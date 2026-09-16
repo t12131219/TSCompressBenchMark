@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tscompbench.local/schemas/v2/compatibility-plan.schema.json",
+  "title": "Time Series Compression Benchmark V2 Compatibility Plan",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "compatibility_plan_id",
+    "status",
+    "reason_code",
+    "missing_capabilities",
+    "input_descriptor",
+    "output_descriptor",
+    "operations",
+    "effective_loss_mode"
+  ],
+  "properties": {
+    "schema_version": {"const": "tscb.compatibility-plan.v2"},
+    "compatibility_plan_id": {"type": "string"},
+    "status": {"enum": ["DIRECT_SUPPORTED", "ADAPTER_LOSSLESS", "ADAPTER_LOSSY", "UNSUPPORTED"]},
+    "reason_code": {"type": "string", "minLength": 1},
+    "missing_capabilities": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {"type": "string"}
+    },
+    "input_descriptor": {"type": "object"},
+    "output_descriptor": {"type": ["object", "null"]},
+    "operations": {"type": "array", "items": {"type": "object"}},
+    "effective_loss_mode": {
+      "enum": ["LOSSLESS", "ERROR_BOUNDED_LOSSY", "RATE_CONTROLLED_LOSSY", "SUMMARY_ONLY"]
+    }
+  }
+}

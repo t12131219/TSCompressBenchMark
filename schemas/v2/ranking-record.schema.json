@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "tscb.ranking-record.v2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "dataset_id", "comparison_key_type", "comparison_key", "profile_id", "metric", "direction", "summary_id", "value", "rank", "tie_method", "coverage_used_as_score"],
+  "properties": {
+    "schema_version": {"const": "tscb.ranking-record.v2"}, "dataset_id": {"type": "string"}, "comparison_key_type": {"type": "string"}, "comparison_key": {"type": "string"}, "profile_id": {"type": "string"}, "metric": {"type": "string"}, "direction": {"enum": ["MIN", "MAX"]}, "summary_id": {"type": "string"}, "value": {"type": "number"}, "rank": {"type": "integer", "minimum": 1}, "tie_method": {"const": "DENSE_EXACT"}, "coverage_used_as_score": {"const": false}
+  }
+}

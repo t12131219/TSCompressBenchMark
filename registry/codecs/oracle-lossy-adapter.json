@@ -1,0 +1,85 @@
+{
+  "schema_version": "tscb.codec-manifest.v2",
+  "key": "oracle-lossy-adapter",
+  "identity": {
+    "display_name": "Layer 2 Lossy Adapter Oracle",
+    "family": "HARNESS_ORACLE",
+    "citations": ["internal:batch-0"],
+    "source_artifact_id": "v2:source-artifact:sha256:8896a5f832e91a4e767b192122faf6991e095d5a954fa75dfa9b3dffea0f600c"
+  },
+  "classification": {
+    "object_level": "P2_PIPELINE",
+    "implementation_class": "CONVENTIONAL",
+    "tracks": ["VALUE"],
+    "subtracks": ["V3"]
+  },
+  "input": {
+    "topologies": ["UTS", "SYNCHRONOUS_MTS"],
+    "dtypes": ["<f4"],
+    "ranks": [1, 2],
+    "layouts": ["ROW_MAJOR_CONTIG"],
+    "endianness": ["little"],
+    "alignment_bytes": 1,
+    "min_n": 1,
+    "max_n": 2147483647,
+    "min_m": 1,
+    "max_m": 4096,
+    "validity_shapes": ["NONE"],
+    "value_coupling_mode": "COLUMN_INDEPENDENT",
+    "timestamp_semantics": {
+      "preserve_order": true,
+      "duplicates": true,
+      "out_of_order": true,
+      "negative_delta": true,
+      "absolute_epoch": true,
+      "overflow_policy": "CHECKED_REJECT"
+    }
+  },
+  "semantics": {
+    "loss_modes": ["ERROR_BOUNDED_LOSSY"],
+    "error_bound_types": ["ABSOLUTE"],
+    "reconstruction_modes": ["APPROX_GRID"],
+    "rebuild_protocol": "CAST_BACK_TO_CANONICAL_DTYPE",
+    "preprocess_class": "NONE",
+    "preprocess_stages": [],
+    "decodability_profile": "SELF_CONTAINED_ORACLE",
+    "bitstream_separability": "INDEPENDENT"
+  },
+  "lifecycle": {
+    "block_semantics": "LOGICAL_BLOCK_SAMPLES",
+    "state_semantics": "INDEPENDENT_CONTEXT_PER_REPETITION",
+    "reset": "REQUIRED",
+    "finalize": "REQUIRED",
+    "safe_overread_bytes": 0,
+    "tail_policy": "SCALAR_EXACT",
+    "dictionary": "NONE",
+    "model": "NONE",
+    "index": "NONE"
+  },
+  "execution": {
+    "backends": ["PYTHON_IN_PROCESS"],
+    "isa": ["SCALAR"],
+    "devices": ["CPU"],
+    "threading": "SINGLE_THREAD",
+    "fallback_policy": "DISALLOWED",
+    "runtime_dispatch": false
+  },
+  "features": {"streaming": false, "query": false, "random_access": false},
+  "parameters": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "block_size": {"type": "integer", "minimum": 1, "maximum": 1048576, "default": 1024},
+      "error_bound_type": {"type": "string", "enum": ["ABSOLUTE"], "default": "ABSOLUTE"},
+      "error_bound": {"type": "decimal-string", "default": "0.000001"},
+      "isa": {"type": "string", "enum": ["SCALAR"], "default": "SCALAR"}
+    },
+    "constraints": []
+  },
+  "adapter": {
+    "backend": "PYTHON_IN_PROCESS",
+    "version": "oracle-v1",
+    "timing_boundary": "FRAMEWORK_DECLARED",
+    "accounting_hooks": ["COPY_BYTES", "ALLOCATION_BYTES", "PADDING_BYTES"]
+  }
+}

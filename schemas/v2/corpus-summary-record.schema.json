@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "tscb.corpus-summary-record.v2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "corpus_summary_id", "algorithm_id", "config_id", "execution_path_hash", "profile_id", "semantic_comparability_key", "execution_comparability_key", "resource_profile_key", "dataset_count", "dataset_ids", "summary_ids", "micro_size_ratio", "micro_compression_factor", "geometric_mean_compression_factor", "micro_encode_mb_per_second", "micro_decode_mb_per_second", "corpus_peak_memory_bytes_max", "corpus_peak_memory_bytes_p95", "corpus_cpu_core_seconds_per_gb"],
+  "properties": {
+    "schema_version": {"const": "tscb.corpus-summary-record.v2"},
+    "corpus_summary_id": {"type": "string"},
+    "algorithm_id": {"type": "string"},
+    "config_id": {"type": "string"},
+    "execution_path_hash": {"type": "string"},
+    "profile_id": {"type": "string"},
+    "semantic_comparability_key": {"type": "string"},
+    "execution_comparability_key": {"type": "string"},
+    "resource_profile_key": {"type": "string"},
+    "dataset_count": {"type": "integer", "minimum": 1},
+    "dataset_ids": {"type": "array", "items": {"type": "string"}},
+    "summary_ids": {"type": "array", "items": {"type": "string"}},
+    "micro_size_ratio": {"type": ["string", "null"]},
+    "micro_compression_factor": {"type": ["string", "null"]},
+    "geometric_mean_compression_factor": {"type": ["string", "null"]},
+    "micro_encode_mb_per_second": {"type": ["string", "null"]},
+    "micro_decode_mb_per_second": {"type": ["string", "null"]},
+    "corpus_peak_memory_bytes_max": {"type": ["number", "null"]},
+    "corpus_peak_memory_bytes_p95": {"type": ["number", "null"]},
+    "corpus_cpu_core_seconds_per_gb": {"type": ["string", "null"]}
+  }
+}

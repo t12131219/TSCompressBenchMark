@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tscompbench.local/schemas/v2/experiment-config.schema.json",
+  "title": "Time Series Compression Benchmark V2 Experiment Config",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "datasets"],
+  "properties": {
+    "schema_version": {"const": "2.0"},
+    "datasets": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"type": "string", "pattern": "^[a-z0-9][a-z0-9_-]*$"}
+    },
+    "algorithms": {
+      "type": "array",
+      "uniqueItems": true,
+      "default": [],
+      "items": {"type": "string", "pattern": "^[a-z0-9][a-z0-9_-]*$"}
+    },
+    "tracks": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "default": ["VALUE"],
+      "items": {"enum": ["TIMESTAMP", "VALUE", "SYSTEM"]}
+    },
+    "seed": {"type": "integer", "minimum": 0, "default": 20260910},
+    "data_preparation": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "characterization_mode": {"enum": ["exact", "sampled"], "default": "exact"},
+        "characterization_sample_rows": {"type": "integer", "minimum": 2},
+        "write_canonical": {"const": true}
+      }
+    },
+    "profile": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "measurement_mode": {"enum": ["QUALIFICATION", "FORMAL"]},
+        "timing_scope": {"enum": ["CORE", "PIPELINE", "E2E"]},
+        "resource_scope": {"type": "string"},
+        "memory_accounting_scope": {"type": "string"},
+        "counter_method": {"type": "string"},
+        "energy_method": {"type": "string"},
+        "sampling_policy": {"type": "string"},
+        "threads": {"type": "integer", "minimum": 1},
+        "processes": {"type": "integer", "minimum": 1},
+        "cpu_affinity": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "integer", "minimum": 0}},
+        "device": {"type": "string"},
+        "allocation_policy": {"type": "string"},
+        "cache_policy": {"type": "string"},
+        "state_policy": {"type": "string"},
+        "gc_policy": {"type": "string"},
+        "jit_policy": {"type": "string"},
+        "timeout_seconds": {"type": "integer", "minimum": 1},
+        "memory_limit_bytes": {"type": "integer", "minimum": 1},
+        "qualification_repetitions": {"type": "integer", "minimum": 1},
+        "warmup_min_count": {"type": "integer", "minimum": 0},
+        "warmup_min_seconds": {"type": "string", "pattern": "^(0|[1-9][0-9]*)(\\.[0-9]+)?$"},
+        "repetitions": {"type": "integer", "minimum": 1},
+        "min_repetition_seconds": {"type": "string", "pattern": "^(0|[1-9][0-9]*)(\\.[0-9]+)?$"},
+        "max_inner_iterations": {"type": "integer", "minimum": 1},
+        "iteration_semantics": {"enum": ["INDEPENDENT_OBJECT", "CONTINUOUS_STREAM"]},
+        "query_workload": {"type": "boolean"},
+        "streaming_workload": {"type": "boolean"},
+        "query_count": {"type": "integer", "minimum": 1}
+      }
+    },
+    "reporting": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "bootstrap_samples": {"type": "integer", "minimum": 100, "default": 2000},
+        "confidence_level": {"type": "string", "pattern": "^0\\.(5[0-9]*|[6-9][0-9]*)$", "default": "0.95"},
+        "ranking_policy": {"const": "PER_METRIC_WITHIN_COMPARABILITY_GROUP"},
+        "tie_method": {"const": "DENSE_EXACT"},
+        "coverage_policy": {"const": "PUBLISH_SEPARATELY_NO_SCORE"}
+      }
+    },
+    "sweep": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "minItems": 1,
+        "items": {"type": ["string", "integer", "boolean"]}
+      }
+    }
+  }
+}

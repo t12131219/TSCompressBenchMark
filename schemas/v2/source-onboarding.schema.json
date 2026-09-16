@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tscompbench.local/schemas/v2/source-onboarding.schema.json",
+  "title": "Time Series Compression Benchmark V2 Source Onboarding Card",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "source_artifact_id", "repository", "commit", "dirty",
+    "submodules", "implementation_files", "public_api_files", "benchmark_files",
+    "test_files", "license_files", "third_party_dependencies",
+    "object_level_candidates", "input_contract", "output_contract",
+    "lifecycle_contract", "stream_components", "upstream_tests", "builds",
+    "license_decision", "known_limitations", "unsupported_reason_codes"
+  ],
+  "properties": {
+    "schema_version": {"const": "tscb.source-onboarding.v2"},
+    "source_onboarding_id": {"type": "string"},
+    "source_artifact_id": {"type": "string"},
+    "repository": {"type": "string"},
+    "commit": {"type": "string"},
+    "dirty": {"const": false},
+    "submodules": {"type": "array"},
+    "implementation_files": {"type": "array", "minItems": 1},
+    "public_api_files": {"type": "array", "minItems": 1},
+    "benchmark_files": {"type": "array"},
+    "test_files": {"type": "array"},
+    "license_files": {"type": "array"},
+    "third_party_dependencies": {"type": "array"},
+    "object_level_candidates": {"type": "array", "minItems": 1},
+    "input_contract": {"type": "object"},
+    "output_contract": {"type": "object"},
+    "lifecycle_contract": {"type": "object"},
+    "stream_components": {"type": "array"},
+    "upstream_tests": {"type": "array"},
+    "builds": {"type": "array", "minItems": 1},
+    "license_decision": {"type": "object"},
+    "known_limitations": {"type": "array"},
+    "unsupported_reason_codes": {"type": "array"}
+  }
+}

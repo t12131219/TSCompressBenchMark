@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "tscb.accounting-ledger.v2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "track", "timestamp_bits", "value_bits", "shared_bits",
+    "unallocated_shared_bits", "metadata_bits", "validity_bits", "dictionary_bits",
+    "model_bits", "index_bits", "checkpoint_bits", "checksum_bits", "padding_bits",
+    "container_bits", "external_side_information_bits", "serialized_bits", "final_bits",
+    "final_physical_bytes", "canonical_raw_bits", "accounting_method",
+    "compression_factor", "size_ratio"
+  ],
+  "properties": {
+    "schema_version": {"const": "tscb.accounting-ledger.v2"},
+    "track": {"enum": ["TIMESTAMP", "VALUE", "SYSTEM"]},
+    "timestamp_bits": {"type": "integer", "minimum": 0},
+    "value_bits": {"type": "integer", "minimum": 0},
+    "shared_bits": {"type": "integer", "minimum": 0},
+    "unallocated_shared_bits": {"type": "integer", "minimum": 0},
+    "metadata_bits": {"type": "integer", "minimum": 0},
+    "validity_bits": {"type": "integer", "minimum": 0},
+    "dictionary_bits": {"type": "integer", "minimum": 0},
+    "model_bits": {"type": "integer", "minimum": 0},
+    "index_bits": {"type": "integer", "minimum": 0},
+    "checkpoint_bits": {"type": "integer", "minimum": 0},
+    "checksum_bits": {"type": "integer", "minimum": 0},
+    "padding_bits": {"type": "integer", "minimum": 0},
+    "container_bits": {"type": "integer", "minimum": 0},
+    "external_side_information_bits": {"type": "integer", "minimum": 0},
+    "serialized_bits": {"type": "integer", "minimum": 0},
+    "final_bits": {"type": "integer", "minimum": 0},
+    "final_physical_bytes": {"type": "integer", "minimum": 0},
+    "canonical_raw_bits": {"type": "integer", "minimum": 0},
+    "accounting_method": {"type": "string", "minLength": 1},
+    "compression_factor": {"type": ["string", "null"]},
+    "size_ratio": {"type": ["string", "null"]}
+  }
+}

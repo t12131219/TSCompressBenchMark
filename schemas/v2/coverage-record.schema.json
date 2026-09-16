@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "tscb.coverage-record.v2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "task_id", "dataset_id", "algorithm_id", "config_id", "track", "profile_id", "planned_status", "planned_reason_code", "final_status", "coverage_category", "record_count", "expected_repetitions", "pass_repetitions", "failed_repetitions", "status_counts", "run_ids"],
+  "properties": {
+    "schema_version": {"const": "tscb.coverage-record.v2"},
+    "task_id": {"type": "string"}, "dataset_id": {"type": "string"}, "algorithm_id": {"type": "string"}, "config_id": {"type": "string"}, "track": {"type": "string"}, "profile_id": {"type": "string"}, "planned_status": {"type": "string"}, "planned_reason_code": {"type": "string"}, "final_status": {"type": "string"}, "coverage_category": {"enum": ["PASS", "UNSUPPORTED", "FAIL", "OOM", "TIMEOUT"]}, "record_count": {"type": "integer", "minimum": 0}, "expected_repetitions": {"type": "integer", "minimum": 1}, "pass_repetitions": {"type": "integer", "minimum": 0}, "failed_repetitions": {"type": "integer", "minimum": 0}, "status_counts": {"type": "object"}, "run_ids": {"type": "array", "items": {"type": ["string", "null"]}}
+  }
+}

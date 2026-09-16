@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tscompbench.local/schemas/v2/comparability-keys.schema.json",
+  "title": "Time Series Compression Benchmark V2 Comparability Keys",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "semantic_key", "execution_key", "resource_key", "semantic_document", "execution_document", "resource_document"],
+  "properties": {
+    "schema_version": {"const": "tscb.comparability-keys.v2"},
+    "semantic_key": {"type": "string"},
+    "execution_key": {"type": "string"},
+    "resource_key": {"type": "string"},
+    "semantic_document": {"type": "object"},
+    "execution_document": {"type": "object"},
+    "resource_document": {"type": "object"}
+  }
+}

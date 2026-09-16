@@ -1,0 +1,24 @@
+schema_version = "2.0"
+datasets = ["etth1"]
+algorithms = [
+  "oracle-direct",
+  "oracle-lossless-adapter",
+  "oracle-lossy-adapter",
+  "oracle-native-nd-only",
+]
+tracks = ["VALUE"]
+seed = 20260910
+
+[data_preparation]
+characterization_mode = "exact"
+write_canonical = true
+
+[profile]
+timing_scope = "PIPELINE"
+threads = 1
+processes = 1
+timeout_seconds = 120
+memory_limit_bytes = 1073741824
+
+[sweep]
+block_size = [256, 1024]

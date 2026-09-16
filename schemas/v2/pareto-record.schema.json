@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "tscb.pareto-record.v2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "view", "dataset_id", "comparison_key_type", "comparison_key", "profile_id", "summary_id", "objectives", "directions", "pareto_optimal", "dominated_by_summary_ids"],
+  "properties": {
+    "schema_version": {"const": "tscb.pareto-record.v2"}, "view": {"enum": ["SPACE_ENCODE", "SPACE_DECODE", "SPACE_MEMORY", "RATE_DISTORTION"]}, "dataset_id": {"type": "string"}, "comparison_key_type": {"type": "string"}, "comparison_key": {"type": "string"}, "profile_id": {"type": "string"}, "summary_id": {"type": "string"}, "objectives": {"type": "object"}, "directions": {"type": "object"}, "pareto_optimal": {"type": "boolean"}, "dominated_by_summary_ids": {"type": "array", "items": {"type": "string"}}
+  }
+}

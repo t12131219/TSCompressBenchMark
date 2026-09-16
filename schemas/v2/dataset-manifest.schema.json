@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tscompbench.local/schemas/v2/dataset-manifest.schema.json",
+  "title": "Time Series Compression Benchmark V2 Dataset Manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "key",
+    "display_name",
+    "source",
+    "license",
+    "file",
+    "parser",
+    "logical",
+    "expected",
+    "split"
+  ],
+  "properties": {
+    "schema_version": {"const": "tscb.dataset-manifest.v2"},
+    "key": {"type": "string", "pattern": "^[a-z0-9][a-z0-9_-]*$"},
+    "display_name": {"type": "string", "minLength": 1},
+    "source": {"type": "object"},
+    "license": {"type": "object"},
+    "file": {
+      "type": "object",
+      "required": ["path", "bytes", "sha256", "format"],
+      "properties": {
+        "path": {"type": "string"},
+        "bytes": {"type": "integer", "minimum": 0},
+        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "format": {"enum": ["csv", "npz"]},
+        "header_bytes_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "raw_header_hex": {"type": "string", "pattern": "^[0-9a-f]*$"}
+      }
+    },
+    "parser": {"type": "object"},
+    "logical": {
+      "type": "object",
+      "required": ["topology", "axes", "timestamp", "value", "validity", "canonical"]
+    },
+    "expected": {"type": "object"},
+    "split": {"type": "object", "required": ["policy", "learned_eligible"]}
+  }
+}
+

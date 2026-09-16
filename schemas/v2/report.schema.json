@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "tscb.report.v2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "report_id", "run_set_id", "generated_at_utc", "policy", "methodology", "notices", "source_hashes", "derived_artifact_hashes", "task_count", "summary_count", "eligible_run_count", "coverage_counts", "environment", "dataset_evidence", "run_set", "source_registry", "codec_registry", "eligibility", "summaries", "corpus_summaries", "coverage", "comparability_groups", "pareto", "rankings"],
+  "properties": {
+    "schema_version": {"const": "tscb.report.v2"}, "report_id": {"type": "string"}, "run_set_id": {"type": "string"}, "generated_at_utc": {"type": "string"}, "policy": {"type": "object"}, "methodology": {"type": "object"}, "notices": {"type": "object"}, "source_hashes": {"type": "object"}, "derived_artifact_hashes": {"type": "object"}, "task_count": {"type": "integer", "minimum": 0}, "summary_count": {"type": "integer", "minimum": 0}, "eligible_run_count": {"type": "integer", "minimum": 0}, "coverage_counts": {"type": "object"}, "environment": {"type": ["object", "null"]}, "dataset_evidence": {"type": "array", "items": {"type": "object"}}, "run_set": {"type": "object"}, "source_registry": {"type": ["object", "null"]}, "codec_registry": {"type": ["object", "null"]}, "eligibility": {"type": "array"}, "summaries": {"type": "array"}, "corpus_summaries": {"type": "array"}, "coverage": {"type": "array"}, "comparability_groups": {"type": "array"}, "pareto": {"type": "array"}, "rankings": {"type": "array"}
+  }
+}

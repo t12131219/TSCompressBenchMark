@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tscompbench.local/schemas/v2/resolved-config.schema.json",
+  "title": "Time Series Compression Benchmark V2 Resolved Configuration",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "algorithm_id",
+    "config_id",
+    "parameters",
+    "framework_parameters",
+    "status",
+    "reason_code"
+  ],
+  "properties": {
+    "schema_version": {"const": "tscb.resolved-config.v2"},
+    "algorithm_id": {"type": "string"},
+    "config_id": {"type": "string"},
+    "parameters": {"type": "object"},
+    "framework_parameters": {"type": "object"},
+    "status": {"enum": ["PLANNED", "SCHEMA_ERROR"]},
+    "reason_code": {"type": "string"}
+  }
+}

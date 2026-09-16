@@ -1,0 +1,37 @@
+{
+  "schema_version": "tscb.dataset-manifest.v2",
+  "key": "ettm2",
+  "display_name": "ETT 15 minute dataset 2",
+  "source": {"uri": "local:datasets/ETTm2.csv", "retrieved_at": "UNSPECIFIED"},
+  "license": {"spdx": "UNSPECIFIED", "status": "REVIEW_REQUIRED"},
+  "file": {
+    "path": "datasets/ETTm2.csv", "bytes": 9677236,
+    "sha256": "db973ca252c6410a30d0469b13d696cf919648d0f3fd588c60f03fdbdbadd1fd",
+    "format": "csv",
+    "header_bytes_sha256": "9526b1e02cad3246051abe5ccc77bdd9ebe698913ae1aa8a2c23813471b80db0"
+  },
+  "parser": {
+    "name": "python.csv", "version": "stdlib-runtime-recorded", "encoding": "utf-8",
+    "encoding_errors": "strict", "delimiter": ",", "decimal": ".", "header": true,
+    "strict_column_count": true
+  },
+  "logical": {
+    "topology": "SYNCHRONOUS_MTS", "axes": ["time", "feature"],
+    "timestamp": {
+      "origin": "SOURCE_COLUMN", "column": "date", "dtype": "<i8", "unit": "s",
+      "epoch": "UNIX", "formats": ["%Y-%m-%d %H:%M:%S"],
+      "timezone_interpretation": "NAIVE_AS_UTC", "order_policy": "PRESERVE",
+      "allow_duplicates": false, "allow_out_of_order": false
+    },
+    "value": {
+      "kind": "CSV_COLUMNS",
+      "column_selection": {"kind": "ALL_EXCEPT", "excluded": ["date"], "expected_count": 7},
+      "default_column": {"dtype": "<f8", "unit": "UNSPECIFIED", "entity": "transformer", "feature": "$HEADER"},
+      "overrides": {}, "display_name_overrides": {}, "representation": "PER_COLUMN_BUFFERS"
+    },
+    "validity": {"shape": "NONE", "missing_tokens": [], "nan_is_null": false},
+    "canonical": {"format_version": "tscb-canonical-v1", "byte_order": "little"}
+  },
+  "expected": {"rows": 69680, "columns": 8},
+  "split": {"policy": "UNSPECIFIED", "learned_eligible": false, "reason": "No evidence-backed split was supplied"}
+}

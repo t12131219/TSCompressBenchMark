@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tscompbench.local/schemas/v2/preprocess-plan.schema.json",
+  "title": "Time Series Compression Benchmark V2 Preprocess Plan",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "stages", "preprocess_plan_id", "semantic_class"],
+  "properties": {
+    "schema_version": {"const": "tscb.preprocess-plan.v2"},
+    "stages": {"type": "array", "items": {"type": "object"}},
+    "preprocess_plan_id": {"type": "string"},
+    "semantic_class": {"enum": ["NONE", "LOSSLESS_LAYOUT", "LOSSLESS_SEMANTIC", "LOSSY_PREPROCESS", "TRAINING_LEARNED"]}
+  }
+}

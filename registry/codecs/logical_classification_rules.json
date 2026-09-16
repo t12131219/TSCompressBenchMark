@@ -1,0 +1,47 @@
+{
+  "schema_version": "tscb.logical-classification-rules.v2",
+  "policy": {
+    "algorithm_id_requires_onboarding": true,
+    "source_catalog_evidence_is_not_qualification": true,
+    "ambiguous_object_level_is_never_silently_resolved": true
+  },
+  "groups": {
+    "ValueCompress": {
+      "track": "VALUE",
+      "entry_role": "ALGORITHM_CANDIDATE",
+      "default_object_levels": ["P0_PRIMITIVE", "P2_PIPELINE"]
+    },
+    "TimeStampCompress": {
+      "track": "TIMESTAMP",
+      "entry_role": "ALGORITHM_CANDIDATE",
+      "default_object_levels": ["P0_PRIMITIVE", "P2_PIPELINE"]
+    },
+    "TSBench": {
+      "track": "MULTI_OR_REFERENCE",
+      "entry_role": "REFERENCE_BENCHMARK",
+      "default_object_levels": []
+    }
+  },
+  "category_keyword_overrides": [
+    {
+      "keywords": ["通用字典压缩", "无损预测编码", "有损预测编码"],
+      "object_levels": ["P1_STANDALONE_CODEC"]
+    },
+    {
+      "keywords": ["变换编码", "降维表示", "Residual", "Entropy", "Delta", "VarInt", "ZigZag", "Rice", "Bit Packing", "Simple-8b", "Elias", "RLE", "DPCM", "Frame-of-Reference"],
+      "object_levels": ["P0_PRIMITIVE", "P2_PIPELINE"]
+    },
+    {
+      "keywords": ["IoTDB", "InfluxDB", "ClickHouse", "Prometheus", "TSDB"],
+      "object_levels": ["P0_PRIMITIVE", "P2_PIPELINE", "P3_STORAGE_SYSTEM"]
+    },
+    {
+      "keywords": ["学习", "神经", "自编码", "Generative"],
+      "object_levels": ["P2_PIPELINE"]
+    },
+    {
+      "keywords": ["硬件加速"],
+      "object_levels": ["P1_STANDALONE_CODEC", "P2_PIPELINE"]
+    }
+  ]
+}

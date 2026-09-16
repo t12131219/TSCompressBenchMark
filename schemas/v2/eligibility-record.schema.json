@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "tscb.eligibility-record.v2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "run_id", "task_id", "dataset_id", "algorithm_id", "config_id", "execution_path_hash", "analysis", "comparison_key", "eligible", "reason_codes"],
+  "properties": {
+    "schema_version": {"const": "tscb.eligibility-record.v2"},
+    "run_id": {"type": "string"},
+    "task_id": {"type": "string"},
+    "dataset_id": {"type": "string"},
+    "algorithm_id": {"type": "string"},
+    "config_id": {"type": "string"},
+    "execution_path_hash": {"type": "string"},
+    "analysis": {"enum": ["SPACE_QUALITY", "PERFORMANCE", "RESOURCE"]},
+    "comparison_key": {"type": "string"},
+    "eligible": {"type": "boolean"},
+    "reason_codes": {"type": "array", "minItems": 1, "items": {"type": "string"}}
+  }
+}

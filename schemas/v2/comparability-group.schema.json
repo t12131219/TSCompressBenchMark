@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "tscb.comparability-group.v2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "semantic_comparability_key", "execution_comparability_key", "resource_profile_key", "semantic_document", "execution_document", "resource_document", "semantic_context", "execution_context", "resource_context", "task_ids", "task_count"],
+  "properties": {
+    "schema_version": {"const": "tscb.comparability-group.v2"},
+    "semantic_comparability_key": {"type": "string"},
+    "execution_comparability_key": {"type": "string"},
+    "resource_profile_key": {"type": "string"},
+    "semantic_document": {"type": "object"},
+    "execution_document": {"type": "object"},
+    "resource_document": {"type": "object"},
+    "semantic_context": {"type": "string"},
+    "execution_context": {"type": "string"},
+    "resource_context": {"type": "string"},
+    "task_ids": {"type": "array", "items": {"type": "string"}},
+    "task_count": {"type": "integer", "minimum": 1}
+  }
+}

@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "tscb.run-record.v2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "run_id", "run_set_id", "task_id", "dataset_id",
+    "algorithm_id", "config_id", "execution_path_hash", "semantic_comparability_key",
+    "execution_comparability_key", "resource_profile_key", "track", "record_kind",
+    "repetition_index", "status", "reason_code", "eligibility", "input_sha256",
+    "bitstream_sha256", "finalize_bytes", "timing", "resources", "workloads", "accounting",
+    "correctness", "diagnostics"
+  ],
+  "properties": {
+    "schema_version": {"const": "tscb.run-record.v2"},
+    "run_id": {"type": "string"},
+    "run_set_id": {"type": "string"},
+    "task_id": {"type": "string"},
+    "dataset_id": {"type": "string"},
+    "algorithm_id": {"type": "string"},
+    "config_id": {"type": "string"},
+    "execution_path_hash": {"type": "string"},
+    "semantic_comparability_key": {"type": "string"},
+    "execution_comparability_key": {"type": "string"},
+    "resource_profile_key": {"type": "string"},
+    "track": {"enum": ["TIMESTAMP", "VALUE", "SYSTEM"]},
+    "record_kind": {"enum": ["DIAGNOSTIC", "FORMAL_REPETITION"]},
+    "repetition_index": {"type": ["integer", "null"], "minimum": 0},
+    "status": {"type": "string"},
+    "reason_code": {"type": "string"},
+    "eligibility": {"type": "boolean"},
+    "input_sha256": {"type": ["string", "null"]},
+    "bitstream_sha256": {"type": ["string", "null"]},
+    "finalize_bytes": {"type": ["integer", "null"], "minimum": 0},
+    "timing": {
+      "type": ["object", "null"],
+      "required": [
+        "schema_version", "timing_scope", "iteration_semantics", "inner_iterations",
+        "selected_wall_ns", "selected_encode_wall_ns", "selected_decode_wall_ns",
+        "core_encode_wall_ns", "core_decode_wall_ns",
+        "pipeline_encode_wall_ns", "pipeline_decode_wall_ns", "e2e_wall_ns",
+        "canonical_bytes_per_iteration", "min_duration_satisfied"
+      ],
+      "properties": {
+        "schema_version": {"const": "tscb.timing-observation.v2"},
+        "timing_scope": {"enum": ["CORE", "PIPELINE", "E2E"]},
+        "iteration_semantics": {"enum": ["INDEPENDENT_OBJECT", "CONTINUOUS_STREAM"]},
+        "inner_iterations": {"type": "integer", "minimum": 1},
+        "selected_wall_ns": {"type": "integer", "minimum": 0},
+        "selected_encode_wall_ns": {"type": "integer", "minimum": 0},
+        "selected_decode_wall_ns": {"type": "integer", "minimum": 0},
+        "core_encode_wall_ns": {"type": "integer", "minimum": 0},
+        "core_decode_wall_ns": {"type": "integer", "minimum": 0},
+        "pipeline_encode_wall_ns": {"type": "integer", "minimum": 0},
+        "pipeline_decode_wall_ns": {"type": "integer", "minimum": 0},
+        "e2e_wall_ns": {"type": "integer", "minimum": 0},
+        "canonical_bytes_per_iteration": {"type": "integer", "minimum": 0},
+        "min_duration_satisfied": {"type": "boolean"}
+      }
+    },
+    "resources": {
+      "type": ["object", "null"],
+      "required": [
+        "schema_version", "requested_scope", "actual_scope", "scope_availability",
+        "process_user_seconds", "process_system_seconds", "process_total_seconds",
+        "peak_process_rss_bytes", "counter_observation", "energy_observation"
+      ],
+      "properties": {
+        "schema_version": {"const": "tscb.resource-observation.v2"},
+        "requested_scope": {"type": "string"},
+        "actual_scope": {"type": "string"},
+        "scope_availability": {"enum": ["AVAILABLE", "UNSUPPORTED", "NOT_COLLECTED"]},
+        "process_user_seconds": {"type": "string"},
+        "process_system_seconds": {"type": "string"},
+        "process_total_seconds": {"type": "string"},
+        "peak_process_rss_bytes": {"type": "integer", "minimum": 0},
+        "counter_observation": {"type": "object"},
+        "energy_observation": {"type": "object"}
+      }
+    },
+    "workloads": {"type": ["object", "null"]},
+    "accounting": {"type": ["object", "null"]},
+    "correctness": {"type": ["object", "null"]},
+    "diagnostics": {"type": "object"}
+  }
+}

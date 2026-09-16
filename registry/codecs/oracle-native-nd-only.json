@@ -1,0 +1,96 @@
+{
+  "schema_version": "tscb.codec-manifest.v2",
+  "key": "oracle-native-nd-only",
+  "identity": {
+    "display_name": "Layer 2 Native ND Unsupported Oracle",
+    "family": "HARNESS_ORACLE",
+    "citations": ["internal:batch-0"],
+    "source_artifact_id": "v2:source-artifact:sha256:8896a5f832e91a4e767b192122faf6991e095d5a954fa75dfa9b3dffea0f600c"
+  },
+  "classification": {
+    "object_level": "P1_STANDALONE_CODEC",
+    "implementation_class": "CONVENTIONAL",
+    "tracks": ["VALUE"],
+    "subtracks": ["V4"]
+  },
+  "input": {
+    "topologies": ["NATIVE_ND_ARRAY"],
+    "dtypes": ["<f8"],
+    "ranks": [3, 4],
+    "layouts": ["ROW_MAJOR_CONTIG", "STRIDED_VIEW"],
+    "endianness": ["little"],
+    "alignment_bytes": 1,
+    "min_n": 1,
+    "max_n": 2147483647,
+    "min_m": 1,
+    "max_m": 1048576,
+    "validity_shapes": ["NONE"],
+    "value_coupling_mode": "NATIVE_ND_ARRAY",
+    "timestamp_semantics": {
+      "preserve_order": true,
+      "duplicates": false,
+      "out_of_order": false,
+      "negative_delta": false,
+      "absolute_epoch": false,
+      "overflow_policy": "CHECKED_REJECT"
+    }
+  },
+  "semantics": {
+    "loss_modes": ["LOSSLESS"],
+    "error_bound_types": [],
+    "reconstruction_modes": ["EXACT_GRID"],
+    "rebuild_protocol": "IDENTITY",
+    "preprocess_class": "NONE",
+    "preprocess_stages": [],
+    "decodability_profile": "SELF_CONTAINED_ORACLE",
+    "bitstream_separability": "INDEPENDENT"
+  },
+  "lifecycle": {
+    "block_semantics": "NATIVE_ND_BLOCK",
+    "state_semantics": "INDEPENDENT_CONTEXT_PER_REPETITION",
+    "reset": "REQUIRED",
+    "finalize": "REQUIRED",
+    "safe_overread_bytes": 0,
+    "tail_policy": "PARTIAL_ND_BLOCK",
+    "dictionary": "NONE",
+    "model": "NONE",
+    "index": "NONE"
+  },
+  "execution": {
+    "backends": ["PYTHON_IN_PROCESS"],
+    "isa": ["SCALAR"],
+    "devices": ["CPU"],
+    "threading": "SINGLE_THREAD",
+    "fallback_policy": "DISALLOWED",
+    "runtime_dispatch": false
+  },
+  "features": {
+    "streaming": false,
+    "query": false,
+    "random_access": false
+  },
+  "parameters": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "block_size": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 1048576,
+        "default": 1024
+      },
+      "isa": {
+        "type": "string",
+        "enum": ["SCALAR"],
+        "default": "SCALAR"
+      }
+    },
+    "constraints": []
+  },
+  "adapter": {
+    "backend": "PYTHON_IN_PROCESS",
+    "version": "oracle-v1",
+    "timing_boundary": "FRAMEWORK_DECLARED",
+    "accounting_hooks": ["COPY_BYTES", "ALLOCATION_BYTES", "PADDING_BYTES"]
+  }
+}

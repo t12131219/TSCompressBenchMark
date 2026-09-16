@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "tscb.measurement-policy.v2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "measurement_mode", "timing_scope", "resource_scope",
+    "memory_accounting_scope", "counter_method", "energy_method", "sampling_policy",
+    "allocation_policy", "cache_policy", "state_policy", "gc_policy", "jit_policy",
+    "warmup_min_count", "warmup_min_seconds", "repetitions",
+    "min_repetition_seconds", "max_inner_iterations", "iteration_semantics",
+    "threads", "processes", "query_workload", "streaming_workload", "query_count", "seed"
+  ],
+  "properties": {
+    "schema_version": {"const": "tscb.measurement-policy.v2"},
+    "measurement_mode": {"enum": ["QUALIFICATION", "FORMAL"]},
+    "timing_scope": {"enum": ["CORE", "PIPELINE", "E2E"]},
+    "resource_scope": {"enum": ["PROCESS", "PROCESS_TREE_CGROUP", "DEVICE", "SYSTEM_E2E"]},
+    "memory_accounting_scope": {"enum": ["PROCESS_RSS", "CGROUP_PEAK", "DEVICE_VRAM"]},
+    "counter_method": {"type": "string", "minLength": 1},
+    "energy_method": {"type": "string", "minLength": 1},
+    "sampling_policy": {"type": "string", "minLength": 1},
+    "allocation_policy": {"enum": ["PER_REPETITION", "PREALLOCATED"]},
+    "cache_policy": {"enum": ["WARM_INPUT", "COLD_INPUT"]},
+    "state_policy": {"enum": ["RESET_PER_REPETITION", "STEADY_STATE_REUSE"]},
+    "gc_policy": {"enum": ["DISABLED_DURING_TIMING", "ENABLED"]},
+    "jit_policy": {"type": "string", "minLength": 1},
+    "warmup_min_count": {"type": "integer", "minimum": 0},
+    "warmup_min_seconds": {"type": "string"},
+    "repetitions": {"type": "integer", "minimum": 1},
+    "min_repetition_seconds": {"type": "string"},
+    "max_inner_iterations": {"type": "integer", "minimum": 1},
+    "iteration_semantics": {"enum": ["INDEPENDENT_OBJECT", "CONTINUOUS_STREAM"]},
+    "threads": {"type": "integer", "minimum": 1},
+    "processes": {"type": "integer", "minimum": 1},
+    "query_workload": {"type": "boolean"},
+    "streaming_workload": {"type": "boolean"},
+    "query_count": {"type": "integer", "minimum": 1},
+    "seed": {"type": "integer", "minimum": 0}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"measurement_mode": {"const": "FORMAL"}}},
+      "then": {
+        "properties": {
+          "warmup_min_count": {"minimum": 3},
+          "warmup_min_seconds": {"pattern": "^(0\\.[5-9][0-9]*|[1-9][0-9]*(\\.[0-9]+)?)$"},
+          "repetitions": {"minimum": 10},
+          "min_repetition_seconds": {"pattern": "^(1(\\.[0-9]+)?|2(\\.[0-9]+)?|3(\\.0+)?)$"}
+        }
+      }
+    }
+  ]
+}

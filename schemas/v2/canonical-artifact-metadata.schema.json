@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tscompbench.local/schemas/v2/canonical-artifact-metadata.schema.json",
+  "title": "TSCB Canonical Artifact V1 Metadata",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "format",
+    "dataset_id",
+    "dataset_content_sha256",
+    "logical_descriptor",
+    "physical_descriptors",
+    "accounting",
+    "buffers"
+  ],
+  "properties": {
+    "format": {"const": "tscb-canonical-v1"},
+    "dataset_id": {"type": "string"},
+    "dataset_content_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "logical_descriptor": {"type": "object"},
+    "physical_descriptors": {"type": "array", "items": {"type": "object"}},
+    "accounting": {
+      "type": "object",
+      "required": [
+        "timestamp_raw_bits",
+        "value_raw_bits",
+        "validity_raw_bits",
+        "canonical_raw_bits",
+        "source_file_bytes_provenance_only"
+      ]
+    },
+    "buffers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "dtype", "shape", "logical_bits", "payload_bytes", "payload_sha256"],
+        "properties": {
+          "name": {"type": "string"},
+          "dtype": {"type": "string"},
+          "shape": {"type": "array", "items": {"type": "integer", "minimum": 0}},
+          "logical_bits": {"type": "integer", "minimum": 0},
+          "payload_bytes": {"type": "integer", "minimum": 0},
+          "payload_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+        }
+      }
+    }
+  }
+}
+

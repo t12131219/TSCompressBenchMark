@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "tscb.preflight-result.v2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "status", "reason_code", "eligible_for_formal_repetitions",
+    "input_validation", "boundary", "correctness", "accounting",
+    "bitstream_sha256", "diagnostics"
+  ],
+  "properties": {
+    "schema_version": {"const": "tscb.preflight-result.v2"},
+    "status": {"type": "string"},
+    "reason_code": {"type": "string"},
+    "eligible_for_formal_repetitions": {"type": "boolean"},
+    "input_validation": {"type": ["object", "null"]},
+    "boundary": {"type": ["object", "null"]},
+    "correctness": {"type": ["object", "null"]},
+    "accounting": {"type": ["object", "null"]},
+    "bitstream_sha256": {"type": ["string", "null"]},
+    "diagnostics": {"type": "object"}
+  }
+}

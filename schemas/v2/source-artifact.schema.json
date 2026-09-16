@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tscompbench.local/schemas/v2/source-artifact.schema.json",
+  "title": "Time Series Compression Benchmark V2 Source Artifact",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "key", "kind", "identity", "license", "build"],
+  "properties": {
+    "schema_version": {"const": "tscb.source-artifact.v2"},
+    "key": {"type": "string"},
+    "kind": {"type": "string"},
+    "identity": {"type": "object"},
+    "license": {"type": "object"},
+    "build": {"type": "object"}
+  }
+}

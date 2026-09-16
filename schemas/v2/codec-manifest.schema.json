@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tscompbench.local/schemas/v2/codec-manifest.schema.json",
+  "title": "Time Series Compression Benchmark V2 Codec Manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "key", "identity", "classification", "input", "semantics", "lifecycle", "execution", "features", "parameters", "adapter"],
+  "properties": {
+    "schema_version": {"const": "tscb.codec-manifest.v2"},
+    "key": {"type": "string", "pattern": "^[a-z0-9][a-z0-9_-]*$"},
+    "identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["display_name", "family", "citations", "source_artifact_id"],
+      "properties": {
+        "display_name": {"type": "string", "minLength": 1},
+        "family": {"type": "string", "minLength": 1},
+        "citations": {"type": "array", "items": {"type": "string"}},
+        "source_artifact_id": {"type": "string", "pattern": "^v2:source-artifact:sha256:[0-9a-f]{64}$"}
+      }
+    },
+    "classification": {"type": "object"},
+    "input": {"type": "object"},
+    "semantics": {"type": "object"},
+    "lifecycle": {"type": "object"},
+    "execution": {"type": "object"},
+    "features": {"type": "object"},
+    "parameters": {"type": "object"},
+    "adapter": {"type": "object"}
+  }
+}

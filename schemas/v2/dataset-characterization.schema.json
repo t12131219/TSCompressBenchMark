@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tscompbench.local/schemas/v2/dataset-characterization.schema.json",
+  "title": "Time Series Compression Benchmark V2 Dataset Characterization",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "dataset_id",
+    "canonical_content_sha256",
+    "profile",
+    "integrity",
+    "timestamp",
+    "value",
+    "read_only_verified",
+    "characterizer"
+  ],
+  "properties": {
+    "schema_version": {"const": "tscb.dataset-characterization.v2"},
+    "dataset_id": {"type": "string"},
+    "canonical_content_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "profile": {"type": "object"},
+    "integrity": {"type": "object"},
+    "timestamp": {"type": "object"},
+    "value": {"type": "object"},
+    "read_only_verified": {"const": true},
+    "characterizer": {"type": "string"}
+  }
+}

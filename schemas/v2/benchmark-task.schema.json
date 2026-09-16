@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tscompbench.local/schemas/v2/benchmark-task.schema.json",
+  "title": "Time Series Compression Benchmark V2 Benchmark Task",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "task_id",
+    "dataset_id",
+    "algorithm_id",
+    "config_id",
+    "track",
+    "profile_id",
+    "status",
+    "reason_code",
+    "expected_workload",
+    "resource_limits",
+    "dependencies",
+    "compatibility",
+    "preprocess",
+    "execution",
+    "comparability"
+  ],
+  "properties": {
+    "schema_version": {"const": "tscb.benchmark-task.v2"},
+    "task_id": {"type": "string"},
+    "dataset_id": {"type": "string"},
+    "algorithm_id": {"type": "string"},
+    "config_id": {"type": "string"},
+    "track": {"enum": ["TIMESTAMP", "VALUE", "SYSTEM"]},
+    "profile_id": {"type": "string"},
+    "status": {"type": "string"},
+    "reason_code": {"type": "string"},
+    "expected_workload": {"type": "object"},
+    "resource_limits": {"type": "object"},
+    "dependencies": {"type": "array", "items": {"type": "string"}},
+    "compatibility": {"type": "object"},
+    "preprocess": {"type": "object"},
+    "execution": {"type": "object"},
+    "comparability": {"type": "object"}
+  }
+}
