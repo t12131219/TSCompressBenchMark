@@ -172,3 +172,30 @@ vendored `frametest` passed its deterministic basic and 100-case fuzz run. Relea
 ASan/UBSan C-ABI smoke tests passed the required zero, tiny, boundary, and repeated-
 Finalize cases. LeakSanitizer was disabled because the host's ptrace policy prevents it;
 the limitation remains explicit in the onboarding record.
+
+## Phase 4 Zstd Frame source onboarding
+
+The second real-codec onboarding was performed on 2026-09-17 after rereading the master
+plan's Zstd lifecycle and Batch-1 requirements, the edge-case standard, and the C/C++
+benchmark analysis. The execution authority is Zstd 1.5.7 vendored by clean lzbench
+commit `fa871e66b3543a70fd4d060f7c12719343ff4ac3`. The shared checkout was not modified.
+
+The copied closure contains the public headers, BSD/GPL license texts, and the selected
+`common`, `compress`, and `decompress` source/header files required by the single-thread
+frame build. The closure omits `zstdmt_compress.c`, the x86 assembly translation unit,
+dictionary builder, deprecated API, legacy decoders, programs, examples, and tests. The
+registered compiler flags additionally set `DYNAMIC_BMI2=0`, `ZSTD_LEGACY_SUPPORT=0`,
+and `ZSTD_DISABLE_ASM`. The relative-file closure digest is
+`70ce1616c3aee76722bb3a5379a6efe425b183af0197f4d5afe9b7c2e8ae8ed3`;
+the resulting SourceArtifactID is
+`v2:source-artifact:sha256:893e7c7c0ef2d09d06a92e4ee6191f7f4b090718da5e88e82f23b12a8f82f237`.
+
+The local upstream reference checkout at
+`d9c0c7e2cf8a8bf9fb98d3bee546dcf8dc9ac59a` differs from the benchmark-vendored files,
+so no files are mixed across the two authorities. lzbench itself calls `ZSTD_compress2`;
+the project adapter uses the same vendored library through `ZSTD_compressStream2` because
+the plan explicitly requires observable update/finalize behavior. The vendored Zstd
+fuzzer passed 100 deterministic cases with seed 20260917 in an out-of-tree copy. Release
+and ASan/UBSan ABI smoke tests passed zero, tiny, 128-KiB boundary, multi-block, independent
+decode, and repeated-Finalize cases. LeakSanitizer remains unavailable under the host
+ptrace policy and is not reported as covered.

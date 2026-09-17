@@ -9,7 +9,7 @@ from tscompbench.codecs import (
     negotiate,
 )
 from tscompbench.contracts import BenchmarkTrack, RunStatus, Topology, ValidityShape
-from tscompbench.planning import expand_sweep, resolve_execution
+from tscompbench.planning import build_comparability_keys, expand_sweep, resolve_execution
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
@@ -131,3 +131,71 @@ def test_missing_execution_artifact_is_an_explicit_planning_result(tmp_path) -> 
     assert resolution.status is RunStatus.BUILD_UNAVAILABLE
     assert resolution.reason_code == "EXECUTION_ARTIFACT_MISSING"
     assert resolution.artifact_sha256 == "UNSPECIFIED"
+
+
+def test_lz4_and_zstd_common_byte_frame_profiles_are_directly_comparable(
+    tmp_path,
+) -> None:
+    registry = _registry()
+    artifact = tmp_path / "adapter.bin"
+    artifact.write_bytes(b"test-native-adapter")
+    environment = {
+        "environment_id": "v2:environment:sha256:" + "3" * 64,
+        "cpu": {"flags": [], "affinity": [0]},
+    }
+    profile = {
+        "measurement_mode": "FORMAL",
+        "timing_scope": "PIPELINE",
+        "resource_scope": "PROCESS",
+        "memory_accounting_scope": "PROCESS_RSS",
+        "counter_method": "NOT_COLLECTED",
+        "energy_method": "NOT_COLLECTED",
+        "sampling_policy": "PROCESS_BOUNDARY",
+        "threads": 1,
+        "processes": 1,
+        "device": "CPU",
+        "runner_version": "test",
+        "allocation_policy": "PER_REPETITION",
+        "cache_policy": "WARM_INPUT",
+        "state_policy": "RESET_PER_REPETITION",
+        "gc_policy": "DISABLED_DURING_TIMING",
+        "jit_policy": "NOT_APPLICABLE",
+        "warmup_min_count": 3,
+        "warmup_min_seconds": "0.5",
+        "repetitions": 10,
+        "min_repetition_seconds": "1",
+        "iteration_semantics": "INDEPENDENT_OBJECT",
+        "query_workload": False,
+        "query_count": 1,
+        "streaming_workload": False,
+    }
+    key_sets = []
+    execution_paths = []
+    for manifest_key in ("lz4-frame", "zstd-frame"):
+        manifest = registry.get(manifest_key)
+        compatibility = negotiate(manifest, _descriptor())
+        config = expand_sweep(manifest, {})[0]
+        execution = resolve_execution(
+            manifest,
+            config,
+            compatibility,
+            environment,
+            artifact_path=artifact,
+            profile=profile,
+        )
+        key_sets.append(
+            build_comparability_keys(
+                manifest,
+                _descriptor(),
+                config,
+                compatibility,
+                execution,
+                profile=profile,
+            )
+        )
+        execution_paths.append(execution.execution_path_hash)
+
+    assert key_sets[0].semantic_key == key_sets[1].semantic_key
+    assert key_sets[0].execution_key == key_sets[1].execution_key
+    assert key_sets[0].resource_key == key_sets[1].resource_key
+    assert execution_paths[0] != execution_paths[1]

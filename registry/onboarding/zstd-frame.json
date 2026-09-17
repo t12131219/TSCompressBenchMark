@@ -1,0 +1,141 @@
+{
+  "schema_version": "tscb.source-onboarding.v2",
+  "source_artifact_id": "v2:source-artifact:sha256:893e7c7c0ef2d09d06a92e4ee6191f7f4b090718da5e88e82f23b12a8f82f237",
+  "repository": "https://github.com/inikep/lzbench.git",
+  "commit": "fa871e66b3543a70fd4d060f7c12719343ff4ac3",
+  "dirty": false,
+  "submodules": [],
+  "implementation_files": [
+    "lz/zstd/lib/common/debug.c",
+    "lz/zstd/lib/common/entropy_common.c",
+    "lz/zstd/lib/common/error_private.c",
+    "lz/zstd/lib/common/fse_decompress.c",
+    "lz/zstd/lib/common/pool.c",
+    "lz/zstd/lib/common/threading.c",
+    "lz/zstd/lib/common/xxhash.c",
+    "lz/zstd/lib/common/zstd_common.c",
+    "lz/zstd/lib/compress/fse_compress.c",
+    "lz/zstd/lib/compress/hist.c",
+    "lz/zstd/lib/compress/huf_compress.c",
+    "lz/zstd/lib/compress/zstd_compress.c",
+    "lz/zstd/lib/compress/zstd_compress_literals.c",
+    "lz/zstd/lib/compress/zstd_compress_sequences.c",
+    "lz/zstd/lib/compress/zstd_compress_superblock.c",
+    "lz/zstd/lib/compress/zstd_double_fast.c",
+    "lz/zstd/lib/compress/zstd_fast.c",
+    "lz/zstd/lib/compress/zstd_lazy.c",
+    "lz/zstd/lib/compress/zstd_ldm.c",
+    "lz/zstd/lib/compress/zstd_opt.c",
+    "lz/zstd/lib/compress/zstd_preSplit.c",
+    "lz/zstd/lib/decompress/huf_decompress.c",
+    "lz/zstd/lib/decompress/zstd_ddict.c",
+    "lz/zstd/lib/decompress/zstd_decompress.c",
+    "lz/zstd/lib/decompress/zstd_decompress_block.c"
+  ],
+  "public_api_files": [
+    "lz/zstd/lib/zstd.h",
+    "lz/zstd/lib/zstd_errors.h"
+  ],
+  "benchmark_files": [
+    "bench/lzbench.h",
+    "bench/lz_codecs.cpp",
+    "lz/zstd/tests/fullbench.c"
+  ],
+  "test_files": [
+    "lz/zstd/tests/fuzzer.c",
+    "lz/zstd/tests/zstreamtest.c",
+    "lz/zstd/tests/fullbench.c"
+  ],
+  "license_files": [
+    "lz/zstd/LICENSE",
+    "lz/zstd/COPYING"
+  ],
+  "third_party_dependencies": [
+    {
+      "name": "xxHash",
+      "relationship": "NAMESPACED_COMPONENT_VENDORED_BY_ZSTD",
+      "files": ["lz/zstd/lib/common/xxhash.c", "lz/zstd/lib/common/xxhash.h"]
+    }
+  ],
+  "object_level_candidates": ["P1_STANDALONE_CODEC"],
+  "input_contract": {
+    "kind": "BYTE_VIEW",
+    "length_type": "size_t",
+    "zero_length": "SUPPORTED",
+    "ownership": "BORROWED_DURING_CALL",
+    "mutation": "FORBIDDEN_BY_ADAPTER_CONTRACT"
+  },
+  "output_contract": {
+    "kind": "ZSTD_FRAME_IN_TSCB_DESCRIPTOR_CONTAINER",
+    "self_contained": true,
+    "actual_written_length": true,
+    "capacity_is_not_size": true,
+    "dictionary": "NONE"
+  },
+  "lifecycle_contract": {
+    "output_bound": "ZSTD_compressBound plus one ZSTD_CStreamOutSize conservative flush allowance",
+    "return_length": "Every update/finalize call returns actual used bytes",
+    "error_codes": "Stable tscb_status_v1 maps native Zstd errors",
+    "finalize": "REQUIRED_ZSTD_compressStream2_ZSTD_e_end_LOOP_UNTIL_ZERO",
+    "reset": "NEW_CONTEXT_PER_INDEPENDENT_OBJECT"
+  },
+  "stream_components": {
+    "outer_container": "TSCB versioned descriptor prefix and canonical JSON metadata",
+    "frame_header": "Zstd magic and Frame_Header_Descriptor fields including pledged content size",
+    "blocks": "Three-byte Zstd block headers and compressed/raw/RLE physical payloads",
+    "footer": "Optional 32-bit content checksum after the last block",
+    "accounting": "Exact structural inspection; no capacity bytes are charged"
+  },
+  "upstream_tests": [
+    {
+      "name": "lzbench-vendored Zstd fuzzer",
+      "command": "out-of-tree fuzzer -i100 -s20260917",
+      "status": "PASS",
+      "evidence": "Starting zstd tester (64-bits, 1.5.7); 100 fuzzer tests completed"
+    },
+    {
+      "name": "project C ABI smoke",
+      "command": "release and ASan/UBSan executables over N=0/1/2/131071/131072/131073/262145",
+      "status": "PASS",
+      "evidence": "Zstd C ABI smoke passed; independent decode and repeated finalize rejection covered"
+    }
+  ],
+  "builds": [
+    {
+      "profile": "RELEASE_SCALAR_SINGLE_THREAD",
+      "artifact_sha256": "52ffce959afba78939a8ccc2010d59f4d746ac8e1b4f6b6d5e0cbc680a52d731",
+      "compile_commands_sha256": "57b173e429a0521ee82c8fa225d8bc91f606e3bc32c4c6d120b34dea34d97334",
+      "compiler": "GCC 11.4.0",
+      "flags": "-O3 -DNDEBUG -DDYNAMIC_BMI2=0 -DZSTD_LEGACY_SUPPORT=0 -DZSTD_DISABLE_ASM"
+    },
+    {
+      "profile": "ASAN_UBSAN_SCALAR_SINGLE_THREAD",
+      "artifact_sha256": "fd8a66f391e4197568ca7f7659f182f3e37445296b2e49127659d5cef825c87c",
+      "compile_commands_sha256": "733d21f5575b86cb77d573a53796bc607494a0cc467b5a18d7dfa487e661a2fe",
+      "compiler": "GCC 11.4.0",
+      "flags": "-O1 -g -fsanitize=address,undefined -DDYNAMIC_BMI2=0 -DZSTD_LEGACY_SUPPORT=0 -DZSTD_DISABLE_ASM"
+    }
+  ],
+  "license_decision": {
+    "spdx": "BSD-3-Clause OR GPL-2.0-only",
+    "selected": "BSD-3-Clause",
+    "status": "RUN_ALLOWED",
+    "redistribution": "ALLOWED_WITH_LICENSE_NOTICE"
+  },
+  "known_limitations": [
+    "lzbench exercises Zstd with ZSTD_compress2 while this plan-required adapter exercises the same vendored implementation through its streaming frame API and explicit end loop.",
+    "This registered variant is scalar, single-threaded, dictionary-free, and disables legacy decoding and assembly; those modes require separate execution variants.",
+    "The project wrapper currently performs one update per independently finalized object and does not claim streaming/query capability.",
+    "The Python FFI descriptor serialization and contiguous byte materialization are included in the declared adapter boundary.",
+    "LeakSanitizer cannot run under the host container ptrace policy; ASan/UBSan qualification uses detect_leaks=0."
+  ],
+  "unsupported_reason_codes": [
+    "EXECUTION_ARTIFACT_MISSING",
+    "VALIDITY_SHAPE_UNSUPPORTED",
+    "NATIVE_SIZE_T_LIMIT",
+    "DICTIONARY_MODE_NOT_REGISTERED",
+    "MULTITHREAD_MODE_NOT_REGISTERED",
+    "QUERY_UNSUPPORTED",
+    "STREAMING_PROTOCOL_NOT_REGISTERED"
+  ]
+}

@@ -164,3 +164,31 @@ without Python objects or out-of-band metadata. `LZ4F_compressEnd` is mandatory;
 physical size and structural accounting are computed from actual finalized bytes, not
 capacity. Python FFI and container work are included in the declared PIPELINE boundary.
 The adapter currently makes no streaming, query, or random-access claim.
+
+## D021 Zstd uses the benchmark-vendored single-thread frame implementation
+
+The second native codec uses Zstd 1.5.7 from the same pinned lzbench commit as the
+benchmark evidence. Its `common`, `compress`, and `decompress` closure is copied
+unmodified; dictionary builder, deprecated/legacy implementations, CLI, examples, and
+the multithread compression translation unit are excluded. The registered build also
+disables assembly and BMI2 runtime dispatch, so `actual_isa=SCALAR`, single-thread, and
+no-dictionary claims match the loaded binary rather than only the experiment request.
+The separate local `facebook/zstd` checkout differs from the lzbench vendored tree and
+is comparison evidence only.
+
+The adapter pledges the source size, performs one `ZSTD_e_continue` update, and loops
+`ZSTD_e_end` until zero. A nonzero return is never treated as a completed frame.
+Dictionary, context reuse, multithreading, streaming workload, query, and random access
+remain separate unregistered modes rather than implicit features.
+
+## D022 Comparability labels describe contracts, not codec brands
+
+The first LZ4/Zstd formal comparison showed that algorithm-named values such as
+`ONE_LZ4_FRAME` and `LZ4_INTERNAL_BLOCK_TAIL` split otherwise identical semantic and
+execution groups. These fields now use the algorithm-neutral contracts
+`ONE_SELF_CONTAINED_FRAME_PER_ROUTED_OBJECT`,
+`SELF_CONTAINED_TSCB_DESCRIPTOR_PLUS_CODEC_FRAME`, and
+`CODEC_INTERNAL_EXACT_TAIL`. AlgorithmID, ConfigID, SourceArtifactID, binary hash, and
+ExecutionPathHash continue to distinguish implementations. A regression test requires
+the two common byte-frame profiles to share Semantic, Execution, and Resource keys while
+retaining different execution paths.

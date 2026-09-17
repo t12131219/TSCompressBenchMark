@@ -106,7 +106,7 @@ Project foundation established with five-layer architecture fully implemented an
 ### Pending
 
 **Phase 4-10 Implementation**
-- Phase 4: Zstd/Snappy/Brotli after the completed first LZ4 Frame integration
+- Phase 4: Snappy/Brotli after the completed LZ4 Frame and Zstd Frame integrations
 - Phase 5: Timestamp primitives (Delta/DoubleDelta/ZigZag/StreamVByte)
 - Phase 6: Value UTS/MTS codecs (Gorilla/Chimp/ALP/Sprintz)
 - Phase 7: Lossy/ND algorithms (Serf/SZ3/zfp)
@@ -115,10 +115,10 @@ Project foundation established with five-layer architecture fully implemented an
 - Phase 10: Statistics layer completion and publication
 
 **Known Limitations**
-- One real codec adapter is currently qualified; the remaining spreadsheet-listed
+- Two real codec adapters are currently qualified; the remaining spreadsheet-listed
   algorithms have not yet been onboarded.
-- LZ4 currently uses one finalized frame per independent object and does not claim
-  streaming/query support.
+- LZ4 and Zstd currently use one finalized frame per independent object and do not claim
+  streaming/query support. Zstd dictionary and multithread modes are not registered.
 - LeakSanitizer is unavailable under the host ptrace policy; ASan/UBSan ran with leak
   detection disabled.
 
@@ -146,6 +146,29 @@ Project foundation established with five-layer architecture fully implemented an
 - Conservative compression bounds may use less than their declared capacity; the
   boundary validator no longer treats safe `bound - 1` success as a contract failure.
 - Test suite now contains 53 passing tests.
+
+### Phase 4 Second Native Codec (2026-09-17)
+
+#### Added
+
+- Pinned lzbench-vendored Zstd 1.5.7 single-thread source closure with BSD/GPL license
+  notices and immutable source artifact/onboarding evidence.
+- Scalar, single-thread, dictionary-free Zstd C ABI adapter with explicit pledged input
+  size and mandatory `ZSTD_e_end` loop until the frame is complete.
+- Python ctypes driver, self-contained descriptor container, exact Zstd frame/block/
+  checksum accounting, independent streaming decode, and adapter factory registration.
+- Release and ASan/UBSan builds, native boundary smoke, fixed-seed upstream fuzzer run,
+  qualification config, and direct LZ4/Zstd formal comparison config.
+- Five-layer Zstd evidence: 49/49 boundary cases and 10/10 eligible FORMAL repetitions.
+
+#### Changed
+
+- Zstd disables assembly, BMI2 runtime dispatch, legacy decode, dictionaries, and worker
+  threads in the registered scalar execution variant; other modes require new variants.
+- Common byte-frame manifests use algorithm-neutral decodability, frame, and tail labels,
+  allowing LZ4 and Zstd to share valid Semantic/Execution/Resource comparison keys while
+  retaining distinct artifact and execution-path identities.
+- Test suite now contains 57 passing tests.
 
 ## [0.0.0] - 2026-09-16
 

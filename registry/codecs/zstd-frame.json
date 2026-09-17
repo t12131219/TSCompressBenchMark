@@ -1,14 +1,14 @@
 {
   "schema_version": "tscb.codec-manifest.v2",
-  "key": "lz4-frame",
+  "key": "zstd-frame",
   "identity": {
-    "display_name": "LZ4 Frame 1.10.0 (lzbench source)",
-    "family": "LZ4",
+    "display_name": "Zstd Frame 1.5.7 (lzbench source)",
+    "family": "ZSTD",
     "citations": [
-      "benchmark:inikep/lzbench@fa871e66b354:lz/lz4",
-      "upstream:lz4/lz4:frame-format"
+      "benchmark:inikep/lzbench@fa871e66b354:lz/zstd",
+      "upstream:facebook/zstd:frame-format"
     ],
-    "source_artifact_id": "v2:source-artifact:sha256:68693355ce70e7eb3c672bb55303b7d380d420e3ec0626a4cef0588556f62679"
+    "source_artifact_id": "v2:source-artifact:sha256:893e7c7c0ef2d09d06a92e4ee6191f7f4b090718da5e88e82f23b12a8f82f237"
   },
   "classification": {
     "object_level": "P1_STANDALONE_CODEC",
@@ -52,7 +52,7 @@
     "block_semantics": "ONE_SELF_CONTAINED_FRAME_PER_ROUTED_OBJECT",
     "state_semantics": "INDEPENDENT_CONTEXT_PER_REPETITION",
     "reset": "NEW_CONTEXT_REQUIRED",
-    "finalize": "REQUIRED_LZ4F_COMPRESS_END",
+    "finalize": "REQUIRED_ZSTD_E_END_UNTIL_ZERO",
     "safe_overread_bytes": 0,
     "tail_policy": "CODEC_INTERNAL_EXACT_TAIL",
     "dictionary": "NONE",
@@ -76,22 +76,19 @@
     "type": "object",
     "additionalProperties": false,
     "properties": {
-      "block_size": {"type": "integer", "minimum": 1, "maximum": 1048576, "default": 65536},
-      "compression_level": {"type": "integer", "minimum": 0, "maximum": 12, "default": 0},
-      "block_size_id": {"type": "integer", "enum": [4, 5, 6, 7], "default": 4},
-      "block_mode": {"type": "string", "enum": ["INDEPENDENT", "LINKED"], "default": "INDEPENDENT"},
+      "block_size": {"type": "integer", "minimum": 1, "maximum": 1048576, "default": 131072},
+      "compression_level": {"type": "integer", "minimum": -5, "maximum": 22, "default": 3},
       "content_checksum": {"type": "boolean", "default": true},
-      "block_checksum": {"type": "boolean", "default": false},
       "isa": {"type": "string", "enum": ["SCALAR"], "default": "SCALAR"}
     },
     "constraints": []
   },
   "adapter": {
     "backend": "C_ABI_V1",
-    "version": "lz4-frame-ctypes-v1",
-    "factory": "LZ4_FRAME_CTYPES_V1",
-    "artifact_path": "build/adapters/lz4_frame/release/libtscb_lz4_frame.so",
+    "version": "zstd-frame-ctypes-v1",
+    "factory": "ZSTD_FRAME_CTYPES_V1",
+    "artifact_path": "build/adapters/zstd_frame/release/libtscb_zstd_frame.so",
     "timing_boundary": "PYTHON_FFI_CONTAINER_INCLUDED",
-    "accounting_hooks": ["FINAL_STREAM_INSPECTION", "LZ4_FRAME_COMPONENTS", "OUTPUT_CAPACITY"]
+    "accounting_hooks": ["FINAL_STREAM_INSPECTION", "ZSTD_FRAME_COMPONENTS", "OUTPUT_CAPACITY"]
   }
 }

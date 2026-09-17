@@ -69,11 +69,62 @@ def _lz4_command(output: Path, profile: str) -> list[str]:
     ]
 
 
-def build_lz4(profile: str) -> dict[str, Any]:
-    output_dir = PROJECT_ROOT / "build" / "adapters" / "lz4_frame" / profile
+def _zstd_command(output: Path, profile: str) -> list[str]:
+    adapter = PROJECT_ROOT / "adapters" / "zstd_frame"
+    vendor = adapter / "vendor" / "zstd" / "lib"
+    flags = [
+        "-std=c11",
+        "-fPIC",
+        "-Wall",
+        "-Wextra",
+        "-DXXH_NAMESPACE=ZSTD_",
+        "-DDYNAMIC_BMI2=0",
+        "-DZSTD_LEGACY_SUPPORT=0",
+        "-DZSTD_DISABLE_ASM",
+    ]
+    if profile == "release":
+        flags += ["-O3", "-DNDEBUG"]
+    elif profile == "sanitizer":
+        flags += [
+            "-O1",
+            "-g",
+            "-fno-omit-frame-pointer",
+            "-fsanitize=address,undefined",
+        ]
+    else:
+        raise ValueError(f"unknown build profile: {profile}")
+    source_files = [
+        *(vendor / "common").glob("*.c"),
+        *(vendor / "compress").glob("*.c"),
+        *(vendor / "decompress").glob("*.c"),
+    ]
+    source_files = sorted(source_files)
+    return [
+        os.environ.get("CC", "cc"),
+        *flags,
+        "-shared",
+        "-I",
+        str(PROJECT_ROOT / "native" / "include"),
+        "-I",
+        str(vendor),
+        str(adapter / "native" / "tscb_zstd_frame.c"),
+        *(str(path) for path in source_files),
+        "-o",
+        str(output),
+    ]
+
+
+def _build(algorithm: str, profile: str) -> dict[str, Any]:
+    directory_name = algorithm.replace("-", "_")
+    output_dir = PROJECT_ROOT / "build" / "adapters" / directory_name / profile
     output_dir.mkdir(parents=True, exist_ok=True)
-    output = output_dir / "libtscb_lz4_frame.so"
-    command = _lz4_command(output, profile)
+    output = output_dir / f"libtscb_{directory_name}.so"
+    if algorithm == "lz4-frame":
+        command = _lz4_command(output, profile)
+    elif algorithm == "zstd-frame":
+        command = _zstd_command(output, profile)
+    else:
+        raise ValueError(f"unknown algorithm: {algorithm}")
     log = _run(command)
     command_document = {
         "schema_version": "tscb.compile-command.v1",
@@ -85,7 +136,7 @@ def build_lz4(profile: str) -> dict[str, Any]:
     ).encode("utf-8")
     record = {
         "schema_version": "tscb.build-artifact.v1",
-        "algorithm": "lz4-frame",
+        "algorithm": algorithm,
         "profile": profile,
         "artifact": str(output.relative_to(PROJECT_ROOT)),
         "artifact_sha256": _sha256(output),
@@ -104,13 +155,11 @@ def build_lz4(profile: str) -> dict[str, Any]:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Build a frozen source codec adapter")
-    parser.add_argument("algorithm", choices=("lz4-frame",))
-    parser.add_argument(
-        "--profile", choices=("release", "sanitizer", "all"), default="release"
-    )
+    parser.add_argument("algorithm", choices=("lz4-frame", "zstd-frame"))
+    parser.add_argument("--profile", choices=("release", "sanitizer", "all"), default="release")
     arguments = parser.parse_args()
     profiles = ("release", "sanitizer") if arguments.profile == "all" else (arguments.profile,)
-    records = [build_lz4(item) for item in profiles]
+    records = [_build(arguments.algorithm, item) for item in profiles]
     print(json.dumps(records, ensure_ascii=False, indent=2, sort_keys=True))
     return 0
 

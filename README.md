@@ -19,10 +19,10 @@ Pareto/ranking/coverage views plus machine and human-readable reports.
 
 The source collection remains read-only under
 `/home/fzg/PycharmProjects/Compression_Source_Code/Source_Code`. Phase 4 copies only the
-reviewed translation-unit closure needed by an adapter. The first qualified native
-codec is LZ4 Frame 1.10.0, taken from lzbench's vendored source at a pinned commit and
-stored under `adapters/lz4_frame/vendor/lz4`; its source, license, build, ABI, accounting,
-and five-layer evidence are recorded in `registry/onboarding/lz4-frame.json`.
+reviewed translation-unit closure needed by an adapter. The qualified native codecs are
+LZ4 Frame 1.10.0 and Zstd Frame 1.5.7, both taken from lzbench's vendored sources at a
+pinned commit. Their source, license, build, ABI, accounting, and five-layer evidence
+are recorded under `registry/onboarding`.
 
 ## Environment
 
@@ -46,16 +46,18 @@ PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run report \
   configs/experiments/performance-evaluation-smoke.toml --output-root runs \
   --run-set-id <existing-run-set-id> --resume
 
-# Build and qualify the first native codec.
-conda run -n CompressBench14 python tools/build_codec.py lz4-frame --profile release
-conda run -n CompressBench14 python tools/build_codec.py lz4-frame --profile sanitizer
+# Build and qualify the native codecs.
+conda run -n CompressBench14 python tools/build_codec.py lz4-frame --profile all
+conda run -n CompressBench14 python tools/build_codec.py zstd-frame --profile all
 PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
   configs/experiments/lz4-frame-qualification.toml --output-root runs
+PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
+  configs/experiments/zstd-frame-qualification.toml --output-root runs
 
 # A FORMAL run uses >=3 warmups, >=0.5 s warmup time, 10 raw repetitions,
 # and >=1 s of selected-scope work in every repetition.
 PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
-  configs/experiments/lz4-frame-formal-smoke.toml --output-root runs
+  configs/experiments/zstd-lz4-formal-comparison.toml --output-root runs
 ```
 
 The package can also be invoked with `PYTHONPATH=src` without installing it.

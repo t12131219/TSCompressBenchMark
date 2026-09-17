@@ -7,6 +7,7 @@ from .compatibility import (
 from .factory import AdapterFactoryError, adapter_artifacts, create_adapter
 from .lz4_frame import Lz4FrameAdapter
 from .oracles import OracleAdapter
+from .zstd_frame import ZstdFrameAdapter
 
 __all__ = [
     "AdapterTelemetry",
@@ -14,6 +15,7 @@ __all__ = [
     "Lz4FrameAdapter",
     "OracleAdapter",
     "PreparedInput",
+    "ZstdFrameAdapter",
     "apply_compatibility_plan",
     "adapter_artifacts",
     "create_adapter",
