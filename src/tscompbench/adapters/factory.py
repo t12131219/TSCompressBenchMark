@@ -1,0 +1,41 @@
+from __future__ import annotations
+
+from pathlib import Path
+
+from tscompbench.codecs import CodecManifest
+from tscompbench.execution.protocol import CodecAdapter
+
+from .lz4_frame import Lz4FrameAdapter
+from .oracles import OracleAdapter
+
+
+class AdapterFactoryError(RuntimeError):
+    """A reviewed adapter factory or artifact declaration is missing."""
+
+
+def adapter_artifacts(
+    project_root: Path, manifest: CodecManifest
+) -> tuple[Path, tuple[Path, ...]]:
+    adapter = manifest.document["adapter"]
+    if manifest.document["identity"]["family"] == "HARNESS_ORACLE":
+        return project_root / "src" / "tscompbench" / "adapters" / "oracles.py", (
+            project_root / "src" / "tscompbench" / "adapters" / "compatibility.py",
+        )
+    relative = adapter.get("artifact_path")
+    if not isinstance(relative, str) or not relative or Path(relative).is_absolute():
+        raise AdapterFactoryError(f"{manifest.key} has no safe relative adapter artifact path")
+    factory = adapter.get("factory")
+    support = project_root / "src" / "tscompbench" / "adapters" / "lz4_frame.py"
+    if factory != "LZ4_FRAME_CTYPES_V1":
+        raise AdapterFactoryError(f"no reviewed adapter factory for {manifest.key}")
+    return project_root / relative, (support,)
+
+
+def create_adapter(project_root: Path, manifest: CodecManifest) -> CodecAdapter:
+    if manifest.document["identity"]["family"] == "HARNESS_ORACLE":
+        return OracleAdapter(manifest_adapter=manifest.document["adapter"])
+    adapter = manifest.document["adapter"]
+    if adapter.get("factory") == "LZ4_FRAME_CTYPES_V1":
+        artifact, _ = adapter_artifacts(project_root, manifest)
+        return Lz4FrameAdapter(artifact, manifest.document["adapter"])
+    raise AdapterFactoryError(f"no reviewed adapter factory for {manifest.key}")

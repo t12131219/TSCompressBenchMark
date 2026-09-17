@@ -1,0 +1,115 @@
+{
+  "schema_version": "tscb.source-onboarding.v2",
+  "source_artifact_id": "v2:source-artifact:sha256:68693355ce70e7eb3c672bb55303b7d380d420e3ec0626a4cef0588556f62679",
+  "repository": "https://github.com/inikep/lzbench.git",
+  "commit": "fa871e66b3543a70fd4d060f7c12719343ff4ac3",
+  "dirty": false,
+  "submodules": [],
+  "implementation_files": [
+    "lz/lz4/lib/lz4.c",
+    "lz/lz4/lib/lz4frame.c",
+    "lz/lz4/lib/lz4hc.c",
+    "lz/lz4/lib/xxhash.c"
+  ],
+  "public_api_files": [
+    "lz/lz4/lib/lz4.h",
+    "lz/lz4/lib/lz4frame.h",
+    "lz/lz4/lib/lz4hc.h"
+  ],
+  "benchmark_files": [
+    "bench/lzbench.h",
+    "bench/lz_codecs.cpp"
+  ],
+  "test_files": [
+    "lz/lz4/tests/frametest.c",
+    "lz/lz4/tests/checkFrame.c",
+    "lz/lz4/ossfuzz/round_trip_frame_fuzzer.c"
+  ],
+  "license_files": [
+    "lz/lz4/LICENSE",
+    "lz/lz4/lib/LICENSE"
+  ],
+  "third_party_dependencies": [
+    {
+      "name": "xxHash",
+      "relationship": "VENDORED_BY_LZ4_SOURCE_CLOSURE",
+      "files": ["lz/lz4/lib/xxhash.c", "lz/lz4/lib/xxhash.h"]
+    }
+  ],
+  "object_level_candidates": ["P1_STANDALONE_CODEC"],
+  "input_contract": {
+    "kind": "BYTE_VIEW",
+    "length_type": "size_t",
+    "zero_length": "SUPPORTED",
+    "ownership": "BORROWED_DURING_CALL",
+    "mutation": "FORBIDDEN_BY_ADAPTER_CONTRACT"
+  },
+  "output_contract": {
+    "kind": "LZ4_FRAME_IN_TSCB_DESCRIPTOR_CONTAINER",
+    "self_contained": true,
+    "actual_written_length": true,
+    "capacity_is_not_size": true
+  },
+  "lifecycle_contract": {
+    "output_bound": "LZ4F_compressBound plus header/finalize allowance; conservative upper bound",
+    "return_length": "Every update/finalize call returns actual used bytes",
+    "error_codes": "Stable tscb_status_v1 maps native LZ4F errors",
+    "finalize": "REQUIRED_LZ4F_compressEnd",
+    "reset": "NEW_CONTEXT_PER_INDEPENDENT_OBJECT"
+  },
+  "stream_components": {
+    "outer_container": "TSCB versioned descriptor prefix and canonical JSON metadata",
+    "frame_header": "LZ4 frame magic, FLG, BD, content size, header checksum",
+    "blocks": "LZ4 block headers and compressed or raw-fallback block payloads",
+    "footer": "End mark and optional content checksum",
+    "accounting": "Exact structural inspection; no capacity bytes are charged"
+  },
+  "upstream_tests": [
+    {
+      "name": "lzbench-vendored LZ4 frametest",
+      "command": "out-of-tree frametest -i100 -s20260917 --no-prompt",
+      "status": "PASS",
+      "evidence": "Basic tests completed; 100 deterministic fuzz cases exited 0"
+    },
+    {
+      "name": "project C ABI smoke",
+      "command": "release and ASan/UBSan executables over N=0/1/2/65535/65536/65537/131073",
+      "status": "PASS",
+      "evidence": "LZ4 C ABI smoke passed; repeated finalize rejected"
+    }
+  ],
+  "builds": [
+    {
+      "profile": "RELEASE",
+      "artifact_sha256": "b26df794e4a249b8851ac1e2cea0e56886c2a76f3b5756e891341e71a39830a1",
+      "compile_commands_sha256": "08f78ed692683f000219992ee3dd3e1533622aa616b82e4ab3a9d4cd38bfb581",
+      "compiler": "GCC 11.4.0",
+      "flags": "-O3 -DNDEBUG -fPIC -shared"
+    },
+    {
+      "profile": "ASAN_UBSAN",
+      "artifact_sha256": "c17e38c22b781d79d941151989f0bad3c297251f94a6b8545919a7a7426a3016",
+      "compile_commands_sha256": "d9df5e27e5b23deb031cf75d62ddf61e8ea257d881bb542dce38eeedc51e28c7",
+      "compiler": "GCC 11.4.0",
+      "flags": "-O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined"
+    }
+  ],
+  "license_decision": {
+    "spdx": "BSD-2-Clause",
+    "status": "RUN_ALLOWED",
+    "redistribution": "ALLOWED_WITH_LICENSE_NOTICE"
+  },
+  "known_limitations": [
+    "The lzbench benchmark table itself exercises the raw LZ4 block API; this adapter uses the complete LZ4 frame implementation vendored by the same benchmark.",
+    "The project wrapper currently performs one update per independently finalized object and does not claim streaming/query capability.",
+    "The Python FFI descriptor serialization and contiguous byte materialization are included in the declared adapter boundary.",
+    "LeakSanitizer cannot run under the host container ptrace policy; ASan/UBSan qualification ran with detect_leaks=0."
+  ],
+  "unsupported_reason_codes": [
+    "EXECUTION_ARTIFACT_MISSING",
+    "VALIDITY_SHAPE_UNSUPPORTED",
+    "NATIVE_SIZE_T_LIMIT",
+    "QUERY_UNSUPPORTED",
+    "STREAMING_PROTOCOL_NOT_REGISTERED"
+  ]
+}

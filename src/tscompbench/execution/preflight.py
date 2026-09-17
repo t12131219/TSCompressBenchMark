@@ -170,7 +170,7 @@ def preflight_task(
         )
         boundary_status = RunStatus.CORRECTNESS_FAIL
         if any(
-            "OutputCapacityError" in reason or "BOUND_MINUS_ONE_ACCEPTED" in reason
+            "OutputCapacityError" in reason or "BOUND_MINUS_ONE_MEMORY_CONTRACT_FAILED" in reason
             for reason in reasons
         ):
             boundary_status = RunStatus.HARNESS_CAPACITY_ERROR

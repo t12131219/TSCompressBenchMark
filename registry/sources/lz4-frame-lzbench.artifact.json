@@ -1,0 +1,40 @@
+{
+  "schema_version": "tscb.source-artifact.v2",
+  "key": "lz4-frame-lzbench-1.10.0",
+  "kind": "VENDORED_BENCHMARK_SOURCE_CLOSURE",
+  "identity": {
+    "kind": "VENDORED_BENCHMARK_SOURCE_CLOSURE",
+    "key": "lz4-frame-lzbench-1.10.0",
+    "benchmark_repository": "https://github.com/inikep/lzbench.git",
+    "benchmark_commit": "fa871e66b3543a70fd4d060f7c12719343ff4ac3",
+    "benchmark_path": "lz/lz4",
+    "benchmark_version": "1.10.0",
+    "upstream_reference_repository": "https://github.com/lz4/lz4.git",
+    "upstream_reference_commit": "0774d05537f9762f838f7ab541b7765f1a729cb5",
+    "source_closure_sha256": "9309d7d873783fe3450b055151c7d0937e5f04fa32e0d255c131bdd6b661379d",
+    "copy_policy": "UNMODIFIED_SELECTED_TRANSLATION_UNIT_CLOSURE"
+  },
+  "license": {
+    "spdx": "BSD-2-Clause",
+    "status": "RUN_ALLOWED",
+    "redistribution": "ALLOWED_WITH_LICENSE_NOTICE",
+    "files": [
+      "adapters/lz4_frame/vendor/lz4/LICENSE",
+      "adapters/lz4_frame/vendor/lz4/lib/LICENSE"
+    ]
+  },
+  "build": {
+    "recipe": "PYTHONPATH=src conda run -n CompressBench14 python tools/build_codec.py lz4-frame --profile all",
+    "patches": [],
+    "submodules": [],
+    "translation_units": [
+      "adapters/lz4_frame/native/tscb_lz4_frame.c",
+      "adapters/lz4_frame/vendor/lz4/lib/lz4.c",
+      "adapters/lz4_frame/vendor/lz4/lib/lz4frame.c",
+      "adapters/lz4_frame/vendor/lz4/lib/lz4hc.c",
+      "adapters/lz4_frame/vendor/lz4/lib/xxhash.c"
+    ],
+    "release_artifact": "build/adapters/lz4_frame/release/libtscb_lz4_frame.so",
+    "sanitizer_artifact": "build/adapters/lz4_frame/sanitizer/libtscb_lz4_frame.so"
+  }
+}

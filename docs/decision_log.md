@@ -135,3 +135,32 @@ Only complete FORMAL PASS groups enter aggregation. Corpus metrics are a second 
 layer using explicit micro and geometric-mean formulas. Direct comparison tightens from
 Semantic to Execution to Resource keys; Pareto and dense metric ranks stay within the
 appropriate key and Coverage is published separately without a weighted total score.
+
+## D018 The first native codec is a pinned lzbench LZ4 Frame closure
+
+Phase 4 starts with LZ4 Frame as required by the engineering plan and the spreadsheet-
+to-benchmark analysis. The source authority is lzbench commit
+`fa871e66b3543a70fd4d060f7c12719343ff4ac3`; only the reviewed LZ4 1.10.0 translation-
+unit closure and license notices are copied into the project. Files are kept unmodified,
+while project-specific behavior lives in a separate stable C ABI shim. The local
+upstream LZ4 checkout is comparison evidence, not a second execution authority.
+
+## D019 Output bounds are conservative capacities, not expected sizes
+
+The first real codec exposed an oracle-specific assumption in the original boundary
+validator: it required `bound - 1` to fail. Native compression bounds such as
+`LZ4F_compressBound` are conservative, so valid data can fit below them. The corrected
+contract requires the declared bound to succeed safely and account only actual written
+bytes. A `bound - 1` attempt may either fail with a stable capacity error or succeed if
+it independently finalizes, stays within capacity, round-trips, and passes canary
+checks. A genuinely under-reported bound still fails the normal bound-capacity case.
+
+## D020 LZ4 uses one self-contained frame inside a versioned descriptor container
+
+Each independently measured object serializes the routed canonical buffers into a
+versioned TSCB descriptor prefix followed by one complete LZ4 frame. The container
+records buffer order, dtype, shape, and byte lengths, allowing independent decode
+without Python objects or out-of-band metadata. `LZ4F_compressEnd` is mandatory;
+physical size and structural accounting are computed from actual finalized bytes, not
+capacity. Python FFI and container work are included in the declared PIPELINE boundary.
+The adapter currently makes no streaming, query, or random-access claim.

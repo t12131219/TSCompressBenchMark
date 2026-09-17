@@ -142,3 +142,33 @@ measurements and presentation, but their table-specific aggregation is not a nor
 contract here. NeaTS CSV export is implementation evidence only. The ODT Layer 19/21
 rules control per-dataset-first aggregation, micro formulas, Coverage, comparison keys,
 bootstrap intervals, Pareto views, and two-level raw/summary storage.
+
+## Phase 4 LZ4 Frame source onboarding
+
+The first real-codec onboarding was performed on 2026-09-17 after rereading the master
+plan, the expanded edge-case standard, and the C/C++ benchmark analysis. It selected
+LZ4 Frame because the plan names it as the first Batch-1 codec and because lzbench
+contains a complete vendored LZ4 1.10.0 source and frame test suite. This changes the
+earlier layer-specific statement that no codec source had yet been copied; no shared
+checkout was modified.
+
+The authoritative source is the clean local lzbench checkout at commit
+`fa871e66b3543a70fd4d060f7c12719343ff4ac3`. Only the reviewed build closure was copied:
+`lz4.c`, `lz4frame.c`, `lz4hc.c`, `xxhash.c`, their public/private headers, and the LZ4
+and library license files. The copied closure digest is
+`9309d7d873783fe3450b055151c7d0937e5f04fa32e0d255c131bdd6b661379d`.
+The immutable registry identity is
+`v2:source-artifact:sha256:68693355ce70e7eb3c672bb55303b7d380d420e3ec0626a4cef0588556f62679`.
+Unrelated lzbench codecs, CLI programs, examples, generated outputs, and tests were not
+vendored. The selected files were also compared with the existing local upstream LZ4
+checkout at commit `0774d055...`; the benchmark-vendored closure remains the execution
+authority.
+
+lzbench's codec table invokes the raw LZ4 block API, while its vendored tree contains the
+complete LZ4 frame implementation. The adapter deliberately uses the latter because the
+normative plan requires a finalized, self-contained LZ4 frame as the first real codec.
+That distinction is a recorded limitation rather than an implicit substitution. The
+vendored `frametest` passed its deterministic basic and 100-case fuzz run. Release and
+ASan/UBSan C-ABI smoke tests passed the required zero, tiny, boundary, and repeated-
+Finalize cases. LeakSanitizer was disabled because the host's ptrace policy prevents it;
+the limitation remains explicit in the onboarding record.

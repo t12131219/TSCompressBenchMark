@@ -91,8 +91,18 @@ def resolve_execution(
             for key in ("version", "implementation", "executable_sha256", "packages")
         },
     }
-    primary_artifact_sha256 = sha256_file(artifact_path)
-    if supporting_artifact_paths:
+    artifact_available = artifact_path.is_file() and all(
+        path.is_file() for path in supporting_artifact_paths
+    )
+    if not artifact_available:
+        primary_artifact_sha256 = "UNSPECIFIED"
+        artifact_sha256 = "UNSPECIFIED"
+        if status is RunStatus.PLANNED:
+            status = RunStatus.BUILD_UNAVAILABLE
+            reason = "EXECUTION_ARTIFACT_MISSING"
+    else:
+        primary_artifact_sha256 = sha256_file(artifact_path)
+    if artifact_available and supporting_artifact_paths:
         artifact_components = (
             {"role": "PRIMARY_ADAPTER", "sha256": primary_artifact_sha256},
             *(
@@ -104,7 +114,7 @@ def resolve_execution(
             ),
         )
         artifact_sha256 = hashlib.sha256(canonical_json_bytes(artifact_components)).hexdigest()
-    else:
+    elif artifact_available:
         artifact_sha256 = primary_artifact_sha256
     identity = {
         "algorithm_id": manifest.algorithm_id,

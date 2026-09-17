@@ -106,7 +106,7 @@ Project foundation established with five-layer architecture fully implemented an
 ### Pending
 
 **Phase 4-10 Implementation**
-- Phase 4: First real codec integration (LZ4/Zstd/Snappy/Brotli)
+- Phase 4: Zstd/Snappy/Brotli after the completed first LZ4 Frame integration
 - Phase 5: Timestamp primitives (Delta/DoubleDelta/ZigZag/StreamVByte)
 - Phase 6: Value UTS/MTS codecs (Gorilla/Chimp/ALP/Sprintz)
 - Phase 7: Lossy/ND algorithms (Serf/SZ3/zfp)
@@ -115,10 +115,37 @@ Project foundation established with five-layer architecture fully implemented an
 - Phase 10: Statistics layer completion and publication
 
 **Known Limitations**
-- No real codec adapters yet (only oracle test adapters)
-- Performance layer validated with synthetic workloads only
-- Statistics layer framework complete but awaiting real benchmark data
-- C ABI adapter interface defined but not yet exercised
+- One real codec adapter is currently qualified; the remaining spreadsheet-listed
+  algorithms have not yet been onboarded.
+- LZ4 currently uses one finalized frame per independent object and does not claim
+  streaming/query support.
+- LeakSanitizer is unavailable under the host ptrace policy; ASan/UBSan ran with leak
+  detection disabled.
+
+### Phase 4 First Native Codec (2026-09-17)
+
+#### Added
+
+- Pinned lzbench-vendored LZ4 1.10.0 source closure with BSD license notices and source
+  artifact/onboarding records.
+- Stable C ABI shim and Python ctypes driver for mandatory LZ4 Frame finalization,
+  independent decode, exact used-length reporting, and structured status errors.
+- Versioned self-contained descriptor container preserving routed buffer order, dtype,
+  shape, and IEEE payload bytes.
+- Release and ASan/UBSan build profiles, native ABI smoke test, qualification/formal
+  experiment configurations, and source-onboarding contract tests.
+- First complete real-codec Layer 1-5 evidence: 10/10 FORMAL repetitions eligible,
+  49/49 boundary checks, and deterministic report generation.
+
+#### Changed
+
+- Runtime adapter selection now resolves registered native codec factories instead of
+  being limited to Batch-0 oracles.
+- Missing native artifacts produce the explicit `BUILD_UNAVAILABLE /
+  EXECUTION_ARTIFACT_MISSING` planning result.
+- Conservative compression bounds may use less than their declared capacity; the
+  boundary validator no longer treats safe `bound - 1` success as a contract failure.
+- Test suite now contains 53 passing tests.
 
 ## [0.0.0] - 2026-09-16
 

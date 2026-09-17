@@ -309,15 +309,80 @@ def run_boundary_suite(
                 finally:
                     session.close()
                 try:
-                    _encode(adapter, routed, parameters, capacity_override=max(0, bound - 1))
+                    encoded, _, _, input_immutable, canary_intact = _encode(
+                        adapter,
+                        routed,
+                        parameters,
+                        capacity_override=max(0, bound - 1),
+                    )
                 except OutputCapacityError:
                     observations.append(
                         BoundaryObservation(case.case_id, "PASS", "BOUND_MINUS_ONE_REJECTED")
                     )
                 else:
-                    observations.append(
-                        BoundaryObservation(case.case_id, "FAIL", "BOUND_MINUS_ONE_ACCEPTED")
-                    )
+                    decode_session = adapter.create_session(parameters)
+                    try:
+                        decoded_output = decode_session.decompress(encoded.stream)
+                    finally:
+                        decode_session.close()
+                    original = {item.name: item.array for item in routed.buffers}
+                    decoded = {item.name: item.array for item in decoded_output.buffers}
+                    if manifest.loss_modes[0] is LossMode.ERROR_BOUNDED_LOSSY:
+                        value_original = {
+                            name: value
+                            for name, value in original.items()
+                            if name.startswith("value/")
+                        }
+                        value_decoded = {
+                            name: value
+                            for name, value in decoded.items()
+                            if name.startswith("value/")
+                        }
+                        loss = validate_error_bound(
+                            value_original,
+                            value_decoded,
+                            error_bound_type=str(
+                                parameters.get("error_bound_type", "ABSOLUTE")
+                            ),
+                            error_bound=str(parameters.get("error_bound", "0")),
+                            error_aggregation_mode=str(
+                                parameters.get("error_aggregation_mode", "PER_CHANNEL")
+                            ),
+                        )
+                        roundtrip_valid = loss.bound_passed and all(
+                            original[name].tobytes(order="C")
+                            == decoded[name].tobytes(order="C")
+                            for name in original
+                            if name == "timestamp" or name == "validity"
+                        )
+                    else:
+                        roundtrip_valid = tuple(original) == tuple(decoded) and all(
+                            original[name].dtype == decoded[name].dtype
+                            and original[name].shape == decoded[name].shape
+                            and original[name].tobytes(order="C")
+                            == decoded[name].tobytes(order="C")
+                            for name in original
+                        )
+                    if (
+                        encoded.output_capacity_bytes == max(0, bound - 1)
+                        and len(encoded.stream) <= encoded.output_capacity_bytes
+                        and input_immutable
+                        and canary_intact
+                        and roundtrip_valid
+                    ):
+                        observations.append(
+                            BoundaryObservation(
+                                case.case_id,
+                                "PASS",
+                                "BOUND_MINUS_ONE_SUFFICIENT_SAFE_AND_VALID",
+                            )
+                        )
+                    else:
+                        observations.append(
+                            BoundaryObservation(
+                                case.case_id, "FAIL", "BOUND_MINUS_ONE_MEMORY_CONTRACT_FAILED"
+                            )
+                        )
                 continue
             if case.pattern == "REPEATED_FINALIZE":
                 session = adapter.create_session(parameters)

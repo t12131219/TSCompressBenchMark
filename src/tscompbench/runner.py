@@ -12,7 +12,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
-from tscompbench.adapters import OracleAdapter
+from tscompbench.adapters import adapter_artifacts, create_adapter
 from tscompbench.codecs import (
     CodecRegistry,
     classify_logical_entries,
@@ -379,10 +379,8 @@ def plan_run_set(
             source_documents[manifest.source_artifact_id] = codec_registry.sources.get(
                 manifest.source_artifact_id
             )
-            adapter_artifact = (
-                project_root / "src" / "tscompbench" / "adapters" / "oracles.py"
-                if manifest.document["identity"]["family"] == "HARNESS_ORACLE"
-                else project_root / "src" / "tscompbench" / "adapters" / "compatibility.py"
+            adapter_artifact, supporting_adapter_artifacts = adapter_artifacts(
+                project_root, manifest
             )
             preprocess = build_preprocess_plan(manifest.document)
             codec_documents.append(
@@ -433,13 +431,7 @@ def plan_run_set(
                             run_set.environment,
                             artifact_path=adapter_artifact,
                             profile=profile,
-                            supporting_artifact_paths=(
-                                project_root
-                                / "src"
-                                / "tscompbench"
-                                / "adapters"
-                                / "compatibility.py",
-                            ),
+                            supporting_artifact_paths=supporting_adapter_artifacts,
                         )
                         comparability = build_comparability_keys(
                             manifest,
@@ -580,6 +572,7 @@ def execute_run_set(
     resolved = json.loads((run_set.path / "resolved_configs.json").read_text(encoding="utf-8"))
     parameters = {item["config_id"]: item["parameters"] for item in resolved["configs"]}
     artifacts: dict[str, Any] = {}
+    project_root = Path(__file__).resolve().parents[2]
     for path in sorted((run_set.path / "datasets").glob("*/*.canonical.tscb")):
         artifact = read_canonical(path, include_buffers=True)
         artifacts[str(artifact.metadata["dataset_id"])] = artifact
@@ -633,11 +626,7 @@ def execute_run_set(
             artifact = artifacts.get(task.dataset_id)
             if artifact is None:
                 raise RunnerError(f"Layer 1 canonical artifact missing for {task.dataset_id}")
-            if manifest.document["identity"]["family"] != "HARNESS_ORACLE":
-                raise RunnerError(
-                    f"no reviewed Layer 3 adapter factory for algorithm {manifest.key}"
-                )
-            adapter = OracleAdapter(manifest_adapter=manifest.document["adapter"])
+            adapter = create_adapter(project_root, manifest)
             append_event(
                 run_set.path / "events.jsonl",
                 "TASK_PREFLIGHTING",

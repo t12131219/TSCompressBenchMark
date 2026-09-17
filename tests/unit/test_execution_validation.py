@@ -144,7 +144,10 @@ def test_boundary_suite_covers_capacity_special_values_layout_and_stream_edges()
     assert report.passed
     assert report.required_case_count >= 30
     reasons = {item.reason for item in report.observations}
-    assert "BOUND_MINUS_ONE_REJECTED" in reasons
+    assert reasons & {
+        "BOUND_MINUS_ONE_REJECTED",
+        "BOUND_MINUS_ONE_SUFFICIENT_SAFE_AND_VALID",
+    }
 
 
 def test_worker_isolation_classifies_timeout_and_oom() -> None:

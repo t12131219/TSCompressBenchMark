@@ -21,7 +21,8 @@ def _registries() -> tuple[SourceRegistry, CodecRegistry]:
 
 def test_codec_manifests_reference_audited_sources_and_have_stable_ids() -> None:
     sources, codecs = _registries()
-    assert len(codecs) == 4
+    assert len(codecs) == 5
+    assert "lz4-frame" in codecs.keys()
     first = {item.key: item.algorithm_id for item in codecs.verify_all()}
     second = {
         item.key: item.algorithm_id

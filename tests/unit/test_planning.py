@@ -98,3 +98,36 @@ def test_runtime_fallback_changes_execution_path_hash(tmp_path) -> None:
     assert fallback.actual_isa == "SCALAR"
     assert fallback.fallback_used is True
     assert fallback.execution_path_hash != scalar.execution_path_hash
+
+
+def test_missing_execution_artifact_is_an_explicit_planning_result(tmp_path) -> None:
+    manifest = _registry().get("lz4-frame")
+    compatibility = negotiate(manifest, _descriptor())
+    config = expand_sweep(manifest, {})[0]
+    environment = {
+        "environment_id": "v2:environment:sha256:" + "2" * 64,
+        "cpu": {"flags": [], "affinity": [0]},
+    }
+    profile = {
+        "threads": 1,
+        "processes": 1,
+        "runner_version": "test",
+        "allocation_policy": "PER_REPETITION",
+        "cache_policy": "WARM_INPUT",
+        "state_policy": "RESET_PER_REPETITION",
+        "gc_policy": "DISABLED_DURING_TIMING",
+        "jit_policy": "NOT_APPLICABLE",
+    }
+
+    resolution = resolve_execution(
+        manifest,
+        config,
+        compatibility,
+        environment,
+        artifact_path=tmp_path / "missing-adapter.so",
+        profile=profile,
+    )
+
+    assert resolution.status is RunStatus.BUILD_UNAVAILABLE
+    assert resolution.reason_code == "EXECUTION_ARTIFACT_MISSING"
+    assert resolution.artifact_sha256 == "UNSPECIFIED"
