@@ -479,6 +479,32 @@ def _markdown(report: dict[str, Any]) -> str:
     lines.extend(
         [
             "",
+            "## Auxiliary timing layers",
+            "",
+            "NATIVE measures codec API calls inside the native wrapper (including codec finalize), "
+            "excluding explicit context lifecycle and prevalidation. It is not lzbench-equivalent. "
+            "CORE measures adapter calls; PIPELINE includes outer preparation and accounting. "
+            "NATIVE uses codec-input bytes; CORE/PIPELINE use canonical bytes. "
+            "All rates below are total bytes / total time, in decimal MB/s. "
+            "Missing/disabled/incomplete native observations are n/a. Native clock instrumentation "
+            "adds overhead; selected-scope minimum duration does not guarantee native duration.",
+            "",
+            "| Dataset | Algorithm | NATIVE encode | NATIVE decode | CORE encode | CORE decode | "
+            "PIPELINE encode | PIPELINE decode |",
+            "|---|---|---:|---:|---:|---:|---:|---:|",
+            *(
+                "| " + " | ".join(
+                    str(row.get(field)) if row.get(field) is not None else "n/a"
+                    for field in (
+                        "dataset_id", "algorithm_id",
+                        "native_encode_mb_per_second_micro", "native_decode_mb_per_second_micro",
+                        "core_encode_mb_per_second_micro", "core_decode_mb_per_second_micro",
+                        "pipeline_encode_mb_per_second_micro",
+                        "pipeline_decode_mb_per_second_micro",
+                    )
+                ) + " |" for row in report["summaries"]
+            ),
+            "",
             "## Cross-dataset aggregates",
             "",
             "Cross-dataset values are secondary to per-dataset results. Micro size uses "
@@ -536,6 +562,17 @@ def _html(markdown_report: str, report: dict[str, Any]) -> str:
     )
     if not summary_rows:
         summary_rows = '<tr><td colspan="8">No performance-eligible summary rows.</td></tr>'
+    timing_rows = "".join(
+        "<tr>" + "".join(
+            f"<td>{html.escape(str(row.get(field)) if row.get(field) is not None else 'n/a')}</td>"
+            for field in (
+                "dataset_id", "algorithm_id",
+                "native_encode_mb_per_second_micro", "native_decode_mb_per_second_micro",
+                "core_encode_mb_per_second_micro", "core_decode_mb_per_second_micro",
+                "pipeline_encode_mb_per_second_micro", "pipeline_decode_mb_per_second_micro",
+            )
+        ) + "</tr>" for row in report["summaries"]
+    ) or '<tr><td colspan="8">No performance-eligible summary rows.</td></tr>'
     comparison_rows = "".join(
         "<tr>"
         f"<td>{html.escape(row['semantic_context'])}</td>"
@@ -601,6 +638,16 @@ Timing scope, threads, model/index accounting, and cold-start policy must match.
 <h2>Per-dataset results</h2><table><thead><tr><th>Dataset</th><th>Track</th>
 <th>Algorithm</th><th>n</th><th>SizeRatio</th><th>CF</th><th>Encode MB/s</th>
 <th>Decode MB/s</th></tr></thead><tbody>{summary_rows}</tbody></table>
+<h2>Auxiliary timing layers (MB/s)</h2>
+<p>NATIVE: codec API calls including finalize; excludes explicit context lifecycle and
+prevalidation. CORE: adapter calls. PIPELINE: preparation, lifecycle and accounting.
+NATIVE uses codec-input bytes; CORE/PIPELINE use canonical bytes. All rates are total
+bytes / total time. Disabled/unavailable/incomplete native observations are n/a.
+Instrumentation adds overhead. Native duration is not independently gated;
+native timings are not automatically comparable to lzbench.</p>
+<table><thead><tr><th>Dataset</th><th>Algorithm</th><th>NATIVE encode</th>
+<th>NATIVE decode</th><th>CORE encode</th><th>CORE decode</th><th>PIPELINE encode</th>
+<th>PIPELINE decode</th></tr></thead><tbody>{timing_rows}</tbody></table>
 <h2>Charts</h2><img src="coverage.svg" alt="Coverage chart">
 <img src="space-encode.svg" alt="Compression factor versus encode throughput">
 <img src="space-decode.svg" alt="Compression factor versus decode throughput">

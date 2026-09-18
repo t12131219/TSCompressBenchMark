@@ -444,6 +444,57 @@ def _dataset_provenance(run_path: Path) -> dict[str, dict[str, Any]]:
     return result
 
 
+def _auxiliary_timing_fields(
+    group: list[dict[str, Any]], policy: dict[str, Any], seed: str
+) -> dict[str, Any]:
+    result: dict[str, Any] = {}
+    for scope in ("core", "pipeline", "native"):
+        for direction in ("encode", "decode"):
+            field = f"{scope}_{direction}_wall_ns"
+            observations = []
+            for record in group:
+                timing = record["timing"]
+                value = timing.get(field)
+                if not isinstance(value, int) or isinstance(value, bool) or value < 0:
+                    continue
+                if scope == "native" and (
+                    timing.get("native_timing_enabled") is not True
+                    or timing.get("native_timing_boundary") != "CODEC_API_ONLY_V1"
+                    or timing.get("native_timing_clock") != "CLOCK_MONOTONIC"
+                    or not isinstance(timing.get("codec_input_bytes_per_iteration"), int)
+                    or isinstance(timing["codec_input_bytes_per_iteration"], bool)
+                    or timing["codec_input_bytes_per_iteration"] < 0
+                ):
+                    continue
+                observations.append(record)
+            complete = len(observations) == len(group)
+            values = [_per_iteration(item, field) for item in observations] if complete else []
+            result.update(
+                _stats_fields(f"{scope}_{direction}_ns", values, policy=policy, seed=seed)
+            )
+            result[f"{scope}_{direction}_observation_count"] = len(observations)
+            result[f"{scope}_{direction}_mb_per_second_micro"] = (
+                decimal_divide(
+                    sum(
+                        int(item["timing"][
+                            "codec_input_bytes_per_iteration" if scope == "native"
+                            else "canonical_bytes_per_iteration"
+                        ]) * int(item["timing"]["inner_iterations"])
+                        for item in observations
+                    ) * 1000,
+                    sum(int(item["timing"][field]) for item in observations),
+                ) if complete else None
+            )
+    native_complete = all(result[f"native_{direction}_observation_count"] == len(group)
+                          for direction in ("encode", "decode"))
+    result["native_timing_boundary"] = "CODEC_API_ONLY_V1" if native_complete else None
+    result["native_timing_clock"] = "CLOCK_MONOTONIC" if native_complete else None
+    result["codec_input_bytes_per_iteration"] = group[0]["timing"].get(
+        "codec_input_bytes_per_iteration"
+    )
+    return result
+
+
 def _summaries(
     run_path: Path,
     records: tuple[dict[str, Any], ...],
@@ -552,6 +603,7 @@ def _summaries(
         row.update(_stats_fields("encode_ns", encode, policy=policy, seed=summary_id))
         row.update(_stats_fields("decode_ns", decode, policy=policy, seed=summary_id))
         row.update(_stats_fields("e2e_ns", e2e, policy=policy, seed=summary_id))
+        row.update(_auxiliary_timing_fields(group, policy, summary_id))
         for metric in ("rmse", "mae", "max_ae", "psnr_range_db"):
             values = [value for item in qualities if (value := item[metric]) is not None]
             row.update(_stats_fields(metric, values, policy=policy, seed=summary_id))
@@ -663,6 +715,18 @@ def _corpus_summaries(summaries: list[dict[str, Any]]) -> list[dict[str, Any]]:
                 ),
             }
         )
+        for scope in ("core", "pipeline", "native"):
+            for direction in ("encode", "decode"):
+                times = [item.get(f"{scope}_{direction}_ns_median") for item in rows]
+                sizes = [
+                    item.get("codec_input_bytes_per_iteration") if scope == "native"
+                    else (int(item["canonical_raw_bits"]) + 7) // 8
+                    for item in rows
+                ]
+                complete = all(value is not None for value in times + sizes)
+                result[-1][f"micro_{scope}_{direction}_mb_per_second"] = (
+                    decimal_divide(sum(sizes) * 1000, sum(times)) if complete else None
+                )
     return result
 
 

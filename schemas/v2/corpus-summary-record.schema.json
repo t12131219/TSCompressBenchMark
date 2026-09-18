@@ -25,5 +25,8 @@
     "corpus_peak_memory_bytes_max": {"type": ["number", "null"]},
     "corpus_peak_memory_bytes_p95": {"type": ["number", "null"]},
     "corpus_cpu_core_seconds_per_gb": {"type": ["string", "null"]}
+  },
+  "patternProperties": {
+    "^micro_(core|pipeline|native)_(encode|decode)_mb_per_second$": {"type": ["string", "null"]}
   }
 }

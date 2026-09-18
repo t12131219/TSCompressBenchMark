@@ -1,0 +1,25 @@
+schema_version = "2.0"
+datasets = ["national_illness"]
+algorithms = ["lz4-frame", "zstd-frame", "snappy-raw"]
+tracks = ["VALUE"]
+seed = 20260917
+
+[profile]
+measurement_mode = "FORMAL"
+timing_scope = "PIPELINE"
+resource_scope = "PROCESS"
+threads = 1
+processes = 1
+warmup_min_count = 3
+warmup_min_seconds = "0.5"
+repetitions = 10
+min_repetition_seconds = "1"
+timeout_seconds = 30
+memory_limit_bytes = 1073741824
+
+[sweep]
+block_size = [65536]
+compression_level = [1]
+content_checksum = [false]
+isa = ["SCALAR"]
+native_timing = [true]

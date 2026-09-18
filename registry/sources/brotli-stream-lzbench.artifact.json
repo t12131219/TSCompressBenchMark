@@ -1,0 +1,37 @@
+{
+  "schema_version": "tscb.source-artifact.v2",
+  "key": "brotli-stream-lzbench-1.2.0",
+  "kind": "VENDORED_BENCHMARK_SOURCE_CLOSURE",
+  "identity": {
+    "kind": "VENDORED_BENCHMARK_SOURCE_CLOSURE",
+    "key": "brotli-stream-lzbench-1.2.0",
+    "benchmark_repository": "https://github.com/inikep/lzbench.git",
+    "benchmark_commit": "fa871e66b3543a70fd4d060f7c12719343ff4ac3",
+    "benchmark_path": "lz/brotli",
+    "benchmark_version": "1.2.0",
+    "upstream_reference_repository": "https://github.com/google/brotli.git",
+    "upstream_reference_commit": "4508218e7fef90fa4273286f7a415065946f2c43",
+    "source_closure_sha256": "99c9b5c8815308fa57543c3188ca1bb37b42a411785d10f9ed0ecbe214e4d06a",
+    "copy_policy": "UNMODIFIED_LZBENCH_COMMON_ENCODER_DECODER_CLOSURE",
+    "execution_variant": "RFC7932_STREAM_QUALITY5_LGWIN22_GENERIC_SINGLE_THREAD"
+  },
+  "license": {
+    "spdx": "MIT",
+    "status": "RUN_ALLOWED",
+    "redistribution": "ALLOWED_WITH_LICENSE_NOTICE",
+    "files": ["adapters/brotli_stream/vendor/brotli/LICENSE"]
+  },
+  "build": {
+    "recipe": "PYTHONPATH=src conda run -n CompressBench14 python tools/build_codec.py brotli-stream --profile all",
+    "patches": [],
+    "submodules": [],
+    "translation_units": [
+      "adapters/brotli_stream/native/tscb_brotli_stream.c",
+      "adapters/brotli_stream/vendor/brotli/common/*.c",
+      "adapters/brotli_stream/vendor/brotli/dec/*.c",
+      "adapters/brotli_stream/vendor/brotli/enc/*.c"
+    ],
+    "release_artifact": "build/adapters/brotli_stream/release/libtscb_brotli_stream.so",
+    "sanitizer_artifact": "build/adapters/brotli_stream/sanitizer/libtscb_brotli_stream.so"
+  }
+}

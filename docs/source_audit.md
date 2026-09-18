@@ -199,3 +199,61 @@ fuzzer passed 100 deterministic cases with seed 20260917 in an out-of-tree copy.
 and ASan/UBSan ABI smoke tests passed zero, tiny, 128-KiB boundary, multi-block, independent
 decode, and repeated-Finalize cases. LeakSanitizer remains unavailable under the host
 ptrace policy and is not reported as covered.
+
+## Phase 4 Snappy raw source onboarding
+
+The third native codec was onboarded from the clean lzbench checkout at commit
+`fa871e66b3543a70fd4d060f7c12719343ff4ac3`. lzbench calls `snappy::RawCompress` and
+`snappy::RawUncompress` and compiles `snappy-sinksource.cc`,
+`snappy-stubs-internal.cc`, and `snappy.cc`; that exact translation-unit closure and its
+headers, BSD license, and raw-format description were copied unmodified. The closure
+digest is `54e6576476ea5c5f654e8257ccbd247c7c7f4212d58fbae1cd44cc3d744f1128`
+and the SourceArtifactID is
+`v2:source-artifact:sha256:e63a21a66a2ebd8fec7b8caa2b477a157b01033ea458fa3be9eab481bb26771d`.
+
+The Google Snappy checkout at `26aa88cbb235a35d4604d2dd5f5284566862de77`
+was used only for comparison; the trees differ and no source was mixed. The lzbench tree
+identifies itself as version 1.2.2 in CMake/NEWS, while the checked-in generated public
+stub still reports 1.2.1. This inconsistency is retained and disclosed instead of editing
+vendor files. Release and ASan/UBSan ABI smoke passed the zero, tiny, 64-KiB-boundary,
+independent-decode, output-bound, and repeated-Finalize cases. The benchmark-vendored
+compression fuzzer harness passed 100 fixed-seed inputs. LeakSanitizer was disabled due
+to the host ptrace restriction.
+
+The final canonical Release artifact SHA-256 is
+`6908c7e336c1ac5f97591dee8380e878388959d442850cd220ee0a2d72fa93d7`; the ASan/UBSan
+artifact is `865ca9052e150235a364565b86e258455da2063f9208b494d4b4ddfef3ee5da5`.
+The current binary completed qualification RunSet
+`runset-20260917T125917Z-a89763b0308a`, followed by 30/30 eligible FORMAL repetitions in
+`runset-20260917T125955Z-fd44e35213d5` and report
+`v2:report:sha256:ba6edff0215d348f08542bffbdf97cf63a5c9ad4c35e05ac40765ce8b1d57bfb`.
+
+## Phase 4 Brotli stream source onboarding
+
+The fourth Batch-1 native codec was onboarded from Brotli 1.2.0 in the clean lzbench
+checkout at commit `fa871e66b3543a70fd4d060f7c12719343ff4ac3`. The copied closure
+contains all common, decoder, encoder, and public include files plus README, changelog,
+and MIT license; lzbench's CLI tool is not part of the runtime closure. Vendored files
+are byte-identical to their lzbench paths. The relative-file closure digest is
+`99c9b5c8815308fa57543c3188ca1bb37b42a411785d10f9ed0ecbe214e4d06a`
+and SourceArtifactID is
+`v2:source-artifact:sha256:fe9a7e9ee3c50bc85ed92108da5fee194a2440e81f64d60af4d6b2beedae4a66`.
+
+The local Google Brotli checkout at
+`4508218e7fef90fa4273286f7a415065946f2c43` is comparison evidence only; its tree is
+not mixed into the lzbench closure. lzbench calls the one-shot encoder. To implement the
+plan's explicit lifecycle, the adapter uses the same vendored library through one
+PROCESS update and FINISH calls until the encoder reports completion. The independent
+decoder receives its exact capacity from the versioned TSCB descriptor because an RFC
+7932 stream has no uncompressed-length field.
+
+Release and ASan/UBSan ABI smoke passed zero, tiny, 64-KiB-boundary, independent-decode,
+native-timing, output-bound, and repeated-Finalize cases. A separate direct public API
+harness passed 100 deterministic inputs with seed 20260917 under both builds. The final
+Release artifact is `36f6cea7fd8207e23e3a527191f6fdce631d38f9994afbdfd2c9ca8ebe08da35`;
+the ASan/UBSan artifact is
+`e872be83f1f7c3943ec463aaa3ef6dbb033e1088617b73d18c9faaeb4191b0f6`.
+Qualification RunSet `runset-20260918T051810Z-33dd0667685e` and 10/10 eligible FORMAL
+repetitions in `runset-20260918T051826Z-a1980b4fbecf` passed. The report is
+`v2:report:sha256:dea5f26860e87d25d50151ab2a7dfda27f381be2f4a5c8559391a1b85289b38c`.
+LeakSanitizer remains unavailable under the host ptrace policy.

@@ -1,4 +1,4 @@
-#include "tscb_adapter_v1.h"
+#include "tscb_native_timing.h"
 
 #include "lz4frame.h"
 
@@ -10,6 +10,7 @@
 #include <string.h>
 
 struct tscb_codec_handle_v1 {
+    tscb_native_timer native_timer;
     LZ4F_cctx *compression_context;
     LZ4F_preferences_t preferences;
     uint64_t input_bytes;
@@ -19,6 +20,8 @@ struct tscb_codec_handle_v1 {
     char last_error[256];
     char accounting_json[256];
 };
+
+TSCB_NATIVE_TIMING_API
 
 static const char TSCB_MANIFEST_JSON[] =
     "{\"abi_version\":1,\"algorithm\":\"lz4-frame\","
@@ -209,6 +212,7 @@ tscb_status_v1 tscb_reset(tscb_codec_handle_v1 *handle, uint32_t reset_mode) {
         return TSCB_STATUS_INVALID_ARGUMENT_V1;
     }
     handle->input_bytes = 0U;
+    (void)tscb_set_native_timing(handle, (uint32_t)handle->native_timer.enabled);
     handle->stream_bytes = 0U;
     handle->update_called = 0;
     handle->finalized = 0;
@@ -270,26 +274,26 @@ tscb_status_v1 tscb_compress(
     }
     destination = (unsigned char *)output->data;
     handle->preferences.frameInfo.contentSize = input->used_bytes;
-    header_size = LZ4F_compressBegin(
+    TSCB_TIME_CODEC(handle->native_timer, encode_ns, header_size = LZ4F_compressBegin(
         handle->compression_context,
         destination,
         (size_t)output->capacity_bytes,
         &handle->preferences
-    );
+    ));
     status = tscb_lz4_error(handle, "LZ4F_compressBegin", header_size);
     if (status != TSCB_STATUS_OK_V1) {
         return tscb_lz4_dst_too_small(header_size)
             ? TSCB_STATUS_DST_TOO_SMALL_V1
             : status;
     }
-    update_size = LZ4F_compressUpdate(
+    TSCB_TIME_CODEC(handle->native_timer, encode_ns, update_size = LZ4F_compressUpdate(
         handle->compression_context,
         destination + header_size,
         (size_t)output->capacity_bytes - header_size,
         input->data,
         (size_t)input->used_bytes,
         NULL
-    );
+    ));
     status = tscb_lz4_error(handle, "LZ4F_compressUpdate", update_size);
     if (status != TSCB_STATUS_OK_V1) {
         return tscb_lz4_dst_too_small(update_size)
@@ -321,12 +325,12 @@ tscb_status_v1 tscb_finalize(tscb_codec_handle_v1 *handle, tscb_buffer_v1 *outpu
     if (output->capacity_bytes > (uint64_t)SIZE_MAX) {
         return TSCB_STATUS_UNSUPPORTED_V1;
     }
-    written = LZ4F_compressEnd(
+    TSCB_TIME_CODEC(handle->native_timer, encode_ns, written = LZ4F_compressEnd(
         handle->compression_context,
         output->data,
         (size_t)output->capacity_bytes,
         NULL
-    );
+    ));
     status = tscb_lz4_error(handle, "LZ4F_compressEnd", written);
     if (status != TSCB_STATUS_OK_V1) {
         return tscb_lz4_dst_too_small(written)
@@ -367,14 +371,14 @@ tscb_status_v1 tscb_decompress(
     for (;;) {
         size_t source_size = (size_t)input->used_bytes - source_position;
         size_t destination_size = (size_t)output->capacity_bytes - destination_position;
-        code = LZ4F_decompress(
+        TSCB_TIME_CODEC(handle->native_timer, decode_ns, code = LZ4F_decompress(
             context,
             (unsigned char *)output->data + destination_position,
             &destination_size,
             (const unsigned char *)input->data + source_position,
             &source_size,
             NULL
-        );
+        ));
         source_position += source_size;
         destination_position += destination_size;
         if (LZ4F_isError(code)) {

@@ -76,6 +76,7 @@
     "type": "object",
     "additionalProperties": false,
     "properties": {
+      "native_timing": {"type": "boolean", "default": true},
       "block_size": {"type": "integer", "minimum": 1, "maximum": 1048576, "default": 131072},
       "compression_level": {"type": "integer", "minimum": -5, "maximum": 22, "default": 3},
       "content_checksum": {"type": "boolean", "default": true},
@@ -89,6 +90,12 @@
     "factory": "ZSTD_FRAME_CTYPES_V1",
     "artifact_path": "build/adapters/zstd_frame/release/libtscb_zstd_frame.so",
     "timing_boundary": "PYTHON_FFI_CONTAINER_INCLUDED",
+    "native_timing_capability": {
+      "optional": true,
+      "boundary": "CODEC_API_ONLY_V1",
+      "clock": "CLOCK_MONOTONIC",
+      "excludes": ["CONTEXT_LIFECYCLE", "EXPLICIT_PREVALIDATION", "PYTHON_FFI_CONTAINER"]
+    },
     "accounting_hooks": ["FINAL_STREAM_INSPECTION", "ZSTD_FRAME_COMPONENTS", "OUTPUT_CAPACITY"]
   }
 }

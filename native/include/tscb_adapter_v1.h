@@ -13,6 +13,13 @@ extern "C" {
 
 typedef struct tscb_codec_handle_v1 tscb_codec_handle_v1;
 
+typedef struct tscb_native_timing_v1 {
+    uint32_t struct_size;
+    uint32_t version;
+    uint64_t native_encode_wall_ns;
+    uint64_t native_decode_wall_ns;
+} tscb_native_timing_v1;
+
 typedef enum tscb_status_v1 {
     TSCB_STATUS_OK_V1 = 0,
     TSCB_STATUS_INVALID_ARGUMENT_V1 = 1,
@@ -72,6 +79,13 @@ tscb_status_v1 tscb_create(
 
 tscb_status_v1 tscb_destroy(tscb_codec_handle_v1 *handle);
 tscb_status_v1 tscb_reset(tscb_codec_handle_v1 *handle, uint32_t reset_mode);
+
+/* Optional extension. Enable before codec work; reset preserves enablement and clears totals.
+ * Queries are non-destructive. Disabled/unavailable clocks return UNSUPPORTED. */
+tscb_status_v1 tscb_set_native_timing(tscb_codec_handle_v1 *handle, uint32_t enabled);
+tscb_status_v1 tscb_get_native_timing(
+    tscb_codec_handle_v1 *handle, tscb_native_timing_v1 *timing
+);
 
 tscb_status_v1 tscb_compress_bound(
     tscb_codec_handle_v1 *handle,

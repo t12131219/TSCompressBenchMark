@@ -1,0 +1,109 @@
+{
+  "schema_version": "tscb.source-onboarding.v2",
+  "source_artifact_id": "v2:source-artifact:sha256:fe9a7e9ee3c50bc85ed92108da5fee194a2440e81f64d60af4d6b2beedae4a66",
+  "repository": "https://github.com/inikep/lzbench.git",
+  "commit": "fa871e66b3543a70fd4d060f7c12719343ff4ac3",
+  "dirty": false,
+  "submodules": [],
+  "implementation_files": [
+    "lz/brotli/common/*.c",
+    "lz/brotli/dec/*.c",
+    "lz/brotli/enc/*.c"
+  ],
+  "public_api_files": [
+    "lz/brotli/include/brotli/decode.h",
+    "lz/brotli/include/brotli/encode.h",
+    "lz/brotli/include/brotli/port.h",
+    "lz/brotli/include/brotli/shared_dictionary.h",
+    "lz/brotli/include/brotli/types.h"
+  ],
+  "benchmark_files": ["bench/lz_codecs.cpp", "bench/lzbench.h", "Makefile"],
+  "test_files": [
+    "adapters/brotli_stream/tests/abi_smoke.c",
+    "adapters/brotli_stream/tests/vendor_roundtrip.c"
+  ],
+  "license_files": ["lz/brotli/LICENSE"],
+  "third_party_dependencies": ["libm"],
+  "object_level_candidates": ["P1_STANDALONE_CODEC"],
+  "input_contract": {
+    "kind": "BYTE_VIEW",
+    "length_type": "size_t",
+    "zero_length": "SUPPORTED",
+    "ownership": "BORROWED_DURING_CALL",
+    "mutation": "FORBIDDEN_BY_ADAPTER_CONTRACT"
+  },
+  "output_contract": {
+    "kind": "RFC7932_BROTLI_STREAM_IN_TSCB_DESCRIPTOR_CONTAINER",
+    "self_contained": true,
+    "actual_written_length": true,
+    "capacity_is_not_size": true,
+    "framing": "RFC7932_BROTLI_STREAM",
+    "checksum": "NONE",
+    "dictionary": "BROTLI_BUILTIN_STATIC_ONLY"
+  },
+  "lifecycle_contract": {
+    "output_bound": "BrotliEncoderMaxCompressedSize",
+    "return_length": "PROCESS and FINISH report their actual used bytes; capacity is never charged",
+    "error_codes": "Stable tscb_status_v1 with exact descriptor-length validation",
+    "update": "BrotliEncoderCompressStream with BROTLI_OPERATION_PROCESS",
+    "finalize": "Loop BROTLI_OPERATION_FINISH until BrotliEncoderIsFinished",
+    "decode": "Independent BrotliDecoderDecompress with exact descriptor length",
+    "reset": "NEW_CONTEXT_PER_INDEPENDENT_OBJECT"
+  },
+  "stream_components": {
+    "outer_container": "TSCB versioned descriptor prefix and canonical JSON metadata",
+    "payload": "One complete RFC 7932 Brotli stream",
+    "checksum": "NONE",
+    "accounting": "Exact outer-container and complete Brotli stream lengths"
+  },
+  "upstream_tests": [
+    {
+      "name": "benchmark-vendored Brotli public API deterministic roundtrip harness",
+      "command": "vendor_roundtrip.c with seed 20260917 and 100 inputs under Release and ASan/UBSan",
+      "status": "PASS",
+      "evidence": "Brotli vendor API roundtrip passed 100 deterministic cases (seed 20260917)"
+    },
+    {
+      "name": "project C ABI smoke",
+      "command": "Release and ASan/UBSan over N=0/1/2/65535/65536/65537/131073",
+      "status": "PASS",
+      "evidence": "Exact round trip, independent decode, bound enforcement, timed FINISH and repeated-finalize rejection"
+    }
+  ],
+  "builds": [
+    {
+      "profile": "RELEASE_SCALAR_SINGLE_THREAD",
+      "artifact_sha256": "36f6cea7fd8207e23e3a527191f6fdce631d38f9994afbdfd2c9ca8ebe08da35",
+      "compile_commands_sha256": "5b299b4b4fafae95bc7732119b95c0c216be17bdb10e6f05e7ca7ff117dfa52e",
+      "compiler": "GCC 11.4.0",
+      "flags": "-O3 -DNDEBUG -std=c11"
+    },
+    {
+      "profile": "ASAN_UBSAN_SCALAR_SINGLE_THREAD",
+      "artifact_sha256": "e872be83f1f7c3943ec463aaa3ef6dbb033e1088617b73d18c9faaeb4191b0f6",
+      "compile_commands_sha256": "731096101141570d390034c78f404e5ac08271196d50b8ec5f22cf5beab7e7b2",
+      "compiler": "GCC 11.4.0",
+      "flags": "-O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined"
+    }
+  ],
+  "license_decision": {
+    "spdx": "MIT",
+    "status": "RUN_ALLOWED",
+    "redistribution": "ALLOWED_WITH_LICENSE_NOTICE"
+  },
+  "known_limitations": [
+    "lzbench calls BrotliEncoderCompress one-shot; the project uses the same vendored implementation through its streaming API so PROCESS and FINISH satisfy the mandatory lifecycle contract.",
+    "The registered variant fixes quality 5, lgwin 22, generic mode, one CPU thread, no external dictionary, and the built-in Brotli static dictionary.",
+    "BrotliDecoderDecompress does not distinguish every destination-too-small case; the adapter supplies the independently declared exact destination length and maps remaining decode failures to a stable codec error.",
+    "Brotli has no embedded uncompressed-length field, so independent allocation length comes from the versioned TSCB descriptor.",
+    "LeakSanitizer cannot run under the host container ptrace policy; ASan/UBSan qualification uses detect_leaks=0."
+  ],
+  "unsupported_reason_codes": [
+    "EXECUTION_ARTIFACT_MISSING",
+    "VALIDITY_SHAPE_UNSUPPORTED",
+    "DICTIONARY_MODE_NOT_REGISTERED",
+    "CHECKSUM_MODE_NOT_REGISTERED",
+    "QUERY_UNSUPPORTED",
+    "STREAMING_PROTOCOL_NOT_REGISTERED"
+  ]
+}

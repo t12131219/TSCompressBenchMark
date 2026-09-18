@@ -133,7 +133,7 @@ def test_missing_execution_artifact_is_an_explicit_planning_result(tmp_path) -> 
     assert resolution.artifact_sha256 == "UNSPECIFIED"
 
 
-def test_lz4_and_zstd_common_byte_frame_profiles_are_directly_comparable(
+def test_frame_profiles_compare_directly_while_raw_and_brotli_remain_separate(
     tmp_path,
 ) -> None:
     registry = _registry()
@@ -171,7 +171,7 @@ def test_lz4_and_zstd_common_byte_frame_profiles_are_directly_comparable(
     }
     key_sets = []
     execution_paths = []
-    for manifest_key in ("lz4-frame", "zstd-frame"):
+    for manifest_key in ("lz4-frame", "zstd-frame", "snappy-raw", "brotli-stream"):
         manifest = registry.get(manifest_key)
         compatibility = negotiate(manifest, _descriptor())
         config = expand_sweep(manifest, {})[0]
@@ -194,8 +194,26 @@ def test_lz4_and_zstd_common_byte_frame_profiles_are_directly_comparable(
             )
         )
         execution_paths.append(execution.execution_path_hash)
+        assert config.parameters["native_timing"] is True
+        disabled = expand_sweep(manifest, {"native_timing": [False]})[0]
+        assert disabled.status is RunStatus.PLANNED
+        assert disabled.config_id != config.config_id
+        disabled_keys = build_comparability_keys(
+            manifest, _descriptor(), disabled, compatibility, execution, profile=profile
+        )
+        assert disabled_keys.semantic_key == key_sets[-1].semantic_key
+        assert disabled_keys.execution_key != key_sets[-1].execution_key
+        assert disabled_keys.resource_key != key_sets[-1].resource_key
 
     assert key_sets[0].semantic_key == key_sets[1].semantic_key
     assert key_sets[0].execution_key == key_sets[1].execution_key
     assert key_sets[0].resource_key == key_sets[1].resource_key
     assert execution_paths[0] != execution_paths[1]
+    assert key_sets[2].semantic_key != key_sets[0].semantic_key
+    assert key_sets[2].execution_key != key_sets[0].execution_key
+    assert key_sets[2].resource_key != key_sets[0].resource_key
+    assert execution_paths[2] not in execution_paths[:2]
+    assert key_sets[3].semantic_key not in {item.semantic_key for item in key_sets[:3]}
+    assert key_sets[3].execution_key not in {item.execution_key for item in key_sets[:3]}
+    assert key_sets[3].resource_key not in {item.resource_key for item in key_sets[:3]}
+    assert execution_paths[3] not in execution_paths[:3]

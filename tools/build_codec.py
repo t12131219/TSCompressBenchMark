@@ -114,6 +114,90 @@ def _zstd_command(output: Path, profile: str) -> list[str]:
     ]
 
 
+def _snappy_command(output: Path, profile: str) -> list[str]:
+    adapter = PROJECT_ROOT / "adapters" / "snappy_raw"
+    vendor = adapter / "vendor" / "snappy"
+    flags = [
+        "-std=c++17",
+        "-fPIC",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-DHAVE_CONFIG_H=0",
+        "-DSNAPPY_HAVE_SSSE3=0",
+        "-DSNAPPY_HAVE_NEON=0",
+        "-DSNAPPY_HAVE_BMI2=0",
+        "-DSNAPPY_HAVE_X86_CRC32=0",
+        "-DSNAPPY_HAVE_NEON_CRC32=0",
+    ]
+    if profile == "release":
+        flags += ["-O3", "-DNDEBUG"]
+    elif profile == "sanitizer":
+        flags += [
+            "-O1",
+            "-g",
+            "-fno-omit-frame-pointer",
+            "-fsanitize=address,undefined",
+        ]
+    else:
+        raise ValueError(f"unknown build profile: {profile}")
+    return [
+        os.environ.get("CXX", "c++"),
+        *flags,
+        "-shared",
+        "-I",
+        str(PROJECT_ROOT / "native" / "include"),
+        "-I",
+        str(vendor),
+        str(adapter / "native" / "tscb_snappy_raw.cc"),
+        str(vendor / "snappy-sinksource.cc"),
+        str(vendor / "snappy-stubs-internal.cc"),
+        str(vendor / "snappy.cc"),
+        "-o",
+        str(output),
+    ]
+
+
+def _brotli_command(output: Path, profile: str) -> list[str]:
+    adapter = PROJECT_ROOT / "adapters" / "brotli_stream"
+    vendor = adapter / "vendor" / "brotli"
+    flags = ["-std=c11", "-fPIC", "-Wall", "-Wextra", "-Werror"]
+    if profile == "release":
+        flags += ["-O3", "-DNDEBUG"]
+    elif profile == "sanitizer":
+        flags += [
+            "-O1",
+            "-g",
+            "-fno-omit-frame-pointer",
+            "-fsanitize=address,undefined",
+        ]
+    else:
+        raise ValueError(f"unknown build profile: {profile}")
+    source_files = sorted(
+        [
+            *(vendor / "common").glob("*.c"),
+            *(vendor / "dec").glob("*.c"),
+            *(vendor / "enc").glob("*.c"),
+        ]
+    )
+    return [
+        os.environ.get("CC", "cc"),
+        *flags,
+        "-shared",
+        "-I",
+        str(PROJECT_ROOT / "native" / "include"),
+        "-I",
+        str(vendor / "include"),
+        "-I",
+        str(vendor),
+        str(adapter / "native" / "tscb_brotli_stream.c"),
+        *(str(path) for path in source_files),
+        "-lm",
+        "-o",
+        str(output),
+    ]
+
+
 def _build(algorithm: str, profile: str) -> dict[str, Any]:
     directory_name = algorithm.replace("-", "_")
     output_dir = PROJECT_ROOT / "build" / "adapters" / directory_name / profile
@@ -123,6 +207,10 @@ def _build(algorithm: str, profile: str) -> dict[str, Any]:
         command = _lz4_command(output, profile)
     elif algorithm == "zstd-frame":
         command = _zstd_command(output, profile)
+    elif algorithm == "snappy-raw":
+        command = _snappy_command(output, profile)
+    elif algorithm == "brotli-stream":
+        command = _brotli_command(output, profile)
     else:
         raise ValueError(f"unknown algorithm: {algorithm}")
     log = _run(command)
@@ -155,7 +243,9 @@ def _build(algorithm: str, profile: str) -> dict[str, Any]:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Build a frozen source codec adapter")
-    parser.add_argument("algorithm", choices=("lz4-frame", "zstd-frame"))
+    parser.add_argument(
+        "algorithm", choices=("lz4-frame", "zstd-frame", "snappy-raw", "brotli-stream")
+    )
     parser.add_argument("--profile", choices=("release", "sanitizer", "all"), default="release")
     arguments = parser.parse_args()
     profiles = ("release", "sanitizer") if arguments.profile == "all" else (arguments.profile,)

@@ -19,10 +19,10 @@ Pareto/ranking/coverage views plus machine and human-readable reports.
 
 The source collection remains read-only under
 `/home/fzg/PycharmProjects/Compression_Source_Code/Source_Code`. Phase 4 copies only the
-reviewed translation-unit closure needed by an adapter. The qualified native codecs are
-LZ4 Frame 1.10.0 and Zstd Frame 1.5.7, both taken from lzbench's vendored sources at a
-pinned commit. Their source, license, build, ABI, accounting, and five-layer evidence
-are recorded under `registry/onboarding`.
+reviewed translation-unit closure needed by an adapter. The native codecs are LZ4 Frame
+1.10.0, Zstd Frame 1.5.7, Snappy Raw 1.2.2, and Brotli Stream 1.2.0, all taken from
+lzbench's vendored sources at a pinned commit. Their source, license, build, ABI,
+accounting, and five-layer evidence are recorded under `registry/onboarding`.
 
 ## Environment
 
@@ -49,18 +49,34 @@ PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run report \
 # Build and qualify the native codecs.
 conda run -n CompressBench14 python tools/build_codec.py lz4-frame --profile all
 conda run -n CompressBench14 python tools/build_codec.py zstd-frame --profile all
+conda run -n CompressBench14 python tools/build_codec.py snappy-raw --profile all
+conda run -n CompressBench14 python tools/build_codec.py brotli-stream --profile all
 PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
   configs/experiments/lz4-frame-qualification.toml --output-root runs
 PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
   configs/experiments/zstd-frame-qualification.toml --output-root runs
+PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
+  configs/experiments/snappy-raw-qualification.toml --output-root runs
+PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
+  configs/experiments/brotli-stream-qualification.toml --output-root runs
 
 # A FORMAL run uses >=3 warmups, >=0.5 s warmup time, 10 raw repetitions,
 # and >=1 s of selected-scope work in every repetition.
 PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
   configs/experiments/zstd-lz4-formal-comparison.toml --output-root runs
+PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
+  configs/experiments/snappy-lz4-zstd-formal-comparison.toml --output-root runs
+PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
+  configs/experiments/brotli-stream-formal.toml --output-root runs
 ```
 
 The package can also be invoked with `PYTHONPATH=src` without installing it.
+
+Native codec API timings are enabled by default for LZ4, Zstd, Snappy, and Brotli.
+Disable them with `native_timing = [false]` in `[sweep]`. They supplement CORE and
+PIPELINE rather than replacing the selected timing scope. See
+[native codec timing](docs/native_codec_timing.md) and the formal example in
+`configs/experiments/native-timing-formal-comparison.toml`.
 
 ## Layer 1 invariants
 

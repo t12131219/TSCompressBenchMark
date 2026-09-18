@@ -106,7 +106,8 @@ Project foundation established with five-layer architecture fully implemented an
 ### Pending
 
 **Phase 4-10 Implementation**
-- Phase 4: Snappy/Brotli after the completed LZ4 Frame and Zstd Frame integrations
+- Phase 4 follow-on: remaining spreadsheet-listed native codec batches after the
+  completed LZ4 Frame, Zstd Frame, Snappy Raw, and Brotli Stream Batch 1
 - Phase 5: Timestamp primitives (Delta/DoubleDelta/ZigZag/StreamVByte)
 - Phase 6: Value UTS/MTS codecs (Gorilla/Chimp/ALP/Sprintz)
 - Phase 7: Lossy/ND algorithms (Serf/SZ3/zfp)
@@ -115,7 +116,7 @@ Project foundation established with five-layer architecture fully implemented an
 - Phase 10: Statistics layer completion and publication
 
 **Known Limitations**
-- Two real codec adapters are currently qualified; the remaining spreadsheet-listed
+- Four real codec adapters are currently integrated; the remaining spreadsheet-listed
   algorithms have not yet been onboarded.
 - LZ4 and Zstd currently use one finalized frame per independent object and do not claim
   streaming/query support. Zstd dictionary and multithread modes are not registered.
@@ -169,6 +170,47 @@ Project foundation established with five-layer architecture fully implemented an
   allowing LZ4 and Zstd to share valid Semantic/Execution/Resource comparison keys while
   retaining distinct artifact and execution-path identities.
 - Test suite now contains 57 passing tests.
+
+### Phase 4 Third Native Codec (2026-09-17)
+
+#### Added
+
+- Pinned lzbench-vendored Snappy source closure matching the benchmark's three compiled
+  translation units, with BSD license, format description, source artifact, and admission
+  records.
+- Scalar C++ adapter behind the stable C ABI using `RawCompress`, `RawUncompress`, and
+  `MaxCompressedLength`, with exact decoded-length enforcement and exception containment.
+- Versioned descriptor container followed by one Snappy raw stream, required zero-byte
+  one-shot Finalize, independent decode, and exact literal/copy structural accounting.
+- Release and ASan/UBSan builds, ABI boundary smoke, 100-case deterministic upstream
+  fuzzer harness, qualification/formal configs, raw-stream parser tests, and fairness-key
+  regression coverage.
+
+#### Changed
+
+- Snappy is registered as `snappy-raw`, not a frame: it has no native framing layer,
+  footer, checksum, or dictionary and remains in a separate comparability group from
+  LZ4/Zstd Frame.
+- Codec registry now contains seven manifests and source registry contains the additional
+  immutable Snappy closure.
+
+### Phase 4 Fourth Native Codec (2026-09-18)
+
+#### Added
+
+- Pinned lzbench-vendored Brotli 1.2.0 common/encoder/decoder closure, MIT license,
+  source artifact, and admission record.
+- C ABI adapter using PROCESS plus FINISH-until-complete, independent decode, native API
+  timing, exact used-length accounting, and a versioned descriptor container.
+- Release and ASan/UBSan builds, ABI boundary smoke, 100-case deterministic vendor API
+  harness, qualification/formal configs, 49-case boundary coverage, and fairness tests.
+- Five-layer evidence with 10/10 eligible FORMAL repetitions and a deterministic report.
+
+#### Changed
+
+- Brotli's RFC 7932 stream, built-in static dictionary, and finalize semantics place it
+  in a separate comparability group from LZ4/Zstd frames and Snappy raw.
+- Codec registry now contains eight manifests.
 
 ## [0.0.0] - 2026-09-16
 

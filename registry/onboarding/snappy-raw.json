@@ -1,0 +1,109 @@
+{
+  "schema_version": "tscb.source-onboarding.v2",
+  "source_artifact_id": "v2:source-artifact:sha256:e63a21a66a2ebd8fec7b8caa2b477a157b01033ea458fa3be9eab481bb26771d",
+  "repository": "https://github.com/inikep/lzbench.git",
+  "commit": "fa871e66b3543a70fd4d060f7c12719343ff4ac3",
+  "dirty": false,
+  "submodules": [],
+  "implementation_files": [
+    "lz/snappy/snappy-sinksource.cc",
+    "lz/snappy/snappy-stubs-internal.cc",
+    "lz/snappy/snappy.cc"
+  ],
+  "public_api_files": [
+    "lz/snappy/snappy.h",
+    "lz/snappy/snappy-sinksource.h",
+    "lz/snappy/snappy-stubs-public.h"
+  ],
+  "benchmark_files": ["bench/lz_codecs.cpp", "Makefile"],
+  "test_files": [
+    "lz/snappy/snappy_compress_fuzzer.cc",
+    "lz/snappy/snappy_uncompress_fuzzer.cc",
+    "lz/snappy/snappy_unittest.cc"
+  ],
+  "license_files": ["lz/snappy/COPYING"],
+  "third_party_dependencies": [],
+  "object_level_candidates": ["P1_STANDALONE_CODEC"],
+  "input_contract": {
+    "kind": "BYTE_VIEW",
+    "length_type": "uint32 stream prefix constrained through size_t API",
+    "zero_length": "SUPPORTED",
+    "ownership": "BORROWED_DURING_CALL",
+    "mutation": "FORBIDDEN_BY_ADAPTER_CONTRACT"
+  },
+  "output_contract": {
+    "kind": "SNAPPY_RAW_STREAM_IN_TSCB_DESCRIPTOR_CONTAINER",
+    "self_contained": true,
+    "actual_written_length": true,
+    "capacity_is_not_size": true,
+    "framing": "NONE",
+    "checksum": "NONE",
+    "dictionary": "NONE"
+  },
+  "lifecycle_contract": {
+    "output_bound": "snappy::MaxCompressedLength",
+    "return_length": "RawCompress output length plus zero-byte one-shot Finalize",
+    "error_codes": "Stable tscb_status_v1; exact capacity and decoded-length checks",
+    "finalize": "REQUIRED_NOOP_ONE_SHOT_FINALIZE",
+    "reset": "NEW_CONTEXT_PER_INDEPENDENT_OBJECT"
+  },
+  "stream_components": {
+    "outer_container": "TSCB versioned descriptor prefix and canonical JSON metadata",
+    "raw_header": "Canonical uint32 varint uncompressed length",
+    "commands": "Literal and one/two/four-byte-offset copy tags",
+    "footer": "NONE",
+    "accounting": "Exact command inspection; literal bytes and control bytes are disjoint"
+  },
+  "upstream_tests": [
+    {
+      "name": "lzbench-vendored Snappy compression fuzzer harness",
+      "command": "snappy_compress_fuzzer.cc with deterministic seed 20260917 and 100 inputs",
+      "status": "PASS",
+      "evidence": "Snappy compression fuzzer harness passed 100 deterministic cases"
+    },
+    {
+      "name": "project C ABI smoke",
+      "command": "Release and ASan/UBSan over N=0/1/2/65535/65536/65537/131073",
+      "status": "PASS",
+      "evidence": "Exact round trip, independent decode, bound enforcement, zero-byte finalize and repeated-finalize rejection"
+    }
+  ],
+  "builds": [
+    {
+      "profile": "RELEASE_SCALAR_SINGLE_THREAD",
+      "artifact_sha256": "6908c7e336c1ac5f97591dee8380e878388959d442850cd220ee0a2d72fa93d7",
+      "compile_commands_sha256": "16675dbb081e5e2ae28372ef479296f9999fa27851645dd9bf07e76bd8b8a6e6",
+      "compiler": "GCC 11.4.0",
+      "flags": "-O3 -DNDEBUG with all registered Snappy SIMD and CRC feature macros disabled"
+    },
+    {
+      "profile": "ASAN_UBSAN_SCALAR_SINGLE_THREAD",
+      "artifact_sha256": "865ca9052e150235a364565b86e258455da2063f9208b494d4b4ddfef3ee5da5",
+      "compile_commands_sha256": "8b24fe4a9872e6be6f24de2f1cde60ed05ecf3d59947fd504223706f8a0228e2",
+      "compiler": "GCC 11.4.0",
+      "flags": "-O1 -g -fsanitize=address,undefined with the same scalar feature defines"
+    }
+  ],
+  "license_decision": {
+    "spdx": "BSD-3-Clause",
+    "status": "RUN_ALLOWED",
+    "redistribution": "ALLOWED_WITH_LICENSE_NOTICE"
+  },
+  "known_limitations": [
+    "Snappy raw has no framing layer, footer, checksum, dictionary, random access, or common continuous-stream protocol and is not directly comparable with framed codecs.",
+    "lzbench CMakeLists.txt and NEWS identify 1.2.2, while its checked-in generated snappy-stubs-public.h still reports patchlevel 1; vendor files remain unmodified and the discrepancy is preserved.",
+    "The registered variant fixes compression level 1, scalar feature macros, one CPU thread, and one raw stream per independently measured object.",
+    "The Python FFI descriptor serialization and contiguous byte materialization are included in the declared adapter boundary.",
+    "LeakSanitizer cannot run under the host container ptrace policy; ASan/UBSan qualification uses detect_leaks=0."
+  ],
+  "unsupported_reason_codes": [
+    "EXECUTION_ARTIFACT_MISSING",
+    "VALIDITY_SHAPE_UNSUPPORTED",
+    "INPUT_EXCEEDS_UINT32_STREAM_LIMIT",
+    "FRAMING_MODE_NOT_REGISTERED",
+    "CHECKSUM_MODE_NOT_REGISTERED",
+    "DICTIONARY_MODE_NOT_REGISTERED",
+    "QUERY_UNSUPPORTED",
+    "STREAMING_PROTOCOL_NOT_REGISTERED"
+  ]
+}

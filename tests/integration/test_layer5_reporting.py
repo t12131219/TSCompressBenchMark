@@ -181,6 +181,18 @@ def test_layer5_filters_groups_uses_frozen_coverage_and_preserves_raw_evidence(t
                 encode_ns=encode_ns + repetition * 2,
             )
             record["run_id"] = f"run:{task['task_id']}-{repetition}"
+            if task["task_id"] == "task-a":
+                record["timing"].update({
+                    "core_encode_wall_ns": 150, "core_decode_wall_ns": 80,
+                    "pipeline_encode_wall_ns": encode_ns + repetition * 2,
+                    "pipeline_decode_wall_ns": 100,
+                    "codec_input_bytes_per_iteration": 120,
+                    "native_encode_wall_ns": 50 + repetition * 2,
+                    "native_decode_wall_ns": 40,
+                    "native_timing_enabled": True,
+                    "native_timing_boundary": "CODEC_API_ONLY_V1",
+                    "native_timing_clock": "CLOCK_MONOTONIC",
+                })
             stream = bytes([65 + repetition % 10]) * (final_bits // 8)
             record["bitstream_sha256"] = hashlib.sha256(stream).hexdigest()
             (run_path / "artifacts" / f"{task['task_id']}-{repetition}.bin").write_bytes(stream)
@@ -261,6 +273,17 @@ def test_layer5_filters_groups_uses_frozen_coverage_and_preserves_raw_evidence(t
     assert all(item["n"] == 10 for item in bundle.summaries)
     assert bundle.summaries[0]["encode_ns_median"] > 0
     assert len(bundle.corpus_summaries) == 2
+    native = next(row for row in bundle.summaries if row["algorithm_id"] == "algorithm:a")
+    legacy = next(row for row in bundle.summaries if row["algorithm_id"] == "algorithm:b")
+    assert native["native_encode_ns_median"] == 29.5
+    assert float(native["native_encode_mb_per_second_micro"]) == 240 * 10 * 1000 / 590
+    assert native["native_decode_ns_median"] == 20
+    assert native["native_encode_observation_count"] == 10
+    assert legacy["native_encode_ns_median"] is None
+    assert legacy["native_decode_mb_per_second_micro"] is None
+    native_corpus = next(row for row in bundle.corpus_summaries
+                         if row["algorithm_id"] == "algorithm:a")
+    assert float(native_corpus["micro_native_encode_mb_per_second"]) == 120 * 1000 / 29.5
     assert {item["coverage_category"] for item in bundle.coverage} == {
         "PASS",
         "FAIL",
@@ -304,5 +327,8 @@ def test_layer5_filters_groups_uses_frozen_coverage_and_preserves_raw_evidence(t
     markdown_report = (run_path / "report" / "report.md").read_text()
     assert "## Reproducibility context" in markdown_report
     assert "### Exclusions and abnormal outcomes" in markdown_report
+    assert "## Auxiliary timing layers" in markdown_report
+    assert "NATIVE encode" in (run_path / "report" / "report.html").read_text()
+    assert "native_encode_wall_ns" not in records[-1].get("timing", {})
     raw_after = hashlib.sha256((run_path / "run_components.jsonl").read_bytes()).hexdigest()
     assert raw_after == raw_before

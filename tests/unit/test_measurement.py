@@ -166,6 +166,46 @@ def test_query_matrix_is_seeded_and_covers_point_full_and_projection_widths() ->
     assert {len(item.channel_indices) for item in first} == {1, 2, 4, 8, 9}
 
 
+def test_native_timing_accumulates_same_inner_iterations_and_keeps_legacy_missing():
+    class Session:
+        def __init__(self):
+            self.session = OracleAdapter().create_session({})
+
+        def __getattr__(self, name):
+            return getattr(self.session, name)
+
+        def native_timing(self):
+            return (7, 11)
+
+    class Adapter:
+        deterministic = True
+
+        def create_session(self, parameters):
+            return Session()
+
+    route = _route()
+    observation = perform_measured_roundtrip(
+        Adapter(), route, _compatibility(route), {}, _policy()
+    )
+    timing = observation.timing
+    assert timing.native_timing_enabled
+    assert timing.inner_iterations > 1
+    assert timing.native_encode_wall_ns == 7 * timing.inner_iterations
+    assert timing.native_decode_wall_ns == 11 * timing.inner_iterations
+    assert float(timing.native_encode_mb_per_second) == pytest.approx(128 * 1000 / 7)
+    assert float(timing.native_decode_mb_per_second) == pytest.approx(128 * 1000 / 11)
+    assert timing.native_timing_boundary == "CODEC_API_ONLY_V1"
+    assert timing.native_timing_clock == "CLOCK_MONOTONIC"
+    legacy = perform_measured_roundtrip(
+        OracleAdapter(), route, _compatibility(route), {"native_timing": True}, _policy()
+    ).timing
+    assert legacy.native_timing_enabled
+    assert legacy.native_encode_wall_ns is None
+    assert legacy.native_decode_wall_ns is None
+    assert legacy.native_encode_mb_per_second is None
+    assert legacy.native_timing_boundary is None
+
+
 def test_query_engine_times_only_pregenerated_requests_and_checks_exact_slices() -> None:
     route = _route()
 

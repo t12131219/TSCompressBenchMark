@@ -20,6 +20,8 @@ from tscompbench.execution.protocol import (
 )
 from tscompbench.ids import canonical_json_bytes, stable_id
 
+from .native_timing import NativeTimingProbe
+
 _ABI_VERSION = 1
 _STATUS_OK = 0
 _STATUS_DST_TOO_SMALL = 3
@@ -178,6 +180,19 @@ class ZstdFrameSession:
         self._updated = False
         self._finalized = False
         self._header = b""
+        try:
+            self._native_timing = NativeTimingProbe(
+                self._native.library, self._handle,
+                enabled=bool(parameters.get("native_timing", True)),
+            )
+        except Exception:
+            self.close()
+            raise
+
+    def native_timing(self) -> tuple[int, int] | None:
+        if not self._handle.value:
+            raise ExecutionContractError("native timing queried after session close")
+        return self._native_timing.read()
 
     def _last_error(self) -> str:
         pointer = ctypes.c_char_p()

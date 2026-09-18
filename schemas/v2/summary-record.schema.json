@@ -41,9 +41,15 @@
     "compression_factor": {"type": ["string", "null"]},
     "semantic_encode_mb_per_second_micro": {"type": ["string", "null"]},
     "semantic_decode_mb_per_second_micro": {"type": ["string", "null"]},
+    "codec_input_bytes_per_iteration": {"type": ["integer", "null"], "minimum": 0},
+    "native_timing_boundary": {"enum": ["CODEC_API_ONLY_V1", null]},
+    "native_timing_clock": {"enum": ["CLOCK_MONOTONIC", null]},
     "resource_observation_count": {"type": "integer", "minimum": 0}
   },
   "patternProperties": {
+    "^(core|pipeline|native)_(encode|decode)_ns_(median|p25|p75|mean|sd|cv|ci_low|ci_high)$": {"type": ["number", "null"]},
+    "^(core|pipeline|native)_(encode|decode)_observation_count$": {"type": "integer", "minimum": 0},
+    "^(core|pipeline|native)_(encode|decode)_mb_per_second_micro$": {"type": ["string", "null"]},
     "^(encode_ns|decode_ns|e2e_ns|rmse|mae|max_ae|psnr_range_db|process_cpu_seconds|peak_memory_bytes|incremental_peak_memory_bytes|cpu_core_seconds_per_gb)_(median|p25|p75|mean|sd|cv|ci_low|ci_high)$": {"type": ["number", "null"]}
   }
 }

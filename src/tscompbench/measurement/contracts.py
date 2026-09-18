@@ -93,6 +93,13 @@ class TimingObservation:
     timestamps_per_second: str | None
     value_elements_per_second: str | None
     min_duration_satisfied: bool
+    native_encode_wall_ns: int | None = None
+    native_decode_wall_ns: int | None = None
+    native_encode_mb_per_second: str | None = None
+    native_decode_mb_per_second: str | None = None
+    native_timing_enabled: bool = False
+    native_timing_boundary: str | None = None
+    native_timing_clock: str | None = None
 
     def to_document(self) -> dict[str, Any]:
         return {"schema_version": "tscb.timing-observation.v2", **asdict(self)}

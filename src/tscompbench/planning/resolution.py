@@ -220,6 +220,7 @@ def build_comparability_keys(
         "fallback_used": execution.fallback_used,
         "backend": execution.backend,
         "adapter_boundary": manifest.document["adapter"]["timing_boundary"],
+        "native_timing_enabled": bool(config.parameters.get("native_timing", False)),
     }
     execution_key = stable_id("execution-comparability", execution_document)
     resource_document = {

@@ -192,3 +192,34 @@ execution groups. These fields now use the algorithm-neutral contracts
 ExecutionPathHash continue to distinguish implementations. A regression test requires
 the two common byte-frame profiles to share Semantic, Execution, and Resource keys while
 retaining different execution paths.
+
+## D023 Snappy raw remains distinct from self-contained codec frames
+
+The third Batch-1 native codec uses the Snappy translation-unit closure compiled by the
+pinned lzbench benchmark and the same `RawCompress`/`RawUncompress` API that lzbench calls.
+Snappy raw begins with a uint32 varint decoded length and then literal/copy commands; it
+has no frame envelope, footer, checksum, dictionary, or finalize bytes. The project still
+requires a one-shot Finalize call, which succeeds with zero written bytes and rejects a
+second call, so lifecycle evidence remains explicit.
+
+The TSCB descriptor prefix makes a routed object independently reconstructible but does
+not relabel the embedded format as a Snappy frame. `snappy-raw` therefore has its own
+decodability and block semantics and does not share Semantic/Execution/Resource keys with
+LZ4/Zstd frame profiles. Algorithm identity alone is not used to create this separation;
+the different physical and lifecycle contract is.
+
+## D024 Brotli uses an RFC 7932 stream with observable FINISH
+
+The fourth Batch-1 codec uses the complete Brotli 1.2.0 common/encoder/decoder closure
+vendored by the pinned lzbench commit. lzbench benchmarks `BrotliEncoderCompress` and
+`BrotliDecoderDecompress`; the project uses the same implementation through
+`BrotliEncoderCompressStream` so PROCESS and every FINISH call satisfy the mandatory
+update/finalize lifecycle and native API timing contract. Finalize loops until
+`BrotliEncoderIsFinished`; a non-finished call is never accepted as a complete stream.
+
+The registered object is a versioned TSCB descriptor followed by one RFC 7932 stream at
+quality 5, lgwin 22, generic mode, single thread, with Brotli's built-in static dictionary
+and no external dictionary or checksum. Brotli stream bytes are counted exactly as the
+routed data bucket, while descriptor and prefix bits remain metadata/container bits.
+Because the stream, dictionary, and finalize contracts differ, Brotli has separate
+Semantic, Execution, and Resource keys from both LZ4/Zstd frames and Snappy raw.

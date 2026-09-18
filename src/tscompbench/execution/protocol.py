@@ -78,6 +78,7 @@ class EncodedArtifact:
     output_capacity_bytes: int
     stream_sha256: str
     ledger: AccountingLedger
+    native_encode_wall_ns: int | None = None
 
     def __post_init__(self) -> None:
         if self.update_bytes < 0 or self.finalize_bytes < 0:

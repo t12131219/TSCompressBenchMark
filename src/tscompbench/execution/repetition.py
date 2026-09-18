@@ -32,14 +32,34 @@ from .routing import hash_logical_buffers, hash_reference_array
 _CANARY = bytes.fromhex("a55ac33c966969963cc35aa5") * 3
 
 
+def _native_timing(session: Any, parameters: dict[str, Any]) -> tuple[int, int] | None:
+    if not parameters.get("native_timing", True):
+        return None
+    query = getattr(session, "native_timing", None)
+    if query is None:
+        return None
+    timing = query()
+    if timing is not None and (
+        not isinstance(timing, tuple)
+        or len(timing) != 2
+        or any(
+            not isinstance(value, int) or isinstance(value, bool) or value < 0 for value in timing
+        )
+    ):
+        raise ExecutionContractError("native timing must contain two non-negative integer totals")
+    return timing
+
+
 @dataclass(frozen=True)
 class TimingObservation:
     encode_wall_ns: int
     decode_wall_ns: int
     encode_process_cpu_ns: int
     decode_process_cpu_ns: int
+    native_encode_wall_ns: int | None = None
+    native_decode_wall_ns: int | None = None
 
-    def to_document(self) -> dict[str, int]:
+    def to_document(self) -> dict[str, int | None]:
         return self.__dict__.copy()
 
 
@@ -107,6 +127,7 @@ def _encode(
             raise ExecutionContractError("finalize returned an invalid used length")
         cpu_ns = time.process_time_ns() - cpu_start
         wall_ns = time.perf_counter_ns() - wall_start
+        native_timing = _native_timing(session, parameters)
         stream = bytes(storage[: updated + finalized])
         ledger = session.accounting(stream, routed)
         artifact = EncodedArtifact(
@@ -116,6 +137,7 @@ def _encode(
             output_capacity_bytes=capacity,
             stream_sha256=hashlib.sha256(stream).hexdigest(),
             ledger=ledger,
+            native_encode_wall_ns=None if native_timing is None else native_timing[0],
         )
         return (
             artifact,
@@ -148,6 +170,7 @@ def perform_roundtrip(
         decoded = session.decompress(artifact.stream)
         decode_cpu = time.process_time_ns() - cpu_start
         decode_wall = time.perf_counter_ns() - wall_start
+        native_decode = _native_timing(session, parameters)
     finally:
         session.close()
     # The resource sample belongs to this qualification repetition only.  A
@@ -165,7 +188,11 @@ def perform_roundtrip(
     return RoundTripObservation(
         encoded=artifact,
         decoded=decoded,
-        timing=TimingObservation(encode_wall, decode_wall, encode_cpu, decode_cpu),
+        timing=TimingObservation(
+            encode_wall, decode_wall, encode_cpu, decode_cpu,
+            artifact.native_encode_wall_ns,
+            None if native_decode is None else native_decode[1],
+        ),
         resources=ResourceObservation(
             process_user_seconds=format(
                 max(0.0, usage_after.ru_utime - usage_before.ru_utime), ".17g"
@@ -290,6 +317,8 @@ def perform_measured_roundtrip(
     start_wall = time.perf_counter_ns()
     sampler.start(start_wall)
     core_encode = core_decode = pipeline_encode = pipeline_decode = e2e = 0
+    native_encode: int | None = 0
+    native_decode: int | None = 0
     encode_cpu = decode_cpu = 0
     encode_user = encode_system = Decimal(0)
     decode_user = decode_system = Decimal(0)
@@ -326,6 +355,7 @@ def perform_measured_roundtrip(
                 decoded = session.decompress(artifact.stream)
                 dec_cpu = time.process_time_ns() - decode_cpu_start
                 dec_wall = time.perf_counter_ns() - decode_core_start
+                native_dec = _native_timing(session, parameters)
             finally:
                 session.close()
             _measure_reverse_adapter(routed, decoded, compatibility)
@@ -334,6 +364,15 @@ def perform_measured_roundtrip(
 
             core_encode += enc_wall
             core_decode += dec_wall
+            # Never publish partial native totals as if they covered every inner iteration.
+            native_encode = (
+                None if native_encode is None or artifact.native_encode_wall_ns is None
+                else native_encode + artifact.native_encode_wall_ns
+            )
+            native_decode = (
+                None if native_decode is None or native_dec is None
+                else native_decode + native_dec[1]
+            )
             pipeline_encode += encode_phase_end - pipeline_start
             pipeline_decode += decode_phase_end - decode_pipeline_start
             e2e += decode_phase_end - e2e_start
@@ -434,6 +473,25 @@ def perform_measured_roundtrip(
             else decimal_rate(value_elements * iterations, selected_wall)
         ),
         min_duration_satisfied=selected_wall >= policy.repetition_min_ns,
+        native_encode_wall_ns=native_encode,
+        native_decode_wall_ns=native_decode,
+        native_encode_mb_per_second=(
+            None if native_encode is None else decimal_rate(
+                codec_input_bytes * iterations, native_encode, scale=1_000_000
+            )
+        ),
+        native_decode_mb_per_second=(
+            None if native_decode is None else decimal_rate(
+                codec_input_bytes * iterations, native_decode, scale=1_000_000
+            )
+        ),
+        native_timing_enabled=bool(parameters.get("native_timing", True)),
+        native_timing_boundary=(
+            "CODEC_API_ONLY_V1" if native_encode is not None or native_decode is not None else None
+        ),
+        native_timing_clock=(
+            "CLOCK_MONOTONIC" if native_encode is not None or native_decode is not None else None
+        ),
     )
     deterministic_match = (
         None

@@ -1,3 +1,6 @@
+import csv
+import json
+
 import pytest
 
 from tscompbench.contracts import BenchmarkTrack, RunStatus
@@ -42,3 +45,21 @@ def test_passing_formal_record_requires_complete_same_repetition_evidence() -> N
             status=RunStatus.PASS,
             reason_code="FORMAL_REPETITION_PASS",
         )
+
+
+def test_native_timing_survives_json_csv_and_idempotent_projection_rebuild(tmp_path):
+    timing = {
+        "native_encode_wall_ns": 17, "native_decode_wall_ns": 19,
+        "native_encode_mb_per_second": "1.2", "native_decode_mb_per_second": "1.1",
+        "native_timing_enabled": True, "native_timing_boundary": "CODEC_API_ONLY_V1",
+        "native_timing_clock": "CLOCK_MONOTONIC",
+    }
+    record = _record(timing=timing)
+    append_run_record(tmp_path, record)
+    append_run_record(tmp_path, record)
+    document = json.loads((tmp_path / "run_components.jsonl").read_text())
+    assert document["timing"] == timing
+    with (tmp_path / "runs.csv").open(newline="") as handle:
+        row = next(csv.DictReader(handle))
+    for name, value in timing.items():
+        assert row[name] == str(value)

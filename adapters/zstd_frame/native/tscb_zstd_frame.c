@@ -1,4 +1,4 @@
-#include "tscb_adapter_v1.h"
+#include "tscb_native_timing.h"
 
 #include "zstd.h"
 #include "zstd_errors.h"
@@ -11,6 +11,7 @@
 #include <string.h>
 
 struct tscb_codec_handle_v1 {
+    tscb_native_timer native_timer;
     ZSTD_CCtx *compression_context;
     int compression_level;
     int content_checksum;
@@ -22,6 +23,8 @@ struct tscb_codec_handle_v1 {
     char last_error[256];
     char accounting_json[320];
 };
+
+TSCB_NATIVE_TIMING_API
 
 static const char TSCB_MANIFEST_JSON[] =
     "{\"abi_version\":1,\"algorithm\":\"zstd-frame\"," 
@@ -232,6 +235,7 @@ tscb_status_v1 tscb_reset(tscb_codec_handle_v1 *handle, uint32_t reset_mode) {
         return TSCB_STATUS_INVALID_ARGUMENT_V1;
     }
     handle->input_bytes = 0U;
+    (void)tscb_set_native_timing(handle, (uint32_t)handle->native_timer.enabled);
     handle->stream_bytes = 0U;
     handle->finalize_calls = 0U;
     handle->update_called = 0;
@@ -302,12 +306,12 @@ tscb_status_v1 tscb_compress(
     do {
         size_t old_source_position = source.pos;
         size_t old_destination_position = destination.pos;
-        code = ZSTD_compressStream2(
+        TSCB_TIME_CODEC(handle->native_timer, encode_ns, code = ZSTD_compressStream2(
             handle->compression_context,
             &destination,
             &source,
             ZSTD_e_continue
-        );
+        ));
         if (ZSTD_isError(code)) {
             return tscb_zstd_error(handle, "ZSTD_compressStream2(continue)", code);
         }
@@ -352,12 +356,12 @@ tscb_status_v1 tscb_finalize(tscb_codec_handle_v1 *handle, tscb_buffer_v1 *outpu
     destination.pos = 0U;
     do {
         size_t old_position = destination.pos;
-        remaining = ZSTD_compressStream2(
+        TSCB_TIME_CODEC(handle->native_timer, encode_ns, remaining = ZSTD_compressStream2(
             handle->compression_context,
             &destination,
             &source,
             ZSTD_e_end
-        );
+        ));
         handle->finalize_calls += 1U;
         if (ZSTD_isError(remaining)) {
             return tscb_zstd_error(handle, "ZSTD_compressStream2(end)", remaining);
@@ -414,7 +418,8 @@ tscb_status_v1 tscb_decompress(
     do {
         size_t old_source_position = source.pos;
         size_t old_destination_position = destination.pos;
-        remaining = ZSTD_decompressStream(context, &destination, &source);
+        TSCB_TIME_CODEC(handle->native_timer, decode_ns,
+            remaining = ZSTD_decompressStream(context, &destination, &source));
         if (ZSTD_isError(remaining)) {
             tscb_status_v1 status = tscb_zstd_error(
                 handle,
