@@ -1,0 +1,52 @@
+{
+  "schema_version": "tscb.source-artifact.v2",
+  "key": "lzss-dipperstein-c-65b6882",
+  "kind": "VENDORED_UPSTREAM_SOURCE_CLOSURE",
+  "identity": {
+    "kind": "VENDORED_UPSTREAM_SOURCE_CLOSURE",
+    "key": "lzss-dipperstein-c-65b6882",
+    "repository": "https://github.com/MichaelDipperstein/lzss",
+    "commit": "65b6882ff1cc225f9c6fcd947def7b1adb21d578",
+    "version": "2026-05-03-snapshot",
+    "source_closure_sha256": "ce81296d3b2269d8ee2adf2d6964f156b31d013a6742e2c7c21486785d91fb9a",
+    "source_closure_file_count": 12,
+    "copy_policy": "UNMODIFIED_MINIMAL_LIBRARY_API_DOC_LICENSE_AND_PINNED_BITFILE",
+    "execution_variant": "OFFSET12_LENGTH4_SPACE32_BINARY_TREE_SCALAR_SINGLE_THREAD",
+    "dependency": {
+      "name": "MichaelDipperstein/bitfile",
+      "commit": "2e6132f75cbe16842a9ab81af7756ed9ac1cdbe0"
+    },
+    "selection_scope": "USER_EXPLICIT_C_VARIANT_NOT_SPREADSHEET_LZSS_REPLACEMENT"
+  },
+  "license": {
+    "spdx": "LGPL-3.0-or-later",
+    "status": "RUN_ALLOWED",
+    "redistribution": "ALLOWED_SUBJECT_TO_LGPL_3_OR_LATER",
+    "files": [
+      "adapters/lzss_dipperstein/vendor/lzss/COPYING",
+      "adapters/lzss_dipperstein/vendor/lzss/COPYING.LESSER",
+      "adapters/lzss_dipperstein/vendor/lzss/bitfile/COPYING",
+      "adapters/lzss_dipperstein/vendor/lzss/bitfile/COPYING.LESSER"
+    ]
+  },
+  "build": {
+    "recipe": "conda run -n CompressBench14 python tools/build_codec.py lzss-dipperstein-c --profile all",
+    "patches": [
+      "adapters/lzss_dipperstein/patches/0001-binary-tree-sentinel-bounds.patch"
+    ],
+    "submodules": [
+      {
+        "path": "bitfile",
+        "commit": "2e6132f75cbe16842a9ab81af7756ed9ac1cdbe0"
+      }
+    ],
+    "translation_units": [
+      "adapters/lzss_dipperstein/native/tscb_lzss_dipperstein.c",
+      "adapters/lzss_dipperstein/vendor/lzss/lzss.c",
+      "adapters/lzss_dipperstein/vendor/lzss/tree.c",
+      "adapters/lzss_dipperstein/vendor/lzss/bitfile/bitfile.c"
+    ],
+    "release_artifact": "build/adapters/lzss_dipperstein_c/release/libtscb_lzss_dipperstein_c.so",
+    "sanitizer_artifact": "build/adapters/lzss_dipperstein_c/sanitizer/libtscb_lzss_dipperstein_c.so"
+  }
+}

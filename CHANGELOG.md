@@ -7,6 +7,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Phase 4 bzip2 1.0.8 Source Integration (2026-09-19)
+
+- Added spreadsheet-listed `BZ2 (Huffman Coding)` as `bzip2-stream`, explicitly
+  classified as the complete BWT + MTF/RLE + Huffman codec rather than pure Huffman.
+- Vendored the 12-file minimal libbz2 closure from pinned lzbench, preserved its
+  license and bytes, and built the same seven translation units as the benchmark.
+- Added strict C ABI lifecycle, exact consumed/produced-length decode, conservative
+  bound checks, native timing, complete-stream accounting and Python `bz2` oracle tests.
+- Passed Release and ASan/UBSan block-boundary/hostile-stream/API/symbol-isolation
+  qualification, 714 full regression tests, Ruff and registry verification.
+- Completed 49/49 preflight observations and 10/10 eligible formal repetitions with
+  a fifth-layer report; retained an earlier swap-affected RunSet as diagnostic evidence.
+
+### Phase 4 Michael Dipperstein C LZSS Integration (2026-09-19)
+
+- Added `lzss-dipperstein-c` as an independent native C offset12/length4,
+  4096-space-window, binary-tree LZSS implementation; retained Rust `lzss-raw` and
+  prevented shared identities or merged rankings.
+- Vendored a pinned 12-file LGPL source closure and bitfile dependency; GRUB remains
+  decode-only reference material and is not claimed byte-compatible.
+- Added a hashed out-of-tree fix for upstream binary-tree sentinel out-of-bounds
+  accesses, with 48-case patched/unmodified release stream equivalence.
+- Added strict grammar/padding/length checks, independent decoder, exact bit accounting,
+  empty-stream safety, native timing and release/ASan/UBSan qualification.
+- Completed qualification plus 49/49 formal preflight observations, 10/10 eligible
+  repetitions and a fifth-layer report; documented the C-only migration boundary in
+  `docs/lzss_dipperstein_c_self_check.md`.
+
 ### Phase 4 LZSSE8 Optimal Parse Source Integration (2026-09-18)
 
 - Added explicitly requested LZSSE8 as a separate level12/SSE4.1 native codec,

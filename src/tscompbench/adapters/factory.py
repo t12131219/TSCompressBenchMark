@@ -6,9 +6,11 @@ from tscompbench.codecs import CodecManifest
 from tscompbench.execution.protocol import CodecAdapter
 
 from .brotli_stream import BrotliStreamAdapter
+from .bzip2_stream import Bzip2StreamAdapter
 from .deflate_zlib import DeflateZlibAdapter
 from .entropy_fse import EntropyAdapter
 from .lz4_frame import Lz4FrameAdapter
+from .lzss_dipperstein import LzssDippersteinAdapter
 from .lzss_raw import LzssRawAdapter
 from .lzsse2_raw import Lzsse2RawAdapter
 from .lzsse8_raw import Lzsse8RawAdapter
@@ -39,8 +41,10 @@ def adapter_artifacts(project_root: Path, manifest: CodecManifest) -> tuple[Path
         "SPRINTZ_CTYPES_V1": "sprintz.py",
         "SPRINTZ8_CTYPES_V1": "sprintz8.py",
         "BROTLI_STREAM_CTYPES_V1": "brotli_stream.py",
+        "BZIP2_STREAM_CTYPES_V1": "bzip2_stream.py",
         "DEFLATE_ZLIB_CTYPES_V1": "deflate_zlib.py",
         "LZSS_RAW_CTYPES_V1": "lzss_raw.py",
+        "LZSS_DIPPERSTEIN_CTYPES_V1": "lzss_dipperstein.py",
         "XZ_STREAM_CTYPES_V1": "xz_stream.py",
         "LZ4_FRAME_CTYPES_V1": "lz4_frame.py",
         "LZSSE2_RAW_CTYPES_V1": "lzsse2_raw.py",
@@ -52,6 +56,9 @@ def adapter_artifacts(project_root: Path, manifest: CodecManifest) -> tuple[Path
     if support_module is None:
         raise AdapterFactoryError(f"no reviewed adapter factory for {manifest.key}")
     support = project_root / "src" / "tscompbench" / "adapters" / support_module
+    if factory in {"LZSS_RAW_CTYPES_V1", "LZSS_DIPPERSTEIN_CTYPES_V1"}:
+        common = project_root / "src" / "tscompbench" / "adapters" / "lzss_common.py"
+        return project_root / relative, (support, common)
     return project_root / relative, (support,)
 
 
@@ -71,12 +78,18 @@ def create_adapter(project_root: Path, manifest: CodecManifest) -> CodecAdapter:
     if adapter.get("factory") == "BROTLI_STREAM_CTYPES_V1":
         artifact, _ = adapter_artifacts(project_root, manifest)
         return BrotliStreamAdapter(artifact, manifest.document["adapter"])
+    if adapter.get("factory") == "BZIP2_STREAM_CTYPES_V1":
+        artifact, _ = adapter_artifacts(project_root, manifest)
+        return Bzip2StreamAdapter(artifact, manifest.document["adapter"])
     if adapter.get("factory") == "DEFLATE_ZLIB_CTYPES_V1":
         artifact, _ = adapter_artifacts(project_root, manifest)
         return DeflateZlibAdapter(artifact, manifest.document["adapter"])
     if adapter.get("factory") == "LZSS_RAW_CTYPES_V1":
         artifact, _ = adapter_artifacts(project_root, manifest)
         return LzssRawAdapter(artifact, manifest.document["adapter"])
+    if adapter.get("factory") == "LZSS_DIPPERSTEIN_CTYPES_V1":
+        artifact, _ = adapter_artifacts(project_root, manifest)
+        return LzssDippersteinAdapter(artifact, manifest.document["adapter"])
     if adapter.get("factory") == "XZ_STREAM_CTYPES_V1":
         artifact, _ = adapter_artifacts(project_root, manifest)
         return XzStreamAdapter(artifact, manifest.document["adapter"])

@@ -1,0 +1,59 @@
+--- tree.c
++++ tree.c
+@@ -307,6 +307,15 @@ static void AddString(unsigned char *slidingWindow,
+     int compare;
+     unsigned int here;
+ 
++    if (treeRoot == NULL_INDEX)
++    {
++        treeRoot = charIndex;
++        tree[charIndex].leftChild = NULL_INDEX;
++        tree[charIndex].rightChild = NULL_INDEX;
++        tree[charIndex].parent = ROOT_INDEX;
++        return;
++    }
++
+     compare = CompareString(slidingWindow, charIndex, treeRoot);
+ 
+     if (0 == compare)
+@@ -433,7 +433,10 @@ static void RemoveString(const unsigned int charIndex)
+         {
+             /* there was a right branch to follow and we're at the end */
+             tree[tree[here].parent].rightChild = tree[here].leftChild;
+-            tree[tree[here].leftChild].parent = tree[here].parent;
++            if (tree[here].leftChild != NULL_INDEX)
++            {
++                tree[tree[here].leftChild].parent = tree[here].parent;
++            }
+             tree[here].leftChild = tree[charIndex].leftChild;
+             tree[tree[charIndex].leftChild].parent = here;
+         }
+@@ -442,20 +445,22 @@ static void RemoveString(const unsigned int charIndex)
+         tree[tree[charIndex].rightChild].parent = here;
+     }
+ 
+-    if (tree[tree[charIndex].parent].leftChild == charIndex)
++    if (tree[charIndex].parent == ROOT_INDEX)
+     {
+-        tree[tree[charIndex].parent].leftChild = here;
++        treeRoot = here;
++    }
++    else if (tree[tree[charIndex].parent].leftChild == charIndex)
++    {
++        tree[tree[charIndex].parent].leftChild = here;
+     }
+     else
+     {
+         tree[tree[charIndex].parent].rightChild = here;
+     }
+ 
+-    tree[here].parent = tree[charIndex].parent;
+-
+-    if (treeRoot == charIndex)
++    if (here != NULL_INDEX)
+     {
+-        treeRoot = here;
++        tree[here].parent = tree[charIndex].parent;
+     }
+ 
+     /* clear all pointers in deleted node. */

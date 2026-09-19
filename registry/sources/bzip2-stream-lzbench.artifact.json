@@ -1,0 +1,41 @@
+{
+  "schema_version": "tscb.source-artifact.v2",
+  "key": "bzip2-stream-lzbench-1.0.8",
+  "kind": "VENDORED_BENCHMARK_SOURCE_CLOSURE",
+  "identity": {
+    "kind": "VENDORED_BENCHMARK_SOURCE_CLOSURE",
+    "key": "bzip2-stream-lzbench-1.0.8",
+    "benchmark_repository": "https://github.com/inikep/lzbench.git",
+    "benchmark_commit": "fa871e66b3543a70fd4d060f7c12719343ff4ac3",
+    "benchmark_path": "bwt/bzip2",
+    "benchmark_version": "1.0.8",
+    "upstream_reference_repository": "https://sourceware.org/git/bzip2.git",
+    "upstream_reference_tag": "bzip2-1.0.8",
+    "source_closure_sha256": "eda9be9e525b9ea675c7574c46d7fa92c4a07fe493d7f6d34714614c8a650cc4",
+    "copy_policy": "UNMODIFIED_MINIMAL_LIBBZ2_SOURCE_CLOSURE_FROM_LZBENCH",
+    "execution_variant": "BZIP2_STREAM_LEVEL9_WORKFACTOR30_NORMAL_DECODE_SINGLE_THREAD"
+  },
+  "license": {
+    "spdx": "bzip2-1.0.6",
+    "status": "RUN_ALLOWED",
+    "redistribution": "ALLOWED_WITH_LICENSE_NOTICE",
+    "files": ["adapters/bzip2_stream/vendor/bzip2/LICENSE"]
+  },
+  "build": {
+    "recipe": "PYTHONPATH=src conda run -n CompressBench14 python tools/build_codec.py bzip2-stream --profile all",
+    "patches": [],
+    "submodules": [],
+    "translation_units": [
+      "adapters/bzip2_stream/native/tscb_bzip2_stream.c",
+      "adapters/bzip2_stream/vendor/bzip2/blocksort.c",
+      "adapters/bzip2_stream/vendor/bzip2/huffman.c",
+      "adapters/bzip2_stream/vendor/bzip2/crctable.c",
+      "adapters/bzip2_stream/vendor/bzip2/randtable.c",
+      "adapters/bzip2_stream/vendor/bzip2/compress.c",
+      "adapters/bzip2_stream/vendor/bzip2/decompress.c",
+      "adapters/bzip2_stream/vendor/bzip2/bzlib.c"
+    ],
+    "release_artifact": "build/adapters/bzip2_stream/release/libtscb_bzip2_stream.so",
+    "sanitizer_artifact": "build/adapters/bzip2_stream/sanitizer/libtscb_bzip2_stream.so"
+  }
+}

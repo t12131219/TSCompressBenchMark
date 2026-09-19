@@ -24,7 +24,9 @@ reviewed translation-unit closure needed by an adapter. The native codecs are LZ
 1.3.2 (`deflate-zlib`, RFC1950 wrapper), and XZ LZMA2 5.8.3 (`xz-stream`, single-call), taken from
 lzbench's vendored sources at a pinned commit. LZSS 0.9.1 (`lzss-raw`) uses the
 spreadsheet's original alexkazik Rust implementation, driven through the same C ABI;
-lzbench's different LZSSE formats are not substituted. The explicitly requested
+lzbench's different LZSSE formats are not substituted. Michael Dipperstein's native C
+offset12/length4 binary-tree implementation is separately registered as
+`lzss-dipperstein-c`; it is not a replacement or shared ranking identity. The explicitly requested
 LZSSE8 Optimal Parse (`lzsse8-raw`, level 12, SSE4.1) is registered separately,
 with immutable lzbench source and a hashed build-time safety patch. Their source, license, build, ABI,
 accounting, and five-layer evidence are recorded under `registry/onboarding`.
@@ -85,10 +87,14 @@ conda run -n CompressBench14 python tools/build_codec.py snappy-raw --profile al
 conda run -n CompressBench14 python tools/build_codec.py brotli-stream --profile all
 conda run -n CompressBench14 python tools/build_codec.py deflate-zlib --profile all
 conda run -n CompressBench14 python adapters/deflate_zlib/tests/run_native_tests.py
+conda run -n CompressBench14 python tools/build_codec.py bzip2-stream --profile all
+conda run -n CompressBench14 python adapters/bzip2_stream/tests/run_native_tests.py
 conda run -n CompressBench14 python tools/build_codec.py xz-stream --profile all
 conda run -n CompressBench14 python adapters/xz_stream/tests/run_native_tests.py
 conda run -n CompressBench14 python tools/build_codec.py lzss-raw --profile all
 conda run -n CompressBench14 python tools/qualify_lzss.py
+conda run -n CompressBench14 python tools/build_codec.py lzss-dipperstein-c --profile all
+conda run -n CompressBench14 python tools/qualify_lzss_dipperstein.py
 conda run -n CompressBench14 python tools/build_codec.py lzsse8-raw --profile all
 conda run -n CompressBench14 python tools/qualify_lzsse8.py
 PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
@@ -106,6 +112,8 @@ PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
 PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
   configs/experiments/deflate-zlib-qualification.toml --output-root runs
 PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
+  configs/experiments/bzip2-stream-qualification.toml --output-root runs
+PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
   configs/experiments/xz-stream-qualification.toml --output-root runs
 
 # A FORMAL run uses >=3 warmups, >=0.5 s warmup time, 10 raw repetitions,
@@ -118,6 +126,8 @@ PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
   configs/experiments/brotli-stream-formal.toml --output-root runs
 PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
   configs/experiments/deflate-zlib-formal.toml --output-root runs
+PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
+  configs/experiments/bzip2-stream-formal.toml --output-root runs
 PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
   configs/experiments/xz-stream-formal.toml --output-root runs
 ```
@@ -152,7 +162,7 @@ PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
 ```
 
 Native codec API timings are enabled by default for LZ4, Zstd, Snappy, Brotli, DEFLATE,
-XZ, LZSS, LZSSE8, Huff0, FSE, Sprintz-Delta, Sprintz-FIRE and SprintzFIRE+Huf (including the
+bzip2, XZ, LZSS, LZSSE8, Huff0, FSE, Sprintz-Delta, Sprintz-FIRE and SprintzFIRE+Huf (including the
 historical restricted u8 registrations).
 Disable them with `native_timing = [false]` in `[sweep]`. They supplement CORE and
 PIPELINE rather than replacing the selected timing scope. See
@@ -171,6 +181,12 @@ Selecting both names generates one canonical task, not duplicate ranking entries
 `codecs list` discloses mappings separately; runs freeze codec_alias_snapshot.json.
 See [LZ77 mapping self-check](docs/lz77_self_check.md).
 
+The spreadsheet label `BZ2 (Huffman Coding)` is registered as `bzip2-stream`, a
+complete bzip2 1.0.8 BWT + MTF/RLE + Huffman codec rather than a pure Huffman
+primitive. The default is level 9, single-thread scalar execution, normal-memory
+decode and one exact stream; all bzip2 stream bytes are charged. See the
+[bzip2 five-layer self-check](docs/bzip2_stream_self_check.md).
+
 LZSS fixes EI=10/EJ=4/initial byte 0x20, upstream safe code and stack work buffers.
 Its one-shot call flushes bits internally; mandatory Finalize acknowledges completion
 with zero bytes. Exact token/decoded-length/zero-tail validation supplements upstream
@@ -178,6 +194,13 @@ EOF tolerance, and all descriptors/token/padding bytes are charged. Alternative 
 parameters, LZSSE, streaming and query are not qualified by this variant. See
 [LZSS five-layer self-check](docs/lzss_raw_self_check.md), including sanitizer coverage
 and the void dependency's redistribution-review limitation.
+
+`lzss-dipperstein-c` retains Michael Dipperstein's 12/4 bitstream, 4096-byte
+space-filled window and binary-tree matcher. A hashed out-of-tree patch fixes upstream
+sentinel out-of-bounds operations and is release-bitstream-equivalent on 48 retained
+cases. The original Rust `lzss-raw` and all its evidence remain available; the two
+AlgorithmIDs and rankings are never merged. See
+[Dipperstein C LZSS self-check](docs/lzss_dipperstein_c_self_check.md).
 
 ```bash
 PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \

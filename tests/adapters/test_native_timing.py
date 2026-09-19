@@ -12,8 +12,10 @@ import pytest
 
 from tscompbench.adapters import (
     BrotliStreamAdapter,
+    Bzip2StreamAdapter,
     DeflateZlibAdapter,
     Lz4FrameAdapter,
+    LzssDippersteinAdapter,
     Lzsse2RawAdapter,
     Lzsse8RawAdapter,
     LzssRawAdapter,
@@ -48,8 +50,10 @@ def _route(n: int) -> RoutedInput:
     ("deflate_zlib", DeflateZlibAdapter),
     ("xz_stream", XzStreamAdapter),
     ("lzss_raw", LzssRawAdapter),
+    ("lzss_dipperstein_c", LzssDippersteinAdapter),
     ("lzsse8_raw", Lzsse8RawAdapter),
     ("lzsse2_raw", Lzsse2RawAdapter),
+    ("bzip2_stream", Bzip2StreamAdapter),
 ])
 def adapter(request):
     directory, factory = request.param
@@ -95,7 +99,10 @@ def test_native_counter_query_finalize_decode_and_reset(adapter):
         assert after[0] >= before[0] > 0
         if not isinstance(
             adapter,
-            (SnappyRawAdapter, XzStreamAdapter, LzssRawAdapter, Lzsse2RawAdapter, Lzsse8RawAdapter),
+            (
+                SnappyRawAdapter, XzStreamAdapter, LzssRawAdapter, LzssDippersteinAdapter,
+                Lzsse2RawAdapter, Lzsse8RawAdapter,
+            ),
         ):
             assert after[0] > before[0]
         else:
@@ -153,7 +160,10 @@ def test_failed_native_decode_keeps_codec_boundary_and_counter(adapter):
         assert timing[0] == 0
         if isinstance(
             adapter,
-            (SnappyRawAdapter, XzStreamAdapter, LzssRawAdapter, Lzsse2RawAdapter, Lzsse8RawAdapter),
+            (
+                SnappyRawAdapter, XzStreamAdapter, LzssRawAdapter, LzssDippersteinAdapter,
+                Lzsse2RawAdapter, Lzsse8RawAdapter,
+            ),
         ):
             # Length/validity prechecks reject this stream before native decoding.
             assert timing[1] == 0

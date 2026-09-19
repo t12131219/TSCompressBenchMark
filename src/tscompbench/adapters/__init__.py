@@ -1,4 +1,5 @@
 from .brotli_stream import BrotliStreamAdapter
+from .bzip2_stream import Bzip2StreamAdapter
 from .compatibility import (
     AdapterTelemetry,
     PreparedInput,
@@ -9,6 +10,7 @@ from .deflate_zlib import DeflateZlibAdapter
 from .entropy_fse import EntropyAdapter
 from .factory import AdapterFactoryError, adapter_artifacts, create_adapter
 from .lz4_frame import Lz4FrameAdapter
+from .lzss_dipperstein import LzssDippersteinAdapter
 from .lzss_raw import LzssRawAdapter
 from .lzsse2_raw import Lzsse2RawAdapter
 from .lzsse8_raw import Lzsse8RawAdapter
@@ -23,10 +25,12 @@ __all__ = [
     "AdapterTelemetry",
     "AdapterFactoryError",
     "BrotliStreamAdapter",
+    "Bzip2StreamAdapter",
     "DeflateZlibAdapter",
     "EntropyAdapter",
     "XzStreamAdapter",
     "Lz4FrameAdapter",
+    "LzssDippersteinAdapter",
     "LzssRawAdapter",
     "Lzsse2RawAdapter",
     "Lzsse8RawAdapter",

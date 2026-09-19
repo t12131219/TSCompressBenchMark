@@ -1,0 +1,100 @@
+{
+  "schema_version": "tscb.codec-manifest.v2",
+  "key": "bzip2-stream",
+  "identity": {
+    "display_name": "BZ2 / bzip2 1.0.8 (lzbench source)",
+    "family": "BZIP2",
+    "citations": [
+      "benchmark:inikep/lzbench@fa871e66b354:bwt/bzip2",
+      "upstream:bzip2/libbzip2-1.0.8"
+    ],
+    "source_artifact_id": "v2:source-artifact:sha256:f041fc4fcf1048f7ee32161b6e0bbcb012828124c22cf218f520844bbcb370d3"
+  },
+  "classification": {
+    "object_level": "P1_STANDALONE_CODEC",
+    "implementation_class": "CONVENTIONAL",
+    "tracks": ["TIMESTAMP", "VALUE"],
+    "subtracks": ["T1", "V0"]
+  },
+  "input": {
+    "topologies": ["UTS", "SYNCHRONOUS_MTS", "NATIVE_ND_ARRAY"],
+    "dtypes": ["<i8", "<i4", "<i2", "|i1", "<u8", "<u4", "<u2", "|u1", "<f8", "<f4"],
+    "ranks": [1, 2, 3, 4],
+    "layouts": ["ROW_MAJOR_CONTIG", "COLUMN_MAJOR_CONTIG", "SOA_COLUMNS", "STRIDED_VIEW", "NOT_APPLICABLE"],
+    "endianness": ["little"],
+    "alignment_bytes": 1,
+    "min_n": 0,
+    "max_n": 4294967295,
+    "min_m": 1,
+    "max_m": 1048576,
+    "validity_shapes": ["NONE"],
+    "value_coupling_mode": "FULL_MATRIX",
+    "timestamp_semantics": {
+      "preserve_order": true,
+      "duplicates": true,
+      "out_of_order": true,
+      "negative_delta": true,
+      "absolute_epoch": true,
+      "overflow_policy": "NOT_APPLICABLE_BYTE_CODEC"
+    }
+  },
+  "semantics": {
+    "loss_modes": ["LOSSLESS"],
+    "error_bound_types": [],
+    "reconstruction_modes": ["EXACT_GRID"],
+    "rebuild_protocol": "TSCB_BUFFER_DESCRIPTOR_CONTAINER_V1",
+    "preprocess_class": "NONE",
+    "preprocess_stages": [],
+    "decodability_profile": "SELF_CONTAINED_TSCB_DESCRIPTOR_PLUS_BZIP2_STREAM",
+    "bitstream_separability": "INDEPENDENT"
+  },
+  "lifecycle": {
+    "block_semantics": "ONE_BZIP2_STREAM_PER_ROUTED_OBJECT",
+    "state_semantics": "INDEPENDENT_CONTEXT_PER_REPETITION",
+    "reset": "NEW_CONTEXT_REQUIRED",
+    "finalize": "REQUIRED_BZ_FINISH_UNTIL_STREAM_END",
+    "safe_overread_bytes": 0,
+    "tail_policy": "CODEC_INTERNAL_EXACT_TAIL",
+    "dictionary": "NONE",
+    "model": "NONE",
+    "index": "NONE"
+  },
+  "execution": {
+    "backends": ["C_ABI_V1"],
+    "isa": ["SCALAR"],
+    "devices": ["CPU"],
+    "threading": "SINGLE_THREAD",
+    "fallback_policy": "DISALLOWED",
+    "runtime_dispatch": false
+  },
+  "features": {
+    "streaming": false,
+    "query": false,
+    "random_access": false
+  },
+  "parameters": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "native_timing": {"type": "boolean", "default": true},
+      "block_size": {"type": "integer", "minimum": 1, "maximum": 1048576, "default": 65536},
+      "compression_level": {"type": "integer", "minimum": 1, "maximum": 9, "default": 9},
+      "isa": {"type": "string", "enum": ["SCALAR"], "default": "SCALAR"}
+    },
+    "constraints": []
+  },
+  "adapter": {
+    "backend": "C_ABI_V1",
+    "version": "bzip2-stream-ctypes-v1",
+    "factory": "BZIP2_STREAM_CTYPES_V1",
+    "artifact_path": "build/adapters/bzip2_stream/release/libtscb_bzip2_stream.so",
+    "timing_boundary": "PYTHON_FFI_CONTAINER_INCLUDED",
+    "native_timing_capability": {
+      "optional": true,
+      "boundary": "CODEC_API_ONLY_V1",
+      "clock": "CLOCK_MONOTONIC",
+      "excludes": ["CONTEXT_LIFECYCLE", "EXPLICIT_PREVALIDATION", "PYTHON_FFI_CONTAINER"]
+    },
+    "accounting_hooks": ["FINAL_STREAM_LENGTH", "COMPLETE_BZIP2_STREAM", "OUTPUT_CAPACITY"]
+  }
+}

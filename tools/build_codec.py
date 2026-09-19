@@ -496,6 +496,56 @@ def _deflate_zlib_command(output: Path, profile: str) -> list[str]:
     ]
 
 
+def _bzip2_command(output: Path, profile: str) -> list[str]:
+    adapter = PROJECT_ROOT / "adapters" / "bzip2_stream"
+    vendor = adapter / "vendor" / "bzip2"
+    flags = [
+        "-std=c11",
+        "-fPIC",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-Wno-implicit-fallthrough",
+        "-Wno-unused-but-set-variable",
+        "-Wno-unused-parameter",
+        "-D_POSIX_C_SOURCE=200809L",
+        "-Wl,-Bsymbolic-functions",
+    ]
+    if profile == "release":
+        flags += ["-O3", "-DNDEBUG"]
+    elif profile == "sanitizer":
+        flags += [
+            "-O1",
+            "-g",
+            "-fno-omit-frame-pointer",
+            "-fsanitize=address,undefined",
+        ]
+    else:
+        raise ValueError(f"unknown build profile: {profile}")
+    source_names = (
+        "blocksort.c",
+        "huffman.c",
+        "crctable.c",
+        "randtable.c",
+        "compress.c",
+        "decompress.c",
+        "bzlib.c",
+    )
+    return [
+        os.environ.get("CC", "cc"),
+        *flags,
+        "-shared",
+        "-I",
+        str(PROJECT_ROOT / "native" / "include"),
+        "-I",
+        str(vendor),
+        str(adapter / "native" / "tscb_bzip2_stream.c"),
+        *(str(vendor / name) for name in source_names),
+        "-o",
+        str(output),
+    ]
+
+
 def _xz_command(output: Path, profile: str) -> tuple[list[str], dict[str, Any], str]:
     adapter = PROJECT_ROOT / "adapters/xz_stream"
     vendor = adapter / "vendor/xz"
@@ -534,6 +584,25 @@ def _xz_command(output: Path, profile: str) -> tuple[list[str], dict[str, Any], 
         "dependency_compile_commands": dependency_commands,
         "dependency_archive_sha256": _sha256(dependency_build / "liblzma.a"),
     }, log
+
+
+def _lzss_dipperstein_command(output: Path, profile: str) -> list[str]:
+    adapter = PROJECT_ROOT / "adapters/lzss_dipperstein"
+    vendor = adapter / "vendor/lzss"
+    patch = adapter / "patches/0001-binary-tree-sentinel-bounds.patch"
+    patched_tree = output.parent / "tree.c"
+    _run(["patch", "--batch", "--output", str(patched_tree), str(vendor / "tree.c"), str(patch)])
+    return [
+        os.environ.get("CC", "cc"), "-std=c11", "-fPIC", "-Wall", "-Wextra", "-Werror",
+        *(["-O3", "-DNDEBUG"] if profile == "release" else
+          ["-O1", "-g", "-fno-omit-frame-pointer", "-fsanitize=address,undefined"]),
+        "-shared", "-Wl,--no-undefined", "-I", str(PROJECT_ROOT / "native/include"),
+        "-I", str(vendor), "-I", str(vendor / "bitfile"),
+        str(adapter / "native/tscb_lzss_dipperstein.c"),
+        str(vendor / "lzss.c"), str(patched_tree),
+        str(vendor / "bitfile/bitfile.c"),
+        "-o", str(output),
+    ]
 
 
 def _lzss_command(output: Path, profile: str) -> tuple[list[str], dict[str, Any], str]:
@@ -684,8 +753,28 @@ def _build(algorithm: str, profile: str) -> dict[str, Any]:
         command = _brotli_command(output, profile)
     elif algorithm == "deflate-zlib":
         command = _deflate_zlib_command(output, profile)
+    elif algorithm == "bzip2-stream":
+        command = _bzip2_command(output, profile)
     elif algorithm == "lzss-raw":
         command, dependency_evidence, dependency_log = _lzss_command(output, profile)
+    elif algorithm == "lzss-dipperstein-c":
+        command = _lzss_dipperstein_command(output, profile)
+        vendor = PROJECT_ROOT / "adapters/lzss_dipperstein/vendor/lzss"
+        patch = (
+            PROJECT_ROOT / "adapters/lzss_dipperstein/patches"
+            / "0001-binary-tree-sentinel-bounds.patch"
+        )
+        dependency_evidence = {
+            "upstream_commit": "65b6882ff1cc225f9c6fcd947def7b1adb21d578",
+            "bitfile_commit": "2e6132f75cbe16842a9ab81af7756ed9ac1cdbe0",
+            "patch_sha256": _sha256(patch),
+            "patched_tree_sha256": _sha256(output_dir / "tree.c"),
+            "source_tree_sha256": _sha256(vendor / "tree.c"),
+            "unmodified_source_sha256": [
+                _sha256(vendor / name)
+                for name in ("lzss.c", "tree.c", "bitfile/bitfile.c")
+            ],
+        }
     elif algorithm == "xz-stream":
         command, dependency_evidence, dependency_log = _xz_command(output, profile)
     else:
@@ -729,7 +818,8 @@ def main() -> int:
             "huff0", "fse", "sprintz-delta-u8", "sprintz-fire-u8",
             "sprintz-delta", "sprintz-fire", "sprintz-fire-huff0",
             "lz4-frame", "zstd-frame", "snappy-raw", "lzsse2-raw", "brotli-stream",
-            "deflate-zlib", "xz-stream", "lzss-raw", "lzsse8-raw"
+            "deflate-zlib", "bzip2-stream", "xz-stream", "lzss-raw",
+            "lzss-dipperstein-c", "lzsse8-raw"
         ),
     )
     parser.add_argument("--profile", choices=("release", "sanitizer", "all"), default="release")

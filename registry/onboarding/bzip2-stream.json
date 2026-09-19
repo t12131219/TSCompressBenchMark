@@ -1,0 +1,104 @@
+{
+  "schema_version": "tscb.source-onboarding.v2",
+  "source_artifact_id": "v2:source-artifact:sha256:f041fc4fcf1048f7ee32161b6e0bbcb012828124c22cf218f520844bbcb370d3",
+  "repository": "https://github.com/inikep/lzbench.git",
+  "commit": "fa871e66b3543a70fd4d060f7c12719343ff4ac3",
+  "dirty": false,
+  "submodules": [],
+  "implementation_files": [
+    "bwt/bzip2/blocksort.c", "bwt/bzip2/huffman.c", "bwt/bzip2/crctable.c",
+    "bwt/bzip2/randtable.c", "bwt/bzip2/compress.c", "bwt/bzip2/decompress.c",
+    "bwt/bzip2/bzlib.c"
+  ],
+  "public_api_files": ["bwt/bzip2/bzlib.h", "bwt/bzip2/bzlib_private.h"],
+  "benchmark_files": ["bench/symmetric_codecs.cpp", "bench/lzbench.h", "Makefile"],
+  "test_files": [
+    "adapters/bzip2_stream/tests/abi_smoke.c",
+    "adapters/bzip2_stream/tests/vendor_roundtrip.c",
+    "adapters/bzip2_stream/tests/run_native_tests.py",
+    "adapters/bzip2_stream/tests/symbol_interposition.c",
+    "tests/adapters/test_bzip2_stream.py"
+  ],
+  "license_files": ["bwt/bzip2/LICENSE"],
+  "third_party_dependencies": [],
+  "object_level_candidates": ["P1_STANDALONE_CODEC"],
+  "input_contract": {
+    "kind": "BYTE_VIEW",
+    "length_type": "unsigned int",
+    "zero_length": "SUPPORTED_BY_FINISH_WITH_NO_BZ_RUN_CALL",
+    "ownership": "BORROWED_DURING_CALL",
+    "mutation": "FORBIDDEN_BY_ADAPTER_CONTRACT"
+  },
+  "output_contract": {
+    "kind": "COMPLETE_BZIP2_STREAM_IN_TSCB_DESCRIPTOR_CONTAINER",
+    "self_contained": true,
+    "actual_written_length": true,
+    "capacity_is_not_size": true,
+    "framing": "BZh_LEVEL_BLOCKS_EOS",
+    "checksum": "PER_BLOCK_AND_COMBINED_CRC32_MANDATORY",
+    "dictionary": "NONE"
+  },
+  "lifecycle_contract": {
+    "output_bound": "sourceLen + floor(sourceLen/100) + 600, rejected if input or bound exceeds UINT_MAX",
+    "return_length": "Actual total_out deltas for BZ_RUN and BZ_FINISH; capacity is never charged",
+    "error_codes": "Stable tscb_status_v1; capacity exhaustion is DST_TOO_SMALL; malformed, truncated, trailing and concatenated streams are CODEC_ERROR",
+    "update": "One BZ_RUN consuming all input; empty input is retained for BZ_FINISH",
+    "finalize": "Loop BZ_FINISH until BZ_STREAM_END; repeated finalize rejected",
+    "decode": "Fresh normal-memory decoder; must reach BZ_STREAM_END, consume all input and produce exact descriptor length",
+    "reset": "NEW_CONTEXT_PER_INDEPENDENT_OBJECT; C ABI reset destroys/reinitializes encoder and clears timing counters"
+  },
+  "stream_components": {
+    "outer_container": "TSCB 12-byte prefix and canonical JSON buffer descriptors",
+    "codec_stream": "Complete bzip2 stream, including BZh level, block headers/data/CRC, EOS/combined CRC and padding, charged to the routed data bucket",
+    "accounting": "EXACT_TSCB_CONTAINER_PLUS_COMPLETE_BZIP2_STREAM_LENGTH"
+  },
+  "upstream_tests": [
+    {
+      "name": "benchmark-vendored libbz2 API deterministic roundtrip harness",
+      "command": "conda run -n CompressBench14 python adapters/bzip2_stream/tests/run_native_tests.py",
+      "status": "PASS",
+      "evidence": "BZ2_bzBuffToBuffCompress/Decompress passed 36 deterministic cases (seed 20260919), levels 1-9, Release and ASan/UBSan; project harness, not a claim that upstream's full test suite was run"
+    },
+    {
+      "name": "project C ABI lifecycle smoke",
+      "command": "run_native_tests.py: abi_smoke.c in Release and ASan/UBSan",
+      "status": "PASS",
+      "evidence": "N=0/1/2, level-1 100000-byte and level-9 900000-byte boundaries; exact decode, hostile streams, reset/reuse, actual-size-minus-one, canary, input immutability, native timing and lifecycle rejection"
+    }
+  ],
+  "builds": [
+    {
+      "profile": "RELEASE_SCALAR_SINGLE_THREAD",
+      "artifact_sha256": "fbbd165f6c6daf626fa8d30c8d6a5fb7f08f6aa6d9fdc26465af080c5ab48519",
+      "compile_commands_sha256": "12cbd518bbbdff0416a58def131d562235811e12a4e473acb32a397d43d36500",
+      "compiler": "GCC 11.4.0",
+      "flags": "-O3 -DNDEBUG -std=c11 -fPIC -Wl,-Bsymbolic-functions; three named upstream-only warning suppressions"
+    },
+    {
+      "profile": "ASAN_UBSAN_SCALAR_SINGLE_THREAD",
+      "artifact_sha256": "e7bf137e9b410d664830482833f0e8d262192686cff1462b0c3470c27aad65f7",
+      "compile_commands_sha256": "03280461820d7ea2224c57fb8a5dfd44a143901c96afec9e7c0efd37f4f9d88b",
+      "compiler": "GCC 11.4.0",
+      "flags": "-O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined -std=c11 -fPIC -Wl,-Bsymbolic-functions; three named upstream-only warning suppressions"
+    }
+  ],
+  "license_decision": {
+    "spdx": "bzip2-1.0.6",
+    "status": "RUN_ALLOWED",
+    "redistribution": "ALLOWED_WITH_LICENSE_NOTICE"
+  },
+  "known_limitations": [
+    "The spreadsheet label says Huffman Coding, but bzip2 is a complete BWT plus MTF/RLE plus Huffman codec. It is not merged with huff0 or any standalone Huffman ranking.",
+    "lzbench calls the one-shot buffer API. The project uses the same vendored implementation through BZ_RUN/BZ_FINISH to expose mandatory Finalize; native timing is not lzbench-equivalent.",
+    "Registered defaults are level 9, effective workFactor 30, verbosity 0, normal-memory decode, one CPU thread, one independent stream and no concatenation. Small-memory decode, work-factor sweeps, concatenated streams and continuous streaming are not registered.",
+    "The single-update ABI and documented output-bound representation are limited to UINT_MAX.",
+    "Complete bzip2 stream bytes are conservatively charged to the routed bucket; internal BWT/MTF/RLE/Huffman bits, CRCs and padding are not guessed into overlapping sub-buckets.",
+    "LeakSanitizer is disabled under the host ptrace policy; ASan/UBSan remain enabled."
+  ],
+  "unsupported_reason_codes": [
+    "EXECUTION_ARTIFACT_MISSING", "VALIDITY_SHAPE_UNSUPPORTED",
+    "SMALL_MEMORY_DECODE_NOT_REGISTERED", "WORK_FACTOR_NOT_REGISTERED",
+    "CONCATENATED_STREAM_NOT_REGISTERED", "QUERY_UNSUPPORTED",
+    "STREAMING_PROTOCOL_NOT_REGISTERED", "SINGLE_UPDATE_LENGTH_LIMIT"
+  ]
+}

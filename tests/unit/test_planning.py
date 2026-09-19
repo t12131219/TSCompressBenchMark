@@ -173,7 +173,8 @@ def test_frame_profiles_compare_directly_while_raw_and_brotli_remain_separate(
     execution_paths = []
     for manifest_key in (
         "lz4-frame", "zstd-frame", "snappy-raw", "brotli-stream", "deflate-zlib",
-        "xz-stream", "lzss-raw", "lzsse8-raw", "lzsse2-raw"
+        "xz-stream", "lzss-raw", "lzss-dipperstein-c", "lzsse8-raw", "lzsse2-raw",
+        "bzip2-stream",
     ):
         manifest = registry.get(manifest_key)
         compatibility = negotiate(manifest, _descriptor())
@@ -240,6 +241,10 @@ def test_frame_profiles_compare_directly_while_raw_and_brotli_remain_separate(
     assert key_sets[8].execution_key not in {item.execution_key for item in key_sets[:8]}
     assert key_sets[8].resource_key not in {item.resource_key for item in key_sets[:8]}
     assert execution_paths[8] not in execution_paths[:8]
+    assert key_sets[10].semantic_key not in {item.semantic_key for item in key_sets[:10]}
+    assert key_sets[10].execution_key not in {item.execution_key for item in key_sets[:10]}
+    assert key_sets[10].resource_key not in {item.resource_key for item in key_sets[:10]}
+    assert execution_paths[10] not in execution_paths[:10]
 
 
 def test_lzss_variant_does_not_collide_with_other_codecs_or_lzsse(tmp_path):
@@ -254,3 +259,10 @@ def test_lzss_variant_does_not_collide_with_other_codecs_or_lzsse(tmp_path):
     assert configurations[1].status is RunStatus.SCHEMA_ERROR
     assert configurations[0].config_id != configurations[1].config_id
     assert manifest.algorithm_id != registry.get("snappy-raw").algorithm_id
+    dipperstein = registry.get("lzss-dipperstein-c")
+    assert dipperstein.algorithm_id != manifest.algorithm_id
+    assert dipperstein.source_artifact_id != manifest.source_artifact_id
+    assert dipperstein.document["parameters"]["properties"]["offset_bits"]["enum"] == [12]
+    assert dipperstein.document["lifecycle"]["dictionary"] == (
+        "FIXED_4096_BYTE_SPACE_FILLED_WINDOW_NO_EXTERNAL_BITS"
+    )

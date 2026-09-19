@@ -441,3 +441,57 @@ qualified report `v2:report:sha256:cea882cea1a0ad956a543d8f5062d62ea9ba38d3baee7
 bits/32522 bytes including charged descriptors/raw flag.
 Self-check: `docs/lzsse8_raw_self_check.md`; machine audit:
 `build/source-audits/lzsse8-final-audit-20260918.json`. Earlier raw runs are retained.
+
+## Michael Dipperstein C LZSS admission (2026-09-19)
+
+Pinned source: MichaelDipperstein/lzss
+`65b6882ff1cc225f9c6fcd947def7b1adb21d578`, with bitfile
+`2e6132f75cbe16842a9ab81af7756ed9ac1cdbe0`. Twelve required implementation, API,
+README and LGPL files were copied on demand and remain byte-identical. Closure digest:
+`ce81296d3b2269d8ee2adf2d6964f156b31d013a6742e2c7c21486785d91fb9a`.
+GRUB was reviewed only as a decode reference and is neither linked nor claimed
+byte-compatible. This explicit extra AlgorithmID does not replace spreadsheet LZSS.
+
+Source review confirms offset12/length4, minimum match 3, a 4096-space initial window,
+binary-tree matching and static global state. Numeric bitfile fields are emitted in
+little-endian byte chunks while individual bit I/O is MSB-first. ASan/UBSan found
+upstream sentinel indexing in tree removal/empty insertion. The build applies hashed
+patch `92e2e04cb311e76fe871a3706480bf11f94c6ac346a7cc18fdc0af1c3ffe1890`
+to a generated copy; 48 patched/unmodified release streams match byte-for-byte.
+
+Release and sanitizer native qualification each pass 48 boundary roundtrips plus
+hostile streams, bounds and canaries. The final formal RunSet
+`runset-20260919T124809Z-5baf782c45ac` passes 49/49 preflight observations and 10/10
+eligible repetitions. ReportID:
+`v2:report:sha256:30be9fd11232753991d15c9c17e4c06203254a62e375288f1beaacdf878ca922`.
+Full scope and constraints: `docs/lzss_dipperstein_c_self_check.md`.
+Machine audit: `build/source-audits/lzss-dipperstein-final-audit-20260919.json`.
+
+## bzip2 1.0.8 source admission (2026-09-19)
+
+The spreadsheet row and `TSBench_C_CPP_Algorithms_Analysis.md` select bzip2 1.0.8.
+Authority is clean local lzbench commit
+`fa871e66b3543a70fd4d060f7c12719343ff4ac3`; benchmark registration exposes levels
+1-9 and calls `BZ2_bzBuffToBuffCompress/Decompress` with verbosity/workFactor zero.
+The Makefile builds blocksort, huffman, crctable, randtable, compress, decompress and
+bzlib. No system libbz2 or Python encoder is used for measured execution.
+
+Seven implementation files, two headers, LICENSE, README and CHANGES were copied
+without modification. Sorted path+NUL+bytes closure digest:
+`eda9be9e525b9ea675c7574c46d7fa92c4a07fe493d7f6d34714614c8a650cc4`.
+SourceArtifactID:
+`v2:source-artifact:sha256:f041fc4fcf1048f7ee32161b6e0bbcb012828124c22cf218f520844bbcb370d3`.
+
+Release and ASan/UBSan builds pass empty/tiny, 100K/900K boundary, exact-length,
+canary, input immutability, reset, hostile-stream and actual-size-minus-one tests.
+Thirty-six deterministic one-shot API cases cover levels 1-9 in each profile. Python
+`bz2` independently decodes emitted level 1/5/9 streams. Three named GCC warning
+suppressions cover unchanged upstream coroutine/unused-value constructs; all other
+warnings remain errors. ELF local binding passes a deliberately competing libbz2
+symbol test.
+
+Authoritative formal evidence is `runset-20260919T134654Z-1ee065100f52`, with 49/49
+preflight and 10/10 eligible repetitions. ReportID:
+`v2:report:sha256:3774b510cc5a9e80627c801d5eabbdfed0845811cc821f482ba16d1828507e4c`.
+The earlier swap-affected RunSet remains diagnostic. Full scope and limitations are
+in `docs/bzip2_stream_self_check.md`.

@@ -363,3 +363,53 @@ now explicitly mapped to the runtime CPU flag; unavailable ISA is not scalar fal
 The supplied qualification/formal configs fix CPU0 on this host; this affinity is
 machine-specific and must be reviewed on another host. Formal evidence must follow
 the completed regression/sanitizer sessions and satisfy every raw repetition gate.
+
+## D030 Michael Dipperstein C LZSS is independent, not a Rust replacement
+
+The user explicitly requested Michael Dipperstein's C implementation as
+`lzss-dipperstein-c`, while retaining spreadsheet-selected alexkazik `lzss-raw` until
+a separately validated byte-compatible C rewrite exists. The implementations differ
+in source, parameters and format: Dipperstein uses offset12/length4, minimum match 3,
+a 4096-byte space-filled window and binary-tree matcher; Rust uses EI10/EJ4 and minimum
+match 2. They therefore have separate AlgorithmID, SourceArtifactID, container magic,
+ConfigID and comparison keys. Historical Rust evidence stays append-only and neither
+result set may be merged under an LZSS family label.
+
+The 12-file upstream closure is immutable. ASan/UBSan exposed binary-tree sentinel
+out-of-bounds operations; a hashed patch is applied to build copies only. Forty-eight
+release cases prove patched/unmodified stream equality. The ABI handles the canonical
+empty stream outside upstream bitfile code to avoid its early-return leak and differing
+zero-length `fmemopen` behavior. All nonempty codec work remains original C source.
+
+Static upstream buffers require single-thread execution. GRUB remains a decoder-format
+reference only because its grouped flags are not byte-compatible. Shared Python LZSS
+descriptor/lifecycle machinery is intentionally variant-configured, so a future C-only
+replacement can reuse framework contracts without rewriting or silently aliasing
+algorithm identities.
+
+## D031 BZ2 maps to the complete bzip2 pipeline, not pure Huffman
+
+The spreadsheet names `BZ2 (Huffman Coding)` and maps Huffman to bzip2 1.0.8.
+Source inspection shows the executable benchmark call is
+`BZ2_bzBuffToBuffCompress/Decompress`, backed by block sort, MTF/RLE and Huffman
+translation units. `bzip2-stream` is therefore a P1 standalone codec with its own
+AlgorithmID. It is not merged with the P0 `huff0` primitive or compared under a
+pure-Huffman claim.
+
+The source authority is lzbench commit
+`fa871e66b3543a70fd4d060f7c12719343ff4ac3`; only its minimal 12-file libbz2
+closure is copied. The registered default retains level 9, API workFactor 0
+(effective 30), verbosity 0, normal-memory decode and one thread. The framework
+`block_size` is not allowed to masquerade as `blockSize100k`.
+
+The adapter uses explicit BZ_RUN/BZ_FINISH lifecycle instead of the benchmark's
+one-shot wrapper so Finalize remains observable. Strict decode rejects trailing and
+concatenated streams even though some file-level bzip2 use cases accept members.
+All complete bzip2 stream bytes, including headers, CRCs and padding, are charged to
+the routed bucket because no independent parser can assign internal bit ownership
+without guessing or overlap.
+
+The first formal RunSet observed host swap activity in two repetitions and remains
+diagnostic. Admission uses only the later 10/10 eligible RunSet and does not rewrite
+resource-pressure records. Formal coverage is the tested level-9 VALUE configuration,
+not all levels or datasets.
