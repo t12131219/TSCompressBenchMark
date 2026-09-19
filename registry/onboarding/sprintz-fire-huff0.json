@@ -1,0 +1,127 @@
+{
+  "schema_version": "tscb.source-onboarding.v2",
+  "source_artifact_id": "v2:source-artifact:sha256:a59b31c15056977efdd52f7fd7b19d749dda2eaf927b3a4ccaa491556fb4c051",
+  "repository": "https://github.com/dblalock/lzbench.git",
+  "commit": "580c4f085381f31b1ad669525ed04e63cbc385f3",
+  "dirty": false,
+  "submodules": [],
+  "implementation_files": [
+    "adapters/sprintz/native/tscb_sprintz_fire_huff0.cc",
+    "adapters/sprintz/native/bounded_sprintz.cc",
+    "adapters/sprintz/vendor/sprintz/sprintz.cpp",
+    "adapters/sprintz/vendor/sprintz/sprintz_xff_lowdim.cpp",
+    "adapters/sprintz/vendor/sprintz/sprintz_xff_rle.cpp",
+    "adapters/entropy_fse/vendor/lib/huf_compress.c",
+    "adapters/entropy_fse/vendor/lib/huf_decompress.c"
+  ],
+  "public_api_files": [
+    "adapters/sprintz/vendor/sprintz/sprintz.h",
+    "adapters/entropy_fse/vendor/lib/huf.h",
+    "native/include/tscb_adapter_v1.h"
+  ],
+  "benchmark_files": [
+    "_lzbench/compressors.cpp:sprintzXff_HUF",
+    "_lzbench/lzbench.h:sprintzXff_HUF",
+    "programs/fullbench.c:HUF_compress"
+  ],
+  "test_files": [
+    "adapters/sprintz/tests/sprintz_fire_huff0_test.cc",
+    "tools/qualify_sprintz_fire_huff0.py",
+    "tests/adapters/test_sprintz.py"
+  ],
+  "license_files": [
+    "adapters/sprintz/vendor/LICENSE",
+    "adapters/entropy_fse/vendor/LICENSE"
+  ],
+  "third_party_dependencies": [],
+  "object_level_candidates": ["P2_PIPELINE"],
+  "input_contract": {
+    "kind": "HOMOGENEOUS_INTEGER_VALUE_MATRIX",
+    "dtypes": ["int8", "uint8", "little-endian int16", "little-endian uint16"],
+    "topologies": ["UTS", "SYNCHRONOUS_MTS"],
+    "dimensions": "1..128",
+    "maximum_total_raw_bytes": 122880,
+    "ownership": "BORROWED_DURING_CALL",
+    "mutation": "FORBIDDEN"
+  },
+  "output_contract": {
+    "kind": "TSCB_DESCRIPTOR_PLUS_32_BYTE_PIPELINE_HEADER_PLUS_HUFF0_OR_RAW_PAYLOAD",
+    "modes": ["RAW", "HUFF0", "CONSTANT"],
+    "self_contained": true,
+    "actual_written_length": true,
+    "capacity_is_not_size": true,
+    "checksum": "NONE"
+  },
+  "lifecycle_contract": {
+    "output_bound": "checked Sprintz bound versus Huff0 bound plus the 32-byte pipeline header",
+    "return_length": "exact Sprintz intermediate and exact serialized Huff0 payload lengths",
+    "error_codes": "stable tscb_status_v1 including UNSUPPORTED, DST_TOO_SMALL and CODEC_ERROR",
+    "finalize": "REQUIRED_ZERO_BYTE_FINALIZE",
+    "reset": "NEW_CONTEXT_PER_INDEPENDENT_OBJECT"
+  },
+  "stream_components": {
+    "outer_container": "12-byte prefix plus canonical JSON descriptors",
+    "pipeline_header": "32 bytes carrying width, mode, dimensions, elements, Sprintz bytes and payload bytes",
+    "payload": "one Huff0 block, one constant byte, or exact raw Sprintz bytes",
+    "layout": "all channels form one row-major Sprintz stream before entropy coding",
+    "accounting": "descriptor, both headers, fallback marker and complete payload are charged"
+  },
+  "upstream_tests": [
+    {
+      "profile": "release",
+      "suite": "direct-Sprintz-and-composed-pipeline-boundary-roundtrip",
+      "status": "PASS",
+      "evidence": "tools/qualify_sprintz_fire_huff0.py; 8/16-bit, 1/4/128 dimensions, boundary lengths, patterned/random input, observed Huff0/raw modes, truncation, suffix, capacity and canary checks"
+    },
+    {
+      "profile": "asan-ubsan",
+      "suite": "composed-native-qualification",
+      "status": "PASS",
+      "evidence": "ASan/UBSan with alignment instrumentation excluded for documented packed x86 accesses; LeakSanitizer not run"
+    },
+    {
+      "profile": "formal",
+      "suite": "five-layer-synthetic-i16-mts",
+      "status": "PASS",
+      "evidence": "runs/runset-20260919T104830Z-d348067cf754: 10 eligible PASS repetitions, one summary and one PASS coverage task"
+    }
+  ],
+  "builds": [
+    {
+      "profile": "RELEASE",
+      "artifact_sha256": "aadba7e509b067932aa915e09b6ba7ce550923a9aeada522d9740b765dc49315",
+      "compile_commands_sha256": "30c12b13d083cb5769f3ddefcf404f1cf14a04fb056f4d8b07601cabc9116fb7"
+    },
+    {
+      "profile": "ASAN_UBSAN",
+      "artifact_sha256": "8038cfe2f9af14a1c85256cf90512408a375898d29766db6b86555bd08147441",
+      "compile_commands_sha256": "af76f1f3fc8a3f82afdd48e77cca7b450d99769c12fb5db8794bda58fa2cc8af"
+    }
+  ],
+  "license_decision": {
+    "spdx": "Apache-2.0 AND BSD-2-Clause",
+    "status": "RUN_ALLOWED",
+    "redistribution": "ALLOWED_WITH_BOTH_LICENSE_NOTICES"
+  },
+  "known_limitations": [
+    "Only lossless homogeneous 8/16-bit integer VALUE objects are registered; float, quantization, validity and heterogeneous widths are unsupported.",
+    "One Huff0 block is limited to 128 KiB; negotiation conservatively limits total canonical raw input to 120 KiB.",
+    "Huff0 zero return is an explicit raw fallback and Huff0 one return is an explicit constant mode; both remain fully charged.",
+    "AVX2, BMI2 and LZCNT are mandatory; there is no scalar fallback, runtime dispatch or non-x86 portability claim.",
+    "Alignment sanitizer is excluded and -fno-strict-aliasing is required by upstream packed x86 accesses; LeakSanitizer was not run.",
+    "One-shot and single-thread only; streaming, query, random access and checksums are not registered.",
+    "Formal evidence uses one deterministic synthetic int16 MTS dataset and does not establish real-data performance."
+  ],
+  "unsupported_reason_codes": [
+    "DTYPE_UNSUPPORTED",
+    "ENDIANNESS_UNSUPPORTED",
+    "HETEROGENEOUS_ITEMSIZE_UNSUPPORTED",
+    "TOPOLOGY_UNSUPPORTED",
+    "DIMENSION_LIMIT",
+    "INPUT_EXCEEDS_REGISTERED_LIMIT",
+    "VALIDITY_SHAPE_UNSUPPORTED",
+    "ISA_UNSUPPORTED",
+    "STREAMING_UNSUPPORTED",
+    "QUERY_UNSUPPORTED"
+  ]
+}

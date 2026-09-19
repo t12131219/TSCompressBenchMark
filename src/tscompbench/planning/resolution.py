@@ -42,7 +42,12 @@ def resolve_execution(
     requested = str(config.parameters.get("isa", execution["isa"][0]))
     available_flags = set(environment["cpu"].get("flags", []))
     manifest_isas = set(execution["isa"])
-    cpu_supports = requested == "SCALAR" or _ISA_FLAGS.get(requested) in available_flags
+    if requested == "AVX2_BMI2_LZCNT":
+        cpu_supports = {"avx2", "bmi2"}.issubset(available_flags) and bool(
+            {"abm", "lzcnt"} & available_flags
+        )
+    else:
+        cpu_supports = requested == "SCALAR" or _ISA_FLAGS.get(requested) in available_flags
     status = RunStatus.PLANNED
     reason = "RESOLVED"
     actual = requested

@@ -1,0 +1,132 @@
+diff --git a/sprintz/sprintz_delta_rle.cpp b/sprintz/sprintz_delta_rle.cpp
+index 1903d4a..8c45a13 100644
+--- a/sprintz/sprintz_delta_rle.cpp
++++ b/sprintz/sprintz_delta_rle.cpp
+@@ -123,6 +123,16 @@ int64_t compress_rowmajor_delta_rle(const uint_t* src, uint64_t len,
+     // extra row is for storing previous values
+     // TODO just look at src and special case first row
+     int_t* deltas = (int_t*)calloc(elem_sz, (block_sz + 1) * ndims);
++    if (!stripe_bitwidths || !stripe_bitoffsets || !stripe_masks ||
++        !stripe_headers || !header_bytes || !deltas) {
++        free(stripe_bitwidths);
++        free(stripe_bitoffsets);
++        free(stripe_masks);
++        free(stripe_headers);
++        free(header_bytes);
++        free(deltas);
++        return -1;
++    }
+     uint_t* prev_vals_ar = (uint_t*)(deltas + block_sz * ndims);
+     // int8_t* deltas = (int8_t*)calloc(1, (block_sz + 1) * ndims);
+     // uint8_t* prev_vals_ar = (uint8_t*)(deltas + block_sz * ndims);
+@@ -393,6 +403,7 @@ main_loop_end:
+     free(stripe_bitoffsets);
+     free(stripe_masks);
+     free(stripe_headers);
++    free(header_bytes);
+     free(deltas);
+ 
+     uint32_t remaining_len = (uint32_t)(src_end - src);
+@@ -511,7 +522,7 @@ SPRINTZ_FORCE_INLINE int64_t decompress_rowmajor_delta_rle(const int_t* src,
+     // do vector loads and stores (except bitwidths, which are u64s so
+     // that we can store directly after sad_epu8)
+     uint64_t* headers_tmp       = (uint64_t*)calloc(nheader_stripes, 8);
+-    uint8_t*  headers           = (uint8_t*) calloc(1, group_header_sz);
++    uint8_t*  headers           = (uint8_t*) calloc(1, 2 * group_header_sz + 32);
+     uint64_t* data_masks        = (uint64_t*)calloc(nstripes_in_vectors * elem_sz, 8);
+     bitwidth_t* stripe_bitwidths= (bitwidth_t*)calloc(nstripes_in_vectors, 8);
+     uint32_t* stripe_bitoffsets = (uint32_t*)calloc(nstripes, 4);
+@@ -520,6 +531,17 @@ SPRINTZ_FORCE_INLINE int64_t decompress_rowmajor_delta_rle(const int_t* src,
+     // TODO just special case very first row
+     int_t* deltas = (int_t*)calloc(block_sz * padded_ndims, elem_sz);
+     uint_t* prev_vals_ar = (uint_t*)calloc(padded_ndims, elem_sz);
++    if (!headers_tmp || !headers || !data_masks || !stripe_bitwidths ||
++        !stripe_bitoffsets || !deltas || !prev_vals_ar) {
++        free(headers_tmp);
++        free(headers);
++        free(data_masks);
++        free(stripe_bitwidths);
++        free(stripe_bitoffsets);
++        free(deltas);
++        free(prev_vals_ar);
++        return -1;
++    }
+ 
+     // ================================ main loop
+ 
+diff --git a/sprintz/sprintz_xff_rle.cpp b/sprintz/sprintz_xff_rle.cpp
+index 00a4422..00a9cce 100644
+--- a/sprintz/sprintz_xff_rle.cpp
++++ b/sprintz/sprintz_xff_rle.cpp
+@@ -147,9 +147,20 @@ int64_t compress_rowmajor_xff_rle(const uint_t* src, uint32_t len,
+     // int16_t* coef_counters_ar=(int16_t*)(errs + (block_sz + 2) * ndims);
+ 
+     int_t*  errs             = (int_t* )calloc((block_sz + 2) * ndims, elem_sz);
++    counter_t* coef_counters_ar = (counter_t*)calloc(ndims, sizeof(counter_t));
++    if (!stripe_bitwidths || !stripe_bitoffsets || !stripe_masks ||
++        !stripe_headers || !header_bytes || !errs || !coef_counters_ar) {
++        free(stripe_bitwidths);
++        free(stripe_bitoffsets);
++        free(stripe_masks);
++        free(stripe_headers);
++        free(header_bytes);
++        free(errs);
++        free(coef_counters_ar);
++        return -1;
++    }
+     uint_t* prev_vals_ar     = (uint_t*)(errs + (block_sz + 0) * ndims);
+     int_t*  prev_deltas_ar   = (int_t* )(errs + (block_sz + 1) * ndims);
+-    counter_t* coef_counters_ar = (counter_t*)calloc(ndims, sizeof(counter_t));
+ 
+     // ================================ main loop
+ 
+@@ -214,7 +225,7 @@ int64_t compress_rowmajor_xff_rle(const uint_t* src, uint32_t len,
+                 //  floor(32767 / (2^12)) * 2^(12) = 28,672
+                 // which is only 14/15 of actual double delta coding
+                 //
+-                int16_t coef = (coef_counters_ar[dim] >> (learning_shift + shft)) << shft;
++                int16_t coef = (coef_counters_ar[dim] >> (learning_shift + shft)) * (1 << shft);
+                 // counter_t coef = (coef_counters_ar[dim] >> (learning_shift + shft)) << shft;
+                 int_t grad_sum = 0;
+ 
+@@ -536,7 +547,9 @@ main_loop_end:
+     free(stripe_bitoffsets);
+     free(stripe_masks);
+     free(stripe_headers);
++    free(header_bytes);
+     free(errs);
++    free(coef_counters_ar);
+ 
+     // printf("wrote ngroups: %d\n", (int)ngroups);
+     size_t remaining_len = src_end - src;
+@@ -666,7 +679,7 @@ SPRINTZ_FORCE_INLINE int64_t decompress_rowmajor_xff_rle(const int_t* src,
+     // do vector loads and stores (except bitwidths, which are u64s so
+     // that we can store directly after sad_epu8)
+     uint64_t* headers_tmp       = (uint64_t*)calloc(nheader_stripes, 8);
+-    uint8_t*  headers           = (uint8_t*) calloc(1, group_header_sz);
++    uint8_t*  headers           = (uint8_t*) calloc(1, 2 * group_header_sz + 32);
+     uint64_t* data_masks        = (uint64_t*)calloc(nstripes_in_vectors * elem_sz, 8);
+     bitwidth_t* stripe_bitwidths= (bitwidth_t*)calloc(nstripes_in_vectors, 8);
+     uint32_t* stripe_bitoffsets = (uint32_t*)calloc(nstripes, 4);
+@@ -682,9 +695,20 @@ SPRINTZ_FORCE_INLINE int64_t decompress_rowmajor_xff_rle(const int_t* src,
+     // int8_t* coeffs_ar_odd =  (int8_t*)(errs_ar + (block_sz + 3) * padded_ndims);
+ 
+     int_t*  errs_ar         = (int_t* )calloc((block_sz + 2) * padded_ndims, elem_sz);
++    uint_t* coeffs_ar_even  = (uint_t*)calloc(2 * padded_ndims, elem_sz);
++    if (!headers_tmp || !headers || !data_masks || !stripe_bitwidths ||
++        !stripe_bitoffsets || !errs_ar || !coeffs_ar_even) {
++        free(headers_tmp);
++        free(headers);
++        free(data_masks);
++        free(stripe_bitwidths);
++        free(stripe_bitoffsets);
++        free(errs_ar);
++        free(coeffs_ar_even);
++        return -1;
++    }
+     uint_t* prev_vals_ar    = (uint_t*)(errs_ar + (block_sz + 0) * padded_ndims);
+     int_t*  prev_deltas_ar  = (int_t* )(errs_ar + (block_sz + 1) * padded_ndims);
+-    uint_t* coeffs_ar_even  = (uint_t*)calloc(2 * padded_ndims, elem_sz);
+     uint_t* coeffs_ar_odd   = coeffs_ar_even + padded_ndims;
+ 
+     if (debug) printf("padded ndims: %d\n", padded_ndims);

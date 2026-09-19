@@ -1,0 +1,145 @@
+{
+  "schema_version": "tscb.source-onboarding.v2",
+  "source_artifact_id": "v2:source-artifact:sha256:0d1d51f2d036919da1c4a77652c01fc6b93d847e12614c0a1b2b82edd530870c",
+  "repository": "https://github.com/dblalock/lzbench.git",
+  "commit": "580c4f085381f31b1ad669525ed04e63cbc385f3",
+  "dirty": false,
+  "submodules": [],
+  "implementation_files": [
+    "adapters/sprintz/vendor/sprintz/sprintz.cpp",
+    "adapters/sprintz/vendor/sprintz/sprintz_delta_lowdim.cpp",
+    "adapters/sprintz/vendor/sprintz/sprintz_xff_lowdim.cpp",
+    "adapters/sprintz/vendor/sprintz/sprintz_delta_rle.cpp",
+    "adapters/sprintz/vendor/sprintz/sprintz_xff_rle.cpp",
+    "adapters/sprintz/vendor/sprintz/format.cpp",
+    "adapters/sprintz/native/bounded_sprintz.cc",
+    "adapters/sprintz/native/tscb_sprintz.cc"
+  ],
+  "public_api_files": [
+    "adapters/sprintz/vendor/sprintz/sprintz.h",
+    "adapters/sprintz/native/bounded_sprintz.h",
+    "adapters/common/tscb_codec_v1.h"
+  ],
+  "benchmark_files": [
+    "_lzbench/compressors.cpp",
+    "_lzbench/lzbench.h",
+    "cpp/Compress/test/test_sprintz_8b.cpp",
+    "cpp/Compress/test/test_sprintz_16b.cpp"
+  ],
+  "test_files": [
+    "adapters/sprintz/tests/bounded_sprintz_test.cc",
+    "adapters/sprintz/tests/allocation_failure_full.cc",
+    "tools/qualify_sprintz.py",
+    "tests/adapters/test_sprintz.py"
+  ],
+  "license_files": ["adapters/sprintz/vendor/LICENSE"],
+  "third_party_dependencies": [],
+  "object_level_candidates": ["P1_STANDALONE_CODEC"],
+  "input_contract": {
+    "kind": "HOMOGENEOUS_INTEGER_VALUE_MATRIX",
+    "dtypes": ["int8", "uint8", "little-endian int16", "little-endian uint16"],
+    "topologies": ["UTS", "SYNCHRONOUS_MTS"],
+    "dimensions": "1..128",
+    "maximum_elements": 131072,
+    "ownership": "BORROWED_DURING_CALL",
+    "mutation": "FORBIDDEN"
+  },
+  "output_contract": {
+    "kind": "TSCB_DESCRIPTOR_PLUS_PRIVATE_SPRINTZ_ENVELOPE_AND_RLE_STREAM",
+    "self_contained": true,
+    "actual_written_length": true,
+    "capacity_is_not_size": true,
+    "checksum": "NONE"
+  },
+  "lifecycle_contract": {
+    "output_bound": "checked wrapper bound for 16-byte private envelope, native metadata, worst-case groups and safety margin",
+    "return_length": "exact validated byte count measured from the complete grammar; does not trust the 16-bit vendor int16_t-unit return",
+    "error_codes": "stable tscb_status_v1 including UNSUPPORTED, MALFORMED and DST_TOO_SMALL",
+    "finalize": "REQUIRED_ZERO_BYTE_FINALIZE",
+    "reset": "NEW_CONTEXT_PER_OBJECT; ABI reset clears state and native timing"
+  },
+  "stream_components": {
+    "outer_container": "12-byte versioned prefix plus canonical JSON descriptors",
+    "native_envelope": "16 bytes carrying element width, dimensions and exact element count",
+    "payload": "Delta or FIRE/XFF Sprintz RLE stream with native metadata and tail",
+    "layout": "all MTS channels are interleaved row-major; Python SOA marshaling is timed",
+    "accounting": "all physical bytes charged once; no external side information"
+  },
+  "upstream_tests": [
+    {
+      "profile": "release",
+      "suite": "bounded-native-roundtrip-and-hostile-stream",
+      "status": "PASS",
+      "evidence": "tools/qualify_sprintz.py; 8/16-bit, 1..128 dimensions, boundary/pattern/random roundtrips, truncation, mutation, capacity and canary checks"
+    },
+    {
+      "profile": "asan-ubsan",
+      "suite": "bounded-native-roundtrip-and-hostile-stream",
+      "status": "PASS",
+      "evidence": "tools/qualify_sprintz.py with ASan/UBSan; alignment sanitizer excluded for documented packed x86 accesses"
+    },
+    {
+      "profile": "asan-ubsan",
+      "suite": "forced-generic-allocation-failure",
+      "status": "PASS",
+      "evidence": "adapters/sprintz/tests/allocation_failure_full.cc wraps malloc/calloc and injects every generic-path allocation failure"
+    },
+    {
+      "profile": "formal",
+      "suite": "five-layer-synthetic-i16-mts",
+      "status": "PASS",
+      "evidence": "runs/runset-20260919T093811Z-e48ab64f58b0: 20 eligible PASS repetitions, two summaries and two PASS coverage tasks"
+    }
+  ],
+  "builds": [
+    {
+      "profile": "SPRINTZ_DELTA_RELEASE",
+      "artifact_sha256": "546e3026ebad20a92a1d4dd31cf94b17e1ade10f14e9666d966292a483d18c50",
+      "compile_commands_sha256": "db616be3abd56524bd23ef1e366b9f1437ded037e576fd094ef28f42ba5680d7"
+    },
+    {
+      "profile": "SPRINTZ_DELTA_ASAN_UBSAN",
+      "artifact_sha256": "d184e1c97d5c2e1dd2fba52f84004a65ee27a7bfa7aaa282c33770ba81f6d571",
+      "compile_commands_sha256": "b4346e79f92392cf0111c6966b4ba74ef5e988812f18f726ee6413bc63da1bc5"
+    },
+    {
+      "profile": "SPRINTZ_FIRE_RELEASE",
+      "artifact_sha256": "abb569818c9bf895aa8d27a5e2bf48012300ba1d895887412273f6e43fdb437d",
+      "compile_commands_sha256": "06554557e0daf8faa8511c70cf09daac46d93f9b9b280f3f1312c000af6f0b78"
+    },
+    {
+      "profile": "SPRINTZ_FIRE_ASAN_UBSAN",
+      "artifact_sha256": "5b4ebe234493055b539854932d422726a73b2269b18f12d18bb94d4fb6516a87",
+      "compile_commands_sha256": "9e8af57fcad7a0889f8afb39b6cbb11eef5ceeccc9ca5ff1d6f27ddae4064b10"
+    }
+  ],
+  "license_decision": {
+    "spdx": "Apache-2.0",
+    "status": "RUN_ALLOWED",
+    "redistribution": "ALLOWED_WITH_LICENSE_NOTICE",
+    "files": ["adapters/sprintz/vendor/LICENSE"]
+  },
+  "known_limitations": [
+    "Upstream defines Sprintz-Delta and Sprintz-FIRE/XFF as distinct codec APIs; no predictor-neutral Sprintz bitstream/API exists, so the benchmark keeps two AlgorithmIDs.",
+    "Only lossless homogeneous 8/16-bit integer UTS and synchronous MTS with 1..128 dimensions are registered; float, lossy quantization, validity, asynchronous MTS and heterogeneous widths are unsupported.",
+    "The upstream 16-bit API reports length in int16_t units and cannot represent an odd final byte. The bounded wrapper independently parses the entire grammar and returns the exact validated byte length.",
+    "The immutable lzbench source closure is compiled through two replayed safety patches that fix unchecked allocations, leaks, low-dimensional overflow, generic 16-bit header overread, signed-shift UB and unsafe odd-dimension sizing.",
+    "ASan/UBSan qualification passes with -fno-sanitize=alignment because upstream deliberately uses packed unaligned x86 accesses; -fno-strict-aliasing is required. LeakSanitizer was not run because it is incompatible with the ptrace-managed host.",
+    "AVX2, BMI2 and LZCNT are mandatory; there is no scalar fallback, runtime dispatch or non-x86 portability claim.",
+    "One-shot single-thread operation only; streaming, query, random access and checksums are not registered.",
+    "Formal evidence uses one deterministic synthetic int16 MTS dataset and does not establish performance on real-world datasets. Failed diagnostic run sets remain append-only and are not reclassified."
+  ],
+  "unsupported_reason_codes": [
+    "EXECUTION_ARTIFACT_MISSING",
+    "ISA_UNSUPPORTED",
+    "DTYPE_UNSUPPORTED",
+    "ENDIANNESS_UNSUPPORTED",
+    "HETEROGENEOUS_ITEMSIZE_UNSUPPORTED",
+    "TOPOLOGY_UNSUPPORTED",
+    "DIMENSION_LIMIT",
+    "INPUT_EXCEEDS_REGISTERED_LIMIT",
+    "VALIDITY_SHAPE_UNSUPPORTED",
+    "STREAMING_UNSUPPORTED",
+    "QUERY_UNSUPPORTED"
+  ]
+}

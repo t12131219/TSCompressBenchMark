@@ -1,0 +1,55 @@
+{
+  "schema_version": "tscb.dataset-manifest.v2",
+  "key": "sprintz_i16_mts",
+  "display_name": "Synthetic int16 four-channel MTS for Sprintz qualification",
+  "source": {
+    "uri": "generated:tools/generate_sprintz_i16_mts_fixture.py@20260919",
+    "retrieved_at": "2026-09-19",
+    "notes": "Deterministic synthetic fixture; not observational data or a real-world ranking corpus"
+  },
+  "license": {"spdx": "CC0-1.0", "status": "RUN_ALLOWED"},
+  "file": {
+    "path": "datasets/sprintz_i16_mts.npz",
+    "bytes": 33034,
+    "sha256": "c04e05ffcf388dc15a42159bd36d99615b0be873f19081b95493a5c4c7ad114c",
+    "format": "npz"
+  },
+  "parser": {
+    "name": "numpy.npz",
+    "version": "runtime-recorded",
+    "allow_pickle": false,
+    "array_key": "values",
+    "expected_keys": ["values"]
+  },
+  "logical": {
+    "topology": "SYNCHRONOUS_MTS",
+    "axes": ["time", "channel"],
+    "timestamp": {
+      "origin": "NONE",
+      "reason": "Synthetic synchronous rows use their row index and carry no timestamp values"
+    },
+    "value": {
+      "kind": "NPZ_ARRAY",
+      "array": {
+        "dtype": "<i2",
+        "unit": "UNSPECIFIED",
+        "entity": "synthetic-four-channel-sequence",
+        "feature": "value-matrix",
+        "required_layout": "ROW_MAJOR_CONTIG"
+      },
+      "representation": "NATIVE_ND_PRESERVED"
+    },
+    "validity": {"shape": "NONE", "missing_tokens": [], "nan_is_null": false},
+    "canonical": {"format_version": "tscb-canonical-v1", "byte_order": "little"}
+  },
+  "expected": {
+    "shape": [4096, 4],
+    "dtype": "<i2",
+    "array_keys": ["values"]
+  },
+  "split": {
+    "policy": "UNSPECIFIED",
+    "learned_eligible": false,
+    "reason": "Synthetic non-learned fixture"
+  }
+}

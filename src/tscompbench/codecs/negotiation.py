@@ -259,6 +259,10 @@ def negotiate(
         missing.append("rank")
     if descriptor.validity_shape.value not in contract["validity_shapes"]:
         missing.append("validity_shape")
+    if descriptor.canonical_raw_bits > contract.get(
+        "max_total_raw_bytes", (descriptor.canonical_raw_bits + 7) // 8
+    ) * 8:
+        missing.append("total_raw_bytes")
     timestamp_contract = contract["timestamp_semantics"]
     if descriptor.track in {BenchmarkTrack.TIMESTAMP, BenchmarkTrack.SYSTEM}:
         if not descriptor.timestamp_present:
@@ -329,6 +333,30 @@ def negotiate(
         target, lossy = conversion
         converted.append(target)
         lossy_conversion = lossy_conversion or lossy
+    if contract.get("homogeneous_itemsize") and len({
+        np.dtype(item).itemsize for item in converted
+    }) > 1:
+        return CompatibilityPlan.create(
+            status=CapabilityStatus.UNSUPPORTED,
+            reason_code="HETEROGENEOUS_ITEMSIZE_UNSUPPORTED",
+            missing_capabilities=("homogeneous_itemsize",),
+            input_descriptor=descriptor,
+            output_descriptor=None,
+            operations=tuple(operations),
+            effective_loss_mode=requested_loss_mode,
+        )
+    if lossy_conversion and all(item is LossMode.LOSSLESS for item in manifest.loss_modes):
+        return CompatibilityPlan.create(
+            status=CapabilityStatus.UNSUPPORTED,
+            reason_code="LOSSY_DTYPE_CONVERSION_UNDECLARED",
+            missing_capabilities=tuple(
+                f"dtype:{source}" for source in descriptor.dtype_vector
+            ),
+            input_descriptor=descriptor,
+            output_descriptor=None,
+            operations=tuple(operations),
+            effective_loss_mode=requested_loss_mode,
+        )
     if tuple(converted) != descriptor.dtype_vector:
         before = dict(current)
         current["dtype_vector"] = converted

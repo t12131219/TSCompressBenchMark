@@ -1,0 +1,55 @@
+{
+  "schema_version": "tscb.source-artifact.v2",
+  "key": "sprintz-fire-huff0",
+  "kind": "COMPOSED_VENDORED_BENCHMARK_SOURCE_CLOSURES_WITH_PATCH",
+  "identity": {
+    "kind": "COMPOSED_VENDORED_BENCHMARK_SOURCE_CLOSURES_WITH_PATCH",
+    "key": "sprintz-fire-huff0",
+    "paper": "https://arxiv.org/abs/1808.02515",
+    "benchmark_repository": "https://github.com/dblalock/lzbench.git",
+    "benchmark_commit": "580c4f085381f31b1ad669525ed04e63cbc385f3",
+    "benchmark_path": "_lzbench/compressors.cpp:sprintzXff_HUF",
+    "sprintz_upstream_repository": "https://github.com/dblalock/sprintz.git",
+    "sprintz_upstream_commit": "a056cdb67d049669875ab5487359aca99ae873ea",
+    "sprintz_source_artifact_id": "v2:source-artifact:sha256:0d1d51f2d036919da1c4a77652c01fc6b93d847e12614c0a1b2b82edd530870c",
+    "huff0_source_artifact_id": "v2:source-artifact:sha256:1b62e728c33885fb38e25d490d0c13841018f265b4cbd4b2c8a3fadfa04b6773",
+    "sprintz_source_closure_sha256": "8535c526f5cdd430f15a9ce0ccc8bdcdd4fd820575ed67a5fe785e4dae011c4a",
+    "huff0_source_closure_sha256": "af5899be99f7f09551bed864832f9b80be2069a4bb8798b30486296e4d17aa8a",
+    "sprintz_patch_set_sha256": "31b403a9428147a59d8c41e2527ffac4db6e72f4eed8de16c4f2511bc874c699",
+    "execution_variant": "SPRINTZ_XFF_RLE_8B_OR_16B_THEN_HUFF0_SINGLE_BLOCK"
+  },
+  "license": {
+    "spdx": "Apache-2.0 AND BSD-2-Clause",
+    "status": "RUN_ALLOWED",
+    "redistribution": "ALLOWED_WITH_BOTH_LICENSE_NOTICES",
+    "files": [
+      "adapters/sprintz/vendor/LICENSE",
+      "adapters/entropy_fse/vendor/LICENSE"
+    ]
+  },
+  "build": {
+    "recipe": "conda run -n CompressBench14 python tools/build_codec.py sprintz-fire-huff0 --profile all",
+    "patches": [
+      "adapters/sprintz/patches/0001-lowdim-byte-safety.patch",
+      "adapters/sprintz/patches/0002-generic-allocation-safety.patch",
+      "adapters/sprintz/patches/0003-fire-prediction-overflow.patch"
+    ],
+    "submodules": [],
+    "translation_units": [
+      "adapters/sprintz/native/tscb_sprintz_fire_huff0.cc",
+      "adapters/sprintz/native/bounded_sprintz.cc",
+      "adapters/sprintz/vendor/sprintz/sprintz.cpp",
+      "adapters/sprintz/vendor/sprintz/sprintz_delta_lowdim.cpp",
+      "adapters/sprintz/vendor/sprintz/sprintz_xff_lowdim.cpp",
+      "adapters/sprintz/vendor/sprintz/sprintz_delta_rle.cpp",
+      "adapters/sprintz/vendor/sprintz/sprintz_xff_rle.cpp",
+      "adapters/sprintz/vendor/sprintz/format.cpp",
+      "adapters/entropy_fse/vendor/lib/huf_compress.c",
+      "adapters/entropy_fse/vendor/lib/huf_decompress.c",
+      "adapters/entropy_fse/vendor/lib/entropy_common.c",
+      "adapters/entropy_fse/vendor/lib/hist.c"
+    ],
+    "release_artifact": "build/adapters/sprintz_fire_huff0/release/libtscb_sprintz_fire_huff0.so",
+    "sanitizer_artifact": "build/adapters/sprintz_fire_huff0/sanitizer/libtscb_sprintz_fire_huff0.so"
+  }
+}

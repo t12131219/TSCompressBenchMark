@@ -1,0 +1,98 @@
+{
+  "schema_version": "tscb.source-onboarding.v2",
+  "source_artifact_id": "v2:source-artifact:sha256:af92b504c16f247d9e34136d14a489b47d26610edee41353c663297ea9a9ad5a",
+  "repository": "https://github.com/dblalock/lzbench.git",
+  "commit": "580c4f085381f31b1ad669525ed04e63cbc385f3",
+  "dirty": false,
+  "submodules": [],
+  "implementation_files": [
+    "adapters/sprintz/vendor/sprintz/sprintz_delta_lowdim.cpp",
+    "adapters/sprintz/vendor/sprintz/sprintz_xff_lowdim.cpp",
+    "adapters/sprintz/native/bounded_lowdim.cc",
+    "adapters/sprintz/native/tscb_sprintz8.cc"
+  ],
+  "public_api_files": ["adapters/include/tscb_adapter_v1.h"],
+  "benchmark_files": ["_lzbench/compressors.cpp", "_lzbench/lzbench.h"],
+  "test_files": [
+    "adapters/sprintz/tests/bounded_lowdim_test.cc",
+    "adapters/sprintz/tests/allocation_failure.cc",
+    "tools/qualify_sprintz_native.py",
+    "tests/adapters/test_sprintz8.py",
+    "tests/unit/test_sprintz_planning.py"
+  ],
+  "license_files": ["adapters/sprintz/vendor/LICENSE"],
+  "third_party_dependencies": [],
+  "object_level_candidates": ["P1_STANDALONE_CODEC"],
+  "input_contract": {
+    "kind": "UINT8_SINGLE_CHANNEL_UTS", "max_elements": 131072,
+    "ownership": "BORROWED_DURING_CALL", "mutation": "FORBIDDEN"
+  },
+  "output_contract": {
+    "kind": "TSCB_DESCRIPTOR_PLUS_SPRINTZ_8B_RLE_FRAME",
+    "variants": ["DELTA", "FIRE_XFF"], "actual_written_length": true
+  },
+  "lifecycle_contract": {
+    "output_bound": "8 + 4*N + 64 native bytes plus descriptor and 12-byte prefix",
+    "decode": "validate exact native grammar and decoded size before vendor call; scratch buffers guard vendor overread/overwrite",
+    "return_length": "actual frame bytes, including eight-byte native header",
+    "error_codes": "stable tscb_status_v1 including DST_TOO_SMALL",
+    "finalize": "required, emits zero bytes; repeated call rejected",
+    "reset": "new context per independent repetition; C ABI reset preserves timer setting"
+  },
+  "stream_components": {
+    "descriptor": "12-byte prefix plus canonical JSON containing variant, dtype, shape and logical length",
+    "native_header": "eight bytes, charged as metadata",
+    "payload": "Delta or XFF low-dimensional Sprintz RLE stream",
+    "accounting": "FinalBits = 8 * entire serialized stream; no external side information"
+  },
+  "upstream_tests": [
+    {
+      "name": "benchmark fork versus patched native closure",
+      "status": "PASS",
+      "evidence": "128 specified input/variant pairs produced byte-identical output; see docs/sprintz_admission_review.md"
+    },
+    {
+      "name": "project native release and ASan/UBSan qualification",
+      "status": "PASS",
+      "evidence": "136 boundary/pattern and 4096 randomized roundtrips per variant, hostile/truncated input and injected allocation failures; see tools/qualify_sprintz_native.py"
+    },
+    {
+      "name": "five-layer uint8 UTS formal run",
+      "status": "PASS",
+      "evidence": "runs/sprintz-u8-formal-12000-20260919: 20 PASS eligible repetitions, two summaries, two PASS coverage tasks; synthetic fixture only"
+    }
+  ],
+  "builds": [
+    {
+      "profile": "SPRINTZ_DELTA_U8_RELEASE", "artifact_sha256": "0cb242aa0169d40c3623440211c086b238355e8c94f8a57f371ad9c1fd96793f",
+      "compile_commands_sha256": "b8611a8687a5c89648f15666f76607a989d8b1647fedd54cf6a09326cbeeb44b"
+    },
+    {
+      "profile": "SPRINTZ_FIRE_U8_RELEASE", "artifact_sha256": "39e813ed1e0cd1a7c50503daa423aa0f5e464ed04340d5c872632fe55c1747a3",
+      "compile_commands_sha256": "80dbe2468f49ee71b762e0cd6f6f591538a4e9857a5465015abd3063e57dd8b4"
+    },
+    {
+      "profile": "SPRINTZ_DELTA_U8_ASAN_UBSAN", "artifact_sha256": "7242099f4ac954d132876db0484bbcc93da4647be73bc7e427d8a46838faf0da",
+      "compile_commands_sha256": "b092a80e6e3a94b5e537937f3af59075c6b398245dfdd0733ff53ea0a573a6ac"
+    },
+    {
+      "profile": "SPRINTZ_FIRE_U8_ASAN_UBSAN", "artifact_sha256": "4eb481e83bc801f63c2dcb93059bf654dcb3a71d77d6d8d26f2638637accff99",
+      "compile_commands_sha256": "7cc3810dc089d11b2f2f9723607ef22312426e0534d63c7832d2eb0aa167f0ab"
+    }
+  ],
+  "license_decision": {
+    "spdx": "Apache-2.0", "status": "RUN_ALLOWED",
+    "redistribution": "ALLOWED_WITH_LICENSE_NOTICE"
+  },
+  "known_limitations": [
+    "Only unsigned 8-bit integer, one channel, no validity, no timestamps; 16-bit, signed, float, and MTS are not qualified.",
+    "Requires AVX2, BMI2 and LZCNT; no scalar fallback, runtime ISA dispatch or streaming.",
+    "The registered dataset is synthetic and must not be presented as a real-world ranking corpus.",
+    "The first formal run-set hit the 2000-iteration ceiling in all 20 repetitions; it remains as failed raw evidence.",
+    "The benchmark's timing loop is not reused; native API timing is auxiliary to the formal PIPELINE scope."
+  ],
+  "unsupported_reason_codes": [
+    "DTYPE_UNSUPPORTED", "TOPOLOGY_UNSUPPORTED", "VALIDITY_SHAPE_UNSUPPORTED",
+    "ISA_UNSUPPORTED", "STREAMING_UNSUPPORTED", "QUERY_UNSUPPORTED"
+  ]
+}

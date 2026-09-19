@@ -1,0 +1,37 @@
+{
+  "schema_version": "tscb.dataset-manifest.v2",
+  "key": "sprintz_u8_uts",
+  "display_name": "Synthetic uint8 UTS for Sprintz qualification",
+  "source": {
+    "uri": "generated:tools/generate_sprintz_fixture.py@20260919",
+    "retrieved_at": "2026-09-19",
+    "notes": "Deterministic synthetic fixture; not observational data or a real-world ranking corpus"
+  },
+  "license": {"spdx": "CC0-1.0", "status": "RUN_ALLOWED"},
+  "file": {
+    "path": "datasets/sprintz_u8_uts.npz",
+    "bytes": 2314,
+    "sha256": "0899a823ee1e50c7680a608a3af08f9bfe7e68e70b67e761c2753c99b9ca2cb2",
+    "format": "npz"
+  },
+  "parser": {
+    "name": "numpy.npz", "version": "runtime-recorded", "allow_pickle": false,
+    "array_key": "values", "expected_keys": ["values"]
+  },
+  "logical": {
+    "topology": "UTS", "axes": ["time"],
+    "timestamp": {"origin": "NONE", "reason": "Synthetic UTS samples have no timestamp values"},
+    "value": {
+      "kind": "NPZ_ARRAY",
+      "array": {
+        "dtype": "|u1", "unit": "UNSPECIFIED", "entity": "synthetic-sequence",
+        "feature": "value", "required_layout": "ROW_MAJOR_CONTIG"
+      },
+      "representation": "NATIVE_ND_PRESERVED"
+    },
+    "validity": {"shape": "NONE", "missing_tokens": [], "nan_is_null": false},
+    "canonical": {"format_version": "tscb-canonical-v1", "byte_order": "little"}
+  },
+  "expected": {"shape": [2048], "dtype": "|u1", "array_keys": ["values"]},
+  "split": {"policy": "UNSPECIFIED", "learned_eligible": false, "reason": "Synthetic non-learned fixture"}
+}

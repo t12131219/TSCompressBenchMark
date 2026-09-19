@@ -1,0 +1,228 @@
+diff --git a/sprintz/sprintz_delta_lowdim.cpp b/sprintz/sprintz_delta_lowdim.cpp
+index 430426f..b500c21 100644
+--- a/sprintz/sprintz_delta_lowdim.cpp
++++ b/sprintz/sprintz_delta_lowdim.cpp
+@@ -115,6 +115,12 @@ int64_t compress_rowmajor_delta_rle_lowdim(const uint_t* src, uint32_t len,
+ 
+     // extra row is for storing previous values
+     int_t* deltas = (int_t*)calloc(elem_sz, (block_sz + 1) * ndims);
++    if (!dims_nbits || !header_bytes || !deltas) {
++        free(dims_nbits);
++        free(header_bytes);
++        free(deltas);
++        return -1;
++    }
+     uint_t* prev_vals_ar = (uint_t*)(deltas + block_sz * ndims);
+ 
+     // ================================ main loop
+@@ -286,8 +292,11 @@ do_rle:
+                 uint16_t byte_offset = header_bit_offset >> 3;
+                 uint8_t bit_offset = header_bit_offset & 0x07;
+                 uint8_t write_nbits = dims_nbits[dim] - (dims_nbits[dim] == elem_sz_nbits);
+-                *(uint32_t*)(header_dest + byte_offset) |= \
+-                        write_nbits << bit_offset;
++                uint16_t field = (uint16_t)write_nbits << bit_offset;
++                header_dest[byte_offset] |= (uint8_t)field;
++                if (bit_offset + nbits_sz_bits > 8) {
++                    header_dest[byte_offset + 1] |= (uint8_t)(field >> 8);
++                }
+                 header_bit_offset += nbits_sz_bits;
+             }
+ 
+@@ -308,7 +317,8 @@ do_rle:
+                 uint8_t nbits = dims_nbits[dim];
+                 if (elem_sz == 1) {
+                     uint64_t mask = kBitpackMasks8[nbits];
+-                    *((uint64_t*)dest) = _pext_u64(delta_buff_u64[dim], mask);
++                    uint64_t packed = _pext_u64(delta_buff_u64[dim], mask);
++                    memcpy(dest, &packed, sizeof(packed));
+                 } else if (elem_sz == 2) {
+                     uint64_t mask = kBitpackMasks16[nbits];
+                     static const uint8_t stripe_sz = stripe_sz_nbytes / elem_sz;
+@@ -474,9 +484,15 @@ SPRINTZ_FORCE_INLINE int64_t decompress_rowmajor_delta_rle_lowdim(
+     // allocate temp vars of minimal possible size such that we can
+     // do vector loads and stores (except bitwidths, which are u64s so
+     // that we can store directly after sad_epu8)
+-    uint8_t*  headers = (uint8_t*) calloc(1, total_header_bytes);
++    uint8_t*  headers = (uint8_t*) calloc(1, total_header_bytes + 8);
+     uint_t* deltas = (uint_t*)calloc(block_sz * padded_ndims, elem_sz);
+     uint_t* prev_vals_ar = (uint_t*)calloc(padded_ndims, elem_sz);
++    if (!headers || !deltas || !prev_vals_ar) {
++        free(headers);
++        free(deltas);
++        free(prev_vals_ar);
++        return -1;
++    }
+ 
+     // ================================ main loop
+ 
+@@ -505,7 +521,8 @@ SPRINTZ_FORCE_INLINE int64_t decompress_rowmajor_delta_rle_lowdim(
+         }
+         // unpack header for the last stripe in the last block
+         // uint64_t packed_header = (*(uint32_t*)header_src) & final_header_mask;
+-        uint64_t packed_header = (*(uint32_t*)header_src);
++        uint32_t packed_header = 0;
++        memcpy(&packed_header, header_src, sizeof(packed_header));
+         uint64_t header = _pdep_u64(packed_header, kHeaderUnpackMask);
+         *header_write_ptr = header;
+ 
+@@ -564,7 +581,10 @@ SPRINTZ_FORCE_INLINE int64_t decompress_rowmajor_delta_rle_lowdim(
+                 if (elem_sz == 1) {
+                     uint64_t mask = kBitpackMasks8[nbits];
+                     int8_t* outptr = ((int8_t*)deltas) + (dim * block_sz);
+-                    *((uint64_t*)outptr) = _pdep_u64(*(uint64_t*)src, mask);
++                    uint64_t packed = 0;
++                    memcpy(&packed, src, sizeof(packed));
++                    uint64_t unpacked = _pdep_u64(packed, mask);
++                    memcpy(outptr, &unpacked, sizeof(unpacked));
+                 } else if (elem_sz == 2) {
+                     uint64_t mask = kBitpackMasks16[nbits];
+                     // if (debug) { printf("true nbits: %d;  ", true_nbits); }
+diff --git a/sprintz/sprintz_xff_lowdim.cpp b/sprintz/sprintz_xff_lowdim.cpp
+index f7922af..1d607ff 100644
+--- a/sprintz/sprintz_xff_lowdim.cpp
++++ b/sprintz/sprintz_xff_lowdim.cpp
+@@ -126,9 +126,16 @@ int64_t compress_rowmajor_xff_rle_lowdim(const uint_t* src, uint32_t len,
+ 
+     // extra row is for storing previous values
+     int_t*  errs             = (int_t* )calloc(elem_sz, (block_sz + 2) * ndims);
++    counter_t* coef_counters_ar = (counter_t*)calloc(sizeof(counter_t), ndims);
++    if (!dims_nbits || !header_bytes || !errs || !coef_counters_ar) {
++        free(dims_nbits);
++        free(header_bytes);
++        free(errs);
++        free(coef_counters_ar);
++        return -1;
++    }
+     uint_t* prev_vals_ar     = (uint_t*)(errs + (block_sz + 0) * ndims);
+     int_t*  prev_deltas_ar   = (int_t* )(errs + (block_sz + 1) * ndims);
+-    counter_t* coef_counters_ar = (counter_t*)calloc(sizeof(counter_t), ndims);
+ 
+     // ================================ main loop
+ 
+@@ -170,7 +177,7 @@ int64_t compress_rowmajor_xff_rle_lowdim(const uint_t* src, uint32_t len,
+                 const uint8_t shft = truncate_coeffs ? elem_sz_nbits - 4 : 0;
+                 // if (!truncate_coeffs) { shft = 0; }
+                 counter_t counter = coef_counters_ar[dim];
+-                counter_t coef = (coef_counters_ar[dim] >> (learning_shift + shft)) << shft;
++                counter_t coef = (coef_counters_ar[dim] >> (learning_shift + shft)) * (1 << shft);
+                 int_t grad_sum = 0;
+ 
+                 // printf("coef: %d\n", coef);
+@@ -332,8 +339,11 @@ do_rle:
+                 // Note: this write will get more complicated when upper byte
+                 // of each stripe_header isn't guaranteed to be 0
+                 uint8_t write_nbits = dims_nbits[dim] - (dims_nbits[dim] == elem_sz_nbits);
+-                *(uint32_t*)(header_dest + byte_offset) |= \
+-                    write_nbits << bit_offset;
++                uint16_t field = (uint16_t)write_nbits << bit_offset;
++                header_dest[byte_offset] |= (uint8_t)field;
++                if (bit_offset + nbits_sz_bits > 8) {
++                    header_dest[byte_offset + 1] |= (uint8_t)(field >> 8);
++                }
+                 header_bit_offset += nbits_sz_bits;
+             }
+ 
+@@ -351,7 +361,8 @@ do_rle:
+                 uint8_t nbits = dims_nbits[dim];
+                 if (elem_sz == 1) {
+                     uint64_t mask = kBitpackMasks8[nbits];
+-                    *((uint64_t*)dest) = _pext_u64(delta_buff_u64[dim], mask);
++                    uint64_t packed = _pext_u64(delta_buff_u64[dim], mask);
++                    memcpy(dest, &packed, sizeof(packed));
+                 } else if (elem_sz == 2) {
+                     uint64_t mask = kBitpackMasks16[nbits];
+                     static const uint8_t stripe_sz = stripe_sz_nbytes / elem_sz;
+@@ -498,18 +509,25 @@ SPRINTZ_FORCE_INLINE int64_t decompress_rowmajor_xff_rle_lowdim(
+     // do vector loads and stores (except bitwidths, which are u64s so
+     // that we can store directly after sad_epu8)
+     // uint8_t*  headers = (uint8_t*) calloc(1, group_header_sz);
+-    uint8_t*  headers = (uint8_t*)calloc(1, total_header_bytes);
++    uint8_t*  headers = (uint8_t*)calloc(1, total_header_bytes + 8);
+ 
+     // extra row in errs is to store last decoded values
+     // TODO just special case very first row
+     int_t*  errs_ar          = (int_t* )calloc(elem_sz, (block_sz + 2) * padded_ndims);
+-    uint_t* prev_vals_ar     = (uint_t*)(errs_ar + (block_sz + 0) * padded_ndims);
+-    int_t*  prev_deltas_ar   = (int_t* )(errs_ar + (block_sz + 1) * padded_ndims);
+     // int8_t* errs_ar = (int8_t*)calloc((block_sz + 4) * padded_ndims, 1);
+     // uint8_t* prev_vals_ar = (uint8_t*)(errs_ar + (block_sz + 0) * padded_ndims);
+     // int8_t* prev_deltas_ar = (int8_t*)(errs_ar + (block_sz + 1) * padded_ndims);
+     int8_t* coeffs_ar_even = (int8_t*)calloc(elem_sz, padded_ndims);
+     int8_t* coeffs_ar_odd = (int8_t*)calloc(elem_sz, padded_ndims);
++    if (!headers || !errs_ar || !coeffs_ar_even || !coeffs_ar_odd) {
++        free(headers);
++        free(errs_ar);
++        free(coeffs_ar_even);
++        free(coeffs_ar_odd);
++        return -1;
++    }
++    uint_t* prev_vals_ar     = (uint_t*)(errs_ar + (block_sz + 0) * padded_ndims);
++    int_t*  prev_deltas_ar   = (int_t* )(errs_ar + (block_sz + 1) * padded_ndims);
+     // int8_t* coeffs_ar_even = (int8_t*)(errs_ar + (block_sz + 2) * padded_ndims);
+     // int8_t* coeffs_ar_odd =  (int8_t*)(errs_ar + (block_sz + 3) * padded_ndims);
+ 
+@@ -541,7 +559,8 @@ SPRINTZ_FORCE_INLINE int64_t decompress_rowmajor_xff_rle_lowdim(
+         }
+         // unpack header for the last stripe in the last block
+         // uint64_t packed_header = (*(uint32_t*)header_src) & final_header_mask;
+-        uint64_t packed_header = (*(uint32_t*)header_src);
++        uint32_t packed_header = 0;
++        memcpy(&packed_header, header_src, sizeof(packed_header));
+         uint64_t header = _pdep_u64(packed_header, kHeaderUnpackMask);
+         *header_write_ptr = header;
+ 
+@@ -714,7 +733,10 @@ SPRINTZ_FORCE_INLINE int64_t decompress_rowmajor_xff_rle_lowdim(
+                 if (elem_sz == 1) {
+                     uint64_t mask = kBitpackMasks8[nbits];
+                     int8_t* outptr = ((int8_t*)errs_ar) + (dim * block_sz);
+-                    *((uint64_t*)outptr) = _pdep_u64(*(uint64_t*)src, mask);
++                    uint64_t packed = 0;
++                    memcpy(&packed, src, sizeof(packed));
++                    uint64_t unpacked = _pdep_u64(packed, mask);
++                    memcpy(outptr, &unpacked, sizeof(unpacked));
+                 } else if (elem_sz == 2) {
+                     uint64_t mask = kBitpackMasks16[nbits];
+                     // if (debug) { printf("true nbits: %d;  ", true_nbits); }
+@@ -827,7 +849,7 @@ SPRINTZ_FORCE_INLINE int64_t decompress_rowmajor_xff_rle_lowdim(
+                 counter_t counter = counters_ar[0];
+                 // printf("raw counter: %d\n", counter);
+                 // printf("raw counter: %d\n", counter);
+-                counter_t coef = (counter >> (learning_shift + shft)) << shft;
++                counter_t coef = (counter >> (learning_shift + shft)) * (1 << shft);
+                 int_t grad_sum = 0;
+ 
+                 switch (ndims) {
+@@ -990,7 +1012,7 @@ SPRINTZ_FORCE_INLINE int64_t decompress_rowmajor_xff_rle_lowdim(
+                 if (ndims == 1) {
+                     counter_t* counters_ar = (counter_t*)coeffs_ar_even;
+                     counter_t counter = counters_ar[0];
+-                    counter_t coef = (counter >> (learning_shift + quantize_shft)) << quantize_shft;
++                    counter_t coef = (counter >> (learning_shift + quantize_shft)) * (1 << quantize_shft);
+                     int_t grad_sum = 0;
+ 
+                     uint_t prev_val = prev_vals_ar[0];
+@@ -1036,8 +1058,8 @@ SPRINTZ_FORCE_INLINE int64_t decompress_rowmajor_xff_rle_lowdim(
+                 } else { // assumes ndims == 2
+                     counter_t counter0 = *(counter_t*)coeffs_ar_even;
+                     counter_t counter1 = *(counter_t*)coeffs_ar_odd;
+-                    counter_t coef0 = (counter0 >> (learning_shift + quantize_shft)) << quantize_shft;
+-                    counter_t coef1 = (counter1 >> (learning_shift + quantize_shft)) << quantize_shft;
++                    counter_t coef0 = (counter0 >> (learning_shift + quantize_shft)) * (1 << quantize_shft);
++                    counter_t coef1 = (counter1 >> (learning_shift + quantize_shft)) * (1 << quantize_shft);
+                     int_t grad_sum0 = 0;
+                     int_t grad_sum1 = 0;
+                     uint_t prev_val0 = prev_vals_ar[0];
+diff --git a/sprintz/bitpack.h b/sprintz/bitpack.h
+index e176cf1..3cec273 100644
+--- a/sprintz/bitpack.h
++++ b/sprintz/bitpack.h
+@@ -299,7 +299,7 @@ static inline uint8_t needed_nbits_u16x8_simple(
+ // NOTE to self: this will yield subtlely wrong behavior if the
+ // expression (x) has side effects; use the functions below instead for
+ // new code
+-#define ZIGZAG_ENCODE_SCALAR(x) ( ((x) << 1) ^ ((x) >> (8 * sizeof(x) - 1)) )
++#define ZIGZAG_ENCODE_SCALAR(x) ( ((uint32_t)(x) << 1) ^ ((x) >> (8 * sizeof(x) - 1)) )
+ #define ZIGZAG_DECODE_SCALAR(x) ( ((x) >> 1) ^ -((x) & 0x01) )
+ 
+ static inline uint8_t zigzag_encode_8b(int8_t x) {

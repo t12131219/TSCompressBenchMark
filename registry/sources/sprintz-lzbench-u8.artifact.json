@@ -1,0 +1,42 @@
+{
+  "schema_version": "tscb.source-artifact.v2",
+  "key": "sprintz-lzbench-u8",
+  "kind": "VENDORED_BENCHMARK_SOURCE_CLOSURE_WITH_PATCH",
+  "identity": {
+    "kind": "VENDORED_BENCHMARK_SOURCE_CLOSURE_WITH_PATCH",
+    "key": "sprintz-lzbench-u8",
+    "benchmark_repository": "https://github.com/dblalock/lzbench.git",
+    "benchmark_commit": "580c4f085381f31b1ad669525ed04e63cbc385f3",
+    "benchmark_path": "_lzbench/compressors.cpp",
+    "upstream_repository": "https://github.com/dblalock/sprintz.git",
+    "upstream_commit": "a056cdb67d049669875ab5487359aca99ae873ea",
+    "source_path": "adapters/sprintz/vendor/sprintz",
+    "source_closure_sha256": "1a2c275b72ca25e1a1d486494513f1624742597bb508f2d85424dfbb98691619",
+    "patch_sha256": "a7cc59c688c2e7e75bc59a27dd0771c415d5fb7c205eab79658776cbde49a620",
+    "execution_variant": "DELTA_OR_XFF_RLE_8B_NDIMS1_BOUNDED_AVX2_BMI2_LZCNT"
+  },
+  "license": {
+    "spdx": "Apache-2.0", "status": "RUN_ALLOWED",
+    "redistribution": "ALLOWED_WITH_LICENSE_NOTICE",
+    "files": ["adapters/sprintz/vendor/LICENSE"]
+  },
+  "build": {
+    "recipe": "conda run -n CompressBench14 python tools/build_codec.py <sprintz-delta-u8|sprintz-fire-u8> --profile all",
+    "patches": ["adapters/sprintz/patches/0001-lowdim-byte-safety.patch"],
+    "submodules": [],
+    "translation_units": [
+      "adapters/sprintz/native/tscb_sprintz8.cc",
+      "adapters/sprintz/native/bounded_lowdim.cc",
+      "adapters/sprintz/vendor/sprintz/sprintz_delta_lowdim.cpp",
+      "adapters/sprintz/vendor/sprintz/sprintz_xff_lowdim.cpp"
+    ],
+    "release_artifacts": {
+      "sprintz-delta-u8": "build/adapters/sprintz_delta_u8/release/libtscb_sprintz_delta_u8.so",
+      "sprintz-fire-u8": "build/adapters/sprintz_fire_u8/release/libtscb_sprintz_fire_u8.so"
+    },
+    "sanitizer_artifacts": {
+      "sprintz-delta-u8": "build/adapters/sprintz_delta_u8/sanitizer/libtscb_sprintz_delta_u8.so",
+      "sprintz-fire-u8": "build/adapters/sprintz_fire_u8/sanitizer/libtscb_sprintz_fire_u8.so"
+    }
+  }
+}

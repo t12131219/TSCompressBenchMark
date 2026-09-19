@@ -1,0 +1,29 @@
+{
+  "schema_version": "tscb.source-artifact.v2",
+  "key": "entropy-fse-benchmark",
+  "kind": "VENDORED_BENCHMARK_SOURCE_CLOSURE",
+  "identity": {
+    "kind": "VENDORED_BENCHMARK_SOURCE_CLOSURE",
+    "key": "entropy-fse-benchmark",
+    "benchmark_repository": "https://github.com/Cyan4973/FiniteStateEntropy.git",
+    "benchmark_commit": "9f30e0918f87bd835fa040d922a208d7b219e50b",
+    "benchmark_path": "programs/fullbench.c",
+    "source_path": "adapters/entropy_fse/vendor/lib",
+    "source_closure_sha256": "af5899be99f7f09551bed864832f9b80be2069a4bb8798b30486296e4d17aa8a",
+    "execution_variant": "HUF_COMPRESS_DECOMPRESS_OR_FSE_COMPRESS_DECOMPRESS_SINGLE_BLOCK"
+  },
+  "license": {
+    "spdx": "BSD-2-Clause",
+    "status": "RUN_ALLOWED",
+    "redistribution": "ALLOWED_WITH_LICENSE_NOTICE",
+    "files": ["adapters/entropy_fse/vendor/LICENSE"]
+  },
+  "build": {
+    "recipe": "PYTHONPATH=src conda run -n CompressBench14 python tools/build_codec.py <huff0|fse> --profile all",
+    "patches": [],
+    "submodules": [],
+    "translation_units": ["adapters/entropy_fse/native/tscb_entropy.c", "adapters/entropy_fse/vendor/lib/*.c"],
+    "release_artifact": "build/adapters/<huff0|fse>/release/libtscb_<huff0|fse>.so",
+    "sanitizer_artifact": "build/adapters/<huff0|fse>/sanitizer/libtscb_<huff0|fse>.so"
+  }
+}

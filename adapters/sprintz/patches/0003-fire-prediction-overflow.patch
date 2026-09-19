@@ -1,0 +1,50 @@
+diff --git a/sprintz/sprintz_xff_lowdim.cpp b/sprintz/sprintz_xff_lowdim.cpp
+--- a/sprintz/sprintz_xff_lowdim.cpp
++++ b/sprintz/sprintz_xff_lowdim.cpp
+@@ -188,5 +188,6 @@ int64_t compress_rowmajor_xff_rle_lowdim(const uint_t* src, uint32_t len,
+                     uint_t val = src[in_offset];
+                     int_t delta = (int_t)(val - prev_val);
+-                    int_t prediction = (((counter_t)prev_delta) * coef) >> elem_sz_nbits;
++                    int_t prediction = (static_cast<int64_t>(prev_delta) * coef) >>
++                        elem_sz_nbits;
+ 
+                     // if (elem_sz == 2) { prediction = prediction << 2; }
+@@ -665,5 +666,6 @@ SPRINTZ_FORCE_INLINE int64_t decompress_rowmajor_xff_rle_lowdim(
+                         int_t prev_delta = prev_deltas_ar[0];
+                         for (uint32_t i = 0; i < length * block_sz; i++) {
+-                            int_t prediction = (((int32_t)prev_delta) * coef) >> elem_sz_nbits;
++                            int_t prediction = (static_cast<int64_t>(prev_delta) * coef) >>
++                                elem_sz_nbits;
+ 
+                             // prediction = prediction << 2;
+@@ -688,7 +690,9 @@ SPRINTZ_FORCE_INLINE int64_t decompress_rowmajor_xff_rle_lowdim(
+                         int_t prev_delta0 = prev_deltas_ar[0];
+                         int_t prev_delta1 = prev_deltas_ar[1];
+                         for (uint32_t i = 0; i < length * block_sz; i++) {
+-                            int_t prediction0 = (((int32_t)prev_delta0) * coef0) >> elem_sz_nbits;
+-                            int_t prediction1 = (((int32_t)prev_delta1) * coef1) >> elem_sz_nbits;
++                            int_t prediction0 = (static_cast<int64_t>(prev_delta0) * coef0) >>
++                                elem_sz_nbits;
++                            int_t prediction1 = (static_cast<int64_t>(prev_delta1) * coef1) >>
++                                elem_sz_nbits;
+ 
+                             // prediction0 = prediction0 << 2;
+@@ -1030,5 +1034,6 @@ SPRINTZ_FORCE_INLINE int64_t decompress_rowmajor_xff_rle_lowdim(
+ 
+                     for (uint32_t i = 0; i < block_sz; i++) {
+-                        int_t prediction = (((int32_t)prev_delta) * coef) >> elem_sz_nbits;
++                        int_t prediction = (static_cast<int64_t>(prev_delta) * coef) >>
++                            elem_sz_nbits;
+                         // int_t err = _mm256_extract_epi16(verrs, i);
+                         int_t err = errs[i];
+@@ -1084,6 +1089,8 @@ SPRINTZ_FORCE_INLINE int64_t decompress_rowmajor_xff_rle_lowdim(
+ 
+                     for (uint32_t i = 0; i < block_sz; i++) {
+-                        int_t prediction0 = (((int32_t)prev_delta0) * coef0) >> elem_sz_nbits;
+-                        int_t prediction1 = (((int32_t)prev_delta1) * coef1) >> elem_sz_nbits;
++                        int_t prediction0 = (static_cast<int64_t>(prev_delta0) * coef0) >>
++                            elem_sz_nbits;
++                        int_t prediction1 = (static_cast<int64_t>(prev_delta1) * coef1) >>
++                            elem_sz_nbits;
+ 
+                         // int_t err0 = _mm256_extract_epi16(verrs, 2 * i);

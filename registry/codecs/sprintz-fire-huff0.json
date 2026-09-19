@@ -1,0 +1,109 @@
+{
+  "schema_version": "tscb.codec-manifest.v2",
+  "key": "sprintz-fire-huff0",
+  "identity": {
+    "display_name": "SprintzFIRE+Huf (paper full pipeline)",
+    "family": "SPRINTZ_FIRE_HUFF0",
+    "citations": [
+      "paper:arXiv:1808.02515:Sections 4.1,4.4,5.2:SprintzFIRE+Huf",
+      "benchmark:dblalock/lzbench@580c4f08:_lzbench/compressors.cpp:sprintzXff_HUF",
+      "upstream:dblalock/sprintz@a056cdb6:sprintz/sprintz.cpp",
+      "upstream:Cyan4973/FiniteStateEntropy@9f30e091:HUF_compress"
+    ],
+    "source_artifact_id": "v2:source-artifact:sha256:a59b31c15056977efdd52f7fd7b19d749dda2eaf927b3a4ccaa491556fb4c051"
+  },
+  "classification": {
+    "object_level": "P2_PIPELINE",
+    "implementation_class": "CONVENTIONAL",
+    "tracks": ["VALUE"],
+    "subtracks": ["V0"]
+  },
+  "input": {
+    "topologies": ["UTS", "SYNCHRONOUS_MTS"],
+    "dtypes": ["|i1", "|u1", "<i2", "<u2"],
+    "ranks": [1, 2],
+    "layouts": ["ROW_MAJOR_CONTIG", "SOA_COLUMNS"],
+    "endianness": ["little"],
+    "alignment_bytes": 1,
+    "min_n": 0,
+    "max_n": 122880,
+    "min_m": 1,
+    "max_m": 128,
+    "validity_shapes": ["NONE"],
+    "homogeneous_itemsize": true,
+    "max_total_raw_bytes": 122880,
+    "value_coupling_mode": "FULL_MATRIX",
+    "timestamp_semantics": {
+      "preserve_order": true,
+      "duplicates": true,
+      "out_of_order": true,
+      "negative_delta": true,
+      "absolute_epoch": true,
+      "overflow_policy": "NOT_APPLICABLE_VALUE_ONLY"
+    }
+  },
+  "semantics": {
+    "loss_modes": ["LOSSLESS"],
+    "error_bound_types": [],
+    "reconstruction_modes": ["EXACT_GRID"],
+    "rebuild_protocol": "TSCB_SPRINTZ_FIRE_HUFF0_DESCRIPTOR_V1",
+    "preprocess_class": "NONE",
+    "preprocess_stages": [],
+    "decodability_profile": "SELF_CONTAINED_DESCRIPTOR_SPRINTZ_XFF_RLE_THEN_HUFF0_WITH_RAW_FALLBACK",
+    "bitstream_separability": "INDEPENDENT"
+  },
+  "lifecycle": {
+    "block_semantics": "ONE_SPRINTZ_FIRE_RLE_STREAM_THEN_ONE_HUFF0_BLOCK_PER_VALUE_OBJECT",
+    "state_semantics": "INDEPENDENT_CONTEXT_PER_REPETITION",
+    "reset": "NEW_CONTEXT_REQUIRED",
+    "finalize": "REQUIRED_ZERO_BYTE_FINALIZE",
+    "safe_overread_bytes": 0,
+    "tail_policy": "EXACT_LENGTH",
+    "dictionary": "NONE",
+    "model": "FIRE_ONLINE_STATE_EMBEDDED_BY_DECODE_SEQUENCE",
+    "index": "NONE"
+  },
+  "execution": {
+    "backends": ["C_ABI_V1"],
+    "isa": ["AVX2_BMI2_LZCNT"],
+    "devices": ["CPU"],
+    "threading": "SINGLE_THREAD",
+    "fallback_policy": "EXPLICIT_HUFF0_RAW_MODE_ONLY",
+    "runtime_dispatch": false
+  },
+  "features": {"streaming": false, "query": false, "random_access": false},
+  "parameters": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "native_timing": {"type": "boolean", "default": true},
+      "isa": {
+        "type": "string",
+        "enum": ["AVX2_BMI2_LZCNT"],
+        "default": "AVX2_BMI2_LZCNT"
+      }
+    },
+    "constraints": []
+  },
+  "adapter": {
+    "backend": "C_ABI_V1",
+    "version": "sprintz-fire-huff0-ctypes-v1",
+    "factory": "SPRINTZ_CTYPES_V1",
+    "artifact_path": "build/adapters/sprintz_fire_huff0/release/libtscb_sprintz_fire_huff0.so",
+    "timing_boundary": "PYTHON_SOA_INTERLEAVE_FFI_AND_CONTAINER_INCLUDED",
+    "native_timing_capability": {
+      "optional": true,
+      "boundary": "SPRINTZ_FIRE_AND_HUFF0_CODEC_APIS_V1",
+      "clock": "CLOCK_MONOTONIC",
+      "excludes": ["CONTEXT_LIFECYCLE", "PYTHON_SOA_INTERLEAVE", "PYTHON_FFI_CONTAINER"]
+    },
+    "accounting_hooks": [
+      "FINAL_STREAM_LENGTH",
+      "PIPELINE_ENVELOPE",
+      "EXACT_SPRINTZ_INTERMEDIATE_LENGTH",
+      "HUFF0_MODE",
+      "EXACT_HUFF0_PAYLOAD_LENGTH",
+      "OUTPUT_CAPACITY"
+    ]
+  }
+}

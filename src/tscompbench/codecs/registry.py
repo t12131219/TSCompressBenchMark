@@ -230,6 +230,7 @@ class CodecRegistry:
                 "value_coupling_mode",
                 "timestamp_semantics",
             },
+            optional={"homogeneous_itemsize", "max_total_raw_bytes"},
             label=f"{path.name}.input",
         )
         for value in input_contract["topologies"]:
@@ -237,6 +238,23 @@ class CodecRegistry:
         for value in input_contract["validity_shapes"]:
             ValidityShape(value)
         ValueCouplingMode(input_contract["value_coupling_mode"])
+        if (
+            "homogeneous_itemsize" in input_contract
+            and type(input_contract["homogeneous_itemsize"]) is not bool
+        ):
+            raise CodecContractError(
+                f"{path.name}.input homogeneous_itemsize must be boolean"
+            )
+        if (
+            "max_total_raw_bytes" in input_contract
+            and (
+                type(input_contract["max_total_raw_bytes"]) is not int
+                or input_contract["max_total_raw_bytes"] <= 0
+            )
+        ):
+            raise CodecContractError(
+                f"{path.name}.input max_total_raw_bytes must be a positive integer"
+            )
         if input_contract["min_n"] < 0 or input_contract["min_m"] < 0:
             raise CodecContractError(f"{path.name} has negative input bounds")
         semantics = document["semantics"]

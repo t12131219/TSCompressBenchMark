@@ -1,0 +1,66 @@
+{
+  "schema_version": "tscb.codec-manifest.v2",
+  "key": "huff0",
+  "identity": {
+    "display_name": "Huff0 (FiniteStateEntropy benchmark)",
+    "family": "HUFFMAN",
+    "citations": ["benchmark:Cyan4973/FiniteStateEntropy@9f30e091:programs/fullbench.c:HUF_compress"],
+    "source_artifact_id": "v2:source-artifact:sha256:1b62e728c33885fb38e25d490d0c13841018f265b4cbd4b2c8a3fadfa04b6773"
+  },
+  "classification": {
+    "object_level": "P1_STANDALONE_CODEC", "implementation_class": "CONVENTIONAL",
+    "tracks": ["VALUE"], "subtracks": ["V0"]
+  },
+  "input": {
+    "topologies": ["UTS", "SYNCHRONOUS_MTS", "NATIVE_ND_ARRAY"],
+    "dtypes": ["<i8", "<i4", "<i2", "|i1", "<u8", "<u4", "<u2", "|u1", "<f8", "<f4"],
+    "ranks": [1, 2, 3, 4],
+    "layouts": ["ROW_MAJOR_CONTIG", "COLUMN_MAJOR_CONTIG", "SOA_COLUMNS", "STRIDED_VIEW", "NOT_APPLICABLE"],
+    "endianness": ["little"], "alignment_bytes": 1,
+    "min_n": 0, "max_n": 8192, "min_m": 1, "max_m": 64,
+    "validity_shapes": ["NONE"], "value_coupling_mode": "FULL_MATRIX",
+    "timestamp_semantics": {
+      "preserve_order": true, "duplicates": true, "out_of_order": true,
+      "negative_delta": true, "absolute_epoch": true,
+      "overflow_policy": "NOT_APPLICABLE_BYTE_CODEC"
+    }
+  },
+  "semantics": {
+    "loss_modes": ["LOSSLESS"], "error_bound_types": [],
+    "reconstruction_modes": ["EXACT_GRID"],
+    "rebuild_protocol": "TSCB_BUFFER_DESCRIPTOR_CONTAINER_V1",
+    "preprocess_class": "NONE", "preprocess_stages": [],
+    "decodability_profile": "SELF_CONTAINED_TSCB_DESCRIPTOR_PLUS_HUFF0_BLOCK_WITH_RAW_FALLBACK",
+    "bitstream_separability": "INDEPENDENT"
+  },
+  "lifecycle": {
+    "block_semantics": "ONE_HUFF0_BLOCK_PER_ROUTED_OBJECT_MAX_128K_BYTES",
+    "state_semantics": "INDEPENDENT_CONTEXT_PER_REPETITION", "reset": "NEW_CONTEXT_REQUIRED",
+    "finalize": "REQUIRED_ZERO_BYTE_FINALIZE", "safe_overread_bytes": 0,
+    "tail_policy": "EXACT_LENGTH", "dictionary": "NONE", "model": "NONE", "index": "NONE"
+  },
+  "execution": {
+    "backends": ["C_ABI_V1"], "isa": ["SCALAR"], "devices": ["CPU"],
+    "threading": "SINGLE_THREAD", "fallback_policy": "DISALLOWED", "runtime_dispatch": false
+  },
+  "features": {"streaming": false, "query": false, "random_access": false},
+  "parameters": {
+    "type": "object", "additionalProperties": false,
+    "properties": {
+      "native_timing": {"type": "boolean", "default": true},
+      "block_size": {"type": "integer", "minimum": 1, "maximum": 1024, "default": 128},
+      "isa": {"type": "string", "enum": ["SCALAR"], "default": "SCALAR"}
+    }, "constraints": []
+  },
+  "adapter": {
+    "backend": "C_ABI_V1", "version": "huff0-ctypes-v1",
+    "factory": "ENTROPY_FSE_CTYPES_V1",
+    "artifact_path": "build/adapters/huff0/release/libtscb_huff0.so",
+    "timing_boundary": "PYTHON_FFI_CONTAINER_INCLUDED",
+    "native_timing_capability": {
+      "optional": true, "boundary": "CODEC_API_ONLY_V1", "clock": "CLOCK_MONOTONIC",
+      "excludes": ["CONTEXT_LIFECYCLE", "PYTHON_FFI_CONTAINER", "RAW_FALLBACK"]
+    },
+    "accounting_hooks": ["FINAL_STREAM_LENGTH", "EXACT_MODE_AND_LENGTH_HEADER", "OUTPUT_CAPACITY"]
+  }
+}

@@ -7,12 +7,15 @@ from tscompbench.execution.protocol import CodecAdapter
 
 from .brotli_stream import BrotliStreamAdapter
 from .deflate_zlib import DeflateZlibAdapter
+from .entropy_fse import EntropyAdapter
 from .lz4_frame import Lz4FrameAdapter
 from .lzss_raw import LzssRawAdapter
 from .lzsse2_raw import Lzsse2RawAdapter
 from .lzsse8_raw import Lzsse8RawAdapter
 from .oracles import OracleAdapter
 from .snappy_raw import SnappyRawAdapter
+from .sprintz import SprintzAdapter
+from .sprintz8 import Sprintz8Adapter
 from .xz_stream import XzStreamAdapter
 from .zstd_frame import ZstdFrameAdapter
 
@@ -32,6 +35,9 @@ def adapter_artifacts(project_root: Path, manifest: CodecManifest) -> tuple[Path
         raise AdapterFactoryError(f"{manifest.key} has no safe relative adapter artifact path")
     factory = adapter.get("factory")
     support_modules = {
+        "ENTROPY_FSE_CTYPES_V1": "entropy_fse.py",
+        "SPRINTZ_CTYPES_V1": "sprintz.py",
+        "SPRINTZ8_CTYPES_V1": "sprintz8.py",
         "BROTLI_STREAM_CTYPES_V1": "brotli_stream.py",
         "DEFLATE_ZLIB_CTYPES_V1": "deflate_zlib.py",
         "LZSS_RAW_CTYPES_V1": "lzss_raw.py",
@@ -53,6 +59,15 @@ def create_adapter(project_root: Path, manifest: CodecManifest) -> CodecAdapter:
     if manifest.document["identity"]["family"] == "HARNESS_ORACLE":
         return OracleAdapter(manifest_adapter=manifest.document["adapter"])
     adapter = manifest.document["adapter"]
+    if adapter.get("factory") == "ENTROPY_FSE_CTYPES_V1":
+        artifact, _ = adapter_artifacts(project_root, manifest)
+        return EntropyAdapter(artifact, adapter, manifest.key)
+    if adapter.get("factory") == "SPRINTZ8_CTYPES_V1":
+        artifact, _ = adapter_artifacts(project_root, manifest)
+        return Sprintz8Adapter(artifact, adapter, manifest.key)
+    if adapter.get("factory") == "SPRINTZ_CTYPES_V1":
+        artifact, _ = adapter_artifacts(project_root, manifest)
+        return SprintzAdapter(artifact, adapter, manifest.key)
     if adapter.get("factory") == "BROTLI_STREAM_CTYPES_V1":
         artifact, _ = adapter_artifacts(project_root, manifest)
         return BrotliStreamAdapter(artifact, manifest.document["adapter"])

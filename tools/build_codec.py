@@ -5,6 +5,7 @@ import hashlib
 import json
 import os
 import shlex
+import shutil
 import subprocess
 from pathlib import Path
 from typing import Any
@@ -66,6 +67,162 @@ def _lz4_command(output: Path, profile: str) -> list[str]:
         str(vendor / "xxhash.c"),
         "-o",
         str(output),
+    ]
+
+
+def _entropy_command(output: Path, profile: str, algorithm: str) -> list[str]:
+    vendor = PROJECT_ROOT / "adapters/entropy_fse/vendor/lib"
+    flags = ["-std=c11", "-fPIC", "-Wall", "-Wextra", "-Werror"]
+    if profile == "release":
+        flags += ["-O3", "-DNDEBUG"]
+    elif profile == "sanitizer":
+        flags += ["-O1", "-g", "-fno-omit-frame-pointer", "-fsanitize=address,undefined"]
+    else:
+        raise ValueError(f"unknown build profile: {profile}")
+    return [
+        os.environ.get("CC", "cc"), *flags, "-shared", "-fno-common",
+        f"-DTSCB_HUFF0={int(algorithm == 'huff0')}",
+        "-I", str(PROJECT_ROOT / "native/include"), "-I", str(vendor),
+        str(PROJECT_ROOT / "adapters/entropy_fse/native/tscb_entropy.c"),
+        *(str(vendor / name) for name in (
+            "fse_compress.c", "fse_decompress.c", "huf_compress.c",
+            "huf_decompress.c", "entropy_common.c", "hist.c",
+        )), "-o", str(output),
+    ]
+
+
+def _sprintz_command(output: Path, profile: str, algorithm: str) -> list[str]:
+    adapter = PROJECT_ROOT / "adapters/sprintz"
+    vendor = adapter / "vendor/sprintz"
+    patch = adapter / "patches/0001-lowdim-byte-safety.patch"
+    target = output.parent / "sprintz"
+    target.mkdir(parents=True, exist_ok=True)
+    for name in ("sprintz_delta_lowdim.cpp", "sprintz_xff_lowdim.cpp", "bitpack.h"):
+        shutil.copy2(vendor / name, target / name)
+    directory = str(output.parent.relative_to(PROJECT_ROOT))
+    _run(["git", "apply", "--check", f"--directory={directory}", str(patch)])
+    _run(["git", "apply", f"--directory={directory}", str(patch)])
+    flags = ["-std=c++17", "-fPIC", "-Wno-ignored-attributes", "-w",
+             "-mavx2", "-mbmi2", "-mlzcnt"]
+    if profile == "release":
+        flags += ["-O3", "-DNDEBUG"]
+    elif profile == "sanitizer":
+        flags += ["-O1", "-g", "-fno-omit-frame-pointer", "-fsanitize=address,undefined"]
+    else:
+        raise ValueError(f"unknown build profile: {profile}")
+    return [
+        os.environ.get("CXX", "c++"), *flags, "-shared", "-Wl,-Bsymbolic-functions",
+        f"-DTSCB_SPRINTZ_FIRE={int(algorithm == 'sprintz-fire-u8')}",
+        "-I", str(PROJECT_ROOT / "native/include"), "-I", str(vendor),
+        str(adapter / "native/tscb_sprintz8.cc"),
+        str(adapter / "native/bounded_lowdim.cc"),
+        str(target / "sprintz_delta_lowdim.cpp"),
+        str(target / "sprintz_xff_lowdim.cpp"), "-o", str(output),
+    ]
+
+
+def _sprintz_full_command(output: Path, profile: str, algorithm: str) -> list[str]:
+    adapter = PROJECT_ROOT / "adapters/sprintz"
+    vendor = adapter / "vendor/sprintz"
+    patches = (
+        adapter / "patches/0001-lowdim-byte-safety.patch",
+        adapter / "patches/0002-generic-allocation-safety.patch",
+    )
+    target = output.parent / "sprintz"
+    target.mkdir(parents=True, exist_ok=True)
+    sources = (
+        "sprintz.cpp",
+        "sprintz_delta_lowdim.cpp",
+        "sprintz_xff_lowdim.cpp",
+        "sprintz_delta_rle.cpp",
+        "sprintz_xff_rle.cpp",
+        "format.cpp",
+    )
+    for name in (*sources, "bitpack.h"):
+        shutil.copy2(vendor / name, target / name)
+    directory = str(output.parent.relative_to(PROJECT_ROOT))
+    for patch in patches:
+        _run(["git", "apply", "--check", f"--directory={directory}", str(patch)])
+        _run(["git", "apply", f"--directory={directory}", str(patch)])
+    flags = [
+        "-std=c++17", "-fPIC", "-Wno-ignored-attributes", "-w",
+        "-mavx2", "-mbmi2", "-mlzcnt", "-fno-strict-aliasing",
+    ]
+    if profile == "release":
+        flags += ["-O3", "-DNDEBUG"]
+    elif profile == "sanitizer":
+        flags += [
+            "-O1", "-g", "-fno-omit-frame-pointer", "-fsanitize=address,undefined",
+            "-fno-sanitize=alignment",
+        ]
+    else:
+        raise ValueError(f"unknown build profile: {profile}")
+    return [
+        os.environ.get("CXX", "c++"), *flags, "-shared", "-Wl,-Bsymbolic-functions",
+        f"-DTSCB_SPRINTZ_FIRE={int(algorithm == 'sprintz-fire')}",
+        "-I", str(PROJECT_ROOT / "native/include"), "-I", str(target), "-I", str(vendor),
+        str(adapter / "native/tscb_sprintz.cc"),
+        str(adapter / "native/bounded_sprintz.cc"),
+        *(str(target / name) for name in sources),
+        "-o", str(output),
+    ]
+
+
+def _sprintz_fire_huff0_command(output: Path, profile: str) -> list[str]:
+    adapter = PROJECT_ROOT / "adapters/sprintz"
+    vendor = adapter / "vendor/sprintz"
+    entropy = PROJECT_ROOT / "adapters/entropy_fse/vendor/lib"
+    patches = (
+        adapter / "patches/0001-lowdim-byte-safety.patch",
+        adapter / "patches/0002-generic-allocation-safety.patch",
+        adapter / "patches/0003-fire-prediction-overflow.patch",
+    )
+    target = output.parent / "sprintz"
+    target.mkdir(parents=True, exist_ok=True)
+    sprintz_sources = (
+        "sprintz.cpp",
+        "sprintz_delta_lowdim.cpp",
+        "sprintz_xff_lowdim.cpp",
+        "sprintz_delta_rle.cpp",
+        "sprintz_xff_rle.cpp",
+        "format.cpp",
+    )
+    entropy_sources = (
+        "fse_compress.c",
+        "fse_decompress.c",
+        "huf_compress.c",
+        "huf_decompress.c",
+        "entropy_common.c",
+        "hist.c",
+    )
+    for name in (*sprintz_sources, "bitpack.h"):
+        shutil.copy2(vendor / name, target / name)
+    directory = str(output.parent.relative_to(PROJECT_ROOT))
+    for patch in patches:
+        _run(["git", "apply", "--check", f"--directory={directory}", str(patch)])
+        _run(["git", "apply", f"--directory={directory}", str(patch)])
+    flags = [
+        "-std=c++17", "-fPIC", "-Wno-ignored-attributes", "-w",
+        "-mavx2", "-mbmi2", "-mlzcnt", "-fno-strict-aliasing",
+    ]
+    if profile == "release":
+        flags += ["-O3", "-DNDEBUG"]
+    elif profile == "sanitizer":
+        flags += [
+            "-O1", "-g", "-fno-omit-frame-pointer", "-fsanitize=address,undefined",
+            "-fno-sanitize=alignment",
+        ]
+    else:
+        raise ValueError(f"unknown build profile: {profile}")
+    return [
+        os.environ.get("CXX", "c++"), *flags, "-shared", "-Wl,-Bsymbolic-functions",
+        "-I", str(PROJECT_ROOT / "native/include"), "-I", str(target),
+        "-I", str(vendor), "-I", str(entropy),
+        str(adapter / "native/tscb_sprintz_fire_huff0.cc"),
+        str(adapter / "native/bounded_sprintz.cc"),
+        *(str(target / name) for name in sprintz_sources),
+        *(str(entropy / name) for name in entropy_sources),
+        "-o", str(output),
     ]
 
 
@@ -441,6 +598,60 @@ def _build(algorithm: str, profile: str) -> dict[str, Any]:
     dependency_log = ""
     if algorithm == "lz4-frame":
         command = _lz4_command(output, profile)
+    elif algorithm in ("huff0", "fse"):
+        command = _entropy_command(output, profile, algorithm)
+    elif algorithm in ("sprintz-delta-u8", "sprintz-fire-u8"):
+        command = _sprintz_command(output, profile, algorithm)
+        dependency_evidence = {
+            "patch_sha256": _sha256(
+                PROJECT_ROOT / "adapters/sprintz/patches/0001-lowdim-byte-safety.patch"
+            ),
+            "patched_translation_unit_sha256": [
+                _sha256(output_dir / "sprintz" / name)
+                for name in ("sprintz_delta_lowdim.cpp", "sprintz_xff_lowdim.cpp")
+            ],
+        }
+    elif algorithm in ("sprintz-delta", "sprintz-fire"):
+        command = _sprintz_full_command(output, profile, algorithm)
+        dependency_evidence = {
+            "patch_sha256": [
+                _sha256(PROJECT_ROOT / "adapters/sprintz/patches" / name)
+                for name in (
+                    "0001-lowdim-byte-safety.patch",
+                    "0002-generic-allocation-safety.patch",
+                )
+            ],
+            "patched_translation_unit_sha256": [
+                _sha256(output_dir / "sprintz" / name)
+                for name in (
+                    "sprintz.cpp", "sprintz_delta_lowdim.cpp", "sprintz_xff_lowdim.cpp",
+                    "sprintz_delta_rle.cpp", "sprintz_xff_rle.cpp", "format.cpp",
+                )
+            ],
+        }
+    elif algorithm == "sprintz-fire-huff0":
+        command = _sprintz_fire_huff0_command(output, profile)
+        dependency_evidence = {
+            "source_artifact_dependencies": [
+                "sprintz-lzbench",
+                "entropy-fse-benchmark",
+            ],
+            "patch_sha256": [
+                _sha256(PROJECT_ROOT / "adapters/sprintz/patches" / name)
+                for name in (
+                    "0001-lowdim-byte-safety.patch",
+                    "0002-generic-allocation-safety.patch",
+                    "0003-fire-prediction-overflow.patch",
+                )
+            ],
+            "patched_translation_unit_sha256": [
+                _sha256(output_dir / "sprintz" / name)
+                for name in (
+                    "sprintz.cpp", "sprintz_delta_lowdim.cpp", "sprintz_xff_lowdim.cpp",
+                    "sprintz_delta_rle.cpp", "sprintz_xff_rle.cpp", "format.cpp",
+                )
+            ],
+        }
     elif algorithm == "zstd-frame":
         command = _zstd_command(output, profile)
     elif algorithm == "snappy-raw":
@@ -515,6 +726,8 @@ def main() -> int:
     parser.add_argument(
         "algorithm",
         choices=(
+            "huff0", "fse", "sprintz-delta-u8", "sprintz-fire-u8",
+            "sprintz-delta", "sprintz-fire", "sprintz-fire-huff0",
             "lz4-frame", "zstd-frame", "snappy-raw", "lzsse2-raw", "brotli-stream",
             "deflate-zlib", "xz-stream", "lzss-raw", "lzsse8-raw"
         ),

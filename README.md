@@ -35,6 +35,33 @@ Use the supplied environment:
 
 ```bash
 PYTHONPATH=src conda run -n CompressBench14 python -m pytest
+conda run -n CompressBench14 python tools/generate_sprintz_fixture.py
+conda run -n CompressBench14 python tools/build_codec.py sprintz-delta-u8 --profile all
+conda run -n CompressBench14 python tools/build_codec.py sprintz-fire-u8 --profile all
+conda run -n CompressBench14 python tools/qualify_sprintz_native.py
+PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
+  configs/experiments/sprintz-u8-qualification.toml --output-root runs
+PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
+  configs/experiments/sprintz-u8-formal.toml --output-root runs
+PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run report \
+  configs/experiments/sprintz-u8-formal.toml --output-root runs \
+  --run-set-id <existing-run-set-id> --resume
+conda run -n CompressBench14 python tools/generate_sprintz_i16_mts_fixture.py
+conda run -n CompressBench14 python tools/build_codec.py sprintz-delta --profile all
+conda run -n CompressBench14 python tools/build_codec.py sprintz-fire --profile all
+conda run -n CompressBench14 python tools/qualify_sprintz.py
+PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
+  configs/experiments/sprintz-qualification.toml --output-root runs
+PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
+  configs/experiments/sprintz-formal.toml --output-root runs
+PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run report \
+  configs/experiments/sprintz-formal.toml --output-root runs \
+  --run-set-id <existing-run-set-id> --resume
+PYTHONPATH=src conda run -n CompressBench14 python tools/build_codec.py huff0 --profile all
+PYTHONPATH=src conda run -n CompressBench14 python tools/build_codec.py fse --profile all
+PYTHONPATH=src conda run -n CompressBench14 python tools/qualify_entropy_fse.py
+PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
+  configs/experiments/entropy-fse-formal.toml --output-root runs
 PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench datasets verify
 PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench codecs verify
 PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench codecs classify-sources
@@ -97,7 +124,36 @@ PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
 
 The package can also be invoked with `PYTHONPATH=src` without installing it.
 
-Native codec API timings are enabled by default for LZ4, Zstd, Snappy, Brotli, DEFLATE, XZ, LZSS, and LZSSE8.
+Sprintz is registered through the two codec APIs actually exposed upstream:
+`sprintz-delta` and `sprintz-fire` (FIRE is named XFF in parts of lzbench).
+Both admit homogeneous signed/unsigned 8-bit and little-endian 16-bit integer
+UTS or synchronous MTS with 1--128 dimensions on AVX2/BMI2/LZCNT. The older
+`sprintz-delta-u8` and `sprintz-fire-u8` IDs preserve the earlier restricted
+single-channel evidence; they are not aliases for the expanded codecs. There
+is no predictor-neutral upstream Sprintz API from which an honest single
+`sprintz` AlgorithmID could be derived. Both registered datasets are synthetic
+and their generated NPZ files are intentionally ignored by Git. See the
+[Sprintz admission review](docs/sprintz_admission_review.md) for source hashes,
+safety patches, residual limitations and five-layer evidence.
+
+The paper-defined full pipeline is separately registered as `sprintz-fire-huff0`
+(`P2_PIPELINE`): FIRE/XFF prediction, Sprintz bit packing and zero-block RLE, followed
+by one Huff0 block. It supports the same integer UTS/MTS domain but limits canonical
+raw input to 120 KiB so the entropy stage remains a single bounded block. Raw and
+constant Huff0 outcomes are explicit, charged modes. See the
+[SprintzFIRE+Huf admission review](docs/sprintz_fire_huff0_admission_review.md).
+
+```bash
+conda run -n CompressBench14 python tools/qualify_sprintz_fire_huff0.py
+PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
+  configs/experiments/sprintz-fire-huff0-qualification.toml --output-root runs
+PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
+  configs/experiments/sprintz-fire-huff0-formal.toml --output-root runs
+```
+
+Native codec API timings are enabled by default for LZ4, Zstd, Snappy, Brotli, DEFLATE,
+XZ, LZSS, LZSSE8, Huff0, FSE, Sprintz-Delta, Sprintz-FIRE and SprintzFIRE+Huf (including the
+historical restricted u8 registrations).
 Disable them with `native_timing = [false]` in `[sweep]`. They supplement CORE and
 PIPELINE rather than replacing the selected timing scope. See
 [native codec timing](docs/native_codec_timing.md) and the formal example in
