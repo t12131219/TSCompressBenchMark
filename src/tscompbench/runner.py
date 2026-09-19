@@ -374,8 +374,21 @@ def plan_run_set(
         resolved_config_documents: dict[str, dict[str, Any]] = {}
         codec_documents: list[dict[str, Any]] = []
         source_documents: dict[str, dict[str, Any]] = {}
+        requested_aliases = [
+            item for item in codec_registry.alias_documents()
+            if item["key"] in run_set.config.algorithms
+        ]
+        if requested_aliases:
+            _write_or_verify_json(run_set.path / "codec_alias_snapshot.json", {
+                "schema_version": "tscb.codec-alias-snapshot.v2",
+                "aliases": requested_aliases,
+            })
+        planned_codec_keys: set[str] = set()
         for algorithm_key in run_set.config.algorithms:
             manifest = codec_registry.get(algorithm_key)
+            if manifest.key in planned_codec_keys:
+                continue
+            planned_codec_keys.add(manifest.key)
             source_documents[manifest.source_artifact_id] = codec_registry.sources.get(
                 manifest.source_artifact_id
             )

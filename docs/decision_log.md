@@ -223,3 +223,143 @@ and no external dictionary or checksum. Brotli stream bytes are counted exactly 
 routed data bucket, while descriptor and prefix bits remain metadata/container bits.
 Because the stream, dictionary, and finalize contracts differ, Brotli has separate
 Semantic, Execution, and Resource keys from both LZ4/Zstd frames and Snappy raw.
+
+## D025 DEFLATE keeps the benchmark's zlib envelope and exposes Z_FINISH
+
+Spreadsheet-listed CPU DEFLATE is implemented using zlib 1.3.2 vendored by the pinned
+lzbench checkout, rather than mixing upstream or libdeflate sources. lzbench uses
+compress2/uncompress, which produce/consume RFC1950 zlib streams containing RFC1951
+DEFLATE; this is neither raw DEFLATE nor gzip. The registered `deflate-zlib` defaults
+are level 6, windowBits 15, memLevel 8, default strategy, no preset dictionary, one
+CPU thread and mandatory Adler32. Nondefault registered levels/windows have separate
+ConfigIDs; raw/gzip/dictionary/strategy variants are unregistered.
+
+The C shim uses Z_NO_FLUSH followed by Z_FINISH until Z_STREAM_END, making update and
+Finalize observable and timed. The decoder creates fresh inflate state and requires
+exact decoded length plus complete input consumption. The TSCB descriptor supplies
+decoded allocation length independently of encoder state. Prefix and zlib header are
+container bits, descriptor JSON is metadata, Adler32 is checksum, and all physical
+DEFLATE bytes are routed payload bits. Different envelope/decodability/lifecycle
+contracts keep its Semantic/Execution/Resource groups separate from the other formats.
+Native timing is API-only and explicitly not lzbench-equivalent; pipeline includes the
+Python container, lifecycle and accounting. The local upstream comparison is 1.3.2.1
+and remains comparison evidence, not an implicit baseline upgrade.
+
+The ELF build uses `-Wl,-Bsymbolic-functions` to bind internal zlib calls to the
+vendored library, not a competing globally loaded implementation. A deliberately
+failing deflateInit2_ loaded with LD_PRELOAD reproduced the original binding risk;
+the final build passes the same ABI smoke under that interference. `ldd` shows only
+libc/loader dependencies, not a system libz dependency. Earlier runs are retained but
+the admission evidence refers to the final symbol-bound build.
+
+## D026 XZ uses a bounded single-call stream and charges its index
+
+Spreadsheet Value-Compress!B9 lists LZMA / xz. `xz-stream` uses lzbench's unmodified
+xz 5.8.3 closure, preset 6 by default (0-9 registered), one scalar CPU thread and
+LZMA_CHECK_NONE. Mandatory structural CRC32 remains charged. Internal LZMA2 history
+is not an external dictionary; serialized properties remain metadata.
+
+lzbench uses MT stream APIs and CONCATENATED | IGNORE_CHECK decoder flags. These
+choices do not satisfy the registered strict single-thread object contract and are
+not copied. lzma_easy_buffer_encode has the documented lzma_stream_buffer_bound
+contract and completes all block/index/footer work in the call. Mandatory project
+Finalize acknowledges completion with zero bytes and no new native API timing;
+repetition is rejected. This is not streaming support. Fresh-context decoder flags
+0 require exact consumed/produced lengths. Python independently validates the
+registered zero/one-block LZMA2 format before allocation.
+
+TSCB/XZ envelope, descriptor/block metadata, index, structural checksums, block
+alignment and payload have exact non-overlapping buckets. Internal header/index
+padding stays in its field; index presence does not imply random access/query.
+Different format/lifecycle contracts retain separate comparison keys. Native timing
+includes intrinsic encode allocation/finish, but is not lzbench-equivalent. Static
+PIC liblzma with local ELF binding passes a globally competing symbol test.
+
+Initial diagnostic runs rejected an inherited DEFLATE window_bits sweep despite
+the CLI envelope's PASS. Admission is based on raw task eligibility and report
+coverage, not exit alone. The sweep was corrected, config regression tests added,
+and all ten final repetitions checked. Rejected runsets remain append-only.
+
+## D027 LZ77's zlib mapping is not a second independent codec
+
+Original spreadsheet Value-Compress rows 2 (LZ77) and 4 (DEFLATE) both reference
+madler/zlib and RFC1951. The analysis explicitly implements LZ77 through zlib.
+Source review finds dictionary matching in deflate.c and Huffman block output in
+trees.c; the benchmark entry calls compress2/uncompress. There is no independently
+serialized pure LZ77 object specified by this mapping.
+
+The plan requires distinguishing logical asset names from executable primitives,
+codecs and pipelines. Shared checkout alone is not enough to justify a new codec:
+here the entire selected executable contract is identical, not a distinct use of
+the same repository. `lz77` therefore resolves to `deflate-zlib`, with the same
+AlgorithmID, SourceArtifactID, ConfigIDs and execution/comparison keys. A separate
+closed/pinned audit record carries logical-name evidence and CodecAliasID. Canonical
+registry enumeration/counts/rankings remain unchanged. Both names in a config
+produce one canonical task, and alias evidence is frozen and checked on resume.
+
+No new vendor tree, shim or baseline upgrade is needed. The existing native source
+was compared and revalidated, then the selectable mapping passed Layers 1-5 with
+new raw evidence. Reports retain the real DEFLATE identity. Isolated matching
+would be P0; an independently decodable pure LZ77 stream would require separate
+source/format admission. Neither is falsely marked qualified by this change.
+
+## D028 Spreadsheet LZSS retains the original Rust wire format, not LZSSE
+
+The master plan and Value-Compress row 3 identify alexkazik/lzss. Local source
+review finds pure Rust 0.9.1, not a C/C++ library. The analysis's independent
+lzbench LZSS claim is unsupported: its registered LZSSE2/4/8 entries use different
+formats. Benchmark-first sourcing is a preference, not authority to substitute
+another implementation. The spreadsheet source's own Criterion benchmark informs
+EI10/EJ4 parameters; its timing/summary loop is not imported. Python drives original
+source through C ABI, as allowed by plan section 4, without prematurely rewriting it.
+
+The fixed generic safe/std/alloc stack API is a separate P1 byte-view variant.
+Its versioned descriptor container includes all shape/dtype/length/channel metadata;
+the initial 0x20 dictionary window is fixed public format knowledge, not side data.
+BitWriter.flush runs inside compression, and mandatory zero-byte Finalize records
+completion. Native auxiliary timing surrounds original source API calls inside
+the bridge, excluding bridge preparation/error handling, explicit validation and
+Python work. Initial bridge-inclusive measurements remain retained and superseded.
+
+Original EOF-tolerant decoding alone is insufficient: independent Python/native
+validators require complete tokens, exact output length and at most seven zero
+tail bits. They supplement, not replace, the original decoder. Token and padding
+bits are charged separately with one final rounding. No checksum does not imply
+general corruption detection; common benchmark correctness still validates all bits.
+
+Offline builds preserve original library/generator/tests and pinned void 1.0.2.
+Rust codec/FFI ASan and C++ ASan/UBSan are real; prebuilt std is uninstrumented and
+LSan disabled. void's declared MIT archive lacks license text, so local running is
+allowed but redistribution requires review. Alternate parameters/family members,
+query/continuous streaming and future C/C++ rewrites remain unqualified. The final
+five-layer evidence and admitted coverage are recorded in docs/lzss_raw_self_check.md.
+
+
+## D029 LZSSE8 is an explicitly requested separate SSE codec
+
+The user explicitly requested LZSSE8 on 2026-09-18. This is a scoped exception
+to the spreadsheet-only selection rule: spreadsheet LZSS still means alexkazik/lzss,
+not this format. LZSSE8 Optimal Parse from lzbench commit
+`fa871e66b3543a70fd4d060f7c12719343ff4ac3`, level12, single-thread SSE4.1, receives
+its own AlgorithmID/source/adapter and all three comparison keys. Fast and the
+existing unfinished LZSSE2 are not admitted by this work.
+
+Only five needed source/license/reference files are copied. Vendor bytes remain
+unchanged; a hashed patch is applied out of tree for allocation failure, unaligned
+integer access and pointer-safe buffer thresholds. Neither codec logic nor its
+wire format is rewritten. Direct original-source comparisons are distinct from
+project safety tests; no absent upstream test suite is claimed as passed.
+
+The raw-length equality mode is intrinsic to LZSSE8, not a hidden alternate codec.
+The unique container includes dtype/shape/length/channel descriptors and an explicit
+raw-storage flag, all charged. Structural validation proves length/offset/tail and
+SIMD load/store bounds before calling the native decoder. No checksum is invented.
+
+Python retains standard enforcement, Track routing, eligibility and all five layers.
+Native timing includes actual compression/decompression APIs (even empty inputs),
+but not state lifecycle or structural prevalidation. CORE includes wrapper/FFI/container
+work, and zero-byte Finalize is required without adding native API time. SSE4.1 is
+now explicitly mapped to the runtime CPU flag; unavailable ISA is not scalar fallback.
+The supplied qualification/formal configs fix CPU0 on this host; this affinity is
+machine-specific and must be reviewed on another host. Formal evidence must follow
+the completed regression/sanitizer sessions and satisfy every raw repetition gate.

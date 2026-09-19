@@ -20,8 +20,13 @@ Pareto/ranking/coverage views plus machine and human-readable reports.
 The source collection remains read-only under
 `/home/fzg/PycharmProjects/Compression_Source_Code/Source_Code`. Phase 4 copies only the
 reviewed translation-unit closure needed by an adapter. The native codecs are LZ4 Frame
-1.10.0, Zstd Frame 1.5.7, Snappy Raw 1.2.2, and Brotli Stream 1.2.0, all taken from
-lzbench's vendored sources at a pinned commit. Their source, license, build, ABI,
+1.10.0, Zstd Frame 1.5.7, Snappy Raw 1.2.2, Brotli Stream 1.2.0, zlib DEFLATE
+1.3.2 (`deflate-zlib`, RFC1950 wrapper), and XZ LZMA2 5.8.3 (`xz-stream`, single-call), taken from
+lzbench's vendored sources at a pinned commit. LZSS 0.9.1 (`lzss-raw`) uses the
+spreadsheet's original alexkazik Rust implementation, driven through the same C ABI;
+lzbench's different LZSSE formats are not substituted. The explicitly requested
+LZSSE8 Optimal Parse (`lzsse8-raw`, level 12, SSE4.1) is registered separately,
+with immutable lzbench source and a hashed build-time safety patch. Their source, license, build, ABI,
 accounting, and five-layer evidence are recorded under `registry/onboarding`.
 
 ## Environment
@@ -51,6 +56,18 @@ conda run -n CompressBench14 python tools/build_codec.py lz4-frame --profile all
 conda run -n CompressBench14 python tools/build_codec.py zstd-frame --profile all
 conda run -n CompressBench14 python tools/build_codec.py snappy-raw --profile all
 conda run -n CompressBench14 python tools/build_codec.py brotli-stream --profile all
+conda run -n CompressBench14 python tools/build_codec.py deflate-zlib --profile all
+conda run -n CompressBench14 python adapters/deflate_zlib/tests/run_native_tests.py
+conda run -n CompressBench14 python tools/build_codec.py xz-stream --profile all
+conda run -n CompressBench14 python adapters/xz_stream/tests/run_native_tests.py
+conda run -n CompressBench14 python tools/build_codec.py lzss-raw --profile all
+conda run -n CompressBench14 python tools/qualify_lzss.py
+conda run -n CompressBench14 python tools/build_codec.py lzsse8-raw --profile all
+conda run -n CompressBench14 python tools/qualify_lzsse8.py
+PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
+  configs/experiments/lzsse8-raw-qualification.toml --output-root runs
+PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
+  configs/experiments/lzsse8-raw-formal.toml --output-root runs
 PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
   configs/experiments/lz4-frame-qualification.toml --output-root runs
 PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
@@ -59,6 +76,10 @@ PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
   configs/experiments/snappy-raw-qualification.toml --output-root runs
 PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
   configs/experiments/brotli-stream-qualification.toml --output-root runs
+PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
+  configs/experiments/deflate-zlib-qualification.toml --output-root runs
+PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
+  configs/experiments/xz-stream-qualification.toml --output-root runs
 
 # A FORMAL run uses >=3 warmups, >=0.5 s warmup time, 10 raw repetitions,
 # and >=1 s of selected-scope work in every repetition.
@@ -68,15 +89,46 @@ PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
   configs/experiments/snappy-lz4-zstd-formal-comparison.toml --output-root runs
 PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
   configs/experiments/brotli-stream-formal.toml --output-root runs
+PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
+  configs/experiments/deflate-zlib-formal.toml --output-root runs
+PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
+  configs/experiments/xz-stream-formal.toml --output-root runs
 ```
 
 The package can also be invoked with `PYTHONPATH=src` without installing it.
 
-Native codec API timings are enabled by default for LZ4, Zstd, Snappy, and Brotli.
+Native codec API timings are enabled by default for LZ4, Zstd, Snappy, Brotli, DEFLATE, XZ, LZSS, and LZSSE8.
 Disable them with `native_timing = [false]` in `[sweep]`. They supplement CORE and
 PIPELINE rather than replacing the selected timing scope. See
 [native codec timing](docs/native_codec_timing.md) and the formal example in
 `configs/experiments/native-timing-formal-comparison.toml`.
+
+XZ uses one single-call LZMA2 stream, preset 6, one CPU thread, no data check and
+mandatory structural CRC32. Its index and headers are fully charged. Finalize is a
+mandatory zero-byte acknowledgement, not streaming support. Raw LZMA/.lzma, EXTREME,
+BCJ/delta and multithreading are not registered. See [XZ self-check](docs/xz_stream_self_check.md).
+
+The spreadsheet's `LZ77` row points to zlib/RFC1951, the same executable codec as
+DEFLATE. Select `algorithms = ["lz77"]` to use its audited mapping to `deflate-zlib`.
+This measures complete DEFLATE (dictionary matching plus Huffman), not pure LZ77.
+Selecting both names generates one canonical task, not duplicate ranking entries.
+`codecs list` discloses mappings separately; runs freeze codec_alias_snapshot.json.
+See [LZ77 mapping self-check](docs/lz77_self_check.md).
+
+LZSS fixes EI=10/EJ=4/initial byte 0x20, upstream safe code and stack work buffers.
+Its one-shot call flushes bits internally; mandatory Finalize acknowledges completion
+with zero bytes. Exact token/decoded-length/zero-tail validation supplements upstream
+EOF tolerance, and all descriptors/token/padding bytes are charged. Alternative LZSS
+parameters, LZSSE, streaming and query are not qualified by this variant. See
+[LZSS five-layer self-check](docs/lzss_raw_self_check.md), including sanitizer coverage
+and the void dependency's redistribution-review limitation.
+
+```bash
+PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
+  configs/experiments/lz77-qualification.toml --output-root runs
+PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
+  configs/experiments/lz77-formal.toml --output-root runs
+```
 
 ## Layer 1 invariants
 
@@ -173,3 +225,5 @@ PIPELINE rather than replacing the selected timing scope. See
   visually adjacent points remain directly comparable.
 - Every summary carries its RunIDs, input/bitstream/canonical hashes, SourceArtifactID,
   adapter/binary hash, EnvironmentID, ConfigID, ExecutionPathHash, and comparison keys.
+
+LZSSE8 evidence and limitations: [five-layer self-check](docs/lzsse8_raw_self_check.md).

@@ -1,0 +1,108 @@
+{
+  "schema_version": "tscb.source-onboarding.v2",
+  "source_artifact_id": "v2:source-artifact:sha256:488e8ce467a7dba0196f8ba1ece20ba03be7167eefa3ab09c79bb914219c5518",
+  "repository": "https://github.com/inikep/lzbench.git",
+  "commit": "fa871e66b3543a70fd4d060f7c12719343ff4ac3",
+  "dirty": false,
+  "submodules": [],
+  "implementation_files": [
+    "lz/zlib/adler32.c", "lz/zlib/compress.c", "lz/zlib/crc32.c",
+    "lz/zlib/deflate.c", "lz/zlib/gzclose.c", "lz/zlib/gzlib.c",
+    "lz/zlib/gzread.c", "lz/zlib/gzwrite.c", "lz/zlib/infback.c",
+    "lz/zlib/inffast.c", "lz/zlib/inflate.c", "lz/zlib/inftrees.c",
+    "lz/zlib/trees.c", "lz/zlib/uncompr.c", "lz/zlib/zutil.c"
+  ],
+  "public_api_files": ["lz/zlib/zlib.h", "lz/zlib/zconf.h"],
+  "benchmark_files": ["bench/lz_codecs.cpp", "bench/lzbench.h", "Makefile"],
+  "test_files": [
+    "adapters/deflate_zlib/tests/abi_smoke.c",
+    "adapters/deflate_zlib/tests/vendor_roundtrip.c",
+    "adapters/deflate_zlib/tests/run_native_tests.py",
+    "adapters/deflate_zlib/tests/symbol_interposition.c",
+    "tests/adapters/test_deflate_zlib.py"
+  ],
+  "license_files": ["lz/zlib/LICENSE"],
+  "third_party_dependencies": [],
+  "object_level_candidates": ["P1_STANDALONE_CODEC"],
+  "input_contract": {
+    "kind": "BYTE_VIEW",
+    "length_type": "uInt",
+    "zero_length": "SUPPORTED",
+    "ownership": "BORROWED_DURING_CALL",
+    "mutation": "FORBIDDEN_BY_ADAPTER_CONTRACT"
+  },
+  "output_contract": {
+    "kind": "RFC1950_ZLIB_WITH_RFC1951_DEFLATE_IN_TSCB_DESCRIPTOR_CONTAINER",
+    "self_contained": true,
+    "actual_written_length": true,
+    "capacity_is_not_size": true,
+    "framing": "RFC1950_ZLIB",
+    "checksum": "ADLER32_MANDATORY",
+    "dictionary": "NONE"
+  },
+  "lifecycle_contract": {
+    "output_bound": "deflateBound on configured live encoder; bounds above UINT_MAX are unsupported",
+    "return_length": "Actual total_out deltas for update and finish; capacity is never charged",
+    "error_codes": "Stable tscb_status_v1; capacity exhaustion is DST_TOO_SMALL; malformed/truncated/nonexact streams are CODEC_ERROR",
+    "update": "One deflate call with Z_NO_FLUSH and complete input consumption",
+    "finalize": "Loop deflate with Z_FINISH until Z_STREAM_END; repeated finalize rejected",
+    "decode": "Fresh inflateInit2 context; inflate must reach Z_STREAM_END, consume all input and produce the exact descriptor length",
+    "reset": "NEW_CONTEXT_PER_INDEPENDENT_OBJECT; C ABI reset reinitializes encoder and clears timing counters"
+  },
+  "stream_components": {
+    "outer_container": "TSCB 12-byte prefix and canonical JSON buffer descriptors",
+    "header": "Two RFC1950 CMF/FLG bytes charged to container_bits",
+    "payload": "All RFC1951 bytes charged to routed data bucket, including internal bit padding",
+    "checksum": "Four Adler32 bytes charged to checksum_bits",
+    "accounting": "EXACT_TSCB_CONTAINER_ZLIB_ENVELOPE_AND_DEFLATE_LENGTH"
+  },
+  "upstream_tests": [
+    {
+      "name": "benchmark-vendored zlib API deterministic roundtrip harness",
+      "command": "conda run -n CompressBench14 python adapters/deflate_zlib/tests/run_native_tests.py",
+      "status": "PASS",
+      "evidence": "compress2/uncompress passed 100 deterministic cases (seed 20260918), levels 0-9, Release and ASan/UBSan; project harness, not a claim that the upstream test suite was run"
+    },
+    {
+      "name": "project C ABI lifecycle smoke",
+      "command": "run_native_tests.py: abi_smoke.c in Release and ASan/UBSan",
+      "status": "PASS",
+      "evidence": "N=0/1/2/65535/65536/65537/131073; independent decode, checksum rejection, reset/reuse, bound, timed update/finalize/decode, finalize-required/repeated-finalize and insufficient-capacity rejection"
+    }
+  ],
+  "builds": [
+    {
+      "profile": "RELEASE_SCALAR_SINGLE_THREAD",
+      "artifact_sha256": "c4c61655f2513661a8e6766025b45a1790ddc2ed8837b18ce2974a0c3d19aeb7",
+      "compile_commands_sha256": "e722f3b06818a809a4ff99b6473f16ac8c596f5c3dfad7ee0fce76a9907e27c6",
+      "compiler": "GCC 11.4.0",
+      "flags": "-O3 -DNDEBUG -std=c11 -fPIC -DZ_HAVE_UNISTD_H -Wall -Wextra -Werror -Wl,-Bsymbolic-functions"
+    },
+    {
+      "profile": "ASAN_UBSAN_SCALAR_SINGLE_THREAD",
+      "artifact_sha256": "c77375acebdc092c8b11de12712f2602f0d6cd0aa951bc2274525850cb1e1494",
+      "compile_commands_sha256": "f3ae0ab9e0c202d5dd9bcc22178f16b29b80937c3c16b9c2a61b3699849f0741",
+      "compiler": "GCC 11.4.0",
+      "flags": "-O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined -std=c11 -fPIC -DZ_HAVE_UNISTD_H -Wall -Wextra -Werror -Wl,-Bsymbolic-functions"
+    }
+  ],
+  "license_decision": {
+    "spdx": "Zlib",
+    "status": "RUN_ALLOWED",
+    "redistribution": "ALLOWED_WITH_LICENSE_NOTICE"
+  },
+  "known_limitations": [
+    "lzbench calls compress2/uncompress one-shot. The project uses the same vendored implementation through Z_NO_FLUSH/Z_FINISH to expose mandatory Finalize; native timing is not lzbench-equivalent.",
+    "Registered defaults: level 6, windowBits 15, memLevel 8, default strategy, one CPU thread, no preset dictionary, mandatory Adler32. Raw DEFLATE, gzip, dictionaries, strategies, memLevel sweeps, parallelism and streaming workloads are not registered.",
+    "A zlib stream does not store uncompressed length. Independent allocation uses the TSCB descriptor, not encoder state.",
+    "The single-update ABI accepts input and output capacities at most UINT_MAX; deflateBound above UINT_MAX is unsupported.",
+    "The benchmark-vendored tree is 1.3.2; the comparison-only upstream checkout e3dc0a85b7032e98380dec011bc8f2c2ee0d8fca is 1.3.2.1 and differs. No sources are mixed or automatically upgraded.",
+    "LeakSanitizer is disabled under the host ptrace policy; ASan/UBSan remain enabled."
+  ],
+  "unsupported_reason_codes": [
+    "EXECUTION_ARTIFACT_MISSING", "VALIDITY_SHAPE_UNSUPPORTED",
+    "DICTIONARY_MODE_NOT_REGISTERED", "CHECKSUM_MODE_NOT_REGISTERED",
+    "QUERY_UNSUPPORTED", "STREAMING_PROTOCOL_NOT_REGISTERED",
+    "SINGLE_UPDATE_LENGTH_LIMIT"
+  ]
+}

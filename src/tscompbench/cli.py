@@ -124,7 +124,8 @@ def main(argv: list[str] | None = None) -> int:
                                 "source_artifact_id": codec_registry.get(key).source_artifact_id,
                             }
                             for key in codec_registry.keys()
-                        ]
+                        ],
+                        "aliases": codec_registry.alias_documents(),
                     }
                 )
             elif args.command == "verify":
@@ -134,6 +135,7 @@ def main(argv: list[str] | None = None) -> int:
                         "status": "PASS",
                         "codec_count": len(manifests),
                         "source_artifact_count": len(codec_registry.sources),
+                        "alias_count": len(codec_registry.alias_documents()),
                     }
                 )
             else:

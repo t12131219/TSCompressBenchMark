@@ -1,0 +1,20 @@
+{
+  "schema_version": "tscb.codec-alias.v2",
+  "key": "lz77",
+  "canonical_key": "deflate-zlib",
+  "canonical_algorithm_id": "v2:algorithm:sha256:0911ea808bb1de69ef122d4eb9b886aeff9dd97380b29f236719c630a5f13038",
+  "source_artifact_id": "v2:source-artifact:sha256:488e8ce467a7dba0196f8ba1ece20ba03be7167eefa3ab09c79bb914219c5518",
+  "mapping_kind": "SPREADSHEET_SOURCE_MAPPING_NOT_NEW_CODEC",
+  "evidence": [
+    "Original /home/fzg/temp/第一步实现的算法.xlsx, SHA256 012cc79f9855f839100fcc3e81449e8dc1dd80d7c175b2b90d1b8d1e07f3be23: Value-Compress!B2=LZ77, C2=https://github.com/madler/zlib, D2=RFC1951; DEFLATE row 4 has the same repository and RFC.",
+    "TSBench_C_CPP_Algorithms_Analysis.md section 2.1 and table: LZ77 is implemented through zlib. Master plan appendix maps LZ77 and DEFLATE to madler/zlib; section 3.2 requires distinguishing logical entries from independently executable codecs.",
+    "Clean lzbench fa871e66b3543a70fd4d060f7c12719343ff4ac3, bench/lz_codecs.cpp lzbench_zlib_compress/decompress uses compress2/uncompress. lz/zlib/deflate.c longest_match and deflate_slow supply matches; trees.c _tr_flush_block writes stored/fixed/dynamic Huffman DEFLATE blocks.",
+    "Reuse the existing unchanged 48-file benchmark-vendored zlib 1.3.2 closure, native builds and source admission card registry/onboarding/deflate-zlib.json; no duplicate vendor tree or algorithm-specific source patch."
+  ],
+  "limitations": [
+    "This selectable spreadsheet mapping measures complete RFC1950 zlib / RFC1951 DEFLATE, including LZ77 matching, Huffman coding and Adler32. It does not measure a standalone pure LZ77 token stream or isolated matching time.",
+    "lz77 and deflate-zlib resolve to exactly the same AlgorithmID, SourceArtifactID, ConfigID, execution path and comparison keys; selecting both names generates one task per unique canonical configuration, not two ranked algorithms.",
+    "No alternative yalz77/misa77 implementation is silently substituted for the spreadsheet's zlib source. A future pure LZ77 variant requires separate user-approved source/format admission and explicit P0/P1/P2 contracts.",
+    "Existing deflate-zlib parameter, lifecycle, capacity and resource limits apply unchanged; unsupported dictionary, query, streaming, raw-DEFLATE/gzip and multithread modes are not added."
+  ]
+}

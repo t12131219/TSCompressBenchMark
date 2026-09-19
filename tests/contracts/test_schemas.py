@@ -12,6 +12,7 @@ def test_versioned_json_schemas_are_valid_json_and_closed_at_root() -> None:
         "accounting-ledger.schema.json",
         "benchmark-task.schema.json",
         "codec-manifest.schema.json",
+        "codec-alias.schema.json",
         "compatibility-plan.schema.json",
         "comparability-keys.schema.json",
         "comparability-group.schema.json",

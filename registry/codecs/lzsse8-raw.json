@@ -1,0 +1,181 @@
+{
+  "schema_version": "tscb.codec-manifest.v2",
+  "key": "lzsse8-raw",
+  "identity": {
+    "display_name": "LZSSE8 Optimal Parse (lzbench 2019-04-18, level 12)",
+    "family": "LZSSE",
+    "source_artifact_id": "v2:source-artifact:sha256:e30217f7e46c3b78d490f5d8a032d67e39c866429f5a35b65405b91f256a7181",
+    "citations": [
+      "user-explicit:LZSSE8-request-20260918 (not spreadsheet LZSS)",
+      "benchmark:inikep/lzbench@fa871e66b354:bench/lz_codecs.cpp:lzbench_lzsse8_compress"
+    ]
+  },
+  "classification": {
+    "object_level": "P1_STANDALONE_CODEC",
+    "implementation_class": "CONVENTIONAL",
+    "tracks": [
+      "TIMESTAMP",
+      "VALUE"
+    ],
+    "subtracks": [
+      "T1",
+      "V0"
+    ]
+  },
+  "input": {
+    "topologies": [
+      "UTS",
+      "SYNCHRONOUS_MTS",
+      "NATIVE_ND_ARRAY"
+    ],
+    "dtypes": [
+      "<i8",
+      "<i4",
+      "<i2",
+      "|i1",
+      "<u8",
+      "<u4",
+      "<u2",
+      "|u1",
+      "<f8",
+      "<f4"
+    ],
+    "ranks": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "layouts": [
+      "ROW_MAJOR_CONTIG",
+      "COLUMN_MAJOR_CONTIG",
+      "SOA_COLUMNS",
+      "STRIDED_VIEW",
+      "NOT_APPLICABLE"
+    ],
+    "endianness": [
+      "little"
+    ],
+    "alignment_bytes": 1,
+    "min_n": 0,
+    "max_n": 2147483647,
+    "min_m": 1,
+    "max_m": 1048576,
+    "validity_shapes": [
+      "NONE"
+    ],
+    "value_coupling_mode": "FULL_MATRIX",
+    "timestamp_semantics": {
+      "preserve_order": true,
+      "duplicates": true,
+      "out_of_order": true,
+      "negative_delta": true,
+      "absolute_epoch": true,
+      "overflow_policy": "NOT_APPLICABLE_BYTE_CODEC"
+    }
+  },
+  "semantics": {
+    "loss_modes": [
+      "LOSSLESS"
+    ],
+    "error_bound_types": [],
+    "reconstruction_modes": [
+      "EXACT_GRID"
+    ],
+    "rebuild_protocol": "TSCB_BUFFER_DESCRIPTOR_CONTAINER_V1",
+    "preprocess_class": "NONE",
+    "preprocess_stages": [],
+    "decodability_profile": "SELF_CONTAINED_TSCB_DESCRIPTOR_PLUS_LZSSE8",
+    "bitstream_separability": "INDEPENDENT"
+  },
+  "lifecycle": {
+    "block_semantics": "ONE_LZSSE8_OPTIMAL_STREAM_PER_ROUTED_OBJECT",
+    "state_semantics": "INDEPENDENT_CONTEXT_PER_REPETITION",
+    "reset": "NEW_CONTEXT_REQUIRED",
+    "finalize": "REQUIRED_NOOP_ONE_SHOT_FINALIZE",
+    "safe_overread_bytes": 0,
+    "tail_policy": "CODEC_INTERNAL_16_LITERAL_TAIL_WITH_EXACT_BUFFER_VALIDATION",
+    "dictionary": "NONE",
+    "model": "NONE",
+    "index": "NONE"
+  },
+  "execution": {
+    "backends": [
+      "C_ABI_V1"
+    ],
+    "isa": [
+      "SSE4_1"
+    ],
+    "devices": [
+      "CPU"
+    ],
+    "threading": "SINGLE_THREAD",
+    "fallback_policy": "DISALLOWED",
+    "runtime_dispatch": false
+  },
+  "features": {
+    "streaming": false,
+    "query": false,
+    "random_access": false
+  },
+  "parameters": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "native_timing": {
+        "type": "boolean",
+        "default": true
+      },
+      "compression_level": {
+        "type": "integer",
+        "enum": [
+          12
+        ],
+        "default": 12
+      },
+      "content_checksum": {
+        "type": "boolean",
+        "enum": [
+          false
+        ],
+        "default": false
+      },
+      "block_size": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 1048576,
+        "default": 65536
+      },
+      "isa": {
+        "type": "string",
+        "enum": [
+          "SSE4_1"
+        ],
+        "default": "SSE4_1"
+      }
+    },
+    "constraints": []
+  },
+  "adapter": {
+    "backend": "C_ABI_V1",
+    "version": "lzsse8-raw-ctypes-v1",
+    "factory": "LZSSE8_RAW_CTYPES_V1",
+    "artifact_path": "build/adapters/lzsse8_raw/release/libtscb_lzsse8_raw.so",
+    "timing_boundary": "PYTHON_FFI_CONTAINER_INCLUDED",
+    "native_timing_capability": {
+      "optional": true,
+      "boundary": "CODEC_API_ONLY_V1",
+      "clock": "CLOCK_MONOTONIC",
+      "excludes": [
+        "CONTEXT_LIFECYCLE",
+        "EXPLICIT_PREVALIDATION",
+        "PYTHON_FFI_CONTAINER"
+      ]
+    },
+    "accounting_hooks": [
+      "FINAL_STREAM_INSPECTION",
+      "EXACT_RAW_OR_COMPRESSED_LENGTH",
+      "OUTPUT_CAPACITY"
+    ]
+  }
+}

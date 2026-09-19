@@ -257,3 +257,187 @@ Qualification RunSet `runset-20260918T051810Z-33dd0667685e` and 10/10 eligible F
 repetitions in `runset-20260918T051826Z-a1980b4fbecf` passed. The report is
 `v2:report:sha256:dea5f26860e87d25d50151ab2a7dfda27f381be2f4a5c8559391a1b85289b38c`.
 LeakSanitizer remains unavailable under the host ptrace policy.
+
+## Phase 4 DEFLATE zlib source onboarding
+
+Spreadsheet Value-Compress row 4 lists DEFLATE. The master plan maps it to madler/zlib;
+the analysis confirms zlib/libdeflate availability in lzbench. This integration chooses
+zlib 1.3.2 at clean benchmark commit `fa871e66b3543a70fd4d060f7c12719343ff4ac3`.
+All 48 files of `lz/zlib` were copied byte-identically, retaining the Zlib license.
+The actual build uses the 15 zlib translation units from lzbench's Makefile, plus the
+project C ABI shim. SourceArtifactID:
+`v2:source-artifact:sha256:488e8ce467a7dba0196f8ba1ece20ba03be7167eefa3ab09c79bb914219c5518`.
+
+Closure digest: `90abdcdbb1d1670afd5b5ca06827f2bb7aedd2e10469b6ceaae90e08d455f7c0`.
+Definition: SHA256 over sorted relative POSIX path UTF-8 bytes + NUL + complete file
+bytes for each file, concatenated; count and digest are regression-tested. The upstream
+checkout `e3dc0a85b7032e98380dec011bc8f2c2ee0d8fca` is clean and identifies as
+1.3.2.1. It differs in version/build documentation, gzip write guard and invalid inflate
+tree-code handling, among other files. It is comparison-only; no files were mixed.
+
+lzbench's `bench/lz_codecs.cpp` uses compress2/uncompress, meaning RFC1950 zlib and
+RFC1951 DEFLATE with Adler32. The project uses the same implementation through explicit
+Z_NO_FLUSH and Z_FINISH to expose mandatory Finalize and then a fresh exact-consumption
+inflate context. This lifecycle/native timing is not lzbench-equivalent. Defaults,
+format, mandatory checksum, limits and excluded variants are recorded in the manifest,
+onboarding card and D025.
+
+Both canonical builds passed ABI smoke and 100 deterministic benchmark API cases
+(seed 20260918). Release `.so`:
+`c4c61655f2513661a8e6766025b45a1790ddc2ed8837b18ce2974a0c3d19aeb7`.
+ASan/UBSan `.so`: `c77375acebdc092c8b11de12712f2602f0d6cd0aa951bc2274525850cb1e1494`.
+Qualification RunSet `runset-20260918T061832Z-d8ca7a21abd6` passed; FORMAL RunSet
+`runset-20260918T061850Z-6e262c4d405a` passed all 49 boundary cases and 10/10 eligible
+repetitions. Report ID:
+`v2:report:sha256:3a046c2d9c5ecaca505a4f9db5cec1ea298b5443431e5836c997c9a604b5f636`.
+Complete layer gates and reproduction commands are in `docs/deflate_zlib_self_check.md`
+and `adapters/deflate_zlib/README.md`. Shared source repos remain clean; LeakSanitizer
+is disabled under the host ptrace policy, not reported as tested.
+
+The final ELF build binds internal functions using `-Wl,-Bsymbolic-functions` and
+passes ABI smoke with a competing globally preloaded deflateInit2_. Without binding,
+the same test reproduced a codec-create failure. `ldd` confirms no system libz runtime
+dependency. Earlier pre-binding runs are retained but superseded by the final evidence.
+
+## Phase 4 XZ LZMA2 source onboarding
+
+Original spreadsheet Value-Compress!B9 lists LZMA / xz with lzbench as reference.
+`xz-stream` copies the 341-file liblzma/common/CMake/tests/license/format closure of
+xz 5.8.3 from clean benchmark commit `fa871e66b3543a70fd4d060f7c12719343ff4ac3`.
+Every copied file was compared byte-for-byte. Closure digest:
+`ef43c1771d2d12fdb35b9d53a15394f81da23770f97891d78f1e97e3504d3574`.
+Definition: sorted relative POSIX path UTF-8 bytes + NUL + full file bytes.
+SourceArtifactID:
+`v2:source-artifact:sha256:e51531a640977f677d6fe69f3350582773ef4c090a5e2c194c083b10b6255988`.
+
+Clean upstream `9fc6f5cd8774ebef8d4e030f7081fb6984c0dc3f` also reports 5.8.3
+but differs in index/stream-buffer decoder/API/hardware files; it is comparison only.
+Identical lzma2_encoder.c does not imply whole-tree equality. The shared catalog
+scan covers 72 repository entries (71 available, all clean), 221 logical entries
+and 145,830 non-generated files, retained in
+`build/source-audits/xz-onboarding-20260918.json`.
+
+Static PIC liblzma disables MT, CLI, specialized CRC dispatch/SIMD matching/copies
+and unrelated filters/checks. Complete dependency commands and archive hash are
+persisted. Single-call encode completes the stream; mandatory zero-byte Finalize
+acknowledges completion. Decoder flags 0 require one exact stream. lzbench's MT
+APIs and CONCATENATED | IGNORE_CHECK decoder are not adopted. No data check matches
+its encode setting, but structural CRCs/index are fully charged. Native timing is
+auxiliary, not lzbench-equivalent.
+
+Both profiles pass ABI smoke, 100 seeded direct vendor API cases and six upstream
+library CTests; six disabled-feature CTests SKIP per profile, not counted as PASS.
+Logs: `build/adapters/xz_stream/<profile>/native-tests.log`; CLI suites excluded.
+LeakSanitizer is disabled under ptrace; ASan/UBSan stay enabled.
+Release: `8676b8a44671f5f80a8e8828f55cadb26cb21d9cba6d39a4ae83b6e03e5822c8`.
+Sanitizer: `492a6d6947e54ab598203577974c6f72afe6cb22ca2e3a0cee2bf89645e2124a`.
+Local ELF binding passes a competing global encoder-symbol test, with no system
+liblzma dependency.
+
+Final qualification `runset-20260918T064148Z-cbb750a373ef` has task PASS; formal
+`runset-20260918T064155Z-610165c750cb` has 49/49 boundary PASS and 10/10 eligible
+repetitions. Report:
+`v2:report:sha256:049f6e8ecd3d53b640c8253fa2e6744119b28dbefd7dda900ce03861e804644e`.
+Earlier schema-rejected sweeps remain diagnostics, not admission evidence. D026,
+the onboarding card and `docs/xz_stream_self_check.md` record gates/limitations.
+Formal coverage is default VALUE national_illness, not every preset/dataset.
+Shared source repositories remain clean and were never patched.
+
+## Phase 4 LZ77 spreadsheet source mapping audit
+
+Read-only original spreadsheet inspection confirms Value-Compress!B2=LZ77,
+C2=madler/zlib, D2=RFC1951; DEFLATE row 4 references the same source and format.
+Workbook SHA256: `012cc79f9855f839100fcc3e81449e8dc1dd80d7c175b2b90d1b8d1e07f3be23`.
+The analysis maps LZ77 through zlib. Reviewed lzbench's zlib benchmark calls,
+deflate.c longest_match/deflate_slow and trees.c _tr_flush_block: actual output is
+complete DEFLATE, not a standalone pure LZ77 stream. yalz77/misa77 were not substituted.
+
+The 48-file benchmark zlib 1.3.2 closure remains byte-identical; no copy or patch.
+Existing source admission card, build identities and Zlib notices are reused.
+Closure digest: `90abdcdbb1d1670afd5b5ca06827f2bb7aedd2e10469b6ceaae90e08d455f7c0`.
+New complete source scan: 72 repository entries, 71 available/clean, 221 logical
+entries, 145,830 non-generated files, saved as
+`build/source-audits/lz77-onboarding-20260918.json`. Source checkouts remain clean.
+Release/ASan/UBSan ABI and 100-case direct API tests were re-run; full log:
+`build/source-audits/lz77-native-tests-20260918.log`. These are project harnesses,
+not an upstream-suite claim; LeakSanitizer remains disabled under ptrace.
+
+`registry/codecs/aliases/lz77.json` records the explicit logical source mapping,
+not a new AlgorithmID. The canonical registry retains ten codecs and 78 source
+artifacts; the additional alias is disclosed separately. Run snapshots pin alias
+evidence and both-name selection cannot duplicate tasks. Qualification
+`runset-20260918T071801Z-e75543ec7c05` passed. Authoritative independent formal
+`runset-20260918T071932Z-77ba2d8dc5fd` passed 49/49 VALUE boundary observations and
+10/10 eligible repetitions; fifth-layer report:
+`v2:report:sha256:90091d86f74c4df417c8e9e8290386de8b2f52c63ab70606f902dc60dcd880c2`.
+Complete scope/limitations and layer gates are in D027 and `docs/lz77_self_check.md`.
+Pure LZ77 remains unqualified as a standalone codec; these results are the
+spreadsheet's zlib DEFLATE implementation only.
+
+## LZSS original source admission (2026-09-18)
+
+Value-Compress row 3 and the master plan identify alexkazik/lzss 0.9.1, clean
+commit 512b9163d8a936003c925e24f7f682eeaeda8307. Reviewed generic/dynamic APIs,
+compress/decompress, MSB bit IO, safe slice writers, build generator, Criterion
+benchmark and original tests. lzbench's LZSSE2/4/8 entries are different formats;
+the C/C++ analysis's old independent matching-LZSS claim has been corrected.
+Existing unfinished LZSSE2 files were preserved, not used to claim LZSS admission.
+
+New full scan: 72 repositories, 71 available/clean, 221 logical entries, 145,830
+non-generated files; build/source-audits/lzss-onboarding-20260918.json. Only the
+needed 34-file original library/test/bench/license/reference and void closure was
+copied, with no shared-source writes or vendor patches. Closure digest:
+82cb61ecc9d31fd48a31624fd2b45f310fcf641d5fcd8e2dcca11d361feced2c.
+All original copied files were re-compared byte-for-byte after final measurement.
+void 1.0.2 was acquired from static.crates.io; archive SHA256 matches original
+Cargo.lock: 6a02e4885ed3bc0f2de90ea6dd45ebcbb66dacffe03547fadbb0eeae2770887d.
+Its MIT declaration is retained; missing license text leaves redistribution under
+review. Local execution is allowed. Runtime/builds are offline after acquisition.
+
+Original Rust safe/std/alloc EI10/EJ4/C32 source is statically linked behind common
+C ABI and Python framework. Release upstream suites (including ignored tests),
+doctests, ASan library/in-place tests and two 39-case ABI fixtures pass. Retained
+log: build/source-audits/lzss-native-tests-20260918.log. Rust source/FFI are ASan;
+C++ ABI is ASan/UBSan; std is not instrumented, LSan disabled. API-only auxiliary
+timing was self-corrected before final measurement; old runsets remain retained.
+
+Final qualification runset-20260918T074915Z-9c95a77d4d12 and authoritative formal
+runset-20260918T074940Z-f8855e7299f1 complete Layers 1-5. Formal has 49/49 boundary
+observations, 10/10 eligible PASS repetitions, nine warmups totaling 527,203,621 ns,
+and every selected range >=1 second. FinalBits 258,168 = 32,271 actual bytes,
+with no hidden side information. Registry: 11 codecs, 79 sources, one alias.
+Machine audit: build/source-audits/lzss-final-audit-20260918.json. ReportID:
+v2:report:sha256:fa7d1c5f244fec21f90a767f0e53bda9a071df70f3bc286196a3829745e96954.
+See D028 and docs/lzss_raw_self_check.md for exact native timing, fairness keys,
+limitations and reproduce commands. Formal coverage is VALUE national_illness only.
+
+
+## LZSSE8 source admission (2026-09-18)
+
+Renewed full scan: 72 repository entries, 71 available/clean, 221 logical entries,
+145,830 non-generated files. Evidence: `build/source-audits/lzsse8-onboarding-20260918.json`.
+Source authority is clean lzbench `fa871e66b3543a70fd4d060f7c12719343ff4ac3`;
+five original LZSSE8/license/README/platform files, BSD-2-Clause notices preserved
+including Brian Marshall's platform notice. Full path+NUL+bytes closure and safety
+patch hashes are frozen in `registry/sources/lzsse8-raw-lzbench.artifact.json`.
+
+The malloc-before-null-check defect and unaligned scalar integer accesses are fixed
+only in generated build copies. Guard/canary tests pass 180 exact-buffer cases and
+2048 hostile streams per release/sanitizer profile. An additional 44 cases compare
+encode bytes and decode against unmodified original source. Forced first/second
+allocation failures and null free pass both profiles. There is no dedicated local
+upstream LZSSE test suite; these evidence names deliberately distinguish project
+qualification from direct original-source compatibility checks. LSan is disabled;
+ASan/UBSan instrument the actual codec and shim without suppressing alignment checks.
+
+Source/card/build records, `tools/qualify_lzsse8.py`, all needed tests and configs
+are in the canonical project, not only the Codex worktree. This explicit user
+variant exception does not expand the original 221-entry spreadsheet source catalog.
+
+
+Final LZSSE8 evidence: 360 regression PASS, Ruff PASS, 49/49 preflight gates,
+10/10 eligible formal repetitions. Authoritative run `runset-20260918T083617Z-3f7abca84f5d`;
+qualified report `v2:report:sha256:cea882cea1a0ad956a543d8f5062d62ea9ba38d3baee77661356cf720f655414`. Accounting: 260176
+bits/32522 bytes including charged descriptors/raw flag.
+Self-check: `docs/lzsse8_raw_self_check.md`; machine audit:
+`build/source-audits/lzsse8-final-audit-20260918.json`. Earlier raw runs are retained.

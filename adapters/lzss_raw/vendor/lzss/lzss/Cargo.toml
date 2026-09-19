@@ -1,0 +1,32 @@
+[package]
+name = "lzss"
+version = "0.9.1"
+authors = ["ALeX Kazik <alex@kazik.de>"]
+edition = "2021"
+description = "A LZSS en-/decompressor (lossless data compression, no_std capable, in pure Rust)"
+repository = "https://github.com/alexkazik/lzss"
+license = "MIT"
+keywords = ["lzss", "compression", "no_std"]
+categories = ["compression", "no-std"]
+rust-version = "1.64.0"
+
+[dependencies]
+void = { version = "1.0.2", default-features = false }
+
+[features]
+default = ['std', 'safe']
+alloc = []
+safe = []
+std = ['void/std', 'alloc']
+
+[package.metadata.docs.rs]
+all-features = true
+# enable unstable features in the documentation
+rustdoc-args = ["--cfg", "docsrs"]
+
+[dev-dependencies]
+criterion = "0.5"
+
+[[bench]]
+name = "benchmark"
+harness = false

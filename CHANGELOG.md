@@ -7,6 +7,80 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Phase 4 LZSSE8 Optimal Parse Source Integration (2026-09-18)
+
+- Added explicitly requested LZSSE8 as a separate level12/SSE4.1 native codec,
+  driven by Python through the existing C ABI, not a renamed spreadsheet LZSS.
+- Retained five byte-identical lzbench source/license files and a hashed out-of-tree
+  allocation/unaligned-access/pointer-safety patch without rewriting the format.
+- Added exact-buffer structural validation, charged descriptors/raw storage flag,
+  mandatory zero-byte Finalize and same-repetition native codec API timing.
+- Passed release/ASan/UBSan guard/canary and hostile-stream qualification, original
+  source byte compatibility, independent scalar decode, and allocation fault injection.
+- Added SSE4.1 negotiation and fixed P-core configuration; fixed existing explicit
+  CPU-affinity JSON tuple/list resume mismatch with an actual resume regression.
+- Passed 360 regression tests, Ruff, both Track boundary suites, 49 formal preflight
+  observations and ten eligible final VALUE formal repetitions; retained report,
+  source/build/raw-data auditor and `docs/lzsse8_raw_self_check.md`.
+
+### Phase 4 LZSS Original Native Source Integration (2026-09-18)
+
+- Added spreadsheet-listed original Rust LZSS 0.9.1, fixed generic EI10/EJ4/C32,
+  safe/stack single-thread execution through C ABI and Python standard enforcement.
+- Corrected the analysis's unsupported equivalence between lzbench LZSSE and the
+  spreadsheet implementation; preserved unrelated unfinished LZSSE2 work.
+- Added 34-file immutable source closure, pinned offline void dependency, source
+  admission/build/license evidence and exact descriptor/token/tail bit accounting.
+- Added strict token coverage/decoded-length/padding validation, ABI overlap checks,
+  mandatory zero-byte Finalize and original-API-only auxiliary native timing.
+- Passed upstream tests, Rust ASan and C++ ASan/UBSan qualification, 298 regression
+  tests, both Track boundary gates, and ten eligible VALUE formal repetitions.
+- Added qualification/formal configurations, five-layer resume/report regression
+  and `docs/lzss_raw_self_check.md` with explicit source/sanitizer/license limitations.
+
+### Phase 4 LZ77 Spreadsheet Source Mapping (2026-09-18)
+
+- Added selectable `lz77` mapping to the spreadsheet's zlib/RFC1951 implementation,
+  explicitly not a separate pure LZ77 codec, source copy or ranked AlgorithmID.
+- Added closed alias schema, source/algorithm identity pins, evidence disclosure,
+  frozen run snapshots and canonical-task deduplication across both logical names.
+- Verified identity/config equivalence, invalid mappings, changed-evidence resume,
+  both Track boundary gates and ten eligible final VALUE formal repetitions.
+- Revalidated existing native zlib Release/ASan/UBSan builds and saved harness logs;
+  retained source licenses, exact accounting and all prior integration changes.
+- Added LZ77 qualification/formal configs and `docs/lz77_self_check.md` with report
+  traceability and the unresolved standalone pure-LZ77 limitation.
+
+### Phase 4 XZ LZMA2 Source Integration (2026-09-18)
+
+- Added spreadsheet-listed LZMA / xz using 341 unmodified files from lzbench's xz
+  5.8.3 closure, retaining 0BSD licenses, source digest and hashed admission evidence.
+- Added static scalar single-thread liblzma/C ABI and Python driver, documented
+  single-call output bound, mandatory zero-byte Finalize and fresh strict decoder.
+- Accounted block headers, filter properties, index, structural CRC32, alignment
+  padding and LZMA2 payload exactly; no data check is not zero checksum bits.
+- Passed Release/ASan/UBSan ABI and 100-case direct API harnesses, competing global
+  symbols, and six upstream library tests per profile; six feature skips disclosed.
+- Removed inherited DEFLATE window_bits from XZ sweeps, added config regression tests,
+  and retained rejected runsets as diagnostics rather than reporting admission.
+- Completed final VALUE qualification and ten eligible FORMAL repetitions on
+  national_illness with fifth-layer report and `docs/xz_stream_self_check.md`.
+
+### Phase 4 DEFLATE zlib Source Integration (2026-09-18)
+
+- Added spreadsheet-listed DEFLATE from lzbench's unmodified 48-file zlib 1.3.2
+  source tree, with Zlib license, reproducible closure digest and hashed admission card.
+- Added scalar single-thread C ABI and Python driver with deflateBound, explicit
+  Z_NO_FLUSH/Z_FINISH, independent exact-consumption inflate and native API timing.
+- Fixed internal zlib function binding and tested competing global symbols to prevent
+  accidentally benchmarking a previously loaded implementation instead of vendor source.
+- Accounted RFC1950 header, RFC1951 payload and mandatory Adler32 separately inside
+  the TSCB container; raw DEFLATE/gzip/dictionary variants are not substituted.
+- Added Release/ASan/UBSan lifecycle and 100-case benchmark API harnesses, 80 parameter
+  and tail combinations, malformed-stream tests and fairness-key regression coverage.
+- Completed default VALUE qualification and 10/10 eligible FORMAL repetitions on
+  national_illness, with fifth-layer report and `docs/deflate_zlib_self_check.md`.
+
 ### Phase 0-3 Complete (2026-09-16)
 
 Project foundation established with five-layer architecture fully implemented and tested.

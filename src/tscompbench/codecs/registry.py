@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 from collections.abc import Iterator
+from copy import deepcopy
 from pathlib import Path
 from typing import Any
 
@@ -106,6 +107,38 @@ class CodecRegistry:
             if manifest.key in self._manifests:
                 raise CodecContractError(f"duplicate codec key: {manifest.key}")
             self._manifests[manifest.key] = manifest
+        self._aliases: dict[str, dict[str, Any]] = {}
+        for path in sorted((self.root / "aliases").glob("*.json")):
+            try:
+                document = json.loads(path.read_text(encoding="utf-8"))
+            except (OSError, json.JSONDecodeError) as error:
+                raise CodecContractError(f"cannot read codec alias {path}: {error}") from error
+            _require_keys(document, required={
+                "schema_version", "key", "canonical_key", "canonical_algorithm_id",
+                "source_artifact_id", "mapping_kind", "evidence", "limitations",
+            }, label=f"codec alias {path.name}")
+            for field in ("schema_version", "key", "canonical_key",
+                          "canonical_algorithm_id", "source_artifact_id", "mapping_kind"):
+                if not isinstance(document[field], str) or not document[field].strip():
+                    raise CodecContractError(f"codec alias requires a string {field}: {path.name}")
+            if (document["schema_version"] != "tscb.codec-alias.v2"
+                    or document["mapping_kind"] != "SPREADSHEET_SOURCE_MAPPING_NOT_NEW_CODEC"):
+                raise CodecContractError(f"unsupported codec alias schema or kind: {path.name}")
+            key = document["key"]
+            if key != path.stem or key in self._manifests or key in self._aliases:
+                raise CodecContractError(f"invalid or colliding codec alias key: {path.name}")
+            target = self._manifests.get(document["canonical_key"])
+            if target is None:
+                raise CodecContractError(f"alias requires a canonical codec, not a chain: {key}")
+            if (target.algorithm_id != document["canonical_algorithm_id"]
+                    or target.source_artifact_id != document["source_artifact_id"]):
+                raise CodecContractError(f"codec alias identity differs from target: {key}")
+            for field in ("evidence", "limitations"):
+                if (not isinstance(document[field], list) or not document[field]
+                        or not all(isinstance(item, str) and item.strip()
+                                   for item in document[field])):
+                    raise CodecContractError(f"codec alias requires nonempty {field}: {key}")
+            self._aliases[key] = document
 
     def keys(self) -> tuple[str, ...]:
         return tuple(sorted(self._manifests))
@@ -117,10 +150,19 @@ class CodecRegistry:
         return len(self._manifests)
 
     def get(self, key: str) -> CodecManifest:
+        if key in self._aliases:
+            key = self._aliases[key]["canonical_key"]
         try:
             return self._manifests[key]
         except KeyError as error:
             raise CodecContractError(f"unknown codec key: {key}") from error
+
+    def alias_documents(self) -> tuple[dict[str, Any], ...]:
+        """Disclose logical names without introducing duplicate algorithm identities."""
+        return tuple(
+            {**deepcopy(document), "codec_alias_id": stable_id("codec-alias", document)}
+            for _, document in sorted(self._aliases.items())
+        )
 
     def verify_all(self) -> tuple[CodecManifest, ...]:
         return tuple(self._manifests[key] for key in self.keys())

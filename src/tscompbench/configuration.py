@@ -70,7 +70,10 @@ class BenchmarkProfile:
         return self.repetitions
 
     def as_document(self) -> dict[str, Any]:
-        return {key: value for key, value in self.__dict__.items() if key != "profile_id"}
+        document = {key: value for key, value in self.__dict__.items() if key != "profile_id"}
+        if self.cpu_affinity is not None:
+            document["cpu_affinity"] = list(self.cpu_affinity)
+        return document
 
 
 @dataclass(frozen=True)

@@ -1,0 +1,119 @@
+{
+  "schema_version": "tscb.source-onboarding.v2",
+  "source_artifact_id": "v2:source-artifact:sha256:e51531a640977f677d6fe69f3350582773ef4c090a5e2c194c083b10b6255988",
+  "repository": "https://github.com/inikep/lzbench.git",
+  "commit": "fa871e66b3543a70fd4d060f7c12719343ff4ac3",
+  "dirty": false,
+  "submodules": [],
+  "implementation_files": [
+    "lz/xz/src/liblzma/common/easy_buffer_encoder.c",
+    "lz/xz/src/liblzma/common/stream_buffer_encoder.c",
+    "lz/xz/src/liblzma/common/stream_decoder.c",
+    "lz/xz/src/liblzma/lzma/lzma2_encoder.c",
+    "lz/xz/src/liblzma/lzma/lzma2_decoder.c",
+    "lz/xz/src/liblzma/lz/lz_encoder.c",
+    "lz/xz/src/liblzma/lz/lz_decoder.c"
+  ],
+  "public_api_files": [
+    "lz/xz/src/liblzma/api/lzma.h", "lz/xz/src/liblzma/api/lzma/container.h"
+  ],
+  "benchmark_files": ["bench/lz_codecs.cpp", "bench/lzbench.h", "Makefile"],
+  "test_files": [
+    "lz/xz/tests/test_index.c", "lz/xz/tests/test_vli.c",
+    "adapters/xz_stream/tests/abi_smoke.c",
+    "adapters/xz_stream/tests/vendor_roundtrip.c",
+    "adapters/xz_stream/tests/symbol_interposition.c",
+    "adapters/xz_stream/tests/run_native_tests.py",
+    "tests/adapters/test_xz_stream.py"
+  ],
+  "license_files": ["lz/xz/COPYING", "lz/xz/COPYING.0BSD"],
+  "third_party_dependencies": [],
+  "object_level_candidates": ["P1_STANDALONE_CODEC"],
+  "input_contract": {
+    "kind": "BYTE_VIEW", "length_type": "size_t", "alignment_bytes": 1,
+    "zero_length": "SUPPORTED", "ownership": "BORROWED_DURING_CALL",
+    "mutation": "FORBIDDEN_BY_ADAPTER_CONTRACT"
+  },
+  "output_contract": {
+    "kind": "XZ_LZMA2_IN_TSCB_DESCRIPTOR_CONTAINER",
+    "self_contained": true, "actual_written_length": true,
+    "capacity_is_not_size": true, "framing": "ONE_XZ_STREAM",
+    "checksum": "NO_DATA_CHECK_MANDATORY_STRUCTURAL_CRC32",
+    "dictionary": "NO_EXTERNAL_DICTIONARY_INTERNAL_LZMA2_WINDOW"
+  },
+  "lifecycle_contract": {
+    "output_bound": "lzma_stream_buffer_bound for single-call stream encoding; zero or overflow bounds are unsupported",
+    "return_length": "Actual out_pos for complete single-call stream; capacity is never charged",
+    "error_codes": "Stable tscb_status_v1; LZMA_BUF_ERROR maps to DST_TOO_SMALL; malformed/truncated/nonexact streams map to CODEC_ERROR",
+    "update": "One lzma_easy_buffer_encode with preset 0-9 and LZMA_CHECK_NONE; writes block/index/footer before returning",
+    "finalize": "Mandatory acknowledgement of completed single-call stream, zero written bytes and no native encode API call; repeated finalize rejected",
+    "decode": "Fresh lzma_stream_decoder with 1 GiB memlimit and flags 0; lzma_code LZMA_FINISH until STREAM_END; exact descriptor output and complete input required",
+    "reset": "NEW_CONTEXT_PER_INDEPENDENT_OBJECT; C ABI reset clears state and native timing counters"
+  },
+  "stream_components": {
+    "outer_container": "TSCB 12-byte prefix and canonical JSON descriptors",
+    "container": "XZ header/footer bytes excluding their CRCs",
+    "metadata": "Descriptor JSON and block header excluding CRC; serialized LZMA2 properties included",
+    "index": "Complete mandatory XZ index excluding its CRC, including internal padding",
+    "checksum": "Header, footer, index and block-header CRC32; never reported as zero merely because data check is NONE",
+    "padding": "Physical compressed-block alignment bytes",
+    "payload": "LZMA2 compressed data charged to routed bucket",
+    "accounting": "EXACT_TSCB_XZ_BLOCK_INDEX_STRUCTURAL_CRC_AND_LENGTH"
+  },
+  "upstream_tests": [
+    {
+      "name": "vendored liblzma CTest",
+      "command": "ctest --test-dir build/adapters/xz_stream/<profile>/vendor-build --output-on-failure -R ^test_[a-z_]+$",
+      "status": "PASS",
+      "evidence": "Release and ASan/UBSan: filter_flags/filter_str/index/index_hash/stream_flags/vli PASS. Six disabled-feature tests SKIP: bcj_exact_size/block_header/check/hardware/lzip_decoder/memlimit. CLI shell suites excluded; native-tests.log preserves actual results."
+    },
+    {
+      "name": "project direct vendored API harness",
+      "command": "conda run -n CompressBench14 python adapters/xz_stream/tests/run_native_tests.py",
+      "status": "PASS",
+      "evidence": "100 deterministic cases seed 20260918, presets 0-9, Release and ASan/UBSan; lzma_easy_buffer_encode/lzma_stream_buffer_decode. This is not lzbench's multithreaded entrypoint."
+    },
+    {
+      "name": "project ABI lifecycle and competing global symbols",
+      "command": "run_native_tests.py: abi_smoke and LD_PRELOAD symbol_interposition",
+      "status": "PASS",
+      "evidence": "Empty/tiny/64-KiB tails, exact bound and canaries, input immutability, independent decode, structural CRC corruption, trailing-byte rejection, capacity errors, mandatory/repeated Finalize, reset and counters. Competing global lzma_easy_buffer_encode cannot replace bound vendor function."
+    }
+  ],
+  "builds": [
+    {
+      "profile": "RELEASE_SCALAR_SINGLE_THREAD",
+      "artifact_sha256": "8676b8a44671f5f80a8e8828f55cadb26cb21d9cba6d39a4ae83b6e03e5822c8",
+      "compile_commands_sha256": "9c9f52d9bb36222599109e9ecd476aab4e2455a1f4e4537b63977519efae36b6",
+      "compiler": "GCC 11.4.0",
+      "flags": "-O3 -DNDEBUG -std=c11 -fPIC; static PIC liblzma, XZ_THREADS=no, lzma1/lzma2 only, CRC32 only, specialized dispatch/SIMD disabled, LZMA_LZ_DECODER_CONFIG=1; -Wl,-Bsymbolic-functions -Wl,--no-undefined; complete dependency commands and archive hash persisted"
+    },
+    {
+      "profile": "ASAN_UBSAN_SCALAR_SINGLE_THREAD",
+      "artifact_sha256": "492a6d6947e54ab598203577974c6f72afe6cb22ca2e3a0cee2bf89645e2124a",
+      "compile_commands_sha256": "7a3bdadd604b291c9057927b4d1cb8c2965166be464f9f17d3031e3bd5753127",
+      "compiler": "GCC 11.4.0",
+      "flags": "-O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined; same scalar single-thread dependency configuration and local ELF function binding"
+    }
+  ],
+  "license_decision": {
+    "spdx": "0BSD", "status": "RUN_ALLOWED", "redistribution": "ALLOWED_WITH_RETAINED_LICENSE_FILES"
+  },
+  "known_limitations": [
+    "Spreadsheet Value-Compress!B9 lists LZMA / xz. Only single-call .xz LZMA2 is registered; raw LZMA/.lzma, EXTREME, BCJ/delta, dictionaries, multithreading and streaming workloads are not registered.",
+    "lzbench uses multithreaded stream encoding/decoding and decoder LZMA_CONCATENATED | LZMA_IGNORE_CHECK. This project uses documented single-call output bound, one thread, one stream and strict decoder flags 0. Native timing is not lzbench-equivalent.",
+    "Final encoding work is inside lzma_easy_buffer_encode; zero-byte Finalize is acknowledgement, not a claim of streaming capability. Native encode timing includes intrinsic allocation and finish within that API.",
+    "No data checksum matches lzbench's setting; structural CRC32 remains mandatory and charged. Payload corruption with unchanged structure is caught by framework exact correctness, not guaranteed by an absent data checksum.",
+    "Only zero blocks for empty input or one LZMA2 block otherwise is registered. Concatenated streams, stream padding, alternate filters/checks and unexpected block count are rejected.",
+    "Decoder memory limit is 1 GiB; worker resource isolation remains separately enforced. Index presence does not advertise random access or query capability.",
+    "Clean upstream comparison 9fc6f5cd8774ebef8d4e030f7081fb6984c0dc3f also reports 5.8.3 but differs in index/stream-buffer decoder/API/hardware files. No sources are mixed; lzma2_encoder.c is byte-identical.",
+    "LeakSanitizer is disabled under host ptrace policy; ASan/UBSan remain enabled. XZ_SANDBOX=no affects unused vendor CLI build configuration, not Python framework process isolation.",
+    "Default VALUE national_illness formal qualification does not claim formal performance coverage of every dataset, track or preset."
+  ],
+  "unsupported_reason_codes": [
+    "EXECUTION_ARTIFACT_MISSING", "VALIDITY_SHAPE_UNSUPPORTED",
+    "DICTIONARY_MODE_NOT_REGISTERED", "CHECKSUM_MODE_NOT_REGISTERED",
+    "QUERY_UNSUPPORTED", "STREAMING_PROTOCOL_NOT_REGISTERED",
+    "SINGLE_UPDATE_LENGTH_LIMIT"
+  ]
+}

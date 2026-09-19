@@ -12,8 +12,13 @@ import pytest
 
 from tscompbench.adapters import (
     BrotliStreamAdapter,
+    DeflateZlibAdapter,
     Lz4FrameAdapter,
+    Lzsse2RawAdapter,
+    Lzsse8RawAdapter,
+    LzssRawAdapter,
     SnappyRawAdapter,
+    XzStreamAdapter,
     ZstdFrameAdapter,
 )
 from tscompbench.adapters.native_timing import NativeTimingProbe, _NativeTiming
@@ -40,6 +45,11 @@ def _route(n: int) -> RoutedInput:
     ("lz4_frame", Lz4FrameAdapter), ("zstd_frame", ZstdFrameAdapter),
     ("snappy_raw", SnappyRawAdapter),
     ("brotli_stream", BrotliStreamAdapter),
+    ("deflate_zlib", DeflateZlibAdapter),
+    ("xz_stream", XzStreamAdapter),
+    ("lzss_raw", LzssRawAdapter),
+    ("lzsse8_raw", Lzsse8RawAdapter),
+    ("lzsse2_raw", Lzsse2RawAdapter),
 ])
 def adapter(request):
     directory, factory = request.param
@@ -55,7 +65,9 @@ def adapter(request):
 @pytest.mark.parametrize("n", [0, 1, 32769])
 def test_native_roundtrip_timings_preserve_stream_and_stay_inside_core(adapter, n):
     route = _route(n)
-    parameters = {"compression_level": 1, "content_checksum": False}
+    level = 12 if isinstance(adapter, (Lzsse2RawAdapter, Lzsse8RawAdapter)) else 1
+    parameters = {"compression_level": level,
+                  "content_checksum": False}
     baseline = perform_roundtrip(adapter, route, {**parameters, "native_timing": False})
     measured = perform_roundtrip(adapter, route, parameters)
     assert baseline.encoded.stream == measured.encoded.stream
@@ -67,8 +79,10 @@ def test_native_roundtrip_timings_preserve_stream_and_stay_inside_core(adapter, 
 
 
 def test_native_counter_query_finalize_decode_and_reset(adapter):
-    parameters = {"compression_level": 1, "content_checksum": False, "native_timing": True}
-    # Short frame input is buffered until finalize, which must contribute encode time.
+    level = 12 if isinstance(adapter, (Lzsse2RawAdapter, Lzsse8RawAdapter)) else 1
+    parameters = {"compression_level": level,
+                  "content_checksum": False, "native_timing": True}
+    # Streaming codecs finish here; one-shot codecs only acknowledge completion.
     route = _route(16)
     session = adapter.create_session(parameters)
     try:
@@ -79,8 +93,13 @@ def test_native_counter_query_finalize_decode_and_reset(adapter):
         finalized = session.finalize(memoryview(storage)[updated:])
         after = session.native_timing()
         assert after[0] >= before[0] > 0
-        if not isinstance(adapter, SnappyRawAdapter):
+        if not isinstance(
+            adapter,
+            (SnappyRawAdapter, XzStreamAdapter, LzssRawAdapter, Lzsse2RawAdapter, Lzsse8RawAdapter),
+        ):
             assert after[0] > before[0]
+        else:
+            assert after[0] == before[0]
         assert after[1] == 0
         assert session.native_timing() == after
         with pytest.raises(ExecutionContractError):
@@ -132,8 +151,11 @@ def test_failed_native_decode_keeps_codec_boundary_and_counter(adapter):
         assert status != 0
         timing = session.native_timing()
         assert timing[0] == 0
-        if isinstance(adapter, SnappyRawAdapter):
-            # Length/validity prechecks reject this stream before RawUncompress.
+        if isinstance(
+            adapter,
+            (SnappyRawAdapter, XzStreamAdapter, LzssRawAdapter, Lzsse2RawAdapter, Lzsse8RawAdapter),
+        ):
+            # Length/validity prechecks reject this stream before native decoding.
             assert timing[1] == 0
         else:
             assert timing[1] > 0

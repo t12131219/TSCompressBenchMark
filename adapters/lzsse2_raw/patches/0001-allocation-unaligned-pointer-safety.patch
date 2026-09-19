@@ -1,0 +1,85 @@
+--- a/lzsse2.cpp
++++ b/lzsse2.cpp
+@@ -103,6 +103,8 @@
+ 
+     LZSSE2_OptimalParseState* result = reinterpret_cast< LZSSE2_OptimalParseState* >( ::malloc( sizeof( LZSSE2_OptimalParseState ) ) );
+ 
++    if ( result == nullptr ) return nullptr;
++
+     result->bufferSize = bufferSize;
+ 
+     if ( result != nullptr )
+@@ -123,6 +125,8 @@
+ 
+ void LZSSE2_FreeOptimalParseState( LZSSE2_OptimalParseState* toFree )
+ {
++    if ( toFree == nullptr ) return;
++
+     ::free( toFree->arrivals );
+         
+     toFree->arrivals = nullptr;
+@@ -130,6 +134,17 @@
+     ::free( toFree );
+ }
+ 
++
++template<typename T> inline T LoadUnaligned(const void* p)
++{
++    T value;
++    memcpy(&value, p, sizeof(value));
++    return value;
++}
++template<typename T> inline void StoreUnaligned(void* p, T value)
++{
++    memcpy(p, &value, sizeof(value));
++}
+ 
+ inline uint32_t CalculateHash( const uint8_t* inputCursor )
+ {
+@@ -497,7 +512,7 @@
+             }
+ 
+             // output the offset (after control block containing the first control nibble for this match).
+-            *reinterpret_cast< uint16_t* >( outputCursor ) = nextPathNode->offset ^ previousOffset;
++            StoreUnaligned<uint16_t>( outputCursor, nextPathNode->offset ^ previousOffset );
+ 
+             previousOffset = nextPathNode->offset;
+ 
+@@ -623,7 +638,7 @@
+ #define DECODE_STEP( HILO, CHECKMATCH, CHECKBUFFERS )                                                                           \
+     {                                                                                                                           \
+                                                                                                                                 \
+-        uint64_t inputWord = *reinterpret_cast<const uint16_t*>( inputCursor );                                                 \
++        uint64_t inputWord = LoadUnaligned<uint16_t>( inputCursor );                                                 \
+         __m128i  literals  = _mm_cvtsi64_si128( inputWord );                                                                    \
+                                                                                                                                 \
+         offset ^= static_cast<size_t>( static_cast<ptrdiff_t>( static_cast<int8_t>( readOffsetHalf##HILO ) ) ) & inputWord;     \
+@@ -658,7 +673,7 @@
+ 
+ #define DECODE_STEP_HALF( HILO, CHECKMATCH, CHECKBUFFERS )                                                                      \
+     {                                                                                                                           \
+-        size_t  inputWord   = *reinterpret_cast< const uint16_t* >( inputCursor );                                              \
++        size_t  inputWord   = LoadUnaligned<uint16_t>( inputCursor );                                              \
+         __m128i literals    = _mm_cvtsi64_si128( inputWord );                                                                   \
+                                                                                                                                 \
+         offset ^= static_cast< size_t >( static_cast< ptrdiff_t >( static_cast<int8_t>( readOffsetHalf##HILO ) ) ) & inputWord; \
+@@ -688,7 +703,7 @@
+ 
+ #define DECODE_STEP_END( HILO, CHECKMATCH, CHECKBUFFERS )                                                                       \
+     {                                                                                                                           \
+-        size_t  inputWord = *reinterpret_cast< const uint16_t* >( inputCursor );                                                \
++        size_t  inputWord = LoadUnaligned<uint16_t>( inputCursor );                                                \
+         __m128i literals  = _mm_cvtsi64_si128( inputWord );                                                                     \
+                                                                                                                                 \
+         offset ^= static_cast< size_t >( static_cast< ptrdiff_t >( static_cast<int8_t>( readOffsetHalf##HILO ) ) ) & inputWord; \
+@@ -736,8 +751,8 @@
+ #pragma warning ( pop )
+ 
+         // "Safe" ends to the buffer, before the input/output cursors hit these, we can loop without overflow checks.
+-        const  uint8_t* inputSafeEnd  = ( input + inputLength ) - INPUT_BUFFER_SAFE;
+-        uint8_t*        outputSafeEnd = ( output + outputLength ) - OUTPUT_BUFFER_SAFE;
++        const  uint8_t* inputSafeEnd  = input + ( inputLength > INPUT_BUFFER_SAFE ? inputLength - INPUT_BUFFER_SAFE : 0 );
++        uint8_t*        outputSafeEnd = output + ( outputLength > OUTPUT_BUFFER_SAFE ? outputLength - OUTPUT_BUFFER_SAFE : 0 );
+ 
+         // Decoding loop with offset output buffer underflow test, but no buffer overflow tests, assumed to end at a safe distance 
+         // from overflows

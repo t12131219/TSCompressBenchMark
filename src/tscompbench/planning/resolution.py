@@ -12,6 +12,7 @@ from .models import ComparabilityKeys, ExecutionResolution, ResolvedConfig
 
 _ISA_FLAGS = {
     "SSE2": "sse2",
+    "SSE4_1": "sse4_1",
     "SSE4_2": "sse4_2",
     "AVX": "avx",
     "AVX2": "avx2",

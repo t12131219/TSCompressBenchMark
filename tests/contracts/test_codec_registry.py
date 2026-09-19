@@ -21,7 +21,12 @@ def _registries() -> tuple[SourceRegistry, CodecRegistry]:
 
 def test_codec_manifests_reference_audited_sources_and_have_stable_ids() -> None:
     sources, codecs = _registries()
-    assert len(codecs) == 8
+    assert len(codecs) == 13
+    assert "lzsse2-raw" in codecs.keys()
+    assert "lzsse8-raw" in codecs.keys()
+    assert "lzss-raw" in codecs.keys()
+    assert "xz-stream" in codecs.keys()
+    assert "deflate-zlib" in codecs.keys()
     assert "brotli-stream" in codecs.keys()
     assert "lz4-frame" in codecs.keys()
     assert "zstd-frame" in codecs.keys()

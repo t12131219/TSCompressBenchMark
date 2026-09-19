@@ -6,9 +6,14 @@ from tscompbench.codecs import CodecManifest
 from tscompbench.execution.protocol import CodecAdapter
 
 from .brotli_stream import BrotliStreamAdapter
+from .deflate_zlib import DeflateZlibAdapter
 from .lz4_frame import Lz4FrameAdapter
+from .lzss_raw import LzssRawAdapter
+from .lzsse2_raw import Lzsse2RawAdapter
+from .lzsse8_raw import Lzsse8RawAdapter
 from .oracles import OracleAdapter
 from .snappy_raw import SnappyRawAdapter
+from .xz_stream import XzStreamAdapter
 from .zstd_frame import ZstdFrameAdapter
 
 
@@ -28,7 +33,12 @@ def adapter_artifacts(project_root: Path, manifest: CodecManifest) -> tuple[Path
     factory = adapter.get("factory")
     support_modules = {
         "BROTLI_STREAM_CTYPES_V1": "brotli_stream.py",
+        "DEFLATE_ZLIB_CTYPES_V1": "deflate_zlib.py",
+        "LZSS_RAW_CTYPES_V1": "lzss_raw.py",
+        "XZ_STREAM_CTYPES_V1": "xz_stream.py",
         "LZ4_FRAME_CTYPES_V1": "lz4_frame.py",
+        "LZSSE2_RAW_CTYPES_V1": "lzsse2_raw.py",
+        "LZSSE8_RAW_CTYPES_V1": "lzsse8_raw.py",
         "SNAPPY_RAW_CTYPES_V1": "snappy_raw.py",
         "ZSTD_FRAME_CTYPES_V1": "zstd_frame.py",
     }
@@ -46,9 +56,24 @@ def create_adapter(project_root: Path, manifest: CodecManifest) -> CodecAdapter:
     if adapter.get("factory") == "BROTLI_STREAM_CTYPES_V1":
         artifact, _ = adapter_artifacts(project_root, manifest)
         return BrotliStreamAdapter(artifact, manifest.document["adapter"])
+    if adapter.get("factory") == "DEFLATE_ZLIB_CTYPES_V1":
+        artifact, _ = adapter_artifacts(project_root, manifest)
+        return DeflateZlibAdapter(artifact, manifest.document["adapter"])
+    if adapter.get("factory") == "LZSS_RAW_CTYPES_V1":
+        artifact, _ = adapter_artifacts(project_root, manifest)
+        return LzssRawAdapter(artifact, manifest.document["adapter"])
+    if adapter.get("factory") == "XZ_STREAM_CTYPES_V1":
+        artifact, _ = adapter_artifacts(project_root, manifest)
+        return XzStreamAdapter(artifact, manifest.document["adapter"])
     if adapter.get("factory") == "LZ4_FRAME_CTYPES_V1":
         artifact, _ = adapter_artifacts(project_root, manifest)
         return Lz4FrameAdapter(artifact, manifest.document["adapter"])
+    if adapter.get("factory") == "LZSSE8_RAW_CTYPES_V1":
+        artifact, _ = adapter_artifacts(project_root, manifest)
+        return Lzsse8RawAdapter(artifact, manifest.document["adapter"])
+    if adapter.get("factory") == "LZSSE2_RAW_CTYPES_V1":
+        artifact, _ = adapter_artifacts(project_root, manifest)
+        return Lzsse2RawAdapter(artifact, manifest.document["adapter"])
     if adapter.get("factory") == "ZSTD_FRAME_CTYPES_V1":
         artifact, _ = adapter_artifacts(project_root, manifest)
         return ZstdFrameAdapter(artifact, manifest.document["adapter"])

@@ -1,0 +1,49 @@
+{
+  "schema_version": "tscb.source-artifact.v2",
+  "key": "deflate-zlib-lzbench-1.3.2",
+  "kind": "VENDORED_BENCHMARK_SOURCE_CLOSURE",
+  "identity": {
+    "kind": "VENDORED_BENCHMARK_SOURCE_CLOSURE",
+    "key": "deflate-zlib-lzbench-1.3.2",
+    "benchmark_repository": "https://github.com/inikep/lzbench.git",
+    "benchmark_commit": "fa871e66b3543a70fd4d060f7c12719343ff4ac3",
+    "benchmark_path": "lz/zlib",
+    "benchmark_version": "1.3.2",
+    "upstream_reference_repository": "https://github.com/madler/zlib.git",
+    "upstream_reference_commit": "e3dc0a85b7032e98380dec011bc8f2c2ee0d8fca",
+    "source_closure_sha256": "90abdcdbb1d1670afd5b5ca06827f2bb7aedd2e10469b6ceaae90e08d455f7c0",
+    "copy_policy": "UNMODIFIED_COMPLETE_LZBENCH_ZLIB_SOURCE_TREE",
+    "execution_variant": "RFC1950_ZLIB_DEFLATE_LEVEL6_WINDOW15_DEFAULT_STRATEGY_SINGLE_THREAD"
+  },
+  "license": {
+    "spdx": "Zlib",
+    "status": "RUN_ALLOWED",
+    "redistribution": "ALLOWED_WITH_LICENSE_NOTICE",
+    "files": ["adapters/deflate_zlib/vendor/zlib/LICENSE"]
+  },
+  "build": {
+    "recipe": "PYTHONPATH=src conda run -n CompressBench14 python tools/build_codec.py deflate-zlib --profile all",
+    "patches": [],
+    "submodules": [],
+    "translation_units": [
+      "adapters/deflate_zlib/native/tscb_deflate_zlib.c",
+      "adapters/deflate_zlib/vendor/zlib/adler32.c",
+      "adapters/deflate_zlib/vendor/zlib/compress.c",
+      "adapters/deflate_zlib/vendor/zlib/crc32.c",
+      "adapters/deflate_zlib/vendor/zlib/deflate.c",
+      "adapters/deflate_zlib/vendor/zlib/gzclose.c",
+      "adapters/deflate_zlib/vendor/zlib/gzlib.c",
+      "adapters/deflate_zlib/vendor/zlib/gzread.c",
+      "adapters/deflate_zlib/vendor/zlib/gzwrite.c",
+      "adapters/deflate_zlib/vendor/zlib/infback.c",
+      "adapters/deflate_zlib/vendor/zlib/inffast.c",
+      "adapters/deflate_zlib/vendor/zlib/inflate.c",
+      "adapters/deflate_zlib/vendor/zlib/inftrees.c",
+      "adapters/deflate_zlib/vendor/zlib/trees.c",
+      "adapters/deflate_zlib/vendor/zlib/uncompr.c",
+      "adapters/deflate_zlib/vendor/zlib/zutil.c"
+    ],
+    "release_artifact": "build/adapters/deflate_zlib/release/libtscb_deflate_zlib.so",
+    "sanitizer_artifact": "build/adapters/deflate_zlib/sanitizer/libtscb_deflate_zlib.so"
+  }
+}

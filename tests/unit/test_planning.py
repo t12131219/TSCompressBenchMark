@@ -171,7 +171,10 @@ def test_frame_profiles_compare_directly_while_raw_and_brotli_remain_separate(
     }
     key_sets = []
     execution_paths = []
-    for manifest_key in ("lz4-frame", "zstd-frame", "snappy-raw", "brotli-stream"):
+    for manifest_key in (
+        "lz4-frame", "zstd-frame", "snappy-raw", "brotli-stream", "deflate-zlib",
+        "xz-stream", "lzss-raw", "lzsse8-raw", "lzsse2-raw"
+    ):
         manifest = registry.get(manifest_key)
         compatibility = negotiate(manifest, _descriptor())
         config = expand_sweep(manifest, {})[0]
@@ -217,3 +220,37 @@ def test_frame_profiles_compare_directly_while_raw_and_brotli_remain_separate(
     assert key_sets[3].execution_key not in {item.execution_key for item in key_sets[:3]}
     assert key_sets[3].resource_key not in {item.resource_key for item in key_sets[:3]}
     assert execution_paths[3] not in execution_paths[:3]
+    assert key_sets[4].semantic_key not in {item.semantic_key for item in key_sets[:4]}
+    assert key_sets[4].execution_key not in {item.execution_key for item in key_sets[:4]}
+    assert key_sets[4].resource_key not in {item.resource_key for item in key_sets[:4]}
+    assert execution_paths[4] not in execution_paths[:4]
+    assert key_sets[5].semantic_key not in {item.semantic_key for item in key_sets[:5]}
+    assert key_sets[5].execution_key not in {item.execution_key for item in key_sets[:5]}
+    assert key_sets[5].resource_key not in {item.resource_key for item in key_sets[:5]}
+    assert execution_paths[5] not in execution_paths[:5]
+    assert key_sets[6].semantic_key not in {item.semantic_key for item in key_sets[:6]}
+    assert key_sets[6].execution_key not in {item.execution_key for item in key_sets[:6]}
+    assert key_sets[6].resource_key not in {item.resource_key for item in key_sets[:6]}
+    assert execution_paths[6] not in execution_paths[:6]
+    assert key_sets[7].semantic_key not in {item.semantic_key for item in key_sets[:7]}
+    assert key_sets[7].execution_key not in {item.execution_key for item in key_sets[:7]}
+    assert key_sets[7].resource_key not in {item.resource_key for item in key_sets[:7]}
+    assert execution_paths[7] not in execution_paths[:7]
+    assert key_sets[8].semantic_key not in {item.semantic_key for item in key_sets[:8]}
+    assert key_sets[8].execution_key not in {item.execution_key for item in key_sets[:8]}
+    assert key_sets[8].resource_key not in {item.resource_key for item in key_sets[:8]}
+    assert execution_paths[8] not in execution_paths[:8]
+
+
+def test_lzss_variant_does_not_collide_with_other_codecs_or_lzsse(tmp_path):
+    registry = _registry()
+    manifest = registry.get("lzss-raw")
+    assert manifest.document["identity"]["family"] == "LZSS"
+    assert manifest.document["lifecycle"]["dictionary"] == (
+        "FIXED_INITIAL_WINDOW_BYTE_0X20_NO_EXTERNAL_DICTIONARY"
+    )
+    configurations = expand_sweep(manifest, {"ei": [10, 11]})
+    assert configurations[0].status is RunStatus.PLANNED
+    assert configurations[1].status is RunStatus.SCHEMA_ERROR
+    assert configurations[0].config_id != configurations[1].config_id
+    assert manifest.algorithm_id != registry.get("snappy-raw").algorithm_id

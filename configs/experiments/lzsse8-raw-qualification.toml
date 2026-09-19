@@ -1,0 +1,52 @@
+schema_version = "2.0"
+datasets = ["national_illness"]
+algorithms = ["lzsse8-raw"]
+tracks = ["VALUE"]
+seed = 20260918
+
+[data_preparation]
+characterization_mode = "exact"
+write_canonical = true
+
+[profile]
+measurement_mode = "QUALIFICATION"
+timing_scope = "PIPELINE"
+resource_scope = "PROCESS"
+memory_accounting_scope = "PROCESS_RSS"
+counter_method = "NOT_COLLECTED"
+energy_method = "NOT_COLLECTED"
+sampling_policy = "PROCESS_BOUNDARY"
+threads = 1
+cpu_affinity = [0]
+processes = 1
+device = "CPU"
+allocation_policy = "PER_REPETITION"
+cache_policy = "WARM_INPUT"
+state_policy = "RESET_PER_REPETITION"
+gc_policy = "DISABLED_DURING_TIMING"
+jit_policy = "NOT_APPLICABLE"
+warmup_min_count = 1
+warmup_min_seconds = "0"
+repetitions = 1
+min_repetition_seconds = "0"
+max_inner_iterations = 1000
+iteration_semantics = "INDEPENDENT_OBJECT"
+query_workload = false
+streaming_workload = false
+query_count = 1
+timeout_seconds = 120
+memory_limit_bytes = 1073741824
+
+[reporting]
+bootstrap_samples = 100
+confidence_level = "0.95"
+ranking_policy = "PER_METRIC_WITHIN_COMPARABILITY_GROUP"
+tie_method = "DENSE_EXACT"
+coverage_policy = "PUBLISH_SEPARATELY_NO_SCORE"
+
+[sweep]
+native_timing = [true]
+block_size = [65536]
+compression_level = [12]
+content_checksum = [false]
+isa = ["SSE4_1"]

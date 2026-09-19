@@ -1,0 +1,142 @@
+{
+  "schema_version": "tscb.source-onboarding.v2",
+  "source_artifact_id": "v2:source-artifact:sha256:61ad2f0403009960c989cb555caf070a4dad8c3095eebc501a09eeddb9912dfd",
+  "repository": "https://github.com/inikep/lzbench.git",
+  "commit": "fa871e66b3543a70fd4d060f7c12719343ff4ac3",
+  "dirty": false,
+  "submodules": [],
+  "implementation_files": [
+    "lz/lzsse/lzsse2/lzsse2.cpp"
+  ],
+  "public_api_files": [
+    "lz/lzsse/lzsse2/lzsse2.h",
+    "lz/lzsse/lzsse2/lzsse2_platform.h"
+  ],
+  "benchmark_files": [
+    "bench/lz_codecs.cpp",
+    "bench/lzbench.h",
+    "Makefile"
+  ],
+  "test_files": [],
+  "license_files": [
+    "lz/lzsse/LICENSE",
+    "lz/lzsse/lzsse2/lzsse2_platform.h"
+  ],
+  "third_party_dependencies": [],
+  "object_level_candidates": [
+    "P1_STANDALONE_CODEC"
+  ],
+  "input_contract": {
+    "kind": "BYTE_VIEW",
+    "length_type": "size_t; signed 32-bit positions limit <= INT32_MAX bytes",
+    "zero_length": "SUPPORTED_WITH_REAL_ZERO_LENGTH_VENDOR_CALL",
+    "ownership": "BORROWED_DURING_CALL",
+    "mutation": "FORBIDDEN",
+    "overlap": "FORBIDDEN_AND_CHECKED",
+    "alignment_bytes": 1,
+    "safe_overread_bytes": 0
+  },
+  "output_contract": {
+    "kind": "LZSSE2_RAW_WITH_VERSIONED_TSCB_DESCRIPTOR_CONTAINER",
+    "self_contained": true,
+    "actual_written_length": true,
+    "capacity_is_not_size": true,
+    "checksum": "NONE",
+    "framing": "NONE",
+    "dictionary": "NONE"
+  },
+  "lifecycle_contract": {
+    "output_bound": "max(1,inputLength); the extra empty byte is capacity, not stored bytes",
+    "return_length": "vendor returned length, exact 0-byte finalized suffix",
+    "error_codes": "tscb_status_v1; strict prechecks before SIMD vendor entry",
+    "finalize": "REQUIRED_NOOP_ONE_SHOT_FINALIZE; tail already completed in compress",
+    "reset": "NEW_OPTIMAL_CONTEXT_PER_INDEPENDENT_OBJECT; ABI reset clears timers and state"
+  },
+  "stream_components": {
+    "outer_container": "12-byte unique LZSSE2 prefix + canonical JSON dtype/shape/name/logical length/track descriptors, all charged",
+    "raw_mode": "Intrinsic vendor raw storage if encoded length equals decoded length, including empty/short inputs; not another codec fallback",
+    "compressed_mode": "3 initial literals, 16-byte nibble controls, 1/2 XOR literals or differential 16-bit offsets, first match nibble count+1, carried counts, 16 final literals",
+    "decode_validation": "Independent LZSSE2-specific control/offset/length traversal checks unconditional input uint16 reads and output SIMD16-byte loads/stores, exact input/output tail; then vendor decoder",
+    "accounting": "Opaque complete raw or compressed bytes attributed to the selected Track, prefix/container and descriptor/metadata disjoint; no uncharged external side information"
+  },
+  "upstream_tests": [
+    {
+      "profile": "release",
+      "suite": "project-exact-buffer-guard-canary-195-roundtrips-2048-hostile-streams",
+      "status": "PASS",
+      "log_sha256": "3bcde450e49846094226fe4b5369ecc7f7005be574d9a34daf70d8f89e70557c",
+      "evidence": "build/source-audits/lzsse2-native-tests-20260918.log"
+    },
+    {
+      "profile": "sanitizer",
+      "suite": "project-exact-buffer-guard-canary-195-roundtrips-2048-hostile-streams",
+      "status": "PASS",
+      "log_sha256": "3bcde450e49846094226fe4b5369ecc7f7005be574d9a34daf70d8f89e70557c",
+      "evidence": "build/source-audits/lzsse2-native-tests-20260918.log"
+    },
+    {
+      "profile": "release",
+      "suite": "unmodified-vendor-compare",
+      "status": "PASS",
+      "log_sha256": "3bcde450e49846094226fe4b5369ecc7f7005be574d9a34daf70d8f89e70557c",
+      "evidence": "build/source-audits/lzsse2-native-tests-20260918.log"
+    },
+    {
+      "profile": "release",
+      "suite": "release-allocation-failure",
+      "status": "PASS",
+      "log_sha256": "3bcde450e49846094226fe4b5369ecc7f7005be574d9a34daf70d8f89e70557c",
+      "evidence": "build/source-audits/lzsse2-native-tests-20260918.log"
+    },
+    {
+      "profile": "sanitizer",
+      "suite": "sanitizer-allocation-failure",
+      "status": "PASS",
+      "log_sha256": "3bcde450e49846094226fe4b5369ecc7f7005be574d9a34daf70d8f89e70557c",
+      "evidence": "build/source-audits/lzsse2-native-tests-20260918.log"
+    }
+  ],
+  "builds": [
+    {
+      "profile": "release",
+      "artifact_sha256": "bd7ca6a3d3d2d533f39c7d87ffda05f7093feb063ee6780c7488bbcc23943a68",
+      "compile_commands_sha256": "f2572fdbd4d9fa6747a1080ea2da36b304ec018ca4daf66b4aad89986e993489",
+      "compiler": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0"
+    },
+    {
+      "profile": "sanitizer",
+      "artifact_sha256": "1122e18723dbdb4fafceaf5937dce773dd271aa42e6c7f1cf97d05aa094e5833",
+      "compile_commands_sha256": "cc4037fd39ac026947f0877467b418a8b9149e78f6afe5c5d03e3c3e2c830155",
+      "compiler": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0"
+    }
+  ],
+  "license_decision": {
+    "spdx": "BSD-2-Clause",
+    "status": "RUN_ALLOWED",
+    "redistribution": "ALLOWED_WITH_LICENSE_NOTICE",
+    "files": [
+      "adapters/lzsse2_raw/vendor/lzsse/LICENSE",
+      "adapters/lzsse2_raw/vendor/lzsse/lzsse2/lzsse2_platform.h"
+    ]
+  },
+  "known_limitations": [
+    "Explicit user LZSSE2 completion request authorizes this variant; spreadsheet LZSS remains alexkazik/lzss. LZSSE8 is independently qualified and not substituted.",
+    "LZSSE2 Optimal Parse only, fixed level12, x64 SSE4.1, single thread, no scalar fallback. Other source levels1..17 are not registered; LZSSE2 header has no Fast API.",
+    "No dedicated upstream LZSSE tests are present in the local lzbench closure. Project suites are labeled as project tests, not fabricated upstream suites; 44 direct unmodified-source comparisons prove patch bitstream compatibility on the retained corpus.",
+    "Vendor files remain byte-identical. Build-time hashed patch fixes null allocation/free, unaligned integer accesses using memcpy, and out-of-object safe-end pointer formation without changing the parser or format.",
+    "Native API timing excludes state allocation/free and structural stream validation; CORE includes these internal wrapper operations and Python descriptor/FFI/copies. Mandatory Finalize emits zero bytes and adds no native API time.",
+    "No checksum: structurally valid corruption may decode; common bit-exact validation remains mandatory. Empty/short/incompressible inputs can legitimately use vendor raw mode.",
+    "ASan/UBSan covers patched codec and C ABI; exact guard-backed buffer tests have no external safe-overread padding. LeakSanitizer disabled under host ptrace policy.",
+    "One complete stream per routed object, full-matrix byte view preserves all IEEE payloads. block_size controls framework boundary fixtures, not an implicit segmentation stage. Streaming/query/random-access are unsupported.",
+    "Decoded byte work limit is INT32_MAX; allocation also depends on large optimal state and per-byte Arrival storage. Worker memory limit may produce OOM rather than claiming all theoretical lengths fit physical RAM."
+  ],
+  "unsupported_reason_codes": [
+    "CPU_MISSING_REQUESTED_ISA",
+    "EXECUTION_ARTIFACT_MISSING",
+    "VALIDITY_SHAPE_UNSUPPORTED",
+    "INPUT_EXCEEDS_REGISTERED_LIMIT",
+    "QUERY_UNSUPPORTED",
+    "STREAMING_PROTOCOL_NOT_REGISTERED",
+    "LZSSE2_VARIANT_NOT_REGISTERED"
+  ]
+}

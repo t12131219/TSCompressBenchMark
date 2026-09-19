@@ -158,6 +158,92 @@ def _snappy_command(output: Path, profile: str) -> list[str]:
     ]
 
 
+def _lzsse2_command(output: Path, profile: str) -> list[str]:
+    adapter = PROJECT_ROOT / "adapters" / "lzsse2_raw"
+    vendor = adapter / "vendor" / "lzsse" / "lzsse2"
+    patch = adapter / "patches/0001-allocation-unaligned-pointer-safety.patch"
+    patched = output.parent / "lzsse2.cpp"
+    _run(["patch", "--batch", "--output", str(patched), str(vendor / "lzsse2.cpp"), str(patch)])
+    flags = [
+        "-std=c++17",
+        "-fPIC",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-Wno-unknown-pragmas",
+        "-Wno-sign-compare",
+        "-msse4.1",
+    ]
+    if profile == "release":
+        flags += ["-O3", "-DNDEBUG"]
+    elif profile == "sanitizer":
+        flags += [
+            "-O1",
+            "-g",
+            "-fno-omit-frame-pointer",
+            "-fsanitize=address,undefined",
+        ]
+    else:
+        raise ValueError(f"unknown build profile: {profile}")
+    return [
+        os.environ.get("CXX", "c++"),
+        *flags,
+        "-shared",
+        "-Wl,-Bsymbolic-functions",
+        "-I",
+        str(PROJECT_ROOT / "native" / "include"),
+        "-I",
+        str(vendor),
+        str(adapter / "native" / "tscb_lzsse2_raw.cc"),
+        str(patched),
+        "-o",
+        str(output),
+    ]
+
+
+def _lzsse8_command(output: Path, profile: str) -> list[str]:
+    adapter = PROJECT_ROOT / "adapters" / "lzsse8_raw"
+    vendor = adapter / "vendor" / "lzsse" / "lzsse8"
+    patch = adapter / "patches/0001-allocation-unaligned-pointer-safety.patch"
+    patched = output.parent / "lzsse8.cpp"
+    _run(["patch", "--batch", "--output", str(patched), str(vendor / "lzsse8.cpp"), str(patch)])
+    flags = [
+        "-std=c++17",
+        "-fPIC",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-Wno-unknown-pragmas",
+        "-Wno-sign-compare",
+        "-msse4.1",
+    ]
+    if profile == "release":
+        flags += ["-O3", "-DNDEBUG"]
+    elif profile == "sanitizer":
+        flags += [
+            "-O1",
+            "-g",
+            "-fno-omit-frame-pointer",
+            "-fsanitize=address,undefined",
+        ]
+    else:
+        raise ValueError(f"unknown build profile: {profile}")
+    return [
+        os.environ.get("CXX", "c++"),
+        *flags,
+        "-shared",
+        "-Wl,-Bsymbolic-functions",
+        "-I",
+        str(PROJECT_ROOT / "native" / "include"),
+        "-I",
+        str(vendor),
+        str(adapter / "native" / "tscb_lzsse8_raw.cc"),
+        str(patched),
+        "-o",
+        str(output),
+    ]
+
+
 def _brotli_command(output: Path, profile: str) -> list[str]:
     adapter = PROJECT_ROOT / "adapters" / "brotli_stream"
     vendor = adapter / "vendor" / "brotli"
@@ -198,30 +284,213 @@ def _brotli_command(output: Path, profile: str) -> list[str]:
     ]
 
 
+def _deflate_zlib_command(output: Path, profile: str) -> list[str]:
+    adapter = PROJECT_ROOT / "adapters" / "deflate_zlib"
+    vendor = adapter / "vendor" / "zlib"
+    flags = [
+        "-std=c11",
+        "-fPIC",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-DZ_HAVE_UNISTD_H",
+        "-Wl,-Bsymbolic-functions",
+    ]
+    if profile == "release":
+        flags += ["-O3", "-DNDEBUG"]
+    elif profile == "sanitizer":
+        flags += [
+            "-O1",
+            "-g",
+            "-fno-omit-frame-pointer",
+            "-fsanitize=address,undefined",
+        ]
+    else:
+        raise ValueError(f"unknown build profile: {profile}")
+    source_names = (
+        "adler32.c",
+        "compress.c",
+        "crc32.c",
+        "deflate.c",
+        "gzclose.c",
+        "gzlib.c",
+        "gzread.c",
+        "gzwrite.c",
+        "infback.c",
+        "inffast.c",
+        "inflate.c",
+        "inftrees.c",
+        "trees.c",
+        "uncompr.c",
+        "zutil.c",
+    )
+    return [
+        os.environ.get("CC", "cc"),
+        *flags,
+        "-shared",
+        "-I",
+        str(PROJECT_ROOT / "native" / "include"),
+        "-I",
+        str(vendor),
+        str(adapter / "native" / "tscb_deflate_zlib.c"),
+        *(str(vendor / name) for name in source_names),
+        "-o",
+        str(output),
+    ]
+
+
+def _xz_command(output: Path, profile: str) -> tuple[list[str], dict[str, Any], str]:
+    adapter = PROJECT_ROOT / "adapters/xz_stream"
+    vendor = adapter / "vendor/xz"
+    dependency_build = output.parent / "vendor-build"
+    flags = "-DLZMA_LZ_DECODER_CONFIG=1"
+    if profile == "sanitizer":
+        flags += " -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined"
+    configure = [
+        "cmake", "-S", str(vendor), "-B", str(dependency_build),
+        f"-DCMAKE_C_COMPILER={os.environ.get('CC', 'cc')}",
+        f"-DCMAKE_BUILD_TYPE={'Release' if profile == 'release' else 'Debug'}",
+        "-DCMAKE_POSITION_INDEPENDENT_CODE=ON", "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON",
+        f"-DCMAKE_C_FLAGS={flags}", "-DBUILD_SHARED_LIBS=OFF", "-DBUILD_TESTING=ON",
+        "-DXZ_THREADS=no", "-DXZ_NLS=OFF", "-DXZ_CHECKS=crc32", "-DXZ_SANDBOX=no",
+        "-DXZ_ENCODERS=lzma1;lzma2", "-DXZ_DECODERS=lzma1;lzma2",
+        "-DXZ_MICROLZMA_ENCODER=OFF", "-DXZ_MICROLZMA_DECODER=OFF", "-DXZ_LZIP_DECODER=OFF",
+        "-DXZ_CLMUL_CRC=OFF", "-DXZ_ARM64_CRC32=OFF", "-DXZ_LOONGARCH_CRC32=OFF",
+        "-DXZ_ASM_I386=OFF", "-DHAVE__MM_MOVEMASK_EPI8=OFF",
+        "-DXZ_TOOL_XZ=OFF", "-DXZ_TOOL_XZDEC=OFF", "-DXZ_TOOL_LZMADEC=OFF",
+        "-DXZ_TOOL_LZMAINFO=OFF", "-DXZ_TOOL_SCRIPTS=OFF", "-DXZ_DOC=OFF",
+    ]
+    build = ["cmake", "--build", str(dependency_build), "--parallel", "2"]
+    log = _run(configure) + _run(build)
+    dependency_commands = json.loads((dependency_build / "compile_commands.json").read_text())
+    command = [
+        os.environ.get("CC", "cc"), "-std=c11", "-fPIC", "-Wall", "-Wextra", "-Werror",
+        *( ["-O3", "-DNDEBUG"] if profile == "release" else
+           ["-O1", "-g", "-fno-omit-frame-pointer", "-fsanitize=address,undefined"] ),
+        "-shared", "-Wl,-Bsymbolic-functions", "-Wl,--no-undefined",
+        "-I", str(PROJECT_ROOT / "native/include"), "-I", str(vendor / "src/liblzma/api"),
+        str(adapter / "native/tscb_xz_stream.c"), str(dependency_build / "liblzma.a"),
+        "-o", str(output),
+    ]
+    return command, {
+        "dependency_configure": configure, "dependency_build": build,
+        "dependency_compile_commands": dependency_commands,
+        "dependency_archive_sha256": _sha256(dependency_build / "liblzma.a"),
+    }, log
+
+
+def _lzss_command(output: Path, profile: str) -> tuple[list[str], dict[str, Any], str]:
+    adapter = PROJECT_ROOT / "adapters/lzss_raw"
+    vendor = adapter / "vendor/lzss/lzss"
+    dependency = output.parent / "rust-build"
+    dependency.mkdir(parents=True, exist_ok=True)
+    flags = ["-C", "relocation-model=pic", "-C", "opt-level=3"]
+    rust_environment: dict[str, str] = {}
+    if profile == "sanitizer":
+        flags = ["-C", "relocation-model=pic", "-C", "opt-level=1", "-g",
+                 "-C", "debug-assertions=yes", "-Z", "sanitizer=address"]
+        rust_environment = {"RUSTC_BOOTSTRAP": "1"}
+    features = ["--cfg", 'feature="std"', "--cfg", 'feature="alloc"',
+                "--cfg", 'feature="safe"']
+    commands = [
+        ["rustc", str(adapter / "vendor/void/src/lib.rs"), "--crate-name", "void",
+         "--crate-type", "rlib", "--cfg", 'feature="std"', *flags,
+         "-o", str(dependency / "libvoid.rlib")],
+        ["rustc", str(vendor / "build.rs"), "-o", str(dependency / "generate")],
+        [str(dependency / "generate")],
+        ["rustc", str(vendor / "src/lib.rs"), "--edition=2021", "--crate-name", "lzss",
+         "--crate-type", "rlib", *features, *flags,
+         "--extern", f"void={dependency / 'libvoid.rlib'}", "-L", str(dependency),
+         "-o", str(dependency / "liblzss.rlib")],
+        ["rustc", str(adapter / "native/ffi.rs"), "--edition=2021",
+         "--crate-name", "tscb_lzss", "--crate-type", "staticlib", *flags,
+         "--extern", f"lzss={dependency / 'liblzss.rlib'}", "-L", str(dependency),
+         "-o", str(dependency / "libtscb_lzss.a")],
+    ]
+    log = ""
+    environment = {**os.environ, **rust_environment, "OUT_DIR": str(dependency)}
+    for command in commands:
+        completed = subprocess.run(command, cwd=vendor, env=environment, text=True,
+                                   stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        log += completed.stdout
+        if completed.returncode:
+            raise RuntimeError(f"Rust build failed: {shlex.join(command)}\n{completed.stdout}")
+    command = [
+        os.environ.get("CXX", "c++"), "-std=c++17", "-fPIC", "-Wall", "-Wextra", "-Werror",
+        *(["-O3", "-DNDEBUG"] if profile == "release" else
+          ["-O1", "-g", "-fno-omit-frame-pointer", "-fsanitize=address,undefined"]),
+        "-shared", "-Wl,--exclude-libs,ALL", "-I", str(PROJECT_ROOT / "native/include"),
+        str(adapter / "native/tscb_lzss_raw.cc"), str(dependency / "libtscb_lzss.a"),
+        "-lpthread", "-ldl", "-lm", "-o", str(output),
+    ]
+    return command, {
+        "dependency_commands": commands, "dependency_environment": rust_environment,
+        "rustc": _run(["rustc", "--version"]),
+        "dependency_archive_sha256": _sha256(dependency / "libtscb_lzss.a"),
+        "sanitizer_coverage": "RUST_CODEC_AND_FFI_ASAN_CPP_ASAN_UBSAN_STD_UNINSTRUMENTED"
+        if profile == "sanitizer" else "NOT_APPLICABLE",
+    }, log
+
+
 def _build(algorithm: str, profile: str) -> dict[str, Any]:
     directory_name = algorithm.replace("-", "_")
     output_dir = PROJECT_ROOT / "build" / "adapters" / directory_name / profile
     output_dir.mkdir(parents=True, exist_ok=True)
     output = output_dir / f"libtscb_{directory_name}.so"
+    dependency_evidence: dict[str, Any] = {}
+    dependency_log = ""
     if algorithm == "lz4-frame":
         command = _lz4_command(output, profile)
     elif algorithm == "zstd-frame":
         command = _zstd_command(output, profile)
     elif algorithm == "snappy-raw":
         command = _snappy_command(output, profile)
+    elif algorithm == "lzsse8-raw":
+        command = _lzsse8_command(output, profile)
+        dependency_evidence = {
+            "patch_sha256": _sha256(
+                PROJECT_ROOT / "adapters/lzsse8_raw/patches"
+                / "0001-allocation-unaligned-pointer-safety.patch"
+            ),
+            "patched_translation_unit_sha256": _sha256(output_dir / "lzsse8.cpp"),
+            "source_translation_unit_sha256": _sha256(
+                PROJECT_ROOT / "adapters/lzsse8_raw/vendor/lzsse/lzsse8/lzsse8.cpp"
+            ),
+        }
+    elif algorithm == "lzsse2-raw":
+        command = _lzsse2_command(output, profile)
+        dependency_evidence = {
+            "patch_sha256": _sha256(
+                PROJECT_ROOT / "adapters/lzsse2_raw/patches"
+                / "0001-allocation-unaligned-pointer-safety.patch"
+            ),
+            "patched_translation_unit_sha256": _sha256(output_dir / "lzsse2.cpp"),
+            "source_translation_unit_sha256": _sha256(
+                PROJECT_ROOT / "adapters/lzsse2_raw/vendor/lzsse/lzsse2/lzsse2.cpp"
+            ),
+        }
     elif algorithm == "brotli-stream":
         command = _brotli_command(output, profile)
+    elif algorithm == "deflate-zlib":
+        command = _deflate_zlib_command(output, profile)
+    elif algorithm == "lzss-raw":
+        command, dependency_evidence, dependency_log = _lzss_command(output, profile)
+    elif algorithm == "xz-stream":
+        command, dependency_evidence, dependency_log = _xz_command(output, profile)
     else:
         raise ValueError(f"unknown algorithm: {algorithm}")
-    log = _run(command)
+    log = dependency_log + _run(command)
     command_document = {
         "schema_version": "tscb.compile-command.v1",
         "profile": profile,
         "command": command,
+        **dependency_evidence,
     }
     command_bytes = json.dumps(
         command_document, ensure_ascii=False, sort_keys=True, separators=(",", ":")
     ).encode("utf-8")
+    if dependency_evidence:
+        (output_dir / "compile-command.json").write_bytes(command_bytes + b"\n")
     record = {
         "schema_version": "tscb.build-artifact.v1",
         "algorithm": algorithm,
@@ -244,7 +513,11 @@ def _build(algorithm: str, profile: str) -> dict[str, Any]:
 def main() -> int:
     parser = argparse.ArgumentParser(description="Build a frozen source codec adapter")
     parser.add_argument(
-        "algorithm", choices=("lz4-frame", "zstd-frame", "snappy-raw", "brotli-stream")
+        "algorithm",
+        choices=(
+            "lz4-frame", "zstd-frame", "snappy-raw", "lzsse2-raw", "brotli-stream",
+            "deflate-zlib", "xz-stream", "lzss-raw", "lzsse8-raw"
+        ),
     )
     parser.add_argument("--profile", choices=("release", "sanitizer", "all"), default="release")
     arguments = parser.parse_args()

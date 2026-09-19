@@ -1,0 +1,120 @@
+--- a/lzsse8.cpp
++++ b/lzsse8.cpp
+@@ -97,9 +97,20 @@
+ 
+ // Simple fast hash function - actually what is used in snappy and derivatives
+ // There's probably better, but I haven't spent time focusing on this area yet.
++template<typename T> inline T LoadUnaligned(const void* p)
++{
++    T value;
++    memcpy(&value, p, sizeof(value));
++    return value;
++}
++template<typename T> inline void StoreUnaligned(void* p, T value)
++{
++    memcpy(p, &value, sizeof(value));
++}
++
+ inline uint32_t HashFast( const uint8_t* inputCursor )
+ {
+-    return *reinterpret_cast<const uint32_t*>( inputCursor ) * 0x1e35a7bd >> ( 32 - FAST_HASH_BITS );
++    return LoadUnaligned<uint32_t>( inputCursor ) * 0x1e35a7bd >> ( 32 - FAST_HASH_BITS );
+ }
+ 
+ struct Arrival
+@@ -136,6 +147,8 @@
+ 
+     LZSSE8_OptimalParseState* result = reinterpret_cast< LZSSE8_OptimalParseState* >( ::malloc( sizeof( LZSSE8_OptimalParseState ) ) );
+ 
++    if ( result == nullptr ) return nullptr;
++
+     result->bufferSize = bufferSize;
+ 
+     if ( result != nullptr )
+@@ -156,6 +169,8 @@
+ 
+ void LZSSE8_FreeOptimalParseState( LZSSE8_OptimalParseState* toFree )
+ {
++    if ( toFree == nullptr ) return;
++
+     ::free( toFree->arrivals );
+ 
+     toFree->arrivals = nullptr;
+@@ -166,7 +181,7 @@
+ 
+ inline uint32_t HashOptimal( const uint8_t* inputCursor )
+ {
+-    return *reinterpret_cast<const uint32_t*>( inputCursor ) * 0x1e35a7bd >> ( 32 - OPTIMAL_HASH_BITS );
++    return LoadUnaligned<uint32_t>( inputCursor ) * 0x1e35a7bd >> ( 32 - OPTIMAL_HASH_BITS );
+ }
+ 
+ 
+@@ -519,7 +534,7 @@
+             }
+ 
+             // Write the offset out - note the xor with the previous offset.
+-            *reinterpret_cast< uint16_t* >( outputCursor ) = nextPathNode->offset ^ previousOffset;
++            StoreUnaligned<uint16_t>( outputCursor, nextPathNode->offset ^ previousOffset );
+ 
+             previousOffset = nextPathNode->offset;
+             outputCursor  += sizeof( uint16_t );
+@@ -794,7 +809,7 @@
+             // The match length value we are encoding.
+ 
+             // Write the offset out - note the xor with the previous offset.
+-            *reinterpret_cast< uint16_t* >( outputCursor ) = matchOffset ^ previousOffset;
++            StoreUnaligned<uint16_t>( outputCursor, matchOffset ^ previousOffset );
+ 
+             previousOffset = matchOffset;
+             outputCursor  += sizeof( uint16_t );
+@@ -902,9 +917,9 @@
+ 
+                 ++currentControlCount;
+ 
+-                *reinterpret_cast< uint64_t* >( outputCursor ) = 
+-                    *reinterpret_cast< const uint64_t* >( inputCursor - ( sizeof( uint64_t ) - 1 ) ) ^ 
+-                    *reinterpret_cast< const uint64_t* >( ( inputCursor - ( sizeof( uint64_t ) - 1 ) ) - previousOffset );
++                StoreUnaligned<uint64_t>( outputCursor,
++                    LoadUnaligned<uint64_t>( inputCursor - ( sizeof( uint64_t ) - 1 ) ) ^
++                    LoadUnaligned<uint64_t>( ( inputCursor - ( sizeof( uint64_t ) - 1 ) ) - previousOffset ) );
+ 
+                 outputCursor += sizeof( uint64_t );
+ 
+@@ -1043,7 +1058,7 @@
+ 
+ #define DECODE_STEP( HILO, CHECKMATCH, CHECKBUFFERS )                                                                           \
+     {                                                                                                                           \
+-        size_t  inputWord = *reinterpret_cast<const uint16_t*>( inputCursor );                                                  \
++        size_t  inputWord = LoadUnaligned<uint16_t>( inputCursor );                                                  \
+         __m128i literals  = _mm_loadu_si128( reinterpret_cast<const __m128i*>( inputCursor ) );                                 \
+                                                                                                                                 \
+         offset ^= static_cast<size_t>( static_cast<ptrdiff_t>( static_cast<int8_t>( readOffsetHalf##HILO ) ) ) & inputWord;     \
+@@ -1078,7 +1093,7 @@
+ 
+ #define DECODE_STEP_HALF( HILO, CHECKMATCH, CHECKBUFFERS )                                                                      \
+     {                                                                                                                           \
+-        size_t  inputWord = *reinterpret_cast<const uint16_t*>( inputCursor );                                                  \
++        size_t  inputWord = LoadUnaligned<uint16_t>( inputCursor );                                                  \
+         __m128i literals = _mm_loadu_si128( reinterpret_cast<const __m128i*>( inputCursor ) );                                  \
+                                                                                                                                 \
+         offset ^= static_cast<size_t>( static_cast<ptrdiff_t>( static_cast<int8_t>( readOffsetHalf##HILO ) ) ) & inputWord;     \
+@@ -1108,7 +1123,7 @@
+ 
+ #define DECODE_STEP_END( HILO, CHECKMATCH, CHECKBUFFERS )                                                                       \
+     {                                                                                                                           \
+-        size_t  inputWord = *reinterpret_cast<const uint16_t*>( inputCursor );                                                  \
++        size_t  inputWord = LoadUnaligned<uint16_t>( inputCursor );                                                  \
+         __m128i literals = _mm_loadu_si128( reinterpret_cast<const __m128i*>( inputCursor ) );                                  \
+                                                                                                                                 \
+         offset ^= static_cast<size_t>( static_cast<ptrdiff_t>( static_cast<int8_t>( readOffsetHalf##HILO ) ) ) & inputWord;     \
+@@ -1161,8 +1176,8 @@
+ #pragma warning ( pop )
+ 
+         // "Safe" ends to the buffer, before the input/output cursors hit these, we can loop without overflow checks.
+-        const  uint8_t* inputSafeEnd  = ( input + inputLength ) - INPUT_BUFFER_SAFE;
+-        uint8_t*        outputSafeEnd = ( output + outputLength ) - OUTPUT_BUFFER_SAFE;
++        const  uint8_t* inputSafeEnd  = input + ( inputLength > INPUT_BUFFER_SAFE ? inputLength - INPUT_BUFFER_SAFE : 0 );
++        uint8_t*        outputSafeEnd = output + ( outputLength > OUTPUT_BUFFER_SAFE ? outputLength - OUTPUT_BUFFER_SAFE : 0 );
+ 
+         // Decoding loop with offset output buffer underflow test, but no buffer overflow tests, assumed to end at a safe distance 
+         // from overflows

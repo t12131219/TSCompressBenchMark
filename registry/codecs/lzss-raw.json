@@ -1,0 +1,189 @@
+{
+  "schema_version": "tscb.codec-manifest.v2",
+  "key": "lzss-raw",
+  "identity": {
+    "display_name": "LZSS 0.9.1 (alexkazik Rust source, EI10/EJ4, safe)",
+    "family": "LZSS",
+    "source_artifact_id": "v2:source-artifact:sha256:2f06ee31d72141e1d9103cb98194a9dc181b08fbf5912f78b2bc4faf2cd54946",
+    "citations": [
+      "spreadsheet:Value-Compress!B3:C3",
+      "upstream:alexkazik/lzss@512b9163d8a9",
+      "benchmark:lzss/benches/benchmark.rs:generic-EI10-EJ4"
+    ]
+  },
+  "classification": {
+    "object_level": "P1_STANDALONE_CODEC",
+    "implementation_class": "CONVENTIONAL",
+    "tracks": [
+      "TIMESTAMP",
+      "VALUE"
+    ],
+    "subtracks": [
+      "T1",
+      "V0"
+    ]
+  },
+  "input": {
+    "topologies": [
+      "UTS",
+      "SYNCHRONOUS_MTS",
+      "NATIVE_ND_ARRAY"
+    ],
+    "dtypes": [
+      "<i8",
+      "<i4",
+      "<i2",
+      "|i1",
+      "<u8",
+      "<u4",
+      "<u2",
+      "|u1",
+      "<f8",
+      "<f4"
+    ],
+    "ranks": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "layouts": [
+      "ROW_MAJOR_CONTIG",
+      "COLUMN_MAJOR_CONTIG",
+      "SOA_COLUMNS",
+      "STRIDED_VIEW",
+      "NOT_APPLICABLE"
+    ],
+    "endianness": [
+      "little"
+    ],
+    "alignment_bytes": 1,
+    "min_n": 0,
+    "max_n": 4294967295,
+    "min_m": 1,
+    "max_m": 1048576,
+    "validity_shapes": [
+      "NONE"
+    ],
+    "value_coupling_mode": "FULL_MATRIX",
+    "timestamp_semantics": {
+      "preserve_order": true,
+      "duplicates": true,
+      "out_of_order": true,
+      "negative_delta": true,
+      "absolute_epoch": true,
+      "overflow_policy": "NOT_APPLICABLE_BYTE_CODEC"
+    }
+  },
+  "semantics": {
+    "loss_modes": [
+      "LOSSLESS"
+    ],
+    "error_bound_types": [],
+    "reconstruction_modes": [
+      "EXACT_GRID"
+    ],
+    "rebuild_protocol": "TSCB_BUFFER_DESCRIPTOR_CONTAINER_V1",
+    "preprocess_class": "NONE",
+    "preprocess_stages": [],
+    "decodability_profile": "SELF_CONTAINED_TSCB_DESCRIPTOR_PLUS_LZSS_EI10_EJ4_C32",
+    "bitstream_separability": "INDEPENDENT"
+  },
+  "lifecycle": {
+    "block_semantics": "ONE_LZSS_EI10_EJ4_C32_STREAM_PER_ROUTED_OBJECT",
+    "state_semantics": "INDEPENDENT_CONTEXT_PER_REPETITION",
+    "reset": "NEW_CONTEXT_REQUIRED",
+    "finalize": "REQUIRED_NOOP_ONE_SHOT_FINALIZE",
+    "safe_overread_bytes": 0,
+    "tail_policy": "CODEC_INTERNAL_EXACT_TAIL",
+    "dictionary": "FIXED_INITIAL_WINDOW_BYTE_0X20_NO_EXTERNAL_DICTIONARY",
+    "model": "NONE",
+    "index": "NONE"
+  },
+  "execution": {
+    "backends": [
+      "C_ABI_V1"
+    ],
+    "isa": [
+      "SCALAR"
+    ],
+    "devices": [
+      "CPU"
+    ],
+    "threading": "SINGLE_THREAD",
+    "fallback_policy": "DISALLOWED",
+    "runtime_dispatch": false
+  },
+  "features": {
+    "streaming": false,
+    "query": false,
+    "random_access": false
+  },
+  "parameters": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "native_timing": {
+        "type": "boolean",
+        "default": true
+      },
+      "block_size": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 1048576,
+        "default": 65536
+      },
+      "isa": {
+        "type": "string",
+        "enum": [
+          "SCALAR"
+        ],
+        "default": "SCALAR"
+      },
+      "ei": {
+        "type": "integer",
+        "enum": [
+          10
+        ],
+        "default": 10
+      },
+      "ej": {
+        "type": "integer",
+        "enum": [
+          4
+        ],
+        "default": 4
+      },
+      "initial_byte": {
+        "type": "integer",
+        "enum": [
+          32
+        ],
+        "default": 32
+      }
+    },
+    "constraints": []
+  },
+  "adapter": {
+    "backend": "C_ABI_V1",
+    "version": "lzss-raw-ctypes-v1",
+    "factory": "LZSS_RAW_CTYPES_V1",
+    "artifact_path": "build/adapters/lzss_raw/release/libtscb_lzss_raw.so",
+    "timing_boundary": "PYTHON_FFI_CONTAINER_INCLUDED",
+    "native_timing_capability": {
+      "optional": true,
+      "boundary": "CODEC_API_ONLY_V1",
+      "clock": "CLOCK_MONOTONIC",
+      "excludes": [
+        "CONTEXT_LIFECYCLE",
+        "EXPLICIT_PREVALIDATION",
+        "PYTHON_FFI_CONTAINER"
+      ]
+    },
+    "accounting_hooks": [
+      "FINAL_STREAM_INSPECTION",
+      "LZSS_TOKEN_AND_PADDING_BITS",
+      "OUTPUT_CAPACITY"
+    ]
+  }
+}
