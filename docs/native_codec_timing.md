@@ -1,7 +1,8 @@
 # Optional native codec timing
 
-Native timing is enabled by default for `lz4-frame`, `zstd-frame`, and
-`snappy-raw`. Set `native_timing = [false]` in an experiment's `[sweep]` to disable it. See
+Native timing is enabled by default for the registered native adapters that expose the
+optional timing ABI, including `serf-qt` and `serf-xor`. Set
+`native_timing = [false]` in an experiment's `[sweep]` to disable it. See
 `configs/experiments/native-timing-formal-comparison.toml` for a formal example.
 Rebuild the release adapters before using the extension:
 
@@ -33,6 +34,7 @@ The clock is CLOCK_MONOTONIC. CODEC_API_ONLY_V1 includes:
 | LZ4 | LZ4F_compressBegin, LZ4F_compressUpdate, LZ4F_compressEnd | LZ4F_decompress |
 | Zstd | Every ZSTD_compressStream2 call, including e_end | Every ZSTD_decompressStream call |
 | Snappy | RawCompress | RawUncompress |
+| Serf-Qt / Serf-XOR | Complete native frame encode, including alignment copy, block calls, record serialization, and checksum | Complete native frame decode after checksum/header prevalidation, including record parsing, block calls, and result copies |
 
 Explicit context create/free, parameter setters, bounds, Snappy length/validity
 prechecks, Python FFI, descriptors, input/output copies, allocation, and accounting
@@ -62,3 +64,11 @@ CORE/NATIVE/PIPELINE are diagnostic, not a disturbance-free exact decomposition.
 Frame/raw, streaming/one-shot, context reuse, build flags, and hardware differences
 still prevent automatic equivalence with lzbench. Existing run evidence and XLSX
 artifacts cannot acquire native timings retrospectively; new measurements are required.
+
+Serf uses the separately named `NATIVE_SERF_FRAME_ENCODE_DECODE_V1` boundary. It is
+broader than `CODEC_API_ONLY_V1` because the upstream API is a stateful per-value block
+interface and the registered decodable object is the project native frame. Native input
+descriptor parsing, the final encoded-output copy, decode checksum/header prevalidation,
+context lifecycle, Python layout work, FFI, and the outer Python container remain outside
+that native interval. This boundary is diagnostic and must not be presented as an
+lzbench-equivalent kernel measurement.

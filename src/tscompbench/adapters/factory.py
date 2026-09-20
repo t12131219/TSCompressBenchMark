@@ -5,6 +5,7 @@ from pathlib import Path
 from tscompbench.codecs import CodecManifest
 from tscompbench.execution.protocol import CodecAdapter
 
+from .alp import AlpAdapter
 from .brotli_stream import BrotliStreamAdapter
 from .bzip2_stream import Bzip2StreamAdapter
 from .deflate_zlib import DeflateZlibAdapter
@@ -15,6 +16,7 @@ from .lzss_raw import LzssRawAdapter
 from .lzsse2_raw import Lzsse2RawAdapter
 from .lzsse8_raw import Lzsse8RawAdapter
 from .oracles import OracleAdapter
+from .serf import SerfAdapter
 from .snappy_raw import SnappyRawAdapter
 from .sprintz import SprintzAdapter
 from .sprintz8 import Sprintz8Adapter
@@ -37,6 +39,8 @@ def adapter_artifacts(project_root: Path, manifest: CodecManifest) -> tuple[Path
         raise AdapterFactoryError(f"{manifest.key} has no safe relative adapter artifact path")
     factory = adapter.get("factory")
     support_modules = {
+        "ALP_CTYPES_V1": "alp.py",
+        "SERF_CTYPES_V1": "serf.py",
         "ENTROPY_FSE_CTYPES_V1": "entropy_fse.py",
         "SPRINTZ_CTYPES_V1": "sprintz.py",
         "SPRINTZ8_CTYPES_V1": "sprintz8.py",
@@ -66,6 +70,12 @@ def create_adapter(project_root: Path, manifest: CodecManifest) -> CodecAdapter:
     if manifest.document["identity"]["family"] == "HARNESS_ORACLE":
         return OracleAdapter(manifest_adapter=manifest.document["adapter"])
     adapter = manifest.document["adapter"]
+    if adapter.get("factory") == "ALP_CTYPES_V1":
+        artifact, _ = adapter_artifacts(project_root, manifest)
+        return AlpAdapter(artifact, adapter, manifest.key)
+    if adapter.get("factory") == "SERF_CTYPES_V1":
+        artifact, _ = adapter_artifacts(project_root, manifest)
+        return SerfAdapter(artifact, adapter, manifest.key)
     if adapter.get("factory") == "ENTROPY_FSE_CTYPES_V1":
         artifact, _ = adapter_artifacts(project_root, manifest)
         return EntropyAdapter(artifact, adapter, manifest.key)

@@ -1,3 +1,4 @@
+from .alp import AlpAdapter
 from .brotli_stream import BrotliStreamAdapter
 from .bzip2_stream import Bzip2StreamAdapter
 from .compatibility import (
@@ -15,6 +16,7 @@ from .lzss_raw import LzssRawAdapter
 from .lzsse2_raw import Lzsse2RawAdapter
 from .lzsse8_raw import Lzsse8RawAdapter
 from .oracles import OracleAdapter
+from .serf import SerfAdapter
 from .snappy_raw import SnappyRawAdapter
 from .sprintz import SprintzAdapter
 from .sprintz8 import Sprintz8Adapter
@@ -24,6 +26,7 @@ from .zstd_frame import ZstdFrameAdapter
 __all__ = [
     "AdapterTelemetry",
     "AdapterFactoryError",
+    "AlpAdapter",
     "BrotliStreamAdapter",
     "Bzip2StreamAdapter",
     "DeflateZlibAdapter",
@@ -37,6 +40,7 @@ __all__ = [
     "OracleAdapter",
     "PreparedInput",
     "SnappyRawAdapter",
+    "SerfAdapter",
     "SprintzAdapter",
     "Sprintz8Adapter",
     "ZstdFrameAdapter",

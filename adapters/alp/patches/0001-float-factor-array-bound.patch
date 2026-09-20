@@ -1,0 +1,15 @@
+diff --git a/alp/include/alp/encoder.hpp b/alp/include/alp/encoder.hpp
+index 2882fa2..af41ee1 100644
+--- a/alp/include/alp/encoder.hpp
++++ b/alp/include/alp/encoder.hpp
+@@ -158,7 +158,9 @@ struct encoder {
+ 
+ 			// We try all combinations in search for the one which minimize the compression size
+ 			for (int8_t exp_ref = Constants<PT>::MAX_EXPONENT; exp_ref >= 0; exp_ref--) {
+-				for (int8_t factor_idx = exp_ref; factor_idx >= 0; factor_idx--) {
++				// float FACT_ARR has indices 0..9 while EXP_ARR intentionally reaches index 10.
++				const int8_t max_factor = std::is_same_v<PT, float> ? std::min<int8_t>(exp_ref, 9) : exp_ref;
++				for (int8_t factor_idx = max_factor; factor_idx >= 0; factor_idx--) {
+ 					uint16_t exceptions_count           = {0};
+ 					uint16_t non_exceptions_count       = {0};
+ 					uint32_t estimated_bits_per_value   = {0};

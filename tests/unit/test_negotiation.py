@@ -12,6 +12,7 @@ from tscompbench.codecs import (
 from tscompbench.contracts import (
     BenchmarkTrack,
     CapabilityStatus,
+    LossMode,
     Topology,
     ValidityShape,
 )
@@ -69,3 +70,18 @@ def test_four_state_negotiation_and_adapter_validation() -> None:
     lossy_prepared = apply_compatibility_plan(original, lossy)
     validate_prepared_input(original, lossy_prepared, lossy, max_abs_error="0.000001")
     assert original.tobytes() == np.array([0.0, -0.0, 1.25, -3.5], dtype="<f8").tobytes()
+
+
+def test_native_lossy_codec_uses_its_declared_loss_mode() -> None:
+    manifest = _codecs().get("serf-qt")
+    compatibility = negotiate(manifest, _descriptor())
+    assert compatibility.status is CapabilityStatus.DIRECT_SUPPORTED
+    assert compatibility.effective_loss_mode is LossMode.ERROR_BOUNDED_LOSSY
+
+    unsupported = negotiate(
+        manifest,
+        _descriptor(),
+        requested_loss_mode=LossMode.LOSSLESS,
+    )
+    assert unsupported.status is CapabilityStatus.UNSUPPORTED
+    assert unsupported.reason_code == "LOSS_MODE_UNSUPPORTED"

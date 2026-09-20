@@ -1,0 +1,14 @@
+diff --git a/alp/include/alp/decoder.hpp b/alp/include/alp/decoder.hpp
+index 8507364..82eef3d 100644
+--- a/alp/include/alp/decoder.hpp
++++ b/alp/include/alp/decoder.hpp
+@@ -126,7 +126,8 @@ struct decoder {
+ 
+ 	//! Scalar decoding a single value with ALP
+ 	static inline PT decode_value(const ST encoded_value, const uint8_t factor, const uint8_t exponent) {
+-		const PT decoded_value = encoded_value * Constants<PT>::FACT_ARR[factor] * Constants<PT>::FRAC_ARR[exponent];
++		const PT decoded_value = static_cast<PT>(encoded_value) * static_cast<PT>(Constants<PT>::FACT_ARR[factor]) *
++		                         Constants<PT>::FRAC_ARR[exponent];
+ 		return decoded_value;
+ 	}
+ 

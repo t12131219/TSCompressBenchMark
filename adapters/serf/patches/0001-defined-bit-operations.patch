@@ -1,0 +1,102 @@
+diff --git a/src/utils/double.h b/src/utils/double.h
+index 06c8a1f..4097865 100644
+--- a/src/utils/double.h
++++ b/src/utils/double.h
+@@ -2,6 +2,7 @@
+ #define SERF_DOUBLE_H
+ 
+ #include <cstdint>
++#include <cstring>
+ #include <limits>
+ 
+ class Double {
+@@ -9,11 +10,15 @@ class Double {
+   static constexpr double kNan = std::numeric_limits<double>::quiet_NaN();
+ 
+   static inline uint64_t DoubleToLongBits(double value) {
+-    return *reinterpret_cast<uint64_t *>(&value);
++    uint64_t bits;
++    std::memcpy(&bits, &value, sizeof(bits));
++    return bits;
+   }
+ 
+   static inline double LongBitsToDouble(uint64_t bits) {
+-    return *reinterpret_cast<double *>(&bits);
++    double value;
++    std::memcpy(&value, &bits, sizeof(value));
++    return value;
+   }
+ };
+ 
+diff --git a/src/utils/float.h b/src/utils/float.h
+index d918c72..57cd0da 100644
+--- a/src/utils/float.h
++++ b/src/utils/float.h
+@@ -2,6 +2,7 @@
+ #define SERF_FLOAT_H
+ 
+ #include <cstdint>
++#include <cstring>
+ #include <limits>
+ 
+ class Float {
+@@ -9,11 +10,15 @@ class Float {
+   static constexpr float kNan = std::numeric_limits<float>::quiet_NaN();
+ 
+   static inline uint32_t FloatToIntBits(float value) {
+-    return *reinterpret_cast<uint32_t *>(&value);
++    uint32_t bits;
++    std::memcpy(&bits, &value, sizeof(bits));
++    return bits;
+   }
+ 
+   static inline float IntBitsToFloat(uint32_t bits) {
+-    return *reinterpret_cast<float *>(&bits);
++    float value;
++    std::memcpy(&value, &bits, sizeof(value));
++    return value;
+   }
+ };
+ 
+diff --git a/src/utils/zig_zag_codec.h b/src/utils/zig_zag_codec.h
+index a31bc57..9645a9f 100644
+--- a/src/utils/zig_zag_codec.h
++++ b/src/utils/zig_zag_codec.h
+@@ -5,10 +5,12 @@
+ class ZigZagCodec {
+  public:
+   static inline int64_t Encode(int64_t value) {
+-    return (value << 1) ^ (value >> 63);
++    const uint64_t bits = static_cast<uint64_t>(value);
++    return static_cast<int64_t>((bits << 1) ^ static_cast<uint64_t>(value >> 63));
+   }
+ 
+   static inline int64_t Decode(int64_t value) {
+-    return (value >> 1) ^ -(value & 1);
++    const uint64_t bits = static_cast<uint64_t>(value);
++    return static_cast<int64_t>((bits >> 1) ^ (0ULL - (bits & 1ULL)));
+   }
+ };
+diff --git a/src/utils/output_bit_stream.cc b/src/utils/output_bit_stream.cc
+index 0481111..a76de20 100644
+--- a/src/utils/output_bit_stream.cc
++++ b/src/utils/output_bit_stream.cc
+@@ -9,6 +9,7 @@ OutputBitStream::OutputBitStream(uint32_t buffer_size) {
+ }
+ 
+ uint32_t OutputBitStream::Write(uint64_t content, uint32_t len) {
++  if (len == 0) return 0;
+   content <<= (64 - len);
+   buffer_ |= (content >> bit_in_buffer_);
+   bit_in_buffer_ += len;
+diff --git a/src/utils/input_bit_stream.cc b/src/utils/input_bit_stream.cc
+index 48496ab..407487c 100644
+--- a/src/utils/input_bit_stream.cc
++++ b/src/utils/input_bit_stream.cc
+@@ -10,5 +10,6 @@ InputBitStream::InputBitStream(uint8_t *raw_data, size_t size) {
+ }
+ 
+ uint64_t InputBitStream::Peek(size_t len) {
++  if (len == 0) return 0;
+   return buffer_ >> (64 - len);
+ }

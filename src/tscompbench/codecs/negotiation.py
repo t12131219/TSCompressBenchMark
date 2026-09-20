@@ -243,8 +243,23 @@ def negotiate(
     manifest: CodecManifest,
     descriptor: DataDescriptor,
     *,
-    requested_loss_mode: LossMode = LossMode.LOSSLESS,
+    requested_loss_mode: LossMode | None = None,
 ) -> CompatibilityPlan:
+    if requested_loss_mode is not None and requested_loss_mode not in manifest.loss_modes:
+        return CompatibilityPlan.create(
+            status=CapabilityStatus.UNSUPPORTED,
+            reason_code="LOSS_MODE_UNSUPPORTED",
+            missing_capabilities=(f"loss_mode:{requested_loss_mode}",),
+            input_descriptor=descriptor,
+            output_descriptor=None,
+            operations=(),
+            effective_loss_mode=requested_loss_mode,
+        )
+    effective_requested_loss_mode = requested_loss_mode or (
+        LossMode.LOSSLESS
+        if LossMode.LOSSLESS in manifest.loss_modes
+        else manifest.loss_modes[0]
+    )
     contract = manifest.document["input"]
     missing: list[str] = []
     if descriptor.track not in manifest.tracks:
@@ -285,7 +300,7 @@ def negotiate(
             input_descriptor=descriptor,
             output_descriptor=None,
             operations=(),
-            effective_loss_mode=requested_loss_mode,
+            effective_loss_mode=effective_requested_loss_mode,
         )
 
     current = asdict(descriptor)
@@ -328,7 +343,7 @@ def negotiate(
                 input_descriptor=descriptor,
                 output_descriptor=None,
                 operations=tuple(operations),
-                effective_loss_mode=requested_loss_mode,
+                effective_loss_mode=effective_requested_loss_mode,
             )
         target, lossy = conversion
         converted.append(target)
@@ -343,7 +358,7 @@ def negotiate(
             input_descriptor=descriptor,
             output_descriptor=None,
             operations=tuple(operations),
-            effective_loss_mode=requested_loss_mode,
+            effective_loss_mode=effective_requested_loss_mode,
         )
     if lossy_conversion and all(item is LossMode.LOSSLESS for item in manifest.loss_modes):
         return CompatibilityPlan.create(
@@ -355,7 +370,7 @@ def negotiate(
             input_descriptor=descriptor,
             output_descriptor=None,
             operations=tuple(operations),
-            effective_loss_mode=requested_loss_mode,
+            effective_loss_mode=effective_requested_loss_mode,
         )
     if tuple(converted) != descriptor.dtype_vector:
         before = dict(current)
@@ -394,7 +409,7 @@ def negotiate(
                 input_descriptor=descriptor,
                 output_descriptor=None,
                 operations=tuple(operations),
-                effective_loss_mode=requested_loss_mode,
+                effective_loss_mode=effective_requested_loss_mode,
             )
         before = dict(current)
         current["endianness"] = contract["endianness"][0]
@@ -450,7 +465,7 @@ def negotiate(
         )
 
     is_lossy = lossy_conversion or manifest.preprocess_class is PreprocessClass.LOSSY_PREPROCESS
-    effective_loss = requested_loss_mode
+    effective_loss = effective_requested_loss_mode
     if is_lossy:
         effective_loss = next(
             (item for item in manifest.loss_modes if item is not LossMode.LOSSLESS),

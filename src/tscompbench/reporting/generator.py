@@ -481,8 +481,9 @@ def _markdown(report: dict[str, Any]) -> str:
             "",
             "## Auxiliary timing layers",
             "",
-            "NATIVE measures codec API calls inside the native wrapper (including codec finalize), "
-            "excluding explicit context lifecycle and prevalidation. It is not lzbench-equivalent. "
+            "NATIVE measures each adapter's declared native boundary; consult the raw "
+            "native_timing_boundary field for its exact inclusions and exclusions. It is not "
+            "automatically lzbench-equivalent. "
             "CORE measures adapter calls; PIPELINE includes outer preparation and accounting. "
             "NATIVE uses codec-input bytes; CORE/PIPELINE use canonical bytes. "
             "All rates below are total bytes / total time, in decimal MB/s. "
@@ -639,8 +640,8 @@ Timing scope, threads, model/index accounting, and cold-start policy must match.
 <th>Algorithm</th><th>n</th><th>SizeRatio</th><th>CF</th><th>Encode MB/s</th>
 <th>Decode MB/s</th></tr></thead><tbody>{summary_rows}</tbody></table>
 <h2>Auxiliary timing layers (MB/s)</h2>
-<p>NATIVE: codec API calls including finalize; excludes explicit context lifecycle and
-prevalidation. CORE: adapter calls. PIPELINE: preparation, lifecycle and accounting.
+<p>NATIVE: each adapter's declared native boundary; consult raw evidence for exact
+inclusions and exclusions. CORE: adapter calls. PIPELINE: preparation, lifecycle and accounting.
 NATIVE uses codec-input bytes; CORE/PIPELINE use canonical bytes. All rates are total
 bytes / total time. Disabled/unavailable/incomplete native observations are n/a.
 Instrumentation adds overhead. Native duration is not independently gated;

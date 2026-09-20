@@ -116,6 +116,38 @@ PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
 PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
   configs/experiments/xz-stream-qualification.toml --output-root runs
 
+ALP and ALP-RD use the audited `cwida/ALP` C++ source closure as two forced, non-overlapping
+schemes:
+
+```bash
+conda run -n CompressBench14 python tools/build_codec.py alp --profile all
+conda run -n CompressBench14 python tools/build_codec.py alp-rd --profile all
+PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
+  configs/experiments/alp-qualification.toml --output-root runs
+PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
+  configs/experiments/alp-formal.toml --output-root runs
+```
+
+Serf-Qt and Serf-XOR use the audited upstream C++ benchmark implementation as separate
+lossy AlgorithmIDs. Both accept homogeneous little-endian float32/float64 VALUE UTS and
+synchronous MTS, enforce a positive absolute error bound, and fully charge their project
+container and native frame. Qt resets at every block; XOR carries adaptive state only
+across finite blocks in one column. Non-finite or unsafe-to-quantize blocks use an
+explicitly charged raw exception record. The vendored source is CC BY-NC 4.0, so
+redistribution and commercial use remain restricted. See the
+[Serf admission review](docs/serf_admission_review.md) and
+[Serf five-layer self-check](docs/serf_self_check.md).
+
+```bash
+conda run -n CompressBench14 python tools/build_codec.py serf-qt --profile all
+conda run -n CompressBench14 python tools/build_codec.py serf-xor --profile all
+conda run -n CompressBench14 python adapters/serf/tests/run_native_tests.py
+PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
+  configs/experiments/serf-qualification.toml --output-root runs
+PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
+  configs/experiments/serf-formal.toml --output-root runs
+```
+
 # A FORMAL run uses >=3 warmups, >=0.5 s warmup time, 10 raw repetitions,
 # and >=1 s of selected-scope work in every repetition.
 PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
@@ -162,8 +194,9 @@ PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
 ```
 
 Native codec API timings are enabled by default for LZ4, Zstd, Snappy, Brotli, DEFLATE,
-bzip2, XZ, LZSS, LZSSE8, Huff0, FSE, Sprintz-Delta, Sprintz-FIRE and SprintzFIRE+Huf (including the
-historical restricted u8 registrations).
+bzip2, XZ, LZSS, LZSSE8, Huff0, FSE, Sprintz-Delta, Sprintz-FIRE, SprintzFIRE+Huf,
+ALP, ALP-RD, Serf-Qt and Serf-XOR (including the historical restricted u8 Sprintz
+registrations).
 Disable them with `native_timing = [false]` in `[sweep]`. They supplement CORE and
 PIPELINE rather than replacing the selected timing scope. See
 [native codec timing](docs/native_codec_timing.md) and the formal example in

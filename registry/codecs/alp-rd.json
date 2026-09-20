@@ -1,0 +1,148 @@
+{
+  "schema_version": "tscb.codec-manifest.v2",
+  "key": "alp-rd",
+  "identity": {
+    "display_name": "ALP-RD (forced left-dictionary/right-part scheme)",
+    "family": "ALP_RD",
+    "citations": [
+      "benchmark:cwida/ALP@31ca0ed1:benchmarks/benchmark.cpp",
+      "publication:cwida/ALP@31ca0ed1:publication/source_code/bench_speed"
+    ],
+    "source_artifact_id": "v2:source-artifact:sha256:278dbf62ed78758b1efa488719f953e3900dbe99e9f7ad30789f025de5f2c074"
+  },
+  "classification": {
+    "object_level": "P1_STANDALONE_CODEC",
+    "implementation_class": "CONVENTIONAL",
+    "tracks": [
+      "VALUE"
+    ],
+    "subtracks": [
+      "V0"
+    ]
+  },
+  "input": {
+    "topologies": [
+      "UTS",
+      "SYNCHRONOUS_MTS"
+    ],
+    "dtypes": [
+      "<f8",
+      "<f4"
+    ],
+    "ranks": [
+      1,
+      2
+    ],
+    "layouts": [
+      "ROW_MAJOR_CONTIG",
+      "SOA_COLUMNS"
+    ],
+    "endianness": [
+      "little"
+    ],
+    "alignment_bytes": 1,
+    "min_n": 0,
+    "max_n": 16777216,
+    "min_m": 1,
+    "max_m": 65535,
+    "validity_shapes": [
+      "NONE"
+    ],
+    "homogeneous_itemsize": true,
+    "max_total_raw_bytes": 134217728,
+    "value_coupling_mode": "COLUMN_INDEPENDENT",
+    "timestamp_semantics": {
+      "preserve_order": true,
+      "duplicates": true,
+      "out_of_order": true,
+      "negative_delta": true,
+      "absolute_epoch": true,
+      "overflow_policy": "NOT_APPLICABLE_VALUE_ONLY"
+    }
+  },
+  "semantics": {
+    "loss_modes": [
+      "LOSSLESS"
+    ],
+    "error_bound_types": [],
+    "reconstruction_modes": [
+      "EXACT_GRID"
+    ],
+    "rebuild_protocol": "TSCB_ALP_RD_CONTAINER_V1",
+    "preprocess_class": "NONE",
+    "preprocess_stages": [],
+    "decodability_profile": "SELF_CONTAINED_DESCRIPTOR_AND_NATIVE_ALP_FRAME",
+    "bitstream_separability": "PER_COLUMN"
+  },
+  "lifecycle": {
+    "block_semantics": "ROWGROUP_102400_VECTOR_1024_PER_COLUMN",
+    "state_semantics": "INDEPENDENT_CONTEXT_PER_REPETITION",
+    "reset": "NEW_CONTEXT_REQUIRED",
+    "finalize": "REQUIRED_ZERO_BYTE_FINALIZE",
+    "safe_overread_bytes": 0,
+    "tail_policy": "ZERO_PAD_TO_VECTOR_EXCLUDED_BY_LOGICAL_COUNT",
+    "dictionary": "ROWGROUP_LOCAL_LEFT_PART_DICTIONARY",
+    "model": "ROWGROUP_SAMPLE",
+    "index": "NONE"
+  },
+  "execution": {
+    "backends": [
+      "C_ABI_V1"
+    ],
+    "isa": [
+      "SCALAR"
+    ],
+    "devices": [
+      "CPU"
+    ],
+    "threading": "SINGLE_THREAD",
+    "fallback_policy": "DISALLOWED",
+    "runtime_dispatch": false
+  },
+  "features": {
+    "streaming": false,
+    "query": false,
+    "random_access": false
+  },
+  "parameters": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "native_timing": {
+        "type": "boolean",
+        "default": true
+      },
+      "isa": {
+        "type": "string",
+        "enum": [
+          "SCALAR"
+        ],
+        "default": "SCALAR"
+      }
+    },
+    "constraints": []
+  },
+  "adapter": {
+    "backend": "C_ABI_V1",
+    "version": "alp-ctypes-v1",
+    "factory": "ALP_CTYPES_V1",
+    "artifact_path": "build/adapters/alp_rd/release/libtscb_alp_rd.so",
+    "timing_boundary": "PYTHON_LAYOUT_FFI_AND_CONTAINER_INCLUDED",
+    "native_timing_capability": {
+      "optional": true,
+      "boundary": "CODEC_API_ONLY_V1",
+      "clock": "CLOCK_MONOTONIC",
+      "excludes": [
+        "CONTEXT_LIFECYCLE",
+        "PYTHON_LAYOUT_TRANSFORM",
+        "PYTHON_FFI_CONTAINER"
+      ]
+    },
+    "accounting_hooks": [
+      "FINAL_STREAM_LENGTH",
+      "COMPLETE_NATIVE_ALP_FRAME",
+      "OUTPUT_CAPACITY",
+      "FORCED_ALP_RD"
+    ]
+  }
+}

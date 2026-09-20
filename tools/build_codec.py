@@ -658,6 +658,101 @@ def _lzss_command(output: Path, profile: str) -> tuple[list[str], dict[str, Any]
     }, log
 
 
+def _alp_command(output: Path, profile: str, algorithm: str) -> list[str]:
+    adapter = PROJECT_ROOT / "adapters" / "alp"
+    vendor = adapter / "vendor" / "alp"
+    target = output.parent / "alp"
+    shutil.copytree(vendor, target, dirs_exist_ok=True)
+    patches = (
+        adapter / "patches" / "0001-float-factor-array-bound.patch",
+        adapter / "patches" / "0002-decoder-multiply-domain.patch",
+        adapter / "patches" / "0003-encoded-integer-range.patch",
+    )
+    directory = str(output.parent.relative_to(PROJECT_ROOT))
+    for patch in patches:
+        _run(["git", "apply", "--check", f"--directory={directory}", str(patch)])
+        _run(["git", "apply", f"--directory={directory}", str(patch)])
+    flags = [
+        "-std=c++17", "-fPIC", "-Wall", "-Wextra", "-Werror",
+        "-Wno-unused-parameter", "-Wno-pass-failed",
+    ]
+    if profile == "release":
+        flags += ["-O3", "-DNDEBUG"]
+    elif profile == "sanitizer":
+        flags += [
+            "-O1", "-g", "-fno-omit-frame-pointer",
+            "-fsanitize=address,undefined",
+        ]
+    else:
+        raise ValueError(f"unknown build profile: {profile}")
+    return [
+        os.environ.get("CXX", "clang++"), *flags, "-shared",
+        f"-DTSCB_ALP_RD={int(algorithm == 'alp-rd')}",
+        "-I", str(PROJECT_ROOT / "native/include"),
+        "-I", str(target / "include"),
+        str(adapter / "native/tscb_alp.cc"),
+        *(str(target / "src" / name) for name in (
+            "fastlanes_ffor.cpp", "fastlanes_unffor.cpp",
+            "fastlanes_generated_ffor.cpp", "fastlanes_generated_unffor.cpp",
+        )),
+        "-o", str(output),
+    ]
+
+
+def _serf_command(output: Path, profile: str, algorithm: str) -> list[str]:
+    adapter = PROJECT_ROOT / "adapters" / "serf"
+    vendor = adapter / "vendor" / "serf"
+    target = output.parent / "serf"
+    shutil.copytree(vendor, target, dirs_exist_ok=True)
+    patches = (
+        adapter / "patches" / "0001-defined-bit-operations.patch",
+        adapter / "patches" / "0002-prefix-mask-bounds.patch",
+        adapter / "patches" / "0003-input-bit-stream-guard.patch",
+    )
+    directory = str(target.relative_to(PROJECT_ROOT))
+    for patch in patches:
+        _run(["git", "apply", "--check", f"--directory={directory}", str(patch)])
+        _run(["git", "apply", f"--directory={directory}", str(patch)])
+    flags = [
+        "-std=c++17", "-fPIC", "-Wall", "-Wextra", "-Werror",
+        "-Wno-vla", "-Wno-parentheses", "-Wno-unused-parameter",
+        "-Wno-reorder", "-Wno-sign-compare",
+    ]
+    if profile == "release":
+        flags += ["-O3", "-DNDEBUG"]
+    elif profile == "sanitizer":
+        flags += [
+            "-O1", "-g", "-fno-omit-frame-pointer", "-fsanitize=address,undefined",
+        ]
+    else:
+        raise ValueError(f"unknown build profile: {profile}")
+    source_names = (
+        "compressor/serf_qt_compressor.cc",
+        "compressor/serf_xor_compressor.cc",
+        "compressor_32/serf_qt_compressor_32.cc",
+        "compressor_32/serf_xor_compressor_32.cc",
+        "decompressor/serf_qt_decompressor.cc",
+        "decompressor/serf_xor_decompressor.cc",
+        "decompressor_32/serf_qt_decompressor_32.cc",
+        "decompressor_32/serf_xor_decompressor_32.cc",
+        "utils/elias_gamma_codec.cc",
+        "utils/input_bit_stream.cc",
+        "utils/output_bit_stream.cc",
+        "utils/post_office_solver.cc",
+        "utils/post_office_solver_32.cc",
+        "utils/serf_utils_32.cc",
+        "utils/serf_utils_64.cc",
+    )
+    return [
+        os.environ.get("CXX", "c++"), *flags, "-shared", "-Wl,--no-undefined",
+        f"-DTSCB_SERF_XOR={int(algorithm == 'serf-xor')}",
+        "-I", str(PROJECT_ROOT / "native/include"), "-I", str(target / "src"),
+        str(adapter / "native/tscb_serf.cc"),
+        *(str(target / "src" / name) for name in source_names),
+        "-o", str(output),
+    ]
+
+
 def _build(algorithm: str, profile: str) -> dict[str, Any]:
     directory_name = algorithm.replace("-", "_")
     output_dir = PROJECT_ROOT / "build" / "adapters" / directory_name / profile
@@ -665,7 +760,46 @@ def _build(algorithm: str, profile: str) -> dict[str, Any]:
     output = output_dir / f"libtscb_{directory_name}.so"
     dependency_evidence: dict[str, Any] = {}
     dependency_log = ""
-    if algorithm == "lz4-frame":
+    if algorithm in ("serf-qt", "serf-xor"):
+        command = _serf_command(output, profile, algorithm)
+        dependency_evidence = {
+            "upstream_commit": "b38450b56825eabc96be8e25d6880127dc688c95",
+            "patch_sha256": [
+                _sha256(PROJECT_ROOT / "adapters/serf/patches" / name)
+                for name in (
+                    "0001-defined-bit-operations.patch",
+                    "0002-prefix-mask-bounds.patch",
+                    "0003-input-bit-stream-guard.patch",
+                )
+            ],
+            "patched_translation_unit_sha256": [
+                _sha256(output_dir / "serf/src/utils" / name)
+                for name in (
+                    "double.h", "float.h", "zig_zag_codec.h",
+                    "output_bit_stream.cc", "input_bit_stream.cc",
+                    "serf_utils_32.cc", "serf_utils_64.cc",
+                )
+            ],
+        }
+    elif algorithm in ("alp", "alp-rd"):
+        command = _alp_command(output, profile, algorithm)
+        dependency_evidence = {
+            "patch_sha256": [
+                _sha256(PROJECT_ROOT / "adapters/alp/patches" / name)
+                for name in (
+                    "0001-float-factor-array-bound.patch",
+                    "0002-decoder-multiply-domain.patch",
+                    "0003-encoded-integer-range.patch",
+                )
+            ],
+            "patched_encoder_sha256": _sha256(
+                output_dir / "alp/include/alp/encoder.hpp"
+            ),
+            "source_encoder_sha256": _sha256(
+                PROJECT_ROOT / "adapters/alp/vendor/alp/include/alp/encoder.hpp"
+            ),
+        }
+    elif algorithm == "lz4-frame":
         command = _lz4_command(output, profile)
     elif algorithm in ("huff0", "fse"):
         command = _entropy_command(output, profile, algorithm)
@@ -819,7 +953,8 @@ def main() -> int:
             "sprintz-delta", "sprintz-fire", "sprintz-fire-huff0",
             "lz4-frame", "zstd-frame", "snappy-raw", "lzsse2-raw", "brotli-stream",
             "deflate-zlib", "bzip2-stream", "xz-stream", "lzss-raw",
-            "lzss-dipperstein-c", "lzsse8-raw"
+            "lzss-dipperstein-c", "lzsse8-raw", "alp", "alp-rd",
+            "serf-qt", "serf-xor"
         ),
     )
     parser.add_argument("--profile", choices=("release", "sanitizer", "all"), default="release")

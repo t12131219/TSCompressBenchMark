@@ -206,6 +206,31 @@ def test_native_timing_accumulates_same_inner_iterations_and_keeps_legacy_missin
     assert legacy.native_timing_boundary is None
 
 
+def test_adapter_can_declare_a_nonstandard_native_timing_boundary():
+    class Session:
+        def __init__(self):
+            self.session = OracleAdapter().create_session({})
+
+        def __getattr__(self, name):
+            return getattr(self.session, name)
+
+        def native_timing(self):
+            return (7, 11)
+
+    class Adapter:
+        deterministic = True
+        native_timing_boundary = "NATIVE_SERF_FRAME_ENCODE_DECODE_V1"
+
+        def create_session(self, parameters):
+            return Session()
+
+    route = _route()
+    timing = perform_measured_roundtrip(
+        Adapter(), route, _compatibility(route), {}, _policy(min_repetition_seconds="0")
+    ).timing
+    assert timing.native_timing_boundary == "NATIVE_SERF_FRAME_ENCODE_DECODE_V1"
+
+
 def test_query_engine_times_only_pregenerated_requests_and_checks_exact_slices() -> None:
     route = _route()
 

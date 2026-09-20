@@ -1,0 +1,113 @@
+{
+  "schema_version": "tscb.codec-manifest.v2",
+  "key": "serf-xor",
+  "identity": {
+    "display_name": "Serf-XOR (absolute-error XOR approximation)",
+    "family": "SERF_XOR",
+    "citations": [
+      "benchmark:Spatio-Temporal-Lab/Serf@b38450b56825:test/Perf.cc",
+      "test:Spatio-Temporal-Lab/Serf@b38450b56825:test/unit_test/serf_test.cc"
+    ],
+    "source_artifact_id": "v2:source-artifact:sha256:2113be7b547b92c71a10c9c9ea2745fc90a26e6f7d8eb9ce76f4d4e2309057f5"
+  },
+  "classification": {
+    "object_level": "P1_STANDALONE_CODEC",
+    "implementation_class": "CONVENTIONAL",
+    "tracks": ["VALUE"],
+    "subtracks": ["V3"]
+  },
+  "input": {
+    "topologies": ["UTS", "SYNCHRONOUS_MTS"],
+    "dtypes": ["<f8", "<f4"],
+    "ranks": [1, 2],
+    "layouts": ["ROW_MAJOR_CONTIG", "SOA_COLUMNS"],
+    "endianness": ["little"],
+    "alignment_bytes": 1,
+    "min_n": 0,
+    "max_n": 16777216,
+    "min_m": 1,
+    "max_m": 65535,
+    "validity_shapes": ["NONE"],
+    "homogeneous_itemsize": true,
+    "max_total_raw_bytes": 134217728,
+    "value_coupling_mode": "COLUMN_INDEPENDENT",
+    "timestamp_semantics": {
+      "preserve_order": true,
+      "duplicates": true,
+      "out_of_order": true,
+      "negative_delta": true,
+      "absolute_epoch": true,
+      "overflow_policy": "NOT_APPLICABLE_VALUE_ONLY"
+    }
+  },
+  "semantics": {
+    "loss_modes": ["ERROR_BOUNDED_LOSSY"],
+    "error_bound_types": ["ABSOLUTE"],
+    "reconstruction_modes": ["APPROX_GRID"],
+    "rebuild_protocol": "TSCB_SERF_XOR_CONTAINER_V1_ABSOLUTE_ERROR",
+    "preprocess_class": "NONE",
+    "preprocess_stages": [],
+    "decodability_profile": "SELF_CONTAINED_DESCRIPTOR_AND_CHECKED_SERF_BLOCKS",
+    "bitstream_separability": "PER_COLUMN_BLOCK_WITH_ADAPTIVE_XOR_STATE"
+  },
+  "lifecycle": {
+    "block_semantics": "CONFIGURED_1_TO_65535_SAMPLES_PER_COLUMN",
+    "state_semantics": "XOR_STATE_CONTINUES_ACROSS_FINITE_BLOCKS_WITHIN_COLUMN",
+    "reset": "NEW_CONTEXT_REQUIRED",
+    "finalize": "REQUIRED_ZERO_BYTE_FINALIZE",
+    "safe_overread_bytes": 0,
+    "tail_policy": "EXACT_LOGICAL_COUNT_IN_BLOCK_RECORD",
+    "dictionary": "NONE",
+    "model": "PREVIOUS_APPROXIMATE_IEEE_VALUE_AND_ADAPTIVE_ZERO_POSITIONS",
+    "index": "NONE"
+  },
+  "execution": {
+    "backends": ["C_ABI_V1"],
+    "isa": ["SCALAR"],
+    "devices": ["CPU"],
+    "threading": "SINGLE_THREAD",
+    "fallback_policy": "REGISTERED_RAW_EXCEPTION_BLOCK_FOR_NONFINITE_OR_OVERFLOW_INPUT_ONLY",
+    "runtime_dispatch": true
+  },
+  "features": {"streaming": false, "query": false, "random_access": false},
+  "parameters": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "block_size": {"type": "integer", "minimum": 1, "maximum": 65535, "default": 1000},
+      "error_bound_type": {"type": "string", "enum": ["ABSOLUTE"], "default": "ABSOLUTE"},
+      "error_bound": {"type": "decimal-string", "default": "0.001"},
+      "adjust_digit": {"type": "integer", "minimum": -1000000000, "maximum": 1000000000, "default": 0},
+      "native_timing": {"type": "boolean", "default": true},
+      "isa": {"type": "string", "enum": ["SCALAR"], "default": "SCALAR"}
+    },
+    "constraints": []
+  },
+  "adapter": {
+    "backend": "C_ABI_V1",
+    "version": "serf-ctypes-v1",
+    "factory": "SERF_CTYPES_V1",
+    "artifact_path": "build/adapters/serf_xor/release/libtscb_serf_xor.so",
+    "timing_boundary": "PYTHON_LAYOUT_FFI_AND_CONTAINER_INCLUDED",
+    "native_timing_capability": {
+      "optional": true,
+      "boundary": "NATIVE_SERF_FRAME_ENCODE_DECODE_V1",
+      "clock": "CLOCK_MONOTONIC",
+      "excludes": [
+        "CONTEXT_LIFECYCLE",
+        "NATIVE_INPUT_DESCRIPTOR_PARSE",
+        "ENCODED_OUTPUT_COPY",
+        "DECODE_FRAME_CHECKSUM_AND_HEADER_PARSE",
+        "PYTHON_LAYOUT_TRANSFORM",
+        "PYTHON_FFI_CONTAINER"
+      ]
+    },
+    "accounting_hooks": [
+      "FINAL_STREAM_LENGTH",
+      "EXACT_VALID_BITS_PER_BLOCK",
+      "COMPLETE_NATIVE_SERF_FRAME",
+      "RAW_EXCEPTION_BLOCKS_CHARGED",
+      "OUTPUT_CAPACITY"
+    ]
+  }
+}

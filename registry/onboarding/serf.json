@@ -1,0 +1,185 @@
+{
+  "schema_version": "tscb.source-onboarding.v2",
+  "source_onboarding_id": "v2:source-onboarding:sha256:df6e34f7d5fe852119a9f693faf366ab0376954898ecb58dc5a232a37352a00c",
+  "source_artifact_id": "v2:source-artifact:sha256:2113be7b547b92c71a10c9c9ea2745fc90a26e6f7d8eb9ce76f4d4e2309057f5",
+  "repository": "https://github.com/Spatio-Temporal-Lab/Serf.git",
+  "commit": "b38450b56825eabc96be8e25d6880127dc688c95",
+  "dirty": false,
+  "submodules": [],
+  "implementation_files": [
+    "adapters/serf/vendor/serf/src/compressor/serf_qt_compressor.cc",
+    "adapters/serf/vendor/serf/src/compressor/serf_xor_compressor.cc",
+    "adapters/serf/vendor/serf/src/compressor_32/serf_qt_compressor_32.cc",
+    "adapters/serf/vendor/serf/src/compressor_32/serf_xor_compressor_32.cc",
+    "adapters/serf/vendor/serf/src/decompressor/serf_qt_decompressor.cc",
+    "adapters/serf/vendor/serf/src/decompressor/serf_xor_decompressor.cc",
+    "adapters/serf/vendor/serf/src/decompressor_32/serf_qt_decompressor_32.cc",
+    "adapters/serf/vendor/serf/src/decompressor_32/serf_xor_decompressor_32.cc",
+    "adapters/serf/vendor/serf/src/utils/elias_gamma_codec.cc",
+    "adapters/serf/vendor/serf/src/utils/input_bit_stream.cc",
+    "adapters/serf/vendor/serf/src/utils/output_bit_stream.cc",
+    "adapters/serf/vendor/serf/src/utils/post_office_solver.cc",
+    "adapters/serf/vendor/serf/src/utils/post_office_solver_32.cc",
+    "adapters/serf/vendor/serf/src/utils/serf_utils_32.cc",
+    "adapters/serf/vendor/serf/src/utils/serf_utils_64.cc",
+    "adapters/serf/native/tscb_serf.cc"
+  ],
+  "public_api_files": [
+    "adapters/serf/vendor/serf/src/compressor/serf_qt_compressor.h",
+    "adapters/serf/vendor/serf/src/compressor/serf_xor_compressor.h",
+    "adapters/serf/vendor/serf/src/decompressor/serf_qt_decompressor.h",
+    "adapters/serf/vendor/serf/src/decompressor/serf_xor_decompressor.h",
+    "native/include/tscb_adapter_v1.h"
+  ],
+  "benchmark_files": [
+    "test/Perf.cc",
+    "test/unit_test/serf_test.cc"
+  ],
+  "test_files": [
+    "adapters/serf/tests/abi_smoke.cc",
+    "adapters/serf/tests/run_native_tests.py",
+    "tests/adapters/test_serf.py",
+    "configs/experiments/serf-qualification.toml",
+    "configs/experiments/serf-formal.toml"
+  ],
+  "license_files": [
+    "adapters/serf/vendor/README.upstream.md"
+  ],
+  "third_party_dependencies": [],
+  "object_level_candidates": [
+    "P1_STANDALONE_CODEC"
+  ],
+  "input_contract": {
+    "kind": "HOMOGENEOUS_FLOAT_VALUE_COLUMNS",
+    "dtypes": [
+      "little-endian float32",
+      "little-endian float64"
+    ],
+    "topologies": [
+      "UTS",
+      "SYNCHRONOUS_MTS"
+    ],
+    "error_bound": "positive finite ABSOLUTE decimal",
+    "block_size": "1..65535 values per column",
+    "maximum_elements": 16777216,
+    "maximum_raw_bytes": 134217728,
+    "ownership": "BORROWED_DURING_CALL",
+    "mutation": "FORBIDDEN"
+  },
+  "output_contract": {
+    "kind": "TSCB_DESCRIPTOR_PLUS_SELF_CONTAINED_SERF_FRAME",
+    "self_contained": true,
+    "actual_written_length": true,
+    "capacity_is_not_size": true,
+    "framing": "PER_COLUMN_BLOCK_RECORDS_WITH_VALID_BIT_LENGTHS",
+    "loss_contract": "RAW_ABSOLUTE_ERROR_AT_MOST_REQUESTED_BOUND"
+  },
+  "lifecycle_contract": {
+    "output_bound": "checked frame, record and worst-case raw payload bound",
+    "return_length": "exact finalized native frame length",
+    "error_codes": "stable tscb_status_v1 including INVALID_ARGUMENT, DST_TOO_SMALL, UNSUPPORTED and CODEC_ERROR",
+    "finalize": "REQUIRED_ZERO_BYTE_FINALIZE; repeated finalize rejected",
+    "reset": "ABI reset clears object state and native timing while preserving enablement"
+  },
+  "stream_components": {
+    "outer_container": "12-byte versioned prefix plus canonical JSON descriptors",
+    "native_header": "scheme, dtype width, row/column counts, block size, error bound and XOR adjustment",
+    "block_records": "kind, reset flag, logical count, exact valid bits, stored byte count and payload",
+    "qt_state": "new predictor and quantizer state for every block",
+    "xor_state": "adaptive XOR state continues across finite blocks within one column",
+    "raw_exception": "non-finite or unsafe-to-quantize blocks stored exactly and fully charged",
+    "checksum": "64-bit complete native-frame structural checksum",
+    "accounting": "all outer and native physical bytes charged exactly once; capacities and upstream size estimates are excluded"
+  },
+  "upstream_tests": [
+    {
+      "name": "project native release ABI smoke",
+      "command": "conda run -n CompressBench14 python adapters/serf/tests/run_native_tests.py",
+      "status": "PASS",
+      "evidence": "float32/float64; 0/1/2, 999/1000/1001/2001; non-finite raw exceptions; canaries, bound-minus-one, finalize and corruption"
+    },
+    {
+      "name": "project native ASan/UBSan ABI smoke",
+      "command": "conda run -n CompressBench14 python adapters/serf/tests/run_native_tests.py",
+      "status": "PASS",
+      "evidence": "same matrix; sanitizer findings produced three replayed source patches and an aligned input copy in the C ABI shim"
+    },
+    {
+      "name": "Python adapter, source closure and negotiation qualification",
+      "command": "PYTHONPATH=src conda run -n CompressBench14 pytest -q tests/adapters/test_serf.py tests/unit/test_negotiation.py tests/unit/test_measurement.py tests/unit/test_statistics.py",
+      "status": "PASS",
+      "evidence": "absolute-bound, IEEE edge, hostile frame, MTS, identity, lossy negotiation and declared native-boundary coverage"
+    },
+    {
+      "name": "five-layer qualification",
+      "command": "tscompbench run validate configs/experiments/serf-qualification.toml",
+      "status": "PASS",
+      "evidence": "runs/runset-20260920T062542Z-83ecd524822d; two tasks and 39/39 boundary cases per algorithm"
+    },
+    {
+      "name": "five-layer formal exchange-rate run",
+      "command": "tscompbench run validate/report configs/experiments/serf-formal.toml",
+      "status": "PASS",
+      "evidence": "runs/runset-20260920T062606Z-db4b8711b0a0; 20 eligible PASS repetitions, two summaries, two coverage tasks and zero raw absolute-error violations"
+    }
+  ],
+  "builds": [
+    {
+      "profile": "SERF_QT_RELEASE_SCALAR",
+      "artifact_sha256": "5db2a8d301f05b019e5c0faac8c54bf915deb6ea77c016cd47f58da92b372273",
+      "compile_commands_sha256": "b190bfe7a92c7ff0889264b70589f60a024cebeb47f7d7b52c665fb8b5092c1a",
+      "compiler": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0"
+    },
+    {
+      "profile": "SERF_QT_ASAN_UBSAN_SCALAR",
+      "artifact_sha256": "9dc17b47551a0210d860f5f5968c9ce100ae2cdd6c5fb551beb09cab16bda31e",
+      "compile_commands_sha256": "68ffa6e59a42d55cec87612a7d319a54eb3b24970bc7b09dfad1379028841afc",
+      "compiler": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0"
+    },
+    {
+      "profile": "SERF_XOR_RELEASE_SCALAR",
+      "artifact_sha256": "9897dcd2b8e55840df9381c8cb5c5afd52aed64bf7922c524e155a01c2dd042d",
+      "compile_commands_sha256": "183d0e03748c6a4ba1c5a0832a44b5ec9e8fc02a62d08b59ea6b42354779d17b",
+      "compiler": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0"
+    },
+    {
+      "profile": "SERF_XOR_ASAN_UBSAN_SCALAR",
+      "artifact_sha256": "d28b4b0a54275d2d16c5d33c1653b684205ce7086cef84c3f32437e1499dc8ea",
+      "compile_commands_sha256": "906bffda0036b7fe0e753f723d4a29cfc6b5bb86803891ff0051870be3761a4c",
+      "compiler": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0"
+    }
+  ],
+  "license_decision": {
+    "spdx": "CC-BY-NC-4.0",
+    "status": "REDISTRIBUTION_RESTRICTED",
+    "redistribution": "ATTRIBUTION_REQUIRED_NONCOMMERCIAL_ONLY",
+    "commercial_use": "NOT_ALLOWED_WITHOUT_SEPARATE_PERMISSION"
+  },
+  "known_limitations": [
+    "Serf-Qt and Serf-XOR are distinct AlgorithmIDs and results must not be merged; their predictor/state behavior differs.",
+    "Only homogeneous little-endian float32/float64 VALUE UTS and synchronous MTS without validity are registered.",
+    "Only a positive finite ABSOLUTE error bound is registered; relative, pointwise-relative, lossless and zero-bound modes are unsupported.",
+    "Qt resets per block. XOR preserves adaptive state only across finite blocks in one column and resets after a raw exception; block size and state semantics are comparison facts.",
+    "The native timing boundary covers complete native Serf frame encode/decode, not only upstream block calls and not an lzbench-equivalent kernel interval.",
+    "Three replayed patches define aliasing and shift behavior, bound prefix-mask indices and prevent input-bit-stream overread. The C ABI shim uses aligned copies for typed access.",
+    "The CC BY-NC 4.0 source is admitted for noncommercial evaluation only; redistribution and commercial use require license review.",
+    "Streaming, query and random access are not registered. Operation is one-shot, scalar CPU and single-threaded.",
+    "Formal evidence covers only exchange_rate float64 at absolute error 0.001 and block size 1000; it is not a universal performance claim.",
+    "Formal report evidence does not project raw-exception-block telemetry, so no claim that the real dataset used zero raw exception blocks is made.",
+    "LeakSanitizer is disabled under the host ptrace policy; ASan and UBSan remain enabled and fail-fast."
+  ],
+  "unsupported_reason_codes": [
+    "EXECUTION_ARTIFACT_MISSING",
+    "LOSS_MODE_UNSUPPORTED",
+    "CAPABILITY_MISMATCH",
+    "DTYPE_UNSUPPORTED",
+    "HETEROGENEOUS_ITEMSIZE_UNSUPPORTED",
+    "VALIDITY_SHAPE_UNSUPPORTED",
+    "TOPOLOGY_UNSUPPORTED",
+    "INPUT_EXCEEDS_REGISTERED_LIMIT",
+    "ERROR_BOUND_TYPE_UNSUPPORTED",
+    "ERROR_BOUND_REQUIRED",
+    "STREAMING_UNSUPPORTED",
+    "QUERY_UNSUPPORTED"
+  ]
+}

@@ -448,6 +448,20 @@ def _auxiliary_timing_fields(
     group: list[dict[str, Any]], policy: dict[str, Any], seed: str
 ) -> dict[str, Any]:
     result: dict[str, Any] = {}
+    native_boundaries = {
+        timing.get("native_timing_boundary")
+        for record in group
+        if isinstance((timing := record["timing"]).get("native_timing_boundary"), str)
+        and timing["native_timing_boundary"]
+    }
+    native_clocks = {
+        timing.get("native_timing_clock")
+        for record in group
+        if isinstance((timing := record["timing"]).get("native_timing_clock"), str)
+        and timing["native_timing_clock"]
+    }
+    native_boundary = next(iter(native_boundaries)) if len(native_boundaries) == 1 else None
+    native_clock = next(iter(native_clocks)) if len(native_clocks) == 1 else None
     for scope in ("core", "pipeline", "native"):
         for direction in ("encode", "decode"):
             field = f"{scope}_{direction}_wall_ns"
@@ -459,8 +473,10 @@ def _auxiliary_timing_fields(
                     continue
                 if scope == "native" and (
                     timing.get("native_timing_enabled") is not True
-                    or timing.get("native_timing_boundary") != "CODEC_API_ONLY_V1"
-                    or timing.get("native_timing_clock") != "CLOCK_MONOTONIC"
+                    or native_boundary is None
+                    or timing.get("native_timing_boundary") != native_boundary
+                    or native_clock is None
+                    or timing.get("native_timing_clock") != native_clock
                     or not isinstance(timing.get("codec_input_bytes_per_iteration"), int)
                     or isinstance(timing["codec_input_bytes_per_iteration"], bool)
                     or timing["codec_input_bytes_per_iteration"] < 0
@@ -487,8 +503,8 @@ def _auxiliary_timing_fields(
             )
     native_complete = all(result[f"native_{direction}_observation_count"] == len(group)
                           for direction in ("encode", "decode"))
-    result["native_timing_boundary"] = "CODEC_API_ONLY_V1" if native_complete else None
-    result["native_timing_clock"] = "CLOCK_MONOTONIC" if native_complete else None
+    result["native_timing_boundary"] = native_boundary if native_complete else None
+    result["native_timing_clock"] = native_clock if native_complete else None
     result["codec_input_bytes_per_iteration"] = group[0]["timing"].get(
         "codec_input_bytes_per_iteration"
     )

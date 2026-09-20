@@ -1,0 +1,33 @@
+diff --git a/alp/include/alp/encoder.hpp b/alp/include/alp/encoder.hpp
+index af41ee1..9827521 100644
+--- a/alp/include/alp/encoder.hpp
++++ b/alp/include/alp/encoder.hpp
+@@ -73,7 +73,9 @@ struct encoder {
+ 	 * because they cannot be cast to int64 without an undefined behaviour
+ 	 */
+ 	static inline bool is_impossible_to_encode(const PT n) {
+-		return !std::isfinite(n) || std::isnan(n) || n > ENCODING_UPPER_LIMIT || n < ENCODING_LOWER_LIMIT ||
++		const PT upper = static_cast<PT>(std::numeric_limits<ST>::max());
++		const PT lower = static_cast<PT>(std::numeric_limits<ST>::min());
++		return !std::isfinite(n) || std::isnan(n) || n > upper || n < lower ||
+ 		       (n == 0.0 && std::signbit(n)); //! Verification for -0.0
+ 	}
+ 
+@@ -82,7 +84,7 @@ struct encoder {
+ 	static ST encode_value(const PT value, const factor_idx_t factor_idx, const exponent_idx_t exponent_idx) {
+ 		PT tmp_encoded_value = value * Constants<PT>::EXP_ARR[exponent_idx] * Constants<PT>::FRAC_ARR[factor_idx];
+ 		if constexpr (SAFE) {
+-			if (is_impossible_to_encode(tmp_encoded_value)) { return ENCODING_UPPER_LIMIT; }
++			if (is_impossible_to_encode(tmp_encoded_value)) { return std::numeric_limits<ST>::max(); }
+ 		}
+ 		tmp_encoded_value = tmp_encoded_value + Constants<PT>::MAGIC_NUMBER - Constants<PT>::MAGIC_NUMBER;
+ 		return static_cast<ST>(tmp_encoded_value);
+@@ -344,7 +346,7 @@ struct encoder {
+ 			auto const actual_value = VALUE_ARR_WITHOUT_SPECIALS[i];
+ 
+ 			// Attempt conversion
+-			const ST encoded_value = encode_value<false>(actual_value, factor_idx, exponent_idx);
++			const ST encoded_value = encode_value<true>(actual_value, factor_idx, exponent_idx);
+ 			encoded_integers[i]    = encoded_value;
+ 			const PT decoded_value = decoder<PT>::decode_value(encoded_value, factor_idx, exponent_idx);
+ 			ENCODED_VALUE_ARR[i]   = decoded_value;

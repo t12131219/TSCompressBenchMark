@@ -487,7 +487,9 @@ def perform_measured_roundtrip(
         ),
         native_timing_enabled=bool(parameters.get("native_timing", True)),
         native_timing_boundary=(
-            "CODEC_API_ONLY_V1" if native_encode is not None or native_decode is not None else None
+            str(getattr(adapter, "native_timing_boundary", "CODEC_API_ONLY_V1"))
+            if native_encode is not None or native_decode is not None
+            else None
         ),
         native_timing_clock=(
             "CLOCK_MONOTONIC" if native_encode is not None or native_decode is not None else None
