@@ -9,18 +9,21 @@ from .alp import AlpAdapter
 from .brotli_stream import BrotliStreamAdapter
 from .bzip2_stream import Bzip2StreamAdapter
 from .deflate_zlib import DeflateZlibAdapter
+from .delta_varint import DeltaVarintAdapter
 from .entropy_fse import EntropyAdapter
 from .lz4_frame import Lz4FrameAdapter
 from .lzss_dipperstein import LzssDippersteinAdapter
 from .lzss_raw import LzssRawAdapter
 from .lzsse2_raw import Lzsse2RawAdapter
 from .lzsse8_raw import Lzsse8RawAdapter
+from .neats import NeatsAdapter
 from .oracles import OracleAdapter
 from .serf import SerfAdapter
 from .snappy_raw import SnappyRawAdapter
 from .sprintz import SprintzAdapter
 from .sprintz8 import Sprintz8Adapter
 from .xz_stream import XzStreamAdapter
+from .zfp import ZfpAdapter
 from .zstd_frame import ZstdFrameAdapter
 
 
@@ -55,6 +58,9 @@ def adapter_artifacts(project_root: Path, manifest: CodecManifest) -> tuple[Path
         "LZSSE8_RAW_CTYPES_V1": "lzsse8_raw.py",
         "SNAPPY_RAW_CTYPES_V1": "snappy_raw.py",
         "ZSTD_FRAME_CTYPES_V1": "zstd_frame.py",
+        "ZFP_CTYPES_V1": "zfp.py",
+        "NEATS_CTYPES_V1": "neats.py",
+        "DELTA_VARINT_CTYPES_V1": "delta_varint.py",
     }
     support_module = support_modules.get(factory)
     if support_module is None:
@@ -94,6 +100,9 @@ def create_adapter(project_root: Path, manifest: CodecManifest) -> CodecAdapter:
     if adapter.get("factory") == "DEFLATE_ZLIB_CTYPES_V1":
         artifact, _ = adapter_artifacts(project_root, manifest)
         return DeflateZlibAdapter(artifact, manifest.document["adapter"])
+    if adapter.get("factory") == "DELTA_VARINT_CTYPES_V1":
+        artifact, _ = adapter_artifacts(project_root, manifest)
+        return DeltaVarintAdapter(artifact, manifest.document["adapter"])
     if adapter.get("factory") == "LZSS_RAW_CTYPES_V1":
         artifact, _ = adapter_artifacts(project_root, manifest)
         return LzssRawAdapter(artifact, manifest.document["adapter"])
@@ -115,6 +124,12 @@ def create_adapter(project_root: Path, manifest: CodecManifest) -> CodecAdapter:
     if adapter.get("factory") == "ZSTD_FRAME_CTYPES_V1":
         artifact, _ = adapter_artifacts(project_root, manifest)
         return ZstdFrameAdapter(artifact, manifest.document["adapter"])
+    if adapter.get("factory") == "ZFP_CTYPES_V1":
+        artifact, _ = adapter_artifacts(project_root, manifest)
+        return ZfpAdapter(artifact, manifest.document["adapter"])
+    if adapter.get("factory") == "NEATS_CTYPES_V1":
+        artifact, _ = adapter_artifacts(project_root, manifest)
+        return NeatsAdapter(artifact, manifest.document["adapter"], manifest.key)
     if adapter.get("factory") == "SNAPPY_RAW_CTYPES_V1":
         artifact, _ = adapter_artifacts(project_root, manifest)
         return SnappyRawAdapter(artifact, manifest.document["adapter"])

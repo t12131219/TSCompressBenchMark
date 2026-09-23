@@ -1,0 +1,75 @@
+{
+  "schema_version": "tscb.source-onboarding.v2",
+  "source_artifact_id": "v2:source-artifact:sha256:98e4fc90b21b9f6fade3e4e01fb18e0c511812d6390b984bd1c51528616fe096",
+  "repository": "https://github.com/mattsta/varint",
+  "commit": "81ba89cd76f079649de49f5726f50f8a1344b21d",
+  "dirty": false,
+  "submodules": [],
+  "implementation_files": [
+    "src/varintDelta.c", "src/varintDelta.h",
+    "src/varintExternal.c", "src/varintExternal.h", "src/varint.h",
+    "src/endianIsLittle.h"
+  ],
+  "public_api_files": ["src/varintDelta.h", "src/varintExternal.h"],
+  "benchmark_files": ["src/varintDeltaTest.c", "src/varintCompete.c"],
+  "test_files": ["src/varintDeltaTest.c", "adapters/delta_varint/tests/abi_smoke.c"],
+  "license_files": ["adapters/delta_varint/vendor/varint/README.upstream.md"],
+  "third_party_dependencies": [],
+  "object_level_candidates": ["P0_PRIMITIVE"],
+  "input_contract": {
+    "kind": "LITTLE_ENDIAN_INT64_TIMESTAMP_VECTOR",
+    "zero_length": "SUPPORTED",
+    "ownership": "BORROWED_DURING_CALL",
+    "mutation": "FORBIDDEN_BY_ADAPTER_CONTRACT"
+  },
+  "output_contract": {
+    "kind": "BASE_ZIGZAG_PLUS_EXTERNAL_WIDTH_DELTAS",
+    "self_contained": false,
+    "actual_written_length": true,
+    "capacity_is_not_size": true,
+    "framing": "TSCB_DESCRIPTOR_COUNT_AND_DTYPE",
+    "checksum": "NONE",
+    "dictionary": "NONE"
+  },
+  "lifecycle_contract": {
+    "output_bound": "1+8+(count-1)*9_FOR_NONEMPTY",
+    "return_length": "actual_varintDeltaEncode_length",
+    "error_codes": ["DST_TOO_SMALL", "CODEC_ERROR"],
+    "finalize": "REQUIRED_ZERO_BYTE_FINALIZE",
+    "reset": "NEW_CONTEXT_PER_INDEPENDENT_OBJECT"
+  },
+  "stream_components": ["descriptor", "base", "width_byte", "delta_payload"],
+  "upstream_tests": [
+    {
+      "name": "vendored varintDelta roundtrip",
+      "status": "PASS",
+      "log_sha256": "6e6abe2b66636dc0bf241a0c9705e6c931679aeca298006be1616384adc0155e"
+    }
+  ],
+  "builds": [
+    {
+      "kind": "release",
+      "artifact_sha256": "ee3f7a079a8452cf445a74cfa5cc3d1155dadba300882571b3ee80593d8b1d52",
+      "compile_commands_sha256": "c94e6e8ddfb74bcf6b8654044b468b14b0e930d906818470da9d95b0ba0b9fdf"
+    },
+    {
+      "kind": "sanitizer",
+      "artifact_sha256": "fc19a76880c0c6388ec3a4dc5793f1648b5032f90584f897f0218614bb1e3eae",
+      "compile_commands_sha256": "68ade205ab6345f1555f65927bcd12d78bb9d8aec6c6a6bba00219ada570a90d"
+    }
+  ],
+  "license_decision": {
+    "spdx": "Apache-2.0",
+    "status": "RUN_ALLOWED",
+    "reason": "README explicitly states Apache-2.0 for routine implementation details; source closure is preserved unmodified"
+  },
+  "known_limitations": [
+    "P0 primitive only; descriptor supplies count and dtype.",
+    "Sequential decode only; no random access or resumable streaming context.",
+    "Signed modular int64 delta arithmetic is inherited from the vendored implementation."
+  ],
+  "unsupported_reason_codes": [
+    "VALUE_TRACK_NOT_REGISTERED", "STREAMING_PROTOCOL_NOT_REGISTERED",
+    "RANDOM_ACCESS_UNSUPPORTED", "NON_I64_TIMESTAMP"
+  ]
+}

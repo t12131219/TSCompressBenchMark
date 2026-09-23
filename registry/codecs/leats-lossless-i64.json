@@ -1,0 +1,111 @@
+{
+  "schema_version": "tscb.codec-manifest.v2",
+  "key": "leats-lossless-i64",
+  "identity": {
+    "display_name": "LeaTS lossless integer (scalar C++20)",
+    "family": "LEATS",
+    "citations": [
+      "benchmark:and-gue/NeaTS@2d804ff492e4:LeaTS.cpp",
+      "upstream:and-gue/NeaTS@2d804ff492e4:include/LeaTS.hpp",
+      "spreadsheet:Value-Compress-row-75:NeaTS-LeaTS-family"
+    ],
+    "source_artifact_id": "v2:source-artifact:sha256:3901f0276c7c6c841174b4a0267e92ea8e1887e68b70bb8d0e71fa9e66784d10"
+  },
+  "classification": {
+    "object_level": "P1_STANDALONE_CODEC",
+    "implementation_class": "LEARNED",
+    "tracks": ["VALUE"],
+    "subtracks": ["V0"]
+  },
+  "input": {
+    "topologies": ["UTS", "SYNCHRONOUS_MTS"],
+    "dtypes": ["|i1", "<i2", "<i4", "<i8"],
+    "ranks": [1, 2],
+    "layouts": ["ROW_MAJOR_CONTIG", "SOA_COLUMNS"],
+    "endianness": ["little"],
+    "alignment_bytes": 1,
+    "min_n": 1,
+    "max_n": 65536,
+    "min_m": 1,
+    "max_m": 64,
+    "validity_shapes": ["NONE"],
+    "homogeneous_itemsize": true,
+    "max_total_raw_bytes": 2097152,
+    "value_coupling_mode": "COLUMN_INDEPENDENT",
+    "timestamp_semantics": {
+      "preserve_order": true,
+      "duplicates": true,
+      "out_of_order": true,
+      "negative_delta": true,
+      "absolute_epoch": true,
+      "overflow_policy": "NOT_APPLICABLE_VALUE_ONLY"
+    }
+  },
+  "semantics": {
+    "loss_modes": ["LOSSLESS"],
+    "error_bound_types": [],
+    "reconstruction_modes": ["EXACT_GRID"],
+    "rebuild_protocol": "TSCB_LEATS_SERIALIZED_COLUMN_CONTAINER_V1",
+    "preprocess_class": "NONE",
+    "preprocess_stages": [],
+    "decodability_profile": "SELF_CONTAINED_DESCRIPTOR_BIAS_SERIALIZED_MODEL_INDEX_AND_CHECKSUM",
+    "bitstream_separability": "INDEPENDENT_PER_COLUMN"
+  },
+  "lifecycle": {
+    "block_semantics": "ONE_COMPLETE_UPSTREAM_MODEL_PER_VALUE_COLUMN",
+    "state_semantics": "OBJECT_LOCAL_MODEL_FIT_DURING_EACH_COMPRESSION",
+    "reset": "NEW_CONTEXT_REQUIRED",
+    "finalize": "REQUIRED_ZERO_BYTE_FINALIZE",
+    "safe_overread_bytes": 0,
+    "tail_policy": "EXACT_LENGTH",
+    "dictionary": "NONE",
+    "model": "PIECEWISE_LINEAR_SERIALIZED_AND_FULLY_CHARGED",
+    "index": "ELIAS_FANO_SERIALIZED_AND_FULLY_CHARGED"
+  },
+  "execution": {
+    "backends": ["C_ABI_V1"],
+    "isa": ["SCALAR"],
+    "devices": ["CPU"],
+    "threading": "SINGLE_THREAD",
+    "fallback_policy": "DISALLOWED",
+    "runtime_dispatch": false
+  },
+  "features": {"streaming": false, "query": true, "random_access": true},
+  "parameters": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "max_bpc": {"type": "integer", "enum": [16, 32], "default": 16},
+      "native_timing": {"type": "boolean", "default": true},
+      "isa": {"type": "string", "enum": ["SCALAR"], "default": "SCALAR"}
+    },
+    "constraints": []
+  },
+  "adapter": {
+    "backend": "C_ABI_V1",
+    "version": "leats-ctypes-v1",
+    "factory": "NEATS_CTYPES_V1",
+    "artifact_path": "build/adapters/leats_lossless_i64/release/libtscb_leats_lossless_i64.so",
+    "timing_boundary": "PYTHON_LAYOUT_FFI_AND_CONTAINER_INCLUDED",
+    "native_timing_capability": {
+      "optional": true,
+      "boundary": "NATIVE_OBJECT_FIT_SERIALIZE_AND_LOAD_DECODE_V1",
+      "clock": "CLOCK_MONOTONIC",
+      "excludes": [
+        "CONTEXT_LIFECYCLE",
+        "ENCODED_OUTPUT_COPY",
+        "DECODE_FRAME_CHECKSUM_AND_HEADER_PARSE",
+        "PYTHON_LAYOUT_TRANSFORM",
+        "PYTHON_FFI_CONTAINER",
+        "QUERY_WORKLOAD_GENERATION"
+      ]
+    },
+    "accounting_hooks": [
+      "FINAL_STREAM_LENGTH",
+      "SERIALIZED_MODEL_AND_INDEX_BYTES",
+      "PER_COLUMN_BIAS",
+      "FRAME_CHECKSUM",
+      "OUTPUT_CAPACITY"
+    ]
+  }
+}

@@ -23,6 +23,7 @@ from tscompbench.execution import (
 from tscompbench.execution.repetition import perform_measured_roundtrip, perform_warmup
 from tscompbench.measurement import (
     MeasurementPolicy,
+    QueryRequest,
     QueryResult,
     StreamPushResult,
     build_query_workload,
@@ -266,6 +267,61 @@ def test_query_engine_times_only_pregenerated_requests_and_checks_exact_slices()
     assert result["decode_amplification"] == "1"
     assert result["read_amplification"] == "1"
     assert result["index_bits"] == 64
+
+
+def test_query_engine_projects_native_matrix_channels() -> None:
+    values = np.arange(60, dtype="<i2").reshape(20, 3)
+    values.flags.writeable = False
+    buffers = (LogicalBuffer("value/000000", values, values.nbytes * 8),)
+    route = RoutedInput(
+        dataset_id="dataset:matrix-query",
+        track=BenchmarkTrack.VALUE,
+        buffers=buffers,
+        timestamp_reference=None,
+        validity_reference=None,
+        n=20,
+        m=3,
+        canonical_raw_bits=values.nbytes * 8,
+        input_sha256=hash_logical_buffers(buffers),
+    )
+
+    class Session:
+        def query(self, stream, request):
+            del stream
+            selected = tuple(
+                LogicalBuffer(
+                    "value/000000",
+                    values[request.start : request.start + request.length, index],
+                    request.length * values.dtype.itemsize * 8,
+                )
+                for index in request.channel_indices
+            )
+            return QueryResult(
+                buffers=selected,
+                decoded_elements=request.length * len(selected),
+                bytes_touched=sum(item.array.nbytes for item in selected),
+            )
+
+        def close(self):
+            return None
+
+    class Adapter:
+        def create_session(self, parameters):
+            return Session()
+
+    requests = (QueryRequest(2, 5, (0, 2)), QueryRequest(8, 1, (1,)))
+    result = execute_query_workload(
+        adapter=Adapter(),
+        parameters={},
+        stream=b"encoded",
+        routed=route,
+        requests=requests,
+        workload_id="query:matrix",
+        index_bits=0,
+    )
+    assert result["status"] == "PASS"
+    assert result["requested_elements"] == 11
+    assert result["decode_amplification"] == "1"
 
 
 def test_streaming_engine_drives_blocks_finalizes_accounts_and_verifies_output() -> None:

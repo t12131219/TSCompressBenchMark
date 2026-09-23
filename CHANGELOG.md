@@ -7,6 +7,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Phase 9 NeaTS / LeaTS Source Integration (2026-09-20)
+
+- Added spreadsheet-listed `neats-lossless-i64` and `leats-lossless-i64` from pinned
+  `and-gue/NeaTS` commit `2d804ff492e45222e841dc1a50904476fa64f4a0` as separate
+  nonlinear and linear AlgorithmIDs sharing one SourceArtifactID.
+- Vendored the audited 172-file C++/SDSL/sux closure and added three hashed GCC 11,
+  scalar serialization and LeaTS predictor-precision patches without modifying the
+  shared source collection.
+- Registered lossless signed integer UTS/synchronous MTS, independent-column, scalar
+  CPU execution through C ABI v1 with complete model/index accounting and native query.
+- Classified fitting as object-local learned compression: fitting is timed, model bytes
+  are charged, and no external training corpus, checkpoint or test leakage exists.
+- Passed release and ASan/UBSan native suites, 56 focused Python/contract tests, final
+  qualification and 20/20 eligible formal repetitions; retained the earlier incomparable
+  and LeaTS correctness-failure run sets as append-only diagnostics.
+
+### Phase 5 zfp Fixed-Accuracy 1D Source Integration (2026-09-20)
+
+- Added spreadsheet-listed zfp from pinned LLNL commit
+  `c0c2c40b30d99f1787664b51c593fb6e0d729253` as `zfp-accuracy-1d`.
+- Vendored the BSD-3-Clause serial C build closure and exposed upstream float32/float64
+  fixed-accuracy compression through C ABI v1 and the Python benchmark framework.
+- Frozen serial CPU, independent 1D-per-column semantics with full zfp headers and both
+  requested and actual power-of-two tolerances; fixed-rate, precision, reversible and
+  native ND execution remain separate future AlgorithmIDs.
+- Added checked framing, complete accounting, raw IEEE exception columns, native timing,
+  release plus ASan/UBSan qualification, hostile-stream tests and five-layer configs.
+
 ### Phase 4 bzip2 1.0.8 Source Integration (2026-09-19)
 
 - Added spreadsheet-listed `BZ2 (Huffman Coding)` as `bzip2-stream`, explicitly

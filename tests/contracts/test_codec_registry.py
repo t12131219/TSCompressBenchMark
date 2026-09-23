@@ -21,11 +21,13 @@ def _registries() -> tuple[SourceRegistry, CodecRegistry]:
 
 def test_codec_manifests_reference_audited_sources_and_have_stable_ids() -> None:
     sources, codecs = _registries()
-    assert len(codecs) == 26
+    assert len(codecs) == 30
     assert "alp" in codecs.keys()
     assert "alp-rd" in codecs.keys()
     assert "serf-qt" in codecs.keys()
     assert "serf-xor" in codecs.keys()
+    assert "neats-lossless-i64" in codecs.keys()
+    assert "leats-lossless-i64" in codecs.keys()
     assert "bzip2-stream" in codecs.keys()
     assert "sprintz-fire-huff0" in codecs.keys()
     assert "sprintz-delta" in codecs.keys()
@@ -44,6 +46,7 @@ def test_codec_manifests_reference_audited_sources_and_have_stable_ids() -> None
     assert "lz4-frame" in codecs.keys()
     assert "zstd-frame" in codecs.keys()
     assert "snappy-raw" in codecs.keys()
+    assert "delta-varint" in codecs.keys()
     first = {item.key: item.algorithm_id for item in codecs.verify_all()}
     second = {
         item.key: item.algorithm_id

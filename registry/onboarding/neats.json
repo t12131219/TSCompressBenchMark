@@ -1,0 +1,152 @@
+{
+  "schema_version": "tscb.source-onboarding.v2",
+  "source_artifact_id": "v2:source-artifact:sha256:3901f0276c7c6c841174b4a0267e92ea8e1887e68b70bb8d0e71fa9e66784d10",
+  "repository": "https://github.com/and-gue/NeaTS.git",
+  "commit": "2d804ff492e45222e841dc1a50904476fa64f4a0",
+  "dirty": false,
+  "submodules": [],
+  "implementation_files": [
+    "adapters/neats/vendor/neats/include/NeaTS.hpp",
+    "adapters/neats/vendor/neats/include/LeaTS.hpp",
+    "adapters/neats/vendor/neats/include/float_pfa.hpp",
+    "adapters/neats/vendor/neats/include/float_dpfa.hpp",
+    "adapters/neats/vendor/neats/include/algorithms.hpp",
+    "adapters/neats/vendor/neats/include/coefficients_space.hpp",
+    "adapters/neats/vendor/neats/include/my_elias_fano.hpp",
+    "adapters/neats/native/tscb_neats.cc"
+  ],
+  "public_api_files": [
+    "adapters/neats/vendor/neats/include/NeaTS.hpp",
+    "adapters/neats/vendor/neats/include/LeaTS.hpp",
+    "native/include/tscb_adapter_v1.h"
+  ],
+  "benchmark_files": [
+    "upstream:main_simd.cpp",
+    "upstream:LeaTS.cpp",
+    "upstream:benchmark/neats_lossless.cpp"
+  ],
+  "test_files": [
+    "adapters/neats/tests/abi_smoke.cc",
+    "adapters/neats/tests/run_native_tests.py",
+    "tests/adapters/test_neats.py",
+    "configs/experiments/neats-leats-qualification.toml",
+    "configs/experiments/neats-leats-formal.toml"
+  ],
+  "license_files": [
+    "adapters/neats/vendor/neats/README.upstream.md",
+    "adapters/neats/vendor/neats/lib/sdsl-lite/COPYING",
+    "adapters/neats/vendor/neats/lib/sdsl-lite/LICENSE",
+    "adapters/neats/vendor/neats/lib/sux/COPYING3",
+    "adapters/neats/vendor/neats/lib/sux/COPYING.RUNTIME"
+  ],
+  "third_party_dependencies": [
+    "vendored SDSL-lite headers (GPL-3.0-or-later and BSD-3-Clause notices retained)",
+    "vendored sux headers (GPL-3.0 with runtime exception notices retained)"
+  ],
+  "object_level_candidates": ["P1_STANDALONE_CODEC"],
+  "input_contract": {
+    "kind": "HOMOGENEOUS_SIGNED_INTEGER_VALUE_COLUMNS",
+    "dtypes": ["int8", "little-endian int16", "little-endian int32", "little-endian int64"],
+    "topologies": ["UTS", "SYNCHRONOUS_MTS"],
+    "maximum_rows": 65536,
+    "maximum_columns": 64,
+    "maximum_elements": 262144,
+    "normalization": "per-column minimum shift into nonnegative int64 with checked span",
+    "ownership": "BORROWED_DURING_CALL",
+    "mutation": "FORBIDDEN"
+  },
+  "output_contract": {
+    "kind": "TSCB_DESCRIPTOR_PLUS_CHECKED_SERIALIZED_UPSTREAM_MODEL_PER_COLUMN",
+    "self_contained": true,
+    "actual_written_length": true,
+    "capacity_is_not_size": true,
+    "loss_contract": "bit-exact reconstruction of every signed integer",
+    "model_contract": "object-local fit only; no external checkpoint or training corpus"
+  },
+  "lifecycle_contract": {
+    "output_bound": "checked conservative bound of 128 bytes per input element plus per-column overhead",
+    "return_length": "exact native frame length",
+    "error_codes": "stable tscb_status_v1 with descriptor, capacity, checksum and record validation",
+    "finalize": "REQUIRED_ZERO_BYTE_FINALIZE; repeated finalize rejected",
+    "reset": "ABI reset clears state and native timing while preserving enablement"
+  },
+  "stream_components": {
+    "outer_container": "12-byte unique prefix and canonical logical descriptor",
+    "native_header": "variant magic, version, source width, max_bpc, rows and columns",
+    "column_records": "signed bias, payload length, upstream logical size and serialized codec object",
+    "model_and_index": "SDSL serialization contains fitted coefficients, residuals and Elias-Fano/rank support",
+    "checksum": "64-bit FNV-1a over the complete native frame before the checksum",
+    "accounting": "descriptor, record metadata, serialized model/index payloads and checksum close exactly"
+  },
+  "upstream_tests": [
+    {
+      "profile": "release",
+      "suite": "both variants across int8/int16/int32/int64 boundaries, full decode, native random access, corruption, canary and undersized output",
+      "status": "PASS",
+      "evidence": "conda run -n CompressBench14 python adapters/neats/tests/run_native_tests.py"
+    },
+    {
+      "profile": "sanitizer",
+      "suite": "same native ABI suite under ASan/UBSan; LSan disabled because managed ptrace is incompatible",
+      "status": "PASS",
+      "evidence": "ASAN_OPTIONS=detect_leaks=0; UBSAN_OPTIONS=halt_on_error=1"
+    }
+  ],
+  "builds": [
+    {
+      "kind": "release",
+      "algorithm": "neats-lossless-i64",
+      "artifact_sha256": "1a9a5fd26a454cb5161159fe2914aba785619ee6b6d51139a004fb1fdaffcf35",
+      "compile_commands_sha256": "fa49d1d8ab7cc6fa4786a318101aaf5d4faab5ec6f846da61a9cc4f181c4896b",
+      "compiler": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0"
+    },
+    {
+      "kind": "sanitizer",
+      "algorithm": "neats-lossless-i64",
+      "artifact_sha256": "68712bc55693444e979419bbfff4d4c99737b9a5619177ab0c8c497729027ad6",
+      "compile_commands_sha256": "c2b6cbf7fc97c19595e5a3e7689ec7a7d33df8d2cbfd684535fa6b2bcbfa8856",
+      "compiler": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0"
+    },
+    {
+      "kind": "release",
+      "algorithm": "leats-lossless-i64",
+      "artifact_sha256": "7ca6b00bea90644c31d538a5435de32a6884243db236bc2de93c764635a6e239",
+      "compile_commands_sha256": "95bd92d4eceb7ade7c10219910f4b5db8c027a35561a114fe8034b02a4790777",
+      "compiler": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0"
+    },
+    {
+      "kind": "sanitizer",
+      "algorithm": "leats-lossless-i64",
+      "artifact_sha256": "c2320a70ed369444e2e73087703f58946d3325d4a23ffd6d41fe347f935778a8",
+      "compile_commands_sha256": "fae3e5fb8c9f3a59856c933d1b0bda60de2cde354636631df32fb72160b1de83",
+      "compiler": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0"
+    }
+  ],
+  "license_decision": {
+    "spdx": "GPL-3.0-only",
+    "status": "RUN_ALLOWED",
+    "redistribution": "GPL_V3_TERMS_AND_SOURCE_REQUIRED"
+  },
+  "known_limitations": [
+    "Only lossless signed integer VALUE UTS and synchronous MTS are admitted.",
+    "Every channel is compressed independently; this is not a joint multivariate model.",
+    "The upstream AVX2/AVX-512 paths are excluded; the build disables compiler auto-vectorization and is identified as scalar.",
+    "max_bpc is restricted to 16 or 32 and is part of AlgorithmID execution parameters.",
+    "Object-local model fitting is included in every compression timing and all serialized model/index bytes are charged; there is no external training split, checkpoint or amortized training cost.",
+    "Random access loads the selected serialized column object; bytes_touched reports the complete native frame because checksum validation scans it.",
+    "Unsigned integers, floats, nulls, asynchronous MTS, streaming and lossy modes are not admitted.",
+    "LeakSanitizer could not run under the managed ptrace environment; ASan and UBSan completed with leak detection disabled."
+  ],
+  "unsupported_reason_codes": [
+    "EXECUTION_ARTIFACT_MISSING",
+    "UNSIGNED_OR_FLOAT_DTYPE_UNSUPPORTED",
+    "VALIDITY_SHAPE_UNSUPPORTED",
+    "INPUT_EXCEEDS_REGISTERED_LIMIT",
+    "I64_NORMALIZATION_SPAN_OVERFLOW",
+    "STREAMING_PROTOCOL_NOT_REGISTERED",
+    "LOSSY_MODE_NOT_REGISTERED",
+    "SIMD_ISA_NOT_REGISTERED",
+    "MULTI_THREAD_UNSUPPORTED",
+    "DEVICE_UNSUPPORTED"
+  ]
+}

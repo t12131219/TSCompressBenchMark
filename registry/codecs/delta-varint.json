@@ -1,0 +1,95 @@
+{
+  "schema_version": "tscb.codec-manifest.v2",
+  "key": "delta-varint",
+  "identity": {
+    "display_name": "Delta + VarInt (mattsta/varint)",
+    "family": "DELTA_VARINT",
+    "citations": ["benchmark:mattsta/varint@81ba89cd76f0"],
+    "source_artifact_id": "v2:source-artifact:sha256:98e4fc90b21b9f6fade3e4e01fb18e0c511812d6390b984bd1c51528616fe096"
+  },
+  "classification": {
+    "object_level": "P0_PRIMITIVE",
+    "implementation_class": "CONVENTIONAL",
+    "tracks": ["TIMESTAMP"],
+    "subtracks": ["T0"]
+  },
+  "input": {
+    "topologies": ["UTS", "SYNCHRONOUS_MTS"],
+    "dtypes": ["<i8"],
+    "ranks": [1],
+    "layouts": ["ROW_MAJOR_CONTIG"],
+    "endianness": ["little"],
+    "alignment_bytes": 1,
+    "min_n": 0,
+    "max_n": 9223372036854775807,
+    "min_m": 1,
+    "max_m": 1,
+    "validity_shapes": ["NONE"],
+    "value_coupling_mode": "COLUMN_INDEPENDENT",
+    "timestamp_semantics": {
+      "preserve_order": true,
+      "duplicates": true,
+      "out_of_order": true,
+      "negative_delta": true,
+      "absolute_epoch": true,
+      "overflow_policy": "MODULAR_INT64"
+    }
+  },
+  "semantics": {
+    "loss_modes": ["LOSSLESS"],
+    "error_bound_types": [],
+    "reconstruction_modes": ["EXACT_GRID"],
+    "rebuild_protocol": "TSCB_BUFFER_DESCRIPTOR_CONTAINER_V1",
+    "preprocess_class": "NONE",
+    "preprocess_stages": [],
+    "decodability_profile": "DESCRIPTOR_COUNT_DTYPE_PLUS_DELTA_VARINT_PAYLOAD",
+    "bitstream_separability": "INDEPENDENT"
+  },
+  "lifecycle": {
+    "block_semantics": "ONE_PRIMITIVE_OBJECT_PER_ROUTED_TIMESTAMP_VECTOR",
+    "state_semantics": "INDEPENDENT_CONTEXT_PER_REPETITION",
+    "reset": "NEW_CONTEXT_REQUIRED",
+    "finalize": "REQUIRED_ZERO_BYTE_FINALIZE",
+    "safe_overread_bytes": 0,
+    "tail_policy": "EXACT_WIDTH_VALIDATION",
+    "dictionary": "NONE",
+    "model": "NONE",
+    "index": "NONE"
+  },
+  "execution": {
+    "backends": ["C_ABI_V1"],
+    "isa": ["SCALAR"],
+    "devices": ["CPU"],
+    "threading": "SINGLE_THREAD",
+    "fallback_policy": "DISALLOWED",
+    "runtime_dispatch": false
+  },
+  "features": {
+    "streaming": false,
+    "query": false,
+    "random_access": false
+  },
+  "parameters": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "native_timing": {"type": "boolean", "default": true},
+      "isa": {"type": "string", "enum": ["SCALAR"], "default": "SCALAR"}
+    },
+    "constraints": []
+  },
+  "adapter": {
+    "backend": "C_ABI_V1",
+    "version": "delta-varint-ctypes-v1",
+    "factory": "DELTA_VARINT_CTYPES_V1",
+    "artifact_path": "build/adapters/delta_varint/release/libtscb_delta_varint.so",
+    "timing_boundary": "PYTHON_FFI_CONTAINER_INCLUDED",
+    "native_timing_capability": {
+      "optional": true,
+      "boundary": "CODEC_API_ONLY_V1",
+      "clock": "CLOCK_MONOTONIC",
+      "excludes": ["CONTEXT_LIFECYCLE", "DESCRIPTOR_CONTAINER", "PYTHON_FFI"]
+    },
+    "accounting_hooks": ["DELTA_VARINT_PAYLOAD_LENGTH", "DESCRIPTOR_LENGTH", "OUTPUT_CAPACITY"]
+  }
+}

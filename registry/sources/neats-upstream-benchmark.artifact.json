@@ -1,0 +1,63 @@
+{
+  "schema_version": "tscb.source-artifact.v2",
+  "key": "neats-upstream-benchmark",
+  "kind": "VENDORED_UPSTREAM_BENCHMARK_SOURCE_CLOSURE_WITH_PATCH",
+  "identity": {
+    "kind": "VENDORED_UPSTREAM_BENCHMARK_SOURCE_CLOSURE_WITH_PATCH",
+    "key": "neats-upstream-benchmark",
+    "benchmark_repository": "https://github.com/and-gue/NeaTS.git",
+    "benchmark_commit": "2d804ff492e45222e841dc1a50904476fa64f4a0",
+    "benchmark_paths": ["main_simd.cpp", "LeaTS.cpp", "benchmark/neats_lossless.cpp"],
+    "spreadsheet_evidence": [
+      "参考TSBench row 16: NeaTS",
+      "Value-Compress row 71: NeaTS",
+      "Value-Compress row 75: NeaTS / LeaTS family"
+    ],
+    "upstream_repository": "https://github.com/and-gue/NeaTS.git",
+    "upstream_commit": "2d804ff492e45222e841dc1a50904476fa64f4a0",
+    "source_path": "adapters/neats/vendor/neats",
+    "source_closure_sha256": "71c668cfb78ced6e95b5d8e21a274a230d699c5b052e13aa4c8f0a105bcd3644",
+    "source_closure_file_count": 172,
+    "patch_set_sha256": "76172f500afe359f5c5831e0db33f2ae559e3a91e5fe8088fe1c405216d44268",
+    "execution_variant": "NEATS_OR_LEATS_LOSSLESS_SIGNED_INTEGER_COLUMNWISE_SCALAR"
+  },
+  "license": {
+    "spdx": "GPL-3.0-only",
+    "status": "RUN_ALLOWED",
+    "redistribution": "GPL_V3_TERMS_AND_SOURCE_REQUIRED",
+    "files": [
+      "adapters/neats/vendor/neats/README.upstream.md",
+      "adapters/neats/vendor/neats/lib/sdsl-lite/COPYING",
+      "adapters/neats/vendor/neats/lib/sdsl-lite/LICENSE",
+      "adapters/neats/vendor/neats/lib/sux/COPYING3",
+      "adapters/neats/vendor/neats/lib/sux/COPYING.RUNTIME"
+    ]
+  },
+  "build": {
+    "recipe": "conda run -n CompressBench14 python tools/build_codec.py <neats-lossless-i64|leats-lossless-i64> --profile all",
+    "patches": [
+      "adapters/neats/patches/0001-gcc11-scalar-compatibility.patch",
+      "adapters/neats/patches/0002-leats-serialization.patch",
+      "adapters/neats/patches/0003-leats-predictor-precision.patch"
+    ],
+    "submodules": [],
+    "translation_units": [
+      "adapters/neats/native/tscb_neats.cc",
+      "adapters/neats/vendor/neats/include/NeaTS.hpp",
+      "adapters/neats/vendor/neats/include/LeaTS.hpp",
+      "adapters/neats/vendor/neats/include/float_pfa.hpp",
+      "adapters/neats/vendor/neats/include/float_dpfa.hpp",
+      "adapters/neats/vendor/neats/include/algorithms.hpp",
+      "adapters/neats/vendor/neats/include/coefficients_space.hpp",
+      "adapters/neats/vendor/neats/include/my_elias_fano.hpp"
+    ],
+    "release_artifacts": {
+      "neats-lossless-i64": "build/adapters/neats_lossless_i64/release/libtscb_neats_lossless_i64.so",
+      "leats-lossless-i64": "build/adapters/leats_lossless_i64/release/libtscb_leats_lossless_i64.so"
+    },
+    "sanitizer_artifacts": {
+      "neats-lossless-i64": "build/adapters/neats_lossless_i64/sanitizer/libtscb_neats_lossless_i64.so",
+      "leats-lossless-i64": "build/adapters/leats_lossless_i64/sanitizer/libtscb_leats_lossless_i64.so"
+    }
+  }
+}

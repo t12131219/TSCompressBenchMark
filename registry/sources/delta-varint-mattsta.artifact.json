@@ -1,0 +1,34 @@
+{
+  "schema_version": "tscb.source-artifact.v2",
+  "key": "delta-varint-mattsta-81ba89c",
+  "kind": "VENDORED_BENCHMARK_SOURCE_CLOSURE",
+  "identity": {
+    "kind": "VENDORED_BENCHMARK_SOURCE_CLOSURE",
+    "key": "delta-varint-mattsta-81ba89c",
+    "benchmark_repository": "https://github.com/mattsta/varint",
+    "benchmark_commit": "81ba89cd76f079649de49f5726f50f8a1344b21d",
+    "benchmark_path": "src/varintDelta.c",
+    "upstream_reference_repository": "https://github.com/mattsta/varint",
+    "source_closure_sha256": "82984d33ab1901f5c800f8ab9336d68884e0b68e97696c9679bb8f675721619b",
+    "copy_policy": "UNMODIFIED_SELECTED_TRANSLATION_UNIT_CLOSURE",
+    "license_basis": "README_DECLARES_MIT_PUBLIC_DOMAIN_AND_APACHE_2_0"
+  },
+  "license": {
+    "spdx": "Apache-2.0",
+    "status": "RUN_ALLOWED",
+    "redistribution": "ALLOWED_WITH_LICENSE_NOTICE",
+    "files": ["adapters/delta_varint/vendor/varint/README.upstream.md"]
+  },
+  "build": {
+    "recipe": "PYTHONPATH=src conda run -n CompressBench14 python tools/build_codec.py delta-varint --profile all",
+    "patches": [],
+    "submodules": [],
+    "translation_units": [
+      "adapters/delta_varint/native/tscb_delta_varint.c",
+      "adapters/delta_varint/vendor/varint/varintDelta.c",
+      "adapters/delta_varint/vendor/varint/varintExternal.c"
+    ],
+    "release_artifact": "build/adapters/delta_varint/release/libtscb_delta_varint.so",
+    "sanitizer_artifact": "build/adapters/delta_varint/sanitizer/libtscb_delta_varint.so"
+  }
+}

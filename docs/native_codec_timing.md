@@ -1,7 +1,8 @@
 # Optional native codec timing
 
 Native timing is enabled by default for the registered native adapters that expose the
-optional timing ABI, including `serf-qt` and `serf-xor`. Set
+optional timing ABI, including `serf-qt`, `serf-xor`, `neats-lossless-i64` and
+`leats-lossless-i64`. Set
 `native_timing = [false]` in an experiment's `[sweep]` to disable it. See
 `configs/experiments/native-timing-formal-comparison.toml` for a formal example.
 Rebuild the release adapters before using the extension:
@@ -35,6 +36,8 @@ The clock is CLOCK_MONOTONIC. CODEC_API_ONLY_V1 includes:
 | Zstd | Every ZSTD_compressStream2 call, including e_end | Every ZSTD_decompressStream call |
 | Snappy | RawCompress | RawUncompress |
 | Serf-Qt / Serf-XOR | Complete native frame encode, including alignment copy, block calls, record serialization, and checksum | Complete native frame decode after checksum/header prevalidation, including record parsing, block calls, and result copies |
+| zfp fixed-accuracy 1D | Complete native frame encode, including exception classification, per-column allocation, full zfp headers, serial 1D calls, records, and checksum | Per-column raw copy or serial zfp 1D decode after outer checksum/header prevalidation, including record parsing and result writes |
+| NeaTS / LeaTS | Per-column object-local model fit, residual/index construction and complete upstream serialization | Load each serialized column model and reconstruct values after frame checksum/header prevalidation |
 
 Explicit context create/free, parameter setters, bounds, Snappy length/validity
 prechecks, Python FFI, descriptors, input/output copies, allocation, and accounting
@@ -72,3 +75,17 @@ descriptor parsing, the final encoded-output copy, decode checksum/header preval
 context lifecycle, Python layout work, FFI, and the outer Python container remain outside
 that native interval. This boundary is diagnostic and must not be presented as an
 lzbench-equivalent kernel measurement.
+
+zfp uses `NATIVE_ZFP_ACCURACY_1D_FRAME_ENCODE_DECODE_V1`. Its encode interval includes
+the complete registered native object because allocation, special-value classification,
+full per-column zfp headers and raw exception records are part of that object's cost.
+Decode checksum/global-header prevalidation remains outside; column record parsing,
+raw-column copies and zfp calls are inside. The boundary is limited to serial 1D fields
+and must not be presented as upstream native-ND kernel timing.
+
+NeaTS and LeaTS use `NATIVE_OBJECT_FIT_SERIALIZE_AND_LOAD_DECODE_V1`. The encode
+interval includes object-local fitting and every serialized model/index byte; there is
+no separately amortized training phase. Decode checksum/global-header prevalidation is
+outside, while loading the serialized per-column object and reconstruction are inside.
+The admitted build is scalar and single-threaded, so these measurements must not be
+presented as upstream AVX or benchmark-program timings.

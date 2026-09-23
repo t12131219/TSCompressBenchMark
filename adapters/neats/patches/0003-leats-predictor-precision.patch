@@ -1,0 +1,9 @@
+Upstream: and-gue/NeaTS@2d804ff492e45222e841dc1a50904476fa64f4a0
+
+LeaTS wrote residuals with an int-times-float expression while its scalar decoder
+evaluates the same linear model after converting the local x coordinate to double.
+On long segments this can move ceil() across an integer boundary and produce a
+one-unit loss in an otherwise lossless stream.
+
+The adapter makes the residual writer use the decoder's double evaluation domain.
+Partitioning, coefficients, residual widths and serialized layout remain unchanged.

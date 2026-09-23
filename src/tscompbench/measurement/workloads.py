@@ -89,14 +89,33 @@ def execute_query_workload(
             elapsed = time.perf_counter_ns() - start
             if not isinstance(result, QueryResult):
                 raise TypeError("session.query must return QueryResult")
-            expected = tuple(value_buffers[index] for index in request.channel_indices)
+            matrix_buffer = (
+                value_buffers[0]
+                if len(value_buffers) == 1
+                and np.asarray(value_buffers[0].array).ndim == 2
+                and np.asarray(value_buffers[0].array).shape[1] == routed.m
+                else None
+            )
+            expected = (
+                tuple(
+                    (matrix_buffer.name, matrix_buffer.array[:, index])
+                    for index in request.channel_indices
+                )
+                if matrix_buffer is not None
+                else tuple(
+                    (value_buffers[index].name, value_buffers[index].array)
+                    for index in request.channel_indices
+                )
+            )
             if len(result.buffers) != len(expected):
                 raise ValueError("query returned the wrong projection width")
-            for wanted, observed in zip(expected, result.buffers, strict=True):
-                expected_array = wanted.array[request.start : request.start + request.length]
+            for (wanted_name, wanted_array), observed in zip(
+                expected, result.buffers, strict=True
+            ):
+                expected_array = wanted_array[request.start : request.start + request.length]
                 observed_array = np.asarray(observed.array)
                 if (
-                    observed.name != wanted.name
+                    observed.name != wanted_name
                     or observed_array.shape != expected_array.shape
                     or observed_array.dtype != expected_array.dtype
                     or observed_array.tobytes(order="C") != expected_array.tobytes(order="C")

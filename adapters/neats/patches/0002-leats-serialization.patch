@@ -1,0 +1,11 @@
+Upstream: and-gue/NeaTS@2d804ff492e45222e841dc1a50904476fa64f4a0
+
+LeaTS declares a complete in-memory codec but its serialize/load block is commented
+and was copied from NeaTS with fields that LeaTS does not own. This patch enables the
+block after removing those invalid NeaTS-only fields. It serializes every LeaTS field
+needed by scalar full decode and operator[]: max_bpc, logical length, residual bit
+count, both Elias-Fano structures, packed residuals, bits-per-correction, and the two
+linear coefficients arrays.
+
+The patch also selects the scalar tail loop in residual construction. This avoids an
+unsupported GCC 11 experimental-simd conversion without changing the stored values.

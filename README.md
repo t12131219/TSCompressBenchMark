@@ -91,6 +91,8 @@ conda run -n CompressBench14 python tools/build_codec.py bzip2-stream --profile 
 conda run -n CompressBench14 python adapters/bzip2_stream/tests/run_native_tests.py
 conda run -n CompressBench14 python tools/build_codec.py xz-stream --profile all
 conda run -n CompressBench14 python adapters/xz_stream/tests/run_native_tests.py
+conda run -n CompressBench14 python tools/build_codec.py zfp-accuracy-1d --profile all
+conda run -n CompressBench14 python adapters/zfp/tests/run_native_tests.py
 conda run -n CompressBench14 python tools/build_codec.py lzss-raw --profile all
 conda run -n CompressBench14 python tools/qualify_lzss.py
 conda run -n CompressBench14 python tools/build_codec.py lzss-dipperstein-c --profile all
@@ -115,6 +117,8 @@ PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
   configs/experiments/bzip2-stream-qualification.toml --output-root runs
 PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
   configs/experiments/xz-stream-qualification.toml --output-root runs
+PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
+  configs/experiments/zfp-accuracy-1d-qualification.toml --output-root runs
 
 ALP and ALP-RD use the audited `cwida/ALP` C++ source closure as two forced, non-overlapping
 schemes:
@@ -146,6 +150,24 @@ PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
   configs/experiments/serf-qualification.toml --output-root runs
 PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
   configs/experiments/serf-formal.toml --output-root runs
+```
+
+NeaTS and LeaTS use the audited `and-gue/NeaTS` C++ source at one pinned commit but
+remain separate AlgorithmIDs for nonlinear and linear piecewise models. The admitted
+path is lossless signed int8/int16/int32/int64 VALUE UTS or synchronous MTS, scalar,
+single-threaded and column-independent. Model fitting happens inside every compression;
+there is no external checkpoint or training split, and all serialized model/index bytes
+are charged. See the [NeaTS/LeaTS admission review](docs/neats_leats_admission_review.md)
+and [five-layer self-check](docs/neats_leats_self_check.md).
+
+```bash
+conda run -n CompressBench14 python tools/build_codec.py neats-lossless-i64 --profile all
+conda run -n CompressBench14 python tools/build_codec.py leats-lossless-i64 --profile all
+conda run -n CompressBench14 python adapters/neats/tests/run_native_tests.py
+PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
+  configs/experiments/neats-leats-qualification.toml --output-root runs
+PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
+  configs/experiments/neats-leats-formal.toml --output-root runs
 ```
 
 # A FORMAL run uses >=3 warmups, >=0.5 s warmup time, 10 raw repetitions,
@@ -195,7 +217,7 @@ PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
 
 Native codec API timings are enabled by default for LZ4, Zstd, Snappy, Brotli, DEFLATE,
 bzip2, XZ, LZSS, LZSSE8, Huff0, FSE, Sprintz-Delta, Sprintz-FIRE, SprintzFIRE+Huf,
-ALP, ALP-RD, Serf-Qt and Serf-XOR (including the historical restricted u8 Sprintz
+ALP, ALP-RD, Serf-Qt, Serf-XOR, NeaTS and LeaTS (including the historical restricted u8 Sprintz
 registrations).
 Disable them with `native_timing = [false]` in `[sweep]`. They supplement CORE and
 PIPELINE rather than replacing the selected timing scope. See

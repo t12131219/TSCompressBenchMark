@@ -753,6 +753,89 @@ def _serf_command(output: Path, profile: str, algorithm: str) -> list[str]:
     ]
 
 
+def _zfp_command(output: Path, profile: str) -> list[str]:
+    adapter = PROJECT_ROOT / "adapters" / "zfp"
+    vendor = adapter / "vendor" / "zfp"
+    flags = ["-std=c11", "-fPIC", "-Wall", "-Wextra"]
+    if profile == "release":
+        flags += ["-O3", "-DNDEBUG"]
+    elif profile == "sanitizer":
+        flags += [
+            "-O1", "-g", "-fno-omit-frame-pointer", "-fsanitize=address,undefined",
+        ]
+    else:
+        raise ValueError(f"unknown build profile: {profile}")
+    source_names = (
+        "zfp.c", "bitstream.c",
+        "encode1f.c", "encode1d.c", "encode1i.c", "encode1l.c",
+        "decode1f.c", "decode1d.c", "decode1i.c", "decode1l.c",
+        "encode2f.c", "encode2d.c", "encode2i.c", "encode2l.c",
+        "decode2f.c", "decode2d.c", "decode2i.c", "decode2l.c",
+        "encode3f.c", "encode3d.c", "encode3i.c", "encode3l.c",
+        "decode3f.c", "decode3d.c", "decode3i.c", "decode3l.c",
+        "encode4f.c", "encode4d.c", "encode4i.c", "encode4l.c",
+        "decode4f.c", "decode4d.c", "decode4i.c", "decode4l.c",
+    )
+    return [
+        os.environ.get("CC", "cc"), *flags, "-shared", "-Wl,--no-undefined",
+        "-I", str(PROJECT_ROOT / "native/include"),
+        "-I", str(vendor / "include"), "-I", str(vendor / "src"),
+        str(adapter / "native/tscb_zfp.c"),
+        *(str(vendor / "src" / name) for name in source_names),
+        "-lm", "-o", str(output),
+    ]
+
+
+def _neats_command(output: Path, profile: str, algorithm: str) -> list[str]:
+    adapter = PROJECT_ROOT / "adapters" / "neats"
+    vendor = adapter / "vendor" / "neats"
+    flags = [
+        "-std=gnu++20", "-fPIC", "-Wall", "-Wextra", "-Wpedantic",
+        "-Wno-comment", "-Wno-unknown-pragmas", "-fno-tree-vectorize",
+        "-fno-tree-slp-vectorize",
+    ]
+    if profile == "release":
+        flags += ["-O3", "-DNDEBUG"]
+    elif profile == "sanitizer":
+        flags += [
+            "-O1", "-g", "-fno-omit-frame-pointer", "-fsanitize=address,undefined",
+        ]
+    else:
+        raise ValueError(f"unknown build profile: {profile}")
+    return [
+        os.environ.get("CXX", "c++"), *flags, "-shared", "-Wl,--no-undefined",
+        f"-DTSCB_NEATS={int(algorithm == 'neats-lossless-i64')}",
+        "-I", str(PROJECT_ROOT / "native/include"),
+        "-I", str(vendor / "include"),
+        "-I", str(vendor / "lib/sdsl-lite/include"),
+        "-I", str(vendor / "lib/sux"),
+        str(adapter / "native/tscb_neats.cc"),
+        "-o", str(output),
+    ]
+
+
+def _delta_varint_command(output: Path, profile: str) -> list[str]:
+    adapter = PROJECT_ROOT / "adapters" / "delta_varint"
+    vendor = adapter / "vendor" / "varint"
+    flags = ["-std=c11", "-fPIC", "-Wall", "-Wextra", "-Werror",
+             "-Wno-unused-parameter", "-Wno-stringop-overread",
+             "-Wno-stringop-overflow", "-Wl,-Bsymbolic-functions"]
+    if profile == "release":
+        flags += ["-O3", "-DNDEBUG"]
+    elif profile == "sanitizer":
+        flags += ["-O1", "-g", "-fno-omit-frame-pointer",
+                  "-fsanitize=address,undefined"]
+    else:
+        raise ValueError(f"unknown build profile: {profile}")
+    return [
+        os.environ.get("CC", "cc"), *flags, "-shared",
+        "-I", str(PROJECT_ROOT / "native/include"), "-I", str(vendor),
+        str(adapter / "native/tscb_delta_varint.c"),
+        str(vendor / "varintDelta.c"), str(vendor / "varintExternal.c"),
+        "-o", str(output),
+    ]
+
+
 def _build(algorithm: str, profile: str) -> dict[str, Any]:
     directory_name = algorithm.replace("-", "_")
     output_dir = PROJECT_ROOT / "build" / "adapters" / directory_name / profile
@@ -760,7 +843,22 @@ def _build(algorithm: str, profile: str) -> dict[str, Any]:
     output = output_dir / f"libtscb_{directory_name}.so"
     dependency_evidence: dict[str, Any] = {}
     dependency_log = ""
-    if algorithm in ("serf-qt", "serf-xor"):
+    if algorithm == "delta-varint":
+        command = _delta_varint_command(output, profile)
+        dependency_evidence = {
+            "upstream_repository": "https://github.com/mattsta/varint",
+            "upstream_commit": "81ba89cd76f079649de49f5726f50f8a1344b21d",
+            "source_closure": [
+                "adapters/delta_varint/vendor/varint/varint.h",
+                "adapters/delta_varint/vendor/varint/varintExternal.h",
+                "adapters/delta_varint/vendor/varint/varintExternal.c",
+                "adapters/delta_varint/vendor/varint/varintDelta.h",
+                "adapters/delta_varint/vendor/varint/varintDelta.c",
+                "adapters/delta_varint/vendor/varint/endianIsLittle.h",
+            ],
+            "variant": "SIGNED_INT64_BASE_PLUS_ZIGZAG_DELTA_EXTERNAL_WIDTH",
+        }
+    elif algorithm in ("serf-qt", "serf-xor"):
         command = _serf_command(output, profile, algorithm)
         dependency_evidence = {
             "upstream_commit": "b38450b56825eabc96be8e25d6880127dc688c95",
@@ -780,6 +878,29 @@ def _build(algorithm: str, profile: str) -> dict[str, Any]:
                     "serf_utils_32.cc", "serf_utils_64.cc",
                 )
             ],
+        }
+    elif algorithm in ("neats-lossless-i64", "leats-lossless-i64"):
+        command = _neats_command(output, profile, algorithm)
+        dependency_evidence = {
+            "upstream_commit": "2d804ff492e45222e841dc1a50904476fa64f4a0",
+            "variant": "NEATS_NONLINEAR" if algorithm.startswith("neats") else "LEATS_LINEAR",
+            "isa": "SCALAR_NO_AUTOVECTORIZATION",
+            "patch_sha256": [
+                _sha256(PROJECT_ROOT / "adapters/neats/patches" / name)
+                for name in (
+                    "0001-gcc11-scalar-compatibility.patch",
+                    "0002-leats-serialization.patch",
+                    "0003-leats-predictor-precision.patch",
+                )
+            ],
+        }
+    elif algorithm == "zfp-accuracy-1d":
+        command = _zfp_command(output, profile)
+        dependency_evidence = {
+            "upstream_commit": "c0c2c40b30d99f1787664b51c593fb6e0d729253",
+            "mode": "FIXED_ACCURACY",
+            "topology": "1D_PER_COLUMN",
+            "backend": "SERIAL_CPU",
         }
     elif algorithm in ("alp", "alp-rd"):
         command = _alp_command(output, profile, algorithm)
@@ -954,7 +1075,8 @@ def main() -> int:
             "lz4-frame", "zstd-frame", "snappy-raw", "lzsse2-raw", "brotli-stream",
             "deflate-zlib", "bzip2-stream", "xz-stream", "lzss-raw",
             "lzss-dipperstein-c", "lzsse8-raw", "alp", "alp-rd",
-            "serf-qt", "serf-xor"
+            "serf-qt", "serf-xor", "zfp-accuracy-1d",
+            "neats-lossless-i64", "leats-lossless-i64", "delta-varint"
         ),
     )
     parser.add_argument("--profile", choices=("release", "sanitizer", "all"), default="release")

@@ -1,0 +1,126 @@
+{
+  "schema_version": "tscb.source-onboarding.v2",
+  "source_artifact_id": "v2:source-artifact:sha256:6d5881b5b75bccc7781c0037a89e78da958cdef81ac14d263e326d6de431193f",
+  "repository": "https://github.com/LLNL/zfp.git",
+  "commit": "c0c2c40b30d99f1787664b51c593fb6e0d729253",
+  "dirty": false,
+  "submodules": [],
+  "implementation_files": [
+    "adapters/zfp/vendor/zfp/src/zfp.c",
+    "adapters/zfp/vendor/zfp/src/bitstream.c",
+    "adapters/zfp/vendor/zfp/src/encode[1-4][fdil].c",
+    "adapters/zfp/vendor/zfp/src/decode[1-4][fdil].c",
+    "adapters/zfp/native/tscb_zfp.c"
+  ],
+  "public_api_files": [
+    "adapters/zfp/vendor/zfp/include/zfp.h",
+    "adapters/zfp/vendor/zfp/include/zfp/bitstream.h",
+    "native/include/tscb_adapter_v1.h"
+  ],
+  "benchmark_files": [
+    "upstream:examples/speed.c",
+    "upstream:tests/testzfp.cpp",
+    "upstream:tests/src/endtoend/serialExecBase.c"
+  ],
+  "test_files": [
+    "adapters/zfp/tests/abi_smoke.c",
+    "adapters/zfp/tests/run_native_tests.py",
+    "tests/adapters/test_zfp.py",
+    "configs/experiments/zfp-accuracy-1d-qualification.toml",
+    "configs/experiments/zfp-accuracy-1d-formal.toml"
+  ],
+  "license_files": ["adapters/zfp/vendor/zfp/LICENSE"],
+  "third_party_dependencies": [],
+  "object_level_candidates": ["P1_STANDALONE_CODEC"],
+  "input_contract": {
+    "kind": "HOMOGENEOUS_FLOAT_VALUE_COLUMNS",
+    "dtypes": ["little-endian float32", "little-endian float64"],
+    "topologies": ["UTS", "SYNCHRONOUS_MTS"],
+    "mode": "FIXED_ACCURACY",
+    "error_bound": "positive finite ABSOLUTE decimal",
+    "dimensionality": "independent 1D field per column",
+    "maximum_elements": 16777216,
+    "maximum_raw_bytes": 134217728,
+    "ownership": "BORROWED_DURING_CALL",
+    "mutation": "FORBIDDEN"
+  },
+  "output_contract": {
+    "kind": "TSCB_DESCRIPTOR_PLUS_CHECKED_ZFP_1D_COLUMN_RECORDS",
+    "self_contained": true,
+    "actual_written_length": true,
+    "capacity_is_not_size": true,
+    "zfp_header": "ZFP_HEADER_FULL per compressed column",
+    "loss_contract": "raw absolute error at most requested bound; framework verifies every finite value",
+    "tolerance_identity": "requested decimal and exact actual power-of-two tolerance both recorded"
+  },
+  "lifecycle_contract": {
+    "output_bound": "upstream zfp_stream_maximum_size per 1D field plus checked project framing and raw-exception maximum",
+    "return_length": "exact finalized native frame length",
+    "error_codes": "stable tscb_status_v1 with strict descriptor, capacity and checksum validation",
+    "finalize": "REQUIRED_ZERO_BYTE_FINALIZE; repeated finalize rejected",
+    "reset": "ABI reset clears object state and native timing while preserving enablement"
+  },
+  "stream_components": {
+    "outer_container": "12-byte unique prefix plus canonical dtype/shape/name/track/mode descriptors",
+    "native_header": "version, dtype width, fixed-accuracy mode, full-header policy, dimensions, requested and actual tolerances",
+    "column_records": "kind, exact logical count, zfp header bit count, stored byte count and payload",
+    "zfp_stream": "independent serial 1D stream with ZFP_HEADER_FULL for every finite regular column",
+    "raw_exception": "whole column stored exactly for NaN, infinity, negative zero or subnormal; all bytes charged",
+    "checksum": "64-bit FNV-1a over the complete native frame before the checksum field",
+    "accounting": "all outer descriptor and native physical bytes charged exactly once; capacities are excluded"
+  },
+  "upstream_tests": [
+    {
+      "profile": "release",
+      "suite": "project native ABI smoke across float32/float64 and 1D tail boundaries",
+      "status": "PASS",
+      "evidence": "conda run -n CompressBench14 python adapters/zfp/tests/run_native_tests.py"
+    },
+    {
+      "profile": "sanitizer",
+      "suite": "same ABI smoke under ASan/UBSan including corruption, canary and bound-minus-one",
+      "status": "PASS",
+      "evidence": "conda run -n CompressBench14 python adapters/zfp/tests/run_native_tests.py"
+    }
+  ],
+  "builds": [
+    {
+      "kind": "release",
+      "profile": "release",
+      "artifact_sha256": "7b1897b84e9b5f6ad261134a7dd5dccba5e398893ddbd5320b216ddcef898a61",
+      "compile_commands_sha256": "2f7fbeb259b0df3ffdabfe1d5a090b2caa80291619651f29fdd3a8ccdb532471",
+      "compiler": "cc (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0"
+    },
+    {
+      "kind": "sanitizer",
+      "profile": "sanitizer",
+      "artifact_sha256": "9755081926d7702855ccab550981c3e78f8a35c62d9c60d40c4cf323b45038c2",
+      "compile_commands_sha256": "64f5ce3cf2742d6cd83d099c87a089012daea5d826cc41a7023fd73e0261e2e4",
+      "compiler": "cc (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0"
+    }
+  ],
+  "license_decision": {
+    "spdx": "BSD-3-Clause",
+    "status": "RUN_ALLOWED",
+    "redistribution": "ALLOWED_WITH_NOTICE"
+  },
+  "known_limitations": [
+    "Only serial CPU fixed-accuracy float32/float64 execution is admitted.",
+    "Each UTS/MTS channel is an independent 1D zfp field; this result does not represent zfp native 2D/3D/4D scientific-array throughput.",
+    "Fixed-rate, fixed-precision and reversible modes require separate AlgorithmIDs and are not accepted by this adapter.",
+    "OpenMP, CUDA, strided fields, validity masks, query and streaming protocols are not registered.",
+    "Columns containing NaN, infinity, negative zero or subnormal values use fully charged raw exception records; this policy is part of the algorithm identity.",
+    "The benchmark validates the requested raw absolute error bound independently even though zfp rounds the requested tolerance down to an actual power of two."
+  ],
+  "unsupported_reason_codes": [
+    "EXECUTION_ARTIFACT_MISSING",
+    "VALIDITY_SHAPE_UNSUPPORTED",
+    "INPUT_EXCEEDS_REGISTERED_LIMIT",
+    "QUERY_UNSUPPORTED",
+    "STREAMING_PROTOCOL_NOT_REGISTERED",
+    "ZFP_MODE_NOT_REGISTERED",
+    "ZFP_NATIVE_ND_NOT_REGISTERED",
+    "MULTI_THREAD_UNSUPPORTED",
+    "DEVICE_UNSUPPORTED"
+  ]
+}
