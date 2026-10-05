@@ -90,7 +90,7 @@ coverage, statistics, and report generation are closed.
 
 This qualification applies only to the scalar, single-thread, no-dictionary frame
 variant. lzbench's table uses `ZSTD_compress2`, while this adapter uses the same vendored
-implementation's streaming API to satisfy the plan's explicit Finalize contract. The
-wrapper currently issues one update per independent object and does not claim a common
-continuous-stream protocol. LeakSanitizer could not run under the host ptrace policy;
+implementation's streaming API. The separately keyed profile retains one persistent
+encoder/decoder context across caller-paced blocks and does not claim zstdmt, dictionaries,
+or a shared cross-object stream. LeakSanitizer could not run under the host ptrace policy;
 ASan/UBSan ran with leak detection disabled and that limitation remains recorded.

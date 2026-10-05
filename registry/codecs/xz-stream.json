@@ -53,19 +53,20 @@
     "backends": ["C_ABI_V1"], "isa": ["SCALAR"], "devices": ["CPU"],
     "threading": "SINGLE_THREAD", "fallback_policy": "DISALLOWED", "runtime_dispatch": false
   },
-  "features": {"streaming": false, "query": false, "random_access": false},
+  "features": {"streaming": true, "query": false, "random_access": false},
   "parameters": {
     "type": "object", "additionalProperties": false,
     "properties": {
       "native_timing": {"type": "boolean", "default": true},
       "block_size": {"type": "integer", "minimum": 1, "maximum": 1048576, "default": 65536},
+      "stream_decode_chunk_bytes": {"type": "integer", "minimum": 1, "maximum": 1048576, "default": 16384},
       "compression_level": {"type": "integer", "minimum": 0, "maximum": 9, "default": 6},
       "isa": {"type": "string", "enum": ["SCALAR"], "default": "SCALAR"}
     },
     "constraints": []
   },
   "adapter": {
-    "backend": "C_ABI_V1", "version": "xz-stream-ctypes-v1", "factory": "XZ_STREAM_CTYPES_V1",
+    "backend": "C_ABI_V1", "version": "xz-stream-ctypes-v2-streaming", "factory": "XZ_STREAM_CTYPES_V1",
     "artifact_path": "build/adapters/xz_stream/release/libtscb_xz_stream.so",
     "timing_boundary": "PYTHON_FFI_CONTAINER_INCLUDED",
     "native_timing_capability": {

@@ -1,8 +1,8 @@
 schema_version = "2.0"
 datasets = ["national_illness"]
-algorithms = ["brotli-stream"]
+algorithms = ["lz4-frame"]
 tracks = ["VALUE"]
-seed = 20260917
+seed = 20260923
 
 [data_preparation]
 characterization_mode = "exact"
@@ -44,8 +44,12 @@ tie_method = "DENSE_EXACT"
 coverage_policy = "PUBLISH_SEPARATELY_NO_SCORE"
 
 [sweep]
+native_timing = [true]
 block_size = [128]
 stream_decode_chunk_bytes = [4096]
-compression_level = [5]
-window_bits = [22]
+compression_level = [0]
+block_size_id = [4]
+block_mode = ["INDEPENDENT"]
+content_checksum = [true]
+block_checksum = [false]
 isa = ["SCALAR"]

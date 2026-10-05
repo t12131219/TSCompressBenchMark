@@ -173,12 +173,15 @@ def execute_streaming_workload(
     create = getattr(adapter, "create_stream_session", None)
     if not callable(create):
         raise TypeError("streaming-capable manifest requires create_stream_session")
+    create_started = time.perf_counter_ns()
     session = create(parameters)
+    reset_overhead_ns = time.perf_counter_ns() - create_started
+    start = getattr(session, "stream_start", None)
     push = getattr(session, "stream_push", None)
     finalize = getattr(session, "stream_finalize", None)
     decompress = getattr(session, "stream_decompress", None)
     accounting = getattr(session, "stream_accounting", None)
-    if not all(callable(item) for item in (push, finalize, decompress, accounting)):
+    if not all(callable(item) for item in (start, push, finalize, decompress, accounting)):
         session.close()
         raise TypeError("streaming session is missing a required lifecycle method")
     from tscompbench.contracts import RunStatus
@@ -193,6 +196,7 @@ def execute_streaming_workload(
     first_output_latency: int | None = None
     stream_start = time.perf_counter_ns()
     try:
+        start(routed)
         for offset in range(0, routed.n, block_size):
             stop = min(routed.n, offset + block_size)
             buffers = tuple(
@@ -247,6 +251,15 @@ def execute_streaming_workload(
         if not isinstance(tail, bytes):
             raise TypeError("stream_finalize must return bytes")
         encoded_parts.append(tail)
+        if tail and first_output_latency is None:
+            first_output_latency = time.perf_counter_ns() - stream_start
+        limits = getattr(session, "stream_limits", None)
+        if callable(limits):
+            limit_document = limits()
+            if not isinstance(limit_document, dict):
+                raise TypeError("stream_limits must return a mapping")
+            state_peak = max(state_peak, int(limit_document.get("state_bytes", 0)))
+            buffer_peak = max(buffer_peak, int(limit_document.get("buffer_bytes", 0)))
         stream = b"".join(encoded_parts)
         ledger = accounting(stream, routed)
         decoded = decompress(stream)
@@ -283,6 +296,9 @@ def execute_streaming_workload(
         "buffer_bytes": buffer_peak,
         "state_bytes": state_peak,
         "checkpoint_bits": checkpoint_bits,
+        "reset_overhead_ns": reset_overhead_ns,
+        "reset_policy": "NEW_CONTEXT_PER_ROUTED_OBJECT",
+        "finalize_policy": "FINALIZE_ONCE_AFTER_LAST_BLOCK",
         "final_bits": ledger.final_bits,
         "final_physical_bytes": ledger.final_physical_bytes,
         "correctness": "PASS_EXACT_STREAM_RECONSTRUCTION",

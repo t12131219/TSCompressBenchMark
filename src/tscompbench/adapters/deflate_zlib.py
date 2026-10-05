@@ -104,6 +104,7 @@ class _NativeLibrary:
             or manifest.get("stream") != "RFC1950_ZLIB_WITH_RFC1951_DEFLATE"
             or manifest.get("checksum") != "ADLER32"
             or manifest.get("threading") != "SINGLE_THREAD"
+            or manifest.get("streaming") != "PERSISTENT_UPDATE_AND_INFLATE_CONTEXTS"
         ):
             raise ExecutionContractError(
                 "zlib DEFLATE artifact violates the registered execution mode"
@@ -152,6 +153,33 @@ class _NativeLibrary:
             ctypes.POINTER(ctypes.c_uint64),
         ]
         library.tscb_get_last_error.restype = ctypes.c_uint32
+        library.tscb_zlib_stream_update.argtypes = [
+            ctypes.c_void_p,
+            ctypes.POINTER(_Buffer),
+            ctypes.POINTER(_Buffer),
+        ]
+        library.tscb_zlib_stream_update.restype = ctypes.c_uint32
+        library.tscb_zlib_stream_finalize.argtypes = [
+            ctypes.c_void_p,
+            ctypes.POINTER(_Buffer),
+        ]
+        library.tscb_zlib_stream_finalize.restype = ctypes.c_uint32
+        library.tscb_zlib_stream_decoder_reset.argtypes = [ctypes.c_void_p]
+        library.tscb_zlib_stream_decoder_reset.restype = ctypes.c_uint32
+        library.tscb_zlib_stream_decompress_update.argtypes = [
+            ctypes.c_void_p,
+            ctypes.POINTER(_Buffer),
+            ctypes.POINTER(_Buffer),
+            ctypes.POINTER(ctypes.c_uint32),
+        ]
+        library.tscb_zlib_stream_decompress_update.restype = ctypes.c_uint32
+        library.tscb_zlib_stream_decoder_finish.argtypes = [ctypes.c_void_p]
+        library.tscb_zlib_stream_decoder_finish.restype = ctypes.c_uint32
+        library.tscb_zlib_stream_state_bytes.argtypes = [
+            ctypes.c_void_p,
+            ctypes.POINTER(ctypes.c_uint64),
+        ]
+        library.tscb_zlib_stream_state_bytes.restype = ctypes.c_uint32
 
 
 @dataclass(frozen=True)
@@ -169,6 +197,9 @@ class DeflateZlibAdapter:
 
     def create_session(self, parameters: dict[str, Any]) -> DeflateZlibSession:
         return DeflateZlibSession(self.library_path, parameters)
+
+    def create_stream_session(self, parameters: dict[str, Any]) -> DeflateZlibStreamSession:
+        return DeflateZlibStreamSession(self.library_path, parameters)
 
 
 class DeflateZlibSession:
@@ -321,7 +352,22 @@ class DeflateZlibSession:
             raise ExecutionContractError("unsupported zlib DEFLATE container version")
         return header, stream[header_end:]
 
-    def _inspect_zlib_stream(self, stream: bytes, routed: RoutedInput) -> bytes:
+    @staticmethod
+    def _serialized_payload(routed: RoutedInput, header: dict[str, Any]) -> bytes:
+        if header.get("payload_layout") != "BLOCK_MAJOR_BUFFER_ORDER":
+            return b"".join(item.array.tobytes(order="C") for item in routed.buffers)
+        block_size = int(header.get("stream_block_size", 0))
+        if block_size < 1:
+            raise ExecutionContractError("invalid streaming payload block size")
+        return b"".join(
+            item.array[offset : min(routed.n, offset + block_size)].tobytes(order="C")
+            for offset in range(0, routed.n, block_size)
+            for item in routed.buffers
+        )
+
+    def _inspect_zlib_stream(
+        self, stream: bytes, routed: RoutedInput, header: dict[str, Any]
+    ) -> bytes:
         if len(stream) < 6:
             raise ExecutionContractError("truncated RFC 1950 zlib stream")
         cmf, flg = stream[0], stream[1]
@@ -331,7 +377,7 @@ class DeflateZlibSession:
             raise ExecutionContractError("preset-dictionary zlib stream is not registered")
         if cmf >> 4 != self._window_bits - 8:
             raise ExecutionContractError("zlib stream window does not match the registered config")
-        payload = b"".join(item.array.tobytes(order="C") for item in routed.buffers)
+        payload = self._serialized_payload(routed, header)
         expected_adler = zlib.adler32(payload) & 0xFFFFFFFF
         observed_adler = int.from_bytes(stream[-4:], "big")
         if observed_adler != expected_adler:
@@ -346,7 +392,7 @@ class DeflateZlibSession:
             raise ExecutionContractError(
                 "zlib DEFLATE descriptor metadata changed after compression"
             )
-        deflate_payload = self._inspect_zlib_stream(zlib_stream, routed)
+        deflate_payload = self._inspect_zlib_stream(zlib_stream, routed, header)
         components: dict[str, int] = {
             "metadata_bits": len(self._header) * 8,
             "container_bits": (_PREFIX.size + 2) * 8,
@@ -387,7 +433,35 @@ class DeflateZlibSession:
         self._check(status, "decompress")
         if int(output_buffer.used_bytes) != output_bytes:
             raise ExecutionContractError("zlib DEFLATE decoded byte count does not match metadata")
-        payload = memoryview(output_storage)[:output_bytes]
+        return self._decoded_output(header, memoryview(output_storage)[:output_bytes])
+
+    @staticmethod
+    def _decoded_output(header: dict[str, Any], payload: memoryview) -> DecodedOutput:
+        descriptors = header.get("buffers")
+        if not isinstance(descriptors, list):
+            raise ExecutionContractError("zlib DEFLATE container has no buffer descriptors")
+        output_bytes = len(payload)
+        if header.get("payload_layout") == "BLOCK_MAJOR_BUFFER_ORDER":
+            block_size = int(header.get("stream_block_size", 0))
+            total_n = int(descriptors[0]["shape"][0]) if descriptors else 0
+            if block_size < 1 or any(int(item["shape"][0]) != total_n for item in descriptors):
+                raise ExecutionContractError("invalid streaming block-layout descriptor")
+            separated = [bytearray() for _ in descriptors]
+            payload_cursor = 0
+            for offset in range(0, total_n, block_size):
+                rows = min(block_size, total_n - offset)
+                for index, descriptor in enumerate(descriptors):
+                    dtype = np.dtype(str(descriptor["dtype"]))
+                    shape = tuple(int(value) for value in descriptor["shape"])
+                    row_width = int(np.prod(shape[1:], dtype=np.int64)) if len(shape) > 1 else 1
+                    length = rows * row_width * dtype.itemsize
+                    if payload_cursor + length > output_bytes:
+                        raise ExecutionContractError("truncated streaming block-layout payload")
+                    separated[index].extend(payload[payload_cursor : payload_cursor + length])
+                    payload_cursor += length
+            if payload_cursor != output_bytes:
+                raise ExecutionContractError("streaming block-layout payload has trailing bytes")
+            payload = memoryview(bytearray().join(separated))
         cursor = 0
         decoded: list[LogicalBuffer] = []
         for descriptor in descriptors:
@@ -420,3 +494,189 @@ class DeflateZlibSession:
                 raise ExecutionContractError(
                     f"native zlib DEFLATE adapter destroy failed ({status})"
                 )
+
+
+class DeflateZlibStreamSession(DeflateZlibSession):
+    """One persistent zlib encoder and decoder context for a routed object."""
+
+    def __init__(self, library_path: Path, parameters: dict[str, Any]):
+        super().__init__(library_path, parameters)
+        self._routed: RoutedInput | None = None
+        self._consumed_n = 0
+        self._consumed_payload_bytes = 0
+        self._preamble_emitted = False
+        self._decode_chunk_bytes = int(parameters.get("stream_decode_chunk_bytes", 16384))
+        self._block_size = int(parameters.get("block_size", 65536))
+        if self._decode_chunk_bytes < 1 or self._block_size < 1:
+            self.close()
+            raise ExecutionContractError("streaming block sizes must be positive")
+
+    def stream_start(self, routed: RoutedInput) -> None:
+        if self._routed is not None:
+            raise ExecutionContractError("stream_start may be called once per stream session")
+        self._routed = routed
+        header = json.loads(self._descriptor_header(routed))
+        header["payload_layout"] = "BLOCK_MAJOR_BUFFER_ORDER"
+        header["stream_block_size"] = self._block_size
+        self._header = canonical_json_bytes(header)
+
+    def _require_started(self) -> RoutedInput:
+        if self._routed is None:
+            raise ExecutionContractError("stream_start must precede stream updates")
+        return self._routed
+
+    def _validate_chunk(self, chunk: RoutedInput) -> None:
+        routed = self._require_started()
+        if self._finalized:
+            raise ExecutionContractError("stream update after finalize is forbidden")
+        if chunk.track is not routed.track or len(chunk.buffers) != len(routed.buffers):
+            raise ExecutionContractError("stream chunk routing does not match the started object")
+        if chunk.n < 0 or self._consumed_n + chunk.n > routed.n:
+            raise ExecutionContractError("stream chunk exceeds the declared routed length")
+        expected_rows = min(self._block_size, routed.n - self._consumed_n)
+        if chunk.n != expected_rows:
+            raise ExecutionContractError("stream chunk length does not match configured block size")
+        for expected, observed in zip(routed.buffers, chunk.buffers, strict=True):
+            expected_array = np.asarray(expected.array)
+            observed_array = np.asarray(observed.array)
+            if (
+                observed.name != expected.name
+                or observed_array.dtype != expected_array.dtype
+                or observed_array.ndim != expected_array.ndim
+                or observed_array.shape[1:] != expected_array.shape[1:]
+                or (observed_array.ndim > 0 and observed_array.shape[0] != chunk.n)
+                or observed.logical_bits != observed_array.nbytes * 8
+            ):
+                raise ExecutionContractError(
+                    "stream chunk buffer schema does not match the started object"
+                )
+
+    @staticmethod
+    def _storage_buffer(data: bytes | bytearray) -> tuple[bytearray, Any, _Buffer]:
+        storage = bytearray(data) if data else bytearray(1)
+        array = (ctypes.c_ubyte * len(storage)).from_buffer(storage)
+        return storage, array, _buffer(
+            ctypes.addressof(array), capacity=len(data), used=len(data)
+        )
+
+    def _stream_state_bytes(self) -> int:
+        state = ctypes.c_uint64()
+        status = int(
+            self._native.library.tscb_zlib_stream_state_bytes(
+                self._handle, ctypes.byref(state)
+            )
+        )
+        self._check(status, "stream_state_bytes")
+        return int(state.value)
+
+    def stream_push(self, chunk: RoutedInput) -> Any:
+        from tscompbench.measurement.workloads import StreamPushResult
+
+        self._validate_chunk(chunk)
+        payload = b"".join(item.array.tobytes(order="C") for item in chunk.buffers)
+        input_storage, input_array, input_buffer = self._storage_buffer(payload)
+        del input_storage
+        bound = self._native_bound(self._consumed_payload_bytes + len(payload))
+        output_storage = bytearray(max(1, bound))
+        output_array = (ctypes.c_ubyte * len(output_storage)).from_buffer(output_storage)
+        output_buffer = _buffer(ctypes.addressof(output_array), capacity=bound, used=0)
+        status = int(
+            self._native.library.tscb_zlib_stream_update(
+                self._handle, ctypes.byref(input_buffer), ctypes.byref(output_buffer)
+            )
+        )
+        self._check(status, "stream_update")
+        self._updated = True
+        self._consumed_n += chunk.n
+        self._consumed_payload_bytes += len(payload)
+        prefix = b""
+        if not self._preamble_emitted:
+            prefix = _PREFIX.pack(_MAGIC, len(self._header)) + self._header
+            self._preamble_emitted = True
+        emitted = prefix + bytes(output_storage[: int(output_buffer.used_bytes)])
+        return StreamPushResult(
+            emitted=emitted,
+            state_bytes=self._stream_state_bytes(),
+            buffer_bytes=0,
+            checkpoint_bits=0,
+        )
+
+    def stream_finalize(self) -> bytes:
+        routed = self._require_started()
+        if self._finalized:
+            raise ExecutionContractError("repeated stream finalize is forbidden")
+        if self._consumed_n != routed.n:
+            raise ExecutionContractError("stream finalized before all declared rows were pushed")
+        bound = self._native_bound(self._consumed_payload_bytes)
+        output_storage = bytearray(max(1, bound))
+        output_array = (ctypes.c_ubyte * len(output_storage)).from_buffer(output_storage)
+        output_buffer = _buffer(ctypes.addressof(output_array), capacity=bound, used=0)
+        status = int(
+            self._native.library.tscb_zlib_stream_finalize(
+                self._handle, ctypes.byref(output_buffer)
+            )
+        )
+        self._check(status, "stream_finalize")
+        self._finalized = True
+        prefix = b""
+        if not self._preamble_emitted:
+            prefix = _PREFIX.pack(_MAGIC, len(self._header)) + self._header
+            self._preamble_emitted = True
+        return prefix + bytes(output_storage[: int(output_buffer.used_bytes)])
+
+    def stream_accounting(self, stream: bytes, routed: RoutedInput) -> AccountingLedger:
+        if routed is not self._require_started():
+            raise ExecutionContractError("stream accounting used a different routed object")
+        return self.accounting(stream, routed)
+
+    def stream_limits(self) -> dict[str, int]:
+        self._require_started()
+        return {
+            "state_bytes": self._stream_state_bytes(),
+            "buffer_bytes": 0,
+        }
+
+    def stream_decompress(self, stream: bytes) -> DecodedOutput:
+        header, frame = self._parse_container(stream)
+        descriptors = header.get("buffers")
+        if not isinstance(descriptors, list):
+            raise ExecutionContractError("zlib DEFLATE container has no buffer descriptors")
+        output_bytes = sum(int(item["payload_bytes"]) for item in descriptors)
+        status = int(self._native.library.tscb_zlib_stream_decoder_reset(self._handle))
+        self._check(status, "stream_decoder_reset")
+        output_storage = bytearray(max(1, output_bytes))
+        output_cursor = 0
+        stream_ended = False
+        for offset in range(0, len(frame), self._decode_chunk_bytes):
+            compressed = frame[offset : offset + self._decode_chunk_bytes]
+            input_storage, input_array, input_buffer = self._storage_buffer(compressed)
+            del input_storage
+            remaining = output_bytes - output_cursor
+            output_view = (
+                output_storage
+                if remaining == 0
+                else memoryview(output_storage)[output_cursor:]
+            )
+            output_array = (ctypes.c_ubyte * max(1, remaining)).from_buffer(output_view)
+            output_buffer = _buffer(
+                ctypes.addressof(output_array), capacity=remaining, used=0
+            )
+            ended = ctypes.c_uint32()
+            status = int(
+                self._native.library.tscb_zlib_stream_decompress_update(
+                    self._handle,
+                    ctypes.byref(input_buffer),
+                    ctypes.byref(output_buffer),
+                    ctypes.byref(ended),
+                )
+            )
+            self._check(status, "stream_decompress_update")
+            output_cursor += int(output_buffer.used_bytes)
+            stream_ended = bool(ended.value)
+            if stream_ended and offset + len(compressed) != len(frame):
+                raise ExecutionContractError("zlib stream has trailing compressed bytes")
+        status = int(self._native.library.tscb_zlib_stream_decoder_finish(self._handle))
+        self._check(status, "stream_decoder_finish")
+        if not stream_ended or output_cursor != output_bytes:
+            raise ExecutionContractError("zlib streaming decode length is not exact")
+        return self._decoded_output(header, memoryview(output_storage)[:output_bytes])

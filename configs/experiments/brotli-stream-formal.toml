@@ -31,7 +31,7 @@ min_repetition_seconds = "1"
 max_inner_iterations = 1000000
 iteration_semantics = "INDEPENDENT_OBJECT"
 query_workload = false
-streaming_workload = false
+streaming_workload = true
 query_count = 1
 timeout_seconds = 30
 memory_limit_bytes = 1073741824
@@ -45,7 +45,8 @@ coverage_policy = "PUBLISH_SEPARATELY_NO_SCORE"
 
 [sweep]
 native_timing = [true]
-block_size = [65536]
+block_size = [128]
+stream_decode_chunk_bytes = [4096]
 compression_level = [5]
 window_bits = [22]
 isa = ["SCALAR"]

@@ -364,6 +364,40 @@ The supplied qualification/formal configs fix CPU0 on this host; this affinity i
 machine-specific and must be reviewed on another host. Formal evidence must follow
 the completed regression/sanitizer sessions and satisfy every raw repetition gate.
 
+## D032 DEFLATE exposes a separately keyed native streaming profile
+
+zlib's native `deflate()`/`inflate()` state is now exposed through an adapter-specific
+stream protocol. The profile keeps one encoder and decoder context across caller-paced
+blocks, uses `Z_NO_FLUSH` per update and `Z_FINISH` exactly once, and rejects truncation,
+trailing bytes, repeated finalize and mixed one-shot/stream modes. The outer TSCB
+descriptor records `BLOCK_MAJOR_BUFFER_ORDER` and the configured block size, so a
+heterogeneous matrix is serialized deterministically without pretending that repeated
+one-shot calls are streaming.
+
+Streaming is an optional workload with its own semantic/execution comparison keys,
+including block size, decode chunk size, reset/finalize and backpressure policy. Main
+repetition timing remains the independent-object one-shot path. No checkpoint
+serialization, dictionary, raw/gzip mode, SIMD or multithread capability is inferred.
+Qualification uses 128-row blocks and formal evidence has 10/10 eligible repetitions,
+eight blocks each, exact FinalBits and state/buffer telemetry.
+
+## D033 Five additional codecs expose native streaming profiles
+
+LZ4 Frame, Zstandard Frame, Brotli, bzip2 and xz now use their upstream incremental
+APIs through the same persistent-context protocol. LZ4 uses `LZ4F_compressUpdate` /
+`LZ4F_compressEnd` and `LZ4F_decompress`; Zstandard uses `ZSTD_compressStream2` /
+`ZSTD_decompressStream`; Brotli uses encoder/decoder stream APIs; bzip2 uses
+`BZ2_bzCompress` / `BZ2_bzDecompress`; xz uses `lzma_easy_encoder` / `lzma_code` and
+`lzma_stream_decoder`. Empty streams, output backpressure, truncation and trailing bytes
+are handled explicitly, including the bzip2 stream-end input check and LZ4 empty-frame
+header initialization.
+
+Streaming remains a separately keyed workload/profile, not a new AlgorithmID. All five
+profiles are scalar CPU, single-thread, no external dictionary, and no SIMD/MT claim.
+The shared lifecycle records block-major ordering, native state bytes, zero buffer and
+checkpoint accounting, and exact descriptor reconstruction. Qualification and formal
+RunSets are recorded in `docs/native_streaming_profiles_self_check.md`.
+
 ## D030 Michael Dipperstein C LZSS is independent, not a Rust replacement
 
 The user explicitly requested Michael Dipperstein's C implementation as

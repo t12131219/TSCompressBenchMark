@@ -12,12 +12,16 @@
 struct tscb_codec_handle_v1 {
     bz_stream encoder;
     int encoder_initialized;
+    bz_stream stream_decoder;
+    int stream_decoder_initialized;
+    int stream_decoder_finished;
     int compression_level;
     uint64_t input_bytes;
     uint64_t stream_bytes;
     uint64_t finalize_calls;
     int update_called;
     int finalized;
+    int stream_mode;
     tscb_native_timer native_timer;
     char last_error[256];
     char accounting_json[256];
@@ -104,7 +108,8 @@ tscb_status_v1 tscb_create(const char *config_json, uint64_t config_length,
 
 tscb_status_v1 tscb_destroy(tscb_codec_handle_v1 *handle) {
     if (handle != NULL) {
-        if (handle->encoder_initialized) (void)BZ2_bzCompressEnd(&handle->encoder);
+    if (handle->encoder_initialized) (void)BZ2_bzCompressEnd(&handle->encoder);
+    if (handle->stream_decoder_initialized) (void)BZ2_bzDecompressEnd(&handle->stream_decoder);
         free(handle);
     }
     return TSCB_STATUS_OK_V1;
@@ -117,6 +122,12 @@ tscb_status_v1 tscb_reset(tscb_codec_handle_v1 *handle, uint32_t reset_mode) {
     enabled = handle->native_timer.enabled;
     handle->input_bytes = handle->stream_bytes = handle->finalize_calls = 0U;
     handle->update_called = handle->finalized = 0;
+    handle->stream_mode = 0;
+    handle->stream_decoder_finished = 0;
+    if (handle->stream_decoder_initialized) {
+        (void)BZ2_bzDecompressEnd(&handle->stream_decoder);
+        handle->stream_decoder_initialized = 0;
+    }
     handle->last_error[0] = '\0';
     handle->native_timer.enabled = enabled;
     handle->native_timer.available = 1;
@@ -164,6 +175,7 @@ tscb_status_v1 tscb_compress(tscb_codec_handle_v1 *handle,
         set_error(handle, "compress update may be called once per bzip2 stream");
         return TSCB_STATUS_CODEC_ERROR_V1;
     }
+    handle->stream_mode = 1;
     handle->encoder.next_in = input->used_bytes == 0U ? &dummy : (char *)input->data;
     handle->encoder.avail_in = (unsigned int)input->used_bytes;
     handle->encoder.next_out = (char *)output->data;
@@ -288,6 +300,134 @@ tscb_status_v1 tscb_decompress(tscb_codec_handle_v1 *handle,
     }
     output->used_bytes = (uint64_t)decoder.total_out_lo32;
     (void)BZ2_bzDecompressEnd(&decoder);
+    return TSCB_STATUS_OK_V1;
+}
+
+tscb_status_v1 tscb_stream_update(tscb_codec_handle_v1 *handle,
+    const tscb_buffer_v1 *input, tscb_buffer_v1 *output) {
+    int result;
+    char dummy = 0;
+    unsigned int before;
+    if (handle == NULL || !valid_buffer(input) || output == NULL || output->data == NULL
+        || output->used_bytes > output->capacity_bytes
+        || input->used_bytes > (uint64_t)UINT_MAX || output->capacity_bytes > (uint64_t)UINT_MAX) {
+        return TSCB_STATUS_INVALID_ARGUMENT_V1;
+    }
+    if (handle->finalized || handle->stream_mode == 1) {
+        set_error(handle, "bzip2 stream update mixed with one-shot or finalize");
+        return TSCB_STATUS_CODEC_ERROR_V1;
+    }
+    handle->stream_mode = 2;
+    handle->encoder.next_in = input->used_bytes == 0U ? &dummy : (char *)input->data;
+    handle->encoder.avail_in = (unsigned int)input->used_bytes;
+    handle->encoder.next_out = (char *)output->data;
+    handle->encoder.avail_out = (unsigned int)output->capacity_bytes;
+    before = handle->encoder.total_out_lo32;
+    TSCB_TIME_CODEC(handle->native_timer, encode_ns,
+        result = BZ2_bzCompress(&handle->encoder, BZ_RUN));
+    if (result != BZ_RUN_OK) {
+        set_error(handle, "bzip2 streaming BZ_RUN failed");
+        return handle->encoder.avail_out == 0U ? TSCB_STATUS_DST_TOO_SMALL_V1 : TSCB_STATUS_CODEC_ERROR_V1;
+    }
+    if (handle->encoder.avail_in != 0U) return TSCB_STATUS_DST_TOO_SMALL_V1;
+    output->used_bytes = (uint64_t)(handle->encoder.total_out_lo32 - before);
+    handle->input_bytes += input->used_bytes;
+    handle->stream_bytes += output->used_bytes;
+    handle->update_called = 1;
+    return TSCB_STATUS_OK_V1;
+}
+
+tscb_status_v1 tscb_stream_finalize(tscb_codec_handle_v1 *handle, tscb_buffer_v1 *output) {
+    int result;
+    unsigned int before;
+    if (handle == NULL || output == NULL || output->data == NULL
+        || output->used_bytes > output->capacity_bytes
+        || output->capacity_bytes > (uint64_t)UINT_MAX) return TSCB_STATUS_INVALID_ARGUMENT_V1;
+    if (handle->finalized || handle->stream_mode == 1) {
+        set_error(handle, "bzip2 stream finalize repeated or mixed with one-shot");
+        return TSCB_STATUS_CODEC_ERROR_V1;
+    }
+    handle->stream_mode = 2;
+    handle->encoder.next_in = NULL; handle->encoder.avail_in = 0U;
+    handle->encoder.next_out = (char *)output->data;
+    handle->encoder.avail_out = (unsigned int)output->capacity_bytes;
+    before = handle->encoder.total_out_lo32;
+    do {
+        unsigned int prior = handle->encoder.total_out_lo32;
+        TSCB_TIME_CODEC(handle->native_timer, encode_ns,
+            result = BZ2_bzCompress(&handle->encoder, BZ_FINISH));
+        handle->finalize_calls += 1U;
+        if (result == BZ_STREAM_END) break;
+        if (result == BZ_FINISH_OK && handle->encoder.avail_out == 0U) return TSCB_STATUS_DST_TOO_SMALL_V1;
+        if (result != BZ_FINISH_OK || prior == handle->encoder.total_out_lo32) return TSCB_STATUS_CODEC_ERROR_V1;
+    } while (result != BZ_STREAM_END);
+    output->used_bytes = (uint64_t)(handle->encoder.total_out_lo32 - before);
+    handle->stream_bytes += output->used_bytes;
+    handle->finalized = 1;
+    return TSCB_STATUS_OK_V1;
+}
+
+tscb_status_v1 tscb_stream_decoder_reset(tscb_codec_handle_v1 *handle) {
+    int result;
+    if (handle == NULL) return TSCB_STATUS_INVALID_ARGUMENT_V1;
+    if (handle->stream_decoder_initialized) (void)BZ2_bzDecompressEnd(&handle->stream_decoder);
+    memset(&handle->stream_decoder, 0, sizeof(handle->stream_decoder));
+    result = BZ2_bzDecompressInit(&handle->stream_decoder, 0, 0);
+    if (result != BZ_OK) {
+        set_error(handle, "bzip2 streaming decoder initialization failed");
+        return TSCB_STATUS_CODEC_ERROR_V1;
+    }
+    handle->stream_decoder_initialized = 1;
+    handle->stream_decoder_finished = 0;
+    return TSCB_STATUS_OK_V1;
+}
+
+tscb_status_v1 tscb_stream_decompress_update(tscb_codec_handle_v1 *handle,
+    const tscb_buffer_v1 *input, tscb_buffer_v1 *output, uint32_t *stream_end) {
+    int result;
+    char dummy = 0;
+    unsigned int prior_in, prior_out;
+    if (handle == NULL || !handle->stream_decoder_initialized || stream_end == NULL
+        || !valid_buffer(input) || output == NULL || output->data == NULL) return TSCB_STATUS_INVALID_ARGUMENT_V1;
+    handle->stream_decoder.next_in = input->used_bytes == 0U ? &dummy : (char *)input->data;
+    handle->stream_decoder.avail_in = (unsigned int)input->used_bytes;
+    handle->stream_decoder.next_out = (char *)output->data;
+    handle->stream_decoder.avail_out = (unsigned int)output->capacity_bytes;
+    prior_in = handle->stream_decoder.total_in_lo32; prior_out = handle->stream_decoder.total_out_lo32;
+    TSCB_TIME_CODEC(handle->native_timer, decode_ns,
+        result = BZ2_bzDecompress(&handle->stream_decoder));
+    if (result == BZ_STREAM_END) {
+        if (handle->stream_decoder.avail_in != 0U) {
+            set_error(handle, "trailing bytes after bzip2 stream");
+            return TSCB_STATUS_CODEC_ERROR_V1;
+        }
+        handle->stream_decoder_finished = 1; *stream_end = 1U;
+    } else {
+        *stream_end = 0U;
+        if (result != BZ_OK || handle->stream_decoder.avail_in != 0U) {
+            if (handle->stream_decoder.avail_out == 0U) return TSCB_STATUS_DST_TOO_SMALL_V1;
+            set_error(handle, "bzip2 streaming decoder rejected input");
+            return TSCB_STATUS_CODEC_ERROR_V1;
+        }
+        if (prior_in == handle->stream_decoder.total_in_lo32 && prior_out == handle->stream_decoder.total_out_lo32)
+            return TSCB_STATUS_CODEC_ERROR_V1;
+    }
+    output->used_bytes = (uint64_t)handle->stream_decoder.total_out_lo32 - (uint64_t)prior_out;
+    return TSCB_STATUS_OK_V1;
+}
+
+tscb_status_v1 tscb_stream_decoder_finish(tscb_codec_handle_v1 *handle) {
+    if (handle == NULL || !handle->stream_decoder_initialized) return TSCB_STATUS_INVALID_ARGUMENT_V1;
+    if (!handle->stream_decoder_finished) {
+        set_error(handle, "truncated bzip2 stream");
+        return TSCB_STATUS_CODEC_ERROR_V1;
+    }
+    return TSCB_STATUS_OK_V1;
+}
+
+tscb_status_v1 tscb_stream_state_bytes(tscb_codec_handle_v1 *handle, uint64_t *state_bytes) {
+    if (handle == NULL || state_bytes == NULL) return TSCB_STATUS_INVALID_ARGUMENT_V1;
+    *state_bytes = sizeof(*handle) + UINT64_C(900000);
     return TSCB_STATUS_OK_V1;
 }
 

@@ -69,7 +69,7 @@
     "runtime_dispatch": false
   },
   "features": {
-    "streaming": false,
+    "streaming": true,
     "query": false,
     "random_access": false
   },
@@ -79,6 +79,7 @@
     "properties": {
       "native_timing": {"type": "boolean", "default": true},
       "block_size": {"type": "integer", "minimum": 1, "maximum": 1048576, "default": 65536},
+      "stream_decode_chunk_bytes": {"type": "integer", "minimum": 1, "maximum": 1048576, "default": 16384},
       "compression_level": {"type": "integer", "minimum": 0, "maximum": 9, "default": 6},
       "window_bits": {"type": "integer", "minimum": 9, "maximum": 15, "default": 15},
       "isa": {"type": "string", "enum": ["SCALAR"], "default": "SCALAR"}
@@ -87,7 +88,7 @@
   },
   "adapter": {
     "backend": "C_ABI_V1",
-    "version": "deflate-zlib-ctypes-v1",
+    "version": "deflate-zlib-ctypes-v2-streaming",
     "factory": "DEFLATE_ZLIB_CTYPES_V1",
     "artifact_path": "build/adapters/deflate_zlib/release/libtscb_deflate_zlib.so",
     "timing_boundary": "PYTHON_FFI_CONTAINER_INCLUDED",
@@ -97,6 +98,6 @@
       "clock": "CLOCK_MONOTONIC",
       "excludes": ["CONTEXT_LIFECYCLE", "EXPLICIT_PREVALIDATION", "PYTHON_FFI_CONTAINER"]
     },
-    "accounting_hooks": ["FINAL_STREAM_LENGTH", "ZLIB_HEADER_DEFLATE_PAYLOAD_ADLER32", "OUTPUT_CAPACITY"]
+    "accounting_hooks": ["FINAL_STREAM_LENGTH", "ZLIB_HEADER_DEFLATE_PAYLOAD_ADLER32", "OUTPUT_CAPACITY", "STREAM_BLOCK_STATE_AND_BUFFER_LIMITS"]
   }
 }

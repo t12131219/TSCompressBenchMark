@@ -12,6 +12,7 @@
 
 struct tscb_codec_handle_v1 {
     BrotliEncoderState *encoder;
+    BrotliDecoderState *stream_decoder;
     int quality;
     int lgwin;
     uint64_t input_bytes;
@@ -19,6 +20,8 @@ struct tscb_codec_handle_v1 {
     uint64_t finalize_calls;
     int update_called;
     int finalized;
+    int stream_mode;
+    int stream_decoder_finished;
     tscb_native_timer native_timer;
     char last_error[256];
     char accounting_json[256];
@@ -110,6 +113,7 @@ tscb_status_v1 tscb_create(const char *config_json, uint64_t config_length,
 tscb_status_v1 tscb_destroy(tscb_codec_handle_v1 *handle) {
     if (handle != NULL) {
         BrotliEncoderDestroyInstance(handle->encoder);
+        BrotliDecoderDestroyInstance(handle->stream_decoder);
         free(handle);
     }
     return TSCB_STATUS_OK_V1;
@@ -122,6 +126,10 @@ tscb_status_v1 tscb_reset(tscb_codec_handle_v1 *handle, uint32_t reset_mode) {
     enabled = handle->native_timer.enabled;
     handle->input_bytes = handle->stream_bytes = handle->finalize_calls = 0U;
     handle->update_called = handle->finalized = 0;
+    handle->stream_mode = 0;
+    handle->stream_decoder_finished = 0;
+    BrotliDecoderDestroyInstance(handle->stream_decoder);
+    handle->stream_decoder = NULL;
     handle->last_error[0] = '\0';
     handle->native_timer.enabled = enabled;
     handle->native_timer.available = 1;
@@ -167,6 +175,7 @@ tscb_status_v1 tscb_compress(tscb_codec_handle_v1 *handle,
         set_error(handle, "compress update may be called once per Brotli stream");
         return TSCB_STATUS_CODEC_ERROR_V1;
     }
+    handle->stream_mode = 1;
     available_in = (size_t)input->used_bytes;
     available_out = (size_t)output->capacity_bytes;
     next_in = (const uint8_t *)input->data;
@@ -256,6 +265,127 @@ tscb_status_v1 tscb_decompress(tscb_codec_handle_v1 *handle,
         return TSCB_STATUS_CODEC_ERROR_V1;
     }
     output->used_bytes = (uint64_t)decoded_size;
+    return TSCB_STATUS_OK_V1;
+}
+
+tscb_status_v1 tscb_stream_update(tscb_codec_handle_v1 *handle,
+    const tscb_buffer_v1 *input, tscb_buffer_v1 *output) {
+    size_t available_in, available_out;
+    const uint8_t *next_in;
+    uint8_t *next_out;
+    if (handle == NULL || !valid_buffer(input) || output == NULL || output->data == NULL
+        || output->used_bytes > output->capacity_bytes) return TSCB_STATUS_INVALID_ARGUMENT_V1;
+    if (handle->finalized || handle->stream_mode == 1) {
+        set_error(handle, "Brotli stream update mixed with one-shot or finalize");
+        return TSCB_STATUS_CODEC_ERROR_V1;
+    }
+    handle->stream_mode = 2;
+    available_in = (size_t)input->used_bytes;
+    available_out = (size_t)output->capacity_bytes;
+    next_in = input->data; next_out = output->data;
+    TSCB_TIME_CODEC(handle->native_timer, encode_ns,
+        if (!BrotliEncoderCompressStream(handle->encoder, BROTLI_OPERATION_PROCESS,
+            &available_in, &next_in, &available_out, &next_out, NULL)) {
+            set_error(handle, "Brotli streaming PROCESS failed");
+            return TSCB_STATUS_CODEC_ERROR_V1;
+        });
+    if (available_in != 0U) {
+        set_error(handle, "Brotli streaming destination is too small");
+        return TSCB_STATUS_DST_TOO_SMALL_V1;
+    }
+    output->used_bytes = (uint64_t)output->capacity_bytes - available_out;
+    handle->input_bytes += input->used_bytes;
+    handle->stream_bytes += output->used_bytes;
+    handle->update_called = 1;
+    return TSCB_STATUS_OK_V1;
+}
+
+tscb_status_v1 tscb_stream_finalize(tscb_codec_handle_v1 *handle, tscb_buffer_v1 *output) {
+    size_t available_in = 0U, available_out;
+    const uint8_t *next_in = NULL;
+    uint8_t *next_out;
+    if (handle == NULL || output == NULL || output->data == NULL
+        || output->used_bytes > output->capacity_bytes) return TSCB_STATUS_INVALID_ARGUMENT_V1;
+    if (handle->finalized || handle->stream_mode == 1) {
+        set_error(handle, "Brotli stream finalize repeated or mixed with one-shot");
+        return TSCB_STATUS_CODEC_ERROR_V1;
+    }
+    handle->stream_mode = 2;
+    available_out = (size_t)output->capacity_bytes;
+    next_out = output->data;
+    while (!BrotliEncoderIsFinished(handle->encoder)) {
+        size_t before = available_out;
+        TSCB_TIME_CODEC(handle->native_timer, encode_ns,
+            if (!BrotliEncoderCompressStream(handle->encoder, BROTLI_OPERATION_FINISH,
+                &available_in, &next_in, &available_out, &next_out, NULL)) {
+                set_error(handle, "Brotli streaming FINISH failed");
+                return TSCB_STATUS_CODEC_ERROR_V1;
+            });
+        handle->finalize_calls += 1U;
+        if (!BrotliEncoderIsFinished(handle->encoder) && available_out == 0U)
+            return TSCB_STATUS_DST_TOO_SMALL_V1;
+        if (!BrotliEncoderIsFinished(handle->encoder) && before == available_out)
+            return TSCB_STATUS_CODEC_ERROR_V1;
+    }
+    output->used_bytes = (uint64_t)output->capacity_bytes - available_out;
+    handle->stream_bytes += output->used_bytes;
+    handle->finalized = 1;
+    return TSCB_STATUS_OK_V1;
+}
+
+tscb_status_v1 tscb_stream_decoder_reset(tscb_codec_handle_v1 *handle) {
+    if (handle == NULL) return TSCB_STATUS_INVALID_ARGUMENT_V1;
+    BrotliDecoderDestroyInstance(handle->stream_decoder);
+    handle->stream_decoder = BrotliDecoderCreateInstance(NULL, NULL, NULL);
+    if (handle->stream_decoder == NULL) {
+        set_error(handle, "Brotli decoder initialization failed");
+        return TSCB_STATUS_CODEC_ERROR_V1;
+    }
+    handle->stream_decoder_finished = 0;
+    return TSCB_STATUS_OK_V1;
+}
+
+tscb_status_v1 tscb_stream_decompress_update(tscb_codec_handle_v1 *handle,
+    const tscb_buffer_v1 *input, tscb_buffer_v1 *output, uint32_t *stream_end) {
+    size_t available_in, available_out;
+    const uint8_t *next_in;
+    uint8_t *next_out;
+    BrotliDecoderResult result;
+    if (handle == NULL || handle->stream_decoder == NULL || stream_end == NULL
+        || !valid_buffer(input) || output == NULL || output->data == NULL) {
+        return TSCB_STATUS_INVALID_ARGUMENT_V1;
+    }
+    available_in = (size_t)input->used_bytes; available_out = (size_t)output->capacity_bytes;
+    next_in = input->data; next_out = output->data;
+    TSCB_TIME_CODEC(handle->native_timer, decode_ns,
+        result = BrotliDecoderDecompressStream(handle->stream_decoder, &available_in,
+            &next_in, &available_out, &next_out, NULL));
+    if (result == BROTLI_DECODER_RESULT_ERROR) {
+        set_error(handle, "Brotli streaming decode failed");
+        return TSCB_STATUS_CODEC_ERROR_V1;
+    }
+    if (available_in != 0U) {
+        set_error(handle, "Brotli streaming decoder needs more output capacity");
+        return TSCB_STATUS_DST_TOO_SMALL_V1;
+    }
+    output->used_bytes = (uint64_t)output->capacity_bytes - available_out;
+    *stream_end = result == BROTLI_DECODER_RESULT_SUCCESS ? 1U : 0U;
+    handle->stream_decoder_finished = *stream_end != 0U;
+    return TSCB_STATUS_OK_V1;
+}
+
+tscb_status_v1 tscb_stream_decoder_finish(tscb_codec_handle_v1 *handle) {
+    if (handle == NULL || handle->stream_decoder == NULL) return TSCB_STATUS_INVALID_ARGUMENT_V1;
+    if (!handle->stream_decoder_finished) {
+        set_error(handle, "truncated Brotli stream");
+        return TSCB_STATUS_CODEC_ERROR_V1;
+    }
+    return TSCB_STATUS_OK_V1;
+}
+
+tscb_status_v1 tscb_stream_state_bytes(tscb_codec_handle_v1 *handle, uint64_t *state_bytes) {
+    if (handle == NULL || state_bytes == NULL) return TSCB_STATUS_INVALID_ARGUMENT_V1;
+    *state_bytes = sizeof(*handle) + UINT64_C(131072);
     return TSCB_STATUS_OK_V1;
 }
 

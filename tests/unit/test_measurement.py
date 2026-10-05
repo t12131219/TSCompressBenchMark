@@ -328,12 +328,18 @@ def test_streaming_engine_drives_blocks_finalizes_accounts_and_verifies_output()
     route = _route()
 
     class Session:
+        def stream_start(self, routed):
+            del routed
+
         def stream_push(self, chunk):
             raw = chunk.buffers[0].array.tobytes()
             return StreamPushResult(raw, state_bytes=8, buffer_bytes=len(raw))
 
         def stream_finalize(self):
             return b""
+
+        def stream_limits(self):
+            return {"state_bytes": 8, "buffer_bytes": 0}
 
         def stream_accounting(self, stream, routed):
             return AccountingLedger.create(

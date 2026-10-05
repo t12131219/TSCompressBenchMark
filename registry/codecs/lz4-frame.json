@@ -68,7 +68,7 @@
     "runtime_dispatch": false
   },
   "features": {
-    "streaming": false,
+    "streaming": true,
     "query": false,
     "random_access": false
   },
@@ -78,6 +78,7 @@
     "properties": {
       "native_timing": {"type": "boolean", "default": true},
       "block_size": {"type": "integer", "minimum": 1, "maximum": 1048576, "default": 65536},
+      "stream_decode_chunk_bytes": {"type": "integer", "minimum": 1, "maximum": 1048576, "default": 16384},
       "compression_level": {"type": "integer", "minimum": 0, "maximum": 12, "default": 0},
       "block_size_id": {"type": "integer", "enum": [4, 5, 6, 7], "default": 4},
       "block_mode": {"type": "string", "enum": ["INDEPENDENT", "LINKED"], "default": "INDEPENDENT"},
@@ -89,7 +90,7 @@
   },
   "adapter": {
     "backend": "C_ABI_V1",
-    "version": "lz4-frame-ctypes-v1",
+    "version": "lz4-frame-ctypes-v2-streaming",
     "factory": "LZ4_FRAME_CTYPES_V1",
     "artifact_path": "build/adapters/lz4_frame/release/libtscb_lz4_frame.so",
     "timing_boundary": "PYTHON_FFI_CONTAINER_INCLUDED",

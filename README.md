@@ -21,7 +21,7 @@ The source collection remains read-only under
 `/home/fzg/PycharmProjects/Compression_Source_Code/Source_Code`. Phase 4 copies only the
 reviewed translation-unit closure needed by an adapter. The native codecs are LZ4 Frame
 1.10.0, Zstd Frame 1.5.7, Snappy Raw 1.2.2, Brotli Stream 1.2.0, zlib DEFLATE
-1.3.2 (`deflate-zlib`, RFC1950 wrapper), and XZ LZMA2 5.8.3 (`xz-stream`, single-call), taken from
+1.3.2 (`deflate-zlib`, RFC1950 wrapper), and XZ LZMA2 5.8.3 (`xz-stream`), taken from
 lzbench's vendored sources at a pinned commit. LZSS 0.9.1 (`lzss-raw`) uses the
 spreadsheet's original alexkazik Rust implementation, driven through the same C ABI;
 lzbench's different LZSSE formats are not substituted. Michael Dipperstein's native C
@@ -181,6 +181,10 @@ PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
 PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
   configs/experiments/deflate-zlib-formal.toml --output-root runs
 PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
+  configs/experiments/deflate-zlib-streaming-qualification.toml --output-root runs
+PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
+  configs/experiments/deflate-zlib-streaming-formal.toml --output-root runs
+PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
   configs/experiments/bzip2-stream-formal.toml --output-root runs
 PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
   configs/experiments/xz-stream-formal.toml --output-root runs
@@ -224,9 +228,8 @@ PIPELINE rather than replacing the selected timing scope. See
 [native codec timing](docs/native_codec_timing.md) and the formal example in
 `configs/experiments/native-timing-formal-comparison.toml`.
 
-XZ uses one single-call LZMA2 stream, preset 6, one CPU thread, no data check and
-mandatory structural CRC32. Its index and headers are fully charged. Finalize is a
-mandatory zero-byte acknowledgement, not streaming support. Raw LZMA/.lzma, EXTREME,
+XZ uses a persistent `lzma_code()` LZMA2 stream, preset 6, one CPU thread, no data check and
+mandatory structural CRC32. Its index and headers are fully charged. Raw LZMA/.lzma, EXTREME,
 BCJ/delta and multithreading are not registered. See [XZ self-check](docs/xz_stream_self_check.md).
 
 The spreadsheet's `LZ77` row points to zlib/RFC1951, the same executable codec as
@@ -235,6 +238,13 @@ This measures complete DEFLATE (dictionary matching plus Huffman), not pure LZ77
 Selecting both names generates one canonical task, not duplicate ranking entries.
 `codecs list` discloses mappings separately; runs freeze codec_alias_snapshot.json.
 See [LZ77 mapping self-check](docs/lz77_self_check.md).
+
+DEFLATE, LZ4 Frame, Zstd Frame, Brotli, bzip2 and xz each have separately keyed native
+streaming workload profiles. They keep one
+zlib encoder/decoder context across caller-sized blocks, uses explicit block-major
+buffer order, reports first-output/block latency and state/buffer limits, and requires
+one final `Z_FINISH`. Streaming results are not merged with one-shot repetition timing;
+see `configs/experiments/deflate-zlib-streaming-*.toml` and the DEFLATE self-check.
 
 The spreadsheet label `BZ2 (Huffman Coding)` is registered as `bzip2-stream`, a
 complete bzip2 1.0.8 BWT + MTF/RLE + Huffman codec rather than a pure Huffman

@@ -246,6 +246,42 @@ def test_frame_profiles_compare_directly_while_raw_and_brotli_remain_separate(
     assert key_sets[10].resource_key not in {item.resource_key for item in key_sets[:10]}
     assert execution_paths[10] not in execution_paths[:10]
 
+    manifest = registry.get("deflate-zlib")
+    compatibility = negotiate(manifest, _descriptor())
+    streaming_profile = {**profile, "streaming_workload": True}
+    streaming_config = expand_sweep(
+        manifest,
+        {"block_size": [4096], "stream_decode_chunk_bytes": [1024]},
+    )[0]
+    streaming_execution = resolve_execution(
+        manifest,
+        streaming_config,
+        compatibility,
+        environment,
+        artifact_path=artifact,
+        profile=streaming_profile,
+    )
+    streaming_keys = build_comparability_keys(
+        manifest,
+        _descriptor(),
+        streaming_config,
+        compatibility,
+        streaming_execution,
+        profile=streaming_profile,
+    )
+    assert streaming_keys.semantic_key != key_sets[4].semantic_key
+    assert streaming_keys.execution_key != key_sets[4].execution_key
+    assert streaming_keys.semantic_document["streaming_profile"] == {
+        "protocol": "PERSISTENT_NATIVE_CONTEXT_PER_ROUTED_OBJECT",
+        "block_size_elements": 4096,
+        "decode_chunk_bytes": 1024,
+        "lookahead_elements": 0,
+        "flush": "Z_NO_FLUSH_PER_BLOCK_Z_FINISH_ONCE",
+        "checkpoint": "NONE",
+        "reset": "NEW_CONTEXT_PER_ROUTED_OBJECT",
+        "backpressure": "CALLER_PACED_BLOCK_PUSH",
+    }
+
 
 def test_lzss_variant_does_not_collide_with_other_codecs_or_lzsse(tmp_path):
     registry = _registry()

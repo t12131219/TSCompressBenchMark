@@ -284,8 +284,8 @@ onboarding card and D025.
 
 Both canonical builds passed ABI smoke and 100 deterministic benchmark API cases
 (seed 20260918). Release `.so`:
-`c4c61655f2513661a8e6766025b45a1790ddc2ed8837b18ce2974a0c3d19aeb7`.
-ASan/UBSan `.so`: `c77375acebdc092c8b11de12712f2602f0d6cd0aa951bc2274525850cb1e1494`.
+`e96a6e98996d30482f12e7a19e6ddc5721d787dacbae32ee69f45a792efc9430`.
+ASan/UBSan `.so`: `3df1caabf12c7717d8f2dc71234046df3dd1620dfce89004e5ae64c7dfea0382`.
 Qualification RunSet `runset-20260918T061832Z-d8ca7a21abd6` passed; FORMAL RunSet
 `runset-20260918T061850Z-6e262c4d405a` passed all 49 boundary cases and 10/10 eligible
 repetitions. Report ID:
@@ -298,6 +298,12 @@ The final ELF build binds internal functions using `-Wl,-Bsymbolic-functions` an
 passes ABI smoke with a competing globally preloaded deflateInit2_. Without binding,
 the same test reproduced a codec-create failure. `ldd` confirms no system libz runtime
 dependency. Earlier pre-binding runs are retained but superseded by the final evidence.
+
+The native streaming extension was subsequently qualified separately: qualification
+`runset-20260923T080626Z-06f786f620aa` uses eight 128-row blocks, and formal
+`runset-20260923T080646Z-2b12739458a1` has 10/10 eligible repetitions with exact
+reconstruction. Its report is
+`v2:report:sha256:58689d67b9792aecd492442fd6f3d6819a9c477eca36263169c0e4bfb714f00a`.
 
 ## Phase 4 XZ LZMA2 source onboarding
 

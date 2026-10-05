@@ -9,6 +9,12 @@
 
 struct tscb_codec_handle_v1 {
     uint32_t preset;
+    lzma_stream stream_encoder;
+    lzma_stream stream_decoder;
+    int stream_encoder_initialized;
+    int stream_decoder_initialized;
+    int stream_decoder_finished;
+    int stream_mode;
     int updated;
     int finalized;
     tscb_native_timer native_timer;
@@ -67,6 +73,10 @@ tscb_status_v1 tscb_create(const char *config_json, uint64_t config_length,
 }
 
 tscb_status_v1 tscb_destroy(tscb_codec_handle_v1 *handle) {
+    if (handle != NULL) {
+        if (handle->stream_encoder_initialized) lzma_end(&handle->stream_encoder);
+        if (handle->stream_decoder_initialized) lzma_end(&handle->stream_decoder);
+    }
     free(handle);
     return TSCB_STATUS_OK_V1;
 }
@@ -75,6 +85,10 @@ tscb_status_v1 tscb_reset(tscb_codec_handle_v1 *handle, uint32_t mode) {
     (void)mode;
     if (handle == NULL) return TSCB_STATUS_INVALID_ARGUMENT_V1;
     handle->updated = handle->finalized = 0;
+    handle->stream_mode = 0;
+    handle->stream_decoder_finished = 0;
+    if (handle->stream_encoder_initialized) { lzma_end(&handle->stream_encoder); handle->stream_encoder_initialized = 0; }
+    if (handle->stream_decoder_initialized) { lzma_end(&handle->stream_decoder); handle->stream_decoder_initialized = 0; }
     handle->last_error[0] = '\0';
     handle->native_timer.available = 1;
     handle->native_timer.encode_ns = handle->native_timer.decode_ns = 0U;
@@ -108,6 +122,7 @@ tscb_status_v1 tscb_compress(tscb_codec_handle_v1 *handle,
         set_error(handle, "one-shot update may be called once per object");
         return TSCB_STATUS_CODEC_ERROR_V1;
     }
+    handle->stream_mode = 1;
     TSCB_TIME_CODEC(handle->native_timer, encode_ns,
         result = lzma_easy_buffer_encode(handle->preset, LZMA_CHECK_NONE, NULL,
             (const uint8_t *)input->data, (size_t)input->used_bytes,
@@ -183,6 +198,109 @@ tscb_status_v1 tscb_decompress(tscb_codec_handle_v1 *handle,
     }
     output->used_bytes = decoder.total_out;
     lzma_end(&decoder);
+    return TSCB_STATUS_OK_V1;
+}
+
+tscb_status_v1 tscb_stream_update(tscb_codec_handle_v1 *handle,
+    const tscb_buffer_v1 *input, tscb_buffer_v1 *output) {
+    lzma_ret result;
+    if (handle == NULL || !valid_buffer(input) || !valid_buffer(output) || output->data == NULL)
+        return TSCB_STATUS_INVALID_ARGUMENT_V1;
+    if (handle->finalized || handle->stream_mode == 1) {
+        set_error(handle, "xz stream update mixed with one-shot or finalize");
+        return TSCB_STATUS_CODEC_ERROR_V1;
+    }
+    handle->stream_mode = 2;
+    if (!handle->stream_encoder_initialized) {
+        handle->stream_encoder = (lzma_stream)LZMA_STREAM_INIT;
+        result = lzma_easy_encoder(&handle->stream_encoder, handle->preset, LZMA_CHECK_NONE);
+        if (result != LZMA_OK) { set_error(handle, "liblzma stream encoder initialization failed"); return TSCB_STATUS_CODEC_ERROR_V1; }
+        handle->stream_encoder_initialized = 1;
+    }
+    handle->stream_encoder.next_in = (const uint8_t *)input->data;
+    handle->stream_encoder.avail_in = (size_t)input->used_bytes;
+    handle->stream_encoder.next_out = (uint8_t *)output->data;
+    handle->stream_encoder.avail_out = (size_t)output->capacity_bytes;
+    TSCB_TIME_CODEC(handle->native_timer, encode_ns, result = lzma_code(&handle->stream_encoder, LZMA_RUN));
+    if (result != LZMA_OK) {
+        set_error(handle, "liblzma streaming run failed");
+        return handle->stream_encoder.avail_out == 0U ? TSCB_STATUS_DST_TOO_SMALL_V1 : TSCB_STATUS_CODEC_ERROR_V1;
+    }
+    if (handle->stream_encoder.avail_in != 0U) return TSCB_STATUS_DST_TOO_SMALL_V1;
+    output->used_bytes = (uint64_t)output->capacity_bytes - handle->stream_encoder.avail_out;
+    handle->updated = 1;
+    return TSCB_STATUS_OK_V1;
+}
+
+tscb_status_v1 tscb_stream_finalize(tscb_codec_handle_v1 *handle, tscb_buffer_v1 *output) {
+    lzma_ret result;
+    if (handle == NULL || !valid_buffer(output) || output->data == NULL)
+        return TSCB_STATUS_INVALID_ARGUMENT_V1;
+    if (handle->finalized || handle->stream_mode == 1) {
+        set_error(handle, "xz stream finalize repeated or mixed with one-shot");
+        return TSCB_STATUS_CODEC_ERROR_V1;
+    }
+    handle->stream_mode = 2;
+    if (!handle->stream_encoder_initialized) {
+        handle->stream_encoder = (lzma_stream)LZMA_STREAM_INIT;
+        result = lzma_easy_encoder(&handle->stream_encoder, handle->preset, LZMA_CHECK_NONE);
+        if (result != LZMA_OK) return TSCB_STATUS_CODEC_ERROR_V1;
+        handle->stream_encoder_initialized = 1;
+    }
+    handle->stream_encoder.next_in = NULL; handle->stream_encoder.avail_in = 0U;
+    handle->stream_encoder.next_out = (uint8_t *)output->data;
+    handle->stream_encoder.avail_out = (size_t)output->capacity_bytes;
+    do {
+        size_t before = handle->stream_encoder.avail_out;
+        TSCB_TIME_CODEC(handle->native_timer, encode_ns, result = lzma_code(&handle->stream_encoder, LZMA_FINISH));
+        if (result == LZMA_STREAM_END) break;
+        if (result != LZMA_OK) return result == LZMA_BUF_ERROR ? TSCB_STATUS_DST_TOO_SMALL_V1 : TSCB_STATUS_CODEC_ERROR_V1;
+        if (before == handle->stream_encoder.avail_out) return TSCB_STATUS_CODEC_ERROR_V1;
+    } while (result != LZMA_STREAM_END);
+    output->used_bytes = (uint64_t)output->capacity_bytes - handle->stream_encoder.avail_out;
+    handle->finalized = 1;
+    return TSCB_STATUS_OK_V1;
+}
+
+tscb_status_v1 tscb_stream_decoder_reset(tscb_codec_handle_v1 *handle) {
+    lzma_ret result;
+    if (handle == NULL) return TSCB_STATUS_INVALID_ARGUMENT_V1;
+    if (handle->stream_decoder_initialized) lzma_end(&handle->stream_decoder);
+    handle->stream_decoder = (lzma_stream)LZMA_STREAM_INIT;
+    result = lzma_stream_decoder(&handle->stream_decoder, UINT64_C(1073741824), 0U);
+    if (result != LZMA_OK) { set_error(handle, "liblzma stream decoder initialization failed"); return TSCB_STATUS_CODEC_ERROR_V1; }
+    handle->stream_decoder_initialized = 1;
+    handle->stream_decoder_finished = 0;
+    return TSCB_STATUS_OK_V1;
+}
+
+tscb_status_v1 tscb_stream_decompress_update(tscb_codec_handle_v1 *handle,
+    const tscb_buffer_v1 *input, tscb_buffer_v1 *output, uint32_t *stream_end) {
+    lzma_ret result;
+    if (handle == NULL || !handle->stream_decoder_initialized || stream_end == NULL
+        || !valid_buffer(input) || !valid_buffer(output) || output->data == NULL)
+        return TSCB_STATUS_INVALID_ARGUMENT_V1;
+    handle->stream_decoder.next_in = (const uint8_t *)input->data;
+    handle->stream_decoder.avail_in = (size_t)input->used_bytes;
+    handle->stream_decoder.next_out = (uint8_t *)output->data;
+    handle->stream_decoder.avail_out = (size_t)output->capacity_bytes;
+    TSCB_TIME_CODEC(handle->native_timer, decode_ns, result = lzma_code(&handle->stream_decoder, LZMA_RUN));
+    if (result == LZMA_STREAM_END) { handle->stream_decoder_finished = 1; *stream_end = 1U; }
+    else { *stream_end = 0U; if (result != LZMA_OK) return result == LZMA_BUF_ERROR ? TSCB_STATUS_DST_TOO_SMALL_V1 : TSCB_STATUS_CODEC_ERROR_V1; }
+    if (handle->stream_decoder.avail_in != 0U) return TSCB_STATUS_DST_TOO_SMALL_V1;
+    output->used_bytes = (uint64_t)output->capacity_bytes - handle->stream_decoder.avail_out;
+    return TSCB_STATUS_OK_V1;
+}
+
+tscb_status_v1 tscb_stream_decoder_finish(tscb_codec_handle_v1 *handle) {
+    if (handle == NULL || !handle->stream_decoder_initialized) return TSCB_STATUS_INVALID_ARGUMENT_V1;
+    if (!handle->stream_decoder_finished) { set_error(handle, "truncated xz stream"); return TSCB_STATUS_CODEC_ERROR_V1; }
+    return TSCB_STATUS_OK_V1;
+}
+
+tscb_status_v1 tscb_stream_state_bytes(tscb_codec_handle_v1 *handle, uint64_t *state_bytes) {
+    if (handle == NULL || state_bytes == NULL) return TSCB_STATUS_INVALID_ARGUMENT_V1;
+    *state_bytes = sizeof(*handle) + UINT64_C(1048576);
     return TSCB_STATUS_OK_V1;
 }
 

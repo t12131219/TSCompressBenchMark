@@ -80,8 +80,8 @@ independent algorithm status. Source review confirms:
   harnesses, not a claim that the complete upstream suite was run. Retained log:
   `build/source-audits/lz77-native-tests-20260918.log`.
 - [x] Source and binary identities match the existing admission card. Release:
-  `c4c61655f2513661a8e6766025b45a1790ddc2ed8837b18ce2974a0c3d19aeb7`.
-  ASan/UBSan: `c77375acebdc092c8b11de12712f2602f0d6cd0aa951bc2274525850cb1e1494`.
+  `e96a6e98996d30482f12e7a19e6ddc5721d787dacbae32ee69f45a792efc9430`.
+  ASan/UBSan: `3df1caabf12c7717d8f2dc71234046df3dd1620dfce89004e5ae64c7dfea0382`.
   LeakSanitizer remains disabled under ptrace; ASan/UBSan remain enabled.
 
 ## Layer 4 - Raw measurement audit

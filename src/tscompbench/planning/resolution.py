@@ -198,6 +198,19 @@ def build_comparability_keys(
         "error_bound_type": config.parameters.get("error_bound_type", "NOT_APPLICABLE"),
         "error_bound_value": config.parameters.get("error_bound", "NOT_APPLICABLE"),
     }
+    if profile["streaming_workload"]:
+        semantic_document["streaming_profile"] = {
+            "protocol": "PERSISTENT_NATIVE_CONTEXT_PER_ROUTED_OBJECT",
+            "block_size_elements": int(config.parameters["block_size"]),
+            "decode_chunk_bytes": int(
+                config.parameters.get("stream_decode_chunk_bytes", 16384)
+            ),
+            "lookahead_elements": 0,
+            "flush": "Z_NO_FLUSH_PER_BLOCK_Z_FINISH_ONCE",
+            "checkpoint": "NONE",
+            "reset": "NEW_CONTEXT_PER_ROUTED_OBJECT",
+            "backpressure": "CALLER_PACED_BLOCK_PUSH",
+        }
     semantic_key = stable_id("semantic-comparability", semantic_document)
     execution_document = {
         "semantic_key": semantic_key,

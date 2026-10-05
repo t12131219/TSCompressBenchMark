@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "TSDataCompressBenchMark：五层运行框架",
+    "locale": "zh-CN",
+    "quality_profile": "showcase",
+    "viewBox": [1570, 920],
+    "views": [
+      {"id": "control", "label": "控制与冻结", "focus": ["cli", "config", "runset", "layer1", "layer2", "evidence"], "note": "CLI 将实验配置、环境、数据和 codec 清单冻结为可恢复的 run set 与任务宇宙。"},
+      {"id": "execution", "label": "隔离执行", "focus": ["layer2", "executor", "adapters", "native", "evidence"], "note": "每个 BenchmarkTask 通过适配器在资源受限的隔离调用中进行预检、测量与正确性验证。"},
+      {"id": "analysis", "label": "统计与发布", "focus": ["evidence", "report"], "note": "Layer 5 仅读取冻结任务与追加证据，以比较键隔离后生成统计、Pareto、排名和 HTML。"}
+    ]
+  },
+  "components": [
+    {"id": "config", "type": "external", "label": "实验配置", "tag": "configs/experiments/*.toml", "pos": [40, 100], "size": [185, 82]},
+    {"id": "cli", "type": "frontend", "label": "tscompbench CLI", "tag": "init、prepare、plan、validate、report", "pos": [40, 450], "size": [185, 84]},
+    {"id": "runset", "type": "backend", "label": "Run Set 生命周期", "tag": "锁定、冻结、恢复", "pos": [270, 450], "size": [205, 88]},
+    {"id": "dataset-registry", "type": "database", "label": "数据集注册表", "tag": "registry/datasets + datasets/", "pos": [520, 100], "size": [210, 84]},
+    {"id": "layer1", "type": "backend", "label": "Layer 1 数据准备", "tag": "canonical + characterization", "pos": [520, 450], "size": [220, 88]},
+    {"id": "codec-registry", "type": "database", "label": "Codec 与 Source 注册表", "tag": "codec + source + alias", "pos": [790, 100], "size": [220, 88]},
+    {"id": "layer2", "type": "backend", "label": "Layer 2 任务规划", "tag": "task_plan + snapshots", "pos": [790, 450], "size": [220, 88]},
+    {"id": "adapters", "type": "backend", "label": "适配器与协议层", "tag": "CodecAdapter", "pos": [1060, 100], "size": [220, 88]},
+    {"id": "executor", "type": "backend", "label": "Layers 3-4 执行器", "tag": "correctness、timing、resources", "pos": [1060, 450], "size": [220, 88]},
+    {"id": "native", "type": "external", "label": "原生 Codec 工件", "tag": "C/C++ source + library", "pos": [1330, 100], "size": [210, 88]},
+    {"id": "evidence", "type": "database", "label": "追加式原始证据", "tag": "runs/<run-set-id>", "pos": [1330, 450], "size": [210, 88]},
+    {"id": "report", "type": "backend", "label": "Layer 5 统计与报告", "tag": "report/", "pos": [1330, 680], "size": [210, 88]}
+  ],
+  "connections": [
+    {"id": "config-cli", "from": "config", "to": "cli", "variant": "emphasis", "fromSide": "bottom", "toSide": "top"},
+    {"id": "cli-runset", "from": "cli", "to": "runset", "variant": "emphasis"},
+    {"id": "runset-layer1", "from": "runset", "to": "layer1", "variant": "emphasis"},
+    {"id": "datasets-layer1", "from": "dataset-registry", "to": "layer1", "fromSide": "bottom", "toSide": "top"},
+    {"id": "layer1-layer2", "from": "layer1", "to": "layer2", "variant": "emphasis"},
+    {"id": "codec-layer2", "from": "codec-registry", "to": "layer2", "fromSide": "bottom", "toSide": "top"},
+    {"id": "layer2-executor", "from": "layer2", "to": "executor", "variant": "emphasis"},
+    {"id": "adapters-executor", "from": "adapters", "to": "executor", "fromSide": "bottom", "toSide": "top"},
+    {"id": "native-adapters", "from": "native", "to": "adapters", "variant": "default"},
+    {"id": "executor-evidence", "from": "executor", "to": "evidence", "variant": "emphasis"},
+    {"id": "evidence-report", "from": "evidence", "to": "report", "variant": "emphasis", "fromSide": "bottom", "toSide": "top"}
+  ],
+  "cards": [
+    {"dot": "cyan", "title": "身份与可比性", "items": ["数据内容、算法参数、执行路径和资源策略生成稳定 ID 与嵌套比较键", "Layer 2 先写任务计划与注册表快照，再开始 Layer 3 执行"]},
+    {"dot": "emerald", "title": "质量与测量", "items": ["预检检查输入、边界、能力与安全；每个正式重复包含 Finalize、记账、解码和正确性验证", "计时、线程/内存资源、查询和流式工作负载被记录为原始证据"]},
+    {"dot": "amber", "title": "发布边界", "items": ["Layer 5 不重跑 codec，只读取冻结任务和追加式运行记录", "统计仅在相同语义、执行和资源比较键内聚合 PASS 正式重复"]}
+  ]
+}

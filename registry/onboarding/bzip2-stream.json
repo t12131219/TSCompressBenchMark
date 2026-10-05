@@ -69,14 +69,14 @@
   "builds": [
     {
       "profile": "RELEASE_SCALAR_SINGLE_THREAD",
-      "artifact_sha256": "fbbd165f6c6daf626fa8d30c8d6a5fb7f08f6aa6d9fdc26465af080c5ab48519",
+      "artifact_sha256": "7bc7954041f804700160177fe1d3808aecdda7664b98143a1107e3213e079e4b",
       "compile_commands_sha256": "12cbd518bbbdff0416a58def131d562235811e12a4e473acb32a397d43d36500",
       "compiler": "GCC 11.4.0",
       "flags": "-O3 -DNDEBUG -std=c11 -fPIC -Wl,-Bsymbolic-functions; three named upstream-only warning suppressions"
     },
     {
       "profile": "ASAN_UBSAN_SCALAR_SINGLE_THREAD",
-      "artifact_sha256": "e7bf137e9b410d664830482833f0e8d262192686cff1462b0c3470c27aad65f7",
+      "artifact_sha256": "13ae1bda03234d074664ad03d9105d6fc34d52aa7362414ba98436e296ad92e7",
       "compile_commands_sha256": "03280461820d7ea2224c57fb8a5dfd44a143901c96afec9e7c0efd37f4f9d88b",
       "compiler": "GCC 11.4.0",
       "flags": "-O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined -std=c11 -fPIC -Wl,-Bsymbolic-functions; three named upstream-only warning suppressions"
@@ -90,7 +90,7 @@
   "known_limitations": [
     "The spreadsheet label says Huffman Coding, but bzip2 is a complete BWT plus MTF/RLE plus Huffman codec. It is not merged with huff0 or any standalone Huffman ranking.",
     "lzbench calls the one-shot buffer API. The project uses the same vendored implementation through BZ_RUN/BZ_FINISH to expose mandatory Finalize; native timing is not lzbench-equivalent.",
-    "Registered defaults are level 9, effective workFactor 30, verbosity 0, normal-memory decode, one CPU thread, one independent stream and no concatenation. Small-memory decode, work-factor sweeps, concatenated streams and continuous streaming are not registered.",
+    "Registered defaults are level 9, effective workFactor 30, verbosity 0, normal-memory decode, one CPU thread and one independent stream. The separate profile uses persistent BZ2_bzCompress/BZ2_bzDecompress contexts; small-memory decode, work-factor sweeps and concatenated streams remain unregistered.",
     "The single-update ABI and documented output-bound representation are limited to UINT_MAX.",
     "Complete bzip2 stream bytes are conservatively charged to the routed bucket; internal BWT/MTF/RLE/Huffman bits, CRCs and padding are not guessed into overlapping sub-buckets.",
     "LeakSanitizer is disabled under the host ptrace policy; ASan/UBSan remain enabled."

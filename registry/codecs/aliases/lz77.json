@@ -2,7 +2,7 @@
   "schema_version": "tscb.codec-alias.v2",
   "key": "lz77",
   "canonical_key": "deflate-zlib",
-  "canonical_algorithm_id": "v2:algorithm:sha256:0911ea808bb1de69ef122d4eb9b886aeff9dd97380b29f236719c630a5f13038",
+  "canonical_algorithm_id": "v2:algorithm:sha256:2407caf70da5004afa478a59ccb9a8ba374b96a7fd21dacf37db9f0ff98f45a3",
   "source_artifact_id": "v2:source-artifact:sha256:488e8ce467a7dba0196f8ba1ece20ba03be7167eefa3ab09c79bb914219c5518",
   "mapping_kind": "SPREADSHEET_SOURCE_MAPPING_NOT_NEW_CODEC",
   "evidence": [
@@ -15,6 +15,6 @@
     "This selectable spreadsheet mapping measures complete RFC1950 zlib / RFC1951 DEFLATE, including LZ77 matching, Huffman coding and Adler32. It does not measure a standalone pure LZ77 token stream or isolated matching time.",
     "lz77 and deflate-zlib resolve to exactly the same AlgorithmID, SourceArtifactID, ConfigID, execution path and comparison keys; selecting both names generates one task per unique canonical configuration, not two ranked algorithms.",
     "No alternative yalz77/misa77 implementation is silently substituted for the spreadsheet's zlib source. A future pure LZ77 variant requires separate user-approved source/format admission and explicit P0/P1/P2 contracts.",
-    "Existing deflate-zlib parameter, lifecycle, capacity and resource limits apply unchanged; unsupported dictionary, query, streaming, raw-DEFLATE/gzip and multithread modes are not added."
+    "Existing deflate-zlib parameter, lifecycle, capacity and resource limits apply unchanged. The canonical codec's qualified persistent streaming profile is available through this alias without creating a pure-LZ77 capability; dictionary, query, raw-DEFLATE/gzip and multithread modes remain unsupported."
   ]
 }

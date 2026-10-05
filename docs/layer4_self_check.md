@@ -28,9 +28,9 @@
   to `RESOURCE_PRESSURE` or `OVERSUBSCRIBED` while preserving correctness PASS evidence.
 - [x] Query positions/ranges/projections are deterministically pre-generated from the
   seed for lengths 1/16/100/1000/full and widths 1/2/4/min(8,M)/M.
-- [x] Query/streaming results are capability-gated. Batch-0 manifests declare both false,
-  so the framework records NOT_REQUESTED or UNSUPPORTED instead of timing full decode and
-  mislabeling it random access/streaming.
+- [x] Query/streaming results are capability-gated. Query remains false for the registered
+  codecs; native streaming profiles are admitted only after persistent-context and exact
+  reconstruction checks, rather than timing repeated one-shot calls.
 - [x] Complete nested evidence is in `run_components.jsonl`; `runs.csv` projects raw
   timing/resource/workload fields and is recoverable on resume.
 - [x] Layer 1 canonical bits/elements feed throughput denominators, Layer 2 profile and
@@ -41,11 +41,9 @@
 
 - The current qualified adapters are internal Batch-0 oracles. They prove the framework
   lifecycle but are never leaderboard-eligible, even in FORMAL mode.
-- No current qualified codec manifest truthfully declares query or streaming support.
-  The generic engines, deterministic generation, capability gates, exact query-slice/
-  stream-reconstruction checks, latency/amplification accounting, and result slots are
-  in place; non-null production observations require the first source adapter that
-  implements the reviewed protocols.
+- No current qualified codec manifest declares query support. The native streaming
+  profiles now provide non-null production observations through the reviewed persistent
+  protocols; query-slice and random-access observations remain gated.
 - PROCESS_TREE_CGROUP, DEVICE, SYSTEM_E2E, perf, and energy collection require host or
   adapter integration not available in this environment. Their explicit unsupported
   state prevents cross-scope resource ranking.

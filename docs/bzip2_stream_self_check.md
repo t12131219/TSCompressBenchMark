@@ -36,8 +36,8 @@ Canonical project: `/home/fzg/PycharmProjects/TSDataCompressBenchMark`
   one independent stream and no concatenation are fixed execution facts.
 - [x] `block_size` is a framework boundary parameter and is not represented as the
   bzip2 internal `blockSize100k` setting. Compression level remains in ConfigID.
-- [x] Small-memory decode, custom work factors, concatenated streams, query, random
-  access and continuous streaming are not advertised or silently substituted.
+- [x] Small-memory decode, custom work factors, concatenated streams, query and random
+  access are not advertised or silently substituted; persistent streaming is separately keyed.
 - [x] Planning tests prove bzip2 has separate semantic, execution, resource and
   execution-path identities from all previously registered codecs.
 

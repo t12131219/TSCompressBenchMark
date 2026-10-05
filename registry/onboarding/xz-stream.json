@@ -42,11 +42,11 @@
     "dictionary": "NO_EXTERNAL_DICTIONARY_INTERNAL_LZMA2_WINDOW"
   },
   "lifecycle_contract": {
-    "output_bound": "lzma_stream_buffer_bound for single-call stream encoding; zero or overflow bounds are unsupported",
-    "return_length": "Actual out_pos for complete single-call stream; capacity is never charged",
+    "output_bound": "Conservative lzma_stream_buffer_bound allowance for persistent update/finalize encoding; zero or overflow bounds are unsupported",
+    "return_length": "Actual out_pos delta for every update/finalize call; capacity is never charged",
     "error_codes": "Stable tscb_status_v1; LZMA_BUF_ERROR maps to DST_TOO_SMALL; malformed/truncated/nonexact streams map to CODEC_ERROR",
     "update": "One lzma_easy_buffer_encode with preset 0-9 and LZMA_CHECK_NONE; writes block/index/footer before returning",
-    "finalize": "Mandatory acknowledgement of completed single-call stream, zero written bytes and no native encode API call; repeated finalize rejected",
+    "finalize": "Mandatory lzma_code(LZMA_FINISH) loop until stream end; repeated finalize rejected",
     "decode": "Fresh lzma_stream_decoder with 1 GiB memlimit and flags 0; lzma_code LZMA_FINISH until STREAM_END; exact descriptor output and complete input required",
     "reset": "NEW_CONTEXT_PER_INDEPENDENT_OBJECT; C ABI reset clears state and native timing counters"
   },
@@ -83,14 +83,14 @@
   "builds": [
     {
       "profile": "RELEASE_SCALAR_SINGLE_THREAD",
-      "artifact_sha256": "8676b8a44671f5f80a8e8828f55cadb26cb21d9cba6d39a4ae83b6e03e5822c8",
+      "artifact_sha256": "edaefa8d7630d607405baecee40acfe53cb8df628baf37750d6d1bb4ec7214bb",
       "compile_commands_sha256": "9c9f52d9bb36222599109e9ecd476aab4e2455a1f4e4537b63977519efae36b6",
       "compiler": "GCC 11.4.0",
       "flags": "-O3 -DNDEBUG -std=c11 -fPIC; static PIC liblzma, XZ_THREADS=no, lzma1/lzma2 only, CRC32 only, specialized dispatch/SIMD disabled, LZMA_LZ_DECODER_CONFIG=1; -Wl,-Bsymbolic-functions -Wl,--no-undefined; complete dependency commands and archive hash persisted"
     },
     {
       "profile": "ASAN_UBSAN_SCALAR_SINGLE_THREAD",
-      "artifact_sha256": "492a6d6947e54ab598203577974c6f72afe6cb22ca2e3a0cee2bf89645e2124a",
+      "artifact_sha256": "8efca409eac0618078228fcf71f5fd65e9d18c661e3faa7d3409ea4b5582f1bb",
       "compile_commands_sha256": "7a3bdadd604b291c9057927b4d1cb8c2965166be464f9f17d3031e3bd5753127",
       "compiler": "GCC 11.4.0",
       "flags": "-O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined; same scalar single-thread dependency configuration and local ELF function binding"
@@ -100,9 +100,9 @@
     "spdx": "0BSD", "status": "RUN_ALLOWED", "redistribution": "ALLOWED_WITH_RETAINED_LICENSE_FILES"
   },
   "known_limitations": [
-    "Spreadsheet Value-Compress!B9 lists LZMA / xz. Only single-call .xz LZMA2 is registered; raw LZMA/.lzma, EXTREME, BCJ/delta, dictionaries, multithreading and streaming workloads are not registered.",
-    "lzbench uses multithreaded stream encoding/decoding and decoder LZMA_CONCATENATED | LZMA_IGNORE_CHECK. This project uses documented single-call output bound, one thread, one stream and strict decoder flags 0. Native timing is not lzbench-equivalent.",
-    "Final encoding work is inside lzma_easy_buffer_encode; zero-byte Finalize is acknowledgement, not a claim of streaming capability. Native encode timing includes intrinsic allocation and finish within that API.",
+    "Spreadsheet Value-Compress!B9 lists LZMA / xz. The registered xz profile uses persistent lzma_code() LZMA2 contexts; raw LZMA/.lzma, EXTREME, BCJ/delta, dictionaries and multithreading remain unregistered.",
+    "lzbench uses multithreaded stream encoding/decoding and decoder LZMA_CONCATENATED | LZMA_IGNORE_CHECK. This project uses one thread, one persistent stream context, conservative output bounds and strict decoder flags 0. Native timing is not lzbench-equivalent.",
+    "Streaming encoding uses lzma_easy_encoder plus lzma_code(LZMA_RUN/LZMA_FINISH); native timing includes intrinsic allocation and finalization within those calls.",
     "No data checksum matches lzbench's setting; structural CRC32 remains mandatory and charged. Payload corruption with unchanged structure is caught by framework exact correctness, not guaranteed by an absent data checksum.",
     "Only zero blocks for empty input or one LZMA2 block otherwise is registered. Concatenated streams, stream padding, alternate filters/checks and unexpected block count are rejected.",
     "Decoder memory limit is 1 GiB; worker resource isolation remains separately enforced. Index presence does not advertise random access or query capability.",

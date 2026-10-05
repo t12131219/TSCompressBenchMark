@@ -40,8 +40,10 @@ Canonical project: `/home/fzg/PycharmProjects/TSDataCompressBenchMark`
 - [x] Tests keep Semantic/Execution/Resource keys separate from LZ4/Zstd frames,
   Snappy raw and Brotli stream. Context reset and native instrumentation policies
   remain visible. No incompatible cross-format total ranking is claimed.
-- [x] Query, random access, streaming workload, preset dictionary and optional
-  checksum modes are not advertised or silently substituted.
+- [x] Query, random access, preset dictionary and optional checksum modes remain
+  unsupported. A separate native streaming profile is now explicitly registered;
+  it uses persistent zlib state, block-major buffer order, caller-paced backpressure,
+  no checkpoint serialization and distinct semantic/execution comparison keys.
 
 ## Layer 3 - Lifecycle, safety, correctness and accounting
 
@@ -66,6 +68,25 @@ Canonical project: `/home/fzg/PycharmProjects/TSDataCompressBenchMark`
 - [x] Competing global deflateInit2_ reproduced the old ELF binding risk. The final
   `-Wl,-Bsymbolic-functions` build passes ABI smoke with that LD_PRELOAD competitor;
   internal codec calls stay within vendor source. `ldd` has no system libz dependency.
+
+## Native streaming profile
+
+- [x] `stream_start` fixes the descriptor and block size; each block uses one persistent
+  native `Z_NO_FLUSH` update and the final block uses one `Z_FINISH` sequence.
+- [x] Decoder state is persistent across compressed chunks and must reach `Z_STREAM_END`;
+  trailing bytes, truncation and Adler corruption are rejected.
+- [x] Block layout is explicit (`BLOCK_MAJOR_BUFFER_ORDER`) so heterogeneous/matrix
+  buffers are not silently serialized as one-shot column-major payloads.
+- [x] State telemetry is the documented zlib state estimate (268,400 bytes for windowBits
+  15/memLevel 8); retained stream buffer is zero and checkpoint bits are zero.
+- [x] Qualification `runset-20260923T080626Z-06f786f620aa`: PASS, 8 blocks, exact
+  reconstruction. Formal `runset-20260923T080646Z-2b12739458a1`: 10/10 eligible,
+  every repetition PASS with 8 blocks; report ID
+  `v2:report:sha256:58689d67b9792aecd492442fd6f3d6819a9c477eca36263169c0e4bfb714f00a`.
+- [x] A failed 8-block run caused by an insufficient per-update destination bound is
+  retained append-only as `runset-20260923T080438Z-2b12739458a1`; the bound was then
+  corrected to use cumulative consumed payload bytes and high-entropy multiblock tests
+  were added.
 
 ## Layer 4 - Measurement evidence
 
@@ -94,8 +115,8 @@ Canonical project: `/home/fzg/PycharmProjects/TSDataCompressBenchMark`
 
 ## Build identities and limitations
 
-Release `.so`: `c4c61655f2513661a8e6766025b45a1790ddc2ed8837b18ce2974a0c3d19aeb7`.  
-ASan/UBSan `.so`: `c77375acebdc092c8b11de12712f2602f0d6cd0aa951bc2274525850cb1e1494`.  
+Release `.so`: `e96a6e98996d30482f12e7a19e6ddc5721d787dacbae32ee69f45a792efc9430`.
+ASan/UBSan `.so`: `3df1caabf12c7717d8f2dc71234046df3dd1620dfce89004e5ae64c7dfea0382`.
 Formal combined native/Python support artifact:
 `45e9c1ceeb2a2dd6badb84fcc6c802bc01d67b355ff63aca9ead9839366e66ca`.
 
@@ -103,10 +124,11 @@ Earlier qualification `runset-20260918T061126Z-d8ca7a21abd6` and formal
 `runset-20260918T061248Z-6e262c4d405a` remain append-only historical evidence;
 the final symbol-bound builds and later runs above are the authoritative admission.
 
-lzbench uses one-shot compress2/uncompress; this adapter uses the same implementation
-through explicit update/finish to satisfy project lifecycle requirements. No gzip/raw
-variant, custom memLevel/strategy, context-reuse benchmark, parallelism or streaming
-protocol is registered. The current single-update ABI is bounded by UINT_MAX for input
+lzbench uses one-shot compress2/uncompress; the one-shot adapter uses the same
+implementation through explicit update/finish to satisfy project lifecycle requirements.
+The separate streaming profile uses persistent update/finish state and is not
+lzbench-equivalent. No gzip/raw variant, custom memLevel/strategy, context-reuse
+benchmark or parallelism is registered. The current ABI is bounded by UINT_MAX for input
 and output capacity. Exact decode allocation is descriptor-based because zlib carries
 no uncompressed-length field. ASan/UBSan run with LeakSanitizer disabled due to ptrace.
 The formal result qualifies the tested default VALUE configuration and dataset, not a

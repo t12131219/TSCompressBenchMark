@@ -103,14 +103,14 @@
   "builds": [
     {
       "profile": "RELEASE_SCALAR_SINGLE_THREAD",
-      "artifact_sha256": "52ffce959afba78939a8ccc2010d59f4d746ac8e1b4f6b6d5e0cbc680a52d731",
+      "artifact_sha256": "f4c5f8b2ccb4c165436ff2a770359530c133f58b52ec77e66da97e66c36bc653",
       "compile_commands_sha256": "57b173e429a0521ee82c8fa225d8bc91f606e3bc32c4c6d120b34dea34d97334",
       "compiler": "GCC 11.4.0",
       "flags": "-O3 -DNDEBUG -DDYNAMIC_BMI2=0 -DZSTD_LEGACY_SUPPORT=0 -DZSTD_DISABLE_ASM"
     },
     {
       "profile": "ASAN_UBSAN_SCALAR_SINGLE_THREAD",
-      "artifact_sha256": "fd8a66f391e4197568ca7f7659f182f3e37445296b2e49127659d5cef825c87c",
+      "artifact_sha256": "e3a69b3f7978700c51ddd94842faf1a9faf7bb9c8f609080aafa65ce47fb4bc0",
       "compile_commands_sha256": "733d21f5575b86cb77d573a53796bc607494a0cc467b5a18d7dfa487e661a2fe",
       "compiler": "GCC 11.4.0",
       "flags": "-O1 -g -fsanitize=address,undefined -DDYNAMIC_BMI2=0 -DZSTD_LEGACY_SUPPORT=0 -DZSTD_DISABLE_ASM"
@@ -125,7 +125,7 @@
   "known_limitations": [
     "lzbench exercises Zstd with ZSTD_compress2 while this plan-required adapter exercises the same vendored implementation through its streaming frame API and explicit end loop.",
     "This registered variant is scalar, single-threaded, dictionary-free, and disables legacy decoding and assembly; those modes require separate execution variants.",
-    "The project wrapper currently performs one update per independently finalized object and does not claim streaming/query capability.",
+    "The project wrapper exposes persistent ZSTD_compressStream2/ZSTD_decompressStream contexts for the separately keyed streaming profile; zstdmt, dictionaries, query and random access remain unregistered.",
     "The Python FFI descriptor serialization and contiguous byte materialization are included in the declared adapter boundary.",
     "LeakSanitizer cannot run under the host container ptrace policy; ASan/UBSan qualification uses detect_leaks=0."
   ],

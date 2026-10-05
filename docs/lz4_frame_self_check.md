@@ -36,7 +36,8 @@ Environment: `CompressBench14`
   unsupported features are explicit.
 - [x] Native artifact resolution is hashed into the execution path; a missing shared
   library maps to `BUILD_UNAVAILABLE / EXECUTION_ARTIFACT_MISSING`.
-- [x] No streaming/query/random-access capability is inferred from the library name.
+- [x] Streaming is admitted only through the separately keyed native LZ4F update/decode
+  profile; query and random access remain unregistered.
 
 ### Layer 3 — Execution and validation
 
@@ -81,14 +82,14 @@ Environment: `CompressBench14`
 
 ## Verification result and limitations
 
-The first algorithm satisfies the project definition of “integrated”: source provenance,
+The one-shot and separately keyed streaming profiles satisfy the project definition of “integrated”: source provenance,
 build, licensing, registry, negotiation, preflight, correctness, exact accounting,
 formal measurement, statistics, coverage, and report generation all close across Layers
 1–5. The full Python suite passes 53 tests and Ruff reports no violations.
 
 This result qualifies only the recorded LZ4 Frame execution path. lzbench's codec table
 benchmarks the raw LZ4 block API, whereas the same benchmark tree vendors the frame
-implementation required by this project's plan. The current adapter uses one update per
-independent object, has no dictionary, and makes no streaming/query claim. ASan/UBSan
+implementation required by this project's plan. Both paths have no dictionary; streaming
+uses persistent LZ4F contexts and remains separate from one-shot timing. ASan/UBSan
 passed; LeakSanitizer could not run under the host ptrace policy and was explicitly
 disabled rather than reported as covered.

@@ -47,14 +47,15 @@
     "update": "One deflate call with Z_NO_FLUSH and complete input consumption",
     "finalize": "Loop deflate with Z_FINISH until Z_STREAM_END; repeated finalize rejected",
     "decode": "Fresh inflateInit2 context; inflate must reach Z_STREAM_END, consume all input and produce the exact descriptor length",
-    "reset": "NEW_CONTEXT_PER_INDEPENDENT_OBJECT; C ABI reset reinitializes encoder and clears timing counters"
+    "reset": "NEW_CONTEXT_PER_INDEPENDENT_OBJECT; C ABI reset reinitializes encoder and clears timing counters",
+    "streaming": "PERSISTENT_NATIVE_ENCODER_AND_DECODER_CONTEXT; Z_NO_FLUSH_PER_BLOCK; Z_FINISH_ONCE; caller-paced backpressure; no checkpoint serialization"
   },
   "stream_components": {
     "outer_container": "TSCB 12-byte prefix and canonical JSON buffer descriptors",
     "header": "Two RFC1950 CMF/FLG bytes charged to container_bits",
     "payload": "All RFC1951 bytes charged to routed data bucket, including internal bit padding",
     "checksum": "Four Adler32 bytes charged to checksum_bits",
-    "accounting": "EXACT_TSCB_CONTAINER_ZLIB_ENVELOPE_AND_DEFLATE_LENGTH"
+    "accounting": "EXACT_TSCB_CONTAINER_ZLIB_ENVELOPE_AND_DEFLATE_LENGTH; STREAMING_BLOCK_MAJOR_BUFFER_ORDER"
   },
   "upstream_tests": [
     {
@@ -67,20 +68,20 @@
       "name": "project C ABI lifecycle smoke",
       "command": "run_native_tests.py: abi_smoke.c in Release and ASan/UBSan",
       "status": "PASS",
-      "evidence": "N=0/1/2/65535/65536/65537/131073; independent decode, checksum rejection, reset/reuse, bound, timed update/finalize/decode, finalize-required/repeated-finalize and insufficient-capacity rejection"
+      "evidence": "N=0/1/2/65535/65536/65537/131073; independent decode, checksum rejection, reset/reuse, bound, timed update/finalize/decode, finalize-required/repeated-finalize and insufficient-capacity rejection; persistent stream update/finalize and incremental decode cases pass in Release and ASan/UBSan"
     }
   ],
   "builds": [
     {
       "profile": "RELEASE_SCALAR_SINGLE_THREAD",
-      "artifact_sha256": "c4c61655f2513661a8e6766025b45a1790ddc2ed8837b18ce2974a0c3d19aeb7",
+      "artifact_sha256": "e96a6e98996d30482f12e7a19e6ddc5721d787dacbae32ee69f45a792efc9430",
       "compile_commands_sha256": "e722f3b06818a809a4ff99b6473f16ac8c596f5c3dfad7ee0fce76a9907e27c6",
       "compiler": "GCC 11.4.0",
       "flags": "-O3 -DNDEBUG -std=c11 -fPIC -DZ_HAVE_UNISTD_H -Wall -Wextra -Werror -Wl,-Bsymbolic-functions"
     },
     {
       "profile": "ASAN_UBSAN_SCALAR_SINGLE_THREAD",
-      "artifact_sha256": "c77375acebdc092c8b11de12712f2602f0d6cd0aa951bc2274525850cb1e1494",
+      "artifact_sha256": "3df1caabf12c7717d8f2dc71234046df3dd1620dfce89004e5ae64c7dfea0382",
       "compile_commands_sha256": "f3ae0ab9e0c202d5dd9bcc22178f16b29b80937c3c16b9c2a61b3699849f0741",
       "compiler": "GCC 11.4.0",
       "flags": "-O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined -std=c11 -fPIC -DZ_HAVE_UNISTD_H -Wall -Wextra -Werror -Wl,-Bsymbolic-functions"
@@ -93,7 +94,8 @@
   },
   "known_limitations": [
     "lzbench calls compress2/uncompress one-shot. The project uses the same vendored implementation through Z_NO_FLUSH/Z_FINISH to expose mandatory Finalize; native timing is not lzbench-equivalent.",
-    "Registered defaults: level 6, windowBits 15, memLevel 8, default strategy, one CPU thread, no preset dictionary, mandatory Adler32. Raw DEFLATE, gzip, dictionaries, strategies, memLevel sweeps, parallelism and streaming workloads are not registered.",
+    "Registered defaults: level 6, windowBits 15, memLevel 8, default strategy, one CPU thread, no preset dictionary, mandatory Adler32. Raw DEFLATE, gzip, dictionaries, strategies, memLevel sweeps and parallelism are not registered.",
+    "Streaming qualification is a separate workload profile with explicit block_size and stream_decode_chunk_bytes, block-major buffer order, persistent native contexts, no checkpoint serialization and caller-paced backpressure; it is not the main one-shot repetition timing.",
     "A zlib stream does not store uncompressed length. Independent allocation uses the TSCB descriptor, not encoder state.",
     "The single-update ABI accepts input and output capacities at most UINT_MAX; deflateBound above UINT_MAX is unsupported.",
     "The benchmark-vendored tree is 1.3.2; the comparison-only upstream checkout e3dc0a85b7032e98380dec011bc8f2c2ee0d8fca is 1.3.2.1 and differs. No sources are mixed or automatically upgraded.",
@@ -102,7 +104,7 @@
   "unsupported_reason_codes": [
     "EXECUTION_ARTIFACT_MISSING", "VALIDITY_SHAPE_UNSUPPORTED",
     "DICTIONARY_MODE_NOT_REGISTERED", "CHECKSUM_MODE_NOT_REGISTERED",
-    "QUERY_UNSUPPORTED", "STREAMING_PROTOCOL_NOT_REGISTERED",
+    "QUERY_UNSUPPORTED",
     "SINGLE_UPDATE_LENGTH_LIMIT"
   ]
 }

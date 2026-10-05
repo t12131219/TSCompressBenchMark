@@ -20,6 +20,7 @@ from tscompbench.execution.protocol import (
 )
 from tscompbench.ids import canonical_json_bytes, stable_id
 
+from .native_streaming import NativeByteStreamingSession, bind_stream_symbols
 from .native_timing import NativeTimingProbe
 
 _ABI_VERSION = 1
@@ -141,6 +142,7 @@ class _NativeLibrary:
             ctypes.POINTER(ctypes.c_uint64),
         ]
         library.tscb_get_last_error.restype = ctypes.c_uint32
+        bind_stream_symbols(library, _Buffer)
 
 
 @dataclass(frozen=True)
@@ -159,8 +161,15 @@ class Lz4FrameAdapter:
     def create_session(self, parameters: dict[str, Any]) -> Lz4FrameSession:
         return Lz4FrameSession(self.library_path, parameters)
 
+    def create_stream_session(self, parameters: dict[str, Any]) -> NativeByteStreamingSession:
+        owner = Lz4FrameSession(self.library_path, parameters)
+        return NativeByteStreamingSession(owner, _Buffer, _buffer, parameters)
+
 
 class Lz4FrameSession:
+    _PREFIX = _PREFIX
+    _MAGIC = _MAGIC
+
     def __init__(self, library_path: Path, parameters: dict[str, Any]):
         self._native = _NativeLibrary(library_path)
         self._handle = ctypes.c_void_p()

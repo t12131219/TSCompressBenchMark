@@ -32,8 +32,8 @@ Environment: `CompressBench14`
   one thread, built-in static dictionary only, no external dictionary, and no checksum.
 - [x] One RFC 7932 Brotli stream per routed object has separate Semantic, Execution,
   and Resource keys from both LZ4/Zstd frames and Snappy raw.
-- [x] Query, random access, and streaming-workload claims remain false; unsupported
-  modes are structured rather than silently falling back.
+- [x] Query and random access remain false; the native streaming workload is a separate
+  capability/profile and unsupported modes are structured rather than silently falling back.
 
 ### Layer 3 - Lifecycle, correctness, and accounting
 

@@ -1,7 +1,7 @@
 # XZ LZMA2 five-layer integration self-check
 
 Date: 2026-09-18  
-Scope: spreadsheet `Value-Compress!B9`, LZMA / xz, `xz-stream` single-call LZMA2  
+Scope: spreadsheet `Value-Compress!B9`, LZMA / xz, `xz-stream` LZMA2
 Environment: `CompressBench14`  
 Canonical project: `/home/fzg/PycharmProjects/TSDataCompressBenchMark`
 
@@ -49,10 +49,9 @@ Canonical project: `/home/fzg/PycharmProjects/TSDataCompressBenchMark`
 
 ## Layer 3 - Lifecycle, safety and accounting
 
-- [x] Documented single-call bound -> lzma_easy_buffer_encode -> mandatory zero-byte
-  Finalize acknowledgement -> accounting -> fresh-context exact decode -> close.
-  The encode API completes all block/index/footer work before returning. Repeated
-  update/Finalize is rejected; this path does not advertise streaming workloads.
+- [x] Streaming path uses lzma_easy_encoder plus lzma_code RUN/FINISH calls with a
+  persistent context; accounting and fresh-context exact decode remain mandatory.
+  Repeated update/Finalize is rejected. One-shot and streaming paths have separate keys.
 - [x] Native decoder flags 0, memlimit 1 GiB; requires STREAM_END, full input
   consumption and exact output length. Python independently checks the registered
   zero/one-block LZMA2 format before allocation. No concat/alternate filter fallback.
@@ -84,8 +83,8 @@ Canonical project: `/home/fzg/PycharmProjects/TSDataCompressBenchMark`
 - [x] Warmup: 42 independent objects, 501,867,060 ns, both minima satisfied.
 - [x] Selected PIPELINE duration: 1,000,191,680 to 1,009,790,720 ns; every repetition
   >=1 s. Native encode/decode observations are positive and within pipeline timing.
-- [x] Native API CLOCK_MONOTONIC timing includes all intrinsic single-call encode
-  allocation/finish; explicit decoder init/end and prechecks are excluded only from
+- [x] Native API CLOCK_MONOTONIC timing includes intrinsic persistent-stream encode
+  allocation/update/finish work; explicit decoder init/end and prechecks are excluded only from
   auxiliary native timing. Zero-byte Finalize does not increase native encode time.
   Pipeline includes Python container/accounting and lifecycle. Scope minima do not
   imply a separate one-second minimum for each native encode/decode observation.

@@ -1,0 +1,58 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "TSDataCompressBenchMark：run validate 细化流程",
+    "locale": "zh-CN",
+    "quality_profile": "showcase",
+    "viewBox": [1540, 1150],
+    "views": [
+      {"id": "runset", "label": "冻结与规划", "focus": ["command", "config", "runset", "prepare", "plan"], "note": "一次 validate 先冻结 run set，再完成 Layer 1 准备和 Layer 2 确定性任务规划。"},
+      {"id": "task", "label": "每个任务", "focus": ["plan", "preflight", "execution-loop", "evidence"], "note": "每个任务先预检，然后在隔离环境中预热、重复、验证并记录。"},
+      {"id": "publication", "label": "证据到报告", "focus": ["evidence", "report"], "note": "报告阶段只读取冻结任务计划和追加运行证据，生成可比较的统计结果。"}
+    ]
+  },
+  "lanes": [
+    {"id": "control", "label": "CLI、配置、Run Set 与计划"},
+    {"id": "execution", "label": "数据准备、隔离执行、证据与报告"}
+  ],
+  "phases": [
+    {"id": "init", "label": "初始化", "fromCol": 0, "toCol": 1},
+    {"id": "freeze", "label": "Layer 1-2：准备与冻结", "fromCol": 2, "toCol": 3, "variant": "emphasis"},
+    {"id": "measure", "label": "Layers 3-4：隔离测量", "fromCol": 4, "toCol": 4, "variant": "emphasis"},
+    {"id": "publish", "label": "Layer 5：发布", "fromCol": 5, "toCol": 5, "variant": "dashed"}
+  ],
+  "groups": [
+    {"id": "runset-group", "label": "Run Set 冻结", "lane": "control", "fromCol": 1, "toCol": 2, "variant": "default"},
+    {"id": "layer12-group", "label": "数据与任务工件", "lane": "execution", "fromCol": 2, "toCol": 3, "variant": "default"},
+    {"id": "task-group", "label": "每个 BenchmarkTask", "lane": "execution", "fromCol": 4, "toCol": 5, "variant": "emphasis"}
+  ],
+  "mainPath": ["command", "config", "runset", "prepare", "plan", "preflight", "execution-loop", "evidence", "report"],
+  "semanticChecks": {"allowedRoots": ["command"], "allowedTerminals": ["report"], "requiredPaths": [{"from": "command", "to": "report"}]},
+  "nodes": [
+    {"id": "command", "lane": "control", "col": 0, "type": "external", "label": "run validate", "tag": "CLI", "width": 150},
+    {"id": "config", "lane": "control", "col": 1, "type": "database", "label": "加载实验配置", "tag": "ExperimentConfig", "width": 170},
+    {"id": "runset", "lane": "control", "col": 2, "type": "backend", "label": "初始化或恢复 Run Set", "tag": "config + env + events", "width": 185},
+    {"id": "plan", "lane": "control", "col": 3, "type": "backend", "label": "协商与规划任务", "tag": "task_plan + snapshots", "width": 180},
+    {"id": "prepare", "lane": "execution", "col": 2, "type": "database", "label": "准备数据集", "tag": "canonical + characterization", "width": 175},
+    {"id": "preflight", "lane": "execution", "col": 4, "type": "security", "label": "预检与输入路由", "tag": "qualified or diagnostic", "width": 180},
+    {"id": "execution-loop", "lane": "execution", "col": 4, "type": "backend", "label": "隔离预热与正式重复", "tag": "Finalize + decode + ledger + resources", "width": 195, "yOffset": 115},
+    {"id": "evidence", "lane": "execution", "col": 5, "type": "database", "label": "追加 RunRecord 与工件", "tag": "events + streams + runs.csv", "width": 185, "yOffset": 70},
+    {"id": "report", "lane": "execution", "col": 5, "type": "backend", "label": "Layer 5 报告与排行", "tag": "eligibility + summary + HTML", "width": 185, "yOffset": 185}
+  ],
+  "edges": [
+    {"id": "command-config", "from": "command", "to": "config", "label": "parse", "variant": "emphasis", "role": "main"},
+    {"id": "config-runset", "from": "config", "to": "runset", "label": "freeze config", "variant": "emphasis", "role": "main"},
+    {"id": "runset-prepare", "from": "runset", "to": "prepare", "label": "selected datasets", "variant": "emphasis", "role": "main"},
+    {"id": "prepare-plan", "from": "prepare", "to": "plan", "label": "canonical descriptors", "variant": "emphasis", "role": "main"},
+    {"id": "plan-preflight", "from": "plan", "to": "preflight", "label": "sorted BenchmarkTask", "variant": "emphasis", "role": "main"},
+    {"id": "preflight-execution", "from": "preflight", "to": "execution-loop", "label": "qualified task", "variant": "emphasis", "role": "main"},
+    {"id": "execution-evidence", "from": "execution-loop", "to": "evidence", "label": "validated records", "variant": "emphasis", "role": "main"},
+    {"id": "evidence-report", "from": "evidence", "to": "report", "label": "frozen evidence", "variant": "emphasis", "role": "main"}
+  ],
+  "cards": [
+    {"dot": "cyan", "title": "Layer 1-2 的冻结内容", "items": ["数据集 manifest、canonical artifact、characterization、codec/source/alias snapshot、resolved configs 和 task_plan 都保存在 run set", "每个任务带有兼容性、预处理计划、执行解析、资源限制和嵌套比较键"]},
+    {"dot": "emerald", "title": "预检与正式重复", "items": ["不兼容、输入/边界失败和预热失败形成 diagnostic RunRecord；每个失败带 reason_code", "正式重复在隔离进程中执行压缩、Finalize、解码、正确性、账本、计时和资源观测；query/streaming 可作为额外工作负载"]},
+    {"dot": "amber", "title": "Layer 5 的聚合规则", "items": ["报告只读任务计划和追加式原始证据，不重跑 codec", "只在相同语义、执行、资源比较键内聚合 PASS FORMAL_REPETITION；coverage 保留全部计划任务"]}
+  ]
+}

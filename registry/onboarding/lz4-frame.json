@@ -81,14 +81,14 @@
   "builds": [
     {
       "profile": "RELEASE",
-      "artifact_sha256": "b26df794e4a249b8851ac1e2cea0e56886c2a76f3b5756e891341e71a39830a1",
+      "artifact_sha256": "4c85a0c0ff45bcc8d29cff00c804246ac1eade3a1afa1cafc702d86dbad40a55",
       "compile_commands_sha256": "08f78ed692683f000219992ee3dd3e1533622aa616b82e4ab3a9d4cd38bfb581",
       "compiler": "GCC 11.4.0",
       "flags": "-O3 -DNDEBUG -fPIC -shared"
     },
     {
       "profile": "ASAN_UBSAN",
-      "artifact_sha256": "c17e38c22b781d79d941151989f0bad3c297251f94a6b8545919a7a7426a3016",
+      "artifact_sha256": "ce158b99f2ab50169ba4299c97c21a9233fdd2618bf10053c6b3d1c8471c1a56",
       "compile_commands_sha256": "d9df5e27e5b23deb031cf75d62ddf61e8ea257d881bb542dce38eeedc51e28c7",
       "compiler": "GCC 11.4.0",
       "flags": "-O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined"
@@ -101,7 +101,7 @@
   },
   "known_limitations": [
     "The lzbench benchmark table itself exercises the raw LZ4 block API; this adapter uses the complete LZ4 frame implementation vendored by the same benchmark.",
-    "The project wrapper currently performs one update per independently finalized object and does not claim streaming/query capability.",
+    "The project wrapper exposes persistent LZ4F_compressUpdate/compressEnd and incremental LZ4F_decompress contexts for the separately keyed streaming profile; query and random access remain unregistered.",
     "The Python FFI descriptor serialization and contiguous byte materialization are included in the declared adapter boundary.",
     "LeakSanitizer cannot run under the host container ptrace policy; ASan/UBSan qualification ran with detect_leaks=0."
   ],

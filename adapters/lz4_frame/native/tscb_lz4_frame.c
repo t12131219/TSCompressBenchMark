@@ -12,11 +12,15 @@
 struct tscb_codec_handle_v1 {
     tscb_native_timer native_timer;
     LZ4F_cctx *compression_context;
+    LZ4F_dctx *stream_decoder;
     LZ4F_preferences_t preferences;
     uint64_t input_bytes;
     uint64_t stream_bytes;
     int update_called;
     int finalized;
+    int stream_mode;
+    int stream_started;
+    int stream_decoder_finished;
     char last_error[256];
     char accounting_json[256];
 };
@@ -202,6 +206,9 @@ tscb_status_v1 tscb_destroy(tscb_codec_handle_v1 *handle) {
     if (handle->compression_context != NULL) {
         (void)LZ4F_freeCompressionContext(handle->compression_context);
     }
+    if (handle->stream_decoder != NULL) {
+        (void)LZ4F_freeDecompressionContext(handle->stream_decoder);
+    }
     free(handle);
     return TSCB_STATUS_OK_V1;
 }
@@ -216,6 +223,13 @@ tscb_status_v1 tscb_reset(tscb_codec_handle_v1 *handle, uint32_t reset_mode) {
     handle->stream_bytes = 0U;
     handle->update_called = 0;
     handle->finalized = 0;
+    handle->stream_mode = 0;
+    handle->stream_started = 0;
+    handle->stream_decoder_finished = 0;
+    if (handle->stream_decoder != NULL) {
+        (void)LZ4F_freeDecompressionContext(handle->stream_decoder);
+        handle->stream_decoder = NULL;
+    }
     handle->last_error[0] = '\0';
     return tscb_new_compression_context(handle);
 }
@@ -268,6 +282,7 @@ tscb_status_v1 tscb_compress(
         tscb_set_error(handle, "compress update may be called exactly once per frame");
         return TSCB_STATUS_CODEC_ERROR_V1;
     }
+    handle->stream_mode = 1;
     if (input->used_bytes > (uint64_t)SIZE_MAX || output->capacity_bytes > (uint64_t)SIZE_MAX) {
         tscb_set_error(handle, "buffer exceeds native size_t");
         return TSCB_STATUS_UNSUPPORTED_V1;
@@ -403,6 +418,141 @@ tscb_status_v1 tscb_decompress(
         return TSCB_STATUS_CODEC_ERROR_V1;
     }
     output->used_bytes = (uint64_t)destination_position;
+    return TSCB_STATUS_OK_V1;
+}
+
+tscb_status_v1 tscb_stream_update(tscb_codec_handle_v1 *handle,
+    const tscb_buffer_v1 *input, tscb_buffer_v1 *output) {
+    size_t written;
+    tscb_status_v1 status;
+    if (handle == NULL || output == NULL || !tscb_buffer_shape_is_valid(input)
+        || output->data == NULL || output->used_bytes > output->capacity_bytes) {
+        return TSCB_STATUS_INVALID_ARGUMENT_V1;
+    }
+    if (handle->finalized || handle->stream_mode == 1) {
+        tscb_set_error(handle, "LZ4 stream update mixed with one-shot or finalize");
+        return TSCB_STATUS_CODEC_ERROR_V1;
+    }
+    handle->stream_mode = 2;
+    if (output->capacity_bytes > (uint64_t)SIZE_MAX || input->used_bytes > (uint64_t)SIZE_MAX) {
+        return TSCB_STATUS_UNSUPPORTED_V1;
+    }
+    if (!handle->stream_started) {
+        written = LZ4F_compressBegin(handle->compression_context, output->data,
+            (size_t)output->capacity_bytes, &handle->preferences);
+        status = tscb_lz4_error(handle, "LZ4F_compressBegin", written);
+        if (status != TSCB_STATUS_OK_V1) {
+            return tscb_lz4_dst_too_small(written) ? TSCB_STATUS_DST_TOO_SMALL_V1 : status;
+        }
+        handle->stream_started = 1;
+    } else {
+        written = 0U;
+    }
+    {
+        size_t update = LZ4F_compressUpdate(handle->compression_context,
+            (unsigned char *)output->data + written,
+            (size_t)output->capacity_bytes - written,
+            input->data, (size_t)input->used_bytes, NULL);
+        status = tscb_lz4_error(handle, "LZ4F_compressUpdate", update);
+        if (status != TSCB_STATUS_OK_V1) {
+            return tscb_lz4_dst_too_small(update) ? TSCB_STATUS_DST_TOO_SMALL_V1 : status;
+        }
+        output->used_bytes = (uint64_t)written + (uint64_t)update;
+    }
+    handle->input_bytes += input->used_bytes;
+    handle->stream_bytes += output->used_bytes;
+    handle->update_called = 1;
+    return TSCB_STATUS_OK_V1;
+}
+
+tscb_status_v1 tscb_stream_finalize(tscb_codec_handle_v1 *handle, tscb_buffer_v1 *output) {
+    size_t written;
+    tscb_status_v1 status;
+    if (handle == NULL || output == NULL || output->data == NULL
+        || output->used_bytes > output->capacity_bytes) return TSCB_STATUS_INVALID_ARGUMENT_V1;
+    if (handle->finalized || handle->stream_mode == 1) {
+        tscb_set_error(handle, "LZ4 stream finalize repeated or mixed with one-shot");
+        return TSCB_STATUS_CODEC_ERROR_V1;
+    }
+    handle->stream_mode = 2;
+    written = 0U;
+    if (!handle->stream_started) {
+        written = LZ4F_compressBegin(handle->compression_context, output->data,
+            (size_t)output->capacity_bytes, &handle->preferences);
+        status = tscb_lz4_error(handle, "LZ4F_compressBegin", written);
+        if (status != TSCB_STATUS_OK_V1) {
+            return tscb_lz4_dst_too_small(written) ? TSCB_STATUS_DST_TOO_SMALL_V1 : status;
+        }
+        handle->stream_started = 1;
+    }
+    {
+        size_t end_written = LZ4F_compressEnd(handle->compression_context,
+            (unsigned char *)output->data + written,
+            (size_t)output->capacity_bytes - written, NULL);
+        status = tscb_lz4_error(handle, "LZ4F_compressEnd", end_written);
+        if (status != TSCB_STATUS_OK_V1) {
+            return tscb_lz4_dst_too_small(end_written) ? TSCB_STATUS_DST_TOO_SMALL_V1 : status;
+        }
+        written += end_written;
+    }
+    output->used_bytes = (uint64_t)written;
+    handle->stream_bytes += output->used_bytes;
+    handle->finalized = 1;
+    return TSCB_STATUS_OK_V1;
+}
+
+tscb_status_v1 tscb_stream_decoder_reset(tscb_codec_handle_v1 *handle) {
+    size_t code;
+    if (handle == NULL) return TSCB_STATUS_INVALID_ARGUMENT_V1;
+    if (handle->stream_decoder != NULL) {
+        (void)LZ4F_freeDecompressionContext(handle->stream_decoder);
+        handle->stream_decoder = NULL;
+    }
+    code = LZ4F_createDecompressionContext(&handle->stream_decoder, LZ4F_VERSION);
+    if (LZ4F_isError(code)) return tscb_lz4_error(handle, "LZ4F_createDecompressionContext", code);
+    handle->stream_decoder_finished = 0;
+    return TSCB_STATUS_OK_V1;
+}
+
+tscb_status_v1 tscb_stream_decompress_update(tscb_codec_handle_v1 *handle,
+    const tscb_buffer_v1 *input, tscb_buffer_v1 *output, uint32_t *stream_end) {
+    size_t source_size;
+    size_t destination_size;
+    size_t code;
+    if (handle == NULL || handle->stream_decoder == NULL || stream_end == NULL
+        || !tscb_buffer_shape_is_valid(input) || output == NULL || output->data == NULL) {
+        return TSCB_STATUS_INVALID_ARGUMENT_V1;
+    }
+    source_size = (size_t)input->used_bytes;
+    destination_size = (size_t)output->capacity_bytes;
+    code = LZ4F_decompress(handle->stream_decoder, output->data, &destination_size,
+        input->data, &source_size, NULL);
+    if (LZ4F_isError(code)) {
+        tscb_status_v1 status = tscb_lz4_error(handle, "LZ4F_decompress", code);
+        return tscb_lz4_dst_too_small(code) ? TSCB_STATUS_DST_TOO_SMALL_V1 : status;
+    }
+    if (source_size != input->used_bytes) {
+        tscb_set_error(handle, "LZ4 stream input chunk was not fully consumed");
+        return TSCB_STATUS_CODEC_ERROR_V1;
+    }
+    output->used_bytes = (uint64_t)destination_size;
+    *stream_end = code == 0U ? 1U : 0U;
+    handle->stream_decoder_finished = *stream_end != 0U;
+    return TSCB_STATUS_OK_V1;
+}
+
+tscb_status_v1 tscb_stream_decoder_finish(tscb_codec_handle_v1 *handle) {
+    if (handle == NULL || handle->stream_decoder == NULL) return TSCB_STATUS_INVALID_ARGUMENT_V1;
+    if (!handle->stream_decoder_finished) {
+        tscb_set_error(handle, "truncated LZ4 frame");
+        return TSCB_STATUS_CODEC_ERROR_V1;
+    }
+    return TSCB_STATUS_OK_V1;
+}
+
+tscb_status_v1 tscb_stream_state_bytes(tscb_codec_handle_v1 *handle, uint64_t *state_bytes) {
+    if (handle == NULL || state_bytes == NULL) return TSCB_STATUS_INVALID_ARGUMENT_V1;
+    *state_bytes = sizeof(*handle) + UINT64_C(65536);
     return TSCB_STATUS_OK_V1;
 }
 
