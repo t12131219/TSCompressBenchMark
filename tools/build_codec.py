@@ -836,14 +836,56 @@ def _delta_varint_command(output: Path, profile: str) -> list[str]:
     ]
 
 
+def _rewrite_lossless_command(
+    output: Path, profile: str, algorithm: str
+) -> tuple[list[str], dict[str, Any]]:
+    adapter = PROJECT_ROOT / "adapters/rewrite_lossless"
+    lock = json.loads((adapter / "FROZEN_APIS.json").read_text())
+    entry = lock["algorithms"][algorithm]
+    for record in entry["files"]:
+        path = PROJECT_ROOT / record["path"]
+        if _sha256(path) != record["sha256"]:
+            raise RuntimeError(f"frozen standalone API changed: {record['path']}")
+    vendor = adapter / "vendor" / entry["package"]
+    command = [
+        "c++", "-std=c++17", "-fPIC", "-fvisibility=hidden", "-shared",
+        "-Wl,--no-undefined", "-Wall", "-Wextra", "-Wpedantic",
+        "-fno-fast-math", "-ffp-contract=off", "-pthread",
+        f"-DTSCB_REWRITE_KIND={entry['kind']}", f'-DTSCB_REWRITE_KEY="{algorithm}"',
+        "-I", str(PROJECT_ROOT / "native/include"), "-I", str(vendor / "include"),
+        str(adapter / "native/tscb_rewrite_lossless.cc"),
+        *[str(vendor / p) for p in entry["translation_units"]],
+        "-o", str(output),
+    ]
+    command[1:1] = (
+        ["-O3", "-DNDEBUG"]
+        if profile == "release"
+        else ["-O1", "-g", "-fsanitize=address,undefined", "-fno-omit-frame-pointer"]
+    )
+    return command, {
+        "frozen_api_lock_sha256": _sha256(adapter / "FROZEN_APIS.json"),
+        "source_closure": entry["files"],
+        "standalone_package": entry["package"],
+    }
+
+
 def _build(algorithm: str, profile: str) -> dict[str, Any]:
+    from build_completed_rewrite import KINDS
+    from build_completed_rewrite import build as build_completed
+
+    if algorithm in KINDS:
+        return build_completed(algorithm, profile)
     directory_name = algorithm.replace("-", "_")
     output_dir = PROJECT_ROOT / "build" / "adapters" / directory_name / profile
     output_dir.mkdir(parents=True, exist_ok=True)
     output = output_dir / f"libtscb_{directory_name}.so"
     dependency_evidence: dict[str, Any] = {}
     dependency_log = ""
-    if algorithm == "delta-varint":
+    if algorithm in (
+        "chimp", "chimp128", "elf-plus", "self-star", "prometheus-xor-chunk", "elf", "elf-star"
+    ):
+        command, dependency_evidence = _rewrite_lossless_command(output, profile, algorithm)
+    elif algorithm == "delta-varint":
         command = _delta_varint_command(output, profile)
         dependency_evidence = {
             "upstream_repository": "https://github.com/mattsta/varint",
@@ -1067,22 +1109,38 @@ def _build(algorithm: str, profile: str) -> dict[str, Any]:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Build a frozen source codec adapter")
-    parser.add_argument(
-        "algorithm",
-        choices=(
-            "huff0", "fse", "sprintz-delta-u8", "sprintz-fire-u8",
-            "sprintz-delta", "sprintz-fire", "sprintz-fire-huff0",
-            "lz4-frame", "zstd-frame", "snappy-raw", "lzsse2-raw", "brotli-stream",
-            "deflate-zlib", "bzip2-stream", "xz-stream", "lzss-raw",
-            "lzss-dipperstein-c", "lzsse8-raw", "alp", "alp-rd",
-            "serf-qt", "serf-xor", "zfp-accuracy-1d",
-            "neats-lossless-i64", "leats-lossless-i64", "delta-varint"
-        ),
+    algorithms = (
+        "abba", "fabba", "influxdb-tsm-adaptive-timestamp", "prometheus-xor2-chunk",
+        "tristan", "corad", "deepzip", "dzip", "walloc-1d",
+        "prometheus-histogram-st", "prometheus-float-histogram-st",
+        "huff0", "fse", "sprintz-delta-u8", "sprintz-fire-u8",
+        "sprintz-delta", "sprintz-fire", "sprintz-fire-huff0",
+        "lz4-frame", "zstd-frame", "snappy-raw", "lzsse2-raw", "brotli-stream",
+        "deflate-zlib", "bzip2-stream", "xz-stream", "lzss-raw",
+        "lzss-dipperstein-c", "lzsse8-raw", "alp", "alp-rd",
+        "serf-qt", "serf-xor", "zfp-accuracy-1d",
+        "neats-lossless-i64", "leats-lossless-i64", "delta-varint",
+        "chimp", "chimp128", "elf-plus", "self-star", "prometheus-xor-chunk", "elf", "elf-star"
     )
+    aliases = {}
+    for path in sorted((PROJECT_ROOT / "registry/codecs/aliases").glob("*.json")):
+        document = json.loads(path.read_text(encoding="utf-8"))
+        if (
+            document.get("schema_version") != "tscb.codec-alias.v2"
+            or document.get("mapping_kind") != "SPREADSHEET_SOURCE_MAPPING_NOT_NEW_CODEC"
+            or document.get("key") != path.stem
+            or path.stem in algorithms
+        ):
+            parser.error(f"invalid codec alias: {path.name}")
+        target = document.get("canonical_key")
+        if target in algorithms:
+            aliases[path.stem] = target
+    parser.add_argument("algorithm", choices=(*algorithms, *aliases))
     parser.add_argument("--profile", choices=("release", "sanitizer", "all"), default="release")
     arguments = parser.parse_args()
     profiles = ("release", "sanitizer") if arguments.profile == "all" else (arguments.profile,)
-    records = [_build(arguments.algorithm, item) for item in profiles]
+    algorithm = aliases.get(arguments.algorithm, arguments.algorithm)
+    records = [_build(algorithm, item) for item in profiles]
     print(json.dumps(records, ensure_ascii=False, indent=2, sort_keys=True))
     return 0
 

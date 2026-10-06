@@ -1,0 +1,68 @@
+schema_version: tscb.porting-source-manifest.v1
+algorithm_id: abba
+repository: https://github.com/nla-group/ABBA
+source_commit: 614d56841cd2f1c2925cea4d2c2648a7b2ac791d
+source_commit_date: 2020-05-07T07:31:57+01:00
+source_commit_subject: "update paper figures"
+source_tag: null
+paper_doi: null
+original_authors:
+  - Steven Elsworth
+  - Stefan Guettel
+  - nla-group
+source_checkout_dirty: false
+snapshot_method: git archive
+snapshot_command: >-
+  git archive --format=tar HEAD .travis.yml .gitignore ABBA.py LICENSE README.md
+  makefile requirements.txt setup.py test_ABBA.py util.py src/Ckmeans.1d.dp.cpp
+  src/Ckmeans.1d.dp.h src/Ckmeans.i src/__init__.py src/dynamic_prog.cpp
+  src/fill_SMAWK.cpp src/fill_log_linear.cpp src/fill_quadratic.cpp
+  src/select_levels.cpp
+snapshot_archive_sha256: 7ec9b93a01600b1c303501180aba45a8bed74384df658d0a054cd86e6fdb956e
+closure_sha256: 3d3caf755eb5e67a1392e15c6fea9567d1a9fa1fa963e0047656f1db0932176c
+closure_hash_recipe: "sha256(sorted(relative_path + NUL + file_sha256 + LF))"
+original_language: Python + C++11
+source_language_version_required: >-
+  Upstream does not pin Python; requirements.txt pins a 2019 dependency set.
+source_backend_target: CPython plus native CKmeans extension
+source_build_profile: upstream makefile and setup.py
+dependency_lock:
+  requirements_txt_sha256: ded7d20dcea208a35b337760a4f8a628d619b9c3c67140b291c4448287309bb9
+files:
+  - {path: ABBA.py, sha256: 75350edf7ee42112aade71bda340ec274b40aea941a3b7ccc03743d5367d3370, role: adaptive compression digitization inverse pipeline, language: Python}
+  - {path: test_ABBA.py, sha256: cd1fa0434affcf148baa0b0b5d5102099c5b28000bea0d22c569a1807607ab85, role: upstream unit tests, language: Python}
+  - {path: util.py, sha256: 454a1f1e7d5349b58f14efbcb05b17d27c9b24b5603cd1409ef56a08a4881d81, role: upstream error metric utility, language: Python}
+  - {path: src/Ckmeans.1d.dp.cpp, sha256: 563dba1c2ada43cd11e88597d8e928205b351bf8c75fffeabc49aebe0ff31475, role: retained CKmeans entry point, language: C++}
+  - {path: src/Ckmeans.1d.dp.h, sha256: 1c632bcb21067faeb40f69c9269e50a866f69d744c693b551346dd8bb2250e8b, role: retained CKmeans declarations, language: C++}
+  - {path: src/dynamic_prog.cpp, sha256: d07924638142098d71d08862eae02f0e6668a53cf09d4ec9515fa75c1b24fe7d, role: retained dynamic program, language: C++}
+  - {path: src/fill_SMAWK.cpp, sha256: ec5e55db9d37f6713ccd2825176b84ae3c97e48f0e421bc8118be1b239e107b2, role: retained linear-time row fill, language: C++}
+  - {path: src/fill_log_linear.cpp, sha256: b66fc5c897f2cd3d47cd5dddf0cffb6392bf63d5276dedd9d703f1192e1824da, role: retained alternate row fill, language: C++}
+  - {path: src/fill_quadratic.cpp, sha256: 297e838923d5db67604e468ae1e4026719e3ffc1fbd8c57499c8e8ebaecd618b, role: retained alternate row fill, language: C++}
+  - {path: src/select_levels.cpp, sha256: e1a0977f64c54e25e0f5fd13d4b9eb610294b706108aec21fc06c6b9b8ea49fb, role: retained tolerance-driven K selection, language: C++}
+  - {path: src/Ckmeans.i, sha256: 71da3db34a2a1e56e6028c918153b54e320889351f78e4a55160b45edecdd5a9, role: upstream SWIG interface, language: SWIG}
+  - {path: requirements.txt, sha256: ded7d20dcea208a35b337760a4f8a628d619b9c3c67140b291c4448287309bb9, role: Python dependency lock, language: Text}
+  - {path: README.md, sha256: 40c124805a693851b70c24027ab54f02bd15b19ca5a27d3e97b81a21be8d2058, role: algorithm and build documentation, language: Markdown}
+  - {path: LICENSE, sha256: 811e765948ab25945d349c65d8520629a04487bf529750f79708dc3b5ee4a509, role: repository license, language: Text}
+dependencies:
+  - {name: NumPy, kind: source runtime, evidence: requirements.txt}
+  - {name: scikit-learn, kind: source alternate-clustering oracle runtime, evidence: requirements.txt and ReWrite/abba/tests/capability/run_capability_validation.py}
+  - {name: SWIG, kind: unavailable upstream binding generator, evidence: makefile}
+submodules: []
+patches: []
+official_decoder: true
+public_format: false
+semantic_condition: >-
+  Compare adaptive pieces, CKmeans labels and centers, population-based symbol
+  remapping, ties-to-even length quantization and reconstructed samples under the
+  frozen scl=0/norm=2 profile. The package-owned container is not an upstream format.
+license:
+  concluded_spdx: MIT
+  redistribution_status: RUN_ALLOWED_WITH_ATTRIBUTION
+  commercial_use_status: ALLOWED_WITH_CONDITIONS
+  license_files: [LICENSES/MIT.txt]
+toolchain_manifest: TOOLCHAIN_MANIFEST.yaml
+reference_package_test: PARTIAL_PASS
+reference_package_test_evidence: >-
+  Six upstream compression/inverse/quantization tests pass under Python 3.11 and
+  NumPy 1.24.3. SWIG is unavailable, so G2 supplies an executable stage-composed
+  oracle from unmodified ABBA.py and the unmodified frozen CKmeans sources.

@@ -1,0 +1,268 @@
+schema_version: tscb.port-manifest.v1
+algorithm_id: abba
+implementation_id: abba-canonical-cpp
+algorithm_name: ABBA
+display_name: ABBA canonical C++
+category: lossy
+family: adaptive-symbolic-aggregation
+object_level: P2_PIPELINE
+rewrite_conclusion: REWRITE_DONE
+port_method: TRANSLATED
+compatibility_target: SEMANTIC
+source:
+  repository: https://github.com/nla-group/ABBA
+  commit: 614d56841cd2f1c2925cea4d2c2648a7b2ac791d
+  archive_sha256: 7ec9b93a01600b1c303501180aba45a8bed74384df658d0a054cd86e6fdb956e
+  closure_sha256: 3d3caf755eb5e67a1392e15c6fea9567d1a9fa1fa963e0047656f1db0932176c
+original_language: Python + C++ kernel
+source_language_version: Python 3 / C++11
+canonical_language: C++17
+license:
+  concluded_spdx: MIT
+  redistribution_status: RUN_ALLOWED_WITH_ATTRIBUTION
+  files:
+  - LICENSES/MIT.txt
+canonical_profile:
+  profile_id: 1
+  name: ckmeans-scl0-norm2-v1
+  compression_norm: 2
+  digitization_method: CKmeans-1d-DP-linear
+  scl: 0
+  seed: true
+  fallback_policy: deterministic-sklearn-compatible-kmeans
+  supported_parameters:
+  - compression_tol
+  - digitization_tol
+  - min_k
+  - max_k
+  - max_len
+  - scl
+  - norm
+  - clustering
+  - weighted
+  - symmetric
+  supported_upstream_paths:
+  - finite-positive-scl deterministic KMeans
+  - scl-infinity length-only CKmeans
+  - incremental clustering
+  excluded_upstream_paths:
+  - patched reconstruction helper
+gates:
+  G0:
+    status: PASS
+    inputs:
+    - first-batch recommendation workbook
+    - frozen nla-group/ABBA repository checkout
+    outputs:
+    - stable algorithm_id abba
+    - P2_PIPELINE object classification
+    - PARTIAL_REWRITE boundary retaining the audited CKmeans kernel
+    - deterministic canonical and alternate clustering profiles
+    reviewer: Codex porting audit on 2026-09-28
+    evidence: 'ABBA is a lossy multi-stage pipeline: adaptive piecewise-linear compression,
+      digitization, length quantization and inverse reconstruction. The existing CKmeans
+      C++ kernel is a dependency of the pipeline, not the complete codec. The default
+      profile fixes scl=0, norm=2 and the CKmeans linear method; finite-scl KMeans,
+      scl-infinity CKmeans and incremental clustering are exposed as source-compatible
+      C++ alternate paths.'
+  G1:
+    status: PASS
+    inputs:
+    - clean source commit 614d56841cd2f1c2925cea4d2c2648a7b2ac791d
+    - complete pipeline, CKmeans, tests, build and dependency audit
+    outputs:
+    - Source/abba immutable snapshot
+    - SOURCE_MANIFEST.yaml file hashes and MIT license record
+    - TOOLCHAIN_MANIFEST.yaml with the SWIG/dependency compatibility finding
+    reviewer: Codex source-closure audit on 2026-09-28
+    evidence: The closure contains the Python pipeline, all six C++ CKmeans implementation
+      files and header, SWIG interface, upstream tests, dependency lock, build files,
+      README and MIT license. The checkout is clean and the snapshot archive and closure
+      hashes are frozen. No upstream file is patched.
+  G2:
+    status: PASS
+    inputs:
+    - frozen ABBA.py and CKmeans source closure
+    - stage-composed executable source oracle
+    - deterministic canonical profile
+    outputs:
+    - contract.md
+    - tests/oracle/abba_oracle.py
+    - tests/oracle/ckmeans_oracle_cli.cpp
+    - tests/golden/abba_vectors.json
+    - validation/DATASET_TEST_PLAN.yaml
+    - validation/reference_validation.md
+    reviewer: Codex executable-oracle audit on 2026-09-28
+    evidence: Six applicable upstream unit tests pass. The unmodified frozen CKmeans
+      sources reproduce the upstream scl=0 examples. Ten deterministic golden requests
+      cover transform and every supported stage, including tie ordering and Python
+      ties-to-even quantization. Three UCR datasets and 36 independent series are
+      frozen before canonical C++ implementation.
+  G3:
+    status: PASS
+    inputs:
+    - canonical scalar C++17 pipeline
+    - audited retained CKmeans kernel
+    - frozen executable source oracle and dataset plan
+    outputs:
+    - include/abba.hpp
+    - src/canonical/abba.cpp
+    - tests/unit/test_abba.cpp
+    - tests/cross_decode/run_differential.py
+    - validation/validation_report.md
+    - validation/dataset_validation_report.md
+    reviewer: Codex canonical correctness review on 2026-09-28
+    evidence: Ten golden, 64 source differential, 64 alternate-clustering differential,
+      and 256 native property cases pass. Every byte mutation of a representative
+      container and truncation are rejected. GCC Release, ASan/UBSan and Clang Release
+      pass. Thirty-six UCR series totaling 5,400 samples match source stages and lossy
+      metrics.
+  G4:
+    status: PASS
+    inputs:
+    - G3 canonical implementation
+    - package-owned C++ API and versioned C11 ABI
+    outputs:
+    - include/abba_c.h
+    - libabba_c shared library
+    - standalone Qualification Preflight
+    - physical FinalBits ledger
+    reviewer: Codex standalone API review on 2026-09-28
+    evidence: Exact size query, exact capacity and capacity-minus-one, canaries, input
+      immutability, N=2/3/127/128/129/257/1024, malformed input, C11 header compilation
+      and accounting closure pass. The export map exposes only five versioned abba_*_v1
+      functions.
+  G5:
+    status: PASS
+    inputs:
+    - G3/G4 correctness evidence
+    - scalar CORE performance observations
+    outputs:
+    - src/optimized/README.md
+    - validation/performance_result.json
+    reviewer: Codex optimization applicability review on 2026-09-28
+    evidence: OPTIMIZATION_NOT_APPLICABLE. The retained CKmeans path already uses
+      SMAWK; segmentation, correction carry and reconstruction are sequential. No
+      profile evidence justifies a second implementation in this release.
+  G6:
+    status: PASS
+    inputs:
+    - complete G0-G5 evidence
+    - GCC/Clang execution and reproducible-build evidence
+    - Zig AArch64 cross-build and QEMU execution evidence
+    outputs:
+    - validation/build_reproducibility.md
+    - validation/cross_platform_validation.md
+    - validation/CROSS_PLATFORM_ENVIRONMENT.yaml
+    reviewer: Codex release evidence review on 2026-09-28
+    evidence: Two independent GCC Release builds produce bit-identical static and
+      shared libraries. GCC and Clang pass all five test targets and produce the same
+      container for the recorded cross-compiler case. Zig 0.15.2 AArch64-musl builds
+      pass unit, C API preflight, golden/property, alternate capability, 36-series
+      dataset differential, and x86_64/AArch64 exchange validation.
+input:
+  logical_record: ordered IEEE-754 binary64 samples
+  dimensions: one univariate series with N >= 2
+  layout: contiguous binary64 values
+  allows_empty: false
+  supports_nan: false
+  supports_inf: false
+  supports_negative_zero: true
+  supports_subnormal: true
+state:
+  stateless: true
+  streaming: false
+  upstream_semantics: one independent series per transform/inverse_transform call
+  block_independent: true
+  cross_block_history: false
+  dictionary: per-container codebook
+  reset_semantics: every encode call starts a new independent series
+native_capability_parity:
+  overall_result: FULL_PARITY
+  matrix_path: NATIVE_CAPABILITY_MATRIX.yaml
+  validation_report: validation/native_capability_validation_report.md
+  unclassified_count: 0
+  required_total: 2
+  required_passed: 2
+  waiver_ids: []
+lossy:
+  enabled: true
+  error_mode: source-relative stage and reconstruction semantic equivalence
+  error_value: abs <= 1e-10 + 1e-12 * abs(reference)
+  rounding: nearest ties-to-even with sequential correction carry
+  fp_precision: IEEE-754 binary64
+  fma_policy: no contraction requested; compiler defaults without fast-math
+  nan_policy: reject
+  inf_policy: reject
+bitstream:
+  standardized: false
+  specification: package-owned ABBA self-describing container v1
+  byte_order: little-endian fixed-width fields
+  bit_order: byte-aligned
+  version: 1
+  checksum: CRC-32 over all preceding container bytes
+standalone_validation:
+  execution_scopes:
+  - CORE
+  serialized_bits_components:
+  - header
+  - codebook
+  - symbol_stream
+  - checksum
+  external_side_information_bits: 0
+  workspace_accounted: true
+  dataset_suite:
+    plan: validation/DATASET_TEST_PLAN.yaml
+    plan_sha256: fd4f26464f54eb5b461d39798c89a3893b2f6b84b8618d8b4f6ec1088089d797
+    selected_dataset_ids:
+    - ucr2018:ECG5000:TEST:rows0-11
+    - ucr2018:Chinatown:TEST:rows0-11
+    - ucr2018:Coffee:TEST:rows0-11
+    result: validation/dataset_validation_result.json
+    result_sha256: f7752eae0b3173fffd0754a3d2c8b2baca813724e287fca7acc8a22611e3711e
+    report: validation/dataset_validation_report.md
+  threads: 1
+  isa: portable-scalar
+standalone_api:
+  cpp_header: include/abba.hpp
+  c_header: include/abba_c.h
+  c_api_version: 1
+  shared_library: libabba_c
+build:
+  c_standard: C11
+  cpp_standard: C++17
+  build_system: CMake 3.22.1
+  native_compiler: GCC/G++ 11.4.0
+  secondary_compiler: Clang/Clang++ 14.0.0
+  target: x86_64-linux-gnu
+  patch_set_sha256: 2bed3c68c8854f36f5421b1462327b4156abefc681a651e536c5aa48de136821
+  reproducible_artifacts:
+    libabba_ckmeans_a: 0110769561703668899457cdcba0d540161fefd26470e76595b555a22b7d6a56
+    libabba_a: 8364b43999147ee87175daed37490ee64a6fddc4e26c264420c49c26a70ec446
+    libabba_c_so: 28860770f3f5f1877ea01058d35ee24a6c750774695218ff138fda383d8e1965
+integration:
+  performed: false
+  tscb_adapter_present: false
+  registry_modified: false
+  note: Out of scope; requires a separate post-rewrite task.
+execution:
+  scope: REWRITE_ONLY
+  required_gates:
+  - G0
+  - G1
+  - G2
+  - G3
+  - G4
+  - G5
+  - G6
+  current_gate: G6
+  terminal_status: REWRITE_DONE
+  blocker_evidence: null
+waivers: []
+final_queue_audit:
+  status: PASS
+  date: '2026-10-03'
+  native: validation/final_queue/native.json
+  security: validation/final_queue/security.json
+  release: validation/final_queue/release.json
+  actual_original_xor_dataset_oracle: null

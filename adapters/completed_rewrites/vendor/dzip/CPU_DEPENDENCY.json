@@ -1,0 +1,15 @@
+{
+  "status": "AUDITED",
+  "upstream_version": "tensorflow v1.14.0",
+  "origin": "https://raw.githubusercontent.com/tensorflow/tensorflow/v1.14.0/tensorflow/core/kernels/eigen_contraction_kernel.h",
+  "upstream_sha256": "38f7b5fccf2163da758b38d49d343368e9b6145b00059bb074605d909574fde5",
+  "native_sha256": "7709868647cc86c0c1ce8601935805f1956c5c069e8ea8314abf7f5bd7d8241b",
+  "patch_sha256": "5eac07d024fea95e253fbec18db68b560a7792347bb9c838834d33009d1b9a7a",
+  "license": "Apache-2.0",
+  "changes": [
+    "Native Eigen include paths",
+    "Remove unused integer/FixedPoint specialization",
+    "Check native float GEMM status in release builds"
+  ],
+  "production_runtime": "Standalone native header, Eigen and MKL-DNN; no TensorFlow/Python execution"
+}

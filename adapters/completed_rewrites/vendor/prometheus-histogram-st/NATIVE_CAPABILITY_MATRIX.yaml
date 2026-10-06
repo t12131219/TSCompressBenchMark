@@ -1,0 +1,4089 @@
+{
+  "schema_version": 1,
+  "algorithm_id": "prometheus-histogram-st",
+  "overall_result": "FULL_PARITY",
+  "capabilities": [
+    {
+      "capability_id": "chunk.integer",
+      "parity_class": "REQUIRED_PARITY",
+      "owner": "prometheus-histogram-st rewrite",
+      "upstream": {
+        "present": true,
+        "public_or_supported": true,
+        "evidence": [
+          {
+            "path": "tsdb/chunkenc/histogram_st.go",
+            "sha256": "313a2695cd586ef2640a5d3c12c98885358606aac1d9b3aa8b3ccb7fcdd69c23",
+            "symbols": [
+              {
+                "symbol": "func NewHistogramSTChunk() *HistogramSTChunk {",
+                "line": 38
+              },
+              {
+                "symbol": "func (c *HistogramSTChunk) Reset(stream []byte) {",
+                "line": 43
+              },
+              {
+                "symbol": "func (*HistogramSTChunk) Encoding() Encoding { return EncHistogramST }",
+                "line": 48
+              },
+              {
+                "symbol": "func (c *HistogramSTChunk) Bytes() []byte {",
+                "line": 51
+              },
+              {
+                "symbol": "func (c *HistogramSTChunk) NumSamples() int {",
+                "line": 56
+              },
+              {
+                "symbol": "func (c *HistogramSTChunk) GetCounterResetHeader() CounterResetHeader {",
+                "line": 63
+              },
+              {
+                "symbol": "func (c *HistogramSTChunk) Compact() {",
+                "line": 68
+              },
+              {
+                "symbol": "func (c *HistogramSTChunk) Appender() (Appender, error) {",
+                "line": 77
+              },
+              {
+                "symbol": "func newHistogramSTIterator(b []byte) *histogramSTIterator {",
+                "line": 134
+              },
+              {
+                "symbol": "func (c *HistogramSTChunk) iterator(it Iterator) *histogramSTIterator {",
+                "line": 147
+              },
+              {
+                "symbol": "func (c *HistogramSTChunk) Iterator(it Iterator) Iterator {",
+                "line": 156
+              },
+              {
+                "symbol": "func (a *HistogramSTAppender) GetCounterResetHeader() CounterResetHeader {",
+                "line": 168
+              },
+              {
+                "symbol": "func (a *HistogramSTAppender) setCounterResetHeader(cr CounterResetHeader) {",
+                "line": 173
+              },
+              {
+                "symbol": "func (a *HistogramSTAppender) NumSamples() int {",
+                "line": 180
+              },
+              {
+                "symbol": "func (a *HistogramSTAppender) setNumSamples(num int) {",
+                "line": 186
+              },
+              {
+                "symbol": "func (a *HistogramSTAppender) appendable(h *histogram.Histogram) (",
+                "line": 192
+              },
+              {
+                "symbol": "func (a *HistogramSTAppender) appendableGauge(h *histogram.Histogram) (",
+                "line": 256
+              },
+              {
+                "symbol": "func (a *HistogramSTAppender) appendHistogramST(num int, st, t int64, h *histogram.Histogram) int {",
+                "line": 296
+              },
+              {
+                "symbol": "func (*HistogramSTAppender) Append(int64, int64, float64) {",
+                "line": 303
+              },
+              {
+                "symbol": "func (*HistogramSTAppender) AppendFloatHistogram(Appender, int64, int64, *histogram.FloatHistogram, bool) (Chunk, bool, Appender, error) {",
+                "line": 307
+              },
+              {
+                "symbol": "func (a *HistogramSTAppender) AppendHistogram(prev Appender, st, t int64, h *histogram.Histogram, appendOnly bool) (Chunk, bool, Appender, error) {",
+                "line": 312
+              },
+              {
+                "symbol": "func (a *HistogramSTAppender) recodeST(",
+                "line": 431
+              },
+              {
+                "symbol": "func (it *histogramSTIterator) AtST() int64 {",
+                "line": 479
+              },
+              {
+                "symbol": "func (it *histogramSTIterator) Reset(b []byte) {",
+                "line": 483
+              },
+              {
+                "symbol": "func (it *histogramSTIterator) Next() ValueType {",
+                "line": 526
+              },
+              {
+                "symbol": "func (it *histogramSTIterator) Seek(t int64) ValueType {",
+                "line": 540
+              }
+            ]
+          }
+        ],
+        "semantic_contract": "Complete integer histogram joint stream and 14-bit sample count",
+        "platforms": [
+          "portable Go"
+        ]
+      },
+      "rewrite": {
+        "present": true,
+        "public_symbol": "Chunk::append",
+        "variant": "canonical_scalar",
+        "build_target": "histogram_st",
+        "platforms": [
+          "Linux x86_64 GCC11/Clang14",
+          "Linux AArch64 musl QEMU"
+        ],
+        "implementation_files": [
+          "include/histogram_st.hpp",
+          "src/histogram_st.cpp"
+        ]
+      },
+      "validation": {
+        "status": "PASS",
+        "witnesses": [
+          "int.one",
+          "int.two",
+          "int.uint64_wrap"
+        ],
+        "tests": [
+          "validation/final-cross-decode/report.json",
+          "validation/final-properties/report.json",
+          "validation/qualification/native.json",
+          "validation/qualification/sanitizers.json",
+          "validation/qualification/tsan-fixed-layout.json",
+          "validation/qualification/portable.json",
+          "validation/qualification/source-tests.json"
+        ],
+        "artifacts": [
+          {
+            "path": "validation/final-cross-decode/report.json",
+            "sha256": "6edeaee2b9ab809dd6453a541ea19a5b58fa65fca1e57346018e3515d59e0dc0"
+          },
+          {
+            "path": "validation/final-properties/report.json",
+            "sha256": "dce5e43ea5acf859953a3196ee3dc9903e1af962320ab8c5961c6345fc709a43"
+          },
+          {
+            "path": "validation/qualification/native.json",
+            "sha256": "f0fb40a79ac55d8eb1c1d862edeef29ac8a82658b40f4adebc8cd35573c8b5aa"
+          },
+          {
+            "path": "validation/qualification/sanitizers.json",
+            "sha256": "3ea799081789c43c6238d90ad640ecb499136293caf43a455f06a9e30a54ba35"
+          },
+          {
+            "path": "validation/qualification/tsan-fixed-layout.json",
+            "sha256": "6acb3248a83b6c98aa373f0951b107334a42a79e97c9bef734682f48dbd31645"
+          },
+          {
+            "path": "validation/qualification/portable.json",
+            "sha256": "ed20a6de21d3a5f71fdc5aa265cbf5fb9401958422b1fb23389bf40c1f788eb3"
+          },
+          {
+            "path": "validation/qualification/source-tests.json",
+            "sha256": "d2cd50f2254fcc8dbb382602669af0bbdc53da510dc7a0a07db7a1ec07d70940"
+          }
+        ]
+      },
+      "waiver_id": null
+    },
+    {
+      "capability_id": "chunk.floating",
+      "parity_class": "REQUIRED_PARITY",
+      "owner": "prometheus-histogram-st rewrite",
+      "upstream": {
+        "present": true,
+        "public_or_supported": true,
+        "evidence": [
+          {
+            "path": "tsdb/chunkenc/float_histogram_st.go",
+            "sha256": "a2cbe06efd9b2f754e4b8b98099d0d8014ddc20d0e10d2ded5fef0775cc376a1",
+            "symbols": [
+              {
+                "symbol": "func NewFloatHistogramSTChunk() *FloatHistogramSTChunk {",
+                "line": 38
+              },
+              {
+                "symbol": "func (c *FloatHistogramSTChunk) Reset(stream []byte) {",
+                "line": 44
+              },
+              {
+                "symbol": "func (*FloatHistogramSTChunk) Encoding() Encoding { return EncFloatHistogramST }",
+                "line": 49
+              },
+              {
+                "symbol": "func (c *FloatHistogramSTChunk) Bytes() []byte {",
+                "line": 52
+              },
+              {
+                "symbol": "func (c *FloatHistogramSTChunk) NumSamples() int {",
+                "line": 57
+              },
+              {
+                "symbol": "func (c *FloatHistogramSTChunk) GetCounterResetHeader() CounterResetHeader {",
+                "line": 64
+              },
+              {
+                "symbol": "func (c *FloatHistogramSTChunk) Compact() {",
+                "line": 69
+              },
+              {
+                "symbol": "func (c *FloatHistogramSTChunk) Appender() (Appender, error) {",
+                "line": 78
+              },
+              {
+                "symbol": "func newFloatHistogramSTIterator(b []byte) *floatHistogramSTIterator {",
+                "line": 146
+              },
+              {
+                "symbol": "func (c *FloatHistogramSTChunk) iterator(it Iterator) *floatHistogramSTIterator {",
+                "line": 159
+              },
+              {
+                "symbol": "func (c *FloatHistogramSTChunk) Iterator(it Iterator) Iterator {",
+                "line": 168
+              },
+              {
+                "symbol": "func (a *FloatHistogramSTAppender) GetCounterResetHeader() CounterResetHeader {",
+                "line": 180
+              },
+              {
+                "symbol": "func (a *FloatHistogramSTAppender) setCounterResetHeader(cr CounterResetHeader) {",
+                "line": 185
+              },
+              {
+                "symbol": "func (a *FloatHistogramSTAppender) NumSamples() int {",
+                "line": 192
+              },
+              {
+                "symbol": "func (a *FloatHistogramSTAppender) setNumSamples(num int) {",
+                "line": 198
+              },
+              {
+                "symbol": "func (a *FloatHistogramSTAppender) appendable(h *histogram.FloatHistogram) (",
+                "line": 204
+              },
+              {
+                "symbol": "func (a *FloatHistogramSTAppender) appendableGauge(h *histogram.FloatHistogram) (",
+                "line": 265
+              },
+              {
+                "symbol": "func (a *FloatHistogramSTAppender) appendFloatHistogramST(num int, st, t int64, fh *histogram.FloatHistogram) int {",
+                "line": 305
+              },
+              {
+                "symbol": "func (*FloatHistogramSTAppender) Append(int64, int64, float64) {",
+                "line": 314
+              },
+              {
+                "symbol": "func (*FloatHistogramSTAppender) AppendHistogram(Appender, int64, int64, *histogram.Histogram, bool) (Chunk, bool, Appender, error) {",
+                "line": 320
+              },
+              {
+                "symbol": "func (a *FloatHistogramSTAppender) AppendFloatHistogram(prev Appender, st, t int64, fh *histogram.FloatHistogram, appendOnly bool) (Chunk, bool, Appender, error) {",
+                "line": 325
+              },
+              {
+                "symbol": "func (a *FloatHistogramSTAppender) recodeST(",
+                "line": 450
+              },
+              {
+                "symbol": "func (it *floatHistogramSTIterator) AtST() int64 {",
+                "line": 499
+              },
+              {
+                "symbol": "func (it *floatHistogramSTIterator) Reset(b []byte) {",
+                "line": 504
+              },
+              {
+                "symbol": "func (it *floatHistogramSTIterator) Next() ValueType {",
+                "line": 535
+              },
+              {
+                "symbol": "func (it *floatHistogramSTIterator) Seek(t int64) ValueType {",
+                "line": 549
+              }
+            ]
+          }
+        ],
+        "semantic_contract": "Complete float histogram joint stream and 14-bit sample count",
+        "platforms": [
+          "portable Go"
+        ]
+      },
+      "rewrite": {
+        "present": true,
+        "public_symbol": "Chunk::append",
+        "variant": "canonical_scalar",
+        "build_target": "histogram_st",
+        "platforms": [
+          "Linux x86_64 GCC11/Clang14",
+          "Linux AArch64 musl QEMU"
+        ],
+        "implementation_files": [
+          "include/histogram_st.hpp",
+          "src/histogram_st.cpp"
+        ]
+      },
+      "validation": {
+        "status": "PASS",
+        "witnesses": [
+          "float.one",
+          "float.two",
+          "float.special_bits"
+        ],
+        "tests": [
+          "validation/final-cross-decode/report.json",
+          "validation/final-properties/report.json",
+          "validation/qualification/native.json",
+          "validation/qualification/sanitizers.json",
+          "validation/qualification/tsan-fixed-layout.json",
+          "validation/qualification/portable.json",
+          "validation/qualification/source-tests.json"
+        ],
+        "artifacts": [
+          {
+            "path": "validation/final-cross-decode/report.json",
+            "sha256": "6edeaee2b9ab809dd6453a541ea19a5b58fa65fca1e57346018e3515d59e0dc0"
+          },
+          {
+            "path": "validation/final-properties/report.json",
+            "sha256": "dce5e43ea5acf859953a3196ee3dc9903e1af962320ab8c5961c6345fc709a43"
+          },
+          {
+            "path": "validation/qualification/native.json",
+            "sha256": "f0fb40a79ac55d8eb1c1d862edeef29ac8a82658b40f4adebc8cd35573c8b5aa"
+          },
+          {
+            "path": "validation/qualification/sanitizers.json",
+            "sha256": "3ea799081789c43c6238d90ad640ecb499136293caf43a455f06a9e30a54ba35"
+          },
+          {
+            "path": "validation/qualification/tsan-fixed-layout.json",
+            "sha256": "6acb3248a83b6c98aa373f0951b107334a42a79e97c9bef734682f48dbd31645"
+          },
+          {
+            "path": "validation/qualification/portable.json",
+            "sha256": "ed20a6de21d3a5f71fdc5aa265cbf5fb9401958422b1fb23389bf40c1f788eb3"
+          },
+          {
+            "path": "validation/qualification/source-tests.json",
+            "sha256": "d2cd50f2254fcc8dbb382602669af0bbdc53da510dc7a0a07db7a1ec07d70940"
+          }
+        ]
+      },
+      "waiver_id": null
+    },
+    {
+      "capability_id": "state.start_timestamp",
+      "parity_class": "REQUIRED_PARITY",
+      "owner": "prometheus-histogram-st rewrite",
+      "upstream": {
+        "present": true,
+        "public_or_supported": true,
+        "evidence": [
+          {
+            "path": "tsdb/chunkenc/st.go",
+            "sha256": "615c71a9af5ea3dd7da7b0bed7b1d379a919606a8f941198f11d01cb895d9580",
+            "symbols": [
+              {
+                "symbol": "func writeHeaderFirstSTKnown(b []byte) {",
+                "line": 37
+              },
+              {
+                "symbol": "func writeHeaderFirstSTChangeOn(b []byte, firstSTChangeOn uint16) {",
+                "line": 41
+              },
+              {
+                "symbol": "func readSTHeader(b []byte) (firstSTKnown bool, firstSTChangeOn uint8) {",
+                "line": 53
+              },
+              {
+                "symbol": "func (e *stEncoder) encode(b *bstream, num uint16, curT, prevT, st int64) {",
+                "line": 60
+              },
+              {
+                "symbol": "func (d *stDecoder) decode(br *bstreamReader, numRead uint16, curT, prevT int64) error {",
+                "line": 104
+              }
+            ]
+          }
+        ],
+        "semantic_contract": "Known first ST, first change at sample1..127, forced boundary and delta-of-difference",
+        "platforms": [
+          "portable Go"
+        ]
+      },
+      "rewrite": {
+        "present": true,
+        "public_symbol": "Chunk::append",
+        "variant": "canonical_scalar",
+        "build_target": "histogram_st",
+        "platforms": [
+          "Linux x86_64 GCC11/Clang14",
+          "Linux AArch64 musl QEMU"
+        ],
+        "implementation_files": [
+          "include/histogram_st.hpp",
+          "src/histogram_st.cpp"
+        ]
+      },
+      "validation": {
+        "status": "PASS",
+        "witnesses": [
+          "int.st_boundary_127",
+          "float.st_boundary_127",
+          "int.st_first_known",
+          "float.st_first_known"
+        ],
+        "tests": [
+          "validation/final-cross-decode/report.json",
+          "validation/final-properties/report.json",
+          "validation/qualification/native.json",
+          "validation/qualification/sanitizers.json",
+          "validation/qualification/tsan-fixed-layout.json",
+          "validation/qualification/portable.json",
+          "validation/qualification/source-tests.json"
+        ],
+        "artifacts": [
+          {
+            "path": "validation/final-cross-decode/report.json",
+            "sha256": "6edeaee2b9ab809dd6453a541ea19a5b58fa65fca1e57346018e3515d59e0dc0"
+          },
+          {
+            "path": "validation/final-properties/report.json",
+            "sha256": "dce5e43ea5acf859953a3196ee3dc9903e1af962320ab8c5961c6345fc709a43"
+          },
+          {
+            "path": "validation/qualification/native.json",
+            "sha256": "f0fb40a79ac55d8eb1c1d862edeef29ac8a82658b40f4adebc8cd35573c8b5aa"
+          },
+          {
+            "path": "validation/qualification/sanitizers.json",
+            "sha256": "3ea799081789c43c6238d90ad640ecb499136293caf43a455f06a9e30a54ba35"
+          },
+          {
+            "path": "validation/qualification/tsan-fixed-layout.json",
+            "sha256": "6acb3248a83b6c98aa373f0951b107334a42a79e97c9bef734682f48dbd31645"
+          },
+          {
+            "path": "validation/qualification/portable.json",
+            "sha256": "ed20a6de21d3a5f71fdc5aa265cbf5fb9401958422b1fb23389bf40c1f788eb3"
+          },
+          {
+            "path": "validation/qualification/source-tests.json",
+            "sha256": "d2cd50f2254fcc8dbb382602669af0bbdc53da510dc7a0a07db7a1ec07d70940"
+          }
+        ]
+      },
+      "waiver_id": null
+    },
+    {
+      "capability_id": "layout.schema",
+      "parity_class": "REQUIRED_PARITY",
+      "owner": "prometheus-histogram-st rewrite",
+      "upstream": {
+        "present": true,
+        "public_or_supported": true,
+        "evidence": [
+          {
+            "path": "tsdb/chunkenc/histogram_meta.go",
+            "sha256": "751bf689f5cfeebe9359500bd0292fc080312c95e33d895b4bee58a9ffca2194",
+            "symbols": [
+              {
+                "symbol": "func writeHistogramChunkLayout(",
+                "line": 22
+              },
+              {
+                "symbol": "func readHistogramChunkLayout(b *bstreamReader) (",
+                "line": 35
+              },
+              {
+                "symbol": "func putHistogramChunkLayoutSpans(b *bstream, spans []histogram.Span) {",
+                "line": 72
+              },
+              {
+                "symbol": "func readHistogramChunkLayoutSpans(b *bstreamReader) ([]histogram.Span, error) {",
+                "line": 80
+              },
+              {
+                "symbol": "func putHistogramChunkLayoutCustomBounds(b *bstream, customValues []float64) {",
+                "line": 105
+              },
+              {
+                "symbol": "func readHistogramChunkLayoutCustomBounds(b *bstreamReader) ([]float64, error) {",
+                "line": 112
+              },
+              {
+                "symbol": "func putZeroThreshold(b *bstream, threshold float64) {",
+                "line": 143
+              },
+              {
+                "symbol": "func readZeroThreshold(br *bstreamReader) (float64, error) {",
+                "line": 158
+              },
+              {
+                "symbol": "func isWholeWhenMultiplied(in float64) bool {",
+                "line": 179
+              },
+              {
+                "symbol": "func putCustomBound(b *bstream, f float64) {",
+                "line": 200
+              },
+              {
+                "symbol": "func readCustomBound(br *bstreamReader) (float64, error) {",
+                "line": 213
+              },
+              {
+                "symbol": "func newBucketIterator(spans []histogram.Span) *bucketIterator {",
+                "line": 237
+              },
+              {
+                "symbol": "func (b *bucketIterator) Next() (int, bool) {",
+                "line": 250
+              },
+              {
+                "symbol": "func expandSpansBothWays(a, b []histogram.Span) (forward, backward []Insert, mergedSpans []histogram.Span) {",
+                "line": 293
+              },
+              {
+                "symbol": "func insert[BV bucketValue](in, out []BV, inserts []Insert, deltas bool) []BV {",
+                "line": 395
+              },
+              {
+                "symbol": "func counterResetHint(crh CounterResetHeader, numRead uint16) histogram.CounterResetHint {",
+                "line": 471
+              },
+              {
+                "symbol": "func adjustForInserts(spans []histogram.Span, inserts []Insert) (mergedSpans []histogram.Span) {",
+                "line": 495
+              }
+            ]
+          }
+        ],
+        "semantic_contract": "Zero threshold compact/raw, signed schema and positive/negative spans",
+        "platforms": [
+          "portable Go"
+        ]
+      },
+      "rewrite": {
+        "present": true,
+        "public_symbol": "Chunk::append",
+        "variant": "canonical_scalar",
+        "build_target": "histogram_st",
+        "platforms": [
+          "Linux x86_64 GCC11/Clang14",
+          "Linux AArch64 musl QEMU"
+        ],
+        "implementation_files": [
+          "include/histogram_st.hpp",
+          "src/histogram_st.cpp"
+        ]
+      },
+      "validation": {
+        "status": "PASS",
+        "witnesses": [
+          "int.raw_zero_threshold",
+          "float.raw_zero_threshold",
+          "int.negative_spans",
+          "float.negative_spans"
+        ],
+        "tests": [
+          "validation/final-cross-decode/report.json",
+          "validation/final-properties/report.json",
+          "validation/qualification/native.json",
+          "validation/qualification/sanitizers.json",
+          "validation/qualification/tsan-fixed-layout.json",
+          "validation/qualification/portable.json",
+          "validation/qualification/source-tests.json"
+        ],
+        "artifacts": [
+          {
+            "path": "validation/final-cross-decode/report.json",
+            "sha256": "6edeaee2b9ab809dd6453a541ea19a5b58fa65fca1e57346018e3515d59e0dc0"
+          },
+          {
+            "path": "validation/final-properties/report.json",
+            "sha256": "dce5e43ea5acf859953a3196ee3dc9903e1af962320ab8c5961c6345fc709a43"
+          },
+          {
+            "path": "validation/qualification/native.json",
+            "sha256": "f0fb40a79ac55d8eb1c1d862edeef29ac8a82658b40f4adebc8cd35573c8b5aa"
+          },
+          {
+            "path": "validation/qualification/sanitizers.json",
+            "sha256": "3ea799081789c43c6238d90ad640ecb499136293caf43a455f06a9e30a54ba35"
+          },
+          {
+            "path": "validation/qualification/tsan-fixed-layout.json",
+            "sha256": "6acb3248a83b6c98aa373f0951b107334a42a79e97c9bef734682f48dbd31645"
+          },
+          {
+            "path": "validation/qualification/portable.json",
+            "sha256": "ed20a6de21d3a5f71fdc5aa265cbf5fb9401958422b1fb23389bf40c1f788eb3"
+          },
+          {
+            "path": "validation/qualification/source-tests.json",
+            "sha256": "d2cd50f2254fcc8dbb382602669af0bbdc53da510dc7a0a07db7a1ec07d70940"
+          }
+        ]
+      },
+      "waiver_id": null
+    },
+    {
+      "capability_id": "layout.custom_bounds",
+      "parity_class": "REQUIRED_PARITY",
+      "owner": "prometheus-histogram-st rewrite",
+      "upstream": {
+        "present": true,
+        "public_or_supported": true,
+        "evidence": [
+          {
+            "path": "tsdb/chunkenc/histogram_meta.go",
+            "sha256": "751bf689f5cfeebe9359500bd0292fc080312c95e33d895b4bee58a9ffca2194",
+            "symbols": [
+              {
+                "symbol": "func writeHistogramChunkLayout(",
+                "line": 22
+              },
+              {
+                "symbol": "func readHistogramChunkLayout(b *bstreamReader) (",
+                "line": 35
+              },
+              {
+                "symbol": "func putHistogramChunkLayoutSpans(b *bstream, spans []histogram.Span) {",
+                "line": 72
+              },
+              {
+                "symbol": "func readHistogramChunkLayoutSpans(b *bstreamReader) ([]histogram.Span, error) {",
+                "line": 80
+              },
+              {
+                "symbol": "func putHistogramChunkLayoutCustomBounds(b *bstream, customValues []float64) {",
+                "line": 105
+              },
+              {
+                "symbol": "func readHistogramChunkLayoutCustomBounds(b *bstreamReader) ([]float64, error) {",
+                "line": 112
+              },
+              {
+                "symbol": "func putZeroThreshold(b *bstream, threshold float64) {",
+                "line": 143
+              },
+              {
+                "symbol": "func readZeroThreshold(br *bstreamReader) (float64, error) {",
+                "line": 158
+              },
+              {
+                "symbol": "func isWholeWhenMultiplied(in float64) bool {",
+                "line": 179
+              },
+              {
+                "symbol": "func putCustomBound(b *bstream, f float64) {",
+                "line": 200
+              },
+              {
+                "symbol": "func readCustomBound(br *bstreamReader) (float64, error) {",
+                "line": 213
+              },
+              {
+                "symbol": "func newBucketIterator(spans []histogram.Span) *bucketIterator {",
+                "line": 237
+              },
+              {
+                "symbol": "func (b *bucketIterator) Next() (int, bool) {",
+                "line": 250
+              },
+              {
+                "symbol": "func expandSpansBothWays(a, b []histogram.Span) (forward, backward []Insert, mergedSpans []histogram.Span) {",
+                "line": 293
+              },
+              {
+                "symbol": "func insert[BV bucketValue](in, out []BV, inserts []Insert, deltas bool) []BV {",
+                "line": 395
+              },
+              {
+                "symbol": "func counterResetHint(crh CounterResetHeader, numRead uint16) histogram.CounterResetHint {",
+                "line": 471
+              },
+              {
+                "symbol": "func adjustForInserts(spans []histogram.Span, inserts []Insert) (mergedSpans []histogram.Span) {",
+                "line": 495
+              }
+            ]
+          }
+        ],
+        "semantic_contract": "Custom schema -53 and compact/raw binary64 bound representation",
+        "platforms": [
+          "portable Go"
+        ]
+      },
+      "rewrite": {
+        "present": true,
+        "public_symbol": "Chunk::append",
+        "variant": "canonical_scalar",
+        "build_target": "histogram_st",
+        "platforms": [
+          "Linux x86_64 GCC11/Clang14",
+          "Linux AArch64 musl QEMU"
+        ],
+        "implementation_files": [
+          "include/histogram_st.hpp",
+          "src/histogram_st.cpp"
+        ]
+      },
+      "validation": {
+        "status": "PASS",
+        "witnesses": [
+          "int.custom_bounds",
+          "float.custom_bounds"
+        ],
+        "tests": [
+          "validation/final-cross-decode/report.json",
+          "validation/final-properties/report.json",
+          "validation/qualification/native.json",
+          "validation/qualification/sanitizers.json",
+          "validation/qualification/tsan-fixed-layout.json",
+          "validation/qualification/portable.json",
+          "validation/qualification/source-tests.json"
+        ],
+        "artifacts": [
+          {
+            "path": "validation/final-cross-decode/report.json",
+            "sha256": "6edeaee2b9ab809dd6453a541ea19a5b58fa65fca1e57346018e3515d59e0dc0"
+          },
+          {
+            "path": "validation/final-properties/report.json",
+            "sha256": "dce5e43ea5acf859953a3196ee3dc9903e1af962320ab8c5961c6345fc709a43"
+          },
+          {
+            "path": "validation/qualification/native.json",
+            "sha256": "f0fb40a79ac55d8eb1c1d862edeef29ac8a82658b40f4adebc8cd35573c8b5aa"
+          },
+          {
+            "path": "validation/qualification/sanitizers.json",
+            "sha256": "3ea799081789c43c6238d90ad640ecb499136293caf43a455f06a9e30a54ba35"
+          },
+          {
+            "path": "validation/qualification/tsan-fixed-layout.json",
+            "sha256": "6acb3248a83b6c98aa373f0951b107334a42a79e97c9bef734682f48dbd31645"
+          },
+          {
+            "path": "validation/qualification/portable.json",
+            "sha256": "ed20a6de21d3a5f71fdc5aa265cbf5fb9401958422b1fb23389bf40c1f788eb3"
+          },
+          {
+            "path": "validation/qualification/source-tests.json",
+            "sha256": "d2cd50f2254fcc8dbb382602669af0bbdc53da510dc7a0a07db7a1ec07d70940"
+          }
+        ]
+      },
+      "waiver_id": null
+    },
+    {
+      "capability_id": "buckets.int_delta_dod",
+      "parity_class": "REQUIRED_PARITY",
+      "owner": "prometheus-histogram-st rewrite",
+      "upstream": {
+        "present": true,
+        "public_or_supported": true,
+        "evidence": [
+          {
+            "path": "tsdb/chunkenc/histogram.go",
+            "sha256": "a8449607ceaf3a4f3920d67c9978563449f863036c6ceb5a5524086bc6e6bb0f",
+            "symbols": [
+              {
+                "symbol": "func NewHistogramChunk() *HistogramChunk {",
+                "line": 44
+              },
+              {
+                "symbol": "func (c *HistogramChunk) Reset(stream []byte) {",
+                "line": 49
+              },
+              {
+                "symbol": "func (*HistogramChunk) Encoding() Encoding {",
+                "line": 54
+              },
+              {
+                "symbol": "func (c *HistogramChunk) Bytes() []byte {",
+                "line": 59
+              },
+              {
+                "symbol": "func (c *HistogramChunk) NumSamples() int {",
+                "line": 64
+              },
+              {
+                "symbol": "func (c *HistogramChunk) GetCounterResetHeader() CounterResetHeader {",
+                "line": 91
+              },
+              {
+                "symbol": "func (c *HistogramChunk) Compact() {",
+                "line": 96
+              },
+              {
+                "symbol": "func (c *HistogramChunk) Appender() (Appender, error) {",
+                "line": 105
+              },
+              {
+                "symbol": "func countSpans(spans []histogram.Span) int {",
+                "line": 146
+              },
+              {
+                "symbol": "func newHistogramIterator(b []byte) *histogramIterator {",
+                "line": 154
+              },
+              {
+                "symbol": "func (c *HistogramChunk) iterator(it Iterator) *histogramIterator {",
+                "line": 164
+              },
+              {
+                "symbol": "func (c *HistogramChunk) Iterator(it Iterator) Iterator {",
+                "line": 177
+              },
+              {
+                "symbol": "func (a *HistogramAppender) GetCounterResetHeader() CounterResetHeader {",
+                "line": 208
+              },
+              {
+                "symbol": "func (a *HistogramAppender) setCounterResetHeader(cr CounterResetHeader) {",
+                "line": 212
+              },
+              {
+                "symbol": "func (a *HistogramAppender) NumSamples() int {",
+                "line": 216
+              },
+              {
+                "symbol": "func (a *HistogramAppender) setNumSamples(num int) {",
+                "line": 221
+              },
+              {
+                "symbol": "func (*HistogramAppender) Append(int64, int64, float64) {",
+                "line": 227
+              },
+              {
+                "symbol": "func (a *HistogramAppender) appendable(h *histogram.Histogram) (",
+                "line": 261
+              },
+              {
+                "symbol": "func expandIntSpansAndBuckets(a, b []histogram.Span, aBuckets, bBuckets []int64) (forward, backward []Insert, ok bool) {",
+                "line": 371
+              },
+              {
+                "symbol": "func (a *HistogramAppender) appendableGauge(h *histogram.Histogram) (",
+                "line": 516
+              },
+              {
+                "symbol": "func (a *HistogramAppender) appendHistogram(num int, t int64, h *histogram.Histogram) int {",
+                "line": 558
+              },
+              {
+                "symbol": "func (a *HistogramAppender) recode(",
+                "line": 677
+              },
+              {
+                "symbol": "func (*HistogramAppender) recodeHistogram(",
+                "line": 729
+              },
+              {
+                "symbol": "func (a *HistogramAppender) writeSumDelta(v float64) {",
+                "line": 743
+              },
+              {
+                "symbol": "func (*HistogramAppender) AppendFloatHistogram(Appender, int64, int64, *histogram.FloatHistogram, bool) (Chunk, bool, Appender, error) {",
+                "line": 747
+              },
+              {
+                "symbol": "func (a *HistogramAppender) AppendHistogram(prev Appender, _, t int64, h *histogram.Histogram, appendOnly bool) (Chunk, bool, Appender, error) {",
+                "line": 751
+              },
+              {
+                "symbol": "func CounterResetHintToHeader(hint histogram.CounterResetHint) CounterResetHeader {",
+                "line": 879
+              },
+              {
+                "symbol": "func (it *histogramIterator) Seek(t int64) ValueType {",
+                "line": 926
+              },
+              {
+                "symbol": "func (*histogramIterator) At() (int64, float64) {",
+                "line": 939
+              },
+              {
+                "symbol": "func (it *histogramIterator) AtHistogram(h *histogram.Histogram) (int64, *histogram.Histogram) {",
+                "line": 943
+              },
+              {
+                "symbol": "func (it *histogramIterator) AtFloatHistogram(fh *histogram.FloatHistogram) (int64, *histogram.FloatHistogram) {",
+                "line": 1017
+              },
+              {
+                "symbol": "func (it *histogramIterator) AtT() int64 {",
+                "line": 1099
+              },
+              {
+                "symbol": "func (*histogramIterator) AtST() int64 {",
+                "line": 1103
+              },
+              {
+                "symbol": "func (it *histogramIterator) Err() error {",
+                "line": 1107
+              },
+              {
+                "symbol": "func (it *histogramIterator) Reset(b []byte) {",
+                "line": 1111
+              },
+              {
+                "symbol": "func (it *histogramIterator) Next() ValueType {",
+                "line": 1151
+              },
+              {
+                "symbol": "func (it *histogramIterator) readSum() bool {",
+                "line": 1364
+              },
+              {
+                "symbol": "func resize[T any](items []T, n int) []T {",
+                "line": 1373
+              }
+            ]
+          }
+        ],
+        "semantic_contract": "Signed bucket deltas and temporal DoD with modulo64 integer arithmetic",
+        "platforms": [
+          "portable Go"
+        ]
+      },
+      "rewrite": {
+        "present": true,
+        "public_symbol": "Chunk::append",
+        "variant": "canonical_scalar",
+        "build_target": "histogram_st",
+        "platforms": [
+          "Linux x86_64 GCC11/Clang14",
+          "Linux AArch64 musl QEMU"
+        ],
+        "implementation_files": [
+          "include/histogram_st.hpp",
+          "src/histogram_st.cpp"
+        ]
+      },
+      "validation": {
+        "status": "PASS",
+        "witnesses": [
+          "int.counter_grow",
+          "int.uint64_wrap",
+          "int.negative_spans"
+        ],
+        "tests": [
+          "validation/final-cross-decode/report.json",
+          "validation/final-properties/report.json",
+          "validation/qualification/native.json",
+          "validation/qualification/sanitizers.json",
+          "validation/qualification/tsan-fixed-layout.json",
+          "validation/qualification/portable.json",
+          "validation/qualification/source-tests.json"
+        ],
+        "artifacts": [
+          {
+            "path": "validation/final-cross-decode/report.json",
+            "sha256": "6edeaee2b9ab809dd6453a541ea19a5b58fa65fca1e57346018e3515d59e0dc0"
+          },
+          {
+            "path": "validation/final-properties/report.json",
+            "sha256": "dce5e43ea5acf859953a3196ee3dc9903e1af962320ab8c5961c6345fc709a43"
+          },
+          {
+            "path": "validation/qualification/native.json",
+            "sha256": "f0fb40a79ac55d8eb1c1d862edeef29ac8a82658b40f4adebc8cd35573c8b5aa"
+          },
+          {
+            "path": "validation/qualification/sanitizers.json",
+            "sha256": "3ea799081789c43c6238d90ad640ecb499136293caf43a455f06a9e30a54ba35"
+          },
+          {
+            "path": "validation/qualification/tsan-fixed-layout.json",
+            "sha256": "6acb3248a83b6c98aa373f0951b107334a42a79e97c9bef734682f48dbd31645"
+          },
+          {
+            "path": "validation/qualification/portable.json",
+            "sha256": "ed20a6de21d3a5f71fdc5aa265cbf5fb9401958422b1fb23389bf40c1f788eb3"
+          },
+          {
+            "path": "validation/qualification/source-tests.json",
+            "sha256": "d2cd50f2254fcc8dbb382602669af0bbdc53da510dc7a0a07db7a1ec07d70940"
+          }
+        ]
+      },
+      "waiver_id": null
+    },
+    {
+      "capability_id": "buckets.float_xor",
+      "parity_class": "REQUIRED_PARITY",
+      "owner": "prometheus-histogram-st rewrite",
+      "upstream": {
+        "present": true,
+        "public_or_supported": true,
+        "evidence": [
+          {
+            "path": "tsdb/chunkenc/float_histogram.go",
+            "sha256": "0efbb2d0d39ca5a233b21126e09929ca210a05e5fea60074f0e7194277891f44",
+            "symbols": [
+              {
+                "symbol": "func NewFloatHistogramChunk() *FloatHistogramChunk {",
+                "line": 43
+              },
+              {
+                "symbol": "func (c *FloatHistogramChunk) Reset(stream []byte) {",
+                "line": 48
+              },
+              {
+                "symbol": "func (*FloatHistogramChunk) Encoding() Encoding {",
+                "line": 61
+              },
+              {
+                "symbol": "func (c *FloatHistogramChunk) Bytes() []byte {",
+                "line": 66
+              },
+              {
+                "symbol": "func (c *FloatHistogramChunk) NumSamples() int {",
+                "line": 71
+              },
+              {
+                "symbol": "func (c *FloatHistogramChunk) GetCounterResetHeader() CounterResetHeader {",
+                "line": 77
+              },
+              {
+                "symbol": "func (c *FloatHistogramChunk) Compact() {",
+                "line": 82
+              },
+              {
+                "symbol": "func (c *FloatHistogramChunk) Appender() (Appender, error) {",
+                "line": 91
+              },
+              {
+                "symbol": "func (c *FloatHistogramChunk) iterator(it Iterator) *floatHistogramIterator {",
+                "line": 142
+              },
+              {
+                "symbol": "func newFloatHistogramIterator(b []byte) *floatHistogramIterator {",
+                "line": 154
+              },
+              {
+                "symbol": "func (c *FloatHistogramChunk) Iterator(it Iterator) Iterator {",
+                "line": 165
+              },
+              {
+                "symbol": "func (a *FloatHistogramAppender) GetCounterResetHeader() CounterResetHeader {",
+                "line": 184
+              },
+              {
+                "symbol": "func (a *FloatHistogramAppender) setCounterResetHeader(cr CounterResetHeader) {",
+                "line": 188
+              },
+              {
+                "symbol": "func (a *FloatHistogramAppender) NumSamples() int {",
+                "line": 192
+              },
+              {
+                "symbol": "func (a *FloatHistogramAppender) setNumSamples(num int) {",
+                "line": 197
+              },
+              {
+                "symbol": "func (*FloatHistogramAppender) Append(int64, int64, float64) {",
+                "line": 203
+              },
+              {
+                "symbol": "func (a *FloatHistogramAppender) appendable(h *histogram.FloatHistogram) (",
+                "line": 232
+              },
+              {
+                "symbol": "func expandFloatSpansAndBuckets(a, b []histogram.Span, aBuckets []xorValue, bBuckets []float64) (forward, backward []Insert, ok bool) {",
+                "line": 335
+              },
+              {
+                "symbol": "func (a *FloatHistogramAppender) appendableGauge(h *histogram.FloatHistogram) (",
+                "line": 479
+              },
+              {
+                "symbol": "func (a *FloatHistogramAppender) appendFloatHistogram(num int, t int64, h *histogram.FloatHistogram) int {",
+                "line": 521
+              },
+              {
+                "symbol": "func (a *FloatHistogramAppender) writeXorValue(old *xorValue, v float64) {",
+                "line": 619
+              },
+              {
+                "symbol": "func (a *FloatHistogramAppender) recode(",
+                "line": 629
+              },
+              {
+                "symbol": "func (*FloatHistogramAppender) recodeHistogram(",
+                "line": 681
+              },
+              {
+                "symbol": "func (*FloatHistogramAppender) AppendHistogram(Appender, int64, int64, *histogram.Histogram, bool) (Chunk, bool, Appender, error) {",
+                "line": 695
+              },
+              {
+                "symbol": "func (a *FloatHistogramAppender) AppendFloatHistogram(prev Appender, _, t int64, h *histogram.FloatHistogram, appendOnly bool) (Chunk, bool, Appender, error) {",
+                "line": 699
+              },
+              {
+                "symbol": "func (it *floatHistogramIterator) Seek(t int64) ValueType {",
+                "line": 867
+              },
+              {
+                "symbol": "func (*floatHistogramIterator) At() (int64, float64) {",
+                "line": 880
+              },
+              {
+                "symbol": "func (*floatHistogramIterator) AtHistogram(*histogram.Histogram) (int64, *histogram.Histogram) {",
+                "line": 884
+              },
+              {
+                "symbol": "func (it *floatHistogramIterator) AtFloatHistogram(fh *histogram.FloatHistogram) (int64, *histogram.FloatHistogram) {",
+                "line": 888
+              },
+              {
+                "symbol": "func (it *floatHistogramIterator) AtT() int64 {",
+                "line": 962
+              },
+              {
+                "symbol": "func (*floatHistogramIterator) AtST() int64 {",
+                "line": 966
+              },
+              {
+                "symbol": "func (it *floatHistogramIterator) Err() error {",
+                "line": 970
+              },
+              {
+                "symbol": "func (it *floatHistogramIterator) Reset(b []byte) {",
+                "line": 974
+              },
+              {
+                "symbol": "func (it *floatHistogramIterator) Next() ValueType {",
+                "line": 1000
+              },
+              {
+                "symbol": "func (it *floatHistogramIterator) readXor(v *float64, leading, trailing *uint8) bool {",
+                "line": 1175
+              }
+            ]
+          }
+        ],
+        "semantic_contract": "Opaque binary64 XOR windows for count/zero/sum/buckets",
+        "platforms": [
+          "portable Go"
+        ]
+      },
+      "rewrite": {
+        "present": true,
+        "public_symbol": "Chunk::append",
+        "variant": "canonical_scalar",
+        "build_target": "histogram_st",
+        "platforms": [
+          "Linux x86_64 GCC11/Clang14",
+          "Linux AArch64 musl QEMU"
+        ],
+        "implementation_files": [
+          "include/histogram_st.hpp",
+          "src/histogram_st.cpp"
+        ]
+      },
+      "validation": {
+        "status": "PASS",
+        "witnesses": [
+          "float.special_bits",
+          "float.counter_grow",
+          "float.negative_spans"
+        ],
+        "tests": [
+          "validation/final-cross-decode/report.json",
+          "validation/final-properties/report.json",
+          "validation/qualification/native.json",
+          "validation/qualification/sanitizers.json",
+          "validation/qualification/tsan-fixed-layout.json",
+          "validation/qualification/portable.json",
+          "validation/qualification/source-tests.json"
+        ],
+        "artifacts": [
+          {
+            "path": "validation/final-cross-decode/report.json",
+            "sha256": "6edeaee2b9ab809dd6453a541ea19a5b58fa65fca1e57346018e3515d59e0dc0"
+          },
+          {
+            "path": "validation/final-properties/report.json",
+            "sha256": "dce5e43ea5acf859953a3196ee3dc9903e1af962320ab8c5961c6345fc709a43"
+          },
+          {
+            "path": "validation/qualification/native.json",
+            "sha256": "f0fb40a79ac55d8eb1c1d862edeef29ac8a82658b40f4adebc8cd35573c8b5aa"
+          },
+          {
+            "path": "validation/qualification/sanitizers.json",
+            "sha256": "3ea799081789c43c6238d90ad640ecb499136293caf43a455f06a9e30a54ba35"
+          },
+          {
+            "path": "validation/qualification/tsan-fixed-layout.json",
+            "sha256": "6acb3248a83b6c98aa373f0951b107334a42a79e97c9bef734682f48dbd31645"
+          },
+          {
+            "path": "validation/qualification/portable.json",
+            "sha256": "ed20a6de21d3a5f71fdc5aa265cbf5fb9401958422b1fb23389bf40c1f788eb3"
+          },
+          {
+            "path": "validation/qualification/source-tests.json",
+            "sha256": "d2cd50f2254fcc8dbb382602669af0bbdc53da510dc7a0a07db7a1ec07d70940"
+          }
+        ]
+      },
+      "waiver_id": null
+    },
+    {
+      "capability_id": "state.counter_reset",
+      "parity_class": "REQUIRED_PARITY",
+      "owner": "prometheus-histogram-st rewrite",
+      "upstream": {
+        "present": true,
+        "public_or_supported": true,
+        "evidence": [
+          {
+            "path": "tsdb/chunkenc/histogram_st.go",
+            "sha256": "313a2695cd586ef2640a5d3c12c98885358606aac1d9b3aa8b3ccb7fcdd69c23",
+            "symbols": [
+              {
+                "symbol": "func NewHistogramSTChunk() *HistogramSTChunk {",
+                "line": 38
+              },
+              {
+                "symbol": "func (c *HistogramSTChunk) Reset(stream []byte) {",
+                "line": 43
+              },
+              {
+                "symbol": "func (*HistogramSTChunk) Encoding() Encoding { return EncHistogramST }",
+                "line": 48
+              },
+              {
+                "symbol": "func (c *HistogramSTChunk) Bytes() []byte {",
+                "line": 51
+              },
+              {
+                "symbol": "func (c *HistogramSTChunk) NumSamples() int {",
+                "line": 56
+              },
+              {
+                "symbol": "func (c *HistogramSTChunk) GetCounterResetHeader() CounterResetHeader {",
+                "line": 63
+              },
+              {
+                "symbol": "func (c *HistogramSTChunk) Compact() {",
+                "line": 68
+              },
+              {
+                "symbol": "func (c *HistogramSTChunk) Appender() (Appender, error) {",
+                "line": 77
+              },
+              {
+                "symbol": "func newHistogramSTIterator(b []byte) *histogramSTIterator {",
+                "line": 134
+              },
+              {
+                "symbol": "func (c *HistogramSTChunk) iterator(it Iterator) *histogramSTIterator {",
+                "line": 147
+              },
+              {
+                "symbol": "func (c *HistogramSTChunk) Iterator(it Iterator) Iterator {",
+                "line": 156
+              },
+              {
+                "symbol": "func (a *HistogramSTAppender) GetCounterResetHeader() CounterResetHeader {",
+                "line": 168
+              },
+              {
+                "symbol": "func (a *HistogramSTAppender) setCounterResetHeader(cr CounterResetHeader) {",
+                "line": 173
+              },
+              {
+                "symbol": "func (a *HistogramSTAppender) NumSamples() int {",
+                "line": 180
+              },
+              {
+                "symbol": "func (a *HistogramSTAppender) setNumSamples(num int) {",
+                "line": 186
+              },
+              {
+                "symbol": "func (a *HistogramSTAppender) appendable(h *histogram.Histogram) (",
+                "line": 192
+              },
+              {
+                "symbol": "func (a *HistogramSTAppender) appendableGauge(h *histogram.Histogram) (",
+                "line": 256
+              },
+              {
+                "symbol": "func (a *HistogramSTAppender) appendHistogramST(num int, st, t int64, h *histogram.Histogram) int {",
+                "line": 296
+              },
+              {
+                "symbol": "func (*HistogramSTAppender) Append(int64, int64, float64) {",
+                "line": 303
+              },
+              {
+                "symbol": "func (*HistogramSTAppender) AppendFloatHistogram(Appender, int64, int64, *histogram.FloatHistogram, bool) (Chunk, bool, Appender, error) {",
+                "line": 307
+              },
+              {
+                "symbol": "func (a *HistogramSTAppender) AppendHistogram(prev Appender, st, t int64, h *histogram.Histogram, appendOnly bool) (Chunk, bool, Appender, error) {",
+                "line": 312
+              },
+              {
+                "symbol": "func (a *HistogramSTAppender) recodeST(",
+                "line": 431
+              },
+              {
+                "symbol": "func (it *histogramSTIterator) AtST() int64 {",
+                "line": 479
+              },
+              {
+                "symbol": "func (it *histogramSTIterator) Reset(b []byte) {",
+                "line": 483
+              },
+              {
+                "symbol": "func (it *histogramSTIterator) Next() ValueType {",
+                "line": 526
+              },
+              {
+                "symbol": "func (it *histogramSTIterator) Seek(t int64) ValueType {",
+                "line": 540
+              }
+            ]
+          }
+        ],
+        "semantic_contract": "Explicit hints, decreasing count/zero/buckets and replacement chunk headers",
+        "platforms": [
+          "portable Go"
+        ]
+      },
+      "rewrite": {
+        "present": true,
+        "public_symbol": "Chunk::append",
+        "variant": "canonical_scalar",
+        "build_target": "histogram_st",
+        "platforms": [
+          "Linux x86_64 GCC11/Clang14",
+          "Linux AArch64 musl QEMU"
+        ],
+        "implementation_files": [
+          "include/histogram_st.hpp",
+          "src/histogram_st.cpp"
+        ]
+      },
+      "validation": {
+        "status": "PASS",
+        "witnesses": [
+          "int.explicit_reset",
+          "float.explicit_reset",
+          "int.reset_schema",
+          "float.reset_schema"
+        ],
+        "tests": [
+          "validation/final-cross-decode/report.json",
+          "validation/final-properties/report.json",
+          "validation/qualification/native.json",
+          "validation/qualification/sanitizers.json",
+          "validation/qualification/tsan-fixed-layout.json",
+          "validation/qualification/portable.json",
+          "validation/qualification/source-tests.json"
+        ],
+        "artifacts": [
+          {
+            "path": "validation/final-cross-decode/report.json",
+            "sha256": "6edeaee2b9ab809dd6453a541ea19a5b58fa65fca1e57346018e3515d59e0dc0"
+          },
+          {
+            "path": "validation/final-properties/report.json",
+            "sha256": "dce5e43ea5acf859953a3196ee3dc9903e1af962320ab8c5961c6345fc709a43"
+          },
+          {
+            "path": "validation/qualification/native.json",
+            "sha256": "f0fb40a79ac55d8eb1c1d862edeef29ac8a82658b40f4adebc8cd35573c8b5aa"
+          },
+          {
+            "path": "validation/qualification/sanitizers.json",
+            "sha256": "3ea799081789c43c6238d90ad640ecb499136293caf43a455f06a9e30a54ba35"
+          },
+          {
+            "path": "validation/qualification/tsan-fixed-layout.json",
+            "sha256": "6acb3248a83b6c98aa373f0951b107334a42a79e97c9bef734682f48dbd31645"
+          },
+          {
+            "path": "validation/qualification/portable.json",
+            "sha256": "ed20a6de21d3a5f71fdc5aa265cbf5fb9401958422b1fb23389bf40c1f788eb3"
+          },
+          {
+            "path": "validation/qualification/source-tests.json",
+            "sha256": "d2cd50f2254fcc8dbb382602669af0bbdc53da510dc7a0a07db7a1ec07d70940"
+          }
+        ]
+      },
+      "waiver_id": null
+    },
+    {
+      "capability_id": "state.gauge",
+      "parity_class": "REQUIRED_PARITY",
+      "owner": "prometheus-histogram-st rewrite",
+      "upstream": {
+        "present": true,
+        "public_or_supported": true,
+        "evidence": [
+          {
+            "path": "tsdb/chunkenc/float_histogram_st.go",
+            "sha256": "a2cbe06efd9b2f754e4b8b98099d0d8014ddc20d0e10d2ded5fef0775cc376a1",
+            "symbols": [
+              {
+                "symbol": "func NewFloatHistogramSTChunk() *FloatHistogramSTChunk {",
+                "line": 38
+              },
+              {
+                "symbol": "func (c *FloatHistogramSTChunk) Reset(stream []byte) {",
+                "line": 44
+              },
+              {
+                "symbol": "func (*FloatHistogramSTChunk) Encoding() Encoding { return EncFloatHistogramST }",
+                "line": 49
+              },
+              {
+                "symbol": "func (c *FloatHistogramSTChunk) Bytes() []byte {",
+                "line": 52
+              },
+              {
+                "symbol": "func (c *FloatHistogramSTChunk) NumSamples() int {",
+                "line": 57
+              },
+              {
+                "symbol": "func (c *FloatHistogramSTChunk) GetCounterResetHeader() CounterResetHeader {",
+                "line": 64
+              },
+              {
+                "symbol": "func (c *FloatHistogramSTChunk) Compact() {",
+                "line": 69
+              },
+              {
+                "symbol": "func (c *FloatHistogramSTChunk) Appender() (Appender, error) {",
+                "line": 78
+              },
+              {
+                "symbol": "func newFloatHistogramSTIterator(b []byte) *floatHistogramSTIterator {",
+                "line": 146
+              },
+              {
+                "symbol": "func (c *FloatHistogramSTChunk) iterator(it Iterator) *floatHistogramSTIterator {",
+                "line": 159
+              },
+              {
+                "symbol": "func (c *FloatHistogramSTChunk) Iterator(it Iterator) Iterator {",
+                "line": 168
+              },
+              {
+                "symbol": "func (a *FloatHistogramSTAppender) GetCounterResetHeader() CounterResetHeader {",
+                "line": 180
+              },
+              {
+                "symbol": "func (a *FloatHistogramSTAppender) setCounterResetHeader(cr CounterResetHeader) {",
+                "line": 185
+              },
+              {
+                "symbol": "func (a *FloatHistogramSTAppender) NumSamples() int {",
+                "line": 192
+              },
+              {
+                "symbol": "func (a *FloatHistogramSTAppender) setNumSamples(num int) {",
+                "line": 198
+              },
+              {
+                "symbol": "func (a *FloatHistogramSTAppender) appendable(h *histogram.FloatHistogram) (",
+                "line": 204
+              },
+              {
+                "symbol": "func (a *FloatHistogramSTAppender) appendableGauge(h *histogram.FloatHistogram) (",
+                "line": 265
+              },
+              {
+                "symbol": "func (a *FloatHistogramSTAppender) appendFloatHistogramST(num int, st, t int64, fh *histogram.FloatHistogram) int {",
+                "line": 305
+              },
+              {
+                "symbol": "func (*FloatHistogramSTAppender) Append(int64, int64, float64) {",
+                "line": 314
+              },
+              {
+                "symbol": "func (*FloatHistogramSTAppender) AppendHistogram(Appender, int64, int64, *histogram.Histogram, bool) (Chunk, bool, Appender, error) {",
+                "line": 320
+              },
+              {
+                "symbol": "func (a *FloatHistogramSTAppender) AppendFloatHistogram(prev Appender, st, t int64, fh *histogram.FloatHistogram, appendOnly bool) (Chunk, bool, Appender, error) {",
+                "line": 325
+              },
+              {
+                "symbol": "func (a *FloatHistogramSTAppender) recodeST(",
+                "line": 450
+              },
+              {
+                "symbol": "func (it *floatHistogramSTIterator) AtST() int64 {",
+                "line": 499
+              },
+              {
+                "symbol": "func (it *floatHistogramSTIterator) Reset(b []byte) {",
+                "line": 504
+              },
+              {
+                "symbol": "func (it *floatHistogramSTIterator) Next() ValueType {",
+                "line": 535
+              },
+              {
+                "symbol": "func (it *floatHistogramSTIterator) Seek(t int64) ValueType {",
+                "line": 549
+              }
+            ]
+          }
+        ],
+        "semantic_contract": "Gauge mode, schema/type transitions and both-way bucket union",
+        "platforms": [
+          "portable Go"
+        ]
+      },
+      "rewrite": {
+        "present": true,
+        "public_symbol": "Chunk::append",
+        "variant": "canonical_scalar",
+        "build_target": "histogram_st",
+        "platforms": [
+          "Linux x86_64 GCC11/Clang14",
+          "Linux AArch64 musl QEMU"
+        ],
+        "implementation_files": [
+          "include/histogram_st.hpp",
+          "src/histogram_st.cpp"
+        ]
+      },
+      "validation": {
+        "status": "PASS",
+        "witnesses": [
+          "int.gauge_transition",
+          "float.gauge_transition",
+          "int.gauge_bothways",
+          "float.gauge_bothways"
+        ],
+        "tests": [
+          "validation/final-cross-decode/report.json",
+          "validation/final-properties/report.json",
+          "validation/qualification/native.json",
+          "validation/qualification/sanitizers.json",
+          "validation/qualification/tsan-fixed-layout.json",
+          "validation/qualification/portable.json",
+          "validation/qualification/source-tests.json"
+        ],
+        "artifacts": [
+          {
+            "path": "validation/final-cross-decode/report.json",
+            "sha256": "6edeaee2b9ab809dd6453a541ea19a5b58fa65fca1e57346018e3515d59e0dc0"
+          },
+          {
+            "path": "validation/final-properties/report.json",
+            "sha256": "dce5e43ea5acf859953a3196ee3dc9903e1af962320ab8c5961c6345fc709a43"
+          },
+          {
+            "path": "validation/qualification/native.json",
+            "sha256": "f0fb40a79ac55d8eb1c1d862edeef29ac8a82658b40f4adebc8cd35573c8b5aa"
+          },
+          {
+            "path": "validation/qualification/sanitizers.json",
+            "sha256": "3ea799081789c43c6238d90ad640ecb499136293caf43a455f06a9e30a54ba35"
+          },
+          {
+            "path": "validation/qualification/tsan-fixed-layout.json",
+            "sha256": "6acb3248a83b6c98aa373f0951b107334a42a79e97c9bef734682f48dbd31645"
+          },
+          {
+            "path": "validation/qualification/portable.json",
+            "sha256": "ed20a6de21d3a5f71fdc5aa265cbf5fb9401958422b1fb23389bf40c1f788eb3"
+          },
+          {
+            "path": "validation/qualification/source-tests.json",
+            "sha256": "d2cd50f2254fcc8dbb382602669af0bbdc53da510dc7a0a07db7a1ec07d70940"
+          }
+        ]
+      },
+      "waiver_id": null
+    },
+    {
+      "capability_id": "state.stale_nan",
+      "parity_class": "REQUIRED_PARITY",
+      "owner": "prometheus-histogram-st rewrite",
+      "upstream": {
+        "present": true,
+        "public_or_supported": true,
+        "evidence": [
+          {
+            "path": "tsdb/chunkenc/histogram.go",
+            "sha256": "a8449607ceaf3a4f3920d67c9978563449f863036c6ceb5a5524086bc6e6bb0f",
+            "symbols": [
+              {
+                "symbol": "func NewHistogramChunk() *HistogramChunk {",
+                "line": 44
+              },
+              {
+                "symbol": "func (c *HistogramChunk) Reset(stream []byte) {",
+                "line": 49
+              },
+              {
+                "symbol": "func (*HistogramChunk) Encoding() Encoding {",
+                "line": 54
+              },
+              {
+                "symbol": "func (c *HistogramChunk) Bytes() []byte {",
+                "line": 59
+              },
+              {
+                "symbol": "func (c *HistogramChunk) NumSamples() int {",
+                "line": 64
+              },
+              {
+                "symbol": "func (c *HistogramChunk) GetCounterResetHeader() CounterResetHeader {",
+                "line": 91
+              },
+              {
+                "symbol": "func (c *HistogramChunk) Compact() {",
+                "line": 96
+              },
+              {
+                "symbol": "func (c *HistogramChunk) Appender() (Appender, error) {",
+                "line": 105
+              },
+              {
+                "symbol": "func countSpans(spans []histogram.Span) int {",
+                "line": 146
+              },
+              {
+                "symbol": "func newHistogramIterator(b []byte) *histogramIterator {",
+                "line": 154
+              },
+              {
+                "symbol": "func (c *HistogramChunk) iterator(it Iterator) *histogramIterator {",
+                "line": 164
+              },
+              {
+                "symbol": "func (c *HistogramChunk) Iterator(it Iterator) Iterator {",
+                "line": 177
+              },
+              {
+                "symbol": "func (a *HistogramAppender) GetCounterResetHeader() CounterResetHeader {",
+                "line": 208
+              },
+              {
+                "symbol": "func (a *HistogramAppender) setCounterResetHeader(cr CounterResetHeader) {",
+                "line": 212
+              },
+              {
+                "symbol": "func (a *HistogramAppender) NumSamples() int {",
+                "line": 216
+              },
+              {
+                "symbol": "func (a *HistogramAppender) setNumSamples(num int) {",
+                "line": 221
+              },
+              {
+                "symbol": "func (*HistogramAppender) Append(int64, int64, float64) {",
+                "line": 227
+              },
+              {
+                "symbol": "func (a *HistogramAppender) appendable(h *histogram.Histogram) (",
+                "line": 261
+              },
+              {
+                "symbol": "func expandIntSpansAndBuckets(a, b []histogram.Span, aBuckets, bBuckets []int64) (forward, backward []Insert, ok bool) {",
+                "line": 371
+              },
+              {
+                "symbol": "func (a *HistogramAppender) appendableGauge(h *histogram.Histogram) (",
+                "line": 516
+              },
+              {
+                "symbol": "func (a *HistogramAppender) appendHistogram(num int, t int64, h *histogram.Histogram) int {",
+                "line": 558
+              },
+              {
+                "symbol": "func (a *HistogramAppender) recode(",
+                "line": 677
+              },
+              {
+                "symbol": "func (*HistogramAppender) recodeHistogram(",
+                "line": 729
+              },
+              {
+                "symbol": "func (a *HistogramAppender) writeSumDelta(v float64) {",
+                "line": 743
+              },
+              {
+                "symbol": "func (*HistogramAppender) AppendFloatHistogram(Appender, int64, int64, *histogram.FloatHistogram, bool) (Chunk, bool, Appender, error) {",
+                "line": 747
+              },
+              {
+                "symbol": "func (a *HistogramAppender) AppendHistogram(prev Appender, _, t int64, h *histogram.Histogram, appendOnly bool) (Chunk, bool, Appender, error) {",
+                "line": 751
+              },
+              {
+                "symbol": "func CounterResetHintToHeader(hint histogram.CounterResetHint) CounterResetHeader {",
+                "line": 879
+              },
+              {
+                "symbol": "func (it *histogramIterator) Seek(t int64) ValueType {",
+                "line": 926
+              },
+              {
+                "symbol": "func (*histogramIterator) At() (int64, float64) {",
+                "line": 939
+              },
+              {
+                "symbol": "func (it *histogramIterator) AtHistogram(h *histogram.Histogram) (int64, *histogram.Histogram) {",
+                "line": 943
+              },
+              {
+                "symbol": "func (it *histogramIterator) AtFloatHistogram(fh *histogram.FloatHistogram) (int64, *histogram.FloatHistogram) {",
+                "line": 1017
+              },
+              {
+                "symbol": "func (it *histogramIterator) AtT() int64 {",
+                "line": 1099
+              },
+              {
+                "symbol": "func (*histogramIterator) AtST() int64 {",
+                "line": 1103
+              },
+              {
+                "symbol": "func (it *histogramIterator) Err() error {",
+                "line": 1107
+              },
+              {
+                "symbol": "func (it *histogramIterator) Reset(b []byte) {",
+                "line": 1111
+              },
+              {
+                "symbol": "func (it *histogramIterator) Next() ValueType {",
+                "line": 1151
+              },
+              {
+                "symbol": "func (it *histogramIterator) readSum() bool {",
+                "line": 1364
+              },
+              {
+                "symbol": "func resize[T any](items []T, n int) []T {",
+                "line": 1373
+              }
+            ]
+          }
+        ],
+        "semantic_contract": "Exact stale bit marker; empty public histogram and skipped buckets",
+        "platforms": [
+          "portable Go"
+        ]
+      },
+      "rewrite": {
+        "present": true,
+        "public_symbol": "Chunk::append",
+        "variant": "canonical_scalar",
+        "build_target": "histogram_st",
+        "platforms": [
+          "Linux x86_64 GCC11/Clang14",
+          "Linux AArch64 musl QEMU"
+        ],
+        "implementation_files": [
+          "include/histogram_st.hpp",
+          "src/histogram_st.cpp"
+        ]
+      },
+      "validation": {
+        "status": "PASS",
+        "witnesses": [
+          "int.stale_and_resume",
+          "float.stale_and_resume"
+        ],
+        "tests": [
+          "validation/final-cross-decode/report.json",
+          "validation/final-properties/report.json",
+          "validation/qualification/native.json",
+          "validation/qualification/sanitizers.json",
+          "validation/qualification/tsan-fixed-layout.json",
+          "validation/qualification/portable.json",
+          "validation/qualification/source-tests.json"
+        ],
+        "artifacts": [
+          {
+            "path": "validation/final-cross-decode/report.json",
+            "sha256": "6edeaee2b9ab809dd6453a541ea19a5b58fa65fca1e57346018e3515d59e0dc0"
+          },
+          {
+            "path": "validation/final-properties/report.json",
+            "sha256": "dce5e43ea5acf859953a3196ee3dc9903e1af962320ab8c5961c6345fc709a43"
+          },
+          {
+            "path": "validation/qualification/native.json",
+            "sha256": "f0fb40a79ac55d8eb1c1d862edeef29ac8a82658b40f4adebc8cd35573c8b5aa"
+          },
+          {
+            "path": "validation/qualification/sanitizers.json",
+            "sha256": "3ea799081789c43c6238d90ad640ecb499136293caf43a455f06a9e30a54ba35"
+          },
+          {
+            "path": "validation/qualification/tsan-fixed-layout.json",
+            "sha256": "6acb3248a83b6c98aa373f0951b107334a42a79e97c9bef734682f48dbd31645"
+          },
+          {
+            "path": "validation/qualification/portable.json",
+            "sha256": "ed20a6de21d3a5f71fdc5aa265cbf5fb9401958422b1fb23389bf40c1f788eb3"
+          },
+          {
+            "path": "validation/qualification/source-tests.json",
+            "sha256": "d2cd50f2254fcc8dbb382602669af0bbdc53da510dc7a0a07db7a1ec07d70940"
+          }
+        ]
+      },
+      "waiver_id": null
+    },
+    {
+      "capability_id": "state.schema_evolution",
+      "parity_class": "REQUIRED_PARITY",
+      "owner": "prometheus-histogram-st rewrite",
+      "upstream": {
+        "present": true,
+        "public_or_supported": true,
+        "evidence": [
+          {
+            "path": "tsdb/chunkenc/histogram_st.go",
+            "sha256": "313a2695cd586ef2640a5d3c12c98885358606aac1d9b3aa8b3ccb7fcdd69c23",
+            "symbols": [
+              {
+                "symbol": "func NewHistogramSTChunk() *HistogramSTChunk {",
+                "line": 38
+              },
+              {
+                "symbol": "func (c *HistogramSTChunk) Reset(stream []byte) {",
+                "line": 43
+              },
+              {
+                "symbol": "func (*HistogramSTChunk) Encoding() Encoding { return EncHistogramST }",
+                "line": 48
+              },
+              {
+                "symbol": "func (c *HistogramSTChunk) Bytes() []byte {",
+                "line": 51
+              },
+              {
+                "symbol": "func (c *HistogramSTChunk) NumSamples() int {",
+                "line": 56
+              },
+              {
+                "symbol": "func (c *HistogramSTChunk) GetCounterResetHeader() CounterResetHeader {",
+                "line": 63
+              },
+              {
+                "symbol": "func (c *HistogramSTChunk) Compact() {",
+                "line": 68
+              },
+              {
+                "symbol": "func (c *HistogramSTChunk) Appender() (Appender, error) {",
+                "line": 77
+              },
+              {
+                "symbol": "func newHistogramSTIterator(b []byte) *histogramSTIterator {",
+                "line": 134
+              },
+              {
+                "symbol": "func (c *HistogramSTChunk) iterator(it Iterator) *histogramSTIterator {",
+                "line": 147
+              },
+              {
+                "symbol": "func (c *HistogramSTChunk) Iterator(it Iterator) Iterator {",
+                "line": 156
+              },
+              {
+                "symbol": "func (a *HistogramSTAppender) GetCounterResetHeader() CounterResetHeader {",
+                "line": 168
+              },
+              {
+                "symbol": "func (a *HistogramSTAppender) setCounterResetHeader(cr CounterResetHeader) {",
+                "line": 173
+              },
+              {
+                "symbol": "func (a *HistogramSTAppender) NumSamples() int {",
+                "line": 180
+              },
+              {
+                "symbol": "func (a *HistogramSTAppender) setNumSamples(num int) {",
+                "line": 186
+              },
+              {
+                "symbol": "func (a *HistogramSTAppender) appendable(h *histogram.Histogram) (",
+                "line": 192
+              },
+              {
+                "symbol": "func (a *HistogramSTAppender) appendableGauge(h *histogram.Histogram) (",
+                "line": 256
+              },
+              {
+                "symbol": "func (a *HistogramSTAppender) appendHistogramST(num int, st, t int64, h *histogram.Histogram) int {",
+                "line": 296
+              },
+              {
+                "symbol": "func (*HistogramSTAppender) Append(int64, int64, float64) {",
+                "line": 303
+              },
+              {
+                "symbol": "func (*HistogramSTAppender) AppendFloatHistogram(Appender, int64, int64, *histogram.FloatHistogram, bool) (Chunk, bool, Appender, error) {",
+                "line": 307
+              },
+              {
+                "symbol": "func (a *HistogramSTAppender) AppendHistogram(prev Appender, st, t int64, h *histogram.Histogram, appendOnly bool) (Chunk, bool, Appender, error) {",
+                "line": 312
+              },
+              {
+                "symbol": "func (a *HistogramSTAppender) recodeST(",
+                "line": 431
+              },
+              {
+                "symbol": "func (it *histogramSTIterator) AtST() int64 {",
+                "line": 479
+              },
+              {
+                "symbol": "func (it *histogramSTIterator) Reset(b []byte) {",
+                "line": 483
+              },
+              {
+                "symbol": "func (it *histogramSTIterator) Next() ValueType {",
+                "line": 526
+              },
+              {
+                "symbol": "func (it *histogramSTIterator) Seek(t int64) ValueType {",
+                "line": 540
+              }
+            ]
+          }
+        ],
+        "semantic_contract": "New chunk on incompatible schema/zero threshold/custom bounds",
+        "platforms": [
+          "portable Go"
+        ]
+      },
+      "rewrite": {
+        "present": true,
+        "public_symbol": "Chunk::append",
+        "variant": "canonical_scalar",
+        "build_target": "histogram_st",
+        "platforms": [
+          "Linux x86_64 GCC11/Clang14",
+          "Linux AArch64 musl QEMU"
+        ],
+        "implementation_files": [
+          "include/histogram_st.hpp",
+          "src/histogram_st.cpp"
+        ]
+      },
+      "validation": {
+        "status": "PASS",
+        "witnesses": [
+          "int.reset_schema",
+          "float.reset_schema",
+          "int.custom_bounds",
+          "float.custom_bounds"
+        ],
+        "tests": [
+          "validation/final-cross-decode/report.json",
+          "validation/final-properties/report.json",
+          "validation/qualification/native.json",
+          "validation/qualification/sanitizers.json",
+          "validation/qualification/tsan-fixed-layout.json",
+          "validation/qualification/portable.json",
+          "validation/qualification/source-tests.json"
+        ],
+        "artifacts": [
+          {
+            "path": "validation/final-cross-decode/report.json",
+            "sha256": "6edeaee2b9ab809dd6453a541ea19a5b58fa65fca1e57346018e3515d59e0dc0"
+          },
+          {
+            "path": "validation/final-properties/report.json",
+            "sha256": "dce5e43ea5acf859953a3196ee3dc9903e1af962320ab8c5961c6345fc709a43"
+          },
+          {
+            "path": "validation/qualification/native.json",
+            "sha256": "f0fb40a79ac55d8eb1c1d862edeef29ac8a82658b40f4adebc8cd35573c8b5aa"
+          },
+          {
+            "path": "validation/qualification/sanitizers.json",
+            "sha256": "3ea799081789c43c6238d90ad640ecb499136293caf43a455f06a9e30a54ba35"
+          },
+          {
+            "path": "validation/qualification/tsan-fixed-layout.json",
+            "sha256": "6acb3248a83b6c98aa373f0951b107334a42a79e97c9bef734682f48dbd31645"
+          },
+          {
+            "path": "validation/qualification/portable.json",
+            "sha256": "ed20a6de21d3a5f71fdc5aa265cbf5fb9401958422b1fb23389bf40c1f788eb3"
+          },
+          {
+            "path": "validation/qualification/source-tests.json",
+            "sha256": "d2cd50f2254fcc8dbb382602669af0bbdc53da510dc7a0a07db7a1ec07d70940"
+          }
+        ]
+      },
+      "waiver_id": null
+    },
+    {
+      "capability_id": "state.forward_recode",
+      "parity_class": "REQUIRED_PARITY",
+      "owner": "prometheus-histogram-st rewrite",
+      "upstream": {
+        "present": true,
+        "public_or_supported": true,
+        "evidence": [
+          {
+            "path": "tsdb/chunkenc/histogram_st.go",
+            "sha256": "313a2695cd586ef2640a5d3c12c98885358606aac1d9b3aa8b3ccb7fcdd69c23",
+            "symbols": [
+              {
+                "symbol": "func NewHistogramSTChunk() *HistogramSTChunk {",
+                "line": 38
+              },
+              {
+                "symbol": "func (c *HistogramSTChunk) Reset(stream []byte) {",
+                "line": 43
+              },
+              {
+                "symbol": "func (*HistogramSTChunk) Encoding() Encoding { return EncHistogramST }",
+                "line": 48
+              },
+              {
+                "symbol": "func (c *HistogramSTChunk) Bytes() []byte {",
+                "line": 51
+              },
+              {
+                "symbol": "func (c *HistogramSTChunk) NumSamples() int {",
+                "line": 56
+              },
+              {
+                "symbol": "func (c *HistogramSTChunk) GetCounterResetHeader() CounterResetHeader {",
+                "line": 63
+              },
+              {
+                "symbol": "func (c *HistogramSTChunk) Compact() {",
+                "line": 68
+              },
+              {
+                "symbol": "func (c *HistogramSTChunk) Appender() (Appender, error) {",
+                "line": 77
+              },
+              {
+                "symbol": "func newHistogramSTIterator(b []byte) *histogramSTIterator {",
+                "line": 134
+              },
+              {
+                "symbol": "func (c *HistogramSTChunk) iterator(it Iterator) *histogramSTIterator {",
+                "line": 147
+              },
+              {
+                "symbol": "func (c *HistogramSTChunk) Iterator(it Iterator) Iterator {",
+                "line": 156
+              },
+              {
+                "symbol": "func (a *HistogramSTAppender) GetCounterResetHeader() CounterResetHeader {",
+                "line": 168
+              },
+              {
+                "symbol": "func (a *HistogramSTAppender) setCounterResetHeader(cr CounterResetHeader) {",
+                "line": 173
+              },
+              {
+                "symbol": "func (a *HistogramSTAppender) NumSamples() int {",
+                "line": 180
+              },
+              {
+                "symbol": "func (a *HistogramSTAppender) setNumSamples(num int) {",
+                "line": 186
+              },
+              {
+                "symbol": "func (a *HistogramSTAppender) appendable(h *histogram.Histogram) (",
+                "line": 192
+              },
+              {
+                "symbol": "func (a *HistogramSTAppender) appendableGauge(h *histogram.Histogram) (",
+                "line": 256
+              },
+              {
+                "symbol": "func (a *HistogramSTAppender) appendHistogramST(num int, st, t int64, h *histogram.Histogram) int {",
+                "line": 296
+              },
+              {
+                "symbol": "func (*HistogramSTAppender) Append(int64, int64, float64) {",
+                "line": 303
+              },
+              {
+                "symbol": "func (*HistogramSTAppender) AppendFloatHistogram(Appender, int64, int64, *histogram.FloatHistogram, bool) (Chunk, bool, Appender, error) {",
+                "line": 307
+              },
+              {
+                "symbol": "func (a *HistogramSTAppender) AppendHistogram(prev Appender, st, t int64, h *histogram.Histogram, appendOnly bool) (Chunk, bool, Appender, error) {",
+                "line": 312
+              },
+              {
+                "symbol": "func (a *HistogramSTAppender) recodeST(",
+                "line": 431
+              },
+              {
+                "symbol": "func (it *histogramSTIterator) AtST() int64 {",
+                "line": 479
+              },
+              {
+                "symbol": "func (it *histogramSTIterator) Reset(b []byte) {",
+                "line": 483
+              },
+              {
+                "symbol": "func (it *histogramSTIterator) Next() ValueType {",
+                "line": 526
+              },
+              {
+                "symbol": "func (it *histogramSTIterator) Seek(t int64) ValueType {",
+                "line": 540
+              }
+            ]
+          }
+        ],
+        "semantic_contract": "Recode old chunk with expanded layout while preserving ST/reset",
+        "platforms": [
+          "portable Go"
+        ]
+      },
+      "rewrite": {
+        "present": true,
+        "public_symbol": "Chunk::append",
+        "variant": "canonical_scalar",
+        "build_target": "histogram_st",
+        "platforms": [
+          "Linux x86_64 GCC11/Clang14",
+          "Linux AArch64 musl QEMU"
+        ],
+        "implementation_files": [
+          "include/histogram_st.hpp",
+          "src/histogram_st.cpp"
+        ]
+      },
+      "validation": {
+        "status": "PASS",
+        "witnesses": [
+          "int.counter_grow",
+          "float.counter_grow",
+          "int.gauge_bothways",
+          "float.gauge_bothways"
+        ],
+        "tests": [
+          "validation/final-cross-decode/report.json",
+          "validation/final-properties/report.json",
+          "validation/qualification/native.json",
+          "validation/qualification/sanitizers.json",
+          "validation/qualification/tsan-fixed-layout.json",
+          "validation/qualification/portable.json",
+          "validation/qualification/source-tests.json"
+        ],
+        "artifacts": [
+          {
+            "path": "validation/final-cross-decode/report.json",
+            "sha256": "6edeaee2b9ab809dd6453a541ea19a5b58fa65fca1e57346018e3515d59e0dc0"
+          },
+          {
+            "path": "validation/final-properties/report.json",
+            "sha256": "dce5e43ea5acf859953a3196ee3dc9903e1af962320ab8c5961c6345fc709a43"
+          },
+          {
+            "path": "validation/qualification/native.json",
+            "sha256": "f0fb40a79ac55d8eb1c1d862edeef29ac8a82658b40f4adebc8cd35573c8b5aa"
+          },
+          {
+            "path": "validation/qualification/sanitizers.json",
+            "sha256": "3ea799081789c43c6238d90ad640ecb499136293caf43a455f06a9e30a54ba35"
+          },
+          {
+            "path": "validation/qualification/tsan-fixed-layout.json",
+            "sha256": "6acb3248a83b6c98aa373f0951b107334a42a79e97c9bef734682f48dbd31645"
+          },
+          {
+            "path": "validation/qualification/portable.json",
+            "sha256": "ed20a6de21d3a5f71fdc5aa265cbf5fb9401958422b1fb23389bf40c1f788eb3"
+          },
+          {
+            "path": "validation/qualification/source-tests.json",
+            "sha256": "d2cd50f2254fcc8dbb382602669af0bbdc53da510dc7a0a07db7a1ec07d70940"
+          }
+        ]
+      },
+      "waiver_id": null
+    },
+    {
+      "capability_id": "state.backward_insert",
+      "parity_class": "REQUIRED_PARITY",
+      "owner": "prometheus-histogram-st rewrite",
+      "upstream": {
+        "present": true,
+        "public_or_supported": true,
+        "evidence": [
+          {
+            "path": "tsdb/chunkenc/histogram_meta.go",
+            "sha256": "751bf689f5cfeebe9359500bd0292fc080312c95e33d895b4bee58a9ffca2194",
+            "symbols": [
+              {
+                "symbol": "func writeHistogramChunkLayout(",
+                "line": 22
+              },
+              {
+                "symbol": "func readHistogramChunkLayout(b *bstreamReader) (",
+                "line": 35
+              },
+              {
+                "symbol": "func putHistogramChunkLayoutSpans(b *bstream, spans []histogram.Span) {",
+                "line": 72
+              },
+              {
+                "symbol": "func readHistogramChunkLayoutSpans(b *bstreamReader) ([]histogram.Span, error) {",
+                "line": 80
+              },
+              {
+                "symbol": "func putHistogramChunkLayoutCustomBounds(b *bstream, customValues []float64) {",
+                "line": 105
+              },
+              {
+                "symbol": "func readHistogramChunkLayoutCustomBounds(b *bstreamReader) ([]float64, error) {",
+                "line": 112
+              },
+              {
+                "symbol": "func putZeroThreshold(b *bstream, threshold float64) {",
+                "line": 143
+              },
+              {
+                "symbol": "func readZeroThreshold(br *bstreamReader) (float64, error) {",
+                "line": 158
+              },
+              {
+                "symbol": "func isWholeWhenMultiplied(in float64) bool {",
+                "line": 179
+              },
+              {
+                "symbol": "func putCustomBound(b *bstream, f float64) {",
+                "line": 200
+              },
+              {
+                "symbol": "func readCustomBound(br *bstreamReader) (float64, error) {",
+                "line": 213
+              },
+              {
+                "symbol": "func newBucketIterator(spans []histogram.Span) *bucketIterator {",
+                "line": 237
+              },
+              {
+                "symbol": "func (b *bucketIterator) Next() (int, bool) {",
+                "line": 250
+              },
+              {
+                "symbol": "func expandSpansBothWays(a, b []histogram.Span) (forward, backward []Insert, mergedSpans []histogram.Span) {",
+                "line": 293
+              },
+              {
+                "symbol": "func insert[BV bucketValue](in, out []BV, inserts []Insert, deltas bool) []BV {",
+                "line": 395
+              },
+              {
+                "symbol": "func counterResetHint(crh CounterResetHeader, numRead uint16) histogram.CounterResetHint {",
+                "line": 471
+              },
+              {
+                "symbol": "func adjustForInserts(spans []histogram.Span, inserts []Insert) (mergedSpans []histogram.Span) {",
+                "line": 495
+              }
+            ]
+          }
+        ],
+        "semantic_contract": "Insert zero buckets into current sample without modifying caller input",
+        "platforms": [
+          "portable Go"
+        ]
+      },
+      "rewrite": {
+        "present": true,
+        "public_symbol": "Chunk::append",
+        "variant": "canonical_scalar",
+        "build_target": "histogram_st",
+        "platforms": [
+          "Linux x86_64 GCC11/Clang14",
+          "Linux AArch64 musl QEMU"
+        ],
+        "implementation_files": [
+          "include/histogram_st.hpp",
+          "src/histogram_st.cpp"
+        ]
+      },
+      "validation": {
+        "status": "PASS",
+        "witnesses": [
+          "int.counter_zero_backward",
+          "float.counter_zero_backward",
+          "int.gauge_bothways",
+          "float.gauge_bothways"
+        ],
+        "tests": [
+          "validation/final-cross-decode/report.json",
+          "validation/final-properties/report.json",
+          "validation/qualification/native.json",
+          "validation/qualification/sanitizers.json",
+          "validation/qualification/tsan-fixed-layout.json",
+          "validation/qualification/portable.json",
+          "validation/qualification/source-tests.json"
+        ],
+        "artifacts": [
+          {
+            "path": "validation/final-cross-decode/report.json",
+            "sha256": "6edeaee2b9ab809dd6453a541ea19a5b58fa65fca1e57346018e3515d59e0dc0"
+          },
+          {
+            "path": "validation/final-properties/report.json",
+            "sha256": "dce5e43ea5acf859953a3196ee3dc9903e1af962320ab8c5961c6345fc709a43"
+          },
+          {
+            "path": "validation/qualification/native.json",
+            "sha256": "f0fb40a79ac55d8eb1c1d862edeef29ac8a82658b40f4adebc8cd35573c8b5aa"
+          },
+          {
+            "path": "validation/qualification/sanitizers.json",
+            "sha256": "3ea799081789c43c6238d90ad640ecb499136293caf43a455f06a9e30a54ba35"
+          },
+          {
+            "path": "validation/qualification/tsan-fixed-layout.json",
+            "sha256": "6acb3248a83b6c98aa373f0951b107334a42a79e97c9bef734682f48dbd31645"
+          },
+          {
+            "path": "validation/qualification/portable.json",
+            "sha256": "ed20a6de21d3a5f71fdc5aa265cbf5fb9401958422b1fb23389bf40c1f788eb3"
+          },
+          {
+            "path": "validation/qualification/source-tests.json",
+            "sha256": "d2cd50f2254fcc8dbb382602669af0bbdc53da510dc7a0a07db7a1ec07d70940"
+          }
+        ]
+      },
+      "waiver_id": null
+    },
+    {
+      "capability_id": "stream.append_only",
+      "parity_class": "REQUIRED_PARITY",
+      "owner": "prometheus-histogram-st rewrite",
+      "upstream": {
+        "present": true,
+        "public_or_supported": true,
+        "evidence": [
+          {
+            "path": "tsdb/chunkenc/histogram_st.go",
+            "sha256": "313a2695cd586ef2640a5d3c12c98885358606aac1d9b3aa8b3ccb7fcdd69c23",
+            "symbols": [
+              {
+                "symbol": "func NewHistogramSTChunk() *HistogramSTChunk {",
+                "line": 38
+              },
+              {
+                "symbol": "func (c *HistogramSTChunk) Reset(stream []byte) {",
+                "line": 43
+              },
+              {
+                "symbol": "func (*HistogramSTChunk) Encoding() Encoding { return EncHistogramST }",
+                "line": 48
+              },
+              {
+                "symbol": "func (c *HistogramSTChunk) Bytes() []byte {",
+                "line": 51
+              },
+              {
+                "symbol": "func (c *HistogramSTChunk) NumSamples() int {",
+                "line": 56
+              },
+              {
+                "symbol": "func (c *HistogramSTChunk) GetCounterResetHeader() CounterResetHeader {",
+                "line": 63
+              },
+              {
+                "symbol": "func (c *HistogramSTChunk) Compact() {",
+                "line": 68
+              },
+              {
+                "symbol": "func (c *HistogramSTChunk) Appender() (Appender, error) {",
+                "line": 77
+              },
+              {
+                "symbol": "func newHistogramSTIterator(b []byte) *histogramSTIterator {",
+                "line": 134
+              },
+              {
+                "symbol": "func (c *HistogramSTChunk) iterator(it Iterator) *histogramSTIterator {",
+                "line": 147
+              },
+              {
+                "symbol": "func (c *HistogramSTChunk) Iterator(it Iterator) Iterator {",
+                "line": 156
+              },
+              {
+                "symbol": "func (a *HistogramSTAppender) GetCounterResetHeader() CounterResetHeader {",
+                "line": 168
+              },
+              {
+                "symbol": "func (a *HistogramSTAppender) setCounterResetHeader(cr CounterResetHeader) {",
+                "line": 173
+              },
+              {
+                "symbol": "func (a *HistogramSTAppender) NumSamples() int {",
+                "line": 180
+              },
+              {
+                "symbol": "func (a *HistogramSTAppender) setNumSamples(num int) {",
+                "line": 186
+              },
+              {
+                "symbol": "func (a *HistogramSTAppender) appendable(h *histogram.Histogram) (",
+                "line": 192
+              },
+              {
+                "symbol": "func (a *HistogramSTAppender) appendableGauge(h *histogram.Histogram) (",
+                "line": 256
+              },
+              {
+                "symbol": "func (a *HistogramSTAppender) appendHistogramST(num int, st, t int64, h *histogram.Histogram) int {",
+                "line": 296
+              },
+              {
+                "symbol": "func (*HistogramSTAppender) Append(int64, int64, float64) {",
+                "line": 303
+              },
+              {
+                "symbol": "func (*HistogramSTAppender) AppendFloatHistogram(Appender, int64, int64, *histogram.FloatHistogram, bool) (Chunk, bool, Appender, error) {",
+                "line": 307
+              },
+              {
+                "symbol": "func (a *HistogramSTAppender) AppendHistogram(prev Appender, st, t int64, h *histogram.Histogram, appendOnly bool) (Chunk, bool, Appender, error) {",
+                "line": 312
+              },
+              {
+                "symbol": "func (a *HistogramSTAppender) recodeST(",
+                "line": 431
+              },
+              {
+                "symbol": "func (it *histogramSTIterator) AtST() int64 {",
+                "line": 479
+              },
+              {
+                "symbol": "func (it *histogramSTIterator) Reset(b []byte) {",
+                "line": 483
+              },
+              {
+                "symbol": "func (it *histogramSTIterator) Next() ValueType {",
+                "line": 526
+              },
+              {
+                "symbol": "func (it *histogramSTIterator) Seek(t int64) ValueType {",
+                "line": 540
+              }
+            ]
+          }
+        ],
+        "semantic_contract": "Reject required replacement or forward/gauge-backward recode",
+        "platforms": [
+          "portable Go"
+        ]
+      },
+      "rewrite": {
+        "present": true,
+        "public_symbol": "Chunk::append",
+        "variant": "canonical_scalar",
+        "build_target": "histogram_st",
+        "platforms": [
+          "Linux x86_64 GCC11/Clang14",
+          "Linux AArch64 musl QEMU"
+        ],
+        "implementation_files": [
+          "include/histogram_st.hpp",
+          "src/histogram_st.cpp"
+        ]
+      },
+      "validation": {
+        "status": "PASS",
+        "witnesses": [
+          "preflight: schema replacement/forward recode/gauge backward recode transactional errors"
+        ],
+        "tests": [
+          "validation/final-cross-decode/report.json",
+          "validation/final-properties/report.json",
+          "validation/qualification/native.json",
+          "validation/qualification/sanitizers.json",
+          "validation/qualification/tsan-fixed-layout.json",
+          "validation/qualification/portable.json",
+          "validation/qualification/source-tests.json"
+        ],
+        "artifacts": [
+          {
+            "path": "validation/final-cross-decode/report.json",
+            "sha256": "6edeaee2b9ab809dd6453a541ea19a5b58fa65fca1e57346018e3515d59e0dc0"
+          },
+          {
+            "path": "validation/final-properties/report.json",
+            "sha256": "dce5e43ea5acf859953a3196ee3dc9903e1af962320ab8c5961c6345fc709a43"
+          },
+          {
+            "path": "validation/qualification/native.json",
+            "sha256": "f0fb40a79ac55d8eb1c1d862edeef29ac8a82658b40f4adebc8cd35573c8b5aa"
+          },
+          {
+            "path": "validation/qualification/sanitizers.json",
+            "sha256": "3ea799081789c43c6238d90ad640ecb499136293caf43a455f06a9e30a54ba35"
+          },
+          {
+            "path": "validation/qualification/tsan-fixed-layout.json",
+            "sha256": "6acb3248a83b6c98aa373f0951b107334a42a79e97c9bef734682f48dbd31645"
+          },
+          {
+            "path": "validation/qualification/portable.json",
+            "sha256": "ed20a6de21d3a5f71fdc5aa265cbf5fb9401958422b1fb23389bf40c1f788eb3"
+          },
+          {
+            "path": "validation/qualification/source-tests.json",
+            "sha256": "d2cd50f2254fcc8dbb382602669af0bbdc53da510dc7a0a07db7a1ec07d70940"
+          }
+        ]
+      },
+      "waiver_id": null
+    },
+    {
+      "capability_id": "stream.resume",
+      "parity_class": "REQUIRED_PARITY",
+      "owner": "prometheus-histogram-st rewrite",
+      "upstream": {
+        "present": true,
+        "public_or_supported": true,
+        "evidence": [
+          {
+            "path": "tsdb/chunkenc/float_histogram_st.go",
+            "sha256": "a2cbe06efd9b2f754e4b8b98099d0d8014ddc20d0e10d2ded5fef0775cc376a1",
+            "symbols": [
+              {
+                "symbol": "func NewFloatHistogramSTChunk() *FloatHistogramSTChunk {",
+                "line": 38
+              },
+              {
+                "symbol": "func (c *FloatHistogramSTChunk) Reset(stream []byte) {",
+                "line": 44
+              },
+              {
+                "symbol": "func (*FloatHistogramSTChunk) Encoding() Encoding { return EncFloatHistogramST }",
+                "line": 49
+              },
+              {
+                "symbol": "func (c *FloatHistogramSTChunk) Bytes() []byte {",
+                "line": 52
+              },
+              {
+                "symbol": "func (c *FloatHistogramSTChunk) NumSamples() int {",
+                "line": 57
+              },
+              {
+                "symbol": "func (c *FloatHistogramSTChunk) GetCounterResetHeader() CounterResetHeader {",
+                "line": 64
+              },
+              {
+                "symbol": "func (c *FloatHistogramSTChunk) Compact() {",
+                "line": 69
+              },
+              {
+                "symbol": "func (c *FloatHistogramSTChunk) Appender() (Appender, error) {",
+                "line": 78
+              },
+              {
+                "symbol": "func newFloatHistogramSTIterator(b []byte) *floatHistogramSTIterator {",
+                "line": 146
+              },
+              {
+                "symbol": "func (c *FloatHistogramSTChunk) iterator(it Iterator) *floatHistogramSTIterator {",
+                "line": 159
+              },
+              {
+                "symbol": "func (c *FloatHistogramSTChunk) Iterator(it Iterator) Iterator {",
+                "line": 168
+              },
+              {
+                "symbol": "func (a *FloatHistogramSTAppender) GetCounterResetHeader() CounterResetHeader {",
+                "line": 180
+              },
+              {
+                "symbol": "func (a *FloatHistogramSTAppender) setCounterResetHeader(cr CounterResetHeader) {",
+                "line": 185
+              },
+              {
+                "symbol": "func (a *FloatHistogramSTAppender) NumSamples() int {",
+                "line": 192
+              },
+              {
+                "symbol": "func (a *FloatHistogramSTAppender) setNumSamples(num int) {",
+                "line": 198
+              },
+              {
+                "symbol": "func (a *FloatHistogramSTAppender) appendable(h *histogram.FloatHistogram) (",
+                "line": 204
+              },
+              {
+                "symbol": "func (a *FloatHistogramSTAppender) appendableGauge(h *histogram.FloatHistogram) (",
+                "line": 265
+              },
+              {
+                "symbol": "func (a *FloatHistogramSTAppender) appendFloatHistogramST(num int, st, t int64, fh *histogram.FloatHistogram) int {",
+                "line": 305
+              },
+              {
+                "symbol": "func (*FloatHistogramSTAppender) Append(int64, int64, float64) {",
+                "line": 314
+              },
+              {
+                "symbol": "func (*FloatHistogramSTAppender) AppendHistogram(Appender, int64, int64, *histogram.Histogram, bool) (Chunk, bool, Appender, error) {",
+                "line": 320
+              },
+              {
+                "symbol": "func (a *FloatHistogramSTAppender) AppendFloatHistogram(prev Appender, st, t int64, fh *histogram.FloatHistogram, appendOnly bool) (Chunk, bool, Appender, error) {",
+                "line": 325
+              },
+              {
+                "symbol": "func (a *FloatHistogramSTAppender) recodeST(",
+                "line": 450
+              },
+              {
+                "symbol": "func (it *floatHistogramSTIterator) AtST() int64 {",
+                "line": 499
+              },
+              {
+                "symbol": "func (it *floatHistogramSTIterator) Reset(b []byte) {",
+                "line": 504
+              },
+              {
+                "symbol": "func (it *floatHistogramSTIterator) Next() ValueType {",
+                "line": 535
+              },
+              {
+                "symbol": "func (it *floatHistogramSTIterator) Seek(t int64) ValueType {",
+                "line": 549
+              }
+            ]
+          }
+        ],
+        "semantic_contract": "Reconstruct complete appender state and exact bit position from existing bytes",
+        "platforms": [
+          "portable Go"
+        ]
+      },
+      "rewrite": {
+        "present": true,
+        "public_symbol": "Chunk::reset/append",
+        "variant": "canonical_scalar",
+        "build_target": "histogram_st",
+        "platforms": [
+          "Linux x86_64 GCC11/Clang14",
+          "Linux AArch64 musl QEMU"
+        ],
+        "implementation_files": [
+          "include/histogram_st.hpp",
+          "src/histogram_st.cpp"
+        ]
+      },
+      "validation": {
+        "status": "PASS",
+        "witnesses": [
+          "all46 cases resume1; all256 properties resume1/3/13"
+        ],
+        "tests": [
+          "validation/final-cross-decode/report.json",
+          "validation/final-properties/report.json",
+          "validation/qualification/native.json",
+          "validation/qualification/sanitizers.json",
+          "validation/qualification/tsan-fixed-layout.json",
+          "validation/qualification/portable.json",
+          "validation/qualification/source-tests.json"
+        ],
+        "artifacts": [
+          {
+            "path": "validation/final-cross-decode/report.json",
+            "sha256": "6edeaee2b9ab809dd6453a541ea19a5b58fa65fca1e57346018e3515d59e0dc0"
+          },
+          {
+            "path": "validation/final-properties/report.json",
+            "sha256": "dce5e43ea5acf859953a3196ee3dc9903e1af962320ab8c5961c6345fc709a43"
+          },
+          {
+            "path": "validation/qualification/native.json",
+            "sha256": "f0fb40a79ac55d8eb1c1d862edeef29ac8a82658b40f4adebc8cd35573c8b5aa"
+          },
+          {
+            "path": "validation/qualification/sanitizers.json",
+            "sha256": "3ea799081789c43c6238d90ad640ecb499136293caf43a455f06a9e30a54ba35"
+          },
+          {
+            "path": "validation/qualification/tsan-fixed-layout.json",
+            "sha256": "6acb3248a83b6c98aa373f0951b107334a42a79e97c9bef734682f48dbd31645"
+          },
+          {
+            "path": "validation/qualification/portable.json",
+            "sha256": "ed20a6de21d3a5f71fdc5aa265cbf5fb9401958422b1fb23389bf40c1f788eb3"
+          },
+          {
+            "path": "validation/qualification/source-tests.json",
+            "sha256": "d2cd50f2254fcc8dbb382602669af0bbdc53da510dc7a0a07db7a1ec07d70940"
+          }
+        ]
+      },
+      "waiver_id": null
+    },
+    {
+      "capability_id": "iterator.next_seek",
+      "parity_class": "REQUIRED_PARITY",
+      "owner": "prometheus-histogram-st rewrite",
+      "upstream": {
+        "present": true,
+        "public_or_supported": true,
+        "evidence": [
+          {
+            "path": "tsdb/chunkenc/float_histogram_st.go",
+            "sha256": "a2cbe06efd9b2f754e4b8b98099d0d8014ddc20d0e10d2ded5fef0775cc376a1",
+            "symbols": [
+              {
+                "symbol": "func NewFloatHistogramSTChunk() *FloatHistogramSTChunk {",
+                "line": 38
+              },
+              {
+                "symbol": "func (c *FloatHistogramSTChunk) Reset(stream []byte) {",
+                "line": 44
+              },
+              {
+                "symbol": "func (*FloatHistogramSTChunk) Encoding() Encoding { return EncFloatHistogramST }",
+                "line": 49
+              },
+              {
+                "symbol": "func (c *FloatHistogramSTChunk) Bytes() []byte {",
+                "line": 52
+              },
+              {
+                "symbol": "func (c *FloatHistogramSTChunk) NumSamples() int {",
+                "line": 57
+              },
+              {
+                "symbol": "func (c *FloatHistogramSTChunk) GetCounterResetHeader() CounterResetHeader {",
+                "line": 64
+              },
+              {
+                "symbol": "func (c *FloatHistogramSTChunk) Compact() {",
+                "line": 69
+              },
+              {
+                "symbol": "func (c *FloatHistogramSTChunk) Appender() (Appender, error) {",
+                "line": 78
+              },
+              {
+                "symbol": "func newFloatHistogramSTIterator(b []byte) *floatHistogramSTIterator {",
+                "line": 146
+              },
+              {
+                "symbol": "func (c *FloatHistogramSTChunk) iterator(it Iterator) *floatHistogramSTIterator {",
+                "line": 159
+              },
+              {
+                "symbol": "func (c *FloatHistogramSTChunk) Iterator(it Iterator) Iterator {",
+                "line": 168
+              },
+              {
+                "symbol": "func (a *FloatHistogramSTAppender) GetCounterResetHeader() CounterResetHeader {",
+                "line": 180
+              },
+              {
+                "symbol": "func (a *FloatHistogramSTAppender) setCounterResetHeader(cr CounterResetHeader) {",
+                "line": 185
+              },
+              {
+                "symbol": "func (a *FloatHistogramSTAppender) NumSamples() int {",
+                "line": 192
+              },
+              {
+                "symbol": "func (a *FloatHistogramSTAppender) setNumSamples(num int) {",
+                "line": 198
+              },
+              {
+                "symbol": "func (a *FloatHistogramSTAppender) appendable(h *histogram.FloatHistogram) (",
+                "line": 204
+              },
+              {
+                "symbol": "func (a *FloatHistogramSTAppender) appendableGauge(h *histogram.FloatHistogram) (",
+                "line": 265
+              },
+              {
+                "symbol": "func (a *FloatHistogramSTAppender) appendFloatHistogramST(num int, st, t int64, fh *histogram.FloatHistogram) int {",
+                "line": 305
+              },
+              {
+                "symbol": "func (*FloatHistogramSTAppender) Append(int64, int64, float64) {",
+                "line": 314
+              },
+              {
+                "symbol": "func (*FloatHistogramSTAppender) AppendHistogram(Appender, int64, int64, *histogram.Histogram, bool) (Chunk, bool, Appender, error) {",
+                "line": 320
+              },
+              {
+                "symbol": "func (a *FloatHistogramSTAppender) AppendFloatHistogram(prev Appender, st, t int64, fh *histogram.FloatHistogram, appendOnly bool) (Chunk, bool, Appender, error) {",
+                "line": 325
+              },
+              {
+                "symbol": "func (a *FloatHistogramSTAppender) recodeST(",
+                "line": 450
+              },
+              {
+                "symbol": "func (it *floatHistogramSTIterator) AtST() int64 {",
+                "line": 499
+              },
+              {
+                "symbol": "func (it *floatHistogramSTIterator) Reset(b []byte) {",
+                "line": 504
+              },
+              {
+                "symbol": "func (it *floatHistogramSTIterator) Next() ValueType {",
+                "line": 535
+              },
+              {
+                "symbol": "func (it *floatHistogramSTIterator) Seek(t int64) ValueType {",
+                "line": 549
+              }
+            ]
+          }
+        ],
+        "semantic_contract": "Ordered traversal and forward seek preserving joint fields",
+        "platforms": [
+          "portable Go"
+        ]
+      },
+      "rewrite": {
+        "present": true,
+        "public_symbol": "Cursor::next/seek",
+        "variant": "canonical_scalar",
+        "build_target": "histogram_st",
+        "platforms": [
+          "Linux x86_64 GCC11/Clang14",
+          "Linux AArch64 musl QEMU"
+        ],
+        "implementation_files": [
+          "include/histogram_st.hpp",
+          "src/histogram_st.cpp"
+        ]
+      },
+      "validation": {
+        "status": "PASS",
+        "witnesses": [
+          "all46 cases; targets -1/1000/2001/INT64_MAX"
+        ],
+        "tests": [
+          "validation/final-cross-decode/report.json",
+          "validation/final-properties/report.json",
+          "validation/qualification/native.json",
+          "validation/qualification/sanitizers.json",
+          "validation/qualification/tsan-fixed-layout.json",
+          "validation/qualification/portable.json",
+          "validation/qualification/source-tests.json"
+        ],
+        "artifacts": [
+          {
+            "path": "validation/final-cross-decode/report.json",
+            "sha256": "6edeaee2b9ab809dd6453a541ea19a5b58fa65fca1e57346018e3515d59e0dc0"
+          },
+          {
+            "path": "validation/final-properties/report.json",
+            "sha256": "dce5e43ea5acf859953a3196ee3dc9903e1af962320ab8c5961c6345fc709a43"
+          },
+          {
+            "path": "validation/qualification/native.json",
+            "sha256": "f0fb40a79ac55d8eb1c1d862edeef29ac8a82658b40f4adebc8cd35573c8b5aa"
+          },
+          {
+            "path": "validation/qualification/sanitizers.json",
+            "sha256": "3ea799081789c43c6238d90ad640ecb499136293caf43a455f06a9e30a54ba35"
+          },
+          {
+            "path": "validation/qualification/tsan-fixed-layout.json",
+            "sha256": "6acb3248a83b6c98aa373f0951b107334a42a79e97c9bef734682f48dbd31645"
+          },
+          {
+            "path": "validation/qualification/portable.json",
+            "sha256": "ed20a6de21d3a5f71fdc5aa265cbf5fb9401958422b1fb23389bf40c1f788eb3"
+          },
+          {
+            "path": "validation/qualification/source-tests.json",
+            "sha256": "d2cd50f2254fcc8dbb382602669af0bbdc53da510dc7a0a07db7a1ec07d70940"
+          }
+        ]
+      },
+      "waiver_id": null
+    },
+    {
+      "capability_id": "iterator.reset_reuse",
+      "parity_class": "REQUIRED_PARITY",
+      "owner": "prometheus-histogram-st rewrite",
+      "upstream": {
+        "present": true,
+        "public_or_supported": true,
+        "evidence": [
+          {
+            "path": "tsdb/chunkenc/histogram_st.go",
+            "sha256": "313a2695cd586ef2640a5d3c12c98885358606aac1d9b3aa8b3ccb7fcdd69c23",
+            "symbols": [
+              {
+                "symbol": "func NewHistogramSTChunk() *HistogramSTChunk {",
+                "line": 38
+              },
+              {
+                "symbol": "func (c *HistogramSTChunk) Reset(stream []byte) {",
+                "line": 43
+              },
+              {
+                "symbol": "func (*HistogramSTChunk) Encoding() Encoding { return EncHistogramST }",
+                "line": 48
+              },
+              {
+                "symbol": "func (c *HistogramSTChunk) Bytes() []byte {",
+                "line": 51
+              },
+              {
+                "symbol": "func (c *HistogramSTChunk) NumSamples() int {",
+                "line": 56
+              },
+              {
+                "symbol": "func (c *HistogramSTChunk) GetCounterResetHeader() CounterResetHeader {",
+                "line": 63
+              },
+              {
+                "symbol": "func (c *HistogramSTChunk) Compact() {",
+                "line": 68
+              },
+              {
+                "symbol": "func (c *HistogramSTChunk) Appender() (Appender, error) {",
+                "line": 77
+              },
+              {
+                "symbol": "func newHistogramSTIterator(b []byte) *histogramSTIterator {",
+                "line": 134
+              },
+              {
+                "symbol": "func (c *HistogramSTChunk) iterator(it Iterator) *histogramSTIterator {",
+                "line": 147
+              },
+              {
+                "symbol": "func (c *HistogramSTChunk) Iterator(it Iterator) Iterator {",
+                "line": 156
+              },
+              {
+                "symbol": "func (a *HistogramSTAppender) GetCounterResetHeader() CounterResetHeader {",
+                "line": 168
+              },
+              {
+                "symbol": "func (a *HistogramSTAppender) setCounterResetHeader(cr CounterResetHeader) {",
+                "line": 173
+              },
+              {
+                "symbol": "func (a *HistogramSTAppender) NumSamples() int {",
+                "line": 180
+              },
+              {
+                "symbol": "func (a *HistogramSTAppender) setNumSamples(num int) {",
+                "line": 186
+              },
+              {
+                "symbol": "func (a *HistogramSTAppender) appendable(h *histogram.Histogram) (",
+                "line": 192
+              },
+              {
+                "symbol": "func (a *HistogramSTAppender) appendableGauge(h *histogram.Histogram) (",
+                "line": 256
+              },
+              {
+                "symbol": "func (a *HistogramSTAppender) appendHistogramST(num int, st, t int64, h *histogram.Histogram) int {",
+                "line": 296
+              },
+              {
+                "symbol": "func (*HistogramSTAppender) Append(int64, int64, float64) {",
+                "line": 303
+              },
+              {
+                "symbol": "func (*HistogramSTAppender) AppendFloatHistogram(Appender, int64, int64, *histogram.FloatHistogram, bool) (Chunk, bool, Appender, error) {",
+                "line": 307
+              },
+              {
+                "symbol": "func (a *HistogramSTAppender) AppendHistogram(prev Appender, st, t int64, h *histogram.Histogram, appendOnly bool) (Chunk, bool, Appender, error) {",
+                "line": 312
+              },
+              {
+                "symbol": "func (a *HistogramSTAppender) recodeST(",
+                "line": 431
+              },
+              {
+                "symbol": "func (it *histogramSTIterator) AtST() int64 {",
+                "line": 479
+              },
+              {
+                "symbol": "func (it *histogramSTIterator) Reset(b []byte) {",
+                "line": 483
+              },
+              {
+                "symbol": "func (it *histogramSTIterator) Next() ValueType {",
+                "line": 526
+              },
+              {
+                "symbol": "func (it *histogramSTIterator) Seek(t int64) ValueType {",
+                "line": 540
+              }
+            ]
+          }
+        ],
+        "semantic_contract": "Reset/reuse without stale bucket, ST or error state",
+        "platforms": [
+          "portable Go"
+        ]
+      },
+      "rewrite": {
+        "present": true,
+        "public_symbol": "Cursor::next/seek",
+        "variant": "canonical_scalar",
+        "build_target": "histogram_st",
+        "platforms": [
+          "Linux x86_64 GCC11/Clang14",
+          "Linux AArch64 musl QEMU"
+        ],
+        "implementation_files": [
+          "include/histogram_st.hpp",
+          "src/histogram_st.cpp"
+        ]
+      },
+      "validation": {
+        "status": "PASS",
+        "witnesses": [
+          "preflight: reused cursor after empty/exhausted/malformed streams"
+        ],
+        "tests": [
+          "validation/final-cross-decode/report.json",
+          "validation/final-properties/report.json",
+          "validation/qualification/native.json",
+          "validation/qualification/sanitizers.json",
+          "validation/qualification/tsan-fixed-layout.json",
+          "validation/qualification/portable.json",
+          "validation/qualification/source-tests.json"
+        ],
+        "artifacts": [
+          {
+            "path": "validation/final-cross-decode/report.json",
+            "sha256": "6edeaee2b9ab809dd6453a541ea19a5b58fa65fca1e57346018e3515d59e0dc0"
+          },
+          {
+            "path": "validation/final-properties/report.json",
+            "sha256": "dce5e43ea5acf859953a3196ee3dc9903e1af962320ab8c5961c6345fc709a43"
+          },
+          {
+            "path": "validation/qualification/native.json",
+            "sha256": "f0fb40a79ac55d8eb1c1d862edeef29ac8a82658b40f4adebc8cd35573c8b5aa"
+          },
+          {
+            "path": "validation/qualification/sanitizers.json",
+            "sha256": "3ea799081789c43c6238d90ad640ecb499136293caf43a455f06a9e30a54ba35"
+          },
+          {
+            "path": "validation/qualification/tsan-fixed-layout.json",
+            "sha256": "6acb3248a83b6c98aa373f0951b107334a42a79e97c9bef734682f48dbd31645"
+          },
+          {
+            "path": "validation/qualification/portable.json",
+            "sha256": "ed20a6de21d3a5f71fdc5aa265cbf5fb9401958422b1fb23389bf40c1f788eb3"
+          },
+          {
+            "path": "validation/qualification/source-tests.json",
+            "sha256": "d2cd50f2254fcc8dbb382602669af0bbdc53da510dc7a0a07db7a1ec07d70940"
+          }
+        ]
+      },
+      "waiver_id": null
+    },
+    {
+      "capability_id": "iterator.integer_to_float",
+      "parity_class": "REQUIRED_PARITY",
+      "owner": "prometheus-histogram-st rewrite",
+      "upstream": {
+        "present": true,
+        "public_or_supported": true,
+        "evidence": [
+          {
+            "path": "tsdb/chunkenc/histogram.go",
+            "sha256": "a8449607ceaf3a4f3920d67c9978563449f863036c6ceb5a5524086bc6e6bb0f",
+            "symbols": [
+              {
+                "symbol": "func NewHistogramChunk() *HistogramChunk {",
+                "line": 44
+              },
+              {
+                "symbol": "func (c *HistogramChunk) Reset(stream []byte) {",
+                "line": 49
+              },
+              {
+                "symbol": "func (*HistogramChunk) Encoding() Encoding {",
+                "line": 54
+              },
+              {
+                "symbol": "func (c *HistogramChunk) Bytes() []byte {",
+                "line": 59
+              },
+              {
+                "symbol": "func (c *HistogramChunk) NumSamples() int {",
+                "line": 64
+              },
+              {
+                "symbol": "func (c *HistogramChunk) GetCounterResetHeader() CounterResetHeader {",
+                "line": 91
+              },
+              {
+                "symbol": "func (c *HistogramChunk) Compact() {",
+                "line": 96
+              },
+              {
+                "symbol": "func (c *HistogramChunk) Appender() (Appender, error) {",
+                "line": 105
+              },
+              {
+                "symbol": "func countSpans(spans []histogram.Span) int {",
+                "line": 146
+              },
+              {
+                "symbol": "func newHistogramIterator(b []byte) *histogramIterator {",
+                "line": 154
+              },
+              {
+                "symbol": "func (c *HistogramChunk) iterator(it Iterator) *histogramIterator {",
+                "line": 164
+              },
+              {
+                "symbol": "func (c *HistogramChunk) Iterator(it Iterator) Iterator {",
+                "line": 177
+              },
+              {
+                "symbol": "func (a *HistogramAppender) GetCounterResetHeader() CounterResetHeader {",
+                "line": 208
+              },
+              {
+                "symbol": "func (a *HistogramAppender) setCounterResetHeader(cr CounterResetHeader) {",
+                "line": 212
+              },
+              {
+                "symbol": "func (a *HistogramAppender) NumSamples() int {",
+                "line": 216
+              },
+              {
+                "symbol": "func (a *HistogramAppender) setNumSamples(num int) {",
+                "line": 221
+              },
+              {
+                "symbol": "func (*HistogramAppender) Append(int64, int64, float64) {",
+                "line": 227
+              },
+              {
+                "symbol": "func (a *HistogramAppender) appendable(h *histogram.Histogram) (",
+                "line": 261
+              },
+              {
+                "symbol": "func expandIntSpansAndBuckets(a, b []histogram.Span, aBuckets, bBuckets []int64) (forward, backward []Insert, ok bool) {",
+                "line": 371
+              },
+              {
+                "symbol": "func (a *HistogramAppender) appendableGauge(h *histogram.Histogram) (",
+                "line": 516
+              },
+              {
+                "symbol": "func (a *HistogramAppender) appendHistogram(num int, t int64, h *histogram.Histogram) int {",
+                "line": 558
+              },
+              {
+                "symbol": "func (a *HistogramAppender) recode(",
+                "line": 677
+              },
+              {
+                "symbol": "func (*HistogramAppender) recodeHistogram(",
+                "line": 729
+              },
+              {
+                "symbol": "func (a *HistogramAppender) writeSumDelta(v float64) {",
+                "line": 743
+              },
+              {
+                "symbol": "func (*HistogramAppender) AppendFloatHistogram(Appender, int64, int64, *histogram.FloatHistogram, bool) (Chunk, bool, Appender, error) {",
+                "line": 747
+              },
+              {
+                "symbol": "func (a *HistogramAppender) AppendHistogram(prev Appender, _, t int64, h *histogram.Histogram, appendOnly bool) (Chunk, bool, Appender, error) {",
+                "line": 751
+              },
+              {
+                "symbol": "func CounterResetHintToHeader(hint histogram.CounterResetHint) CounterResetHeader {",
+                "line": 879
+              },
+              {
+                "symbol": "func (it *histogramIterator) Seek(t int64) ValueType {",
+                "line": 926
+              },
+              {
+                "symbol": "func (*histogramIterator) At() (int64, float64) {",
+                "line": 939
+              },
+              {
+                "symbol": "func (it *histogramIterator) AtHistogram(h *histogram.Histogram) (int64, *histogram.Histogram) {",
+                "line": 943
+              },
+              {
+                "symbol": "func (it *histogramIterator) AtFloatHistogram(fh *histogram.FloatHistogram) (int64, *histogram.FloatHistogram) {",
+                "line": 1017
+              },
+              {
+                "symbol": "func (it *histogramIterator) AtT() int64 {",
+                "line": 1099
+              },
+              {
+                "symbol": "func (*histogramIterator) AtST() int64 {",
+                "line": 1103
+              },
+              {
+                "symbol": "func (it *histogramIterator) Err() error {",
+                "line": 1107
+              },
+              {
+                "symbol": "func (it *histogramIterator) Reset(b []byte) {",
+                "line": 1111
+              },
+              {
+                "symbol": "func (it *histogramIterator) Next() ValueType {",
+                "line": 1151
+              },
+              {
+                "symbol": "func (it *histogramIterator) readSum() bool {",
+                "line": 1364
+              },
+              {
+                "symbol": "func resize[T any](items []T, n int) []T {",
+                "line": 1373
+              }
+            ]
+          }
+        ],
+        "semantic_contract": "Integer bucket deltas to absolute binary64 histogram conversion",
+        "platforms": [
+          "portable Go"
+        ]
+      },
+      "rewrite": {
+        "present": true,
+        "public_symbol": "Cursor::next/seek",
+        "variant": "canonical_scalar",
+        "build_target": "histogram_st",
+        "platforms": [
+          "Linux x86_64 GCC11/Clang14",
+          "Linux AArch64 musl QEMU"
+        ],
+        "implementation_files": [
+          "include/histogram_st.hpp",
+          "src/histogram_st.cpp"
+        ]
+      },
+      "validation": {
+        "status": "PASS",
+        "witnesses": [
+          "all integer vectors and properties; public_api: nil/reused large integer arithmetic"
+        ],
+        "tests": [
+          "validation/final-cross-decode/report.json",
+          "validation/final-properties/report.json",
+          "validation/qualification/native.json",
+          "validation/qualification/sanitizers.json",
+          "validation/qualification/tsan-fixed-layout.json",
+          "validation/qualification/portable.json",
+          "validation/qualification/source-tests.json"
+        ],
+        "artifacts": [
+          {
+            "path": "validation/final-cross-decode/report.json",
+            "sha256": "6edeaee2b9ab809dd6453a541ea19a5b58fa65fca1e57346018e3515d59e0dc0"
+          },
+          {
+            "path": "validation/final-properties/report.json",
+            "sha256": "dce5e43ea5acf859953a3196ee3dc9903e1af962320ab8c5961c6345fc709a43"
+          },
+          {
+            "path": "validation/qualification/native.json",
+            "sha256": "f0fb40a79ac55d8eb1c1d862edeef29ac8a82658b40f4adebc8cd35573c8b5aa"
+          },
+          {
+            "path": "validation/qualification/sanitizers.json",
+            "sha256": "3ea799081789c43c6238d90ad640ecb499136293caf43a455f06a9e30a54ba35"
+          },
+          {
+            "path": "validation/qualification/tsan-fixed-layout.json",
+            "sha256": "6acb3248a83b6c98aa373f0951b107334a42a79e97c9bef734682f48dbd31645"
+          },
+          {
+            "path": "validation/qualification/portable.json",
+            "sha256": "ed20a6de21d3a5f71fdc5aa265cbf5fb9401958422b1fb23389bf40c1f788eb3"
+          },
+          {
+            "path": "validation/qualification/source-tests.json",
+            "sha256": "d2cd50f2254fcc8dbb382602669af0bbdc53da510dc7a0a07db7a1ec07d70940"
+          }
+        ]
+      },
+      "waiver_id": null
+    },
+    {
+      "capability_id": "iterator.reserved_schema",
+      "parity_class": "REQUIRED_PARITY",
+      "owner": "prometheus-histogram-st rewrite",
+      "upstream": {
+        "present": true,
+        "public_or_supported": true,
+        "evidence": [
+          {
+            "path": "tsdb/chunkenc/histogram.go",
+            "sha256": "a8449607ceaf3a4f3920d67c9978563449f863036c6ceb5a5524086bc6e6bb0f",
+            "symbols": [
+              {
+                "symbol": "func NewHistogramChunk() *HistogramChunk {",
+                "line": 44
+              },
+              {
+                "symbol": "func (c *HistogramChunk) Reset(stream []byte) {",
+                "line": 49
+              },
+              {
+                "symbol": "func (*HistogramChunk) Encoding() Encoding {",
+                "line": 54
+              },
+              {
+                "symbol": "func (c *HistogramChunk) Bytes() []byte {",
+                "line": 59
+              },
+              {
+                "symbol": "func (c *HistogramChunk) NumSamples() int {",
+                "line": 64
+              },
+              {
+                "symbol": "func (c *HistogramChunk) GetCounterResetHeader() CounterResetHeader {",
+                "line": 91
+              },
+              {
+                "symbol": "func (c *HistogramChunk) Compact() {",
+                "line": 96
+              },
+              {
+                "symbol": "func (c *HistogramChunk) Appender() (Appender, error) {",
+                "line": 105
+              },
+              {
+                "symbol": "func countSpans(spans []histogram.Span) int {",
+                "line": 146
+              },
+              {
+                "symbol": "func newHistogramIterator(b []byte) *histogramIterator {",
+                "line": 154
+              },
+              {
+                "symbol": "func (c *HistogramChunk) iterator(it Iterator) *histogramIterator {",
+                "line": 164
+              },
+              {
+                "symbol": "func (c *HistogramChunk) Iterator(it Iterator) Iterator {",
+                "line": 177
+              },
+              {
+                "symbol": "func (a *HistogramAppender) GetCounterResetHeader() CounterResetHeader {",
+                "line": 208
+              },
+              {
+                "symbol": "func (a *HistogramAppender) setCounterResetHeader(cr CounterResetHeader) {",
+                "line": 212
+              },
+              {
+                "symbol": "func (a *HistogramAppender) NumSamples() int {",
+                "line": 216
+              },
+              {
+                "symbol": "func (a *HistogramAppender) setNumSamples(num int) {",
+                "line": 221
+              },
+              {
+                "symbol": "func (*HistogramAppender) Append(int64, int64, float64) {",
+                "line": 227
+              },
+              {
+                "symbol": "func (a *HistogramAppender) appendable(h *histogram.Histogram) (",
+                "line": 261
+              },
+              {
+                "symbol": "func expandIntSpansAndBuckets(a, b []histogram.Span, aBuckets, bBuckets []int64) (forward, backward []Insert, ok bool) {",
+                "line": 371
+              },
+              {
+                "symbol": "func (a *HistogramAppender) appendableGauge(h *histogram.Histogram) (",
+                "line": 516
+              },
+              {
+                "symbol": "func (a *HistogramAppender) appendHistogram(num int, t int64, h *histogram.Histogram) int {",
+                "line": 558
+              },
+              {
+                "symbol": "func (a *HistogramAppender) recode(",
+                "line": 677
+              },
+              {
+                "symbol": "func (*HistogramAppender) recodeHistogram(",
+                "line": 729
+              },
+              {
+                "symbol": "func (a *HistogramAppender) writeSumDelta(v float64) {",
+                "line": 743
+              },
+              {
+                "symbol": "func (*HistogramAppender) AppendFloatHistogram(Appender, int64, int64, *histogram.FloatHistogram, bool) (Chunk, bool, Appender, error) {",
+                "line": 747
+              },
+              {
+                "symbol": "func (a *HistogramAppender) AppendHistogram(prev Appender, _, t int64, h *histogram.Histogram, appendOnly bool) (Chunk, bool, Appender, error) {",
+                "line": 751
+              },
+              {
+                "symbol": "func CounterResetHintToHeader(hint histogram.CounterResetHint) CounterResetHeader {",
+                "line": 879
+              },
+              {
+                "symbol": "func (it *histogramIterator) Seek(t int64) ValueType {",
+                "line": 926
+              },
+              {
+                "symbol": "func (*histogramIterator) At() (int64, float64) {",
+                "line": 939
+              },
+              {
+                "symbol": "func (it *histogramIterator) AtHistogram(h *histogram.Histogram) (int64, *histogram.Histogram) {",
+                "line": 943
+              },
+              {
+                "symbol": "func (it *histogramIterator) AtFloatHistogram(fh *histogram.FloatHistogram) (int64, *histogram.FloatHistogram) {",
+                "line": 1017
+              },
+              {
+                "symbol": "func (it *histogramIterator) AtT() int64 {",
+                "line": 1099
+              },
+              {
+                "symbol": "func (*histogramIterator) AtST() int64 {",
+                "line": 1103
+              },
+              {
+                "symbol": "func (it *histogramIterator) Err() error {",
+                "line": 1107
+              },
+              {
+                "symbol": "func (it *histogramIterator) Reset(b []byte) {",
+                "line": 1111
+              },
+              {
+                "symbol": "func (it *histogramIterator) Next() ValueType {",
+                "line": 1151
+              },
+              {
+                "symbol": "func (it *histogramIterator) readSum() bool {",
+                "line": 1364
+              },
+              {
+                "symbol": "func resize[T any](items []T, n int) []T {",
+                "line": 1373
+              }
+            ]
+          }
+        ],
+        "semantic_contract": "Known reserved -9..52; high-resolution downsampling to schema8 at retrieval",
+        "platforms": [
+          "portable Go"
+        ]
+      },
+      "rewrite": {
+        "present": true,
+        "public_symbol": "Cursor::next/seek",
+        "variant": "canonical_scalar",
+        "build_target": "histogram_st",
+        "platforms": [
+          "Linux x86_64 GCC11/Clang14",
+          "Linux AArch64 musl QEMU"
+        ],
+        "implementation_files": [
+          "include/histogram_st.hpp",
+          "src/histogram_st.cpp"
+        ]
+      },
+      "validation": {
+        "status": "PASS",
+        "witnesses": [
+          "int.reserved_schema",
+          "float.reserved_schema"
+        ],
+        "tests": [
+          "validation/final-cross-decode/report.json",
+          "validation/final-properties/report.json",
+          "validation/qualification/native.json",
+          "validation/qualification/sanitizers.json",
+          "validation/qualification/tsan-fixed-layout.json",
+          "validation/qualification/portable.json",
+          "validation/qualification/source-tests.json"
+        ],
+        "artifacts": [
+          {
+            "path": "validation/final-cross-decode/report.json",
+            "sha256": "6edeaee2b9ab809dd6453a541ea19a5b58fa65fca1e57346018e3515d59e0dc0"
+          },
+          {
+            "path": "validation/final-properties/report.json",
+            "sha256": "dce5e43ea5acf859953a3196ee3dc9903e1af962320ab8c5961c6345fc709a43"
+          },
+          {
+            "path": "validation/qualification/native.json",
+            "sha256": "f0fb40a79ac55d8eb1c1d862edeef29ac8a82658b40f4adebc8cd35573c8b5aa"
+          },
+          {
+            "path": "validation/qualification/sanitizers.json",
+            "sha256": "3ea799081789c43c6238d90ad640ecb499136293caf43a455f06a9e30a54ba35"
+          },
+          {
+            "path": "validation/qualification/tsan-fixed-layout.json",
+            "sha256": "6acb3248a83b6c98aa373f0951b107334a42a79e97c9bef734682f48dbd31645"
+          },
+          {
+            "path": "validation/qualification/portable.json",
+            "sha256": "ed20a6de21d3a5f71fdc5aa265cbf5fb9401958422b1fb23389bf40c1f788eb3"
+          },
+          {
+            "path": "validation/qualification/source-tests.json",
+            "sha256": "d2cd50f2254fcc8dbb382602669af0bbdc53da510dc7a0a07db7a1ec07d70940"
+          }
+        ]
+      },
+      "waiver_id": null
+    },
+    {
+      "capability_id": "api.chunk_reset_compact",
+      "parity_class": "REQUIRED_PARITY",
+      "owner": "prometheus-histogram-st rewrite",
+      "upstream": {
+        "present": true,
+        "public_or_supported": true,
+        "evidence": [
+          {
+            "path": "tsdb/chunkenc/chunk.go",
+            "sha256": "02a4d5279ca0fd0d0e47f8bb0cfa3b4f142def954bc778ec257aa0136854f082",
+            "symbols": [
+              {
+                "symbol": "func (e Encoding) String() string {",
+                "line": 38
+              },
+              {
+                "symbol": "func IsValidEncoding(e Encoding) bool {",
+                "line": 59
+              },
+              {
+                "symbol": "func (v ValueType) String() string {",
+                "line": 195
+              },
+              {
+                "symbol": "func (v ValueType) ChunkEncoding(useXOR2, useHistogramST bool) Encoding {",
+                "line": 216
+              },
+              {
+                "symbol": "func (v ValueType) NewChunk(useXOR2, useHistogramST bool) (Chunk, error) {",
+                "line": 240
+              },
+              {
+                "symbol": "func CompatibleValues(a, b Encoding) bool {",
+                "line": 254
+              },
+              {
+                "symbol": "func isFloatXOREncoding(e Encoding) bool {",
+                "line": 259
+              },
+              {
+                "symbol": "func MockSeriesIterator(startTimestamps, timestamps []int64, values []float64) Iterator {",
+                "line": 267
+              },
+              {
+                "symbol": "func (*mockSeriesIterator) Seek(int64) ValueType { return ValNone }",
+                "line": 283
+              },
+              {
+                "symbol": "func (it *mockSeriesIterator) At() (int64, float64) {",
+                "line": 285
+              },
+              {
+                "symbol": "func (*mockSeriesIterator) AtHistogram(*histogram.Histogram) (int64, *histogram.Histogram) {",
+                "line": 289
+              },
+              {
+                "symbol": "func (*mockSeriesIterator) AtFloatHistogram(*histogram.FloatHistogram) (int64, *histogram.FloatHistogram) {",
+                "line": 293
+              },
+              {
+                "symbol": "func (it *mockSeriesIterator) AtT() int64 {",
+                "line": 297
+              },
+              {
+                "symbol": "func (it *mockSeriesIterator) AtST() int64 {",
+                "line": 301
+              },
+              {
+                "symbol": "func (it *mockSeriesIterator) Next() ValueType {",
+                "line": 308
+              },
+              {
+                "symbol": "func (*mockSeriesIterator) Err() error { return nil }",
+                "line": 316
+              },
+              {
+                "symbol": "func NewNopIterator() Iterator {",
+                "line": 319
+              },
+              {
+                "symbol": "func (nopIterator) Next() ValueType      { return ValNone }",
+                "line": 325
+              },
+              {
+                "symbol": "func (nopIterator) Seek(int64) ValueType { return ValNone }",
+                "line": 326
+              },
+              {
+                "symbol": "func (nopIterator) At() (int64, float64) { return math.MinInt64, 0 }",
+                "line": 327
+              },
+              {
+                "symbol": "func (nopIterator) AtHistogram(*histogram.Histogram) (int64, *histogram.Histogram) {",
+                "line": 328
+              },
+              {
+                "symbol": "func (nopIterator) AtFloatHistogram(*histogram.FloatHistogram) (int64, *histogram.FloatHistogram) {",
+                "line": 332
+              },
+              {
+                "symbol": "func (nopIterator) AtT() int64  { return math.MinInt64 }",
+                "line": 335
+              },
+              {
+                "symbol": "func (nopIterator) AtST() int64 { return 0 }",
+                "line": 336
+              },
+              {
+                "symbol": "func (nopIterator) Err() error  { return nil }",
+                "line": 337
+              },
+              {
+                "symbol": "func NewPool() Pool {",
+                "line": 356
+              },
+              {
+                "symbol": "func (p *pool) Get(e Encoding, b []byte) (Chunk, error) {",
+                "line": 391
+              },
+              {
+                "symbol": "func (p *pool) Put(c Chunk) error {",
+                "line": 414
+              },
+              {
+                "symbol": "func FromData(e Encoding, d []byte) (Chunk, error) {",
+                "line": 454
+              },
+              {
+                "symbol": "func NewEmptyChunk(e Encoding) (Chunk, error) {",
+                "line": 473
+              }
+            ]
+          }
+        ],
+        "semantic_contract": "Standalone chunk import/export, count, reset header and compact lifecycle",
+        "platforms": [
+          "portable Go"
+        ]
+      },
+      "rewrite": {
+        "present": true,
+        "public_symbol": "Chunk::reset/compact/clear/finalize",
+        "variant": "canonical_scalar",
+        "build_target": "histogram_st",
+        "platforms": [
+          "Linux x86_64 GCC11/Clang14",
+          "Linux AArch64 musl QEMU"
+        ],
+        "implementation_files": [
+          "include/histogram_st.hpp",
+          "src/histogram_st.cpp"
+        ]
+      },
+      "validation": {
+        "status": "PASS",
+        "witnesses": [
+          "preflight: alias reset/compact/clear/repeated finalize"
+        ],
+        "tests": [
+          "validation/final-cross-decode/report.json",
+          "validation/final-properties/report.json",
+          "validation/qualification/native.json",
+          "validation/qualification/sanitizers.json",
+          "validation/qualification/tsan-fixed-layout.json",
+          "validation/qualification/portable.json",
+          "validation/qualification/source-tests.json"
+        ],
+        "artifacts": [
+          {
+            "path": "validation/final-cross-decode/report.json",
+            "sha256": "6edeaee2b9ab809dd6453a541ea19a5b58fa65fca1e57346018e3515d59e0dc0"
+          },
+          {
+            "path": "validation/final-properties/report.json",
+            "sha256": "dce5e43ea5acf859953a3196ee3dc9903e1af962320ab8c5961c6345fc709a43"
+          },
+          {
+            "path": "validation/qualification/native.json",
+            "sha256": "f0fb40a79ac55d8eb1c1d862edeef29ac8a82658b40f4adebc8cd35573c8b5aa"
+          },
+          {
+            "path": "validation/qualification/sanitizers.json",
+            "sha256": "3ea799081789c43c6238d90ad640ecb499136293caf43a455f06a9e30a54ba35"
+          },
+          {
+            "path": "validation/qualification/tsan-fixed-layout.json",
+            "sha256": "6acb3248a83b6c98aa373f0951b107334a42a79e97c9bef734682f48dbd31645"
+          },
+          {
+            "path": "validation/qualification/portable.json",
+            "sha256": "ed20a6de21d3a5f71fdc5aa265cbf5fb9401958422b1fb23389bf40c1f788eb3"
+          },
+          {
+            "path": "validation/qualification/source-tests.json",
+            "sha256": "d2cd50f2254fcc8dbb382602669af0bbdc53da510dc7a0a07db7a1ec07d70940"
+          }
+        ]
+      },
+      "waiver_id": null
+    },
+    {
+      "capability_id": "api.previous_appender",
+      "parity_class": "REQUIRED_PARITY",
+      "owner": "prometheus-histogram-st rewrite",
+      "upstream": {
+        "present": true,
+        "public_or_supported": true,
+        "evidence": [
+          {
+            "path": "tsdb/chunkenc/appendable.go",
+            "sha256": "2666cff92c4abd2f5352f50336910ca962dc2e160198e99f5ce26270338b158b",
+            "symbols": []
+          }
+        ],
+        "semantic_contract": "First sample reset classification against compatible previous appender",
+        "platforms": [
+          "portable Go"
+        ]
+      },
+      "rewrite": {
+        "present": true,
+        "public_symbol": "Chunk::append",
+        "variant": "canonical_scalar",
+        "build_target": "histogram_st",
+        "platforms": [
+          "Linux x86_64 GCC11/Clang14",
+          "Linux AArch64 musl QEMU"
+        ],
+        "implementation_files": [
+          "include/histogram_st.hpp",
+          "src/histogram_st.cpp"
+        ]
+      },
+      "validation": {
+        "status": "PASS",
+        "witnesses": [
+          "public_api: twelve original Go expectations"
+        ],
+        "tests": [
+          "validation/final-cross-decode/report.json",
+          "validation/final-properties/report.json",
+          "validation/qualification/native.json",
+          "validation/qualification/sanitizers.json",
+          "validation/qualification/tsan-fixed-layout.json",
+          "validation/qualification/portable.json",
+          "validation/qualification/source-tests.json"
+        ],
+        "artifacts": [
+          {
+            "path": "validation/final-cross-decode/report.json",
+            "sha256": "6edeaee2b9ab809dd6453a541ea19a5b58fa65fca1e57346018e3515d59e0dc0"
+          },
+          {
+            "path": "validation/final-properties/report.json",
+            "sha256": "dce5e43ea5acf859953a3196ee3dc9903e1af962320ab8c5961c6345fc709a43"
+          },
+          {
+            "path": "validation/qualification/native.json",
+            "sha256": "f0fb40a79ac55d8eb1c1d862edeef29ac8a82658b40f4adebc8cd35573c8b5aa"
+          },
+          {
+            "path": "validation/qualification/sanitizers.json",
+            "sha256": "3ea799081789c43c6238d90ad640ecb499136293caf43a455f06a9e30a54ba35"
+          },
+          {
+            "path": "validation/qualification/tsan-fixed-layout.json",
+            "sha256": "6acb3248a83b6c98aa373f0951b107334a42a79e97c9bef734682f48dbd31645"
+          },
+          {
+            "path": "validation/qualification/portable.json",
+            "sha256": "ed20a6de21d3a5f71fdc5aa265cbf5fb9401958422b1fb23389bf40c1f788eb3"
+          },
+          {
+            "path": "validation/qualification/source-tests.json",
+            "sha256": "d2cd50f2254fcc8dbb382602669af0bbdc53da510dc7a0a07db7a1ec07d70940"
+          }
+        ]
+      },
+      "waiver_id": null
+    },
+    {
+      "capability_id": "api.accounting",
+      "parity_class": "REQUIRED_PARITY",
+      "owner": "prometheus-histogram-st rewrite",
+      "upstream": {
+        "present": true,
+        "public_or_supported": true,
+        "evidence": [
+          {
+            "path": "tsdb/chunkenc/chunk.go",
+            "sha256": "02a4d5279ca0fd0d0e47f8bb0cfa3b4f142def954bc778ec257aa0136854f082",
+            "symbols": [
+              {
+                "symbol": "func (e Encoding) String() string {",
+                "line": 38
+              },
+              {
+                "symbol": "func IsValidEncoding(e Encoding) bool {",
+                "line": 59
+              },
+              {
+                "symbol": "func (v ValueType) String() string {",
+                "line": 195
+              },
+              {
+                "symbol": "func (v ValueType) ChunkEncoding(useXOR2, useHistogramST bool) Encoding {",
+                "line": 216
+              },
+              {
+                "symbol": "func (v ValueType) NewChunk(useXOR2, useHistogramST bool) (Chunk, error) {",
+                "line": 240
+              },
+              {
+                "symbol": "func CompatibleValues(a, b Encoding) bool {",
+                "line": 254
+              },
+              {
+                "symbol": "func isFloatXOREncoding(e Encoding) bool {",
+                "line": 259
+              },
+              {
+                "symbol": "func MockSeriesIterator(startTimestamps, timestamps []int64, values []float64) Iterator {",
+                "line": 267
+              },
+              {
+                "symbol": "func (*mockSeriesIterator) Seek(int64) ValueType { return ValNone }",
+                "line": 283
+              },
+              {
+                "symbol": "func (it *mockSeriesIterator) At() (int64, float64) {",
+                "line": 285
+              },
+              {
+                "symbol": "func (*mockSeriesIterator) AtHistogram(*histogram.Histogram) (int64, *histogram.Histogram) {",
+                "line": 289
+              },
+              {
+                "symbol": "func (*mockSeriesIterator) AtFloatHistogram(*histogram.FloatHistogram) (int64, *histogram.FloatHistogram) {",
+                "line": 293
+              },
+              {
+                "symbol": "func (it *mockSeriesIterator) AtT() int64 {",
+                "line": 297
+              },
+              {
+                "symbol": "func (it *mockSeriesIterator) AtST() int64 {",
+                "line": 301
+              },
+              {
+                "symbol": "func (it *mockSeriesIterator) Next() ValueType {",
+                "line": 308
+              },
+              {
+                "symbol": "func (*mockSeriesIterator) Err() error { return nil }",
+                "line": 316
+              },
+              {
+                "symbol": "func NewNopIterator() Iterator {",
+                "line": 319
+              },
+              {
+                "symbol": "func (nopIterator) Next() ValueType      { return ValNone }",
+                "line": 325
+              },
+              {
+                "symbol": "func (nopIterator) Seek(int64) ValueType { return ValNone }",
+                "line": 326
+              },
+              {
+                "symbol": "func (nopIterator) At() (int64, float64) { return math.MinInt64, 0 }",
+                "line": 327
+              },
+              {
+                "symbol": "func (nopIterator) AtHistogram(*histogram.Histogram) (int64, *histogram.Histogram) {",
+                "line": 328
+              },
+              {
+                "symbol": "func (nopIterator) AtFloatHistogram(*histogram.FloatHistogram) (int64, *histogram.FloatHistogram) {",
+                "line": 332
+              },
+              {
+                "symbol": "func (nopIterator) AtT() int64  { return math.MinInt64 }",
+                "line": 335
+              },
+              {
+                "symbol": "func (nopIterator) AtST() int64 { return 0 }",
+                "line": 336
+              },
+              {
+                "symbol": "func (nopIterator) Err() error  { return nil }",
+                "line": 337
+              },
+              {
+                "symbol": "func NewPool() Pool {",
+                "line": 356
+              },
+              {
+                "symbol": "func (p *pool) Get(e Encoding, b []byte) (Chunk, error) {",
+                "line": 391
+              },
+              {
+                "symbol": "func (p *pool) Put(c Chunk) error {",
+                "line": 414
+              },
+              {
+                "symbol": "func FromData(e Encoding, d []byte) (Chunk, error) {",
+                "line": 454
+              },
+              {
+                "symbol": "func NewEmptyChunk(e Encoding) (Chunk, error) {",
+                "line": 473
+              }
+            ]
+          }
+        ],
+        "semantic_contract": "Complete physical chunk bytes including layout/ST/reset fields; external type identity declared",
+        "platforms": [
+          "portable Go"
+        ]
+      },
+      "rewrite": {
+        "present": true,
+        "public_symbol": "Chunk::payload_bits/final_bits/serialize_frame; Cursor::reset_frame",
+        "variant": "canonical_scalar",
+        "build_target": "histogram_st",
+        "platforms": [
+          "Linux x86_64 GCC11/Clang14",
+          "Linux AArch64 musl QEMU"
+        ],
+        "implementation_files": [
+          "include/histogram_st.hpp",
+          "src/histogram_st.cpp"
+        ]
+      },
+      "validation": {
+        "status": "PASS",
+        "witnesses": [
+          "preflight: raw/frame canary/capacity-1/type/length/bit component closure"
+        ],
+        "tests": [
+          "validation/final-cross-decode/report.json",
+          "validation/final-properties/report.json",
+          "validation/qualification/native.json",
+          "validation/qualification/sanitizers.json",
+          "validation/qualification/tsan-fixed-layout.json",
+          "validation/qualification/portable.json",
+          "validation/qualification/source-tests.json"
+        ],
+        "artifacts": [
+          {
+            "path": "validation/final-cross-decode/report.json",
+            "sha256": "6edeaee2b9ab809dd6453a541ea19a5b58fa65fca1e57346018e3515d59e0dc0"
+          },
+          {
+            "path": "validation/final-properties/report.json",
+            "sha256": "dce5e43ea5acf859953a3196ee3dc9903e1af962320ab8c5961c6345fc709a43"
+          },
+          {
+            "path": "validation/qualification/native.json",
+            "sha256": "f0fb40a79ac55d8eb1c1d862edeef29ac8a82658b40f4adebc8cd35573c8b5aa"
+          },
+          {
+            "path": "validation/qualification/sanitizers.json",
+            "sha256": "3ea799081789c43c6238d90ad640ecb499136293caf43a455f06a9e30a54ba35"
+          },
+          {
+            "path": "validation/qualification/tsan-fixed-layout.json",
+            "sha256": "6acb3248a83b6c98aa373f0951b107334a42a79e97c9bef734682f48dbd31645"
+          },
+          {
+            "path": "validation/qualification/portable.json",
+            "sha256": "ed20a6de21d3a5f71fdc5aa265cbf5fb9401958422b1fb23389bf40c1f788eb3"
+          },
+          {
+            "path": "validation/qualification/source-tests.json",
+            "sha256": "d2cd50f2254fcc8dbb382602669af0bbdc53da510dc7a0a07db7a1ec07d70940"
+          }
+        ]
+      },
+      "waiver_id": null
+    },
+    {
+      "capability_id": "optimization.simd_internal_threads",
+      "parity_class": "NOT_APPLICABLE",
+      "upstream": {
+        "present": false,
+        "public_or_supported": false,
+        "evidence": []
+      },
+      "rewrite": {
+        "present": false
+      },
+      "validation": {
+        "status": "NOT_APPLICABLE"
+      },
+      "rationale": "No upstream histogram codec SIMD/GPU/internal threading path. Go package pool is infrastructure, not an encoding variant."
+    }
+  ],
+  "waiver_ids": []
+}

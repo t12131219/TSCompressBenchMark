@@ -1,0 +1,89 @@
+{
+  "schema_version": "tscb.dataset-manifest.v2",
+  "key": "rewrite_float_mts",
+  "display_name": "Synthetic completed-rewrite qualification: rewrite_float_mts",
+  "source": {
+    "uri": "generated:tools/generate_completed_rewrite_fixtures.py@20261006",
+    "retrieved_at": "2026-10-06",
+    "notes": "Deterministic synthetic fixtures; no real-world corpus or performance claim"
+  },
+  "license": {
+    "spdx": "CC0-1.0",
+    "status": "RUN_ALLOWED"
+  },
+  "file": {
+    "path": "fixtures/completed_rewrites/rewrite_float_mts.csv",
+    "bytes": 12894,
+    "sha256": "676c846a78456f6442fdcec8030936d7a6c2861bb52c11785ed8f87bed0432b9",
+    "format": "csv",
+    "header_bytes_sha256": "b68ccca1fd37ebef84375f3a70aed75ea4a11a34ca52bbf5657263b14232ff2b"
+  },
+  "parser": {
+    "name": "python.csv",
+    "version": "stdlib-runtime-recorded",
+    "encoding": "utf-8",
+    "encoding_errors": "strict",
+    "delimiter": ",",
+    "decimal": ".",
+    "header": true,
+    "strict_column_count": true
+  },
+  "logical": {
+    "topology": "SYNCHRONOUS_MTS",
+    "axes": [
+      "time",
+      "feature"
+    ],
+    "timestamp": {
+      "origin": "SOURCE_COLUMN",
+      "column": "date",
+      "dtype": "<i8",
+      "unit": "s",
+      "epoch": "UNIX",
+      "formats": [
+        "%Y-%m-%d %H:%M:%S"
+      ],
+      "timezone_interpretation": "NAIVE_AS_UTC",
+      "order_policy": "PRESERVE",
+      "allow_duplicates": false,
+      "allow_out_of_order": false
+    },
+    "value": {
+      "kind": "CSV_COLUMNS",
+      "column_selection": {
+        "kind": "ALL_EXCEPT",
+        "excluded": [
+          "date"
+        ],
+        "expected_count": 3
+      },
+      "default_column": {
+        "dtype": "<f8",
+        "unit": "UNSPECIFIED",
+        "entity": "synthetic-record",
+        "feature": "$HEADER"
+      },
+      "overrides": {},
+      "display_name_overrides": {},
+      "representation": "PER_COLUMN_BUFFERS"
+    },
+    "validity": {
+      "shape": "NONE",
+      "missing_tokens": [],
+      "nan_is_null": false
+    },
+    "canonical": {
+      "format_version": "tscb-canonical-v1",
+      "byte_order": "little"
+    }
+  },
+  "expected": {
+    "rows": 160,
+    "columns": 4
+  },
+  "split": {
+    "policy": "PER_OBJECT_ENCODING_OR_DECLARED_FROZEN_MODEL_NO_TEST_TUNING",
+    "learned_eligible": true,
+    "reason": "Compression may fit per-object state; no external training or tuning on these fixtures"
+  }
+}

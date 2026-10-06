@@ -1,0 +1,212 @@
+schema_version: tscb.port-manifest.v1
+algorithm_id: prometheus-xor2-chunk
+implementation_id: prometheus-xor2-chunk-canonical-cpp
+algorithm_name: Prometheus XOR2 Chunk
+display_name: Prometheus XOR2 Chunk canonical C++
+category: lossless
+family: gorilla-xor2
+object_level: P3_SYSTEM
+port_method: TRANSLATED
+compatibility_target: CROSS_DECODE
+source:
+  repository: https://github.com/prometheus/prometheus
+  commit: 8374d30cb3fe705773bbac72d7015eba17480557
+  archive_sha256: 52c5b141cb3478abe477f518862b16137653bab6649ad30c80a6f0d131475f9e
+  closure_sha256: 489d3b76e33e465e2ac2141f474c1a56c8d3785110335731ebf50066fb86126c
+original_language: Go
+source_language_version: 1.26.0
+canonical_language: C++17
+license:
+  concluded_spdx: Apache-2.0 AND BSD-3-Clause
+  redistribution_status: RUN_ALLOWED_WITH_ATTRIBUTION
+  files:
+  - LICENSES/Apache-2.0.txt
+  - LICENSES/BSD-3-Clause.txt
+  - LICENSES/NOTICE
+gates:
+  G0:
+    status: PASS
+    inputs:
+    - first-batch recommendation workbook
+    - frozen Prometheus repository checkout
+    outputs:
+    - stable algorithm_id prometheus-xor2-chunk
+    - P3_SYSTEM object classification
+    - joint timestamp/value/ST stream boundary
+    reviewer: Codex porting audit on 2026-09-28
+    evidence: XOR2 is a complete paired timestamp/value chunk with optional start
+      timestamps. Its shared control prefixes prohibit splitting timestamp and value
+      into separate codecs.
+  G1:
+    status: PASS
+    inputs:
+    - clean source commit 8374d30cb3fe705773bbac72d7015eba17480557
+    - source and test dependency audit
+    outputs:
+    - Source/prometheus-xor2-chunk immutable snapshot
+    - SOURCE_MANIFEST.yaml file hashes and license record
+    reviewer: Codex source-closure audit on 2026-09-28
+    evidence: The closure includes XOR2, its shared XOR bit-range dependency, bstream,
+      varbit, ST, chunk interfaces and test helper, stale-NaN semantics, upstream
+      tests, format documentation, dependency locks, LICENSE and NOTICE.
+  G2:
+    status: PASS
+    inputs:
+    - frozen xor2.go, bstream.go, varbit.go, st.go and format documentation
+    - unmodified Prometheus chunkenc oracle at the frozen source commit
+    outputs:
+    - contract.md
+    - tests/oracle/xor2_oracle.go
+    - tests/golden/generate_and_verify.py
+    - tests/golden/xor2_chunk_vectors.json
+    - validation/DATASET_TEST_PLAN.yaml
+    reviewer: Codex executable-oracle audit on 2026-09-28
+    evidence: The Go oracle built against the unmodified frozen repository and reproduced
+      all 13 physical golden chunks. Oracle self-decode matched ST, timestamp and
+      every value bit. The vectors cover all joint dod branches, value-window modes,
+      exact stale NaN semantics, ST activation/deltas and the index-127 forced-ST
+      rule.
+  G3:
+    status: PASS
+    inputs:
+    - canonical scalar C++17 translation
+    - frozen Go oracle and golden vectors
+    outputs:
+    - include/prometheus_xor2_chunk.hpp
+    - src/canonical/prometheus_xor2_chunk.cpp
+    - validation/validation_report.md
+    - validation/dataset_validation_report.md
+    reviewer: Codex canonical correctness review on 2026-09-28
+    evidence: Native and sanitizer suites pass. Thirteen golden and 64 deterministic
+      property vectors produce byte-identical Go/C++ chunks and pass both cross-decode
+      directions. Cursor, seek, append, malformed inputs and three complete datasets
+      totaling 25,974 triples pass.
+  G4:
+    status: PASS
+    inputs:
+    - canonical implementation
+    - versioned package-owned C and C++ APIs
+    outputs:
+    - include/prometheus_xor2_chunk_c.h
+    - libprometheus_xor2_chunk_c shared library
+    - standalone Qualification Preflight
+    - physical FinalBits ledger
+    reviewer: Codex standalone API review on 2026-09-28
+    evidence: Lifecycle, exact bound and bound-minus-one, input immutability, canaries,
+      N=0/1/2/127/128/129, malformed input, three-field pairing and accounting closure
+      pass directly against the rewrite API.
+  G5:
+    status: PASS
+    inputs:
+    - G3 canonical correctness evidence
+    - G4 standalone qualification evidence
+    - scalar CORE baseline performance result
+    outputs:
+    - src/optimized/README.md
+    - validation/performance_result.json
+    reviewer: Codex optimization applicability review on 2026-09-28
+    evidence: OPTIMIZATION_NOT_APPLICABLE. The physical format has serial timestamp,
+      value-window, ST and bit-offset dependencies. No distinct optimized path is
+      justified without profiling evidence; the canonical path is the only path.
+  G6:
+    status: PASS
+    inputs:
+    - complete G0-G5 evidence
+    - native and AArch64 reproducibility evidence
+    outputs:
+    - validation/build_reproducibility.md
+    - validation/cross_platform_validation.md
+    - validation/CROSS_PLATFORM_ENVIRONMENT.yaml
+    reviewer: Codex release evidence review on 2026-09-28
+    evidence: Native Release libraries are reproducible. Static AArch64 unit and preflight
+      execution, Go/AArch64 plus x86_64/AArch64 cross-decode, three dataset cases
+      and two-build AArch64 artifact reproducibility pass under the recorded QEMU
+      runner. QEMU is not used for performance.
+input:
+  logical_record: paired int64 timestamp and IEEE-754 binary64 value with optional
+    int64 start timestamp
+  dimensions: N paired samples plus optional per-sample start timestamps
+  layout: ordered triples of signed int64 ST, signed int64 timestamp and uint64 value
+    bits
+  allows_empty: true
+  supports_stale_nan: true
+state:
+  upstream_semantics: appendable chunk with resume, iterator reuse and seek
+  block_independent: true
+  cross_block_history: false
+native_capability_parity:
+  overall_result: FULL_PARITY
+  matrix_path: NATIVE_CAPABILITY_MATRIX.yaml
+  validation_report: validation/native_capability_validation_report.md
+  unclassified_count: 0
+  required_total: 2
+  required_passed: 2
+  waiver_ids: []
+bitstream:
+  standardized: true
+  specification: upstream tsdb/docs/format/chunks.md XOR2 chunk data
+  byte_order: big-endian uint16 sample count; Go varint/uvarint fields
+  bit_order: MSB-first within bytes
+  version: Prometheus EncXOR2 at frozen source commit
+  checksum: none inside XOR2Chunk.Bytes
+  stream_boundary: joint timestamp/value control prefixes with optional interleaved
+    ST deltas
+standalone_validation:
+  execution_scopes:
+  - CORE
+  serialized_bits_components:
+  - timestamp_value_joint
+  - start_timestamp
+  - container
+  - padding
+  external_side_information_bits: 0
+  workspace_accounted: true
+  dataset_suite:
+    plan: validation/DATASET_TEST_PLAN.yaml
+    plan_sha256: 5cf51c0a19c5d1ac9a361a82663e4683f400044220e65229d3c4ce89c5e3bf51
+    selected_dataset_ids:
+    - ett:ETTh1:OT
+    - ett:exchange_rate:OT
+    - ett:national_illness:OT
+    canonical_input_hashes:
+    - 8cf2bbdf8c57c05bf678b80fd5c08e08bfe9683cb1ab37289ae593878d69347f
+    - ca5a59567b9790b2195c6927257a4f24bd63f9c3d80d677caff2aaaf3f05eb4c
+    - a2c2861ab80d4b9f7efdcc3c96eaf0c922536dc6c3d95c704f078c480327cd0b
+    result: validation/dataset_validation_result.json
+    result_sha256: 93c66ec9b2117131abd5c1c4c39d78c9ca0dce5c35e368fbc91942a75faeee4c
+    aarch64_result: validation/dataset_validation_aarch64_result.json
+    aarch64_result_sha256: 59448b98933c026323c899959bcd5455230c4b294c271fe001ead3ffc35c6df7
+    report: validation/dataset_validation_report.md
+  threads: 1
+  isa: portable-scalar
+standalone_api:
+  cpp_header: include/prometheus_xor2_chunk.hpp
+  c_header: include/prometheus_xor2_chunk_c.h
+  c_api_version: 1
+  shared_library: libprometheus_xor2_chunk_c
+integration:
+  performed: false
+  tscb_adapter_present: false
+  registry_modified: false
+  note: Out of scope; requires a separate post-rewrite task.
+execution:
+  scope: REWRITE_ONLY
+  required_gates:
+  - G0
+  - G1
+  - G2
+  - G3
+  - G4
+  - G5
+  - G6
+  current_gate: G6
+  terminal_status: REWRITE_DONE
+  blocker_evidence: null
+waivers: []
+final_queue_audit:
+  status: PASS
+  date: '2026-10-03'
+  native: validation/final_queue/native.json
+  security: validation/final_queue/security.json
+  release: validation/final_queue/release.json
+  actual_original_xor_dataset_oracle: null

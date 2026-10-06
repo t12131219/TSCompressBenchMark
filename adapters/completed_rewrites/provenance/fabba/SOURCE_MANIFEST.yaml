@@ -1,0 +1,49 @@
+schema_version: tscb.porting-source-manifest.v1
+algorithm_id: fabba
+repository: https://github.com/nla-group/fABBA
+source_commit: 4066a5fc778f50f4bee1c41d8f3ab3ee4a3ff6ad
+source_commit_date: 2026-07-05T17:02:08+02:00
+source_commit_subject: "Update README.md"
+source_checkout_dirty: false
+snapshot_method: git archive
+snapshot_archive_sha256: 27a736995af0f88a2318724a7db648de4a9eb1e824c1fc866e7718476feb4ce9
+closure_file_count: 52
+closure_sha256: bc1e127d5b544d9084fe314d6b6d6a97f55d14f079b082fb465693cc97020d01
+closure_hash_recipe: "sha256(sorted(relative_path + NUL + file_sha256 + LF))"
+file_hashes: SOURCE_FILES.sha256
+original_language: Python + Cython + generated C
+source_language_version: Python >=3.8; Cython generator 3.2.4
+roles:
+  orchestration: [fABBA/fabba.py, fABBA/digitization.py, fABBA/storage.py]
+  canonical_python: [fABBA/chainApproximation.py, fABBA/fabba_agg.py, fABBA/inverse_t.py]
+  cython_and_generated_c: [fABBA/extmod, fABBA/separate]
+  tests: [runtest.py, test]
+  build_and_metadata: [pyproject.toml, setup.py, setup.cfg, requirements.txt]
+generated_code_provenance:
+  generator: Cython 3.2.4
+  evidence: each generated .c header embeds its corresponding .pyx source path
+  policy: generated C is frozen evidence, not linked by the C++17 rewrite
+dependencies:
+  - {name: NumPy, role: source runtime and stage oracle}
+  - {name: pandas, role: upstream symbol orchestration}
+  - {name: SciPy, role: alternate aggregation paths excluded by profile}
+  - {name: scikit-learn, role: ABBA class in shared module; excluded by profile}
+  - {name: Cython, role: unavailable generator; generated outputs are frozen}
+reference_package_test: FAIL_IMPORT
+reference_package_test_evidence: >-
+  PYTHONDONTWRITEBYTECODE=1 python3 runtest.py fails before the fABBA cases because
+  fABBA.__init__ imports xabba and the checked-in Python 3.11 inversetc extension
+  does not export inv_transform_fp. The frozen primary Python modules remain
+  independently loadable and form the stage-composed oracle.
+license:
+  concluded_spdx: BSD-3-Clause
+  redistribution_status: RUN_ALLOWED_WITH_ATTRIBUTION
+  license_files: [LICENSES/BSD-3-Clause.txt]
+patches: []
+submodules: []
+official_decoder: true
+public_format: false
+semantic_condition: >-
+  Compare segmentation, normalized coordinates, stable norm ordering, greedy
+  labels, raw means, ties-to-even quantization, and reconstruction. The rewrite
+  container is package-owned and is not an upstream byte format.

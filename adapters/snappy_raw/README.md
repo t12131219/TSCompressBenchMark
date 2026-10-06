@@ -19,3 +19,18 @@ PYTHONPATH=src conda run -n CompressBench14 python tools/build_codec.py snappy-r
 The registered variant is scalar, single-threaded, dictionary-free, and fixed to Snappy
 compression level 1. The wrapper preserves routed buffer order and raw IEEE bytes and
 does not cast, reorder, fill, interpolate, or drop values.
+
+Current build and run evidence is recorded in
+[`docs/snappy_raw_evidence_refresh.json`](../../docs/snappy_raw_evidence_refresh.json).
+Check both binary/build-record hashes against the onboarding card and audit the current
+AlgorithmID run evidence without rebuilding:
+
+```bash
+PYTHONPATH=src conda run -n CompressBench14 python tools/refresh_snappy_evidence.py --verify-card
+```
+
+For a future rebuild, use a new versioned `--report docs/snappy_raw_evidence_YYYYMMDD.json`
+path, review its result, and update the card's build hashes and evidence references.
+The tool runs release/sanitizer ABI smoke, existing adapter/timing tests, qualification
+and a standalone formal profile. It retains resource-pressure runs; correctness PASS
+does not make a rejected formal performance group eligible. Old reports are not overwritten.

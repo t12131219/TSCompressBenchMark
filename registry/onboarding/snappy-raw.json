@@ -62,23 +62,47 @@
       "evidence": "Snappy compression fuzzer harness passed 100 deterministic cases"
     },
     {
-      "name": "project C ABI smoke",
-      "command": "Release and ASan/UBSan over N=0/1/2/65535/65536/65537/131073",
+      "name": "current native-timing build C ABI smoke (2026-10-05)",
+      "command": "python tools/refresh_snappy_evidence.py; Release and ASan/UBSan over N=0/1/2/65535/65536/65537/131073",
       "status": "PASS",
-      "evidence": "Exact round trip, independent decode, bound enforcement, zero-byte finalize and repeated-finalize rejection"
+      "evidence": "docs/snappy_raw_evidence_refresh.json; exact round trip, independent decode, bound enforcement, zero-byte finalize and repeated-finalize rejection"
+    },
+    {
+      "name": "current adapter and native timing regression tests (2026-10-05)",
+      "command": "pytest -q tests/adapters/test_snappy_raw.py; pytest -q tests/adapters/test_native_timing.py -k snappy_raw",
+      "status": "PASS",
+      "evidence": "docs/snappy_raw_evidence_refresh.json; 9 adapter tests and 6 native timing tests passed"
+    },
+    {
+      "name": "current AlgorithmID qualification (2026-10-05)",
+      "command": "tscompbench run validate configs/experiments/snappy-raw-qualification.toml --output-root runs",
+      "status": "PASS",
+      "evidence": "docs/snappy_raw_evidence_refresh.json; runset-20261005T092712Z-a89763b0308a; 1/1 correctness PASS, performance not eligible (QUALIFICATION)"
+    },
+    {
+      "name": "current AlgorithmID formal measurement (2026-10-05)",
+      "command": "tscompbench run validate configs/experiments/snappy-raw-formal.toml --output-root runs",
+      "status": "RESOURCE_PRESSURE",
+      "evidence": "docs/snappy_raw_evidence_refresh.json; runset-20261005T092726Z-b248fb2d87c3; 10/10 correctness PASS, 9/10 raw repetitions eligible, 1 swap rejection; whole formal report has 0 eligible runs and no ranked summary"
     }
   ],
   "builds": [
     {
       "profile": "RELEASE_SCALAR_SINGLE_THREAD",
-      "artifact_sha256": "6908c7e336c1ac5f97591dee8380e878388959d442850cd220ee0a2d72fa93d7",
+      "artifact_sha256": "fa7e16cdb385bb73383aa4ed58ef2868e1c568c6de3b0e62989d96526235d493",
+      "artifact_path": "build/adapters/snappy_raw/release/libtscb_snappy_raw.so",
+      "build_record": "build/adapters/snappy_raw/release/build-record.json",
+      "validation_evidence": "docs/snappy_raw_evidence_refresh.json",
       "compile_commands_sha256": "16675dbb081e5e2ae28372ef479296f9999fa27851645dd9bf07e76bd8b8a6e6",
       "compiler": "GCC 11.4.0",
       "flags": "-O3 -DNDEBUG with all registered Snappy SIMD and CRC feature macros disabled"
     },
     {
       "profile": "ASAN_UBSAN_SCALAR_SINGLE_THREAD",
-      "artifact_sha256": "865ca9052e150235a364565b86e258455da2063f9208b494d4b4ddfef3ee5da5",
+      "artifact_sha256": "641dfac78a563ccb58e8fadf647377ae4a35e0655f14aaf5fb6b99b30f0fd145",
+      "artifact_path": "build/adapters/snappy_raw/sanitizer/libtscb_snappy_raw.so",
+      "build_record": "build/adapters/snappy_raw/sanitizer/build-record.json",
+      "validation_evidence": "docs/snappy_raw_evidence_refresh.json",
       "compile_commands_sha256": "8b24fe4a9872e6be6f24de2f1cde60ed05ecf3d59947fd504223706f8a0228e2",
       "compiler": "GCC 11.4.0",
       "flags": "-O1 -g -fsanitize=address,undefined with the same scalar feature defines"
@@ -94,7 +118,8 @@
     "lzbench CMakeLists.txt and NEWS identify 1.2.2, while its checked-in generated snappy-stubs-public.h still reports patchlevel 1; vendor files remain unmodified and the discrepancy is preserved.",
     "The registered variant fixes compression level 1, scalar feature macros, one CPU thread, and one raw stream per independently measured object.",
     "The Python FFI descriptor serialization and contiguous byte materialization are included in the declared adapter boundary.",
-    "LeakSanitizer cannot run under the host container ptrace policy; ASan/UBSan qualification uses detect_leaks=0."
+    "LeakSanitizer cannot run under the host container ptrace policy; ASan/UBSan qualification uses detect_leaks=0.",
+    "2026-10-05 current AlgorithmID correctness and qualification passed, but formal measurement attempts detected host swap activity; retain RESOURCE_PRESSURE and do not publish a formal ranked summary. Historical pre-native-timing builds and runs remain in docs/snappy_raw_evidence_refresh.json and docs/snappy_raw_self_check.md."
   ],
   "unsupported_reason_codes": [
     "EXECUTION_ARTIFACT_MISSING",

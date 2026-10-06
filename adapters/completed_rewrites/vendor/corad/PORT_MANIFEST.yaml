@@ -1,0 +1,83 @@
+schema_version: tscb.port-manifest.v1
+algorithm_id: corad
+recommendation_rank: 14
+object_level: P2_PIPELINE
+source:
+  repository: https://github.com/eXascaleInfolab/CORAD
+  commit: 083824eb3e0b3ad72a00d4f585bc77b5adb5c1be
+license:
+  concluded_spdx: NOASSERTION
+  redistribution_status: UNKNOWN
+  workflow_override:
+    decision: ../../USER_DECISIONS.md
+    decision_sha256: 5fd9288be7919d99b0ee5ce70f0de321e1a22c0eed3fc5caf29794def3db354f
+    date: '2026-10-04'
+    applies_to: local_source_audit_execution_and_rewrite
+    upstream_grant_claimed: false
+    provenance_retained: true
+gates:
+  G0:
+    status: PASS
+    evidence: Recommendation canonical task identity
+  G1:
+    status: PASS
+    evidence: validation/g2_source/audit.json;595-file source closure;15 dataset cases;all
+      backend/RNG/MKL/Pearson closure
+  G2:
+    status: PASS
+    evidence: validation/g2_freeze.json
+    contract_sha256: f60cbd657ab539a2ede2383bbf4ae1e4f2379df26c3dbcbb6395221e42dc0846
+    capability_matrix_sha256: 204c399e534da9487865d6609b127ce2b2bf5b681c0f84c246667525ae973f43
+    frozen_matrix_path: validation/history/g2-frozen/NATIVE_CAPABILITY_MATRIX.yaml
+  G3:
+    status: PASS
+    artifacts:
+    - path: validation/differential-final-v2-gcc/report.json
+      sha256: dd7210f8681d3a173df49caa2f8720ae7b6dad9792cf04d266c6c73008daec02
+    - path: validation/differential-final-v2-clang/report.json
+      sha256: d4e4d370fb5a5b47c0eeb50c5eccd5f14ab2bc27df389bc608301715eb85be2b
+    - path: validation/differential-final-v2-asan/report.json
+      sha256: 9444e189aca23c316724a946ec5220fe52988b15a59b6fd5eb19b0f0cc8ea138
+    - path: validation/builds-v3/report.json
+      sha256: 081a43d3f349df861fcc0e5077222f82ca5d117e63de29e64a31a47a9740c398
+  G4:
+    status: PASS
+    artifacts:
+    - path: validation/differential-final-v2-gcc/report.json
+      sha256: dd7210f8681d3a173df49caa2f8720ae7b6dad9792cf04d266c6c73008daec02
+    - path: validation/differential-final-v2-clang/report.json
+      sha256: d4e4d370fb5a5b47c0eeb50c5eccd5f14ab2bc27df389bc608301715eb85be2b
+    - path: validation/differential-final-v2-asan/report.json
+      sha256: 9444e189aca23c316724a946ec5220fe52988b15a59b6fd5eb19b0f0cc8ea138
+  G5:
+    status: PASS
+    artifacts:
+    - path: validation/builds-v3/report.json
+      sha256: 081a43d3f349df861fcc0e5077222f82ca5d117e63de29e64a31a47a9740c398
+    - path: validation/qualification-v2/report.json
+      sha256: 567b002e66d4d343d159debb2370dc0646394357483864c0a7cd5c670e67dbd6
+    - path: validation/final_evidence_audit.json
+      sha256: c5d4eeeccb5081a68ecff42922858a880a7fa91fd74f180969e5128fcac7b009
+  G6:
+    status: PASS
+    evidence: validation/package_consumption/report.json;validation/release_audit.json;release/release_manifest.json
+    candidate_consumption:
+      path: validation/package_candidate/report.json
+      sha256: d6a3a8ab4f3e0794c07d2030d48391c26529cc5b57bcd8aa0bc17b8f5eb34bf4
+integration:
+  performed: false
+  tscb_adapter_present: false
+  registry_modified: false
+execution:
+  scope: REWRITE_ONLY
+  current_gate: G6
+  terminal_status: REWRITE_DONE
+  blocker_evidence: null
+waivers: []
+status: REWRITE_DONE
+compatibility_target: SEMANTIC
+port_method: TRANSLATED
+native_capability_parity:
+  overall_result: FULL_PARITY
+  required_passed: 12
+  required_total: 12

@@ -1,6 +1,6 @@
 # Snappy raw five-layer integration self-check
 
-Date: 2026-09-17  
+Historical evidence date: 2026-09-17 (pre-native-timing identity; current refresh below)
 Scope: third spreadsheet-listed Batch-1 native codec (`snappy-raw`)  
 Environment: `CompressBench14`
 
@@ -78,3 +78,42 @@ match. lzbench labels this source tree 1.2.2 in `CMakeLists.txt` and `NEWS`, but
 checked-in generated `snappy-stubs-public.h` still contains patchlevel 1; this mismatch is
 preserved rather than patched. LeakSanitizer remains unavailable under the host ptrace
 policy, so sanitizer evidence uses `detect_leaks=0`.
+
+## Current build evidence refresh — 2026-10-05
+
+The wrapper and manifest gained optional native timing after the original admission.
+The release binary was rebuilt but the onboarding card still held the earlier hashes;
+the historical runs used AlgorithmID `48368427…`, whereas the current registration uses
+`1af7afbe…`. This explains the stale build evidence and zero current-identity rows.
+The old runs remain historical evidence and are not relabelled.
+
+- Release rebuild reproduces the current SHA-256 exactly:
+  `fa7e16cdb385bb73383aa4ed58ef2868e1c568c6de3b0e62989d96526235d493`.
+- ASan/UBSan is rebuilt from the current wrapper:
+  `641dfac78a563ccb58e8fadf647377ae4a35e0655f14aaf5fb6b99b30f0fd145`.
+- Both current hashes and compile-command digests match their build records and the
+  updated onboarding card. The pinned SourceArtifactID and AlgorithmID are unchanged.
+- All 10 retained vendor files match the clean pinned lzbench checkout byte for byte.
+  The refresh records an explicit sorted path/NUL/content inventory separately from
+  the historical source-closure digest, whose serialization was not specified.
+- Release and ASan/UBSan C ABI smoke pass all seven length cases; the existing adapter
+  suite passes 9 tests and Snappy native timing passes 6 tests. Named fixture IDs allow
+  the latter to be selected reliably with `-k snappy_raw`.
+- Current qualification `runset-20261005T092712Z-a89763b0308a` passes 1/1, including
+  preflight/boundary, correctness, exact accounting and native timing checks.
+- Formal attempts retain swap-related `RESOURCE_PRESSURE`. The latest saved attempt,
+  `runset-20261005T092726Z-b248fb2d87c3`, has 10/10 correctness PASS and 9 individually
+  eligible repetitions, but one swap rejection disqualifies the full group: the report
+  has **zero eligible runs and no ranked summary**. No formal performance pass is claimed.
+
+The [refresh report](snappy_raw_evidence_refresh.json) retains commands, output, old
+card hashes, current build identities and file/run SHA-256 evidence. Verify synchronization
+without rebuilding or rerunning with:
+
+```bash
+PYTHONPATH=src conda run -n CompressBench14 python tools/refresh_snappy_evidence.py --verify-card
+```
+
+Coverage is Linux CPU scalar/single-thread and `national_illness` VALUE, not all datasets
+or parameters. ASan/UBSan were enabled; LeakSanitizer remains disabled. Raw-stream,
+framing/checksum/query/streaming restrictions remain as registered.

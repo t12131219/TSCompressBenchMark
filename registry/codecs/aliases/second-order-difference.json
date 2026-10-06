@@ -1,0 +1,18 @@
+{
+  "schema_version": "tscb.codec-alias.v2",
+  "key": "second-order-difference",
+  "canonical_key": "prometheus-xor-chunk",
+  "canonical_algorithm_id": "v2:algorithm:sha256:b327134be6c26ce552d11fc67e16197ca47b0d28a421c3de72d06bc0b28a866d",
+  "source_artifact_id": "v2:source-artifact:sha256:586dee8bc85209fc1ad35c6b9206a02b5d98afbc7e26599601999de9f1f49f8d",
+  "mapping_kind": "SPREADSHEET_SOURCE_MAPPING_NOT_NEW_CODEC",
+  "evidence": [
+    "Compression_Rewrite_Algorithm_List_v1.0.xlsx, SHA256 961ae06a62a45abf68b6947e396db7553b2251334131e21914599f52455ed243: requested Gorilla and Delta-of-Delta rows select Prometheus timestamp/value joint chunk source.",
+    "Frozen Prometheus commit 8374d30cb3fe705773bbac72d7015eba17480557: xorAppender.Append uses timestamp second differences and value XOR in one stream.",
+    "Standalone original-public-api/report.json compares unmodified NewXORChunk / Appender / FromData / Iterator APIs with all real rows and columns."
+  ],
+  "limitations": [
+    "Measures complete paired int64 timestamp/binary64 value chunks on SYSTEM/S0; it does not isolate a timestamp-only or value-only bitstream.",
+    "All three aliases share the same AlgorithmID and canonical configurations and do not add ranked algorithms.",
+    "Standalone compressed bytes remain opaque shared T/V bytes; wrapper overhead is accounted exactly."
+  ]
+}

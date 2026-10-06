@@ -54,7 +54,7 @@ def _route(n: int) -> RoutedInput:
     ("lzsse8_raw", Lzsse8RawAdapter),
     ("lzsse2_raw", Lzsse2RawAdapter),
     ("bzip2_stream", Bzip2StreamAdapter),
-])
+], ids=lambda param: param[0])
 def adapter(request):
     directory, factory = request.param
     path = PROJECT_ROOT / f"build/adapters/{directory}/release/libtscb_{directory}.so"

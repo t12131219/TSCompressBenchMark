@@ -21,7 +21,10 @@ def _registries() -> tuple[SourceRegistry, CodecRegistry]:
 
 def test_codec_manifests_reference_audited_sources_and_have_stable_ids() -> None:
     sources, codecs = _registries()
-    assert len(codecs) == 30
+    assert len(codecs) == 48
+    assert {
+        "chimp", "chimp128", "elf", "elf-plus", "elf-star", "self-star", "prometheus-xor-chunk"
+    } <= set(codecs.keys())
     assert "alp" in codecs.keys()
     assert "alp-rd" in codecs.keys()
     assert "serf-qt" in codecs.keys()

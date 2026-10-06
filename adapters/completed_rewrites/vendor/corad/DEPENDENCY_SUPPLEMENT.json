@@ -1,0 +1,30 @@
+{
+  "status": "PASS",
+  "files": [
+    {
+      "path": "reproduction/dependency_sources/cpython-3.11.5-listobject.c",
+      "sha256": "3156c2130862bbe16970b98a0afb41c6b7472532ca846405b66b2b00398fa86f",
+      "license": "PSF-2.0",
+      "source_url": "https://raw.githubusercontent.com/python/cpython/v3.11.5/Objects/listobject.c"
+    },
+    {
+      "path": "reproduction/licenses/Python-LICENSE.txt",
+      "sha256": "3b2f81fe21d181c499c59a256c8e1968455d6689d269aa85373bfb6af41da3bf",
+      "license": "PSF-2.0",
+      "source_url": "Installed Python3.11.5 notices"
+    },
+    {
+      "path": "reproduction/dependency_sources/pandas-2.0.3-algos.pyx",
+      "sha256": "930fcc03ec9151da918c2f69408b1b643b1a2dcb0ca7de68100b27867c327ebc",
+      "license": "BSD-3-Clause",
+      "source_url": "https://raw.githubusercontent.com/pandas-dev/pandas/v2.0.3/pandas/_libs/algos.pyx"
+    }
+  ],
+  "cpython_specialization": {
+    "source": "CPython3.11.5 Objects/listobject.c lines1095..2083",
+    "changes": "Retain original stable powersort/count_run/binary insertion/galloping/merge policy. Float-key bridge with stack n<=256; no Python objects/runtime. Reverse-before/after preserves exact reverse sorting. Explicit key-only invariants; wrapper and memory aliases only.",
+    "license": "PSF-2.0",
+    "production_python_dependency": false
+  },
+  "frozen_contract_unchanged": true
+}

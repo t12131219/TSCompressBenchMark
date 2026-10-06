@@ -1,0 +1,372 @@
+schema_version: 1
+algorithm_id: corad
+upstream_revision: 083824eb3e0b3ad72a00d4f585bc77b5adb5c1be
+overall_result: FULL_PARITY
+waiver_ids: []
+capabilities:
+- capability_id: preprocessing.zscore
+  owner: Local corad rewrite maintainer
+  parity_class: REQUIRED_PARITY
+  upstream:
+    present: true
+    public_or_supported: true
+    symbol: stats.zscore(axis=0,ddof=0)
+    description: P2 source normalization; constant-column failure preserved
+  rewrite:
+    present: true
+    implementation: src/canonical/codec.cpp;third_party/tristan/src/canonical/numerical.cpp;src/canonical/cpython_powersort.c
+  validation:
+    status: PASS
+    platforms:
+    - linux-x86_64
+    artifacts:
+    - path: validation/builds-v3/report.json
+      sha256: 081a43d3f349df861fcc0e5077222f82ca5d117e63de29e64a31a47a9740c398
+    - path: validation/qualification-v2/report.json
+      sha256: 567b002e66d4d343d159debb2370dc0646394357483864c0a7cd5c670e67dbd6
+    - path: validation/differential-final-v2-gcc/report.json
+      sha256: dd7210f8681d3a173df49caa2f8720ae7b6dad9792cf04d266c6c73008daec02
+    - path: validation/differential-final-v2-clang/report.json
+      sha256: d4e4d370fb5a5b47c0eeb50c5eccd5f14ab2bc27df389bc608301715eb85be2b
+    - path: validation/differential-final-v2-asan/report.json
+      sha256: 9444e189aca23c316724a946ec5220fe52988b15a59b6fd5eb19b0f0cc8ea138
+- capability_id: preprocessing.tricklets
+  owner: Local corad rewrite maintainer
+  parity_class: REQUIRED_PARITY
+  upstream:
+    present: true
+    public_or_supported: true
+    symbol: dataframeToTricklets / chunks
+    description: Ordered channel/window layout; incomplete tails are discarded by
+      source
+  rewrite:
+    present: true
+    implementation: src/canonical/codec.cpp;third_party/tristan/src/canonical/numerical.cpp;src/canonical/cpython_powersort.c
+  validation:
+    status: PASS
+    platforms:
+    - linux-x86_64
+    artifacts:
+    - path: validation/builds-v3/report.json
+      sha256: 081a43d3f349df861fcc0e5077222f82ca5d117e63de29e64a31a47a9740c398
+    - path: validation/qualification-v2/report.json
+      sha256: 567b002e66d4d343d159debb2370dc0646394357483864c0a7cd5c670e67dbd6
+    - path: validation/differential-final-v2-gcc/report.json
+      sha256: dd7210f8681d3a173df49caa2f8720ae7b6dad9792cf04d266c6c73008daec02
+    - path: validation/differential-final-v2-clang/report.json
+      sha256: d4e4d370fb5a5b47c0eeb50c5eccd5f14ab2bc27df389bc608301715eb85be2b
+    - path: validation/differential-final-v2-asan/report.json
+      sha256: 9444e189aca23c316724a946ec5220fe52988b15a59b6fd5eb19b0f0cc8ea138
+- capability_id: learning.dictionary
+  owner: Local corad rewrite maintainer
+  parity_class: REQUIRED_PARITY
+  upstream:
+    present: true
+    public_or_supported: true
+    symbol: learnDictionary / sklearn DictionaryLearning
+    description: Real training, max_iter=10; source ignores n_iter; source RNG and
+      BLAS state must be frozen
+  rewrite:
+    present: true
+    implementation: src/canonical/codec.cpp;third_party/tristan/src/canonical/numerical.cpp;src/canonical/cpython_powersort.c
+  validation:
+    status: PASS
+    platforms:
+    - linux-x86_64
+    artifacts:
+    - path: validation/builds-v3/report.json
+      sha256: 081a43d3f349df861fcc0e5077222f82ca5d117e63de29e64a31a47a9740c398
+    - path: validation/qualification-v2/report.json
+      sha256: 567b002e66d4d343d159debb2370dc0646394357483864c0a7cd5c670e67dbd6
+    - path: validation/differential-final-v2-gcc/report.json
+      sha256: dd7210f8681d3a173df49caa2f8720ae7b6dad9792cf04d266c6c73008daec02
+    - path: validation/differential-final-v2-clang/report.json
+      sha256: d4e4d370fb5a5b47c0eeb50c5eccd5f14ab2bc27df389bc608301715eb85be2b
+    - path: validation/differential-final-v2-asan/report.json
+      sha256: 9444e189aca23c316724a946ec5220fe52988b15a59b6fd5eb19b0f0cc8ea138
+- capability_id: backend.blas_lapack
+  owner: Local corad rewrite maintainer
+  parity_class: REQUIRED_PARITY
+  upstream:
+    present: true
+    public_or_supported: true
+    symbol: numpy/scipy BLAS and LAPACK
+    description: Pinned MKL2023.1 single-thread BLAS/LAPACK, native reuse without
+      Python; independently verified TRISTAN numerical closure
+  rewrite:
+    present: true
+    implementation: src/canonical/codec.cpp;third_party/tristan/src/canonical/numerical.cpp;src/canonical/cpython_powersort.c
+  validation:
+    status: PASS
+    platforms:
+    - linux-x86_64
+    artifacts:
+    - path: validation/builds-v3/report.json
+      sha256: 081a43d3f349df861fcc0e5077222f82ca5d117e63de29e64a31a47a9740c398
+    - path: validation/qualification-v2/report.json
+      sha256: 567b002e66d4d343d159debb2370dc0646394357483864c0a7cd5c670e67dbd6
+    - path: validation/differential-final-v2-gcc/report.json
+      sha256: dd7210f8681d3a173df49caa2f8720ae7b6dad9792cf04d266c6c73008daec02
+    - path: validation/differential-final-v2-clang/report.json
+      sha256: d4e4d370fb5a5b47c0eeb50c5eccd5f14ab2bc27df389bc608301715eb85be2b
+    - path: validation/differential-final-v2-asan/report.json
+      sha256: 9444e189aca23c316724a946ec5220fe52988b15a59b6fd5eb19b0f0cc8ea138
+- capability_id: codec.reconstruction
+  owner: Local corad rewrite maintainer
+  parity_class: REQUIRED_PARITY
+  upstream:
+    present: true
+    public_or_supported: true
+    symbol: reconstructDataMulti_with_correlation
+    description: Independent decoder with complete charged dictionary, coefficients
+      and reference metadata
+  rewrite:
+    present: true
+    implementation: src/canonical/codec.cpp;third_party/tristan/src/canonical/numerical.cpp;src/canonical/cpython_powersort.c
+  validation:
+    status: PASS
+    platforms:
+    - linux-x86_64
+    artifacts:
+    - path: validation/builds-v3/report.json
+      sha256: 081a43d3f349df861fcc0e5077222f82ca5d117e63de29e64a31a47a9740c398
+    - path: validation/qualification-v2/report.json
+      sha256: 567b002e66d4d343d159debb2370dc0646394357483864c0a7cd5c670e67dbd6
+    - path: validation/differential-final-v2-gcc/report.json
+      sha256: dd7210f8681d3a173df49caa2f8720ae7b6dad9792cf04d266c6c73008daec02
+    - path: validation/differential-final-v2-clang/report.json
+      sha256: d4e4d370fb5a5b47c0eeb50c5eccd5f14ab2bc27df389bc608301715eb85be2b
+    - path: validation/differential-final-v2-asan/report.json
+      sha256: 9444e189aca23c316724a946ec5220fe52988b15a59b6fd5eb19b0f0cc8ea138
+- capability_id: sparse.omp
+  owner: Local corad rewrite maintainer
+  parity_class: REQUIRED_PARITY
+  upstream:
+    present: true
+    public_or_supported: true
+    symbol: SparseCoder(transform_algorithm=omp)
+    description: Public transform backend; original positive finite input cases execute
+      successfully
+  rewrite:
+    present: true
+    implementation: src/canonical/codec.cpp;third_party/tristan/src/canonical/numerical.cpp;src/canonical/cpython_powersort.c
+  validation:
+    status: PASS
+    platforms:
+    - linux-x86_64
+    artifacts:
+    - path: validation/builds-v3/report.json
+      sha256: 081a43d3f349df861fcc0e5077222f82ca5d117e63de29e64a31a47a9740c398
+    - path: validation/qualification-v2/report.json
+      sha256: 567b002e66d4d343d159debb2370dc0646394357483864c0a7cd5c670e67dbd6
+    - path: validation/differential-final-v2-gcc/report.json
+      sha256: dd7210f8681d3a173df49caa2f8720ae7b6dad9792cf04d266c6c73008daec02
+    - path: validation/differential-final-v2-clang/report.json
+      sha256: d4e4d370fb5a5b47c0eeb50c5eccd5f14ab2bc27df389bc608301715eb85be2b
+    - path: validation/differential-final-v2-asan/report.json
+      sha256: 9444e189aca23c316724a946ec5220fe52988b15a59b6fd5eb19b0f0cc8ea138
+- capability_id: sparse.lars
+  owner: Local corad rewrite maintainer
+  parity_class: REQUIRED_PARITY
+  upstream:
+    present: true
+    public_or_supported: true
+    symbol: SparseCoder(transform_algorithm=lars)
+    description: Public transform backend; original positive finite input cases execute
+      successfully
+  rewrite:
+    present: true
+    implementation: src/canonical/codec.cpp;third_party/tristan/src/canonical/numerical.cpp;src/canonical/cpython_powersort.c
+  validation:
+    status: PASS
+    platforms:
+    - linux-x86_64
+    artifacts:
+    - path: validation/builds-v3/report.json
+      sha256: 081a43d3f349df861fcc0e5077222f82ca5d117e63de29e64a31a47a9740c398
+    - path: validation/qualification-v2/report.json
+      sha256: 567b002e66d4d343d159debb2370dc0646394357483864c0a7cd5c670e67dbd6
+    - path: validation/differential-final-v2-gcc/report.json
+      sha256: dd7210f8681d3a173df49caa2f8720ae7b6dad9792cf04d266c6c73008daec02
+    - path: validation/differential-final-v2-clang/report.json
+      sha256: d4e4d370fb5a5b47c0eeb50c5eccd5f14ab2bc27df389bc608301715eb85be2b
+    - path: validation/differential-final-v2-asan/report.json
+      sha256: 9444e189aca23c316724a946ec5220fe52988b15a59b6fd5eb19b0f0cc8ea138
+- capability_id: sparse.lasso_lars
+  owner: Local corad rewrite maintainer
+  parity_class: REQUIRED_PARITY
+  upstream:
+    present: true
+    public_or_supported: true
+    symbol: SparseCoder(transform_algorithm=lasso_lars)
+    description: Public transform backend; original positive finite input cases execute
+      successfully
+  rewrite:
+    present: true
+    implementation: src/canonical/codec.cpp;third_party/tristan/src/canonical/numerical.cpp;src/canonical/cpython_powersort.c
+  validation:
+    status: PASS
+    platforms:
+    - linux-x86_64
+    artifacts:
+    - path: validation/builds-v3/report.json
+      sha256: 081a43d3f349df861fcc0e5077222f82ca5d117e63de29e64a31a47a9740c398
+    - path: validation/qualification-v2/report.json
+      sha256: 567b002e66d4d343d159debb2370dc0646394357483864c0a7cd5c670e67dbd6
+    - path: validation/differential-final-v2-gcc/report.json
+      sha256: dd7210f8681d3a173df49caa2f8720ae7b6dad9792cf04d266c6c73008daec02
+    - path: validation/differential-final-v2-clang/report.json
+      sha256: d4e4d370fb5a5b47c0eeb50c5eccd5f14ab2bc27df389bc608301715eb85be2b
+    - path: validation/differential-final-v2-asan/report.json
+      sha256: 9444e189aca23c316724a946ec5220fe52988b15a59b6fd5eb19b0f0cc8ea138
+- capability_id: sparse.lasso_cd
+  owner: Local corad rewrite maintainer
+  parity_class: REQUIRED_PARITY
+  upstream:
+    present: true
+    public_or_supported: true
+    symbol: SparseCoder(transform_algorithm=lasso_cd)
+    description: Public transform backend; original positive finite input cases execute
+      successfully
+  rewrite:
+    present: true
+    implementation: src/canonical/codec.cpp;third_party/tristan/src/canonical/numerical.cpp;src/canonical/cpython_powersort.c
+  validation:
+    status: PASS
+    platforms:
+    - linux-x86_64
+    artifacts:
+    - path: validation/builds-v3/report.json
+      sha256: 081a43d3f349df861fcc0e5077222f82ca5d117e63de29e64a31a47a9740c398
+    - path: validation/qualification-v2/report.json
+      sha256: 567b002e66d4d343d159debb2370dc0646394357483864c0a7cd5c670e67dbd6
+    - path: validation/differential-final-v2-gcc/report.json
+      sha256: dd7210f8681d3a173df49caa2f8720ae7b6dad9792cf04d266c6c73008daec02
+    - path: validation/differential-final-v2-clang/report.json
+      sha256: d4e4d370fb5a5b47c0eeb50c5eccd5f14ab2bc27df389bc608301715eb85be2b
+    - path: validation/differential-final-v2-asan/report.json
+      sha256: 9444e189aca23c316724a946ec5220fe52988b15a59b6fd5eb19b0f0cc8ea138
+- capability_id: sparse.threshold
+  owner: Local corad rewrite maintainer
+  parity_class: REQUIRED_PARITY
+  upstream:
+    present: true
+    public_or_supported: true
+    symbol: SparseCoder(transform_algorithm=threshold)
+    description: Public transform backend; original positive finite input cases execute
+      successfully
+  rewrite:
+    present: true
+    implementation: src/canonical/codec.cpp;third_party/tristan/src/canonical/numerical.cpp;src/canonical/cpython_powersort.c
+  validation:
+    status: PASS
+    platforms:
+    - linux-x86_64
+    artifacts:
+    - path: validation/builds-v3/report.json
+      sha256: 081a43d3f349df861fcc0e5077222f82ca5d117e63de29e64a31a47a9740c398
+    - path: validation/qualification-v2/report.json
+      sha256: 567b002e66d4d343d159debb2370dc0646394357483864c0a7cd5c670e67dbd6
+    - path: validation/differential-final-v2-gcc/report.json
+      sha256: dd7210f8681d3a173df49caa2f8720ae7b6dad9792cf04d266c6c73008daec02
+    - path: validation/differential-final-v2-clang/report.json
+      sha256: d4e4d370fb5a5b47c0eeb50c5eccd5f14ab2bc27df389bc608301715eb85be2b
+    - path: validation/differential-final-v2-asan/report.json
+      sha256: 9444e189aca23c316724a946ec5220fe52988b15a59b6fd5eb19b0f0cc8ea138
+- capability_id: correlation.matrix
+  owner: Local corad rewrite maintainer
+  parity_class: REQUIRED_PARITY
+  upstream:
+    present: true
+    public_or_supported: true
+    symbol: DataFrame.corr
+    description: Pearson correlation on each window including source NaN/tie behavior
+  rewrite:
+    present: true
+    implementation: src/canonical/codec.cpp;third_party/tristan/src/canonical/numerical.cpp;src/canonical/cpython_powersort.c
+  validation:
+    status: PASS
+    platforms:
+    - linux-x86_64
+    artifacts:
+    - path: validation/builds-v3/report.json
+      sha256: 081a43d3f349df861fcc0e5077222f82ca5d117e63de29e64a31a47a9740c398
+    - path: validation/qualification-v2/report.json
+      sha256: 567b002e66d4d343d159debb2370dc0646394357483864c0a7cd5c670e67dbd6
+    - path: validation/differential-final-v2-gcc/report.json
+      sha256: dd7210f8681d3a173df49caa2f8720ae7b6dad9792cf04d266c6c73008daec02
+    - path: validation/differential-final-v2-clang/report.json
+      sha256: d4e4d370fb5a5b47c0eeb50c5eccd5f14ab2bc27df389bc608301715eb85be2b
+    - path: validation/differential-final-v2-asan/report.json
+      sha256: 9444e189aca23c316724a946ec5220fe52988b15a59b6fd5eb19b0f0cc8ea138
+- capability_id: correlation.references
+  owner: Local corad rewrite maintainer
+  parity_class: REQUIRED_PARITY
+  upstream:
+    present: true
+    public_or_supported: true
+    symbol: sparse_code_with_correlation
+    description: Stable sum ranking and maximum correlation among already atom-coded
+      windows; decoder copies reference values
+  rewrite:
+    present: true
+    implementation: src/canonical/codec.cpp;third_party/tristan/src/canonical/numerical.cpp;src/canonical/cpython_powersort.c
+  validation:
+    status: PASS
+    platforms:
+    - linux-x86_64
+    artifacts:
+    - path: validation/builds-v3/report.json
+      sha256: 081a43d3f349df861fcc0e5077222f82ca5d117e63de29e64a31a47a9740c398
+    - path: validation/qualification-v2/report.json
+      sha256: 567b002e66d4d343d159debb2370dc0646394357483864c0a7cd5c670e67dbd6
+    - path: validation/differential-final-v2-gcc/report.json
+      sha256: dd7210f8681d3a173df49caa2f8720ae7b6dad9792cf04d266c6c73008daec02
+    - path: validation/differential-final-v2-clang/report.json
+      sha256: d4e4d370fb5a5b47c0eeb50c5eccd5f14ab2bc27df389bc608301715eb85be2b
+    - path: validation/differential-final-v2-asan/report.json
+      sha256: 9444e189aca23c316724a946ec5220fe52988b15a59b6fd5eb19b0f0cc8ea138
+- capability_id: streaming.incremental
+  owner: Local corad rewrite maintainer
+  parity_class: NOT_APPLICABLE
+  rationale: Selected source pipeline is batch; no stateful append/close codec API
+  validation:
+    status: PASS
+- capability_id: accelerator.gpu
+  owner: Local corad rewrite maintainer
+  parity_class: NOT_APPLICABLE
+  rationale: No selected CUDA or GPU backend
+  validation:
+    status: PASS
+- capability_id: correlation.luminol_helper
+  owner: Local corad rewrite maintainer
+  parity_class: NOT_APPLICABLE
+  rationale: localCorrelation is an unused separate helper; selected CORAD pipeline
+    computes DataFrame.corr
+  validation:
+    status: PASS
+- capability_id: simd.custom
+  owner: Local CORAD maintainer
+  parity_class: NOT_APPLICABLE
+  rationale: No custom source ISA kernels; reuse audited MKL dispatch
+  validation:
+    status: PASS
+- capability_id: threading.joblib
+  owner: Local CORAD maintainer
+  parity_class: NOT_APPLICABLE
+  rationale: Selected wrappers expose no n_jobs, default single task; independent
+    objects isolated
+  validation:
+    status: PASS
+- capability_id: random_access.seek
+  owner: Local CORAD maintainer
+  parity_class: NOT_APPLICABLE
+  rationale: Selected decoder reconstructs complete batches, no seek API
+  validation:
+    status: PASS
+source_audit: ../../Source/tristan/golden/source_audit.json
+source_audit_sha256: 4eeab49f59406a4d1759b853572ab73907abe07480fa0faf9740127e3a121c3e
+inventory_status: FROZEN
+classification_frozen_before_cpp: true
+supported_validation_platforms:
+- linux-x86_64

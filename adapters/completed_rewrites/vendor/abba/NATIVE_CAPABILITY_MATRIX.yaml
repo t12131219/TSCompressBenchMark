@@ -1,0 +1,102 @@
+schema_version: 1
+algorithm_id: abba
+upstream_revision: 614d56841cd2f1c2925cea4d2c2648a7b2ac791d
+overall_result: FULL_PARITY
+waiver_ids: []
+
+capabilities:
+  - capability_id: codec.one_shot_profile_scl0_norm2
+    category: INPUT_AND_PIPELINE
+    upstream:
+      present: true
+      public_or_supported: true
+      evidence:
+        - path: Compression_Rewrite/Source/abba/upstream/ABBA.py
+          symbol_or_test: ABBA.digitize_ckmeans
+          lines_or_case: "343-440"
+      platforms: [linux-x86_64, linux-aarch64]
+      build_flags: []
+      semantic_contract:
+        reset_frequency: per_transform_call
+        flush_semantics: not_applicable
+        finalize_semantics: return_container
+    parity_class: REQUIRED_PARITY
+    rewrite:
+      present: true
+      public_symbol: abba_transform_v1
+      variant: canonical_scalar
+      platforms: [linux-x86_64, linux-aarch64]
+      build_target: abba_c
+    validation:
+      status: PASS
+      oracle: tests/oracle/abba_oracle.py
+      tests: [golden, differential, dataset, standalone_preflight]
+      artifact_hashes: []
+    waiver_id: null
+    rationale: Frozen AlgorithmID profile is scl=0, norm=2, CKmeans linear.
+
+  - capability_id: codec.alternate_scl_norm_and_incremental
+    category: ALTERNATE_ALGORITHM_PATH
+    upstream:
+      present: true
+      public_or_supported: true
+      evidence:
+        - path: Compression_Rewrite/Source/abba/upstream/ABBA.py
+          symbol_or_test: ABBA.__init__ and ABBA.digitize_incremental
+          lines_or_case: "75-85; 647-730"
+      platforms: [linux-x86_64]
+      build_flags: []
+      semantic_contract:
+        reset_frequency: per_transform_call
+        flush_semantics: not_applicable
+        finalize_semantics: return_container
+    parity_class: REQUIRED_PARITY
+    rewrite:
+      present: true
+      public_symbol: abba::transform
+      variant: alternate-clustering
+      platforms: [linux-x86_64, linux-aarch64]
+      build_target: abba
+    validation:
+      status: PASS
+      oracle: Compression_Rewrite/Source/abba/upstream/ABBA.py
+      tests: [finite_scl_kmeans, infinite_scl_ckmeans, norm1, incremental, weighted, symmetric, container_roundtrip, aarch64_differential]
+      artifact_hashes: []
+    waiver_id: null
+    rationale: Alternate scl, norm, KMeans, length-only CKmeans, and incremental paths are implemented and source-differential tested on x86_64 and AArch64.
+
+  - capability_id: streaming.continuous
+    category: STREAMING_STATEFUL
+    upstream:
+      present: false
+      public_or_supported: false
+      evidence:
+        - path: Compression_Rewrite/Source/abba/upstream/ABBA.py
+          symbol_or_test: transform/inverse_transform call boundary
+          lines_or_case: "147-194"
+      platforms: [all]
+      build_flags: []
+      semantic_contract: {reset_frequency: per_call, flush_semantics: not_applicable, finalize_semantics: not_applicable}
+    parity_class: NOT_APPLICABLE
+    rewrite: {present: false, public_symbol: null, variant: null, platforms: [], build_target: null}
+    validation: {status: PASS, oracle: null, tests: [], artifact_hashes: []}
+    waiver_id: null
+    rationale: Upstream exposes independent transform calls, not a streaming API.
+
+  - capability_id: optimized.simd_or_internal_threads
+    category: SIMD_AND_MULTITHREADING
+    upstream:
+      present: false
+      public_or_supported: false
+      evidence:
+        - path: Compression_Rewrite/Source/abba/SOURCE_MANIFEST.yaml
+          symbol_or_test: source closure and build profile
+          lines_or_case: "24-29"
+      platforms: [all]
+      build_flags: []
+      semantic_contract: {reset_frequency: null, flush_semantics: null, finalize_semantics: null}
+    parity_class: NOT_APPLICABLE
+    rewrite: {present: false, public_symbol: null, variant: null, platforms: [], build_target: null}
+    validation: {status: PASS, oracle: null, tests: [], artifact_hashes: []}
+    waiver_id: null
+    rationale: No supported SIMD or internal parallel execution path exists in the locked closure.

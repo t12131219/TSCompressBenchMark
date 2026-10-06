@@ -33,16 +33,24 @@ def test_lz77_experiment_sweeps_are_valid_for_the_actual_source_codec(profile):
     assert configurations[0].status is not RunStatus.SCHEMA_ERROR
 
 
-@pytest.mark.parametrize("names", [
-    ["lz77"], ["lz77", "deflate-zlib"], ["deflate-zlib", "lz77"],
-])
+@pytest.mark.parametrize(
+    "names",
+    [
+        ["lz77"],
+        ["lz77", "deflate-zlib"],
+        ["deflate-zlib", "lz77"],
+    ],
+)
 def test_mapping_is_frozen_and_duplicate_logical_names_do_not_multiply_tasks(
-    tmp_path, monkeypatch, names,
+    tmp_path,
+    monkeypatch,
+    names,
 ):
     original = (PROJECT_ROOT / "configs/experiments/lz77-qualification.toml").read_text()
     config_path = tmp_path / "config.toml"
-    config_path.write_text(original.replace('algorithms = ["lz77"]',
-                                            "algorithms = " + json.dumps(names)))
+    config_path.write_text(
+        original.replace('algorithms = ["lz77"]', "algorithms = " + json.dumps(names))
+    )
     run = initialize_run_set(config_path, tmp_path / "runs", run_set_id="lz77-mapping")
     registry = _registry()
     datasets = DatasetRegistry(PROJECT_ROOT / "registry/datasets", PROJECT_ROOT)
@@ -56,7 +64,9 @@ def test_mapping_is_frozen_and_duplicate_logical_names_do_not_multiply_tasks(
     assert codec_snapshot["codecs"][0]["key"] == "deflate-zlib"
     assert plan_run_set(run, datasets, registry) == tasks
     altered = list(registry.alias_documents())
-    altered[0]["limitations"].append("Different admission evidence cannot resume this run.")
+    next(alias for alias in altered if alias["key"] == "lz77")["limitations"].append(
+        "Different admission evidence cannot resume this run."
+    )
     monkeypatch.setattr(registry, "alias_documents", lambda: tuple(altered))
     with pytest.raises(RunnerError, match="existing frozen artifact differs"):
         plan_run_set(run, datasets, registry)
@@ -66,7 +76,15 @@ def test_mapping_is_frozen_and_duplicate_logical_names_do_not_multiply_tasks(
 def test_mapping_passes_registered_boundary_gate_on_both_tracks(track):
     manifest = _registry().get("lz77")
     adapter = create_adapter(PROJECT_ROOT, manifest)
-    report = run_boundary_suite(adapter, manifest, track, {
-        "block_size": 8, "compression_level": 6, "window_bits": 15, "isa": "SCALAR",
-    })
+    report = run_boundary_suite(
+        adapter,
+        manifest,
+        track,
+        {
+            "block_size": 8,
+            "compression_level": 6,
+            "window_bits": 15,
+            "isa": "SCALAR",
+        },
+    )
     assert report.passed, [item for item in report.observations if item.status != "PASS"]

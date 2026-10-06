@@ -1,0 +1,222 @@
+{
+  "schema_version": "tscb.source-onboarding.v2",
+  "source_artifact_id": "v2:source-artifact:sha256:f8ce781c683909cb34da83d2c8e1184b9d1e2fac53145666b4cc6f374c7ff3de",
+  "repository": "https://github.com/nla-group/fABBA",
+  "commit": "4066a5fc778f50f4bee1c41d8f3ab3ee4a3ff6ad",
+  "dirty": false,
+  "submodules": [],
+  "implementation_files": [
+    "adapters/completed_rewrites/vendor/fabba/src/canonical/fabba.cpp",
+    "adapters/completed_rewrites/vendor/fabba/src/optimized/README.md",
+    "adapters/completed_rewrites/vendor/fabba/src/standalone/fabba.exports.map",
+    "adapters/completed_rewrites/vendor/fabba/src/standalone/fabba_c.cpp"
+  ],
+  "public_api_files": [
+    "adapters/completed_rewrites/vendor/fabba/include/fabba.hpp",
+    "adapters/completed_rewrites/vendor/fabba/include/fabba_c.h"
+  ],
+  "benchmark_files": [
+    "adapters/completed_rewrites/native/binding.cpp",
+    "src/tscompbench/adapters/completed_rewrites.py"
+  ],
+  "test_files": [
+    "adapters/completed_rewrites/tests/qualification.cpp",
+    "tests/adapters/test_completed_rewrites.py",
+    "tests/integration/test_completed_rewrites_qualification.py"
+  ],
+  "license_files": [
+    "adapters/completed_rewrites/vendor/fabba/LICENSES/BSD-3-Clause.txt",
+    "adapters/completed_rewrites/vendor/fabba/LICENSES/GNU-runtime-copyright.txt",
+    "adapters/completed_rewrites/vendor/fabba/LICENSES/GPL-3.txt",
+    "adapters/completed_rewrites/vendor/fabba/LICENSES/LGPL-2.1.txt",
+    "adapters/completed_rewrites/vendor/fabba/LICENSES/glibc-copyright.txt"
+  ],
+  "third_party_dependencies": [
+    {
+      "path": "/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+      "sha256": "9eb34cb2da3ae2a9398cc09b3cd2d069563ec40d9858cb711af15cd23fa80abf"
+    },
+    {
+      "path": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+      "sha256": "c53819710b163d3f1d2541778590d58d3ef31cb0ed75adcbe059faac68c1e72d"
+    },
+    {
+      "path": "/usr/lib/x86_64-linux-gnu/libgcc_s.so.1",
+      "sha256": "fc9d43b2f6c20e53b009238f767c5b949d202389e20de9e202ea684b4ba3729a"
+    },
+    {
+      "path": "/usr/lib/x86_64-linux-gnu/libm.so.6",
+      "sha256": "00830df310aac5023e10bd7b715149ab8ddc682277fd8ae3539a7a44fcdd6c38"
+    },
+    {
+      "path": "/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30",
+      "sha256": "ff0825e113603c3866680d5d52216bc6d8eedf3a59f52a0aef67ff01994db128"
+    }
+  ],
+  "object_level_candidates": [
+    "P2_PIPELINE"
+  ],
+  "input_contract": {
+    "topologies": [
+      "UTS",
+      "SYNCHRONOUS_MTS"
+    ],
+    "dtypes": [
+      "<f8"
+    ],
+    "ranks": [
+      1,
+      2
+    ],
+    "layouts": [
+      "ROW_MAJOR_CONTIG",
+      "SOA_COLUMNS"
+    ],
+    "endianness": [
+      "little"
+    ],
+    "alignment_bytes": 1,
+    "min_n": 2,
+    "max_n": 16777216,
+    "min_m": 1,
+    "max_m": 65535,
+    "validity_shapes": [
+      "NONE"
+    ],
+    "homogeneous_itemsize": true,
+    "max_total_raw_bytes": 134217728,
+    "value_coupling_mode": "COLUMN_INDEPENDENT",
+    "timestamp_semantics": {
+      "preserve_order": true,
+      "duplicates": true,
+      "out_of_order": true,
+      "negative_delta": true,
+      "absolute_epoch": true,
+      "overflow_policy": "NOT_APPLICABLE_VALUE_ONLY"
+    },
+    "max_total_elements": 16777216,
+    "value_domain": {
+      "kind": "FROZEN_SOURCE_WITH_BOUNDED_REJECTION",
+      "unsupported_action": "REJECT_BEFORE_OUTPUT",
+      "oracle_evidence": "adapters/completed_rewrites/vendor/fabba/contract.md",
+      "rejection_reasons": [
+        "FINITE_INPUT_REQUIRED",
+        "SEGMENT_ENDPOINT_ARITHMETIC_UNSUPPORTED"
+      ]
+    }
+  },
+  "output_contract": {
+    "framing": "SHA256_DESCRIPTOR_AND_COMPLETE_NATIVE_FRAMES_V1",
+    "self_contained": true,
+    "actual_written_length": true,
+    "capacity_is_not_size": true,
+    "model_and_dictionary_accounting": "OPAQUE_NATIVE_FRAME_BYTES; INCLUDED_IN_FINAL_BITS; NOT_SEPARATELY_ATTRIBUTED"
+  },
+  "lifecycle_contract": {
+    "output_bound": "FROZEN_NATIVE_BOUND_PLUS_EXACT_DESCRIPTOR_AND_RECORD_OVERHEAD",
+    "return_length": "actual_used_bytes",
+    "error_codes": [
+      "OUTPUT_CAPACITY",
+      "EXECUTION_CONTRACT",
+      "SOURCE_DOMAIN_UNSUPPORTED"
+    ],
+    "finalize": "EXACTLY_ONCE_REQUIRED_ZERO_BYTE_FINALIZE",
+    "reset": "FRESH_INDEPENDENT_SESSION_PER_INNER_OBJECT"
+  },
+  "stream_components": [
+    "descriptor_and_checksums",
+    "native_record_lengths",
+    "complete_native_frames"
+  ],
+  "upstream_tests": [
+    {
+      "status": "PASS",
+      "name": "release: upstream CTest and framework ABI qualification",
+      "log_sha256": "d4de930df5ff7ec55c84b3e7baf0aff3294cdc53b6bbe4abde787580b8650142",
+      "log": "build/adapters/fabba/release/qualification.log",
+      "scope": "NOT_APPLICABLE"
+    },
+    {
+      "status": "PASS",
+      "name": "sanitizer: upstream CTest and framework ABI qualification",
+      "log_sha256": "39409c868dac175409800d1702d670422cd9b2d363ab8e72c91db3478a906cb6",
+      "log": "build/adapters/fabba/sanitizer/qualification.log",
+      "scope": "FRAMEWORK_BINDING_AND_FROZEN_CPP_SOURCES; EXTERNAL_BINARY_RUNTIMES_NOT_INSTRUMENTED; LEAK_CHECK_DISABLED"
+    }
+  ],
+  "builds": [
+    {
+      "kind": "release",
+      "artifact_sha256": "8ceb40269c2094a9fc7481d504c39057171f2b15ae4ea7767317309d2eb4af81",
+      "compile_commands_sha256": "8e0a08743f6c7da8f3dedffc35289893d54c814a20c48aa3dd9485a1c038494f",
+      "build_record_sha256": "1d8fc52e49b1c2d4e039981ae72e43fbe3a41246fa6be90973f31cf9d9dffc5e",
+      "compiler": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0\nCopyright (C) 2021 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+      "configure_command": [
+        "cmake",
+        "-S",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/adapters/fabba/release/recipe",
+        "-B",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/adapters/fabba/release/cmake",
+        "-DCMAKE_BUILD_TYPE=Release",
+        "-DCMAKE_CXX_FLAGS=-fno-fast-math -ffp-contract=off",
+        "-DCMAKE_C_FLAGS=-fno-fast-math -ffp-contract=off",
+        "-DCMAKE_EXE_LINKER_FLAGS=",
+        "-DDEEPZIP_WITH_HDF5=OFF",
+        "-DDEEPZIP_WITH_CUDA=OFF",
+        "-DDZIP_WITH_HDF5=OFF",
+        "-DDZIP_WITH_CUDA=OFF",
+        "-DTRISTAN_MKL_ROOT=/home/fzg/anaconda3"
+      ]
+    },
+    {
+      "kind": "sanitizer",
+      "artifact_sha256": "efba4772eef01793ecbdc8ea12983f9618b4766b7bade281132537604910a548",
+      "compile_commands_sha256": "6bccb760789b879da69094826db4057969aeb1628f800115c94da35fced60c1a",
+      "build_record_sha256": "eb5ea14a332473b2eab82a407b791f214e6fd1454b1c4547d14d3638a9bd78dd",
+      "compiler": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0\nCopyright (C) 2021 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+      "configure_command": [
+        "cmake",
+        "-S",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/adapters/fabba/sanitizer/recipe",
+        "-B",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/adapters/fabba/sanitizer/cmake",
+        "-DCMAKE_BUILD_TYPE=Release",
+        "-DCMAKE_CXX_FLAGS=-fno-fast-math -ffp-contract=off -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer",
+        "-DCMAKE_C_FLAGS=-fno-fast-math -ffp-contract=off -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer",
+        "-DCMAKE_EXE_LINKER_FLAGS=-no-pie",
+        "-DDEEPZIP_WITH_HDF5=OFF",
+        "-DDEEPZIP_WITH_CUDA=OFF",
+        "-DDZIP_WITH_HDF5=OFF",
+        "-DDZIP_WITH_CUDA=OFF",
+        "-DTRISTAN_MKL_ROOT=/home/fzg/anaconda3"
+      ]
+    }
+  ],
+  "license_decision": {
+    "spdx": "BSD-3-Clause",
+    "status": "RUN_ALLOWED",
+    "files": [
+      "adapters/completed_rewrites/vendor/fabba/LICENSES/BSD-3-Clause.txt",
+      "adapters/completed_rewrites/vendor/fabba/LICENSES/GNU-runtime-copyright.txt",
+      "adapters/completed_rewrites/vendor/fabba/LICENSES/GPL-3.txt",
+      "adapters/completed_rewrites/vendor/fabba/LICENSES/LGPL-2.1.txt",
+      "adapters/completed_rewrites/vendor/fabba/LICENSES/glibc-copyright.txt"
+    ],
+    "redistribution": "LOCAL_EXECUTION_ONLY; ORIGINAL_NOTICES_RETAINED; NO_UPSTREAM_LICENSE_GRANT_INVENTED"
+  },
+  "known_limitations": [
+    "Finite binary64; positive scl; one native worker; no universal error bound.",
+    "PIPELINE/E2E supported; CORE/native timing unavailable and reported as null.",
+    "Independent object profile; streaming/query/random access rejected during planning.",
+    "Synthetic acceptance fixtures establish integration, not real-world performance or quality rankings."
+  ],
+  "unsupported_reason_codes": [
+    "TRACK_OR_DTYPE_UNSUPPORTED",
+    "TIMING_SCOPE_UNSUPPORTED",
+    "STREAMING_UNSUPPORTED",
+    "QUERY_UNSUPPORTED",
+    "SOURCE_DOMAIN_UNSUPPORTED",
+    "ISA_UNSUPPORTED"
+  ],
+  "source_onboarding_id": "v2:source-onboarding:sha256:729c13de0d56b41af59d4bbac92cd7dcd73a729cd864ba1899f915af9c464ab7"
+}

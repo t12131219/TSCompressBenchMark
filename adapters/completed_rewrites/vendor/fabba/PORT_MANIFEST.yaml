@@ -1,0 +1,238 @@
+schema_version: tscb.port-manifest.v1
+algorithm_id: fabba
+implementation_id: fabba-canonical-cpp
+algorithm_name: fABBA
+display_name: fABBA canonical C++
+category: lossy
+family: adaptive-symbolic-aggregation
+object_level: P2_PIPELINE
+rewrite_conclusion: REWRITE_DONE
+port_method: TRANSLATED
+compatibility_target: SEMANTIC
+source:
+  repository: https://github.com/nla-group/fABBA
+  commit: 4066a5fc778f50f4bee1c41d8f3ab3ee4a3ff6ad
+  archive_sha256: 27a736995af0f88a2318724a7db648de4a9eb1e824c1fc866e7718476feb4ce9
+  closure_sha256: bc1e127d5b544d9084fe314d6b6d6a97f55d14f079b082fb465693cc97020d01
+  closure_file_count: 52
+original_language: Python + Cython + generated C
+canonical_language: C++17
+license:
+  concluded_spdx: BSD-3-Clause
+  redistribution_status: RUN_ALLOWED_WITH_ATTRIBUTION
+  files:
+  - LICENSES/BSD-3-Clause.txt
+canonical_profile:
+  profile_id: 1
+  name: stable-norm2-scl1-v1
+  sorting: stable-2-norm-with-original-index-tie-break
+  scl_default: 1.0
+  alphabet_set: 0
+  threads: configurable
+  partitioning: true
+  supported_parameters:
+  - tol
+  - alpha
+  - scl
+  - max_len
+  - partition
+  - threads
+  excluded_paths:
+  - alternate-sorting
+  - alternate-alphabet
+  - multivariate
+  - image
+gates:
+  G0:
+    status: PASS
+    inputs:
+    - first-batch recommendation workbook
+    - frozen fABBA repository
+    outputs:
+    - algorithm_id fabba
+    - P2_PIPELINE classification
+    - duplicate-stage decision
+    reviewer: Codex porting audit on 2026-09-28
+    evidence: fABBA is the complete compression/digitization/inverse pipeline. ABBA_fABBA_compression_stage
+      is a P0 duplicate/stage reference and does not receive a second AlgorithmID.
+  G1:
+    status: PASS
+    inputs:
+    - clean source commit 4066a5f
+    - generated-code and dependency audit
+    outputs:
+    - Source/fabba snapshot
+    - SOURCE_MANIFEST.yaml
+    - TOOLCHAIN_MANIFEST.yaml
+    reviewer: Codex source-closure audit on 2026-09-28
+    evidence: Fifty-two files freeze orchestration, Python/Cython implementations,
+      Cython 3.2.4 generated C, build metadata, tests, and BSD-3-Clause license. No
+      upstream file is patched; ABI-specific prebuilt shared objects are excluded.
+  G2:
+    status: PASS
+    inputs:
+    - frozen primary modules
+    - stable norm-order decision
+    - canonical profile
+    outputs:
+    - contract.md
+    - fabba_oracle.py
+    - fabba_vectors.json
+    - DATASET_TEST_PLAN.yaml
+    reviewer: Codex executable-oracle audit on 2026-09-28
+  evidence: Upstream runtest import failure is recorded. A stage-composed oracle loads
+    unmodified segmentation, aggregation, and inverse modules and freezes stable tie
+    and zero-variance behavior. Nine vectors and three UCR datasets were frozen before
+    canonical work.
+  G3:
+    status: PASS
+    inputs:
+    - scalar C++17 pipeline
+    - frozen oracle and dataset plan
+    outputs:
+    - fabba.hpp
+    - fabba.cpp
+    - unit and differential tests
+    - validation reports
+    reviewer: Codex canonical correctness review on 2026-09-28
+    evidence: Nine golden, 64 source differential, 32 partitioned-parallel differential,
+      256 native property, exhaustive representative byte-mutation, GCC/Clang, ASan/UBSan,
+      and 36 UCR-series tests pass. UCR coverage totals 5,400 samples.
+  G4:
+    status: PASS
+    inputs:
+    - G3 canonical implementation
+    - package-owned C++ API and C11 ABI
+    outputs:
+    - fabba_c.h
+    - libfabba_c
+    - standalone preflight
+    - FinalBits ledger
+    reviewer: Codex standalone API review on 2026-09-28
+    evidence: Size query, exact/capacity-minus-one, canaries, immutability, boundary
+      lengths, malformed input, C11 compilation, export-map, and accounting pass.
+  G5:
+    status: PASS
+    inputs:
+    - correctness evidence
+    - CORE scalar performance observations
+    outputs:
+    - src/optimized/README.md
+    - performance_result.json
+    reviewer: Codex optimization applicability review on 2026-09-28
+    evidence: OPTIMIZATION_NOT_APPLICABLE. The 8,192-sample median is about 0.539
+      ms encode and 15.76 us decode; no profile evidence supports a second path.
+  G6:
+    status: PASS
+    inputs:
+    - G0-G5 evidence
+    - dual compiler matrix
+    - reproducible artifacts
+    outputs:
+    - build and cross-platform reports
+    - AArch64 execution evidence
+    reviewer: Codex release evidence review on 2026-09-28
+    evidence: Two GCC builds are bit-identical, GCC/Clang containers match, all five
+      test targets pass in three build profiles, TSan passes the parallel path, and
+      Zig/QEMU AArch64 unit, preflight, differential, dataset, capability, and exchange
+      validation passes.
+input:
+  logical_record: ordered IEEE-754 binary64 samples
+  dimensions: one univariate series with N >= 2
+  layout: contiguous binary64
+  allows_empty: false
+  supports_nan: false
+  supports_inf: false
+  supports_negative_zero: true
+  supports_subnormal: true
+state:
+  stateless: true
+  streaming: false
+  block_independent: true
+  cross_block_history: false
+  dictionary: per-container codebook
+native_capability_parity:
+  overall_result: FULL_PARITY
+  matrix_path: NATIVE_CAPABILITY_MATRIX.yaml
+  validation_report: validation/native_capability_validation_report.md
+  unclassified_count: 0
+  required_total: 2
+  required_passed: 2
+  waiver_ids: []
+lossy:
+  enabled: true
+  error_mode: source-relative stage and reconstruction semantic equivalence
+  error_value: abs <= 1e-10 + 1e-12 * abs(reference)
+  rounding: nearest ties-to-even with sequential correction carry
+  fp_precision: IEEE-754 binary64
+  nan_policy: reject
+  inf_policy: reject
+bitstream:
+  standardized: false
+  specification: package-owned fABBA container v1
+  header_bytes: 72
+  byte_order: little-endian fixed-width fields
+  version: 1
+  checksum: CRC-32 over all preceding bytes
+standalone_validation:
+  execution_scopes:
+  - CORE
+  serialized_bits_components:
+  - header
+  - codebook
+  - symbol_stream
+  - checksum
+  external_side_information_bits: 0
+  dataset_suite:
+    plan: validation/DATASET_TEST_PLAN.yaml
+    plan_sha256: d2756cb417358b315d301b24a02d4663c13a83f3a7c83d8f86431d4cb7cf37ae
+    selected_dataset_ids:
+    - ucr2018:ECG5000:TEST:rows0-11
+    - ucr2018:Chinatown:TEST:rows0-11
+    - ucr2018:Coffee:TEST:rows0-11
+    result: validation/dataset_validation_result.json
+    result_sha256: 57f43b75b4637abe1f6300782495ff6e9b1220e442edf6db6089ac5033209eb3
+  threads: 1
+  isa: portable-scalar
+standalone_api:
+  cpp_header: include/fabba.hpp
+  c_header: include/fabba_c.h
+  c_api_version: 1
+  shared_library: libfabba_c
+build:
+  c_standard: C11
+  cpp_standard: C++17
+  build_system: CMake 3.22.1
+  native_compiler: GCC/G++ 11.4.0
+  secondary_compiler: Clang/Clang++ 14.0.0
+  target: x86_64-linux-gnu
+  implementation_closure_sha256: 4874da6ff1e5f67e1968d183584e30865a2e40e5d0562ece660ae995bead1221
+  reproducible_artifacts:
+    libfabba_a: f0cdd52aa1aa41f792fe4c011720b7b21e44711cab4a1e3fe3966204bf41aa6f
+    libfabba_c_so: cb6496f2e4fb5088d283c40ffbcd5b3873985cda0fd7978216e32cfe47df58df
+integration:
+  performed: false
+  tscb_adapter_present: false
+  registry_modified: false
+  note: Out of scope; requires a separate post-rewrite task.
+execution:
+  scope: REWRITE_ONLY
+  required_gates:
+  - G0
+  - G1
+  - G2
+  - G3
+  - G4
+  - G5
+  - G6
+  current_gate: G6
+  terminal_status: REWRITE_DONE
+  blocker_evidence: null
+waivers: []
+final_queue_audit:
+  status: PASS
+  date: '2026-10-03'
+  native: validation/final_queue/native.json
+  security: validation/final_queue/security.json
+  release: validation/final_queue/release.json
+  actual_original_xor_dataset_oracle: null

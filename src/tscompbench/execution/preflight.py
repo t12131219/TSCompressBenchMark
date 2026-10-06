@@ -200,10 +200,13 @@ def preflight_task(
         exception_status = {
             "OutputCapacityError": RunStatus.HARNESS_CAPACITY_ERROR,
             "MemoryError": RunStatus.OOM,
+            "SourceDomainError": RunStatus.UNSUPPORTED,
         }.get(call.exception_type or "", call.status)
         return _failure(
             exception_status,
-            "MINIMAL_ROUNDTRIP_WORKER_FAILED",
+            "SOURCE_DOMAIN_UNSUPPORTED"
+            if call.exception_type == "SourceDomainError"
+            else "MINIMAL_ROUNDTRIP_WORKER_FAILED",
             input_validation=input_validation,
             boundary=boundary,
             diagnostics={

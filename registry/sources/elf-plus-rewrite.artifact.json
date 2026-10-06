@@ -1,0 +1,73 @@
+{
+  "schema_version": "tscb.source-artifact.v2",
+  "key": "elf-plus-rewrite",
+  "kind": "FROZEN_STANDALONE_CPP_REWRITE_PUBLIC_API",
+  "identity": {
+    "kind": "FROZEN_STANDALONE_CPP_REWRITE_PUBLIC_API",
+    "key": "elf-plus",
+    "package": "elf-plus",
+    "api_files": [
+      {
+        "path": "adapters/rewrite_lossless/vendor/elf-plus/LICENSES/LLVM-libcxx.txt",
+        "sha256": "539dd7aed86e8a4f12cbdd0e6c50c189c7d74847e4fecc64ce2c6ee3a01da38b"
+      },
+      {
+        "path": "adapters/rewrite_lossless/vendor/elf-plus/LICENSES/LLVM-libcxxabi.txt",
+        "sha256": "e2b35be49f7284a45b7baca8fc7b3ab7440e7902392b2528a457816b5bb2a15c"
+      },
+      {
+        "path": "adapters/rewrite_lossless/vendor/elf-plus/LICENSES/LLVM-libunwind.txt",
+        "sha256": "b5efebcaca80879234098e52d1725e6d9eb8fb96a19fce625d39184b705f7b6d"
+      },
+      {
+        "path": "adapters/rewrite_lossless/vendor/elf-plus/LICENSES/musl-COPYRIGHT.txt",
+        "sha256": "f9bc4423732350eb0b3f7ed7e91d530298476f8fec0c6c427a1c04ade22655af"
+      },
+      {
+        "path": "adapters/rewrite_lossless/vendor/elf-plus/LOCAL_WORKFLOW_DECISIONS.md",
+        "sha256": "b9ba8f8269c92ba732fd7853148740c8e34f352b846beff18ebc3e35ab18b0c1"
+      },
+      {
+        "path": "adapters/rewrite_lossless/vendor/elf-plus/README.md",
+        "sha256": "ddea49f3e9fe656d2b8df920571b30ffb078b65283e0effd6f9d6c1acfd61a55"
+      },
+      {
+        "path": "adapters/rewrite_lossless/vendor/elf-plus/UPSTREAM_PROVENANCE.json",
+        "sha256": "a7c919380c38234d8afb7d0d9281c093cf0fe0c77a2ca4764d3a8aac3c3f43b2"
+      },
+      {
+        "path": "adapters/rewrite_lossless/vendor/elf-plus/contract.md",
+        "sha256": "044bae43318542c46fd63a46851be6ed49970163c8658bb07fd3dd86bce1ac1e"
+      },
+      {
+        "path": "adapters/rewrite_lossless/vendor/elf-plus/include/elf_plus.hpp",
+        "sha256": "17cb0dd39a3a8b951b12f26466b31bbe328255e418642a69a03e20d1ecc01b43"
+      },
+      {
+        "path": "adapters/rewrite_lossless/vendor/elf-plus/src/codec.cpp",
+        "sha256": "199258aae61f7e7dd889a0a2181250cb1d78ac21b79bfc375cc3f96b78e4b6bb"
+      }
+    ],
+    "variant": "elf-plus",
+    "wrapper": "RWF1_COLUMN_SESSIONS_V1"
+  },
+  "license": {
+    "spdx": "NOASSERTION",
+    "status": "REDISTRIBUTION_RESTRICTED",
+    "files": [
+      "adapters/rewrite_lossless/vendor/elf-plus/LICENSES/LLVM-libcxx.txt",
+      "adapters/rewrite_lossless/vendor/elf-plus/LICENSES/LLVM-libcxxabi.txt",
+      "adapters/rewrite_lossless/vendor/elf-plus/LICENSES/LLVM-libunwind.txt",
+      "adapters/rewrite_lossless/vendor/elf-plus/LICENSES/musl-COPYRIGHT.txt",
+      "adapters/rewrite_lossless/vendor/elf-plus/LOCAL_WORKFLOW_DECISIONS.md"
+    ],
+    "redistribution": "NO_EXTERNAL_PUBLICATION; user-authorized local run/rewrite; unknown upstream grant"
+  },
+  "build": {
+    "recipe": "python tools/build_codec.py elf-plus --profile all",
+    "frozen_lock": "adapters/rewrite_lossless/FROZEN_APIS.json",
+    "translation_units": [
+      "src/codec.cpp"
+    ]
+  }
+}

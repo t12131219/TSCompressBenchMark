@@ -1,0 +1,132 @@
+schema_version: tscb.port-manifest.v1
+algorithm_id: walloc-1d
+recommendation_rank: 15
+object_level: P2_PIPELINE
+source:
+  repository: https://github.com/danjacobellis/walloc
+  commit: c75d1b05e03fd35f66f72fa6ae21d3bb51c2d7b2
+license:
+  concluded_spdx: NOASSERTION
+  redistribution_status: UNKNOWN
+  workflow_override:
+    decision: ../../USER_DECISIONS.md
+    decision_sha256: 5fd9288be7919d99b0ee5ce70f0de321e1a22c0eed3fc5caf29794def3db354f
+    date: '2026-10-04'
+    applies_to: local_source_audit_execution_and_rewrite
+    upstream_grant_claimed: false
+    provenance_retained: true
+gates:
+  G0:
+    status: PASS
+    evidence: Recommendation canonical task identity
+  G1:
+    status: PASS
+    evidence: validation/g2-freeze-v2/report.json; pinned models/native dependencies
+      and executable CPU/CUDA source oracle
+  G2:
+    status: PASS
+    evidence: validation/g2-freeze-v2/report.json
+    contract_sha256: ba896f04633276a9bfba4f55c3b0ec71e5b417c3b06cfc42463f03121d3a106e
+    capability_matrix_sha256: 627f34bcdb5078ee5c9a14a35407f3d1dcd75f0b0467596944ea5f4ad9f6d8f5
+    frozen_matrix_path: validation/history/g2-frozen/NATIVE_CAPABILITY_MATRIX.yaml
+  G3:
+    status: PASS
+    artifacts:
+    - path: validation/final-cpu-gcc-v6/report.json
+      sha256: 893ad1643a1ba4e107f3e6edd1baf1b97a47f3abdc3f1816579df722d8a4f198
+    - path: validation/final-cpu-clang-v6/report.json
+      sha256: 8d21d676d4cb86b202e350e96037fa3225027162ff6a3a3f5a7814ce57213616
+    - path: validation/final-cpu-asan-v6/report.json
+      sha256: 58d38e8b3747d306fe934f1c1093269184974163712a5a41592dc352c4957865
+    - path: validation/final-tensor-cpu-v6/report.json
+      sha256: fff895549d3ea6ca12bb320ac454cd5537c6b4e3a131f523a88917d56117ce5c
+    - path: validation/final-additional-cpu-v6/report.json
+      sha256: 2cbe73870bd8b34fa206f97142b2565d17db4733e6ed4cb29a00a20c97baed0f
+    - path: validation/final-full-cpu-v6/report.json
+      sha256: 57229ec927f6d07ee01523d775204d028588f8805ad66e8918d73db83a688a09
+    - path: validation/final-batch32-cpu-v6/report.json
+      sha256: 1c8ae94d4b2dc4c3cd3f7a0fb98cd614e388c06f6571753c01f07bf3a1285b5a
+    - path: validation/final-asan-v6/report.json
+      sha256: 250b80976501f8dc51a42485cd3584a1432e43117b4356f8d54c48ef8a16c011
+    - path: validation/final-tsan-v6/report.json
+      sha256: c6d40197494f325d1fb95a3f6fe0c6c4d4b25ab33fc0c97d9e9bbcc7424b9440
+    - path: validation/final-static-v6/report.json
+      sha256: dca3439ac9dc776d9970741170b497552d11e416737fc16e51c63026d55fb794
+    - path: validation/final-build-gcc-v6/report.json
+      sha256: 5d4317ae937ae8875501363b26c29f3497a1aae418419fa69e41ac2f3cfff363
+    - path: validation/final-build-clang-v6/report.json
+      sha256: ae253784780e0cd8a05dd1a821ba460bdba3def1695f740acb39ee3cdf3ef639
+  G4:
+    status: PASS
+    artifacts:
+    - path: validation/final-cpu-gcc-v6/report.json
+      sha256: 893ad1643a1ba4e107f3e6edd1baf1b97a47f3abdc3f1816579df722d8a4f198
+    - path: validation/final-cpu-clang-v6/report.json
+      sha256: 8d21d676d4cb86b202e350e96037fa3225027162ff6a3a3f5a7814ce57213616
+    - path: validation/final-cpu-asan-v6/report.json
+      sha256: 58d38e8b3747d306fe934f1c1093269184974163712a5a41592dc352c4957865
+    - path: validation/final-tensor-cpu-v6/report.json
+      sha256: fff895549d3ea6ca12bb320ac454cd5537c6b4e3a131f523a88917d56117ce5c
+    - path: validation/final-additional-cpu-v6/report.json
+      sha256: 2cbe73870bd8b34fa206f97142b2565d17db4733e6ed4cb29a00a20c97baed0f
+    - path: validation/final-full-cpu-v6/report.json
+      sha256: 57229ec927f6d07ee01523d775204d028588f8805ad66e8918d73db83a688a09
+    - path: validation/final-batch32-cpu-v6/report.json
+      sha256: 1c8ae94d4b2dc4c3cd3f7a0fb98cd614e388c06f6571753c01f07bf3a1285b5a
+    - path: validation/final-asan-v6/report.json
+      sha256: 250b80976501f8dc51a42485cd3584a1432e43117b4356f8d54c48ef8a16c011
+    - path: validation/final-tsan-v6/report.json
+      sha256: c6d40197494f325d1fb95a3f6fe0c6c4d4b25ab33fc0c97d9e9bbcc7424b9440
+    - path: validation/final-static-v6/report.json
+      sha256: dca3439ac9dc776d9970741170b497552d11e416737fc16e51c63026d55fb794
+    - path: validation/final-build-gcc-v6/report.json
+      sha256: 5d4317ae937ae8875501363b26c29f3497a1aae418419fa69e41ac2f3cfff363
+    - path: validation/final-build-clang-v6/report.json
+      sha256: ae253784780e0cd8a05dd1a821ba460bdba3def1695f740acb39ee3cdf3ef639
+  G5:
+    status: PASS
+    artifacts:
+    - path: validation/final-cuda-v4/report.json
+      sha256: 7136ba6002ffed59974ba008582d23f793ec6ebc54f5a8731301ed97405b280b
+    - path: validation/final-tensor-cuda-v4/report.json
+      sha256: d9c9cdd7901d36b76ba6d21c1b726b1ba0fe85ffae6a4c7964f8fb6aba99944c
+    - path: validation/final-full-cuda-v4/report.json
+      sha256: 89d8aeca9ffe8514cea1019064b53369e3873a7f63b83b703ef5e1370b2ed721
+    - path: validation/final-batch32-cuda-v4/report.json
+      sha256: 190e07e819ffa4806e168a84ee9185020a57baee2d4b57f32c709a8f15c64e4e
+    - path: validation/final-cuda-safety-v4/report.json
+      sha256: bc3962370c9ed7cc754237d7faf8460539373f62f11f52d4447645dd76bf1451
+    - path: validation/final-gpu-api-v4/report.json
+      sha256: 09a4510f16f67c3042c28a7ea730b9a517f5c09e4234cdb1f59a281b75d1e67e
+    - path: validation/final-build-repeat-v6/report.json
+      sha256: 5b23d264f346bd2fe551b7f70eae6574ecceaf96a30423ed1411835088f1f3ed
+    - path: validation/qualification-v2/report.json
+      sha256: 3b62b280b6962d7246b909d626aeb5be77ddcd01b7a08b38d8b71096514bb7b5
+    - path: validation/training-cost-v2/report.json
+      sha256: 33b3f706ffdba04775d99f79ae6a022a5d30957af7a1adc22ef6d80d70702d08
+    - path: validation/reduction-v4/report.json
+      sha256: b765414075de5272e6ea740418af040996e2aa4aba07adfdbc5f9786646999c5
+  G6:
+    status: PASS
+    candidate_consumption:
+      path: validation/package_candidate/report.json
+      sha256: 6965f42af858d4a48882608f32697af50e136ad97a8e9c00ea79b006dd91b726
+    evidence: validation/package_consumption/report.json;validation/release_audit.json;release/release_manifest.json
+integration:
+  performed: false
+  tscb_adapter_present: false
+  registry_modified: false
+execution:
+  scope: REWRITE_ONLY
+  current_gate: G6
+  terminal_status: REWRITE_DONE
+  blocker_evidence: null
+waivers: []
+status: REWRITE_DONE
+compatibility_target: SEMANTIC
+native_capability_parity:
+  overall_result: FULL_PARITY
+  matrix: NATIVE_CAPABILITY_MATRIX.yaml
+  required_total: 18
+  required_passed: 18
+  waiver_ids: []

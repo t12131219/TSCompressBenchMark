@@ -9,7 +9,7 @@ from tscompbench.codecs import CompatibilityPlan
 from tscompbench.contracts import AdapterOperationKind, LossMode, RunStatus
 from tscompbench.execution.protocol import DecodedOutput, RoutedInput
 
-from .lossy import LossValidationReport, validate_error_bound
+from .lossy import LossValidationReport, profile_unbounded_loss, validate_error_bound
 
 
 @dataclass(frozen=True)
@@ -215,6 +215,21 @@ def validate_common_correctness(
                 {"raw_violation_count": loss.raw_violation_count},
                 loss,
             )
+    elif loss_mode is LossMode.UNBOUNDED_LOSSY:
+        for name in value_names:
+            if expected[name].array.dtype != restored[name].dtype or not np.all(
+                np.isfinite(restored[name])
+            ):
+                return CorrectnessReport(
+                    RunStatus.CORRECTNESS_FAIL, "LOSSY_FINITE_DTYPE", tuple(checks),
+                    {"buffer": name},
+                )
+        loss = profile_unbounded_loss(
+            {name: expected[name].array for name in value_names},
+            {name: restored[name] for name in value_names},
+            timestamp=original.timestamp_reference,
+        )
+        checks.append("LOSS_QUALITY_PROFILE_NO_ERROR_GUARANTEE")
     elif loss_mode is LossMode.RATE_CONTROLLED_LOSSY:
         diagnostics["rate_gate"] = "DEFERRED_TO_RATE_PROFILE_WITH_ACTUAL_FINAL_BITS"
         checks.append("RATE_TARGET_RECORDED")

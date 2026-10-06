@@ -1,0 +1,73 @@
+{
+  "schema_version": "tscb.dataset-manifest.v2",
+  "key": "rewrite_byte_uts",
+  "display_name": "Synthetic completed-rewrite qualification: rewrite_byte_uts",
+  "source": {
+    "uri": "generated:tools/generate_completed_rewrite_fixtures.py@20261006",
+    "retrieved_at": "2026-10-06",
+    "notes": "Deterministic synthetic fixtures; no real-world corpus or performance claim"
+  },
+  "license": {
+    "spdx": "CC0-1.0",
+    "status": "RUN_ALLOWED"
+  },
+  "file": {
+    "path": "fixtures/completed_rewrites/rewrite_byte_uts.npz",
+    "bytes": 522,
+    "sha256": "74c558bd0354e84a14ec4d77c0bd2763303561c65d856a8320adfead0b126744",
+    "format": "npz"
+  },
+  "parser": {
+    "name": "numpy.npz",
+    "version": "runtime-recorded",
+    "allow_pickle": false,
+    "array_key": "values",
+    "expected_keys": [
+      "values"
+    ]
+  },
+  "logical": {
+    "topology": "UTS",
+    "axes": [
+      "time"
+    ],
+    "timestamp": {
+      "origin": "NONE",
+      "reason": "Synthetic UTS samples have no timestamp values"
+    },
+    "value": {
+      "kind": "NPZ_ARRAY",
+      "array": {
+        "dtype": "|u1",
+        "unit": "BYTE_SYMBOL",
+        "entity": "synthetic-input",
+        "feature": "value",
+        "required_layout": "ROW_MAJOR_CONTIG"
+      },
+      "representation": "NATIVE_ND_PRESERVED"
+    },
+    "validity": {
+      "shape": "NONE",
+      "missing_tokens": [],
+      "nan_is_null": false
+    },
+    "canonical": {
+      "format_version": "tscb-canonical-v1",
+      "byte_order": "little"
+    }
+  },
+  "expected": {
+    "shape": [
+      256
+    ],
+    "dtype": "|u1",
+    "array_keys": [
+      "values"
+    ]
+  },
+  "split": {
+    "policy": "PER_OBJECT_ENCODING_OR_DECLARED_FROZEN_MODEL_NO_TEST_TUNING",
+    "learned_eligible": true,
+    "reason": "Compression may fit per-object state; no external training or tuning on these fixtures"
+  }
+}

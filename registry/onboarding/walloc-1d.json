@@ -1,0 +1,609 @@
+{
+  "schema_version": "tscb.source-onboarding.v2",
+  "source_artifact_id": "v2:source-artifact:sha256:178f7c4cda75aa2a85a34e1d66a921826923cbdfa34b3627fe38fa2edc00aeba",
+  "repository": "https://github.com/danjacobellis/walloc",
+  "commit": "c75d1b05e03fd35f66f72fa6ae21d3bb51c2d7b2",
+  "dirty": false,
+  "submodules": [],
+  "implementation_files": [
+    "adapters/completed_rewrites/vendor/walloc-1d/src/canonical/safe_reduce.cu",
+    "adapters/completed_rewrites/vendor/walloc-1d/src/canonical/walloc.cpp",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/Makefile.am",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dec/Makefile.am",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dec/alpha_dec.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dec/alphai_dec.h",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dec/buffer_dec.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dec/common_dec.h",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dec/frame_dec.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dec/idec_dec.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dec/io_dec.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dec/quant_dec.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dec/tree_dec.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dec/vp8_dec.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dec/vp8_dec.h",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dec/vp8i_dec.h",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dec/vp8l_dec.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dec/vp8li_dec.h",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dec/webp_dec.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dec/webpi_dec.h",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/demux/Makefile.am",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/demux/anim_decode.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/demux/demux.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/demux/libwebpdemux.pc.in",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/demux/libwebpdemux.rc",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dsp/Makefile.am",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dsp/alpha_processing.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dsp/alpha_processing_mips_dsp_r2.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dsp/alpha_processing_neon.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dsp/alpha_processing_sse2.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dsp/alpha_processing_sse41.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dsp/common_sse2.h",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dsp/common_sse41.h",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dsp/cost.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dsp/cost_mips32.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dsp/cost_mips_dsp_r2.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dsp/cost_neon.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dsp/cost_sse2.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dsp/cpu.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dsp/cpu.h",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dsp/dec.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dsp/dec_clip_tables.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dsp/dec_mips32.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dsp/dec_mips_dsp_r2.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dsp/dec_msa.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dsp/dec_neon.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dsp/dec_sse2.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dsp/dec_sse41.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dsp/dsp.h",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dsp/enc.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dsp/enc_mips32.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dsp/enc_mips_dsp_r2.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dsp/enc_msa.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dsp/enc_neon.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dsp/enc_sse2.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dsp/enc_sse41.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dsp/filters.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dsp/filters_mips_dsp_r2.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dsp/filters_msa.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dsp/filters_neon.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dsp/filters_sse2.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dsp/lossless.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dsp/lossless.h",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dsp/lossless_avx2.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dsp/lossless_common.h",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dsp/lossless_enc.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dsp/lossless_enc_avx2.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dsp/lossless_enc_mips32.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dsp/lossless_enc_mips_dsp_r2.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dsp/lossless_enc_msa.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dsp/lossless_enc_neon.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dsp/lossless_enc_sse2.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dsp/lossless_enc_sse41.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dsp/lossless_mips_dsp_r2.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dsp/lossless_msa.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dsp/lossless_neon.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dsp/lossless_sse2.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dsp/lossless_sse41.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dsp/mips_macro.h",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dsp/msa_macro.h",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dsp/neon.h",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dsp/quant.h",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dsp/rescaler.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dsp/rescaler_mips32.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dsp/rescaler_mips_dsp_r2.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dsp/rescaler_msa.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dsp/rescaler_neon.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dsp/rescaler_sse2.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dsp/ssim.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dsp/ssim_sse2.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dsp/upsampling.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dsp/upsampling_mips_dsp_r2.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dsp/upsampling_msa.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dsp/upsampling_neon.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dsp/upsampling_sse2.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dsp/upsampling_sse41.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dsp/yuv.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dsp/yuv.h",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dsp/yuv_mips32.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dsp/yuv_mips_dsp_r2.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dsp/yuv_neon.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dsp/yuv_sse2.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/dsp/yuv_sse41.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/enc/Makefile.am",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/enc/alpha_enc.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/enc/analysis_enc.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/enc/backward_references_cost_enc.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/enc/backward_references_enc.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/enc/backward_references_enc.h",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/enc/config_enc.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/enc/cost_enc.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/enc/cost_enc.h",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/enc/filter_enc.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/enc/frame_enc.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/enc/histogram_enc.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/enc/histogram_enc.h",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/enc/iterator_enc.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/enc/near_lossless_enc.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/enc/picture_csp_enc.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/enc/picture_enc.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/enc/picture_psnr_enc.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/enc/picture_rescale_enc.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/enc/picture_tools_enc.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/enc/predictor_enc.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/enc/quant_enc.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/enc/syntax_enc.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/enc/token_enc.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/enc/tree_enc.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/enc/vp8i_enc.h",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/enc/vp8l_enc.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/enc/vp8li_enc.h",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/enc/webp_enc.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/libwebp.pc.in",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/libwebp.rc",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/libwebpdecoder.pc.in",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/libwebpdecoder.rc",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/mux/Makefile.am",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/mux/anim_encode.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/mux/animi.h",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/mux/libwebpmux.pc.in",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/mux/libwebpmux.rc",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/mux/muxedit.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/mux/muxi.h",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/mux/muxinternal.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/mux/muxread.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/utils/Makefile.am",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/utils/bit_reader_inl_utils.h",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/utils/bit_reader_utils.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/utils/bit_reader_utils.h",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/utils/bit_writer_utils.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/utils/bit_writer_utils.h",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/utils/color_cache_utils.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/utils/color_cache_utils.h",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/utils/endian_inl_utils.h",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/utils/filters_utils.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/utils/filters_utils.h",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/utils/huffman_encode_utils.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/utils/huffman_encode_utils.h",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/utils/huffman_utils.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/utils/huffman_utils.h",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/utils/palette.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/utils/palette.h",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/utils/quant_levels_dec_utils.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/utils/quant_levels_dec_utils.h",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/utils/quant_levels_utils.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/utils/quant_levels_utils.h",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/utils/random_utils.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/utils/random_utils.h",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/utils/rescaler_utils.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/utils/rescaler_utils.h",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/utils/thread_utils.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/utils/thread_utils.h",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/utils/utils.c",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/utils/utils.h",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/webp/decode.h",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/webp/demux.h",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/webp/encode.h",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/webp/format_constants.h",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/webp/mux.h",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/webp/mux_types.h",
+    "adapters/completed_rewrites/vendor/walloc-1d/third_party/libwebp/src/webp/types.h"
+  ],
+  "public_api_files": [
+    "adapters/completed_rewrites/vendor/walloc-1d/include/walloc.hpp",
+    "adapters/completed_rewrites/vendor/walloc-1d/include/walloc_tensor.hpp"
+  ],
+  "benchmark_files": [
+    "adapters/completed_rewrites/native/binding.cpp",
+    "src/tscompbench/adapters/completed_rewrites.py"
+  ],
+  "test_files": [
+    "adapters/completed_rewrites/tests/qualification.cpp",
+    "tests/adapters/test_completed_rewrites.py",
+    "tests/integration/test_completed_rewrites_qualification.py"
+  ],
+  "license_files": [
+    "adapters/completed_rewrites/vendor/walloc-1d/LICENSES/CUDA11.8-EULA.txt",
+    "adapters/completed_rewrites/vendor/walloc-1d/LICENSES/PyTorch-LICENSE.txt",
+    "adapters/completed_rewrites/vendor/walloc-1d/LICENSES/diffusers-LICENSE.txt",
+    "adapters/completed_rewrites/vendor/walloc-1d/LICENSES/libwebp-AUTHORS",
+    "adapters/completed_rewrites/vendor/walloc-1d/LICENSES/libwebp-COPYING",
+    "adapters/completed_rewrites/vendor/walloc-1d/LICENSES/libwebp-PATENTS",
+    "adapters/completed_rewrites/vendor/walloc-1d/LICENSES/nvidia_cublas_cu11-11.11.3.6.dist-info.txt",
+    "adapters/completed_rewrites/vendor/walloc-1d/LICENSES/nvidia_cuda_cupti_cu11-11.8.87.dist-info.txt",
+    "adapters/completed_rewrites/vendor/walloc-1d/LICENSES/nvidia_cuda_nvrtc_cu11-11.8.89.dist-info.txt",
+    "adapters/completed_rewrites/vendor/walloc-1d/LICENSES/nvidia_cuda_runtime_cu11-11.8.89.dist-info.txt",
+    "adapters/completed_rewrites/vendor/walloc-1d/LICENSES/nvidia_cudnn_cu11-9.1.0.70.dist-info.txt",
+    "adapters/completed_rewrites/vendor/walloc-1d/LICENSES/nvidia_cufft_cu11-10.9.0.58.dist-info.txt",
+    "adapters/completed_rewrites/vendor/walloc-1d/LICENSES/nvidia_curand_cu11-10.3.0.86.dist-info.txt",
+    "adapters/completed_rewrites/vendor/walloc-1d/LICENSES/nvidia_cusolver_cu11-11.4.1.48.dist-info.txt",
+    "adapters/completed_rewrites/vendor/walloc-1d/LICENSES/nvidia_cusparse_cu11-11.7.5.86.dist-info.txt",
+    "adapters/completed_rewrites/vendor/walloc-1d/LICENSES/nvidia_nccl_cu11-2.21.5.dist-info.txt",
+    "adapters/completed_rewrites/vendor/walloc-1d/LICENSES/nvidia_nvtx_cu11-11.8.86.dist-info.txt",
+    "adapters/completed_rewrites/vendor/walloc-1d/LICENSES/pytorch_wavelets-LICENSE.txt"
+  ],
+  "third_party_dependencies": [
+    {
+      "path": "/home/fzg/anaconda3/envs/CompressBench/lib/python3.11/site-packages/nvidia/cublas/lib/libcublas.so.11",
+      "sha256": "3b81d170cd613cf9ee24d30b483f7b6d8170d6d32a0354fc207d09c943ae3f62"
+    },
+    {
+      "path": "/home/fzg/anaconda3/envs/CompressBench/lib/python3.11/site-packages/nvidia/cublas/lib/libcublasLt.so.11",
+      "sha256": "b6d14a7461b3ec1995427fd179b98b915c9fc81057366ab7bfa4681451b0d308"
+    },
+    {
+      "path": "/home/fzg/anaconda3/envs/CompressBench/lib/python3.11/site-packages/nvidia/cublas/lib/libnvblas.so.11",
+      "sha256": "647373d0020a53c70bd44d2950f81f6c5edec206899855800a76aabe1ae27e02"
+    },
+    {
+      "path": "/home/fzg/anaconda3/envs/CompressBench/lib/python3.11/site-packages/nvidia/cuda_cupti/lib/libcheckpoint.so",
+      "sha256": "38073c63ab8f022926f58f7cb39c565005f382bdfacd85822e7502a5256b6671"
+    },
+    {
+      "path": "/home/fzg/anaconda3/envs/CompressBench/lib/python3.11/site-packages/nvidia/cuda_cupti/lib/libcupti.so.11.8",
+      "sha256": "ae79a72e074a01e152ed07f3443d2415dba7e76d52381e527632ea84eda15a7e"
+    },
+    {
+      "path": "/home/fzg/anaconda3/envs/CompressBench/lib/python3.11/site-packages/nvidia/cuda_cupti/lib/libnvperf_host.so",
+      "sha256": "a692ada484422cee064e5d385d335fbb00546cb343c22acec106168038de75b6"
+    },
+    {
+      "path": "/home/fzg/anaconda3/envs/CompressBench/lib/python3.11/site-packages/nvidia/cuda_cupti/lib/libnvperf_target.so",
+      "sha256": "d0ce70348b8781d62ac274c40af1b4552bde7757dd307e1037fedc488ea0ef02"
+    },
+    {
+      "path": "/home/fzg/anaconda3/envs/CompressBench/lib/python3.11/site-packages/nvidia/cuda_cupti/lib/libpcsamplingutil.so",
+      "sha256": "517d8a6fa84f0a9ff6c3d91ae14b1c9918811a4b8b35637534246d4bbd5b5390"
+    },
+    {
+      "path": "/home/fzg/anaconda3/envs/CompressBench/lib/python3.11/site-packages/nvidia/cuda_nvrtc/lib/libnvrtc-builtins.so.11.8",
+      "sha256": "2dc4bf687034e89e117ef82fb300291e4833319a2d47722005d40eeafbafdaaf"
+    },
+    {
+      "path": "/home/fzg/anaconda3/envs/CompressBench/lib/python3.11/site-packages/nvidia/cuda_nvrtc/lib/libnvrtc.so.11.2",
+      "sha256": "6960d05ae43a3e335e2d26f325db48bf7843c22ba4f40540ba7d0090597030c5"
+    },
+    {
+      "path": "/home/fzg/anaconda3/envs/CompressBench/lib/python3.11/site-packages/nvidia/cuda_runtime/lib/libOpenCL.so.1",
+      "sha256": "1552ec44b469da72e585a29ac7fd2aa98d7f99b9362b7fb8f3dcb2d6b603d3fb"
+    },
+    {
+      "path": "/home/fzg/anaconda3/envs/CompressBench/lib/python3.11/site-packages/nvidia/cuda_runtime/lib/libcudart.so.11.0",
+      "sha256": "d0da41ae1323cf4eeb610123d69d7714124cfe5ebfcc4e45f02b910e51c57ee6"
+    },
+    {
+      "path": "/home/fzg/anaconda3/envs/CompressBench/lib/python3.11/site-packages/nvidia/cudnn/lib/libcudnn.so.9",
+      "sha256": "74a4c495a26d5104150241e84a10842442c024c129cdc274ad8b6a7a8794980e"
+    },
+    {
+      "path": "/home/fzg/anaconda3/envs/CompressBench/lib/python3.11/site-packages/nvidia/cudnn/lib/libcudnn_adv.so.9",
+      "sha256": "5adee116d98d3ff6133af14534002c5f16860cddead632697b93bfda87239a7c"
+    },
+    {
+      "path": "/home/fzg/anaconda3/envs/CompressBench/lib/python3.11/site-packages/nvidia/cudnn/lib/libcudnn_cnn.so.9",
+      "sha256": "0e41dfebac04b6fc31d662991041f352b31aae4c96b18898df4ece6d59694f59"
+    },
+    {
+      "path": "/home/fzg/anaconda3/envs/CompressBench/lib/python3.11/site-packages/nvidia/cudnn/lib/libcudnn_engines_precompiled.so.9",
+      "sha256": "69e0e8ea762871fabc213b8a6f8b652f995711b55f3ce70e8d739fcbdfe61761"
+    },
+    {
+      "path": "/home/fzg/anaconda3/envs/CompressBench/lib/python3.11/site-packages/nvidia/cudnn/lib/libcudnn_engines_runtime_compiled.so.9",
+      "sha256": "c8cf08e7a22174a20c1c7438d7c4bdee17ca5f2e284dca7ff0a0f98a8ba40996"
+    },
+    {
+      "path": "/home/fzg/anaconda3/envs/CompressBench/lib/python3.11/site-packages/nvidia/cudnn/lib/libcudnn_graph.so.9",
+      "sha256": "2df563f084609e9bd6f03724eba8a4b74a435d0b2d29b082f92b083a2369a75f"
+    },
+    {
+      "path": "/home/fzg/anaconda3/envs/CompressBench/lib/python3.11/site-packages/nvidia/cudnn/lib/libcudnn_heuristic.so.9",
+      "sha256": "42c2663e95bcd334f48b3d74f0a5534c8d363d1f13430c9bdfef74fbfc92efcd"
+    },
+    {
+      "path": "/home/fzg/anaconda3/envs/CompressBench/lib/python3.11/site-packages/nvidia/cudnn/lib/libcudnn_ops.so.9",
+      "sha256": "c51b778599cd8cf602463794e719f277fd4761593d7d98be9c0603db62477487"
+    },
+    {
+      "path": "/home/fzg/anaconda3/envs/CompressBench/lib/python3.11/site-packages/nvidia/cufft/lib/libcufft.so.10",
+      "sha256": "ca5c6f81d584906b4d32b984ad8704dd65bf75bdab4334ed22ce7eef7501a95a"
+    },
+    {
+      "path": "/home/fzg/anaconda3/envs/CompressBench/lib/python3.11/site-packages/nvidia/cufft/lib/libcufftw.so.10",
+      "sha256": "1a592a5b2f359a9077550ee1fdadd58eb2cf9cc0bfab8fe397a374fb949da143"
+    },
+    {
+      "path": "/home/fzg/anaconda3/envs/CompressBench/lib/python3.11/site-packages/nvidia/curand/lib/libcurand.so.10",
+      "sha256": "97813df916ebe8613efb8d57127b9119403332a64d929bfd172452c140e101de"
+    },
+    {
+      "path": "/home/fzg/anaconda3/envs/CompressBench/lib/python3.11/site-packages/nvidia/cusolver/lib/libcusolver.so.11",
+      "sha256": "e495b537a182b34feb1c086664b6495989f9b11c2305b64abaefd0c8b48249be"
+    },
+    {
+      "path": "/home/fzg/anaconda3/envs/CompressBench/lib/python3.11/site-packages/nvidia/cusolver/lib/libcusolverMg.so.11",
+      "sha256": "f759cd746f4e1ad766677f48b1e4bacb16d0baf973f68c41a33228e3a3b91f73"
+    },
+    {
+      "path": "/home/fzg/anaconda3/envs/CompressBench/lib/python3.11/site-packages/nvidia/cusparse/lib/libcusparse.so.11",
+      "sha256": "8c7d6b64b4c4722420dfaed9e1700a2a01b35fe196ce9335cf266da0187de1f3"
+    },
+    {
+      "path": "/home/fzg/anaconda3/envs/CompressBench/lib/python3.11/site-packages/nvidia/nccl/lib/libnccl.so.2",
+      "sha256": "4de8ef6a9d27e45e0e3d067c81fdc0a7103cb318e34557da25949a4230a9caaf"
+    },
+    {
+      "path": "/home/fzg/anaconda3/envs/CompressBench/lib/python3.11/site-packages/nvidia/nvtx/lib/libnvToolsExt.so.1",
+      "sha256": "847d78f275c8cc97442a278073204bdc1a0009ffc2559bf7248c70d92105dfdc"
+    },
+    {
+      "path": "/home/fzg/anaconda3/envs/CompressBench/lib/python3.11/site-packages/torch/lib/libc10.so",
+      "sha256": "36389abc57c77115bd452b3a2170692a467ff9f22a1e043afb03f11bb38ac549"
+    },
+    {
+      "path": "/home/fzg/anaconda3/envs/CompressBench/lib/python3.11/site-packages/torch/lib/libc10_cuda.so",
+      "sha256": "cc68fd6925f45c131aa7605553b5c7acda5b06e26962c1f7b3e0ae4a601565ed"
+    },
+    {
+      "path": "/home/fzg/anaconda3/envs/CompressBench/lib/python3.11/site-packages/torch/lib/libcaffe2_nvrtc.so",
+      "sha256": "82874a2f435f2bc5006f3c7f9cc51ab16a5573db19a9b0247e9cd13b7efa67de"
+    },
+    {
+      "path": "/home/fzg/anaconda3/envs/CompressBench/lib/python3.11/site-packages/torch/lib/libcusparseLt-f8b4a9fb.so.0",
+      "sha256": "3b38990d75fc3c9c321820b0643a97410bd577fa0465da81ae587e64a91cd7fe"
+    },
+    {
+      "path": "/home/fzg/anaconda3/envs/CompressBench/lib/python3.11/site-packages/torch/lib/libgomp-a34b3233.so.1",
+      "sha256": "9eb01021bb58ec36925daeb5a56606bfab558332eb5f5119e990e4c208ed2581"
+    },
+    {
+      "path": "/home/fzg/anaconda3/envs/CompressBench/lib/python3.11/site-packages/torch/lib/libshm.so",
+      "sha256": "7f826c53bedf00e97c998385ecde0869462eac1d39f9b8c9567a501477481187"
+    },
+    {
+      "path": "/home/fzg/anaconda3/envs/CompressBench/lib/python3.11/site-packages/torch/lib/libtorch.so",
+      "sha256": "853e427fa7f4523bbde3cdf4c4b1a09075b428e223e4848dd6d292b5ea8a7388"
+    },
+    {
+      "path": "/home/fzg/anaconda3/envs/CompressBench/lib/python3.11/site-packages/torch/lib/libtorch_cpu.so",
+      "sha256": "f01d78d9a42636d78f6005540cde0bd7d49aefe55610475ddaccf87c3a23fec7"
+    },
+    {
+      "path": "/home/fzg/anaconda3/envs/CompressBench/lib/python3.11/site-packages/torch/lib/libtorch_cuda.so",
+      "sha256": "bee32cdcbac0ec53b964afcc1d5af8e22100ebae19ffca91e7c3ea9cae58476c"
+    },
+    {
+      "path": "/home/fzg/anaconda3/envs/CompressBench/lib/python3.11/site-packages/torch/lib/libtorch_cuda_linalg.so",
+      "sha256": "ed92008f7177b916e19621b7164fede0e0e7062110cf4ab4ea0e35ffc80ab9a9"
+    },
+    {
+      "path": "/home/fzg/anaconda3/envs/CompressBench/lib/python3.11/site-packages/torch/lib/libtorch_global_deps.so",
+      "sha256": "c9663f1d23bd5f7f521d1a3a707638f3ca711c5e2b6679cd397d555cb2d1f7ce"
+    },
+    {
+      "path": "/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+      "sha256": "9eb34cb2da3ae2a9398cc09b3cd2d069563ec40d9858cb711af15cd23fa80abf"
+    },
+    {
+      "path": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+      "sha256": "c53819710b163d3f1d2541778590d58d3ef31cb0ed75adcbe059faac68c1e72d"
+    },
+    {
+      "path": "/usr/lib/x86_64-linux-gnu/libdl.so.2",
+      "sha256": "bf1783273aa79484bf5f70eddc013bc3982785d8aadef224aa09beb08fa95b42"
+    },
+    {
+      "path": "/usr/lib/x86_64-linux-gnu/libgcc_s.so.1",
+      "sha256": "fc9d43b2f6c20e53b009238f767c5b949d202389e20de9e202ea684b4ba3729a"
+    },
+    {
+      "path": "/usr/lib/x86_64-linux-gnu/libm.so.6",
+      "sha256": "00830df310aac5023e10bd7b715149ab8ddc682277fd8ae3539a7a44fcdd6c38"
+    },
+    {
+      "path": "/usr/lib/x86_64-linux-gnu/libpthread.so.0",
+      "sha256": "16e807d47ff2441f0203fb2b8805d471e555d932d3d8d262ec6a58ea1d640fd8"
+    },
+    {
+      "path": "/usr/lib/x86_64-linux-gnu/librt.so.1",
+      "sha256": "c8124d69d67c4f94c162c36550c9244d60e2e368ecae98857754e3ba11824677"
+    },
+    {
+      "path": "/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30",
+      "sha256": "ff0825e113603c3866680d5d52216bc6d8eedf3a59f52a0aef67ff01994db128"
+    },
+    {
+      "path": "/usr/lib/x86_64-linux-gnu/libutil.so.1",
+      "sha256": "8647a84d95565d4676d8fd8fa79569f3a81dedd19f9212029ac9225b546e25f1"
+    },
+    {
+      "path": "/usr/local/cuda-11.8/targets/x86_64-linux/lib/libcudart.so.11.8.89",
+      "sha256": "d0da41ae1323cf4eeb610123d69d7714124cfe5ebfcc4e45f02b910e51c57ee6"
+    }
+  ],
+  "object_level_candidates": [
+    "P2_PIPELINE"
+  ],
+  "input_contract": {
+    "topologies": [
+      "UTS",
+      "SYNCHRONOUS_MTS"
+    ],
+    "dtypes": [
+      "<f4"
+    ],
+    "ranks": [
+      1,
+      2
+    ],
+    "layouts": [
+      "ROW_MAJOR_CONTIG",
+      "SOA_COLUMNS"
+    ],
+    "endianness": [
+      "little"
+    ],
+    "alignment_bytes": 1,
+    "min_n": 0,
+    "max_n": 16777216,
+    "min_m": 2,
+    "max_m": 2,
+    "validity_shapes": [
+      "NONE"
+    ],
+    "homogeneous_itemsize": true,
+    "max_total_raw_bytes": 134217728,
+    "value_coupling_mode": "FULL_MATRIX",
+    "timestamp_semantics": {
+      "preserve_order": true,
+      "duplicates": true,
+      "out_of_order": true,
+      "negative_delta": true,
+      "absolute_epoch": true,
+      "overflow_policy": "NOT_APPLICABLE_VALUE_ONLY"
+    },
+    "max_total_elements": 16777216,
+    "value_domain": {
+      "kind": "FROZEN_SOURCE_WITH_BOUNDED_REJECTION",
+      "unsupported_action": "REJECT_BEFORE_OUTPUT",
+      "oracle_evidence": "adapters/completed_rewrites/vendor/walloc-1d/contract.md",
+      "rejection_reasons": [
+        "FINITE_INPUT_REQUIRED"
+      ]
+    },
+    "required_value_units": [
+      "NORMALIZED_AUDIO_MINUS_HALF_TO_HALF"
+    ]
+  },
+  "output_contract": {
+    "framing": "SHA256_DESCRIPTOR_AND_COMPLETE_NATIVE_FRAMES_V1",
+    "self_contained": true,
+    "actual_written_length": true,
+    "capacity_is_not_size": true,
+    "model_and_dictionary_accounting": "OPAQUE_NATIVE_FRAME_BYTES; INCLUDED_IN_FINAL_BITS; NOT_SEPARATELY_ATTRIBUTED"
+  },
+  "lifecycle_contract": {
+    "output_bound": "FROZEN_NATIVE_BOUND_PLUS_EXACT_DESCRIPTOR_AND_RECORD_OVERHEAD",
+    "return_length": "actual_used_bytes",
+    "error_codes": [
+      "OUTPUT_CAPACITY",
+      "EXECUTION_CONTRACT",
+      "SOURCE_DOMAIN_UNSUPPORTED"
+    ],
+    "finalize": "EXACTLY_ONCE_REQUIRED_ZERO_BYTE_FINALIZE",
+    "reset": "FRESH_INDEPENDENT_SESSION_PER_INNER_OBJECT"
+  },
+  "stream_components": [
+    "descriptor_and_checksums",
+    "native_record_lengths",
+    "complete_native_frames"
+  ],
+  "upstream_tests": [
+    {
+      "status": "PASS",
+      "name": "release: upstream CTest and framework ABI qualification",
+      "log_sha256": "84122affebbbc2e5d364bd54f4e76bf4fbb9b7a8ebd323649c77f72ae35636ed",
+      "log": "build/adapters/walloc_1d/release/qualification.log",
+      "scope": "NOT_APPLICABLE"
+    },
+    {
+      "status": "PASS",
+      "name": "sanitizer: upstream CTest and framework ABI qualification",
+      "log_sha256": "e569b45c9eed718fd7c1d128ed2e76d8b1f5bbf0a8dbc7f98f8b624deafe1c63",
+      "log": "build/adapters/walloc_1d/sanitizer/qualification.log",
+      "scope": "FRAMEWORK_BINDING_AND_FROZEN_CPP_SOURCES; EXTERNAL_BINARY_RUNTIMES_NOT_INSTRUMENTED; LEAK_CHECK_DISABLED"
+    }
+  ],
+  "builds": [
+    {
+      "kind": "release",
+      "artifact_sha256": "1f768037675ad5d325e71c5498e8fd8fea2d3b539ffd7783cbd936843eb3e2bd",
+      "compile_commands_sha256": "7174891437e6dc2b5f6ead5539659dc8337c8bfe05afef857552f9c597998c95",
+      "build_record_sha256": "0ef4ef7027bc88fd51bad0d4a1799af37025fb3c5786d724b36d97685b0a9706",
+      "compiler": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0\nCopyright (C) 2021 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+      "configure_command": [
+        "cmake",
+        "-S",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/adapters/walloc_1d/release/recipe",
+        "-B",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/adapters/walloc_1d/release/cmake",
+        "-DCMAKE_BUILD_TYPE=Release",
+        "-DCMAKE_CXX_FLAGS=-fno-fast-math -ffp-contract=off",
+        "-DCMAKE_C_FLAGS=-fno-fast-math -ffp-contract=off",
+        "-DCMAKE_EXE_LINKER_FLAGS=",
+        "-DDEEPZIP_WITH_HDF5=OFF",
+        "-DDEEPZIP_WITH_CUDA=OFF",
+        "-DDZIP_WITH_HDF5=OFF",
+        "-DDZIP_WITH_CUDA=OFF",
+        "-DTRISTAN_MKL_ROOT=/home/fzg/anaconda3",
+        "-DWALLOC_TORCH_ROOT=/home/fzg/anaconda3/envs/CompressBench/lib/python3.11/site-packages/torch",
+        "-DCMAKE_CUDA_COMPILER=/usr/local/cuda-11.8/bin/nvcc",
+        "-DCUDAToolkit_ROOT=/usr/local/cuda-11.8"
+      ]
+    },
+    {
+      "kind": "sanitizer",
+      "artifact_sha256": "af465ef9673a1b8d6559d5a577205de9f909bf31e042b9d290b1f692e8018019",
+      "compile_commands_sha256": "2d08c10b3826007caadd4eb80327a991e1fc1480dc36d2af9f222bfd195dfb59",
+      "build_record_sha256": "10309fde2695c1506418ac0f11774ac47fa8ab3c8b28b2be823b98e474051c8e",
+      "compiler": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0\nCopyright (C) 2021 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+      "configure_command": [
+        "cmake",
+        "-S",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/adapters/walloc_1d/sanitizer/recipe",
+        "-B",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/adapters/walloc_1d/sanitizer/cmake",
+        "-DCMAKE_BUILD_TYPE=Release",
+        "-DCMAKE_CXX_FLAGS=-fno-fast-math -ffp-contract=off -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer",
+        "-DCMAKE_C_FLAGS=-fno-fast-math -ffp-contract=off -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer",
+        "-DCMAKE_EXE_LINKER_FLAGS=-no-pie",
+        "-DDEEPZIP_WITH_HDF5=OFF",
+        "-DDEEPZIP_WITH_CUDA=OFF",
+        "-DDZIP_WITH_HDF5=OFF",
+        "-DDZIP_WITH_CUDA=OFF",
+        "-DTRISTAN_MKL_ROOT=/home/fzg/anaconda3",
+        "-DWALLOC_TORCH_ROOT=/home/fzg/anaconda3/envs/CompressBench/lib/python3.11/site-packages/torch",
+        "-DCMAKE_CUDA_COMPILER=/usr/local/cuda-11.8/bin/nvcc",
+        "-DCUDAToolkit_ROOT=/usr/local/cuda-11.8"
+      ]
+    }
+  ],
+  "license_decision": {
+    "spdx": "NOASSERTION",
+    "status": "REDISTRIBUTION_RESTRICTED",
+    "files": [
+      "adapters/completed_rewrites/vendor/walloc-1d/LICENSES/CUDA11.8-EULA.txt",
+      "adapters/completed_rewrites/vendor/walloc-1d/LICENSES/PyTorch-LICENSE.txt",
+      "adapters/completed_rewrites/vendor/walloc-1d/LICENSES/diffusers-LICENSE.txt",
+      "adapters/completed_rewrites/vendor/walloc-1d/LICENSES/libwebp-AUTHORS",
+      "adapters/completed_rewrites/vendor/walloc-1d/LICENSES/libwebp-COPYING",
+      "adapters/completed_rewrites/vendor/walloc-1d/LICENSES/libwebp-PATENTS",
+      "adapters/completed_rewrites/vendor/walloc-1d/LICENSES/nvidia_cublas_cu11-11.11.3.6.dist-info.txt",
+      "adapters/completed_rewrites/vendor/walloc-1d/LICENSES/nvidia_cuda_cupti_cu11-11.8.87.dist-info.txt",
+      "adapters/completed_rewrites/vendor/walloc-1d/LICENSES/nvidia_cuda_nvrtc_cu11-11.8.89.dist-info.txt",
+      "adapters/completed_rewrites/vendor/walloc-1d/LICENSES/nvidia_cuda_runtime_cu11-11.8.89.dist-info.txt",
+      "adapters/completed_rewrites/vendor/walloc-1d/LICENSES/nvidia_cudnn_cu11-9.1.0.70.dist-info.txt",
+      "adapters/completed_rewrites/vendor/walloc-1d/LICENSES/nvidia_cufft_cu11-10.9.0.58.dist-info.txt",
+      "adapters/completed_rewrites/vendor/walloc-1d/LICENSES/nvidia_curand_cu11-10.3.0.86.dist-info.txt",
+      "adapters/completed_rewrites/vendor/walloc-1d/LICENSES/nvidia_cusolver_cu11-11.4.1.48.dist-info.txt",
+      "adapters/completed_rewrites/vendor/walloc-1d/LICENSES/nvidia_cusparse_cu11-11.7.5.86.dist-info.txt",
+      "adapters/completed_rewrites/vendor/walloc-1d/LICENSES/nvidia_nccl_cu11-2.21.5.dist-info.txt",
+      "adapters/completed_rewrites/vendor/walloc-1d/LICENSES/nvidia_nvtx_cu11-11.8.86.dist-info.txt",
+      "adapters/completed_rewrites/vendor/walloc-1d/LICENSES/pytorch_wavelets-LICENSE.txt"
+    ],
+    "redistribution": "LOCAL_EXECUTION_ONLY; ORIGINAL_NOTICES_RETAINED; NO_UPSTREAM_LICENSE_GRANT_INVENTED"
+  },
+  "known_limitations": [
+    "CPU stereo float32 normalized-audio profile, official stereo_5x/stereo_20x models. Native zero-padding, WebP latent container, embedded full model and cropped reconstruction retained. No universal error bound; SIMD dependency dispatch, no scalar-kernel claim.",
+    "PIPELINE/E2E supported; CORE/native timing unavailable and reported as null.",
+    "Independent object profile; streaming/query/random access rejected during planning.",
+    "Synthetic acceptance fixtures establish integration, not real-world performance or quality rankings."
+  ],
+  "unsupported_reason_codes": [
+    "TRACK_OR_DTYPE_UNSUPPORTED",
+    "TIMING_SCOPE_UNSUPPORTED",
+    "STREAMING_UNSUPPORTED",
+    "QUERY_UNSUPPORTED",
+    "SOURCE_DOMAIN_UNSUPPORTED",
+    "ISA_UNSUPPORTED"
+  ],
+  "source_onboarding_id": "v2:source-onboarding:sha256:b27bd2135f325626127224e9c2df8b633ca92b4187337a2440a9a26a98b9ee57"
+}

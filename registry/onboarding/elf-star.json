@@ -1,0 +1,160 @@
+{
+  "schema_version": "tscb.source-onboarding.v2",
+  "source_artifact_id": "v2:source-artifact:sha256:f880d919673dd94f4459a5a2c17d01d9911272d93eec15fbf2c1b4a58537f555",
+  "repository": "https://github.com/Spatio-Temporal-Lab/SElfStar",
+  "commit": "457ceb0033e98d516fef42e39d17c9d4b8abbfdb",
+  "dirty": false,
+  "submodules": [],
+  "implementation_files": [
+    "adapters/rewrite_lossless/vendor/elf-star/src/codec.cpp"
+  ],
+  "public_api_files": [
+    "adapters/rewrite_lossless/vendor/elf-star/include/elf_star.hpp"
+  ],
+  "benchmark_files": [
+    "adapters/rewrite_lossless/native/tscb_rewrite_lossless.cc"
+  ],
+  "test_files": [
+    "adapters/rewrite_lossless/tests/qualification.cc",
+    "tests/adapters/test_rewrite_lossless.py"
+  ],
+  "license_files": [
+    "adapters/rewrite_lossless/vendor/elf-star/LICENSES/LOCAL_PERMISSION.md",
+    "adapters/rewrite_lossless/vendor/elf-star/LOCAL_WORKFLOW_DECISIONS.md"
+  ],
+  "third_party_dependencies": [
+    {
+      "scope": "NATIVE_SYSTEM_RUNTIME",
+      "name": "Linux C/C++ runtime",
+      "reference_runtime_not_linked": true
+    }
+  ],
+  "object_level_candidates": [
+    "P1_STANDALONE_CODEC"
+  ],
+  "input_contract": {
+    "topologies": [
+      "UTS",
+      "SYNCHRONOUS_MTS"
+    ],
+    "dtypes": [
+      "<f4",
+      "<f8"
+    ],
+    "ranks": [
+      1,
+      2
+    ],
+    "layouts": [
+      "ROW_MAJOR_CONTIG",
+      "SOA_COLUMNS"
+    ],
+    "endianness": [
+      "little"
+    ],
+    "alignment_bytes": 1,
+    "min_n": 0,
+    "max_n": 16777216,
+    "min_m": 1,
+    "max_m": 65535,
+    "validity_shapes": [
+      "NONE"
+    ],
+    "homogeneous_itemsize": true,
+    "max_total_raw_bytes": 134217728,
+    "value_coupling_mode": "COLUMN_INDEPENDENT",
+    "timestamp_semantics": {
+      "preserve_order": true,
+      "duplicates": true,
+      "out_of_order": true,
+      "negative_delta": true,
+      "absolute_epoch": true,
+      "overflow_policy": "NOT_APPLICABLE_VALUE_ONLY"
+    },
+    "value_domain": {
+      "kind": "FROZEN_SOURCE_WITH_BOUNDED_REJECTION",
+      "unsupported_action": "REJECT_BEFORE_OUTPUT",
+      "oracle_evidence": "Compression_Rewrite/ReWrite/elf-star/validation/source-domain/report.json",
+      "rejection_reasons": [
+        "NaN is END, outside lossless domain",
+        "source rejects decimal scale",
+        "source significance loop does not terminate",
+        "source beta symbol outside table",
+        "source decimal recovery is not lossless"
+      ]
+    },
+    "max_total_elements": 16777216
+  },
+  "output_contract": {
+    "self_contained": true,
+    "actual_written_length": true,
+    "capacity_is_not_size": true,
+    "framing": "TSCB_DESCRIPTOR_SHA256_AND_RWF1_FNV64_CHECKED_STANDALONE_FRAMES",
+    "components": "OPAQUE_STANDALONE_CODEC_BYTES_WITH_EXACT_WRAPPER_ACCOUNTING_V1"
+  },
+  "lifecycle_contract": {
+    "output_bound": "FROZEN_STANDALONE_API_BOUND_PLUS_EXACT_WRAPPER_BOUND",
+    "return_length": "actual_used_bytes",
+    "error_codes": [
+      "DST_TOO_SMALL",
+      "SOURCE_DOMAIN_UNSUPPORTED",
+      "INVALID_ARGUMENT",
+      "CODEC_ERROR"
+    ],
+    "finalize": "REQUIRED_ZERO_BYTE_FINALIZE",
+    "reset": "MODE_ZERO_ONLY"
+  },
+  "stream_components": [
+    "descriptor",
+    "descriptor_checksum",
+    "native_header",
+    "record_headers",
+    "standalone_frames",
+    "native_checksum"
+  ],
+  "upstream_tests": [
+    {
+      "status": "PASS",
+      "name": "current standalone original differential",
+      "log_sha256": "6ebae13b3b92f2bbef0214c0949c243424d86bf2106214d08045d368480eacfd"
+    },
+    {
+      "status": "PASS",
+      "name": "ASan/UBSan native ABI qualification",
+      "log_sha256": "3e4ec118dc5fd4d9bb4fd27ee3ceed8562a77b3a535c876582af128252872fa5"
+    }
+  ],
+  "builds": [
+    {
+      "kind": "release",
+      "artifact_sha256": "fadc683592149e938d3b371604558282fc9c965397a220841fb03391950bafcd",
+      "compile_commands_sha256": "bb440105847ea1f5769349cae09828af390439491d487a4f053f5f3c7d251e0d"
+    },
+    {
+      "kind": "sanitizer",
+      "artifact_sha256": "8c0c69555633bf0c8b037dd7fb5f812b43fcec3cbbdbdfadca9e91eb6c45f43c",
+      "compile_commands_sha256": "3dc47f0ceab2e29645dec61276793e738928e772f8eb01e51854c72dcb49f4fc"
+    }
+  ],
+  "license_decision": {
+    "spdx": "NOASSERTION",
+    "status": "REDISTRIBUTION_RESTRICTED",
+    "reason": "NO_EXTERNAL_PUBLICATION; user-authorized local run/rewrite; unknown upstream grant"
+  },
+  "known_limitations": [
+    "PIPELINE/E2E timing supported; native CORE rejected during planning",
+    "Full standalone frames charged as opaque bytes; wrapper components exact",
+    "No registered query/random-access/incremental Benchmark streaming profile",
+    "Preserve source domain; no raw fallback",
+    "Standalone multi-block source state preserved in SElfStar sessions"
+  ],
+  "unsupported_reason_codes": [
+    "TRACK_OR_DTYPE_UNSUPPORTED",
+    "SOURCE_DOMAIN_UNSUPPORTED",
+    "STREAMING_PROFILE_NOT_REGISTERED",
+    "QUERY_UNSUPPORTED",
+    "VALIDITY_UNSUPPORTED",
+    "TIMING_SCOPE_UNSUPPORTED"
+  ],
+  "source_onboarding_id": "v2:source-onboarding:sha256:cecdc797ff005927cbdbdcb6e6bb03c7da51eb53dfac90f76e5db728c5bd25a7"
+}

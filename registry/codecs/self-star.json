@@ -1,0 +1,158 @@
+{
+  "schema_version": "tscb.codec-manifest.v2",
+  "key": "self-star",
+  "identity": {
+    "display_name": "SElf*",
+    "family": "SELF_STAR",
+    "citations": [
+      "standalone:Compression_Rewrite/ReWrite/self-star/contract.md"
+    ],
+    "source_artifact_id": "v2:source-artifact:sha256:0bf9402d37197cde38cf24b12b04172381e9aba46b4baead62314241b3349139"
+  },
+  "classification": {
+    "object_level": "P1_STANDALONE_CODEC",
+    "implementation_class": "CONVENTIONAL",
+    "tracks": [
+      "VALUE"
+    ],
+    "subtracks": [
+      "V0"
+    ]
+  },
+  "input": {
+    "topologies": [
+      "UTS",
+      "SYNCHRONOUS_MTS"
+    ],
+    "dtypes": [
+      "<f4",
+      "<f8"
+    ],
+    "ranks": [
+      1,
+      2
+    ],
+    "layouts": [
+      "ROW_MAJOR_CONTIG",
+      "SOA_COLUMNS"
+    ],
+    "endianness": [
+      "little"
+    ],
+    "alignment_bytes": 1,
+    "min_n": 0,
+    "max_n": 1024000,
+    "min_m": 1,
+    "max_m": 65535,
+    "validity_shapes": [
+      "NONE"
+    ],
+    "homogeneous_itemsize": true,
+    "max_total_raw_bytes": 134217728,
+    "value_coupling_mode": "COLUMN_INDEPENDENT",
+    "timestamp_semantics": {
+      "preserve_order": true,
+      "duplicates": true,
+      "out_of_order": true,
+      "negative_delta": true,
+      "absolute_epoch": true,
+      "overflow_policy": "NOT_APPLICABLE_VALUE_ONLY"
+    },
+    "value_domain": {
+      "kind": "FROZEN_SOURCE_WITH_BOUNDED_REJECTION",
+      "unsupported_action": "REJECT_BEFORE_OUTPUT",
+      "oracle_evidence": "Compression_Rewrite/Source/self-star/golden/source_audit.json",
+      "rejection_reasons": [
+        "NaN outside source lossless domain",
+        "source rejects decimal scale",
+        "source significance loop does not terminate",
+        "source beta symbol outside table",
+        "source decimal recovery is not lossless for value"
+      ]
+    },
+    "max_total_elements": 16777216,
+    "max_blocks_per_column": 1024
+  },
+  "semantics": {
+    "loss_modes": [
+      "LOSSLESS"
+    ],
+    "error_bound_types": [],
+    "reconstruction_modes": [
+      "EXACT_GRID"
+    ],
+    "rebuild_protocol": "TSCB_SELF_STAR_FROZEN_API_RWF1_V1",
+    "preprocess_class": "NONE",
+    "preprocess_stages": [],
+    "decodability_profile": "SELF_CONTAINED_DESCRIPTOR_WITH_CHECKED_FROZEN_CODEC_FRAMES",
+    "bitstream_separability": "PER_COLUMN_SESSION"
+  },
+  "lifecycle": {
+    "block_semantics": "CONFIGURED_SAMPLE_BLOCKS_WITH_EXACT_TAIL",
+    "state_semantics": "ADAPTIVE_STATE_CARRIED_ACROSS_ALL_BLOCKS_OF_EACH_COLUMN",
+    "reset": "REQUIRED_MODE_ZERO",
+    "finalize": "REQUIRED_ZERO_BYTE_FINALIZE",
+    "safe_overread_bytes": 0,
+    "tail_policy": "EXACT_COUNT",
+    "dictionary": "NONE",
+    "model": "FROZEN_UPSTREAM_STATE",
+    "index": "NONE"
+  },
+  "execution": {
+    "backends": [
+      "C_ABI_V1"
+    ],
+    "isa": [
+      "SCALAR"
+    ],
+    "devices": [
+      "CPU"
+    ],
+    "threading": "SINGLE_THREAD",
+    "fallback_policy": "DISALLOWED_SOURCE_DOMAIN_ERRORS_REJECTED",
+    "runtime_dispatch": false,
+    "timing_scopes": [
+      "PIPELINE",
+      "E2E"
+    ]
+  },
+  "features": {
+    "streaming": false,
+    "query": false,
+    "random_access": false
+  },
+  "parameters": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "block_size": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 16384,
+        "default": 1000
+      },
+      "isa": {
+        "type": "string",
+        "enum": [
+          "SCALAR"
+        ],
+        "default": "SCALAR"
+      }
+    },
+    "constraints": []
+  },
+  "adapter": {
+    "backend": "C_ABI_V1",
+    "version": "rewrite-lossless-ctypes-v1",
+    "factory": "REWRITE_LOSSLESS_CTYPES_V1",
+    "artifact_path": "build/adapters/self_star/release/libtscb_self_star.so",
+    "timing_boundary": "PYTHON_LAYOUT_FFI_DESCRIPTOR_AND_CHECKED_NATIVE_FRAME_INCLUDED",
+    "accounting_hooks": [
+      "FINAL_STREAM_LENGTH",
+      "DESCRIPTOR_AND_WRAPPER_OVERHEAD",
+      "OPAQUE_COMPLETE_STANDALONE_CODEC_BYTES",
+      "COLUMN_CODEC_BYTES",
+      "OUTPUT_CAPACITY"
+    ]
+  }
+}

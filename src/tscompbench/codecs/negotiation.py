@@ -244,6 +244,7 @@ def negotiate(
     descriptor: DataDescriptor,
     *,
     requested_loss_mode: LossMode | None = None,
+    parameters: dict[str, Any] | None = None,
 ) -> CompatibilityPlan:
     if requested_loss_mode is not None and requested_loss_mode not in manifest.loss_modes:
         return CompatibilityPlan.create(
@@ -256,12 +257,13 @@ def negotiate(
             effective_loss_mode=requested_loss_mode,
         )
     effective_requested_loss_mode = requested_loss_mode or (
-        LossMode.LOSSLESS
-        if LossMode.LOSSLESS in manifest.loss_modes
-        else manifest.loss_modes[0]
+        LossMode.LOSSLESS if LossMode.LOSSLESS in manifest.loss_modes else manifest.loss_modes[0]
     )
     contract = manifest.document["input"]
     missing: list[str] = []
+    required_units = contract.get("required_value_units")
+    if required_units is not None and tuple(required_units) != descriptor.value_units:
+        missing.append("logical_record:field_roles")
     if descriptor.track not in manifest.tracks:
         missing.append("track")
     if descriptor.topology.value not in contract["topologies"]:
@@ -270,13 +272,24 @@ def negotiate(
         missing.append("n")
     if not contract["min_m"] <= descriptor.m <= contract["max_m"]:
         missing.append("m")
+    if descriptor.n * descriptor.m > contract.get(
+        "max_total_elements", descriptor.n * descriptor.m
+    ):
+        missing.append("total_elements")
+    if "max_blocks_per_column" in contract:
+        default = manifest.document["parameters"]["properties"]["block_size"]["default"]
+        block_size = (parameters or {}).get("block_size", default)
+        if type(block_size) is int and block_size > 0:
+            if (descriptor.n + block_size - 1) // block_size > contract["max_blocks_per_column"]:
+                missing.append("blocks_per_column")
     if len(descriptor.shape) not in contract["ranks"]:
         missing.append("rank")
     if descriptor.validity_shape.value not in contract["validity_shapes"]:
         missing.append("validity_shape")
-    if descriptor.canonical_raw_bits > contract.get(
-        "max_total_raw_bytes", (descriptor.canonical_raw_bits + 7) // 8
-    ) * 8:
+    if (
+        descriptor.canonical_raw_bits
+        > contract.get("max_total_raw_bytes", (descriptor.canonical_raw_bits + 7) // 8) * 8
+    ):
         missing.append("total_raw_bytes")
     timestamp_contract = contract["timestamp_semantics"]
     if descriptor.track in {BenchmarkTrack.TIMESTAMP, BenchmarkTrack.SYSTEM}:
@@ -333,8 +346,15 @@ def negotiate(
     supported_dtypes = tuple(contract["dtypes"])
     converted: list[str] = []
     lossy_conversion = False
-    for source in descriptor.dtype_vector:
-        conversion = _conversion(source, supported_dtypes)
+    for index, source in enumerate(descriptor.dtype_vector):
+        role = (
+            "timestamp"
+            if descriptor.track is BenchmarkTrack.TIMESTAMP
+            or (descriptor.track is BenchmarkTrack.SYSTEM and index == 0)
+            else "value"
+        )
+        role_dtypes = tuple(contract.get("component_dtypes", {}).get(role, supported_dtypes))
+        conversion = _conversion(source, role_dtypes)
         if conversion is None:
             return CompatibilityPlan.create(
                 status=CapabilityStatus.UNSUPPORTED,
@@ -348,9 +368,10 @@ def negotiate(
         target, lossy = conversion
         converted.append(target)
         lossy_conversion = lossy_conversion or lossy
-    if contract.get("homogeneous_itemsize") and len({
-        np.dtype(item).itemsize for item in converted
-    }) > 1:
+    if (
+        contract.get("homogeneous_itemsize")
+        and len({np.dtype(item).itemsize for item in converted}) > 1
+    ):
         return CompatibilityPlan.create(
             status=CapabilityStatus.UNSUPPORTED,
             reason_code="HETEROGENEOUS_ITEMSIZE_UNSUPPORTED",
@@ -364,9 +385,7 @@ def negotiate(
         return CompatibilityPlan.create(
             status=CapabilityStatus.UNSUPPORTED,
             reason_code="LOSSY_DTYPE_CONVERSION_UNDECLARED",
-            missing_capabilities=tuple(
-                f"dtype:{source}" for source in descriptor.dtype_vector
-            ),
+            missing_capabilities=tuple(f"dtype:{source}" for source in descriptor.dtype_vector),
             input_descriptor=descriptor,
             output_descriptor=None,
             operations=tuple(operations),

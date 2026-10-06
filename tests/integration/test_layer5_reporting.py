@@ -4,6 +4,7 @@ from pathlib import Path
 
 from tscompbench.reporting import generate_report
 from tscompbench.statistics import analyze_run_set
+from tscompbench.statistics.engine import _base_reasons, _eligibility
 
 
 def _write_jsonl(path: Path, rows: list[dict]) -> None:
@@ -11,6 +12,64 @@ def _write_jsonl(path: Path, rows: list[dict]) -> None:
         "".join(json.dumps(row, sort_keys=True, separators=(",", ":")) + "\n" for row in rows),
         encoding="utf-8",
     )
+
+
+def test_unbounded_quality_eligibility_uses_frozen_task_semantics(tmp_path):
+    (tmp_path / "artifacts").mkdir()
+    task = _task("task-lossy", "algorithm:a", "path:a")
+    task["comparability"]["semantic_document"]["loss_mode"] = "UNBOUNDED_LOSSY"
+    record = _record(tmp_path, task, 0, final_bits=400, encode_ns=200)
+    record["correctness"]["loss"] = {
+        "error_bound_type": "NOT_APPLICABLE_UNBOUNDED_LOSSY",
+        "bound_passed": None,
+        "raw_violation_count": None,
+        "numerical_violation_count": None,
+        "channels": [{"element_count": 100, "rmse": "0.1", "mae": "0.08", "max_ae": "0.2"}],
+    }
+    assert "loss_mode" not in record
+    reasons = _base_reasons(tmp_path, record, task, {}, {"source:algorithm:a"})
+    assert "ERROR_BOUND_NOT_PASS" not in reasons
+    task["comparability"]["semantic_document"]["loss_mode"] = "ERROR_BOUNDED_LOSSY"
+    reasons = _base_reasons(tmp_path, record, task, {}, {"source:algorithm:a"})
+    assert "ERROR_BOUND_NOT_PASS" in reasons
+
+
+def test_failed_repetitions_remain_in_coverage_and_ten_valid_observations_can_be_analyzed(tmp_path):
+    (tmp_path / "artifacts").mkdir()
+    task = _task("task-a", "algorithm:a", "path:a")
+    task["comparability"]["execution_document"]["repetitions"] = 12
+    records = []
+    for index in range(12):
+        record = _record(
+            tmp_path,
+            task,
+            index,
+            final_bits=400,
+            encode_ns=200,
+            status="RESOURCE_PRESSURE" if index == 11 else "PASS",
+        )
+        record["diagnostics"]["measurement_policy"]["repetitions"] = 12
+        records.append(record)
+    facts = {
+        "dataset:one": {
+            name: "1" * 64
+            for name in ("source_sha256", "canonical_artifact_sha256", "canonical_content_sha256")
+        }
+    }
+    rows, _ = _eligibility(
+        tmp_path, tuple(records), {"task-a": task}, facts, {"source:algorithm:a"}
+    )
+    performance = [r for r in rows if r["analysis"] == "PERFORMANCE"]
+    assert sum(row["eligible"] for row in performance) == 11
+    assert len(performance) == 12
+    assert "RUN_STATUS_RESOURCE_PRESSURE" in performance[-1]["reason_codes"] or any(
+        "RUN_STATUS_RESOURCE_PRESSURE" in r["reason_codes"] for r in performance
+    )
+    rows, _ = _eligibility(
+        tmp_path, tuple(records[:11]), {"task-a": task}, facts, {"source:algorithm:a"}
+    )
+    assert not any(row["eligible"] for row in rows)
+    assert any("INSUFFICIENT_OR_DUPLICATE_REPETITIONS" in r["reason_codes"] for r in rows)
 
 
 def _task(task_id: str, algorithm: str, execution_path: str) -> dict:
@@ -182,17 +241,20 @@ def test_layer5_filters_groups_uses_frozen_coverage_and_preserves_raw_evidence(t
             )
             record["run_id"] = f"run:{task['task_id']}-{repetition}"
             if task["task_id"] == "task-a":
-                record["timing"].update({
-                    "core_encode_wall_ns": 150, "core_decode_wall_ns": 80,
-                    "pipeline_encode_wall_ns": encode_ns + repetition * 2,
-                    "pipeline_decode_wall_ns": 100,
-                    "codec_input_bytes_per_iteration": 120,
-                    "native_encode_wall_ns": 50 + repetition * 2,
-                    "native_decode_wall_ns": 40,
-                    "native_timing_enabled": True,
-                    "native_timing_boundary": "CODEC_API_ONLY_V1",
-                    "native_timing_clock": "CLOCK_MONOTONIC",
-                })
+                record["timing"].update(
+                    {
+                        "core_encode_wall_ns": 150,
+                        "core_decode_wall_ns": 80,
+                        "pipeline_encode_wall_ns": encode_ns + repetition * 2,
+                        "pipeline_decode_wall_ns": 100,
+                        "codec_input_bytes_per_iteration": 120,
+                        "native_encode_wall_ns": 50 + repetition * 2,
+                        "native_decode_wall_ns": 40,
+                        "native_timing_enabled": True,
+                        "native_timing_boundary": "CODEC_API_ONLY_V1",
+                        "native_timing_clock": "CLOCK_MONOTONIC",
+                    }
+                )
             stream = bytes([65 + repetition % 10]) * (final_bits // 8)
             record["bitstream_sha256"] = hashlib.sha256(stream).hexdigest()
             (run_path / "artifacts" / f"{task['task_id']}-{repetition}.bin").write_bytes(stream)
@@ -281,8 +343,9 @@ def test_layer5_filters_groups_uses_frozen_coverage_and_preserves_raw_evidence(t
     assert native["native_encode_observation_count"] == 10
     assert legacy["native_encode_ns_median"] is None
     assert legacy["native_decode_mb_per_second_micro"] is None
-    native_corpus = next(row for row in bundle.corpus_summaries
-                         if row["algorithm_id"] == "algorithm:a")
+    native_corpus = next(
+        row for row in bundle.corpus_summaries if row["algorithm_id"] == "algorithm:a"
+    )
     assert float(native_corpus["micro_native_encode_mb_per_second"]) == 120 * 1000 / 29.5
     assert {item["coverage_category"] for item in bundle.coverage} == {
         "PASS",

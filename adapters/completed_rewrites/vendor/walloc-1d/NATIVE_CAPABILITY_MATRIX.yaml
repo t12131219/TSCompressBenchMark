@@ -1,0 +1,827 @@
+schema_version: 1
+algorithm_id: walloc-1d
+inventory_status: FROZEN
+classification_frozen_before_cpp: true
+overall_result: FULL_PARITY
+waiver_ids: []
+capabilities:
+- capability_id: wavelet.packet
+  owner: Local WaLLoC maintainer
+  parity_class: REQUIRED_PARITY
+  upstream:
+    description: Periodized bior4.4 analysis/synthesis and custom backward
+    evidence: src/walloc/walloc.py:220; pytorch_wavelets lowlevel AFB1D/SFB1D
+  rationale: Reachable Codec1D or documented complete 1D pipeline capability
+  validation:
+    status: PASS
+    gate: G3
+    platforms:
+    - linux-x86_64
+    planned_tests:
+    - source/native stages
+    - boundary tests
+    - frozen source fixture hashes
+    artifacts:
+    - path: validation/final-cpu-gcc-v6/report.json
+      sha256: 893ad1643a1ba4e107f3e6edd1baf1b97a47f3abdc3f1816579df722d8a4f198
+    - path: validation/final-cpu-clang-v6/report.json
+      sha256: 8d21d676d4cb86b202e350e96037fa3225027162ff6a3a3f5a7814ce57213616
+    - path: validation/final-cpu-asan-v6/report.json
+      sha256: 58d38e8b3747d306fe934f1c1093269184974163712a5a41592dc352c4957865
+    - path: validation/final-tensor-cpu-v6/report.json
+      sha256: fff895549d3ea6ca12bb320ac454cd5537c6b4e3a131f523a88917d56117ce5c
+    - path: validation/final-additional-cpu-v6/report.json
+      sha256: 2cbe73870bd8b34fa206f97142b2565d17db4733e6ed4cb29a00a20c97baed0f
+    - path: validation/final-full-cpu-v6/report.json
+      sha256: 57229ec927f6d07ee01523d775204d028588f8805ad66e8918d73db83a688a09
+    - path: validation/final-batch32-cpu-v6/report.json
+      sha256: 1c8ae94d4b2dc4c3cd3f7a0fb98cd614e388c06f6571753c01f07bf3a1285b5a
+    - path: validation/final-asan-v6/report.json
+      sha256: 250b80976501f8dc51a42485cd3584a1432e43117b4356f8d54c48ef8a16c011
+    - path: validation/final-tsan-v6/report.json
+      sha256: c6d40197494f325d1fb95a3f6fe0c6c4d4b25ab33fc0c97d9e9bbcc7424b9440
+    - path: validation/final-static-v6/report.json
+      sha256: dca3439ac9dc776d9970741170b497552d11e416737fc16e51c63026d55fb794
+    - path: validation/final-build-gcc-v6/report.json
+      sha256: 5d4317ae937ae8875501363b26c29f3497a1aae418419fa69e41ac2f3cfff363
+    - path: validation/final-build-clang-v6/report.json
+      sha256: ae253784780e0cd8a05dd1a821ba460bdba3def1695f740acb39ee3cdf3ef639
+  rewrite:
+    present: true
+    implementation: src/canonical/walloc.cpp; include/walloc.hpp; include/walloc_tensor.hpp
+- capability_id: encoder.light
+  owner: Local WaLLoC maintainer
+  parity_class: REQUIRED_PARITY
+  upstream:
+    description: Conv1d with padding=1
+    evidence: src/walloc/walloc.py:180
+  rationale: Reachable Codec1D or documented complete 1D pipeline capability
+  validation:
+    status: PASS
+    gate: G3
+    platforms:
+    - linux-x86_64
+    planned_tests:
+    - source/native stages
+    - boundary tests
+    - frozen source fixture hashes
+    artifacts:
+    - path: validation/final-cpu-gcc-v6/report.json
+      sha256: 893ad1643a1ba4e107f3e6edd1baf1b97a47f3abdc3f1816579df722d8a4f198
+    - path: validation/final-cpu-clang-v6/report.json
+      sha256: 8d21d676d4cb86b202e350e96037fa3225027162ff6a3a3f5a7814ce57213616
+    - path: validation/final-cpu-asan-v6/report.json
+      sha256: 58d38e8b3747d306fe934f1c1093269184974163712a5a41592dc352c4957865
+    - path: validation/final-tensor-cpu-v6/report.json
+      sha256: fff895549d3ea6ca12bb320ac454cd5537c6b4e3a131f523a88917d56117ce5c
+    - path: validation/final-additional-cpu-v6/report.json
+      sha256: 2cbe73870bd8b34fa206f97142b2565d17db4733e6ed4cb29a00a20c97baed0f
+    - path: validation/final-full-cpu-v6/report.json
+      sha256: 57229ec927f6d07ee01523d775204d028588f8805ad66e8918d73db83a688a09
+    - path: validation/final-batch32-cpu-v6/report.json
+      sha256: 1c8ae94d4b2dc4c3cd3f7a0fb98cd614e388c06f6571753c01f07bf3a1285b5a
+    - path: validation/final-asan-v6/report.json
+      sha256: 250b80976501f8dc51a42485cd3584a1432e43117b4356f8d54c48ef8a16c011
+    - path: validation/final-tsan-v6/report.json
+      sha256: c6d40197494f325d1fb95a3f6fe0c6c4d4b25ab33fc0c97d9e9bbcc7424b9440
+    - path: validation/final-static-v6/report.json
+      sha256: dca3439ac9dc776d9970741170b497552d11e416737fc16e51c63026d55fb794
+    - path: validation/final-build-gcc-v6/report.json
+      sha256: 5d4317ae937ae8875501363b26c29f3497a1aae418419fa69e41ac2f3cfff363
+    - path: validation/final-build-clang-v6/report.json
+      sha256: ae253784780e0cd8a05dd1a821ba460bdba3def1695f740acb39ee3cdf3ef639
+  rewrite:
+    present: true
+    implementation: src/canonical/walloc.cpp; include/walloc.hpp; include/walloc_tensor.hpp
+- capability_id: encoder.oobleck
+  owner: Local WaLLoC maintainer
+  parity_class: REQUIRED_PARITY
+  upstream:
+    description: Alternate neural encoder, residual/Snake/weight_norm
+    evidence: src/walloc/walloc.py:191
+  rationale: Reachable Codec1D or documented complete 1D pipeline capability
+  validation:
+    status: PASS
+    gate: G3
+    platforms:
+    - linux-x86_64
+    planned_tests:
+    - source/native stages
+    - boundary tests
+    - frozen source fixture hashes
+    artifacts:
+    - path: validation/final-cpu-gcc-v6/report.json
+      sha256: 893ad1643a1ba4e107f3e6edd1baf1b97a47f3abdc3f1816579df722d8a4f198
+    - path: validation/final-cpu-clang-v6/report.json
+      sha256: 8d21d676d4cb86b202e350e96037fa3225027162ff6a3a3f5a7814ce57213616
+    - path: validation/final-cpu-asan-v6/report.json
+      sha256: 58d38e8b3747d306fe934f1c1093269184974163712a5a41592dc352c4957865
+    - path: validation/final-tensor-cpu-v6/report.json
+      sha256: fff895549d3ea6ca12bb320ac454cd5537c6b4e3a131f523a88917d56117ce5c
+    - path: validation/final-additional-cpu-v6/report.json
+      sha256: 2cbe73870bd8b34fa206f97142b2565d17db4733e6ed4cb29a00a20c97baed0f
+    - path: validation/final-full-cpu-v6/report.json
+      sha256: 57229ec927f6d07ee01523d775204d028588f8805ad66e8918d73db83a688a09
+    - path: validation/final-batch32-cpu-v6/report.json
+      sha256: 1c8ae94d4b2dc4c3cd3f7a0fb98cd614e388c06f6571753c01f07bf3a1285b5a
+    - path: validation/final-asan-v6/report.json
+      sha256: 250b80976501f8dc51a42485cd3584a1432e43117b4356f8d54c48ef8a16c011
+    - path: validation/final-tsan-v6/report.json
+      sha256: c6d40197494f325d1fb95a3f6fe0c6c4d4b25ab33fc0c97d9e9bbcc7424b9440
+    - path: validation/final-static-v6/report.json
+      sha256: dca3439ac9dc776d9970741170b497552d11e416737fc16e51c63026d55fb794
+    - path: validation/final-build-gcc-v6/report.json
+      sha256: 5d4317ae937ae8875501363b26c29f3497a1aae418419fa69e41ac2f3cfff363
+    - path: validation/final-build-clang-v6/report.json
+      sha256: ae253784780e0cd8a05dd1a821ba460bdba3def1695f740acb39ee3cdf3ef639
+  rewrite:
+    present: true
+    implementation: src/canonical/walloc.cpp; include/walloc.hpp; include/walloc_tensor.hpp
+- capability_id: bottleneck.eval
+  owner: Local WaLLoC maintainer
+  parity_class: REQUIRED_PARITY
+  upstream:
+    description: CDF + exact rounding and inverse CDF
+    evidence: src/walloc/walloc.py:24
+  rationale: Reachable Codec1D or documented complete 1D pipeline capability
+  validation:
+    status: PASS
+    gate: G3
+    platforms:
+    - linux-x86_64
+    planned_tests:
+    - source/native stages
+    - boundary tests
+    - frozen source fixture hashes
+    artifacts:
+    - path: validation/final-cpu-gcc-v6/report.json
+      sha256: 893ad1643a1ba4e107f3e6edd1baf1b97a47f3abdc3f1816579df722d8a4f198
+    - path: validation/final-cpu-clang-v6/report.json
+      sha256: 8d21d676d4cb86b202e350e96037fa3225027162ff6a3a3f5a7814ce57213616
+    - path: validation/final-cpu-asan-v6/report.json
+      sha256: 58d38e8b3747d306fe934f1c1093269184974163712a5a41592dc352c4957865
+    - path: validation/final-tensor-cpu-v6/report.json
+      sha256: fff895549d3ea6ca12bb320ac454cd5537c6b4e3a131f523a88917d56117ce5c
+    - path: validation/final-additional-cpu-v6/report.json
+      sha256: 2cbe73870bd8b34fa206f97142b2565d17db4733e6ed4cb29a00a20c97baed0f
+    - path: validation/final-full-cpu-v6/report.json
+      sha256: 57229ec927f6d07ee01523d775204d028588f8805ad66e8918d73db83a688a09
+    - path: validation/final-batch32-cpu-v6/report.json
+      sha256: 1c8ae94d4b2dc4c3cd3f7a0fb98cd614e388c06f6571753c01f07bf3a1285b5a
+    - path: validation/final-asan-v6/report.json
+      sha256: 250b80976501f8dc51a42485cd3584a1432e43117b4356f8d54c48ef8a16c011
+    - path: validation/final-tsan-v6/report.json
+      sha256: c6d40197494f325d1fb95a3f6fe0c6c4d4b25ab33fc0c97d9e9bbcc7424b9440
+    - path: validation/final-static-v6/report.json
+      sha256: dca3439ac9dc776d9970741170b497552d11e416737fc16e51c63026d55fb794
+    - path: validation/final-build-gcc-v6/report.json
+      sha256: 5d4317ae937ae8875501363b26c29f3497a1aae418419fa69e41ac2f3cfff363
+    - path: validation/final-build-clang-v6/report.json
+      sha256: ae253784780e0cd8a05dd1a821ba460bdba3def1695f740acb39ee3cdf3ef639
+  rewrite:
+    present: true
+    implementation: src/canonical/walloc.cpp; include/walloc.hpp; include/walloc_tensor.hpp
+- capability_id: bottleneck.train
+  owner: Local WaLLoC maintainer
+  parity_class: REQUIRED_PARITY
+  upstream:
+    description: Uniform stochastic training and RNG state
+    evidence: src/walloc/walloc.py:39
+  rationale: Reachable Codec1D or documented complete 1D pipeline capability
+  validation:
+    status: PASS
+    gate: G3
+    platforms:
+    - linux-x86_64
+    planned_tests:
+    - source/native stages
+    - boundary tests
+    - frozen source fixture hashes
+    artifacts:
+    - path: validation/final-cpu-gcc-v6/report.json
+      sha256: 893ad1643a1ba4e107f3e6edd1baf1b97a47f3abdc3f1816579df722d8a4f198
+    - path: validation/final-cpu-clang-v6/report.json
+      sha256: 8d21d676d4cb86b202e350e96037fa3225027162ff6a3a3f5a7814ce57213616
+    - path: validation/final-cpu-asan-v6/report.json
+      sha256: 58d38e8b3747d306fe934f1c1093269184974163712a5a41592dc352c4957865
+    - path: validation/final-tensor-cpu-v6/report.json
+      sha256: fff895549d3ea6ca12bb320ac454cd5537c6b4e3a131f523a88917d56117ce5c
+    - path: validation/final-additional-cpu-v6/report.json
+      sha256: 2cbe73870bd8b34fa206f97142b2565d17db4733e6ed4cb29a00a20c97baed0f
+    - path: validation/final-full-cpu-v6/report.json
+      sha256: 57229ec927f6d07ee01523d775204d028588f8805ad66e8918d73db83a688a09
+    - path: validation/final-batch32-cpu-v6/report.json
+      sha256: 1c8ae94d4b2dc4c3cd3f7a0fb98cd614e388c06f6571753c01f07bf3a1285b5a
+    - path: validation/final-asan-v6/report.json
+      sha256: 250b80976501f8dc51a42485cd3584a1432e43117b4356f8d54c48ef8a16c011
+    - path: validation/final-tsan-v6/report.json
+      sha256: c6d40197494f325d1fb95a3f6fe0c6c4d4b25ab33fc0c97d9e9bbcc7424b9440
+    - path: validation/final-static-v6/report.json
+      sha256: dca3439ac9dc776d9970741170b497552d11e416737fc16e51c63026d55fb794
+    - path: validation/final-build-gcc-v6/report.json
+      sha256: 5d4317ae937ae8875501363b26c29f3497a1aae418419fa69e41ac2f3cfff363
+    - path: validation/final-build-clang-v6/report.json
+      sha256: ae253784780e0cd8a05dd1a821ba460bdba3def1695f740acb39ee3cdf3ef639
+  rewrite:
+    present: true
+    implementation: src/canonical/walloc.cpp; include/walloc.hpp; include/walloc_tensor.hpp
+- capability_id: decoder.oobleck
+  owner: Local WaLLoC maintainer
+  parity_class: REQUIRED_PARITY
+  upstream:
+    description: Both transpose blocks; dilation 1/3/9
+    evidence: src/walloc/walloc.py:205; diffusers autoencoder_oobleck
+  rationale: Reachable Codec1D or documented complete 1D pipeline capability
+  validation:
+    status: PASS
+    gate: G3
+    platforms:
+    - linux-x86_64
+    planned_tests:
+    - source/native stages
+    - boundary tests
+    - frozen source fixture hashes
+    artifacts:
+    - path: validation/final-cpu-gcc-v6/report.json
+      sha256: 893ad1643a1ba4e107f3e6edd1baf1b97a47f3abdc3f1816579df722d8a4f198
+    - path: validation/final-cpu-clang-v6/report.json
+      sha256: 8d21d676d4cb86b202e350e96037fa3225027162ff6a3a3f5a7814ce57213616
+    - path: validation/final-cpu-asan-v6/report.json
+      sha256: 58d38e8b3747d306fe934f1c1093269184974163712a5a41592dc352c4957865
+    - path: validation/final-tensor-cpu-v6/report.json
+      sha256: fff895549d3ea6ca12bb320ac454cd5537c6b4e3a131f523a88917d56117ce5c
+    - path: validation/final-additional-cpu-v6/report.json
+      sha256: 2cbe73870bd8b34fa206f97142b2565d17db4733e6ed4cb29a00a20c97baed0f
+    - path: validation/final-full-cpu-v6/report.json
+      sha256: 57229ec927f6d07ee01523d775204d028588f8805ad66e8918d73db83a688a09
+    - path: validation/final-batch32-cpu-v6/report.json
+      sha256: 1c8ae94d4b2dc4c3cd3f7a0fb98cd614e388c06f6571753c01f07bf3a1285b5a
+    - path: validation/final-asan-v6/report.json
+      sha256: 250b80976501f8dc51a42485cd3584a1432e43117b4356f8d54c48ef8a16c011
+    - path: validation/final-tsan-v6/report.json
+      sha256: c6d40197494f325d1fb95a3f6fe0c6c4d4b25ab33fc0c97d9e9bbcc7424b9440
+    - path: validation/final-static-v6/report.json
+      sha256: dca3439ac9dc776d9970741170b497552d11e416737fc16e51c63026d55fb794
+    - path: validation/final-build-gcc-v6/report.json
+      sha256: 5d4317ae937ae8875501363b26c29f3497a1aae418419fa69e41ac2f3cfff363
+    - path: validation/final-build-clang-v6/report.json
+      sha256: ae253784780e0cd8a05dd1a821ba460bdba3def1695f740acb39ee3cdf3ef639
+  rewrite:
+    present: true
+    implementation: src/canonical/walloc.cpp; include/walloc.hpp; include/walloc_tensor.hpp
+- capability_id: decoder.post
+  owner: Local WaLLoC maintainer
+  parity_class: REQUIRED_PARITY
+  upstream:
+    description: Optional learned 129-tap post and clamp
+    evidence: src/walloc/walloc.py:212
+  rationale: Reachable Codec1D or documented complete 1D pipeline capability
+  validation:
+    status: PASS
+    gate: G3
+    platforms:
+    - linux-x86_64
+    planned_tests:
+    - source/native stages
+    - boundary tests
+    - frozen source fixture hashes
+    artifacts:
+    - path: validation/final-cpu-gcc-v6/report.json
+      sha256: 893ad1643a1ba4e107f3e6edd1baf1b97a47f3abdc3f1816579df722d8a4f198
+    - path: validation/final-cpu-clang-v6/report.json
+      sha256: 8d21d676d4cb86b202e350e96037fa3225027162ff6a3a3f5a7814ce57213616
+    - path: validation/final-cpu-asan-v6/report.json
+      sha256: 58d38e8b3747d306fe934f1c1093269184974163712a5a41592dc352c4957865
+    - path: validation/final-tensor-cpu-v6/report.json
+      sha256: fff895549d3ea6ca12bb320ac454cd5537c6b4e3a131f523a88917d56117ce5c
+    - path: validation/final-additional-cpu-v6/report.json
+      sha256: 2cbe73870bd8b34fa206f97142b2565d17db4733e6ed4cb29a00a20c97baed0f
+    - path: validation/final-full-cpu-v6/report.json
+      sha256: 57229ec927f6d07ee01523d775204d028588f8805ad66e8918d73db83a688a09
+    - path: validation/final-batch32-cpu-v6/report.json
+      sha256: 1c8ae94d4b2dc4c3cd3f7a0fb98cd614e388c06f6571753c01f07bf3a1285b5a
+    - path: validation/final-asan-v6/report.json
+      sha256: 250b80976501f8dc51a42485cd3584a1432e43117b4356f8d54c48ef8a16c011
+    - path: validation/final-tsan-v6/report.json
+      sha256: c6d40197494f325d1fb95a3f6fe0c6c4d4b25ab33fc0c97d9e9bbcc7424b9440
+    - path: validation/final-static-v6/report.json
+      sha256: dca3439ac9dc776d9970741170b497552d11e416737fc16e51c63026d55fb794
+    - path: validation/final-build-gcc-v6/report.json
+      sha256: 5d4317ae937ae8875501363b26c29f3497a1aae418419fa69e41ac2f3cfff363
+    - path: validation/final-build-clang-v6/report.json
+      sha256: ae253784780e0cd8a05dd1a821ba460bdba3def1695f740acb39ee3cdf3ef639
+  rewrite:
+    present: true
+    implementation: src/canonical/walloc.cpp; include/walloc.hpp; include/walloc_tensor.hpp
+- capability_id: layout.multichannel
+  owner: Local WaLLoC maintainer
+  parity_class: REQUIRED_PARITY
+  upstream:
+    description: Mono/stereo/multichannel batch/tensor layouts
+    evidence: src/walloc/walloc.py:155
+  rationale: Reachable Codec1D or documented complete 1D pipeline capability
+  validation:
+    status: PASS
+    gate: G3
+    platforms:
+    - linux-x86_64
+    planned_tests:
+    - source/native stages
+    - boundary tests
+    - frozen source fixture hashes
+    artifacts:
+    - path: validation/final-cpu-gcc-v6/report.json
+      sha256: 893ad1643a1ba4e107f3e6edd1baf1b97a47f3abdc3f1816579df722d8a4f198
+    - path: validation/final-cpu-clang-v6/report.json
+      sha256: 8d21d676d4cb86b202e350e96037fa3225027162ff6a3a3f5a7814ce57213616
+    - path: validation/final-cpu-asan-v6/report.json
+      sha256: 58d38e8b3747d306fe934f1c1093269184974163712a5a41592dc352c4957865
+    - path: validation/final-tensor-cpu-v6/report.json
+      sha256: fff895549d3ea6ca12bb320ac454cd5537c6b4e3a131f523a88917d56117ce5c
+    - path: validation/final-additional-cpu-v6/report.json
+      sha256: 2cbe73870bd8b34fa206f97142b2565d17db4733e6ed4cb29a00a20c97baed0f
+    - path: validation/final-full-cpu-v6/report.json
+      sha256: 57229ec927f6d07ee01523d775204d028588f8805ad66e8918d73db83a688a09
+    - path: validation/final-batch32-cpu-v6/report.json
+      sha256: 1c8ae94d4b2dc4c3cd3f7a0fb98cd614e388c06f6571753c01f07bf3a1285b5a
+    - path: validation/final-asan-v6/report.json
+      sha256: 250b80976501f8dc51a42485cd3584a1432e43117b4356f8d54c48ef8a16c011
+    - path: validation/final-tsan-v6/report.json
+      sha256: c6d40197494f325d1fb95a3f6fe0c6c4d4b25ab33fc0c97d9e9bbcc7424b9440
+    - path: validation/final-static-v6/report.json
+      sha256: dca3439ac9dc776d9970741170b497552d11e416737fc16e51c63026d55fb794
+    - path: validation/final-build-gcc-v6/report.json
+      sha256: 5d4317ae937ae8875501363b26c29f3497a1aae418419fa69e41ac2f3cfff363
+    - path: validation/final-build-clang-v6/report.json
+      sha256: ae253784780e0cd8a05dd1a821ba460bdba3def1695f740acb39ee3cdf3ef639
+  rewrite:
+    present: true
+    implementation: src/canonical/walloc.cpp; include/walloc.hpp; include/walloc_tensor.hpp
+- capability_id: model.initialization
+  owner: Local WaLLoC maintainer
+  parity_class: REQUIRED_PARITY
+  upstream:
+    description: Native random initialization and g/v state
+    evidence: src/walloc/walloc.py:156; torch Conv1d reset_parameters
+  rationale: Reachable Codec1D or documented complete 1D pipeline capability
+  validation:
+    status: PASS
+    gate: G3
+    platforms:
+    - linux-x86_64
+    planned_tests:
+    - source/native stages
+    - boundary tests
+    - frozen source fixture hashes
+    artifacts:
+    - path: validation/final-cpu-gcc-v6/report.json
+      sha256: 893ad1643a1ba4e107f3e6edd1baf1b97a47f3abdc3f1816579df722d8a4f198
+    - path: validation/final-cpu-clang-v6/report.json
+      sha256: 8d21d676d4cb86b202e350e96037fa3225027162ff6a3a3f5a7814ce57213616
+    - path: validation/final-cpu-asan-v6/report.json
+      sha256: 58d38e8b3747d306fe934f1c1093269184974163712a5a41592dc352c4957865
+    - path: validation/final-tensor-cpu-v6/report.json
+      sha256: fff895549d3ea6ca12bb320ac454cd5537c6b4e3a131f523a88917d56117ce5c
+    - path: validation/final-additional-cpu-v6/report.json
+      sha256: 2cbe73870bd8b34fa206f97142b2565d17db4733e6ed4cb29a00a20c97baed0f
+    - path: validation/final-full-cpu-v6/report.json
+      sha256: 57229ec927f6d07ee01523d775204d028588f8805ad66e8918d73db83a688a09
+    - path: validation/final-batch32-cpu-v6/report.json
+      sha256: 1c8ae94d4b2dc4c3cd3f7a0fb98cd614e388c06f6571753c01f07bf3a1285b5a
+    - path: validation/final-asan-v6/report.json
+      sha256: 250b80976501f8dc51a42485cd3584a1432e43117b4356f8d54c48ef8a16c011
+    - path: validation/final-tsan-v6/report.json
+      sha256: c6d40197494f325d1fb95a3f6fe0c6c4d4b25ab33fc0c97d9e9bbcc7424b9440
+    - path: validation/final-static-v6/report.json
+      sha256: dca3439ac9dc776d9970741170b497552d11e416737fc16e51c63026d55fb794
+    - path: validation/final-build-gcc-v6/report.json
+      sha256: 5d4317ae937ae8875501363b26c29f3497a1aae418419fa69e41ac2f3cfff363
+    - path: validation/final-build-clang-v6/report.json
+      sha256: ae253784780e0cd8a05dd1a821ba460bdba3def1695f740acb39ee3cdf3ef639
+  rewrite:
+    present: true
+    implementation: src/canonical/walloc.cpp; include/walloc.hpp; include/walloc_tensor.hpp
+- capability_id: model.checkpoints
+  owner: Local WaLLoC maintainer
+  parity_class: REQUIRED_PARITY
+  upstream:
+    description: Both official checkpoints; strict complete model transport
+    evidence: audio_compression.ipynb:3
+  rationale: Reachable Codec1D or documented complete 1D pipeline capability
+  validation:
+    status: PASS
+    gate: G4
+    platforms:
+    - linux-x86_64
+    planned_tests:
+    - source/native stages
+    - boundary tests
+    - frozen source fixture hashes
+    artifacts:
+    - path: validation/final-cpu-gcc-v6/report.json
+      sha256: 893ad1643a1ba4e107f3e6edd1baf1b97a47f3abdc3f1816579df722d8a4f198
+    - path: validation/final-cpu-clang-v6/report.json
+      sha256: 8d21d676d4cb86b202e350e96037fa3225027162ff6a3a3f5a7814ce57213616
+    - path: validation/final-cpu-asan-v6/report.json
+      sha256: 58d38e8b3747d306fe934f1c1093269184974163712a5a41592dc352c4957865
+    - path: validation/final-tensor-cpu-v6/report.json
+      sha256: fff895549d3ea6ca12bb320ac454cd5537c6b4e3a131f523a88917d56117ce5c
+    - path: validation/final-additional-cpu-v6/report.json
+      sha256: 2cbe73870bd8b34fa206f97142b2565d17db4733e6ed4cb29a00a20c97baed0f
+    - path: validation/final-full-cpu-v6/report.json
+      sha256: 57229ec927f6d07ee01523d775204d028588f8805ad66e8918d73db83a688a09
+    - path: validation/final-batch32-cpu-v6/report.json
+      sha256: 1c8ae94d4b2dc4c3cd3f7a0fb98cd614e388c06f6571753c01f07bf3a1285b5a
+    - path: validation/final-asan-v6/report.json
+      sha256: 250b80976501f8dc51a42485cd3584a1432e43117b4356f8d54c48ef8a16c011
+    - path: validation/final-tsan-v6/report.json
+      sha256: c6d40197494f325d1fb95a3f6fe0c6c4d4b25ab33fc0c97d9e9bbcc7424b9440
+    - path: validation/final-static-v6/report.json
+      sha256: dca3439ac9dc776d9970741170b497552d11e416737fc16e51c63026d55fb794
+    - path: validation/final-build-gcc-v6/report.json
+      sha256: 5d4317ae937ae8875501363b26c29f3497a1aae418419fa69e41ac2f3cfff363
+    - path: validation/final-build-clang-v6/report.json
+      sha256: ae253784780e0cd8a05dd1a821ba460bdba3def1695f740acb39ee3cdf3ef639
+  rewrite:
+    present: true
+    implementation: src/canonical/walloc.cpp; include/walloc.hpp; include/walloc_tensor.hpp
+- capability_id: container.webp
+  owner: Local WaLLoC maintainer
+  parity_class: REQUIRED_PARITY
+  upstream:
+    description: Exact byte conversion/tile/WebP/crop; cross-decode
+    evidence: audio_compression.ipynb:12,15
+  rationale: Reachable Codec1D or documented complete 1D pipeline capability
+  validation:
+    status: PASS
+    gate: G4
+    platforms:
+    - linux-x86_64
+    planned_tests:
+    - source/native stages
+    - boundary tests
+    - frozen source fixture hashes
+    artifacts:
+    - path: validation/final-cpu-gcc-v6/report.json
+      sha256: 893ad1643a1ba4e107f3e6edd1baf1b97a47f3abdc3f1816579df722d8a4f198
+    - path: validation/final-cpu-clang-v6/report.json
+      sha256: 8d21d676d4cb86b202e350e96037fa3225027162ff6a3a3f5a7814ce57213616
+    - path: validation/final-cpu-asan-v6/report.json
+      sha256: 58d38e8b3747d306fe934f1c1093269184974163712a5a41592dc352c4957865
+    - path: validation/final-tensor-cpu-v6/report.json
+      sha256: fff895549d3ea6ca12bb320ac454cd5537c6b4e3a131f523a88917d56117ce5c
+    - path: validation/final-additional-cpu-v6/report.json
+      sha256: 2cbe73870bd8b34fa206f97142b2565d17db4733e6ed4cb29a00a20c97baed0f
+    - path: validation/final-full-cpu-v6/report.json
+      sha256: 57229ec927f6d07ee01523d775204d028588f8805ad66e8918d73db83a688a09
+    - path: validation/final-batch32-cpu-v6/report.json
+      sha256: 1c8ae94d4b2dc4c3cd3f7a0fb98cd614e388c06f6571753c01f07bf3a1285b5a
+    - path: validation/final-asan-v6/report.json
+      sha256: 250b80976501f8dc51a42485cd3584a1432e43117b4356f8d54c48ef8a16c011
+    - path: validation/final-tsan-v6/report.json
+      sha256: c6d40197494f325d1fb95a3f6fe0c6c4d4b25ab33fc0c97d9e9bbcc7424b9440
+    - path: validation/final-static-v6/report.json
+      sha256: dca3439ac9dc776d9970741170b497552d11e416737fc16e51c63026d55fb794
+    - path: validation/final-build-gcc-v6/report.json
+      sha256: 5d4317ae937ae8875501363b26c29f3497a1aae418419fa69e41ac2f3cfff363
+    - path: validation/final-build-clang-v6/report.json
+      sha256: ae253784780e0cd8a05dd1a821ba460bdba3def1695f740acb39ee3cdf3ef639
+  rewrite:
+    present: true
+    implementation: src/canonical/walloc.cpp; include/walloc.hpp; include/walloc_tensor.hpp
+- capability_id: pipeline.independent_frame
+  owner: Local WaLLoC maintainer
+  parity_class: REQUIRED_PARITY
+  upstream:
+    description: Complete model and lengths in accounted output
+    evidence: audio_compression.ipynb:12,15 (lengths external)
+  rationale: Reachable Codec1D or documented complete 1D pipeline capability
+  validation:
+    status: PASS
+    gate: G4
+    platforms:
+    - linux-x86_64
+    planned_tests:
+    - source/native stages
+    - boundary tests
+    - frozen source fixture hashes
+    artifacts:
+    - path: validation/final-cpu-gcc-v6/report.json
+      sha256: 893ad1643a1ba4e107f3e6edd1baf1b97a47f3abdc3f1816579df722d8a4f198
+    - path: validation/final-cpu-clang-v6/report.json
+      sha256: 8d21d676d4cb86b202e350e96037fa3225027162ff6a3a3f5a7814ce57213616
+    - path: validation/final-cpu-asan-v6/report.json
+      sha256: 58d38e8b3747d306fe934f1c1093269184974163712a5a41592dc352c4957865
+    - path: validation/final-tensor-cpu-v6/report.json
+      sha256: fff895549d3ea6ca12bb320ac454cd5537c6b4e3a131f523a88917d56117ce5c
+    - path: validation/final-additional-cpu-v6/report.json
+      sha256: 2cbe73870bd8b34fa206f97142b2565d17db4733e6ed4cb29a00a20c97baed0f
+    - path: validation/final-full-cpu-v6/report.json
+      sha256: 57229ec927f6d07ee01523d775204d028588f8805ad66e8918d73db83a688a09
+    - path: validation/final-batch32-cpu-v6/report.json
+      sha256: 1c8ae94d4b2dc4c3cd3f7a0fb98cd614e388c06f6571753c01f07bf3a1285b5a
+    - path: validation/final-asan-v6/report.json
+      sha256: 250b80976501f8dc51a42485cd3584a1432e43117b4356f8d54c48ef8a16c011
+    - path: validation/final-tsan-v6/report.json
+      sha256: c6d40197494f325d1fb95a3f6fe0c6c4d4b25ab33fc0c97d9e9bbcc7424b9440
+    - path: validation/final-static-v6/report.json
+      sha256: dca3439ac9dc776d9970741170b497552d11e416737fc16e51c63026d55fb794
+    - path: validation/final-build-gcc-v6/report.json
+      sha256: 5d4317ae937ae8875501363b26c29f3497a1aae418419fa69e41ac2f3cfff363
+    - path: validation/final-build-clang-v6/report.json
+      sha256: ae253784780e0cd8a05dd1a821ba460bdba3def1695f740acb39ee3cdf3ef639
+  rewrite:
+    present: true
+    implementation: src/canonical/walloc.cpp; include/walloc.hpp; include/walloc_tensor.hpp
+- capability_id: training.gradients_adamw
+  owner: Local WaLLoC maintainer
+  parity_class: REQUIRED_PARITY
+  upstream:
+    description: Both losses and genuine parameter updates
+    evidence: train_stereo.ipynb:10,12
+  rationale: Reachable Codec1D or documented complete 1D pipeline capability
+  validation:
+    status: PASS
+    gate: G3
+    platforms:
+    - linux-x86_64
+    planned_tests:
+    - source/native stages
+    - boundary tests
+    - frozen source fixture hashes
+    artifacts:
+    - path: validation/final-cpu-gcc-v6/report.json
+      sha256: 893ad1643a1ba4e107f3e6edd1baf1b97a47f3abdc3f1816579df722d8a4f198
+    - path: validation/final-cpu-clang-v6/report.json
+      sha256: 8d21d676d4cb86b202e350e96037fa3225027162ff6a3a3f5a7814ce57213616
+    - path: validation/final-cpu-asan-v6/report.json
+      sha256: 58d38e8b3747d306fe934f1c1093269184974163712a5a41592dc352c4957865
+    - path: validation/final-tensor-cpu-v6/report.json
+      sha256: fff895549d3ea6ca12bb320ac454cd5537c6b4e3a131f523a88917d56117ce5c
+    - path: validation/final-additional-cpu-v6/report.json
+      sha256: 2cbe73870bd8b34fa206f97142b2565d17db4733e6ed4cb29a00a20c97baed0f
+    - path: validation/final-full-cpu-v6/report.json
+      sha256: 57229ec927f6d07ee01523d775204d028588f8805ad66e8918d73db83a688a09
+    - path: validation/final-batch32-cpu-v6/report.json
+      sha256: 1c8ae94d4b2dc4c3cd3f7a0fb98cd614e388c06f6571753c01f07bf3a1285b5a
+    - path: validation/final-asan-v6/report.json
+      sha256: 250b80976501f8dc51a42485cd3584a1432e43117b4356f8d54c48ef8a16c011
+    - path: validation/final-tsan-v6/report.json
+      sha256: c6d40197494f325d1fb95a3f6fe0c6c4d4b25ab33fc0c97d9e9bbcc7424b9440
+    - path: validation/final-static-v6/report.json
+      sha256: dca3439ac9dc776d9970741170b497552d11e416737fc16e51c63026d55fb794
+    - path: validation/final-build-gcc-v6/report.json
+      sha256: 5d4317ae937ae8875501363b26c29f3497a1aae418419fa69e41ac2f3cfff363
+    - path: validation/final-build-clang-v6/report.json
+      sha256: ae253784780e0cd8a05dd1a821ba460bdba3def1695f740acb39ee3cdf3ef639
+  rewrite:
+    present: true
+    implementation: src/canonical/walloc.cpp; include/walloc.hpp; include/walloc_tensor.hpp
+- capability_id: training.schedule
+  owner: Local WaLLoC maintainer
+  parity_class: REQUIRED_PARITY
+  upstream:
+    description: Accumulation, warmup and plateau; resume state
+    evidence: train_stereo.ipynb:11,12,14
+  rationale: Reachable Codec1D or documented complete 1D pipeline capability
+  validation:
+    status: PASS
+    gate: G4
+    platforms:
+    - linux-x86_64
+    planned_tests:
+    - source/native stages
+    - boundary tests
+    - frozen source fixture hashes
+    artifacts:
+    - path: validation/final-cpu-gcc-v6/report.json
+      sha256: 893ad1643a1ba4e107f3e6edd1baf1b97a47f3abdc3f1816579df722d8a4f198
+    - path: validation/final-cpu-clang-v6/report.json
+      sha256: 8d21d676d4cb86b202e350e96037fa3225027162ff6a3a3f5a7814ce57213616
+    - path: validation/final-cpu-asan-v6/report.json
+      sha256: 58d38e8b3747d306fe934f1c1093269184974163712a5a41592dc352c4957865
+    - path: validation/final-tensor-cpu-v6/report.json
+      sha256: fff895549d3ea6ca12bb320ac454cd5537c6b4e3a131f523a88917d56117ce5c
+    - path: validation/final-additional-cpu-v6/report.json
+      sha256: 2cbe73870bd8b34fa206f97142b2565d17db4733e6ed4cb29a00a20c97baed0f
+    - path: validation/final-full-cpu-v6/report.json
+      sha256: 57229ec927f6d07ee01523d775204d028588f8805ad66e8918d73db83a688a09
+    - path: validation/final-batch32-cpu-v6/report.json
+      sha256: 1c8ae94d4b2dc4c3cd3f7a0fb98cd614e388c06f6571753c01f07bf3a1285b5a
+    - path: validation/final-asan-v6/report.json
+      sha256: 250b80976501f8dc51a42485cd3584a1432e43117b4356f8d54c48ef8a16c011
+    - path: validation/final-tsan-v6/report.json
+      sha256: c6d40197494f325d1fb95a3f6fe0c6c4d4b25ab33fc0c97d9e9bbcc7424b9440
+    - path: validation/final-static-v6/report.json
+      sha256: dca3439ac9dc776d9970741170b497552d11e416737fc16e51c63026d55fb794
+    - path: validation/final-build-gcc-v6/report.json
+      sha256: 5d4317ae937ae8875501363b26c29f3497a1aae418419fa69e41ac2f3cfff363
+    - path: validation/final-build-clang-v6/report.json
+      sha256: ae253784780e0cd8a05dd1a821ba460bdba3def1695f740acb39ee3cdf3ef639
+  rewrite:
+    present: true
+    implementation: src/canonical/walloc.cpp; include/walloc.hpp; include/walloc_tensor.hpp
+- capability_id: preprocessing.audio
+  owner: Local WaLLoC maintainer
+  parity_class: REQUIRED_PARITY
+  upstream:
+    description: Mixing/crop/mean/max normalization without test fitting
+    evidence: train_stereo.ipynb:4,5
+  rationale: Reachable Codec1D or documented complete 1D pipeline capability
+  validation:
+    status: PASS
+    gate: G4
+    platforms:
+    - linux-x86_64
+    planned_tests:
+    - source/native stages
+    - boundary tests
+    - frozen source fixture hashes
+    artifacts:
+    - path: validation/final-cpu-gcc-v6/report.json
+      sha256: 893ad1643a1ba4e107f3e6edd1baf1b97a47f3abdc3f1816579df722d8a4f198
+    - path: validation/final-cpu-clang-v6/report.json
+      sha256: 8d21d676d4cb86b202e350e96037fa3225027162ff6a3a3f5a7814ce57213616
+    - path: validation/final-cpu-asan-v6/report.json
+      sha256: 58d38e8b3747d306fe934f1c1093269184974163712a5a41592dc352c4957865
+    - path: validation/final-tensor-cpu-v6/report.json
+      sha256: fff895549d3ea6ca12bb320ac454cd5537c6b4e3a131f523a88917d56117ce5c
+    - path: validation/final-additional-cpu-v6/report.json
+      sha256: 2cbe73870bd8b34fa206f97142b2565d17db4733e6ed4cb29a00a20c97baed0f
+    - path: validation/final-full-cpu-v6/report.json
+      sha256: 57229ec927f6d07ee01523d775204d028588f8805ad66e8918d73db83a688a09
+    - path: validation/final-batch32-cpu-v6/report.json
+      sha256: 1c8ae94d4b2dc4c3cd3f7a0fb98cd614e388c06f6571753c01f07bf3a1285b5a
+    - path: validation/final-asan-v6/report.json
+      sha256: 250b80976501f8dc51a42485cd3584a1432e43117b4356f8d54c48ef8a16c011
+    - path: validation/final-tsan-v6/report.json
+      sha256: c6d40197494f325d1fb95a3f6fe0c6c4d4b25ab33fc0c97d9e9bbcc7424b9440
+    - path: validation/final-static-v6/report.json
+      sha256: dca3439ac9dc776d9970741170b497552d11e416737fc16e51c63026d55fb794
+    - path: validation/final-build-gcc-v6/report.json
+      sha256: 5d4317ae937ae8875501363b26c29f3497a1aae418419fa69e41ac2f3cfff363
+    - path: validation/final-build-clang-v6/report.json
+      sha256: ae253784780e0cd8a05dd1a821ba460bdba3def1695f740acb39ee3cdf3ef639
+  rewrite:
+    present: true
+    implementation: src/canonical/walloc.cpp; include/walloc.hpp; include/walloc_tensor.hpp
+- capability_id: backend.cpu
+  owner: Local WaLLoC maintainer
+  parity_class: REQUIRED_PARITY
+  upstream:
+    description: Pinned native tensor dependency/dispatch; thread configuration
+    evidence: audio_compression.ipynb:3
+  rationale: Reachable Codec1D or documented complete 1D pipeline capability
+  validation:
+    status: PASS
+    gate: G3
+    platforms:
+    - linux-x86_64
+    planned_tests:
+    - source/native stages
+    - boundary tests
+    - frozen source fixture hashes
+    artifacts:
+    - path: validation/final-cpu-gcc-v6/report.json
+      sha256: 893ad1643a1ba4e107f3e6edd1baf1b97a47f3abdc3f1816579df722d8a4f198
+    - path: validation/final-cpu-clang-v6/report.json
+      sha256: 8d21d676d4cb86b202e350e96037fa3225027162ff6a3a3f5a7814ce57213616
+    - path: validation/final-cpu-asan-v6/report.json
+      sha256: 58d38e8b3747d306fe934f1c1093269184974163712a5a41592dc352c4957865
+    - path: validation/final-tensor-cpu-v6/report.json
+      sha256: fff895549d3ea6ca12bb320ac454cd5537c6b4e3a131f523a88917d56117ce5c
+    - path: validation/final-additional-cpu-v6/report.json
+      sha256: 2cbe73870bd8b34fa206f97142b2565d17db4733e6ed4cb29a00a20c97baed0f
+    - path: validation/final-full-cpu-v6/report.json
+      sha256: 57229ec927f6d07ee01523d775204d028588f8805ad66e8918d73db83a688a09
+    - path: validation/final-batch32-cpu-v6/report.json
+      sha256: 1c8ae94d4b2dc4c3cd3f7a0fb98cd614e388c06f6571753c01f07bf3a1285b5a
+    - path: validation/final-asan-v6/report.json
+      sha256: 250b80976501f8dc51a42485cd3584a1432e43117b4356f8d54c48ef8a16c011
+    - path: validation/final-tsan-v6/report.json
+      sha256: c6d40197494f325d1fb95a3f6fe0c6c4d4b25ab33fc0c97d9e9bbcc7424b9440
+    - path: validation/final-static-v6/report.json
+      sha256: dca3439ac9dc776d9970741170b497552d11e416737fc16e51c63026d55fb794
+    - path: validation/final-build-gcc-v6/report.json
+      sha256: 5d4317ae937ae8875501363b26c29f3497a1aae418419fa69e41ac2f3cfff363
+    - path: validation/final-build-clang-v6/report.json
+      sha256: ae253784780e0cd8a05dd1a821ba460bdba3def1695f740acb39ee3cdf3ef639
+  rewrite:
+    present: true
+    implementation: src/canonical/walloc.cpp; include/walloc.hpp; include/walloc_tensor.hpp
+- capability_id: backend.cuda
+  owner: Local WaLLoC maintainer
+  parity_class: REQUIRED_PARITY
+  upstream:
+    description: Explicit CUDA inference AND training; no fallback
+    evidence: train_stereo.ipynb:2,10,12
+  rationale: Reachable Codec1D or documented complete 1D pipeline capability
+  validation:
+    status: PASS
+    gate: G5
+    platforms:
+    - linux-x86_64-sm75
+    planned_tests:
+    - source/native stages
+    - boundary tests
+    - frozen source fixture hashes
+    artifacts:
+    - path: validation/final-cuda-v4/report.json
+      sha256: 7136ba6002ffed59974ba008582d23f793ec6ebc54f5a8731301ed97405b280b
+    - path: validation/final-tensor-cuda-v4/report.json
+      sha256: d9c9cdd7901d36b76ba6d21c1b726b1ba0fe85ffae6a4c7964f8fb6aba99944c
+    - path: validation/final-full-cuda-v4/report.json
+      sha256: 89d8aeca9ffe8514cea1019064b53369e3873a7f63b83b703ef5e1370b2ed721
+    - path: validation/final-batch32-cuda-v4/report.json
+      sha256: 190e07e819ffa4806e168a84ee9185020a57baee2d4b57f32c709a8f15c64e4e
+    - path: validation/final-cuda-safety-v4/report.json
+      sha256: bc3962370c9ed7cc754237d7faf8460539373f62f11f52d4447645dd76bf1451
+    - path: validation/final-gpu-api-v4/report.json
+      sha256: 09a4510f16f67c3042c28a7ea730b9a517f5c09e4234cdb1f59a281b75d1e67e
+    - path: validation/final-build-repeat-v6/report.json
+      sha256: 5b23d264f346bd2fe551b7f70eae6574ecceaf96a30423ed1411835088f1f3ed
+    - path: validation/qualification-v2/report.json
+      sha256: 3b62b280b6962d7246b909d626aeb5be77ddcd01b7a08b38d8b71096514bb7b5
+    - path: validation/training-cost-v2/report.json
+      sha256: 33b3f706ffdba04775d99f79ae6a022a5d30957af7a1adc22ef6d80d70702d08
+    - path: validation/reduction-v4/report.json
+      sha256: b765414075de5272e6ea740418af040996e2aa4aba07adfdbc5f9786646999c5
+  rewrite:
+    present: true
+    implementation: src/canonical/walloc.cpp; include/walloc.hpp; include/walloc_tensor.hpp
+- capability_id: handles.concurrency
+  owner: Local WaLLoC maintainer
+  parity_class: REQUIRED_PARITY
+  upstream:
+    description: Independent model/lifecycle handles; protected RNG
+    evidence: torch module/device execution
+  rationale: Reachable Codec1D or documented complete 1D pipeline capability
+  validation:
+    status: PASS
+    gate: G4
+    platforms:
+    - linux-x86_64
+    planned_tests:
+    - source/native stages
+    - boundary tests
+    - frozen source fixture hashes
+    artifacts:
+    - path: validation/final-cpu-gcc-v6/report.json
+      sha256: 893ad1643a1ba4e107f3e6edd1baf1b97a47f3abdc3f1816579df722d8a4f198
+    - path: validation/final-cpu-clang-v6/report.json
+      sha256: 8d21d676d4cb86b202e350e96037fa3225027162ff6a3a3f5a7814ce57213616
+    - path: validation/final-cpu-asan-v6/report.json
+      sha256: 58d38e8b3747d306fe934f1c1093269184974163712a5a41592dc352c4957865
+    - path: validation/final-tensor-cpu-v6/report.json
+      sha256: fff895549d3ea6ca12bb320ac454cd5537c6b4e3a131f523a88917d56117ce5c
+    - path: validation/final-additional-cpu-v6/report.json
+      sha256: 2cbe73870bd8b34fa206f97142b2565d17db4733e6ed4cb29a00a20c97baed0f
+    - path: validation/final-full-cpu-v6/report.json
+      sha256: 57229ec927f6d07ee01523d775204d028588f8805ad66e8918d73db83a688a09
+    - path: validation/final-batch32-cpu-v6/report.json
+      sha256: 1c8ae94d4b2dc4c3cd3f7a0fb98cd614e388c06f6571753c01f07bf3a1285b5a
+    - path: validation/final-asan-v6/report.json
+      sha256: 250b80976501f8dc51a42485cd3584a1432e43117b4356f8d54c48ef8a16c011
+    - path: validation/final-tsan-v6/report.json
+      sha256: c6d40197494f325d1fb95a3f6fe0c6c4d4b25ab33fc0c97d9e9bbcc7424b9440
+    - path: validation/final-static-v6/report.json
+      sha256: dca3439ac9dc776d9970741170b497552d11e416737fc16e51c63026d55fb794
+    - path: validation/final-build-gcc-v6/report.json
+      sha256: 5d4317ae937ae8875501363b26c29f3497a1aae418419fa69e41ac2f3cfff363
+    - path: validation/final-build-clang-v6/report.json
+      sha256: ae253784780e0cd8a05dd1a821ba460bdba3def1695f740acb39ee3cdf3ef639
+  rewrite:
+    present: true
+    implementation: src/canonical/walloc.cpp; include/walloc.hpp; include/walloc_tensor.hpp
+- capability_id: streaming.online
+  owner: Local WaLLoC maintainer
+  parity_class: NOT_APPLICABLE
+  rationale: No online encoder/decode state in original 1D pipeline
+  validation:
+    status: PASS
+- capability_id: random_access.seek
+  owner: Local WaLLoC maintainer
+  parity_class: NOT_APPLICABLE
+  rationale: No source seek API
+  validation:
+    status: PASS
+- capability_id: simd.custom
+  owner: Local WaLLoC maintainer
+  parity_class: NOT_APPLICABLE
+  rationale: Source defines no custom ISA kernel; declared tensor-library CPU dispatch
+    reused
+  validation:
+    status: PASS
+- capability_id: training.worker_count
+  owner: Local WaLLoC maintainer
+  parity_class: NOT_APPLICABLE
+  rationale: 24 PyTorch loader workers are infrastructure; same crop/mix semantics
+    required, not identical worker process count
+  validation:
+    status: PASS
+- capability_id: codec.2d
+  owner: Local WaLLoC maintainer
+  parity_class: NOT_APPLICABLE
+  rationale: Distinct 2D algorithm outside XLSX Codec1D identity
+  validation:
+    status: PASS

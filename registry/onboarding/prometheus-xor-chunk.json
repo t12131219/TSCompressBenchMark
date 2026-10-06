@@ -1,0 +1,163 @@
+{
+  "schema_version": "tscb.source-onboarding.v2",
+  "source_artifact_id": "v2:source-artifact:sha256:586dee8bc85209fc1ad35c6b9206a02b5d98afbc7e26599601999de9f1f49f8d",
+  "repository": "https://github.com/prometheus/prometheus",
+  "commit": "8374d30cb3fe705773bbac72d7015eba17480557",
+  "dirty": false,
+  "submodules": [],
+  "implementation_files": [
+    "adapters/rewrite_lossless/vendor/prometheus-xor-chunk/src/canonical/prometheus_xor_chunk.cpp",
+    "adapters/rewrite_lossless/vendor/prometheus-xor-chunk/src/optimized/README.md",
+    "adapters/rewrite_lossless/vendor/prometheus-xor-chunk/src/standalone/prometheus_xor_chunk_c.cpp"
+  ],
+  "public_api_files": [
+    "adapters/rewrite_lossless/vendor/prometheus-xor-chunk/include/prometheus_xor_chunk.hpp",
+    "adapters/rewrite_lossless/vendor/prometheus-xor-chunk/include/prometheus_xor_chunk_c.h"
+  ],
+  "benchmark_files": [
+    "adapters/rewrite_lossless/native/tscb_rewrite_lossless.cc"
+  ],
+  "test_files": [
+    "adapters/rewrite_lossless/tests/qualification.cc",
+    "tests/adapters/test_rewrite_lossless.py"
+  ],
+  "license_files": [
+    "adapters/rewrite_lossless/vendor/prometheus-xor-chunk/LICENSES/Apache-2.0.txt",
+    "adapters/rewrite_lossless/vendor/prometheus-xor-chunk/LICENSES/BSD-3-Clause.txt",
+    "adapters/rewrite_lossless/vendor/prometheus-xor-chunk/LICENSES/GNU-runtime-copyright.txt",
+    "adapters/rewrite_lossless/vendor/prometheus-xor-chunk/LICENSES/GPL-3.txt",
+    "adapters/rewrite_lossless/vendor/prometheus-xor-chunk/LICENSES/LGPL-2.1.txt",
+    "adapters/rewrite_lossless/vendor/prometheus-xor-chunk/LICENSES/NOTICE",
+    "adapters/rewrite_lossless/vendor/prometheus-xor-chunk/LICENSES/glibc-copyright.txt"
+  ],
+  "third_party_dependencies": [
+    {
+      "scope": "NATIVE_SYSTEM_RUNTIME",
+      "name": "Linux C/C++ runtime",
+      "reference_runtime_not_linked": true
+    }
+  ],
+  "object_level_candidates": [
+    "P3_STORAGE_SYSTEM"
+  ],
+  "input_contract": {
+    "topologies": [
+      "UTS",
+      "SYNCHRONOUS_MTS"
+    ],
+    "dtypes": [
+      "<i8",
+      "<f8"
+    ],
+    "ranks": [
+      1,
+      2
+    ],
+    "layouts": [
+      "COMPOSITE_T_V"
+    ],
+    "endianness": [
+      "little"
+    ],
+    "alignment_bytes": 1,
+    "min_n": 0,
+    "max_n": 16777216,
+    "min_m": 1,
+    "max_m": 65535,
+    "validity_shapes": [
+      "NONE"
+    ],
+    "homogeneous_itemsize": true,
+    "max_total_raw_bytes": 134217728,
+    "value_coupling_mode": "COLUMN_INDEPENDENT",
+    "timestamp_semantics": {
+      "preserve_order": true,
+      "duplicates": true,
+      "out_of_order": true,
+      "negative_delta": true,
+      "absolute_epoch": true,
+      "overflow_policy": "UINT64_TWOS_COMPLEMENT_MODULAR_AS_UPSTREAM"
+    },
+    "component_dtypes": {
+      "timestamp": [
+        "<i8"
+      ],
+      "value": [
+        "<f8"
+      ]
+    },
+    "max_total_elements": 16777216
+  },
+  "output_contract": {
+    "self_contained": true,
+    "actual_written_length": true,
+    "capacity_is_not_size": true,
+    "framing": "TSCB_DESCRIPTOR_SHA256_AND_RWF1_FNV64_CHECKED_STANDALONE_FRAMES",
+    "components": "OPAQUE_STANDALONE_CODEC_BYTES_WITH_EXACT_WRAPPER_ACCOUNTING_V1"
+  },
+  "lifecycle_contract": {
+    "output_bound": "FROZEN_STANDALONE_API_BOUND_PLUS_EXACT_WRAPPER_BOUND",
+    "return_length": "actual_used_bytes",
+    "error_codes": [
+      "DST_TOO_SMALL",
+      "SOURCE_DOMAIN_UNSUPPORTED",
+      "INVALID_ARGUMENT",
+      "CODEC_ERROR"
+    ],
+    "finalize": "REQUIRED_ZERO_BYTE_FINALIZE",
+    "reset": "MODE_ZERO_ONLY"
+  },
+  "stream_components": [
+    "descriptor",
+    "descriptor_checksum",
+    "native_header",
+    "record_headers",
+    "standalone_frames",
+    "native_checksum"
+  ],
+  "upstream_tests": [
+    {
+      "status": "PASS",
+      "name": "current standalone original differential",
+      "log_sha256": "25d51fa05b1b7a7ff832153fadb806e6155b0846161b76ee2c20bc935f0586d2"
+    },
+    {
+      "status": "PASS",
+      "name": "ASan/UBSan native ABI qualification",
+      "log_sha256": "ddcb72fcfa23fc7939ba581f7c70db35df301e9f3309e6bee5d179ece03cd883"
+    }
+  ],
+  "builds": [
+    {
+      "kind": "release",
+      "artifact_sha256": "0a73e311a759e86c3e813053e4289572839db8c4fd0fff2a456db180560cf74c",
+      "compile_commands_sha256": "8a902d49260eb3afea3a54c93bf7b3345b2125987c77406a5e37c187f97410a1"
+    },
+    {
+      "kind": "sanitizer",
+      "artifact_sha256": "b5316952854dd93cf8942b9d0581ec998117fcc3b11d5cc6142406d42f53ff3a",
+      "compile_commands_sha256": "161dab8df4113c6280e943190bd2e6f18a7c13d0d0c4fb1538ae10b0652f6adb"
+    }
+  ],
+  "license_decision": {
+    "spdx": "Apache-2.0 AND BSD-3-Clause",
+    "status": "RUN_ALLOWED",
+    "reason": "ORIGINAL_LICENSE_TERMS_APPLY"
+  },
+  "known_limitations": [
+    "PIPELINE/E2E timing supported; native CORE rejected during planning",
+    "Full standalone frames charged as opaque bytes; wrapper components exact",
+    "No registered query/random-access/incremental Benchmark streaming profile",
+    "Preserve source domain; no raw fallback",
+    "Standalone multi-block source state preserved in SElfStar sessions"
+  ],
+  "unsupported_reason_codes": [
+    "TRACK_OR_DTYPE_UNSUPPORTED",
+    "SOURCE_DOMAIN_UNSUPPORTED",
+    "STREAMING_PROFILE_NOT_REGISTERED",
+    "QUERY_UNSUPPORTED",
+    "VALIDITY_UNSUPPORTED",
+    "TIMING_SCOPE_UNSUPPORTED"
+  ],
+  "source_onboarding_id": "v2:source-onboarding:sha256:1ed718783303eac6ac7dab493133116535ff676790a3cbf749f3235cf6c42c02"
+}

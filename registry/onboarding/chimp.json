@@ -1,0 +1,155 @@
+{
+  "schema_version": "tscb.source-onboarding.v2",
+  "source_artifact_id": "v2:source-artifact:sha256:8282bd96eaf3c2ffc3b1c721a7b60484e056c148f92569e4ba78ce8048beca3f",
+  "repository": "https://github.com/panagiotisl/chimp",
+  "commit": "320d397157c7e0696b3c64dc1711fc17a3add3da",
+  "dirty": false,
+  "submodules": [],
+  "implementation_files": [
+    "adapters/rewrite_lossless/vendor/chimp/src/codec.cpp"
+  ],
+  "public_api_files": [
+    "adapters/rewrite_lossless/vendor/chimp/include/chimp.hpp"
+  ],
+  "benchmark_files": [
+    "adapters/rewrite_lossless/native/tscb_rewrite_lossless.cc"
+  ],
+  "test_files": [
+    "adapters/rewrite_lossless/tests/qualification.cc",
+    "tests/adapters/test_rewrite_lossless.py"
+  ],
+  "license_files": [
+    "adapters/rewrite_lossless/vendor/chimp/LICENSES/Apache-2.0.md"
+  ],
+  "third_party_dependencies": [
+    {
+      "scope": "NATIVE_SYSTEM_RUNTIME",
+      "name": "Linux C/C++ runtime",
+      "reference_runtime_not_linked": true
+    }
+  ],
+  "object_level_candidates": [
+    "P1_STANDALONE_CODEC"
+  ],
+  "input_contract": {
+    "topologies": [
+      "UTS",
+      "SYNCHRONOUS_MTS"
+    ],
+    "dtypes": [
+      "<f4",
+      "<f8"
+    ],
+    "ranks": [
+      1,
+      2
+    ],
+    "layouts": [
+      "ROW_MAJOR_CONTIG",
+      "SOA_COLUMNS"
+    ],
+    "endianness": [
+      "little"
+    ],
+    "alignment_bytes": 1,
+    "min_n": 0,
+    "max_n": 16777216,
+    "min_m": 1,
+    "max_m": 65535,
+    "validity_shapes": [
+      "NONE"
+    ],
+    "homogeneous_itemsize": true,
+    "max_total_raw_bytes": 134217728,
+    "value_coupling_mode": "COLUMN_INDEPENDENT",
+    "timestamp_semantics": {
+      "preserve_order": true,
+      "duplicates": true,
+      "out_of_order": true,
+      "negative_delta": true,
+      "absolute_epoch": true,
+      "overflow_policy": "NOT_APPLICABLE_VALUE_ONLY"
+    },
+    "value_domain": {
+      "kind": "FROZEN_SOURCE_WITH_BOUNDED_REJECTION",
+      "unsupported_action": "REJECT_BEFORE_OUTPUT",
+      "oracle_evidence": "Compression_Rewrite/Source/chimp/golden/source_audit.json",
+      "rejection_reasons": [
+        "canonical NaN is END"
+      ]
+    },
+    "max_total_elements": 16777216
+  },
+  "output_contract": {
+    "self_contained": true,
+    "actual_written_length": true,
+    "capacity_is_not_size": true,
+    "framing": "TSCB_DESCRIPTOR_SHA256_AND_RWF1_FNV64_CHECKED_STANDALONE_FRAMES",
+    "components": "OPAQUE_STANDALONE_CODEC_BYTES_WITH_EXACT_WRAPPER_ACCOUNTING_V1"
+  },
+  "lifecycle_contract": {
+    "output_bound": "FROZEN_STANDALONE_API_BOUND_PLUS_EXACT_WRAPPER_BOUND",
+    "return_length": "actual_used_bytes",
+    "error_codes": [
+      "DST_TOO_SMALL",
+      "SOURCE_DOMAIN_UNSUPPORTED",
+      "INVALID_ARGUMENT",
+      "CODEC_ERROR"
+    ],
+    "finalize": "REQUIRED_ZERO_BYTE_FINALIZE",
+    "reset": "MODE_ZERO_ONLY"
+  },
+  "stream_components": [
+    "descriptor",
+    "descriptor_checksum",
+    "native_header",
+    "record_headers",
+    "standalone_frames",
+    "native_checksum"
+  ],
+  "upstream_tests": [
+    {
+      "status": "PASS",
+      "name": "current standalone original differential",
+      "log_sha256": "826153d15b122fb6e56e9a5761fdb9e397366ab0b62799c620c7a75dd719578b"
+    },
+    {
+      "status": "PASS",
+      "name": "ASan/UBSan native ABI qualification",
+      "log_sha256": "d97d7b06d604625a9452619e5938790562e955df5be49cb3b97373706a0e11e2"
+    }
+  ],
+  "builds": [
+    {
+      "kind": "release",
+      "artifact_sha256": "16175d1443399e47011295fa175e09cc3f3b7aa883fcb0a350709f399b87c3ac",
+      "compile_commands_sha256": "b0fc19e284ef8f415d199850589eb4919593373c394bcbf82894491c972e8b48"
+    },
+    {
+      "kind": "sanitizer",
+      "artifact_sha256": "26d6825eb0372a92686494c3578de37d83a586a3048244aa7476c135a6ed5071",
+      "compile_commands_sha256": "3c5e9d7a893b1b0f32458c96cbd5868946338d4027b5da35bb2e9e95e4920854"
+    }
+  ],
+  "license_decision": {
+    "spdx": "Apache-2.0",
+    "status": "RUN_ALLOWED",
+    "reason": "ORIGINAL_LICENSE_TERMS_APPLY"
+  },
+  "known_limitations": [
+    "PIPELINE/E2E timing supported; native CORE rejected during planning",
+    "Full standalone frames charged as opaque bytes; wrapper components exact",
+    "No registered query/random-access/incremental Benchmark streaming profile",
+    "Preserve source domain; no raw fallback",
+    "Standalone multi-block source state preserved in SElfStar sessions"
+  ],
+  "unsupported_reason_codes": [
+    "TRACK_OR_DTYPE_UNSUPPORTED",
+    "SOURCE_DOMAIN_UNSUPPORTED",
+    "STREAMING_PROFILE_NOT_REGISTERED",
+    "QUERY_UNSUPPORTED",
+    "VALIDITY_UNSUPPORTED",
+    "TIMING_SCOPE_UNSUPPORTED"
+  ],
+  "source_onboarding_id": "v2:source-onboarding:sha256:883f6bb29b75de9308ce59031b8f364826599a9be5e46e14ec81162777f99e24"
+}

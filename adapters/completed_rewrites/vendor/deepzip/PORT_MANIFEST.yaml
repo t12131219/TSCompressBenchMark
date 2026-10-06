@@ -1,0 +1,172 @@
+schema_version: tscb.port-manifest.v1
+algorithm_id: deepzip
+implementation_id: deepzip-cpp
+algorithm_name: DeepZip
+display_name: DeepZip C/C++ rewrite
+category: lossless
+family: learned-probability-arithmetic-coding
+object_level: P2_PIPELINE
+rewrite_conclusion: REWRITE_DONE
+port_method: TRANSLATED
+compatibility_target: SEMANTIC
+source:
+  repository: https://github.com/mohit1997/DeepZip
+  commit: 8c35502397a1488c89fa282ed033cc9d5fd4b4dc
+  repository_archive_sha256: 01f2d4d45f0ebdf5ea7cca6a82c4ab0af0ea315dfe28c9c3373992323d24ab69
+  closure_sha256: 5c3a0fb9528e8e697bae82aa3bacc71e2f8fb383fec3ae6e351d62d73d65541a
+  closure_file_count: 28
+original_language: Python 3.6 + Keras/TensorFlow GPU
+canonical_language: C++17
+license:
+  concluded_spdx: MIT
+  redistribution_status: RUN_ALLOWED_WITH_ATTRIBUTION
+  files:
+  - LICENSES/DeepZip-MIT.txt
+  - LICENSES/Project-Nayuki-MIT.txt
+  - LICENSES/HDF5.txt
+  - LICENSES/HDF5-LBNL.txt
+selected_profile:
+  profile_id: xor20-bidirectional-cudnngru-f32-v1
+  model_name: biGRU
+  model_sha256: 11c83907881b14ed3c670b6b37cacad06fc9657872c520bd772693cb04919fe2
+  model_size_bytes: 170192
+  alphabet_size: 2
+  timesteps: 64
+  batch_size: 1000
+gates:
+  G0:
+    status: PASS
+    evidence: Recommendation rank 5 is deepzip. DeepZip_RNN_Predictor is a P0 stage
+      duplicate assigned to the deepzip canonical P2 pipeline.
+  G1:
+    status: PASS
+    evidence: ../../Source/deepzip/ENVIRONMENT.md
+  G2:
+    status: PASS
+    evidence:
+    - contract_v1.md
+    - DATASET_TEST_PLAN.yaml
+    - NATIVE_CAPABILITY_MATRIX.yaml
+    - validation/source_probe_trace.json
+  G3:
+    status: PASS
+    reviewer: Codex evidence-driven audit
+    evidence:
+    - validation/validation_report.md
+    - validation/qualification.json
+    - validation/build_reproducibility.json
+    - validation/aarch64.json
+  G4:
+    status: PASS
+    reviewer: Codex evidence-driven audit
+    evidence:
+    - validation/validation_report.md
+    - validation/qualification.json
+    - validation/build_reproducibility.json
+    - validation/aarch64.json
+  G5:
+    status: PASS
+    reviewer: Codex evidence-driven audit
+    evidence:
+    - validation/validation_report.md
+    - validation/qualification.json
+    - validation/build_reproducibility.json
+    - validation/aarch64.json
+  G6:
+    status: PASS
+    reviewer: Codex evidence-driven audit
+    evidence:
+    - validation/validation_report.md
+    - validation/qualification.json
+    - validation/build_reproducibility.json
+    - validation/aarch64.json
+native_capability_parity:
+  overall_result: FULL_PARITY
+  matrix_path: NATIVE_CAPABILITY_MATRIX.yaml
+  validation_report: validation/native_capability_validation_report.md
+  unclassified_count: 0
+  required_total: 24
+  required_passed: 24
+  waiver_ids: []
+  matrix_sha256: 4c3585fe212c20c0c7604b5fd1a254de3750de9a5b07fe7ec245ece7fbdaaf32
+standalone_validation:
+  preprocessing_included: true
+  execution_scopes:
+  - canonical_scalar
+  - native_cuda
+  - aarch64_scalar_qemu
+  source_vs_rewrite_required: true
+  serialized_bits_components:
+  - metadata_dictionary
+  - model
+  - lengths
+  - entropy
+  - padding
+  - checksums
+  external_side_information_bits: 0
+  model_dictionary_embedded: true
+integration:
+  performed: false
+  tscb_adapter_present: false
+  registry_modified: false
+  note: Out of scope; requires a separate post-rewrite task.
+execution:
+  scope: REWRITE_ONLY
+  required_gates:
+  - G0
+  - G1
+  - G2
+  - G3
+  - G4
+  - G5
+  - G6
+  current_gate: G6
+  terminal_status: REWRITE_DONE
+  blocker_evidence: null
+build:
+  c_standard: not_applicable_CXX_public_API
+  cxx_standard: C++17
+  compiler: GCC 11.4.0; Clang 14.0.0; nvcc 11.8.89; Zig 0.15.2 AArch64-musl
+  artifact_sha256: 0d1b89b314a341d291289ea9542326d40c2295be32ac97cb5fea3460870dc66d
+  reproducibility: BYTE_IDENTICAL_SCALAR_AND_CUDA_TWO_DIRECTORIES
+waivers: []
+standalone_api:
+  header: include/deepzip/deepzip.hpp
+  version: 1.0.0
+  symbols:
+  - Model::load
+  - Model::from_hdf5
+  - Model::predict
+  - compress
+  - decompress
+  - compress_bound
+  - compress_to
+  - Codec::append
+  - Codec::finalize
+  - Codec::reset
+  safe_overread_bytes: 0
+supported_models:
+- biGRU
+- biGRU_big
+- biGRU_16bit
+- biLSTM
+- biLSTM_16bit
+- LSTM_multi
+- LSTM_multi_big
+- LSTM_multi_bn
+- LSTM_multi_16bit
+- LSTM_multi_selu_16bit
+- GRU_multi
+- GRU_multi_big
+- GRU_multi_16bit
+- FC_4layer_16bit
+- FC_4layer
+- FC_4layer_big
+- FC
+capability_scope_notes:
+- Training authors external state and is not codec inference.
+- Two upstream NameError constructors are NOT_APPLICABLE, with executed evidence.
+- Native HDF5 importer covers frozen Keras fixed-width attributes; portable-model
+  builds are explicit.
+- GPU execution tested on RTX 2070; ARM is scalar under QEMU and has no native ARM
+  performance claim.

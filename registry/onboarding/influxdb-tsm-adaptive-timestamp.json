@@ -1,0 +1,224 @@
+{
+  "schema_version": "tscb.source-onboarding.v2",
+  "source_artifact_id": "v2:source-artifact:sha256:464fa098650b7942c869b50ee0317f62846f1f2c453d6f45437edc1e27acad80",
+  "repository": "https://github.com/influxdata/influxdb",
+  "commit": "f9befe3459b689dc6dd1dd11e1e58e2943434ab1",
+  "dirty": false,
+  "submodules": [],
+  "implementation_files": [
+    "adapters/completed_rewrites/vendor/influxdb-tsm-adaptive-timestamp/src/cli.cpp",
+    "adapters/completed_rewrites/vendor/influxdb-tsm-adaptive-timestamp/src/tsm_timestamp.cpp"
+  ],
+  "public_api_files": [
+    "adapters/completed_rewrites/vendor/influxdb-tsm-adaptive-timestamp/include/tsm_timestamp.hpp"
+  ],
+  "benchmark_files": [
+    "adapters/completed_rewrites/native/binding.cpp",
+    "src/tscompbench/adapters/completed_rewrites.py"
+  ],
+  "test_files": [
+    "adapters/completed_rewrites/tests/qualification.cpp",
+    "tests/adapters/test_completed_rewrites.py",
+    "tests/integration/test_completed_rewrites_qualification.py"
+  ],
+  "license_files": [
+    "adapters/completed_rewrites/vendor/influxdb-tsm-adaptive-timestamp/LICENSES/GNU-runtime-copyright.txt",
+    "adapters/completed_rewrites/vendor/influxdb-tsm-adaptive-timestamp/LICENSES/GPL-3.txt",
+    "adapters/completed_rewrites/vendor/influxdb-tsm-adaptive-timestamp/LICENSES/InfluxData-MIT.txt",
+    "adapters/completed_rewrites/vendor/influxdb-tsm-adaptive-timestamp/LICENSES/Jason-Wilder-MIT.txt",
+    "adapters/completed_rewrites/vendor/influxdb-tsm-adaptive-timestamp/LICENSES/LGPL-2.1.txt",
+    "adapters/completed_rewrites/vendor/influxdb-tsm-adaptive-timestamp/LICENSES/LLVM-libcxx.txt",
+    "adapters/completed_rewrites/vendor/influxdb-tsm-adaptive-timestamp/LICENSES/LLVM-libcxxabi.txt",
+    "adapters/completed_rewrites/vendor/influxdb-tsm-adaptive-timestamp/LICENSES/LLVM-libunwind.txt",
+    "adapters/completed_rewrites/vendor/influxdb-tsm-adaptive-timestamp/LICENSES/glibc-copyright.txt",
+    "adapters/completed_rewrites/vendor/influxdb-tsm-adaptive-timestamp/LICENSES/go-cmp-BSD-3-Clause.txt",
+    "adapters/completed_rewrites/vendor/influxdb-tsm-adaptive-timestamp/LICENSES/musl-COPYRIGHT.txt",
+    "adapters/completed_rewrites/vendor/influxdb-tsm-adaptive-timestamp/NOTICE"
+  ],
+  "third_party_dependencies": [
+    {
+      "path": "/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+      "sha256": "9eb34cb2da3ae2a9398cc09b3cd2d069563ec40d9858cb711af15cd23fa80abf"
+    },
+    {
+      "path": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+      "sha256": "c53819710b163d3f1d2541778590d58d3ef31cb0ed75adcbe059faac68c1e72d"
+    },
+    {
+      "path": "/usr/lib/x86_64-linux-gnu/libgcc_s.so.1",
+      "sha256": "fc9d43b2f6c20e53b009238f767c5b949d202389e20de9e202ea684b4ba3729a"
+    },
+    {
+      "path": "/usr/lib/x86_64-linux-gnu/libm.so.6",
+      "sha256": "00830df310aac5023e10bd7b715149ab8ddc682277fd8ae3539a7a44fcdd6c38"
+    },
+    {
+      "path": "/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30",
+      "sha256": "ff0825e113603c3866680d5d52216bc6d8eedf3a59f52a0aef67ff01994db128"
+    }
+  ],
+  "object_level_candidates": [
+    "P1_STANDALONE_CODEC"
+  ],
+  "input_contract": {
+    "topologies": [
+      "UTS",
+      "SYNCHRONOUS_MTS"
+    ],
+    "dtypes": [
+      "<i8"
+    ],
+    "ranks": [
+      1,
+      2
+    ],
+    "layouts": [
+      "ROW_MAJOR_CONTIG",
+      "SOA_COLUMNS"
+    ],
+    "endianness": [
+      "little"
+    ],
+    "alignment_bytes": 1,
+    "min_n": 0,
+    "max_n": 16777216,
+    "min_m": 1,
+    "max_m": 65535,
+    "validity_shapes": [
+      "NONE"
+    ],
+    "homogeneous_itemsize": true,
+    "max_total_raw_bytes": 134217728,
+    "value_coupling_mode": "COLUMN_INDEPENDENT",
+    "timestamp_semantics": {
+      "preserve_order": true,
+      "duplicates": true,
+      "out_of_order": true,
+      "negative_delta": true,
+      "absolute_epoch": true,
+      "overflow_policy": "NOT_APPLICABLE_VALUE_ONLY"
+    },
+    "max_total_elements": 16777216
+  },
+  "output_contract": {
+    "framing": "SHA256_DESCRIPTOR_AND_COMPLETE_NATIVE_FRAMES_V1",
+    "self_contained": true,
+    "actual_written_length": true,
+    "capacity_is_not_size": true,
+    "model_and_dictionary_accounting": "OPAQUE_NATIVE_FRAME_BYTES; INCLUDED_IN_FINAL_BITS; NOT_SEPARATELY_ATTRIBUTED"
+  },
+  "lifecycle_contract": {
+    "output_bound": "FROZEN_NATIVE_BOUND_PLUS_EXACT_DESCRIPTOR_AND_RECORD_OVERHEAD",
+    "return_length": "actual_used_bytes",
+    "error_codes": [
+      "OUTPUT_CAPACITY",
+      "EXECUTION_CONTRACT",
+      "SOURCE_DOMAIN_UNSUPPORTED"
+    ],
+    "finalize": "EXACTLY_ONCE_REQUIRED_ZERO_BYTE_FINALIZE",
+    "reset": "FRESH_INDEPENDENT_SESSION_PER_INNER_OBJECT"
+  },
+  "stream_components": [
+    "descriptor_and_checksums",
+    "native_record_lengths",
+    "complete_native_frames"
+  ],
+  "upstream_tests": [
+    {
+      "status": "PASS",
+      "name": "release: upstream CTest and framework ABI qualification",
+      "log_sha256": "e7851964024c9c69fbb170f602f19afd6e30a334dde7d5b3b4aa3f94235fe3d1",
+      "log": "build/adapters/influxdb_tsm_adaptive_timestamp/release/qualification.log",
+      "scope": "NOT_APPLICABLE"
+    },
+    {
+      "status": "PASS",
+      "name": "sanitizer: upstream CTest and framework ABI qualification",
+      "log_sha256": "d5d5f8ef960b3a8a22aea7da840053cdcf034241645b9a7c04f13dfac3ab7d21",
+      "log": "build/adapters/influxdb_tsm_adaptive_timestamp/sanitizer/qualification.log",
+      "scope": "FRAMEWORK_BINDING_AND_FROZEN_CPP_SOURCES; EXTERNAL_BINARY_RUNTIMES_NOT_INSTRUMENTED; LEAK_CHECK_DISABLED"
+    }
+  ],
+  "builds": [
+    {
+      "kind": "release",
+      "artifact_sha256": "251cf5081596bc36f38f2020a0c4a5416a4a4d454d86dcb250ee6d66108ac8fc",
+      "compile_commands_sha256": "f20b94a6e7dbc63dde7f68e50d9c3f27e63ee3b9ab115b04e3392697ddb3c152",
+      "build_record_sha256": "5651ad7965fc13f0e42203a36c98735be6d514b564b932452f533d23a96c8ad7",
+      "compiler": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0\nCopyright (C) 2021 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+      "configure_command": [
+        "cmake",
+        "-S",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/adapters/influxdb_tsm_adaptive_timestamp/release/recipe",
+        "-B",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/adapters/influxdb_tsm_adaptive_timestamp/release/cmake",
+        "-DCMAKE_BUILD_TYPE=Release",
+        "-DCMAKE_CXX_FLAGS=-fno-fast-math -ffp-contract=off",
+        "-DCMAKE_C_FLAGS=-fno-fast-math -ffp-contract=off",
+        "-DCMAKE_EXE_LINKER_FLAGS=",
+        "-DDEEPZIP_WITH_HDF5=OFF",
+        "-DDEEPZIP_WITH_CUDA=OFF",
+        "-DDZIP_WITH_HDF5=OFF",
+        "-DDZIP_WITH_CUDA=OFF",
+        "-DTRISTAN_MKL_ROOT=/home/fzg/anaconda3"
+      ]
+    },
+    {
+      "kind": "sanitizer",
+      "artifact_sha256": "5a431662ee325b3a2a52579eb43037ee5fbcf5f7701c9a0bfd371cbcbadd578c",
+      "compile_commands_sha256": "1e78fc8cf04e9996738dff3f275b966c77e3642e72582dc90e6b404882c05a38",
+      "build_record_sha256": "6b830bd483ed6bc7e54824fda7b52b0c78efce1a2be0d2d8957cb57dad85870c",
+      "compiler": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0\nCopyright (C) 2021 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+      "configure_command": [
+        "cmake",
+        "-S",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/adapters/influxdb_tsm_adaptive_timestamp/sanitizer/recipe",
+        "-B",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/adapters/influxdb_tsm_adaptive_timestamp/sanitizer/cmake",
+        "-DCMAKE_BUILD_TYPE=Release",
+        "-DCMAKE_CXX_FLAGS=-fno-fast-math -ffp-contract=off -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer",
+        "-DCMAKE_C_FLAGS=-fno-fast-math -ffp-contract=off -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer",
+        "-DCMAKE_EXE_LINKER_FLAGS=-no-pie",
+        "-DDEEPZIP_WITH_HDF5=OFF",
+        "-DDEEPZIP_WITH_CUDA=OFF",
+        "-DDZIP_WITH_HDF5=OFF",
+        "-DDZIP_WITH_CUDA=OFF",
+        "-DTRISTAN_MKL_ROOT=/home/fzg/anaconda3"
+      ]
+    }
+  ],
+  "license_decision": {
+    "spdx": "MIT",
+    "status": "RUN_ALLOWED",
+    "files": [
+      "adapters/completed_rewrites/vendor/influxdb-tsm-adaptive-timestamp/LICENSES/GNU-runtime-copyright.txt",
+      "adapters/completed_rewrites/vendor/influxdb-tsm-adaptive-timestamp/LICENSES/GPL-3.txt",
+      "adapters/completed_rewrites/vendor/influxdb-tsm-adaptive-timestamp/LICENSES/InfluxData-MIT.txt",
+      "adapters/completed_rewrites/vendor/influxdb-tsm-adaptive-timestamp/LICENSES/Jason-Wilder-MIT.txt",
+      "adapters/completed_rewrites/vendor/influxdb-tsm-adaptive-timestamp/LICENSES/LGPL-2.1.txt",
+      "adapters/completed_rewrites/vendor/influxdb-tsm-adaptive-timestamp/LICENSES/LLVM-libcxx.txt",
+      "adapters/completed_rewrites/vendor/influxdb-tsm-adaptive-timestamp/LICENSES/LLVM-libcxxabi.txt",
+      "adapters/completed_rewrites/vendor/influxdb-tsm-adaptive-timestamp/LICENSES/LLVM-libunwind.txt",
+      "adapters/completed_rewrites/vendor/influxdb-tsm-adaptive-timestamp/LICENSES/glibc-copyright.txt",
+      "adapters/completed_rewrites/vendor/influxdb-tsm-adaptive-timestamp/LICENSES/go-cmp-BSD-3-Clause.txt",
+      "adapters/completed_rewrites/vendor/influxdb-tsm-adaptive-timestamp/LICENSES/musl-COPYRIGHT.txt",
+      "adapters/completed_rewrites/vendor/influxdb-tsm-adaptive-timestamp/NOTICE"
+    ],
+    "redistribution": "LOCAL_EXECUTION_ONLY; ORIGINAL_NOTICES_RETAINED; NO_UPSTREAM_LICENSE_GRANT_INVENTED"
+  },
+  "known_limitations": [
+    "Whole timestamp object, both STREAM and BATCH selectors; no benchmark incremental streaming/query profile.",
+    "PIPELINE/E2E supported; CORE/native timing unavailable and reported as null.",
+    "Independent object profile; streaming/query/random access rejected during planning.",
+    "Synthetic acceptance fixtures establish integration, not real-world performance or quality rankings."
+  ],
+  "unsupported_reason_codes": [
+    "TRACK_OR_DTYPE_UNSUPPORTED",
+    "TIMING_SCOPE_UNSUPPORTED",
+    "STREAMING_UNSUPPORTED",
+    "QUERY_UNSUPPORTED",
+    "SOURCE_DOMAIN_UNSUPPORTED",
+    "ISA_UNSUPPORTED"
+  ],
+  "source_onboarding_id": "v2:source-onboarding:sha256:54cdb438bd6915710d1dc1a439a15115f65d20909d7d4e1bc8c57e4649aa1fdf"
+}

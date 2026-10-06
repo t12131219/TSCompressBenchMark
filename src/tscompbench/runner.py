@@ -375,14 +375,18 @@ def plan_run_set(
         codec_documents: list[dict[str, Any]] = []
         source_documents: dict[str, dict[str, Any]] = {}
         requested_aliases = [
-            item for item in codec_registry.alias_documents()
+            item
+            for item in codec_registry.alias_documents()
             if item["key"] in run_set.config.algorithms
         ]
         if requested_aliases:
-            _write_or_verify_json(run_set.path / "codec_alias_snapshot.json", {
-                "schema_version": "tscb.codec-alias-snapshot.v2",
-                "aliases": requested_aliases,
-            })
+            _write_or_verify_json(
+                run_set.path / "codec_alias_snapshot.json",
+                {
+                    "schema_version": "tscb.codec-alias-snapshot.v2",
+                    "aliases": requested_aliases,
+                },
+            )
         planned_codec_keys: set[str] = set()
         for algorithm_key in run_set.config.algorithms:
             manifest = codec_registry.get(algorithm_key)
@@ -436,7 +440,9 @@ def plan_run_set(
                         BenchmarkTrack(track_name),
                     )
                     for config in configs:
-                        compatibility = negotiate(manifest, descriptor)
+                        compatibility = negotiate(
+                            manifest, descriptor, parameters=config.parameters
+                        )
                         execution = resolve_execution(
                             manifest,
                             config,

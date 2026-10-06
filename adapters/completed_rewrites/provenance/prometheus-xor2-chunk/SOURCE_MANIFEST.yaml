@@ -1,0 +1,157 @@
+schema_version: tscb.porting-source-manifest.v1
+algorithm_id: prometheus-xor2-chunk
+repository: https://github.com/prometheus/prometheus
+source_commit: 8374d30cb3fe705773bbac72d7015eba17480557
+source_commit_date: 2026-09-09T12:39:43+02:00
+source_commit_subject: "tsdb: preserve retired series chunks for active readers (#19664)"
+source_tag: null
+paper_doi: null
+original_authors:
+  - The Prometheus Authors
+  - Damian Gryski
+source_checkout_dirty: false
+snapshot_method: git archive
+snapshot_command: >-
+  git archive --format=tar HEAD LICENSE NOTICE go.mod go.sum model/value/value.go
+  tsdb/chunkenc/xor.go tsdb/chunkenc/xor2.go tsdb/chunkenc/xor2_test.go
+  tsdb/chunkenc/bstream.go tsdb/chunkenc/varbit.go tsdb/chunkenc/chunk.go
+  tsdb/chunkenc/chunk_test.go tsdb/chunkenc/st.go tsdb/docs/format/chunks.md
+snapshot_archive_sha256: 52c5b141cb3478abe477f518862b16137653bab6649ad30c80a6f0d131475f9e
+closure_sha256: 489d3b76e33e465e2ac2141f474c1a56c8d3785110335731ebf50066fb86126c
+closure_hash_recipe: "sha256(sorted(relative_path + NUL + file_sha256 + LF))"
+original_language: Go
+source_language_version_required: "1.26.0"
+source_backend_target: linux/amd64
+source_build_profile: upstream Go module
+dependency_lock:
+  go_mod_sha256: 94e39d68d3abd10168c4b1944a63356a1d9a467ddeceee46aea75fc14e4381d1
+  go_sum_sha256: 2b0f11cdccdc6605922c8f48d7afc68ae44fdc90df6b5d2f6f677b447b07d99e
+files:
+  - path: LICENSE
+    sha256: c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4
+    role: repository license
+    language: Text
+    copyright: The Prometheus Authors
+    generated_from: null
+    concluded_spdx: Apache-2.0
+  - path: NOTICE
+    sha256: ac9e304462a58a4d71b6488423d4447e614c8b31d517fe24345016522c102a78
+    role: attribution notice
+    language: Text
+    copyright: The Prometheus Authors and listed third parties
+    generated_from: null
+    concluded_spdx: Apache-2.0
+  - path: go.mod
+    sha256: 94e39d68d3abd10168c4b1944a63356a1d9a467ddeceee46aea75fc14e4381d1
+    role: module definition
+    language: Go module
+    copyright: The Prometheus Authors
+    generated_from: null
+    concluded_spdx: Apache-2.0
+  - path: go.sum
+    sha256: 2b0f11cdccdc6605922c8f48d7afc68ae44fdc90df6b5d2f6f677b447b07d99e
+    role: dependency lock
+    language: Go checksum database
+    copyright: null
+    generated_from: go.mod dependency resolution
+    concluded_spdx: Apache-2.0
+  - path: model/value/value.go
+    sha256: c1928bc9c9f4d520aedfc244b2b322d786c47b51ad0f519a68ef4078508c9915
+    role: stale NaN marker and exact bit-pattern predicate
+    language: Go
+    copyright: The Prometheus Authors
+    generated_from: null
+    concluded_spdx: Apache-2.0
+  - path: tsdb/chunkenc/bstream.go
+    sha256: d4e0121f9b0c7d70625c17e459543c3f25eceddb289767ae28375a1c328b7822
+    role: MSB-first bit reader and writer
+    language: Go
+    copyright: The Prometheus Authors and Damian Gryski
+    generated_from: null
+    concluded_spdx: Apache-2.0 AND BSD-3-Clause
+  - path: tsdb/chunkenc/chunk.go
+    sha256: 02a4d5279ca0fd0d0e47f8bb0cfa3b4f142def954bc778ec257aa0136854f082
+    role: encoding identity, interfaces, pooling and chunk limits
+    language: Go
+    copyright: The Prometheus Authors
+    generated_from: null
+    concluded_spdx: Apache-2.0
+  - path: tsdb/chunkenc/chunk_test.go
+    sha256: 618819db825c56c7488d68de2adc0b897958074aa48b0e1062d950121e007520
+    role: shared test sample record and chunk behavior evidence used by XOR2 tests
+    language: Go
+    copyright: The Prometheus Authors
+    generated_from: null
+    concluded_spdx: Apache-2.0
+  - path: tsdb/chunkenc/st.go
+    sha256: 615c71a9af5ea3dd7da7b0bed7b1d379a919606a8f941198f11d01cb895d9580
+    role: start-timestamp header and shared state semantics
+    language: Go
+    copyright: The Prometheus Authors
+    generated_from: null
+    concluded_spdx: Apache-2.0
+  - path: tsdb/chunkenc/varbit.go
+    sha256: 4b14ad5ffa6168d742cfe2ebc22619195604ddd2acc66d5f50e7f2ef2afee105
+    role: variable-bit signed integer format used by start-timestamp deltas
+    language: Go
+    copyright: The Prometheus Authors
+    generated_from: null
+    concluded_spdx: Apache-2.0
+  - path: tsdb/chunkenc/xor.go
+    sha256: 773909a5932728bfa3f00640c171a0624c4f1006372a20eb6a58e8e9fc6e3a81
+    role: shared signed bitRange predicate and baseline XOR semantics
+    language: Go
+    copyright: The Prometheus Authors and Damian Gryski
+    generated_from: null
+    concluded_spdx: Apache-2.0 AND BSD-3-Clause
+  - path: tsdb/chunkenc/xor2.go
+    sha256: b93f51f8a18066e9a80a54aa3ac5ba386de88138f5fb8d91218332fba856faf7
+    role: XOR2 encoder, decoder, iterator, joint control stream and optional start timestamps
+    language: Go
+    copyright: The Prometheus Authors
+    generated_from: null
+    concluded_spdx: Apache-2.0
+  - path: tsdb/chunkenc/xor2_test.go
+    sha256: 5eebf80f613dbabcb2c05e4662ebaff86ee5267f8bf30e4f56061c76c55c34db
+    role: XOR2 upstream tests, benchmarks and stale/start-timestamp cases
+    language: Go
+    copyright: The Prometheus Authors
+    generated_from: null
+    concluded_spdx: Apache-2.0
+  - path: tsdb/docs/format/chunks.md
+    sha256: 3e455c3b302c6f8034b594e86396fbe68bc8a28a574644532a196526b8c5b868
+    role: normative XOR2 chunk format documentation
+    language: Markdown
+    copyright: The Prometheus Authors
+    generated_from: null
+    concluded_spdx: Apache-2.0
+dependencies:
+  - name: github.com/prometheus/prometheus/model/value
+    kind: in-repository semantic dependency
+    evidence: model/value/value.go
+  - name: chunkenc.bitRange
+    kind: in-package source dependency
+    evidence: tsdb/chunkenc/xor.go
+  - name: chunkenc.triple
+    kind: in-package test dependency
+    evidence: tsdb/chunkenc/chunk_test.go
+submodules: []
+patches: []
+official_decoder: true
+public_format: true
+cross_decode_condition: >-
+  A future port must preserve the single joint timestamp/value control stream,
+  stale-NaN marker, optional start-timestamp header, and varbit ST deltas.
+license:
+  concluded_spdx: Apache-2.0 AND BSD-3-Clause
+  redistribution_status: RUN_ALLOWED_WITH_ATTRIBUTION
+  commercial_use_status: ALLOWED_WITH_CONDITIONS
+  license_files:
+    - LICENSES/Apache-2.0.txt
+    - LICENSES/BSD-3-Clause.txt
+    - upstream/NOTICE
+toolchain_manifest: TOOLCHAIN_MANIFEST.yaml
+reference_package_test: PASS
+reference_package_test_evidence: >-
+  The unmodified tsdb/chunkenc package, including XOR2 tests, passed with the
+  verified official Go 1.26.0 linux/amd64 toolchain on 2026-09-28.

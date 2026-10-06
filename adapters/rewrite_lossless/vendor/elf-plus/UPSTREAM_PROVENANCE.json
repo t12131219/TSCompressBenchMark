@@ -1,0 +1,959 @@
+{
+  "package": "elf-plus",
+  "standalone_api_version": 1,
+  "standalone_origin": "Compression_Rewrite/ReWrite/elf-plus",
+  "source_lock": {
+    "files": [
+      {
+        "path": ".gitignore",
+        "bytes": 92,
+        "sha256": "cafea90652141e5281fa714cea702d96ce018a4899fba1535d24f7b97a2c8162",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "README.md",
+        "bytes": 6038,
+        "sha256": "b4c42b54aaa055e2017ad6f50d4b5a66d9f4a0a53640f692322b258714122e82",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "pom.xml",
+        "bytes": 3735,
+        "sha256": "a045b0a45414cdd3922938e7c030b9dae98b2da0d46b614b2ac4e14977e34ccd",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/com/github/kutschkem/fpc/DfcmPredictor.java",
+        "bytes": 1114,
+        "sha256": "ddcdad6431b98214031b6e6f6fa8560d46b63c6f7a69bdd04a3ccb95c9ab082a",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/com/github/kutschkem/fpc/FcmPredictor.java",
+        "bytes": 993,
+        "sha256": "52fce0bca9475a1a3ea345f15b3cae1f48d958aaa77b61dbe25b29309eb4050a",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/com/github/kutschkem/fpc/FpcCompressor.java",
+        "bytes": 6000,
+        "sha256": "c7c77b92cd48b5016c8128fa9df531aed7b6668599d84bf252c45babf9ea5fe6",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/fi/iki/yak/ts/compression/gorilla/BitInput.java",
+        "bytes": 857,
+        "sha256": "494c1a4fe8aa01117d61e5a33c28c1e3269b848a4b0ad90c8407d87b9e4d1ed9",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/fi/iki/yak/ts/compression/gorilla/BitOutput.java",
+        "bytes": 707,
+        "sha256": "ea239ce781aaec9f67cd8c1e3be9ebc2fb7514751b89df9dca1e1ea2f5264aa8",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/fi/iki/yak/ts/compression/gorilla/ByteBufferBitInput.java",
+        "bytes": 2682,
+        "sha256": "8d2dc7e5c6c1d7483947b92e6a2312db6bef8f46f836092d67e517be348f24ef",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/fi/iki/yak/ts/compression/gorilla/ByteBufferBitInput2.java",
+        "bytes": 1894,
+        "sha256": "f3722d38830006c800c8c7acb44befa36451c4def46e51d0ff90b35e0899d1d0",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/fi/iki/yak/ts/compression/gorilla/ByteBufferBitOutput.java",
+        "bytes": 2729,
+        "sha256": "7afee7184f3b0e5a122c426504ff40627695a6a3f7bc296bd09f25b567809c93",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/fi/iki/yak/ts/compression/gorilla/Compressor.java",
+        "bytes": 4686,
+        "sha256": "688d0f5ef785bfdbab1bb0237808bea0d07d5f1a2343f40f62509ccb374a013c",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/fi/iki/yak/ts/compression/gorilla/CompressorOS.java",
+        "bytes": 4466,
+        "sha256": "8c4c5a5066eab41e3b531e6f5bac0115a6b7054e61bb76b1a2e7589fc3114a9d",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/fi/iki/yak/ts/compression/gorilla/Decompressor.java",
+        "bytes": 2462,
+        "sha256": "d22ec31b620fbfdafceaea82b8001cf7bc622bc9b44b053113007f1ecba1dcdb",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/fi/iki/yak/ts/compression/gorilla/DecompressorOS.java",
+        "bytes": 2523,
+        "sha256": "19a3d4f3507e9f89cbdf77f701d0d7a6566b9d7620a0cb25f153da8183c61bdb",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/fi/iki/yak/ts/compression/gorilla/GorillaCompressor.java",
+        "bytes": 5283,
+        "sha256": "b7ca119a7f94dcb4e295b9acc0ef707b31f5bda31b0d8bd4bba76f0c600eae6b",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/fi/iki/yak/ts/compression/gorilla/GorillaDecompressor.java",
+        "bytes": 3805,
+        "sha256": "e86276d80ca1ceb5ce6d0c91bd402eef50ff36123714dfea43c9ded1b77640b9",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/fi/iki/yak/ts/compression/gorilla/LongArrayInput.java",
+        "bytes": 2799,
+        "sha256": "4c1f845681bd3310fe56f5171bb54b0a8ef742b8b2758f9afd602e8c0aa70895",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/fi/iki/yak/ts/compression/gorilla/LongArrayOutput.java",
+        "bytes": 4085,
+        "sha256": "c6a276408fd5c9d2207db51a68c3fbc3ebb32877b6e6c57940319d34a57bfa27",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/fi/iki/yak/ts/compression/gorilla/Pair.java",
+        "bytes": 552,
+        "sha256": "888a4f72ba42ed7b66eac40b3f06d1b59988abec86939920dc25266cd9efece5",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/fi/iki/yak/ts/compression/gorilla/Predictor.java",
+        "bytes": 1009,
+        "sha256": "ac74eb0291d0bc5e4f5d1ddff601589ed0b6934c51b5ee5069a9b84de371cdbd",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/fi/iki/yak/ts/compression/gorilla/Value.java",
+        "bytes": 394,
+        "sha256": "d5ef2d7b2cd2eb7f72d202cb180355864ec3a194a95d84562c605d7e05c99e2c",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/fi/iki/yak/ts/compression/gorilla/ValueCompressor.java",
+        "bytes": 3190,
+        "sha256": "6b7d6fa78bf240e2134cff32f1d54da5f66a650a440695be1a78090940eaa7c4",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/fi/iki/yak/ts/compression/gorilla/ValueDecompressor.java",
+        "bytes": 1605,
+        "sha256": "53619119d325fb3254e3dd64384122f2eb6cdf196bd736ddb4878372c3b9e3ce",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/fi/iki/yak/ts/compression/gorilla/benchmark/EncodingBenchmark.java",
+        "bytes": 5551,
+        "sha256": "c2c87004e13fceca6e93d06e50dbfbc164317406ef074f1fafcd453ed55cb6f4",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/fi/iki/yak/ts/compression/gorilla/predictors/DifferentialFCM.java",
+        "bytes": 1271,
+        "sha256": "0de81012b8144ffe4b545cdded2f2069633293ff4bbc302d9d5f3983b932361c",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/fi/iki/yak/ts/compression/gorilla/predictors/LastValuePredictor.java",
+        "bytes": 512,
+        "sha256": "6d151a79f2976b878a68e53c140c8a3a148030058c81329aaca4b9c19b754cd0",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/gr/aueb/delorean/chimp/Chimp.java",
+        "bytes": 4651,
+        "sha256": "79b237692ce5a06e1107dd1b9614c692bce782afdc0f38c7b42743086b50bbc9",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/gr/aueb/delorean/chimp/Chimp32.java",
+        "bytes": 4544,
+        "sha256": "43b23d9a4a41fae0c09816744aff1a2a2d1618eb366c72607da045213caaf535",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/gr/aueb/delorean/chimp/ChimpDecompressor.java",
+        "bytes": 3869,
+        "sha256": "2ae2218c84067943a7c056bb446c4e585c102298364f120003b51b91fd16908b",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/gr/aueb/delorean/chimp/ChimpDecompressor32.java",
+        "bytes": 3237,
+        "sha256": "528950dd27199b63101c00f0165bacfbf15ba3ec3956dc6dab18bcea806bc14e",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/gr/aueb/delorean/chimp/ChimpN.java",
+        "bytes": 6130,
+        "sha256": "128e795be3d8706c2bb40d0987820843213eb205cd9731d5eb8bc8adc9f68f25",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/gr/aueb/delorean/chimp/ChimpN32.java",
+        "bytes": 6106,
+        "sha256": "8c9a1060df1fe0ed0803267330a0dbd7c6bda6cabccc24f8f62e177ab645e7ab",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/gr/aueb/delorean/chimp/ChimpNDecompressor.java",
+        "bytes": 3823,
+        "sha256": "05fc35de57c8fd0b9c480ab251799045b24041eb8b4f8cbc8337863e448f3d30",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/gr/aueb/delorean/chimp/ChimpNDecompressor32.java",
+        "bytes": 4340,
+        "sha256": "88ca943d4180351ea0803f069b35d5a1568cff85f06a73ee65188ece22518a9b",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/gr/aueb/delorean/chimp/ChimpNDecompressorO.java",
+        "bytes": 4830,
+        "sha256": "7c1ca6af6f27e6efafdad86e5e0d9e5d04b67f2c08db8a7b0ea7efdda80a4186",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/gr/aueb/delorean/chimp/ChimpNNoIndex.java",
+        "bytes": 4883,
+        "sha256": "e839e015b4ca809482614170dc0fde3cf8a161ac89eb2236784bcb90cbbf4f44",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/gr/aueb/delorean/chimp/ChimpNO.java",
+        "bytes": 6479,
+        "sha256": "03f2b6bfd874173f5617e9aef68fcb500c3cc486f8137930828924be84041b01",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/gr/aueb/delorean/chimp/Compressor32.java",
+        "bytes": 4310,
+        "sha256": "a2f37e2b979dac427b6bb9e0e91ff0f9545c9c99aef03e1a4d7c230615d39bb9",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/gr/aueb/delorean/chimp/Compressor32OS.java",
+        "bytes": 4568,
+        "sha256": "a83cbe30d6a02b6e807e04c3fe3e2f61b9c776c6eff2ab7098d07f6fba5b4f2d",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/gr/aueb/delorean/chimp/Decompressor32.java",
+        "bytes": 2082,
+        "sha256": "465434d811b7d5fd525d41d58bc728ad281c83b1f274a42200216cfb04787417",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/gr/aueb/delorean/chimp/Decompressor32OS.java",
+        "bytes": 2460,
+        "sha256": "3124703ee7ee64f7664702e7bf19c32b88e3975e1a6ad877abf3c0ad4d1d241a",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/gr/aueb/delorean/chimp/DecompressorPmcMr.java",
+        "bytes": 1250,
+        "sha256": "27aab1e1dd1c1a694c17e2320d38875d7d993de359f08924c6ead53bb4fb5a7e",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/gr/aueb/delorean/chimp/DecompressorSwingFilter.java",
+        "bytes": 1426,
+        "sha256": "4fb8ba6aa65b4c8c8432e0f497d249b46e69610f29b0c680193dac567fc8000a",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/gr/aueb/delorean/chimp/DecompressorSwingFilterBigDecimal.java",
+        "bytes": 1631,
+        "sha256": "f186f6d527f78a6ba94fb668d569cc0dd642cc6d9d116c2f3efaf92f4afbcad0",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/gr/aueb/delorean/chimp/InputBitStream.java",
+        "bytes": 52464,
+        "sha256": "2a9e65807e2e135860883130353a9313a73b22b1a70facc267b23cf25f3e6a89",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/gr/aueb/delorean/chimp/LinearFunction.java",
+        "bytes": 1760,
+        "sha256": "94b6900ec78df2a88ebeed45b8748a301b82fc609f3e4148b9587add65a5a6e5",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/gr/aueb/delorean/chimp/LinearFunctionBigDecimal.java",
+        "bytes": 1404,
+        "sha256": "c620a99e1da14993c55f9abdd782cf4c46294a8bdae794a573da5eab04201b39",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/gr/aueb/delorean/chimp/LossyCompressor32.java",
+        "bytes": 5694,
+        "sha256": "3fcbe69750664bb91c9a4a046e0a344685e24170b5f57b9720452bbedc051ce9",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/gr/aueb/delorean/chimp/NewDecompressor32.java",
+        "bytes": 2149,
+        "sha256": "f05d8ca35bd152a25e9a012339d7d89a0d3678a713af8ff669c640ceb26dc460",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/gr/aueb/delorean/chimp/NewLossyCompressor32.java",
+        "bytes": 5970,
+        "sha256": "9ce1431feea645a2acb747af1c4b59a286bb017a211c0b79c46d464cda92a47c",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/gr/aueb/delorean/chimp/OutputBitStream.java",
+        "bytes": 44823,
+        "sha256": "ebcb7bceff8e372972068d910cc3489a08855299ae85211cdae23688bd107c63",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/gr/aueb/delorean/chimp/PmcMR.java",
+        "bytes": 1922,
+        "sha256": "ebb36c789961c90492c7ac51a30bfa3bdc06dcf3425a34dd86266dbb965d1a9a",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/gr/aueb/delorean/chimp/Point.java",
+        "bytes": 385,
+        "sha256": "7c01be8cbe3d67af3bcd95c8d1beae37c2aed5f79b765938a88dd14e28317f02",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/gr/aueb/delorean/chimp/PointBigDecimal.java",
+        "bytes": 455,
+        "sha256": "721dc9e82b91d75c89df8e6d8b71ea35d25355a4422160b29cd691ec3bde741a",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/gr/aueb/delorean/chimp/RunLengthEncodingDecompressor32.java",
+        "bytes": 2388,
+        "sha256": "069b210196b06aae7d6fe7f0dd33416a263ecf57a2452c47d7d7732a17a68e68",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/gr/aueb/delorean/chimp/RunLengthEncodingLossyCompressor32.java",
+        "bytes": 6633,
+        "sha256": "f7de741a6b934931386492a94c641376cbb14456336666c6795f911104261bf6",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/gr/aueb/delorean/chimp/SwingFilter.java",
+        "bytes": 3484,
+        "sha256": "378efb5bd1493f16045b351160ae7eaf5c339e7c561aa53670855064902e0364",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/gr/aueb/delorean/chimp/SwingFilterBigDecimal.java",
+        "bytes": 4629,
+        "sha256": "96b64cbdfd7aea62fe14acb0f24a6524a6ba067b45005c121cce36478a47c78c",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/gr/aueb/delorean/chimp/SwingFilterDisjoint.java",
+        "bytes": 6276,
+        "sha256": "e4db3212081dabffdcfcec65ff54da2cf053bf828da70dd71ab09fa4711b09be",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/gr/aueb/delorean/chimp/SwingFilterDisjointQuantized.java",
+        "bytes": 8309,
+        "sha256": "29fb464b3787cfd7cbe5cb91ad55df6ef09c331d1176adb08deec87d21cd8fdd",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/gr/aueb/delorean/chimp/SwingSegment.java",
+        "bytes": 672,
+        "sha256": "3763ef8fd7ac7f6bf1833a054e51d69b4e2fea0f5715e6938f42e92a81803fa0",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/gr/aueb/delorean/chimp/SwingSegmentBigDecimal.java",
+        "bytes": 1072,
+        "sha256": "d88b3f25f0546ac034dbd2a039e84d72b490158004f44d2cd3b49e4723a75a3c",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/gr/aueb/delorean/chimp/SwingSegmentDisjointQuantized.java",
+        "bytes": 586,
+        "sha256": "6d08b23e62c19db335b5067b90395376cd74d14c437464fdda4513ed996faf01",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/gr/aueb/delorean/chimp/Value.java",
+        "bytes": 374,
+        "sha256": "3df03bb327675991dcf3d1588e56f574d37d660d813bc5ca4dfa09f68ab77181",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/org/apache/hadoop/hbase/io/compress/CompressionUtil.java",
+        "bytes": 2016,
+        "sha256": "d57c88a8d675bdce70d4c3db3bd23ae629ee668a6e2a5569bc000c3310bcf099",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/org/apache/hadoop/hbase/io/compress/brotli/BrotliCodec.java",
+        "bytes": 3884,
+        "sha256": "b2e4f66e3c6079f1dc1ec474e1371f8927338c87d92abd904d961bd935c36c8e",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/org/apache/hadoop/hbase/io/compress/brotli/BrotliCompressor.java",
+        "bytes": 6656,
+        "sha256": "49272357909c4f1ab126e27f022c218cd9eebadd4179266a4514e04ece59c099",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/org/apache/hadoop/hbase/io/compress/brotli/BrotliDecompressor.java",
+        "bytes": 4772,
+        "sha256": "5beb275f2b30854990e0de493a9049e32e1c21a79dda6147f80e86f14a0c1c8c",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/org/apache/hadoop/hbase/io/compress/xerial/SnappyCodec.java",
+        "bytes": 3436,
+        "sha256": "48b885a7a27bc6803e52bb55b0825458d42147cb8d16a6f2f53f10d5b51101da",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/org/apache/hadoop/hbase/io/compress/xerial/SnappyCompressor.java",
+        "bytes": 5614,
+        "sha256": "01c4a884b089a448a8ba7d5f0865bb4553f67ad346161e48a9cd9f0ff48da5b4",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/org/apache/hadoop/hbase/io/compress/xerial/SnappyDecompressor.java",
+        "bytes": 4078,
+        "sha256": "be435b5e6d60a17343bb82eae543b62ae190f12ae67b4272e6004ed452e8138d",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/org/apache/hadoop/hbase/io/compress/xz/LzmaCodec.java",
+        "bytes": 3458,
+        "sha256": "fe800c0a49a0650f291b500ada6be653c8afd6ecb33ba00ae71ab11a95198839",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/org/apache/hadoop/hbase/io/compress/xz/LzmaCompressor.java",
+        "bytes": 7789,
+        "sha256": "687d2864a5bdf72a2713b1a2a1095f1d2b368a76ffc651fde4f76ea67e477b19",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/org/apache/hadoop/hbase/io/compress/xz/LzmaDecompressor.java",
+        "bytes": 5432,
+        "sha256": "9aec20e96d9d696844c18d79b6fd2454c340bc74afc5dc1c5d0a34019d421fca",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/org/apache/hadoop/hbase/io/compress/zstd/ZstdCodec.java",
+        "bytes": 5100,
+        "sha256": "449770118bbae7989ff34b6e3827b0b642947ef0245c0c9aafbee0b8b67cdab3",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/org/apache/hadoop/hbase/io/compress/zstd/ZstdCompressor.java",
+        "bytes": 7142,
+        "sha256": "37287505fe4ae6ea23f66c9af42d010743845539c6978283021097cc36e14077",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/org/apache/hadoop/hbase/io/compress/zstd/ZstdDecompressor.java",
+        "bytes": 5806,
+        "sha256": "1afa99883860ec847ee160eae04c816bd060919fb29293269c903b808f5453e9",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/org/urbcomp/startdb/compress/elf/Main.java",
+        "bytes": 1118,
+        "sha256": "d9caefc6ffb569b608a758398e70a18d3e4615937fec13404d67eb4b2291ea1d",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/org/urbcomp/startdb/compress/elf/compressor/AbstractElfCompressor.java",
+        "bytes": 1857,
+        "sha256": "71a4ab17fb7e75ebcf9c40230e0595da4e5a1303c602809bb0c2599b5424d2e4",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/org/urbcomp/startdb/compress/elf/compressor/ChimpCompressor.java",
+        "bytes": 546,
+        "sha256": "4ce35dcae83036d86bda743ee5ee9c5766c27981acb3cb855b83ada22a9707d6",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/org/urbcomp/startdb/compress/elf/compressor/ChimpNCompressor.java",
+        "bytes": 591,
+        "sha256": "f171c00f5f35fdcc09781b620b79e1d4221b0336b7e8395720b266a5b58bb03a",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/org/urbcomp/startdb/compress/elf/compressor/ElfCompressor.java",
+        "bytes": 1093,
+        "sha256": "236d2f88f45b59111e92bd079ae780a299047bbc7d8ce7936156c553f379a5ca",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/org/urbcomp/startdb/compress/elf/compressor/ElfOnChimpCompressor.java",
+        "bytes": 994,
+        "sha256": "787a88c8673e881695d26a1a7d4d6fc221bd1408a9ddac7e7a23c9934168fa09",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/org/urbcomp/startdb/compress/elf/compressor/ElfOnChimpNCompressor.java",
+        "bytes": 1036,
+        "sha256": "b64f865f5f4ba77f4510b2633d4a2f2cbd9685b0801f9974660655776f450d1b",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/org/urbcomp/startdb/compress/elf/compressor/ElfOnGorillaCompressorOS.java",
+        "bytes": 1067,
+        "sha256": "415424a1defd1fac138337a9768fcbcc22d7fd77a47845fd00772f9e36d0f7de",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/org/urbcomp/startdb/compress/elf/compressor/GorillaCompressorOS.java",
+        "bytes": 645,
+        "sha256": "6a5b99bab50046b2d1c19a867d2ab8ddb9431ad303f33704032d3eadaecec7f4",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/org/urbcomp/startdb/compress/elf/compressor/ICompressor.java",
+        "bytes": 255,
+        "sha256": "46f59079070806d8e1a46a8cfb2f714d1cad0703bb001ac1e23fb2a7b3a33387",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/org/urbcomp/startdb/compress/elf/compressor32/AbstractElfCompressor32.java",
+        "bytes": 1804,
+        "sha256": "0437d5d80f0423c89db540bda1b4bd3c5cc458ed1a373f9f726145ee35b7ecdd",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/org/urbcomp/startdb/compress/elf/compressor32/ChimpCompressor32.java",
+        "bytes": 589,
+        "sha256": "ebdb8404120f399deab20bfc1fa8aa248eb3249e10fafb45f071f41c06d1e27f",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/org/urbcomp/startdb/compress/elf/compressor32/ChimpNCompressor32.java",
+        "bytes": 633,
+        "sha256": "0196911537fef9b7bbaf246d93d97fbcf96493cb522436c4a5ec6bbbdae94716",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/org/urbcomp/startdb/compress/elf/compressor32/ElfCompressor32.java",
+        "bytes": 1118,
+        "sha256": "bfd736cfa4071bae71fc4420d1ddc42ca43140c69633db3267a19b520c05d514",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/org/urbcomp/startdb/compress/elf/compressor32/ElfOnChimpCompressor32.java",
+        "bytes": 1009,
+        "sha256": "0d367ae8b75427bf4f4bcaf9678db29c42b99e7820c1b7bf9a8a86b172cf2fe8",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/org/urbcomp/startdb/compress/elf/compressor32/ElfOnChimpNCompressor32.java",
+        "bytes": 1061,
+        "sha256": "087219d5ad35b40793c3576d6b314cc5b45c7bdbe0dd39341e5a0aff08b71054",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/org/urbcomp/startdb/compress/elf/compressor32/ElfOnGorillaCompressor32OS.java",
+        "bytes": 1136,
+        "sha256": "ac3f5169ea25571730ce84496ebd2ff13fbb4636961eeae49e98e093511de665",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/org/urbcomp/startdb/compress/elf/compressor32/GorillaCompressor32OS.java",
+        "bytes": 641,
+        "sha256": "08140b431ae57fe03a7adb91860979c319ae41c38cb16ebd2f2f285abd0d314a",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/org/urbcomp/startdb/compress/elf/compressor32/ICompressor32.java",
+        "bytes": 258,
+        "sha256": "a9895ae2a6bba8b925c17aa4b1f009aa642a3f518dd76f2f507ff12db208e558",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/org/urbcomp/startdb/compress/elf/decompressor/AbstractElfDecompressor.java",
+        "bytes": 1464,
+        "sha256": "165fca69234eaa37622b0abcdb40d5576162203c510b306ed9822c1de86467a6",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/org/urbcomp/startdb/compress/elf/decompressor/ChimpDecompressor.java",
+        "bytes": 451,
+        "sha256": "875cfd3c9cc43717278da0908ee33bbc4540b073abd562956ca8f358fc576c7d",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/org/urbcomp/startdb/compress/elf/decompressor/ChimpNDecompressor.java",
+        "bytes": 494,
+        "sha256": "764bad2eef7f89eae06966979bc08c97c0ff633dc225f53b2dfecd82771ec156",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/org/urbcomp/startdb/compress/elf/decompressor/ElfDecompressor.java",
+        "bytes": 815,
+        "sha256": "a9404577308def095b8cf8643393a7281a0456efeb34ef8aa2c87e035b1528b2",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/org/urbcomp/startdb/compress/elf/decompressor/ElfOnChimpDecompressor.java",
+        "bytes": 816,
+        "sha256": "fa5f6a62499490a3a13887467591d67e840f258ffd18a2c17f24ab8aa9f9f226",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/org/urbcomp/startdb/compress/elf/decompressor/ElfOnChimpNDecompressor.java",
+        "bytes": 853,
+        "sha256": "e8fe58a4a8b67319ff04034406a3b8bf4fe3a436168c433a4c3a46a0efadee45",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/org/urbcomp/startdb/compress/elf/decompressor/ElfOnGorillaDecompressorOS.java",
+        "bytes": 1004,
+        "sha256": "0ba04dc72a2123d7662f21a72dcb139646cb1de6ecdd72a6ac8b4b916401dc0f",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/org/urbcomp/startdb/compress/elf/decompressor/GorillaDecompressorOS.java",
+        "bytes": 470,
+        "sha256": "14dbd4e3cf3c39bcd95e14ddf0cd9fa34b3093b91878531874ce53501977e8d5",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/org/urbcomp/startdb/compress/elf/decompressor/IDecompressor.java",
+        "bytes": 146,
+        "sha256": "2bfcf658d029865a19be31b35f5af6a4be28bd8173c81c630dc80f380c561ae3",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/org/urbcomp/startdb/compress/elf/decompressor32/AbstractElfDecompressor32.java",
+        "bytes": 1462,
+        "sha256": "c80d3ffad5bdc1b91aff6ef0b60a3503897a897e37f997628b6cdd46badc1869",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/org/urbcomp/startdb/compress/elf/decompressor32/ChimpDecompressor32.java",
+        "bytes": 475,
+        "sha256": "e96d3b558d68f6c94f7fd0322b9ce0fcc40d52ef3f718042fc112fc031ce5f4b",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/org/urbcomp/startdb/compress/elf/decompressor32/ChimpNDecompressor32.java",
+        "bytes": 518,
+        "sha256": "2cd323a11a3294408a968e6139341726b45db7b947b750c7e17914426952f4d4",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/org/urbcomp/startdb/compress/elf/decompressor32/ElfDecompressor32.java",
+        "bytes": 835,
+        "sha256": "a3a901d051eb965c50f8faec0ff5a0bad23dba532261c085ddc5b13ba3008b73",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/org/urbcomp/startdb/compress/elf/decompressor32/ElfOnChimpDecompressor32.java",
+        "bytes": 837,
+        "sha256": "5a5f28dba80b7c37cb9e6f77b97da3be71d771fe03e517999a4aa9c9da9b1df3",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/org/urbcomp/startdb/compress/elf/decompressor32/ElfOnChimpNDecompressor32.java",
+        "bytes": 872,
+        "sha256": "89c8381148470eba47cd996a3af8056dac7abb886ecc36fbdb7d15d58ed6fd8d",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/org/urbcomp/startdb/compress/elf/decompressor32/ElfOnGorillaDecompressor32OS.java",
+        "bytes": 1002,
+        "sha256": "5207863735af35f5ab02f15e1add1dffd1238b1fd01870d30d34636a7c4c61b8",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/org/urbcomp/startdb/compress/elf/decompressor32/GorillaDecompressor32OS.java",
+        "bytes": 478,
+        "sha256": "f72e81bf64f20ad2f3eb96f7d7f7cf0b3e35dac9721574dfcb2e3b14599d8d10",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/org/urbcomp/startdb/compress/elf/decompressor32/IDecompressor32.java",
+        "bytes": 149,
+        "sha256": "7615b768021a3cfa7dc2604c867db00736af3b18e15914a623ff0b588b8e0c2e",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/org/urbcomp/startdb/compress/elf/utils/Elf32Utils.java",
+        "bytes": 5497,
+        "sha256": "fd1554f8dd14063a4cc1113a8246f55fe91a258028c0015ec9e7df9cacd97e2e",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/org/urbcomp/startdb/compress/elf/utils/Elf64Utils.java",
+        "bytes": 5263,
+        "sha256": "3709df654de327efce4da79e0e26e9e5ce140f91e8bb63256dcfb3654f923d97",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/org/urbcomp/startdb/compress/elf/xorcompressor/ElfXORCompressor.java",
+        "bytes": 5168,
+        "sha256": "9a192200689a278c050582ff4e967b4fb420e5edff56bab0a4288bafce5f0613",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/org/urbcomp/startdb/compress/elf/xorcompressor/ElfXORCompressor32.java",
+        "bytes": 4683,
+        "sha256": "1d1b55d938d3601a00d402f14d260bd71ce52a3c3b3f3ad17c4ffd2c7bcfc6a4",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/org/urbcomp/startdb/compress/elf/xordecompressor/ElfXORDecompressor.java",
+        "bytes": 4133,
+        "sha256": "c507e30e27e61464b8b4ccbffc27cfc22610344d6ff94217ea1419540201976d",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/main/java/org/urbcomp/startdb/compress/elf/xordecompressor/ElfXORDecompressor32.java",
+        "bytes": 4118,
+        "sha256": "8db18bf0a69aa1d54c79b35c806f6b53289ba5d9f8e528d24ba1504269d33eef",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/test/java/gr/aueb/delorean/chimp/benchmarks/TestDoublePrecision.java",
+        "bytes": 26692,
+        "sha256": "085e12de5465bb1de792364c734e2a46c3f8327da57f9158decd94e8da1d41fd",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/test/java/gr/aueb/delorean/chimp/benchmarks/TestLossy.java",
+        "bytes": 17028,
+        "sha256": "cb332cfa5a2889d5f3b2a7f707e00e88cf80dbc84e22038e2f847eec514f6b25",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/test/java/gr/aueb/delorean/chimp/benchmarks/TestSinglePrecision.java",
+        "bytes": 22855,
+        "sha256": "e8443e0a9dfe8a09124bf601800b0cf430bc6c96117b7c8673b84146e3b85c37",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/test/java/gr/aueb/delorean/chimp/benchmarks/TimeseriesFileReader.java",
+        "bytes": 3274,
+        "sha256": "3df3ff3ab14886e12bcc154e6b77a732e2bf73b336fa8b57548b0b3509d7d5a5",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/test/java/org/urbcomp/startdb/compress/elf/doubleprecision/FileReader.java",
+        "bytes": 2416,
+        "sha256": "c77fe162fb0addb4fb9dd5ac145d3452c4d779945ef2287d96f1e8f2f44f2651",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/test/java/org/urbcomp/startdb/compress/elf/doubleprecision/ResultStructure.java",
+        "bytes": 6705,
+        "sha256": "6360574f8981abb50587093c6eef22b464b041607f13f3c5c629b96c84b60912",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/test/java/org/urbcomp/startdb/compress/elf/doubleprecision/TestBeta.java",
+        "bytes": 11052,
+        "sha256": "3148a563fb8cb4a397ad45ea9a0dbbbbce918dcdf5e7c5c7f535801f3664ff45",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/test/java/org/urbcomp/startdb/compress/elf/doubleprecision/TestCompressor.java",
+        "bytes": 25965,
+        "sha256": "02435064c0b8ba85ec324ac7801c3798848b18c8adad0f4f064f32004b083739",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/test/java/org/urbcomp/startdb/compress/elf/singleprecision/FileReader.java",
+        "bytes": 3155,
+        "sha256": "53d7b6a65c20a974739ef4efea97e3a290505f6d3e91a95f3d8cca619c4cf9e1",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/test/java/org/urbcomp/startdb/compress/elf/singleprecision/TestCompressor.java",
+        "bytes": 23920,
+        "sha256": "a2cad8d608c2275fa3adca395df3a8557a31a6eba4b0f4355893437fa7e1f053",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/test/resources/ElfTestData/Air-pressure.csv",
+        "bytes": 875571,
+        "sha256": "8d509ad428e72ccbc72acc9ca0a66022d7fad1c67d8de8eaddf1c05cb5afcbda",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/test/resources/ElfTestData/Air-sensor.csv",
+        "bytes": 159287,
+        "sha256": "5d15c0a50b7553f4ba5bc5f8deefec513e29bd9d5ca9bfa0f4379c0e01101f66",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/test/resources/ElfTestData/Basel-temp.csv",
+        "bytes": 984997,
+        "sha256": "52adbe9e78f55e2dbeaec2d69be48ea052abaac8cac4942f0d436b3c87088709",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/test/resources/ElfTestData/Basel-wind.csv",
+        "bytes": 933467,
+        "sha256": "ed4d2bcd0bd95d2d4f55d4307728152ddd3d4c81bf64c968fe9d719321d4560f",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/test/resources/ElfTestData/Bird-migration.csv",
+        "bytes": 758215,
+        "sha256": "abba924b11eecf2da663d2977950e1496af76efed6c4e399637ec518853a43e1",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/test/resources/ElfTestData/Bitcoin-price.csv",
+        "bytes": 77485,
+        "sha256": "770bba34c6190f2aa7f402e22feb5ced4effce95a1acc63a00c5e61c11d9fc34",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/test/resources/ElfTestData/Blockchain-tr.csv",
+        "bytes": 690656,
+        "sha256": "badb4ad743fdf3dedfba0d43dbea535b570b15c1feb72462486ac0ce2457499c",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/test/resources/ElfTestData/City-lat.csv",
+        "bytes": 330225,
+        "sha256": "89db56bcdd9ce8a5863d443203891ae07265ebe636bae112ba90e449a5ae6a20",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/test/resources/ElfTestData/City-lon.csv",
+        "bytes": 344878,
+        "sha256": "8d24eb82aa28607290da80e31b8867e1ef71191acc9e3be428e86c8db9bf51b9",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/test/resources/ElfTestData/City-temp.csv",
+        "bytes": 468393,
+        "sha256": "8e070ea3120dda9ca10fa9aa320224fd105c14f4872f5998e83b91a815267448",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/test/resources/ElfTestData/Dew-point-temp.csv",
+        "bytes": 600006,
+        "sha256": "ee2dc6b8a8c888f205cb0c39842de7bdc4467cb6e3904b1cd26c3fe02513070a",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/test/resources/ElfTestData/Food-price.csv",
+        "bytes": 579912,
+        "sha256": "08c4229038b31273191f744768b3a7abbd6d786f8f51a5059cfd1bc66e020d3f",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/test/resources/ElfTestData/IR-bio-temp.csv",
+        "bytes": 587587,
+        "sha256": "d85fab8277e0d8336ac5f18418125a960b602a1cf9be9d027440f5916105e694",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/test/resources/ElfTestData/PM10-dust.csv",
+        "bytes": 591410,
+        "sha256": "a0e2c21141a190fce601d80b89d08218a2a32da986c6486fd1371acfa1bfb06f",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/test/resources/ElfTestData/POI-lat.csv",
+        "bytes": 1905939,
+        "sha256": "f745e23e55b65379963552b5fce763a1f412f100a4d46e2fa775db9d4221da51",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/test/resources/ElfTestData/POI-lon.csv",
+        "bytes": 1942088,
+        "sha256": "61213d0e47074ead8966858edd496906c0d2ab377d9d9fd990426974a36b586c",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/test/resources/ElfTestData/SSD-bench.csv",
+        "bytes": 51118,
+        "sha256": "27c92e71181d8377eb7fdace797c0a401db8a2c3f13b686b0280ae59ef37a8c2",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/test/resources/ElfTestData/Stocks-DE.csv",
+        "bytes": 632283,
+        "sha256": "dda43ca9847f1d28afe6dce60b191fe463711925b6a1696afe3d6ef44fa7efbf",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/test/resources/ElfTestData/Stocks-UK.csv",
+        "bytes": 620317,
+        "sha256": "40e0e8f2d81a32123187e644bb86cb2cfd9c706f12970d3ab652249d8ed005be",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/test/resources/ElfTestData/Stocks-USA.csv",
+        "bytes": 608701,
+        "sha256": "2fcfa5604063c2b2a0c40341deaf0bb823bc8f33123249e6a5c317f9e34cd9ce",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/test/resources/ElfTestData/Wind-Speed.csv",
+        "bytes": 487650,
+        "sha256": "124137c4f356d50671762732733422365e9359bbf6d1f01e560246ddcb7c6b10",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/test/resources/ElfTestData/electric_vehicle_charging.csv",
+        "bytes": 16531,
+        "sha256": "a9f7b954a33e40affdc47b95377272f92b9fc77f7f46d2eaf3d929cc056d7d43",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      },
+      {
+        "path": "src/test/resources/ElfTestData/init.csv",
+        "bytes": 487650,
+        "sha256": "124137c4f356d50671762732733422365e9359bbf6d1f01e560246ddcb7c6b10",
+        "license": "NOASSERTION unless file header contains its own third-party notice; notices preserved"
+      }
+    ],
+    "closure_sha256": "482648280e38a34593235f0e3cd2debc274264c4bc54f950f852a4f45fb976d3"
+  },
+  "source_lock_sha256": "d5334fe24139cf6024e4ac6c45a39c683a337ac2268557288e4354365c5bf9fa",
+  "standalone_port_manifest_sha256": "7af91afeefd0aa849092027c2d7f7ea48184e4bd933f4f3dbaf2eac9193fb575",
+  "standalone_sbom_sha256": "971f267a0ef857c138367f84e505dd2955f9aa4597faab63256bd47413408f26",
+  "current_qualification": {
+    "status": "PASS",
+    "report_sha256": "5bafea4a420d8467e2640e3abd637ed4ed1873299765ec31c1d471f0688e5657",
+    "declared_platforms": [
+      "linux-x86_64-gcc",
+      "linux-x86_64-clang"
+    ],
+    "security_scope": "ASan/UBSan; leak detection disabled because the sandbox disallows LSan ptrace; no leak-clean claim",
+    "reproducibility": "BIT_FOR_BIT_RELOCATED_GCC_RELEASE",
+    "artifacts": {
+      "elf_plus_cli": "3b21218c009d54da7db843f9b9e33627811e892d79fbce6bb7184ec935363609",
+      "libelf_plus.a": "3e88fe292a09d9f5993707299bd74b95924ea4f57982f42144ba6d1e9c748129",
+      "elf_plus_benchmark": "0aaac68eca5385088c102824f827c7025193cb2685b37439fb073a065f9084eb",
+      "elf_plus_preflight": "b2ecea8ed6095c16affa15374fc5f9209391ed6f066622d1007aec3586f9e431"
+    }
+  },
+  "license": {
+    "spdx": "NOASSERTION",
+    "local_workflow_only": true,
+    "decision_sha256": "b9ba8f8269c92ba732fd7853148740c8e34f352b846beff18ebc3e35ab18b0c1",
+    "external_publication_authorized": false
+  }
+}

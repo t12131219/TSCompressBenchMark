@@ -47,7 +47,11 @@ def resolve_execution(
             {"abm", "lzcnt"} & available_flags
         )
     else:
-        cpu_supports = requested == "SCALAR" or _ISA_FLAGS.get(requested) in available_flags
+        cpu_supports = (
+            requested == "SCALAR"
+            or (requested == "CPU_RUNTIME_DISPATCH" and execution["runtime_dispatch"])
+            or _ISA_FLAGS.get(requested) in available_flags
+        )
     status = RunStatus.PLANNED
     reason = "RESOLVED"
     actual = requested
@@ -56,6 +60,13 @@ def resolve_execution(
     if compatibility.status is CapabilityStatus.UNSUPPORTED:
         status = RunStatus.UNSUPPORTED
         reason = compatibility.reason_code
+        actual = "NOT_EXECUTED"
+    elif (
+        "timing_scopes" in execution
+        and profile.get("timing_scope") not in execution["timing_scopes"]
+    ):
+        status = RunStatus.UNSUPPORTED
+        reason = "TIMING_SCOPE_UNSUPPORTED"
         actual = "NOT_EXECUTED"
     elif requested not in manifest_isas:
         status = RunStatus.ISA_UNSUPPORTED
@@ -202,9 +213,7 @@ def build_comparability_keys(
         semantic_document["streaming_profile"] = {
             "protocol": "PERSISTENT_NATIVE_CONTEXT_PER_ROUTED_OBJECT",
             "block_size_elements": int(config.parameters["block_size"]),
-            "decode_chunk_bytes": int(
-                config.parameters.get("stream_decode_chunk_bytes", 16384)
-            ),
+            "decode_chunk_bytes": int(config.parameters.get("stream_decode_chunk_bytes", 16384)),
             "lookahead_elements": 0,
             "flush": "Z_NO_FLUSH_PER_BLOCK_Z_FINISH_ONCE",
             "checkpoint": "NONE",

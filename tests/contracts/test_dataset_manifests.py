@@ -9,11 +9,11 @@ def test_all_real_dataset_manifests_verify_and_have_stable_ids() -> None:
     registry = DatasetRegistry(PROJECT_ROOT / "registry" / "datasets", PROJECT_ROOT)
     first = registry.verify_all()
     second = registry.verify_all()
-    assert len(first) == 15
+    assert len(first) == 20
     assert "sprintz_i16_mts" in {item.key for item in first}
     assert "sprintz_u8_uts" in {item.key for item in first}
     assert [item.dataset_id for item in first] == [item.dataset_id for item in second]
-    assert len({item.dataset_id for item in first}) == 15
+    assert len({item.dataset_id for item in first}) == 20
 
 
 def test_unknown_manifest_fields_are_not_silently_accepted(tmp_path) -> None:

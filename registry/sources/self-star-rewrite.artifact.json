@@ -1,0 +1,73 @@
+{
+  "schema_version": "tscb.source-artifact.v2",
+  "key": "self-star-rewrite",
+  "kind": "FROZEN_STANDALONE_CPP_REWRITE_PUBLIC_API",
+  "identity": {
+    "kind": "FROZEN_STANDALONE_CPP_REWRITE_PUBLIC_API",
+    "key": "self-star",
+    "package": "self-star",
+    "api_files": [
+      {
+        "path": "adapters/rewrite_lossless/vendor/self-star/LICENSES/LLVM-libcxx.txt",
+        "sha256": "539dd7aed86e8a4f12cbdd0e6c50c189c7d74847e4fecc64ce2c6ee3a01da38b"
+      },
+      {
+        "path": "adapters/rewrite_lossless/vendor/self-star/LICENSES/LLVM-libcxxabi.txt",
+        "sha256": "e2b35be49f7284a45b7baca8fc7b3ab7440e7902392b2528a457816b5bb2a15c"
+      },
+      {
+        "path": "adapters/rewrite_lossless/vendor/self-star/LICENSES/LLVM-libunwind.txt",
+        "sha256": "b5efebcaca80879234098e52d1725e6d9eb8fb96a19fce625d39184b705f7b6d"
+      },
+      {
+        "path": "adapters/rewrite_lossless/vendor/self-star/LICENSES/musl-COPYRIGHT.txt",
+        "sha256": "f9bc4423732350eb0b3f7ed7e91d530298476f8fec0c6c427a1c04ade22655af"
+      },
+      {
+        "path": "adapters/rewrite_lossless/vendor/self-star/LOCAL_WORKFLOW_DECISIONS.md",
+        "sha256": "b9ba8f8269c92ba732fd7853148740c8e34f352b846beff18ebc3e35ab18b0c1"
+      },
+      {
+        "path": "adapters/rewrite_lossless/vendor/self-star/README.md",
+        "sha256": "49762908e77946894be4d66afdbfd1340ee7d4903ae9397ccd914b3b2a0c6409"
+      },
+      {
+        "path": "adapters/rewrite_lossless/vendor/self-star/UPSTREAM_PROVENANCE.json",
+        "sha256": "a280d9fd62e81fb7c554fb7c286792dccc91e79c9c925645ac7e9137637541f7"
+      },
+      {
+        "path": "adapters/rewrite_lossless/vendor/self-star/contract.md",
+        "sha256": "64c081ad50daa194f0d814035881c7fb81e986cf4c6189d38bf4335e115cda7e"
+      },
+      {
+        "path": "adapters/rewrite_lossless/vendor/self-star/include/self_star.hpp",
+        "sha256": "222465c5ddfba4209a0ec049a38a4bb17a9348c7725190980bb4bf171b5d849d"
+      },
+      {
+        "path": "adapters/rewrite_lossless/vendor/self-star/src/codec.cpp",
+        "sha256": "bf953231718186eb6191ef7977b098acacab7e31d90cad6ec4975eb6af48443e"
+      }
+    ],
+    "variant": "self-star",
+    "wrapper": "RWF1_COLUMN_SESSIONS_V1"
+  },
+  "license": {
+    "spdx": "NOASSERTION",
+    "status": "REDISTRIBUTION_RESTRICTED",
+    "files": [
+      "adapters/rewrite_lossless/vendor/self-star/LICENSES/LLVM-libcxx.txt",
+      "adapters/rewrite_lossless/vendor/self-star/LICENSES/LLVM-libcxxabi.txt",
+      "adapters/rewrite_lossless/vendor/self-star/LICENSES/LLVM-libunwind.txt",
+      "adapters/rewrite_lossless/vendor/self-star/LICENSES/musl-COPYRIGHT.txt",
+      "adapters/rewrite_lossless/vendor/self-star/LOCAL_WORKFLOW_DECISIONS.md"
+    ],
+    "redistribution": "NO_EXTERNAL_PUBLICATION; user-authorized local run/rewrite; unknown upstream grant"
+  },
+  "build": {
+    "recipe": "python tools/build_codec.py self-star --profile all",
+    "frozen_lock": "adapters/rewrite_lossless/FROZEN_APIS.json",
+    "translation_units": [
+      "src/codec.cpp"
+    ]
+  }
+}

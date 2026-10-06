@@ -1,0 +1,96 @@
+schema_version: 1
+algorithm_id: fabba
+upstream_revision: 4066a5fc778f50f4bee1c41d8f3ab3ee4a3ff6ad
+overall_result: FULL_PARITY
+waiver_ids: []
+
+capabilities:
+  - capability_id: codec.one_shot_profile_norm2_scl1
+    category: INPUT_AND_PIPELINE
+    upstream:
+      present: true
+      public_or_supported: true
+      evidence:
+        - path: Compression_Rewrite/Source/fabba/upstream/fABBA/fabba.py
+          symbol_or_test: fABBA.fit_transform
+          lines_or_case: "733-823"
+      platforms: [linux-x86_64, linux-aarch64]
+      build_flags: []
+      semantic_contract: {reset_frequency: per_transform_call, flush_semantics: not_applicable, finalize_semantics: return_container}
+    parity_class: REQUIRED_PARITY
+    rewrite:
+      present: true
+      public_symbol: fabba_transform_v1
+      variant: canonical_scalar
+      platforms: [linux-x86_64, linux-aarch64]
+      build_target: fabba_c
+    validation:
+      status: PASS
+      oracle: tests/oracle/fabba_oracle.py
+      tests: [golden, differential, dataset, standalone_preflight]
+      artifact_hashes: []
+    waiver_id: null
+    rationale: Frozen profile is one-thread, univariate, norm-2, scl=1.
+
+  - capability_id: threading.partitioned_parallel_compress
+    category: MULTITHREADING
+    upstream:
+      present: true
+      public_or_supported: true
+      evidence:
+        - path: Compression_Rewrite/Source/fabba/upstream/fABBA/fabba.py
+          symbol_or_test: fABBA.parallel_compress
+          lines_or_case: "1052-1104"
+      platforms: [linux-x86_64]
+      build_flags: []
+      semantic_contract: {reset_frequency: per_partition, flush_semantics: join_workers, finalize_semantics: return_partition_list}
+    parity_class: REQUIRED_PARITY
+    rewrite:
+      present: true
+      public_symbol: fabba::parallel_compress
+      variant: partitioned-bounded-workers
+      platforms: [linux-x86_64, linux-aarch64]
+      build_target: fabba
+    validation:
+      status: PASS
+      oracle: Compression_Rewrite/Source/fabba/upstream/fABBA/fabba.py
+      tests: [source_differential, threads_1_2_3, threads_above_work_units, execution_evidence, tail_policy, deterministic_repeat, concurrent_calls, tsan, aarch64_differential]
+      artifact_hashes: []
+    waiver_id: null
+    rationale: Partitioned compression uses bounded worker batches, deterministic output ordering, explicit execution statistics, concurrent-call coverage, and TSan validation.
+
+  - capability_id: codec.image_helper
+    category: SHAPE_AND_LAYOUT
+    upstream:
+      present: true
+      public_or_supported: true
+      evidence:
+        - path: Compression_Rewrite/Source/fabba/upstream/fABBA/__init__.py
+          symbol_or_test: image_compress/image_decompress
+          lines_or_case: "203-229"
+      platforms: [linux-x86_64]
+      build_flags: []
+      semantic_contract: {reset_frequency: per_image, flush_semantics: not_applicable, finalize_semantics: return_image}
+    parity_class: NOT_APPLICABLE
+    rewrite: {present: false, public_symbol: null, variant: null, platforms: [], build_target: null}
+    validation: {status: PASS, oracle: null, tests: [], artifact_hashes: []}
+    waiver_id: null
+    rationale: Image helper is a wrapper around flattened univariate fABBA and is outside this AlgorithmID.
+
+  - capability_id: optimized.simd
+    category: SIMD
+    upstream:
+      present: false
+      public_or_supported: false
+      evidence:
+        - path: Compression_Rewrite/Source/fabba/SOURCE_MANIFEST.yaml
+          symbol_or_test: source roles and build metadata
+          lines_or_case: "14-31"
+      platforms: [all]
+      build_flags: []
+      semantic_contract: {reset_frequency: null, flush_semantics: null, finalize_semantics: null}
+    parity_class: NOT_APPLICABLE
+    rewrite: {present: false, public_symbol: null, variant: null, platforms: [], build_target: null}
+    validation: {status: PASS, oracle: null, tests: [], artifact_hashes: []}
+    waiver_id: null
+    rationale: No supported upstream SIMD variant is present in the locked closure.

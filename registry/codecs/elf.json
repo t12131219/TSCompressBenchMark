@@ -1,0 +1,156 @@
+{
+  "schema_version": "tscb.codec-manifest.v2",
+  "key": "elf",
+  "identity": {
+    "display_name": "Elf (VLDB2023)",
+    "family": "ELF",
+    "citations": [
+      "standalone:Compression_Rewrite/ReWrite/elf/contract.md"
+    ],
+    "source_artifact_id": "v2:source-artifact:sha256:c77ffff441c01660d4f4f45385e5a94601213d65cac2def67a7d28461d49eae7"
+  },
+  "classification": {
+    "object_level": "P1_STANDALONE_CODEC",
+    "implementation_class": "CONVENTIONAL",
+    "tracks": [
+      "VALUE"
+    ],
+    "subtracks": [
+      "V0"
+    ]
+  },
+  "input": {
+    "topologies": [
+      "UTS",
+      "SYNCHRONOUS_MTS"
+    ],
+    "dtypes": [
+      "<f4",
+      "<f8"
+    ],
+    "ranks": [
+      1,
+      2
+    ],
+    "layouts": [
+      "ROW_MAJOR_CONTIG",
+      "SOA_COLUMNS"
+    ],
+    "endianness": [
+      "little"
+    ],
+    "alignment_bytes": 1,
+    "min_n": 0,
+    "max_n": 16777216,
+    "min_m": 1,
+    "max_m": 65535,
+    "validity_shapes": [
+      "NONE"
+    ],
+    "homogeneous_itemsize": true,
+    "max_total_raw_bytes": 134217728,
+    "value_coupling_mode": "COLUMN_INDEPENDENT",
+    "timestamp_semantics": {
+      "preserve_order": true,
+      "duplicates": true,
+      "out_of_order": true,
+      "negative_delta": true,
+      "absolute_epoch": true,
+      "overflow_policy": "NOT_APPLICABLE_VALUE_ONLY"
+    },
+    "value_domain": {
+      "kind": "FROZEN_SOURCE_WITH_BOUNDED_REJECTION",
+      "unsupported_action": "REJECT_BEFORE_OUTPUT",
+      "oracle_evidence": "Compression_Rewrite/ReWrite/elf/validation/source-domain/report.json",
+      "rejection_reasons": [
+        "NaN is the source END marker",
+        "source significance search does not terminate",
+        "invalid source erasure scale",
+        "original source recovery is not lossless"
+      ]
+    },
+    "max_total_elements": 16777216
+  },
+  "semantics": {
+    "loss_modes": [
+      "LOSSLESS"
+    ],
+    "error_bound_types": [],
+    "reconstruction_modes": [
+      "EXACT_GRID"
+    ],
+    "rebuild_protocol": "TSCB_ELF_FROZEN_API_RWF1_V1",
+    "preprocess_class": "NONE",
+    "preprocess_stages": [],
+    "decodability_profile": "SELF_CONTAINED_DESCRIPTOR_WITH_CHECKED_FROZEN_CODEC_FRAMES",
+    "bitstream_separability": "PER_COLUMN_BLOCK"
+  },
+  "lifecycle": {
+    "block_semantics": "CONFIGURED_SAMPLE_BLOCKS_WITH_EXACT_TAIL",
+    "state_semantics": "RESET_EACH_BLOCK_AND_COLUMN",
+    "reset": "REQUIRED_MODE_ZERO",
+    "finalize": "REQUIRED_ZERO_BYTE_FINALIZE",
+    "safe_overread_bytes": 0,
+    "tail_policy": "EXACT_COUNT",
+    "dictionary": "NONE",
+    "model": "FROZEN_UPSTREAM_STATE",
+    "index": "NONE"
+  },
+  "execution": {
+    "backends": [
+      "C_ABI_V1"
+    ],
+    "isa": [
+      "SCALAR"
+    ],
+    "devices": [
+      "CPU"
+    ],
+    "threading": "SINGLE_THREAD",
+    "fallback_policy": "DISALLOWED_SOURCE_DOMAIN_ERRORS_REJECTED",
+    "runtime_dispatch": false,
+    "timing_scopes": [
+      "PIPELINE",
+      "E2E"
+    ]
+  },
+  "features": {
+    "streaming": false,
+    "query": false,
+    "random_access": false
+  },
+  "parameters": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "block_size": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 16384,
+        "default": 1000
+      },
+      "isa": {
+        "type": "string",
+        "enum": [
+          "SCALAR"
+        ],
+        "default": "SCALAR"
+      }
+    },
+    "constraints": []
+  },
+  "adapter": {
+    "backend": "C_ABI_V1",
+    "version": "rewrite-lossless-ctypes-v1",
+    "factory": "REWRITE_LOSSLESS_CTYPES_V1",
+    "artifact_path": "build/adapters/elf/release/libtscb_elf.so",
+    "timing_boundary": "PYTHON_LAYOUT_FFI_DESCRIPTOR_AND_CHECKED_NATIVE_FRAME_INCLUDED",
+    "accounting_hooks": [
+      "FINAL_STREAM_LENGTH",
+      "DESCRIPTOR_AND_WRAPPER_OVERHEAD",
+      "OPAQUE_COMPLETE_STANDALONE_CODEC_BYTES",
+      "COLUMN_CODEC_BYTES",
+      "OUTPUT_CAPACITY"
+    ]
+  }
+}

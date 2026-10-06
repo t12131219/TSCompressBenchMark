@@ -1,0 +1,96 @@
+{
+  "schema_version": "tscb.source-artifact.v2",
+  "key": "prometheus-xor-chunk-rewrite",
+  "kind": "FROZEN_STANDALONE_CPP_REWRITE_PUBLIC_API",
+  "identity": {
+    "kind": "FROZEN_STANDALONE_CPP_REWRITE_PUBLIC_API",
+    "key": "prometheus-xor-chunk",
+    "package": "prometheus-xor-chunk",
+    "api_files": [
+      {
+        "path": "adapters/rewrite_lossless/vendor/prometheus-xor-chunk/LICENSES/Apache-2.0.txt",
+        "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+      },
+      {
+        "path": "adapters/rewrite_lossless/vendor/prometheus-xor-chunk/LICENSES/BSD-3-Clause.txt",
+        "sha256": "0d4157d2137f2cefb5968b62e3fc59010b15b1ecfe9d71dde50580af01eafca9"
+      },
+      {
+        "path": "adapters/rewrite_lossless/vendor/prometheus-xor-chunk/LICENSES/GNU-runtime-copyright.txt",
+        "sha256": "da8191658b3452ce9caf31638ba61dab31a38c619fa39df119812e050f592fd3"
+      },
+      {
+        "path": "adapters/rewrite_lossless/vendor/prometheus-xor-chunk/LICENSES/GPL-3.txt",
+        "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
+      },
+      {
+        "path": "adapters/rewrite_lossless/vendor/prometheus-xor-chunk/LICENSES/LGPL-2.1.txt",
+        "sha256": "dc626520dcd53a22f727af3ee42c770e56c97a64fe3adb063799d8ab032fe551"
+      },
+      {
+        "path": "adapters/rewrite_lossless/vendor/prometheus-xor-chunk/LICENSES/NOTICE",
+        "sha256": "ac9e304462a58a4d71b6488423d4447e614c8b31d517fe24345016522c102a78"
+      },
+      {
+        "path": "adapters/rewrite_lossless/vendor/prometheus-xor-chunk/LICENSES/glibc-copyright.txt",
+        "sha256": "d3c95b56fa33e28b57860580f0baf4e4f4de2a268a2b80f1d031a5191bade265"
+      },
+      {
+        "path": "adapters/rewrite_lossless/vendor/prometheus-xor-chunk/README.md",
+        "sha256": "15e6ce4c65eed01157730d99ecb9193d5866c11ef68a3017c5c1a67b2240a0a9"
+      },
+      {
+        "path": "adapters/rewrite_lossless/vendor/prometheus-xor-chunk/UPSTREAM_PROVENANCE.json",
+        "sha256": "f3a0ba6ad83ef2420018d46f263fdbd6e0a27d2704e486d31637fdb711b9301d"
+      },
+      {
+        "path": "adapters/rewrite_lossless/vendor/prometheus-xor-chunk/contract.md",
+        "sha256": "6a1cce9b0edba60ed115b6801f1cc5e23b199635a4faef2e09f848fbb90be75a"
+      },
+      {
+        "path": "adapters/rewrite_lossless/vendor/prometheus-xor-chunk/include/prometheus_xor_chunk.hpp",
+        "sha256": "b102fadbb7adedb13e4d52dbed352b9d2f8d906307f121be2bde7ece31709724"
+      },
+      {
+        "path": "adapters/rewrite_lossless/vendor/prometheus-xor-chunk/include/prometheus_xor_chunk_c.h",
+        "sha256": "fee8065545ceb41953624f8741a5cf09993a6d2e9bb5cfe1494995f98c265e2b"
+      },
+      {
+        "path": "adapters/rewrite_lossless/vendor/prometheus-xor-chunk/src/canonical/prometheus_xor_chunk.cpp",
+        "sha256": "3fa9aed6c7cf9b6835a4e94bdd74af7db47b9369bd047e6d7dc3d4f19fe10a42"
+      },
+      {
+        "path": "adapters/rewrite_lossless/vendor/prometheus-xor-chunk/src/optimized/README.md",
+        "sha256": "845d6327cccdca23ca1bd1d3259f5e52cd15958b28cdc51c2c3a0f457030a461"
+      },
+      {
+        "path": "adapters/rewrite_lossless/vendor/prometheus-xor-chunk/src/standalone/prometheus_xor_chunk_c.cpp",
+        "sha256": "d9e8cd5b75e89f007693d877646f85c8e7f0ac9fcfc193a0af5109feae81c819"
+      }
+    ],
+    "variant": "prometheus-xor-chunk",
+    "wrapper": "RWF1_COLUMN_SESSIONS_V1"
+  },
+  "license": {
+    "spdx": "Apache-2.0 AND BSD-3-Clause",
+    "status": "RUN_ALLOWED",
+    "files": [
+      "adapters/rewrite_lossless/vendor/prometheus-xor-chunk/LICENSES/Apache-2.0.txt",
+      "adapters/rewrite_lossless/vendor/prometheus-xor-chunk/LICENSES/BSD-3-Clause.txt",
+      "adapters/rewrite_lossless/vendor/prometheus-xor-chunk/LICENSES/GNU-runtime-copyright.txt",
+      "adapters/rewrite_lossless/vendor/prometheus-xor-chunk/LICENSES/GPL-3.txt",
+      "adapters/rewrite_lossless/vendor/prometheus-xor-chunk/LICENSES/LGPL-2.1.txt",
+      "adapters/rewrite_lossless/vendor/prometheus-xor-chunk/LICENSES/NOTICE",
+      "adapters/rewrite_lossless/vendor/prometheus-xor-chunk/LICENSES/glibc-copyright.txt"
+    ],
+    "redistribution": "ORIGINAL_LICENSE_TERMS_APPLY"
+  },
+  "build": {
+    "recipe": "python tools/build_codec.py prometheus-xor-chunk --profile all",
+    "frozen_lock": "adapters/rewrite_lossless/FROZEN_APIS.json",
+    "translation_units": [
+      "src/canonical/prometheus_xor_chunk.cpp",
+      "src/standalone/prometheus_xor_chunk_c.cpp"
+    ]
+  }
+}

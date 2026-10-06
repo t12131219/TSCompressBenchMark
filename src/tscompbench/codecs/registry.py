@@ -113,16 +113,34 @@ class CodecRegistry:
                 document = json.loads(path.read_text(encoding="utf-8"))
             except (OSError, json.JSONDecodeError) as error:
                 raise CodecContractError(f"cannot read codec alias {path}: {error}") from error
-            _require_keys(document, required={
-                "schema_version", "key", "canonical_key", "canonical_algorithm_id",
-                "source_artifact_id", "mapping_kind", "evidence", "limitations",
-            }, label=f"codec alias {path.name}")
-            for field in ("schema_version", "key", "canonical_key",
-                          "canonical_algorithm_id", "source_artifact_id", "mapping_kind"):
+            _require_keys(
+                document,
+                required={
+                    "schema_version",
+                    "key",
+                    "canonical_key",
+                    "canonical_algorithm_id",
+                    "source_artifact_id",
+                    "mapping_kind",
+                    "evidence",
+                    "limitations",
+                },
+                label=f"codec alias {path.name}",
+            )
+            for field in (
+                "schema_version",
+                "key",
+                "canonical_key",
+                "canonical_algorithm_id",
+                "source_artifact_id",
+                "mapping_kind",
+            ):
                 if not isinstance(document[field], str) or not document[field].strip():
                     raise CodecContractError(f"codec alias requires a string {field}: {path.name}")
-            if (document["schema_version"] != "tscb.codec-alias.v2"
-                    or document["mapping_kind"] != "SPREADSHEET_SOURCE_MAPPING_NOT_NEW_CODEC"):
+            if (
+                document["schema_version"] != "tscb.codec-alias.v2"
+                or document["mapping_kind"] != "SPREADSHEET_SOURCE_MAPPING_NOT_NEW_CODEC"
+            ):
                 raise CodecContractError(f"unsupported codec alias schema or kind: {path.name}")
             key = document["key"]
             if key != path.stem or key in self._manifests or key in self._aliases:
@@ -130,13 +148,17 @@ class CodecRegistry:
             target = self._manifests.get(document["canonical_key"])
             if target is None:
                 raise CodecContractError(f"alias requires a canonical codec, not a chain: {key}")
-            if (target.algorithm_id != document["canonical_algorithm_id"]
-                    or target.source_artifact_id != document["source_artifact_id"]):
+            if (
+                target.algorithm_id != document["canonical_algorithm_id"]
+                or target.source_artifact_id != document["source_artifact_id"]
+            ):
                 raise CodecContractError(f"codec alias identity differs from target: {key}")
             for field in ("evidence", "limitations"):
-                if (not isinstance(document[field], list) or not document[field]
-                        or not all(isinstance(item, str) and item.strip()
-                                   for item in document[field])):
+                if (
+                    not isinstance(document[field], list)
+                    or not document[field]
+                    or not all(isinstance(item, str) and item.strip() for item in document[field])
+                ):
                     raise CodecContractError(f"codec alias requires nonempty {field}: {key}")
             self._aliases[key] = document
 
@@ -230,11 +252,62 @@ class CodecRegistry:
                 "value_coupling_mode",
                 "timestamp_semantics",
             },
-            optional={"homogeneous_itemsize", "max_total_raw_bytes"},
+            optional={
+                "homogeneous_itemsize",
+                "max_total_raw_bytes",
+                "component_dtypes",
+                "value_domain",
+                "max_total_elements",
+                "max_blocks_per_column",
+                "required_value_units",
+                "logical_record",
+            },
             label=f"{path.name}.input",
         )
         for value in input_contract["topologies"]:
             Topology(value)
+        for limit in ["max_total_elements", "max_blocks_per_column"]:
+            if limit in input_contract and (
+                type(input_contract[limit]) is not int or input_contract[limit] <= 0
+            ):
+                raise CodecContractError(f"{path.name}.input invalid {limit}")
+        if "max_blocks_per_column" in input_contract:
+            block = document["parameters"]["properties"].get("block_size", {})
+            if block.get("type") != "integer" or type(block.get("default")) is not int:
+                raise CodecContractError(
+                    f"{path.name}.input block limit requires integer block_size"
+                )
+        if "value_domain" in input_contract:
+            domain = input_contract["value_domain"]
+            if (
+                not isinstance(domain, dict)
+                or set(domain)
+                != {"kind", "unsupported_action", "oracle_evidence", "rejection_reasons"}
+                or domain["kind"] != "FROZEN_SOURCE_WITH_BOUNDED_REJECTION"
+                or domain["unsupported_action"] != "REJECT_BEFORE_OUTPUT"
+                or not isinstance(domain["oracle_evidence"], str)
+                or not domain["oracle_evidence"]
+                or not isinstance(domain["rejection_reasons"], list)
+                or not domain["rejection_reasons"]
+                or any(
+                    not isinstance(reason, str) or not reason
+                    for reason in domain["rejection_reasons"]
+                )
+            ):
+                raise CodecContractError(f"{path.name}.input invalid value_domain")
+        if "component_dtypes" in input_contract:
+            components = input_contract["component_dtypes"]
+            if (
+                not isinstance(components, dict)
+                or set(components) != {"timestamp", "value"}
+                or any(
+                    not isinstance(values, list)
+                    or not values
+                    or any(value not in input_contract["dtypes"] for value in values)
+                    for values in components.values()
+                )
+            ):
+                raise CodecContractError(f"{path.name}.input invalid component_dtypes")
         for value in input_contract["validity_shapes"]:
             ValidityShape(value)
         ValueCouplingMode(input_contract["value_coupling_mode"])
@@ -242,15 +315,10 @@ class CodecRegistry:
             "homogeneous_itemsize" in input_contract
             and type(input_contract["homogeneous_itemsize"]) is not bool
         ):
-            raise CodecContractError(
-                f"{path.name}.input homogeneous_itemsize must be boolean"
-            )
-        if (
-            "max_total_raw_bytes" in input_contract
-            and (
-                type(input_contract["max_total_raw_bytes"]) is not int
-                or input_contract["max_total_raw_bytes"] <= 0
-            )
+            raise CodecContractError(f"{path.name}.input homogeneous_itemsize must be boolean")
+        if "max_total_raw_bytes" in input_contract and (
+            type(input_contract["max_total_raw_bytes"]) is not int
+            or input_contract["max_total_raw_bytes"] <= 0
         ):
             raise CodecContractError(
                 f"{path.name}.input max_total_raw_bytes must be a positive integer"
@@ -308,8 +376,15 @@ class CodecRegistry:
                 "fallback_policy",
                 "runtime_dispatch",
             },
+            optional={"timing_scopes"},
             label=f"{path.name}.execution",
         )
+        if "timing_scopes" in execution and (
+            not isinstance(execution["timing_scopes"], list)
+            or not execution["timing_scopes"]
+            or any(scope not in {"CORE", "PIPELINE", "E2E"} for scope in execution["timing_scopes"])
+        ):
+            raise CodecContractError(f"{path.name}.execution invalid timing_scopes")
         features = document["features"]
         _require_keys(
             features,

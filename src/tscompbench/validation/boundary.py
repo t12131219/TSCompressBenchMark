@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from typing import Any
 
 import numpy as np
@@ -13,6 +13,7 @@ from tscompbench.execution.protocol import (
     LogicalBuffer,
     OutputCapacityError,
     RoutedInput,
+    SourceDomainError,
 )
 from tscompbench.execution.repetition import _encode, perform_roundtrip
 from tscompbench.execution.routing import hash_logical_buffers, hash_reference_array
@@ -84,7 +85,7 @@ def build_boundary_suite(
     contract = manifest.document["input"]
     minimum = int(contract["min_n"])
     maximum = int(contract["max_n"])
-    block = int(parameters.get("block_size", max(1, minimum)))
+    block = int(parameters.get("block_size", parameters.get("window_size", max(1, minimum))))
     length_candidates = {0, 1, 2, max(0, minimum - 1), minimum, minimum + 1}
     length_candidates.update(
         {
@@ -97,7 +98,9 @@ def build_boundary_suite(
         }
     )
     length_candidates = {value for value in length_candidates if value <= maximum}
-    supported_dtypes = tuple(str(item) for item in contract["dtypes"])
+    # SYSTEM timestamps and values have separate type roles.
+    value_dtypes = contract.get("component_dtypes", {}).get("value", contract["dtypes"])
+    supported_dtypes = tuple(str(item) for item in value_dtypes)
     base_dtype = supported_dtypes[0]
     cases: list[BoundaryCase] = []
     for n in sorted(length_candidates):
@@ -171,7 +174,10 @@ def build_boundary_suite(
             "TIMESTAMP_LARGE_GAP",
             "TIMESTAMP_EPOCH_EXTREMES",
         ):
-            cases.append(_case("TIMESTAMP", max(minimum, 9), 1, "<i8", pattern, "C"))
+            dtype = (
+                base_dtype if "SYSTEM" in manifest.document["classification"]["tracks"] else "<i8"
+            )
+            cases.append(_case("TIMESTAMP", max(minimum, 9), 1, dtype, pattern, "C"))
     cases.append(
         _case(
             "CAPACITY",
@@ -183,6 +189,13 @@ def build_boundary_suite(
             "CAPACITY_REJECTED",
         )
     )
+    if min_m > 1:
+        cases = [
+            _case(item.axis, item.n, min_m, item.dtype, item.pattern, item.layout, item.expected)
+            if item.axis != "M" and item.m < min_m
+            else item
+            for item in cases
+        ]
     unique = {item.case_id: item for item in cases}
     return tuple(unique[key] for key in sorted(unique))
 
@@ -245,7 +258,13 @@ def _values(case: BoundaryCase) -> np.ndarray[Any]:
     return values
 
 
-def _routed(case: BoundaryCase, track: BenchmarkTrack) -> RoutedInput:
+def _routed(
+    case: BoundaryCase,
+    track: BenchmarkTrack,
+    *,
+    logical_record: str | None = None,
+    floating_histogram: bool = False,
+) -> RoutedInput:
     arrays: list[LogicalBuffer] = []
     if track in {BenchmarkTrack.TIMESTAMP, BenchmarkTrack.SYSTEM}:
         timestamp = np.arange(case.n, dtype="<i8")
@@ -268,6 +287,31 @@ def _routed(case: BoundaryCase, track: BenchmarkTrack) -> RoutedInput:
         for index in range(case.m):
             values = _values(case)
             arrays.append(LogicalBuffer(f"value/{index:06d}", values, values.nbytes * 8))
+    units = ()
+    if logical_record == "PROMETHEUS_GAUGE_SCHEMA0_ONE_POSITIVE_BUCKET_V1":
+        if track is not BenchmarkTrack.SYSTEM or case.m != 6:
+            raise ExecutionContractError("Histogram-ST boundary record dimensions")
+        count = np.arange(case.n, dtype="<u8") + 1
+        zero = np.zeros(case.n, dtype="<u8")
+        bucket = count.copy()
+        if floating_histogram:
+            count = count.astype("<f8").view("<u8")
+            bucket = bucket.astype("<f8").view("<u8")
+        fields = [zero.copy(), count, zero.copy(), _values(case), zero.copy(), bucket]
+        arrays = [arrays[0]] + [
+            LogicalBuffer(f"value/{i:06d}", field, field.nbytes * 8)
+            for i, field in enumerate(fields)
+        ]
+        for item in arrays:
+            item.array.flags.writeable = False
+        units = (
+            "HISTOGRAM_ST_INT64_BITS",
+            "HISTOGRAM_COUNT_BITS",
+            "HISTOGRAM_ZERO_COUNT_BITS",
+            "HISTOGRAM_SUM_BINARY64_BITS",
+            "HISTOGRAM_ZERO_THRESHOLD_BINARY64_BITS",
+            "HISTOGRAM_BUCKET_BITS",
+        )
     buffers = tuple(arrays)
     canonical_raw_bits = sum(item.logical_bits for item in buffers)
     timestamp_reference = arrays[0].array if arrays and arrays[0].name == "timestamp" else None
@@ -283,6 +327,7 @@ def _routed(case: BoundaryCase, track: BenchmarkTrack) -> RoutedInput:
         input_sha256=hash_logical_buffers(buffers),
         segment_plan_id="v2:segment-plan:boundary" if track is BenchmarkTrack.SYSTEM else None,
         pairing_reference_sha256=hash_reference_array(timestamp_reference),
+        value_units=units,
     )
 
 
@@ -300,7 +345,15 @@ def run_boundary_suite(
                 BoundaryObservation(case.case_id, "PASS", "CAPABILITY_REJECTED_WITHOUT_INVOCATION")
             )
             continue
-        routed = _routed(case, track)
+        routed = _routed(
+            case,
+            track,
+            logical_record=manifest.document["input"].get("logical_record"),
+            floating_histogram=manifest.key == "prometheus-float-histogram-st",
+        )
+        required_units = manifest.document["input"].get("required_value_units")
+        if required_units:
+            routed = replace(routed, value_units=tuple(required_units))
         try:
             if case.expected == "CAPACITY_REJECTED":
                 session = adapter.create_session(parameters)
@@ -341,20 +394,19 @@ def run_boundary_suite(
                         loss = validate_error_bound(
                             value_original,
                             value_decoded,
-                            error_bound_type=str(
-                                parameters.get("error_bound_type", "ABSOLUTE")
-                            ),
+                            error_bound_type=str(parameters.get("error_bound_type", "ABSOLUTE")),
                             error_bound=str(parameters.get("error_bound", "0")),
                             error_aggregation_mode=str(
                                 parameters.get("error_aggregation_mode", "PER_CHANNEL")
                             ),
                         )
                         roundtrip_valid = loss.bound_passed and all(
-                            original[name].tobytes(order="C")
-                            == decoded[name].tobytes(order="C")
+                            original[name].tobytes(order="C") == decoded[name].tobytes(order="C")
                             for name in original
                             if name == "timestamp" or name == "validity"
                         )
+                    elif manifest.loss_modes[0] is LossMode.UNBOUNDED_LOSSY:
+                        roundtrip_valid = _unbounded_reconstruction_valid(original, decoded)
                     else:
                         roundtrip_valid = tuple(original) == tuple(decoded) and all(
                             original[name].dtype == decoded[name].dtype
@@ -432,6 +484,11 @@ def run_boundary_suite(
                     if name == "timestamp" or name == "validity"
                 )
                 mismatch_reason = "ROUNDTRIP_WITHIN_BOUND" if exact else "BOUND_VIOLATION"
+            elif loss_mode is LossMode.UNBOUNDED_LOSSY:
+                exact = _unbounded_reconstruction_valid(original, decoded)
+                mismatch_reason = (
+                    "FINITE_APPROXIMATION_NO_BOUND" if exact else "INVALID_APPROXIMATION"
+                )
             else:
                 exact = tuple(original) == tuple(decoded) and all(
                     original[name].dtype == decoded[name].dtype
@@ -459,6 +516,20 @@ def run_boundary_suite(
                     )
         except MemoryError:
             raise
+        except SourceDomainError as error:
+            declared = manifest.document["input"].get("value_domain", {})
+            accepted = (
+                declared.get("kind") == "FROZEN_SOURCE_WITH_BOUNDED_REJECTION"
+                and error.rejection_atomic
+                and str(error) in declared.get("rejection_reasons", [])
+            )
+            observations.append(
+                BoundaryObservation(
+                    case.case_id,
+                    "PASS" if accepted else "FAIL",
+                    "SOURCE_DOMAIN_REJECTED_ATOMICALLY:" + str(error),
+                )
+            )
         except Exception as error:
             observations.append(
                 BoundaryObservation(case.case_id, "FAIL", f"{type(error).__name__}:{error}")
@@ -472,4 +543,17 @@ def run_boundary_suite(
     }
     return BoundarySuiteReport(
         stable_id("boundary-suite", suite_document), tuple(observations), len(cases), passed
+    )
+
+
+def _unbounded_reconstruction_valid(original, decoded):
+    return tuple(original) == tuple(decoded) and all(
+        original[name].dtype == decoded[name].dtype
+        and original[name].shape == decoded[name].shape
+        and (
+            original[name].tobytes(order="C") == decoded[name].tobytes(order="C")
+            if name in {"timestamp", "validity"}
+            else np.all(np.isfinite(decoded[name]))
+        )
+        for name in original
     )

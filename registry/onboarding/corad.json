@@ -1,0 +1,351 @@
+{
+  "schema_version": "tscb.source-onboarding.v2",
+  "source_artifact_id": "v2:source-artifact:sha256:11e7f072de8ef924b5bd617f560e9085bac6a580a7077e183e42c8a63b60de44",
+  "repository": "https://github.com/eXascaleInfolab/CORAD",
+  "commit": "083824eb3e0b3ad72a00d4f585bc77b5adb5c1be",
+  "dirty": false,
+  "submodules": [],
+  "implementation_files": [
+    "adapters/completed_rewrites/vendor/corad/src/canonical/codec.cpp",
+    "adapters/completed_rewrites/vendor/corad/src/canonical/cpython_powersort.c",
+    "adapters/completed_rewrites/vendor/corad/src/canonical/cpython_rank_bridge.h",
+    "adapters/completed_rewrites/vendor/corad/third_party/tristan/src/canonical/numerical.cpp",
+    "adapters/completed_rewrites/vendor/corad/third_party/tristan/src/canonical/numerical_internal.hpp"
+  ],
+  "public_api_files": [
+    "adapters/completed_rewrites/vendor/corad/include/corad.hpp",
+    "adapters/completed_rewrites/vendor/corad/third_party/tristan/include/tristan.hpp"
+  ],
+  "benchmark_files": [
+    "adapters/completed_rewrites/native/binding.cpp",
+    "src/tscompbench/adapters/completed_rewrites.py"
+  ],
+  "test_files": [
+    "adapters/completed_rewrites/tests/qualification.cpp",
+    "tests/adapters/test_completed_rewrites.py",
+    "tests/integration/test_completed_rewrites_qualification.py"
+  ],
+  "license_files": [
+    "adapters/completed_rewrites/vendor/corad/LICENSES/BSD-3-Clause-pandas.txt",
+    "adapters/completed_rewrites/vendor/corad/LICENSES/BSD-3-Clause-scikit-learn.txt"
+  ],
+  "third_party_dependencies": [
+    {
+      "path": "/home/fzg/anaconda3/lib/libgcc_s.so.1",
+      "sha256": "d912bad5e511194c15b506fe7eafe4454bc2dc4073a0fdebc60e86af59a0f2bc"
+    },
+    {
+      "path": "/home/fzg/anaconda3/lib/libmkl_avx.so.2",
+      "sha256": "6e58519630bac8a01b92eca792123ca803fb8a9565d4839b34f301bed35f478e"
+    },
+    {
+      "path": "/home/fzg/anaconda3/lib/libmkl_avx2.so.2",
+      "sha256": "5bc7d7e94302cd9b94f34d8df5d55a1b35d7eae3ce66372c73726652ff210e89"
+    },
+    {
+      "path": "/home/fzg/anaconda3/lib/libmkl_avx512.so.2",
+      "sha256": "7c3d5a1bd3cf76695ccc50d4a89c7b9ef7e881fb0cf87fa9c91a6750cea7f973"
+    },
+    {
+      "path": "/home/fzg/anaconda3/lib/libmkl_blacs_intelmpi_ilp64.so.2",
+      "sha256": "8a79a70bcdaa12bd8c3decc1cd012445705a540c1429b93c553a51e0dd958f32"
+    },
+    {
+      "path": "/home/fzg/anaconda3/lib/libmkl_blacs_intelmpi_lp64.so.2",
+      "sha256": "5bcae5f2f1671d582e4891073209ec0bfe7e9c9f1f5b81543964080c1e74cd95"
+    },
+    {
+      "path": "/home/fzg/anaconda3/lib/libmkl_blacs_openmpi_ilp64.so.2",
+      "sha256": "79881ac42d4a6d3b732d50014e2e6866cee437387bb5177bbf47e7d4e336ea35"
+    },
+    {
+      "path": "/home/fzg/anaconda3/lib/libmkl_blacs_openmpi_lp64.so.2",
+      "sha256": "fab4331ca338d6f4485a93f1b375b06d4fb17817a2ad06081641f2bc6ab6b530"
+    },
+    {
+      "path": "/home/fzg/anaconda3/lib/libmkl_cdft_core.so.2",
+      "sha256": "328316a05d5defc85baed3f1d18a527c088052a6c6f362585079d151f9f3f0bf"
+    },
+    {
+      "path": "/home/fzg/anaconda3/lib/libmkl_core.so.2",
+      "sha256": "19edadb815b79d8f646438a84b29e5a3e1abafac48ec6344e44e2d422dff94f7"
+    },
+    {
+      "path": "/home/fzg/anaconda3/lib/libmkl_def.so.2",
+      "sha256": "0b3cf1a5e4337773a40e30061cf6c34eb75d4a67e57875808b4fc3f4a8161330"
+    },
+    {
+      "path": "/home/fzg/anaconda3/lib/libmkl_gf_ilp64.so.2",
+      "sha256": "e8b78ca5a8f791b359c94275a103e216d4d4e83082c9f32fd9d9bb85830a73a3"
+    },
+    {
+      "path": "/home/fzg/anaconda3/lib/libmkl_gf_lp64.so.2",
+      "sha256": "af2aaf48e18405dda1f392cbb0aa8cb8fe017e69d679caa9d9047d9aca0d0b3b"
+    },
+    {
+      "path": "/home/fzg/anaconda3/lib/libmkl_gnu_thread.so.2",
+      "sha256": "5d4e01395b75733e2233105efa95ca8039c3eae40cf10423e89c9487bef60ed0"
+    },
+    {
+      "path": "/home/fzg/anaconda3/lib/libmkl_intel_ilp64.so.2",
+      "sha256": "d2acdedbf3527da2d985ce1c3a9929efaecf0f1ba63056e2b6080591247e2c58"
+    },
+    {
+      "path": "/home/fzg/anaconda3/lib/libmkl_intel_lp64.so.2",
+      "sha256": "f0039b0dfdd5a70840f6287e3d77282c640d4a11a8212d10e5e8837794d1d074"
+    },
+    {
+      "path": "/home/fzg/anaconda3/lib/libmkl_intel_thread.so.2",
+      "sha256": "67a7403a52ed53c852682f81a40c615503a09d1c32206d7265ff256f4a730c8c"
+    },
+    {
+      "path": "/home/fzg/anaconda3/lib/libmkl_mc.so.2",
+      "sha256": "e188943239684f803f91df7c42955b2f4bc962822f39c0b438a22bdfcc7c12fc"
+    },
+    {
+      "path": "/home/fzg/anaconda3/lib/libmkl_mc3.so.2",
+      "sha256": "ec5b97356da1464691a722b09972010f3253a8b6fad83cd6b98ef0b054c17481"
+    },
+    {
+      "path": "/home/fzg/anaconda3/lib/libmkl_pgi_thread.so.2",
+      "sha256": "02a09039e6e3d3872e8e9923e36d33d3dfe01972a11cce041a605fdea8efcc1d"
+    },
+    {
+      "path": "/home/fzg/anaconda3/lib/libmkl_rt.so.2",
+      "sha256": "75173baf355b7493185b2268dc65617e6e061b18fb10cff224171db108ca7600"
+    },
+    {
+      "path": "/home/fzg/anaconda3/lib/libmkl_scalapack_ilp64.so.2",
+      "sha256": "2918bca7443fa9bf7eadb0df463dc70431d71ffc4a00162042dc3aef03481cb3"
+    },
+    {
+      "path": "/home/fzg/anaconda3/lib/libmkl_scalapack_lp64.so.2",
+      "sha256": "69a251a1a412dbfefe9eb03f142acc18aba7aab51667b4a064f8a11ed8976792"
+    },
+    {
+      "path": "/home/fzg/anaconda3/lib/libmkl_sequential.so.2",
+      "sha256": "4f4b622043f73d5d03e805a0f519930adcbbeff64675f343c3c60577de901129"
+    },
+    {
+      "path": "/home/fzg/anaconda3/lib/libmkl_tbb_thread.so.2",
+      "sha256": "96bb3efebab27d540f743c566c9e296b0127558f8794bc0666fe53564ae8c47b"
+    },
+    {
+      "path": "/home/fzg/anaconda3/lib/libmkl_vml_avx.so.2",
+      "sha256": "6209081c8ca44123113a041f12e1db2cc7da95bca6e86dcdddeca439a571cfe1"
+    },
+    {
+      "path": "/home/fzg/anaconda3/lib/libmkl_vml_avx2.so.2",
+      "sha256": "3196378de7c8f842481203abc471a1e1b5f231b4c1da26fd6812cc90df38e012"
+    },
+    {
+      "path": "/home/fzg/anaconda3/lib/libmkl_vml_avx512.so.2",
+      "sha256": "e5e0dff27c80dfe18f2eb400a7bef590f520f6488908dc6a5c8f2b4be51b7162"
+    },
+    {
+      "path": "/home/fzg/anaconda3/lib/libmkl_vml_cmpt.so.2",
+      "sha256": "24b6ed2ddd0a1e7e0fb4e2330ecc042b77175f754e2cffa3963f8ca50d4e6ec1"
+    },
+    {
+      "path": "/home/fzg/anaconda3/lib/libmkl_vml_def.so.2",
+      "sha256": "b4b8d9fb3392667af4c5cbfce64b1f0c886fd5385999dcbc734ddb63f5a5ac88"
+    },
+    {
+      "path": "/home/fzg/anaconda3/lib/libmkl_vml_mc.so.2",
+      "sha256": "27ce5631d297f2adaf0aa21a765de3efa8116f55c2822e6da195e9e66078cffb"
+    },
+    {
+      "path": "/home/fzg/anaconda3/lib/libmkl_vml_mc3.so.2",
+      "sha256": "3211959beba2d9a5e95409567047d8ff854d4f9e77d8e623d030a34943ac516e"
+    },
+    {
+      "path": "/home/fzg/anaconda3/lib/libstdc++.so.6.0.29",
+      "sha256": "4f045231ff3a95c2fbfde450575f0ef45d23e95be15193c8729b521fc363ece4"
+    },
+    {
+      "path": "/home/fzg/anaconda3/lib/mkl_msg.cat",
+      "sha256": "c77212b277d93a7036ea2ac0fd457962e8840a9f9a3f7dc38a9c9c6faa8b01ec"
+    },
+    {
+      "path": "/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+      "sha256": "9eb34cb2da3ae2a9398cc09b3cd2d069563ec40d9858cb711af15cd23fa80abf"
+    },
+    {
+      "path": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+      "sha256": "c53819710b163d3f1d2541778590d58d3ef31cb0ed75adcbe059faac68c1e72d"
+    },
+    {
+      "path": "/usr/lib/x86_64-linux-gnu/libdl.so.2",
+      "sha256": "bf1783273aa79484bf5f70eddc013bc3982785d8aadef224aa09beb08fa95b42"
+    },
+    {
+      "path": "/usr/lib/x86_64-linux-gnu/libm.so.6",
+      "sha256": "00830df310aac5023e10bd7b715149ab8ddc682277fd8ae3539a7a44fcdd6c38"
+    }
+  ],
+  "object_level_candidates": [
+    "P2_PIPELINE"
+  ],
+  "input_contract": {
+    "topologies": [
+      "UTS",
+      "SYNCHRONOUS_MTS"
+    ],
+    "dtypes": [
+      "<f8"
+    ],
+    "ranks": [
+      1,
+      2
+    ],
+    "layouts": [
+      "ROW_MAJOR_CONTIG",
+      "SOA_COLUMNS"
+    ],
+    "endianness": [
+      "little"
+    ],
+    "alignment_bytes": 1,
+    "min_n": 2,
+    "max_n": 1048576,
+    "min_m": 1,
+    "max_m": 256,
+    "validity_shapes": [
+      "NONE"
+    ],
+    "homogeneous_itemsize": true,
+    "max_total_raw_bytes": 134217728,
+    "value_coupling_mode": "FULL_MATRIX",
+    "timestamp_semantics": {
+      "preserve_order": true,
+      "duplicates": true,
+      "out_of_order": true,
+      "negative_delta": true,
+      "absolute_epoch": true,
+      "overflow_policy": "NOT_APPLICABLE_VALUE_ONLY"
+    },
+    "max_total_elements": 16777216,
+    "value_domain": {
+      "kind": "FROZEN_SOURCE_WITH_BOUNDED_REJECTION",
+      "unsupported_action": "REJECT_BEFORE_OUTPUT",
+      "oracle_evidence": "adapters/completed_rewrites/vendor/corad/contract.md",
+      "rejection_reasons": [
+        "FINITE_INPUT_REQUIRED",
+        "INCOMPLETE_WINDOW_UNSUPPORTED",
+        "CONSTANT_COLUMN_UNSUPPORTED",
+        "NORMALIZATION_ARITHMETIC_UNSUPPORTED"
+      ]
+    }
+  },
+  "output_contract": {
+    "framing": "SHA256_DESCRIPTOR_AND_COMPLETE_NATIVE_FRAMES_V1",
+    "self_contained": true,
+    "actual_written_length": true,
+    "capacity_is_not_size": true,
+    "model_and_dictionary_accounting": "OPAQUE_NATIVE_FRAME_BYTES; INCLUDED_IN_FINAL_BITS; NOT_SEPARATELY_ATTRIBUTED"
+  },
+  "lifecycle_contract": {
+    "output_bound": "FROZEN_NATIVE_BOUND_PLUS_EXACT_DESCRIPTOR_AND_RECORD_OVERHEAD",
+    "return_length": "actual_used_bytes",
+    "error_codes": [
+      "OUTPUT_CAPACITY",
+      "EXECUTION_CONTRACT",
+      "SOURCE_DOMAIN_UNSUPPORTED"
+    ],
+    "finalize": "EXACTLY_ONCE_REQUIRED_ZERO_BYTE_FINALIZE",
+    "reset": "FRESH_INDEPENDENT_SESSION_PER_INNER_OBJECT"
+  },
+  "stream_components": [
+    "descriptor_and_checksums",
+    "native_record_lengths",
+    "complete_native_frames"
+  ],
+  "upstream_tests": [
+    {
+      "status": "PASS",
+      "name": "release: upstream CTest and framework ABI qualification",
+      "log_sha256": "8735cce6a0619c592ef803e615e77b4e27ba48f3672951d78c25eb7dbd57189b",
+      "log": "build/adapters/corad/release/qualification.log",
+      "scope": "NOT_APPLICABLE"
+    },
+    {
+      "status": "PASS",
+      "name": "sanitizer: upstream CTest and framework ABI qualification",
+      "log_sha256": "6bf691b6f961189c7a0d96422fbe6b4c5f34da013026a3c1f8351f9f98d91d61",
+      "log": "build/adapters/corad/sanitizer/qualification.log",
+      "scope": "FRAMEWORK_BINDING_AND_FROZEN_CPP_SOURCES; EXTERNAL_BINARY_RUNTIMES_NOT_INSTRUMENTED; LEAK_CHECK_DISABLED"
+    }
+  ],
+  "builds": [
+    {
+      "kind": "release",
+      "artifact_sha256": "51c9fb2526016c4b16651cc6162977ed04a179a2232a9aeb2e6b72b779ad0734",
+      "compile_commands_sha256": "95f350c7cf85413c678d900f807c045145caea636b26a9d5bd67d69837c4587b",
+      "build_record_sha256": "eca1e4e22c212fbf350cd0b63d00132028185d56b806afc3530223fbbef57710",
+      "compiler": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0\nCopyright (C) 2021 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+      "configure_command": [
+        "cmake",
+        "-S",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/adapters/corad/release/recipe",
+        "-B",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/adapters/corad/release/cmake",
+        "-DCMAKE_BUILD_TYPE=Release",
+        "-DCMAKE_CXX_FLAGS=-fno-fast-math -ffp-contract=off",
+        "-DCMAKE_C_FLAGS=-fno-fast-math -ffp-contract=off",
+        "-DCMAKE_EXE_LINKER_FLAGS=",
+        "-DDEEPZIP_WITH_HDF5=OFF",
+        "-DDEEPZIP_WITH_CUDA=OFF",
+        "-DDZIP_WITH_HDF5=OFF",
+        "-DDZIP_WITH_CUDA=OFF",
+        "-DTRISTAN_MKL_ROOT=/home/fzg/anaconda3"
+      ]
+    },
+    {
+      "kind": "sanitizer",
+      "artifact_sha256": "9ab4104ef48215fb72ad7ef10122a6ded0e9ff5a6747210388cf0075cb463bca",
+      "compile_commands_sha256": "9793f61c27e76a3026f34c6d744685e8fdf9c1f5415e142d3fd6cb52584e420c",
+      "build_record_sha256": "d3fcf4f2a08e39693e651c4ed921047d9e89b0e9d96c44901fef773601100522",
+      "compiler": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0\nCopyright (C) 2021 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+      "configure_command": [
+        "cmake",
+        "-S",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/adapters/corad/sanitizer/recipe",
+        "-B",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/adapters/corad/sanitizer/cmake",
+        "-DCMAKE_BUILD_TYPE=Release",
+        "-DCMAKE_CXX_FLAGS=-fno-fast-math -ffp-contract=off -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer",
+        "-DCMAKE_C_FLAGS=-fno-fast-math -ffp-contract=off -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer",
+        "-DCMAKE_EXE_LINKER_FLAGS=-no-pie",
+        "-DDEEPZIP_WITH_HDF5=OFF",
+        "-DDEEPZIP_WITH_CUDA=OFF",
+        "-DDZIP_WITH_HDF5=OFF",
+        "-DDZIP_WITH_CUDA=OFF",
+        "-DTRISTAN_MKL_ROOT=/home/fzg/anaconda3"
+      ]
+    }
+  ],
+  "license_decision": {
+    "spdx": "NOASSERTION",
+    "status": "REDISTRIBUTION_RESTRICTED",
+    "files": [
+      "adapters/completed_rewrites/vendor/corad/LICENSES/BSD-3-Clause-pandas.txt",
+      "adapters/completed_rewrites/vendor/corad/LICENSES/BSD-3-Clause-scikit-learn.txt"
+    ],
+    "redistribution": "LOCAL_EXECUTION_ONLY; ORIGINAL_NOTICES_RETAINED; NO_UPSTREAM_LICENSE_GRANT_INVENTED"
+  },
+  "known_limitations": [
+    "Complete windows only; constant columns and invalid normalization arithmetic rejected. Per-object dictionary learning, Pearson selection and inverse normalization included; source maximum 10 learning iterations with early stop.",
+    "PIPELINE/E2E supported; CORE/native timing unavailable and reported as null.",
+    "Independent object profile; streaming/query/random access rejected during planning.",
+    "Synthetic acceptance fixtures establish integration, not real-world performance or quality rankings."
+  ],
+  "unsupported_reason_codes": [
+    "TRACK_OR_DTYPE_UNSUPPORTED",
+    "TIMING_SCOPE_UNSUPPORTED",
+    "STREAMING_UNSUPPORTED",
+    "QUERY_UNSUPPORTED",
+    "SOURCE_DOMAIN_UNSUPPORTED",
+    "ISA_UNSUPPORTED"
+  ],
+  "source_onboarding_id": "v2:source-onboarding:sha256:5b0804b85d56b3c3e5c74d95b0ea65519bdaed0449896895894258f844a4e645"
+}

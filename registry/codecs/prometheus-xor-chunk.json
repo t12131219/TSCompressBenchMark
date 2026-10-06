@@ -1,0 +1,152 @@
+{
+  "schema_version": "tscb.codec-manifest.v2",
+  "key": "prometheus-xor-chunk",
+  "identity": {
+    "display_name": "Prometheus XOR (Gorilla + Delta-of-Delta joint chunk)",
+    "family": "PROMETHEUS_XOR_CHUNK",
+    "citations": [
+      "standalone:Compression_Rewrite/ReWrite/prometheus-xor-chunk/contract.md"
+    ],
+    "source_artifact_id": "v2:source-artifact:sha256:586dee8bc85209fc1ad35c6b9206a02b5d98afbc7e26599601999de9f1f49f8d"
+  },
+  "classification": {
+    "object_level": "P3_STORAGE_SYSTEM",
+    "implementation_class": "CONVENTIONAL",
+    "tracks": [
+      "SYSTEM"
+    ],
+    "subtracks": [
+      "S0"
+    ]
+  },
+  "input": {
+    "topologies": [
+      "UTS",
+      "SYNCHRONOUS_MTS"
+    ],
+    "dtypes": [
+      "<i8",
+      "<f8"
+    ],
+    "ranks": [
+      1,
+      2
+    ],
+    "layouts": [
+      "COMPOSITE_T_V"
+    ],
+    "endianness": [
+      "little"
+    ],
+    "alignment_bytes": 1,
+    "min_n": 0,
+    "max_n": 16777216,
+    "min_m": 1,
+    "max_m": 65535,
+    "validity_shapes": [
+      "NONE"
+    ],
+    "homogeneous_itemsize": true,
+    "max_total_raw_bytes": 134217728,
+    "value_coupling_mode": "COLUMN_INDEPENDENT",
+    "timestamp_semantics": {
+      "preserve_order": true,
+      "duplicates": true,
+      "out_of_order": true,
+      "negative_delta": true,
+      "absolute_epoch": true,
+      "overflow_policy": "UINT64_TWOS_COMPLEMENT_MODULAR_AS_UPSTREAM"
+    },
+    "component_dtypes": {
+      "timestamp": [
+        "<i8"
+      ],
+      "value": [
+        "<f8"
+      ]
+    },
+    "max_total_elements": 16777216
+  },
+  "semantics": {
+    "loss_modes": [
+      "LOSSLESS"
+    ],
+    "error_bound_types": [],
+    "reconstruction_modes": [
+      "EXACT_GRID"
+    ],
+    "rebuild_protocol": "TSCB_PROMETHEUS_XOR_CHUNK_FROZEN_API_RWF1_V1",
+    "preprocess_class": "NONE",
+    "preprocess_stages": [],
+    "decodability_profile": "SELF_CONTAINED_DESCRIPTOR_WITH_CHECKED_FROZEN_CODEC_FRAMES",
+    "bitstream_separability": "JOINT_TV_PER_COLUMN_CHUNK"
+  },
+  "lifecycle": {
+    "block_semantics": "CONFIGURED_SAMPLE_BLOCKS_WITH_EXACT_TAIL",
+    "state_semantics": "RESET_EACH_BLOCK_AND_COLUMN",
+    "reset": "REQUIRED_MODE_ZERO",
+    "finalize": "REQUIRED_ZERO_BYTE_FINALIZE",
+    "safe_overread_bytes": 0,
+    "tail_policy": "EXACT_COUNT",
+    "dictionary": "NONE",
+    "model": "FROZEN_UPSTREAM_STATE",
+    "index": "NONE"
+  },
+  "execution": {
+    "backends": [
+      "C_ABI_V1"
+    ],
+    "isa": [
+      "SCALAR"
+    ],
+    "devices": [
+      "CPU"
+    ],
+    "threading": "SINGLE_THREAD",
+    "fallback_policy": "DISALLOWED_SOURCE_DOMAIN_ERRORS_REJECTED",
+    "runtime_dispatch": false,
+    "timing_scopes": [
+      "PIPELINE",
+      "E2E"
+    ]
+  },
+  "features": {
+    "streaming": false,
+    "query": false,
+    "random_access": false
+  },
+  "parameters": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "block_size": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 65535,
+        "default": 1000
+      },
+      "isa": {
+        "type": "string",
+        "enum": [
+          "SCALAR"
+        ],
+        "default": "SCALAR"
+      }
+    },
+    "constraints": []
+  },
+  "adapter": {
+    "backend": "C_ABI_V1",
+    "version": "rewrite-lossless-ctypes-v1",
+    "factory": "REWRITE_LOSSLESS_CTYPES_V1",
+    "artifact_path": "build/adapters/prometheus_xor_chunk/release/libtscb_prometheus_xor_chunk.so",
+    "timing_boundary": "PYTHON_LAYOUT_FFI_DESCRIPTOR_AND_CHECKED_NATIVE_FRAME_INCLUDED",
+    "accounting_hooks": [
+      "FINAL_STREAM_LENGTH",
+      "DESCRIPTOR_AND_WRAPPER_OVERHEAD",
+      "OPAQUE_COMPLETE_STANDALONE_CODEC_BYTES",
+      "JOINT_TV_BYTES_UNALLOCATED_SHARED",
+      "OUTPUT_CAPACITY"
+    ]
+  }
+}

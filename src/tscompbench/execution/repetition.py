@@ -26,6 +26,7 @@ from .protocol import (
     EncodedArtifact,
     ExecutionContractError,
     RoutedInput,
+    SourceDomainError,
 )
 from .routing import hash_logical_buffers, hash_reference_array
 
@@ -119,7 +120,20 @@ def _encode(
         pairing_before = hash_reference_array(routed.timestamp_reference)
         wall_start = time.perf_counter_ns()
         cpu_start = time.process_time_ns()
-        updated = session.compress_update(routed, memoryview(storage)[:capacity])
+        try:
+            updated = session.compress_update(routed, memoryview(storage)[:capacity])
+        except SourceDomainError as error:
+            if (
+                before != hash_logical_buffers(routed.buffers)
+                or pairing_before != hash_reference_array(routed.timestamp_reference)
+                or any(storage[:capacity])
+                or bytes(storage[capacity:]) != _CANARY
+            ):
+                raise ExecutionContractError(
+                    "source-domain rejection modified input/output"
+                ) from error
+            error.rejection_atomic = True
+            raise
         if not isinstance(updated, int) or updated < 0 or updated > capacity:
             raise ExecutionContractError("compress_update returned an invalid used length")
         finalized = session.finalize(memoryview(storage)[updated:capacity])
@@ -189,7 +203,10 @@ def perform_roundtrip(
         encoded=artifact,
         decoded=decoded,
         timing=TimingObservation(
-            encode_wall, decode_wall, encode_cpu, decode_cpu,
+            encode_wall,
+            decode_wall,
+            encode_cpu,
+            decode_cpu,
             artifact.native_encode_wall_ns,
             None if native_decode is None else native_decode[1],
         ),
@@ -366,11 +383,13 @@ def perform_measured_roundtrip(
             core_decode += dec_wall
             # Never publish partial native totals as if they covered every inner iteration.
             native_encode = (
-                None if native_encode is None or artifact.native_encode_wall_ns is None
+                None
+                if native_encode is None or artifact.native_encode_wall_ns is None
                 else native_encode + artifact.native_encode_wall_ns
             )
             native_decode = (
-                None if native_decode is None or native_dec is None
+                None
+                if native_decode is None or native_dec is None
                 else native_decode + native_dec[1]
             )
             pipeline_encode += encode_phase_end - pipeline_start
@@ -476,14 +495,14 @@ def perform_measured_roundtrip(
         native_encode_wall_ns=native_encode,
         native_decode_wall_ns=native_decode,
         native_encode_mb_per_second=(
-            None if native_encode is None else decimal_rate(
-                codec_input_bytes * iterations, native_encode, scale=1_000_000
-            )
+            None
+            if native_encode is None
+            else decimal_rate(codec_input_bytes * iterations, native_encode, scale=1_000_000)
         ),
         native_decode_mb_per_second=(
-            None if native_decode is None else decimal_rate(
-                codec_input_bytes * iterations, native_decode, scale=1_000_000
-            )
+            None
+            if native_decode is None
+            else decimal_rate(codec_input_bytes * iterations, native_decode, scale=1_000_000)
         ),
         native_timing_enabled=bool(parameters.get("native_timing", True)),
         native_timing_boundary=(

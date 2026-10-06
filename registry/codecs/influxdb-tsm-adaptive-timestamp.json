@@ -1,0 +1,208 @@
+{
+  "schema_version": "tscb.codec-manifest.v2",
+  "key": "influxdb-tsm-adaptive-timestamp",
+  "identity": {
+    "display_name": "influxdb-tsm-adaptive-timestamp",
+    "family": "INFLUXDB-TSM-ADAPTIVE-TIMESTAMP",
+    "citations": [
+      "adapters/completed_rewrites/vendor/influxdb-tsm-adaptive-timestamp/contract.md"
+    ],
+    "source_artifact_id": "v2:source-artifact:sha256:464fa098650b7942c869b50ee0317f62846f1f2c453d6f45437edc1e27acad80"
+  },
+  "classification": {
+    "object_level": "P1_STANDALONE_CODEC",
+    "implementation_class": "CONVENTIONAL",
+    "tracks": [
+      "TIMESTAMP"
+    ],
+    "subtracks": [
+      "T1"
+    ]
+  },
+  "input": {
+    "topologies": [
+      "UTS",
+      "SYNCHRONOUS_MTS"
+    ],
+    "dtypes": [
+      "<i8"
+    ],
+    "ranks": [
+      1,
+      2
+    ],
+    "layouts": [
+      "ROW_MAJOR_CONTIG",
+      "SOA_COLUMNS"
+    ],
+    "endianness": [
+      "little"
+    ],
+    "alignment_bytes": 1,
+    "min_n": 0,
+    "max_n": 16777216,
+    "min_m": 1,
+    "max_m": 65535,
+    "validity_shapes": [
+      "NONE"
+    ],
+    "homogeneous_itemsize": true,
+    "max_total_raw_bytes": 134217728,
+    "value_coupling_mode": "COLUMN_INDEPENDENT",
+    "timestamp_semantics": {
+      "preserve_order": true,
+      "duplicates": true,
+      "out_of_order": true,
+      "negative_delta": true,
+      "absolute_epoch": true,
+      "overflow_policy": "NOT_APPLICABLE_VALUE_ONLY"
+    },
+    "max_total_elements": 16777216
+  },
+  "semantics": {
+    "loss_modes": [
+      "LOSSLESS"
+    ],
+    "error_bound_types": [],
+    "reconstruction_modes": [
+      "EXACT_GRID"
+    ],
+    "rebuild_protocol": "COMPLETE_NATIVE_FRAME_WITH_ORIGINAL_GRID_V1",
+    "preprocess_class": "NONE",
+    "preprocess_stages": [],
+    "decodability_profile": "SELF_CONTAINED_DESCRIPTOR_AND_NATIVE_FRAMES",
+    "bitstream_separability": "PER_COLUMN"
+  },
+  "lifecycle": {
+    "block_semantics": "WHOLE_OBJECT",
+    "state_semantics": "INDEPENDENT_OBJECT",
+    "reset": "REQUIRED_MODE_ZERO",
+    "finalize": "REQUIRED_ZERO_BYTE_FINALIZE",
+    "safe_overread_bytes": 0,
+    "tail_policy": "EXACT_COUNT",
+    "dictionary": "NONE",
+    "model": "NONE",
+    "index": "NONE"
+  },
+  "execution": {
+    "backends": [
+      "COMPLETED_REWRITE_ABI_V1"
+    ],
+    "isa": [
+      "SCALAR"
+    ],
+    "devices": [
+      "CPU"
+    ],
+    "threading": "SINGLE_THREAD",
+    "fallback_policy": "DISALLOWED",
+    "runtime_dispatch": false,
+    "timing_scopes": [
+      "PIPELINE",
+      "E2E"
+    ]
+  },
+  "features": {
+    "streaming": false,
+    "query": false,
+    "random_access": false
+  },
+  "parameters": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "encoding_profile": {
+        "type": "string",
+        "default": "STREAM",
+        "enum": [
+          "STREAM",
+          "BATCH"
+        ]
+      },
+      "isa": {
+        "type": "string",
+        "default": "SCALAR",
+        "enum": [
+          "SCALAR"
+        ]
+      }
+    },
+    "constraints": []
+  },
+  "adapter": {
+    "backend": "COMPLETED_REWRITE_ABI_V1",
+    "version": "completed-rewrites-v1",
+    "factory": "COMPLETED_REWRITE_CTYPES_V1",
+    "artifact_path": "build/adapters/influxdb_tsm_adaptive_timestamp/release/libtscb_influxdb_tsm_adaptive_timestamp.so",
+    "timing_boundary": "PYTHON_LAYOUT_C_ABI_NATIVE_FRAME_AND_MODEL_LOAD_INCLUDED",
+    "accounting_hooks": [
+      "FINAL_STREAM_LENGTH",
+      "CONTAINER_BYTES",
+      "COMPLETE_NATIVE_FRAMES_WITH_ALL_MODEL_BITS"
+    ],
+    "parameter_contract": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "encoding_profile": {
+          "type": "string",
+          "default": "STREAM",
+          "enum": [
+            "STREAM",
+            "BATCH"
+          ]
+        },
+        "isa": {
+          "type": "string",
+          "default": "SCALAR",
+          "enum": [
+            "SCALAR"
+          ]
+        }
+      },
+      "constraints": []
+    },
+    "input_contract": {
+      "topologies": [
+        "UTS",
+        "SYNCHRONOUS_MTS"
+      ],
+      "dtypes": [
+        "<i8"
+      ],
+      "ranks": [
+        1,
+        2
+      ],
+      "layouts": [
+        "ROW_MAJOR_CONTIG",
+        "SOA_COLUMNS"
+      ],
+      "endianness": [
+        "little"
+      ],
+      "alignment_bytes": 1,
+      "min_n": 0,
+      "max_n": 16777216,
+      "min_m": 1,
+      "max_m": 65535,
+      "validity_shapes": [
+        "NONE"
+      ],
+      "homogeneous_itemsize": true,
+      "max_total_raw_bytes": 134217728,
+      "value_coupling_mode": "COLUMN_INDEPENDENT",
+      "timestamp_semantics": {
+        "preserve_order": true,
+        "duplicates": true,
+        "out_of_order": true,
+        "negative_delta": true,
+        "absolute_epoch": true,
+        "overflow_policy": "NOT_APPLICABLE_VALUE_ONLY"
+      },
+      "max_total_elements": 16777216
+    },
+    "runtime_profile": "CPU_SINGLE_THREAD",
+    "isa_scope": "NATIVE_BASELINE"
+  }
+}

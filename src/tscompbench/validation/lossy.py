@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from typing import Any
 
 import numpy as np
@@ -30,8 +30,8 @@ def _number(value: np.generic[Any] | float) -> str | None:
 class ChannelLossMetrics:
     name: str
     element_count: int
-    raw_violation_count: int
-    numerical_violation_count: int
+    raw_violation_count: int | None
+    numerical_violation_count: int | None
     mae: str | None
     rmse: str | None
     nrmse_range: str | None
@@ -47,8 +47,8 @@ class ChannelLossMetrics:
 class LossValidationReport:
     error_bound_type: str
     error_aggregation_mode: str
-    raw_violation_count: int
-    numerical_violation_count: int
+    raw_violation_count: int | None
+    numerical_violation_count: int | None
     element_count: int
     channels: tuple[ChannelLossMetrics, ...]
     time_weighted_rmse: str | None
@@ -56,7 +56,9 @@ class LossValidationReport:
     temporal_fidelity_is_gate: bool = False
 
     @property
-    def bound_passed(self) -> bool:
+    def bound_passed(self) -> bool | None:
+        if self.error_bound_type == "NOT_APPLICABLE_UNBOUNDED_LOSSY":
+            return None
         return self.raw_violation_count == 0
 
     def to_document(self) -> dict[str, Any]:
@@ -271,4 +273,30 @@ def validate_error_bound(
         channels=tuple(channels),
         time_weighted_rmse=twrmse,
         temporal_fidelity=temporal,
+    )
+
+
+def profile_unbounded_loss(
+    originals: dict[str, np.ndarray[Any]],
+    reconstructed: dict[str, np.ndarray[Any]],
+    *,
+    timestamp: np.ndarray[Any] | None = None,
+) -> LossValidationReport:
+    """Measure approximation quality without claiming an error or rate guarantee."""
+    report = validate_error_bound(
+        originals,
+        reconstructed,
+        error_bound_type="ABS",
+        error_bound="0",
+        timestamp=timestamp,
+    )
+    return replace(
+        report,
+        error_bound_type="NOT_APPLICABLE_UNBOUNDED_LOSSY",
+        raw_violation_count=None,
+        numerical_violation_count=None,
+        channels=tuple(
+            replace(c, raw_violation_count=None, numerical_violation_count=None)
+            for c in report.channels
+        ),
     )

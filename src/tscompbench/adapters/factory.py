@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import hashlib
+import json
 from pathlib import Path
 
 from tscompbench.codecs import CodecManifest
@@ -8,6 +10,7 @@ from tscompbench.execution.protocol import CodecAdapter
 from .alp import AlpAdapter
 from .brotli_stream import BrotliStreamAdapter
 from .bzip2_stream import Bzip2StreamAdapter
+from .completed_rewrites import CompletedRewriteAdapter
 from .deflate_zlib import DeflateZlibAdapter
 from .delta_varint import DeltaVarintAdapter
 from .entropy_fse import EntropyAdapter
@@ -18,6 +21,7 @@ from .lzsse2_raw import Lzsse2RawAdapter
 from .lzsse8_raw import Lzsse8RawAdapter
 from .neats import NeatsAdapter
 from .oracles import OracleAdapter
+from .rewrite_lossless import RewriteLosslessAdapter
 from .serf import SerfAdapter
 from .snappy_raw import SnappyRawAdapter
 from .sprintz import SprintzAdapter
@@ -42,6 +46,8 @@ def adapter_artifacts(project_root: Path, manifest: CodecManifest) -> tuple[Path
         raise AdapterFactoryError(f"{manifest.key} has no safe relative adapter artifact path")
     factory = adapter.get("factory")
     support_modules = {
+        "COMPLETED_REWRITE_CTYPES_V1": "completed_rewrites.py",
+        "REWRITE_LOSSLESS_CTYPES_V1": "rewrite_lossless.py",
         "ALP_CTYPES_V1": "alp.py",
         "SERF_CTYPES_V1": "serf.py",
         "ENTROPY_FSE_CTYPES_V1": "entropy_fse.py",
@@ -66,6 +72,34 @@ def adapter_artifacts(project_root: Path, manifest: CodecManifest) -> tuple[Path
     if support_module is None:
         raise AdapterFactoryError(f"no reviewed adapter factory for {manifest.key}")
     support = project_root / "src" / "tscompbench" / "adapters" / support_module
+    if factory == "COMPLETED_REWRITE_CTYPES_V1":
+        artifact = project_root / relative
+        record_path = artifact.parent / "build-record.json"
+        support_paths = [support, record_path]
+        support_paths.extend(
+            project_root / entry["path"] for entry in adapter.get("models", {}).values()
+        )
+        if record_path.is_file():
+            record = json.loads(record_path.read_text())
+            entries = record.get("runtime_dependencies", []) + record.get("binding_sources", [])
+            for entry in entries:
+                path = Path(entry["path"])
+                if not path.is_absolute():
+                    path = project_root / path
+                if path.is_file():
+                    with path.open("rb") as stream:
+                        actual = hashlib.file_digest(stream, "sha256").hexdigest()
+                    if actual != entry["sha256"]:
+                        raise AdapterFactoryError(
+                            f"{manifest.key}: execution dependency drift: {path}"
+                        )
+                support_paths.append(path)
+            if artifact.is_file():
+                with artifact.open("rb") as stream:
+                    actual = hashlib.file_digest(stream, "sha256").hexdigest()
+                if actual != record["artifact_sha256"]:
+                    raise AdapterFactoryError(f"{manifest.key}: build artifact drift")
+        return artifact, tuple(dict.fromkeys(support_paths))
     if factory in {"LZSS_RAW_CTYPES_V1", "LZSS_DIPPERSTEIN_CTYPES_V1"}:
         common = project_root / "src" / "tscompbench" / "adapters" / "lzss_common.py"
         return project_root / relative, (support, common)
@@ -76,6 +110,12 @@ def create_adapter(project_root: Path, manifest: CodecManifest) -> CodecAdapter:
     if manifest.document["identity"]["family"] == "HARNESS_ORACLE":
         return OracleAdapter(manifest_adapter=manifest.document["adapter"])
     adapter = manifest.document["adapter"]
+    if adapter.get("factory") == "COMPLETED_REWRITE_CTYPES_V1":
+        artifact, _ = adapter_artifacts(project_root, manifest)
+        return CompletedRewriteAdapter(artifact, adapter, manifest.key)
+    if adapter.get("factory") == "REWRITE_LOSSLESS_CTYPES_V1":
+        artifact, _ = adapter_artifacts(project_root, manifest)
+        return RewriteLosslessAdapter(artifact, adapter, manifest.key)
     if adapter.get("factory") == "ALP_CTYPES_V1":
         artifact, _ = adapter_artifacts(project_root, manifest)
         return AlpAdapter(artifact, adapter, manifest.key)

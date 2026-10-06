@@ -1,0 +1,75 @@
+{
+  "schema_version": "tscb.dataset-manifest.v2",
+  "key": "rewrite_audio_stereo",
+  "display_name": "Synthetic completed-rewrite qualification: rewrite_audio_stereo",
+  "source": {
+    "uri": "generated:tools/generate_completed_rewrite_fixtures.py@20261006",
+    "retrieved_at": "2026-10-06",
+    "notes": "Deterministic synthetic fixtures; no real-world corpus or performance claim"
+  },
+  "license": {
+    "spdx": "CC0-1.0",
+    "status": "RUN_ALLOWED"
+  },
+  "file": {
+    "path": "fixtures/completed_rewrites/rewrite_audio_stereo.npz",
+    "bytes": 778,
+    "sha256": "9bda833af457bd908689b22592be9c14012056a8f8f57066745fd703286ee8cf",
+    "format": "npz"
+  },
+  "parser": {
+    "name": "numpy.npz",
+    "version": "runtime-recorded",
+    "allow_pickle": false,
+    "array_key": "values",
+    "expected_keys": [
+      "values"
+    ]
+  },
+  "logical": {
+    "topology": "SYNCHRONOUS_MTS",
+    "axes": [
+      "time",
+      "channel"
+    ],
+    "timestamp": {
+      "origin": "NONE",
+      "reason": "Synthetic UTS samples have no timestamp values"
+    },
+    "value": {
+      "kind": "NPZ_ARRAY",
+      "array": {
+        "dtype": "<f4",
+        "unit": "NORMALIZED_AUDIO_MINUS_HALF_TO_HALF",
+        "entity": "synthetic-input",
+        "feature": "value",
+        "required_layout": "ROW_MAJOR_CONTIG"
+      },
+      "representation": "NATIVE_ND_PRESERVED"
+    },
+    "validity": {
+      "shape": "NONE",
+      "missing_tokens": [],
+      "nan_is_null": false
+    },
+    "canonical": {
+      "format_version": "tscb-canonical-v1",
+      "byte_order": "little"
+    }
+  },
+  "expected": {
+    "shape": [
+      64,
+      2
+    ],
+    "dtype": "<f4",
+    "array_keys": [
+      "values"
+    ]
+  },
+  "split": {
+    "policy": "PER_OBJECT_ENCODING_OR_DECLARED_FROZEN_MODEL_NO_TEST_TUNING",
+    "learned_eligible": true,
+    "reason": "Compression may fit per-object state; no external training or tuning on these fixtures"
+  }
+}

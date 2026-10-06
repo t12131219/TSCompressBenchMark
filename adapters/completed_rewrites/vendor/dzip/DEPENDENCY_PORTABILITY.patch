@@ -1,0 +1,791 @@
+--- upstream/libbsc/bwt/bwt.cpp
++++ native/libbsc/bwt/bwt.cpp
+@@ -75,6 +75,7 @@
+ 
+     for (int p = 0, i = n - 1; i >= 0; --i)
+     {
++        if (p < 0 || p > n || p == index) return LIBBSC_DATA_CORRUPT;
+         unsigned int  u = P[p];
+         unsigned char c = u & 0xff;
+         T[i] = c; p = (u >> 8) + bucket[c];
+@@ -89,7 +90,7 @@
+ {
+     if (int * RESTRICT bucket = (int *)bsc_zero_malloc(ALPHABET_SIZE * ALPHABET_SIZE * sizeof(int)))
+     {
+-        if (unsigned short * RESTRICT fastbits = (unsigned short *)bsc_malloc((1 + (1 << BWT_NUM_FASTBITS)) * sizeof(unsigned short)))
++        if (unsigned short * RESTRICT fastbits = (unsigned short *)bsc_zero_malloc((1 + (1 << BWT_NUM_FASTBITS)) * sizeof(unsigned short)))
+         {
+             int count[ALPHABET_SIZE]; memset(count, 0, ALPHABET_SIZE * sizeof(int));
+ 
+@@ -156,7 +157,10 @@
+ 
+             for (int p = index, i = 1; i < n; i += 2)
+             {
+-                int c = fastbits[p >> shift]; while (bucket[c] <= p) c++;
++                if (p < 0 || p > n) { bsc_free(fastbits); bsc_free(bucket); return LIBBSC_DATA_CORRUPT; }
++                int c = fastbits[p >> shift];
++                while (c < ALPHABET_SIZE * ALPHABET_SIZE && bucket[c] <= p) c++;
++                if (c >= ALPHABET_SIZE * ALPHABET_SIZE) { bsc_free(fastbits); bsc_free(bucket); return LIBBSC_DATA_CORRUPT; }
+                 T[i - 1] = (unsigned char)(c >> 8); T[i] = (unsigned char)(c & 0xff);
+                 p = P[p];
+             }
+@@ -366,7 +370,7 @@
+     {
+         return LIBBSC_NO_ERROR;
+     }
+-    if (unsigned int * P = (unsigned int *)bsc_malloc((n + 1) * sizeof(unsigned int)))
++    if (unsigned int * P = (unsigned int *)bsc_zero_malloc((n + 1) * sizeof(unsigned int)))
+     {
+         int result = LIBBSC_NO_ERROR;
+ 
+--- upstream/libbsc/coder/coder.cpp
++++ native/libbsc/coder/coder.cpp
+@@ -139,8 +139,8 @@
+             result = inputSize; memcpy(output + outputPtr, input + inputStart, inputSize);
+         }
+ 
+-        *(int *)(output + 1 + 8 * blockId + 0) = inputSize;
+-        *(int *)(output + 1 + 8 * blockId + 4) = result;
++        bsc_write<int>(output + 1 + 8 * blockId + 0, inputSize);
++        bsc_write<int>(output + 1 + 8 * blockId + 4, result);
+ 
+         outputPtr += result;
+     }
+@@ -187,8 +187,8 @@
+                     compressionResult[blockId] = bsc_coder_encode_block(input + blockStart, buffer + blockStart, blockSize, blockSize, coder);
+                     if (compressionResult[blockId] < LIBBSC_NO_ERROR) compressionResult[blockId] = blockSize;
+ 
+-                    *(int *)(output + 1 + 8 * blockId + 0) = blockSize;
+-                    *(int *)(output + 1 + 8 * blockId + 4) = compressionResult[blockId];
++                    bsc_write<int>(output + 1 + 8 * blockId + 0, blockSize);
++                    bsc_write<int>(output + 1 + 8 * blockId + 4, compressionResult[blockId]);
+                 }
+ 
+                 #pragma omp single
+@@ -255,27 +255,37 @@
+ }
+ 
+ 
+-int bsc_coder_decode_block(const unsigned char * input, unsigned char * output, int coder)
+-{
+-    if (coder == LIBBSC_CODER_QLFC_STATIC)   return bsc_qlfc_static_decode_block  (input, output);
+-    if (coder == LIBBSC_CODER_QLFC_ADAPTIVE) return bsc_qlfc_adaptive_decode_block(input, output);
++int bsc_coder_decode_block(const unsigned char * input, unsigned char * output, int inputSize, int outputSize, int coder)
++{
++    if (coder == LIBBSC_CODER_QLFC_STATIC)   return bsc_qlfc_static_decode_block  (input, output, inputSize, outputSize);
++    if (coder == LIBBSC_CODER_QLFC_ADAPTIVE) return bsc_qlfc_adaptive_decode_block(input, output, inputSize, outputSize);
+ 
+     return LIBBSC_BAD_PARAMETER;
+ }
+ 
+-int bsc_coder_decompress(const unsigned char * input, unsigned char * output, int coder, int features)
++int bsc_coder_decompress(const unsigned char * input, unsigned char * output, int inputSize, int outputSize, int coder, int features)
+ {
+     if ((coder != LIBBSC_CODER_QLFC_STATIC) && (coder != LIBBSC_CODER_QLFC_ADAPTIVE))
+     {
+         return LIBBSC_BAD_PARAMETER;
+     }
+ 
++    if (inputSize < 1 || outputSize < 1) return LIBBSC_DATA_CORRUPT;
+     int nBlocks = input[0];
+     if (nBlocks == 1)
+     {
+-        return bsc_coder_decode_block(input + 1, output, coder);
+-    }
+-
++        return bsc_coder_decode_block(input + 1, output, inputSize - 1, outputSize, coder);
++    }
++
++    if (nBlocks < 1 || inputSize < 1 + 8 * nBlocks) return LIBBSC_DATA_CORRUPT;
++    int inputTotal = 1 + 8 * nBlocks, outputTotal = 0;
++    for (int block = 0; block < nBlocks; ++block)
++    {
++        int decoded = bsc_load<int>(input + 1 + 8 * block);
++        int stored = bsc_load<int>(input + 5 + 8 * block);
++        if (decoded <= 0 || stored <= 0 || stored > inputSize - inputTotal || decoded > outputSize - outputTotal) return LIBBSC_DATA_CORRUPT;
++        inputTotal += stored; outputTotal += decoded;
++    }
+     int decompressionResult[ALPHABET_SIZE];
+ 
+ #ifdef LIBBSC_OPENMP
+@@ -285,17 +295,17 @@
+         #pragma omp parallel for schedule(dynamic)
+         for (int blockId = 0; blockId < nBlocks; ++blockId)
+         {
+-            int inputPtr  = 0; for (int p = 0; p < blockId; ++p) inputPtr  += *(int *)(input + 1 + 8 * p + 4);
+-            int outputPtr = 0; for (int p = 0; p < blockId; ++p) outputPtr += *(int *)(input + 1 + 8 * p + 0);
++            int inputPtr  = 0; for (int p = 0; p < blockId; ++p) inputPtr  += bsc_load<int>(input + 1 + 8 * p + 4);
++            int outputPtr = 0; for (int p = 0; p < blockId; ++p) outputPtr += bsc_load<int>(input + 1 + 8 * p + 0);
+ 
+             inputPtr += 1 + 8 * nBlocks;
+ 
+-            int inputSize  = *(int *)(input + 1 + 8 * blockId + 4);
+-            int outputSize = *(int *)(input + 1 + 8 * blockId + 0);
++            int inputSize  = bsc_load<int>(input + 1 + 8 * blockId + 4);
++            int outputSize = bsc_load<int>(input + 1 + 8 * blockId + 0);
+ 
+             if (inputSize != outputSize)
+             {
+-                decompressionResult[blockId] = bsc_coder_decode_block(input + inputPtr, output + outputPtr, coder);
++                decompressionResult[blockId] = bsc_coder_decode_block(input + inputPtr, output + outputPtr, inputSize, outputSize, coder);
+             }
+             else
+             {
+@@ -310,17 +320,17 @@
+     {
+         for (int blockId = 0; blockId < nBlocks; ++blockId)
+         {
+-            int inputPtr  = 0; for (int p = 0; p < blockId; ++p) inputPtr  += *(int *)(input + 1 + 8 * p + 4);
+-            int outputPtr = 0; for (int p = 0; p < blockId; ++p) outputPtr += *(int *)(input + 1 + 8 * p + 0);
++            int inputPtr  = 0; for (int p = 0; p < blockId; ++p) inputPtr  += bsc_load<int>(input + 1 + 8 * p + 4);
++            int outputPtr = 0; for (int p = 0; p < blockId; ++p) outputPtr += bsc_load<int>(input + 1 + 8 * p + 0);
+ 
+             inputPtr += 1 + 8 * nBlocks;
+ 
+-            int inputSize  = *(int *)(input + 1 + 8 * blockId + 4);
+-            int outputSize = *(int *)(input + 1 + 8 * blockId + 0);
++            int inputSize  = bsc_load<int>(input + 1 + 8 * blockId + 4);
++            int outputSize = bsc_load<int>(input + 1 + 8 * blockId + 0);
+ 
+             if (inputSize != outputSize)
+             {
+-                decompressionResult[blockId] = bsc_coder_decode_block(input + inputPtr, output + outputPtr, coder);
++                decompressionResult[blockId] = bsc_coder_decode_block(input + inputPtr, output + outputPtr, inputSize, outputSize, coder);
+             }
+             else
+             {
+--- upstream/libbsc/coder/coder.h
++++ native/libbsc/coder/coder.h
+@@ -63,7 +63,7 @@
+     * @param features   - the set of additional features.
+     * @return the length of decompressed memory block if no error occurred, error code otherwise.
+     */
+-    int bsc_coder_decompress(const unsigned char * input, unsigned char * output, int coder, int features);
++    int bsc_coder_decompress(const unsigned char * input, unsigned char * output, int inputSize, int outputSize, int coder, int features);
+ 
+ #ifdef __cplusplus
+ }
+--- upstream/libbsc/coder/common/rangecoder.h
++++ native/libbsc/coder/common/rangecoder.h
+@@ -55,19 +55,22 @@
+     unsigned int ari_cache;
+     unsigned int ari_range;
+ 
+-    const unsigned short * RESTRICT ari_input;
+-          unsigned short * RESTRICT ari_output;
+-          unsigned short * RESTRICT ari_outputEOB;
+-          unsigned short * RESTRICT ari_outputStart;
++    const unsigned char * RESTRICT ari_input;
++    const unsigned char * ari_inputEnd;
++    bool ari_valid;
++          unsigned char * RESTRICT ari_output;
++          unsigned char * RESTRICT ari_outputEOB;
++          unsigned char * RESTRICT ari_outputStart;
+ 
+     INLINE void OutputShort(unsigned short s)
+     {
+-        *ari_output++ = s;
++        bsc_write<unsigned short>(ari_output, s); ari_output += 2;
+     };
+ 
+     INLINE unsigned short InputShort()
+     {
+-        return *ari_input++;
++        if (ari_inputEnd - ari_input < 2) { ari_valid = false; return 0; }
++        unsigned short value = bsc_load<unsigned short>(ari_input); ari_input += 2; return value;
+     };
+ 
+     INLINE void ShiftLow()
+@@ -94,9 +97,9 @@
+ 
+     INLINE void InitEncoder(unsigned char * output, int outputSize)
+     {
+-        ari_outputStart = (unsigned short *)output;
+-        ari_output      = (unsigned short *)output;
+-        ari_outputEOB   = (unsigned short *)(output + outputSize - 16);
++        ari_outputStart = output;
++        ari_output      = output;
++        ari_outputEOB   = output + outputSize - 16;
+         ari.low         = 0;
+         ari_ffnum       = 0;
+         ari_cache       = 0;
+@@ -106,7 +109,7 @@
+     INLINE int FinishEncoder()
+     {
+         ShiftLow(); ShiftLow(); ShiftLow();
+-        return (int)(ari_output - ari_outputStart) * sizeof(ari_output[0]);
++        return (int)(ari_output - ari_outputStart);
+     }
+ 
+     INLINE void EncodeBit0(int probability)
+@@ -149,15 +152,19 @@
+         }
+     };
+ 
+-    INLINE void InitDecoder(const unsigned char * input)
+-    {
+-        ari_input = (unsigned short *)input;
++    INLINE void InitDecoder(const unsigned char * input, int inputSize)
++    {
++        ari_input = input;
++        ari_inputEnd = input + inputSize;
++        ari_valid = true;
+         ari_code  = 0;
+         ari_range = 0xffffffff;
+         ari_code  = (ari_code << 16) | InputShort();
+         ari_code  = (ari_code << 16) | InputShort();
+         ari_code  = (ari_code << 16) | InputShort();
+     };
++
++    INLINE bool Good() const { return ari_valid; }
+ 
+     INLINE int DecodeBit(int probability)
+     {
+--- upstream/libbsc/coder/qlfc/qlfc.cpp
++++ native/libbsc/coder/qlfc/qlfc.cpp
+@@ -751,11 +751,11 @@
+     return coder.FinishEncoder();
+ }
+ 
+-int bsc_qlfc_adaptive_decode(const unsigned char * input, unsigned char * output, QlfcStatisticalModel * model)
++int bsc_qlfc_adaptive_decode(const unsigned char * input, unsigned char * output, int inputSize, int outputSize, QlfcStatisticalModel * model)
+ {
+     RangeCoder coder;
+ 
+-    unsigned char MTFTable[ALPHABET_SIZE];
++    unsigned char MTFTable[ALPHABET_SIZE] = {};
+ 
+     bsc_qlfc_init_model(model);
+ 
+@@ -771,8 +771,9 @@
+         rankHistory[i] = runHistory[i] = 0;
+     }
+ 
+-    coder.InitDecoder(input);
++    coder.InitDecoder(input, inputSize);
+     int n = (int)coder.DecodeWord();
++    if (!coder.Good() || n <= 0 || n > outputSize) return LIBBSC_DATA_CORRUPT;
+ 
+     unsigned char usedChar[ALPHABET_SIZE];
+     for (int i = 0; i < ALPHABET_SIZE; ++i) usedChar[i] = 0;
+@@ -809,6 +810,7 @@
+             }
+         }
+ 
++        if (!coder.Good() || currentChar < 0 || currentChar >= ALPHABET_SIZE) return LIBBSC_DATA_CORRUPT;
+         MTFTable[rank] =  currentChar;
+ 
+         if (currentChar == prevChar)
+@@ -938,6 +940,7 @@
+         }
+ 
+         {
++            if (!coder.Good() || rank < 1 || rank >= ALPHABET_SIZE) return LIBBSC_DATA_CORRUPT;
+             for (int r = 0; r < rank; ++r)
+             {
+                 MTFTable[r] = MTFTable[r + 1];
+@@ -970,6 +973,7 @@
+             int bitRunSize = 1;
+             while (true)
+             {
++                if (!coder.Good() || bitRunSize >= 30) return LIBBSC_DATA_CORRUPT;
+                 if (coder.DecodeBit(mixer->Mixup(*charPredictor, *statePredictor, *staticPredictor)))
+                 {
+                     ProbabilityCounter::UpdateBit1(*statePredictor,  M_RUN_ES_TH1, M_RUN_ES_AR1); statePredictor++;
+@@ -1029,17 +1033,18 @@
+         contextRank4 = ((contextRank4 << 2) | (rank < 3    ? rank : 3)) & 0xff;
+         contextRun   = ((contextRun   << 1) | (runSize < 3 ? 1    : 0)) & 0xf;
+ 
++        if (!coder.Good() || runSize <= 0 || runSize > n - i) return LIBBSC_DATA_CORRUPT;
+         for (; runSize > 0; --runSize) output[i++] = currentChar;
+     }
+ 
+     return n;
+ }
+ 
+-int bsc_qlfc_static_decode(const unsigned char * input, unsigned char * output, QlfcStatisticalModel * model)
++int bsc_qlfc_static_decode(const unsigned char * input, unsigned char * output, int inputSize, int outputSize, QlfcStatisticalModel * model)
+ {
+     RangeCoder coder;
+ 
+-    unsigned char MTFTable[ALPHABET_SIZE];
++    unsigned char MTFTable[ALPHABET_SIZE] = {};
+ 
+     bsc_qlfc_init_model(model);
+ 
+@@ -1055,8 +1060,9 @@
+         rankHistory[i] = runHistory[i] = 0;
+     }
+ 
+-    coder.InitDecoder(input);
++    coder.InitDecoder(input, inputSize);
+     int n = (int)coder.DecodeWord();
++    if (!coder.Good() || n <= 0 || n > outputSize) return LIBBSC_DATA_CORRUPT;
+ 
+     unsigned char usedChar[ALPHABET_SIZE];
+     for (int i = 0; i < ALPHABET_SIZE; ++i) usedChar[i] = 0;
+@@ -1093,6 +1099,7 @@
+             }
+         }
+ 
++        if (!coder.Good() || currentChar < 0 || currentChar >= ALPHABET_SIZE) return LIBBSC_DATA_CORRUPT;
+         MTFTable[rank] =  currentChar;
+ 
+         if (currentChar == prevChar)
+@@ -1208,6 +1215,7 @@
+         }
+ 
+         {
++            if (!coder.Good() || rank < 1 || rank >= ALPHABET_SIZE) return LIBBSC_DATA_CORRUPT;
+             for (int r = 0; r < rank; ++r)
+             {
+                 MTFTable[r] = MTFTable[r + 1];
+@@ -1237,6 +1245,7 @@
+             int bitRunSize = 1;
+             while (true)
+             {
++                if (!coder.Good() || bitRunSize >= 30) return LIBBSC_DATA_CORRUPT;
+                 if (coder.DecodeBit((*charPredictor * F_RUN_EM_LR0 + *statePredictor * F_RUN_EM_LR1 + *staticPredictor * F_RUN_EM_LR2) >> 5))
+                 {
+                     ProbabilityCounter::UpdateBit1(*statePredictor,  F_RUN_ES_TH1, F_RUN_ES_AR1); statePredictor++;
+@@ -1290,6 +1299,7 @@
+         contextRank4 = ((contextRank4 << 2) | (rank < 3    ? rank : 3)) & 0xff;
+         contextRun   = ((contextRun   << 1) | (runSize < 3 ? 1    : 0)) & 0xf;
+ 
++        if (!coder.Good() || runSize <= 0 || runSize > n - i) return LIBBSC_DATA_CORRUPT;
+         for (; runSize > 0; --runSize) output[i++] = currentChar;
+     }
+ 
+@@ -1330,11 +1340,11 @@
+     return LIBBSC_NOT_ENOUGH_MEMORY;
+ }
+ 
+-int bsc_qlfc_static_decode_block(const unsigned char * input, unsigned char * output)
++int bsc_qlfc_static_decode_block(const unsigned char * input, unsigned char * output, int inputSize, int outputSize)
+ {
+     if (QlfcStatisticalModel * model = (QlfcStatisticalModel *)bsc_malloc(sizeof(QlfcStatisticalModel)))
+     {
+-        int result = bsc_qlfc_static_decode(input, output, model);
++        int result = bsc_qlfc_static_decode(input, output, inputSize, outputSize, model);
+ 
+         bsc_free(model);
+ 
+@@ -1343,11 +1353,11 @@
+     return LIBBSC_NOT_ENOUGH_MEMORY;
+ }
+ 
+-int bsc_qlfc_adaptive_decode_block(const unsigned char * input, unsigned char * output)
++int bsc_qlfc_adaptive_decode_block(const unsigned char * input, unsigned char * output, int inputSize, int outputSize)
+ {
+     if (QlfcStatisticalModel * model = (QlfcStatisticalModel *)bsc_malloc(sizeof(QlfcStatisticalModel)))
+     {
+-        int result = bsc_qlfc_adaptive_decode(input, output, model);
++        int result = bsc_qlfc_adaptive_decode(input, output, inputSize, outputSize, model);
+ 
+         bsc_free(model);
+ 
+--- upstream/libbsc/coder/qlfc/qlfc.h
++++ native/libbsc/coder/qlfc/qlfc.h
+@@ -70,7 +70,7 @@
+     * @param output     - the output memory block of n bytes.
+     * @return the length of compressed memory block if no error occurred, error code otherwise.
+     */
+-    int bsc_qlfc_static_decode_block(const unsigned char * input, unsigned char * output);
++    int bsc_qlfc_static_decode_block(const unsigned char * input, unsigned char * output, int inputSize, int outputSize);
+ 
+     /**
+     * Decompress a memory block using Quantized Local Frequency Coding algorithm.
+@@ -78,7 +78,7 @@
+     * @param output     - the output memory block of n bytes.
+     * @return the length of decompressed memory block if no error occurred, error code otherwise.
+     */
+-    int bsc_qlfc_adaptive_decode_block(const unsigned char * input, unsigned char * output);
++    int bsc_qlfc_adaptive_decode_block(const unsigned char * input, unsigned char * output, int inputSize, int outputSize);
+ 
+ #ifdef __cplusplus
+ }
+--- upstream/libbsc/libbsc/libbsc.cpp
++++ native/libbsc/libbsc/libbsc.cpp
+@@ -84,13 +84,13 @@
+     unsigned int adler32_data = bsc_adler32(input, n, features);
+ 
+     memmove(output + LIBBSC_HEADER_SIZE, input, n);
+-    *(int *)(output +  0) = n + LIBBSC_HEADER_SIZE;
+-    *(int *)(output +  4) = n;
+-    *(int *)(output +  8) = 0;
+-    *(int *)(output + 12) = 0;
+-    *(int *)(output + 16) = adler32_data;
+-    *(int *)(output + 20) = adler32_data;
+-    *(int *)(output + 24) = bsc_adler32(output, 24, features);
++    bsc_write<int>(output +  0, n + LIBBSC_HEADER_SIZE);
++    bsc_write<int>(output +  4, n);
++    bsc_write<int>(output +  8, 0);
++    bsc_write<int>(output + 12, 0);
++    bsc_write<int>(output + 16, adler32_data);
++    bsc_write<int>(output + 20, adler32_data);
++    bsc_write<int>(output + 24, bsc_adler32(output, 24, features));
+     return n + LIBBSC_HEADER_SIZE;
+ }
+ 
+@@ -210,13 +210,13 @@
+             data[LIBBSC_HEADER_SIZE + result + 4 * num_indexes] = num_indexes;
+             result += 1 + 4 * num_indexes;
+         }
+-        *(int *)(data +  0) = result + LIBBSC_HEADER_SIZE;
+-        *(int *)(data +  4) = n;
+-        *(int *)(data +  8) = mode;
+-        *(int *)(data + 12) = index;
+-        *(int *)(data + 16) = adler32_data;
+-        *(int *)(data + 20) = bsc_adler32(data + LIBBSC_HEADER_SIZE, result, features);
+-        *(int *)(data + 24) = bsc_adler32(data, 24, features);
++        bsc_write<int>(data +  0, result + LIBBSC_HEADER_SIZE);
++        bsc_write<int>(data +  4, n);
++        bsc_write<int>(data +  8, mode);
++        bsc_write<int>(data + 12, index);
++        bsc_write<int>(data + 16, adler32_data);
++        bsc_write<int>(data + 20, bsc_adler32(data + LIBBSC_HEADER_SIZE, result, features));
++        bsc_write<int>(data + 24, bsc_adler32(data, 24, features));
+         return result + LIBBSC_HEADER_SIZE;
+     }
+ 
+@@ -336,13 +336,13 @@
+             output[LIBBSC_HEADER_SIZE + result + 4 * num_indexes] = num_indexes;
+             result += 1 + 4 * num_indexes;
+         }
+-        *(int *)(output +  0) = result + LIBBSC_HEADER_SIZE;
+-        *(int *)(output +  4) = n;
+-        *(int *)(output +  8) = mode;
+-        *(int *)(output + 12) = index;
+-        *(int *)(output + 16) = bsc_adler32(input, n, features);
+-        *(int *)(output + 20) = bsc_adler32(output + LIBBSC_HEADER_SIZE, result, features);
+-        *(int *)(output + 24) = bsc_adler32(output, 24, features);
++        bsc_write<int>(output +  0, result + LIBBSC_HEADER_SIZE);
++        bsc_write<int>(output +  4, n);
++        bsc_write<int>(output +  8, mode);
++        bsc_write<int>(output + 12, index);
++        bsc_write<int>(output + 16, bsc_adler32(input, n, features));
++        bsc_write<int>(output + 20, bsc_adler32(output + LIBBSC_HEADER_SIZE, result, features));
++        bsc_write<int>(output + 24, bsc_adler32(output, 24, features));
+         return result + LIBBSC_HEADER_SIZE;
+     }
+ 
+@@ -356,15 +356,15 @@
+         return LIBBSC_UNEXPECTED_EOB;
+     }
+ 
+-    if (*(unsigned int *)(blockHeader + 24) != bsc_adler32(blockHeader, 24, features))
++    if (bsc_load<unsigned int>(blockHeader + 24) != bsc_adler32(blockHeader, 24, features))
+     {
+         return LIBBSC_DATA_CORRUPT;
+     }
+ 
+-    int blockSize    = *(int *)(blockHeader +  0);
+-    int dataSize     = *(int *)(blockHeader +  4);
+-    int mode         = *(int *)(blockHeader +  8);
+-    int index        = *(int *)(blockHeader + 12);
++    int blockSize    = bsc_load<int>(blockHeader +  0);
++    int dataSize     = bsc_load<int>(blockHeader +  4);
++    int mode         = bsc_load<int>(blockHeader +  8);
++    int index        = bsc_load<int>(blockHeader + 12);
+ 
+     int lzpHashSize  = (mode >> 16) & 0xff;
+     int lzpMinLen    = (mode >>  8) & 0xff;
+@@ -446,22 +446,23 @@
+         return LIBBSC_UNEXPECTED_EOB;
+     }
+ 
+-    if (*(unsigned int *)(data + 20) != bsc_adler32(data + LIBBSC_HEADER_SIZE, blockSize - LIBBSC_HEADER_SIZE, features))
++    if (bsc_load<unsigned int>(data + 20) != bsc_adler32(data + LIBBSC_HEADER_SIZE, blockSize - LIBBSC_HEADER_SIZE, features))
+     {
+         return LIBBSC_DATA_CORRUPT;
+     }
+ 
+-    int mode = *(int *)(data + 8);
++    int mode = bsc_load<int>(data + 8);
+     if (mode == 0)
+     {
+         memmove(data, data + LIBBSC_HEADER_SIZE, dataSize);
+         return LIBBSC_NO_ERROR;
+     }
+ 
+-    int             index           = *(int *)(data + 12);
+-    unsigned int    adler32_data    = *(int *)(data + 16);
++    int             index           = bsc_load<int>(data + 12);
++    unsigned int    adler32_data    = bsc_load<int>(data + 16);
+ 
+     num_indexes = data[blockSize - 1];
++    if (blockSize <= LIBBSC_HEADER_SIZE + 1 + 4 * num_indexes) return LIBBSC_DATA_CORRUPT;
+     if (num_indexes > 0)
+     {
+         memcpy(indexes, data + blockSize - 1 - 4 * num_indexes, 4 * num_indexes);
+@@ -479,7 +480,7 @@
+ 
+         memcpy(buffer, data, blockSize);
+ 
+-        lzSize = bsc_coder_decompress(buffer + LIBBSC_HEADER_SIZE, data, coder, features);
++        lzSize = bsc_coder_decompress(buffer + LIBBSC_HEADER_SIZE, data, blockSize - LIBBSC_HEADER_SIZE - 1 - 4 * num_indexes, dataSize, coder, features);
+ 
+         bsc_free(buffer);
+     }
+@@ -516,7 +517,7 @@
+         if (unsigned char * buffer = (unsigned char *)bsc_malloc(lzSize))
+         {
+             memcpy(buffer, data, lzSize);
+-            result = bsc_lzp_decompress(buffer, data, lzSize, lzpHashSize, lzpMinLen, features);
++            result = bsc_lzp_decompress(buffer, data, lzSize, dataSize, lzpHashSize, lzpMinLen, features);
+             bsc_free(buffer);
+             if (result < LIBBSC_NO_ERROR)
+             {
+@@ -553,22 +554,23 @@
+         return LIBBSC_UNEXPECTED_EOB;
+     }
+ 
+-    if (*(unsigned int *)(input + 20) != bsc_adler32(input + LIBBSC_HEADER_SIZE, blockSize - LIBBSC_HEADER_SIZE, features))
++    if (bsc_load<unsigned int>(input + 20) != bsc_adler32(input + LIBBSC_HEADER_SIZE, blockSize - LIBBSC_HEADER_SIZE, features))
+     {
+         return LIBBSC_DATA_CORRUPT;
+     }
+ 
+-    int mode = *(int *)(input + 8);
++    int mode = bsc_load<int>(input + 8);
+     if (mode == 0)
+     {
+         memcpy(output, input + LIBBSC_HEADER_SIZE, dataSize);
+         return LIBBSC_NO_ERROR;
+     }
+ 
+-    int             index           = *(int *)(input + 12);
+-    unsigned int    adler32_data    = *(int *)(input + 16);
++    int             index           = bsc_load<int>(input + 12);
++    unsigned int    adler32_data    = bsc_load<int>(input + 16);
+ 
+     num_indexes = input[blockSize - 1];
++    if (blockSize <= LIBBSC_HEADER_SIZE + 1 + 4 * num_indexes) return LIBBSC_DATA_CORRUPT;
+     if (num_indexes > 0)
+     {
+         memcpy(indexes, input + blockSize - 1 - 4 * num_indexes, 4 * num_indexes);
+@@ -579,7 +581,7 @@
+     int coder        = (mode >>  5) & 0x7;
+     int blockSorter  = (mode >>  0) & 0x1f;
+ 
+-    int lzSize = bsc_coder_decompress(input + LIBBSC_HEADER_SIZE, output, coder, features);
++    int lzSize = bsc_coder_decompress(input + LIBBSC_HEADER_SIZE, output, blockSize - LIBBSC_HEADER_SIZE - 1 - 4 * num_indexes, dataSize, coder, features);
+     if (lzSize < LIBBSC_NO_ERROR)
+     {
+         return lzSize;
+@@ -613,7 +615,7 @@
+         if (unsigned char * buffer = (unsigned char *)bsc_malloc(lzSize))
+         {
+             memcpy(buffer, output, lzSize);
+-            result = bsc_lzp_decompress(buffer, output, lzSize, lzpHashSize, lzpMinLen, features);
++            result = bsc_lzp_decompress(buffer, output, lzSize, dataSize, lzpHashSize, lzpMinLen, features);
+             bsc_free(buffer);
+             if (result < LIBBSC_NO_ERROR)
+             {
+--- upstream/libbsc/lzp/lzp.cpp
++++ native/libbsc/lzp/lzp.cpp
+@@ -79,9 +79,9 @@
+             if (value > 0)
+             {
+                 const unsigned char * reference = inputStart + value;
+-                if ((*(unsigned int *)(input + minLen - 4) == *(unsigned int *)(reference + minLen - 4)) && (*(unsigned int *)(input) == *(unsigned int *)(reference)))
+-                {
+-                    if ((heuristic > input) && (*(unsigned int *)heuristic != *(unsigned int *)(reference + (heuristic - input))))
++                if ((bsc_load<unsigned int>(input + minLen - 4) == bsc_load<unsigned int>(reference + minLen - 4)) && (bsc_load<unsigned int>(input) == bsc_load<unsigned int>(reference)))
++                {
++                    if ((heuristic > input) && (bsc_load<unsigned int>(heuristic) != bsc_load<unsigned int>(reference + (heuristic - input))))
+                     {
+                         goto LIBBSC_LZP_MATCH_NOT_FOUND;
+                     }
+@@ -89,7 +89,7 @@
+                     int len = 4;
+                     for (; input + len < inputMinLenEnd; len += 4)
+                     {
+-                        if (*(unsigned int *)(input + len) != *(unsigned int *)(reference + len)) break;
++                        if (bsc_load<unsigned int>(input + len) != bsc_load<unsigned int>(reference + len)) break;
+                     }
+                     if (len < minLen)
+                     {
+@@ -101,7 +101,7 @@
+                     if (input[len] == reference[len]) len++;
+                     if (input[len] == reference[len]) len++;
+ 
+-                    input += len; context = input[-1] | (input[-2] << 8) | (input[-3] << 16) | (input[-4] << 24);
++                    input += len; context = input[-1] | (input[-2] << 8) | (input[-3] << 16) | (unsigned(input[-4]) << 24);
+ 
+                     *output++ = LIBBSC_LZP_MATCH_FLAG;
+ 
+@@ -147,9 +147,9 @@
+     return LIBBSC_NOT_ENOUGH_MEMORY;
+ }
+ 
+-int bsc_lzp_decode_block(const unsigned char * input, const unsigned char * inputEnd, unsigned char * output, int hashSize, int minLen)
+-{
+-    if (inputEnd - input < 4)
++int bsc_lzp_decode_block(const unsigned char * input, const unsigned char * inputEnd, unsigned char * output, unsigned char * outputLimit, int hashSize, int minLen)
++{
++    if (inputEnd - input < 4 || outputLimit - output < 4)
+     {
+         return LIBBSC_UNEXPECTED_EOB;
+     }
+@@ -167,21 +167,27 @@
+ 
+         while (input < inputEnd)
+         {
++            if (output >= outputLimit) { bsc_free(lookup); return LIBBSC_DATA_CORRUPT; }
+             unsigned int index = ((context >> 15) ^ context ^ (context >> 3)) & mask;
+             int value = lookup[index]; lookup[index] = (int)(output - outputStart);
+             if (*input == LIBBSC_LZP_MATCH_FLAG && value > 0)
+             {
+                 input++;
++                if (input >= inputEnd) { bsc_free(lookup); return LIBBSC_DATA_CORRUPT; }
+                 if (*input != 255)
+                 {
+-                    int len = minLen; while (true) { len += *input; if (*input++ != 254) break; }
++                    int len = minLen;
++                    while (true) {
++                        if (input >= inputEnd || len > outputLimit - output || *input > outputLimit - output - len) { bsc_free(lookup); return LIBBSC_DATA_CORRUPT; }
++                        len += *input; if (*input++ != 254) break;
++                    }
+ 
+                     const unsigned char * reference = outputStart + value;
+                           unsigned char * outputEnd = output + len;
+ 
+                     while (output < outputEnd) *output++ = *reference++;
+ 
+-                    context = output[-1] | (output[-2] << 8) | (output[-3] << 16) | (output[-4] << 24);
++                    context = output[-1] | (output[-2] << 8) | (output[-3] << 16) | (unsigned(output[-4]) << 24);
+                 }
+                 else
+                 {
+@@ -230,8 +236,8 @@
+             result = inputSize; memcpy(output + outputPtr, input + inputStart, inputSize);
+         }
+ 
+-        *(int *)(output + 1 + 8 * blockId + 0) = inputSize;
+-        *(int *)(output + 1 + 8 * blockId + 4) = result;
++        bsc_write<int>(output + 1 + 8 * blockId + 0, inputSize);
++        bsc_write<int>(output + 1 + 8 * blockId + 4, result);
+ 
+         outputPtr += result;
+     }
+@@ -272,8 +278,8 @@
+                     compressionResult[blockId] = bsc_lzp_encode_block(input + blockStart, input + blockStart + blockSize, buffer + blockStart, buffer + blockStart + blockSize, hashSize, minLen);
+                     if (compressionResult[blockId] < LIBBSC_NO_ERROR) compressionResult[blockId] = blockSize;
+ 
+-                    *(int *)(output + 1 + 8 * blockId + 0) = blockSize;
+-                    *(int *)(output + 1 + 8 * blockId + 4) = compressionResult[blockId];
++                    bsc_write<int>(output + 1 + 8 * blockId + 0, blockSize);
++                    bsc_write<int>(output + 1 + 8 * blockId + 4, compressionResult[blockId]);
+                 }
+ 
+                 #pragma omp single
+@@ -335,15 +341,25 @@
+     return bsc_lzp_compress_serial(input, output, n, hashSize, minLen);
+ }
+ 
+-int bsc_lzp_decompress(const unsigned char * input, unsigned char * output, int n, int hashSize, int minLen, int features)
+-{
++int bsc_lzp_decompress(const unsigned char * input, unsigned char * output, int n, int outputSize, int hashSize, int minLen, int features)
++{
++    if (n < 1 || outputSize < 1) return LIBBSC_DATA_CORRUPT;
+     int nBlocks = input[0];
+ 
+     if (nBlocks == 1)
+     {
+-        return bsc_lzp_decode_block(input + 1, input + n, output, hashSize, minLen);
+-    }
+-
++        return bsc_lzp_decode_block(input + 1, input + n, output, output + outputSize, hashSize, minLen);
++    }
++
++    if (nBlocks < 1 || n < 1 + 8 * nBlocks) return LIBBSC_DATA_CORRUPT;
++    int inputTotal = 1 + 8 * nBlocks, outputTotal = 0;
++    for (int block = 0; block < nBlocks; ++block)
++    {
++        int decoded = bsc_load<int>(input + 1 + 8 * block);
++        int stored = bsc_load<int>(input + 5 + 8 * block);
++        if (decoded <= 0 || stored <= 0 || stored > n - inputTotal || decoded > outputSize - outputTotal) return LIBBSC_DATA_CORRUPT;
++        inputTotal += stored; outputTotal += decoded;
++    }
+     int decompressionResult[ALPHABET_SIZE];
+ 
+ #ifdef LIBBSC_OPENMP
+@@ -353,17 +369,17 @@
+         #pragma omp parallel for schedule(dynamic)
+         for (int blockId = 0; blockId < nBlocks; ++blockId)
+         {
+-            int inputPtr = 0;  for (int p = 0; p < blockId; ++p) inputPtr  += *(int *)(input + 1 + 8 * p + 4);
+-            int outputPtr = 0; for (int p = 0; p < blockId; ++p) outputPtr += *(int *)(input + 1 + 8 * p + 0);
++            int inputPtr = 0;  for (int p = 0; p < blockId; ++p) inputPtr  += bsc_load<int>(input + 1 + 8 * p + 4);
++            int outputPtr = 0; for (int p = 0; p < blockId; ++p) outputPtr += bsc_load<int>(input + 1 + 8 * p + 0);
+ 
+             inputPtr += 1 + 8 * nBlocks;
+ 
+-            int inputSize  = *(int *)(input + 1 + 8 * blockId + 4);
+-            int outputSize = *(int *)(input + 1 + 8 * blockId + 0);
++            int inputSize  = bsc_load<int>(input + 1 + 8 * blockId + 4);
++            int outputSize = bsc_load<int>(input + 1 + 8 * blockId + 0);
+ 
+             if (inputSize != outputSize)
+             {
+-                decompressionResult[blockId] = bsc_lzp_decode_block(input + inputPtr, input + inputPtr + inputSize, output + outputPtr, hashSize, minLen);
++                decompressionResult[blockId] = bsc_lzp_decode_block(input + inputPtr, input + inputPtr + inputSize, output + outputPtr, output + outputPtr + outputSize, hashSize, minLen);
+             }
+             else
+             {
+@@ -378,17 +394,17 @@
+     {
+         for (int blockId = 0; blockId < nBlocks; ++blockId)
+         {
+-            int inputPtr = 0;  for (int p = 0; p < blockId; ++p) inputPtr  += *(int *)(input + 1 + 8 * p + 4);
+-            int outputPtr = 0; for (int p = 0; p < blockId; ++p) outputPtr += *(int *)(input + 1 + 8 * p + 0);
++            int inputPtr = 0;  for (int p = 0; p < blockId; ++p) inputPtr  += bsc_load<int>(input + 1 + 8 * p + 4);
++            int outputPtr = 0; for (int p = 0; p < blockId; ++p) outputPtr += bsc_load<int>(input + 1 + 8 * p + 0);
+ 
+             inputPtr += 1 + 8 * nBlocks;
+ 
+-            int inputSize  = *(int *)(input + 1 + 8 * blockId + 4);
+-            int outputSize = *(int *)(input + 1 + 8 * blockId + 0);
++            int inputSize  = bsc_load<int>(input + 1 + 8 * blockId + 4);
++            int outputSize = bsc_load<int>(input + 1 + 8 * blockId + 0);
+ 
+             if (inputSize != outputSize)
+             {
+-                decompressionResult[blockId] = bsc_lzp_decode_block(input + inputPtr, input + inputPtr + inputSize, output + outputPtr, hashSize, minLen);
++                decompressionResult[blockId] = bsc_lzp_decode_block(input + inputPtr, input + inputPtr + inputSize, output + outputPtr, output + outputPtr + outputSize, hashSize, minLen);
+             }
+             else
+             {
+--- upstream/libbsc/lzp/lzp.h
++++ native/libbsc/lzp/lzp.h
+@@ -59,7 +59,7 @@
+     * @param features   - the set of additional features.
+     * @return The length of original memory block if no error occurred, error code otherwise.
+     */
+-    int bsc_lzp_decompress(const unsigned char * input, unsigned char * output, int n, int hashSize, int minLen, int features);
++    int bsc_lzp_decompress(const unsigned char * input, unsigned char * output, int n, int outputSize, int hashSize, int minLen, int features);
+ 
+ #ifdef __cplusplus
+ }
+--- upstream/libbsc/platform/platform.h
++++ native/libbsc/platform/platform.h
+@@ -32,6 +32,18 @@
+ 
+ #ifndef _LIBBSC_PLATFORM_H
+ #define _LIBBSC_PLATFORM_H
++
++// Native port patch: serialized bytes need not be aligned. memcpy preserves
++// the original little-endian host representation without pointer aliasing UB.
++#include <cstring>
++template<class T> inline T bsc_load(const void * address)
++{
++    T value; std::memcpy(&value, address, sizeof(value)); return value;
++}
++template<class T> inline void bsc_write(void * address, T value)
++{
++    std::memcpy(address, &value, sizeof(value));
++}
+ 
+ #if defined(_OPENMP) && defined(LIBBSC_OPENMP_SUPPORT)
+     #include <omp.h>

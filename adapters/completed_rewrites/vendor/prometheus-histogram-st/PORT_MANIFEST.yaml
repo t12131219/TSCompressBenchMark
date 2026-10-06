@@ -1,0 +1,134 @@
+{
+  "schema_version": 1,
+  "algorithm_id": "prometheus-histogram-st",
+  "implementation_id": "prometheus-histogram-st-canonical-cpp-v1",
+  "object_level": "P3_SYSTEM",
+  "port_method": "TRANSLATED",
+  "compatibility_target": "CROSS_DECODE",
+  "scope": "STANDALONE_REWRITE_ONLY",
+  "status": "REWRITE_DONE",
+  "current_gate": "G6",
+  "source_manifest": "../../Source/prometheus-histogram-st/SOURCE_MANIFEST.yaml",
+  "contract_sha256": "f41c8cb50de4d08bc5ccbbcd03b7cade4d635c8eddfaf9a66fc80ad9c958dcb1",
+  "gates": {
+    "G0": {
+      "status": "PASS",
+      "evidence": "validation/gate_freeze.json"
+    },
+    "G1": {
+      "status": "PASS",
+      "evidence": "validation/gate_freeze.json"
+    },
+    "G2": {
+      "status": "PASS",
+      "evidence": "validation/gate_freeze.json"
+    },
+    "G3": {
+      "status": "PASS",
+      "reviewer": "Local automated qualification audit",
+      "evidence": [
+        "validation/release_audit.json",
+        "dataset_validation_report.md",
+        "native_capability_validation_report.md"
+      ]
+    },
+    "G4": {
+      "status": "PASS",
+      "reviewer": "Local automated qualification audit",
+      "evidence": [
+        "validation/release_audit.json",
+        "dataset_validation_report.md",
+        "native_capability_validation_report.md"
+      ]
+    },
+    "G5": {
+      "status": "PASS",
+      "reviewer": "Local automated qualification audit",
+      "evidence": [
+        "validation/release_audit.json",
+        "dataset_validation_report.md",
+        "native_capability_validation_report.md"
+      ],
+      "optimization": "OPTIMIZATION_NOT_APPLICABLE; independent-handle safety verified"
+    },
+    "G6": {
+      "status": "PASS",
+      "reviewer": "Local automated qualification audit",
+      "evidence": [
+        "validation/release_audit.json",
+        "dataset_validation_report.md",
+        "native_capability_validation_report.md"
+      ]
+    }
+  },
+  "native_capability_parity": {
+    "overall_result": "FULL_PARITY",
+    "required_total": 22,
+    "required_passed": 22,
+    "matrix": "NATIVE_CAPABILITY_MATRIX.yaml",
+    "waiver_ids": [],
+    "matrix_sha256": "a13c9ed81fde835dbb1784612256ed1e0463ebba97de061b4fe4f6977854c1da"
+  },
+  "integration": {
+    "performed": false,
+    "tscb_adapter_present": false,
+    "registry_modified": false
+  },
+  "rewrite_conclusion": "REWRITE_DONE",
+  "standalone_api": {
+    "header": "include/histogram_st.hpp",
+    "safe_overread_bytes": 0,
+    "canonical_execution_path": "scalar",
+    "symbols": [
+      "Chunk::append/reset/clear/finalize/serialize_frame/compact/append_bound",
+      "Cursor::reset/reset_frame/next/seek",
+      "capability/version"
+    ],
+    "thread_safety": "independent handles only; shared handle requires caller synchronization",
+    "input_ownership": "append copies; raw/frame cursor borrows immutable bytes",
+    "resource_limits": {
+      "samples": 16383,
+      "array_entries_per_side": 100000
+    }
+  },
+  "accounting": {
+    "raw_bits": "size_bytes*8",
+    "frame_type_bits": 8,
+    "frame_length_bits": 64,
+    "final_bits": "raw_bits+72 per chunk",
+    "external_side_information_bits": 0,
+    "checksum_bits": 0,
+    "raw_compatibility": "Requires caller Kind as original FromData; use frame for self-contained storage"
+  },
+  "build": {
+    "compiler": {
+      "gcc": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0\nCopyright (C) 2021 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+      "clang": "Ubuntu clang version 14.0.0-1ubuntu1.1\nTarget: x86_64-pc-linux-gnu\nThread model: posix\nInstalledDir: /usr/bin\n",
+      "cmake": "cmake version 3.22.1\n\nCMake suite maintained and supported by Kitware (kitware.com/cmake).\n",
+      "linker": "GNU ld (GNU Binutils for Ubuntu) 2.38\nCopyright (C) 2022 Free Software Foundation, Inc.\n\u8fd9\u4e2a\u7a0b\u5e8f\u662f\u81ea\u7531\u8f6f\u4ef6\uff1b\u60a8\u53ef\u4ee5\u9075\u5faaGNU \u901a\u7528\u516c\u5171\u6388\u6743\u7248\u672c 3 \u6216\n(\u60a8\u81ea\u884c\u9009\u62e9\u7684) \u7a0d\u540e\u7248\u672c\u4ee5\u518d\u6b21\u6563\u5e03\u5b83\u3002\n\u8fd9\u4e2a\u7a0b\u5e8f\u5b8c\u5168\u6ca1\u6709\u4efb\u4f55\u62c5\u4fdd\u3002\n",
+      "archiver": "GNU ar (GNU Binutils for Ubuntu) 2.38\nCopyright (C) 2022 Free Software Foundation, Inc.\n\u8fd9\u4e2a\u7a0b\u5e8f\u662f\u81ea\u7531\u8f6f\u4ef6\uff1b\u60a8\u53ef\u4ee5\u9075\u5faa GNU \u901a\u7528\u516c\u5171\u6388\u6743\u7248\u672c 3 \u6216\n(\u60a8\u81ea\u884c\u9009\u62e9\u7684) \u7a0d\u540e\u7248\u672c\u518d\u53d1\u5e03\u5b83\u3002\n\u8fd9\u4e2a\u7a0b\u5e8f\u4e0d\u542b\u4efb\u4f55\u62c5\u4fdd\u3002\n",
+      "glibc": "ldd (Ubuntu GLIBC 2.35-0ubuntu3.8) 2.35\nCopyright (C) 2022 \u81ea\u7531\u8f6f\u4ef6\u57fa\u91d1\u4f1a\u3002\n\u8fd9\u662f\u81ea\u7531\u8f6f\u4ef6\uff1b\u590d\u5236\u672c\u8f6f\u4ef6\u9700\u6ee1\u8db3\u7684\u6761\u4ef6\u8bf7\u53c2\u89c1\u6e90\u4ee3\u7801\u3002\u672c\u8f6f\u4ef6\u4e0d\u63d0\u4f9b\u4efb\u4f55\n\u54c1\u8d28\u4fdd\u8bc1\uff1b\u751a\u81f3\u4e0d\u4fdd\u8bc1\u9002\u9500\u6027\u6216\u662f\u9002\u7528\u4e8e\u67d0\u79cd\u7279\u5b9a\u7528\u9014\u3002\n\u7531 Roland McGrath \u548c Ulrich Drepper \u7f16\u5199\u3002\n",
+      "zig": "0.15.2\n",
+      "qemu": "qemu-aarch64 version 6.2.0 (Debian 1:6.2+dfsg-2ubuntu6.31)\nCopyright (c) 2003-2021 Fabrice Bellard and the QEMU Project developers\n",
+      "go": "go version go1.26.0 linux/amd64\n"
+    },
+    "target": "x86_64-linux-gnu",
+    "sysroot": "system /",
+    "reproducibility": "BYTE_IDENTICAL_TWO_RELOCATED_BUILDS",
+    "reproduction_report": "validation/qualification/reproduce.json",
+    "artifact_sha256": "c9cf255a28dc5cecfe35910b3acfd208d1c725ef1c71901481b60c5e3ba43640",
+    "reference_runtime_in_native": false
+  },
+  "license": {
+    "spdx": "Apache-2.0 AND BSD-3-Clause",
+    "notice": "NOTICE",
+    "files": "LICENSES",
+    "runtime_dependencies": "External GNU/libc dynamic runtime with retained notices; see SBOM.json"
+  },
+  "dataset_validation": {
+    "status": "PASS",
+    "cases": 12,
+    "report": "dataset_validation_report.md",
+    "note": "Fixed measured-data-derived native histograms; not original CSV scalar reconstruction"
+  }
+}

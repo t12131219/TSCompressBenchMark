@@ -1,0 +1,53 @@
+{
+  "schema_version": "tscb.source-artifact.v2",
+  "key": "chimp-rewrite",
+  "kind": "FROZEN_STANDALONE_CPP_REWRITE_PUBLIC_API",
+  "identity": {
+    "kind": "FROZEN_STANDALONE_CPP_REWRITE_PUBLIC_API",
+    "key": "chimp",
+    "package": "chimp",
+    "api_files": [
+      {
+        "path": "adapters/rewrite_lossless/vendor/chimp/LICENSES/Apache-2.0.md",
+        "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+      },
+      {
+        "path": "adapters/rewrite_lossless/vendor/chimp/README.md",
+        "sha256": "8283eba463e0795c2e7c7dc7cc069bacd74c3f07376396c8669fa8c6bc77051b"
+      },
+      {
+        "path": "adapters/rewrite_lossless/vendor/chimp/UPSTREAM_PROVENANCE.json",
+        "sha256": "4f4de82f36cece3a022c1caa02a96022525788056cc827d2ede23886cf740b62"
+      },
+      {
+        "path": "adapters/rewrite_lossless/vendor/chimp/contract.md",
+        "sha256": "5f0db91e37cc9ac5b8db9e21a83a253708d4603c0d6ea59d2b438cde75c044c8"
+      },
+      {
+        "path": "adapters/rewrite_lossless/vendor/chimp/include/chimp.hpp",
+        "sha256": "86c521fcd23efcd539c4cb127829d5349e34fd5ec55c832e69c8930f4e957e10"
+      },
+      {
+        "path": "adapters/rewrite_lossless/vendor/chimp/src/codec.cpp",
+        "sha256": "b8d23194e270bd1a4e9849a3a368d3a1fbc3208ab4b07d555b2f26dd6899d287"
+      }
+    ],
+    "variant": "chimp",
+    "wrapper": "RWF1_COLUMN_SESSIONS_V1"
+  },
+  "license": {
+    "spdx": "Apache-2.0",
+    "status": "RUN_ALLOWED",
+    "files": [
+      "adapters/rewrite_lossless/vendor/chimp/LICENSES/Apache-2.0.md"
+    ],
+    "redistribution": "ORIGINAL_LICENSE_TERMS_APPLY"
+  },
+  "build": {
+    "recipe": "python tools/build_codec.py chimp --profile all",
+    "frozen_lock": "adapters/rewrite_lossless/FROZEN_APIS.json",
+    "translation_units": [
+      "src/codec.cpp"
+    ]
+  }
+}

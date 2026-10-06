@@ -1,0 +1,447 @@
+{
+  "algorithm": "prometheus-float-histogram-st",
+  "status": "PASS",
+  "measurement_mode": "QUALIFICATION",
+  "run_path": "runs/completed-prometheus-float-histogram-st-qualification-stage2",
+  "config_sha256": "6318172a4246ab59338aef7e6b718b701e0a3d5190c384e9977efac244b8ec7f",
+  "record_count": 1,
+  "formal_eligible_count": 0,
+  "preflight": [
+    {
+      "schema_version": "tscb.preflight-result.v2",
+      "status": "PASS",
+      "reason_code": "PREFLIGHT_PASS",
+      "eligible_for_formal_repetitions": true,
+      "input_validation": {
+        "schema_version": "tscb.input-validation.v2",
+        "input_sha256": "54108438e0bd2abdc9fb64e13fb815eead65fb19a66d298fa6779dbed18874eb",
+        "buffer_count": 7,
+        "buffer_names": [
+          "timestamp",
+          "value/000000",
+          "value/000001",
+          "value/000002",
+          "value/000003",
+          "value/000004",
+          "value/000005"
+        ],
+        "observed_dtypes": [
+          "<i8",
+          "<u8",
+          "<u8",
+          "<u8",
+          "<u8",
+          "<u8",
+          "<u8"
+        ],
+        "observed_shapes": [
+          [
+            16
+          ],
+          [
+            16
+          ],
+          [
+            16
+          ],
+          [
+            16
+          ],
+          [
+            16
+          ],
+          [
+            16
+          ],
+          [
+            16
+          ]
+        ],
+        "timestamp_unit": "s",
+        "timestamp_epoch": "UNIX",
+        "value_units": [
+          "HISTOGRAM_ST_INT64_BITS",
+          "HISTOGRAM_COUNT_BITS",
+          "HISTOGRAM_ZERO_COUNT_BITS",
+          "HISTOGRAM_SUM_BINARY64_BITS",
+          "HISTOGRAM_ZERO_THRESHOLD_BINARY64_BITS",
+          "HISTOGRAM_BUCKET_BITS"
+        ],
+        "special_values": {
+          "nan": 0,
+          "positive_inf": 0,
+          "negative_inf": 0,
+          "negative_zero": 0
+        }
+      },
+      "boundary": {
+        "schema_version": "tscb.boundary-suite-report.v2",
+        "suite_id": "v2:boundary-suite:sha256:289ee0bacd1f9d5b4a4723e5bce9dd3273bd4896ba574949b9164b8f02c4c47f",
+        "required_case_count": 33,
+        "passed": true,
+        "observations": [
+          {
+            "case_id": "v2:boundary-case:sha256:0c58d34fde4d3612e08aa40a5f889427ec70c344353f532a99b65a8f04f6e996",
+            "status": "PASS",
+            "reason": "CAPABILITY_REJECTED_WITHOUT_INVOCATION"
+          },
+          {
+            "case_id": "v2:boundary-case:sha256:192edcb286c24488734611996073a79dacbf0950ca3125e1601b53605bcc4743",
+            "status": "PASS",
+            "reason": "ROUNDTRIP_EXACT"
+          },
+          {
+            "case_id": "v2:boundary-case:sha256:19be100ac4749aefe298df25471cb6138e3aa4a930e9527f751546fb34b1d9af",
+            "status": "PASS",
+            "reason": "ROUNDTRIP_EXACT"
+          },
+          {
+            "case_id": "v2:boundary-case:sha256:1b5c15342649fa5983186b68e30ea171048e7a82e6b08f59668b10840bfd865e",
+            "status": "PASS",
+            "reason": "CAPABILITY_REJECTED_WITHOUT_INVOCATION"
+          },
+          {
+            "case_id": "v2:boundary-case:sha256:3859232360d85eab977e10ad9b278eac0a50e388e4dcd13bd985d99b0540dc6b",
+            "status": "PASS",
+            "reason": "ROUNDTRIP_EXACT"
+          },
+          {
+            "case_id": "v2:boundary-case:sha256:387ecd287b3818cb0d1bd8511564d80ae90acc972d2c25ff5cfd2ffda293361f",
+            "status": "PASS",
+            "reason": "ROUNDTRIP_EXACT"
+          },
+          {
+            "case_id": "v2:boundary-case:sha256:3c111f07a78385fe76776f7d4a41a76f8726f12b33f807ccb6fabb2103298691",
+            "status": "PASS",
+            "reason": "ROUNDTRIP_EXACT"
+          },
+          {
+            "case_id": "v2:boundary-case:sha256:427ec5739520ff48c80dd996d6ac811bbc1f07125f5e701838c057a158ac2ae4",
+            "status": "PASS",
+            "reason": "ROUNDTRIP_EXACT"
+          },
+          {
+            "case_id": "v2:boundary-case:sha256:4643e429a12bf95549161e6c186d2718e7d8edce2310b7d2f441086ae7522cde",
+            "status": "PASS",
+            "reason": "ROUNDTRIP_EXACT"
+          },
+          {
+            "case_id": "v2:boundary-case:sha256:5013f3e3c98d1be638d91eca4aa981c7890a5e7f5b0dc086599613201f2a653d",
+            "status": "PASS",
+            "reason": "ROUNDTRIP_EXACT"
+          },
+          {
+            "case_id": "v2:boundary-case:sha256:515010934349fb1d2b02853ce0dbbc56d8f64b166a8d360db12ab38f62d0ec69",
+            "status": "PASS",
+            "reason": "ROUNDTRIP_EXACT"
+          },
+          {
+            "case_id": "v2:boundary-case:sha256:54d1e4310789d9ce6b65759de450f0ad5b6a3701e2134f0ce46f15fb9cb0fce6",
+            "status": "PASS",
+            "reason": "ROUNDTRIP_EXACT"
+          },
+          {
+            "case_id": "v2:boundary-case:sha256:563f81af348a43018e115e0882d708e2fcefa981bb18e29b086b240f4fc8fe54",
+            "status": "PASS",
+            "reason": "ROUNDTRIP_EXACT"
+          },
+          {
+            "case_id": "v2:boundary-case:sha256:581540620d1ef019dbb587ce2122f690a8c9cd5098e93793641c99d1c8974e67",
+            "status": "PASS",
+            "reason": "ROUNDTRIP_EXACT"
+          },
+          {
+            "case_id": "v2:boundary-case:sha256:5a8e72ec3973d233198928d776b594c0dbf4d162dbb9395cb50fa6c7d27b5a3c",
+            "status": "PASS",
+            "reason": "ROUNDTRIP_EXACT"
+          },
+          {
+            "case_id": "v2:boundary-case:sha256:5eca1a3925be5330e807b9b57217b950aacbadcac0d5f1e7c13220b71137c913",
+            "status": "PASS",
+            "reason": "ROUNDTRIP_EXACT"
+          },
+          {
+            "case_id": "v2:boundary-case:sha256:63081271b8c787ef5a9980c595eece25b85b0e952f715a427582f7777aa2ecf4",
+            "status": "PASS",
+            "reason": "ROUNDTRIP_EXACT"
+          },
+          {
+            "case_id": "v2:boundary-case:sha256:699ba196c7c39e0bc88b2789583e728995d97d04df054d63129cdcd6ce2e0b36",
+            "status": "PASS",
+            "reason": "ROUNDTRIP_EXACT"
+          },
+          {
+            "case_id": "v2:boundary-case:sha256:7bd44538e151546cb49c04e2bb2c49e6bc3c1e91fcf3753d7bd9aef886cd6cc0",
+            "status": "PASS",
+            "reason": "ROUNDTRIP_EXACT"
+          },
+          {
+            "case_id": "v2:boundary-case:sha256:7dc665e4c2cf2c769ee54e2bafa64a2c8afe7375b4ea0d969326dcdf99f11a2a",
+            "status": "PASS",
+            "reason": "CAPABILITY_REJECTED_WITHOUT_INVOCATION"
+          },
+          {
+            "case_id": "v2:boundary-case:sha256:95896a89c3fe8f31bdabcaf1205f2186db7914eb12e6d6d041b2cf10ecf9a961",
+            "status": "PASS",
+            "reason": "ROUNDTRIP_EXACT"
+          },
+          {
+            "case_id": "v2:boundary-case:sha256:9a695675e01dd5d1b6ce28030d9f34f032b97c9e1e3e10493aa1b77e95d0d189",
+            "status": "PASS",
+            "reason": "CAPABILITY_REJECTED_WITHOUT_INVOCATION"
+          },
+          {
+            "case_id": "v2:boundary-case:sha256:ac20c47bc1d4190a0b2b735ae5ce93b090cd42999e973c804beb0163922fd432",
+            "status": "PASS",
+            "reason": "ROUNDTRIP_EXACT"
+          },
+          {
+            "case_id": "v2:boundary-case:sha256:b94e93314fe0746c2b7b0b5667c0f9e2c1ad7abdc332af386f3026a6dd0fb4f6",
+            "status": "PASS",
+            "reason": "ROUNDTRIP_EXACT"
+          },
+          {
+            "case_id": "v2:boundary-case:sha256:cc1384a031296cf101cf8318086b4644051c5b350a97013c907a3c641e1790ff",
+            "status": "PASS",
+            "reason": "ROUNDTRIP_EXACT"
+          },
+          {
+            "case_id": "v2:boundary-case:sha256:cf3b408b2d7c3b8dc4af6e1f5011ba5942236ba488a1675f9193a01d6d62f06e",
+            "status": "PASS",
+            "reason": "ROUNDTRIP_EXACT"
+          },
+          {
+            "case_id": "v2:boundary-case:sha256:d63a429b6ec76f37c673c3653cb6d4c71a1115ae7118434ee64883aa2eb4e1c4",
+            "status": "PASS",
+            "reason": "ROUNDTRIP_EXACT"
+          },
+          {
+            "case_id": "v2:boundary-case:sha256:e03f876dbba538aedf99a0a65cf63e7445e3db41cfb07a7597d19dc68fb66c8f",
+            "status": "PASS",
+            "reason": "ROUNDTRIP_EXACT"
+          },
+          {
+            "case_id": "v2:boundary-case:sha256:e9bfff4b06477d59296f627062da034b9ac788b64213ae441901387cfb667cd3",
+            "status": "PASS",
+            "reason": "REPEATED_FINALIZE_DEFINED_REJECT"
+          },
+          {
+            "case_id": "v2:boundary-case:sha256:eb87e4501107be28aa0b8ae5be51a7f66647fe42d2b72877ad895a237fbe50e7",
+            "status": "PASS",
+            "reason": "ROUNDTRIP_EXACT"
+          },
+          {
+            "case_id": "v2:boundary-case:sha256:f3fde4d98d44c3c42349007bd9851a7487be4543bcdddf69a99185a12f3dc3f6",
+            "status": "PASS",
+            "reason": "ROUNDTRIP_EXACT"
+          },
+          {
+            "case_id": "v2:boundary-case:sha256:f5b8985cc1ea80944d1d077af1cc5c7f5508826157c4201a3bd62343c99237a3",
+            "status": "PASS",
+            "reason": "ROUNDTRIP_EXACT"
+          },
+          {
+            "case_id": "v2:boundary-case:sha256:f73a020ca98c1a34073a4bda04228825a7335d2ce7746f0719f04e374dc8fb47",
+            "status": "PASS",
+            "reason": "BOUND_MINUS_ONE_REJECTED"
+          }
+        ]
+      },
+      "correctness": {
+        "schema_version": "tscb.correctness-report.v2",
+        "status": "PASS",
+        "first_failure_stage": null,
+        "checks": [
+          "CHANNEL_ENTITY_FEATURE_ORDER",
+          "DECODED_LENGTH_SHAPE",
+          "TIMESTAMP_EXACT_ORDER_UNIT_EPOCH",
+          "INTEGER_EXACT_SIGNEDNESS_OVERFLOW",
+          "FLOAT_IEEE_BITS",
+          "VALIDITY_EXACT",
+          "T_V_PAIRING",
+          "REBUILD_PROTOCOL",
+          "DETERMINISM",
+          "INPUT_IMMUTABILITY",
+          "OUTPUT_CANARY"
+        ],
+        "diagnostics": {},
+        "loss": null
+      },
+      "accounting": {
+        "track": "SYSTEM",
+        "timestamp_bits": 0,
+        "value_bits": 0,
+        "shared_bits": 0,
+        "unallocated_shared_bits": 1096,
+        "metadata_bits": 0,
+        "validity_bits": 0,
+        "dictionary_bits": 0,
+        "model_bits": 0,
+        "index_bits": 0,
+        "checkpoint_bits": 0,
+        "checksum_bits": 0,
+        "padding_bits": 0,
+        "container_bits": 8872,
+        "external_side_information_bits": 0,
+        "serialized_bits": 9968,
+        "final_bits": 9968,
+        "final_physical_bytes": 1246,
+        "canonical_raw_bits": 7168,
+        "accounting_method": "EXACT_CONTAINER_AND_OPAQUE_COMPLETE_NATIVE_FRAMES",
+        "schema_version": "tscb.accounting-ledger.v2",
+        "compression_factor": "0.7191011235955056",
+        "size_ratio": "1.390625"
+      },
+      "bitstream_sha256": "a81e964ae4310f0f9cc63f2af8e7214a55061bc9955603e182f8da0afad16f63",
+      "diagnostics": {
+        "worker_limit_method": "RLIMIT_AS_WITH_EXISTING_VM_HEADROOM"
+      }
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "runs/completed-prometheus-float-histogram-st-qualification-stage2/.run-store.lock",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "runs/completed-prometheus-float-histogram-st-qualification-stage2/artifacts/eb080fa8d69d525d3185b0f345394a63ecd0aefb8075720db0866ab7ae4e04b6.bin",
+      "sha256": "a81e964ae4310f0f9cc63f2af8e7214a55061bc9955603e182f8da0afad16f63"
+    },
+    {
+      "path": "runs/completed-prometheus-float-histogram-st-qualification-stage2/codec_registry_snapshot.json",
+      "sha256": "5ab721b556edc3b4348405debd4323e65cf1806f096cfcb7024691a2c22c5a94"
+    },
+    {
+      "path": "runs/completed-prometheus-float-histogram-st-qualification-stage2/comparability.csv",
+      "sha256": "f6b1279fc5b57b209c9d7e6d677c6a3019b77d24285b9fc4392d2d0dd4073e7a"
+    },
+    {
+      "path": "runs/completed-prometheus-float-histogram-st-qualification-stage2/corpus_summary.csv",
+      "sha256": "47d878c954bc5f042218a2c74ee2ee6416405457cf640916b297d625bf97029b"
+    },
+    {
+      "path": "runs/completed-prometheus-float-histogram-st-qualification-stage2/coverage.csv",
+      "sha256": "33b1e87dcc5b66b77b8c80959fe0e951c8bb9002a1adf66ae4d59988a462c159"
+    },
+    {
+      "path": "runs/completed-prometheus-float-histogram-st-qualification-stage2/datasets/rewrite_histogram_float/preparation-record.json",
+      "sha256": "0655406d851a74c47948366c534690c30fbb84ba7bbc3035017864399dead552"
+    },
+    {
+      "path": "runs/completed-prometheus-float-histogram-st-qualification-stage2/datasets/rewrite_histogram_float/rewrite_histogram_float.canonical.tscb",
+      "sha256": "6f879199495809bd62733f4e812f8da99de9235814078447957b745577bb17a3"
+    },
+    {
+      "path": "runs/completed-prometheus-float-histogram-st-qualification-stage2/datasets/rewrite_histogram_float/rewrite_histogram_float.characterization.json",
+      "sha256": "fdcec8a23db8c2ce3a6d5e3f29b6b2819ed50189331b56bb58e43db9fd3ba543"
+    },
+    {
+      "path": "runs/completed-prometheus-float-histogram-st-qualification-stage2/datasets/rewrite_histogram_float/rewrite_histogram_float.manifest.json",
+      "sha256": "6cefab0fe331e31818853503f10675fd3dc60c866baeca0e0013756a840762c7"
+    },
+    {
+      "path": "runs/completed-prometheus-float-histogram-st-qualification-stage2/eligibility.csv",
+      "sha256": "5bc935cfd0c1cd1918d60735e8d6d7888a180ed265efcbb565e8cf184c73056a"
+    },
+    {
+      "path": "runs/completed-prometheus-float-histogram-st-qualification-stage2/environment.json",
+      "sha256": "23aff1731aadea4f3a29aaa58bd72c74e6b6a05415d2f0fc1472739aa4c47afa"
+    },
+    {
+      "path": "runs/completed-prometheus-float-histogram-st-qualification-stage2/events.jsonl",
+      "sha256": "d4c3edc86f0f7834679dea084869a2e7323c8e4f41348548d773102584b70e25"
+    },
+    {
+      "path": "runs/completed-prometheus-float-histogram-st-qualification-stage2/frozen_config.json",
+      "sha256": "37365e111fceaa976cc75dea4acd4d06ac9d17a8c03e1538d7df16ff0282f921"
+    },
+    {
+      "path": "runs/completed-prometheus-float-histogram-st-qualification-stage2/layer2-plan.json",
+      "sha256": "d3937b4db36645a64c24e3cbdcfb7fa333082689a5ba051f54630e9cf081f856"
+    },
+    {
+      "path": "runs/completed-prometheus-float-histogram-st-qualification-stage2/layer3-execution.json",
+      "sha256": "67e59b6ec33607b9327ea698afef20710f1ac7513aab357db746577654d66d64"
+    },
+    {
+      "path": "runs/completed-prometheus-float-histogram-st-qualification-stage2/layer4-performance.json",
+      "sha256": "66a271a50315a2bc8a8095d604d51ef4c3c5901c526d8c3b1a6a503f21461c24"
+    },
+    {
+      "path": "runs/completed-prometheus-float-histogram-st-qualification-stage2/layer5-statistics.json",
+      "sha256": "a80a4e5c17e2c2901d71f3a89ad430785881858cf9ff6855e5df920739648305"
+    },
+    {
+      "path": "runs/completed-prometheus-float-histogram-st-qualification-stage2/pareto.csv",
+      "sha256": "976bda36b3d490952f6cf65f0698279231cae3ceaf18c17f81c8e29dc7217342"
+    },
+    {
+      "path": "runs/completed-prometheus-float-histogram-st-qualification-stage2/preflight/97b9781dba9f0a187896072589d6ae72e6e10577f2f6aa4c99b78cec25d33521.json",
+      "sha256": "7a88112aba9150fe1a8d42f6aadf63c62ace74651cb7090486ae2385f34dd7da"
+    },
+    {
+      "path": "runs/completed-prometheus-float-histogram-st-qualification-stage2/ranking.csv",
+      "sha256": "2c50edaddfe682801215f4a5ad7dda57bfc3ae1bdc7fe21ed1ce4ae2e6be91fd"
+    },
+    {
+      "path": "runs/completed-prometheus-float-histogram-st-qualification-stage2/report/coverage.svg",
+      "sha256": "ce9773ce1ffcc539c9d03f39820b6e4a5967cb4a20d0124f417793cfa631d5e2"
+    },
+    {
+      "path": "runs/completed-prometheus-float-histogram-st-qualification-stage2/report/report.html",
+      "sha256": "f5e278a0dced099323bc50bb47b870c4e607383f998d0775d4432aafce298ab7"
+    },
+    {
+      "path": "runs/completed-prometheus-float-histogram-st-qualification-stage2/report/report.json",
+      "sha256": "187cc70b9d90a059da2f86dedf37eb8621ca4eacbe0f2a7cb0ad506c8433ff07"
+    },
+    {
+      "path": "runs/completed-prometheus-float-histogram-st-qualification-stage2/report/report.md",
+      "sha256": "91ee9c005a2f290d9928d4fac7ec126fbba48e30471c4c0db9bc814b6935a1b7"
+    },
+    {
+      "path": "runs/completed-prometheus-float-histogram-st-qualification-stage2/report/space-decode.svg",
+      "sha256": "3e20aa6227beab7714116e12a7814c993d320cdcf72310ddcb38c6ef18ae085d"
+    },
+    {
+      "path": "runs/completed-prometheus-float-histogram-st-qualification-stage2/report/space-encode.svg",
+      "sha256": "8fca0473a8f851776bd01df41ed8941628f88a7214a3072988b9cf2bf3bf8088"
+    },
+    {
+      "path": "runs/completed-prometheus-float-histogram-st-qualification-stage2/resolved_configs.json",
+      "sha256": "b32b047738917ffad206252c80aa4c3d6c08a212053cc0f6544cbc27a9d5beeb"
+    },
+    {
+      "path": "runs/completed-prometheus-float-histogram-st-qualification-stage2/run-set.json",
+      "sha256": "5b6bd8c234c7fd01d12135fa30bd41744e3a8c2eab5a4edcecfb53a0cdbd4c4b"
+    },
+    {
+      "path": "runs/completed-prometheus-float-histogram-st-qualification-stage2/run_components.jsonl",
+      "sha256": "0e7cd5b4807976886ff985f86138dba8f03ddf629d7b45f58a6e3e202c826c98"
+    },
+    {
+      "path": "runs/completed-prometheus-float-histogram-st-qualification-stage2/runs.csv",
+      "sha256": "e86fb81c74ebb33d2b3bd67351b2203c266b9d3e7c8a61607b699a6465deee14"
+    },
+    {
+      "path": "runs/completed-prometheus-float-histogram-st-qualification-stage2/source_classification.json",
+      "sha256": "f375c3ecf6facf37c78f639c6b047ae1c8e6f8b05e91d9ae386a3d02c2c19052"
+    },
+    {
+      "path": "runs/completed-prometheus-float-histogram-st-qualification-stage2/source_registry_snapshot.json",
+      "sha256": "50403573963c311c4e439696fa100a41ce5fee78687502e04bdc078a87bda9a7"
+    },
+    {
+      "path": "runs/completed-prometheus-float-histogram-st-qualification-stage2/summary.csv",
+      "sha256": "984429ccd0536806ded9759e02c608f2e91cb4b320115a69c546fa161954ae49"
+    },
+    {
+      "path": "runs/completed-prometheus-float-histogram-st-qualification-stage2/task_plan.jsonl",
+      "sha256": "515c2332bea30d3d099b537c83c905bf8c39ea28c3e7ac4fbccbb35215e7abf2"
+    },
+    {
+      "path": "runs/completed-prometheus-float-histogram-st-qualification-stage2/warmup/97b9781dba9f0a187896072589d6ae72e6e10577f2f6aa4c99b78cec25d33521.from-0.json",
+      "sha256": "e2fedf994dfe4ae3999483b297a9e81a6334df47e7c9f08e0331ea73d4f18f4d"
+    }
+  ]
+}

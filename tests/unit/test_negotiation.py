@@ -1,3 +1,4 @@
+from dataclasses import replace
 from pathlib import Path
 
 import numpy as np
@@ -85,3 +86,25 @@ def test_native_lossy_codec_uses_its_declared_loss_mode() -> None:
     )
     assert unsupported.status is CapabilityStatus.UNSUPPORTED
     assert unsupported.reason_code == "LOSS_MODE_UNSUPPORTED"
+
+
+def test_rewrite_capacity_limits_are_rejected_during_planning() -> None:
+    manifest = _codecs().get("self-star")
+    descriptor = replace(_descriptor(), n=1025, shape=(1025,), canonical_raw_bits=1025 * 64)
+    small_blocks = negotiate(manifest, descriptor, parameters={"block_size": 1})
+    assert small_blocks.status is CapabilityStatus.UNSUPPORTED
+    assert small_blocks.missing_capabilities == ("blocks_per_column",)
+    assert negotiate(manifest, descriptor, parameters={"block_size": 2}).status is not (
+        CapabilityStatus.UNSUPPORTED
+    )
+    descriptor = replace(
+        _descriptor(),
+        n=8388609,
+        m=2,
+        shape=(8388609, 2),
+        dtype_vector=("<f4", "<f4"),
+        canonical_raw_bits=8388609 * 2 * 32,
+    )
+    too_many = negotiate(_codecs().get("chimp"), descriptor)
+    assert too_many.status is CapabilityStatus.UNSUPPORTED
+    assert too_many.missing_capabilities == ("total_elements",)

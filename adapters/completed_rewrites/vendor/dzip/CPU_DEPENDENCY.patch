@@ -1,0 +1,129 @@
+--- upstream/eigen_contraction_kernel.h
++++ native/eigen_contraction_kernel.h
+@@ -13,6 +13,10 @@
+ limitations under the License.
+ ==============================================================================*/
+ 
++// Native DZip adaptation: replace TensorFlow includes with native Eigen,
++// omit unused integer/FixedPoint specialization, and check float GEMM status.
++// Original and complete patch provenance: CPU_DEPENDENCY.json/.patch.
++
+ #ifndef TENSORFLOW_CORE_KERNELS_EIGEN_CONTRACTION_KERNEL_H_
+ #define TENSORFLOW_CORE_KERNELS_EIGEN_CONTRACTION_KERNEL_H_
+ 
+@@ -32,12 +36,11 @@
+ //   #include "tensorflow/core/kernels/eigen_contraction_kernel.h"
+ //   #endif
+ 
+-#include "third_party/eigen3/unsupported/Eigen/CXX11/Tensor"
+-
+-// FixedPoint header must be included after Tensor.
+-// clang-format off
+-#include "third_party/eigen3/unsupported/Eigen/CXX11/FixedPoint"
+-// clang-format on
++#include <unsupported/Eigen/CXX11/Tensor>
++#include <stdexcept>
++
++// DZip uses float32 only. The unused quantized integer specialization and
++// its unavailable FixedPoint dependency are omitted; float kernels are unchanged.
+ 
+ #if defined(TENSORFLOW_USE_MKLDNN_CONTRACTION_KERNEL)
+ #include "mkldnn.h"
+@@ -162,73 +165,7 @@
+     mkldnn_status_t st = mkldnn_sgemm(&transposeA, &transposeB, &m, &n, &k,
+                                       &alpha, blockA, &ldA, blockB, &ldB, &beta,
+                                       const_cast<float*>(output.data()), &ldC);
+-    eigen_assert(st == 0);
+-
+-    // eigen_assert is a no-op in optimized mode so we add these to avoid
+-    // compiler's unused-variable errors.
+-    EIGEN_UNUSED_VARIABLE(max_index);
+-    EIGEN_UNUSED_VARIABLE(st);
+-  }
+-};
+-
+-template <typename IndexType, typename OutputMapper, bool ConjugateLhs = false,
+-          bool ConjugateRhs = false>
+-struct mkldnn_gemm_s8s8s32_kernel {
+-  static_assert(!ConjugateLhs, "MKL-DNN kernel doesn't support ConjugateLhs");
+-  static_assert(!ConjugateRhs, "MKL-DNN kernel doesn't support ConjugateRhs");
+-
+-  static constexpr int kComputeStrideFromBlockDimensions = -1;
+-
+-  using LhsScalar = Eigen::QInt8;
+-  using RhsScalar = Eigen::QInt8;
+-  using ResScalar = Eigen::QInt32;
+-
+-  EIGEN_DONT_INLINE
+-  void operator()(const OutputMapper& output, const LhsScalar* blockA,
+-                  const RhsScalar* blockB, const IndexType rows,
+-                  const IndexType depth, const IndexType cols, float alpha,
+-                  int ldA = kComputeStrideFromBlockDimensions,
+-                  int ldB = kComputeStrideFromBlockDimensions,
+-                  char transposeA = 'N', char transposeB = 'N') {
+-    static const int max_index = (std::numeric_limits<int>::max)();
+-
+-    eigen_assert(max_index >= rows);
+-    eigen_assert(max_index >= cols);
+-    eigen_assert(max_index >= depth);
+-    eigen_assert(max_index >= output.stride());
+-
+-    const int m = static_cast<int>(rows);
+-    const int n = static_cast<int>(cols);
+-    const int k = static_cast<int>(depth);
+-
+-    ldA = ldA == kComputeStrideFromBlockDimensions ? m : ldA;
+-    ldB = ldB == kComputeStrideFromBlockDimensions ? k : ldB;
+-    const int ldC = static_cast<int>(output.stride());
+-
+-    const float beta = 1.0;
+-
+-    // Currently we support only symmetric quantization with zero point at 0.
+-    const int8_t ao = 0;
+-    const int8_t bo = 0;
+-
+-    // Don't add any offset to the result C.
+-    const char offsetc = 'F';
+-    const int32_t co = 0;
+-
+-    const int8_t* A = reinterpret_cast<const int8_t*>(blockA);
+-    const int8_t* B = reinterpret_cast<const int8_t*>(blockB);
+-    int32_t* C =
+-        reinterpret_cast<int32_t*>(const_cast<ResScalar*>(output.data()));
+-
+-    mkldnn_status_t st =
+-        mkldnn_gemm_s8s8s32(&transposeA, &transposeB, &offsetc,  //
+-                            &m, &n, &k,                          //
+-                            &alpha,                              //
+-                            A, &ldA, &ao,                        //
+-                            B, &ldB, &bo,                        //
+-                            &beta,                               //
+-                            C, &ldC, &co);
+-    eigen_assert(st == 0);
++    if (st != mkldnn_success) throw std::runtime_error("native MKL-DNN contraction failed");
+ 
+     // eigen_assert is a no-op in optimized mode so we add these to avoid
+     // compiler's unused-variable errors.
+@@ -447,12 +384,6 @@
+   using GemmKernel = mkldnn_gemm_kernel<float, StorageIndex, OutputMapper>;
+ };
+ 
+-template <typename StorageIndex, typename OutputMapper>
+-struct GemmKernelProvider<Eigen::QInt32, Eigen::QInt8, Eigen::QInt8,
+-                          StorageIndex, OutputMapper> {
+-  enum { Defined = 1 };
+-  using GemmKernel = mkldnn_gemm_s8s8s32_kernel<StorageIndex, OutputMapper>;
+-};
+ 
+ // NOTE: 'std::enable_if' doesn't work for template specializations. See
+ // "default template argument in a class template partial specialization".
+@@ -821,8 +752,7 @@
+   }
+ 
+ REGISTER_TENSOR_CONTRACTION_KERNEL_WITH_FALLBACK(float, float, float);
+-REGISTER_TENSOR_CONTRACTION_KERNEL_NO_FALLBACK(Eigen::QInt32, Eigen::QInt8,
+-                                               Eigen::QInt8);
++
+ 
+ #undef REGISTER_TENSOR_CONTRACTION_KERNEL
+ 

@@ -1,0 +1,240 @@
+{
+  "schema_version": "tscb.codec-manifest.v2",
+  "key": "walloc-1d",
+  "identity": {
+    "display_name": "walloc-1d",
+    "family": "WALLOC-1D",
+    "citations": [
+      "adapters/completed_rewrites/vendor/walloc-1d/contract.md"
+    ],
+    "source_artifact_id": "v2:source-artifact:sha256:178f7c4cda75aa2a85a34e1d66a921826923cbdfa34b3627fe38fa2edc00aeba"
+  },
+  "classification": {
+    "object_level": "P2_PIPELINE",
+    "implementation_class": "LEARNED",
+    "tracks": [
+      "VALUE"
+    ],
+    "subtracks": [
+      "V0"
+    ]
+  },
+  "input": {
+    "topologies": [
+      "UTS",
+      "SYNCHRONOUS_MTS"
+    ],
+    "dtypes": [
+      "<f4"
+    ],
+    "ranks": [
+      1,
+      2
+    ],
+    "layouts": [
+      "ROW_MAJOR_CONTIG",
+      "SOA_COLUMNS"
+    ],
+    "endianness": [
+      "little"
+    ],
+    "alignment_bytes": 1,
+    "min_n": 0,
+    "max_n": 16777216,
+    "min_m": 2,
+    "max_m": 2,
+    "validity_shapes": [
+      "NONE"
+    ],
+    "homogeneous_itemsize": true,
+    "max_total_raw_bytes": 134217728,
+    "value_coupling_mode": "FULL_MATRIX",
+    "timestamp_semantics": {
+      "preserve_order": true,
+      "duplicates": true,
+      "out_of_order": true,
+      "negative_delta": true,
+      "absolute_epoch": true,
+      "overflow_policy": "NOT_APPLICABLE_VALUE_ONLY"
+    },
+    "max_total_elements": 16777216,
+    "value_domain": {
+      "kind": "FROZEN_SOURCE_WITH_BOUNDED_REJECTION",
+      "unsupported_action": "REJECT_BEFORE_OUTPUT",
+      "oracle_evidence": "adapters/completed_rewrites/vendor/walloc-1d/contract.md",
+      "rejection_reasons": [
+        "FINITE_INPUT_REQUIRED"
+      ]
+    },
+    "required_value_units": [
+      "NORMALIZED_AUDIO_MINUS_HALF_TO_HALF"
+    ]
+  },
+  "semantics": {
+    "loss_modes": [
+      "UNBOUNDED_LOSSY"
+    ],
+    "error_bound_types": [],
+    "reconstruction_modes": [
+      "APPROX_GRID"
+    ],
+    "rebuild_protocol": "COMPLETE_NATIVE_FRAME_WITH_ORIGINAL_GRID_V1",
+    "preprocess_class": "NONE",
+    "preprocess_stages": [],
+    "decodability_profile": "SELF_CONTAINED_DESCRIPTOR_AND_NATIVE_FRAMES",
+    "bitstream_separability": "FULL_MATRIX"
+  },
+  "lifecycle": {
+    "block_semantics": "WHOLE_OBJECT",
+    "state_semantics": "INDEPENDENT_OBJECT",
+    "reset": "REQUIRED_MODE_ZERO",
+    "finalize": "REQUIRED_ZERO_BYTE_FINALIZE",
+    "safe_overread_bytes": 0,
+    "tail_policy": "EXACT_COUNT",
+    "dictionary": "EMBEDDED_AND_CHARGED",
+    "model": "EMBEDDED_AND_CHARGED",
+    "index": "NONE"
+  },
+  "execution": {
+    "backends": [
+      "COMPLETED_REWRITE_ABI_V1"
+    ],
+    "isa": [
+      "CPU_RUNTIME_DISPATCH"
+    ],
+    "devices": [
+      "CPU"
+    ],
+    "threading": "SINGLE_THREAD",
+    "fallback_policy": "DISALLOWED",
+    "runtime_dispatch": true,
+    "timing_scopes": [
+      "PIPELINE",
+      "E2E"
+    ]
+  },
+  "features": {
+    "streaming": false,
+    "query": false,
+    "random_access": false
+  },
+  "parameters": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "isa": {
+        "type": "string",
+        "default": "CPU_RUNTIME_DISPATCH",
+        "enum": [
+          "CPU_RUNTIME_DISPATCH"
+        ]
+      },
+      "model_key": {
+        "type": "string",
+        "default": "stereo_5x",
+        "enum": [
+          "stereo_20x",
+          "stereo_5x"
+        ]
+      }
+    },
+    "constraints": []
+  },
+  "adapter": {
+    "backend": "COMPLETED_REWRITE_ABI_V1",
+    "version": "completed-rewrites-v1",
+    "factory": "COMPLETED_REWRITE_CTYPES_V1",
+    "artifact_path": "build/adapters/walloc_1d/release/libtscb_walloc_1d.so",
+    "timing_boundary": "PYTHON_LAYOUT_C_ABI_NATIVE_FRAME_AND_MODEL_LOAD_INCLUDED",
+    "accounting_hooks": [
+      "FINAL_STREAM_LENGTH",
+      "CONTAINER_BYTES",
+      "COMPLETE_NATIVE_FRAMES_WITH_ALL_MODEL_BITS"
+    ],
+    "models": {
+      "stereo_20x": {
+        "path": "adapters/completed_rewrites/vendor/walloc-1d/models/stereo_20x.wlm",
+        "sha256": "51f7bf36603018246fdca1e46ef1efb98f422909de171836d1590e0aace8edd8"
+      },
+      "stereo_5x": {
+        "path": "adapters/completed_rewrites/vendor/walloc-1d/models/stereo_5x.wlm",
+        "sha256": "9d353d92ac31326d5febe66b1f4ab27468bee2af90ebc685777a2bcf08d426c7"
+      }
+    },
+    "parameter_contract": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "isa": {
+          "type": "string",
+          "default": "CPU_RUNTIME_DISPATCH",
+          "enum": [
+            "CPU_RUNTIME_DISPATCH"
+          ]
+        },
+        "model_key": {
+          "type": "string",
+          "default": "stereo_5x",
+          "enum": [
+            "stereo_20x",
+            "stereo_5x"
+          ]
+        }
+      },
+      "constraints": []
+    },
+    "input_contract": {
+      "topologies": [
+        "UTS",
+        "SYNCHRONOUS_MTS"
+      ],
+      "dtypes": [
+        "<f4"
+      ],
+      "ranks": [
+        1,
+        2
+      ],
+      "layouts": [
+        "ROW_MAJOR_CONTIG",
+        "SOA_COLUMNS"
+      ],
+      "endianness": [
+        "little"
+      ],
+      "alignment_bytes": 1,
+      "min_n": 0,
+      "max_n": 16777216,
+      "min_m": 2,
+      "max_m": 2,
+      "validity_shapes": [
+        "NONE"
+      ],
+      "homogeneous_itemsize": true,
+      "max_total_raw_bytes": 134217728,
+      "value_coupling_mode": "FULL_MATRIX",
+      "timestamp_semantics": {
+        "preserve_order": true,
+        "duplicates": true,
+        "out_of_order": true,
+        "negative_delta": true,
+        "absolute_epoch": true,
+        "overflow_policy": "NOT_APPLICABLE_VALUE_ONLY"
+      },
+      "max_total_elements": 16777216,
+      "value_domain": {
+        "kind": "FROZEN_SOURCE_WITH_BOUNDED_REJECTION",
+        "unsupported_action": "REJECT_BEFORE_OUTPUT",
+        "oracle_evidence": "adapters/completed_rewrites/vendor/walloc-1d/contract.md",
+        "rejection_reasons": [
+          "FINITE_INPUT_REQUIRED"
+        ]
+      },
+      "required_value_units": [
+        "NORMALIZED_AUDIO_MINUS_HALF_TO_HALF"
+      ]
+    },
+    "runtime_profile": "CPU_SINGLE_THREAD_NATIVE_DEPENDENCY_DISPATCH",
+    "isa_scope": "WRAPPER_BASELINE; DEPENDENCY_DISPATCH_RECORDED_IN_BUILD"
+  }
+}

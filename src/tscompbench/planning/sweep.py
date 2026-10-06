@@ -63,6 +63,18 @@ def _validate_constraints(parameters: dict[str, Any], constraints: list[dict[str
                 required = constraint.get("required", {})
                 if not all(parameters.get(key) in values for key, values in required.items()):
                     raise PlanningError(constraint.get("reason", "conditional requirement failed"))
+        elif kind == "ordered":
+            if parameters[constraint["lower"]] > parameters[constraint["upper"]]:
+                raise PlanningError(constraint.get("reason", "parameter ordering violated"))
+        elif kind == "numeric_range":
+            value = Decimal(str(parameters[constraint["parameter"]]))
+            if (
+                not value.is_finite()
+                or ("minimum" in constraint and value < Decimal(constraint["minimum"]))
+                or (constraint.get("exclusive_minimum") and value == Decimal(constraint["minimum"]))
+                or ("maximum" in constraint and value > Decimal(constraint["maximum"]))
+            ):
+                raise PlanningError(constraint.get("reason", "numeric parameter outside range"))
         else:
             raise PlanningError(f"unknown parameter constraint kind: {kind}")
 

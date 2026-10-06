@@ -1,0 +1,117 @@
+schema_version: tscb.port-manifest.v1
+algorithm_id: dzip
+recommendation_rank: 10
+object_level: P2_PIPELINE
+source:
+  repository: https://github.com/mohit1997/DZip
+  commit: b52ed99687919a744dfdc3dc7a968b2331ee7102
+license:
+  concluded_spdx: NOASSERTION
+  redistribution_status: UNKNOWN
+  workflow_override:
+    decision: ../../USER_DECISIONS.md
+    decision_sha256: 5fd9288be7919d99b0ee5ce70f0de321e1a22c0eed3fc5caf29794def3db354f
+    date: '2026-10-04'
+    applies_to: local_source_audit_execution_and_rewrite
+    upstream_grant_claimed: false
+    provenance_retained: true
+gates:
+  G0:
+    status: PASS
+    evidence: Recommendation canonical task identity
+  G1:
+    status: PASS
+    evidence: validation/gate_freeze.json
+    license_workflow: explicit user decision; no upstream grant claimed
+  G2:
+    status: PASS
+    evidence: validation/gate_freeze.json
+    license_workflow: explicit user decision; no upstream grant claimed
+  G3:
+    status: PASS
+    artifacts:
+    - path: validation/native-finalized-training/alphabet-2/report.json
+      sha256: 77648061a4406cd5f68adb8a7bc73313b623f9dd9810d2bf7a712de783a2943c
+    - path: validation/native-finalized-training/alphabet-4/report.json
+      sha256: b308faca5490bfa56f0ebad3c1d0c7dcc95f29fc6200a7203948eb834d0c7a36
+    - path: validation/native-finalized-training/alphabet-10/report.json
+      sha256: d5fd698701ce19e266938c5d975ebe2b49ba0bf31faef49987fcda6a2748d16c
+    - path: validation/native-finalized-training/alphabet-128/report.json
+      sha256: 9cf745fe67a198aa46ea6a64a5c6ef1e4c6822e06e436cb8df12732e954f7ac1
+    - path: validation/native-finalized-training/alphabet-2-batch-128/report.json
+      sha256: 10479281862983c5f8b5abfb8226e0185ac683e239c17b6d07b7ed58f4814359
+    - path: validation/native-diagnostic-cuda84/alphabet-2-source-bootstrap/report.json
+      sha256: 4a8370fbb2ba8a39a38b6a2aba366aba14e748440f2acef7eac263c330d91ff1
+    - path: validation/native-diagnostic-cuda84/alphabet-4/report.json
+      sha256: fa684c8bae52b3c2168dedbf1e3ac2dec472eaa155fd4c984a1820b2574ceb11
+    - path: validation/native-diagnostic-cuda84/alphabet-10/report.json
+      sha256: a6ba7eab9ed9bcf2d39c23edf8e11e6aa14640ccaa2d3206e6db5d1e51e1e455
+    - path: validation/native-diagnostic-cuda84/alphabet-128/report.json
+      sha256: c8fb2e89703158eeb99ef9df0f24df006fddc6dca5fefe3a281585346bab9cf2
+    - path: validation/native-finalized-codec/report.json
+      sha256: 93884de406649e24ed18898e181b944dd8746d72c915ee250fbe77fe5b7847e3
+    - path: validation/native-finalized-datasets/report.json
+      sha256: 5dfd111875cf44a770800ca7f86f4fb68c98c76dd58dbe1cc0dd39de38ae0fee
+    - path: validation/native-diagnostic-cuda84/bootstrap-schedule/report.json
+      sha256: 205bc57681a510f98f86f22de79e942390ff23e715539114206b9f645f0f8e85
+    - path: validation/native-finalized-import/report.json
+      sha256: 997c4e9f643122fd4b80c2668f335015997df472b0720c6e7ca64ddaea3e7322
+    - path: validation/native-finalized-cuda84-transition/report.json
+      sha256: fa766aee1881667d794bce8e19a8bec90bab56b7d90fa84f7792a2a7afd1c5d6
+    pending_reports: []
+    failures: []
+  G4:
+    status: PASS
+    artifacts:
+    - path: validation/native-finalized-gcc/report.json
+      sha256: 0537733e7239000748de410be408e48cb0c9501fc8d55c61a4a4afa2d8353499
+    - path: validation/native-finalized-clang/report.json
+      sha256: c882d248635c05c56d0279c91d5696c8a5a33d5d6f5bc045f49ba438a5738227
+    - path: validation/native-finalized-sanitizers/report.json
+      sha256: 8288ef57917f07342183287602ebbefaca489c70356c7aa0567972243b5eac8e
+    pending_reports: []
+    failures: []
+  G5:
+    status: PASS
+    artifacts:
+    - path: validation/native-diagnostic-cuda84/safety/report.json
+      sha256: 4f51c5524058c2b2f47517a42a7809b56fd38d09b5a6518ef249ad1cda9b5aaf
+    - path: validation/native-finalized-cuda84-builds/report.json
+      sha256: ad7ae126809ffbff64eeb739fbcb23a2118ac2d63541777f8c071b53c069e43a
+    - path: validation/native-diagnostic-cuda84/runtime/report.json
+      sha256: 41c1c462104544414a5dc2a303c8e32521640a68c5db4c8d4d9db3a7ebb8ae3f
+    pending_reports: []
+    failures: []
+  G6:
+    status: PASS
+    evidence: validation/release_audit.json; release/release_manifest.json
+    scope: deterministic local package only
+integration:
+  performed: false
+  tscb_adapter_present: false
+  registry_modified: false
+execution:
+  scope: REWRITE_ONLY
+  current_gate: G6
+  terminal_status: REWRITE_DONE
+  blocker_evidence: null
+waivers: []
+status: REWRITE_DONE
+port_method: TRANSLATED
+compatibility_target: SEMANTIC
+native_capability_parity:
+  overall_result: FULL_PARITY
+  required_total: 14
+  required_passed: 14
+  matrix_path: NATIVE_CAPABILITY_MATRIX.yaml
+  matrix_sha256: 8c9f289951ce3601ee9221de70424b50348d337db8f5f94c633ed9ae1ffa078f
+rewrite_conclusion: REWRITE_DONE
+standalone_validation:
+  preprocessing_included: true
+  external_side_information_bits: 0
+  model_dictionary_embedded: true
+  numerical_profile: '1: Linux x86_64 AVX, frozen Eigen/MKL-DNN CPU; explicit GPU
+    checkpoint conversion'
+  execution_scopes:
+  - canonical_cpu_avx
+  - native_cuda_serialized_calls

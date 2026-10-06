@@ -1,0 +1,566 @@
+schema_version: 1
+algorithm_id: dzip
+upstream_revision: b52ed99687919a744dfdc3dc7a968b2331ee7102
+overall_result: FULL_PARITY
+waiver_ids: []
+capabilities:
+- capability_id: input.preprocessing
+  parity_class: REQUIRED_PARITY
+  upstream:
+    present: true
+    path: encode-decode/run.py
+    sha256: 59768f94887429791a28569a9c4aafcc90c592002b2eb20f66bb7d056b440694
+    description: latin-1, universal newlines, sorted alphabet and mapping
+  rewrite:
+    present: true
+    variant: canonical_cpu_avx
+    build_targets:
+    - dzip
+    - dzip_nn
+    - dzip_train
+    build_flags:
+    - DZIP_WITH_HDF5=ON
+    paths:
+    - src/codec.cpp
+    - src/nn.cpp
+    - src/cpu_ops.cpp
+    - src/training.cpp
+    - src/hdf5.cpp
+    platform: Linux x86_64 AVX; CUDA bootstrap also requires audited NVIDIA native
+      libraries
+  validation:
+    status: PASS
+    artifacts:
+    - path: validation/native-finalized-gcc/report.json
+      sha256: 0537733e7239000748de410be408e48cb0c9501fc8d55c61a4a4afa2d8353499
+    - path: validation/native-finalized-clang/report.json
+      sha256: c882d248635c05c56d0279c91d5696c8a5a33d5d6f5bc045f49ba438a5738227
+    - path: validation/native-finalized-sanitizers/report.json
+      sha256: 8288ef57917f07342183287602ebbefaca489c70356c7aa0567972243b5eac8e
+    - path: validation/native-finalized-datasets/report.json
+      sha256: 5dfd111875cf44a770800ca7f86f4fb68c98c76dd58dbe1cc0dd39de38ae0fee
+    pending_reports: []
+    failures: []
+- capability_id: codec.bootstrap_only
+  parity_class: REQUIRED_PARITY
+  upstream:
+    present: true
+    path: encode-decode/compressor_bs.py
+    sha256: 246fbfdc56f88bb164152e6ee878f7699a3aac8b81ce104d4d6d815031f8ba9d
+    description: source bootstrap CPU predictor and complete decoding
+  rewrite:
+    present: true
+    variant: canonical_cpu_avx
+    build_targets:
+    - dzip
+    - dzip_nn
+    - dzip_train
+    build_flags:
+    - DZIP_WITH_HDF5=ON
+    paths:
+    - src/codec.cpp
+    - src/nn.cpp
+    - src/cpu_ops.cpp
+    - src/training.cpp
+    - src/hdf5.cpp
+    platform: Linux x86_64 AVX; CUDA bootstrap also requires audited NVIDIA native
+      libraries
+  validation:
+    status: PASS
+    artifacts:
+    - path: validation/native-finalized-codec/report.json
+      sha256: 93884de406649e24ed18898e181b944dd8746d72c915ee250fbe77fe5b7847e3
+    - path: validation/native-finalized-datasets/report.json
+      sha256: 5dfd111875cf44a770800ca7f86f4fb68c98c76dd58dbe1cc0dd39de38ae0fee
+    - path: validation/native-finalized-cuda84-transition/report.json
+      sha256: fa766aee1881667d794bce8e19a8bec90bab56b7d90fa84f7792a2a7afd1c5d6
+    pending_reports: []
+    failures: []
+- capability_id: codec.combined
+  parity_class: REQUIRED_PARITY
+  upstream:
+    present: true
+    path: encode-decode/compressor.py
+    sha256: e8b7d16d7f75db42f0225794d82dd29b257a1466595d06cc260c2e8dd086c8dc
+    description: complete model plus online updates and decoding
+  rewrite:
+    present: true
+    variant: canonical_cpu_avx
+    build_targets:
+    - dzip
+    - dzip_nn
+    - dzip_train
+    build_flags:
+    - DZIP_WITH_HDF5=ON
+    paths:
+    - src/codec.cpp
+    - src/nn.cpp
+    - src/cpu_ops.cpp
+    - src/training.cpp
+    - src/hdf5.cpp
+    platform: Linux x86_64 AVX; CUDA bootstrap also requires audited NVIDIA native
+      libraries
+  validation:
+    status: PASS
+    artifacts:
+    - path: validation/native-finalized-codec/report.json
+      sha256: 93884de406649e24ed18898e181b944dd8746d72c915ee250fbe77fe5b7847e3
+    - path: validation/native-finalized-datasets/report.json
+      sha256: 5dfd111875cf44a770800ca7f86f4fb68c98c76dd58dbe1cc0dd39de38ae0fee
+    - path: validation/native-finalized-cuda84-transition/report.json
+      sha256: fa766aee1881667d794bce8e19a8bec90bab56b7d90fa84f7792a2a7afd1c5d6
+    - path: validation/native-finalized-training/alphabet-2/report.json
+      sha256: 77648061a4406cd5f68adb8a7bc73313b623f9dd9810d2bf7a712de783a2943c
+    - path: validation/native-finalized-training/alphabet-4/report.json
+      sha256: b308faca5490bfa56f0ebad3c1d0c7dcc95f29fc6200a7203948eb834d0c7a36
+    - path: validation/native-finalized-training/alphabet-10/report.json
+      sha256: d5fd698701ce19e266938c5d975ebe2b49ba0bf31faef49987fcda6a2748d16c
+    - path: validation/native-finalized-training/alphabet-128/report.json
+      sha256: 9cf745fe67a198aa46ea6a64a5c6ef1e4c6822e06e436cb8df12732e954f7ac1
+    - path: validation/native-finalized-training/alphabet-2-batch-128/report.json
+      sha256: 10479281862983c5f8b5abfb8226e0185ac683e239c17b6d07b7ed58f4814359
+    pending_reports: []
+    failures: []
+- capability_id: model.architecture_regimes
+  parity_class: REQUIRED_PARITY
+  upstream:
+    present: true
+    path: encode-decode/models.py
+    sha256: 3916bd119e3be15f5f8f17845636e02e5148e2d3bcbc4620dd5c2903f546c03c
+    description: all four alphabet regimes and explicit unsupported alphabet 9
+  rewrite:
+    present: true
+    variant: canonical_cpu_avx
+    build_targets:
+    - dzip
+    - dzip_nn
+    - dzip_train
+    build_flags:
+    - DZIP_WITH_HDF5=ON
+    paths:
+    - src/codec.cpp
+    - src/nn.cpp
+    - src/cpu_ops.cpp
+    - src/training.cpp
+    - src/hdf5.cpp
+    platform: Linux x86_64 AVX; CUDA bootstrap also requires audited NVIDIA native
+      libraries
+  validation:
+    status: PASS
+    artifacts:
+    - path: validation/native-finalized-training/alphabet-2/report.json
+      sha256: 77648061a4406cd5f68adb8a7bc73313b623f9dd9810d2bf7a712de783a2943c
+    - path: validation/native-finalized-training/alphabet-4/report.json
+      sha256: b308faca5490bfa56f0ebad3c1d0c7dcc95f29fc6200a7203948eb834d0c7a36
+    - path: validation/native-finalized-training/alphabet-10/report.json
+      sha256: d5fd698701ce19e266938c5d975ebe2b49ba0bf31faef49987fcda6a2748d16c
+    - path: validation/native-finalized-training/alphabet-128/report.json
+      sha256: 9cf745fe67a198aa46ea6a64a5c6ef1e4c6822e06e436cb8df12732e954f7ac1
+    - path: validation/native-finalized-training/alphabet-2-batch-128/report.json
+      sha256: 10479281862983c5f8b5abfb8226e0185ac683e239c17b6d07b7ed58f4814359
+    - path: validation/native-diagnostic-cuda84/alphabet-2-source-bootstrap/report.json
+      sha256: 4a8370fbb2ba8a39a38b6a2aba366aba14e748440f2acef7eac263c330d91ff1
+    - path: validation/native-diagnostic-cuda84/alphabet-4/report.json
+      sha256: fa684c8bae52b3c2168dedbf1e3ac2dec472eaa155fd4c984a1820b2574ceb11
+    - path: validation/native-diagnostic-cuda84/alphabet-10/report.json
+      sha256: a6ba7eab9ed9bcf2d39c23edf8e11e6aa14640ccaa2d3206e6db5d1e51e1e455
+    - path: validation/native-diagnostic-cuda84/alphabet-128/report.json
+      sha256: c8fb2e89703158eeb99ef9df0f24df006fddc6dca5fefe3a281585346bab9cf2
+    pending_reports: []
+    failures: []
+- capability_id: model.source_weight_import
+  parity_class: REQUIRED_PARITY
+  upstream:
+    present: true
+    path: encode-decode/compressor.py
+    sha256: e8b7d16d7f75db42f0225794d82dd29b257a1466595d06cc260c2e8dd086c8dc
+    description: Keras bootstrap weights and initial supporter state
+  rewrite:
+    present: true
+    variant: canonical_cpu_avx
+    build_targets:
+    - dzip
+    - dzip_nn
+    - dzip_train
+    build_flags:
+    - DZIP_WITH_HDF5=ON
+    paths:
+    - src/codec.cpp
+    - src/nn.cpp
+    - src/cpu_ops.cpp
+    - src/training.cpp
+    - src/hdf5.cpp
+    platform: Linux x86_64 AVX; CUDA bootstrap also requires audited NVIDIA native
+      libraries
+  validation:
+    status: PASS
+    artifacts:
+    - path: validation/native-finalized-import/report.json
+      sha256: 997c4e9f643122fd4b80c2668f335015997df472b0720c6e7ca64ddaea3e7322
+    - path: validation/native-finalized-cuda84-transition/report.json
+      sha256: fa766aee1881667d794bce8e19a8bec90bab56b7d90fa84f7792a2a7afd1c5d6
+    pending_reports: []
+    failures: []
+- capability_id: state.online_adam
+  parity_class: REQUIRED_PARITY
+  upstream:
+    present: true
+    path: encode-decode/compressor.py
+    sha256: e8b7d16d7f75db42f0225794d82dd29b257a1466595d06cc260c2e8dd086c8dc
+    description: default CPU Adam updates include shared bootstrap tensors
+  rewrite:
+    present: true
+    variant: canonical_cpu_avx
+    build_targets:
+    - dzip
+    - dzip_nn
+    - dzip_train
+    build_flags:
+    - DZIP_WITH_HDF5=ON
+    paths:
+    - src/codec.cpp
+    - src/nn.cpp
+    - src/cpu_ops.cpp
+    - src/training.cpp
+    - src/hdf5.cpp
+    platform: Linux x86_64 AVX; CUDA bootstrap also requires audited NVIDIA native
+      libraries
+  validation:
+    status: PASS
+    artifacts:
+    - path: validation/native-finalized-training/alphabet-2/report.json
+      sha256: 77648061a4406cd5f68adb8a7bc73313b623f9dd9810d2bf7a712de783a2943c
+    - path: validation/native-finalized-training/alphabet-4/report.json
+      sha256: b308faca5490bfa56f0ebad3c1d0c7dcc95f29fc6200a7203948eb834d0c7a36
+    - path: validation/native-finalized-training/alphabet-10/report.json
+      sha256: d5fd698701ce19e266938c5d975ebe2b49ba0bf31faef49987fcda6a2748d16c
+    - path: validation/native-finalized-training/alphabet-128/report.json
+      sha256: 9cf745fe67a198aa46ea6a64a5c6ef1e4c6822e06e436cb8df12732e954f7ac1
+    - path: validation/native-finalized-training/alphabet-2-batch-128/report.json
+      sha256: 10479281862983c5f8b5abfb8226e0185ac683e239c17b6d07b7ed58f4814359
+    - path: validation/native-finalized-datasets/report.json
+      sha256: 5dfd111875cf44a770800ca7f86f4fb68c98c76dd58dbe1cc0dd39de38ae0fee
+    pending_reports: []
+    failures: []
+- capability_id: state.full_batches_and_tail
+  parity_class: REQUIRED_PARITY
+  upstream:
+    present: true
+    path: encode-decode/decompressor.py
+    sha256: 4f44bb883ae412160925e6c2a2ababe5412258a3a56c4d769193ec81b1faa8f3
+    description: 128-symbol batch updates, same overlapping contexts, no tail update
+  rewrite:
+    present: true
+    variant: canonical_cpu_avx
+    build_targets:
+    - dzip
+    - dzip_nn
+    - dzip_train
+    build_flags:
+    - DZIP_WITH_HDF5=ON
+    paths:
+    - src/codec.cpp
+    - src/nn.cpp
+    - src/cpu_ops.cpp
+    - src/training.cpp
+    - src/hdf5.cpp
+    platform: Linux x86_64 AVX; CUDA bootstrap also requires audited NVIDIA native
+      libraries
+  validation:
+    status: PASS
+    artifacts:
+    - path: validation/native-finalized-gcc/report.json
+      sha256: 0537733e7239000748de410be408e48cb0c9501fc8d55c61a4a4afa2d8353499
+    - path: validation/native-finalized-clang/report.json
+      sha256: c882d248635c05c56d0279c91d5696c8a5a33d5d6f5bc045f49ba438a5738227
+    - path: validation/native-finalized-sanitizers/report.json
+      sha256: 8288ef57917f07342183287602ebbefaca489c70356c7aa0567972243b5eac8e
+    - path: validation/native-finalized-codec/report.json
+      sha256: 93884de406649e24ed18898e181b944dd8746d72c915ee250fbe77fe5b7847e3
+    - path: validation/native-finalized-datasets/report.json
+      sha256: 5dfd111875cf44a770800ca7f86f4fb68c98c76dd58dbe1cc0dd39de38ae0fee
+    pending_reports: []
+    failures: []
+- capability_id: entropy.quantized_cumulative
+  parity_class: REQUIRED_PARITY
+  upstream:
+    present: true
+    path: encode-decode/compressor.py
+    sha256: e8b7d16d7f75db42f0225794d82dd29b257a1466595d06cc260c2e8dd086c8dc
+    description: uniform float64 vs predicted float32 NumPy cumulative conversion
+  rewrite:
+    present: true
+    variant: canonical_cpu_avx
+    build_targets:
+    - dzip
+    - dzip_nn
+    - dzip_train
+    build_flags:
+    - DZIP_WITH_HDF5=ON
+    paths:
+    - src/codec.cpp
+    - src/nn.cpp
+    - src/cpu_ops.cpp
+    - src/training.cpp
+    - src/hdf5.cpp
+    platform: Linux x86_64 AVX; CUDA bootstrap also requires audited NVIDIA native
+      libraries
+  validation:
+    status: PASS
+    artifacts:
+    - path: validation/native-finalized-codec/report.json
+      sha256: 93884de406649e24ed18898e181b944dd8746d72c915ee250fbe77fe5b7847e3
+    - path: validation/native-finalized-datasets/report.json
+      sha256: 5dfd111875cf44a770800ca7f86f4fb68c98c76dd58dbe1cc0dd39de38ae0fee
+    pending_reports: []
+    failures: []
+- capability_id: entropy.raw_arithmetic
+  parity_class: REQUIRED_PARITY
+  upstream:
+    present: true
+    path: encode-decode/arithmeticcoding_fast.py
+    sha256: b8a567ddf0d6472b09de55125a367dd73e5c31e941dfeb81967397abd478b029
+    description: 32-bit coding, one-bit finish and implicit zero EOF
+  rewrite:
+    present: true
+    variant: canonical_cpu_avx
+    build_targets:
+    - dzip
+    - dzip_nn
+    - dzip_train
+    build_flags:
+    - DZIP_WITH_HDF5=ON
+    paths:
+    - src/codec.cpp
+    - src/nn.cpp
+    - src/cpu_ops.cpp
+    - src/training.cpp
+    - src/hdf5.cpp
+    platform: Linux x86_64 AVX; CUDA bootstrap also requires audited NVIDIA native
+      libraries
+  validation:
+    status: PASS
+    artifacts:
+    - path: validation/native-finalized-codec/report.json
+      sha256: 93884de406649e24ed18898e181b944dd8746d72c915ee250fbe77fe5b7847e3
+    - path: validation/native-finalized-datasets/report.json
+      sha256: 5dfd111875cf44a770800ca7f86f4fb68c98c76dd58dbe1cc0dd39de38ae0fee
+    pending_reports: []
+    failures: []
+- capability_id: model.bootstrap_training
+  parity_class: REQUIRED_PARITY
+  upstream:
+    present: true
+    path: encode-decode/train_bootstrap.py
+    sha256: c0a2bace3a2b2779c6e6ad4ebd478106ccde6b01b29feb3ebad0725530811231
+    description: input-dependent training, clipping, checkpoint/early stopping and
+      preprocessing cost
+  rewrite:
+    present: true
+    variant: native_cuda
+    build_targets:
+    - dzip
+    - dzip_nn
+    - dzip_train
+    build_flags:
+    - DZIP_WITH_HDF5=ON
+    - DZIP_WITH_CUDA=ON
+    paths:
+    - src/codec.cpp
+    - src/nn.cpp
+    - src/cpu_ops.cpp
+    - src/training.cpp
+    - src/hdf5.cpp
+    - src/cuda_gru.cpp
+    - src/cuda_embedding.cu
+    - src/cuda_reduce.cu
+    platform: Linux x86_64 AVX; CUDA bootstrap also requires audited NVIDIA native
+      libraries
+  validation:
+    status: PASS
+    artifacts:
+    - path: validation/native-diagnostic-cuda84/alphabet-2-source-bootstrap/report.json
+      sha256: 4a8370fbb2ba8a39a38b6a2aba366aba14e748440f2acef7eac263c330d91ff1
+    - path: validation/native-diagnostic-cuda84/alphabet-4/report.json
+      sha256: fa684c8bae52b3c2168dedbf1e3ac2dec472eaa155fd4c984a1820b2574ceb11
+    - path: validation/native-diagnostic-cuda84/alphabet-10/report.json
+      sha256: a6ba7eab9ed9bcf2d39c23edf8e11e6aa14640ccaa2d3206e6db5d1e51e1e455
+    - path: validation/native-diagnostic-cuda84/alphabet-128/report.json
+      sha256: c8fb2e89703158eeb99ef9df0f24df006fddc6dca5fefe3a281585346bab9cf2
+    - path: validation/native-diagnostic-cuda84/bootstrap-schedule/report.json
+      sha256: 205bc57681a510f98f86f22de79e942390ff23e715539114206b9f645f0f8e85
+    - path: validation/native-finalized-cuda84-transition/report.json
+      sha256: fa766aee1881667d794bce8e19a8bec90bab56b7d90fa84f7792a2a7afd1c5d6
+    pending_reports: []
+    failures: []
+- capability_id: storage.bsc_model
+  parity_class: REQUIRED_PARITY
+  upstream:
+    present: true
+    path: encode-decode/compress.sh
+    sha256: 2cab75f0a06e04e751cdd9adafa1f37e79377f19548ee56ac508d2233ccb65cb
+    description: retained native libbsc for checkpoint storage and restoration
+  rewrite:
+    present: true
+    variant: canonical_cpu_avx
+    build_targets:
+    - dzip
+    - dzip_nn
+    - dzip_train
+    build_flags:
+    - DZIP_WITH_HDF5=ON
+    paths:
+    - src/codec.cpp
+    - src/nn.cpp
+    - src/cpu_ops.cpp
+    - src/training.cpp
+    - src/hdf5.cpp
+    platform: Linux x86_64 AVX; CUDA bootstrap also requires audited NVIDIA native
+      libraries
+  validation:
+    status: PASS
+    artifacts:
+    - path: validation/native-finalized-gcc/report.json
+      sha256: 0537733e7239000748de410be408e48cb0c9501fc8d55c61a4a4afa2d8353499
+    - path: validation/native-finalized-clang/report.json
+      sha256: c882d248635c05c56d0279c91d5696c8a5a33d5d6f5bc045f49ba438a5738227
+    - path: validation/native-finalized-sanitizers/report.json
+      sha256: 8288ef57917f07342183287602ebbefaca489c70356c7aa0567972243b5eac8e
+    - path: validation/native-finalized-codec/report.json
+      sha256: 93884de406649e24ed18898e181b944dd8746d72c915ee250fbe77fe5b7847e3
+    - path: validation/native-finalized-datasets/report.json
+      sha256: 5dfd111875cf44a770800ca7f86f4fb68c98c76dd58dbe1cc0dd39de38ae0fee
+    pending_reports: []
+    failures: []
+- capability_id: storage.full_state_accounting
+  parity_class: REQUIRED_PARITY
+  upstream:
+    present: true
+    path: encode-decode/decompress.sh
+    sha256: 8683b0b817e1b29661c9b87a5ec4b760ceb0612fdd8b2a4bc745b045114fc62f
+    description: mode, alphabet, length, model and stream included
+  rewrite:
+    present: true
+    variant: canonical_cpu_avx
+    build_targets:
+    - dzip
+    - dzip_nn
+    - dzip_train
+    build_flags:
+    - DZIP_WITH_HDF5=ON
+    paths:
+    - src/codec.cpp
+    - src/nn.cpp
+    - src/cpu_ops.cpp
+    - src/training.cpp
+    - src/hdf5.cpp
+    platform: Linux x86_64 AVX; CUDA bootstrap also requires audited NVIDIA native
+      libraries
+  validation:
+    status: PASS
+    artifacts:
+    - path: validation/native-finalized-gcc/report.json
+      sha256: 0537733e7239000748de410be408e48cb0c9501fc8d55c61a4a4afa2d8353499
+    - path: validation/native-finalized-clang/report.json
+      sha256: c882d248635c05c56d0279c91d5696c8a5a33d5d6f5bc045f49ba438a5738227
+    - path: validation/native-finalized-sanitizers/report.json
+      sha256: 8288ef57917f07342183287602ebbefaca489c70356c7aa0567972243b5eac8e
+    - path: validation/native-finalized-datasets/report.json
+      sha256: 5dfd111875cf44a770800ca7f86f4fb68c98c76dd58dbe1cc0dd39de38ae0fee
+    pending_reports: []
+    failures: []
+- capability_id: api.lifecycle_capacity_limits
+  parity_class: REQUIRED_PARITY
+  upstream:
+    present: true
+    path: encode-decode/decompressor.py
+    sha256: 4f44bb883ae412160925e6c2a2ababe5412258a3a56c4d769193ec81b1faa8f3
+    description: native owned API, query/finalize/reset, bounds and malformed rejection
+  rewrite:
+    present: true
+    variant: canonical_cpu_avx
+    build_targets:
+    - dzip
+    - dzip_nn
+    - dzip_train
+    build_flags:
+    - DZIP_WITH_HDF5=ON
+    paths:
+    - src/codec.cpp
+    - src/nn.cpp
+    - src/cpu_ops.cpp
+    - src/training.cpp
+    - src/hdf5.cpp
+    platform: Linux x86_64 AVX; CUDA bootstrap also requires audited NVIDIA native
+      libraries
+  validation:
+    status: PASS
+    artifacts:
+    - path: validation/native-finalized-gcc/report.json
+      sha256: 0537733e7239000748de410be408e48cb0c9501fc8d55c61a4a4afa2d8353499
+    - path: validation/native-finalized-clang/report.json
+      sha256: c882d248635c05c56d0279c91d5696c8a5a33d5d6f5bc045f49ba438a5738227
+    - path: validation/native-finalized-sanitizers/report.json
+      sha256: 8288ef57917f07342183287602ebbefaca489c70356c7aa0567972243b5eac8e
+    pending_reports: []
+    failures: []
+- capability_id: reference.gpu_bpc_estimator
+  parity_class: REFERENCE_ONLY
+  upstream:
+    present: true
+    path: coding-gpu/train_combined.py
+    sha256: 02ade0ca0f94996eef69af8becc9c60e0514fb33c9f2621dfca6a0de8affabe4
+  reason: Source wrapper computes/logs average cross-entropy and model size; it emits
+    no encoded data stream and has no paired decoder. Frozen backbone and beta1=0
+    are preserved in inventory, not passed off as CPU codec semantics.
+- capability_id: model.alphabet9
+  parity_class: NOT_APPLICABLE
+  reason: Executed source biGRU_big returns None for alphabet 9; no source neural
+    model exists in that branch.
+  evidence: validation/source_constructor_inventory.json
+- capability_id: accelerator.bootstrap_cuda
+  parity_class: REQUIRED_PARITY
+  upstream:
+    present: true
+    path: encode-decode/train_bootstrap.py; models.py biGRU_jump
+    description: Official --gpu bootstrap training path uses CuDNNGRU; this is distinct
+      from the reference-only GPU BPC estimator
+  rewrite:
+    present: true
+    variant: native_cuda
+    build_targets:
+    - dzip
+    - dzip_nn
+    - dzip_train
+    build_flags:
+    - DZIP_WITH_HDF5=ON
+    - DZIP_WITH_CUDA=ON
+    paths:
+    - src/codec.cpp
+    - src/nn.cpp
+    - src/cpu_ops.cpp
+    - src/training.cpp
+    - src/hdf5.cpp
+    - src/cuda_gru.cpp
+    - src/cuda_embedding.cu
+    - src/cuda_reduce.cu
+    platform: Linux x86_64 AVX; CUDA bootstrap also requires audited NVIDIA native
+      libraries
+  validation:
+    status: PASS
+    artifacts:
+    - path: validation/native-diagnostic-cuda84/alphabet-2-source-bootstrap/report.json
+      sha256: 4a8370fbb2ba8a39a38b6a2aba366aba14e748440f2acef7eac263c330d91ff1
+    - path: validation/native-diagnostic-cuda84/alphabet-4/report.json
+      sha256: fa684c8bae52b3c2168dedbf1e3ac2dec472eaa155fd4c984a1820b2574ceb11
+    - path: validation/native-diagnostic-cuda84/alphabet-10/report.json
+      sha256: a6ba7eab9ed9bcf2d39c23edf8e11e6aa14640ccaa2d3206e6db5d1e51e1e455
+    - path: validation/native-diagnostic-cuda84/alphabet-128/report.json
+      sha256: c8fb2e89703158eeb99ef9df0f24df006fddc6dca5fefe3a281585346bab9cf2
+    - path: validation/native-diagnostic-cuda84/bootstrap-schedule/report.json
+      sha256: 205bc57681a510f98f86f22de79e942390ff23e715539114206b9f645f0f8e85
+    - path: validation/native-diagnostic-cuda84/safety/report.json
+      sha256: 4f51c5524058c2b2f47517a42a7809b56fd38d09b5a6518ef249ad1cda9b5aaf
+    pending_reports: []
+    failures: []
+note: Derived from current evidence; no tolerance changes or capability waivers.

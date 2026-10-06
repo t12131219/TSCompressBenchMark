@@ -1,0 +1,59 @@
+schema_version: 1
+algorithm_id: prometheus-xor2-chunk
+upstream_revision: 8374d30cb3fe705773bbac72d7015eba17480557
+overall_result: FULL_PARITY
+
+capabilities:
+  - capability_id: streaming.append_and_resume_with_st
+    category: STREAMING_STATEFUL
+    upstream:
+      present: true
+      public_or_supported: true
+      evidence: [{path: Compression_Rewrite/Source/prometheus-xor2-chunk/upstream/tsdb/chunkenc/xor2.go, symbol_or_test: XOR2Chunk.Appender, lines_or_case: "111-145", sha256: null}]
+      platforms: [linux-amd64]
+      build_flags: []
+      semantic_contract: {reset_frequency: explicit_reset, flush_semantics: finalize_chunk, finalize_semantics: bytes}
+    parity_class: REQUIRED_PARITY
+    rewrite: {present: true, public_symbol: xor2_codec::append, variant: canonical_scalar, platforms: [linux-x86_64, linux-aarch64], build_target: prometheus_xor2_chunk_c}
+    validation: {status: PASS, oracle: tests/oracle/xor2_oracle.go, tests: [append_resume, split_points, cross_decode, dataset, preflight], artifact_hashes: []}
+    waiver_id: null
+    rationale: Joint timestamp/value/ST state and resume behavior are tested.
+
+  - capability_id: state.iterator_seek_and_reuse
+    category: RANDOM_ACCESS_AND_LIFECYCLE
+    upstream:
+      present: true
+      public_or_supported: true
+      evidence: [{path: Compression_Rewrite/Source/prometheus-xor2-chunk/upstream/tsdb/chunkenc/chunk.go, symbol_or_test: Iterator.Seek and Iterable.Iterator reuse, lines_or_case: "109-154", sha256: null}]
+      platforms: [linux-amd64]
+      build_flags: []
+      semantic_contract: {reset_frequency: iterator_reset, flush_semantics: not_applicable, finalize_semantics: exhausted_iterator}
+    parity_class: REQUIRED_PARITY
+    rewrite: {present: true, public_symbol: xor2_codec::Cursor, variant: canonical_scalar, platforms: [linux-x86_64, linux-aarch64], build_target: prometheus_xor2_chunk_c}
+    validation: {status: PASS, oracle: tests/oracle/xor2_oracle.go, tests: [seek, cursor_reset_reuse, cross_decode], artifact_hashes: []}
+    waiver_id: null
+    rationale: Forward seek, cursor reuse and append continuation are tested.
+
+  - capability_id: memory.pool
+    category: RESOURCE_LIFECYCLE
+    upstream:
+      present: true
+      public_or_supported: true
+      evidence: [{path: Compression_Rewrite/Source/prometheus-xor2-chunk/upstream/tsdb/chunkenc/chunk.go, symbol_or_test: NewPool, lines_or_case: "339-448", sha256: null}]
+      platforms: [linux-amd64]
+      build_flags: []
+      semantic_contract: {reset_frequency: pool_put_get, flush_semantics: not_applicable, finalize_semantics: reset}
+    parity_class: NOT_APPLICABLE
+    rewrite: {present: false, public_symbol: null, variant: null, platforms: [], build_target: null}
+    validation: {status: PASS, oracle: null, tests: [], artifact_hashes: []}
+    waiver_id: null
+    rationale: Pool is package-wide infrastructure, outside this XOR2 chunk AlgorithmID.
+
+  - capability_id: optimized.simd_or_internal_threads
+    category: SIMD_AND_MULTITHREADING
+    upstream: {present: false, public_or_supported: false, evidence: [], platforms: [all], build_flags: [], semantic_contract: {reset_frequency: null, flush_semantics: null, finalize_semantics: null}}
+    parity_class: NOT_APPLICABLE
+    rewrite: {present: false, public_symbol: null, variant: null, platforms: [], build_target: null}
+    validation: {status: PASS, oracle: null, tests: [], artifact_hashes: []}
+    waiver_id: null
+    rationale: No supported upstream SIMD or internal multithreaded XOR2 path is in the closure.

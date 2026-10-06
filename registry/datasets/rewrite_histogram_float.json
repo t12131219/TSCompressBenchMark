@@ -1,0 +1,108 @@
+{
+  "schema_version": "tscb.dataset-manifest.v2",
+  "key": "rewrite_histogram_float",
+  "display_name": "Synthetic completed-rewrite qualification: rewrite_histogram_float",
+  "source": {
+    "uri": "generated:tools/generate_completed_rewrite_fixtures.py@20261006",
+    "retrieved_at": "2026-10-06",
+    "notes": "Deterministic synthetic fixtures; no real-world corpus or performance claim"
+  },
+  "license": {
+    "spdx": "CC0-1.0",
+    "status": "RUN_ALLOWED"
+  },
+  "file": {
+    "path": "fixtures/completed_rewrites/rewrite_histogram_float.csv",
+    "bytes": 1470,
+    "sha256": "28d30006394c28060522f204dbdf2dec509e90003e48239e7c11f8035aadad65",
+    "format": "csv",
+    "header_bytes_sha256": "091e1f4d9fcfe5369e7dca6acdcafc07be3f007ab742c064a347e9062c229577"
+  },
+  "parser": {
+    "name": "python.csv",
+    "version": "stdlib-runtime-recorded",
+    "encoding": "utf-8",
+    "encoding_errors": "strict",
+    "delimiter": ",",
+    "decimal": ".",
+    "header": true,
+    "strict_column_count": true
+  },
+  "logical": {
+    "topology": "SYNCHRONOUS_MTS",
+    "axes": [
+      "time",
+      "feature"
+    ],
+    "timestamp": {
+      "origin": "SOURCE_COLUMN",
+      "column": "date",
+      "dtype": "<i8",
+      "unit": "s",
+      "epoch": "UNIX",
+      "formats": [
+        "%Y-%m-%d %H:%M:%S"
+      ],
+      "timezone_interpretation": "NAIVE_AS_UTC",
+      "order_policy": "PRESERVE",
+      "allow_duplicates": false,
+      "allow_out_of_order": false
+    },
+    "value": {
+      "kind": "CSV_COLUMNS",
+      "column_selection": {
+        "kind": "ALL_EXCEPT",
+        "excluded": [
+          "date"
+        ],
+        "expected_count": 6
+      },
+      "default_column": {
+        "dtype": "<u8",
+        "unit": "UNSPECIFIED",
+        "entity": "synthetic-record",
+        "feature": "$HEADER"
+      },
+      "overrides": {
+        "start_timestamp_bits": {
+          "unit": "HISTOGRAM_ST_INT64_BITS"
+        },
+        "count_bits": {
+          "unit": "HISTOGRAM_COUNT_BITS"
+        },
+        "zero_count_bits": {
+          "unit": "HISTOGRAM_ZERO_COUNT_BITS"
+        },
+        "sum_bits": {
+          "unit": "HISTOGRAM_SUM_BINARY64_BITS"
+        },
+        "zero_threshold_bits": {
+          "unit": "HISTOGRAM_ZERO_THRESHOLD_BINARY64_BITS"
+        },
+        "bucket_bits": {
+          "unit": "HISTOGRAM_BUCKET_BITS"
+        }
+      },
+      "display_name_overrides": {},
+      "representation": "PER_COLUMN_BUFFERS"
+    },
+    "validity": {
+      "shape": "NONE",
+      "missing_tokens": [],
+      "nan_is_null": false
+    },
+    "canonical": {
+      "format_version": "tscb-canonical-v1",
+      "byte_order": "little"
+    }
+  },
+  "expected": {
+    "rows": 16,
+    "columns": 7
+  },
+  "split": {
+    "policy": "PER_OBJECT_ENCODING_OR_DECLARED_FROZEN_MODEL_NO_TEST_TUNING",
+    "learned_eligible": true,
+    "reason": "Compression may fit per-object state; no external training or tuning on these fixtures"
+  }
+}

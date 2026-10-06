@@ -1,0 +1,340 @@
+{
+  "schema_version": "tscb.codec-manifest.v2",
+  "key": "abba",
+  "identity": {
+    "display_name": "abba",
+    "family": "ABBA",
+    "citations": [
+      "adapters/completed_rewrites/vendor/abba/contract.md"
+    ],
+    "source_artifact_id": "v2:source-artifact:sha256:6e3294ef5e8e37bbf08d75effd7342dc2808d47e75597dd2f6c01da82bdfe8d6"
+  },
+  "classification": {
+    "object_level": "P2_PIPELINE",
+    "implementation_class": "LEARNED",
+    "tracks": [
+      "VALUE"
+    ],
+    "subtracks": [
+      "V0"
+    ]
+  },
+  "input": {
+    "topologies": [
+      "UTS",
+      "SYNCHRONOUS_MTS"
+    ],
+    "dtypes": [
+      "<f8"
+    ],
+    "ranks": [
+      1,
+      2
+    ],
+    "layouts": [
+      "ROW_MAJOR_CONTIG",
+      "SOA_COLUMNS"
+    ],
+    "endianness": [
+      "little"
+    ],
+    "alignment_bytes": 1,
+    "min_n": 2,
+    "max_n": 16777216,
+    "min_m": 1,
+    "max_m": 65535,
+    "validity_shapes": [
+      "NONE"
+    ],
+    "homogeneous_itemsize": true,
+    "max_total_raw_bytes": 134217728,
+    "value_coupling_mode": "COLUMN_INDEPENDENT",
+    "timestamp_semantics": {
+      "preserve_order": true,
+      "duplicates": true,
+      "out_of_order": true,
+      "negative_delta": true,
+      "absolute_epoch": true,
+      "overflow_policy": "NOT_APPLICABLE_VALUE_ONLY"
+    },
+    "max_total_elements": 16777216,
+    "value_domain": {
+      "kind": "FROZEN_SOURCE_WITH_BOUNDED_REJECTION",
+      "unsupported_action": "REJECT_BEFORE_OUTPUT",
+      "oracle_evidence": "adapters/completed_rewrites/vendor/abba/contract.md",
+      "rejection_reasons": [
+        "FINITE_INPUT_REQUIRED",
+        "SEGMENT_ENDPOINT_ARITHMETIC_UNSUPPORTED"
+      ]
+    }
+  },
+  "semantics": {
+    "loss_modes": [
+      "UNBOUNDED_LOSSY"
+    ],
+    "error_bound_types": [],
+    "reconstruction_modes": [
+      "APPROX_GRID"
+    ],
+    "rebuild_protocol": "COMPLETE_NATIVE_FRAME_WITH_ORIGINAL_GRID_V1",
+    "preprocess_class": "NONE",
+    "preprocess_stages": [],
+    "decodability_profile": "SELF_CONTAINED_DESCRIPTOR_AND_NATIVE_FRAMES",
+    "bitstream_separability": "PER_COLUMN"
+  },
+  "lifecycle": {
+    "block_semantics": "WHOLE_OBJECT",
+    "state_semantics": "INDEPENDENT_OBJECT",
+    "reset": "REQUIRED_MODE_ZERO",
+    "finalize": "REQUIRED_ZERO_BYTE_FINALIZE",
+    "safe_overread_bytes": 0,
+    "tail_policy": "EXACT_COUNT",
+    "dictionary": "EMBEDDED_AND_CHARGED",
+    "model": "EMBEDDED_AND_CHARGED",
+    "index": "NONE"
+  },
+  "execution": {
+    "backends": [
+      "COMPLETED_REWRITE_ABI_V1"
+    ],
+    "isa": [
+      "SCALAR"
+    ],
+    "devices": [
+      "CPU"
+    ],
+    "threading": "SINGLE_THREAD",
+    "fallback_policy": "DISALLOWED",
+    "runtime_dispatch": false,
+    "timing_scopes": [
+      "PIPELINE",
+      "E2E"
+    ]
+  },
+  "features": {
+    "streaming": false,
+    "query": false,
+    "random_access": false
+  },
+  "parameters": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "compression_tolerance": {
+        "type": "decimal-string",
+        "default": "0.1"
+      },
+      "digitization_tolerance": {
+        "type": "decimal-string",
+        "default": "0.1"
+      },
+      "min_k": {
+        "type": "integer",
+        "default": 1,
+        "minimum": 1,
+        "maximum": 65535
+      },
+      "max_k": {
+        "type": "integer",
+        "default": 100,
+        "minimum": 1,
+        "maximum": 65535
+      },
+      "max_len": {
+        "type": "integer",
+        "default": 4294967295,
+        "minimum": 1,
+        "maximum": 4294967295
+      },
+      "norm": {
+        "type": "integer",
+        "default": 2,
+        "minimum": 1,
+        "maximum": 2
+      },
+      "scl": {
+        "type": "decimal-string",
+        "default": "0"
+      },
+      "clustering": {
+        "type": "string",
+        "default": "KMEANS",
+        "enum": [
+          "KMEANS",
+          "INCREMENTAL"
+        ]
+      },
+      "isa": {
+        "type": "string",
+        "default": "SCALAR",
+        "enum": [
+          "SCALAR"
+        ]
+      }
+    },
+    "constraints": [
+      {
+        "kind": "ordered",
+        "lower": "min_k",
+        "upper": "max_k"
+      },
+      {
+        "kind": "numeric_range",
+        "parameter": "compression_tolerance",
+        "minimum": "0"
+      },
+      {
+        "kind": "numeric_range",
+        "parameter": "digitization_tolerance",
+        "minimum": "0"
+      },
+      {
+        "kind": "numeric_range",
+        "parameter": "scl",
+        "minimum": "0"
+      }
+    ]
+  },
+  "adapter": {
+    "backend": "COMPLETED_REWRITE_ABI_V1",
+    "version": "completed-rewrites-v1",
+    "factory": "COMPLETED_REWRITE_CTYPES_V1",
+    "artifact_path": "build/adapters/abba/release/libtscb_abba.so",
+    "timing_boundary": "PYTHON_LAYOUT_C_ABI_NATIVE_FRAME_AND_MODEL_LOAD_INCLUDED",
+    "accounting_hooks": [
+      "FINAL_STREAM_LENGTH",
+      "CONTAINER_BYTES",
+      "COMPLETE_NATIVE_FRAMES_WITH_ALL_MODEL_BITS"
+    ],
+    "parameter_contract": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "compression_tolerance": {
+          "type": "decimal-string",
+          "default": "0.1"
+        },
+        "digitization_tolerance": {
+          "type": "decimal-string",
+          "default": "0.1"
+        },
+        "min_k": {
+          "type": "integer",
+          "default": 1,
+          "minimum": 1,
+          "maximum": 65535
+        },
+        "max_k": {
+          "type": "integer",
+          "default": 100,
+          "minimum": 1,
+          "maximum": 65535
+        },
+        "max_len": {
+          "type": "integer",
+          "default": 4294967295,
+          "minimum": 1,
+          "maximum": 4294967295
+        },
+        "norm": {
+          "type": "integer",
+          "default": 2,
+          "minimum": 1,
+          "maximum": 2
+        },
+        "scl": {
+          "type": "decimal-string",
+          "default": "0"
+        },
+        "clustering": {
+          "type": "string",
+          "default": "KMEANS",
+          "enum": [
+            "KMEANS",
+            "INCREMENTAL"
+          ]
+        },
+        "isa": {
+          "type": "string",
+          "default": "SCALAR",
+          "enum": [
+            "SCALAR"
+          ]
+        }
+      },
+      "constraints": [
+        {
+          "kind": "ordered",
+          "lower": "min_k",
+          "upper": "max_k"
+        },
+        {
+          "kind": "numeric_range",
+          "parameter": "compression_tolerance",
+          "minimum": "0"
+        },
+        {
+          "kind": "numeric_range",
+          "parameter": "digitization_tolerance",
+          "minimum": "0"
+        },
+        {
+          "kind": "numeric_range",
+          "parameter": "scl",
+          "minimum": "0"
+        }
+      ]
+    },
+    "input_contract": {
+      "topologies": [
+        "UTS",
+        "SYNCHRONOUS_MTS"
+      ],
+      "dtypes": [
+        "<f8"
+      ],
+      "ranks": [
+        1,
+        2
+      ],
+      "layouts": [
+        "ROW_MAJOR_CONTIG",
+        "SOA_COLUMNS"
+      ],
+      "endianness": [
+        "little"
+      ],
+      "alignment_bytes": 1,
+      "min_n": 2,
+      "max_n": 16777216,
+      "min_m": 1,
+      "max_m": 65535,
+      "validity_shapes": [
+        "NONE"
+      ],
+      "homogeneous_itemsize": true,
+      "max_total_raw_bytes": 134217728,
+      "value_coupling_mode": "COLUMN_INDEPENDENT",
+      "timestamp_semantics": {
+        "preserve_order": true,
+        "duplicates": true,
+        "out_of_order": true,
+        "negative_delta": true,
+        "absolute_epoch": true,
+        "overflow_policy": "NOT_APPLICABLE_VALUE_ONLY"
+      },
+      "max_total_elements": 16777216,
+      "value_domain": {
+        "kind": "FROZEN_SOURCE_WITH_BOUNDED_REJECTION",
+        "unsupported_action": "REJECT_BEFORE_OUTPUT",
+        "oracle_evidence": "adapters/completed_rewrites/vendor/abba/contract.md",
+        "rejection_reasons": [
+          "FINITE_INPUT_REQUIRED",
+          "SEGMENT_ENDPOINT_ARITHMETIC_UNSUPPORTED"
+        ]
+      }
+    },
+    "runtime_profile": "CPU_SINGLE_THREAD",
+    "isa_scope": "NATIVE_BASELINE"
+  }
+}

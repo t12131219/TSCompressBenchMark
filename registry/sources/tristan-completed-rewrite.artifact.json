@@ -1,0 +1,90 @@
+{
+  "schema_version": "tscb.source-artifact.v2",
+  "key": "tristan-completed-rewrite",
+  "kind": "FROZEN_STANDALONE_CPP_REWRITE_PUBLIC_API",
+  "identity": {
+    "kind": "FROZEN_STANDALONE_CPP_REWRITE_PUBLIC_API",
+    "package": "tristan",
+    "api_files": [
+      {
+        "path": "adapters/completed_rewrites/vendor/tristan/CMakeLists.txt",
+        "sha256": "ad49e28ba9aca97dc97249f01b51391cf4da67abcbc0b21ac10df2e7c9daa7a0"
+      },
+      {
+        "path": "adapters/completed_rewrites/vendor/tristan/DEPENDENCY_LOCK.json",
+        "sha256": "3e729f95a571c9d1a490b4de8961b95c5dee7788a95fd290043877f58fe71a51"
+      },
+      {
+        "path": "adapters/completed_rewrites/vendor/tristan/LICENSES/BSD-3-Clause-scikit-learn.txt",
+        "sha256": "d81e7339cfef557debf6d8214e4a31acd01b3144d2b39e42513c3c7e5c29e5c2"
+      },
+      {
+        "path": "adapters/completed_rewrites/vendor/tristan/NATIVE_CAPABILITY_MATRIX.yaml",
+        "sha256": "33664205fc35ab12ecca3b6fe1c2ef851059511a08a36b1aa4300391873dd873"
+      },
+      {
+        "path": "adapters/completed_rewrites/vendor/tristan/PORT_MANIFEST.yaml",
+        "sha256": "07fd466c02afc562b493af3302d8ff095affc0f121b93cbda155d5c071f3995a"
+      },
+      {
+        "path": "adapters/completed_rewrites/vendor/tristan/README.md",
+        "sha256": "aa67a52520948d846b68b64e114040b93467878a5fbe52a521ddbf378935c841"
+      },
+      {
+        "path": "adapters/completed_rewrites/vendor/tristan/contract.md",
+        "sha256": "6d85953dffb837864ec38d975b03a754b5017df0557df5aca83a00921248de5d"
+      },
+      {
+        "path": "adapters/completed_rewrites/vendor/tristan/include/tristan.hpp",
+        "sha256": "4183d796318516f21e2d5653d548186876282659fccd0a76016808380529d6cd"
+      },
+      {
+        "path": "adapters/completed_rewrites/vendor/tristan/src/canonical/codec.cpp",
+        "sha256": "e580a37e3aaa9ac94f81e4f2d97d391b429470a5f05cdfac7e24478ea144eb2e"
+      },
+      {
+        "path": "adapters/completed_rewrites/vendor/tristan/src/canonical/numerical.cpp",
+        "sha256": "ccabf83c5c51fb3209e5677d20aa626729b6eea2e5e9e3ee9d08a21977190189"
+      },
+      {
+        "path": "adapters/completed_rewrites/vendor/tristan/src/canonical/numerical_internal.hpp",
+        "sha256": "ceb38cbfa41b68693dc214a8d1810a910fedf1cff1bd7ebd9450b6c93966ff5d"
+      },
+      {
+        "path": "adapters/completed_rewrites/vendor/tristan/tests/performance/qualification.cpp",
+        "sha256": "97dd6f67f4315812a8817435cf146d2b16614de5d3be5ce53071c1d7dabfb465"
+      },
+      {
+        "path": "adapters/completed_rewrites/vendor/tristan/tests/preflight.cpp",
+        "sha256": "e06f0fc56b34bc88995a6829cc151e206a3eb6b10696a98a6add5be09e2b1b84"
+      },
+      {
+        "path": "adapters/completed_rewrites/vendor/tristan/tools/tristan_cli.cpp",
+        "sha256": "f4d941c6a02d118aa225663a522fda95651b2c5ef3eeea67e585cd82e2224bd5"
+      }
+    ],
+    "port_manifest_sha256": "07fd466c02afc562b493af3302d8ff095affc0f121b93cbda155d5c071f3995a",
+    "upstream_commits": [
+      "083824eb3e0b3ad72a00d4f585bc77b5adb5c1be"
+    ],
+    "variant": "tristan",
+    "source_manifest": {
+      "path": "adapters/completed_rewrites/provenance/tristan/SOURCE_MANIFEST.yaml",
+      "sha256": "c6c0fd5ef42dee2a2a3edb59cdf65febbb295edaad6513b97b30e8dad34688e8",
+      "original": "Compression_Rewrite/Source/tristan/SOURCE_MANIFEST.yaml"
+    }
+  },
+  "license": {
+    "spdx": "NOASSERTION",
+    "status": "REDISTRIBUTION_RESTRICTED",
+    "files": [
+      "adapters/completed_rewrites/vendor/tristan/LICENSES/BSD-3-Clause-scikit-learn.txt"
+    ],
+    "redistribution": "LOCAL_EXECUTION_ONLY; ORIGINAL_NOTICES_RETAINED; NO_UPSTREAM_LICENSE_GRANT_INVENTED"
+  },
+  "build": {
+    "recipe": "python tools/build_codec.py tristan --profile all",
+    "frozen_lock": "adapters/completed_rewrites/FROZEN_SOURCES.json",
+    "standalone_package": "tristan"
+  }
+}

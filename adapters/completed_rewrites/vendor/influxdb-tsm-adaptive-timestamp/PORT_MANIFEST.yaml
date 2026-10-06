@@ -1,0 +1,135 @@
+{
+  "schema_version": 1,
+  "algorithm_id": "influxdb-tsm-adaptive-timestamp",
+  "implementation_id": "influxdb-tsm-adaptive-timestamp-cpp-v1",
+  "status": "REWRITE_DONE",
+  "current_gate": "G6",
+  "scope": "STANDALONE_REWRITE_ONLY",
+  "object_level": "P2_PIPELINE",
+  "port_method": "TRANSLATED",
+  "compatibility_target": "CROSS_DECODE",
+  "source_manifest": "../../Source/influxdb-tsm-adaptive-timestamp/SOURCE_MANIFEST.yaml",
+  "gates": {
+    "G0": {
+      "status": "PASS",
+      "evidence": "validation/gate_freeze.json"
+    },
+    "G1": {
+      "status": "PASS",
+      "evidence": "validation/gate_freeze.json"
+    },
+    "G2": {
+      "status": "PASS",
+      "evidence": "validation/gate_freeze.json"
+    },
+    "G3": {
+      "status": "PASS",
+      "reviewer": "Local automated qualification audit",
+      "evidence": [
+        "validation/release_audit.json",
+        "dataset_validation_report.md",
+        "native_capability_validation_report.md"
+      ]
+    },
+    "G4": {
+      "status": "PASS",
+      "reviewer": "Local automated qualification audit",
+      "evidence": [
+        "validation/release_audit.json",
+        "dataset_validation_report.md",
+        "native_capability_validation_report.md"
+      ]
+    },
+    "G5": {
+      "status": "PASS",
+      "reviewer": "Local automated qualification audit",
+      "evidence": [
+        "validation/release_audit.json",
+        "dataset_validation_report.md",
+        "native_capability_validation_report.md"
+      ],
+      "optimization": "No upstream ISA/GPU/internal-parallel variant; required batch and separate-handle safety qualified"
+    },
+    "G6": {
+      "status": "PASS",
+      "reviewer": "Local automated qualification audit",
+      "evidence": [
+        "validation/release_audit.json",
+        "dataset_validation_report.md",
+        "native_capability_validation_report.md"
+      ]
+    }
+  },
+  "native_capability_parity": {
+    "overall_result": "FULL_PARITY",
+    "required_total": 15,
+    "required_passed": 15,
+    "waiver_ids": [],
+    "matrix_sha256": "a0deb159cd3ba172452049102694c5c72d8276a83bf601d0a7f4b8d87a9453c2"
+  },
+  "integration": {
+    "performed": false,
+    "tscb_adapter_present": false,
+    "registry_modified": false
+  },
+  "rewrite_conclusion": "REWRITE_DONE",
+  "standalone_api": {
+    "header": "include/tsm_timestamp.hpp",
+    "symbols": [
+      "encode/encode_bound/encode_to",
+      "decode/count_timestamps",
+      "Encoder::append/finish/finalize/reset",
+      "Cursor::reset/source_init/next/count/encoding",
+      "version/capability"
+    ],
+    "safe_overread_bytes": 0,
+    "hard_sample_limit": 16777216,
+    "thread_safety": "Independent handles only",
+    "profiles": [
+      "source_stream",
+      "source_batch"
+    ],
+    "input_contract": "Immutable aligned contiguous int64; arbitrary byte alignment for compressed streams"
+  },
+  "accounting": {
+    "final_bits": "physical source bytes*8",
+    "external_side_information_bits": 0,
+    "checksum_bits": 0,
+    "components": [
+      "type_scaling_byte",
+      "BE64_first",
+      "raw_words_or_packed_words_or_RLE_delta_count_varints",
+      "unused_selector_bits"
+    ]
+  },
+  "build": {
+    "compiler_versions": {
+      "gcc": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0\nCopyright (C) 2021 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+      "clang": "Ubuntu clang version 14.0.0-1ubuntu1.1\nTarget: x86_64-pc-linux-gnu\nThread model: posix\nInstalledDir: /usr/bin\n",
+      "cmake": "cmake version 3.22.1\n\nCMake suite maintained and supported by Kitware (kitware.com/cmake).\n",
+      "linker": "GNU ld (GNU Binutils for Ubuntu) 2.38\nCopyright (C) 2022 Free Software Foundation, Inc.\n\u8fd9\u4e2a\u7a0b\u5e8f\u662f\u81ea\u7531\u8f6f\u4ef6\uff1b\u60a8\u53ef\u4ee5\u9075\u5faaGNU \u901a\u7528\u516c\u5171\u6388\u6743\u7248\u672c 3 \u6216\n(\u60a8\u81ea\u884c\u9009\u62e9\u7684) \u7a0d\u540e\u7248\u672c\u4ee5\u518d\u6b21\u6563\u5e03\u5b83\u3002\n\u8fd9\u4e2a\u7a0b\u5e8f\u5b8c\u5168\u6ca1\u6709\u4efb\u4f55\u62c5\u4fdd\u3002\n",
+      "archiver": "GNU ar (GNU Binutils for Ubuntu) 2.38\nCopyright (C) 2022 Free Software Foundation, Inc.\n\u8fd9\u4e2a\u7a0b\u5e8f\u662f\u81ea\u7531\u8f6f\u4ef6\uff1b\u60a8\u53ef\u4ee5\u9075\u5faa GNU \u901a\u7528\u516c\u5171\u6388\u6743\u7248\u672c 3 \u6216\n(\u60a8\u81ea\u884c\u9009\u62e9\u7684) \u7a0d\u540e\u7248\u672c\u518d\u53d1\u5e03\u5b83\u3002\n\u8fd9\u4e2a\u7a0b\u5e8f\u4e0d\u542b\u4efb\u4f55\u62c5\u4fdd\u3002\n",
+      "glibc": "ldd (Ubuntu GLIBC 2.35-0ubuntu3.8) 2.35\nCopyright (C) 2022 \u81ea\u7531\u8f6f\u4ef6\u57fa\u91d1\u4f1a\u3002\n\u8fd9\u662f\u81ea\u7531\u8f6f\u4ef6\uff1b\u590d\u5236\u672c\u8f6f\u4ef6\u9700\u6ee1\u8db3\u7684\u6761\u4ef6\u8bf7\u53c2\u89c1\u6e90\u4ee3\u7801\u3002\u672c\u8f6f\u4ef6\u4e0d\u63d0\u4f9b\u4efb\u4f55\n\u54c1\u8d28\u4fdd\u8bc1\uff1b\u751a\u81f3\u4e0d\u4fdd\u8bc1\u9002\u9500\u6027\u6216\u662f\u9002\u7528\u4e8e\u67d0\u79cd\u7279\u5b9a\u7528\u9014\u3002\n\u7531 Roland McGrath \u548c Ulrich Drepper \u7f16\u5199\u3002\n",
+      "zig": "0.15.2\n",
+      "qemu": "qemu-aarch64 version 6.2.0 (Debian 1:6.2+dfsg-2ubuntu6.31)\nCopyright (c) 2003-2021 Fabrice Bellard and the QEMU Project developers\n"
+    },
+    "target": "x86_64-linux-gnu",
+    "sysroot": "system /",
+    "reproducibility": "BYTE_IDENTICAL_TWO_RELOCATED_BUILDS",
+    "report": "validation/qualification/reproduce.json",
+    "library_sha256": "4991984a7dbead1b5a0d86ce457c8641fbe64583262bce19ed776ef0299c85b3",
+    "reference_runtime_in_native": false
+  },
+  "license": {
+    "spdx": "MIT",
+    "files": "LICENSES",
+    "notice": "NOTICE",
+    "external_runtime": "GNU/libc dynamic dependencies documented in SBOM"
+  },
+  "dataset_validation": {
+    "status": "PASS",
+    "complete_columns": 3,
+    "profile_cases": 6,
+    "report": "dataset_validation_report.md"
+  }
+}

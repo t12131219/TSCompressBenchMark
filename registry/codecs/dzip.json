@@ -1,0 +1,250 @@
+{
+  "schema_version": "tscb.codec-manifest.v2",
+  "key": "dzip",
+  "identity": {
+    "display_name": "dzip",
+    "family": "DZIP",
+    "citations": [
+      "adapters/completed_rewrites/vendor/dzip/contract.md"
+    ],
+    "source_artifact_id": "v2:source-artifact:sha256:f221a0ba976c44143cf64f975d41f3255271171ff3efadb3edbe8ac330affd5e"
+  },
+  "classification": {
+    "object_level": "P2_PIPELINE",
+    "implementation_class": "LEARNED",
+    "tracks": [
+      "VALUE"
+    ],
+    "subtracks": [
+      "V0"
+    ]
+  },
+  "input": {
+    "topologies": [
+      "UTS",
+      "SYNCHRONOUS_MTS"
+    ],
+    "dtypes": [
+      "|u1"
+    ],
+    "ranks": [
+      1,
+      2
+    ],
+    "layouts": [
+      "ROW_MAJOR_CONTIG",
+      "SOA_COLUMNS"
+    ],
+    "endianness": [
+      "little"
+    ],
+    "alignment_bytes": 1,
+    "min_n": 0,
+    "max_n": 16777216,
+    "min_m": 1,
+    "max_m": 65535,
+    "validity_shapes": [
+      "NONE"
+    ],
+    "homogeneous_itemsize": true,
+    "max_total_raw_bytes": 134217728,
+    "value_coupling_mode": "COLUMN_INDEPENDENT",
+    "timestamp_semantics": {
+      "preserve_order": true,
+      "duplicates": true,
+      "out_of_order": true,
+      "negative_delta": true,
+      "absolute_epoch": true,
+      "overflow_policy": "NOT_APPLICABLE_VALUE_ONLY"
+    },
+    "max_total_elements": 16777216,
+    "value_domain": {
+      "kind": "FROZEN_SOURCE_WITH_BOUNDED_REJECTION",
+      "unsupported_action": "REJECT_BEFORE_OUTPUT",
+      "oracle_evidence": "adapters/completed_rewrites/vendor/dzip/contract.md",
+      "rejection_reasons": [
+        "MODEL_ALPHABET_UNSUPPORTED"
+      ]
+    }
+  },
+  "semantics": {
+    "loss_modes": [
+      "LOSSLESS"
+    ],
+    "error_bound_types": [],
+    "reconstruction_modes": [
+      "EXACT_GRID"
+    ],
+    "rebuild_protocol": "COMPLETE_NATIVE_FRAME_WITH_ORIGINAL_GRID_V1",
+    "preprocess_class": "NONE",
+    "preprocess_stages": [],
+    "decodability_profile": "SELF_CONTAINED_DESCRIPTOR_AND_NATIVE_FRAMES",
+    "bitstream_separability": "PER_COLUMN"
+  },
+  "lifecycle": {
+    "block_semantics": "WHOLE_OBJECT",
+    "state_semantics": "INDEPENDENT_OBJECT",
+    "reset": "REQUIRED_MODE_ZERO",
+    "finalize": "REQUIRED_ZERO_BYTE_FINALIZE",
+    "safe_overread_bytes": 0,
+    "tail_policy": "EXACT_COUNT",
+    "dictionary": "EMBEDDED_AND_CHARGED",
+    "model": "EMBEDDED_AND_CHARGED",
+    "index": "NONE"
+  },
+  "execution": {
+    "backends": [
+      "COMPLETED_REWRITE_ABI_V1"
+    ],
+    "isa": [
+      "AVX"
+    ],
+    "devices": [
+      "CPU"
+    ],
+    "threading": "CALLER_PLUS_TWO_PERSISTENT_SINGLE_WORKER_EIGEN_POOLS",
+    "fallback_policy": "DISALLOWED",
+    "runtime_dispatch": true,
+    "timing_scopes": [
+      "PIPELINE",
+      "E2E"
+    ]
+  },
+  "features": {
+    "streaming": false,
+    "query": false,
+    "random_access": false
+  },
+  "parameters": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "mode": {
+        "type": "string",
+        "default": "BOOTSTRAP",
+        "enum": [
+          "BOOTSTRAP",
+          "COMBINED"
+        ]
+      },
+      "initial_model": {
+        "type": "string",
+        "default": "NATIVE_SEEDED_UNTRAINED_INPUT_ALPHABET",
+        "enum": [
+          "NATIVE_SEEDED_UNTRAINED_INPUT_ALPHABET"
+        ]
+      },
+      "model_seed": {
+        "type": "integer",
+        "default": 0,
+        "minimum": 0,
+        "maximum": 4294967295
+      },
+      "isa": {
+        "type": "string",
+        "default": "AVX",
+        "enum": [
+          "AVX"
+        ]
+      }
+    },
+    "constraints": []
+  },
+  "adapter": {
+    "backend": "COMPLETED_REWRITE_ABI_V1",
+    "version": "completed-rewrites-v1",
+    "factory": "COMPLETED_REWRITE_CTYPES_V1",
+    "artifact_path": "build/adapters/dzip/release/libtscb_dzip.so",
+    "timing_boundary": "PYTHON_LAYOUT_C_ABI_NATIVE_FRAME_AND_MODEL_LOAD_INCLUDED",
+    "accounting_hooks": [
+      "FINAL_STREAM_LENGTH",
+      "CONTAINER_BYTES",
+      "COMPLETE_NATIVE_FRAMES_WITH_ALL_MODEL_BITS"
+    ],
+    "parameter_contract": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "mode": {
+          "type": "string",
+          "default": "BOOTSTRAP",
+          "enum": [
+            "BOOTSTRAP",
+            "COMBINED"
+          ]
+        },
+        "initial_model": {
+          "type": "string",
+          "default": "NATIVE_SEEDED_UNTRAINED_INPUT_ALPHABET",
+          "enum": [
+            "NATIVE_SEEDED_UNTRAINED_INPUT_ALPHABET"
+          ]
+        },
+        "model_seed": {
+          "type": "integer",
+          "default": 0,
+          "minimum": 0,
+          "maximum": 4294967295
+        },
+        "isa": {
+          "type": "string",
+          "default": "AVX",
+          "enum": [
+            "AVX"
+          ]
+        }
+      },
+      "constraints": []
+    },
+    "input_contract": {
+      "topologies": [
+        "UTS",
+        "SYNCHRONOUS_MTS"
+      ],
+      "dtypes": [
+        "|u1"
+      ],
+      "ranks": [
+        1,
+        2
+      ],
+      "layouts": [
+        "ROW_MAJOR_CONTIG",
+        "SOA_COLUMNS"
+      ],
+      "endianness": [
+        "little"
+      ],
+      "alignment_bytes": 1,
+      "min_n": 0,
+      "max_n": 16777216,
+      "min_m": 1,
+      "max_m": 65535,
+      "validity_shapes": [
+        "NONE"
+      ],
+      "homogeneous_itemsize": true,
+      "max_total_raw_bytes": 134217728,
+      "value_coupling_mode": "COLUMN_INDEPENDENT",
+      "timestamp_semantics": {
+        "preserve_order": true,
+        "duplicates": true,
+        "out_of_order": true,
+        "negative_delta": true,
+        "absolute_epoch": true,
+        "overflow_policy": "NOT_APPLICABLE_VALUE_ONLY"
+      },
+      "max_total_elements": 16777216,
+      "value_domain": {
+        "kind": "FROZEN_SOURCE_WITH_BOUNDED_REJECTION",
+        "unsupported_action": "REJECT_BEFORE_OUTPUT",
+        "oracle_evidence": "adapters/completed_rewrites/vendor/dzip/contract.md",
+        "rejection_reasons": [
+          "MODEL_ALPHABET_UNSUPPORTED"
+        ]
+      }
+    },
+    "runtime_profile": "CPU_AVX_BASELINE_AND_MKLDNN_DISPATCH; PROCESS_THREAD_BUDGET_3",
+    "isa_scope": "WRAPPER_BASELINE; DEPENDENCY_DISPATCH_RECORDED_IN_BUILD"
+  }
+}

@@ -17,6 +17,14 @@ class OutputCapacityError(ExecutionContractError):
     """The supplied destination capacity cannot hold the finalized object."""
 
 
+class SourceDomainError(ExecutionContractError):
+    """A frozen upstream codec cannot losslessly encode this value sequence."""
+
+    def __init__(self, message: str):
+        super().__init__(message)
+        self.rejection_atomic = False
+
+
 @dataclass(frozen=True)
 class LogicalBuffer:
     name: str

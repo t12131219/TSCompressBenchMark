@@ -244,7 +244,14 @@ def _base_reasons(
     elif correctness.get("first_failure_stage") is not None:
         reasons.append("CORRECTNESS_FAILURE_STAGE_PRESENT")
     loss = correctness.get("loss") if isinstance(correctness, dict) else None
-    if isinstance(loss, dict) and loss.get("bound_passed") is not True:
+    unbounded_quality = (
+        ((task or {}).get("comparability") or {}).get("semantic_document", {}).get("loss_mode")
+        == "UNBOUNDED_LOSSY"
+        and isinstance(loss, dict)
+        and loss.get("error_bound_type") == "NOT_APPLICABLE_UNBOUNDED_LOSSY"
+        and loss.get("bound_passed") is None
+    )
+    if isinstance(loss, dict) and loss.get("bound_passed") is not True and not unbounded_quality:
         reasons.append("ERROR_BOUND_NOT_PASS")
     if not _accounting_valid(record.get("accounting")):
         reasons.append("ACCOUNTING_INCOMPLETE_OR_INCONSISTENT")
@@ -356,9 +363,41 @@ def _eligibility(
     for group_rows in groups.values():
         record = by_run[group_rows[0]["run_id"]]
         policy = record["diagnostics"]["measurement_policy"]
-        required = max(10, int(policy.get("repetitions", 0)))
+        planned = int(policy.get("repetitions", 0))
         repetition_indices = {by_run[row["run_id"]].get("repetition_index") for row in group_rows}
-        if len(group_rows) < required or len(repetition_indices) != len(group_rows):
+        group_identity = tuple(
+            record.get(name)
+            for name in (
+                "dataset_id",
+                "algorithm_id",
+                "config_id",
+                "execution_path_hash",
+                "schema_version",
+            )
+        )
+        all_group_records = [
+            item
+            for item in records
+            if tuple(
+                item.get(name)
+                for name in (
+                    "dataset_id",
+                    "algorithm_id",
+                    "config_id",
+                    "execution_path_hash",
+                    "schema_version",
+                )
+            )
+            == group_identity
+            and item.get("record_kind") == "FORMAL_REPETITION"
+        ]
+        all_indices = [item.get("repetition_index") for item in all_group_records]
+        complete = (
+            planned >= 10
+            and len(all_indices) == planned
+            and set(all_indices) == set(range(planned))
+        )
+        if not complete or len(group_rows) < 10 or len(repetition_indices) != len(group_rows):
             for analysis in ("PERFORMANCE", "RESOURCE", "SPACE_QUALITY"):
                 for row in rows:
                     if (
@@ -492,17 +531,26 @@ def _auxiliary_timing_fields(
             result[f"{scope}_{direction}_mb_per_second_micro"] = (
                 decimal_divide(
                     sum(
-                        int(item["timing"][
-                            "codec_input_bytes_per_iteration" if scope == "native"
-                            else "canonical_bytes_per_iteration"
-                        ]) * int(item["timing"]["inner_iterations"])
+                        int(
+                            item["timing"][
+                                "codec_input_bytes_per_iteration"
+                                if scope == "native"
+                                else "canonical_bytes_per_iteration"
+                            ]
+                        )
+                        * int(item["timing"]["inner_iterations"])
                         for item in observations
-                    ) * 1000,
+                    )
+                    * 1000,
                     sum(int(item["timing"][field]) for item in observations),
-                ) if complete else None
+                )
+                if complete
+                else None
             )
-    native_complete = all(result[f"native_{direction}_observation_count"] == len(group)
-                          for direction in ("encode", "decode"))
+    native_complete = all(
+        result[f"native_{direction}_observation_count"] == len(group)
+        for direction in ("encode", "decode")
+    )
     result["native_timing_boundary"] = native_boundary if native_complete else None
     result["native_timing_clock"] = native_clock if native_complete else None
     result["codec_input_bytes_per_iteration"] = group[0]["timing"].get(
@@ -735,7 +783,8 @@ def _corpus_summaries(summaries: list[dict[str, Any]]) -> list[dict[str, Any]]:
             for direction in ("encode", "decode"):
                 times = [item.get(f"{scope}_{direction}_ns_median") for item in rows]
                 sizes = [
-                    item.get("codec_input_bytes_per_iteration") if scope == "native"
+                    item.get("codec_input_bytes_per_iteration")
+                    if scope == "native"
                     else (int(item["canonical_raw_bits"]) + 7) // 8
                     for item in rows
                 ]

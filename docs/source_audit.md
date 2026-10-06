@@ -220,13 +220,20 @@ independent-decode, output-bound, and repeated-Finalize cases. The benchmark-ven
 compression fuzzer harness passed 100 fixed-seed inputs. LeakSanitizer was disabled due
 to the host ptrace restriction.
 
-The final canonical Release artifact SHA-256 is
+The historical 2026-09-17 canonical Release artifact SHA-256 was
 `6908c7e336c1ac5f97591dee8380e878388959d442850cd220ee0a2d72fa93d7`; the ASan/UBSan
 artifact is `865ca9052e150235a364565b86e258455da2063f9208b494d4b4ddfef3ee5da5`.
-The current binary completed qualification RunSet
+That historical binary completed qualification RunSet
 `runset-20260917T125917Z-a89763b0308a`, followed by 30/30 eligible FORMAL repetitions in
 `runset-20260917T125955Z-fd44e35213d5` and report
 `v2:report:sha256:ba6edff0215d348f08542bffbdf97cf63a5c9ad4c35e05ac40765ce8b1d57bfb`.
+
+The 2026-10-05 native-timing refresh resolves stale onboarding build hashes. Current
+release/sanitizer hashes are `fa7e16cd…` / `641dfac7…`; both match rebuilt artifacts
+and build records. The pinned vendor files are unchanged. Current-identity qualification
+and 15 adapter/timing tests pass; formal attempts retain host-swap `RESOURCE_PRESSURE`
+and have no eligible ranked summary. See [current self-check](snappy_raw_self_check.md#current-build-evidence-refresh--2026-10-05)
+and [hash-bound evidence](snappy_raw_evidence_refresh.json). Historical builds/runs remain preserved.
 
 ## Phase 4 Brotli stream source onboarding
 

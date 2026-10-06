@@ -1,0 +1,1074 @@
+schema_version: 1
+algorithm_id: deepzip
+upstream_revision: 8c35502397a1488c89fa282ed033cc9d5fd4b4dc
+inventory_gate: G1_COMPLETE
+classification_gate: G2_FROZEN_G6_VERIFIED
+overall_result: FULL_PARITY
+waiver_ids: []
+capabilities:
+- capability_id: pipeline.lossless_encode_decode
+  category: INPUT_AND_PIPELINE
+  owner: deepzip-standalone
+  parity_class: REQUIRED_PARITY
+  upstream:
+    present: true
+    public_or_supported: true
+    platforms:
+    - linux-x86_64-cuda
+    evidence:
+    - path: ../../Source/deepzip/upstream/src/compressor.py
+      symbol_or_test: main/predict_lstm
+      lines_or_case: full_file
+  rewrite:
+    present: true
+    public_symbol: compress/decompress/Codec
+    variant: canonical_scalar+native_cuda
+    platforms:
+    - linux-x86_64
+    - linux-x86_64-cuda
+    - linux-aarch64-scalar
+    build_target: deepzip
+    build_flags:
+    - DEEPZIP_WITH_CUDA=ON
+    - DEEPZIP_WITH_HDF5=ON
+  validation:
+    status: PASS
+    oracle: unmodified_locked_upstream
+    tests:
+    - validation/scalar_models.json
+    - validation/cuda_models.json
+    - validation/scalar_pipelines.json
+    - validation/cuda_pipelines.json
+    - validation/qualification.json
+    artifact_hashes:
+    - f6a6b932f11cfbdc2bf4c64c60d7cd25c05dca37db9007e38fcb309f808d0f99
+    - 8724ff5730f6d770f988a22d546b5bd9b1f576da5bdc4853a930666e24c48ca1
+    - 1894b782a22f908c7814fbc87059613c97869ab1f677f7ae1e325a08eea63658
+    - eb8af39caf4e0c825d16d8eaf73fca23873363c0fb24ad62b8d558fc2522a5e9
+    - 27eb0b91fc29ca9f3c8a56c6c2d7db399f2413a06788de371cb385e7de2fd2d2
+  waiver_id: null
+- capability_id: input.explicit_byte_dictionary
+  category: INPUT_AND_PIPELINE
+  owner: deepzip-standalone
+  parity_class: REQUIRED_PARITY
+  upstream:
+    present: true
+    public_or_supported: true
+    platforms:
+    - linux-x86_64-cuda
+    evidence:
+    - path: ../../Source/deepzip/upstream/data/parse_new.py
+      symbol_or_test: char2id/id2char
+      lines_or_case: full_file
+  rewrite:
+    present: true
+    public_symbol: compress/decompress/Codec
+    variant: canonical_scalar+native_cuda
+    platforms:
+    - linux-x86_64
+    - linux-x86_64-cuda
+    - linux-aarch64-scalar
+    build_target: deepzip
+    build_flags:
+    - DEEPZIP_WITH_CUDA=ON
+    - DEEPZIP_WITH_HDF5=ON
+  validation:
+    status: PASS
+    oracle: unmodified_locked_upstream
+    tests:
+    - validation/scalar_models.json
+    - validation/cuda_models.json
+    - validation/scalar_pipelines.json
+    - validation/cuda_pipelines.json
+    - validation/qualification.json
+    artifact_hashes:
+    - f6a6b932f11cfbdc2bf4c64c60d7cd25c05dca37db9007e38fcb309f808d0f99
+    - 8724ff5730f6d770f988a22d546b5bd9b1f576da5bdc4853a930666e24c48ca1
+    - 1894b782a22f908c7814fbc87059613c97869ab1f677f7ae1e325a08eea63658
+    - eb8af39caf4e0c825d16d8eaf73fca23873363c0fb24ad62b8d558fc2522a5e9
+    - 27eb0b91fc29ca9f3c8a56c6c2d7db399f2413a06788de371cb385e7de2fd2d2
+  waiver_id: null
+- capability_id: model.load_checkpoint_weights
+  category: MODEL_STATE
+  owner: deepzip-standalone
+  parity_class: REQUIRED_PARITY
+  upstream:
+    present: true
+    public_or_supported: true
+    platforms:
+    - linux-x86_64-cuda
+    evidence:
+    - path: ../../Source/deepzip/upstream/src/compressor.py
+      symbol_or_test: model.load_weights
+      lines_or_case: full_file
+  rewrite:
+    present: true
+    public_symbol: Model::from_hdf5/Model::load
+    variant: canonical_scalar+native_cuda
+    platforms:
+    - linux-x86_64
+    - linux-x86_64-cuda
+    build_target: deepzip
+    build_flags:
+    - DEEPZIP_WITH_CUDA=ON
+    - DEEPZIP_WITH_HDF5=ON
+  validation:
+    status: PASS
+    oracle: unmodified_locked_upstream
+    tests:
+    - validation/scalar_models.json
+    - validation/cuda_models.json
+    - validation/scalar_pipelines.json
+    - validation/cuda_pipelines.json
+    - validation/qualification.json
+    artifact_hashes:
+    - f6a6b932f11cfbdc2bf4c64c60d7cd25c05dca37db9007e38fcb309f808d0f99
+    - 8724ff5730f6d770f988a22d546b5bd9b1f576da5bdc4853a930666e24c48ca1
+    - 1894b782a22f908c7814fbc87059613c97869ab1f677f7ae1e325a08eea63658
+    - eb8af39caf4e0c825d16d8eaf73fca23873363c0fb24ad62b8d558fc2522a5e9
+    - 27eb0b91fc29ca9f3c8a56c6c2d7db399f2413a06788de371cb385e7de2fd2d2
+  waiver_id: null
+- capability_id: entropy.arithmetic_32bit
+  category: ENTROPY_BACKEND
+  owner: deepzip-standalone
+  parity_class: REQUIRED_PARITY
+  upstream:
+    present: true
+    public_or_supported: true
+    platforms:
+    - linux-x86_64-cuda
+    evidence:
+    - path: ../../Source/deepzip/upstream/src/arithmeticcoding_fast.py
+      symbol_or_test: ArithmeticEncoder/Decoder
+      lines_or_case: full_file
+  rewrite:
+    present: true
+    public_symbol: cumulative/encode_arithmetic/decode_arithmetic
+    variant: canonical_scalar+native_cuda
+    platforms:
+    - linux-x86_64
+    - linux-x86_64-cuda
+    - linux-aarch64-scalar
+    build_target: deepzip
+    build_flags:
+    - DEEPZIP_WITH_CUDA=ON
+    - DEEPZIP_WITH_HDF5=ON
+  validation:
+    status: PASS
+    oracle: unmodified_locked_upstream
+    tests:
+    - validation/scalar_models.json
+    - validation/cuda_models.json
+    - validation/scalar_pipelines.json
+    - validation/cuda_pipelines.json
+    - validation/qualification.json
+    - validation/scalar_dataset_traces.json
+    artifact_hashes:
+    - f6a6b932f11cfbdc2bf4c64c60d7cd25c05dca37db9007e38fcb309f808d0f99
+    - 8724ff5730f6d770f988a22d546b5bd9b1f576da5bdc4853a930666e24c48ca1
+    - 1894b782a22f908c7814fbc87059613c97869ab1f677f7ae1e325a08eea63658
+    - eb8af39caf4e0c825d16d8eaf73fca23873363c0fb24ad62b8d558fc2522a5e9
+    - 27eb0b91fc29ca9f3c8a56c6c2d7db399f2413a06788de371cb385e7de2fd2d2
+    - b35f40d45b0dd3fa013031cb34d01b7facea2a8797a0e5f5753c637e5c57fa19
+  waiver_id: null
+- capability_id: entropy.numpy_float64_cumsum_cast
+  category: NUMERIC_SEMANTICS
+  owner: deepzip-standalone
+  parity_class: REQUIRED_PARITY
+  upstream:
+    present: true
+    public_or_supported: true
+    platforms:
+    - linux-x86_64-cuda
+    evidence:
+    - path: ../../Source/deepzip/upstream/src/compressor.py
+      symbol_or_test: prob*10000000+1/cumsum
+      lines_or_case: full_file
+  rewrite:
+    present: true
+    public_symbol: cumulative/encode_arithmetic/decode_arithmetic
+    variant: canonical_scalar+native_cuda
+    platforms:
+    - linux-x86_64
+    - linux-x86_64-cuda
+    - linux-aarch64-scalar
+    build_target: deepzip
+    build_flags:
+    - DEEPZIP_WITH_CUDA=ON
+    - DEEPZIP_WITH_HDF5=ON
+  validation:
+    status: PASS
+    oracle: unmodified_locked_upstream
+    tests:
+    - validation/scalar_models.json
+    - validation/cuda_models.json
+    - validation/scalar_pipelines.json
+    - validation/cuda_pipelines.json
+    - validation/qualification.json
+    - validation/scalar_dataset_traces.json
+    artifact_hashes:
+    - f6a6b932f11cfbdc2bf4c64c60d7cd25c05dca37db9007e38fcb309f808d0f99
+    - 8724ff5730f6d770f988a22d546b5bd9b1f576da5bdc4853a930666e24c48ca1
+    - 1894b782a22f908c7814fbc87059613c97869ab1f677f7ae1e325a08eea63658
+    - eb8af39caf4e0c825d16d8eaf73fca23873363c0fb24ad62b8d558fc2522a5e9
+    - 27eb0b91fc29ca9f3c8a56c6c2d7db399f2413a06788de371cb385e7de2fd2d2
+    - b35f40d45b0dd3fa013031cb34d01b7facea2a8797a0e5f5753c637e5c57fa19
+  waiver_id: null
+- capability_id: partition.independent_lanes_and_tail
+  category: PARTITIONING
+  owner: deepzip-standalone
+  parity_class: REQUIRED_PARITY
+  upstream:
+    present: true
+    public_or_supported: true
+    platforms:
+    - linux-x86_64-cuda
+    evidence:
+    - path: ../../Source/deepzip/upstream/src/compressor.py
+      symbol_or_test: predict_lstm/main
+      lines_or_case: full_file
+  rewrite:
+    present: true
+    public_symbol: compress/decompress/Codec
+    variant: canonical_scalar+native_cuda
+    platforms:
+    - linux-x86_64
+    - linux-x86_64-cuda
+    - linux-aarch64-scalar
+    build_target: deepzip
+    build_flags:
+    - DEEPZIP_WITH_CUDA=ON
+    - DEEPZIP_WITH_HDF5=ON
+  validation:
+    status: PASS
+    oracle: unmodified_locked_upstream
+    tests:
+    - validation/scalar_models.json
+    - validation/cuda_models.json
+    - validation/scalar_pipelines.json
+    - validation/cuda_pipelines.json
+    - validation/qualification.json
+    - validation/scalar_dataset_traces.json
+    artifact_hashes:
+    - f6a6b932f11cfbdc2bf4c64c60d7cd25c05dca37db9007e38fcb309f808d0f99
+    - 8724ff5730f6d770f988a22d546b5bd9b1f576da5bdc4853a930666e24c48ca1
+    - 1894b782a22f908c7814fbc87059613c97869ab1f677f7ae1e325a08eea63658
+    - eb8af39caf4e0c825d16d8eaf73fca23873363c0fb24ad62b8d558fc2522a5e9
+    - 27eb0b91fc29ca9f3c8a56c6c2d7db399f2413a06788de371cb385e7de2fd2d2
+    - b35f40d45b0dd3fa013031cb34d01b7facea2a8797a0e5f5753c637e5c57fa19
+  waiver_id: null
+- capability_id: execution.gpu_prediction
+  category: GPU
+  owner: deepzip-standalone
+  parity_class: REQUIRED_PARITY
+  upstream:
+    present: true
+    public_or_supported: true
+    platforms:
+    - linux-x86_64-cuda
+    evidence:
+    - path: ../../Source/deepzip/upstream/src/models.py
+      symbol_or_test: CuDNNGRU/CuDNNLSTM/Dense
+      lines_or_case: full_file
+  rewrite:
+    present: true
+    public_symbol: Model::predict
+    variant: native_cuda
+    platforms:
+    - linux-x86_64-cuda
+    build_target: deepzip
+    build_flags:
+    - DEEPZIP_WITH_CUDA=ON
+    - DEEPZIP_WITH_HDF5=ON
+  validation:
+    status: PASS
+    oracle: unmodified_locked_upstream
+    tests:
+    - validation/scalar_models.json
+    - validation/cuda_models.json
+    - validation/scalar_pipelines.json
+    - validation/cuda_pipelines.json
+    - validation/qualification.json
+    artifact_hashes:
+    - f6a6b932f11cfbdc2bf4c64c60d7cd25c05dca37db9007e38fcb309f808d0f99
+    - 8724ff5730f6d770f988a22d546b5bd9b1f576da5bdc4853a930666e24c48ca1
+    - 1894b782a22f908c7814fbc87059613c97869ab1f677f7ae1e325a08eea63658
+    - eb8af39caf4e0c825d16d8eaf73fca23873363c0fb24ad62b8d558fc2522a5e9
+    - 27eb0b91fc29ca9f3c8a56c6c2d7db399f2413a06788de371cb385e7de2fd2d2
+  waiver_id: null
+- capability_id: predictor.biGRU
+  category: LEARNED_MODEL
+  owner: deepzip-standalone
+  parity_class: REQUIRED_PARITY
+  upstream:
+    present: true
+    public_or_supported: true
+    platforms:
+    - linux-x86_64-cuda
+    evidence:
+    - path: ../../Source/deepzip/upstream/src/models.py
+      symbol_or_test: biGRU
+      lines_or_case: function
+  rewrite:
+    present: true
+    public_symbol: Model::predict
+    variant: canonical_scalar+native_cuda
+    platforms:
+    - linux-x86_64
+    - linux-x86_64-cuda
+    - linux-aarch64-scalar
+    build_target: deepzip
+    build_flags:
+    - DEEPZIP_WITH_CUDA=ON
+    - DEEPZIP_WITH_HDF5=ON
+  validation:
+    status: PASS
+    oracle: unmodified_locked_upstream
+    tests:
+    - validation/scalar_models.json
+    - validation/cuda_models.json
+    - validation/scalar_pipelines.json
+    - validation/cuda_pipelines.json
+    - validation/qualification.json
+    artifact_hashes:
+    - f6a6b932f11cfbdc2bf4c64c60d7cd25c05dca37db9007e38fcb309f808d0f99
+    - 8724ff5730f6d770f988a22d546b5bd9b1f576da5bdc4853a930666e24c48ca1
+    - 1894b782a22f908c7814fbc87059613c97869ab1f677f7ae1e325a08eea63658
+    - eb8af39caf4e0c825d16d8eaf73fca23873363c0fb24ad62b8d558fc2522a5e9
+    - 27eb0b91fc29ca9f3c8a56c6c2d7db399f2413a06788de371cb385e7de2fd2d2
+  rationale: Reachable documented source model.
+  waiver_id: null
+- capability_id: predictor.biGRU_big
+  category: LEARNED_MODEL
+  owner: deepzip-standalone
+  parity_class: REQUIRED_PARITY
+  upstream:
+    present: true
+    public_or_supported: true
+    platforms:
+    - linux-x86_64-cuda
+    evidence:
+    - path: ../../Source/deepzip/upstream/src/models.py
+      symbol_or_test: biGRU_big
+      lines_or_case: function
+  rewrite:
+    present: true
+    public_symbol: Model::predict
+    variant: canonical_scalar+native_cuda
+    platforms:
+    - linux-x86_64
+    - linux-x86_64-cuda
+    - linux-aarch64-scalar
+    build_target: deepzip
+    build_flags:
+    - DEEPZIP_WITH_CUDA=ON
+    - DEEPZIP_WITH_HDF5=ON
+  validation:
+    status: PASS
+    oracle: unmodified_locked_upstream
+    tests:
+    - validation/scalar_models.json
+    - validation/cuda_models.json
+    - validation/scalar_pipelines.json
+    - validation/cuda_pipelines.json
+    - validation/qualification.json
+    artifact_hashes:
+    - f6a6b932f11cfbdc2bf4c64c60d7cd25c05dca37db9007e38fcb309f808d0f99
+    - 8724ff5730f6d770f988a22d546b5bd9b1f576da5bdc4853a930666e24c48ca1
+    - 1894b782a22f908c7814fbc87059613c97869ab1f677f7ae1e325a08eea63658
+    - eb8af39caf4e0c825d16d8eaf73fca23873363c0fb24ad62b8d558fc2522a5e9
+    - 27eb0b91fc29ca9f3c8a56c6c2d7db399f2413a06788de371cb385e7de2fd2d2
+  rationale: Reachable documented source model.
+  waiver_id: null
+- capability_id: predictor.biGRU_16bit
+  category: LEARNED_MODEL
+  owner: deepzip-standalone
+  parity_class: REQUIRED_PARITY
+  upstream:
+    present: true
+    public_or_supported: true
+    platforms:
+    - linux-x86_64-cuda
+    evidence:
+    - path: ../../Source/deepzip/upstream/src/models.py
+      symbol_or_test: biGRU_16bit
+      lines_or_case: function
+  rewrite:
+    present: true
+    public_symbol: Model::predict
+    variant: canonical_scalar+native_cuda
+    platforms:
+    - linux-x86_64
+    - linux-x86_64-cuda
+    - linux-aarch64-scalar
+    build_target: deepzip
+    build_flags:
+    - DEEPZIP_WITH_CUDA=ON
+    - DEEPZIP_WITH_HDF5=ON
+  validation:
+    status: PASS
+    oracle: unmodified_locked_upstream
+    tests:
+    - validation/scalar_models.json
+    - validation/cuda_models.json
+    - validation/scalar_pipelines.json
+    - validation/cuda_pipelines.json
+    - validation/qualification.json
+    artifact_hashes:
+    - f6a6b932f11cfbdc2bf4c64c60d7cd25c05dca37db9007e38fcb309f808d0f99
+    - 8724ff5730f6d770f988a22d546b5bd9b1f576da5bdc4853a930666e24c48ca1
+    - 1894b782a22f908c7814fbc87059613c97869ab1f677f7ae1e325a08eea63658
+    - eb8af39caf4e0c825d16d8eaf73fca23873363c0fb24ad62b8d558fc2522a5e9
+    - 27eb0b91fc29ca9f3c8a56c6c2d7db399f2413a06788de371cb385e7de2fd2d2
+  rationale: Reachable documented source model.
+  waiver_id: null
+- capability_id: predictor.biLSTM
+  category: LEARNED_MODEL
+  owner: deepzip-standalone
+  parity_class: REQUIRED_PARITY
+  upstream:
+    present: true
+    public_or_supported: true
+    platforms:
+    - linux-x86_64-cuda
+    evidence:
+    - path: ../../Source/deepzip/upstream/src/models.py
+      symbol_or_test: biLSTM
+      lines_or_case: function
+  rewrite:
+    present: true
+    public_symbol: Model::predict
+    variant: canonical_scalar+native_cuda
+    platforms:
+    - linux-x86_64
+    - linux-x86_64-cuda
+    - linux-aarch64-scalar
+    build_target: deepzip
+    build_flags:
+    - DEEPZIP_WITH_CUDA=ON
+    - DEEPZIP_WITH_HDF5=ON
+  validation:
+    status: PASS
+    oracle: unmodified_locked_upstream
+    tests:
+    - validation/scalar_models.json
+    - validation/cuda_models.json
+    - validation/scalar_pipelines.json
+    - validation/cuda_pipelines.json
+    - validation/qualification.json
+    artifact_hashes:
+    - f6a6b932f11cfbdc2bf4c64c60d7cd25c05dca37db9007e38fcb309f808d0f99
+    - 8724ff5730f6d770f988a22d546b5bd9b1f576da5bdc4853a930666e24c48ca1
+    - 1894b782a22f908c7814fbc87059613c97869ab1f677f7ae1e325a08eea63658
+    - eb8af39caf4e0c825d16d8eaf73fca23873363c0fb24ad62b8d558fc2522a5e9
+    - 27eb0b91fc29ca9f3c8a56c6c2d7db399f2413a06788de371cb385e7de2fd2d2
+  rationale: Reachable documented source model.
+  waiver_id: null
+- capability_id: predictor.biLSTM_16bit
+  category: LEARNED_MODEL
+  owner: deepzip-standalone
+  parity_class: REQUIRED_PARITY
+  upstream:
+    present: true
+    public_or_supported: true
+    platforms:
+    - linux-x86_64-cuda
+    evidence:
+    - path: ../../Source/deepzip/upstream/src/models.py
+      symbol_or_test: biLSTM_16bit
+      lines_or_case: function
+  rewrite:
+    present: true
+    public_symbol: Model::predict
+    variant: canonical_scalar+native_cuda
+    platforms:
+    - linux-x86_64
+    - linux-x86_64-cuda
+    - linux-aarch64-scalar
+    build_target: deepzip
+    build_flags:
+    - DEEPZIP_WITH_CUDA=ON
+    - DEEPZIP_WITH_HDF5=ON
+  validation:
+    status: PASS
+    oracle: unmodified_locked_upstream
+    tests:
+    - validation/scalar_models.json
+    - validation/cuda_models.json
+    - validation/scalar_pipelines.json
+    - validation/cuda_pipelines.json
+    - validation/qualification.json
+    artifact_hashes:
+    - f6a6b932f11cfbdc2bf4c64c60d7cd25c05dca37db9007e38fcb309f808d0f99
+    - 8724ff5730f6d770f988a22d546b5bd9b1f576da5bdc4853a930666e24c48ca1
+    - 1894b782a22f908c7814fbc87059613c97869ab1f677f7ae1e325a08eea63658
+    - eb8af39caf4e0c825d16d8eaf73fca23873363c0fb24ad62b8d558fc2522a5e9
+    - 27eb0b91fc29ca9f3c8a56c6c2d7db399f2413a06788de371cb385e7de2fd2d2
+  rationale: Reachable documented source model.
+  waiver_id: null
+- capability_id: predictor.LSTM_multi
+  category: LEARNED_MODEL
+  owner: deepzip-standalone
+  parity_class: REQUIRED_PARITY
+  upstream:
+    present: true
+    public_or_supported: true
+    platforms:
+    - linux-x86_64-cuda
+    evidence:
+    - path: ../../Source/deepzip/upstream/src/models.py
+      symbol_or_test: LSTM_multi
+      lines_or_case: function
+  rewrite:
+    present: true
+    public_symbol: Model::predict
+    variant: canonical_scalar+native_cuda
+    platforms:
+    - linux-x86_64
+    - linux-x86_64-cuda
+    - linux-aarch64-scalar
+    build_target: deepzip
+    build_flags:
+    - DEEPZIP_WITH_CUDA=ON
+    - DEEPZIP_WITH_HDF5=ON
+  validation:
+    status: PASS
+    oracle: unmodified_locked_upstream
+    tests:
+    - validation/scalar_models.json
+    - validation/cuda_models.json
+    - validation/scalar_pipelines.json
+    - validation/cuda_pipelines.json
+    - validation/qualification.json
+    artifact_hashes:
+    - f6a6b932f11cfbdc2bf4c64c60d7cd25c05dca37db9007e38fcb309f808d0f99
+    - 8724ff5730f6d770f988a22d546b5bd9b1f576da5bdc4853a930666e24c48ca1
+    - 1894b782a22f908c7814fbc87059613c97869ab1f677f7ae1e325a08eea63658
+    - eb8af39caf4e0c825d16d8eaf73fca23873363c0fb24ad62b8d558fc2522a5e9
+    - 27eb0b91fc29ca9f3c8a56c6c2d7db399f2413a06788de371cb385e7de2fd2d2
+  rationale: Reachable documented source model.
+  waiver_id: null
+- capability_id: predictor.LSTM_multi_big
+  category: LEARNED_MODEL
+  owner: deepzip-standalone
+  parity_class: REQUIRED_PARITY
+  upstream:
+    present: true
+    public_or_supported: true
+    platforms:
+    - linux-x86_64-cuda
+    evidence:
+    - path: ../../Source/deepzip/upstream/src/models.py
+      symbol_or_test: LSTM_multi_big
+      lines_or_case: function
+  rewrite:
+    present: true
+    public_symbol: Model::predict
+    variant: canonical_scalar+native_cuda
+    platforms:
+    - linux-x86_64
+    - linux-x86_64-cuda
+    - linux-aarch64-scalar
+    build_target: deepzip
+    build_flags:
+    - DEEPZIP_WITH_CUDA=ON
+    - DEEPZIP_WITH_HDF5=ON
+  validation:
+    status: PASS
+    oracle: unmodified_locked_upstream
+    tests:
+    - validation/scalar_models.json
+    - validation/cuda_models.json
+    - validation/scalar_pipelines.json
+    - validation/cuda_pipelines.json
+    - validation/qualification.json
+    artifact_hashes:
+    - f6a6b932f11cfbdc2bf4c64c60d7cd25c05dca37db9007e38fcb309f808d0f99
+    - 8724ff5730f6d770f988a22d546b5bd9b1f576da5bdc4853a930666e24c48ca1
+    - 1894b782a22f908c7814fbc87059613c97869ab1f677f7ae1e325a08eea63658
+    - eb8af39caf4e0c825d16d8eaf73fca23873363c0fb24ad62b8d558fc2522a5e9
+    - 27eb0b91fc29ca9f3c8a56c6c2d7db399f2413a06788de371cb385e7de2fd2d2
+  rationale: Reachable documented source model.
+  waiver_id: null
+- capability_id: predictor.LSTM_multi_bn
+  category: LEARNED_MODEL
+  owner: deepzip-standalone
+  parity_class: REQUIRED_PARITY
+  upstream:
+    present: true
+    public_or_supported: true
+    platforms:
+    - linux-x86_64-cuda
+    evidence:
+    - path: ../../Source/deepzip/upstream/src/models.py
+      symbol_or_test: LSTM_multi_bn
+      lines_or_case: function
+  rewrite:
+    present: true
+    public_symbol: Model::predict
+    variant: canonical_scalar+native_cuda
+    platforms:
+    - linux-x86_64
+    - linux-x86_64-cuda
+    - linux-aarch64-scalar
+    build_target: deepzip
+    build_flags:
+    - DEEPZIP_WITH_CUDA=ON
+    - DEEPZIP_WITH_HDF5=ON
+  validation:
+    status: PASS
+    oracle: unmodified_locked_upstream
+    tests:
+    - validation/scalar_models.json
+    - validation/cuda_models.json
+    - validation/scalar_pipelines.json
+    - validation/cuda_pipelines.json
+    - validation/qualification.json
+    artifact_hashes:
+    - f6a6b932f11cfbdc2bf4c64c60d7cd25c05dca37db9007e38fcb309f808d0f99
+    - 8724ff5730f6d770f988a22d546b5bd9b1f576da5bdc4853a930666e24c48ca1
+    - 1894b782a22f908c7814fbc87059613c97869ab1f677f7ae1e325a08eea63658
+    - eb8af39caf4e0c825d16d8eaf73fca23873363c0fb24ad62b8d558fc2522a5e9
+    - 27eb0b91fc29ca9f3c8a56c6c2d7db399f2413a06788de371cb385e7de2fd2d2
+  rationale: Reachable documented source model.
+  waiver_id: null
+- capability_id: predictor.LSTM_multi_16bit
+  category: LEARNED_MODEL
+  owner: deepzip-standalone
+  parity_class: REQUIRED_PARITY
+  upstream:
+    present: true
+    public_or_supported: true
+    platforms:
+    - linux-x86_64-cuda
+    evidence:
+    - path: ../../Source/deepzip/upstream/src/models.py
+      symbol_or_test: LSTM_multi_16bit
+      lines_or_case: function
+  rewrite:
+    present: true
+    public_symbol: Model::predict
+    variant: canonical_scalar+native_cuda
+    platforms:
+    - linux-x86_64
+    - linux-x86_64-cuda
+    - linux-aarch64-scalar
+    build_target: deepzip
+    build_flags:
+    - DEEPZIP_WITH_CUDA=ON
+    - DEEPZIP_WITH_HDF5=ON
+  validation:
+    status: PASS
+    oracle: unmodified_locked_upstream
+    tests:
+    - validation/scalar_models.json
+    - validation/cuda_models.json
+    - validation/scalar_pipelines.json
+    - validation/cuda_pipelines.json
+    - validation/qualification.json
+    artifact_hashes:
+    - f6a6b932f11cfbdc2bf4c64c60d7cd25c05dca37db9007e38fcb309f808d0f99
+    - 8724ff5730f6d770f988a22d546b5bd9b1f576da5bdc4853a930666e24c48ca1
+    - 1894b782a22f908c7814fbc87059613c97869ab1f677f7ae1e325a08eea63658
+    - eb8af39caf4e0c825d16d8eaf73fca23873363c0fb24ad62b8d558fc2522a5e9
+    - 27eb0b91fc29ca9f3c8a56c6c2d7db399f2413a06788de371cb385e7de2fd2d2
+  rationale: Reachable documented source model.
+  waiver_id: null
+- capability_id: predictor.LSTM_multi_selu
+  category: LEARNED_MODEL
+  owner: deepzip-standalone
+  parity_class: NOT_APPLICABLE
+  upstream:
+    present: true
+    public_or_supported: false
+    platforms:
+    - linux-x86_64-cuda
+    evidence:
+    - path: ../../Source/deepzip/upstream/src/models.py
+      symbol_or_test: LSTM_multi_selu
+      lines_or_case: function
+  rewrite:
+    present: false
+    public_symbol: null
+  validation:
+    status: PASS
+    oracle: ../../Source/deepzip/golden/locked/LSTM_multi_selu
+    planned_tests: []
+  rationale: 'NameError: name ''init'' is not defined'
+  waiver_id: null
+- capability_id: predictor.LSTM_multi_selu_16bit
+  category: LEARNED_MODEL
+  owner: deepzip-standalone
+  parity_class: REQUIRED_PARITY
+  upstream:
+    present: true
+    public_or_supported: true
+    platforms:
+    - linux-x86_64-cuda
+    evidence:
+    - path: ../../Source/deepzip/upstream/src/models.py
+      symbol_or_test: LSTM_multi_selu_16bit
+      lines_or_case: function
+  rewrite:
+    present: true
+    public_symbol: Model::predict
+    variant: canonical_scalar+native_cuda
+    platforms:
+    - linux-x86_64
+    - linux-x86_64-cuda
+    - linux-aarch64-scalar
+    build_target: deepzip
+    build_flags:
+    - DEEPZIP_WITH_CUDA=ON
+    - DEEPZIP_WITH_HDF5=ON
+  validation:
+    status: PASS
+    oracle: unmodified_locked_upstream
+    tests:
+    - validation/scalar_models.json
+    - validation/cuda_models.json
+    - validation/scalar_pipelines.json
+    - validation/cuda_pipelines.json
+    - validation/qualification.json
+    artifact_hashes:
+    - f6a6b932f11cfbdc2bf4c64c60d7cd25c05dca37db9007e38fcb309f808d0f99
+    - 8724ff5730f6d770f988a22d546b5bd9b1f576da5bdc4853a930666e24c48ca1
+    - 1894b782a22f908c7814fbc87059613c97869ab1f677f7ae1e325a08eea63658
+    - eb8af39caf4e0c825d16d8eaf73fca23873363c0fb24ad62b8d558fc2522a5e9
+    - 27eb0b91fc29ca9f3c8a56c6c2d7db399f2413a06788de371cb385e7de2fd2d2
+  rationale: Reachable documented source model.
+  waiver_id: null
+- capability_id: predictor.GRU_multi
+  category: LEARNED_MODEL
+  owner: deepzip-standalone
+  parity_class: REQUIRED_PARITY
+  upstream:
+    present: true
+    public_or_supported: true
+    platforms:
+    - linux-x86_64-cuda
+    evidence:
+    - path: ../../Source/deepzip/upstream/src/models.py
+      symbol_or_test: GRU_multi
+      lines_or_case: function
+  rewrite:
+    present: true
+    public_symbol: Model::predict
+    variant: canonical_scalar+native_cuda
+    platforms:
+    - linux-x86_64
+    - linux-x86_64-cuda
+    - linux-aarch64-scalar
+    build_target: deepzip
+    build_flags:
+    - DEEPZIP_WITH_CUDA=ON
+    - DEEPZIP_WITH_HDF5=ON
+  validation:
+    status: PASS
+    oracle: unmodified_locked_upstream
+    tests:
+    - validation/scalar_models.json
+    - validation/cuda_models.json
+    - validation/scalar_pipelines.json
+    - validation/cuda_pipelines.json
+    - validation/qualification.json
+    artifact_hashes:
+    - f6a6b932f11cfbdc2bf4c64c60d7cd25c05dca37db9007e38fcb309f808d0f99
+    - 8724ff5730f6d770f988a22d546b5bd9b1f576da5bdc4853a930666e24c48ca1
+    - 1894b782a22f908c7814fbc87059613c97869ab1f677f7ae1e325a08eea63658
+    - eb8af39caf4e0c825d16d8eaf73fca23873363c0fb24ad62b8d558fc2522a5e9
+    - 27eb0b91fc29ca9f3c8a56c6c2d7db399f2413a06788de371cb385e7de2fd2d2
+  rationale: Reachable documented source model.
+  waiver_id: null
+- capability_id: predictor.GRU_multi_big
+  category: LEARNED_MODEL
+  owner: deepzip-standalone
+  parity_class: REQUIRED_PARITY
+  upstream:
+    present: true
+    public_or_supported: true
+    platforms:
+    - linux-x86_64-cuda
+    evidence:
+    - path: ../../Source/deepzip/upstream/src/models.py
+      symbol_or_test: GRU_multi_big
+      lines_or_case: function
+  rewrite:
+    present: true
+    public_symbol: Model::predict
+    variant: canonical_scalar+native_cuda
+    platforms:
+    - linux-x86_64
+    - linux-x86_64-cuda
+    - linux-aarch64-scalar
+    build_target: deepzip
+    build_flags:
+    - DEEPZIP_WITH_CUDA=ON
+    - DEEPZIP_WITH_HDF5=ON
+  validation:
+    status: PASS
+    oracle: unmodified_locked_upstream
+    tests:
+    - validation/scalar_models.json
+    - validation/cuda_models.json
+    - validation/scalar_pipelines.json
+    - validation/cuda_pipelines.json
+    - validation/qualification.json
+    artifact_hashes:
+    - f6a6b932f11cfbdc2bf4c64c60d7cd25c05dca37db9007e38fcb309f808d0f99
+    - 8724ff5730f6d770f988a22d546b5bd9b1f576da5bdc4853a930666e24c48ca1
+    - 1894b782a22f908c7814fbc87059613c97869ab1f677f7ae1e325a08eea63658
+    - eb8af39caf4e0c825d16d8eaf73fca23873363c0fb24ad62b8d558fc2522a5e9
+    - 27eb0b91fc29ca9f3c8a56c6c2d7db399f2413a06788de371cb385e7de2fd2d2
+  rationale: Reachable documented source model.
+  waiver_id: null
+- capability_id: predictor.GRU_multi_16bit
+  category: LEARNED_MODEL
+  owner: deepzip-standalone
+  parity_class: REQUIRED_PARITY
+  upstream:
+    present: true
+    public_or_supported: true
+    platforms:
+    - linux-x86_64-cuda
+    evidence:
+    - path: ../../Source/deepzip/upstream/src/models.py
+      symbol_or_test: GRU_multi_16bit
+      lines_or_case: function
+  rewrite:
+    present: true
+    public_symbol: Model::predict
+    variant: canonical_scalar+native_cuda
+    platforms:
+    - linux-x86_64
+    - linux-x86_64-cuda
+    - linux-aarch64-scalar
+    build_target: deepzip
+    build_flags:
+    - DEEPZIP_WITH_CUDA=ON
+    - DEEPZIP_WITH_HDF5=ON
+  validation:
+    status: PASS
+    oracle: unmodified_locked_upstream
+    tests:
+    - validation/scalar_models.json
+    - validation/cuda_models.json
+    - validation/scalar_pipelines.json
+    - validation/cuda_pipelines.json
+    - validation/qualification.json
+    artifact_hashes:
+    - f6a6b932f11cfbdc2bf4c64c60d7cd25c05dca37db9007e38fcb309f808d0f99
+    - 8724ff5730f6d770f988a22d546b5bd9b1f576da5bdc4853a930666e24c48ca1
+    - 1894b782a22f908c7814fbc87059613c97869ab1f677f7ae1e325a08eea63658
+    - eb8af39caf4e0c825d16d8eaf73fca23873363c0fb24ad62b8d558fc2522a5e9
+    - 27eb0b91fc29ca9f3c8a56c6c2d7db399f2413a06788de371cb385e7de2fd2d2
+  rationale: Reachable documented source model.
+  waiver_id: null
+- capability_id: predictor.FC_4layer_16bit
+  category: LEARNED_MODEL
+  owner: deepzip-standalone
+  parity_class: REQUIRED_PARITY
+  upstream:
+    present: true
+    public_or_supported: true
+    platforms:
+    - linux-x86_64-cuda
+    evidence:
+    - path: ../../Source/deepzip/upstream/src/models.py
+      symbol_or_test: FC_4layer_16bit
+      lines_or_case: function
+  rewrite:
+    present: true
+    public_symbol: Model::predict
+    variant: canonical_scalar+native_cuda
+    platforms:
+    - linux-x86_64
+    - linux-x86_64-cuda
+    - linux-aarch64-scalar
+    build_target: deepzip
+    build_flags:
+    - DEEPZIP_WITH_CUDA=ON
+    - DEEPZIP_WITH_HDF5=ON
+  validation:
+    status: PASS
+    oracle: unmodified_locked_upstream
+    tests:
+    - validation/scalar_models.json
+    - validation/cuda_models.json
+    - validation/scalar_pipelines.json
+    - validation/cuda_pipelines.json
+    - validation/qualification.json
+    artifact_hashes:
+    - f6a6b932f11cfbdc2bf4c64c60d7cd25c05dca37db9007e38fcb309f808d0f99
+    - 8724ff5730f6d770f988a22d546b5bd9b1f576da5bdc4853a930666e24c48ca1
+    - 1894b782a22f908c7814fbc87059613c97869ab1f677f7ae1e325a08eea63658
+    - eb8af39caf4e0c825d16d8eaf73fca23873363c0fb24ad62b8d558fc2522a5e9
+    - 27eb0b91fc29ca9f3c8a56c6c2d7db399f2413a06788de371cb385e7de2fd2d2
+  rationale: Reachable documented source model.
+  waiver_id: null
+- capability_id: predictor.FC_4layer
+  category: LEARNED_MODEL
+  owner: deepzip-standalone
+  parity_class: REQUIRED_PARITY
+  upstream:
+    present: true
+    public_or_supported: true
+    platforms:
+    - linux-x86_64-cuda
+    evidence:
+    - path: ../../Source/deepzip/upstream/src/models.py
+      symbol_or_test: FC_4layer
+      lines_or_case: function
+  rewrite:
+    present: true
+    public_symbol: Model::predict
+    variant: canonical_scalar+native_cuda
+    platforms:
+    - linux-x86_64
+    - linux-x86_64-cuda
+    - linux-aarch64-scalar
+    build_target: deepzip
+    build_flags:
+    - DEEPZIP_WITH_CUDA=ON
+    - DEEPZIP_WITH_HDF5=ON
+  validation:
+    status: PASS
+    oracle: unmodified_locked_upstream
+    tests:
+    - validation/scalar_models.json
+    - validation/cuda_models.json
+    - validation/scalar_pipelines.json
+    - validation/cuda_pipelines.json
+    - validation/qualification.json
+    artifact_hashes:
+    - f6a6b932f11cfbdc2bf4c64c60d7cd25c05dca37db9007e38fcb309f808d0f99
+    - 8724ff5730f6d770f988a22d546b5bd9b1f576da5bdc4853a930666e24c48ca1
+    - 1894b782a22f908c7814fbc87059613c97869ab1f677f7ae1e325a08eea63658
+    - eb8af39caf4e0c825d16d8eaf73fca23873363c0fb24ad62b8d558fc2522a5e9
+    - 27eb0b91fc29ca9f3c8a56c6c2d7db399f2413a06788de371cb385e7de2fd2d2
+  rationale: Reachable documented source model.
+  waiver_id: null
+- capability_id: predictor.FC_4layer_big
+  category: LEARNED_MODEL
+  owner: deepzip-standalone
+  parity_class: REQUIRED_PARITY
+  upstream:
+    present: true
+    public_or_supported: true
+    platforms:
+    - linux-x86_64-cuda
+    evidence:
+    - path: ../../Source/deepzip/upstream/src/models.py
+      symbol_or_test: FC_4layer_big
+      lines_or_case: function
+  rewrite:
+    present: true
+    public_symbol: Model::predict
+    variant: canonical_scalar+native_cuda
+    platforms:
+    - linux-x86_64
+    - linux-x86_64-cuda
+    - linux-aarch64-scalar
+    build_target: deepzip
+    build_flags:
+    - DEEPZIP_WITH_CUDA=ON
+    - DEEPZIP_WITH_HDF5=ON
+  validation:
+    status: PASS
+    oracle: unmodified_locked_upstream
+    tests:
+    - validation/scalar_models.json
+    - validation/cuda_models.json
+    - validation/scalar_pipelines.json
+    - validation/cuda_pipelines.json
+    - validation/qualification.json
+    artifact_hashes:
+    - f6a6b932f11cfbdc2bf4c64c60d7cd25c05dca37db9007e38fcb309f808d0f99
+    - 8724ff5730f6d770f988a22d546b5bd9b1f576da5bdc4853a930666e24c48ca1
+    - 1894b782a22f908c7814fbc87059613c97869ab1f677f7ae1e325a08eea63658
+    - eb8af39caf4e0c825d16d8eaf73fca23873363c0fb24ad62b8d558fc2522a5e9
+    - 27eb0b91fc29ca9f3c8a56c6c2d7db399f2413a06788de371cb385e7de2fd2d2
+  rationale: Reachable documented source model.
+  waiver_id: null
+- capability_id: predictor.FC_16bit
+  category: LEARNED_MODEL
+  owner: deepzip-standalone
+  parity_class: NOT_APPLICABLE
+  upstream:
+    present: true
+    public_or_supported: false
+    platforms:
+    - linux-x86_64-cuda
+    evidence:
+    - path: ../../Source/deepzip/upstream/src/models.py
+      symbol_or_test: FC_16bit
+      lines_or_case: function
+  rewrite:
+    present: false
+    public_symbol: null
+  validation:
+    status: PASS
+    oracle: ../../Source/deepzip/golden/locked/FC_16bit
+    planned_tests: []
+  rationale: 'NameError: name ''k'' is not defined'
+  waiver_id: null
+- capability_id: predictor.FC
+  category: LEARNED_MODEL
+  owner: deepzip-standalone
+  parity_class: REQUIRED_PARITY
+  upstream:
+    present: true
+    public_or_supported: true
+    platforms:
+    - linux-x86_64-cuda
+    evidence:
+    - path: ../../Source/deepzip/upstream/src/models.py
+      symbol_or_test: FC
+      lines_or_case: function
+  rewrite:
+    present: true
+    public_symbol: Model::predict
+    variant: canonical_scalar+native_cuda
+    platforms:
+    - linux-x86_64
+    - linux-x86_64-cuda
+    - linux-aarch64-scalar
+    build_target: deepzip
+    build_flags:
+    - DEEPZIP_WITH_CUDA=ON
+    - DEEPZIP_WITH_HDF5=ON
+  validation:
+    status: PASS
+    oracle: unmodified_locked_upstream
+    tests:
+    - validation/scalar_models.json
+    - validation/cuda_models.json
+    - validation/scalar_pipelines.json
+    - validation/cuda_pipelines.json
+    - validation/qualification.json
+    artifact_hashes:
+    - f6a6b932f11cfbdc2bf4c64c60d7cd25c05dca37db9007e38fcb309f808d0f99
+    - 8724ff5730f6d770f988a22d546b5bd9b1f576da5bdc4853a930666e24c48ca1
+    - 1894b782a22f908c7814fbc87059613c97869ab1f677f7ae1e325a08eea63658
+    - eb8af39caf4e0c825d16d8eaf73fca23873363c0fb24ad62b8d558fc2522a5e9
+    - 27eb0b91fc29ca9f3c8a56c6c2d7db399f2413a06788de371cb385e7de2fd2d2
+  rationale: Reachable documented source model.
+  waiver_id: null
+- capability_id: training.checkpoint_authoring
+  category: MODEL_TRAINING
+  owner: external-model-authoring
+  parity_class: NOT_APPLICABLE
+  upstream:
+    present: true
+    public_or_supported: true
+    evidence:
+    - path: ../../Source/deepzip/upstream/src/trainer.py
+      symbol_or_test: fit_model
+      lines_or_case: full_file
+  rationale: External training is outside compression/decompression API; all inference
+    architectures remain required.
+  rewrite:
+    present: false
+  validation:
+    status: PASS
+  waiver_id: null

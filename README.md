@@ -33,6 +33,14 @@ accounting, and five-layer evidence are recorded under `registry/onboarding`.
 
 ## Environment
 
+Completed C++ rewrites are integrated through the same five-layer runner. The new
+contracts include approximate symbolic/sparse/audio pipelines, timestamp encoding,
+joint Prometheus chunks/histograms, and neural byte codecs. See
+[the integration profiles and reproduction commands](adapters/completed_rewrites/README.md)
+and [the integration audit](docs/completed_rewrite_integration_review.md).
+Each profile has explicit input/runtime limits; qualification is scoped to those
+registered profiles. Synthetic acceptance fixtures do not establish corpus performance.
+
 Use the supplied environment:
 
 ```bash
@@ -238,6 +246,29 @@ This measures complete DEFLATE (dictionary matching plus Huffman), not pure LZ77
 Selecting both names generates one canonical task, not duplicate ranking entries.
 `codecs list` discloses mappings separately; runs freeze codec_alias_snapshot.json.
 See [LZ77 mapping self-check](docs/lz77_self_check.md).
+
+All registered aliases are usable in experiment `algorithms` and in `build_codec.py`:
+
+| Selectable alias | Implementation | Track |
+|---|---|---|
+| `lz77` | `deflate-zlib` | VALUE / TIMESTAMP |
+| `gorilla` | `prometheus-xor-chunk` | SYSTEM |
+| `delta-of-delta` | `prometheus-xor-chunk` | SYSTEM |
+| `second-order-difference` | `prometheus-xor-chunk` | SYSTEM |
+
+For example, use `algorithms = ["gorilla"]` with `tracks = ["SYSTEM"]` in the
+Prometheus XOR experiment configuration. `delta-of-delta` and `second-order-difference`
+can replace `gorilla` in that same configuration. The frozen configuration retains
+the selected alias, and `codec_alias_snapshot.json` records its mapping. Execution,
+build artifacts and statistics use the canonical codec identity. Selecting several
+aliases of the same implementation produces one task per canonical configuration.
+
+```bash
+python tools/build_codec.py lz77 --profile all
+python tools/build_codec.py gorilla --profile all
+python tools/build_codec.py delta-of-delta --profile all
+python tools/build_codec.py second-order-difference --profile all
+```
 
 DEFLATE, LZ4 Frame, Zstd Frame, Brotli, bzip2 and xz each have separately keyed native
 streaming workload profiles. They keep one

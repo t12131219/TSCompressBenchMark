@@ -1,0 +1,992 @@
+{
+  "overall_result": "FULL_PARITY",
+  "capabilities": [
+    {
+      "capability_id": "encode.stream",
+      "parity_class": "REQUIRED_PARITY",
+      "upstream": {
+        "present": true,
+        "public_or_supported": true,
+        "semantic_contract": "NewTimeEncoder; Write; Bytes; Reset",
+        "evidence": [
+          "tsdb/engine/tsm1/timestamp.go",
+          "tsdb/engine/tsm1/batch_timestamp.go",
+          "pkg/encoding/simple8b/encoding.go"
+        ]
+      },
+      "rewrite": {
+        "present": true,
+        "public_symbol": "Encoder::append/finish/finalize; Profile::Stream",
+        "variant": "scalar_stream_and_batch",
+        "build_target": "tsm_timestamp",
+        "platforms": [
+          "Linux x86_64 GCC11/Clang14",
+          "AArch64 musl QEMU"
+        ]
+      },
+      "validation": {
+        "status": "PASS",
+        "witnesses": [
+          "45 locked source cases +256 seeded properties, Stream profile"
+        ],
+        "tests": [
+          "validation/release-cross-decode/report.json",
+          "validation/clang-cross-decode/report.json",
+          "validation/arm64-cross-decode/report.json",
+          "validation/qualification/native.json",
+          "validation/qualification/safety.json",
+          "validation/qualification/tsan.json"
+        ],
+        "artifacts": [
+          {
+            "path": "validation/release-cross-decode/report.json",
+            "sha256": "9524f38d0aa9330daa6a88334e850d1eadac84530f82fe684b207e45afb64fa2"
+          },
+          {
+            "path": "validation/clang-cross-decode/report.json",
+            "sha256": "97f496641dce091aebdf959c3e38d7306393887e2d499247208271f71bc31dd1"
+          },
+          {
+            "path": "validation/arm64-cross-decode/report.json",
+            "sha256": "2bf1a3b05f121d001f281fd9b818c7428eaadc480fc4f56bd9ec39b80ff4a652"
+          },
+          {
+            "path": "validation/qualification/native.json",
+            "sha256": "879697f1b2fec0d5b24da0d4a38476f22bda89f6792e210827a280d752574823"
+          },
+          {
+            "path": "validation/qualification/safety.json",
+            "sha256": "008a785e634854966d834d2656dc209bb0165d1c1a83f0209163fa1f131840ac"
+          },
+          {
+            "path": "validation/qualification/tsan.json",
+            "sha256": "79360c74b7ec315b027e94969de62174408af0692dfc2a73d748732e51925b2f"
+          }
+        ]
+      },
+      "waiver_id": null
+    },
+    {
+      "capability_id": "encode.batch",
+      "parity_class": "REQUIRED_PARITY",
+      "upstream": {
+        "present": true,
+        "public_or_supported": true,
+        "semantic_contract": "TimeArrayEncodeAll",
+        "evidence": [
+          "tsdb/engine/tsm1/timestamp.go",
+          "tsdb/engine/tsm1/batch_timestamp.go",
+          "pkg/encoding/simple8b/encoding.go"
+        ]
+      },
+      "rewrite": {
+        "present": true,
+        "public_symbol": "encode/encode_to; Profile::Batch",
+        "variant": "scalar_stream_and_batch",
+        "build_target": "tsm_timestamp",
+        "platforms": [
+          "Linux x86_64 GCC11/Clang14",
+          "AArch64 musl QEMU"
+        ]
+      },
+      "validation": {
+        "status": "PASS",
+        "witnesses": [
+          "45 locked source cases +256 seeded properties, Batch profile"
+        ],
+        "tests": [
+          "validation/release-cross-decode/report.json",
+          "validation/clang-cross-decode/report.json",
+          "validation/arm64-cross-decode/report.json",
+          "validation/qualification/native.json",
+          "validation/qualification/safety.json",
+          "validation/qualification/tsan.json"
+        ],
+        "artifacts": [
+          {
+            "path": "validation/release-cross-decode/report.json",
+            "sha256": "9524f38d0aa9330daa6a88334e850d1eadac84530f82fe684b207e45afb64fa2"
+          },
+          {
+            "path": "validation/clang-cross-decode/report.json",
+            "sha256": "97f496641dce091aebdf959c3e38d7306393887e2d499247208271f71bc31dd1"
+          },
+          {
+            "path": "validation/arm64-cross-decode/report.json",
+            "sha256": "2bf1a3b05f121d001f281fd9b818c7428eaadc480fc4f56bd9ec39b80ff4a652"
+          },
+          {
+            "path": "validation/qualification/native.json",
+            "sha256": "879697f1b2fec0d5b24da0d4a38476f22bda89f6792e210827a280d752574823"
+          },
+          {
+            "path": "validation/qualification/safety.json",
+            "sha256": "008a785e634854966d834d2656dc209bb0165d1c1a83f0209163fa1f131840ac"
+          },
+          {
+            "path": "validation/qualification/tsan.json",
+            "sha256": "79360c74b7ec315b027e94969de62174408af0692dfc2a73d748732e51925b2f"
+          }
+        ]
+      },
+      "waiver_id": null
+    },
+    {
+      "capability_id": "select.adaptive",
+      "parity_class": "REQUIRED_PARITY",
+      "upstream": {
+        "present": true,
+        "public_or_supported": true,
+        "semantic_contract": "RLE before raw maximum check before scaled Simple8b",
+        "evidence": [
+          "tsdb/engine/tsm1/timestamp.go",
+          "tsdb/engine/tsm1/batch_timestamp.go",
+          "pkg/encoding/simple8b/encoding.go"
+        ]
+      },
+      "rewrite": {
+        "present": true,
+        "public_symbol": "encode; Cursor::reset/next",
+        "variant": "scalar_stream_and_batch",
+        "build_target": "tsm_timestamp",
+        "platforms": [
+          "Linux x86_64 GCC11/Clang14",
+          "AArch64 musl QEMU"
+        ]
+      },
+      "validation": {
+        "status": "PASS",
+        "witnesses": [
+          "source vectors raw-pre-scaling/rle-large-delta/duplicates/max-simple/too-large-simple"
+        ],
+        "tests": [
+          "validation/release-cross-decode/report.json",
+          "validation/clang-cross-decode/report.json",
+          "validation/arm64-cross-decode/report.json",
+          "validation/qualification/native.json",
+          "validation/qualification/safety.json",
+          "validation/qualification/tsan.json"
+        ],
+        "artifacts": [
+          {
+            "path": "validation/release-cross-decode/report.json",
+            "sha256": "9524f38d0aa9330daa6a88334e850d1eadac84530f82fe684b207e45afb64fa2"
+          },
+          {
+            "path": "validation/clang-cross-decode/report.json",
+            "sha256": "97f496641dce091aebdf959c3e38d7306393887e2d499247208271f71bc31dd1"
+          },
+          {
+            "path": "validation/arm64-cross-decode/report.json",
+            "sha256": "2bf1a3b05f121d001f281fd9b818c7428eaadc480fc4f56bd9ec39b80ff4a652"
+          },
+          {
+            "path": "validation/qualification/native.json",
+            "sha256": "879697f1b2fec0d5b24da0d4a38476f22bda89f6792e210827a280d752574823"
+          },
+          {
+            "path": "validation/qualification/safety.json",
+            "sha256": "008a785e634854966d834d2656dc209bb0165d1c1a83f0209163fa1f131840ac"
+          },
+          {
+            "path": "validation/qualification/tsan.json",
+            "sha256": "79360c74b7ec315b027e94969de62174408af0692dfc2a73d748732e51925b2f"
+          }
+        ]
+      },
+      "waiver_id": null
+    },
+    {
+      "capability_id": "preprocess.delta_modulo",
+      "parity_class": "REQUIRED_PARITY",
+      "upstream": {
+        "present": true,
+        "public_or_supported": true,
+        "semantic_contract": "uint64 difference/prefix sum",
+        "evidence": [
+          "tsdb/engine/tsm1/timestamp.go",
+          "tsdb/engine/tsm1/batch_timestamp.go",
+          "pkg/encoding/simple8b/encoding.go"
+        ]
+      },
+      "rewrite": {
+        "present": true,
+        "public_symbol": "encode; Cursor::reset/next",
+        "variant": "scalar_stream_and_batch",
+        "build_target": "tsm_timestamp",
+        "platforms": [
+          "Linux x86_64 GCC11/Clang14",
+          "AArch64 musl QEMU"
+        ]
+      },
+      "validation": {
+        "status": "PASS",
+        "witnesses": [
+          "signed-wrap/raw-reverse/rle-large-delta + random uint64 deltas"
+        ],
+        "tests": [
+          "validation/release-cross-decode/report.json",
+          "validation/clang-cross-decode/report.json",
+          "validation/arm64-cross-decode/report.json",
+          "validation/qualification/native.json",
+          "validation/qualification/safety.json",
+          "validation/qualification/tsan.json"
+        ],
+        "artifacts": [
+          {
+            "path": "validation/release-cross-decode/report.json",
+            "sha256": "9524f38d0aa9330daa6a88334e850d1eadac84530f82fe684b207e45afb64fa2"
+          },
+          {
+            "path": "validation/clang-cross-decode/report.json",
+            "sha256": "97f496641dce091aebdf959c3e38d7306393887e2d499247208271f71bc31dd1"
+          },
+          {
+            "path": "validation/arm64-cross-decode/report.json",
+            "sha256": "2bf1a3b05f121d001f281fd9b818c7428eaadc480fc4f56bd9ec39b80ff4a652"
+          },
+          {
+            "path": "validation/qualification/native.json",
+            "sha256": "879697f1b2fec0d5b24da0d4a38476f22bda89f6792e210827a280d752574823"
+          },
+          {
+            "path": "validation/qualification/safety.json",
+            "sha256": "008a785e634854966d834d2656dc209bb0165d1c1a83f0209163fa1f131840ac"
+          },
+          {
+            "path": "validation/qualification/tsan.json",
+            "sha256": "79360c74b7ec315b027e94969de62174408af0692dfc2a73d748732e51925b2f"
+          }
+        ]
+      },
+      "waiver_id": null
+    },
+    {
+      "capability_id": "preprocess.decimal_scale",
+      "parity_class": "REQUIRED_PARITY",
+      "upstream": {
+        "present": true,
+        "public_or_supported": true,
+        "semantic_contract": "largest shared power10 <=10^12",
+        "evidence": [
+          "tsdb/engine/tsm1/timestamp.go",
+          "tsdb/engine/tsm1/batch_timestamp.go",
+          "pkg/encoding/simple8b/encoding.go"
+        ]
+      },
+      "rewrite": {
+        "present": true,
+        "public_symbol": "encode; Cursor::reset/next",
+        "variant": "scalar_stream_and_batch",
+        "build_target": "tsm_timestamp",
+        "platforms": [
+          "Linux x86_64 GCC11/Clang14",
+          "AArch64 musl QEMU"
+        ]
+      },
+      "validation": {
+        "status": "PASS",
+        "witnesses": [
+          "scale-0..12 + source encoder singleton exponent12"
+        ],
+        "tests": [
+          "validation/release-cross-decode/report.json",
+          "validation/clang-cross-decode/report.json",
+          "validation/arm64-cross-decode/report.json",
+          "validation/qualification/native.json",
+          "validation/qualification/safety.json",
+          "validation/qualification/tsan.json"
+        ],
+        "artifacts": [
+          {
+            "path": "validation/release-cross-decode/report.json",
+            "sha256": "9524f38d0aa9330daa6a88334e850d1eadac84530f82fe684b207e45afb64fa2"
+          },
+          {
+            "path": "validation/clang-cross-decode/report.json",
+            "sha256": "97f496641dce091aebdf959c3e38d7306393887e2d499247208271f71bc31dd1"
+          },
+          {
+            "path": "validation/arm64-cross-decode/report.json",
+            "sha256": "2bf1a3b05f121d001f281fd9b818c7428eaadc480fc4f56bd9ec39b80ff4a652"
+          },
+          {
+            "path": "validation/qualification/native.json",
+            "sha256": "879697f1b2fec0d5b24da0d4a38476f22bda89f6792e210827a280d752574823"
+          },
+          {
+            "path": "validation/qualification/safety.json",
+            "sha256": "008a785e634854966d834d2656dc209bb0165d1c1a83f0209163fa1f131840ac"
+          },
+          {
+            "path": "validation/qualification/tsan.json",
+            "sha256": "79360c74b7ec315b027e94969de62174408af0692dfc2a73d748732e51925b2f"
+          }
+        ]
+      },
+      "waiver_id": null
+    },
+    {
+      "capability_id": "wire.raw",
+      "parity_class": "REQUIRED_PARITY",
+      "upstream": {
+        "present": true,
+        "public_or_supported": true,
+        "semantic_contract": "BE64 unscaled deltas",
+        "evidence": [
+          "tsdb/engine/tsm1/timestamp.go",
+          "tsdb/engine/tsm1/batch_timestamp.go",
+          "pkg/encoding/simple8b/encoding.go"
+        ]
+      },
+      "rewrite": {
+        "present": true,
+        "public_symbol": "encode; Cursor::reset/next",
+        "variant": "scalar_stream_and_batch",
+        "build_target": "tsm_timestamp",
+        "platforms": [
+          "Linux x86_64 GCC11/Clang14",
+          "AArch64 musl QEMU"
+        ]
+      },
+      "validation": {
+        "status": "PASS",
+        "witnesses": [
+          "raw-pre-scaling/raw-reverse/too-large-simple"
+        ],
+        "tests": [
+          "validation/release-cross-decode/report.json",
+          "validation/clang-cross-decode/report.json",
+          "validation/arm64-cross-decode/report.json",
+          "validation/qualification/native.json",
+          "validation/qualification/safety.json",
+          "validation/qualification/tsan.json"
+        ],
+        "artifacts": [
+          {
+            "path": "validation/release-cross-decode/report.json",
+            "sha256": "9524f38d0aa9330daa6a88334e850d1eadac84530f82fe684b207e45afb64fa2"
+          },
+          {
+            "path": "validation/clang-cross-decode/report.json",
+            "sha256": "97f496641dce091aebdf959c3e38d7306393887e2d499247208271f71bc31dd1"
+          },
+          {
+            "path": "validation/arm64-cross-decode/report.json",
+            "sha256": "2bf1a3b05f121d001f281fd9b818c7428eaadc480fc4f56bd9ec39b80ff4a652"
+          },
+          {
+            "path": "validation/qualification/native.json",
+            "sha256": "879697f1b2fec0d5b24da0d4a38476f22bda89f6792e210827a280d752574823"
+          },
+          {
+            "path": "validation/qualification/safety.json",
+            "sha256": "008a785e634854966d834d2656dc209bb0165d1c1a83f0209163fa1f131840ac"
+          },
+          {
+            "path": "validation/qualification/tsan.json",
+            "sha256": "79360c74b7ec315b027e94969de62174408af0692dfc2a73d748732e51925b2f"
+          }
+        ]
+      },
+      "waiver_id": null
+    },
+    {
+      "capability_id": "wire.rle",
+      "parity_class": "REQUIRED_PARITY",
+      "upstream": {
+        "present": true,
+        "public_or_supported": true,
+        "semantic_contract": "BE64 first, scaled delta/count Uvarints",
+        "evidence": [
+          "tsdb/engine/tsm1/timestamp.go",
+          "tsdb/engine/tsm1/batch_timestamp.go",
+          "pkg/encoding/simple8b/encoding.go"
+        ]
+      },
+      "rewrite": {
+        "present": true,
+        "public_symbol": "encode; Cursor::reset/next",
+        "variant": "scalar_stream_and_batch",
+        "build_target": "tsm_timestamp",
+        "platforms": [
+          "Linux x86_64 GCC11/Clang14",
+          "AArch64 musl QEMU"
+        ]
+      },
+      "validation": {
+        "status": "PASS",
+        "witnesses": [
+          "duplicates/rle-large-delta/two + complete real timestamp columns"
+        ],
+        "tests": [
+          "validation/release-cross-decode/report.json",
+          "validation/clang-cross-decode/report.json",
+          "validation/arm64-cross-decode/report.json",
+          "validation/qualification/native.json",
+          "validation/qualification/safety.json",
+          "validation/qualification/tsan.json"
+        ],
+        "artifacts": [
+          {
+            "path": "validation/release-cross-decode/report.json",
+            "sha256": "9524f38d0aa9330daa6a88334e850d1eadac84530f82fe684b207e45afb64fa2"
+          },
+          {
+            "path": "validation/clang-cross-decode/report.json",
+            "sha256": "97f496641dce091aebdf959c3e38d7306393887e2d499247208271f71bc31dd1"
+          },
+          {
+            "path": "validation/arm64-cross-decode/report.json",
+            "sha256": "2bf1a3b05f121d001f281fd9b818c7428eaadc480fc4f56bd9ec39b80ff4a652"
+          },
+          {
+            "path": "validation/qualification/native.json",
+            "sha256": "879697f1b2fec0d5b24da0d4a38476f22bda89f6792e210827a280d752574823"
+          },
+          {
+            "path": "validation/qualification/safety.json",
+            "sha256": "008a785e634854966d834d2656dc209bb0165d1c1a83f0209163fa1f131840ac"
+          },
+          {
+            "path": "validation/qualification/tsan.json",
+            "sha256": "79360c74b7ec315b027e94969de62174408af0692dfc2a73d748732e51925b2f"
+          }
+        ]
+      },
+      "waiver_id": null
+    },
+    {
+      "capability_id": "wire.simple8b",
+      "parity_class": "REQUIRED_PARITY",
+      "upstream": {
+        "present": true,
+        "public_or_supported": true,
+        "semantic_contract": "all16 selectors, implicit ones",
+        "evidence": [
+          "tsdb/engine/tsm1/timestamp.go",
+          "tsdb/engine/tsm1/batch_timestamp.go",
+          "pkg/encoding/simple8b/encoding.go"
+        ]
+      },
+      "rewrite": {
+        "present": true,
+        "public_symbol": "encode; Cursor::reset/next",
+        "variant": "scalar_stream_and_batch",
+        "build_target": "tsm_timestamp",
+        "platforms": [
+          "Linux x86_64 GCC11/Clang14",
+          "AArch64 musl QEMU"
+        ]
+      },
+      "validation": {
+        "status": "PASS",
+        "witnesses": [
+          "selector-0..15/zero-deltas-mixed/simple-stream-batch-difference"
+        ],
+        "tests": [
+          "validation/release-cross-decode/report.json",
+          "validation/clang-cross-decode/report.json",
+          "validation/arm64-cross-decode/report.json",
+          "validation/qualification/native.json",
+          "validation/qualification/safety.json",
+          "validation/qualification/tsan.json"
+        ],
+        "artifacts": [
+          {
+            "path": "validation/release-cross-decode/report.json",
+            "sha256": "9524f38d0aa9330daa6a88334e850d1eadac84530f82fe684b207e45afb64fa2"
+          },
+          {
+            "path": "validation/clang-cross-decode/report.json",
+            "sha256": "97f496641dce091aebdf959c3e38d7306393887e2d499247208271f71bc31dd1"
+          },
+          {
+            "path": "validation/arm64-cross-decode/report.json",
+            "sha256": "2bf1a3b05f121d001f281fd9b818c7428eaadc480fc4f56bd9ec39b80ff4a652"
+          },
+          {
+            "path": "validation/qualification/native.json",
+            "sha256": "879697f1b2fec0d5b24da0d4a38476f22bda89f6792e210827a280d752574823"
+          },
+          {
+            "path": "validation/qualification/safety.json",
+            "sha256": "008a785e634854966d834d2656dc209bb0165d1c1a83f0209163fa1f131840ac"
+          },
+          {
+            "path": "validation/qualification/tsan.json",
+            "sha256": "79360c74b7ec315b027e94969de62174408af0692dfc2a73d748732e51925b2f"
+          }
+        ]
+      },
+      "waiver_id": null
+    },
+    {
+      "capability_id": "decode.iterator",
+      "parity_class": "REQUIRED_PARITY",
+      "upstream": {
+        "present": true,
+        "public_or_supported": true,
+        "semantic_contract": "TimeDecoder Init/Next/Read/Error",
+        "evidence": [
+          "tsdb/engine/tsm1/timestamp.go",
+          "tsdb/engine/tsm1/batch_timestamp.go",
+          "pkg/encoding/simple8b/encoding.go"
+        ]
+      },
+      "rewrite": {
+        "present": true,
+        "public_symbol": "Cursor::reset/next",
+        "variant": "scalar_stream_and_batch",
+        "build_target": "tsm_timestamp",
+        "platforms": [
+          "Linux x86_64 GCC11/Clang14",
+          "AArch64 musl QEMU"
+        ]
+      },
+      "validation": {
+        "status": "PASS",
+        "witnesses": [
+          "both-profile outputs decoded by source/native iterator"
+        ],
+        "tests": [
+          "validation/release-cross-decode/report.json",
+          "validation/clang-cross-decode/report.json",
+          "validation/arm64-cross-decode/report.json",
+          "validation/qualification/native.json",
+          "validation/qualification/safety.json",
+          "validation/qualification/tsan.json"
+        ],
+        "artifacts": [
+          {
+            "path": "validation/release-cross-decode/report.json",
+            "sha256": "9524f38d0aa9330daa6a88334e850d1eadac84530f82fe684b207e45afb64fa2"
+          },
+          {
+            "path": "validation/clang-cross-decode/report.json",
+            "sha256": "97f496641dce091aebdf959c3e38d7306393887e2d499247208271f71bc31dd1"
+          },
+          {
+            "path": "validation/arm64-cross-decode/report.json",
+            "sha256": "2bf1a3b05f121d001f281fd9b818c7428eaadc480fc4f56bd9ec39b80ff4a652"
+          },
+          {
+            "path": "validation/qualification/native.json",
+            "sha256": "879697f1b2fec0d5b24da0d4a38476f22bda89f6792e210827a280d752574823"
+          },
+          {
+            "path": "validation/qualification/safety.json",
+            "sha256": "008a785e634854966d834d2656dc209bb0165d1c1a83f0209163fa1f131840ac"
+          },
+          {
+            "path": "validation/qualification/tsan.json",
+            "sha256": "79360c74b7ec315b027e94969de62174408af0692dfc2a73d748732e51925b2f"
+          }
+        ]
+      },
+      "waiver_id": null
+    },
+    {
+      "capability_id": "decode.batch",
+      "parity_class": "REQUIRED_PARITY",
+      "upstream": {
+        "present": true,
+        "public_or_supported": true,
+        "semantic_contract": "TimeArrayDecodeAll",
+        "evidence": [
+          "tsdb/engine/tsm1/timestamp.go",
+          "tsdb/engine/tsm1/batch_timestamp.go",
+          "pkg/encoding/simple8b/encoding.go"
+        ]
+      },
+      "rewrite": {
+        "present": true,
+        "public_symbol": "decode",
+        "variant": "scalar_stream_and_batch",
+        "build_target": "tsm_timestamp",
+        "platforms": [
+          "Linux x86_64 GCC11/Clang14",
+          "AArch64 musl QEMU"
+        ]
+      },
+      "validation": {
+        "status": "PASS",
+        "witnesses": [
+          "both-profile outputs decoded by source/native batch"
+        ],
+        "tests": [
+          "validation/release-cross-decode/report.json",
+          "validation/clang-cross-decode/report.json",
+          "validation/arm64-cross-decode/report.json",
+          "validation/qualification/native.json",
+          "validation/qualification/safety.json",
+          "validation/qualification/tsan.json"
+        ],
+        "artifacts": [
+          {
+            "path": "validation/release-cross-decode/report.json",
+            "sha256": "9524f38d0aa9330daa6a88334e850d1eadac84530f82fe684b207e45afb64fa2"
+          },
+          {
+            "path": "validation/clang-cross-decode/report.json",
+            "sha256": "97f496641dce091aebdf959c3e38d7306393887e2d499247208271f71bc31dd1"
+          },
+          {
+            "path": "validation/arm64-cross-decode/report.json",
+            "sha256": "2bf1a3b05f121d001f281fd9b818c7428eaadc480fc4f56bd9ec39b80ff4a652"
+          },
+          {
+            "path": "validation/qualification/native.json",
+            "sha256": "879697f1b2fec0d5b24da0d4a38476f22bda89f6792e210827a280d752574823"
+          },
+          {
+            "path": "validation/qualification/safety.json",
+            "sha256": "008a785e634854966d834d2656dc209bb0165d1c1a83f0209163fa1f131840ac"
+          },
+          {
+            "path": "validation/qualification/tsan.json",
+            "sha256": "79360c74b7ec315b027e94969de62174408af0692dfc2a73d748732e51925b2f"
+          }
+        ]
+      },
+      "waiver_id": null
+    },
+    {
+      "capability_id": "query.count",
+      "parity_class": "REQUIRED_PARITY",
+      "upstream": {
+        "present": true,
+        "public_or_supported": true,
+        "semantic_contract": "CountTimestamps",
+        "evidence": [
+          "tsdb/engine/tsm1/timestamp.go",
+          "tsdb/engine/tsm1/batch_timestamp.go",
+          "pkg/encoding/simple8b/encoding.go"
+        ]
+      },
+      "rewrite": {
+        "present": true,
+        "public_symbol": "count_timestamps/Cursor::count",
+        "variant": "scalar_stream_and_batch",
+        "build_target": "tsm_timestamp",
+        "platforms": [
+          "Linux x86_64 GCC11/Clang14",
+          "AArch64 musl QEMU"
+        ]
+      },
+      "validation": {
+        "status": "PASS",
+        "witnesses": [
+          "all602 release cases + resource-limit count boundaries"
+        ],
+        "tests": [
+          "validation/release-cross-decode/report.json",
+          "validation/clang-cross-decode/report.json",
+          "validation/arm64-cross-decode/report.json",
+          "validation/qualification/native.json",
+          "validation/qualification/safety.json",
+          "validation/qualification/tsan.json"
+        ],
+        "artifacts": [
+          {
+            "path": "validation/release-cross-decode/report.json",
+            "sha256": "9524f38d0aa9330daa6a88334e850d1eadac84530f82fe684b207e45afb64fa2"
+          },
+          {
+            "path": "validation/clang-cross-decode/report.json",
+            "sha256": "97f496641dce091aebdf959c3e38d7306393887e2d499247208271f71bc31dd1"
+          },
+          {
+            "path": "validation/arm64-cross-decode/report.json",
+            "sha256": "2bf1a3b05f121d001f281fd9b818c7428eaadc480fc4f56bd9ec39b80ff4a652"
+          },
+          {
+            "path": "validation/qualification/native.json",
+            "sha256": "879697f1b2fec0d5b24da0d4a38476f22bda89f6792e210827a280d752574823"
+          },
+          {
+            "path": "validation/qualification/safety.json",
+            "sha256": "008a785e634854966d834d2656dc209bb0165d1c1a83f0209163fa1f131840ac"
+          },
+          {
+            "path": "validation/qualification/tsan.json",
+            "sha256": "79360c74b7ec315b027e94969de62174408af0692dfc2a73d748732e51925b2f"
+          }
+        ]
+      },
+      "waiver_id": null
+    },
+    {
+      "capability_id": "state.legacy_empty_init",
+      "parity_class": "REQUIRED_PARITY",
+      "upstream": {
+        "present": true,
+        "public_or_supported": true,
+        "semantic_contract": "Legacy reused RLE Init(empty) behavior",
+        "evidence": [
+          "tsdb/engine/tsm1/timestamp.go",
+          "tsdb/engine/tsm1/batch_timestamp.go",
+          "pkg/encoding/simple8b/encoding.go"
+        ]
+      },
+      "rewrite": {
+        "present": true,
+        "public_symbol": "Cursor::source_init",
+        "variant": "scalar_stream_and_batch",
+        "build_target": "tsm_timestamp",
+        "platforms": [
+          "Linux x86_64 GCC11/Clang14",
+          "AArch64 musl QEMU"
+        ]
+      },
+      "validation": {
+        "status": "PASS",
+        "witnesses": [
+          "legacy_empty_oracle.txt vs native source_init after RLE"
+        ],
+        "tests": [
+          "validation/release-cross-decode/report.json",
+          "validation/clang-cross-decode/report.json",
+          "validation/arm64-cross-decode/report.json",
+          "validation/qualification/native.json",
+          "validation/qualification/safety.json",
+          "validation/qualification/tsan.json"
+        ],
+        "artifacts": [
+          {
+            "path": "validation/release-cross-decode/report.json",
+            "sha256": "9524f38d0aa9330daa6a88334e850d1eadac84530f82fe684b207e45afb64fa2"
+          },
+          {
+            "path": "validation/clang-cross-decode/report.json",
+            "sha256": "97f496641dce091aebdf959c3e38d7306393887e2d499247208271f71bc31dd1"
+          },
+          {
+            "path": "validation/arm64-cross-decode/report.json",
+            "sha256": "2bf1a3b05f121d001f281fd9b818c7428eaadc480fc4f56bd9ec39b80ff4a652"
+          },
+          {
+            "path": "validation/qualification/native.json",
+            "sha256": "879697f1b2fec0d5b24da0d4a38476f22bda89f6792e210827a280d752574823"
+          },
+          {
+            "path": "validation/qualification/safety.json",
+            "sha256": "008a785e634854966d834d2656dc209bb0165d1c1a83f0209163fa1f131840ac"
+          },
+          {
+            "path": "validation/qualification/tsan.json",
+            "sha256": "79360c74b7ec315b027e94969de62174408af0692dfc2a73d748732e51925b2f"
+          }
+        ]
+      },
+      "waiver_id": null
+    },
+    {
+      "capability_id": "api.lifecycle_ownership",
+      "parity_class": "REQUIRED_PARITY",
+      "upstream": {
+        "present": true,
+        "public_or_supported": true,
+        "semantic_contract": "Input preservation, terminal finalization/cache/reset",
+        "evidence": [
+          "tsdb/engine/tsm1/timestamp.go",
+          "tsdb/engine/tsm1/batch_timestamp.go",
+          "pkg/encoding/simple8b/encoding.go"
+        ]
+      },
+      "rewrite": {
+        "present": true,
+        "public_symbol": "Encoder::reset/finalize; encode_bound/encode_to",
+        "variant": "scalar_stream_and_batch",
+        "build_target": "tsm_timestamp",
+        "platforms": [
+          "Linux x86_64 GCC11/Clang14",
+          "AArch64 musl QEMU"
+        ]
+      },
+      "validation": {
+        "status": "PASS",
+        "witnesses": [
+          "preflight immutable input/canary/exact bound/bound-1/reset/repeated finalize/typed alignment"
+        ],
+        "tests": [
+          "validation/release-cross-decode/report.json",
+          "validation/clang-cross-decode/report.json",
+          "validation/arm64-cross-decode/report.json",
+          "validation/qualification/native.json",
+          "validation/qualification/safety.json",
+          "validation/qualification/tsan.json"
+        ],
+        "artifacts": [
+          {
+            "path": "validation/release-cross-decode/report.json",
+            "sha256": "9524f38d0aa9330daa6a88334e850d1eadac84530f82fe684b207e45afb64fa2"
+          },
+          {
+            "path": "validation/clang-cross-decode/report.json",
+            "sha256": "97f496641dce091aebdf959c3e38d7306393887e2d499247208271f71bc31dd1"
+          },
+          {
+            "path": "validation/arm64-cross-decode/report.json",
+            "sha256": "2bf1a3b05f121d001f281fd9b818c7428eaadc480fc4f56bd9ec39b80ff4a652"
+          },
+          {
+            "path": "validation/qualification/native.json",
+            "sha256": "879697f1b2fec0d5b24da0d4a38476f22bda89f6792e210827a280d752574823"
+          },
+          {
+            "path": "validation/qualification/safety.json",
+            "sha256": "008a785e634854966d834d2656dc209bb0165d1c1a83f0209163fa1f131840ac"
+          },
+          {
+            "path": "validation/qualification/tsan.json",
+            "sha256": "79360c74b7ec315b027e94969de62174408af0692dfc2a73d748732e51925b2f"
+          }
+        ]
+      },
+      "waiver_id": null
+    },
+    {
+      "capability_id": "api.accounting",
+      "parity_class": "REQUIRED_PARITY",
+      "upstream": {
+        "present": true,
+        "public_or_supported": true,
+        "semantic_contract": "Full physical stream bits",
+        "evidence": [
+          "tsdb/engine/tsm1/timestamp.go",
+          "tsdb/engine/tsm1/batch_timestamp.go",
+          "pkg/encoding/simple8b/encoding.go"
+        ]
+      },
+      "rewrite": {
+        "present": true,
+        "public_symbol": "Encoder::final_bits/bytes; encode_bound",
+        "variant": "scalar_stream_and_batch",
+        "build_target": "tsm_timestamp",
+        "platforms": [
+          "Linux x86_64 GCC11/Clang14",
+          "AArch64 musl QEMU"
+        ]
+      },
+      "validation": {
+        "status": "PASS",
+        "witnesses": [
+          "all six dataset physical bytes + preflight FinalBits==bytes*8"
+        ],
+        "tests": [
+          "validation/release-cross-decode/report.json",
+          "validation/clang-cross-decode/report.json",
+          "validation/arm64-cross-decode/report.json",
+          "validation/qualification/native.json",
+          "validation/qualification/safety.json",
+          "validation/qualification/tsan.json"
+        ],
+        "artifacts": [
+          {
+            "path": "validation/release-cross-decode/report.json",
+            "sha256": "9524f38d0aa9330daa6a88334e850d1eadac84530f82fe684b207e45afb64fa2"
+          },
+          {
+            "path": "validation/clang-cross-decode/report.json",
+            "sha256": "97f496641dce091aebdf959c3e38d7306393887e2d499247208271f71bc31dd1"
+          },
+          {
+            "path": "validation/arm64-cross-decode/report.json",
+            "sha256": "2bf1a3b05f121d001f281fd9b818c7428eaadc480fc4f56bd9ec39b80ff4a652"
+          },
+          {
+            "path": "validation/qualification/native.json",
+            "sha256": "879697f1b2fec0d5b24da0d4a38476f22bda89f6792e210827a280d752574823"
+          },
+          {
+            "path": "validation/qualification/safety.json",
+            "sha256": "008a785e634854966d834d2656dc209bb0165d1c1a83f0209163fa1f131840ac"
+          },
+          {
+            "path": "validation/qualification/tsan.json",
+            "sha256": "79360c74b7ec315b027e94969de62174408af0692dfc2a73d748732e51925b2f"
+          }
+        ]
+      },
+      "waiver_id": null
+    },
+    {
+      "capability_id": "threading.independent_handles",
+      "parity_class": "REQUIRED_PARITY",
+      "upstream": {
+        "present": true,
+        "public_or_supported": true,
+        "semantic_contract": "Separate mutable states; no internal parallelism",
+        "evidence": [
+          "tsdb/engine/tsm1/timestamp.go",
+          "tsdb/engine/tsm1/batch_timestamp.go",
+          "pkg/encoding/simple8b/encoding.go"
+        ]
+      },
+      "rewrite": {
+        "present": true,
+        "public_symbol": "separate Encoder/Cursor handles",
+        "variant": "scalar_stream_and_batch",
+        "build_target": "tsm_timestamp",
+        "platforms": [
+          "Linux x86_64 GCC11/Clang14",
+          "AArch64 musl QEMU"
+        ]
+      },
+      "validation": {
+        "status": "PASS",
+        "witnesses": [
+          "4 concurrent callers, both profiles, 1000 iterations each, TSan"
+        ],
+        "tests": [
+          "validation/release-cross-decode/report.json",
+          "validation/clang-cross-decode/report.json",
+          "validation/arm64-cross-decode/report.json",
+          "validation/qualification/native.json",
+          "validation/qualification/safety.json",
+          "validation/qualification/tsan.json"
+        ],
+        "artifacts": [
+          {
+            "path": "validation/release-cross-decode/report.json",
+            "sha256": "9524f38d0aa9330daa6a88334e850d1eadac84530f82fe684b207e45afb64fa2"
+          },
+          {
+            "path": "validation/clang-cross-decode/report.json",
+            "sha256": "97f496641dce091aebdf959c3e38d7306393887e2d499247208271f71bc31dd1"
+          },
+          {
+            "path": "validation/arm64-cross-decode/report.json",
+            "sha256": "2bf1a3b05f121d001f281fd9b818c7428eaadc480fc4f56bd9ec39b80ff4a652"
+          },
+          {
+            "path": "validation/qualification/native.json",
+            "sha256": "879697f1b2fec0d5b24da0d4a38476f22bda89f6792e210827a280d752574823"
+          },
+          {
+            "path": "validation/qualification/safety.json",
+            "sha256": "008a785e634854966d834d2656dc209bb0165d1c1a83f0209163fa1f131840ac"
+          },
+          {
+            "path": "validation/qualification/tsan.json",
+            "sha256": "79360c74b7ec315b027e94969de62174408af0692dfc2a73d748732e51925b2f"
+          }
+        ]
+      },
+      "waiver_id": null
+    },
+    {
+      "capability_id": "optimization.simd_gpu_internal_parallel",
+      "parity_class": "NOT_APPLICABLE",
+      "upstream": {
+        "present": false
+      },
+      "validation": {
+        "status": "NOT_APPLICABLE"
+      },
+      "rationale": "Neither timestamp nor either Simple8b dependency closure has a supported ISA/GPU/internal-parallel path; batch is required above."
+    }
+  ],
+  "waiver_ids": []
+}

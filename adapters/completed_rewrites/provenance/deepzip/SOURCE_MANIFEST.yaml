@@ -1,0 +1,112 @@
+schema_version: tscb.porting-source-manifest.v1
+algorithm_id: deepzip
+repository: https://github.com/mohit1997/DeepZip
+source_commit: 8c35502397a1488c89fa282ed033cc9d5fd4b4dc
+source_commit_date: 2022-03-04 16:09:48-06:00
+source_commit_subject: Update README.md
+source_checkout_dirty: false
+source_checkout_shallow: true
+snapshot_method: minimal audited source closure copied from the locked checkout
+repository_archive_sha256: 01f2d4d45f0ebdf5ea7cca6a82c4ab0af0ea315dfe28c9c3373992323d24ab69
+closure_file_count: 28
+closure_sha256: 5c3a0fb9528e8e697bae82aa3bacc71e2f8fb383fec3ae6e351d62d73d65541a
+closure_hash_recipe: sha256(sorted(relative_path + NUL + file_sha256 + LF))
+file_hashes: SOURCE_FILES.sha256
+original_language: Python
+source_language_version: Python 3.6
+object_level: P2_PIPELINE
+logical_entries:
+- name: DeepZip
+  decision: CANONICAL_TASK
+- name: DeepZip_RNN_Predictor
+  decision: DUPLICATE_STAGE
+  canonical_task: deepzip
+selection_evidence:
+  standard_sha256: a09ce76164b5289f23c5c58e74173237450f0c60bb124a27f97d2f12dfc6e27e
+  recommendation_workbook_sha256: 6cbc7a27ab6eedcd35beb80c4cbbba10c0a36febf2bd049c8ad9d8da66462543
+  recommendation_rank: 5
+  recommendation_batch: B3
+roles:
+  pipeline:
+  - src/compressor.py
+  - src/decompressor.py
+  predictor_architectures:
+  - src/models.py
+  arithmetic_coder:
+  - src/arithmeticcoding_fast.py
+  preprocessing:
+  - data/parse_new.py
+  - data/run_parser.sh
+  source_environment:
+  - install.sh
+  - docker/Dockerfile
+  - docker/Makefile
+  selected_checkpoint:
+  - data/trained_models/xor20/biGRU.hdf5
+selected_profile:
+  profile_id: xor20-bidirectional-cudnngru-f32-v1
+  model_name: biGRU
+  checkpoint: upstream/data/trained_models/xor20/biGRU.hdf5
+  checkpoint_size_bytes: 170192
+  checkpoint_sha256: 11c83907881b14ed3c670b6b37cacad06fc9657872c520bd772693cb04919fe2
+  checkpoint_backend_attribute: tensorflow
+  checkpoint_keras_version_attribute: 2.2.4
+  alphabet_size: 2
+  timesteps: 64
+  source_batch_size: 1000
+dependencies:
+- name: TensorFlow GPU
+  version: 1.8.0
+  role: source predictor runtime
+- name: Keras
+  version: 2.2.2
+  role: source model construction and weight loading
+- name: CUDA
+  version: '9.0'
+  role: CuDNNGRU execution
+- name: cuDNN
+  version: '7'
+  role: CuDNNGRU execution
+- name: NumPy
+  version: 1.16.4
+  role: preprocessing and probability quantization
+- name: scikit-learn
+  version: unpinned
+  role: source preprocessing
+third_party:
+- name: Project Nayuki Reference arithmetic coding
+  role: basis of src/arithmeticcoding_fast.py
+  repository: https://github.com/nayuki/Reference-arithmetic-coding
+  local_reference_commit: ab6ee50afec04d235a4b82d17f407f0fd2b42e9a
+  license: MIT
+license:
+  concluded_spdx: MIT
+  redistribution_status: RUN_ALLOWED_WITH_ATTRIBUTION
+  license_files:
+  - LICENSES/DeepZip-MIT.txt
+  - LICENSES/Project-Nayuki-MIT.txt
+patches: []
+official_decoder: true
+public_format: false
+g1_status: PASS
+blocker_evidence: null
+supported_model_names:
+- biGRU
+- biGRU_big
+- biGRU_16bit
+- biLSTM
+- biLSTM_16bit
+- LSTM_multi
+- LSTM_multi_big
+- LSTM_multi_bn
+- LSTM_multi_16bit
+- LSTM_multi_selu_16bit
+- GRU_multi
+- GRU_multi_big
+- GRU_multi_16bit
+- FC_4layer_16bit
+- FC_4layer
+- FC_4layer_big
+- FC
+oracle_environment_lock: ORACLE_ENVIRONMENT_LOCK.json
+oracle_environment_lock_sha256: 388967012b649fc195746a484658b25b75dc903bb8bb06d4973579dda2f8bf12

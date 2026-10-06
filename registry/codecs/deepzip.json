@@ -1,0 +1,353 @@
+{
+  "schema_version": "tscb.codec-manifest.v2",
+  "key": "deepzip",
+  "identity": {
+    "display_name": "deepzip",
+    "family": "DEEPZIP",
+    "citations": [
+      "adapters/completed_rewrites/vendor/deepzip/contract.md"
+    ],
+    "source_artifact_id": "v2:source-artifact:sha256:607b2ba98f3a0d309227281b7b2cb03eedf9e51cdd7c14c62884549390f7a167"
+  },
+  "classification": {
+    "object_level": "P2_PIPELINE",
+    "implementation_class": "LEARNED",
+    "tracks": [
+      "VALUE"
+    ],
+    "subtracks": [
+      "V0"
+    ]
+  },
+  "input": {
+    "topologies": [
+      "UTS",
+      "SYNCHRONOUS_MTS"
+    ],
+    "dtypes": [
+      "|u1"
+    ],
+    "ranks": [
+      1,
+      2
+    ],
+    "layouts": [
+      "ROW_MAJOR_CONTIG",
+      "SOA_COLUMNS"
+    ],
+    "endianness": [
+      "little"
+    ],
+    "alignment_bytes": 1,
+    "min_n": 0,
+    "max_n": 16777216,
+    "min_m": 1,
+    "max_m": 65535,
+    "validity_shapes": [
+      "NONE"
+    ],
+    "homogeneous_itemsize": true,
+    "max_total_raw_bytes": 134217728,
+    "value_coupling_mode": "COLUMN_INDEPENDENT",
+    "timestamp_semantics": {
+      "preserve_order": true,
+      "duplicates": true,
+      "out_of_order": true,
+      "negative_delta": true,
+      "absolute_epoch": true,
+      "overflow_policy": "NOT_APPLICABLE_VALUE_ONLY"
+    },
+    "max_total_elements": 16777216,
+    "value_domain": {
+      "kind": "FROZEN_SOURCE_WITH_BOUNDED_REJECTION",
+      "unsupported_action": "REJECT_BEFORE_OUTPUT",
+      "oracle_evidence": "adapters/completed_rewrites/vendor/deepzip/contract.md",
+      "rejection_reasons": [
+        "MODEL_ALPHABET_UNSUPPORTED"
+      ]
+    }
+  },
+  "semantics": {
+    "loss_modes": [
+      "LOSSLESS"
+    ],
+    "error_bound_types": [],
+    "reconstruction_modes": [
+      "EXACT_GRID"
+    ],
+    "rebuild_protocol": "COMPLETE_NATIVE_FRAME_WITH_ORIGINAL_GRID_V1",
+    "preprocess_class": "NONE",
+    "preprocess_stages": [],
+    "decodability_profile": "SELF_CONTAINED_DESCRIPTOR_AND_NATIVE_FRAMES",
+    "bitstream_separability": "PER_COLUMN"
+  },
+  "lifecycle": {
+    "block_semantics": "WHOLE_OBJECT",
+    "state_semantics": "INDEPENDENT_OBJECT",
+    "reset": "REQUIRED_MODE_ZERO",
+    "finalize": "REQUIRED_ZERO_BYTE_FINALIZE",
+    "safe_overread_bytes": 0,
+    "tail_policy": "EXACT_COUNT",
+    "dictionary": "EMBEDDED_AND_CHARGED",
+    "model": "EMBEDDED_AND_CHARGED",
+    "index": "NONE"
+  },
+  "execution": {
+    "backends": [
+      "COMPLETED_REWRITE_ABI_V1"
+    ],
+    "isa": [
+      "SCALAR"
+    ],
+    "devices": [
+      "CPU"
+    ],
+    "threading": "SINGLE_THREAD",
+    "fallback_policy": "DISALLOWED",
+    "runtime_dispatch": false,
+    "timing_scopes": [
+      "PIPELINE",
+      "E2E"
+    ]
+  },
+  "features": {
+    "streaming": false,
+    "query": false,
+    "random_access": false
+  },
+  "parameters": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "lanes": {
+        "type": "integer",
+        "default": 1,
+        "minimum": 1,
+        "maximum": 4096
+      },
+      "isa": {
+        "type": "string",
+        "default": "SCALAR",
+        "enum": [
+          "SCALAR"
+        ]
+      },
+      "model_key": {
+        "type": "string",
+        "default": "biGRU",
+        "enum": [
+          "FC",
+          "FC_4layer",
+          "FC_4layer_16bit",
+          "FC_4layer_big",
+          "GRU_multi",
+          "GRU_multi_16bit",
+          "GRU_multi_big",
+          "LSTM_multi",
+          "LSTM_multi_16bit",
+          "LSTM_multi_big",
+          "LSTM_multi_bn",
+          "LSTM_multi_selu_16bit",
+          "biGRU",
+          "biGRU_16bit",
+          "biGRU_big",
+          "biLSTM",
+          "biLSTM_16bit"
+        ]
+      }
+    },
+    "constraints": []
+  },
+  "adapter": {
+    "backend": "COMPLETED_REWRITE_ABI_V1",
+    "version": "completed-rewrites-v1",
+    "factory": "COMPLETED_REWRITE_CTYPES_V1",
+    "artifact_path": "build/adapters/deepzip/release/libtscb_deepzip.so",
+    "timing_boundary": "PYTHON_LAYOUT_C_ABI_NATIVE_FRAME_AND_MODEL_LOAD_INCLUDED",
+    "accounting_hooks": [
+      "FINAL_STREAM_LENGTH",
+      "CONTAINER_BYTES",
+      "COMPLETE_NATIVE_FRAMES_WITH_ALL_MODEL_BITS"
+    ],
+    "models": {
+      "FC": {
+        "path": "adapters/completed_rewrites/vendor/deepzip/models/FC.dzm",
+        "sha256": "bedf6693e2fa556990dc82563974965ffd7dd1835f088b06a80382bffb8cf42b",
+        "alphabet_size": 4
+      },
+      "FC_4layer": {
+        "path": "adapters/completed_rewrites/vendor/deepzip/models/FC_4layer.dzm",
+        "sha256": "6eeaabfec6dcdc17e4d750b99cf7ee18334fd55f3805cce2eaa6bb1116846642",
+        "alphabet_size": 4
+      },
+      "FC_4layer_16bit": {
+        "path": "adapters/completed_rewrites/vendor/deepzip/models/FC_4layer_16bit.dzm",
+        "sha256": "a5c3e0a202e821831303abf40480ba03a45b839562b9d8f7f3129bbb0c7f5614",
+        "alphabet_size": 4
+      },
+      "FC_4layer_big": {
+        "path": "adapters/completed_rewrites/vendor/deepzip/models/FC_4layer_big.dzm",
+        "sha256": "25633556588c421e7ae67038d5949f99621ac58420d585b07277320596570e77",
+        "alphabet_size": 4
+      },
+      "GRU_multi": {
+        "path": "adapters/completed_rewrites/vendor/deepzip/models/GRU_multi.dzm",
+        "sha256": "96b0826d1dc7d829d39d48615d9524d6e31d3abcb0321bdbbeae79f0d5182192",
+        "alphabet_size": 4
+      },
+      "GRU_multi_16bit": {
+        "path": "adapters/completed_rewrites/vendor/deepzip/models/GRU_multi_16bit.dzm",
+        "sha256": "4c601892b682644c0a566f531f41e97be572de78f1a1a63000b519df73b2c0d6",
+        "alphabet_size": 4
+      },
+      "GRU_multi_big": {
+        "path": "adapters/completed_rewrites/vendor/deepzip/models/GRU_multi_big.dzm",
+        "sha256": "2e37bb54e02c2774ace90afcce43e79a37137b765b9b6c118bba098b1fa02325",
+        "alphabet_size": 4
+      },
+      "LSTM_multi": {
+        "path": "adapters/completed_rewrites/vendor/deepzip/models/LSTM_multi.dzm",
+        "sha256": "25234dd1104135c963f919f843188e2e0fe6a2d3c52472f16455aea660a54984",
+        "alphabet_size": 4
+      },
+      "LSTM_multi_16bit": {
+        "path": "adapters/completed_rewrites/vendor/deepzip/models/LSTM_multi_16bit.dzm",
+        "sha256": "b4ea66dfc1317953dd4d5128d7813d6841aef7fa099b806b26189c44a9f7a324",
+        "alphabet_size": 4
+      },
+      "LSTM_multi_big": {
+        "path": "adapters/completed_rewrites/vendor/deepzip/models/LSTM_multi_big.dzm",
+        "sha256": "b942a15d617c8e8c4f88cf22930e4c99dfb4acbac8944c3ea6c078bc960af8ee",
+        "alphabet_size": 4
+      },
+      "LSTM_multi_bn": {
+        "path": "adapters/completed_rewrites/vendor/deepzip/models/LSTM_multi_bn.dzm",
+        "sha256": "a13418c3e3f0872ae4c18d5a4382163537a40b96685156b59721ff2dfbf36354",
+        "alphabet_size": 4
+      },
+      "LSTM_multi_selu_16bit": {
+        "path": "adapters/completed_rewrites/vendor/deepzip/models/LSTM_multi_selu_16bit.dzm",
+        "sha256": "7875896ec0e6c737e4642b74c83c61cc978e7252fc80a1d1e60475f109b05b76",
+        "alphabet_size": 4
+      },
+      "biGRU_16bit": {
+        "path": "adapters/completed_rewrites/vendor/deepzip/models/biGRU_16bit.dzm",
+        "sha256": "463468e5752fed82aa27cb0af9d1e14caaae143abd99eb8d6b2f6f00bf91eacf",
+        "alphabet_size": 4
+      },
+      "biGRU_big": {
+        "path": "adapters/completed_rewrites/vendor/deepzip/models/biGRU_big.dzm",
+        "sha256": "6eba690e83c061154c7dfbbf61829d01f93282fd76836a4ff32e2c67550f7b8d",
+        "alphabet_size": 4
+      },
+      "biLSTM": {
+        "path": "adapters/completed_rewrites/vendor/deepzip/models/biLSTM.dzm",
+        "sha256": "5bc81e75a5e558fd2bbc62efd037d7458ed756ff3992941b82ef7c944d8b8a99",
+        "alphabet_size": 4
+      },
+      "biLSTM_16bit": {
+        "path": "adapters/completed_rewrites/vendor/deepzip/models/biLSTM_16bit.dzm",
+        "sha256": "a15f2b0b543655c429cd2d6d64c3b7a857aaf85a6c2c01fcfd592a9262abfd7c",
+        "alphabet_size": 4
+      },
+      "biGRU": {
+        "path": "adapters/completed_rewrites/vendor/deepzip/tests/fixtures/biGRU.dzm",
+        "sha256": "1c5c9924d758c587cec55002d8e53d5a435f8d1c5a87459a068604772545af6e",
+        "alphabet_size": 4
+      }
+    },
+    "parameter_contract": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "lanes": {
+          "type": "integer",
+          "default": 1,
+          "minimum": 1,
+          "maximum": 4096
+        },
+        "isa": {
+          "type": "string",
+          "default": "SCALAR",
+          "enum": [
+            "SCALAR"
+          ]
+        },
+        "model_key": {
+          "type": "string",
+          "default": "biGRU",
+          "enum": [
+            "FC",
+            "FC_4layer",
+            "FC_4layer_16bit",
+            "FC_4layer_big",
+            "GRU_multi",
+            "GRU_multi_16bit",
+            "GRU_multi_big",
+            "LSTM_multi",
+            "LSTM_multi_16bit",
+            "LSTM_multi_big",
+            "LSTM_multi_bn",
+            "LSTM_multi_selu_16bit",
+            "biGRU",
+            "biGRU_16bit",
+            "biGRU_big",
+            "biLSTM",
+            "biLSTM_16bit"
+          ]
+        }
+      },
+      "constraints": []
+    },
+    "input_contract": {
+      "topologies": [
+        "UTS",
+        "SYNCHRONOUS_MTS"
+      ],
+      "dtypes": [
+        "|u1"
+      ],
+      "ranks": [
+        1,
+        2
+      ],
+      "layouts": [
+        "ROW_MAJOR_CONTIG",
+        "SOA_COLUMNS"
+      ],
+      "endianness": [
+        "little"
+      ],
+      "alignment_bytes": 1,
+      "min_n": 0,
+      "max_n": 16777216,
+      "min_m": 1,
+      "max_m": 65535,
+      "validity_shapes": [
+        "NONE"
+      ],
+      "homogeneous_itemsize": true,
+      "max_total_raw_bytes": 134217728,
+      "value_coupling_mode": "COLUMN_INDEPENDENT",
+      "timestamp_semantics": {
+        "preserve_order": true,
+        "duplicates": true,
+        "out_of_order": true,
+        "negative_delta": true,
+        "absolute_epoch": true,
+        "overflow_policy": "NOT_APPLICABLE_VALUE_ONLY"
+      },
+      "max_total_elements": 16777216,
+      "value_domain": {
+        "kind": "FROZEN_SOURCE_WITH_BOUNDED_REJECTION",
+        "unsupported_action": "REJECT_BEFORE_OUTPUT",
+        "oracle_evidence": "adapters/completed_rewrites/vendor/deepzip/contract.md",
+        "rejection_reasons": [
+          "MODEL_ALPHABET_UNSUPPORTED"
+        ]
+      }
+    },
+    "runtime_profile": "CPU_SINGLE_THREAD",
+    "isa_scope": "NATIVE_BASELINE"
+  }
+}

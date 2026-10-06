@@ -1,0 +1,402 @@
+schema_version: 1
+algorithm_id: tristan
+upstream_revision: 083824eb3e0b3ad72a00d4f585bc77b5adb5c1be
+overall_result: FULL_PARITY
+waiver_ids: []
+capabilities:
+- capability_id: preprocessing.zscore
+  owner: Local tristan rewrite maintainer
+  parity_class: REQUIRED_PARITY
+  upstream:
+    present: true
+    public_or_supported: true
+    symbol: stats.zscore(axis=0,ddof=0)
+    description: P2 source normalization; constant-column failure preserved
+  rewrite:
+    present: true
+    implementation: src/canonical/codec.cpp
+  validation:
+    status: PASS
+    platforms:
+    - linux-x86_64
+    artifacts:
+    - path: validation/builds-v3/report.json
+      sha256: cdf1ae1d7b47e3da960c86334a9a6d5ba3b9b4b439fa3e928cfb74cfdf5bec73
+    - path: validation/qualification-v1/report.json
+      sha256: 1e96a01d9e28731ac00e5add88ab85633f2b4e30d0ccce08eb90e23b7b5deb13
+    - path: validation/differential-final-gcc/report.json
+      sha256: c1c2f7564990366e61b11dfac2483a5fccbb14304e68ef8477164c5d0db37f5c
+    - path: validation/differential-final-clang/report.json
+      sha256: 68461a7604b3f1cbdb77b1be474822b0bbcd4e011683fe8e01c64cbee16da2be
+    - path: validation/differential-final-asan/report.json
+      sha256: 9e28762ea1b2c4f6a398020735fb29ef3ca928c8fe298630f8cdc7ec0ec3049d
+    - path: validation/extended-final-gcc/report.json
+      sha256: 0978528a5fd11522e9806295b020930cdfb519360094e066b67e4a06b27d514b
+    - path: validation/extended-final-clang/report.json
+      sha256: 4157bf38c4316842cbcdb121326ba77d20c1fa3f320f1e2713777632ba7f09fa
+    - path: validation/extended-final-asan/report.json
+      sha256: d5bf1beb3975074bbe74397d60e0a8084f87bb55828877fd24d36c1723390016
+    numerical_thresholds: Frozen contract unchanged; exact nonzero support; real per-object
+      dictionary training
+- capability_id: preprocessing.tricklets
+  owner: Local tristan rewrite maintainer
+  parity_class: REQUIRED_PARITY
+  upstream:
+    present: true
+    public_or_supported: true
+    symbol: dataframeToTricklets / chunks
+    description: Ordered channel/window layout; incomplete tails are discarded by
+      source
+  rewrite:
+    present: true
+    implementation: src/canonical/codec.cpp
+  validation:
+    status: PASS
+    platforms:
+    - linux-x86_64
+    artifacts:
+    - path: validation/builds-v3/report.json
+      sha256: cdf1ae1d7b47e3da960c86334a9a6d5ba3b9b4b439fa3e928cfb74cfdf5bec73
+    - path: validation/qualification-v1/report.json
+      sha256: 1e96a01d9e28731ac00e5add88ab85633f2b4e30d0ccce08eb90e23b7b5deb13
+    - path: validation/differential-final-gcc/report.json
+      sha256: c1c2f7564990366e61b11dfac2483a5fccbb14304e68ef8477164c5d0db37f5c
+    - path: validation/differential-final-clang/report.json
+      sha256: 68461a7604b3f1cbdb77b1be474822b0bbcd4e011683fe8e01c64cbee16da2be
+    - path: validation/differential-final-asan/report.json
+      sha256: 9e28762ea1b2c4f6a398020735fb29ef3ca928c8fe298630f8cdc7ec0ec3049d
+    - path: validation/extended-final-gcc/report.json
+      sha256: 0978528a5fd11522e9806295b020930cdfb519360094e066b67e4a06b27d514b
+    - path: validation/extended-final-clang/report.json
+      sha256: 4157bf38c4316842cbcdb121326ba77d20c1fa3f320f1e2713777632ba7f09fa
+    - path: validation/extended-final-asan/report.json
+      sha256: d5bf1beb3975074bbe74397d60e0a8084f87bb55828877fd24d36c1723390016
+    numerical_thresholds: Frozen contract unchanged; exact nonzero support; real per-object
+      dictionary training
+- capability_id: learning.dictionary
+  owner: Local tristan rewrite maintainer
+  parity_class: REQUIRED_PARITY
+  upstream:
+    present: true
+    public_or_supported: true
+    symbol: learnDictionary / sklearn DictionaryLearning
+    description: Real training, max_iter=10; source ignores n_iter; source RNG and
+      BLAS state must be frozen
+  rewrite:
+    present: true
+    implementation: src/canonical/numerical.cpp
+  validation:
+    status: PASS
+    platforms:
+    - linux-x86_64
+    artifacts:
+    - path: validation/builds-v3/report.json
+      sha256: cdf1ae1d7b47e3da960c86334a9a6d5ba3b9b4b439fa3e928cfb74cfdf5bec73
+    - path: validation/qualification-v1/report.json
+      sha256: 1e96a01d9e28731ac00e5add88ab85633f2b4e30d0ccce08eb90e23b7b5deb13
+    - path: validation/differential-final-gcc/report.json
+      sha256: c1c2f7564990366e61b11dfac2483a5fccbb14304e68ef8477164c5d0db37f5c
+    - path: validation/differential-final-clang/report.json
+      sha256: 68461a7604b3f1cbdb77b1be474822b0bbcd4e011683fe8e01c64cbee16da2be
+    - path: validation/differential-final-asan/report.json
+      sha256: 9e28762ea1b2c4f6a398020735fb29ef3ca928c8fe298630f8cdc7ec0ec3049d
+    - path: validation/extended-final-gcc/report.json
+      sha256: 0978528a5fd11522e9806295b020930cdfb519360094e066b67e4a06b27d514b
+    - path: validation/extended-final-clang/report.json
+      sha256: 4157bf38c4316842cbcdb121326ba77d20c1fa3f320f1e2713777632ba7f09fa
+    - path: validation/extended-final-asan/report.json
+      sha256: d5bf1beb3975074bbe74397d60e0a8084f87bb55828877fd24d36c1723390016
+    numerical_thresholds: Frozen contract unchanged; exact nonzero support; real per-object
+      dictionary training
+- capability_id: backend.blas_lapack
+  owner: Local tristan rewrite maintainer
+  parity_class: REQUIRED_PARITY
+  upstream:
+    present: true
+    public_or_supported: true
+    symbol: numpy/scipy BLAS and LAPACK
+    description: Audited Intel MKL2023.1 BLAS/LAPACK; source single-thread dispatch;
+      reuse native dependency without Python; gesdd, GEMM/GEMV, POTRS/TRTRS, NRM2,
+      AXPY, ROT/ROTG
+    evidence: validation/g2_source/audit.json
+  rewrite:
+    present: true
+    implementation: src/canonical/numerical.cpp
+  validation:
+    status: PASS
+    platforms:
+    - linux-x86_64
+    artifacts:
+    - path: validation/builds-v3/report.json
+      sha256: cdf1ae1d7b47e3da960c86334a9a6d5ba3b9b4b439fa3e928cfb74cfdf5bec73
+    - path: validation/qualification-v1/report.json
+      sha256: 1e96a01d9e28731ac00e5add88ab85633f2b4e30d0ccce08eb90e23b7b5deb13
+    - path: validation/differential-final-gcc/report.json
+      sha256: c1c2f7564990366e61b11dfac2483a5fccbb14304e68ef8477164c5d0db37f5c
+    - path: validation/differential-final-clang/report.json
+      sha256: 68461a7604b3f1cbdb77b1be474822b0bbcd4e011683fe8e01c64cbee16da2be
+    - path: validation/differential-final-asan/report.json
+      sha256: 9e28762ea1b2c4f6a398020735fb29ef3ca928c8fe298630f8cdc7ec0ec3049d
+    - path: validation/extended-final-gcc/report.json
+      sha256: 0978528a5fd11522e9806295b020930cdfb519360094e066b67e4a06b27d514b
+    - path: validation/extended-final-clang/report.json
+      sha256: 4157bf38c4316842cbcdb121326ba77d20c1fa3f320f1e2713777632ba7f09fa
+    - path: validation/extended-final-asan/report.json
+      sha256: d5bf1beb3975074bbe74397d60e0a8084f87bb55828877fd24d36c1723390016
+    numerical_thresholds: Frozen contract unchanged; exact nonzero support; real per-object
+      dictionary training
+- capability_id: codec.reconstruction
+  owner: Local tristan rewrite maintainer
+  parity_class: REQUIRED_PARITY
+  upstream:
+    present: true
+    public_or_supported: true
+    symbol: reconstructDataMulti_without_correlation
+    description: Independent decoder with complete charged dictionary, coefficients
+      and reference metadata
+  rewrite:
+    present: true
+    implementation: src/canonical/codec.cpp
+  validation:
+    status: PASS
+    platforms:
+    - linux-x86_64
+    artifacts:
+    - path: validation/builds-v3/report.json
+      sha256: cdf1ae1d7b47e3da960c86334a9a6d5ba3b9b4b439fa3e928cfb74cfdf5bec73
+    - path: validation/qualification-v1/report.json
+      sha256: 1e96a01d9e28731ac00e5add88ab85633f2b4e30d0ccce08eb90e23b7b5deb13
+    - path: validation/differential-final-gcc/report.json
+      sha256: c1c2f7564990366e61b11dfac2483a5fccbb14304e68ef8477164c5d0db37f5c
+    - path: validation/differential-final-clang/report.json
+      sha256: 68461a7604b3f1cbdb77b1be474822b0bbcd4e011683fe8e01c64cbee16da2be
+    - path: validation/differential-final-asan/report.json
+      sha256: 9e28762ea1b2c4f6a398020735fb29ef3ca928c8fe298630f8cdc7ec0ec3049d
+    - path: validation/extended-final-gcc/report.json
+      sha256: 0978528a5fd11522e9806295b020930cdfb519360094e066b67e4a06b27d514b
+    - path: validation/extended-final-clang/report.json
+      sha256: 4157bf38c4316842cbcdb121326ba77d20c1fa3f320f1e2713777632ba7f09fa
+    - path: validation/extended-final-asan/report.json
+      sha256: d5bf1beb3975074bbe74397d60e0a8084f87bb55828877fd24d36c1723390016
+    numerical_thresholds: Frozen contract unchanged; exact nonzero support; real per-object
+      dictionary training
+- capability_id: sparse.omp
+  owner: Local tristan rewrite maintainer
+  parity_class: REQUIRED_PARITY
+  upstream:
+    present: true
+    public_or_supported: true
+    symbol: SparseCoder(transform_algorithm=omp)
+    description: Public transform backend; original positive finite input cases execute
+      successfully
+  rewrite:
+    present: true
+    implementation: src/canonical/numerical.cpp
+  validation:
+    status: PASS
+    platforms:
+    - linux-x86_64
+    artifacts:
+    - path: validation/builds-v3/report.json
+      sha256: cdf1ae1d7b47e3da960c86334a9a6d5ba3b9b4b439fa3e928cfb74cfdf5bec73
+    - path: validation/qualification-v1/report.json
+      sha256: 1e96a01d9e28731ac00e5add88ab85633f2b4e30d0ccce08eb90e23b7b5deb13
+    - path: validation/differential-final-gcc/report.json
+      sha256: c1c2f7564990366e61b11dfac2483a5fccbb14304e68ef8477164c5d0db37f5c
+    - path: validation/differential-final-clang/report.json
+      sha256: 68461a7604b3f1cbdb77b1be474822b0bbcd4e011683fe8e01c64cbee16da2be
+    - path: validation/differential-final-asan/report.json
+      sha256: 9e28762ea1b2c4f6a398020735fb29ef3ca928c8fe298630f8cdc7ec0ec3049d
+    - path: validation/extended-final-gcc/report.json
+      sha256: 0978528a5fd11522e9806295b020930cdfb519360094e066b67e4a06b27d514b
+    - path: validation/extended-final-clang/report.json
+      sha256: 4157bf38c4316842cbcdb121326ba77d20c1fa3f320f1e2713777632ba7f09fa
+    - path: validation/extended-final-asan/report.json
+      sha256: d5bf1beb3975074bbe74397d60e0a8084f87bb55828877fd24d36c1723390016
+    numerical_thresholds: Frozen contract unchanged; exact nonzero support; real per-object
+      dictionary training
+- capability_id: sparse.lars
+  owner: Local tristan rewrite maintainer
+  parity_class: REQUIRED_PARITY
+  upstream:
+    present: true
+    public_or_supported: true
+    symbol: SparseCoder(transform_algorithm=lars)
+    description: Public transform backend; original positive finite input cases execute
+      successfully
+  rewrite:
+    present: true
+    implementation: src/canonical/numerical.cpp
+  validation:
+    status: PASS
+    platforms:
+    - linux-x86_64
+    artifacts:
+    - path: validation/builds-v3/report.json
+      sha256: cdf1ae1d7b47e3da960c86334a9a6d5ba3b9b4b439fa3e928cfb74cfdf5bec73
+    - path: validation/qualification-v1/report.json
+      sha256: 1e96a01d9e28731ac00e5add88ab85633f2b4e30d0ccce08eb90e23b7b5deb13
+    - path: validation/differential-final-gcc/report.json
+      sha256: c1c2f7564990366e61b11dfac2483a5fccbb14304e68ef8477164c5d0db37f5c
+    - path: validation/differential-final-clang/report.json
+      sha256: 68461a7604b3f1cbdb77b1be474822b0bbcd4e011683fe8e01c64cbee16da2be
+    - path: validation/differential-final-asan/report.json
+      sha256: 9e28762ea1b2c4f6a398020735fb29ef3ca928c8fe298630f8cdc7ec0ec3049d
+    - path: validation/extended-final-gcc/report.json
+      sha256: 0978528a5fd11522e9806295b020930cdfb519360094e066b67e4a06b27d514b
+    - path: validation/extended-final-clang/report.json
+      sha256: 4157bf38c4316842cbcdb121326ba77d20c1fa3f320f1e2713777632ba7f09fa
+    - path: validation/extended-final-asan/report.json
+      sha256: d5bf1beb3975074bbe74397d60e0a8084f87bb55828877fd24d36c1723390016
+    numerical_thresholds: Frozen contract unchanged; exact nonzero support; real per-object
+      dictionary training
+- capability_id: sparse.lasso_lars
+  owner: Local tristan rewrite maintainer
+  parity_class: REQUIRED_PARITY
+  upstream:
+    present: true
+    public_or_supported: true
+    symbol: SparseCoder(transform_algorithm=lasso_lars)
+    description: Public transform backend; original positive finite input cases execute
+      successfully
+  rewrite:
+    present: true
+    implementation: src/canonical/numerical.cpp
+  validation:
+    status: PASS
+    platforms:
+    - linux-x86_64
+    artifacts:
+    - path: validation/builds-v3/report.json
+      sha256: cdf1ae1d7b47e3da960c86334a9a6d5ba3b9b4b439fa3e928cfb74cfdf5bec73
+    - path: validation/qualification-v1/report.json
+      sha256: 1e96a01d9e28731ac00e5add88ab85633f2b4e30d0ccce08eb90e23b7b5deb13
+    - path: validation/differential-final-gcc/report.json
+      sha256: c1c2f7564990366e61b11dfac2483a5fccbb14304e68ef8477164c5d0db37f5c
+    - path: validation/differential-final-clang/report.json
+      sha256: 68461a7604b3f1cbdb77b1be474822b0bbcd4e011683fe8e01c64cbee16da2be
+    - path: validation/differential-final-asan/report.json
+      sha256: 9e28762ea1b2c4f6a398020735fb29ef3ca928c8fe298630f8cdc7ec0ec3049d
+    - path: validation/extended-final-gcc/report.json
+      sha256: 0978528a5fd11522e9806295b020930cdfb519360094e066b67e4a06b27d514b
+    - path: validation/extended-final-clang/report.json
+      sha256: 4157bf38c4316842cbcdb121326ba77d20c1fa3f320f1e2713777632ba7f09fa
+    - path: validation/extended-final-asan/report.json
+      sha256: d5bf1beb3975074bbe74397d60e0a8084f87bb55828877fd24d36c1723390016
+    numerical_thresholds: Frozen contract unchanged; exact nonzero support; real per-object
+      dictionary training
+- capability_id: sparse.lasso_cd
+  owner: Local tristan rewrite maintainer
+  parity_class: REQUIRED_PARITY
+  upstream:
+    present: true
+    public_or_supported: true
+    symbol: SparseCoder(transform_algorithm=lasso_cd)
+    description: Public transform backend; original positive finite input cases execute
+      successfully
+  rewrite:
+    present: true
+    implementation: src/canonical/numerical.cpp
+  validation:
+    status: PASS
+    platforms:
+    - linux-x86_64
+    artifacts:
+    - path: validation/builds-v3/report.json
+      sha256: cdf1ae1d7b47e3da960c86334a9a6d5ba3b9b4b439fa3e928cfb74cfdf5bec73
+    - path: validation/qualification-v1/report.json
+      sha256: 1e96a01d9e28731ac00e5add88ab85633f2b4e30d0ccce08eb90e23b7b5deb13
+    - path: validation/differential-final-gcc/report.json
+      sha256: c1c2f7564990366e61b11dfac2483a5fccbb14304e68ef8477164c5d0db37f5c
+    - path: validation/differential-final-clang/report.json
+      sha256: 68461a7604b3f1cbdb77b1be474822b0bbcd4e011683fe8e01c64cbee16da2be
+    - path: validation/differential-final-asan/report.json
+      sha256: 9e28762ea1b2c4f6a398020735fb29ef3ca928c8fe298630f8cdc7ec0ec3049d
+    - path: validation/extended-final-gcc/report.json
+      sha256: 0978528a5fd11522e9806295b020930cdfb519360094e066b67e4a06b27d514b
+    - path: validation/extended-final-clang/report.json
+      sha256: 4157bf38c4316842cbcdb121326ba77d20c1fa3f320f1e2713777632ba7f09fa
+    - path: validation/extended-final-asan/report.json
+      sha256: d5bf1beb3975074bbe74397d60e0a8084f87bb55828877fd24d36c1723390016
+    numerical_thresholds: Frozen contract unchanged; exact nonzero support; real per-object
+      dictionary training
+- capability_id: sparse.threshold
+  owner: Local tristan rewrite maintainer
+  parity_class: REQUIRED_PARITY
+  upstream:
+    present: true
+    public_or_supported: true
+    symbol: SparseCoder(transform_algorithm=threshold)
+    description: Public transform backend; original positive finite input cases execute
+      successfully
+  rewrite:
+    present: true
+    implementation: src/canonical/numerical.cpp
+  validation:
+    status: PASS
+    platforms:
+    - linux-x86_64
+    artifacts:
+    - path: validation/builds-v3/report.json
+      sha256: cdf1ae1d7b47e3da960c86334a9a6d5ba3b9b4b439fa3e928cfb74cfdf5bec73
+    - path: validation/qualification-v1/report.json
+      sha256: 1e96a01d9e28731ac00e5add88ab85633f2b4e30d0ccce08eb90e23b7b5deb13
+    - path: validation/differential-final-gcc/report.json
+      sha256: c1c2f7564990366e61b11dfac2483a5fccbb14304e68ef8477164c5d0db37f5c
+    - path: validation/differential-final-clang/report.json
+      sha256: 68461a7604b3f1cbdb77b1be474822b0bbcd4e011683fe8e01c64cbee16da2be
+    - path: validation/differential-final-asan/report.json
+      sha256: 9e28762ea1b2c4f6a398020735fb29ef3ca928c8fe298630f8cdc7ec0ec3049d
+    - path: validation/extended-final-gcc/report.json
+      sha256: 0978528a5fd11522e9806295b020930cdfb519360094e066b67e4a06b27d514b
+    - path: validation/extended-final-clang/report.json
+      sha256: 4157bf38c4316842cbcdb121326ba77d20c1fa3f320f1e2713777632ba7f09fa
+    - path: validation/extended-final-asan/report.json
+      sha256: d5bf1beb3975074bbe74397d60e0a8084f87bb55828877fd24d36c1723390016
+    numerical_thresholds: Frozen contract unchanged; exact nonzero support; real per-object
+      dictionary training
+- capability_id: streaming.incremental
+  owner: Local tristan rewrite maintainer
+  parity_class: NOT_APPLICABLE
+  rationale: Selected source pipeline is batch; no stateful append/close codec API
+  validation:
+    status: PASS
+- capability_id: accelerator.gpu
+  owner: Local tristan rewrite maintainer
+  parity_class: NOT_APPLICABLE
+  rationale: No selected CUDA or GPU backend
+  validation:
+    status: PASS
+- capability_id: correlation.luminol_helper
+  owner: Local tristan rewrite maintainer
+  parity_class: NOT_APPLICABLE
+  rationale: localCorrelation is an unused separate helper; selected CORAD pipeline
+    computes DataFrame.corr
+  validation:
+    status: PASS
+- capability_id: simd.custom
+  parity_class: NOT_APPLICABLE
+  owner: Local tristan rewrite maintainer
+  rationale: Selected upstream has no custom ISA kernels; audited MKL internal ISA
+    dispatch is reused
+  validation:
+    status: PASS
+- capability_id: threading.joblib
+  parity_class: NOT_APPLICABLE
+  owner: Local tristan rewrite maintainer
+  rationale: Selected learnDictionary/SparseCoder wrappers do not expose n_jobs; default
+    one task; numerical library thread state audited separately
+  validation:
+    status: PASS
+- capability_id: random_access.seek
+  parity_class: NOT_APPLICABLE
+  owner: Local tristan rewrite maintainer
+  rationale: Source decoder reconstructs a complete batch; no seek/query API
+  validation:
+    status: PASS
+source_audit: ../../Source/tristan/golden/source_audit.json
+source_audit_sha256: 4eeab49f59406a4d1759b853572ab73907abe07480fa0faf9740127e3a121c3e
+inventory_status: FROZEN
+classification_frozen_before_cpp: true
+supported_validation_platforms:
+- linux-x86_64
