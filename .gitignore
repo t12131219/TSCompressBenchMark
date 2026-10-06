@@ -4,10 +4,47 @@ __pycache__/
 .ruff_cache/
 .mypy_cache/
 *.egg-info/
+.coverage
+.coverage.*
+htmlcov/
+/.venv/
+/venv/
+
+# Generated build/run/export products. Keep repository directory placeholders.
 build/*
 !build/.gitkeep
 runs/*
 !runs/.gitkeep
+/outputs/
+/reports/
+/artifacts/
+/dist/
+/tmp/
+/temp/
+
+# Local editor/agent settings and transient files.
+/.idea/
+/.vscode/
+/.claude/
+/.codex/
+/.agents/
+/.aws/
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+*.tmp
+*.temp
+*.log
+
+# Native build intermediates; required vendored libraries/models are not excluded.
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+CTestTestfile.cmake
+Testing/Temporary/
+/cmake-build-*/
 
 # Local specifications, implementation plans, and dataset payloads.
 /TimeSeries_Compression_Benchmark_Standard_v2.0_EdgeCase_Expanded.odt
@@ -19,7 +56,13 @@ runs/*
 # Local compression rewrites and their generated artifacts.
 /Compression_Rewrite/
 
-# Local rewrite cleanup inventories and historical evidence archive.
-/docs/rewrite_cleanup/**/*.json
-/docs/rewrite_cleanup/**/*.tar.gz
-/docs/rewrite_cleanup/**/*.log
+# Generated, host-specific validation/measurement reports kept locally.
+# Keep curated Markdown reviews, architecture assets, contracts, and source locks.
+/docs/completed_rewrites/
+/docs/*_integration_audit.json
+/docs/*_qualification.json
+/docs/*_release_consumption.json
+/docs/*_rewrite_review.json
+/docs/*_evidence_refresh.json
+/docs/**/*.visual-check.json
+/docs/rewrite_cleanup/
