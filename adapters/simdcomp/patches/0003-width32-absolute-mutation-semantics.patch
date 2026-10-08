@@ -1,0 +1,40 @@
+--- a/src/simdfor.c
++++ b/src/simdfor.c
+@@ -15196,5 +15196,5 @@
+ 
+ void simdfastsetFOR(uint32_t initvalue, __m128i *in, uint32_t bit,
+                     uint32_t value, size_t index) {
+-  simdfastset(in, bit, value - initvalue, index);
++  simdfastset(in, bit, bit == 32 ? value : value - initvalue, index);
+ }
+--- a/src/simdintegratedbitpacking.c
++++ b/src/simdintegratedbitpacking.c
+@@ -25339,6 +25339,15 @@
+ void simdfastsetd1fromprevious(__m128i *in, uint32_t bit,
+                                uint32_t previousvalue, uint32_t value,
+                                size_t index) {
++  if (bit == 32) {
++    /* Width 32 stores absolute values; retain the documented suffix shift. */
++    uint32_t *absolute = (uint32_t *)in;
++    uint32_t change = value - absolute[index];
++    size_t i;
++    for (i = index; i < SIMDBlockSize; ++i)
++      absolute[i] += change;
++    return;
++  }
+   simdfastset(in, bit, value - previousvalue, index);
+ }
+ 
+@@ -25347,10 +25356,10 @@
+ void simdfastsetd1(uint32_t initvalue, __m128i *in, uint32_t bit,
+                    uint32_t value, size_t index) {
+   if (index == 0) {
+-    simdfastset(in, bit, value - initvalue, index);
++    simdfastsetd1fromprevious(in, bit, initvalue, value, index);
+   } else {
+     uint32_t prev = simdselectd1(initvalue, in, bit, index - 1);
+-    simdfastset(in, bit, value - prev, index);
++    simdfastsetd1fromprevious(in, bit, prev, value, index);
+   }
+ }
+ 

@@ -1,0 +1,511 @@
+{
+  "schema_version": "tscb.codec-manifest.v2",
+  "key": "littleintpacker-bmi2-u32",
+  "identity": {
+    "display_name": "LittleIntPacker BMI2 (original fixed-width uint32 primitive)",
+    "family": "LITTLEINTPACKER_BMI2_UINT32",
+    "source_artifact_id": "v2:source-artifact:sha256:9f964d577f7ed79bfa4d342974c0955aba7e9a8d690f957bbd0afa7dce8102b2",
+    "citations": [
+      "https://github.com/fast-pack/LittleIntPacker@8777f574a5ab3c653881371819383c986292843c",
+      "adapters/littleintpacker/SOURCE_ADMISSION.md"
+    ]
+  },
+  "classification": {
+    "object_level": "P0_PRIMITIVE",
+    "implementation_class": "CONVENTIONAL",
+    "tracks": [
+      "VALUE"
+    ],
+    "subtracks": [
+      "V0"
+    ]
+  },
+  "input": {
+    "topologies": [
+      "UTS"
+    ],
+    "dtypes": [
+      "<u4"
+    ],
+    "ranks": [
+      1
+    ],
+    "layouts": [
+      "ROW_MAJOR_CONTIG"
+    ],
+    "endianness": [
+      "little"
+    ],
+    "alignment_bytes": 1,
+    "min_n": 0,
+    "max_n": 16777216,
+    "min_m": 1,
+    "max_m": 1,
+    "validity_shapes": [
+      "NONE"
+    ],
+    "value_coupling_mode": "COLUMN_INDEPENDENT",
+    "timestamp_semantics": {
+      "preserve_order": true,
+      "duplicates": true,
+      "out_of_order": true,
+      "negative_delta": true,
+      "absolute_epoch": true,
+      "overflow_policy": "NOT_APPLICABLE_PLAIN_UINT32"
+    },
+    "max_total_raw_bytes": 67108864,
+    "value_domain": {
+      "kind": "FROZEN_SOURCE_WITH_BOUNDED_REJECTION",
+      "unsupported_action": "REJECT_BEFORE_OUTPUT",
+      "oracle_evidence": "build/source-audits/littleintpacker_native_tests.json",
+      "rejection_reasons": [
+        "LITTLEINTPACKER_SUPPLIED_WIDTH_OUT_OF_RANGE"
+      ]
+    }
+  },
+  "semantics": {
+    "loss_modes": [
+      "LOSSLESS"
+    ],
+    "error_bound_types": [],
+    "reconstruction_modes": [
+      "EXACT_GRID"
+    ],
+    "rebuild_protocol": "TSCB_LIP1_UINT32_BMI2_CHECKED_DESCRIPTOR_V1",
+    "preprocess_class": "NONE",
+    "preprocess_stages": [],
+    "decodability_profile": "SELF_CONTAINED_CHECKED_DESCRIPTOR_LIP1_BMI2",
+    "bitstream_separability": "INDEPENDENT"
+  },
+  "lifecycle": {
+    "block_semantics": "ONE_ROUTED_VECTOR_NO_IMPLICIT_CHUNKING",
+    "state_semantics": "INDEPENDENT_CONTEXT_PER_REPETITION",
+    "reset": "MODE_ZERO_PRESERVES_PARAMETERS_CLEARS_OBJECT_AND_TIMING",
+    "finalize": "REQUIRED_ZERO_BYTE_FINALIZE",
+    "safe_overread_bytes": 0,
+    "tail_policy": "INTERNAL_32_VALUE_PACK_AND_128_VALUE_DECODE_HEADROOM_NO_EXTERNAL_PADDING",
+    "dictionary": "NONE",
+    "model": "NONE",
+    "index": "NONE"
+  },
+  "execution": {
+    "backends": [
+      "C_ABI_V1"
+    ],
+    "isa": [
+      "AVX2_BMI2"
+    ],
+    "devices": [
+      "CPU"
+    ],
+    "threading": "SINGLE_THREAD",
+    "fallback_policy": "DISALLOWED",
+    "runtime_dispatch": false
+  },
+  "features": {
+    "streaming": false,
+    "query": false,
+    "random_access": false
+  },
+  "parameters": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "native_timing": {
+        "type": "boolean",
+        "default": true
+      },
+      "isa": {
+        "type": "string",
+        "enum": [
+          "AVX2_BMI2"
+        ],
+        "default": "AVX2_BMI2"
+      },
+      "width_mode": {
+        "type": "string",
+        "enum": [
+          "AUTO",
+          "FIXED"
+        ],
+        "default": "AUTO"
+      },
+      "bit_width": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 32,
+        "default": 32
+      }
+    },
+    "constraints": [
+      {
+        "kind": "requires",
+        "when": {
+          "width_mode": "AUTO"
+        },
+        "required": {
+          "bit_width": [
+            32
+          ]
+        },
+        "reason": "AUTO width uses the whole object; bit_width=32 is its canonical placeholder"
+      }
+    ]
+  },
+  "adapter": {
+    "backend": "C_ABI_V1",
+    "version": "littleintpacker-ctypes-v1",
+    "factory": "LITTLEINTPACKER_CTYPES_V1",
+    "artifact_path": "build/adapters/littleintpacker/release/libtscb_littleintpacker.so",
+    "python_source_closure": [
+      {
+        "path": "src/tscompbench/__init__.py",
+        "sha256": "f62bab5f9aae50baffebd237be149dd11b3fde56a31a34efc85c54f2ecbb659e"
+      },
+      {
+        "path": "src/tscompbench/accounting/__init__.py",
+        "sha256": "3ccb992282afc462e3e628b09e5c853ab9f6901f67fc3995b9b77777d2aa0399"
+      },
+      {
+        "path": "src/tscompbench/accounting/ledger.py",
+        "sha256": "2ba12396c5c79130e643ae5a7d8b3e9d8683c26fdd352ab6786455cc05a9f153"
+      },
+      {
+        "path": "src/tscompbench/adapters/__init__.py",
+        "sha256": "75c6372ec1e3483696a1be20f2607df4f72fdcdfa3ef5fa2b6c5eb62e8b7e7fd"
+      },
+      {
+        "path": "src/tscompbench/adapters/alp.py",
+        "sha256": "011e77656dccea0c619a8de225d7126b23f1ed7a0c3ff4ec9f1fa38db0dfa74a"
+      },
+      {
+        "path": "src/tscompbench/adapters/brotli_stream.py",
+        "sha256": "79272dd8d06da9a56fedc23a36ff810110403f79d138e7a5dc7b13190859a369"
+      },
+      {
+        "path": "src/tscompbench/adapters/bzip2_stream.py",
+        "sha256": "358360bb9c7d67d54811b282163ddce56d971da4236b796e604bc87be185603b"
+      },
+      {
+        "path": "src/tscompbench/adapters/compatibility.py",
+        "sha256": "b5cead91befe4e35abf903c83f23bd8f43b2648050c75f7e44785b5c38862f80"
+      },
+      {
+        "path": "src/tscompbench/adapters/completed_rewrites.py",
+        "sha256": "9bd6d769a12584dcc56623146a526932716b121f0b026721e590a4d2924eb632"
+      },
+      {
+        "path": "src/tscompbench/adapters/deflate_zlib.py",
+        "sha256": "ab87deef49b6af4634cf4d662d8fedca77928970a9df13c35c2e8e838fd17735"
+      },
+      {
+        "path": "src/tscompbench/adapters/delta_varint.py",
+        "sha256": "5a52c9c192566c722df8b354a36cdcb583ed501f9d78f23bf1ccea2ea6c13e8e"
+      },
+      {
+        "path": "src/tscompbench/adapters/entropy_fse.py",
+        "sha256": "30236471170eb8d6cf23a1d64e059e0e49092ab6ba0a3e3cd87d4e281718af4f"
+      },
+      {
+        "path": "src/tscompbench/adapters/factory.py",
+        "sha256": "6c1036f2586ab371824f304d2370610af8ef2bbf2841174f2f30c5085d33d0a4"
+      },
+      {
+        "path": "src/tscompbench/adapters/fast_differential.py",
+        "sha256": "fb9514ca5a1c2d4dd23f9370e9bfa96c196793633952c93d63a61cdcd1ccb184"
+      },
+      {
+        "path": "src/tscompbench/adapters/fastpfor_simple.py",
+        "sha256": "75f59fe37158bb75d33a4f5b213c798b6b5cebfa180c8301830a466f499c8b06"
+      },
+      {
+        "path": "src/tscompbench/adapters/fastpfor_simple8b_rle.py",
+        "sha256": "ee88bda29ef714d6e694dc62ac69faed777998c7583b9dd7bd4fe0c7d1279213"
+      },
+      {
+        "path": "src/tscompbench/adapters/littleintpacker.py",
+        "sha256": "debb9a86887e9501a2697c75cc5d3ca5d88ea895a9e997be4d52cddd87dff5fd"
+      },
+      {
+        "path": "src/tscompbench/adapters/lz4_frame.py",
+        "sha256": "d59e0a6f7875476faf2f2ae81c52e7b3ef04f9d54ec35aba8d7ad4f085baf23d"
+      },
+      {
+        "path": "src/tscompbench/adapters/lzss_common.py",
+        "sha256": "3fb435ae1b1afd20fab890d1cdc0828f8980fe779aa11a6e0fc268fd157c314a"
+      },
+      {
+        "path": "src/tscompbench/adapters/lzss_dipperstein.py",
+        "sha256": "e6b4df15674ea3e45297105344ac605cc8c39ddcc230d9ac0b0ed7816f527417"
+      },
+      {
+        "path": "src/tscompbench/adapters/lzss_raw.py",
+        "sha256": "825a4320fdfb856aa8bfb5e0221bf904b33bdf27651983a9a106e80f013312d9"
+      },
+      {
+        "path": "src/tscompbench/adapters/lzsse2_raw.py",
+        "sha256": "911f3d2bf77d02512b1d923263b00cd68333b4f0bc6cb14a8a109306d9c3f90a"
+      },
+      {
+        "path": "src/tscompbench/adapters/lzsse8_raw.py",
+        "sha256": "2e564ca835c92310fc8c8c8bba044c7a9895325da1bd6e0c354ddfba626e631f"
+      },
+      {
+        "path": "src/tscompbench/adapters/maskedvbyte.py",
+        "sha256": "9e8f71820e1e3114203d00c7528438a19d7380b423b8987381173d6794ada086"
+      },
+      {
+        "path": "src/tscompbench/adapters/native_streaming.py",
+        "sha256": "b6f1dd7d86831835129ab07b95a40f457748aa8761e91b8cd60a64fde5acc0a1"
+      },
+      {
+        "path": "src/tscompbench/adapters/native_timing.py",
+        "sha256": "da33463384685e46dadd7af58ec36b922b6dffc9a0303580255b9b5b1e95e0b9"
+      },
+      {
+        "path": "src/tscompbench/adapters/neats.py",
+        "sha256": "3f7a6986d7ce816f9e3d67d3a06b190ec5f3a903160e7b64d258f24301fd9b72"
+      },
+      {
+        "path": "src/tscompbench/adapters/oracles.py",
+        "sha256": "25407f541e32495080029d7ec63a038dfed04c8a836e9dc0e9661caf43b2a010"
+      },
+      {
+        "path": "src/tscompbench/adapters/rewrite_lossless.py",
+        "sha256": "05076b3b8d0c9e39e05ea7c0f04099b0d2eca73aa6841ea5609906452599fc3c"
+      },
+      {
+        "path": "src/tscompbench/adapters/serf.py",
+        "sha256": "2e7f8eeef07b2b33f30f31a8cc359754415b3072b416e6b3ddc148cef73e135c"
+      },
+      {
+        "path": "src/tscompbench/adapters/simdcomp.py",
+        "sha256": "565bb93a36ecc57f0f70f0b3f2f58d64a63610767dc07fb862d1e1ade80ad512"
+      },
+      {
+        "path": "src/tscompbench/adapters/snappy_raw.py",
+        "sha256": "498b180d47a1872327a46abd276557794a7dc74cd04d3a957731a2526fc44832"
+      },
+      {
+        "path": "src/tscompbench/adapters/sprintz.py",
+        "sha256": "0f79b3c922609d22486b04fa81d4191c5e4d20def857fc848ebcc53223d9877e"
+      },
+      {
+        "path": "src/tscompbench/adapters/sprintz8.py",
+        "sha256": "ea340d8d7073f95824fdd4411934c5af7ac0cef48259163aa319ab70bd7e2711"
+      },
+      {
+        "path": "src/tscompbench/adapters/streamvbyte.py",
+        "sha256": "79e2c7fba61de4163f4e62fe4750db517397827df534105d888c9c630a30dd2d"
+      },
+      {
+        "path": "src/tscompbench/adapters/streamvbyte_modern.py",
+        "sha256": "3ea34ec580330f00d20ea03a07be6ab87bd0684d5b4e4e5703fe6bc92db28500"
+      },
+      {
+        "path": "src/tscompbench/adapters/streamvbyte_pipeline.py",
+        "sha256": "7f344b41b65e08738bba59ce2181b1caa1280030cfa1edaa8b78a10f8980ff4c"
+      },
+      {
+        "path": "src/tscompbench/adapters/xz_stream.py",
+        "sha256": "a09d07b39385b553105ccbbad484d6cdca938e4c1d8f20c34c5c4cb85114547d"
+      },
+      {
+        "path": "src/tscompbench/adapters/zfp.py",
+        "sha256": "d01264f5ca651abffed55edfc9b67cae95ec5d10bbe66965277febe7b5ec7991"
+      },
+      {
+        "path": "src/tscompbench/adapters/zstd_frame.py",
+        "sha256": "3ea50a2ccfa21deb0249e549428ecdd63ad2c39363f547304433b981ceb73e6c"
+      },
+      {
+        "path": "src/tscompbench/codecs/__init__.py",
+        "sha256": "3fffb98f3f947b1efe40a2ded9f09d626383fc26c586609828875f8e97e60f42"
+      },
+      {
+        "path": "src/tscompbench/codecs/classification.py",
+        "sha256": "0c1993f1001ec51c8097018dca92aaacd001ff0d44402728147f62df0963b956"
+      },
+      {
+        "path": "src/tscompbench/codecs/models.py",
+        "sha256": "0fc0d5c2018a173a8c57a1989c0c20017cc7f1def423b761c2904d8051344fbb"
+      },
+      {
+        "path": "src/tscompbench/codecs/negotiation.py",
+        "sha256": "294d57f737a54f1029de0640222e1b7616b3667924f5b0d708285202b48bfb84"
+      },
+      {
+        "path": "src/tscompbench/codecs/onboarding.py",
+        "sha256": "775600239e8b1c3948c6f80ffce58a37a98ea9a610ef6eb7c1ea4c2a5e9f01f0"
+      },
+      {
+        "path": "src/tscompbench/codecs/registry.py",
+        "sha256": "09b82dcbf77e010096d14184c6968a94d8177597cd441cf9f9d0d4e79d6437aa"
+      },
+      {
+        "path": "src/tscompbench/contracts/__init__.py",
+        "sha256": "0900122327416d50f71784961c963d698e02aec628e5aadedbb740e18daae60e"
+      },
+      {
+        "path": "src/tscompbench/contracts/enums.py",
+        "sha256": "b2e1f9c932d8a46372f89e379a0694a76a1eeea6ace49fb0d8d97d7d16ac1944"
+      },
+      {
+        "path": "src/tscompbench/datasets/__init__.py",
+        "sha256": "7a298a88bcf2e5a236095c81c944ae212722410644700db0545eb6f193915a4c"
+      },
+      {
+        "path": "src/tscompbench/datasets/canonical.py",
+        "sha256": "7823607c1502bdd75c369dff3119c87be565b26df6908bc1906564d3c987ce1a"
+      },
+      {
+        "path": "src/tscompbench/datasets/characterize.py",
+        "sha256": "1a4676f53c5bd1a52ce6c4776762f7ca6b99c34ef4f2d46255c1d794bbd1e542"
+      },
+      {
+        "path": "src/tscompbench/datasets/loaders.py",
+        "sha256": "6970968ef9fbee401ef34c8539d0c797cc276e9984644eba95ae628810e12f07"
+      },
+      {
+        "path": "src/tscompbench/datasets/models.py",
+        "sha256": "119fb16d613d5b61e2805d1f6e14aad85a46d501c8ddd1d6d6e65b2e75d23e5c"
+      },
+      {
+        "path": "src/tscompbench/datasets/registry.py",
+        "sha256": "367ba068bec84739c483a7547bf86e994b8043ee8615b8b1221e23827212202f"
+      },
+      {
+        "path": "src/tscompbench/execution/__init__.py",
+        "sha256": "1d0ea9d200c25cf8963a622673a42a65f7bf5a3cf8564a30b2fddd1ad71a50df"
+      },
+      {
+        "path": "src/tscompbench/execution/isolation.py",
+        "sha256": "54ad3c67e6ac82dad196140c52843e584df072095a0e9375cedd3d0bd1d9ea90"
+      },
+      {
+        "path": "src/tscompbench/execution/preparation.py",
+        "sha256": "9a761afb833b565138475fba34092032cb2872754b8a820c4fae711948595fb5"
+      },
+      {
+        "path": "src/tscompbench/execution/protocol.py",
+        "sha256": "1144991af823dd6a28f3981733b6a6df4511a82e8af5439ff7cf00a74b346a09"
+      },
+      {
+        "path": "src/tscompbench/execution/repetition.py",
+        "sha256": "9a9b4733255b6804df10b31c5b5358434b69de272c203e0a3b16932e33d75e54"
+      },
+      {
+        "path": "src/tscompbench/execution/routing.py",
+        "sha256": "13f9ffad2f4618cefeb3ccb9cca8252de731e552563db3c59a9105ad557fb71e"
+      },
+      {
+        "path": "src/tscompbench/ids/__init__.py",
+        "sha256": "8dedcfdd766da90e292eb509ee764f4d3b2f9555bd03f68ec343aacee3b95a5c"
+      },
+      {
+        "path": "src/tscompbench/ids/canonical_json.py",
+        "sha256": "2ee3e07905bc07aeedbc355657200a3fa1e9d684c55700e6d36e778b4a7a9ade"
+      },
+      {
+        "path": "src/tscompbench/measurement/__init__.py",
+        "sha256": "b2e52e6d72d7a7cc9750a0ecabfaa39701a17ebcdcfcbf0ff836663cbc94715e"
+      },
+      {
+        "path": "src/tscompbench/measurement/contracts.py",
+        "sha256": "087e18b022aa64f4b63cbb43abf1c37d838f66f089399b0118eef3e069731381"
+      },
+      {
+        "path": "src/tscompbench/measurement/resources.py",
+        "sha256": "c7ed11df070e5e291d8c8e71430c421ce3b45a098a64e12036d505310c07becf"
+      },
+      {
+        "path": "src/tscompbench/measurement/workloads.py",
+        "sha256": "65f996254329784683baeb162f555eb3f9b0d998420cdd0818eb0ac72cde8dbe"
+      },
+      {
+        "path": "src/tscompbench/planning/__init__.py",
+        "sha256": "baa4d5af1232541cac81e4f0f7e389c4d71f8ff6feb5d3344eec1ef92e79fff4"
+      },
+      {
+        "path": "src/tscompbench/planning/models.py",
+        "sha256": "66d7ff48d3afc347c3d18a03055133c74dd41019e5f588e306d2e468273100ac"
+      },
+      {
+        "path": "src/tscompbench/planning/resolution.py",
+        "sha256": "d31405f56bbd9274a930dc94cec684a6124b5b8f88a39cf5fdd077d69cd5909a"
+      },
+      {
+        "path": "src/tscompbench/planning/sweep.py",
+        "sha256": "bff6866be4c2dd7931d77b9ca8a56779e6dcb2f733540d11bab3ee43b36fce97"
+      },
+      {
+        "path": "src/tscompbench/planning/tasks.py",
+        "sha256": "f2754922e6a1db88f7747a02438db289011b1f9643f34bce9a3b8237075f2b31"
+      },
+      {
+        "path": "src/tscompbench/preprocess/__init__.py",
+        "sha256": "04f8677bcdc85efb69e4a3736163c2327c802218859e6af1fbdeb490a32c3246"
+      },
+      {
+        "path": "src/tscompbench/preprocess/contracts.py",
+        "sha256": "16e596bbce1e418033a2e843cd68a67632f28388b013c0d5dcefa3e393a3f1a2"
+      },
+      {
+        "path": "src/tscompbench/preprocess/maskedvbyte.py",
+        "sha256": "29470b515d76b1f61378851ea964b91ac8f706d429806f8e4f7bec384e3deb09"
+      },
+      {
+        "path": "src/tscompbench/preprocess/simdcomp.py",
+        "sha256": "3819ba902cd1bbd7a5c0c7b70c8d6bfff8e3eb751a34307626654e92424826f5"
+      },
+      {
+        "path": "src/tscompbench/preprocess/streamvbyte.py",
+        "sha256": "411b22f9a72f91f10288afab793cbc4a14700dc0b9a8dea2a5b8985c234af97e"
+      },
+      {
+        "path": "src/tscompbench/preprocess/streamvbyte_modern.py",
+        "sha256": "71923554bf16d68db9f4e2a74adecbb3739a08fcf75604c8dfe27352fa5e6669"
+      },
+      {
+        "path": "src/tscompbench/version.py",
+        "sha256": "91447944015cec709e8aa7655f7e9d64e1e4508e7023a57fe3746911c0fc6fed"
+      },
+      {
+        "path": "tests/adapters/test_littleintpacker.py",
+        "sha256": "1935af98ac9cb414d79348a7fd80d047571b9e0038ffc4e15a36429f17c988d8"
+      },
+      {
+        "path": "tools/audit_littleintpacker_native.py",
+        "sha256": "adc47343499116c340c52dc6ededc14f57950613103b701271083eab8203e9cb"
+      },
+      {
+        "path": "tools/audit_littleintpacker_source.py",
+        "sha256": "7152df6edf9ab929484f3207ed3779c0e7d7dbc013efe63d92be5331a220492d"
+      },
+      {
+        "path": "tools/qualify_littleintpacker_sdk.py",
+        "sha256": "27c0ee0d46d724c12e58dde5d5bb97264cbee8b802920e337cc8dbcdafc4919d"
+      }
+    ],
+    "timing_boundary": "PYTHON_FFI_DESCRIPTOR_LIP1_WIDTH_SCAN_STAGING_AND_CHECKSUM_INCLUDED",
+    "native_timing_capability": {
+      "optional": true,
+      "boundary": "CODEC_API_ONLY_V1",
+      "clock": "CLOCK_MONOTONIC",
+      "excludes": [
+        "CONTEXT_LIFECYCLE",
+        "DESCRIPTOR_CONTAINER",
+        "PYTHON_FFI",
+        "STAGING_ALLOCATION_COPY",
+        "WIDTH_SCAN_AND_VALIDATION",
+        "LIP1_CHECKSUM"
+      ]
+    },
+    "accounting_hooks": [
+      "ORIGINAL_FIXED_WIDTH_VALUE_BITS",
+      "TAIL_PADDING_BITS",
+      "COUNT_WIDTH_VARIANT_MODE_METADATA",
+      "DESCRIPTOR_LIP1_CONTAINER_CHECKSUM"
+    ]
+  }
+}

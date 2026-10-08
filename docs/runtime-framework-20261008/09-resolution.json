@@ -1,0 +1,219 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "TSDataCompressBenchMark · 实际运行路径与三层可比键",
+    "locale": "zh-CN",
+    "quality_profile": "showcase",
+    "viewBox": [
+      1150,
+      755
+    ],
+    "legend": {
+      "mode": "auto",
+      "entries": {
+        "frontend": {
+          "label": "入口 / 报告"
+        },
+        "backend": {
+          "label": "控制 / 执行"
+        },
+        "database": {
+          "label": "文件证据"
+        },
+        "security": {
+          "label": "资格 / 校验"
+        },
+        "external": {
+          "label": "外部来源"
+        }
+      }
+    }
+  },
+  "components": [
+    {
+      "id": "tscb-09-resolution-n1",
+      "type": "backend",
+      "label": "请求 ISA 与环境",
+      "sublabel": "resolve_execution",
+      "pos": [
+        60,
+        85
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-09-resolution-n2",
+      "type": "security",
+      "label": "ISA 与 fallback 门",
+      "sublabel": "actual_isa",
+      "pos": [
+        450,
+        85
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-09-resolution-n3",
+      "type": "backend",
+      "label": "设备与资源选择",
+      "sublabel": "threads / processes / affinity",
+      "pos": [
+        840,
+        85
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-09-resolution-n4",
+      "type": "backend",
+      "label": "产物闭包身份",
+      "sublabel": "artifact_sha256",
+      "pos": [
+        840,
+        335
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-09-resolution-n5",
+      "type": "backend",
+      "label": "execution_path_hash",
+      "sublabel": "ExecutionResolution",
+      "pos": [
+        450,
+        335
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-09-resolution-n6",
+      "type": "backend",
+      "label": "语义可比键",
+      "sublabel": "SemanticComparabilityKey",
+      "pos": [
+        60,
+        335
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-09-resolution-n7",
+      "type": "backend",
+      "label": "执行可比键",
+      "sublabel": "ExecutionComparabilityKey",
+      "pos": [
+        60,
+        585
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-09-resolution-n8",
+      "type": "backend",
+      "label": "资源可比键",
+      "sublabel": "ResourceProfileKey",
+      "pos": [
+        450,
+        585
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-09-resolution-n9",
+      "type": "security",
+      "label": "冻结并供资格分析",
+      "sublabel": "comparability documents",
+      "pos": [
+        840,
+        585
+      ],
+      "size": [
+        250,
+        95
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "tscb-09-resolution-e0",
+      "to": "tscb-09-resolution-n2",
+      "label": "进入",
+      "from": "tscb-09-resolution-n1"
+    },
+    {
+      "id": "tscb-09-resolution-e1",
+      "to": "tscb-09-resolution-n3",
+      "label": "生成",
+      "from": "tscb-09-resolution-n2"
+    },
+    {
+      "id": "tscb-09-resolution-e2",
+      "to": "tscb-09-resolution-n4",
+      "label": "传递",
+      "from": "tscb-09-resolution-n3",
+      "labelAt": [
+        965.0,
+        194.0
+      ]
+    },
+    {
+      "id": "tscb-09-resolution-e3",
+      "to": "tscb-09-resolution-n5",
+      "label": "执行",
+      "from": "tscb-09-resolution-n4"
+    },
+    {
+      "id": "tscb-09-resolution-e4",
+      "to": "tscb-09-resolution-n6",
+      "label": "得到",
+      "from": "tscb-09-resolution-n5"
+    },
+    {
+      "id": "tscb-09-resolution-e5",
+      "to": "tscb-09-resolution-n7",
+      "label": "核对",
+      "from": "tscb-09-resolution-n6",
+      "labelAt": [
+        185.0,
+        444.0
+      ]
+    },
+    {
+      "id": "tscb-09-resolution-e6",
+      "to": "tscb-09-resolution-n8",
+      "label": "冻结",
+      "from": "tscb-09-resolution-n7"
+    },
+    {
+      "id": "tscb-09-resolution-e7",
+      "to": "tscb-09-resolution-n9",
+      "label": "输出",
+      "from": "tscb-09-resolution-n8"
+    }
+  ]
+}

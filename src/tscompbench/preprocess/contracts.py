@@ -21,8 +21,11 @@ class PreprocessStage:
     parameters: dict[str, Any]
     inverse_required: bool
     accounting_components: tuple[str, ...]
+    enabled: bool = True
 
     def __post_init__(self) -> None:
+        if type(self.enabled) is not bool:
+            raise PreprocessContractError("stage enabled flag must be boolean")
         if self.stage_slot not in {"A", "B", "C", "D"}:
             raise PreprocessContractError("pipeline stage slot must be A, B, C, or D")
         if self.stage_class is PreprocessClass.NONE and self.parameters:
@@ -43,7 +46,7 @@ class PreprocessPlan:
 
     @property
     def semantic_class(self) -> PreprocessClass:
-        classes = {stage.stage_class for stage in self.stages}
+        classes = {stage.stage_class for stage in self.stages if stage.enabled}
         if PreprocessClass.LOSSY_PREPROCESS in classes:
             return PreprocessClass.LOSSY_PREPROCESS
         if PreprocessClass.TRAINING_LEARNED in classes:
@@ -63,7 +66,9 @@ class PreprocessPlan:
         }
 
 
-def build_preprocess_plan(manifest_document: dict[str, Any]) -> PreprocessPlan:
+def build_preprocess_plan(
+    manifest_document: dict[str, Any], parameters: dict[str, Any] | None = None
+) -> PreprocessPlan:
     semantics = manifest_document["semantics"]
     declared_class = PreprocessClass(semantics["preprocess_class"])
     stages = tuple(
@@ -82,6 +87,25 @@ def build_preprocess_plan(manifest_document: dict[str, Any]) -> PreprocessPlan:
         raise PreprocessContractError(
             "manifest preprocess_class does not match its explicit pipeline stages"
         )
+    if parameters is not None:
+        from dataclasses import replace
+
+        effective = []
+        for stage, item in zip(stages, semantics["preprocess_stages"], strict=True):
+            switch = item.get("enable_parameter")
+            if switch is not None:
+                prop = manifest_document["parameters"]["properties"].get(switch, {})
+                if prop.get("type") != "boolean":
+                    raise PreprocessContractError(
+                        "stage switch must name a boolean codec parameter"
+                    )
+                enabled = parameters.get(switch, prop.get("default"))
+                # Invalid configs still need a deterministic diagnostic Task. Their
+                # config status blocks execution; do not coerce a nonboolean to truth.
+                if type(enabled) is bool:
+                    stage = replace(stage, enabled=enabled)
+            effective.append(stage)
+        plan = PreprocessPlan.create(tuple(effective))
     return plan
 
 

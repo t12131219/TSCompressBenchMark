@@ -1,0 +1,91 @@
+{
+  "schema_version": "tscb.source-artifact.v2",
+  "key": "maskedvbyte-e2298b7",
+  "kind": "VENDORED_UPSTREAM_SOURCE_CLOSURE",
+  "identity": {
+    "kind": "VENDORED_UPSTREAM_SOURCE_CLOSURE",
+    "key": "maskedvbyte-e2298b7",
+    "repository": "https://github.com/fast-pack/MaskedVByte",
+    "commit": "e2298b7a28002e08f3f74755353b7229bfe6475b",
+    "source_closure_sha256": "7c3c82c22677c3bdb3595419d1b9f0e4efaabbf44e82964ea0e6cde15aaf31b1",
+    "patch_series": [
+      {
+        "path": "adapters/maskedvbyte/patches/0001-unsigned-shifts.patch",
+        "sha256": "c1095c52e39f9e550469ccc481469e9b3e6f796bc59fa127ce3790c707bfdb69"
+      }
+    ],
+    "selection": "EXACT_WORKBOOK_SOURCE_BENCHMARK_WRAPPER_DIFFERENCES_RETAINED",
+    "benchmark_reference": "FastPFOR headers/simdvariablebyte.h: plain-only padded other API; not substituted",
+    "copy_policy": "UNMODIFIED_VENDOR_PLUS_EXPLICIT_BUILD_ONLY_UNSIGNED_SHIFT_PATCH"
+  },
+  "license": {
+    "spdx": "Apache-2.0",
+    "status": "RUN_ALLOWED",
+    "redistribution": "ALLOWED_WITH_LICENSE_NOTICE",
+    "files": [
+      "adapters/maskedvbyte/vendor/MaskedVByte/LICENSE"
+    ]
+  },
+  "build": {
+    "recipe": "python tools/build_codec.py maskedvbyte-u32 --profile all",
+    "patches": [
+      {
+        "path": "adapters/maskedvbyte/patches/0001-unsigned-shifts.patch",
+        "sha256": "c1095c52e39f9e550469ccc481469e9b3e6f796bc59fa127ce3790c707bfdb69"
+      }
+    ],
+    "submodules": [],
+    "source_closure": [
+      {
+        "path": "adapters/maskedvbyte/vendor/MaskedVByte/README.md",
+        "sha256": "9432b488ec3d0ff91153e609d9d261fcd5cb9c734e1231a0713ebb9f30e24977"
+      },
+      {
+        "path": "adapters/maskedvbyte/vendor/MaskedVByte/LICENSE",
+        "sha256": "cb5e8e7e5f4a3988e1063c142c60dc2df75605f4c46515e776e3aca6df976e14"
+      },
+      {
+        "path": "adapters/maskedvbyte/vendor/MaskedVByte/Makefile",
+        "sha256": "5b72a10f4c39c85c526ce891285b953d831ecfe4357c782201a1372ce3f163e3"
+      },
+      {
+        "path": "adapters/maskedvbyte/vendor/MaskedVByte/CMakeLists.txt",
+        "sha256": "92aa25555bf881b841627fc2eb4fa194734afe1ea2925f95973c9730a3d5a26d"
+      },
+      {
+        "path": "adapters/maskedvbyte/vendor/MaskedVByte/cmake/maskedvbyteConfig.cmake.in",
+        "sha256": "327c369c43f93c22a78d89047aa2412dc9b0d34799a826273e1d21894b6734ed"
+      },
+      {
+        "path": "adapters/maskedvbyte/vendor/MaskedVByte/include/varintencode.h",
+        "sha256": "1f5b578bb8be74d74c30ba534d950ae5870d757f6a6149375ec93077b1a67b2a"
+      },
+      {
+        "path": "adapters/maskedvbyte/vendor/MaskedVByte/include/varintdecode.h",
+        "sha256": "e677a49f487c3f0e70837cc6754d3dd699984fae25febaaf7e615d10366853bb"
+      },
+      {
+        "path": "adapters/maskedvbyte/vendor/MaskedVByte/src/varintencode.c",
+        "sha256": "1a1e77fa923f541e5f8689dbf51e57c75b2bea0b10048e483f408469a6bd291d"
+      },
+      {
+        "path": "adapters/maskedvbyte/vendor/MaskedVByte/src/varintdecode.c",
+        "sha256": "9a716c43ade144171a7e1295ea3f52d68b277d8c001d413943c620b4e7679291"
+      },
+      {
+        "path": "adapters/maskedvbyte/vendor/MaskedVByte/tests/unit.c",
+        "sha256": "ab2dbbd5ef68c0eb9c507d01a4386ed495dce2f8665984a325d6f6bfa0ce9c15"
+      },
+      {
+        "path": "adapters/maskedvbyte/vendor/MaskedVByte/examples/example.c",
+        "sha256": "65b583f1b06d6da16f0850664020bd2abeb09d35f4fae37efa728b96bc62c730"
+      }
+    ],
+    "translation_units": [
+      "adapters/maskedvbyte/native/tscb_maskedvbyte.c",
+      "adapters/maskedvbyte/vendor/MaskedVByte/src/varintencode.c",
+      "adapters/maskedvbyte/vendor/MaskedVByte/src/varintdecode.c"
+    ],
+    "admission_card": "adapters/maskedvbyte/SOURCE_ADMISSION.md"
+  }
+}

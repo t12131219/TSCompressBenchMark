@@ -7,6 +7,7 @@ from tscompbench.codecs import CodecManifest
 from tscompbench.contracts import RunStatus
 from tscompbench.datasets.canonical import CanonicalArtifact
 from tscompbench.planning import BenchmarkTask
+from tscompbench.preprocess.runtime import reviewed_pipeline_executor, validate_pipeline_stages
 from tscompbench.validation import (
     BoundarySuiteReport,
     CorrectnessReport,
@@ -115,7 +116,7 @@ def preflight_task(
                 "runtime_adapter_id": adapter.adapter_id,
             },
         ), None
-    if task.preprocess.stages:
+    if not reviewed_pipeline_executor(manifest.document, adapter, task.preprocess, parameters):
         return _failure(
             RunStatus.INCOMPARABLE,
             "PREPROCESS_EXECUTOR_NOT_REGISTERED",
@@ -139,6 +140,37 @@ def preflight_task(
 
     timeout = float(task.resource_limits["timeout_seconds"])
     memory_limit = int(task.resource_limits["memory_limit_bytes"])
+    stage_evidence = None
+    if task.preprocess.stages:
+        stage_call = run_isolated(
+            validate_pipeline_stages,
+            adapter,
+            prepared.codec_input,
+            parameters,
+            timeout_seconds=timeout,
+            memory_limit_bytes=memory_limit,
+            cpu_affinity=cpu_affinity,
+        )
+        if stage_call.status is not RunStatus.PASS:
+            stage_status = {
+                "SourceDomainError": RunStatus.UNSUPPORTED,
+                "MemoryError": RunStatus.OOM,
+                "PreprocessContractError": RunStatus.CORRECTNESS_FAIL,
+            }.get(stage_call.exception_type or "", stage_call.status)
+            return _failure(
+                stage_status,
+                "SOURCE_DOMAIN_UNSUPPORTED"
+                if stage_call.exception_type == "SourceDomainError"
+                else "PREPROCESS_STAGE_VALIDATION_FAILED",
+                input_validation=input_validation,
+                diagnostics={
+                    "exception_type": stage_call.exception_type,
+                    "message": stage_call.message,
+                    "exit_code": stage_call.exit_code,
+                    "limit_method": stage_call.limit_method,
+                },
+            ), prepared
+        stage_evidence = stage_call.value
     boundary_call = run_isolated(
         run_boundary_suite,
         adapter,
@@ -259,7 +291,10 @@ def preflight_task(
             correctness,
             observation.encoded.ledger.to_document(),
             observation.encoded.stream_sha256,
-            {"worker_limit_method": call.limit_method},
+            {
+                "worker_limit_method": call.limit_method,
+                "preprocess_stage_validation": stage_evidence,
+            },
         ),
         prepared,
     )

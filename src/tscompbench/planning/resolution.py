@@ -7,6 +7,7 @@ from typing import Any
 from tscompbench.codecs import CodecManifest, CompatibilityPlan, DataDescriptor
 from tscompbench.contracts import CapabilityStatus, RunStatus
 from tscompbench.ids import canonical_json_bytes, stable_id
+from tscompbench.preprocess import build_preprocess_plan
 
 from .models import ComparabilityKeys, ExecutionResolution, ResolvedConfig
 
@@ -41,8 +42,11 @@ def resolve_execution(
     execution = manifest.document["execution"]
     requested = str(config.parameters.get("isa", execution["isa"][0]))
     available_flags = set(environment["cpu"].get("flags", []))
+    required_flags = set(execution.get("required_cpu_flags", []))
     manifest_isas = set(execution["isa"])
-    if requested == "AVX2_BMI2_LZCNT":
+    if requested == "AVX2_BMI2":
+        cpu_supports = {"avx2", "bmi2"}.issubset(available_flags)
+    elif requested == "AVX2_BMI2_LZCNT":
         cpu_supports = {"avx2", "bmi2"}.issubset(available_flags) and bool(
             {"abm", "lzcnt"} & available_flags
         )
@@ -52,6 +56,7 @@ def resolve_execution(
             or (requested == "CPU_RUNTIME_DISPATCH" and execution["runtime_dispatch"])
             or _ISA_FLAGS.get(requested) in available_flags
         )
+    cpu_supports = cpu_supports and required_flags.issubset(available_flags)
     status = RunStatus.PLANNED
     reason = "RESOLVED"
     actual = requested
@@ -73,7 +78,11 @@ def resolve_execution(
         reason = "REQUESTED_ISA_NOT_DECLARED_BY_CODEC"
         actual = "NOT_EXECUTED"
     elif not cpu_supports:
-        if execution["fallback_policy"] == "SCALAR_ALLOWED" and "SCALAR" in manifest_isas:
+        if (
+            execution["fallback_policy"] == "SCALAR_ALLOWED"
+            and "SCALAR" in manifest_isas
+            and required_flags.issubset(available_flags)
+        ):
             actual = "SCALAR"
             fallback_used = True
             fallback_reason = "CPU_MISSING_REQUESTED_ISA"
@@ -203,7 +212,9 @@ def build_comparability_keys(
         "adapter_semantic_class": tuple(
             operation.semantic_class for operation in compatibility.operations
         ),
-        "preprocess_class": manifest.preprocess_class,
+        "preprocess_class": build_preprocess_plan(
+            manifest.document, config.parameters
+        ).semantic_class,
         "block_semantics": lifecycle["block_semantics"],
         "state_semantics": lifecycle["state_semantics"],
         "error_bound_type": config.parameters.get("error_bound_type", "NOT_APPLICABLE"),
@@ -249,6 +260,7 @@ def build_comparability_keys(
         "backend": execution.backend,
         "adapter_boundary": manifest.document["adapter"]["timing_boundary"],
         "native_timing_enabled": bool(config.parameters.get("native_timing", False)),
+        "stage_timing_enabled": bool(config.parameters.get("stage_timing", False)),
     }
     execution_key = stable_id("execution-comparability", execution_document)
     resource_document = {

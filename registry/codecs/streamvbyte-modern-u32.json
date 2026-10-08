@@ -1,0 +1,148 @@
+{
+  "schema_version": "tscb.codec-manifest.v2",
+  "key": "streamvbyte-modern-u32",
+  "identity": {
+    "display_name": "Modern Stream VByte 1234 (uint32 primitive)",
+    "family": "MODERN_STREAMVBYTE_1234_U32",
+    "citations": [
+      "https://github.com/fast-pack/streamvbyte@7c472d7d4d63c8bc65a88f310ccfc695a0eaf1ce",
+      "adapters/streamvbyte_modern/contract.md"
+    ],
+    "source_artifact_id": "v2:source-artifact:sha256:84d899b8be4348656bcca306d2b543d8acde7e1865f762698ee8ed3dbc33859b"
+  },
+  "classification": {
+    "object_level": "P0_PRIMITIVE",
+    "implementation_class": "CONVENTIONAL",
+    "tracks": [
+      "VALUE"
+    ],
+    "subtracks": [
+      "V0"
+    ]
+  },
+  "input": {
+    "topologies": [
+      "UTS"
+    ],
+    "dtypes": [
+      "<u4"
+    ],
+    "ranks": [
+      1
+    ],
+    "layouts": [
+      "ROW_MAJOR_CONTIG"
+    ],
+    "endianness": [
+      "little"
+    ],
+    "alignment_bytes": 1,
+    "min_n": 0,
+    "max_n": 16777216,
+    "min_m": 1,
+    "max_m": 1,
+    "validity_shapes": [
+      "NONE"
+    ],
+    "value_coupling_mode": "COLUMN_INDEPENDENT",
+    "timestamp_semantics": {
+      "preserve_order": true,
+      "duplicates": true,
+      "out_of_order": true,
+      "negative_delta": true,
+      "absolute_epoch": true,
+      "overflow_policy": "NOT_APPLICABLE_VALUE_ONLY"
+    },
+    "max_total_raw_bytes": 67108864
+  },
+  "semantics": {
+    "loss_modes": [
+      "LOSSLESS"
+    ],
+    "error_bound_types": [],
+    "reconstruction_modes": [
+      "EXACT_GRID"
+    ],
+    "rebuild_protocol": "TSCB_MODERN_1234_U32_DESCRIPTOR_COUNT_V1",
+    "preprocess_class": "NONE",
+    "preprocess_stages": [],
+    "decodability_profile": "SELF_CONTAINED_CHECKED_DESCRIPTOR_AND_NATIVE_SVB_COUNT",
+    "bitstream_separability": "INDEPENDENT"
+  },
+  "lifecycle": {
+    "block_semantics": "ONE_ROUTED_VECTOR_NO_IMPLICIT_CHUNKING",
+    "state_semantics": "INDEPENDENT_CONTEXT_PER_REPETITION",
+    "reset": "NEW_CONTEXT_REQUIRED",
+    "finalize": "REQUIRED_ZERO_BYTE_FINALIZE",
+    "safe_overread_bytes": 0,
+    "tail_policy": "EXACT_COUNT_SSE4_1_FULL_GROUPS_SCALAR_REMAINDER",
+    "dictionary": "NONE",
+    "model": "NONE",
+    "index": "NONE"
+  },
+  "execution": {
+    "backends": [
+      "C_ABI_V1"
+    ],
+    "isa": [
+      "SSE4_1"
+    ],
+    "devices": [
+      "CPU"
+    ],
+    "threading": "SINGLE_THREAD",
+    "fallback_policy": "DISALLOWED",
+    "runtime_dispatch": false
+  },
+  "features": {
+    "streaming": false,
+    "query": false,
+    "random_access": false
+  },
+  "parameters": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "native_timing": {
+        "type": "boolean",
+        "default": true
+      },
+      "isa": {
+        "type": "string",
+        "enum": [
+          "SSE4_1"
+        ],
+        "default": "SSE4_1"
+      }
+    },
+    "constraints": []
+  },
+  "adapter": {
+    "backend": "C_ABI_V1",
+    "version": "streamvbyte-modern-ctypes-v1",
+    "factory": "STREAMVBYTE_MODERN_CTYPES_V1",
+    "artifact_path": "build/adapters/streamvbyte_modern_u32/release/libtscb_streamvbyte_modern_u32.so",
+    "timing_boundary": "PYTHON_FFI_DESCRIPTOR_AND_COMPLETE_NATIVE_PIPELINE_INCLUDED",
+    "native_timing_capability": {
+      "optional": true,
+      "boundary": "CODEC_API_ONLY_V1",
+      "clock": "CLOCK_MONOTONIC",
+      "excludes": [
+        "CONTEXT_LIFECYCLE",
+        "DESCRIPTOR_CONTAINER",
+        "PYTHON_FFI",
+        "CHECKED_DELTA_ZIGZAG_LIMB_SPLIT_RECOVERY",
+        "PADDED_ALIGNED_STAGING",
+        "SHIM_COUNT_AND_USED_LENGTH"
+      ]
+    },
+    "accounting_hooks": [
+      "NATIVE_COUNT_AND_SEED",
+      "DESCRIPTOR_AND_SHA256",
+      "FINAL_SVB_CONTROL_DATA_BYTES",
+      "OUTPUT_CAPACITY"
+    ],
+    "input_materialization": "STRIDED_VECTOR_GATHER_PRESERVES_DTYPE_ORDER_AND_BITS_INCLUDED_IN_CORE_PIPELINE",
+    "descriptor_limit_bytes": 4096
+  }
+}

@@ -421,6 +421,7 @@ def execute_task(
             correctness=correctness,
             diagnostics={
                 "adapter_telemetry": prepared.telemetry.__dict__,
+                "codec_telemetry": observation.codec_telemetry,
                 "worker_limit_method": call.limit_method,
                 "same_repetition_correctness_and_measurement": True,
                 "measurement_policy": measurement_policy.to_document(),

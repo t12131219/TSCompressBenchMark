@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 1,
+  "ok": false,
+  "command": "validate",
+  "stage": "render",
+  "type": "architecture",
+  "input": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/archify-five-layer-reference/framework.archify.json",
+  "error": "Architecture layout validation failed:\n- Label \"同次运行记录\" overlaps component \"workloads\" — adjust labelDx/labelDy/labelSegment or set labelAt.\n  label rect: [176, 5080, 68, 14]\n  component \"workloads\" rect: [60, 5020, 300, 80]\n  Suggested fix: labelAt [210, 5114] or labelDy +24 (below); or labelAt [210, 5016] or labelDy -74 (above)\n- [composition/label-route-clearance] showcase architecture label \"请求且支持\" on connections[35] id \"workloads--query\" \"workloads\" -> \"query\" label \"请求且支持\" is 0px from connections[36] id \"workloads--streaming\" \"workloads\" -> \"streaming\" label \"请求且支持\" segment 1 [400, 5060] -> [400, 4990] (label rect [381, 5040, 58, 14]; minimum 4px) — adjust labelAt, labelDx, labelDy, or labelSegment; otherwise adjust the other relationship route/via/channel.",
+  "diagnostics": [
+    {
+      "code": "composition/label-route-clearance",
+      "severity": "error",
+      "message": "[composition/label-route-clearance] showcase architecture label \"请求且支持\" on connections[35] id \"workloads--query\" \"workloads\" -> \"query\" label \"请求且支持\" is 0px from connections[36] id \"workloads--streaming\" \"workloads\" -> \"streaming\" label \"请求且支持\" segment 1 [400, 5060] -> [400, 4990] (label rect [381, 5040, 58, 14]; minimum 4px) — adjust labelAt, labelDx, labelDy, or labelSegment; otherwise adjust the other relationship route/via/channel.",
+      "subject": {
+        "diagramType": "architecture",
+        "collection": "connections",
+        "index": 35,
+        "id": "workloads--query",
+        "from": "workloads",
+        "to": "query"
+      },
+      "evidence": {
+        "label": "请求且支持",
+        "otherRelationship": {
+          "diagramType": "architecture",
+          "collection": "connections",
+          "index": 36,
+          "id": "workloads--streaming",
+          "from": "workloads",
+          "to": "streaming"
+        },
+        "segmentIndex": 1,
+        "clearancePx": 0,
+        "minimumPx": 4,
+        "labelRect": {
+          "relation": {
+            "id": "workloads--query",
+            "from": "workloads",
+            "to": "query",
+            "label": "请求且支持",
+            "variant": "dashed"
+          },
+          "relationIndex": 35,
+          "label": "请求且支持",
+          "x": 381,
+          "y": 5040,
+          "width": 58,
+          "height": 14,
+          "lx": 410,
+          "ly": 5050
+        },
+        "from": [
+          400,
+          5060
+        ],
+        "to": [
+          400,
+          4990
+        ]
+      },
+      "supportedFixes": [
+        "adjust labelAt, labelDx, labelDy, or labelSegment; otherwise adjust the other relationship route/via/channel"
+      ]
+    },
+    {
+      "code": "layout/constraint",
+      "severity": "error",
+      "message": "Label \"同次运行记录\" overlaps component \"workloads\" — adjust labelDx/labelDy/labelSegment or set labelAt.\n  label rect: [176, 5080, 68, 14]\n  component \"workloads\" rect: [60, 5020, 300, 80]\n  Suggested fix: labelAt [210, 5114] or labelDy +24 (below); or labelAt [210, 5016] or labelDy -74 (above)",
+      "subject": {
+        "diagramType": "architecture"
+      },
+      "evidence": {},
+      "supportedFixes": []
+    }
+  ]
+}

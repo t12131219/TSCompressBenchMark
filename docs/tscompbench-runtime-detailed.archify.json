@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {"title": "TSDataCompressBenchMark · 运行框架", "locale": "zh-CN", "quality_profile": "showcase", "viewBox": [2100, 1400]},
+  "components": [
+    {"id":"entry","type":"frontend","label":"CLI 与实验配置","pos":[160,120],"size":[400,100]},
+    {"id":"init","type":"backend","label":"运行集初始化","pos":[760,120],"size":[400,100]},
+    {"id":"data","type":"database","label":"数据准备与规范化","pos":[1360,120],"size":[400,100]},
+    {"id":"plan","type":"backend","label":"能力协商与任务规划","pos":[1360,500],"size":[400,100]},
+    {"id":"execute","type":"backend","label":"隔离执行与测量","pos":[760,500],"size":[400,100]},
+    {"id":"report","type":"backend","label":"统计、比较与报告","pos":[160,500],"size":[400,100]}
+  ],
+  "connections": [
+    {"from":"entry","to":"init"}, {"from":"init","to":"data"},
+    {"from":"data","to":"plan"}, {"from":"plan","to":"execute"},
+    {"from":"execute","to":"report"}
+  ]
+}

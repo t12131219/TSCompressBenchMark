@@ -1,0 +1,219 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "TSDataCompressBenchMark · 正确性、损失模式与位账本",
+    "locale": "zh-CN",
+    "quality_profile": "showcase",
+    "viewBox": [
+      1150,
+      755
+    ],
+    "legend": {
+      "mode": "auto",
+      "entries": {
+        "frontend": {
+          "label": "入口 / 报告"
+        },
+        "backend": {
+          "label": "控制 / 执行"
+        },
+        "database": {
+          "label": "文件证据"
+        },
+        "security": {
+          "label": "资格 / 校验"
+        },
+        "external": {
+          "label": "外部来源"
+        }
+      }
+    }
+  },
+  "components": [
+    {
+      "id": "tscb-16-correctness-n1",
+      "type": "security",
+      "label": "观测保护门",
+      "sublabel": "validate_common_correctness",
+      "pos": [
+        60,
+        85
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-16-correctness-n2",
+      "type": "backend",
+      "label": "恢复逻辑视图",
+      "sublabel": "_restore_adapter_view",
+      "pos": [
+        450,
+        85
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-16-correctness-n3",
+      "type": "backend",
+      "label": "时间与有效性",
+      "sublabel": "exact semantics",
+      "pos": [
+        840,
+        85
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-16-correctness-n4",
+      "type": "backend",
+      "label": "LOSSLESS / LOSSY 门",
+      "sublabel": "LossMode",
+      "pos": [
+        840,
+        335
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-16-correctness-n5",
+      "type": "backend",
+      "label": "损失质量证据",
+      "sublabel": "validate_error_bound",
+      "pos": [
+        450,
+        335
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-16-correctness-n6",
+      "type": "database",
+      "label": "序列化组件账本",
+      "sublabel": "AccountingLedger",
+      "pos": [
+        60,
+        335
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-16-correctness-n7",
+      "type": "security",
+      "label": "物理闭合与外部信息",
+      "sublabel": "serialized_bits / final_bits",
+      "pos": [
+        60,
+        585
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-16-correctness-n8",
+      "type": "backend",
+      "label": "大小分母与比例",
+      "sublabel": "canonical_raw_bits",
+      "pos": [
+        450,
+        585
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-16-correctness-n9",
+      "type": "backend",
+      "label": "正确性资格 RunRecord",
+      "sublabel": "same repetition",
+      "pos": [
+        840,
+        585
+      ],
+      "size": [
+        250,
+        95
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "tscb-16-correctness-e0",
+      "to": "tscb-16-correctness-n2",
+      "label": "进入",
+      "from": "tscb-16-correctness-n1"
+    },
+    {
+      "id": "tscb-16-correctness-e1",
+      "to": "tscb-16-correctness-n3",
+      "label": "生成",
+      "from": "tscb-16-correctness-n2"
+    },
+    {
+      "id": "tscb-16-correctness-e2",
+      "to": "tscb-16-correctness-n4",
+      "label": "传递",
+      "from": "tscb-16-correctness-n3",
+      "labelAt": [
+        965.0,
+        194.0
+      ]
+    },
+    {
+      "id": "tscb-16-correctness-e3",
+      "to": "tscb-16-correctness-n5",
+      "label": "有损质量分支",
+      "from": "tscb-16-correctness-n4"
+    },
+    {
+      "id": "tscb-16-correctness-e4",
+      "to": "tscb-16-correctness-n6",
+      "label": "得到",
+      "from": "tscb-16-correctness-n5"
+    },
+    {
+      "id": "tscb-16-correctness-e5",
+      "to": "tscb-16-correctness-n7",
+      "label": "核对",
+      "from": "tscb-16-correctness-n6",
+      "labelAt": [
+        185.0,
+        444.0
+      ]
+    },
+    {
+      "id": "tscb-16-correctness-e6",
+      "to": "tscb-16-correctness-n8",
+      "label": "冻结",
+      "from": "tscb-16-correctness-n7"
+    },
+    {
+      "id": "tscb-16-correctness-e7",
+      "to": "tscb-16-correctness-n9",
+      "label": "输出",
+      "from": "tscb-16-correctness-n8"
+    }
+  ]
+}

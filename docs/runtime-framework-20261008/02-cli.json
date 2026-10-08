@@ -1,0 +1,222 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "TSDataCompressBenchMark · 命令入口与分派",
+    "locale": "zh-CN",
+    "quality_profile": "showcase",
+    "viewBox": [
+      1150,
+      755
+    ],
+    "legend": {
+      "mode": "auto",
+      "entries": {
+        "frontend": {
+          "label": "入口 / 报告"
+        },
+        "backend": {
+          "label": "控制 / 执行"
+        },
+        "database": {
+          "label": "文件证据"
+        },
+        "security": {
+          "label": "资格 / 校验"
+        },
+        "external": {
+          "label": "外部来源"
+        }
+      }
+    }
+  },
+  "components": [
+    {
+      "id": "tscb-02-cli-n1",
+      "type": "frontend",
+      "label": "可执行入口",
+      "sublabel": "tscompbench / __main__",
+      "pos": [
+        60,
+        85
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-02-cli-n2",
+      "type": "backend",
+      "label": "解析命令行",
+      "sublabel": "_build_parser",
+      "pos": [
+        450,
+        85
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-02-cli-n3",
+      "type": "backend",
+      "label": "构建注册表",
+      "sublabel": "DatasetRegistry",
+      "pos": [
+        840,
+        85
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-02-cli-n4",
+      "type": "backend",
+      "label": "run 公共初始化",
+      "sublabel": "initialize_run_set",
+      "pos": [
+        840,
+        335
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-02-cli-n5",
+      "type": "backend",
+      "label": "init / prepare",
+      "sublabel": "L0 → L1",
+      "pos": [
+        450,
+        335
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-02-cli-n6",
+      "type": "backend",
+      "label": "plan",
+      "sublabel": "L1 → L2",
+      "pos": [
+        60,
+        335
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-02-cli-n7",
+      "type": "backend",
+      "label": "validate",
+      "sublabel": "L1 → L2 → L3/L4",
+      "pos": [
+        60,
+        585
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-02-cli-n8",
+      "type": "backend",
+      "label": "report",
+      "sublabel": "已有证据 → L5",
+      "pos": [
+        450,
+        585
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-02-cli-n9",
+      "type": "frontend",
+      "label": "终端输出 / 退出码",
+      "sublabel": "JSON / stderr",
+      "pos": [
+        840,
+        585
+      ],
+      "size": [
+        250,
+        95
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "tscb-02-cli-e0",
+      "to": "tscb-02-cli-n2",
+      "label": "入口",
+      "from": "tscb-02-cli-n1"
+    },
+    {
+      "id": "tscb-02-cli-e1",
+      "to": "tscb-02-cli-n3",
+      "label": "根目录",
+      "from": "tscb-02-cli-n2"
+    },
+    {
+      "id": "tscb-02-cli-e2",
+      "to": "tscb-02-cli-n4",
+      "label": "run 分支",
+      "from": "tscb-02-cli-n3",
+      "labelAt": [
+        965.0,
+        194.0
+      ]
+    },
+    {
+      "id": "tscb-02-cli-e3",
+      "to": "tscb-02-cli-n5",
+      "label": "init / prepare 分派",
+      "from": "tscb-02-cli-n4"
+    },
+    {
+      "id": "tscb-02-cli-e4",
+      "to": "tscb-02-cli-n6",
+      "label": "另一命令分支",
+      "from": "tscb-02-cli-n5",
+      "variant": "dashed"
+    },
+    {
+      "id": "tscb-02-cli-e5",
+      "to": "tscb-02-cli-n7",
+      "label": "另一命令分支",
+      "from": "tscb-02-cli-n6",
+      "labelAt": [
+        185.0,
+        444.0
+      ],
+      "variant": "dashed"
+    },
+    {
+      "id": "tscb-02-cli-e6",
+      "to": "tscb-02-cli-n8",
+      "label": "另一命令分支",
+      "from": "tscb-02-cli-n7",
+      "variant": "dashed"
+    },
+    {
+      "id": "tscb-02-cli-e7",
+      "to": "tscb-02-cli-n9",
+      "label": "返回",
+      "from": "tscb-02-cli-n8"
+    }
+  ]
+}

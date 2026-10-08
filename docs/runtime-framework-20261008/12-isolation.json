@@ -1,0 +1,219 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "TSDataCompressBenchMark · 隔离进程、资源上限与错误传播",
+    "locale": "zh-CN",
+    "quality_profile": "showcase",
+    "viewBox": [
+      1150,
+      755
+    ],
+    "legend": {
+      "mode": "auto",
+      "entries": {
+        "frontend": {
+          "label": "入口 / 报告"
+        },
+        "backend": {
+          "label": "控制 / 执行"
+        },
+        "database": {
+          "label": "文件证据"
+        },
+        "security": {
+          "label": "资格 / 校验"
+        },
+        "external": {
+          "label": "外部来源"
+        }
+      }
+    }
+  },
+  "components": [
+    {
+      "id": "tscb-12-isolation-n1",
+      "type": "backend",
+      "label": "父进程调用",
+      "sublabel": "run_isolated",
+      "pos": [
+        60,
+        85
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-12-isolation-n2",
+      "type": "backend",
+      "label": "进程与 Pipe",
+      "sublabel": "multiprocessing",
+      "pos": [
+        450,
+        85
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-12-isolation-n3",
+      "type": "security",
+      "label": "子进程资源边界",
+      "sublabel": "_child",
+      "pos": [
+        840,
+        85
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-12-isolation-n4",
+      "type": "backend",
+      "label": "执行具体函数",
+      "sublabel": "function(*args, **kwargs)",
+      "pos": [
+        840,
+        335
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-12-isolation-n5",
+      "type": "backend",
+      "label": "父进程期限等待",
+      "sublabel": "parent.poll(timeout)",
+      "pos": [
+        450,
+        335
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-12-isolation-n6",
+      "type": "security",
+      "label": "超时终止分支",
+      "sublabel": "terminate → kill",
+      "pos": [
+        60,
+        335
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-12-isolation-n7",
+      "type": "backend",
+      "label": "领域异常映射",
+      "sublabel": "_worker_failure_status",
+      "pos": [
+        60,
+        585
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-12-isolation-n8",
+      "type": "backend",
+      "label": "隔离结果校验",
+      "sublabel": "类型与状态",
+      "pos": [
+        450,
+        585
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-12-isolation-n9",
+      "type": "backend",
+      "label": "父进程证据回调",
+      "sublabel": "record_callback / event_callback",
+      "pos": [
+        840,
+        585
+      ],
+      "size": [
+        250,
+        95
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "tscb-12-isolation-e0",
+      "to": "tscb-12-isolation-n2",
+      "label": "创建",
+      "from": "tscb-12-isolation-n1"
+    },
+    {
+      "id": "tscb-12-isolation-e1",
+      "to": "tscb-12-isolation-n3",
+      "label": "设置限制",
+      "from": "tscb-12-isolation-n2"
+    },
+    {
+      "id": "tscb-12-isolation-e2",
+      "to": "tscb-12-isolation-n4",
+      "label": "执行",
+      "from": "tscb-12-isolation-n3",
+      "labelAt": [
+        965.0,
+        194.0
+      ]
+    },
+    {
+      "id": "tscb-12-isolation-e3",
+      "to": "tscb-12-isolation-n5",
+      "label": "发信封 / 等待",
+      "from": "tscb-12-isolation-n4"
+    },
+    {
+      "id": "tscb-12-isolation-e4",
+      "to": "tscb-12-isolation-n6",
+      "label": "超时分支",
+      "from": "tscb-12-isolation-n5"
+    },
+    {
+      "id": "tscb-12-isolation-e5",
+      "to": "tscb-12-isolation-n7",
+      "label": "分类失败",
+      "from": "tscb-12-isolation-n6",
+      "labelAt": [
+        185.0,
+        444.0
+      ]
+    },
+    {
+      "id": "tscb-12-isolation-e6",
+      "to": "tscb-12-isolation-n8",
+      "label": "校验结果",
+      "from": "tscb-12-isolation-n7"
+    },
+    {
+      "id": "tscb-12-isolation-e7",
+      "to": "tscb-12-isolation-n9",
+      "label": "持久化",
+      "from": "tscb-12-isolation-n8"
+    }
+  ]
+}

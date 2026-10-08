@@ -2,6 +2,8 @@ import hashlib
 import json
 from pathlib import Path
 
+import pytest
+
 from tscompbench.reporting import generate_report
 from tscompbench.statistics import analyze_run_set
 from tscompbench.statistics.engine import _base_reasons, _eligibility
@@ -12,6 +14,21 @@ def _write_jsonl(path: Path, rows: list[dict]) -> None:
         "".join(json.dumps(row, sort_keys=True, separators=(",", ":")) + "\n" for row in rows),
         encoding="utf-8",
     )
+
+
+@pytest.mark.parametrize("direction", ["encode", "decode"])
+def test_statistics_rechecks_each_direction_despite_claimed_duration_pass(tmp_path, direction):
+    (tmp_path / "artifacts").mkdir()
+    task = _task("task-duration", "algorithm:a", "path:a")
+    record = _record(tmp_path, task, 0, final_bits=400, encode_ns=200)
+    record["timing"][f"selected_{direction}_wall_ns"] = 200_000_000
+    record["timing"]["selected_wall_ns"] = 1_200_000_000
+    assert record["timing"]["min_duration_satisfied"] is True
+    reasons = _base_reasons(tmp_path, record, task, {}, {"source:algorithm:a"})
+    assert "PER_DIRECTION_MIN_DURATION_NOT_SATISFIED" in reasons
+    record["diagnostics"]["measurement_policy"]["min_repetition_seconds"] = "NaN"
+    reasons = _base_reasons(tmp_path, record, task, {}, {"source:algorithm:a"})
+    assert "MIN_DURATION_POLICY_INVALID" in reasons
 
 
 def test_unbounded_quality_eligibility_uses_frozen_task_semantics(tmp_path):
@@ -117,6 +134,8 @@ def _record(
     encode_ns: int,
     status: str = "PASS",
 ) -> dict:
+    encode_ns += 1_000_000_000
+    decode_ns = 1_000_000_100
     run_id = f"run:{task['task_id']}:{repetition}"
     stream = bytes([65 + repetition % 10]) * (final_bits // 8)
     bitstream_hash = hashlib.sha256(stream).hexdigest()
@@ -177,10 +196,10 @@ def _record(
                 "schema_version": "tscb.timing-observation.v2",
                 "timing_scope": "PIPELINE",
                 "inner_iterations": 2,
-                "selected_wall_ns": encode_ns + 100,
+                "selected_wall_ns": encode_ns + decode_ns,
                 "selected_encode_wall_ns": encode_ns,
-                "selected_decode_wall_ns": 100,
-                "e2e_wall_ns": encode_ns + 100,
+                "selected_decode_wall_ns": decode_ns,
+                "e2e_wall_ns": encode_ns + decode_ns,
                 "canonical_bytes_per_iteration": 100,
                 "min_duration_satisfied": True,
             }
@@ -218,6 +237,7 @@ def _record(
                 "schema_version": "tscb.measurement-policy.v2",
                 "measurement_mode": "FORMAL",
                 "repetitions": 10,
+                "min_repetition_seconds": "1",
             }
         },
     }
@@ -245,8 +265,8 @@ def test_layer5_filters_groups_uses_frozen_coverage_and_preserves_raw_evidence(t
                     {
                         "core_encode_wall_ns": 150,
                         "core_decode_wall_ns": 80,
-                        "pipeline_encode_wall_ns": encode_ns + repetition * 2,
-                        "pipeline_decode_wall_ns": 100,
+                        "pipeline_encode_wall_ns": record["timing"]["selected_encode_wall_ns"],
+                        "pipeline_decode_wall_ns": record["timing"]["selected_decode_wall_ns"],
                         "codec_input_bytes_per_iteration": 120,
                         "native_encode_wall_ns": 50 + repetition * 2,
                         "native_decode_wall_ns": 40,

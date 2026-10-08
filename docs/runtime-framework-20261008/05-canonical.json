@@ -1,0 +1,219 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "TSDataCompressBenchMark · Canonical 格式与身份链",
+    "locale": "zh-CN",
+    "quality_profile": "showcase",
+    "viewBox": [
+      1150,
+      755
+    ],
+    "legend": {
+      "mode": "auto",
+      "entries": {
+        "frontend": {
+          "label": "入口 / 报告"
+        },
+        "backend": {
+          "label": "控制 / 执行"
+        },
+        "database": {
+          "label": "文件证据"
+        },
+        "security": {
+          "label": "资格 / 校验"
+        },
+        "external": {
+          "label": "外部来源"
+        }
+      }
+    }
+  },
+  "components": [
+    {
+      "id": "tscb-05-canonical-n1",
+      "type": "backend",
+      "label": "规范身份编码",
+      "sublabel": "canonical_json_bytes",
+      "pos": [
+        60,
+        85
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-05-canonical-n2",
+      "type": "backend",
+      "label": "来源与数据集身份",
+      "sublabel": "DatasetID",
+      "pos": [
+        450,
+        85
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-05-canonical-n3",
+      "type": "backend",
+      "label": "逻辑位数",
+      "sublabel": "CanonicalDataset",
+      "pos": [
+        840,
+        85
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-05-canonical-n4",
+      "type": "backend",
+      "label": "文件头",
+      "sublabel": "<8sHHQI",
+      "pos": [
+        840,
+        335
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-05-canonical-n5",
+      "type": "backend",
+      "label": "元数据区",
+      "sublabel": "canonical UTF-8 JSON",
+      "pos": [
+        450,
+        335
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-05-canonical-n6",
+      "type": "backend",
+      "label": "命名缓冲区",
+      "sublabel": "<HQ + name + payload",
+      "pos": [
+        60,
+        335
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-05-canonical-n7",
+      "type": "database",
+      "label": "原子提交",
+      "sublabel": "临时文件 → os.replace",
+      "pos": [
+        60,
+        585
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-05-canonical-n8",
+      "type": "security",
+      "label": "读取严格核验",
+      "sublabel": "read_canonical",
+      "pos": [
+        450,
+        585
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-05-canonical-n9",
+      "type": "backend",
+      "label": "供规划与执行",
+      "sublabel": "metadata → buffers",
+      "pos": [
+        840,
+        585
+      ],
+      "size": [
+        250,
+        95
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "tscb-05-canonical-e0",
+      "to": "tscb-05-canonical-n2",
+      "label": "进入",
+      "from": "tscb-05-canonical-n1"
+    },
+    {
+      "id": "tscb-05-canonical-e1",
+      "to": "tscb-05-canonical-n3",
+      "label": "生成",
+      "from": "tscb-05-canonical-n2"
+    },
+    {
+      "id": "tscb-05-canonical-e2",
+      "to": "tscb-05-canonical-n4",
+      "label": "传递",
+      "from": "tscb-05-canonical-n3",
+      "labelAt": [
+        965.0,
+        194.0
+      ]
+    },
+    {
+      "id": "tscb-05-canonical-e3",
+      "to": "tscb-05-canonical-n5",
+      "label": "执行",
+      "from": "tscb-05-canonical-n4"
+    },
+    {
+      "id": "tscb-05-canonical-e4",
+      "to": "tscb-05-canonical-n6",
+      "label": "得到",
+      "from": "tscb-05-canonical-n5"
+    },
+    {
+      "id": "tscb-05-canonical-e5",
+      "to": "tscb-05-canonical-n7",
+      "label": "核对",
+      "from": "tscb-05-canonical-n6",
+      "labelAt": [
+        185.0,
+        444.0
+      ]
+    },
+    {
+      "id": "tscb-05-canonical-e6",
+      "to": "tscb-05-canonical-n8",
+      "label": "冻结",
+      "from": "tscb-05-canonical-n7"
+    },
+    {
+      "id": "tscb-05-canonical-e7",
+      "to": "tscb-05-canonical-n9",
+      "label": "输出",
+      "from": "tscb-05-canonical-n8"
+    }
+  ]
+}

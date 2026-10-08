@@ -1,0 +1,1147 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "TSDataCompressBenchMark · 源码展开运行框架",
+    "locale": "zh-CN",
+    "quality_profile": "showcase",
+    "viewBox": [
+      1380,
+      2105
+    ]
+  },
+  "components": [
+    {
+      "id": "cli",
+      "type": "frontend",
+      "label": "命令入口与配置解析",
+      "sublabel": "run 子命令 · 配置 / 测量 / 报告",
+      "tag": "cli.main · load_experiment_config",
+      "pos": [
+        40,
+        100
+      ],
+      "size": [
+        235,
+        90
+      ]
+    },
+    {
+      "id": "runset",
+      "type": "backend",
+      "label": "Run Set 初始化与恢复",
+      "sublabel": "冻结 TOML / Environment · 锁与一致性检查",
+      "tag": "runner.initialize_run_set",
+      "pos": [
+        300,
+        100
+      ],
+      "size": [
+        235,
+        90
+      ]
+    },
+    {
+      "id": "dataset",
+      "type": "database",
+      "label": "数据集注册与源文件校验",
+      "sublabel": "Manifest / DatasetID / source SHA-256",
+      "tag": "datasets.registry.DatasetRegistry",
+      "pos": [
+        560,
+        100
+      ],
+      "size": [
+        235,
+        90
+      ]
+    },
+    {
+      "id": "load",
+      "type": "backend",
+      "label": "加载数据与特征分析",
+      "sublabel": "CanonicalDataset · T / V / Topology",
+      "tag": "load_dataset · characterize",
+      "pos": [
+        820,
+        100
+      ],
+      "size": [
+        235,
+        90
+      ]
+    },
+    {
+      "id": "canonical",
+      "type": "database",
+      "label": "写入并复用 Canonical 工件",
+      "sublabel": "二进制 + Manifest + characterization",
+      "tag": "prepare_dataset · load_preparation_result",
+      "pos": [
+        1080,
+        100
+      ],
+      "size": [
+        235,
+        90
+      ]
+    },
+    {
+      "id": "registry",
+      "type": "database",
+      "label": "Codec / Source / Alias 注册",
+      "sublabel": "AlgorithmID · 源码身份 · 工件定位",
+      "tag": "CodecRegistry · adapter_artifacts",
+      "pos": [
+        1080,
+        355
+      ],
+      "size": [
+        235,
+        90
+      ]
+    },
+    {
+      "id": "sweep",
+      "type": "backend",
+      "label": "参数扫描与 ConfigID 生成",
+      "sublabel": "算法参数 × 框架参数 · 配置状态",
+      "tag": "planning.sweep.expand_sweep",
+      "pos": [
+        820,
+        355
+      ],
+      "size": [
+        235,
+        90
+      ]
+    },
+    {
+      "id": "descriptor",
+      "type": "backend",
+      "label": "展开数据集与 Benchmark Track",
+      "sublabel": "Dataset × Algorithm × Track × Config",
+      "tag": "descriptor_from_layer1_artifacts",
+      "pos": [
+        560,
+        355
+      ],
+      "size": [
+        235,
+        90
+      ]
+    },
+    {
+      "id": "preprocess-plan",
+      "type": "backend",
+      "label": "声明算法预处理计划",
+      "sublabel": "参数决定 stages / semantic_class",
+      "tag": "preprocess.contracts.build_preprocess_plan",
+      "pos": [
+        300,
+        355
+      ],
+      "size": [
+        235,
+        90
+      ]
+    },
+    {
+      "id": "negotiate",
+      "type": "security",
+      "label": "四态能力协商与兼容计划",
+      "sublabel": "DIRECT_SUPPORTED / UNSUPPORTED",
+      "tag": "negotiate · ADAPTER_LOSSLESS / ADAPTER_LOSSY",
+      "pos": [
+        40,
+        355
+      ],
+      "size": [
+        235,
+        90
+      ]
+    },
+    {
+      "id": "resolve",
+      "type": "backend",
+      "label": "解析真实执行路径",
+      "sublabel": "ISA / 回退 / 亲和性 / 工件哈希",
+      "tag": "planning.resolution.resolve_execution",
+      "pos": [
+        40,
+        510
+      ],
+      "size": [
+        235,
+        90
+      ]
+    },
+    {
+      "id": "semantic-key",
+      "type": "backend",
+      "label": "构造语义可比性键",
+      "sublabel": "Track / LossMode / dtype / 拓扑 / 误差界",
+      "tag": "SemanticComparabilityKey",
+      "pos": [
+        300,
+        510
+      ],
+      "size": [
+        235,
+        90
+      ]
+    },
+    {
+      "id": "execution-key",
+      "type": "backend",
+      "label": "构造执行与资源比较键",
+      "sublabel": "语义键 → 执行策略 → 资源采集策略",
+      "tag": "ExecutionComparabilityKey / ResourceProfileKey",
+      "pos": [
+        560,
+        510
+      ],
+      "size": [
+        235,
+        90
+      ]
+    },
+    {
+      "id": "task",
+      "type": "backend",
+      "label": "创建确定性 BenchmarkTask",
+      "sublabel": "携带兼容 / 预处理 / 执行 / 资源限制",
+      "tag": "create_task · TaskID / ExecutionPathHash",
+      "pos": [
+        820,
+        510
+      ],
+      "size": [
+        235,
+        90
+      ]
+    },
+    {
+      "id": "freeze",
+      "type": "database",
+      "label": "冻结任务宇宙与注册快照",
+      "sublabel": "TaskID 排序 · 完整记录不可执行配置",
+      "tag": "task_plan.jsonl / resolved_configs.json",
+      "pos": [
+        1080,
+        510
+      ],
+      "size": [
+        235,
+        90
+      ]
+    },
+    {
+      "id": "factory",
+      "type": "backend",
+      "label": "适配器创建与源工件门控",
+      "sublabel": "源身份 / License / Build / AdapterID",
+      "tag": "create_adapter · preflight_task",
+      "pos": [
+        1080,
+        765
+      ],
+      "size": [
+        235,
+        90
+      ]
+    },
+    {
+      "id": "route",
+      "type": "backend",
+      "label": "按 Track 路由 Canonical",
+      "sublabel": "TIMESTAMP: T · VALUE: V + Validity",
+      "tag": "SYSTEM: T + V + Validity / SegmentPlan",
+      "pos": [
+        820,
+        765
+      ],
+      "size": [
+        235,
+        90
+      ]
+    },
+    {
+      "id": "input",
+      "type": "security",
+      "label": "输入契约校验",
+      "sublabel": "shape / dtype / 拓扑 / hash / 配对",
+      "tag": "validation.input.validate_routed_input",
+      "pos": [
+        560,
+        765
+      ],
+      "size": [
+        235,
+        90
+      ]
+    },
+    {
+      "id": "compat",
+      "type": "backend",
+      "label": "应用兼容适配并校验",
+      "sublabel": "逐缓冲转换 · 原始引用与输入哈希保留",
+      "tag": "prepare_execution_input / validate_prepared_input",
+      "pos": [
+        300,
+        765
+      ],
+      "size": [
+        235,
+        90
+      ]
+    },
+    {
+      "id": "preprocess-test",
+      "type": "security",
+      "label": "验证注册预处理执行器",
+      "sublabel": "声明与实际 stages 一致 · 阶段证据",
+      "tag": "reviewed_pipeline_executor / validate_pipeline_stages",
+      "pos": [
+        40,
+        765
+      ],
+      "size": [
+        235,
+        90
+      ]
+    },
+    {
+      "id": "boundary",
+      "type": "security",
+      "label": "边界与内存安全测试",
+      "sublabel": "极短输入 / 容量边界 / canary / 确定性",
+      "tag": "validation.boundary.run_boundary_suite",
+      "pos": [
+        40,
+        920
+      ],
+      "size": [
+        235,
+        90
+      ]
+    },
+    {
+      "id": "isolation",
+      "type": "security",
+      "label": "隔离执行最小 Round-trip",
+      "sublabel": "超时 / 内存限制 / CPU affinity",
+      "tag": "run_isolated · perform_roundtrip",
+      "pos": [
+        300,
+        920
+      ],
+      "size": [
+        235,
+        90
+      ]
+    },
+    {
+      "id": "session",
+      "type": "backend",
+      "label": "创建编码 Session 与输出区",
+      "sublabel": "output_bound · 缓冲分配 · 输入快照",
+      "tag": "adapter.create_session · _encode",
+      "pos": [
+        560,
+        920
+      ],
+      "size": [
+        235,
+        90
+      ]
+    },
+    {
+      "id": "compress",
+      "type": "backend",
+      "label": "增量编码",
+      "sublabel": "compress_update → 已用长度校验",
+      "tag": "编码过程中检查输入及配对引用",
+      "pos": [
+        820,
+        920
+      ],
+      "size": [
+        235,
+        90
+      ]
+    },
+    {
+      "id": "finalize",
+      "type": "backend",
+      "label": "强制 Finalize 与释放 Session",
+      "sublabel": "写入尾部 / flush · 输出长度 / canary",
+      "tag": "session.finalize · session.close",
+      "pos": [
+        1080,
+        920
+      ],
+      "size": [
+        235,
+        90
+      ]
+    },
+    {
+      "id": "account",
+      "type": "backend",
+      "label": "完整比特成本记账",
+      "sublabel": "payload / header / index / metadata 等",
+      "tag": "session.accounting · FinalBits",
+      "pos": [
+        1080,
+        1075
+      ],
+      "size": [
+        235,
+        90
+      ]
+    },
+    {
+      "id": "decode",
+      "type": "backend",
+      "label": "独立解码与适配视图恢复",
+      "sublabel": "新 Session → decompress → close",
+      "tag": "解码后恢复原始 dtype / 形状视图",
+      "pos": [
+        820,
+        1075
+      ],
+      "size": [
+        235,
+        90
+      ]
+    },
+    {
+      "id": "common",
+      "type": "security",
+      "label": "公共正确性检查",
+      "sublabel": "通道顺序 / T / Validity / T-V 配对",
+      "tag": "输入不变性 · canary · 确定性",
+      "pos": [
+        560,
+        1075
+      ],
+      "size": [
+        235,
+        90
+      ]
+    },
+    {
+      "id": "loss",
+      "type": "security",
+      "label": "按 LossMode 验证重建",
+      "sublabel": "无损位精确 · 有界误差 / 质量评估",
+      "tag": "SUMMARY / UNBOUNDED / RATE 按各自契约",
+      "pos": [
+        300,
+        1075
+      ],
+      "size": [
+        235,
+        90
+      ]
+    },
+    {
+      "id": "preflight",
+      "type": "security",
+      "label": "形成 Preflight 资格结论",
+      "sublabel": "PASS 才进入预热与正式重复",
+      "tag": "失败携带阶段 / 原因 / accounting 证据",
+      "pos": [
+        40,
+        1075
+      ],
+      "size": [
+        235,
+        90
+      ]
+    },
+    {
+      "id": "policy",
+      "type": "backend",
+      "label": "冻结测量策略并执行预热",
+      "sublabel": "warmup 次数 + 时长 · 测量模式",
+      "tag": "MeasurementPolicy · perform_warmup",
+      "pos": [
+        40,
+        1330
+      ],
+      "size": [
+        235,
+        90
+      ]
+    },
+    {
+      "id": "repetitions",
+      "type": "backend",
+      "label": "隔离执行正式重复实验",
+      "sublabel": "每轮独立对象 · 复用完整编解码内核",
+      "tag": "execute_task · perform_measured_roundtrip",
+      "pos": [
+        300,
+        1330
+      ],
+      "size": [
+        235,
+        90
+      ]
+    },
+    {
+      "id": "duration",
+      "type": "backend",
+      "label": "最短时长与内循环控制",
+      "sublabel": "所选范围的编码 / 解码时长门控",
+      "tag": "inner_iterations · max_inner_iterations",
+      "pos": [
+        560,
+        1330
+      ],
+      "size": [
+        235,
+        90
+      ]
+    },
+    {
+      "id": "timing",
+      "type": "backend",
+      "label": "分范围累计计时与吞吐",
+      "sublabel": "CORE / PIPELINE / E2E · wall / CPU",
+      "tag": "可选 NATIVE / pipeline stage telemetry",
+      "pos": [
+        820,
+        1330
+      ],
+      "size": [
+        235,
+        90
+      ]
+    },
+    {
+      "id": "resource",
+      "type": "backend",
+      "label": "同步采集进程资源",
+      "sublabel": "CPU · RSS / PSS / USS · I/O / faults",
+      "tag": "ResourceSampler.start / stop",
+      "pos": [
+        1080,
+        1330
+      ],
+      "size": [
+        235,
+        90
+      ]
+    },
+    {
+      "id": "formal-check",
+      "type": "security",
+      "label": "逐次正确性与资源资格校验",
+      "sublabel": "正式重复仍检查重建 / 安全 / 资源预算",
+      "tag": "validate_common_correctness · resource eligibility",
+      "pos": [
+        1080,
+        1485
+      ],
+      "size": [
+        235,
+        90
+      ]
+    },
+    {
+      "id": "query",
+      "type": "backend",
+      "label": "查询 / 随机访问工作负载",
+      "sublabel": "配置请求 + query / random_access 能力",
+      "tag": "固定 seed · WorkloadID · 延迟 / 放大率",
+      "pos": [
+        820,
+        1485
+      ],
+      "size": [
+        235,
+        90
+      ]
+    },
+    {
+      "id": "stream",
+      "type": "backend",
+      "label": "流式工作负载与状态测量",
+      "sublabel": "配置请求 + streaming 能力",
+      "tag": "首输出 / 分块延迟 · 状态 / 缓冲 / reset",
+      "pos": [
+        560,
+        1485
+      ],
+      "size": [
+        235,
+        90
+      ]
+    },
+    {
+      "id": "record",
+      "type": "database",
+      "label": "创建原始 RunRecord",
+      "sublabel": "同一 RunID 关联正确性 / 计时 / 资源",
+      "tag": "PASS 或诊断状态 · query / streaming 结果",
+      "pos": [
+        300,
+        1485
+      ],
+      "size": [
+        235,
+        90
+      ]
+    },
+    {
+      "id": "append",
+      "type": "database",
+      "label": "追加证据与恢复进度",
+      "sublabel": "run_components.jsonl → runs.csv 投影",
+      "tag": "events.jsonl · bitstreams · 未完成重复恢复",
+      "pos": [
+        40,
+        1485
+      ],
+      "size": [
+        235,
+        90
+      ]
+    },
+    {
+      "id": "read",
+      "type": "database",
+      "label": "读取冻结任务和原始证据",
+      "sublabel": "TaskID / RunID 唯一性 · provenance",
+      "tag": "analyze_run_set · source hashes",
+      "pos": [
+        40,
+        1740
+      ],
+      "size": [
+        235,
+        90
+      ]
+    },
+    {
+      "id": "eligibility",
+      "type": "security",
+      "label": "按分析维度筛选资格",
+      "sublabel": "PASS / 正确性 / accounting / 测量契约",
+      "tag": "_eligibility · 排除原因全部保留",
+      "pos": [
+        300,
+        1740
+      ],
+      "size": [
+        235,
+        90
+      ]
+    },
+    {
+      "id": "aggregate",
+      "type": "backend",
+      "label": "按配置与实际执行路径聚合",
+      "sublabel": "Dataset + ConfigID + ExecutionPathHash 等",
+      "tag": "_summaries · 合格正式 repetitions",
+      "pos": [
+        560,
+        1740
+      ],
+      "size": [
+        235,
+        90
+      ]
+    },
+    {
+      "id": "robust",
+      "type": "backend",
+      "label": "稳健统计与 Bootstrap 区间",
+      "sublabel": "median / 分位数 / 离散度 / 置信区间",
+      "tag": "descriptive_statistics · deterministic bootstrap",
+      "pos": [
+        820,
+        1740
+      ],
+      "size": [
+        235,
+        90
+      ]
+    },
+    {
+      "id": "corpus",
+      "type": "backend",
+      "label": "生成分数据集与 Corpus 指标",
+      "sublabel": "先 per-dataset · 再 micro / GeoMean",
+      "tag": "_corpus_summaries · 不合并为综合总分",
+      "pos": [
+        1080,
+        1740
+      ],
+      "size": [
+        235,
+        90
+      ]
+    },
+    {
+      "id": "groups",
+      "type": "backend",
+      "label": "按层级比较键建立分析视图",
+      "sublabel": "空间质量: Semantic · 速度: Execution",
+      "tag": "资源: ResourceProfileKey · _comparability_groups",
+      "pos": [
+        1080,
+        1895
+      ],
+      "size": [
+        235,
+        90
+      ]
+    },
+    {
+      "id": "pareto",
+      "type": "backend",
+      "label": "计算 Pareto 与逐指标排名",
+      "sublabel": "同数据集 / profile / 比较键内计算",
+      "tag": "_pareto_rows · _ranking_rows · DENSE_EXACT",
+      "pos": [
+        820,
+        1895
+      ],
+      "size": [
+        235,
+        90
+      ]
+    },
+    {
+      "id": "coverage",
+      "type": "backend",
+      "label": "按冻结任务全集统计覆盖率",
+      "sublabel": "PASS / UNSUPPORTED / FAIL / OOM / TIMEOUT",
+      "tag": "_coverage · 包含未产生 PASS 的任务",
+      "pos": [
+        560,
+        1895
+      ],
+      "size": [
+        235,
+        90
+      ]
+    },
+    {
+      "id": "tables",
+      "type": "database",
+      "label": "写入统计与分析表",
+      "sublabel": "summary / eligibility / corpus 等表",
+      "tag": "rankings.csv / pareto.csv / coverage.csv",
+      "pos": [
+        300,
+        1895
+      ],
+      "size": [
+        235,
+        90
+      ]
+    },
+    {
+      "id": "report",
+      "type": "frontend",
+      "label": "生成可追溯实验报告",
+      "sublabel": "report.json / report.md / report.html",
+      "tag": "generate_report · coverage / Pareto SVG",
+      "pos": [
+        40,
+        1895
+      ],
+      "size": [
+        235,
+        90
+      ]
+    },
+    {
+      "id": "diagnostic",
+      "type": "database",
+      "label": "预检失败：写入诊断记录",
+      "sublabel": "失败 / 超时 / OOM / 不支持",
+      "tag": "record_kind=DIAGNOSTIC · 不进入正式测量",
+      "pos": [
+        350,
+        1190
+      ],
+      "size": [
+        265,
+        80
+      ]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "01 数据准备 / Data Preparation",
+      "wraps": [
+        "cli",
+        "runset",
+        "dataset",
+        "load",
+        "canonical"
+      ],
+      "pad": 25
+    },
+    {
+      "kind": "region",
+      "label": "02 能力与配置 / Capability & Configuration",
+      "wraps": [
+        "registry",
+        "sweep",
+        "descriptor",
+        "preprocess-plan",
+        "negotiate",
+        "resolve",
+        "semantic-key",
+        "execution-key",
+        "task",
+        "freeze"
+      ],
+      "pad": 25
+    },
+    {
+      "kind": "region",
+      "label": "03 执行验证 / Execution & Validation",
+      "wraps": [
+        "factory",
+        "route",
+        "input",
+        "compat",
+        "preprocess-test",
+        "boundary",
+        "isolation",
+        "session",
+        "compress",
+        "finalize",
+        "account",
+        "decode",
+        "common",
+        "loss",
+        "preflight"
+      ],
+      "pad": 25
+    },
+    {
+      "kind": "region",
+      "label": "04 性能测评 / Performance Evaluation",
+      "wraps": [
+        "policy",
+        "repetitions",
+        "duration",
+        "timing",
+        "resource",
+        "formal-check",
+        "query",
+        "stream",
+        "record",
+        "append"
+      ],
+      "pad": 25
+    },
+    {
+      "kind": "region",
+      "label": "05 统计分析与报告 / Statistics & Reporting",
+      "wraps": [
+        "read",
+        "eligibility",
+        "aggregate",
+        "robust",
+        "corpus",
+        "groups",
+        "pareto",
+        "coverage",
+        "tables",
+        "report"
+      ],
+      "pad": 25
+    }
+  ],
+  "connections": [
+    {
+      "to": "runset",
+      "variant": "emphasis",
+      "from": "cli"
+    },
+    {
+      "to": "dataset",
+      "variant": "emphasis",
+      "from": "runset"
+    },
+    {
+      "to": "load",
+      "variant": "emphasis",
+      "from": "dataset"
+    },
+    {
+      "to": "canonical",
+      "variant": "emphasis",
+      "from": "load"
+    },
+    {
+      "to": "sweep",
+      "variant": "emphasis",
+      "from": "registry"
+    },
+    {
+      "to": "descriptor",
+      "variant": "emphasis",
+      "from": "sweep"
+    },
+    {
+      "to": "preprocess-plan",
+      "variant": "emphasis",
+      "from": "descriptor"
+    },
+    {
+      "to": "negotiate",
+      "variant": "emphasis",
+      "from": "preprocess-plan"
+    },
+    {
+      "to": "resolve",
+      "variant": "emphasis",
+      "from": "negotiate",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "to": "semantic-key",
+      "variant": "emphasis",
+      "from": "resolve"
+    },
+    {
+      "to": "execution-key",
+      "variant": "emphasis",
+      "from": "semantic-key"
+    },
+    {
+      "to": "task",
+      "variant": "emphasis",
+      "from": "execution-key"
+    },
+    {
+      "to": "freeze",
+      "variant": "emphasis",
+      "from": "task"
+    },
+    {
+      "from": "canonical",
+      "to": "registry",
+      "variant": "emphasis",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "to": "route",
+      "variant": "emphasis",
+      "from": "factory"
+    },
+    {
+      "to": "input",
+      "variant": "emphasis",
+      "from": "route"
+    },
+    {
+      "to": "compat",
+      "variant": "emphasis",
+      "from": "input"
+    },
+    {
+      "to": "preprocess-test",
+      "variant": "emphasis",
+      "from": "compat"
+    },
+    {
+      "to": "boundary",
+      "variant": "emphasis",
+      "from": "preprocess-test",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "to": "isolation",
+      "variant": "emphasis",
+      "from": "boundary"
+    },
+    {
+      "to": "session",
+      "variant": "emphasis",
+      "from": "isolation"
+    },
+    {
+      "to": "compress",
+      "variant": "emphasis",
+      "from": "session"
+    },
+    {
+      "to": "finalize",
+      "variant": "emphasis",
+      "from": "compress"
+    },
+    {
+      "to": "account",
+      "variant": "emphasis",
+      "from": "finalize",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "to": "decode",
+      "variant": "emphasis",
+      "from": "account"
+    },
+    {
+      "to": "common",
+      "variant": "emphasis",
+      "from": "decode"
+    },
+    {
+      "to": "loss",
+      "variant": "emphasis",
+      "from": "common"
+    },
+    {
+      "to": "preflight",
+      "variant": "emphasis",
+      "from": "loss"
+    },
+    {
+      "from": "freeze",
+      "to": "factory",
+      "variant": "emphasis",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "to": "repetitions",
+      "variant": "emphasis",
+      "from": "policy"
+    },
+    {
+      "to": "duration",
+      "variant": "emphasis",
+      "from": "repetitions"
+    },
+    {
+      "to": "timing",
+      "variant": "emphasis",
+      "from": "duration"
+    },
+    {
+      "to": "resource",
+      "variant": "emphasis",
+      "from": "timing"
+    },
+    {
+      "to": "formal-check",
+      "variant": "emphasis",
+      "from": "resource",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "to": "query",
+      "variant": "emphasis",
+      "from": "formal-check"
+    },
+    {
+      "to": "stream",
+      "variant": "emphasis",
+      "from": "query"
+    },
+    {
+      "to": "record",
+      "variant": "emphasis",
+      "from": "stream"
+    },
+    {
+      "to": "append",
+      "variant": "emphasis",
+      "from": "record"
+    },
+    {
+      "from": "preflight",
+      "to": "policy",
+      "variant": "emphasis",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "label": "PASS",
+      "labelDy": 24,
+      "labelDx": -48
+    },
+    {
+      "to": "eligibility",
+      "variant": "emphasis",
+      "from": "read"
+    },
+    {
+      "to": "aggregate",
+      "variant": "emphasis",
+      "from": "eligibility"
+    },
+    {
+      "to": "robust",
+      "variant": "emphasis",
+      "from": "aggregate"
+    },
+    {
+      "to": "corpus",
+      "variant": "emphasis",
+      "from": "robust"
+    },
+    {
+      "to": "groups",
+      "variant": "emphasis",
+      "from": "corpus",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "to": "pareto",
+      "variant": "emphasis",
+      "from": "groups"
+    },
+    {
+      "to": "coverage",
+      "variant": "emphasis",
+      "from": "pareto"
+    },
+    {
+      "to": "tables",
+      "variant": "emphasis",
+      "from": "coverage"
+    },
+    {
+      "to": "report",
+      "variant": "emphasis",
+      "from": "tables"
+    },
+    {
+      "from": "append",
+      "to": "read",
+      "variant": "emphasis",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "from": "preflight",
+      "to": "diagnostic",
+      "variant": "security",
+      "fromSide": "bottom",
+      "toSide": "left",
+      "label": "失败",
+      "labelAt": [
+        310,
+        1235
+      ]
+    }
+  ]
+}

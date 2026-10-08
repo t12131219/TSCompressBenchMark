@@ -376,7 +376,7 @@ class CodecRegistry:
                 "fallback_policy",
                 "runtime_dispatch",
             },
-            optional={"timing_scopes"},
+            optional={"timing_scopes", "required_cpu_flags"},
             label=f"{path.name}.execution",
         )
         if "timing_scopes" in execution and (
@@ -385,6 +385,15 @@ class CodecRegistry:
             or any(scope not in {"CORE", "PIPELINE", "E2E"} for scope in execution["timing_scopes"])
         ):
             raise CodecContractError(f"{path.name}.execution invalid timing_scopes")
+        if "required_cpu_flags" in execution:
+            flags = execution["required_cpu_flags"]
+            if (
+                not isinstance(flags, list)
+                or not flags
+                or any(not isinstance(flag, str) or not flag.strip() for flag in flags)
+                or len(set(flags)) != len(flags)
+            ):
+                raise CodecContractError(f"{path.name}.execution invalid required_cpu_flags")
         features = document["features"]
         _require_keys(
             features,

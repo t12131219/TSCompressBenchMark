@@ -1,0 +1,219 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "TSDataCompressBenchMark · 运行框架总览",
+    "locale": "zh-CN",
+    "quality_profile": "showcase",
+    "viewBox": [
+      1150,
+      755
+    ],
+    "legend": {
+      "mode": "auto",
+      "entries": {
+        "frontend": {
+          "label": "入口 / 报告"
+        },
+        "backend": {
+          "label": "控制 / 执行"
+        },
+        "database": {
+          "label": "文件证据"
+        },
+        "security": {
+          "label": "资格 / 校验"
+        },
+        "external": {
+          "label": "外部来源"
+        }
+      }
+    }
+  },
+  "components": [
+    {
+      "id": "tscb-01-overview-n1",
+      "type": "frontend",
+      "label": "CLI 与实验配置",
+      "sublabel": "python -m tscompbench",
+      "pos": [
+        60,
+        85
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-01-overview-n2",
+      "type": "backend",
+      "label": "初始化与冻结",
+      "sublabel": "initialize_run_set",
+      "pos": [
+        450,
+        85
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-01-overview-n3",
+      "type": "backend",
+      "label": "L1 · 数据准备",
+      "sublabel": "prepare_run_set",
+      "pos": [
+        840,
+        85
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-01-overview-n4",
+      "type": "backend",
+      "label": "L2 · 协商与规划",
+      "sublabel": "plan_run_set",
+      "pos": [
+        840,
+        335
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-01-overview-n5",
+      "type": "backend",
+      "label": "L3 · 预检资格门",
+      "sublabel": "preflight_task",
+      "pos": [
+        450,
+        335
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-01-overview-n6",
+      "type": "backend",
+      "label": "L3/L4 · 重复执行",
+      "sublabel": "execute_task",
+      "pos": [
+        60,
+        335
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-01-overview-n7",
+      "type": "database",
+      "label": "追加原始证据",
+      "sublabel": "run_components.jsonl",
+      "pos": [
+        60,
+        585
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-01-overview-n8",
+      "type": "backend",
+      "label": "L5 · 冻结证据分析",
+      "sublabel": "analyze_run_set",
+      "pos": [
+        450,
+        585
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-01-overview-n9",
+      "type": "frontend",
+      "label": "报告与可追溯产物",
+      "sublabel": "generate_report",
+      "pos": [
+        840,
+        585
+      ],
+      "size": [
+        250,
+        95
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "tscb-01-overview-e0",
+      "to": "tscb-01-overview-n2",
+      "label": "初始化",
+      "from": "tscb-01-overview-n1"
+    },
+    {
+      "id": "tscb-01-overview-e1",
+      "to": "tscb-01-overview-n3",
+      "label": "准备数据",
+      "from": "tscb-01-overview-n2"
+    },
+    {
+      "id": "tscb-01-overview-e2",
+      "to": "tscb-01-overview-n4",
+      "label": "注册表 / 参数",
+      "from": "tscb-01-overview-n3",
+      "labelAt": [
+        965.0,
+        194.0
+      ]
+    },
+    {
+      "id": "tscb-01-overview-e3",
+      "to": "tscb-01-overview-n5",
+      "label": "逐任务预检",
+      "from": "tscb-01-overview-n4"
+    },
+    {
+      "id": "tscb-01-overview-e4",
+      "to": "tscb-01-overview-n6",
+      "label": "资格通过",
+      "from": "tscb-01-overview-n5"
+    },
+    {
+      "id": "tscb-01-overview-e5",
+      "to": "tscb-01-overview-n7",
+      "label": "逐重复持久化",
+      "from": "tscb-01-overview-n6",
+      "labelAt": [
+        185.0,
+        444.0
+      ]
+    },
+    {
+      "id": "tscb-01-overview-e6",
+      "to": "tscb-01-overview-n8",
+      "label": "run report",
+      "from": "tscb-01-overview-n7"
+    },
+    {
+      "id": "tscb-01-overview-e7",
+      "to": "tscb-01-overview-n9",
+      "label": "发布分析",
+      "from": "tscb-01-overview-n8"
+    }
+  ]
+}

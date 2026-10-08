@@ -1,0 +1,252 @@
+[
+  {
+    "node_id": "cli",
+    "label": "命令入口与配置解析",
+    "implementation": "cli.main · load_experiment_config"
+  },
+  {
+    "node_id": "runset",
+    "label": "Run Set 初始化与恢复",
+    "implementation": "runner.initialize_run_set"
+  },
+  {
+    "node_id": "dataset",
+    "label": "数据集注册与源文件校验",
+    "implementation": "datasets.registry.DatasetRegistry"
+  },
+  {
+    "node_id": "load",
+    "label": "加载数据与特征分析",
+    "implementation": "load_dataset · characterize"
+  },
+  {
+    "node_id": "canonical",
+    "label": "写入并复用 Canonical 工件",
+    "implementation": "prepare_dataset · load_preparation_result"
+  },
+  {
+    "node_id": "registry",
+    "label": "Codec / Source / Alias 注册",
+    "implementation": "CodecRegistry · adapter_artifacts"
+  },
+  {
+    "node_id": "sweep",
+    "label": "参数扫描与 ConfigID 生成",
+    "implementation": "planning.sweep.expand_sweep"
+  },
+  {
+    "node_id": "descriptor",
+    "label": "展开数据集与 Benchmark Track",
+    "implementation": "descriptor_from_layer1_artifacts"
+  },
+  {
+    "node_id": "preprocess-plan",
+    "label": "声明算法预处理计划",
+    "implementation": "preprocess.contracts.build_preprocess_plan"
+  },
+  {
+    "node_id": "negotiate",
+    "label": "四态能力协商与兼容计划",
+    "implementation": "negotiate · ADAPTER_LOSSLESS / ADAPTER_LOSSY"
+  },
+  {
+    "node_id": "resolve",
+    "label": "解析真实执行路径",
+    "implementation": "planning.resolution.resolve_execution"
+  },
+  {
+    "node_id": "semantic-key",
+    "label": "构造语义可比性键",
+    "implementation": "SemanticComparabilityKey"
+  },
+  {
+    "node_id": "execution-key",
+    "label": "构造执行与资源比较键",
+    "implementation": "ExecutionComparabilityKey / ResourceProfileKey"
+  },
+  {
+    "node_id": "task",
+    "label": "创建确定性 BenchmarkTask",
+    "implementation": "create_task · TaskID / ExecutionPathHash"
+  },
+  {
+    "node_id": "freeze",
+    "label": "冻结任务宇宙与注册快照",
+    "implementation": "task_plan.jsonl / resolved_configs.json"
+  },
+  {
+    "node_id": "factory",
+    "label": "适配器创建与源工件门控",
+    "implementation": "create_adapter · preflight_task"
+  },
+  {
+    "node_id": "route",
+    "label": "按 Track 路由 Canonical",
+    "implementation": "SYSTEM: T + V + Validity / SegmentPlan"
+  },
+  {
+    "node_id": "input",
+    "label": "输入契约校验",
+    "implementation": "validation.input.validate_routed_input"
+  },
+  {
+    "node_id": "compat",
+    "label": "应用兼容适配并校验",
+    "implementation": "prepare_execution_input / validate_prepared_input"
+  },
+  {
+    "node_id": "preprocess-test",
+    "label": "验证注册预处理执行器",
+    "implementation": "reviewed_pipeline_executor / validate_pipeline_stages"
+  },
+  {
+    "node_id": "boundary",
+    "label": "边界与内存安全测试",
+    "implementation": "validation.boundary.run_boundary_suite"
+  },
+  {
+    "node_id": "isolation",
+    "label": "隔离执行最小 Round-trip",
+    "implementation": "run_isolated · perform_roundtrip"
+  },
+  {
+    "node_id": "session",
+    "label": "创建编码 Session 与输出区",
+    "implementation": "adapter.create_session · _encode"
+  },
+  {
+    "node_id": "compress",
+    "label": "增量编码",
+    "implementation": "编码过程中检查输入及配对引用"
+  },
+  {
+    "node_id": "finalize",
+    "label": "强制 Finalize 与释放 Session",
+    "implementation": "session.finalize · session.close"
+  },
+  {
+    "node_id": "account",
+    "label": "完整比特成本记账",
+    "implementation": "session.accounting · FinalBits"
+  },
+  {
+    "node_id": "decode",
+    "label": "独立解码与适配视图恢复",
+    "implementation": "解码后恢复原始 dtype / 形状视图"
+  },
+  {
+    "node_id": "common",
+    "label": "公共正确性检查",
+    "implementation": "输入不变性 · canary · 确定性"
+  },
+  {
+    "node_id": "loss",
+    "label": "按 LossMode 验证重建",
+    "implementation": "SUMMARY / UNBOUNDED / RATE 按各自契约"
+  },
+  {
+    "node_id": "preflight",
+    "label": "形成 Preflight 资格结论",
+    "implementation": "失败携带阶段 / 原因 / accounting 证据"
+  },
+  {
+    "node_id": "policy",
+    "label": "冻结测量策略并执行预热",
+    "implementation": "MeasurementPolicy · perform_warmup"
+  },
+  {
+    "node_id": "repetitions",
+    "label": "隔离执行正式重复实验",
+    "implementation": "execute_task · perform_measured_roundtrip"
+  },
+  {
+    "node_id": "duration",
+    "label": "最短时长与内循环控制",
+    "implementation": "inner_iterations · max_inner_iterations"
+  },
+  {
+    "node_id": "timing",
+    "label": "分范围累计计时与吞吐",
+    "implementation": "可选 NATIVE / pipeline stage telemetry"
+  },
+  {
+    "node_id": "resource",
+    "label": "同步采集进程资源",
+    "implementation": "ResourceSampler.start / stop"
+  },
+  {
+    "node_id": "formal-check",
+    "label": "逐次正确性与资源资格校验",
+    "implementation": "validate_common_correctness · resource eligibility"
+  },
+  {
+    "node_id": "query",
+    "label": "查询 / 随机访问工作负载",
+    "implementation": "固定 seed · WorkloadID · 延迟 / 放大率"
+  },
+  {
+    "node_id": "stream",
+    "label": "流式工作负载与状态测量",
+    "implementation": "首输出 / 分块延迟 · 状态 / 缓冲 / reset"
+  },
+  {
+    "node_id": "record",
+    "label": "创建原始 RunRecord",
+    "implementation": "PASS 或诊断状态 · query / streaming 结果"
+  },
+  {
+    "node_id": "append",
+    "label": "追加证据与恢复进度",
+    "implementation": "events.jsonl · bitstreams · 未完成重复恢复"
+  },
+  {
+    "node_id": "read",
+    "label": "读取冻结任务和原始证据",
+    "implementation": "analyze_run_set · source hashes"
+  },
+  {
+    "node_id": "eligibility",
+    "label": "按分析维度筛选资格",
+    "implementation": "_eligibility · 排除原因全部保留"
+  },
+  {
+    "node_id": "aggregate",
+    "label": "按配置与实际执行路径聚合",
+    "implementation": "_summaries · 合格正式 repetitions"
+  },
+  {
+    "node_id": "robust",
+    "label": "稳健统计与 Bootstrap 区间",
+    "implementation": "descriptive_statistics · deterministic bootstrap"
+  },
+  {
+    "node_id": "corpus",
+    "label": "生成分数据集与 Corpus 指标",
+    "implementation": "_corpus_summaries · 不合并为综合总分"
+  },
+  {
+    "node_id": "groups",
+    "label": "按层级比较键建立分析视图",
+    "implementation": "资源: ResourceProfileKey · _comparability_groups"
+  },
+  {
+    "node_id": "pareto",
+    "label": "计算 Pareto 与逐指标排名",
+    "implementation": "_pareto_rows · _ranking_rows · DENSE_EXACT"
+  },
+  {
+    "node_id": "coverage",
+    "label": "按冻结任务全集统计覆盖率",
+    "implementation": "_coverage · 包含未产生 PASS 的任务"
+  },
+  {
+    "node_id": "tables",
+    "label": "写入统计与分析表",
+    "implementation": "rankings.csv / pareto.csv / coverage.csv"
+  },
+  {
+    "node_id": "report",
+    "label": "生成可追溯实验报告",
+    "implementation": "generate_report · coverage / Pareto SVG"
+  }
+]

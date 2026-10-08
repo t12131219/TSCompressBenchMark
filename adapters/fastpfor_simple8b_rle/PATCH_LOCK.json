@@ -1,0 +1,28 @@
+{
+  "schema_version": "tscb.fastpfor-simple8b-rle-patch-lock.v1",
+  "source_lock_sha256": "ba4f5a9c8b9858d89eb1fa9bea721db6c16c8231317d3ad5d7b8b8c28000c208",
+  "patch": {
+    "path": "adapters/fastpfor_simple8b_rle/patches/0001-complete-length-word-access-and-tail.patch",
+    "sha256": "5629cfc08ac5adc416679f8f80552ef02a1337c7e35dc52dc4a8b0854a9bade7"
+  },
+  "original_sha256": "1c15b6d3dded69421328aa6a5c2d8b5800718cec52c2260aabf4bbcce9bc218e",
+  "patched_sha256": "8074500776fc1d2396b92e465cce7aa0637db3fc6e2ecc7227e27aeb89223c03",
+  "generator_sha256": "a8dbfdbdbd3078d8ad1dd80ab23506a35b3a2c3bd0923f86c40948b20b06b7cc",
+  "changes": [
+    "MEMCPY_PACKED_UINT64_LOAD_AND_STORE",
+    "ONLY_FULL_EIGHT_VALUE_UNROLLS",
+    "RETURN_MARKED_HEADER_PLUS_PAYLOAD_WORDS"
+  ],
+  "selector_table_and_rle_selection_changed": false,
+  "original_source_modified": false,
+  "known_remaining_source_limitations": [
+    "ENCODER_IGNORES_OUTPUT_CAPACITY",
+    "DECODER_IGNORES_COMPRESSED_LENGTH",
+    "MALFORMED_OR_EOS_COUNTS_NOT_VALIDATED",
+    "UINT32_INPUT_OUTPUT_ALIGNMENT_REQUIRED",
+    "SOURCE_COUNT_AND_RLE_MULTIPLICATION_REQUIRE_BOUNDED_LENGTH"
+  ],
+  "bounded_abi": "PENDING",
+  "benchmark_five_layers": "PENDING",
+  "full_logical_entry_qualified": false
+}

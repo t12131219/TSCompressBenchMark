@@ -1,0 +1,12 @@
+--- a/src/streamvbyte_x64_encode.c
++++ b/src/streamvbyte_x64_encode.c
+@@ -77,7 +77,8 @@
+ 		_mm_storeu_si128((__m128i *)dataPtr, r1);
+ 		dataPtr += len_lut[keys >> 8];
+ 
+-		*((uint16_t*)keyPtr) = (uint16_t)keys;
++		uint16_t key16 = (uint16_t)keys;
++		memcpy(keyPtr, &key16, sizeof(key16));
+ 		keyPtr += 2;
+ 	}
+ 

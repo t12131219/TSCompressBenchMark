@@ -1,0 +1,83 @@
+--- a/src/varintdecode.c
++++ b/src/varintdecode.c
+@@ -1,4 +1,6 @@
+ #include "varintdecode.h"
++
++/* TSCB local patch: unsigned scalar/signature shifts preserve uint32 wire bits. */
+ 
+ #if defined(_MSC_VER)
+ #define ALIGNED(x) __declspec(align(x))
+@@ -1229,7 +1231,7 @@
+ #endif
+ 				availablebytes += 32;
+ 			} else if (availablebytes + count + 15 < length) {
+-				int newsig = _mm_movemask_epi8(
++				uint64_t newsig = _mm_movemask_epi8(
+ 						_mm_lddqu_si128(
+ 								(const __m128i *) (in + availablebytes
+ 										+ consumed)));
+@@ -1354,7 +1356,7 @@
+ #endif
+ 				availablebytes += 32;
+ 			} else if(availablebytes + consumed + 15 < inputsize ) {
+-				int newsig = _mm_movemask_epi8(
++				uint64_t newsig = _mm_movemask_epi8(
+ 						_mm_lddqu_si128(
+ 								(const __m128i *) (in + availablebytes
+ 										+ consumed)));
+@@ -1377,11 +1379,11 @@
+ 		for (uint32_t v = 0; consumed < inputsize; shift += 7) {
+ 			uint8_t c = in[consumed++];
+ 			if ((c & 128) == 0) {
+-				out[0] = v + (c << shift);
++				out[0] = v + ((uint32_t)c << shift);
+ 				++out;
+ 				break;
+ 			} else {
+-				v += (c & 127) << shift;
++				v += ((uint32_t)(c & 127U)) << shift;
+ 			}
+ 		}
+ 	}
+@@ -1596,7 +1598,7 @@
+ #endif
+ 				availablebytes += 32;
+ 			} else if (availablebytes + count + 15 < length) {
+-				int newsig = _mm_movemask_epi8(
++				uint64_t newsig = _mm_movemask_epi8(
+ 						_mm_lddqu_si128(
+ 								(const __m128i *) (in + availablebytes
+ 										+ consumed)));
+@@ -1740,7 +1742,7 @@
+ #endif
+ 				availablebytes += 32;
+ 			} else if(availablebytes + consumed + 15 < inputsize ) {
+-				int newsig = _mm_movemask_epi8(
++				uint64_t newsig = _mm_movemask_epi8(
+ 						_mm_lddqu_si128(
+ 								(const __m128i *) (in + availablebytes
+ 										+ consumed)));
+@@ -1764,12 +1766,12 @@
+ 		for (uint32_t v = 0; consumed < inputsize; shift += 7) {
+ 			uint8_t c = in[consumed++];
+ 			if ((c & 128) == 0) {
+-				uint32_t delta = v + (c << shift);
++				uint32_t delta = v + ((uint32_t)c << shift);
+ 				prev += delta;
+ 				*out++ = prev;
+ 				break;
+ 			} else {
+-				v += (c & 127) << shift;
++				v += ((uint32_t)(c & 127U)) << shift;
+ 			}
+ 		}
+ 	}
+@@ -2267,7 +2269,7 @@
+ #endif
+                 availablebytes += 32;
+             } else if (availablebytes + count + 15 < length) {
+-                int newsig = _mm_movemask_epi8(
++                uint64_t newsig = _mm_movemask_epi8(
+                                  _mm_lddqu_si128(
+                                      (const __m128i *) (in + availablebytes
+                                                         + consumed)));

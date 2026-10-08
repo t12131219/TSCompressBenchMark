@@ -1,0 +1,220 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "TSDataCompressBenchMark · 显式预处理 A/B/C/D 与融合路径",
+    "locale": "zh-CN",
+    "quality_profile": "showcase",
+    "viewBox": [
+      1150,
+      755
+    ],
+    "legend": {
+      "mode": "auto",
+      "entries": {
+        "frontend": {
+          "label": "入口 / 报告"
+        },
+        "backend": {
+          "label": "控制 / 执行"
+        },
+        "database": {
+          "label": "文件证据"
+        },
+        "security": {
+          "label": "资格 / 校验"
+        },
+        "external": {
+          "label": "外部来源"
+        }
+      }
+    }
+  },
+  "components": [
+    {
+      "id": "tscb-15-pipeline-n1",
+      "type": "backend",
+      "label": "有效阶段计划",
+      "sublabel": "PreprocessPlan",
+      "pos": [
+        60,
+        85
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-15-pipeline-n2",
+      "type": "backend",
+      "label": "运行执行器准入",
+      "sublabel": "reviewed_pipeline_executor",
+      "pos": [
+        450,
+        85
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-15-pipeline-n3",
+      "type": "backend",
+      "label": "A · checked delta / ZigZag",
+      "sublabel": "int64 → uint64",
+      "pos": [
+        840,
+        85
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-15-pipeline-n4",
+      "type": "backend",
+      "label": "B · low/high limb",
+      "sublabel": "u64 → interleaved u32",
+      "pos": [
+        840,
+        335
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-15-pipeline-n5",
+      "type": "backend",
+      "label": "C · Stream VByte",
+      "sublabel": "codec / raw words",
+      "pos": [
+        450,
+        335
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-15-pipeline-n6",
+      "type": "backend",
+      "label": "D · 自包含封装",
+      "sublabel": "descriptor / frame / checksum",
+      "pos": [
+        60,
+        335
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-15-pipeline-n7",
+      "type": "backend",
+      "label": "逆序与独立验证",
+      "sublabel": "D → C → B → A",
+      "pos": [
+        60,
+        585
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-15-pipeline-n8",
+      "type": "backend",
+      "label": "D1 / FOR 融合例外",
+      "sublabel": "MaskedVByte / SIMDComp",
+      "pos": [
+        450,
+        585
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-15-pipeline-n9",
+      "type": "backend",
+      "label": "阶段证据与导出",
+      "sublabel": "pipeline_stages.csv",
+      "pos": [
+        840,
+        585
+      ],
+      "size": [
+        250,
+        95
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "tscb-15-pipeline-e0",
+      "to": "tscb-15-pipeline-n2",
+      "label": "进入",
+      "from": "tscb-15-pipeline-n1"
+    },
+    {
+      "id": "tscb-15-pipeline-e1",
+      "to": "tscb-15-pipeline-n3",
+      "label": "生成",
+      "from": "tscb-15-pipeline-n2"
+    },
+    {
+      "id": "tscb-15-pipeline-e2",
+      "to": "tscb-15-pipeline-n4",
+      "label": "传递",
+      "from": "tscb-15-pipeline-n3",
+      "labelAt": [
+        965.0,
+        194.0
+      ]
+    },
+    {
+      "id": "tscb-15-pipeline-e3",
+      "to": "tscb-15-pipeline-n5",
+      "label": "执行",
+      "from": "tscb-15-pipeline-n4"
+    },
+    {
+      "id": "tscb-15-pipeline-e4",
+      "to": "tscb-15-pipeline-n6",
+      "label": "得到",
+      "from": "tscb-15-pipeline-n5"
+    },
+    {
+      "id": "tscb-15-pipeline-e5",
+      "to": "tscb-15-pipeline-n7",
+      "label": "核对",
+      "from": "tscb-15-pipeline-n6",
+      "labelAt": [
+        185.0,
+        444.0
+      ]
+    },
+    {
+      "id": "tscb-15-pipeline-e6",
+      "to": "tscb-15-pipeline-n8",
+      "label": "同类融合路径",
+      "from": "tscb-15-pipeline-n7",
+      "variant": "dashed"
+    },
+    {
+      "id": "tscb-15-pipeline-e7",
+      "to": "tscb-15-pipeline-n9",
+      "label": "输出",
+      "from": "tscb-15-pipeline-n8"
+    }
+  ]
+}

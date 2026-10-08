@@ -1,0 +1,29 @@
+--- a/src/simdpackedsearch.c
++++ b/src/simdpackedsearch.c
+@@ -8274,7 +8274,12 @@
+                                      int length, uint32_t key,
+                                      uint32_t *presult) {
+   uint32_t *in32 = (uint32_t *)in;
+-  int answer = lower_bound(in32, key, 0, length);
++  int answer;
++  if (length == 0) {
++    *presult = key + 1;
++    return 0;
++  }
++  answer = lower_bound(in32, key, 0, length);
+   if (in32[answer] < key) {
+     *presult = key + 1;
+     return (length);
+--- a/src/simdfor.c
++++ b/src/simdfor.c
+@@ -15026,6 +15026,10 @@
+       count -= step + 1;
+     } else
+       count = step;
++  }
++  if (begin == length) {
++    *presult = key + 1;
++    return begin;
+   }
+   *presult = simdselectFOR(initvalue, in, bit, begin);
+   return begin;

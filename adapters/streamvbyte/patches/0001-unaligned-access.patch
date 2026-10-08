@@ -1,0 +1,124 @@
+--- a/streamvbyte.c
++++ b/streamvbyte.c
+@@ -1,3 +1,4 @@
++// TSCB safety patch: memcpy for unaligned scalar/header/key accesses.
+ // StreamVByte data format:
+ //   [count] [count * 2-bits per key] [count * vbyte ints]
+ //   (out)   | (key)->              | (data)->           |
+@@ -82,16 +83,16 @@
+     *dataPtrPtr += 1;
+     code = 0;
+   } else if (val < (1 << 16)) { // 2 bytes
+-    *(uint16_t *)dataPtr = (uint16_t)(val);
++    memcpy(dataPtr, &val, 2);
+     *dataPtrPtr += 2;
+     code = 1;
+   } else if (val < (1 << 24)) { // 3 bytes
+-    *(uint16_t *)dataPtr = (uint16_t)(val);
++    memcpy(dataPtr, &val, 2);
+     *(dataPtr + 2) = (uint8_t)(val >> 16);
+     *dataPtrPtr += 3;
+     code = 2;
+   } else { // 4 bytes
+-    *(uint32_t *)dataPtr = val;
++    memcpy(dataPtr, &val, 4);
+     *dataPtrPtr += 4;
+     code = 3;
+   }
+@@ -161,14 +162,14 @@
+     val = (uint32_t)*dataPtr;
+     dataPtr += 1;
+   } else if (code == 1) { // 2 bytes
+-    val = (uint32_t) * (uint16_t *)dataPtr;
++    val = 0; memcpy(&val, dataPtr, 2);
+     dataPtr += 2;
+   } else if (code == 2) { // 3 bytes
+-    val = (uint32_t) * (uint16_t *)dataPtr;
++    val = 0; memcpy(&val, dataPtr, 2);
+     val |= *(dataPtr + 2) << 16;
+     dataPtr += 3;
+   } else {                      // code == 3
+-    val = *(uint32_t *)dataPtr; // 4 bytes
++    memcpy(&val, dataPtr, 4); // 4 bytes
+     dataPtr += 4;
+   }
+ 
+@@ -675,7 +676,7 @@
+                                 uint8_t *__restrict__ *dataPtrPtr) {
+   uint8_t len = lengthTable[key];
+   xmm_t Data = _mm_loadu_si128((xmm_t *)*dataPtrPtr);
+-  xmm_t Shuf = *(xmm_t *)&shuffleTable[key];
++  xmm_t Shuf = _mm_loadu_si128((const xmm_t *)&shuffleTable[key]);
+ 
+   Data = _mm_shuffle_epi8(Data, Shuf);
+   *dataPtrPtr += len;
+@@ -697,10 +698,10 @@
+     int64_t Offset = -(int64_t)keybytes / 8 + 1;
+ 
+     const uint64_t *keyPtr64 = (const uint64_t *)keyPtr - Offset;
+-    uint64_t nextkeys = keyPtr64[Offset];
++    uint64_t nextkeys; memcpy(&nextkeys, keyPtr64 + Offset, 8);
+     for (; Offset != 0; ++Offset) {
+       uint64_t keys = nextkeys;
+-      nextkeys = keyPtr64[Offset + 1];
++      memcpy(&nextkeys, keyPtr64 + Offset + 1, 8);
+       // faster 16-bit delta since we only have 8-bit values
+       if (!keys) { // 32 1-byte ints in a row
+ 
+@@ -808,10 +809,10 @@
+     int64_t Offset = -(int64_t)keybytes / 8 + 1;
+ 
+     const uint64_t *keyPtr64 = (const uint64_t *)keyPtr - Offset;
+-    uint64_t nextkeys = keyPtr64[Offset];
++    uint64_t nextkeys; memcpy(&nextkeys, keyPtr64 + Offset, 8);
+     for (; Offset != 0; ++Offset) {
+       uint64_t keys = nextkeys;
+-      nextkeys = keyPtr64[Offset + 1];
++      memcpy(&nextkeys, keyPtr64 + Offset + 1, 8);
+ 
+       Data = _decode_avx((keys & 0xFF), &dataPtr);
+       _write_avx(out, Data);
+@@ -873,7 +874,7 @@
+ 
+ uint64_t svb_encode(uint8_t *out, uint32_t *in, uint32_t count, int delta,
+                     int type) {
+-  *(uint32_t *)out = count;          // first 4 bytes is number of ints
++  memcpy(out, &count, 4);          // first 4 bytes is number of ints
+   uint8_t *keyPtr = out + 4;         // keys come immediately after 32-bit count
+   uint32_t keyLen = (count + 3) / 4; // 2-bits rounded to full byte
+   uint8_t *dataPtr = keyPtr + keyLen; // variable byte data after all keys
+@@ -891,7 +892,7 @@
+ }
+ 
+ uint64_t svb_decode(uint32_t *out, uint8_t *in, int delta, int type) {
+-  uint32_t count = *(uint32_t *)in; // first 4 bytes is number of ints
++  uint32_t count; memcpy(&count, in, 4); // first 4 bytes is number of ints
+   if (count == 0)
+     return 0;
+ 
+@@ -1047,10 +1048,10 @@
+     int64_t Offset = -(int64_t)keybytes / 8 + 1;
+ 
+     const uint64_t *keyPtr64 = (const uint64_t *)keyPtr - Offset;
+-    uint64_t nextkeys = keyPtr64[Offset];
++    uint64_t nextkeys; memcpy(&nextkeys, keyPtr64 + Offset, 8);
+     for (; Offset != 0; ++Offset) {
+       uint64_t keys = nextkeys;
+-      nextkeys = keyPtr64[Offset + 1];
++      memcpy(&nextkeys, keyPtr64 + Offset + 1, 8);
+       // faster 16-bit delta since we only have 8-bit values
+       if (!keys) { // 32 1-byte ints in a row
+ 
+@@ -1297,10 +1298,10 @@
+     int64_t Offset = -(int64_t)keybytes / 8 + 1;
+ 
+     const uint64_t *keyPtr64 = (const uint64_t *)keyPtr - Offset;
+-    uint64_t nextkeys = keyPtr64[Offset];
++    uint64_t nextkeys; memcpy(&nextkeys, keyPtr64 + Offset, 8);
+     for (; Offset != 0; ++Offset) {
+       uint64_t keys = nextkeys;
+-      nextkeys = keyPtr64[Offset + 1];
++      memcpy(&nextkeys, keyPtr64 + Offset + 1, 8);
+       // faster 16-bit delta since we only have 8-bit values
+       if (!keys) { // 32 1-byte ints in a row
+ 

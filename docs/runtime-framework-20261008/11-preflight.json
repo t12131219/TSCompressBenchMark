@@ -1,0 +1,219 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "TSDataCompressBenchMark · L3 · 预检、边界与安全门",
+    "locale": "zh-CN",
+    "quality_profile": "showcase",
+    "viewBox": [
+      1150,
+      755
+    ],
+    "legend": {
+      "mode": "auto",
+      "entries": {
+        "frontend": {
+          "label": "入口 / 报告"
+        },
+        "backend": {
+          "label": "控制 / 执行"
+        },
+        "database": {
+          "label": "文件证据"
+        },
+        "security": {
+          "label": "资格 / 校验"
+        },
+        "external": {
+          "label": "外部来源"
+        }
+      }
+    }
+  },
+  "components": [
+    {
+      "id": "tscb-11-preflight-n1",
+      "type": "security",
+      "label": "计划状态 / 来源许可",
+      "sublabel": "preflight_task",
+      "pos": [
+        60,
+        85
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-11-preflight-n2",
+      "type": "security",
+      "label": "实际绑定 / 阶段注册",
+      "sublabel": "runtime identity",
+      "pos": [
+        450,
+        85
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-11-preflight-n3",
+      "type": "backend",
+      "label": "路由与适配核验",
+      "sublabel": "input validation",
+      "pos": [
+        840,
+        85
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-11-preflight-n4",
+      "type": "backend",
+      "label": "独立阶段证据",
+      "sublabel": "validate_pipeline_stages",
+      "pos": [
+        840,
+        335
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-11-preflight-n5",
+      "type": "backend",
+      "label": "边界案例生成",
+      "sublabel": "build_boundary_suite",
+      "pos": [
+        450,
+        335
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-11-preflight-n6",
+      "type": "security",
+      "label": "隔离安全干跑",
+      "sublabel": "run_boundary_suite",
+      "pos": [
+        60,
+        335
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-11-preflight-n7",
+      "type": "backend",
+      "label": "最小 roundtrip",
+      "sublabel": "perform_roundtrip",
+      "pos": [
+        60,
+        585
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-11-preflight-n8",
+      "type": "security",
+      "label": "共同正确性门",
+      "sublabel": "validate_common_correctness",
+      "pos": [
+        450,
+        585
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-11-preflight-n9",
+      "type": "backend",
+      "label": "PASS 或诊断终止",
+      "sublabel": "PreflightResult",
+      "pos": [
+        840,
+        585
+      ],
+      "size": [
+        250,
+        95
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "tscb-11-preflight-e0",
+      "to": "tscb-11-preflight-n2",
+      "label": "进入",
+      "from": "tscb-11-preflight-n1"
+    },
+    {
+      "id": "tscb-11-preflight-e1",
+      "to": "tscb-11-preflight-n3",
+      "label": "生成",
+      "from": "tscb-11-preflight-n2"
+    },
+    {
+      "id": "tscb-11-preflight-e2",
+      "to": "tscb-11-preflight-n4",
+      "label": "传递",
+      "from": "tscb-11-preflight-n3",
+      "labelAt": [
+        965.0,
+        194.0
+      ]
+    },
+    {
+      "id": "tscb-11-preflight-e3",
+      "to": "tscb-11-preflight-n5",
+      "label": "执行",
+      "from": "tscb-11-preflight-n4"
+    },
+    {
+      "id": "tscb-11-preflight-e4",
+      "to": "tscb-11-preflight-n6",
+      "label": "得到",
+      "from": "tscb-11-preflight-n5"
+    },
+    {
+      "id": "tscb-11-preflight-e5",
+      "to": "tscb-11-preflight-n7",
+      "label": "核对",
+      "from": "tscb-11-preflight-n6",
+      "labelAt": [
+        185.0,
+        444.0
+      ]
+    },
+    {
+      "id": "tscb-11-preflight-e6",
+      "to": "tscb-11-preflight-n8",
+      "label": "冻结",
+      "from": "tscb-11-preflight-n7"
+    },
+    {
+      "id": "tscb-11-preflight-e7",
+      "to": "tscb-11-preflight-n9",
+      "label": "输出",
+      "from": "tscb-11-preflight-n8"
+    }
+  ]
+}

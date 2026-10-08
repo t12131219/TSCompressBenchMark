@@ -1,0 +1,219 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "TSDataCompressBenchMark · 编码对象生命周期与 C ABI",
+    "locale": "zh-CN",
+    "quality_profile": "showcase",
+    "viewBox": [
+      1150,
+      755
+    ],
+    "legend": {
+      "mode": "auto",
+      "entries": {
+        "frontend": {
+          "label": "入口 / 报告"
+        },
+        "backend": {
+          "label": "控制 / 执行"
+        },
+        "database": {
+          "label": "文件证据"
+        },
+        "security": {
+          "label": "资格 / 校验"
+        },
+        "external": {
+          "label": "外部来源"
+        }
+      }
+    }
+  },
+  "components": [
+    {
+      "id": "tscb-13-session-n1",
+      "type": "backend",
+      "label": "Python Adapter",
+      "sublabel": "create_session(parameters)",
+      "pos": [
+        60,
+        85
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-13-session-n2",
+      "type": "backend",
+      "label": "Native ABI v1",
+      "sublabel": "tscb_create / abi_version",
+      "pos": [
+        450,
+        85
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-13-session-n3",
+      "type": "backend",
+      "label": "输出上界与分配",
+      "sublabel": "output_bound",
+      "pos": [
+        840,
+        85
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-13-session-n4",
+      "type": "backend",
+      "label": "压缩更新",
+      "sublabel": "compress_update",
+      "pos": [
+        840,
+        335
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-13-session-n5",
+      "type": "backend",
+      "label": "强制 Finalize",
+      "sublabel": "finalize",
+      "pos": [
+        450,
+        335
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-13-session-n6",
+      "type": "backend",
+      "label": "位流、账本与计时扩展",
+      "sublabel": "EncodedArtifact",
+      "pos": [
+        60,
+        335
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-13-session-n7",
+      "type": "backend",
+      "label": "独立解码上下文",
+      "sublabel": "session.decompress",
+      "pos": [
+        60,
+        585
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-13-session-n8",
+      "type": "backend",
+      "label": "逆适配与逻辑恢复",
+      "sublabel": "_measure_reverse_adapter",
+      "pos": [
+        450,
+        585
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-13-session-n9",
+      "type": "backend",
+      "label": "销毁 / 可选扩展",
+      "sublabel": "tscb_destroy / timing / query",
+      "pos": [
+        840,
+        585
+      ],
+      "size": [
+        250,
+        95
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "tscb-13-session-e0",
+      "to": "tscb-13-session-n2",
+      "label": "进入",
+      "from": "tscb-13-session-n1"
+    },
+    {
+      "id": "tscb-13-session-e1",
+      "to": "tscb-13-session-n3",
+      "label": "生成",
+      "from": "tscb-13-session-n2"
+    },
+    {
+      "id": "tscb-13-session-e2",
+      "to": "tscb-13-session-n4",
+      "label": "传递",
+      "from": "tscb-13-session-n3",
+      "labelAt": [
+        965.0,
+        194.0
+      ]
+    },
+    {
+      "id": "tscb-13-session-e3",
+      "to": "tscb-13-session-n5",
+      "label": "执行",
+      "from": "tscb-13-session-n4"
+    },
+    {
+      "id": "tscb-13-session-e4",
+      "to": "tscb-13-session-n6",
+      "label": "得到",
+      "from": "tscb-13-session-n5"
+    },
+    {
+      "id": "tscb-13-session-e5",
+      "to": "tscb-13-session-n7",
+      "label": "核对",
+      "from": "tscb-13-session-n6",
+      "labelAt": [
+        185.0,
+        444.0
+      ]
+    },
+    {
+      "id": "tscb-13-session-e6",
+      "to": "tscb-13-session-n8",
+      "label": "冻结",
+      "from": "tscb-13-session-n7"
+    },
+    {
+      "id": "tscb-13-session-e7",
+      "to": "tscb-13-session-n9",
+      "label": "输出",
+      "from": "tscb-13-session-n8"
+    }
+  ]
+}

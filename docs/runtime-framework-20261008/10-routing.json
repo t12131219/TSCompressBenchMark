@@ -1,0 +1,219 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "TSDataCompressBenchMark · 三种 Track 与输入路由",
+    "locale": "zh-CN",
+    "quality_profile": "showcase",
+    "viewBox": [
+      1150,
+      755
+    ],
+    "legend": {
+      "mode": "auto",
+      "entries": {
+        "frontend": {
+          "label": "入口 / 报告"
+        },
+        "backend": {
+          "label": "控制 / 执行"
+        },
+        "database": {
+          "label": "文件证据"
+        },
+        "security": {
+          "label": "资格 / 校验"
+        },
+        "external": {
+          "label": "外部来源"
+        }
+      }
+    }
+  },
+  "components": [
+    {
+      "id": "tscb-10-routing-n1",
+      "type": "backend",
+      "label": "Canonical 缓冲区",
+      "sublabel": "read_canonical",
+      "pos": [
+        60,
+        85
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-10-routing-n2",
+      "type": "backend",
+      "label": "只读 ndarray 视图",
+      "sublabel": "_array_from_payload",
+      "pos": [
+        450,
+        85
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-10-routing-n3",
+      "type": "backend",
+      "label": "TIMESTAMP 分支",
+      "sublabel": "timestamp only",
+      "pos": [
+        840,
+        85
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-10-routing-n4",
+      "type": "backend",
+      "label": "VALUE 分支",
+      "sublabel": "values + validity",
+      "pos": [
+        840,
+        335
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-10-routing-n5",
+      "type": "backend",
+      "label": "SYSTEM 分支",
+      "sublabel": "timestamp + values + validity",
+      "pos": [
+        450,
+        335
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-10-routing-n6",
+      "type": "backend",
+      "label": "LogicalBuffer / RoutedInput",
+      "sublabel": "规范路由对象",
+      "pos": [
+        60,
+        335
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-10-routing-n7",
+      "type": "backend",
+      "label": "内容身份与配对保护",
+      "sublabel": "hash_logical_buffers",
+      "pos": [
+        60,
+        585
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-10-routing-n8",
+      "type": "security",
+      "label": "输入一致性校验",
+      "sublabel": "validate_routed_input",
+      "pos": [
+        450,
+        585
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-10-routing-n9",
+      "type": "backend",
+      "label": "准备执行输入",
+      "sublabel": "prepare_execution_input",
+      "pos": [
+        840,
+        585
+      ],
+      "size": [
+        250,
+        95
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "tscb-10-routing-e0",
+      "to": "tscb-10-routing-n2",
+      "label": "解码视图",
+      "from": "tscb-10-routing-n1"
+    },
+    {
+      "id": "tscb-10-routing-e1",
+      "to": "tscb-10-routing-n3",
+      "label": "Track 选择",
+      "from": "tscb-10-routing-n2"
+    },
+    {
+      "id": "tscb-10-routing-e2",
+      "to": "tscb-10-routing-n4",
+      "label": "另一路",
+      "from": "tscb-10-routing-n3",
+      "labelAt": [
+        965.0,
+        194.0
+      ]
+    },
+    {
+      "id": "tscb-10-routing-e3",
+      "to": "tscb-10-routing-n5",
+      "label": "另一路",
+      "from": "tscb-10-routing-n4"
+    },
+    {
+      "id": "tscb-10-routing-e4",
+      "to": "tscb-10-routing-n6",
+      "label": "所选分支汇合",
+      "from": "tscb-10-routing-n5"
+    },
+    {
+      "id": "tscb-10-routing-e5",
+      "to": "tscb-10-routing-n7",
+      "label": "计算 hash",
+      "from": "tscb-10-routing-n6",
+      "labelAt": [
+        185.0,
+        444.0
+      ]
+    },
+    {
+      "id": "tscb-10-routing-e6",
+      "to": "tscb-10-routing-n8",
+      "label": "核对合同",
+      "from": "tscb-10-routing-n7"
+    },
+    {
+      "id": "tscb-10-routing-e7",
+      "to": "tscb-10-routing-n9",
+      "label": "物理适配",
+      "from": "tscb-10-routing-n8"
+    }
+  ]
+}

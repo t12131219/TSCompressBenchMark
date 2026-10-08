@@ -1,0 +1,55 @@
+--- a/src/streamvbytedelta_x64_encode.c
++++ b/src/streamvbytedelta_x64_encode.c
+@@ -55,7 +55,8 @@
+ 		_mm_storeu_si128((__m128i *)dataPtr, r1);
+ 		dataPtr += len_lut[keys >> 8];
+ 
+-		*((uint16_t*)keyPtr) = (uint16_t)keys;
++		uint16_t key16 = (uint16_t)keys;
++		memcpy(keyPtr, &key16, sizeof(key16));
+ 		keyPtr += 2;
+ 	}
+   prev = (uint32_t)_mm_extract_epi32(Prev,3);
+--- a/src/streamvbyte_zigzag.c
++++ b/src/streamvbyte_zigzag.c
+@@ -1,8 +1,9 @@
+ #include "streamvbyte_zigzag.h"
++#include <string.h>
+ 
+ static inline
+ uint32_t svb_zigzag_encode_32 (uint32_t val) {
+-	return (val + val) ^ (uint32_t)((int32_t)val >> 31);
++	return (val + val) ^ (0U - (val >> 31));
+ }
+ 
+ void zigzag_encode(const int32_t * in, uint32_t * out, size_t N) {
+@@ -12,14 +13,16 @@
+ 
+ void zigzag_delta_encode(const int32_t * in, uint32_t * out, size_t N, int32_t prev) {
+     for (size_t i = 0; i < N; i++) {
+-      out[i] = svb_zigzag_encode_32((uint32_t)(in[i] - prev));
++      out[i] = svb_zigzag_encode_32(((uint32_t)in[i] - (uint32_t)prev));
+       prev = in[i];
+     }
+ }
+ 
+ static inline
+ int32_t svb_zigzag_decode_32 (uint32_t val) {
+-	return (val >> 1) ^ (0-(val & 1));
++	uint32_t bits = (val >> 1) ^ (0U - (val & 1U));
++	int32_t result; memcpy(&result, &bits, sizeof(result));
++	return result;
+ }
+ 
+ 
+@@ -32,7 +35,8 @@
+ void zigzag_delta_decode(const uint32_t * in, int32_t * out, size_t N, int32_t prev) {
+     for(size_t i = 0; i < N; i++) {
+       int32_t val =svb_zigzag_decode_32(in[i]);
+-      out[i] = val + prev;
+-      prev += val;
++      uint32_t bits = (uint32_t)val + (uint32_t)prev;
++      memcpy(&out[i], &bits, sizeof(bits));
++      prev = out[i];
+     }
+ }

@@ -1,0 +1,184 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1150" height="755" viewBox="0 0 1150 755" role="img" lang="zh-CN" aria-labelledby="archify-diagram-title archify-diagram-description" data-preset="classic" data-quality-profile="showcase"><style>.m-emphasis{ fill: #34d399; }.a-dashed{ stroke: #a78bfa; fill: none; stroke-dasharray: 4,4; }.m-dashed{ fill: #a78bfa; }.c-backend{ fill: rgba(6, 78, 59, 0.4);    stroke: #34d399; }.t-muted{ fill: #94a3b8; }.t-messagebus{ fill: #fb923c; }.m-security{ fill: #fb7185; }.c-mask{ fill: #0f172a; stroke: none; }.c-grid{ stroke: #1e293b; fill: none; }.a-default{ stroke: #64748b; fill: none; }.m-default{ fill: #64748b; }.t-primary{ fill: #ffffff; }text{font-family:"Noto Sans CJK SC",sans-serif}.semantic-sigil{fill:none;stroke:#94a3b8;stroke-width:1.5}.sigil-fill{fill:#94a3b8;stroke:none}</style><rect width="1150" height="755" fill="#020617"/>
+        <title id="archify-diagram-title">TSDataCompressBenchMark · 显式预处理 A/B/C/D 与融合路径</title>
+        <desc id="archify-diagram-description">由 Archify 生成的架构图。</desc>
+        <!-- Definitions -->
+        <defs>
+          <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" class="m-default" />
+          </marker>
+          <marker id="arrowhead-emphasis" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" class="m-emphasis" />
+          </marker>
+          <marker id="arrowhead-security" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" class="m-security" />
+          </marker>
+          <marker id="arrowhead-dashed" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" class="m-dashed" />
+          </marker>
+          <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+            <path d="M 40 0 L 0 0 0 40" class="c-grid" stroke-width="0.5"/>
+          </pattern>
+        </defs>
+
+        <!-- Background Grid -->
+        <rect width="100%" height="100%" fill="url(#grid)" />
+
+        <!-- Boundaries (behind everything) -->
+
+
+        <!-- Connection paths (before components for correct z-order) -->
+        <path data-edge-from="tscb-15-pipeline-n1" data-edge-to="tscb-15-pipeline-n2" data-edge-label="进入" data-edge-key="0" data-edge-id="tscb-15-pipeline-e0" data-composition-points="310,132.5;450,132.5" d="M 310 132.5 L 450 132.5" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <path data-edge-from="tscb-15-pipeline-n2" data-edge-to="tscb-15-pipeline-n3" data-edge-label="生成" data-edge-key="1" data-edge-id="tscb-15-pipeline-e1" data-composition-points="700,132.5;840,132.5" d="M 700 132.5 L 840 132.5" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <path data-edge-from="tscb-15-pipeline-n3" data-edge-to="tscb-15-pipeline-n4" data-edge-label="传递" data-edge-key="2" data-edge-id="tscb-15-pipeline-e2" data-composition-points="965,180;965,335" d="M 965 180 L 965 335" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <path data-edge-from="tscb-15-pipeline-n4" data-edge-to="tscb-15-pipeline-n5" data-edge-label="执行" data-edge-key="3" data-edge-id="tscb-15-pipeline-e3" data-composition-points="840,382.5;700,382.5" d="M 840 382.5 L 700 382.5" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <path data-edge-from="tscb-15-pipeline-n5" data-edge-to="tscb-15-pipeline-n6" data-edge-label="得到" data-edge-key="4" data-edge-id="tscb-15-pipeline-e4" data-composition-points="450,382.5;310,382.5" d="M 450 382.5 L 310 382.5" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <path data-edge-from="tscb-15-pipeline-n6" data-edge-to="tscb-15-pipeline-n7" data-edge-label="核对" data-edge-key="5" data-edge-id="tscb-15-pipeline-e5" data-composition-points="185,430;185,585" d="M 185 430 L 185 585" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <path data-edge-from="tscb-15-pipeline-n7" data-edge-to="tscb-15-pipeline-n8" data-edge-label="同类融合路径" data-edge-key="6" data-edge-id="tscb-15-pipeline-e6" data-composition-points="310,632.5;450,632.5" d="M 310 632.5 L 450 632.5" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
+        <path data-edge-from="tscb-15-pipeline-n8" data-edge-to="tscb-15-pipeline-n9" data-edge-label="输出" data-edge-key="7" data-edge-id="tscb-15-pipeline-e7" data-composition-points="700,632.5;840,632.5" d="M 700 632.5 L 840 632.5" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+        <!-- Components -->
+        <g id="node-tscb-15-pipeline-n1" data-node-id="tscb-15-pipeline-n1" data-node-label="有效阶段计划" tabindex="0" role="button" aria-label="聚焦有效阶段计划，PreprocessPlan, 架构组件" aria-pressed="false" data-node-kind="backend" data-node-sublabel="PreprocessPlan" data-node-context="架构组件">
+          <title>有效阶段计划 · PreprocessPlan · 架构组件</title>
+          <rect x="60" y="85" width="250" height="95" rx="6" class="c-mask"/>
+          <rect x="60" y="85" width="250" height="95" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(66 91) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="185" y="130.5" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">有效阶段计划</text>
+        <text data-detail="context" x="185" y="146.5" class="t-muted" font-size="9" text-anchor="middle">PreprocessPlan</text>
+        </g>
+
+        <g id="node-tscb-15-pipeline-n2" data-node-id="tscb-15-pipeline-n2" data-node-label="运行执行器准入" tabindex="0" role="button" aria-label="聚焦运行执行器准入，reviewed_pipeline_executor, 架构组件" aria-pressed="false" data-node-kind="backend" data-node-sublabel="reviewed_pipeline_executor" data-node-context="架构组件">
+          <title>运行执行器准入 · reviewed_pipeline_executor · 架构组件</title>
+          <rect x="450" y="85" width="250" height="95" rx="6" class="c-mask"/>
+          <rect x="450" y="85" width="250" height="95" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(456 91) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="575" y="130.5" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">运行执行器准入</text>
+        <text data-detail="context" x="575" y="146.5" class="t-muted" font-size="9" text-anchor="middle">reviewed_pipeline_executor</text>
+        </g>
+
+        <g id="node-tscb-15-pipeline-n3" data-node-id="tscb-15-pipeline-n3" data-node-label="A · checked delta / ZigZag" tabindex="0" role="button" aria-label="聚焦A · checked delta / ZigZag，int64 → uint64, 架构组件" aria-pressed="false" data-node-kind="backend" data-node-sublabel="int64 → uint64" data-node-context="架构组件">
+          <title>A · checked delta / ZigZag · int64 → uint64 · 架构组件</title>
+          <rect x="840" y="85" width="250" height="95" rx="6" class="c-mask"/>
+          <rect x="840" y="85" width="250" height="95" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(846 91) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="965" y="130.5" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">A · checked delta / ZigZag</text>
+        <text data-detail="context" x="965" y="146.5" class="t-muted" font-size="9" text-anchor="middle">int64 → uint64</text>
+        </g>
+
+        <g id="node-tscb-15-pipeline-n4" data-node-id="tscb-15-pipeline-n4" data-node-label="B · low/high limb" tabindex="0" role="button" aria-label="聚焦B · low/high limb，u64 → interleaved u32, 架构组件" aria-pressed="false" data-node-kind="backend" data-node-sublabel="u64 → interleaved u32" data-node-context="架构组件">
+          <title>B · low/high limb · u64 → interleaved u32 · 架构组件</title>
+          <rect x="840" y="335" width="250" height="95" rx="6" class="c-mask"/>
+          <rect x="840" y="335" width="250" height="95" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(846 341) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="965" y="380.5" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">B · low/high limb</text>
+        <text data-detail="context" x="965" y="396.5" class="t-muted" font-size="9" text-anchor="middle">u64 → interleaved u32</text>
+        </g>
+
+        <g id="node-tscb-15-pipeline-n5" data-node-id="tscb-15-pipeline-n5" data-node-label="C · Stream VByte" tabindex="0" role="button" aria-label="聚焦C · Stream VByte，codec / raw words, 架构组件" aria-pressed="false" data-node-kind="backend" data-node-sublabel="codec / raw words" data-node-context="架构组件">
+          <title>C · Stream VByte · codec / raw words · 架构组件</title>
+          <rect x="450" y="335" width="250" height="95" rx="6" class="c-mask"/>
+          <rect x="450" y="335" width="250" height="95" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(456 341) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="575" y="380.5" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">C · Stream VByte</text>
+        <text data-detail="context" x="575" y="396.5" class="t-muted" font-size="9" text-anchor="middle">codec / raw words</text>
+        </g>
+
+        <g id="node-tscb-15-pipeline-n6" data-node-id="tscb-15-pipeline-n6" data-node-label="D · 自包含封装" tabindex="0" role="button" aria-label="聚焦D · 自包含封装，descriptor / frame / checksum, 架构组件" aria-pressed="false" data-node-kind="backend" data-node-sublabel="descriptor / frame / checksum" data-node-context="架构组件">
+          <title>D · 自包含封装 · descriptor / frame / checksum · 架构组件</title>
+          <rect x="60" y="335" width="250" height="95" rx="6" class="c-mask"/>
+          <rect x="60" y="335" width="250" height="95" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(66 341) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="185" y="380.5" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">D · 自包含封装</text>
+        <text data-detail="context" x="185" y="396.5" class="t-muted" font-size="9" text-anchor="middle">descriptor / frame / checksum</text>
+        </g>
+
+        <g id="node-tscb-15-pipeline-n7" data-node-id="tscb-15-pipeline-n7" data-node-label="逆序与独立验证" tabindex="0" role="button" aria-label="聚焦逆序与独立验证，D → C → B → A, 架构组件" aria-pressed="false" data-node-kind="backend" data-node-sublabel="D → C → B → A" data-node-context="架构组件">
+          <title>逆序与独立验证 · D → C → B → A · 架构组件</title>
+          <rect x="60" y="585" width="250" height="95" rx="6" class="c-mask"/>
+          <rect x="60" y="585" width="250" height="95" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(66 591) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="185" y="630.5" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">逆序与独立验证</text>
+        <text data-detail="context" x="185" y="646.5" class="t-muted" font-size="9" text-anchor="middle">D → C → B → A</text>
+        </g>
+
+        <g id="node-tscb-15-pipeline-n8" data-node-id="tscb-15-pipeline-n8" data-node-label="D1 / FOR 融合例外" tabindex="0" role="button" aria-label="聚焦D1 / FOR 融合例外，MaskedVByte / SIMDComp, 架构组件" aria-pressed="false" data-node-kind="backend" data-node-sublabel="MaskedVByte / SIMDComp" data-node-context="架构组件">
+          <title>D1 / FOR 融合例外 · MaskedVByte / SIMDComp · 架构组件</title>
+          <rect x="450" y="585" width="250" height="95" rx="6" class="c-mask"/>
+          <rect x="450" y="585" width="250" height="95" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(456 591) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="575" y="630.5" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">D1 / FOR 融合例外</text>
+        <text data-detail="context" x="575" y="646.5" class="t-muted" font-size="9" text-anchor="middle">MaskedVByte / SIMDComp</text>
+        </g>
+
+        <g id="node-tscb-15-pipeline-n9" data-node-id="tscb-15-pipeline-n9" data-node-label="阶段证据与导出" tabindex="0" role="button" aria-label="聚焦阶段证据与导出，pipeline_stages.csv, 架构组件" aria-pressed="false" data-node-kind="backend" data-node-sublabel="pipeline_stages.csv" data-node-context="架构组件">
+          <title>阶段证据与导出 · pipeline_stages.csv · 架构组件</title>
+          <rect x="840" y="585" width="250" height="95" rx="6" class="c-mask"/>
+          <rect x="840" y="585" width="250" height="95" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(846 591) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="965" y="630.5" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">阶段证据与导出</text>
+        <text data-detail="context" x="965" y="646.5" class="t-muted" font-size="9" text-anchor="middle">pipeline_stages.csv</text>
+        </g>
+
+        <!-- Connection labels -->
+        <g data-detail="context" data-edge-from="tscb-15-pipeline-n1" data-edge-to="tscb-15-pipeline-n2" data-edge-label="进入" data-edge-key="0" data-edge-id="tscb-15-pipeline-e0">
+          <rect x="365" y="112.5" width="30" height="14" rx="3" class="c-mask"/>
+          <text x="380" y="122.5" class="t-muted" font-size="8" text-anchor="middle">进入</text>
+        </g>
+        <g data-detail="context" data-edge-from="tscb-15-pipeline-n2" data-edge-to="tscb-15-pipeline-n3" data-edge-label="生成" data-edge-key="1" data-edge-id="tscb-15-pipeline-e1">
+          <rect x="755" y="112.5" width="30" height="14" rx="3" class="c-mask"/>
+          <text x="770" y="122.5" class="t-muted" font-size="8" text-anchor="middle">生成</text>
+        </g>
+        <g data-detail="context" data-edge-from="tscb-15-pipeline-n3" data-edge-to="tscb-15-pipeline-n4" data-edge-label="传递" data-edge-key="2" data-edge-id="tscb-15-pipeline-e2">
+          <rect x="950" y="184" width="30" height="14" rx="3" class="c-mask"/>
+          <text x="965" y="194" class="t-muted" font-size="8" text-anchor="middle">传递</text>
+        </g>
+        <g data-detail="context" data-edge-from="tscb-15-pipeline-n4" data-edge-to="tscb-15-pipeline-n5" data-edge-label="执行" data-edge-key="3" data-edge-id="tscb-15-pipeline-e3">
+          <rect x="755" y="362.5" width="30" height="14" rx="3" class="c-mask"/>
+          <text x="770" y="372.5" class="t-muted" font-size="8" text-anchor="middle">执行</text>
+        </g>
+        <g data-detail="context" data-edge-from="tscb-15-pipeline-n5" data-edge-to="tscb-15-pipeline-n6" data-edge-label="得到" data-edge-key="4" data-edge-id="tscb-15-pipeline-e4">
+          <rect x="365" y="362.5" width="30" height="14" rx="3" class="c-mask"/>
+          <text x="380" y="372.5" class="t-muted" font-size="8" text-anchor="middle">得到</text>
+        </g>
+        <g data-detail="context" data-edge-from="tscb-15-pipeline-n6" data-edge-to="tscb-15-pipeline-n7" data-edge-label="核对" data-edge-key="5" data-edge-id="tscb-15-pipeline-e5">
+          <rect x="170" y="434" width="30" height="14" rx="3" class="c-mask"/>
+          <text x="185" y="444" class="t-muted" font-size="8" text-anchor="middle">核对</text>
+        </g>
+        <g data-detail="context" data-edge-from="tscb-15-pipeline-n7" data-edge-to="tscb-15-pipeline-n8" data-edge-label="同类融合路径" data-edge-key="6" data-edge-id="tscb-15-pipeline-e6">
+          <rect x="346.2" y="612.5" width="67.6" height="14" rx="3" class="c-mask"/>
+          <text x="380" y="622.5" class="t-messagebus" font-size="8" text-anchor="middle">同类融合路径</text>
+        </g>
+        <g data-detail="context" data-edge-from="tscb-15-pipeline-n8" data-edge-to="tscb-15-pipeline-n9" data-edge-label="输出" data-edge-key="7" data-edge-id="tscb-15-pipeline-e7">
+          <rect x="755" y="612.5" width="30" height="14" rx="3" class="c-mask"/>
+          <text x="770" y="622.5" class="t-muted" font-size="8" text-anchor="middle">输出</text>
+        </g>
+
+        <!-- Boundary labels (foreground masks keep routes out of titles) -->
+
+
+        <!-- Legend -->
+        <g data-legend="" data-legend-bridge="">
+          <text x="40" y="719" class="t-primary" font-size="12" font-weight="650">图例</text>
+          <g data-legend-semantic-kind="backend" data-legend-kind="backend" data-legend-label="控制 / 执行" data-legend-x="40" data-legend-baseline="739" data-legend-width="98">
+            <rect x="40" y="730" width="16" height="10" rx="2.5" class="c-backend" stroke-width="1"/>
+            <text x="62" y="739" class="t-muted" font-size="10" font-weight="500">控制 / 执行</text>
+          </g>
+        </g>
+      </svg>

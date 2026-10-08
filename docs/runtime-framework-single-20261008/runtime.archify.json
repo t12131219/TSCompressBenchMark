@@ -1,0 +1,4122 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "TSDataCompressBenchMark · 单图详细运行框架 · 197 节点",
+    "locale": "zh-CN",
+    "quality_profile": "standard",
+    "viewBox": [
+      5750,
+      3973
+    ],
+    "legend": {
+      "mode": "auto",
+      "entries": {
+        "frontend": {
+          "label": "入口 / 阅读输出"
+        },
+        "backend": {
+          "label": "运行 / 适配 / 测量"
+        },
+        "database": {
+          "label": "数据 / 冻结证据"
+        },
+        "security": {
+          "label": "合同 / 资格 / 校验门"
+        },
+        "external": {
+          "label": "说明 / 注册目录"
+        }
+      }
+    }
+  },
+  "components": [
+    {
+      "id": "entry",
+      "type": "frontend",
+      "label": "01 · 命令与实验配置",
+      "sublabel": "CLI → runner；各命令按需执行不同层",
+      "tag": "cli.py:76",
+      "pos": [
+        110,
+        270
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "entry_detail_1",
+      "type": "frontend",
+      "label": "可执行入口",
+      "sublabel": "tscompbench / python -m tscompbench",
+      "tag": "cli.py:76",
+      "pos": [
+        110,
+        490
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "entry_detail_2",
+      "type": "backend",
+      "label": "数据与算法命令",
+      "sublabel": "datasets: list / verify / prepare；codecs: list / verify / classify-sources",
+      "tag": "cli.py:41",
+      "pos": [
+        110,
+        645
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "entry_detail_3",
+      "type": "backend",
+      "label": "run 子命令依赖",
+      "sublabel": "init → prepare → plan → validate；report 读取已有运行集",
+      "tag": "cli.py:41",
+      "pos": [
+        110,
+        800
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "entry_detail_4",
+      "type": "backend",
+      "label": "严格加载实验 TOML",
+      "sublabel": "datasets / algorithms / tracks / seed / sweep / profile / reporting",
+      "tag": "configuration.py:396",
+      "pos": [
+        110,
+        955
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "entry_detail_5",
+      "type": "backend",
+      "label": "配置与测量身份",
+      "sublabel": "生成 ExperimentConfigID、ProfileID；拒绝未知字段与非法值",
+      "tag": "configuration.py:396",
+      "pos": [
+        110,
+        1110
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "entry_detail_6",
+      "type": "backend",
+      "label": "QUALIFICATION / FORMAL",
+      "sublabel": "框架资格测试与正式测量分开；正式来源仍需准入",
+      "tag": "configuration.py:36",
+      "pos": [
+        110,
+        1265
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "entry_detail_7",
+      "type": "backend",
+      "label": "FORMAL 最低测量条件",
+      "sublabel": "预热 ≥3 次且 ≥0.5s；重复 ≥10 次；每方向最低 1–3s",
+      "tag": "configuration.py:174",
+      "pos": [
+        110,
+        1420
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "entry_detail_8",
+      "type": "backend",
+      "label": "线程与资源政策",
+      "sublabel": "threads / processes / affinity / timeout / memory / timing_scope",
+      "tag": "configuration.py:36",
+      "pos": [
+        110,
+        1575
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "entry_detail_9",
+      "type": "frontend",
+      "label": "返回与退出",
+      "sublabel": "成功输出 JSON；配置 / I/O / 运行异常输出 stderr，退出 2",
+      "tag": "cli.py:76",
+      "pos": [
+        110,
+        1730
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "init",
+      "type": "backend",
+      "label": "02 · 初始化与环境冻结",
+      "sublabel": "initialize_run_set：创建或严格恢复 RunSet",
+      "tag": "runner.py:186",
+      "pos": [
+        620,
+        270
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "init_detail_1",
+      "type": "backend",
+      "label": "输出目录与安全 ID",
+      "sublabel": "RunSetID 限单个路径组件；默认时间戳 + 配置摘要",
+      "tag": "runner.py:186",
+      "pos": [
+        620,
+        490
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "init_detail_2",
+      "type": "backend",
+      "label": "存储与运行能力探测",
+      "sublabel": "检查 ≥64MiB 空闲、append/fsync、隔离与单调时钟",
+      "tag": "runner.py:125",
+      "pos": [
+        620,
+        645
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "init_detail_3",
+      "type": "security",
+      "label": "运行集文件锁",
+      "sublabel": "同名 flock 防并发写；各阶段分别获取和释放",
+      "tag": "runner.py:186",
+      "pos": [
+        620,
+        800
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "init_detail_4",
+      "type": "database",
+      "label": "创建运行集与元数据",
+      "sublabel": "run-set.json 保存 Runner 版本、Git 状态与工作区探测",
+      "tag": "runner.py:186",
+      "pos": [
+        620,
+        955
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "init_detail_5",
+      "type": "backend",
+      "label": "捕获实际运行环境",
+      "sublabel": "CPU / ISA / OS / 软件环境 / 设备 → EnvironmentID",
+      "tag": "environment.py:152",
+      "pos": [
+        620,
+        1110
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "init_detail_6",
+      "type": "database",
+      "label": "冻结配置与环境",
+      "sublabel": "frozen_config.json + environment.json；写入后不可漂移",
+      "tag": "runner.py:186",
+      "pos": [
+        620,
+        1265
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "init_detail_7",
+      "type": "database",
+      "label": "追加启动事件",
+      "sublabel": "events.jsonl：RUN_SET_CREATED / RUN_SET_RESUMED",
+      "tag": "storage/events.py:15",
+      "pos": [
+        620,
+        1420
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "init_detail_8",
+      "type": "security",
+      "label": "恢复入口的校验门",
+      "sublabel": "--run-set-id + --resume；配置、环境与日志必须一致",
+      "tag": "runner.py:186",
+      "pos": [
+        620,
+        1575
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "init_detail_9",
+      "type": "backend",
+      "label": "继续执行所选命令",
+      "sublabel": "init 到此返回；其他命令各自进入对应层",
+      "tag": "cli.py:76",
+      "pos": [
+        620,
+        1730
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "data",
+      "type": "backend",
+      "label": "03 · L1 数据准备",
+      "sublabel": "CSV / NPZ → CanonicalArtifact + 表征",
+      "tag": "runner.py:281",
+      "pos": [
+        1130,
+        270
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "data_detail_1",
+      "type": "database",
+      "label": "数据集注册与源校验",
+      "sublabel": "registry/datasets：manifest 合同、源路径与文件 SHA-256",
+      "tag": "datasets/registry.py:66",
+      "pos": [
+        1130,
+        490
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "data_detail_2",
+      "type": "backend",
+      "label": "加载 CSV / NPZ",
+      "sublabel": "声明驱动解析 timestamp、value、validity；保留实体 / 特征顺序",
+      "tag": "datasets/loaders.py:314",
+      "pos": [
+        1130,
+        645
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "data_detail_3",
+      "type": "backend",
+      "label": "逻辑语义与物理表示",
+      "sublabel": "拓扑、dtype、shape、单位、epoch、字节序、对齐、布局",
+      "tag": "datasets/models.py:58",
+      "pos": [
+        1130,
+        800
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "data_detail_4",
+      "type": "backend",
+      "label": "规范内容身份与逻辑位数",
+      "sublabel": "DatasetID / 内容哈希；timestamp + value + validity 原始位数",
+      "tag": "datasets/models.py:58",
+      "pos": [
+        1130,
+        955
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "data_detail_5",
+      "type": "database",
+      "label": "写入 canonical.tscb",
+      "sublabel": "版本头 + 规范 JSON 元数据 + 命名缓冲区；little-endian",
+      "tag": "datasets/canonical.py:56",
+      "pos": [
+        1130,
+        1110
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "data_detail_6",
+      "type": "security",
+      "label": "原子落盘并重新核验",
+      "sublabel": "临时文件 → flush/fsync → replace；检查长度 / 描述 / 载荷哈希",
+      "tag": "datasets/canonical.py:124",
+      "pos": [
+        1130,
+        1265
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "data_detail_7",
+      "type": "backend",
+      "label": "只读数据表征",
+      "sublabel": "exact / seeded sampled；分布、熵、差分、相关性及时间特征",
+      "tag": "datasets/characterize.py:235",
+      "pos": [
+        1130,
+        1420
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "data_detail_8",
+      "type": "database",
+      "label": "冻结 L1 产物",
+      "sublabel": "metadata、characterization、preparation-record、layer1-preparation",
+      "tag": "datasets/prepare.py:108",
+      "pos": [
+        1130,
+        1575
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "data_detail_9",
+      "type": "security",
+      "label": "复用已有准备结果",
+      "sublabel": "已有 preparation-record 时核验内容、数据身份与表征配置",
+      "tag": "datasets/prepare.py:26",
+      "pos": [
+        1130,
+        1730
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "data_detail_10",
+      "type": "backend",
+      "label": "传递数据描述与缓冲区",
+      "sublabel": "L2 使用元数据与表征；执行阶段读取 canonical payload",
+      "tag": "runner.py:571",
+      "pos": [
+        1130,
+        1885
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "plan",
+      "type": "backend",
+      "label": "04 · L2 注册、协商与任务规划",
+      "sublabel": "算法 × 数据集 × Track × 参数 → 冻结任务全集",
+      "tag": "runner.py:342",
+      "pos": [
+        1640,
+        270
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "plan_detail_1",
+      "type": "database",
+      "label": "读取 Source / Codec 注册表",
+      "sublabel": "来源、许可、availability、能力、语义、生命周期、适配器合同",
+      "tag": "codecs/registry.py:98",
+      "pos": [
+        1640,
+        490
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "plan_detail_2",
+      "type": "backend",
+      "label": "别名解析与来源分类",
+      "sublabel": "按真实 codec key 去重；冻结 alias / source / codec snapshots",
+      "tag": "runner.py:342",
+      "pos": [
+        1640,
+        645
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "plan_detail_3",
+      "type": "security",
+      "label": "定位适配器构建闭包",
+      "sublabel": "主产物 / binary / build-record / supporting artifacts 哈希校验",
+      "tag": "adapters/factory.py:64",
+      "pos": [
+        1640,
+        800
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "plan_detail_4",
+      "type": "backend",
+      "label": "展开参数 sweep",
+      "sublabel": "默认值、类型、范围、枚举与组合约束 → ConfigID / status",
+      "tag": "planning/sweep.py:82",
+      "pos": [
+        1640,
+        955
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "plan_detail_5",
+      "type": "backend",
+      "label": "按数据集与 Track 建描述",
+      "sublabel": "n / m / topology / dtype / validity / timestamp / value units",
+      "tag": "codecs/negotiation.py:110",
+      "pos": [
+        1640,
+        1110
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "plan_detail_6",
+      "type": "backend",
+      "label": "建立显式 PreprocessPlan",
+      "sublabel": "A–D 槽位及开关进入身份；每阶段逆变换、账本归属可核验",
+      "tag": "preprocess/contracts.py:69",
+      "pos": [
+        1640,
+        1265
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "plan_detail_7",
+      "type": "backend",
+      "label": "能力协商与适配计划",
+      "sublabel": "DIRECT_SUPPORTED / ADAPTER_LOSSLESS / ADAPTER_LOSSY / UNSUPPORTED",
+      "tag": "codecs/negotiation.py:242",
+      "pos": [
+        1640,
+        1420
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "plan_detail_8",
+      "type": "backend",
+      "label": "解析实际执行路径",
+      "sublabel": "ISA / device / threads / fallback / affinity / timing → ExecutionPathHash",
+      "tag": "planning/resolution.py:32",
+      "pos": [
+        1640,
+        1575
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "plan_detail_9",
+      "type": "backend",
+      "label": "构建三层可比键",
+      "sublabel": "Semantic → Execution → Resource；包含损失、对象、路径、预算",
+      "tag": "planning/resolution.py:186",
+      "pos": [
+        1640,
+        1730
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "plan_detail_10",
+      "type": "database",
+      "label": "生成与冻结 BenchmarkTask",
+      "sublabel": "TaskID / ProfileID / 资源限额；排序 task_plan.jsonl + resolved_configs",
+      "tag": "planning/tasks.py:73",
+      "pos": [
+        1640,
+        1885
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "plan_detail_11",
+      "type": "backend",
+      "label": "保留不支持与非法组合",
+      "sublabel": "诊断任务仍进入冻结任务全集，后续计入 coverage 分母",
+      "tag": "runner.py:342",
+      "pos": [
+        1640,
+        2040
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "preflight",
+      "type": "backend",
+      "label": "05 · L3 输入路由与预检",
+      "sublabel": "preflight_task：通过所有资格门后才允许预热",
+      "tag": "execution/preflight.py:93",
+      "pos": [
+        2150,
+        270
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "preflight_detail_1",
+      "type": "backend",
+      "label": "选择 Track 的输入缓冲区",
+      "sublabel": "TIMESTAMP / VALUE / SYSTEM 是每个任务的互斥路由",
+      "tag": "execution/routing.py:51",
+      "pos": [
+        2150,
+        490
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "preflight_detail_2",
+      "type": "backend",
+      "label": "TIMESTAMP 路径",
+      "sublabel": "只编码 timestamp；原始位数分母使用 timestamp_raw_bits",
+      "tag": "execution/routing.py:51",
+      "pos": [
+        2150,
+        645
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "preflight_detail_3",
+      "type": "backend",
+      "label": "VALUE 路径",
+      "sublabel": "编码 value + validity；timestamp 留作配对验证参考",
+      "tag": "execution/routing.py:51",
+      "pos": [
+        2150,
+        800
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "preflight_detail_4",
+      "type": "backend",
+      "label": "SYSTEM 路径",
+      "sublabel": "timestamp + value + validity；冻结 SegmentPlanID 与统一分母",
+      "tag": "execution/routing.py:51",
+      "pos": [
+        2150,
+        955
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "preflight_detail_5",
+      "type": "security",
+      "label": "来源、许可与运行路径门",
+      "sublabel": "来源完整且许可可用；Task 状态与实际 adapter_id 必须匹配",
+      "tag": "execution/preflight.py:93",
+      "pos": [
+        2150,
+        1110
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "preflight_detail_6",
+      "type": "backend",
+      "label": "输入合同与显式适配",
+      "sublabel": "检查 dtype / shape / 单位 / 配对；复制、对齐、字节序、精确扩宽或 lossy cast",
+      "tag": "execution/preparation.py:23",
+      "pos": [
+        2150,
+        1265
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "preflight_detail_7",
+      "type": "security",
+      "label": "已审核预处理执行器门",
+      "sublabel": "独立数学 / 位流 oracle 校验；来源值域拒绝保持原子性",
+      "tag": "preprocess/runtime.py:58",
+      "pos": [
+        2150,
+        1420
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "preflight_detail_8",
+      "type": "security",
+      "label": "隔离边界套件",
+      "sublabel": "空数据、特殊值、容量、截断、溢出、确定性、内存安全等",
+      "tag": "validation/boundary.py:334",
+      "pos": [
+        2150,
+        1575
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "preflight_detail_9",
+      "type": "backend",
+      "label": "隔离最小 roundtrip",
+      "sublabel": "编码 → Finalize → 解码 → 正确性 + 位账本闭合",
+      "tag": "execution/repetition.py:234",
+      "pos": [
+        2150,
+        1730
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "preflight_detail_10",
+      "type": "security",
+      "label": "生成 PreflightResult",
+      "sublabel": "失败写 DIAGNOSTIC / reason_code；PASS 才 eligible_for_formal_repetitions",
+      "tag": "execution/preflight.py:28",
+      "pos": [
+        2150,
+        1885
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "measure",
+      "type": "backend",
+      "label": "06 · L3/L4 调度、隔离与测量",
+      "sublabel": "父进程串行任务循环；具体函数调用进入 worker",
+      "tag": "execution/orchestrator.py:86",
+      "pos": [
+        2660,
+        270
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "measure_detail_1",
+      "type": "backend",
+      "label": "读取任务进度与缺失重复",
+      "sublabel": "父进程 for task；仅调度未出现的 repetition_index",
+      "tag": "runner.py:571",
+      "pos": [
+        2660,
+        490
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "measure_detail_2",
+      "type": "backend",
+      "label": "每次调用创建隔离进程",
+      "sublabel": "fork（可用时）/ spawn；结果与异常经单向 Pipe 返回",
+      "tag": "execution/isolation.py:65",
+      "pos": [
+        2660,
+        645
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "measure_detail_3",
+      "type": "backend",
+      "label": "亲和性与内存限制",
+      "sublabel": "sched_setaffinity；RLIMIT_AS 保留现有 VM + 64MiB 余量",
+      "tag": "execution/isolation.py:34",
+      "pos": [
+        2660,
+        800
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "measure_detail_4",
+      "type": "security",
+      "label": "截止时间与失败传播",
+      "sublabel": "父进程 deadline → terminate / kill；OOM / TIMEOUT / CRASHED",
+      "tag": "execution/isolation.py:65",
+      "pos": [
+        2660,
+        955
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "measure_detail_5",
+      "type": "backend",
+      "label": "独立 worker 预热",
+      "sublabel": "重复 fresh roundtrip，次数与累计时长均满足阈值",
+      "tag": "execution/repetition.py:345",
+      "pos": [
+        2660,
+        1110
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "measure_detail_6",
+      "type": "backend",
+      "label": "独立 worker 正式重复",
+      "sublabel": "每次重复内部是 INDEPENDENT_OBJECT；对象重新创建并 Finalize",
+      "tag": "execution/repetition.py:382",
+      "pos": [
+        2660,
+        1265
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "measure_detail_7",
+      "type": "backend",
+      "label": "最低时长分别达标",
+      "sublabel": "编码和解码均达到 min_repetition_seconds；E2E 还检查端到端时长",
+      "tag": "measurement/contracts.py:9",
+      "pos": [
+        2660,
+        1420
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "measure_detail_8",
+      "type": "security",
+      "label": "达到上限仍未达标则失败",
+      "sublabel": "max_inner_iterations 防无限扩张；不发布未满足时长的数据",
+      "tag": "execution/repetition.py:382",
+      "pos": [
+        2660,
+        1575
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "measure_detail_9",
+      "type": "backend",
+      "label": "资源采样与可用性",
+      "sublabel": "RSS / PSS / USS / CPU / faults / I/O / threads / swap；scope 如实记录",
+      "tag": "measurement/resources.py:195",
+      "pos": [
+        2660,
+        1730
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "measure_detail_10",
+      "type": "security",
+      "label": "资源资格门",
+      "sublabel": "swap → RESOURCE_PRESSURE；实测线程超预算 → OVERSUBSCRIBED",
+      "tag": "execution/orchestrator.py:86",
+      "pos": [
+        2660,
+        1885
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "measure_detail_11",
+      "type": "backend",
+      "label": "计时状态政策",
+      "sublabel": "GC / cache / state / allocation / JIT 政策进入测量合同与可比身份",
+      "tag": "measurement/contracts.py:9",
+      "pos": [
+        2660,
+        2040
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "session",
+      "type": "backend",
+      "label": "07 · 原生适配与计时边界",
+      "sublabel": "同一次重复对应 finalized 对象、计时、资源与校验",
+      "tag": "execution/repetition.py:382",
+      "pos": [
+        3170,
+        270
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "session_detail_1",
+      "type": "backend",
+      "label": "Python 工厂创建 Adapter",
+      "sublabel": "manifest.adapter.factory → codec adapter；Oracle 与第三方区分",
+      "tag": "adapters/factory.py:258",
+      "pos": [
+        3170,
+        490
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "session_detail_2",
+      "type": "backend",
+      "label": "适配器进入 ctypes / C ABI",
+      "sublabel": "Python 协议桥接本项目 native wrapper 与锁定 vendor 来源",
+      "tag": "execution/protocol.py:119",
+      "pos": [
+        3170,
+        645
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "session_detail_3",
+      "type": "backend",
+      "label": "创建新的编码 Session",
+      "sublabel": "create_session(parameters)；output_bound 分配容量 + canary",
+      "tag": "execution/repetition.py:166",
+      "pos": [
+        3170,
+        800
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "session_detail_4",
+      "type": "backend",
+      "label": "编码并完成对象",
+      "sublabel": "compress_update → finalize；尾部、字典、模型、索引都进入最终位流",
+      "tag": "execution/repetition.py:166",
+      "pos": [
+        3170,
+        955
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "session_detail_5",
+      "type": "backend",
+      "label": "获取账本与编码观测",
+      "sublabel": "accounting(stream)；SHA-256、native_timing、codec_telemetry",
+      "tag": "execution/repetition.py:166",
+      "pos": [
+        3170,
+        1110
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "session_detail_6",
+      "type": "backend",
+      "label": "finally 关闭编码 Session",
+      "sublabel": "无论成功失败均 close；状态不从上一独立对象继承",
+      "tag": "execution/repetition.py:166",
+      "pos": [
+        3170,
+        1265
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "session_detail_7",
+      "type": "backend",
+      "label": "新建解码 Session",
+      "sublabel": "decompress(finalized stream) → close；物化逆适配工作",
+      "tag": "execution/repetition.py:382",
+      "pos": [
+        3170,
+        1420
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "session_detail_8",
+      "type": "backend",
+      "label": "CORE 计时",
+      "sublabel": "压缩 update + finalize 与 decompress 的调用时间；分别记录 encode/decode",
+      "tag": "execution/repetition.py:382",
+      "pos": [
+        3170,
+        1575
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "session_detail_9",
+      "type": "backend",
+      "label": "PIPELINE / E2E 计时",
+      "sublabel": "PIPELINE 纳入适配及 session 工作；E2E 覆盖 encode→decode 的内存路径",
+      "tag": "execution/repetition.py:382",
+      "pos": [
+        3170,
+        1730
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "session_detail_10",
+      "type": "backend",
+      "label": "原生计时独立保留",
+      "sublabel": "原生 clock / boundary / 分母明确；不可将部分原生总量冒充全部循环",
+      "tag": "execution/repetition.py:36",
+      "pos": [
+        3170,
+        1885
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "session_detail_11",
+      "type": "backend",
+      "label": "按真实分母记录吞吐",
+      "sublabel": "canonical bytes、codec input bytes、native bytes、rows、value elements",
+      "tag": "measurement/contracts.py:81",
+      "pos": [
+        3170,
+        2040
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "validate",
+      "type": "backend",
+      "label": "08 · 正确性、位账本与附加负载",
+      "sublabel": "计时之外核验，再形成该重复的最终状态",
+      "tag": "execution/orchestrator.py:86",
+      "pos": [
+        3680,
+        270
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "validate_detail_1",
+      "type": "security",
+      "label": "恢复消费者可见表示",
+      "sublabel": "逆适配后检查缓冲区身份、顺序、长度、shape 与 dtype",
+      "tag": "validation/correctness.py:51",
+      "pos": [
+        3680,
+        490
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "validate_detail_2",
+      "type": "security",
+      "label": "时间、缺失与 T/V 配对",
+      "sublabel": "timestamp 精确、顺序、unit、epoch；validity 位精确与配对 reference hash",
+      "tag": "validation/correctness.py:51",
+      "pos": [
+        3680,
+        645
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "validate_detail_3",
+      "type": "security",
+      "label": "LOSSLESS 无损检查",
+      "sublabel": "整数逐字节、符号与溢出；浮点 IEEE bits、NaN / Inf / ±0",
+      "tag": "validation/correctness.py:51",
+      "pos": [
+        3680,
+        800
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "validate_detail_4",
+      "type": "security",
+      "label": "有界 / 无界损失模式",
+      "sublabel": "ERROR_BOUNDED_LOSSY：误差界；UNBOUNDED_LOSSY：有限域与质量表征",
+      "tag": "validation/lossy.py:187",
+      "pos": [
+        3680,
+        955
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "validate_detail_5",
+      "type": "security",
+      "label": "速率控制 / 摘要分支",
+      "sublabel": "RATE_CONTROLLED_LOSSY：记录目标、延后速率门；SUMMARY_ONLY：摘要与安全检查",
+      "tag": "validation/correctness.py:51",
+      "pos": [
+        3680,
+        1110
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "validate_detail_6",
+      "type": "security",
+      "label": "输入不变、canary、确定性",
+      "sublabel": "同一正式重复中的多次位流比较；与本次对象观测绑定",
+      "tag": "execution/repetition.py:382",
+      "pos": [
+        3680,
+        1265
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "validate_detail_7",
+      "type": "backend",
+      "label": "按位闭合 AccountingLedger",
+      "sublabel": "T / V / shared / metadata / validity / dictionary / model / index 等互斥归属",
+      "tag": "accounting/ledger.py:14",
+      "pos": [
+        3680,
+        1420
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "validate_detail_8",
+      "type": "backend",
+      "label": "最终大小与解码成本",
+      "sublabel": "Σcomponents = serialized_bits；FinalBits = serialized + external side info",
+      "tag": "accounting/ledger.py:14",
+      "pos": [
+        3680,
+        1575
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "validate_detail_9",
+      "type": "backend",
+      "label": "可选 Query / random access",
+      "sublabel": "seeded range / projection 请求在计时外生成；能力与协议均满足才执行",
+      "tag": "measurement/workloads.py:58",
+      "pos": [
+        3680,
+        1730
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "validate_detail_10",
+      "type": "backend",
+      "label": "可选 Streaming",
+      "sublabel": "记录首输出 / block latency、state / buffer、checkpoint / reset 等",
+      "tag": "measurement/workloads.py:161",
+      "pos": [
+        3680,
+        1885
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "validate_detail_11",
+      "type": "security",
+      "label": "附加负载失败与不可用",
+      "sublabel": "未请求 / 不支持 / 失败各自记录；失败可将 PASS 改为 INCOMPARABLE",
+      "tag": "execution/orchestrator.py:86",
+      "pos": [
+        3680,
+        2040
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "persist",
+      "type": "database",
+      "label": "09 · 原始证据与恢复",
+      "sublabel": "追加记录为事实源；runs.csv 是可重建投影",
+      "tag": "runner.py:571",
+      "pos": [
+        4190,
+        270
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "persist_detail_1",
+      "type": "backend",
+      "label": "构造不可漂移 RunRecord",
+      "sublabel": "TaskID / RunID / repetition / status / reason / timing / resources / ledger",
+      "tag": "storage/runs.py:23",
+      "pos": [
+        4190,
+        490
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "persist_detail_2",
+      "type": "database",
+      "label": "逐重复追加事实记录",
+      "sublabel": "run_components.jsonl：RunID 幂等写入并核验重复记录一致",
+      "tag": "storage/runs.py:434",
+      "pos": [
+        4190,
+        645
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "persist_detail_3",
+      "type": "database",
+      "label": "保存同对象 finalized 位流",
+      "sublabel": "artifacts/<RunID摘要>.bin；写入或验证 SHA-256 一致",
+      "tag": "runner.py:571",
+      "pos": [
+        4190,
+        800
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "persist_detail_4",
+      "type": "database",
+      "label": "保存预检与预热观测",
+      "sublabel": "preflight/<TaskID>.json；warmup/<TaskID>.from-<index>.json",
+      "tag": "runner.py:571",
+      "pos": [
+        4190,
+        955
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "persist_detail_5",
+      "type": "database",
+      "label": "追加运行生命周期事件",
+      "sublabel": "预检、warming、running、validating、accounting、terminal",
+      "tag": "storage/events.py:15",
+      "pos": [
+        4190,
+        1110
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "persist_detail_6",
+      "type": "database",
+      "label": "重建 CSV 与层总结",
+      "sublabel": "runs.csv；layer3-execution.json / layer4-performance.json",
+      "tag": "runner.py:571",
+      "pos": [
+        4190,
+        1265
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "persist_detail_7",
+      "type": "security",
+      "label": "恢复前验证完整 JSONL",
+      "sublabel": "末行必须换行；坏 JSON 或不完整事件阻止恢复 / 分析",
+      "tag": "runner.py:548",
+      "pos": [
+        4190,
+        1420
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "persist_detail_8",
+      "type": "backend",
+      "label": "按任务和重复判断完成",
+      "sublabel": "已有 DIAGNOSTIC 整任务跳过；已有失败重复也视为已记录",
+      "tag": "runner.py:548",
+      "pos": [
+        4190,
+        1575
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "persist_detail_9",
+      "type": "backend",
+      "label": "只补缺失重复",
+      "sublabel": "配置 / 环境 / 任务计划仍一致；已存在记录不会自动重测",
+      "tag": "runner.py:571",
+      "pos": [
+        4190,
+        1730
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "persist_detail_10",
+      "type": "backend",
+      "label": "交给独立 report 命令",
+      "sublabel": "报告阶段仅使用冻结证据，不再调用 codec",
+      "tag": "runner.py:754",
+      "pos": [
+        4190,
+        1885
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "statistics",
+      "type": "backend",
+      "label": "10 · L5 资格筛选与统计",
+      "sublabel": "analyze_run_set：证据只读、按可比合同聚合",
+      "tag": "statistics/engine.py:1116",
+      "pos": [
+        4700,
+        270
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "statistics_detail_1",
+      "type": "database",
+      "label": "读取冻结计划与来源证据",
+      "sublabel": "task_plan + run_components + run-set/config/environment/snapshots",
+      "tag": "statistics/engine.py:1116",
+      "pos": [
+        4700,
+        490
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "statistics_detail_2",
+      "type": "security",
+      "label": "核验引用与内容身份链",
+      "sublabel": "重复 TaskID / RunID、missing artifact、哈希 / 账本 / 路径漂移拒绝",
+      "tag": "statistics/engine.py:148",
+      "pos": [
+        4700,
+        645
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "statistics_detail_3",
+      "type": "security",
+      "label": "分别判定三种分析资格",
+      "sublabel": "space/quality、performance、resource；每个排除原因均保留",
+      "tag": "statistics/engine.py:326",
+      "pos": [
+        4700,
+        800
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "statistics_detail_4",
+      "type": "security",
+      "label": "正式统计的重复组门",
+      "sublabel": "FORMAL + 完整 PASS 重复组；BUILTIN_HARNESS / QUALIFICATION 不进正式榜",
+      "tag": "statistics/engine.py:326",
+      "pos": [
+        4700,
+        955
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "statistics_detail_5",
+      "type": "backend",
+      "label": "按数据集与路径分组",
+      "sublabel": "DatasetID + AlgorithmID + ConfigID + ExecutionPathHash + ProfileID + schema",
+      "tag": "statistics/engine.py:644",
+      "pos": [
+        4700,
+        1110
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "statistics_detail_6",
+      "type": "backend",
+      "label": "按 inner_iterations 归一化",
+      "sublabel": "时间与 CPU 使用每独立对象值；不将重复总时间当单次时间",
+      "tag": "statistics/engine.py:436",
+      "pos": [
+        4700,
+        1265
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "statistics_detail_7",
+      "type": "backend",
+      "label": "稳健分布统计",
+      "sublabel": "median / P25 / P75 / mean / sample SD / CV；不取最快一次作排名",
+      "tag": "statistics/engine.py:471",
+      "pos": [
+        4700,
+        1420
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "statistics_detail_8",
+      "type": "backend",
+      "label": "确定性 Bootstrap 区间",
+      "sublabel": "固定 seed 与 reporting policy；中位数置信区间可重现",
+      "tag": "statistics/core.py:1",
+      "pos": [
+        4700,
+        1575
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "statistics_detail_9",
+      "type": "backend",
+      "label": "独立 corpus 汇总",
+      "sublabel": "micro size / throughput；压缩因子几何均值；memory max/p95；CPU cost",
+      "tag": "statistics/engine.py:787",
+      "pos": [
+        4700,
+        1730
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "statistics_detail_10",
+      "type": "database",
+      "label": "分析过程绑定原始哈希",
+      "sublabel": "SourceHashes 与 provenance 随汇总保留；原始证据不被报告改写",
+      "tag": "statistics/engine.py:1116",
+      "pos": [
+        4700,
+        1885
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "report",
+      "type": "frontend",
+      "label": "11 · 覆盖、比较与报告交付",
+      "sublabel": "generate_report：可追溯表格、图表与文档",
+      "tag": "reporting/generator.py:685",
+      "pos": [
+        5210,
+        270
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "report_detail_1",
+      "type": "backend",
+      "label": "Coverage 使用完整任务分母",
+      "sublabel": "partial / failed / unsupported / OOM / timeout 均可见；coverage 不变成分数",
+      "tag": "statistics/engine.py:880",
+      "pos": [
+        5210,
+        490
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "report_detail_2",
+      "type": "backend",
+      "label": "展开三层可比上下文",
+      "sublabel": "Semantic 比空间；Execution 比性能；Resource 比资源",
+      "tag": "statistics/engine.py:939",
+      "pos": [
+        5210,
+        645
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "report_detail_3",
+      "type": "backend",
+      "label": "组内 Pareto 与 dense rank",
+      "sublabel": "逐指标排名；不跨 Track / LossMode / ObjectLevel / CPU-GPU 混成总榜",
+      "tag": "statistics/engine.py:1075",
+      "pos": [
+        5210,
+        800
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "report_detail_4",
+      "type": "database",
+      "label": "输出 7 张核心 CSV",
+      "sublabel": "eligibility / summary / corpus_summary / coverage / comparability / pareto / ranking",
+      "tag": "reporting/generator.py:685",
+      "pos": [
+        5210,
+        955
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "report_detail_5",
+      "type": "database",
+      "label": "可选阶段观测 CSV",
+      "sublabel": "pipeline_stages.csv：A–D enabled、wall_ns、输入输出量、最终贡献",
+      "tag": "reporting/generator.py:685",
+      "pos": [
+        5210,
+        1110
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "report_detail_6",
+      "type": "frontend",
+      "label": "报告目录与统计记录",
+      "sublabel": "report/report.json、report.md、report.html；layer5-statistics.json",
+      "tag": "reporting/generator.py:685",
+      "pos": [
+        5210,
+        1265
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "report_detail_7",
+      "type": "frontend",
+      "label": "嵌入确定性 SVG 图表",
+      "sublabel": "coverage.svg / space-encode.svg / space-decode.svg",
+      "tag": "reporting/generator.py:685",
+      "pos": [
+        5210,
+        1420
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "report_detail_8",
+      "type": "backend",
+      "label": "性能图按可比组拆分",
+      "sublabel": "DatasetID × ExecutionComparabilityKey × ProfileID，保证相邻点可比",
+      "tag": "reporting/generator.py:314",
+      "pos": [
+        5210,
+        1575
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "report_detail_9",
+      "type": "backend",
+      "label": "汇总仍保留完整溯源链",
+      "sublabel": "RunIDs / 输入、位流、canonical 哈希 / 来源、binary、环境、配置、路径",
+      "tag": "statistics/engine.py:644",
+      "pos": [
+        5210,
+        1730
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "report_detail_10",
+      "type": "frontend",
+      "label": "绑定 ReportID 与表格哈希",
+      "sublabel": "确定性报告 + 表格 / 图表哈希；终端返回产物路径与 eligible_run_count",
+      "tag": "reporting/generator.py:685",
+      "pos": [
+        5210,
+        1885
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "reading",
+      "type": "external",
+      "label": "阅读方式：横向主流程，纵向节点展开",
+      "sublabel": "粗实线表示数据 / 控制依赖；虚线只串联同阶段细节，不能当作逐条执行顺序",
+      "tag": "",
+      "pos": [
+        110,
+        75
+      ],
+      "size": [
+        1600,
+        84
+      ]
+    },
+    {
+      "id": "scope",
+      "type": "external",
+      "label": "运行边界：本地 Python 控制平面 + 隔离 Native worker",
+      "sublabel": "项目要求 Python ≥3.14 / NumPy ≥2.5；L3/L4 共用生命周期，report 单独触发；2026-10-08 工作区静态审阅",
+      "tag": "",
+      "pos": [
+        1900,
+        75
+      ],
+      "size": [
+        1600,
+        84
+      ]
+    },
+    {
+      "id": "identity",
+      "type": "security",
+      "label": "身份链：Dataset → Algorithm / Source → Config → Execution → Task → Run → Report",
+      "sublabel": "内容哈希、文件哈希、EnvironmentID、ProfileID 与三层可比键贯穿运行和报告",
+      "tag": "",
+      "pos": [
+        3690,
+        75
+      ],
+      "size": [
+        1600,
+        84
+      ]
+    },
+    {
+      "id": "pipeline_a",
+      "type": "backend",
+      "label": "StreamVByte A · 语义变换",
+      "sublabel": "checked int64 Delta + ZigZag → uint64；首值 seed；检查溢出",
+      "tag": "preprocess/streamvbyte.py:1",
+      "pos": [
+        110,
+        2280
+      ],
+      "size": [
+        535,
+        84
+      ]
+    },
+    {
+      "id": "pipeline_b",
+      "type": "backend",
+      "label": "StreamVByte B · 数据布局",
+      "sublabel": "uint64 拆为交错 low/high uint32 limbs；独立 oracle 验证",
+      "tag": "preprocess/streamvbyte.py:1",
+      "pos": [
+        760,
+        2280
+      ],
+      "size": [
+        535,
+        84
+      ]
+    },
+    {
+      "id": "pipeline_c",
+      "type": "backend",
+      "label": "StreamVByte C · 编码后端",
+      "sublabel": "LZBENCH 或 modern StreamVByte；保留控制字节与值域合同",
+      "tag": "preprocess/streamvbyte_modern.py:1",
+      "pos": [
+        1410,
+        2280
+      ],
+      "size": [
+        535,
+        84
+      ]
+    },
+    {
+      "id": "pipeline_d",
+      "type": "backend",
+      "label": "StreamVByte D · 独立解码封装",
+      "sublabel": "native frame + canonical descriptor + checksum；D 不允许禁用",
+      "tag": "preprocess/streamvbyte.py:1",
+      "pos": [
+        2060,
+        2280
+      ],
+      "size": [
+        535,
+        84
+      ]
+    },
+    {
+      "id": "pipeline_inverse",
+      "type": "backend",
+      "label": "StreamVByte 逆向与成本归属",
+      "sublabel": "D⁻¹ → C⁻¹ → B⁻¹ → A⁻¹；stage timing / bytes / final bits 分别记录",
+      "tag": "preprocess/runtime.py:1",
+      "pos": [
+        2710,
+        2280
+      ],
+      "size": [
+        535,
+        84
+      ]
+    },
+    {
+      "id": "masked_fused",
+      "type": "backend",
+      "label": "MaskedVByte · 融合 A/B + D",
+      "sublabel": "modular D1 + LEB128 uint32；C 无后端；融合阶段不虚构独立时间",
+      "tag": "preprocess/maskedvbyte.py:1",
+      "pos": [
+        3360,
+        2280
+      ],
+      "size": [
+        535,
+        84
+      ]
+    },
+    {
+      "id": "simd_fused",
+      "type": "backend",
+      "label": "SIMDComp · 融合 A/B + D",
+      "sublabel": "modular D1 / 固定 FOR + bitpack；C 无后端；尾块与 width32 合同",
+      "tag": "preprocess/simdcomp.py:1",
+      "pos": [
+        4010,
+        2280
+      ],
+      "size": [
+        535,
+        84
+      ]
+    },
+    {
+      "id": "pipeline_switch",
+      "type": "backend",
+      "label": "预处理开关的比较边界",
+      "sublabel": "开关改变 ConfigID / ExecutionPathHash；不同融合路径不共用计时语义",
+      "tag": "preprocess/contracts.py:1",
+      "pos": [
+        4660,
+        2280
+      ],
+      "size": [
+        535,
+        84
+      ]
+    },
+    {
+      "id": "source_admit",
+      "type": "security",
+      "label": "接入 ① 原始来源与许可",
+      "sublabel": "Source_Code 只读；来源身份 / license / availability / admission 证据",
+      "tag": "codecs/onboarding.py:1",
+      "pos": [
+        110,
+        2525
+      ],
+      "size": [
+        700,
+        84
+      ]
+    },
+    {
+      "id": "source_freeze",
+      "type": "backend",
+      "label": "接入 ② 冻结来源与补丁",
+      "sublabel": "vendor + SOURCE_LOCK + patches；变更必须有 provenance 与审核记录",
+      "tag": "codecs/registry.py:1",
+      "pos": [
+        1000,
+        2525
+      ],
+      "size": [
+        700,
+        84
+      ]
+    },
+    {
+      "id": "native_build",
+      "type": "backend",
+      "label": "接入 ③ 构建 Native wrapper",
+      "sublabel": "tools/build_codec.py；本项目 adapters/*/native + vendor → .so",
+      "tag": "adapters/factory.py:1",
+      "pos": [
+        1890,
+        2525
+      ],
+      "size": [
+        700,
+        84
+      ]
+    },
+    {
+      "id": "abi_qualify",
+      "type": "security",
+      "label": "接入 ④ ABI / source / sdk 验证",
+      "sublabel": "tools/qualify_* / audit_*；边界、原生计时、源码与构建闭包证据",
+      "tag": "codecs/onboarding.py:1",
+      "pos": [
+        2780,
+        2525
+      ],
+      "size": [
+        700,
+        84
+      ]
+    },
+    {
+      "id": "register_codec",
+      "type": "backend",
+      "label": "接入 ⑤ 登记并冻结合同",
+      "sublabel": "registry/sources + onboarding + codecs；能力声明与 provenance 引用",
+      "tag": "codecs/registry.py:1",
+      "pos": [
+        3670,
+        2525
+      ],
+      "size": [
+        700,
+        84
+      ]
+    },
+    {
+      "id": "benchmark_qualify",
+      "type": "security",
+      "label": "接入 ⑥ 针对具体组合正式准入",
+      "sublabel": "配置/数据/ISA/Track 仍需运行时预检与 FORMAL 测量，登记不等于全通过",
+      "tag": "execution/preflight.py:1",
+      "pos": [
+        4560,
+        2525
+      ],
+      "size": [
+        700,
+        84
+      ]
+    },
+    {
+      "id": "codec_1",
+      "type": "external",
+      "label": "alp-rd",
+      "sublabel": "alp",
+      "tag": "ALP_CTYPES_V1",
+      "pos": [
+        110,
+        2850
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "codec_2",
+      "type": "external",
+      "label": "brotli-stream",
+      "sublabel": "此工厂下的登记算法",
+      "tag": "BROTLI_STREAM_CTYPES_V1",
+      "pos": [
+        620,
+        2850
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "codec_3",
+      "type": "external",
+      "label": "bzip2-stream",
+      "sublabel": "此工厂下的登记算法",
+      "tag": "BZIP2_STREAM_CTYPES_V1",
+      "pos": [
+        1130,
+        2850
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "codec_4",
+      "type": "external",
+      "label": "abba",
+      "sublabel": "corad",
+      "tag": "COMPLETED_REWRITE_CTYPES_V1",
+      "pos": [
+        1640,
+        2850
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "codec_5",
+      "type": "external",
+      "label": "deepzip",
+      "sublabel": "dzip",
+      "tag": "COMPLETED_REWRITE_CTYPES_V1",
+      "pos": [
+        2150,
+        2850
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "codec_6",
+      "type": "external",
+      "label": "fabba",
+      "sublabel": "influxdb-tsm-adaptive-timestamp",
+      "tag": "COMPLETED_REWRITE_CTYPES_V1",
+      "pos": [
+        2660,
+        2850
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "codec_7",
+      "type": "external",
+      "label": "prometheus-float-histogram-st",
+      "sublabel": "prometheus-histogram-st",
+      "tag": "COMPLETED_REWRITE_CTYPES_V1",
+      "pos": [
+        3170,
+        2850
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "codec_8",
+      "type": "external",
+      "label": "prometheus-xor2-chunk",
+      "sublabel": "tristan",
+      "tag": "COMPLETED_REWRITE_CTYPES_V1",
+      "pos": [
+        3680,
+        2850
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "codec_9",
+      "type": "external",
+      "label": "walloc-1d",
+      "sublabel": "此工厂下的登记算法",
+      "tag": "COMPLETED_REWRITE_CTYPES_V1",
+      "pos": [
+        4190,
+        2850
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "codec_10",
+      "type": "external",
+      "label": "deflate-zlib",
+      "sublabel": "此工厂下的登记算法",
+      "tag": "DEFLATE_ZLIB_CTYPES_V1",
+      "pos": [
+        4700,
+        2850
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "codec_11",
+      "type": "external",
+      "label": "delta-varint",
+      "sublabel": "此工厂下的登记算法",
+      "tag": "DELTA_VARINT_CTYPES_V1",
+      "pos": [
+        5210,
+        2850
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "codec_12",
+      "type": "external",
+      "label": "fse",
+      "sublabel": "huff0",
+      "tag": "ENTROPY_FSE_CTYPES_V1",
+      "pos": [
+        110,
+        3005
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "codec_13",
+      "type": "external",
+      "label": "fastpfor-simple8b-rle-u32",
+      "sublabel": "此工厂下的登记算法",
+      "tag": "FASTPFOR_SIMPLE8B_RLE_CTYPES_V1",
+      "pos": [
+        620,
+        3005
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "codec_14",
+      "type": "external",
+      "label": "simple16-u28",
+      "sublabel": "simple9-u28",
+      "tag": "FASTPFOR_SIMPLE_CTYPES_V1",
+      "pos": [
+        1130,
+        3005
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "codec_15",
+      "type": "external",
+      "label": "simple9hacked-u28",
+      "sublabel": "此工厂下的登记算法",
+      "tag": "FASTPFOR_SIMPLE_CTYPES_V1",
+      "pos": [
+        1640,
+        3005
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "codec_16",
+      "type": "external",
+      "label": "fast-differential-u32",
+      "sublabel": "此工厂下的登记算法",
+      "tag": "FAST_DIFFERENTIAL_CTYPES_V1",
+      "pos": [
+        2150,
+        3005
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "codec_17",
+      "type": "external",
+      "label": "oracle-direct",
+      "sublabel": "oracle-lossless-adapter",
+      "tag": "HARNESS_ORACLE",
+      "pos": [
+        2660,
+        3005
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "codec_18",
+      "type": "external",
+      "label": "oracle-lossy-adapter",
+      "sublabel": "oracle-native-nd-only",
+      "tag": "HARNESS_ORACLE",
+      "pos": [
+        3170,
+        3005
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "codec_19",
+      "type": "external",
+      "label": "littleintpacker-bmi2-u32",
+      "sublabel": "littleintpacker-horizontal-u32",
+      "tag": "LITTLEINTPACKER_CTYPES_V1",
+      "pos": [
+        3680,
+        3005
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "codec_20",
+      "type": "external",
+      "label": "littleintpacker-pack32-u32",
+      "sublabel": "littleintpacker-sc-u32",
+      "tag": "LITTLEINTPACKER_CTYPES_V1",
+      "pos": [
+        4190,
+        3005
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "codec_21",
+      "type": "external",
+      "label": "littleintpacker-turbo-u32",
+      "sublabel": "此工厂下的登记算法",
+      "tag": "LITTLEINTPACKER_CTYPES_V1",
+      "pos": [
+        4700,
+        3005
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "codec_22",
+      "type": "external",
+      "label": "lz4-frame",
+      "sublabel": "此工厂下的登记算法",
+      "tag": "LZ4_FRAME_CTYPES_V1",
+      "pos": [
+        5210,
+        3005
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "codec_23",
+      "type": "external",
+      "label": "lzsse2-raw",
+      "sublabel": "此工厂下的登记算法",
+      "tag": "LZSSE2_RAW_CTYPES_V1",
+      "pos": [
+        110,
+        3160
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "codec_24",
+      "type": "external",
+      "label": "lzsse8-raw",
+      "sublabel": "此工厂下的登记算法",
+      "tag": "LZSSE8_RAW_CTYPES_V1",
+      "pos": [
+        620,
+        3160
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "codec_25",
+      "type": "external",
+      "label": "lzss-dipperstein-c",
+      "sublabel": "此工厂下的登记算法",
+      "tag": "LZSS_DIPPERSTEIN_CTYPES_V1",
+      "pos": [
+        1130,
+        3160
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "codec_26",
+      "type": "external",
+      "label": "lzss-raw",
+      "sublabel": "此工厂下的登记算法",
+      "tag": "LZSS_RAW_CTYPES_V1",
+      "pos": [
+        1640,
+        3160
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "codec_27",
+      "type": "external",
+      "label": "delta-maskedvbyte-u32",
+      "sublabel": "maskedvbyte-u32",
+      "tag": "MASKEDVBYTE_CTYPES_V1",
+      "pos": [
+        2150,
+        3160
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "codec_28",
+      "type": "external",
+      "label": "leats-lossless-i64",
+      "sublabel": "neats-lossless-i64",
+      "tag": "NEATS_CTYPES_V1",
+      "pos": [
+        2660,
+        3160
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "codec_29",
+      "type": "external",
+      "label": "chimp",
+      "sublabel": "chimp128",
+      "tag": "REWRITE_LOSSLESS_CTYPES_V1",
+      "pos": [
+        3170,
+        3160
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "codec_30",
+      "type": "external",
+      "label": "elf-plus",
+      "sublabel": "elf-star",
+      "tag": "REWRITE_LOSSLESS_CTYPES_V1",
+      "pos": [
+        3680,
+        3160
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "codec_31",
+      "type": "external",
+      "label": "elf",
+      "sublabel": "prometheus-xor-chunk",
+      "tag": "REWRITE_LOSSLESS_CTYPES_V1",
+      "pos": [
+        4190,
+        3160
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "codec_32",
+      "type": "external",
+      "label": "self-star",
+      "sublabel": "此工厂下的登记算法",
+      "tag": "REWRITE_LOSSLESS_CTYPES_V1",
+      "pos": [
+        4700,
+        3160
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "codec_33",
+      "type": "external",
+      "label": "serf-qt",
+      "sublabel": "serf-xor",
+      "tag": "SERF_CTYPES_V1",
+      "pos": [
+        5210,
+        3160
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "codec_34",
+      "type": "external",
+      "label": "delta-simdcomp-u32",
+      "sublabel": "for-simdcomp-u32",
+      "tag": "SIMDCOMP_CTYPES_V1",
+      "pos": [
+        110,
+        3315
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "codec_35",
+      "type": "external",
+      "label": "simdcomp-u32",
+      "sublabel": "此工厂下的登记算法",
+      "tag": "SIMDCOMP_CTYPES_V1",
+      "pos": [
+        620,
+        3315
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "codec_36",
+      "type": "external",
+      "label": "snappy-raw",
+      "sublabel": "此工厂下的登记算法",
+      "tag": "SNAPPY_RAW_CTYPES_V1",
+      "pos": [
+        1130,
+        3315
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "codec_37",
+      "type": "external",
+      "label": "sprintz-delta-u8",
+      "sublabel": "sprintz-fire-u8",
+      "tag": "SPRINTZ8_CTYPES_V1",
+      "pos": [
+        1640,
+        3315
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "codec_38",
+      "type": "external",
+      "label": "sprintz-delta",
+      "sublabel": "sprintz-fire-huff0",
+      "tag": "SPRINTZ_CTYPES_V1",
+      "pos": [
+        2150,
+        3315
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "codec_39",
+      "type": "external",
+      "label": "sprintz-fire",
+      "sublabel": "此工厂下的登记算法",
+      "tag": "SPRINTZ_CTYPES_V1",
+      "pos": [
+        2660,
+        3315
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "codec_40",
+      "type": "external",
+      "label": "streamvbyte-u32",
+      "sublabel": "此工厂下的登记算法",
+      "tag": "STREAMVBYTE_CTYPES_V1",
+      "pos": [
+        3170,
+        3315
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "codec_41",
+      "type": "external",
+      "label": "streamvbyte-modern-u32",
+      "sublabel": "此工厂下的登记算法",
+      "tag": "STREAMVBYTE_MODERN_CTYPES_V1",
+      "pos": [
+        3680,
+        3315
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "codec_42",
+      "type": "external",
+      "label": "delta-zigzag-streamvbyte-modern64",
+      "sublabel": "此工厂下的登记算法",
+      "tag": "STREAMVBYTE_MODERN_PIPELINE_CTYPES_V1",
+      "pos": [
+        4190,
+        3315
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "codec_43",
+      "type": "external",
+      "label": "delta-zigzag-streamvbyte64",
+      "sublabel": "此工厂下的登记算法",
+      "tag": "STREAMVBYTE_PIPELINE_CTYPES_V1",
+      "pos": [
+        4700,
+        3315
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "codec_44",
+      "type": "external",
+      "label": "xz-stream",
+      "sublabel": "此工厂下的登记算法",
+      "tag": "XZ_STREAM_CTYPES_V1",
+      "pos": [
+        5210,
+        3315
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "codec_45",
+      "type": "external",
+      "label": "zfp-accuracy-1d",
+      "sublabel": "此工厂下的登记算法",
+      "tag": "ZFP_CTYPES_V1",
+      "pos": [
+        110,
+        3470
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "codec_46",
+      "type": "external",
+      "label": "zstd-frame",
+      "sublabel": "此工厂下的登记算法",
+      "tag": "ZSTD_FRAME_CTYPES_V1",
+      "pos": [
+        620,
+        3470
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "dataset_1",
+      "type": "database",
+      "label": "electricity",
+      "sublabel": "etth1",
+      "tag": "registry/datasets/*.json",
+      "pos": [
+        110,
+        3739
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "dataset_2",
+      "type": "database",
+      "label": "etth2",
+      "sublabel": "ettm1",
+      "tag": "registry/datasets/*.json",
+      "pos": [
+        620,
+        3739
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "dataset_3",
+      "type": "database",
+      "label": "ettm2",
+      "sublabel": "exchange_rate",
+      "tag": "registry/datasets/*.json",
+      "pos": [
+        1130,
+        3739
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "dataset_4",
+      "type": "database",
+      "label": "national_illness",
+      "sublabel": "pems03",
+      "tag": "registry/datasets/*.json",
+      "pos": [
+        1640,
+        3739
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "dataset_5",
+      "type": "database",
+      "label": "pems04",
+      "sublabel": "pems07",
+      "tag": "registry/datasets/*.json",
+      "pos": [
+        2150,
+        3739
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "dataset_6",
+      "type": "database",
+      "label": "pems08",
+      "sublabel": "rewrite_audio_stereo",
+      "tag": "registry/datasets/*.json",
+      "pos": [
+        2660,
+        3739
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "dataset_7",
+      "type": "database",
+      "label": "rewrite_byte_uts",
+      "sublabel": "rewrite_float_mts",
+      "tag": "registry/datasets/*.json",
+      "pos": [
+        3170,
+        3739
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "dataset_8",
+      "type": "database",
+      "label": "rewrite_histogram_float",
+      "sublabel": "rewrite_histogram_int",
+      "tag": "registry/datasets/*.json",
+      "pos": [
+        3680,
+        3739
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "dataset_9",
+      "type": "database",
+      "label": "simple_uint28_uts",
+      "sublabel": "sprintz_i16_mts",
+      "tag": "registry/datasets/*.json",
+      "pos": [
+        4190,
+        3739
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "dataset_10",
+      "type": "database",
+      "label": "sprintz_u8_uts",
+      "sublabel": "streamvbyte_u32_uts",
+      "tag": "registry/datasets/*.json",
+      "pos": [
+        4700,
+        3739
+      ],
+      "size": [
+        400,
+        84
+      ]
+    },
+    {
+      "id": "dataset_11",
+      "type": "database",
+      "label": "traffic",
+      "sublabel": "weather",
+      "tag": "registry/datasets/*.json",
+      "pos": [
+        5210,
+        3739
+      ],
+      "size": [
+        400,
+        84
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "e_entry_entry_detail_1",
+      "to": "entry_detail_1",
+      "variant": "dashed",
+      "from": "entry",
+      "label": "展开",
+      "labelDy": 24
+    },
+    {
+      "id": "e_entry_detail_1_entry_detail_2",
+      "to": "entry_detail_2",
+      "variant": "dashed",
+      "from": "entry_detail_1",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_entry_detail_2_entry_detail_3",
+      "to": "entry_detail_3",
+      "variant": "dashed",
+      "from": "entry_detail_2",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_entry_detail_3_entry_detail_4",
+      "to": "entry_detail_4",
+      "variant": "dashed",
+      "from": "entry_detail_3",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_entry_detail_4_entry_detail_5",
+      "to": "entry_detail_5",
+      "variant": "dashed",
+      "from": "entry_detail_4",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_entry_detail_5_entry_detail_6",
+      "to": "entry_detail_6",
+      "variant": "dashed",
+      "from": "entry_detail_5",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_entry_detail_6_entry_detail_7",
+      "to": "entry_detail_7",
+      "variant": "dashed",
+      "from": "entry_detail_6",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_entry_detail_7_entry_detail_8",
+      "to": "entry_detail_8",
+      "variant": "dashed",
+      "from": "entry_detail_7",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_entry_detail_8_entry_detail_9",
+      "to": "entry_detail_9",
+      "variant": "dashed",
+      "from": "entry_detail_8",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_entry_init",
+      "to": "init",
+      "variant": "emphasis",
+      "from": "entry",
+      "label": "启动"
+    },
+    {
+      "id": "e_init_init_detail_1",
+      "to": "init_detail_1",
+      "variant": "dashed",
+      "from": "init",
+      "label": "展开",
+      "labelDy": 24
+    },
+    {
+      "id": "e_init_detail_1_init_detail_2",
+      "to": "init_detail_2",
+      "variant": "dashed",
+      "from": "init_detail_1",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_init_detail_2_init_detail_3",
+      "to": "init_detail_3",
+      "variant": "dashed",
+      "from": "init_detail_2",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_init_detail_3_init_detail_4",
+      "to": "init_detail_4",
+      "variant": "dashed",
+      "from": "init_detail_3",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_init_detail_4_init_detail_5",
+      "to": "init_detail_5",
+      "variant": "dashed",
+      "from": "init_detail_4",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_init_detail_5_init_detail_6",
+      "to": "init_detail_6",
+      "variant": "dashed",
+      "from": "init_detail_5",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_init_detail_6_init_detail_7",
+      "to": "init_detail_7",
+      "variant": "dashed",
+      "from": "init_detail_6",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_init_detail_7_init_detail_8",
+      "to": "init_detail_8",
+      "variant": "dashed",
+      "from": "init_detail_7",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_init_detail_8_init_detail_9",
+      "to": "init_detail_9",
+      "variant": "dashed",
+      "from": "init_detail_8",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_init_data",
+      "to": "data",
+      "variant": "emphasis",
+      "from": "init",
+      "label": "准备"
+    },
+    {
+      "id": "e_data_data_detail_1",
+      "to": "data_detail_1",
+      "variant": "dashed",
+      "from": "data",
+      "label": "展开",
+      "labelDy": 24
+    },
+    {
+      "id": "e_data_detail_1_data_detail_2",
+      "to": "data_detail_2",
+      "variant": "dashed",
+      "from": "data_detail_1",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_data_detail_2_data_detail_3",
+      "to": "data_detail_3",
+      "variant": "dashed",
+      "from": "data_detail_2",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_data_detail_3_data_detail_4",
+      "to": "data_detail_4",
+      "variant": "dashed",
+      "from": "data_detail_3",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_data_detail_4_data_detail_5",
+      "to": "data_detail_5",
+      "variant": "dashed",
+      "from": "data_detail_4",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_data_detail_5_data_detail_6",
+      "to": "data_detail_6",
+      "variant": "dashed",
+      "from": "data_detail_5",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_data_detail_6_data_detail_7",
+      "to": "data_detail_7",
+      "variant": "dashed",
+      "from": "data_detail_6",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_data_detail_7_data_detail_8",
+      "to": "data_detail_8",
+      "variant": "dashed",
+      "from": "data_detail_7",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_data_detail_8_data_detail_9",
+      "to": "data_detail_9",
+      "variant": "dashed",
+      "from": "data_detail_8",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_data_detail_9_data_detail_10",
+      "to": "data_detail_10",
+      "variant": "dashed",
+      "from": "data_detail_9",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_data_plan",
+      "to": "plan",
+      "variant": "emphasis",
+      "from": "data",
+      "label": "描述"
+    },
+    {
+      "id": "e_plan_plan_detail_1",
+      "to": "plan_detail_1",
+      "variant": "dashed",
+      "from": "plan",
+      "label": "展开",
+      "labelDy": 24
+    },
+    {
+      "id": "e_plan_detail_1_plan_detail_2",
+      "to": "plan_detail_2",
+      "variant": "dashed",
+      "from": "plan_detail_1",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_plan_detail_2_plan_detail_3",
+      "to": "plan_detail_3",
+      "variant": "dashed",
+      "from": "plan_detail_2",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_plan_detail_3_plan_detail_4",
+      "to": "plan_detail_4",
+      "variant": "dashed",
+      "from": "plan_detail_3",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_plan_detail_4_plan_detail_5",
+      "to": "plan_detail_5",
+      "variant": "dashed",
+      "from": "plan_detail_4",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_plan_detail_5_plan_detail_6",
+      "to": "plan_detail_6",
+      "variant": "dashed",
+      "from": "plan_detail_5",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_plan_detail_6_plan_detail_7",
+      "to": "plan_detail_7",
+      "variant": "dashed",
+      "from": "plan_detail_6",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_plan_detail_7_plan_detail_8",
+      "to": "plan_detail_8",
+      "variant": "dashed",
+      "from": "plan_detail_7",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_plan_detail_8_plan_detail_9",
+      "to": "plan_detail_9",
+      "variant": "dashed",
+      "from": "plan_detail_8",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_plan_detail_9_plan_detail_10",
+      "to": "plan_detail_10",
+      "variant": "dashed",
+      "from": "plan_detail_9",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_plan_detail_10_plan_detail_11",
+      "to": "plan_detail_11",
+      "variant": "dashed",
+      "from": "plan_detail_10",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_plan_preflight",
+      "to": "preflight",
+      "variant": "emphasis",
+      "from": "plan",
+      "label": "任务计划"
+    },
+    {
+      "id": "e_preflight_preflight_detail_1",
+      "to": "preflight_detail_1",
+      "variant": "dashed",
+      "from": "preflight",
+      "label": "展开",
+      "labelDy": 24
+    },
+    {
+      "id": "e_preflight_detail_1_preflight_detail_2",
+      "to": "preflight_detail_2",
+      "variant": "dashed",
+      "from": "preflight_detail_1",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_preflight_detail_2_preflight_detail_3",
+      "to": "preflight_detail_3",
+      "variant": "dashed",
+      "from": "preflight_detail_2",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_preflight_detail_3_preflight_detail_4",
+      "to": "preflight_detail_4",
+      "variant": "dashed",
+      "from": "preflight_detail_3",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_preflight_detail_4_preflight_detail_5",
+      "to": "preflight_detail_5",
+      "variant": "dashed",
+      "from": "preflight_detail_4",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_preflight_detail_5_preflight_detail_6",
+      "to": "preflight_detail_6",
+      "variant": "dashed",
+      "from": "preflight_detail_5",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_preflight_detail_6_preflight_detail_7",
+      "to": "preflight_detail_7",
+      "variant": "dashed",
+      "from": "preflight_detail_6",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_preflight_detail_7_preflight_detail_8",
+      "to": "preflight_detail_8",
+      "variant": "dashed",
+      "from": "preflight_detail_7",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_preflight_detail_8_preflight_detail_9",
+      "to": "preflight_detail_9",
+      "variant": "dashed",
+      "from": "preflight_detail_8",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_preflight_detail_9_preflight_detail_10",
+      "to": "preflight_detail_10",
+      "variant": "dashed",
+      "from": "preflight_detail_9",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_preflight_measure",
+      "to": "measure",
+      "variant": "emphasis",
+      "from": "preflight",
+      "label": "资格通过"
+    },
+    {
+      "id": "e_measure_measure_detail_1",
+      "to": "measure_detail_1",
+      "variant": "dashed",
+      "from": "measure",
+      "label": "展开",
+      "labelDy": 24
+    },
+    {
+      "id": "e_measure_detail_1_measure_detail_2",
+      "to": "measure_detail_2",
+      "variant": "dashed",
+      "from": "measure_detail_1",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_measure_detail_2_measure_detail_3",
+      "to": "measure_detail_3",
+      "variant": "dashed",
+      "from": "measure_detail_2",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_measure_detail_3_measure_detail_4",
+      "to": "measure_detail_4",
+      "variant": "dashed",
+      "from": "measure_detail_3",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_measure_detail_4_measure_detail_5",
+      "to": "measure_detail_5",
+      "variant": "dashed",
+      "from": "measure_detail_4",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_measure_detail_5_measure_detail_6",
+      "to": "measure_detail_6",
+      "variant": "dashed",
+      "from": "measure_detail_5",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_measure_detail_6_measure_detail_7",
+      "to": "measure_detail_7",
+      "variant": "dashed",
+      "from": "measure_detail_6",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_measure_detail_7_measure_detail_8",
+      "to": "measure_detail_8",
+      "variant": "dashed",
+      "from": "measure_detail_7",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_measure_detail_8_measure_detail_9",
+      "to": "measure_detail_9",
+      "variant": "dashed",
+      "from": "measure_detail_8",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_measure_detail_9_measure_detail_10",
+      "to": "measure_detail_10",
+      "variant": "dashed",
+      "from": "measure_detail_9",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_measure_detail_10_measure_detail_11",
+      "to": "measure_detail_11",
+      "variant": "dashed",
+      "from": "measure_detail_10",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_measure_session",
+      "to": "session",
+      "variant": "emphasis",
+      "from": "measure",
+      "label": "调用"
+    },
+    {
+      "id": "e_session_session_detail_1",
+      "to": "session_detail_1",
+      "variant": "dashed",
+      "from": "session",
+      "label": "展开",
+      "labelDy": 24
+    },
+    {
+      "id": "e_session_detail_1_session_detail_2",
+      "to": "session_detail_2",
+      "variant": "dashed",
+      "from": "session_detail_1",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_session_detail_2_session_detail_3",
+      "to": "session_detail_3",
+      "variant": "dashed",
+      "from": "session_detail_2",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_session_detail_3_session_detail_4",
+      "to": "session_detail_4",
+      "variant": "dashed",
+      "from": "session_detail_3",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_session_detail_4_session_detail_5",
+      "to": "session_detail_5",
+      "variant": "dashed",
+      "from": "session_detail_4",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_session_detail_5_session_detail_6",
+      "to": "session_detail_6",
+      "variant": "dashed",
+      "from": "session_detail_5",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_session_detail_6_session_detail_7",
+      "to": "session_detail_7",
+      "variant": "dashed",
+      "from": "session_detail_6",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_session_detail_7_session_detail_8",
+      "to": "session_detail_8",
+      "variant": "dashed",
+      "from": "session_detail_7",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_session_detail_8_session_detail_9",
+      "to": "session_detail_9",
+      "variant": "dashed",
+      "from": "session_detail_8",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_session_detail_9_session_detail_10",
+      "to": "session_detail_10",
+      "variant": "dashed",
+      "from": "session_detail_9",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_session_detail_10_session_detail_11",
+      "to": "session_detail_11",
+      "variant": "dashed",
+      "from": "session_detail_10",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_session_validate",
+      "to": "validate",
+      "variant": "emphasis",
+      "from": "session",
+      "label": "观测"
+    },
+    {
+      "id": "e_validate_validate_detail_1",
+      "to": "validate_detail_1",
+      "variant": "dashed",
+      "from": "validate",
+      "label": "展开",
+      "labelDy": 24
+    },
+    {
+      "id": "e_validate_detail_1_validate_detail_2",
+      "to": "validate_detail_2",
+      "variant": "dashed",
+      "from": "validate_detail_1",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_validate_detail_2_validate_detail_3",
+      "to": "validate_detail_3",
+      "variant": "dashed",
+      "from": "validate_detail_2",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_validate_detail_3_validate_detail_4",
+      "to": "validate_detail_4",
+      "variant": "dashed",
+      "from": "validate_detail_3",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_validate_detail_4_validate_detail_5",
+      "to": "validate_detail_5",
+      "variant": "dashed",
+      "from": "validate_detail_4",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_validate_detail_5_validate_detail_6",
+      "to": "validate_detail_6",
+      "variant": "dashed",
+      "from": "validate_detail_5",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_validate_detail_6_validate_detail_7",
+      "to": "validate_detail_7",
+      "variant": "dashed",
+      "from": "validate_detail_6",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_validate_detail_7_validate_detail_8",
+      "to": "validate_detail_8",
+      "variant": "dashed",
+      "from": "validate_detail_7",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_validate_detail_8_validate_detail_9",
+      "to": "validate_detail_9",
+      "variant": "dashed",
+      "from": "validate_detail_8",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_validate_detail_9_validate_detail_10",
+      "to": "validate_detail_10",
+      "variant": "dashed",
+      "from": "validate_detail_9",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_validate_detail_10_validate_detail_11",
+      "to": "validate_detail_11",
+      "variant": "dashed",
+      "from": "validate_detail_10",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_validate_persist",
+      "to": "persist",
+      "variant": "emphasis",
+      "from": "validate",
+      "label": "结果"
+    },
+    {
+      "id": "e_persist_persist_detail_1",
+      "to": "persist_detail_1",
+      "variant": "dashed",
+      "from": "persist",
+      "label": "展开",
+      "labelDy": 24
+    },
+    {
+      "id": "e_persist_detail_1_persist_detail_2",
+      "to": "persist_detail_2",
+      "variant": "dashed",
+      "from": "persist_detail_1",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_persist_detail_2_persist_detail_3",
+      "to": "persist_detail_3",
+      "variant": "dashed",
+      "from": "persist_detail_2",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_persist_detail_3_persist_detail_4",
+      "to": "persist_detail_4",
+      "variant": "dashed",
+      "from": "persist_detail_3",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_persist_detail_4_persist_detail_5",
+      "to": "persist_detail_5",
+      "variant": "dashed",
+      "from": "persist_detail_4",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_persist_detail_5_persist_detail_6",
+      "to": "persist_detail_6",
+      "variant": "dashed",
+      "from": "persist_detail_5",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_persist_detail_6_persist_detail_7",
+      "to": "persist_detail_7",
+      "variant": "dashed",
+      "from": "persist_detail_6",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_persist_detail_7_persist_detail_8",
+      "to": "persist_detail_8",
+      "variant": "dashed",
+      "from": "persist_detail_7",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_persist_detail_8_persist_detail_9",
+      "to": "persist_detail_9",
+      "variant": "dashed",
+      "from": "persist_detail_8",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_persist_detail_9_persist_detail_10",
+      "to": "persist_detail_10",
+      "variant": "dashed",
+      "from": "persist_detail_9",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_persist_statistics",
+      "to": "statistics",
+      "variant": "emphasis",
+      "from": "persist",
+      "label": "run report"
+    },
+    {
+      "id": "e_statistics_statistics_detail_1",
+      "to": "statistics_detail_1",
+      "variant": "dashed",
+      "from": "statistics",
+      "label": "展开",
+      "labelDy": 24
+    },
+    {
+      "id": "e_statistics_detail_1_statistics_detail_2",
+      "to": "statistics_detail_2",
+      "variant": "dashed",
+      "from": "statistics_detail_1",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_statistics_detail_2_statistics_detail_3",
+      "to": "statistics_detail_3",
+      "variant": "dashed",
+      "from": "statistics_detail_2",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_statistics_detail_3_statistics_detail_4",
+      "to": "statistics_detail_4",
+      "variant": "dashed",
+      "from": "statistics_detail_3",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_statistics_detail_4_statistics_detail_5",
+      "to": "statistics_detail_5",
+      "variant": "dashed",
+      "from": "statistics_detail_4",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_statistics_detail_5_statistics_detail_6",
+      "to": "statistics_detail_6",
+      "variant": "dashed",
+      "from": "statistics_detail_5",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_statistics_detail_6_statistics_detail_7",
+      "to": "statistics_detail_7",
+      "variant": "dashed",
+      "from": "statistics_detail_6",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_statistics_detail_7_statistics_detail_8",
+      "to": "statistics_detail_8",
+      "variant": "dashed",
+      "from": "statistics_detail_7",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_statistics_detail_8_statistics_detail_9",
+      "to": "statistics_detail_9",
+      "variant": "dashed",
+      "from": "statistics_detail_8",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_statistics_detail_9_statistics_detail_10",
+      "to": "statistics_detail_10",
+      "variant": "dashed",
+      "from": "statistics_detail_9",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_statistics_report",
+      "to": "report",
+      "variant": "emphasis",
+      "from": "statistics",
+      "label": "分析产物"
+    },
+    {
+      "id": "e_report_report_detail_1",
+      "to": "report_detail_1",
+      "variant": "dashed",
+      "from": "report",
+      "label": "展开",
+      "labelDy": 24
+    },
+    {
+      "id": "e_report_detail_1_report_detail_2",
+      "to": "report_detail_2",
+      "variant": "dashed",
+      "from": "report_detail_1",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_report_detail_2_report_detail_3",
+      "to": "report_detail_3",
+      "variant": "dashed",
+      "from": "report_detail_2",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_report_detail_3_report_detail_4",
+      "to": "report_detail_4",
+      "variant": "dashed",
+      "from": "report_detail_3",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_report_detail_4_report_detail_5",
+      "to": "report_detail_5",
+      "variant": "dashed",
+      "from": "report_detail_4",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_report_detail_5_report_detail_6",
+      "to": "report_detail_6",
+      "variant": "dashed",
+      "from": "report_detail_5",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_report_detail_6_report_detail_7",
+      "to": "report_detail_7",
+      "variant": "dashed",
+      "from": "report_detail_6",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_report_detail_7_report_detail_8",
+      "to": "report_detail_8",
+      "variant": "dashed",
+      "from": "report_detail_7",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_report_detail_8_report_detail_9",
+      "to": "report_detail_9",
+      "variant": "dashed",
+      "from": "report_detail_8",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_report_detail_9_report_detail_10",
+      "to": "report_detail_10",
+      "variant": "dashed",
+      "from": "report_detail_9",
+      "label": "细节续列",
+      "labelDy": 24
+    },
+    {
+      "id": "e_pipeline_a_pipeline_b",
+      "to": "pipeline_b",
+      "variant": "default",
+      "from": "pipeline_a",
+      "label": "可逆阶段"
+    },
+    {
+      "id": "e_pipeline_b_pipeline_c",
+      "to": "pipeline_c",
+      "variant": "default",
+      "from": "pipeline_b",
+      "label": "可逆阶段"
+    },
+    {
+      "id": "e_pipeline_c_pipeline_d",
+      "to": "pipeline_d",
+      "variant": "default",
+      "from": "pipeline_c",
+      "label": "可逆阶段"
+    },
+    {
+      "id": "e_pipeline_d_pipeline_inverse",
+      "to": "pipeline_inverse",
+      "variant": "default",
+      "from": "pipeline_d",
+      "label": "可逆阶段"
+    },
+    {
+      "id": "e_source_admit_source_freeze",
+      "to": "source_freeze",
+      "variant": "default",
+      "from": "source_admit",
+      "label": "准入证据"
+    },
+    {
+      "id": "e_source_freeze_native_build",
+      "to": "native_build",
+      "variant": "default",
+      "from": "source_freeze",
+      "label": "准入证据"
+    },
+    {
+      "id": "e_native_build_abi_qualify",
+      "to": "abi_qualify",
+      "variant": "default",
+      "from": "native_build",
+      "label": "准入证据"
+    },
+    {
+      "id": "e_abi_qualify_register_codec",
+      "to": "register_codec",
+      "variant": "default",
+      "from": "abi_qualify",
+      "label": "准入证据"
+    },
+    {
+      "id": "e_register_codec_benchmark_qualify",
+      "to": "benchmark_qualify",
+      "variant": "default",
+      "from": "register_codec",
+      "label": "准入证据"
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "运行前支撑链：来源冻结 → 构建 → 资格认证 → 注册；具体工具因算法而异",
+      "wraps": [
+        "source_admit",
+        "source_freeze",
+        "native_build",
+        "abi_qualify",
+        "register_codec",
+        "benchmark_qualify"
+      ],
+      "pad": 32
+    },
+    {
+      "kind": "region",
+      "label": "算法注册目录：67 个 CodecManifest；逐个列出 key，工厂为辅助来源标记（登记 ≠ 所有组合已正式准入）",
+      "wraps": [
+        "codec_1",
+        "codec_2",
+        "codec_3",
+        "codec_4",
+        "codec_5",
+        "codec_6",
+        "codec_7",
+        "codec_8",
+        "codec_9",
+        "codec_10",
+        "codec_11",
+        "codec_12",
+        "codec_13",
+        "codec_14",
+        "codec_15",
+        "codec_16",
+        "codec_17",
+        "codec_18",
+        "codec_19",
+        "codec_20",
+        "codec_21",
+        "codec_22",
+        "codec_23",
+        "codec_24",
+        "codec_25",
+        "codec_26",
+        "codec_27",
+        "codec_28",
+        "codec_29",
+        "codec_30",
+        "codec_31",
+        "codec_32",
+        "codec_33",
+        "codec_34",
+        "codec_35",
+        "codec_36",
+        "codec_37",
+        "codec_38",
+        "codec_39",
+        "codec_40",
+        "codec_41",
+        "codec_42",
+        "codec_43",
+        "codec_44",
+        "codec_45",
+        "codec_46"
+      ],
+      "pad": 32
+    },
+    {
+      "kind": "region",
+      "label": "数据集注册目录：22 个 DatasetManifest；实际源文件由各 manifest 指定",
+      "wraps": [
+        "dataset_1",
+        "dataset_2",
+        "dataset_3",
+        "dataset_4",
+        "dataset_5",
+        "dataset_6",
+        "dataset_7",
+        "dataset_8",
+        "dataset_9",
+        "dataset_10",
+        "dataset_11"
+      ],
+      "pad": 32
+    },
+    {
+      "kind": "region",
+      "label": "显式预处理细化：A–D 是已审核执行器的合同槽；StreamVByte、MaskedVByte、SIMDComp 语义分别核验",
+      "wraps": [
+        "pipeline_a",
+        "pipeline_b",
+        "pipeline_c",
+        "pipeline_d",
+        "pipeline_inverse",
+        "masked_fused",
+        "simd_fused",
+        "pipeline_switch"
+      ],
+      "pad": 32
+    }
+  ]
+}

@@ -1,0 +1,398 @@
+{
+  "schema_version": "tscb.source-artifact.v2",
+  "key": "fastpfor-simple-2457e1e",
+  "kind": "VENDORED_UPSTREAM_SOURCE_CLOSURE",
+  "identity": {
+    "kind": "VENDORED_UPSTREAM_SOURCE_CLOSURE",
+    "key": "fastpfor-simple-2457e1e",
+    "repository": "https://github.com/fast-pack/FastPFOR",
+    "commit": "2457e1ed1af35bbf7f4c509c863fa9797e637cb3",
+    "source_closure_sha256": "1934acae916cc87abc2a3f36db17075dc791c30e59dfcb6d69a3d61635eee7fb",
+    "patch_series": [],
+    "copy_policy": "TRACKED_PINNED_BYTES_EQUAL_NO_PATCH",
+    "selection": "WORKBOOK_SIMPLE9_SIMPLE16_ORIGINAL_PUBLIC_APIS_LZBENCH_NO_MATCHING_ENTRY"
+  },
+  "license": {
+    "spdx": "Apache-2.0 AND BSD-3-Clause",
+    "status": "RUN_ALLOWED",
+    "redistribution": "ALLOWED_WITH_LICENSE_NOTICE",
+    "files": [
+      "adapters/fastpfor_simple/vendor/fastpfor/LICENSE",
+      "adapters/fastpfor_simple/third_party/googletest/LICENSE"
+    ]
+  },
+  "build": {
+    "recipe": "python tools/build_codec.py simple9-u28 --profile all",
+    "patches": [],
+    "submodules": [],
+    "source_closure": [
+      {
+        "upstream_path": "LICENSE",
+        "path": "adapters/fastpfor_simple/vendor/fastpfor/LICENSE",
+        "sha256": "73ba74dfaa520b49a401b5d21459a8523a146f3b7518a833eea5efa85130bf68",
+        "bytes": 10273,
+        "role": "ALGORITHM_AND_UPSTREAM_TEST"
+      },
+      {
+        "upstream_path": "AUTHORS",
+        "path": "adapters/fastpfor_simple/vendor/fastpfor/AUTHORS",
+        "sha256": "55b36c85a5f135fc52cc58ba0694fca1305ecd0010a9fcf940727688aeab4a27",
+        "bytes": 178,
+        "role": "ALGORITHM_AND_UPSTREAM_TEST"
+      },
+      {
+        "upstream_path": "README.md",
+        "path": "adapters/fastpfor_simple/vendor/fastpfor/README.md",
+        "sha256": "6ab400e9cad8c776e214f6581d4a07a2e2f8356d3adc6f73f460579f77c4fc3c",
+        "bytes": 12763,
+        "role": "ALGORITHM_AND_UPSTREAM_TEST"
+      },
+      {
+        "upstream_path": "headers/common.h",
+        "path": "adapters/fastpfor_simple/vendor/fastpfor/headers/common.h",
+        "sha256": "44d4a82ea76b251852b16d785fe39d600780b9b9d746c5be3664e27f778abc4e",
+        "bytes": 1220,
+        "role": "ALGORITHM_AND_UPSTREAM_TEST"
+      },
+      {
+        "upstream_path": "headers/codecs.h",
+        "path": "adapters/fastpfor_simple/vendor/fastpfor/headers/codecs.h",
+        "sha256": "f8f6bd99d7a0edb5a537bbc5fcc191980fe17e86f0aebb1aa92b6160307504df",
+        "bytes": 6258,
+        "role": "ALGORITHM_AND_UPSTREAM_TEST"
+      },
+      {
+        "upstream_path": "headers/util.h",
+        "path": "adapters/fastpfor_simple/vendor/fastpfor/headers/util.h",
+        "sha256": "dbc1e7a7583e171db0637c3ec348c79ba0ce70ab28d4c7a6526c6941b55363d1",
+        "bytes": 12429,
+        "role": "ALGORITHM_AND_UPSTREAM_TEST"
+      },
+      {
+        "upstream_path": "headers/bitpacking.h",
+        "path": "adapters/fastpfor_simple/vendor/fastpfor/headers/bitpacking.h",
+        "sha256": "3542087d2bcd4adc596a6ce37b245689024c208f1f4b1779a26218c18776b616",
+        "bytes": 29366,
+        "role": "ALGORITHM_AND_UPSTREAM_TEST"
+      },
+      {
+        "upstream_path": "headers/bitpackinghelpers.h",
+        "path": "adapters/fastpfor_simple/vendor/fastpfor/headers/bitpackinghelpers.h",
+        "sha256": "5bb307d6ffe610a328bf8df4a81d00f17983e3aa065f069e23d27d53bcb19a2c",
+        "bytes": 18451,
+        "role": "ALGORITHM_AND_UPSTREAM_TEST"
+      },
+      {
+        "upstream_path": "headers/simple9.h",
+        "path": "adapters/fastpfor_simple/vendor/fastpfor/headers/simple9.h",
+        "sha256": "9735d35a014291086bb3dfa0e787d7693a43244231c150349e47a48fa9d896a4",
+        "bytes": 16477,
+        "role": "ALGORITHM_AND_UPSTREAM_TEST"
+      },
+      {
+        "upstream_path": "headers/simple16.h",
+        "path": "adapters/fastpfor_simple/vendor/fastpfor/headers/simple16.h",
+        "sha256": "c2b15d19b6f9f9543db63c8868ce29865957750b0b5f70779d7eb3b51dc9c90e",
+        "bytes": 38916,
+        "role": "ALGORITHM_AND_UPSTREAM_TEST"
+      },
+      {
+        "upstream_path": "unittest/test_simple16.cpp",
+        "path": "adapters/fastpfor_simple/vendor/fastpfor/unittest/test_simple16.cpp",
+        "sha256": "faaa454a72ccad164692f6ccabc1fc4ee949543ac15dde807cf227ffe672c1bd",
+        "bytes": 533,
+        "role": "ALGORITHM_AND_UPSTREAM_TEST"
+      },
+      {
+        "upstream_path": "unittest/util.h",
+        "path": "adapters/fastpfor_simple/vendor/fastpfor/unittest/util.h",
+        "sha256": "0eb30420d3475a04d980ff3b0a3664886c233fa0235f8afa43e16bfdd1b97046",
+        "bytes": 1090,
+        "role": "ALGORITHM_AND_UPSTREAM_TEST"
+      },
+      {
+        "upstream_path": "unittest/test_driver.cpp",
+        "path": "adapters/fastpfor_simple/vendor/fastpfor/unittest/test_driver.cpp",
+        "sha256": "532ec2985a9168f18d5b9c61a1e438a5f6ded90a3eabb0429b75a107bf38e60e",
+        "bytes": 132,
+        "role": "ALGORITHM_AND_UPSTREAM_TEST"
+      },
+      {
+        "upstream_path": "lib/sdsl-lite/external/googletest/LICENSE",
+        "path": "adapters/fastpfor_simple/third_party/googletest/LICENSE",
+        "sha256": "9702de7e4117a8e2b20dafab11ffda58c198aede066406496bef670d40a22138",
+        "bytes": 1475,
+        "role": "UPSTREAM_TEST_ONLY"
+      },
+      {
+        "upstream_path": "lib/sdsl-lite/external/googletest/googletest/include/gtest/gtest-assertion-result.h",
+        "path": "adapters/fastpfor_simple/third_party/googletest/googletest/include/gtest/gtest-assertion-result.h",
+        "sha256": "d6562e22c316e831bfbc2cde3b158f06380a22e7e1c6c1e180689abee5c5b972",
+        "bytes": 8503,
+        "role": "UPSTREAM_TEST_ONLY"
+      },
+      {
+        "upstream_path": "lib/sdsl-lite/external/googletest/googletest/include/gtest/gtest-death-test.h",
+        "path": "adapters/fastpfor_simple/third_party/googletest/googletest/include/gtest/gtest-death-test.h",
+        "sha256": "8decbb86ebbfa142fd78a83cfbeb4c5e73e98179058ce70fcc279935c497429a",
+        "bytes": 14910,
+        "role": "UPSTREAM_TEST_ONLY"
+      },
+      {
+        "upstream_path": "lib/sdsl-lite/external/googletest/googletest/include/gtest/gtest-matchers.h",
+        "path": "adapters/fastpfor_simple/third_party/googletest/googletest/include/gtest/gtest-matchers.h",
+        "sha256": "d637dd188944433c62d96a062f9b1adab851574c537d7021270c7a52a2759a90",
+        "bytes": 33067,
+        "role": "UPSTREAM_TEST_ONLY"
+      },
+      {
+        "upstream_path": "lib/sdsl-lite/external/googletest/googletest/include/gtest/gtest-message.h",
+        "path": "adapters/fastpfor_simple/third_party/googletest/googletest/include/gtest/gtest-message.h",
+        "sha256": "f1c7bd4e0c02240e884deed25a2e0bfd04e5e0c3fd778a3b126cbb64531f65a7",
+        "bytes": 9203,
+        "role": "UPSTREAM_TEST_ONLY"
+      },
+      {
+        "upstream_path": "lib/sdsl-lite/external/googletest/googletest/include/gtest/gtest-param-test.h",
+        "path": "adapters/fastpfor_simple/third_party/googletest/googletest/include/gtest/gtest-param-test.h",
+        "sha256": "1adb46e17e47fc2f40dc5b8e9acec4f01efa389a19bbea25d32aea28b94e32e6",
+        "bytes": 24008,
+        "role": "UPSTREAM_TEST_ONLY"
+      },
+      {
+        "upstream_path": "lib/sdsl-lite/external/googletest/googletest/include/gtest/gtest-printers.h",
+        "path": "adapters/fastpfor_simple/third_party/googletest/googletest/include/gtest/gtest-printers.h",
+        "sha256": "f3396ea55d577ee04f15a2b14b14b76edb8a84d385c831defd88cff8535bc273",
+        "bytes": 40511,
+        "role": "UPSTREAM_TEST_ONLY"
+      },
+      {
+        "upstream_path": "lib/sdsl-lite/external/googletest/googletest/include/gtest/gtest-spi.h",
+        "path": "adapters/fastpfor_simple/third_party/googletest/googletest/include/gtest/gtest-spi.h",
+        "sha256": "fc0bbebaeb211b81a2ec3df388e5e5f25a7c22e90186839854d2e5b26ce226e6",
+        "bytes": 12843,
+        "role": "UPSTREAM_TEST_ONLY"
+      },
+      {
+        "upstream_path": "lib/sdsl-lite/external/googletest/googletest/include/gtest/gtest-test-part.h",
+        "path": "adapters/fastpfor_simple/third_party/googletest/googletest/include/gtest/gtest-test-part.h",
+        "sha256": "2279b9bfd08aff7c0f764a2716bde0d3a61dc12573687a2cff91256b17681bf0",
+        "bytes": 7164,
+        "role": "UPSTREAM_TEST_ONLY"
+      },
+      {
+        "upstream_path": "lib/sdsl-lite/external/googletest/googletest/include/gtest/gtest-typed-test.h",
+        "path": "adapters/fastpfor_simple/third_party/googletest/googletest/include/gtest/gtest-typed-test.h",
+        "sha256": "d56313830bf30d6271d7c1f8ca57dc52d95a10b97e4ace6efa0f085ae519303a",
+        "bytes": 15889,
+        "role": "UPSTREAM_TEST_ONLY"
+      },
+      {
+        "upstream_path": "lib/sdsl-lite/external/googletest/googletest/include/gtest/gtest.h",
+        "path": "adapters/fastpfor_simple/third_party/googletest/googletest/include/gtest/gtest.h",
+        "sha256": "93da03ddf6d5b9bdf40ae4ded9939067c9ed0b6de93f787f7e8d187609b6b02d",
+        "bytes": 91459,
+        "role": "UPSTREAM_TEST_ONLY"
+      },
+      {
+        "upstream_path": "lib/sdsl-lite/external/googletest/googletest/include/gtest/gtest_pred_impl.h",
+        "path": "adapters/fastpfor_simple/third_party/googletest/googletest/include/gtest/gtest_pred_impl.h",
+        "sha256": "85e850e735a42ebb5f9a01a018708c1c0b9b7d83c94b14b7d5d29512c00b6ffd",
+        "bytes": 12783,
+        "role": "UPSTREAM_TEST_ONLY"
+      },
+      {
+        "upstream_path": "lib/sdsl-lite/external/googletest/googletest/include/gtest/gtest_prod.h",
+        "path": "adapters/fastpfor_simple/third_party/googletest/googletest/include/gtest/gtest_prod.h",
+        "sha256": "3c6301ef533db8686e474dd5a0de4d98a31cbb630e2273f712472d1be25aa261",
+        "bytes": 2502,
+        "role": "UPSTREAM_TEST_ONLY"
+      },
+      {
+        "upstream_path": "lib/sdsl-lite/external/googletest/googletest/include/gtest/internal/custom/gtest-port.h",
+        "path": "adapters/fastpfor_simple/third_party/googletest/googletest/include/gtest/internal/custom/gtest-port.h",
+        "sha256": "5e06747c9e8b86e9d841fabd61c2f045b2bb1133716f127be4a963ced1c44e01",
+        "bytes": 1873,
+        "role": "UPSTREAM_TEST_ONLY"
+      },
+      {
+        "upstream_path": "lib/sdsl-lite/external/googletest/googletest/include/gtest/internal/custom/gtest-printers.h",
+        "path": "adapters/fastpfor_simple/third_party/googletest/googletest/include/gtest/internal/custom/gtest-printers.h",
+        "sha256": "b95afda2426e8c4f09c11d3296d522fb336b248c0da7e078388db4bb072c2166",
+        "bytes": 2094,
+        "role": "UPSTREAM_TEST_ONLY"
+      },
+      {
+        "upstream_path": "lib/sdsl-lite/external/googletest/googletest/include/gtest/internal/custom/gtest.h",
+        "path": "adapters/fastpfor_simple/third_party/googletest/googletest/include/gtest/internal/custom/gtest.h",
+        "sha256": "21d20a1c64ea38c20c4b12337c261a1a18989d2a30710a83dfb5cd9a3bb3c55e",
+        "bytes": 1858,
+        "role": "UPSTREAM_TEST_ONLY"
+      },
+      {
+        "upstream_path": "lib/sdsl-lite/external/googletest/googletest/include/gtest/internal/gtest-death-test-internal.h",
+        "path": "adapters/fastpfor_simple/third_party/googletest/googletest/include/gtest/internal/gtest-death-test-internal.h",
+        "sha256": "a70d1174ef668639c7af21764442f8e487b0fc70c237a70f90e3161a8e8262d6",
+        "bytes": 13929,
+        "role": "UPSTREAM_TEST_ONLY"
+      },
+      {
+        "upstream_path": "lib/sdsl-lite/external/googletest/googletest/include/gtest/internal/gtest-filepath.h",
+        "path": "adapters/fastpfor_simple/third_party/googletest/googletest/include/gtest/internal/gtest-filepath.h",
+        "sha256": "544ce95d2e1e4b7ae17ee170f482aaa09e17d0056999c4ce7e7a6097c3a755cf",
+        "bytes": 10339,
+        "role": "UPSTREAM_TEST_ONLY"
+      },
+      {
+        "upstream_path": "lib/sdsl-lite/external/googletest/googletest/include/gtest/internal/gtest-internal.h",
+        "path": "adapters/fastpfor_simple/third_party/googletest/googletest/include/gtest/internal/gtest-internal.h",
+        "sha256": "a33806c8e6ca5eb6f839b8e015bdf8eae848641035f9499834f9d402b823d5fe",
+        "bytes": 63416,
+        "role": "UPSTREAM_TEST_ONLY"
+      },
+      {
+        "upstream_path": "lib/sdsl-lite/external/googletest/googletest/include/gtest/internal/gtest-linked_ptr.h",
+        "path": "adapters/fastpfor_simple/third_party/googletest/googletest/include/gtest/internal/gtest-linked_ptr.h",
+        "sha256": "13578d7ded49de140ebf1d799ede535f2ed7afb0c3c6151c1dea5444636313ac",
+        "bytes": 8424,
+        "role": "UPSTREAM_TEST_ONLY"
+      },
+      {
+        "upstream_path": "lib/sdsl-lite/external/googletest/googletest/include/gtest/internal/gtest-param-util-generated.h",
+        "path": "adapters/fastpfor_simple/third_party/googletest/googletest/include/gtest/internal/gtest-param-util-generated.h",
+        "sha256": "334f340fe934608c24d144487cc22e566357e30976e1c92ce85a004453ddafe9",
+        "bytes": 192177,
+        "role": "UPSTREAM_TEST_ONLY"
+      },
+      {
+        "upstream_path": "lib/sdsl-lite/external/googletest/googletest/include/gtest/internal/gtest-param-util.h",
+        "path": "adapters/fastpfor_simple/third_party/googletest/googletest/include/gtest/internal/gtest-param-util.h",
+        "sha256": "effa1b3e6a3554aae8fc82fbe88c1c3215f723bb3e2e444bf424f688c476a030",
+        "bytes": 38172,
+        "role": "UPSTREAM_TEST_ONLY"
+      },
+      {
+        "upstream_path": "lib/sdsl-lite/external/googletest/googletest/include/gtest/internal/gtest-port-arch.h",
+        "path": "adapters/fastpfor_simple/third_party/googletest/googletest/include/gtest/internal/gtest-port-arch.h",
+        "sha256": "37f6d5c70322ee5f4f84fafcb4e8e2f4bbf08a5afc64a6636cf6a9f45d442198",
+        "bytes": 4305,
+        "role": "UPSTREAM_TEST_ONLY"
+      },
+      {
+        "upstream_path": "lib/sdsl-lite/external/googletest/googletest/include/gtest/internal/gtest-port.h",
+        "path": "adapters/fastpfor_simple/third_party/googletest/googletest/include/gtest/internal/gtest-port.h",
+        "sha256": "c22ef5c860dabc3e74225f3a54c2d7224375ad2dd2af619d3f8cbe7e917fc754",
+        "bytes": 90033,
+        "role": "UPSTREAM_TEST_ONLY"
+      },
+      {
+        "upstream_path": "lib/sdsl-lite/external/googletest/googletest/include/gtest/internal/gtest-string.h",
+        "path": "adapters/fastpfor_simple/third_party/googletest/googletest/include/gtest/internal/gtest-string.h",
+        "sha256": "0cc08c746bceb2b101c61ffbc905c598eb62fee3c262c4585c21b10d8a3e6508",
+        "bytes": 7323,
+        "role": "UPSTREAM_TEST_ONLY"
+      },
+      {
+        "upstream_path": "lib/sdsl-lite/external/googletest/googletest/include/gtest/internal/gtest-tuple.h",
+        "path": "adapters/fastpfor_simple/third_party/googletest/googletest/include/gtest/internal/gtest-tuple.h",
+        "sha256": "b56258ebffa678cc3f0cefbfc8b44aece06e099c3e99f6994011f3bcc2d614ec",
+        "bytes": 28617,
+        "role": "UPSTREAM_TEST_ONLY"
+      },
+      {
+        "upstream_path": "lib/sdsl-lite/external/googletest/googletest/include/gtest/internal/gtest-type-util.h",
+        "path": "adapters/fastpfor_simple/third_party/googletest/googletest/include/gtest/internal/gtest-type-util.h",
+        "sha256": "c1cf53463579025a7b25466e9680a778d74beff52d8a64b6e83fcb6dd99e4bb7",
+        "bytes": 7349,
+        "role": "UPSTREAM_TEST_ONLY"
+      },
+      {
+        "upstream_path": "lib/sdsl-lite/external/googletest/googletest/src/gtest-all.cc",
+        "path": "adapters/fastpfor_simple/third_party/googletest/googletest/src/gtest-all.cc",
+        "sha256": "972d3016860f9aa6452e078cf77406290fb7003b66fd6c0744a030bd1c323606",
+        "bytes": 2201,
+        "role": "UPSTREAM_TEST_ONLY"
+      },
+      {
+        "upstream_path": "lib/sdsl-lite/external/googletest/googletest/src/gtest-assertion-result.cc",
+        "path": "adapters/fastpfor_simple/third_party/googletest/googletest/src/gtest-assertion-result.cc",
+        "sha256": "dbd2235676dcc0ef6409108a4041e05442fc6895735a5561d71151e6a14296bb",
+        "bytes": 3009,
+        "role": "UPSTREAM_TEST_ONLY"
+      },
+      {
+        "upstream_path": "lib/sdsl-lite/external/googletest/googletest/src/gtest-death-test.cc",
+        "path": "adapters/fastpfor_simple/third_party/googletest/googletest/src/gtest-death-test.cc",
+        "sha256": "4a0a2dad0efbb61c4f7686ccd326e19d6e5633c98202f6878fa2d18c52f3329a",
+        "bytes": 62742,
+        "role": "UPSTREAM_TEST_ONLY"
+      },
+      {
+        "upstream_path": "lib/sdsl-lite/external/googletest/googletest/src/gtest-filepath.cc",
+        "path": "adapters/fastpfor_simple/third_party/googletest/googletest/src/gtest-filepath.cc",
+        "sha256": "8eec3fa2a0e6617106a8d9bfedf3209b0a8cad02e2a17e76196807290e940f8c",
+        "bytes": 15732,
+        "role": "UPSTREAM_TEST_ONLY"
+      },
+      {
+        "upstream_path": "lib/sdsl-lite/external/googletest/googletest/src/gtest-internal-inl.h",
+        "path": "adapters/fastpfor_simple/third_party/googletest/googletest/src/gtest-internal-inl.h",
+        "sha256": "fce60f191b52108b5851f6aec51a6f14001e1a79fd302d48c8fdbb842f8fef1a",
+        "bytes": 47929,
+        "role": "UPSTREAM_TEST_ONLY"
+      },
+      {
+        "upstream_path": "lib/sdsl-lite/external/googletest/googletest/src/gtest-matchers.cc",
+        "path": "adapters/fastpfor_simple/third_party/googletest/googletest/src/gtest-matchers.cc",
+        "sha256": "e4ce9edf33493625353cc147a14caac14fdba7390d76166d101fa2fe9d16bbda",
+        "bytes": 3724,
+        "role": "UPSTREAM_TEST_ONLY"
+      },
+      {
+        "upstream_path": "lib/sdsl-lite/external/googletest/googletest/src/gtest-port.cc",
+        "path": "adapters/fastpfor_simple/third_party/googletest/googletest/src/gtest-port.cc",
+        "sha256": "6e6c0346e833a254e52544728b40fd0cced0b36431e9eed8f5e477e6f5fe1a23",
+        "bytes": 47960,
+        "role": "UPSTREAM_TEST_ONLY"
+      },
+      {
+        "upstream_path": "lib/sdsl-lite/external/googletest/googletest/src/gtest-printers.cc",
+        "path": "adapters/fastpfor_simple/third_party/googletest/googletest/src/gtest-printers.cc",
+        "sha256": "bd14e45b5cb8df8be5944a0aaeb3739c533737a183ae4ed6627f5613eea1f6c9",
+        "bytes": 18551,
+        "role": "UPSTREAM_TEST_ONLY"
+      },
+      {
+        "upstream_path": "lib/sdsl-lite/external/googletest/googletest/src/gtest-test-part.cc",
+        "path": "adapters/fastpfor_simple/third_party/googletest/googletest/src/gtest-test-part.cc",
+        "sha256": "b268314cbc718b485ff3e45fdeb5a1496bb8d87dadd5e824c558bf3b03e2dbf9",
+        "bytes": 4028,
+        "role": "UPSTREAM_TEST_ONLY"
+      },
+      {
+        "upstream_path": "lib/sdsl-lite/external/googletest/googletest/src/gtest-typed-test.cc",
+        "path": "adapters/fastpfor_simple/third_party/googletest/googletest/src/gtest-typed-test.cc",
+        "sha256": "b92e70b2d7ee3b86328162cbda269a28de4ce67f0e8d9beec5ec2c73a93ba006",
+        "bytes": 3823,
+        "role": "UPSTREAM_TEST_ONLY"
+      },
+      {
+        "upstream_path": "lib/sdsl-lite/external/googletest/googletest/src/gtest.cc",
+        "path": "adapters/fastpfor_simple/third_party/googletest/googletest/src/gtest.cc",
+        "sha256": "53470c00499b943b4f5c3e7b581ffda9c76f828f485f33e17471aa08e8b296ac",
+        "bytes": 259551,
+        "role": "UPSTREAM_TEST_ONLY"
+      },
+      {
+        "path": "adapters/fastpfor_simple/references/fastpfor/src/inmemorybenchmark.cpp",
+        "upstream_path": "src/inmemorybenchmark.cpp",
+        "sha256": "38279eb82d99122033fae1cee67b00f2e183af4121451069a01d71e9cebfeb30",
+        "role": "BENCHMARK_REFERENCE_ONLY"
+      }
+    ],
+    "translation_units": [
+      "adapters/fastpfor_simple/native/tscb_fastpfor_simple.cpp"
+    ],
+    "admission_card": "adapters/fastpfor_simple/SOURCE_ADMISSION.md"
+  }
+}

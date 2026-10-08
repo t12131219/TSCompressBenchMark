@@ -1,0 +1,134 @@
+{
+  "schema_version": "tscb.source-artifact.v2",
+  "key": "littleintpacker-8777f57",
+  "kind": "VENDORED_UPSTREAM_SOURCE_CLOSURE",
+  "identity": {
+    "kind": "VENDORED_UPSTREAM_SOURCE_CLOSURE",
+    "key": "littleintpacker-8777f57",
+    "repository": "https://github.com/fast-pack/LittleIntPacker",
+    "commit": "8777f574a5ab3c653881371819383c986292843c",
+    "source_closure_sha256": "5e30052a5a9e88459f1e0cd4b867682d0f25a3e3909473f5debee7b6659ec868",
+    "patch_series": [
+      {
+        "path": "adapters/littleintpacker/patches/0001-zero-width-and-word-access.patch",
+        "sha256": "8f44ce97d1a63eb2de0c151aa462070c09f2884da5ebde1e1a887093a0d5beb6"
+      }
+    ],
+    "copy_policy": "TRACKED_PINNED_BYTES_WITH_BUILD_ONLY_LOCKED_PATCH",
+    "selection": "WORKBOOK_134_138_ORIGINAL_REPOSITORY_BENCHMARK_AND_FIVE_PUBLIC_API_PAIRS"
+  },
+  "license": {
+    "spdx": "Apache-2.0",
+    "status": "RUN_ALLOWED",
+    "redistribution": "ALLOWED_WITH_LICENSE_NOTICE",
+    "files": [
+      "adapters/littleintpacker/vendor/littleintpacker/LICENSE"
+    ]
+  },
+  "build": {
+    "recipe": "python tools/build_codec.py littleintpacker-pack32-u32 --profile all",
+    "patches": [
+      {
+        "path": "adapters/littleintpacker/patches/0001-zero-width-and-word-access.patch",
+        "sha256": "8f44ce97d1a63eb2de0c151aa462070c09f2884da5ebde1e1a887093a0d5beb6"
+      }
+    ],
+    "submodules": [],
+    "source_closure": [
+      {
+        "upstream_path": "LICENSE",
+        "path": "adapters/littleintpacker/vendor/littleintpacker/LICENSE",
+        "sha256": "b40930bbcf80744c86c46a12bc9da056641d722716c378f5659b9e555ef833e1",
+        "bytes": 11357
+      },
+      {
+        "upstream_path": "README.md",
+        "path": "adapters/littleintpacker/vendor/littleintpacker/README.md",
+        "sha256": "b1cc57e00caf82a1b8680fb5a6c5a81fce22616b5d7fa251d2ca4c9da10e3f76",
+        "bytes": 4349
+      },
+      {
+        "upstream_path": "makefile",
+        "path": "adapters/littleintpacker/vendor/littleintpacker/makefile",
+        "sha256": "a41673da19c904c3ad39876a3561f430680919733bb3177e359ebfdf19c9baa5",
+        "bytes": 1495
+      },
+      {
+        "upstream_path": "include/bitpacking.h",
+        "path": "adapters/littleintpacker/vendor/littleintpacker/include/bitpacking.h",
+        "sha256": "79c840586d4e700a28a03f4ee1b35162ddce9a968124f50b4808294507d0229b",
+        "bytes": 3337
+      },
+      {
+        "upstream_path": "include/portability.h",
+        "path": "adapters/littleintpacker/vendor/littleintpacker/include/portability.h",
+        "sha256": "06f540f4338e811b0b8ff08500042fa87cdcc768c4a4215f2f6a864f30929fdb",
+        "bytes": 461
+      },
+      {
+        "upstream_path": "include/util.h",
+        "path": "adapters/littleintpacker/vendor/littleintpacker/include/util.h",
+        "sha256": "e14fd4c69be088b314022c70ad4e322dc057231a14e18ef9610f1aa8b91dc262",
+        "bytes": 286
+      },
+      {
+        "upstream_path": "src/bitpacking32.c",
+        "path": "adapters/littleintpacker/vendor/littleintpacker/src/bitpacking32.c",
+        "sha256": "677d3698a499b9bae9126d2edc62b515252a248db4feaf2c93d4e4e79a9487f8",
+        "bytes": 162518
+      },
+      {
+        "upstream_path": "src/turbobitpacking32.c",
+        "path": "adapters/littleintpacker/vendor/littleintpacker/src/turbobitpacking32.c",
+        "sha256": "d22cd7a91ce8c4e974495b9bc61d81eb5b272c8881ec3257a76872908729b233",
+        "bytes": 137825
+      },
+      {
+        "upstream_path": "src/scpacking32.c",
+        "path": "adapters/littleintpacker/vendor/littleintpacker/src/scpacking32.c",
+        "sha256": "a25f1998ff25c812ff8e138f853935a59a17a31a4cad51707374f8f121acce04",
+        "bytes": 129320
+      },
+      {
+        "upstream_path": "src/bmipacking32.c",
+        "path": "adapters/littleintpacker/vendor/littleintpacker/src/bmipacking32.c",
+        "sha256": "babaea37f6be38a918338bf2ce16451899294bca5525077d65c847b8613ff9da",
+        "bytes": 134106
+      },
+      {
+        "upstream_path": "src/horizontalpacking32.c",
+        "path": "adapters/littleintpacker/vendor/littleintpacker/src/horizontalpacking32.c",
+        "sha256": "21331814d9924201efee8c094463ac631708999424d51ba6a9b4deb137811ac3",
+        "bytes": 37792
+      },
+      {
+        "upstream_path": "src/util.c",
+        "path": "adapters/littleintpacker/vendor/littleintpacker/src/util.c",
+        "sha256": "2c135552477cdffd962147980dc64a239469366eec8830700724fa4b0a85237c",
+        "bytes": 2151
+      },
+      {
+        "upstream_path": "tests/unit.c",
+        "path": "adapters/littleintpacker/vendor/littleintpacker/tests/unit.c",
+        "sha256": "32c3a5c391f73b6addff024de941eafe55f6bc867ea403b200d2bfc48ac96c69",
+        "bytes": 9289
+      },
+      {
+        "upstream_path": "benchmarks/bitpackingbenchmark.c",
+        "path": "adapters/littleintpacker/vendor/littleintpacker/benchmarks/bitpackingbenchmark.c",
+        "sha256": "c3a9ca327d57b2553d77fc35cb070c8f0d8b748dd5b83484a65ea674b3067516",
+        "bytes": 9705
+      }
+    ],
+    "translation_units": [
+      "adapters/littleintpacker/native/tscb_littleintpacker.cpp",
+      "adapters/littleintpacker/vendor/littleintpacker/src/bitpacking32.c",
+      "adapters/littleintpacker/vendor/littleintpacker/src/turbobitpacking32.c",
+      "adapters/littleintpacker/vendor/littleintpacker/src/scpacking32.c",
+      "adapters/littleintpacker/vendor/littleintpacker/src/bmipacking32.c",
+      "adapters/littleintpacker/vendor/littleintpacker/src/horizontalpacking32.c",
+      "adapters/littleintpacker/vendor/littleintpacker/src/util.c"
+    ],
+    "admission_card": "adapters/littleintpacker/SOURCE_ADMISSION.md"
+  }
+}

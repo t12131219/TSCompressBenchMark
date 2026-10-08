@@ -1,0 +1,233 @@
+{
+  "schema_version": "tscb.codec-manifest.v2",
+  "key": "delta-zigzag-streamvbyte-modern64",
+  "identity": {
+    "display_name": "Checked Delta + ZigZag + limb32 + modern Stream VByte (int64)",
+    "family": "CHECKED_DELTA_ZIGZAG_LIMB32_MODERN_STREAMVBYTE",
+    "citations": [
+      "https://github.com/fast-pack/streamvbyte@7c472d7d4d63c8bc65a88f310ccfc695a0eaf1ce",
+      "adapters/streamvbyte_modern/contract.md"
+    ],
+    "source_artifact_id": "v2:source-artifact:sha256:84d899b8be4348656bcca306d2b543d8acde7e1865f762698ee8ed3dbc33859b"
+  },
+  "classification": {
+    "object_level": "P2_PIPELINE",
+    "implementation_class": "CONVENTIONAL",
+    "tracks": [
+      "TIMESTAMP"
+    ],
+    "subtracks": [
+      "T1"
+    ]
+  },
+  "input": {
+    "topologies": [
+      "UTS",
+      "SYNCHRONOUS_MTS"
+    ],
+    "dtypes": [
+      "<i8"
+    ],
+    "ranks": [
+      1
+    ],
+    "layouts": [
+      "ROW_MAJOR_CONTIG"
+    ],
+    "endianness": [
+      "little"
+    ],
+    "alignment_bytes": 1,
+    "min_n": 0,
+    "max_n": 16777216,
+    "min_m": 1,
+    "max_m": 1,
+    "validity_shapes": [
+      "NONE"
+    ],
+    "value_coupling_mode": "COLUMN_INDEPENDENT",
+    "timestamp_semantics": {
+      "preserve_order": true,
+      "duplicates": true,
+      "out_of_order": true,
+      "negative_delta": true,
+      "absolute_epoch": true,
+      "overflow_policy": "CHECKED_I64_DELTA_AND_RECOVERY"
+    },
+    "max_total_raw_bytes": 134217728,
+    "value_domain": {
+      "kind": "FROZEN_SOURCE_WITH_BOUNDED_REJECTION",
+      "unsupported_action": "REJECT_BEFORE_OUTPUT",
+      "oracle_evidence": "build/source-audits/streamvbyte-modern-native-tests.json",
+      "rejection_reasons": [
+        "checked int64 delta overflow"
+      ]
+    }
+  },
+  "semantics": {
+    "loss_modes": [
+      "LOSSLESS"
+    ],
+    "error_bound_types": [],
+    "reconstruction_modes": [
+      "EXACT_GRID"
+    ],
+    "rebuild_protocol": "TSCB_MODERN_1234_EXPLICIT_STAGES_V1",
+    "preprocess_class": "LOSSLESS_LAYOUT",
+    "preprocess_stages": [
+      {
+        "name": "CHECKED_DELTA_I64_ZIGZAG_U64",
+        "stage_class": "LOSSLESS_LAYOUT",
+        "stage_slot": "A",
+        "parameters": {
+          "overflow": "CHECKED_I64",
+          "seed": "FIRST_I64"
+        },
+        "inverse_required": true,
+        "accounting_components": [
+          "timestamp_bits"
+        ],
+        "enable_parameter": "stage_a"
+      },
+      {
+        "name": "INTERLEAVED_LOW_HIGH_U32",
+        "stage_class": "LOSSLESS_LAYOUT",
+        "stage_slot": "B",
+        "parameters": {
+          "limb_bits": 32,
+          "order": "LOW_HIGH"
+        },
+        "inverse_required": true,
+        "accounting_components": [],
+        "enable_parameter": "stage_b"
+      },
+      {
+        "name": "MODERN_STREAM_VBYTE_1234_SSE41",
+        "stage_class": "NONE",
+        "stage_slot": "C",
+        "parameters": {},
+        "inverse_required": true,
+        "accounting_components": [
+          "timestamp_bits",
+          "metadata_bits"
+        ],
+        "enable_parameter": "stage_c"
+      },
+      {
+        "name": "TSCB_DESCRIPTOR_AND_NATIVE_FRAMING",
+        "stage_class": "NONE",
+        "stage_slot": "D",
+        "parameters": {},
+        "inverse_required": true,
+        "accounting_components": [
+          "container_bits",
+          "metadata_bits",
+          "checksum_bits"
+        ],
+        "enable_parameter": "stage_d"
+      }
+    ],
+    "decodability_profile": "SELF_CONTAINED_CHECKED_DESCRIPTOR_AND_NATIVE_SVB_COUNT",
+    "bitstream_separability": "INDEPENDENT"
+  },
+  "lifecycle": {
+    "block_semantics": "ONE_ROUTED_VECTOR_NO_IMPLICIT_CHUNKING",
+    "state_semantics": "INDEPENDENT_CONTEXT_PER_REPETITION",
+    "reset": "NEW_CONTEXT_REQUIRED",
+    "finalize": "REQUIRED_ZERO_BYTE_FINALIZE",
+    "safe_overread_bytes": 0,
+    "tail_policy": "EXACT_COUNT_SSE4_1_FULL_GROUPS_SCALAR_REMAINDER",
+    "dictionary": "NONE",
+    "model": "NONE",
+    "index": "NONE"
+  },
+  "execution": {
+    "backends": [
+      "C_ABI_V1"
+    ],
+    "isa": [
+      "SSE4_1"
+    ],
+    "devices": [
+      "CPU"
+    ],
+    "threading": "SINGLE_THREAD",
+    "fallback_policy": "DISALLOWED",
+    "runtime_dispatch": false
+  },
+  "features": {
+    "streaming": false,
+    "query": false,
+    "random_access": false
+  },
+  "parameters": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "native_timing": {
+        "type": "boolean",
+        "default": true
+      },
+      "isa": {
+        "type": "string",
+        "enum": [
+          "SSE4_1"
+        ],
+        "default": "SSE4_1"
+      },
+      "stage_a": {
+        "type": "boolean",
+        "default": true
+      },
+      "stage_b": {
+        "type": "boolean",
+        "default": true
+      },
+      "stage_c": {
+        "type": "boolean",
+        "default": true
+      },
+      "stage_d": {
+        "type": "boolean",
+        "default": true,
+        "enum": [
+          true
+        ]
+      },
+      "stage_timing": {
+        "type": "boolean",
+        "default": true
+      }
+    },
+    "constraints": []
+  },
+  "adapter": {
+    "backend": "C_ABI_V1",
+    "version": "streamvbyte-modern-pipeline-ctypes-v1",
+    "factory": "STREAMVBYTE_MODERN_PIPELINE_CTYPES_V1",
+    "artifact_path": "build/adapters/delta_zigzag_streamvbyte_modern64/release/libtscb_delta_zigzag_streamvbyte_modern64.so",
+    "timing_boundary": "PYTHON_FFI_DESCRIPTOR_AND_COMPLETE_NATIVE_PIPELINE_INCLUDED",
+    "native_timing_capability": {
+      "optional": true,
+      "boundary": "CODEC_API_ONLY_V1",
+      "clock": "CLOCK_MONOTONIC",
+      "excludes": [
+        "CONTEXT_LIFECYCLE",
+        "DESCRIPTOR_CONTAINER",
+        "PYTHON_FFI",
+        "CHECKED_DELTA_ZIGZAG_LIMB_SPLIT_RECOVERY",
+        "PADDED_ALIGNED_STAGING",
+        "SHIM_COUNT_AND_USED_LENGTH"
+      ]
+    },
+    "accounting_hooks": [
+      "NATIVE_COUNT_AND_SEED",
+      "DESCRIPTOR_AND_SHA256",
+      "FINAL_SVB_CONTROL_DATA_BYTES",
+      "OUTPUT_CAPACITY"
+    ],
+    "input_materialization": "STRIDED_VECTOR_GATHER_PRESERVES_DTYPE_ORDER_AND_BITS_INCLUDED_IN_CORE_PIPELINE",
+    "descriptor_limit_bytes": 4096,
+    "pipeline_executor_id": "v2:pipeline-executor:sha256:02b63ace74630999348b7ee56666b71bba9b3f0c7eeebb04fd3dff6ed88fec16"
+  }
+}

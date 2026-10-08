@@ -1,0 +1,220 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "TSDataCompressBenchMark · 恢复、缺失重复与终态行为",
+    "locale": "zh-CN",
+    "quality_profile": "showcase",
+    "viewBox": [
+      1150,
+      755
+    ],
+    "legend": {
+      "mode": "auto",
+      "entries": {
+        "frontend": {
+          "label": "入口 / 报告"
+        },
+        "backend": {
+          "label": "控制 / 执行"
+        },
+        "database": {
+          "label": "文件证据"
+        },
+        "security": {
+          "label": "资格 / 校验"
+        },
+        "external": {
+          "label": "外部来源"
+        }
+      }
+    }
+  },
+  "components": [
+    {
+      "id": "tscb-19-resume-n1",
+      "type": "backend",
+      "label": "显式恢复请求",
+      "sublabel": "--run-set-id --resume",
+      "pos": [
+        60,
+        85
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-19-resume-n2",
+      "type": "security",
+      "label": "配置 / 环境 / 日志门",
+      "sublabel": "frozen identity",
+      "pos": [
+        450,
+        85
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-19-resume-n3",
+      "type": "backend",
+      "label": "L1 完成集复用",
+      "sublabel": "load_preparation_result",
+      "pos": [
+        840,
+        85
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-19-resume-n4",
+      "type": "backend",
+      "label": "L2 重新计算并比对",
+      "sublabel": "write-or-verify",
+      "pos": [
+        840,
+        335
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-19-resume-n5",
+      "type": "backend",
+      "label": "读取实际进度",
+      "sublabel": "_layer3_progress",
+      "pos": [
+        450,
+        335
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-19-resume-n6",
+      "type": "backend",
+      "label": "终态复用",
+      "sublabel": "LAYER_3_TASK_REUSED",
+      "pos": [
+        60,
+        335
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-19-resume-n7",
+      "type": "backend",
+      "label": "只执行缺失 index",
+      "sublabel": "repetition_indices",
+      "pos": [
+        60,
+        585
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-19-resume-n8",
+      "type": "security",
+      "label": "回调记录与位流窗口",
+      "sublabel": "persist_repetition",
+      "pos": [
+        450,
+        585
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-19-resume-n9",
+      "type": "backend",
+      "label": "报表可重建",
+      "sublabel": "report_run_set",
+      "pos": [
+        840,
+        585
+      ],
+      "size": [
+        250,
+        95
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "tscb-19-resume-e0",
+      "to": "tscb-19-resume-n2",
+      "label": "进入",
+      "from": "tscb-19-resume-n1"
+    },
+    {
+      "id": "tscb-19-resume-e1",
+      "to": "tscb-19-resume-n3",
+      "label": "生成",
+      "from": "tscb-19-resume-n2"
+    },
+    {
+      "id": "tscb-19-resume-e2",
+      "to": "tscb-19-resume-n4",
+      "label": "传递",
+      "from": "tscb-19-resume-n3",
+      "labelAt": [
+        965.0,
+        194.0
+      ]
+    },
+    {
+      "id": "tscb-19-resume-e3",
+      "to": "tscb-19-resume-n5",
+      "label": "执行",
+      "from": "tscb-19-resume-n4"
+    },
+    {
+      "id": "tscb-19-resume-e4",
+      "to": "tscb-19-resume-n6",
+      "label": "得到",
+      "from": "tscb-19-resume-n5"
+    },
+    {
+      "id": "tscb-19-resume-e5",
+      "to": "tscb-19-resume-n7",
+      "label": "缺失项分支",
+      "from": "tscb-19-resume-n6",
+      "labelAt": [
+        185.0,
+        444.0
+      ],
+      "variant": "dashed"
+    },
+    {
+      "id": "tscb-19-resume-e6",
+      "to": "tscb-19-resume-n8",
+      "label": "冻结",
+      "from": "tscb-19-resume-n7"
+    },
+    {
+      "id": "tscb-19-resume-e7",
+      "to": "tscb-19-resume-n9",
+      "label": "输出",
+      "from": "tscb-19-resume-n8"
+    }
+  ]
+}

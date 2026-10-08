@@ -85,6 +85,7 @@ class RoundTripObservation:
     canary_intact: bool
     determinism_match: bool | None
     lifecycle_trace: tuple[str, ...]
+    codec_telemetry: dict[str, Any] | None = None
 
 
 @dataclass(frozen=True)
@@ -97,6 +98,69 @@ class MeasuredRoundTripObservation:
     canary_intact: bool
     determinism_match: bool | None
     lifecycle_trace: tuple[str, ...]
+    codec_telemetry: dict[str, Any] | None = None
+
+
+def _codec_telemetry(session: Any) -> dict[str, Any] | None:
+    query = getattr(session, "codec_telemetry", None)
+    if query is None:
+        return None
+    value = query()
+    if not isinstance(value, dict):
+        raise ExecutionContractError("codec telemetry must be a document")
+    return value
+
+
+def _accumulate_stage_timings(
+    previous: dict[str, Any] | None,
+    telemetry: dict[str, Any] | None,
+    iteration: int,
+) -> dict[str, Any] | None:
+    current = None if telemetry is None else telemetry.get("pipeline_stages")
+    if current is None or (iteration > 0 and previous is None):
+        return None
+    if (
+        not isinstance(current, dict)
+        or current.get("schema_version") != ("tscb.pipeline-stage-observation.v1")
+        or set(current.get("stages", {})) != set("ABCD")
+    ):
+        raise ExecutionContractError("invalid pipeline stage timing observation")
+    identity = {
+        key: current[key]
+        for key in ("schema_version", "executor_id", "timing_enabled", "timing_boundary")
+    }
+    if previous is not None and any(previous[key] != value for key, value in identity.items()):
+        raise ExecutionContractError("pipeline stage timing contract changed during repetition")
+    result = {**identity, "inner_iterations": iteration + 1, "stages": {}}
+    for slot, stage in current["stages"].items():
+        value = stage["wall_ns"]
+        available = current["timing_enabled"] and stage["enabled"]
+        if (available and (type(value) is not int or value < 0)) or (
+            not available and value is not None
+        ):
+            raise ExecutionContractError("pipeline stage timing availability mismatch")
+        old = None if previous is None else previous["stages"][slot]
+        geometry = {
+            key: stage[key]
+            for key in ("enabled", "input_bytes", "output_bytes", "final_contribution_bits")
+        }
+        if old is not None and any(old[key] != v for key, v in geometry.items()):
+            raise ExecutionContractError("pipeline stage geometry changed during repetition")
+        result["stages"][slot] = {
+            **geometry,
+            "wall_ns": None if value is None else value + (0 if old is None else old["wall_ns"]),
+            "observation_count": (iteration + 1) if available else 0,
+        }
+    return result
+
+
+def _native_input_bytes(telemetry: dict[str, Any] | None, default: int) -> int:
+    value = (
+        default if telemetry is None else telemetry.get("native_input_bytes_per_iteration", default)
+    )
+    if type(value) is not int or value < 0:
+        raise ExecutionContractError("native input byte denominator must be non-negative integer")
+    return value
 
 
 def _encode(
@@ -152,6 +216,7 @@ def _encode(
             stream_sha256=hashlib.sha256(stream).hexdigest(),
             ledger=ledger,
             native_encode_wall_ns=None if native_timing is None else native_timing[0],
+            codec_telemetry=_codec_telemetry(session),
         )
         return (
             artifact,
@@ -185,6 +250,7 @@ def perform_roundtrip(
         decode_cpu = time.process_time_ns() - cpu_start
         decode_wall = time.perf_counter_ns() - wall_start
         native_decode = _native_timing(session, parameters)
+        decoder_telemetry = _codec_telemetry(session)
     finally:
         session.close()
     # The resource sample belongs to this qualification repetition only.  A
@@ -229,6 +295,15 @@ def perform_roundtrip(
             "ACCOUNTING",
             "DECOMPRESS_INDEPENDENT_CONTEXT",
             "CONTEXT_DESTROYED",
+        ),
+        codec_telemetry=(
+            None
+            if artifact.codec_telemetry is None and decoder_telemetry is None
+            else {
+                "scope": "SAME_OBJECT",
+                "encode": artifact.codec_telemetry,
+                "decode": decoder_telemetry,
+            }
         ),
     )
 
@@ -345,6 +420,9 @@ def perform_measured_roundtrip(
     codec_input_bytes = 0
     last_artifact: EncodedArtifact | None = None
     last_decoded: DecodedOutput | None = None
+    last_decoder_telemetry: dict[str, Any] | None = None
+    stage_encode = stage_decode = None
+    native_input_bytes = None
     input_immutable = True
     canary_intact = True
     gc_was_enabled = gc.isenabled()
@@ -373,6 +451,7 @@ def perform_measured_roundtrip(
                 dec_cpu = time.process_time_ns() - decode_cpu_start
                 dec_wall = time.perf_counter_ns() - decode_core_start
                 native_dec = _native_timing(session, parameters)
+                last_decoder_telemetry = _codec_telemetry(session)
             finally:
                 session.close()
             _measure_reverse_adapter(routed, decoded, compatibility)
@@ -392,6 +471,20 @@ def perform_measured_roundtrip(
                 if native_decode is None or native_dec is None
                 else native_decode + native_dec[1]
             )
+            current_native_bytes = _native_input_bytes(artifact.codec_telemetry, codec_input_bytes)
+            if current_native_bytes != _native_input_bytes(
+                last_decoder_telemetry, codec_input_bytes
+            ):
+                raise ExecutionContractError("native encoder/decoder input denominator mismatch")
+            if native_input_bytes is not None and current_native_bytes != native_input_bytes:
+                raise ExecutionContractError("native byte denominator changed during repetition")
+            native_input_bytes = current_native_bytes
+            stage_encode = _accumulate_stage_timings(
+                stage_encode, artifact.codec_telemetry, iterations
+            )
+            stage_decode = _accumulate_stage_timings(
+                stage_decode, last_decoder_telemetry, iterations
+            )
             pipeline_encode += encode_phase_end - pipeline_start
             pipeline_decode += decode_phase_end - decode_pipeline_start
             e2e += decode_phase_end - e2e_start
@@ -410,12 +503,9 @@ def perform_measured_roundtrip(
             last_artifact = artifact
             last_decoded = decoded
             iterations += 1
-            selected = {
-                "CORE": core_encode + core_decode,
-                "PIPELINE": pipeline_encode + pipeline_decode,
-                "E2E": e2e,
-            }[policy.timing_scope]
-            if selected >= policy.repetition_min_ns:
+            selected_encode = core_encode if policy.timing_scope == "CORE" else pipeline_encode
+            selected_decode = core_decode if policy.timing_scope == "CORE" else pipeline_decode
+            if policy.duration_satisfied(selected_encode, selected_decode, e2e):
                 break
             if iterations >= policy.max_inner_iterations:
                 raise ExecutionContractError(
@@ -491,18 +581,18 @@ def perform_measured_roundtrip(
             if value_elements == 0
             else decimal_rate(value_elements * iterations, selected_wall)
         ),
-        min_duration_satisfied=selected_wall >= policy.repetition_min_ns,
+        min_duration_satisfied=policy.duration_satisfied(selected_encode, selected_decode, e2e),
         native_encode_wall_ns=native_encode,
         native_decode_wall_ns=native_decode,
         native_encode_mb_per_second=(
             None
             if native_encode is None
-            else decimal_rate(codec_input_bytes * iterations, native_encode, scale=1_000_000)
+            else decimal_rate(native_input_bytes * iterations, native_encode, scale=1_000_000)
         ),
         native_decode_mb_per_second=(
             None
             if native_decode is None
-            else decimal_rate(codec_input_bytes * iterations, native_decode, scale=1_000_000)
+            else decimal_rate(native_input_bytes * iterations, native_decode, scale=1_000_000)
         ),
         native_timing_enabled=bool(parameters.get("native_timing", True)),
         native_timing_boundary=(
@@ -512,6 +602,17 @@ def perform_measured_roundtrip(
         ),
         native_timing_clock=(
             "CLOCK_MONOTONIC" if native_encode is not None or native_decode is not None else None
+        ),
+        native_input_bytes_per_iteration=native_input_bytes,
+        pipeline_stage_timings=(
+            None
+            if stage_encode is None or stage_decode is None
+            else {
+                "schema_version": "tscb.pipeline-stage-timing-totals.v1",
+                "scope": "ALL_INNER_ITERATIONS",
+                "encode": stage_encode,
+                "decode": stage_decode,
+            }
         ),
     )
     deterministic_match = (
@@ -537,5 +638,15 @@ def perform_measured_roundtrip(
             "DECOMPRESS_INDEPENDENT_CONTEXT",
             "REVERSE_ADAPTER_CONSUMED",
             "RESOURCE_MONITOR_STOPPED",
+        ),
+        codec_telemetry=(
+            None
+            if last_artifact.codec_telemetry is None and last_decoder_telemetry is None
+            else {
+                "scope": "LAST_INNER_ITERATION",
+                "observed_iteration_index": iterations - 1,
+                "encode": last_artifact.codec_telemetry,
+                "decode": last_decoder_telemetry,
+            }
         ),
     )

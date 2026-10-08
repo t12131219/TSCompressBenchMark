@@ -1,0 +1,840 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1380" height="2105" data-theme="light" viewBox="0 0 1380 2105" role="img" lang="zh-CN" aria-labelledby="archify-diagram-title archify-diagram-description" data-preset="classic" data-quality-profile="showcase">
+        <title id="archify-diagram-title">TSDataCompressBenchMark · 源码展开运行框架</title>
+        <desc id="archify-diagram-description">由 Archify 生成的架构图。</desc>
+        <style>text{font-family:"Noto Sans CJK SC",sans-serif}
+.c-grid{ stroke: #e2e8f0; fill: none; }.c-mask{ fill: #ffffff; stroke: none; }.c-frontend{ fill: rgba(34, 211, 238, 0.15);   stroke: #0891b2; }.c-backend{ fill: rgba(52, 211, 153, 0.18);    stroke: #059669; }.c-database{ fill: rgba(167, 139, 250, 0.2);   stroke: #7c3aed; }.c-cloud{ fill: rgba(251, 191, 36, 0.18);      stroke: #d97706; }.c-security{ fill: rgba(251, 113, 133, 0.15);   stroke: #e11d48; }.c-messagebus{ fill: rgba(251, 146, 60, 0.15); stroke: #ea580c; }.c-external{ fill: rgba(148, 163, 184, 0.18);   stroke: #64748b; }.t-primary{ fill: #0f172a; }.t-muted{ fill: #64748b; }.t-dim{ fill: #94a3b8; }.t-frontend{ fill: #0891b2; }.t-backend{ fill: #059669; }.t-database{ fill: #7c3aed; }.t-cloud{ fill: #d97706; }.t-security{ fill: #e11d48; }.t-messagebus{ fill: #ea580c; }.t-external{ fill: #64748b; }svg .semantic-sigil{
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.35;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      opacity: 0.76;
+      pointer-events: none;
+    }svg .semantic-sigil > *{ vector-effect: non-scaling-stroke; }svg .semantic-sigil .sigil-fill{ fill: currentColor; stroke: none; }svg .s-frontend{ color: #0891b2; }svg .s-backend{ color: #059669; }svg .s-database{ color: #7c3aed; }svg .s-cloud{ color: #d97706; }svg .s-security{ color: #e11d48; }svg .s-messagebus{ color: #ea580c; }svg .s-external{ color: #64748b; }.a-default{ stroke: #94a3b8; fill: none; }.a-emphasis{ stroke: #059669; fill: none; }.a-security{ stroke: #e11d48; fill: none; stroke-dasharray: 5,5; }.a-dashed{ stroke: #7c3aed; fill: none; stroke-dasharray: 4,4; }.m-default{ fill: #94a3b8; }.m-emphasis{ fill: #059669; }.m-security{ fill: #e11d48; }.m-dashed{ fill: #7c3aed; }.c-security-group{ fill: transparent; stroke: #e11d48; stroke-dasharray: 4,4; }.c-region{ fill: rgba(251, 191, 36, 0.05); stroke: #d97706; stroke-dasharray: 8,4; }.c-lane{ fill: rgba(248, 250, 252, 0.65); stroke: #cbd5e1; stroke-dasharray: 6,6; }</style><rect width="1380" height="2105" fill="#f8fafc"/><!-- Definitions -->
+        <defs>
+          <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" class="m-default" />
+          </marker>
+          <marker id="arrowhead-emphasis" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" class="m-emphasis" />
+          </marker>
+          <marker id="arrowhead-security" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" class="m-security" />
+          </marker>
+          <marker id="arrowhead-dashed" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" class="m-dashed" />
+          </marker>
+          <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+            <path d="M 40 0 L 0 0 0 40" class="c-grid" stroke-width="0.5"/>
+          </pattern>
+        </defs>
+
+        <!-- Background Grid -->
+        <rect width="100%" height="100%" fill="url(#grid)" />
+
+        <!-- Boundaries (behind everything) -->
+        <rect data-graph-role="structural-frame" data-composition-frame-kind="region" data-composition-frame-id="0" data-composition-frame-label="01 数据准备 / Data Preparation" x="15" y="75" width="1325" height="135" rx="12" class="c-region" stroke-width="1"/>
+
+        <rect data-graph-role="structural-frame" data-composition-frame-kind="region" data-composition-frame-id="1" data-composition-frame-label="02 能力与配置 / Capability &amp; Configuration" x="15" y="330" width="1325" height="290" rx="12" class="c-region" stroke-width="1"/>
+
+        <rect data-graph-role="structural-frame" data-composition-frame-kind="region" data-composition-frame-id="2" data-composition-frame-label="03 执行验证 / Execution &amp; Validation" x="15" y="740" width="1325" height="445" rx="12" class="c-region" stroke-width="1"/>
+
+        <rect data-graph-role="structural-frame" data-composition-frame-kind="region" data-composition-frame-id="3" data-composition-frame-label="04 性能测评 / Performance Evaluation" x="15" y="1305" width="1325" height="290" rx="12" class="c-region" stroke-width="1"/>
+
+        <rect data-graph-role="structural-frame" data-composition-frame-kind="region" data-composition-frame-id="4" data-composition-frame-label="05 统计分析与报告 / Statistics &amp; Reporting" x="15" y="1715" width="1325" height="290" rx="12" class="c-region" stroke-width="1"/>
+
+        <!-- Connection paths (before components for correct z-order) -->
+        <path data-edge-from="cli" data-edge-to="runset" data-edge-key="0" data-composition-points="275,145;300,145" d="M 275 145 L 300 145" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+        <path data-edge-from="runset" data-edge-to="dataset" data-edge-key="1" data-composition-points="535,145;560,145" d="M 535 145 L 560 145" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+        <path data-edge-from="dataset" data-edge-to="load" data-edge-key="2" data-composition-points="795,145;820,145" d="M 795 145 L 820 145" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+        <path data-edge-from="load" data-edge-to="canonical" data-edge-key="3" data-composition-points="1055,145;1080,145" d="M 1055 145 L 1080 145" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+        <path data-edge-from="registry" data-edge-to="sweep" data-edge-key="4" data-composition-points="1080,400;1055,400" d="M 1080 400 L 1055 400" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+        <path data-edge-from="sweep" data-edge-to="descriptor" data-edge-key="5" data-composition-points="820,400;795,400" d="M 820 400 L 795 400" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+        <path data-edge-from="descriptor" data-edge-to="preprocess-plan" data-edge-key="6" data-composition-points="560,400;535,400" d="M 560 400 L 535 400" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+        <path data-edge-from="preprocess-plan" data-edge-to="negotiate" data-edge-key="7" data-composition-points="300,400;275,400" d="M 300 400 L 275 400" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+        <path data-edge-from="negotiate" data-edge-to="resolve" data-edge-key="8" data-composition-points="157.5,445;157.5,510" d="M 157.5 445 L 157.5 510" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+        <path data-edge-from="resolve" data-edge-to="semantic-key" data-edge-key="9" data-composition-points="275,555;300,555" d="M 275 555 L 300 555" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+        <path data-edge-from="semantic-key" data-edge-to="execution-key" data-edge-key="10" data-composition-points="535,555;560,555" d="M 535 555 L 560 555" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+        <path data-edge-from="execution-key" data-edge-to="task" data-edge-key="11" data-composition-points="795,555;820,555" d="M 795 555 L 820 555" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+        <path data-edge-from="task" data-edge-to="freeze" data-edge-key="12" data-composition-points="1055,555;1080,555" d="M 1055 555 L 1080 555" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+        <path data-edge-from="canonical" data-edge-to="registry" data-edge-key="13" data-composition-points="1197.5,190;1197.5,355" d="M 1197.5 190 L 1197.5 355" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+        <path data-edge-from="factory" data-edge-to="route" data-edge-key="14" data-composition-points="1080,810;1055,810" d="M 1080 810 L 1055 810" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+        <path data-edge-from="route" data-edge-to="input" data-edge-key="15" data-composition-points="820,810;795,810" d="M 820 810 L 795 810" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+        <path data-edge-from="input" data-edge-to="compat" data-edge-key="16" data-composition-points="560,810;535,810" d="M 560 810 L 535 810" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+        <path data-edge-from="compat" data-edge-to="preprocess-test" data-edge-key="17" data-composition-points="300,810;275,810" d="M 300 810 L 275 810" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+        <path data-edge-from="preprocess-test" data-edge-to="boundary" data-edge-key="18" data-composition-points="157.5,855;157.5,920" d="M 157.5 855 L 157.5 920" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+        <path data-edge-from="boundary" data-edge-to="isolation" data-edge-key="19" data-composition-points="275,965;300,965" d="M 275 965 L 300 965" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+        <path data-edge-from="isolation" data-edge-to="session" data-edge-key="20" data-composition-points="535,965;560,965" d="M 535 965 L 560 965" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+        <path data-edge-from="session" data-edge-to="compress" data-edge-key="21" data-composition-points="795,965;820,965" d="M 795 965 L 820 965" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+        <path data-edge-from="compress" data-edge-to="finalize" data-edge-key="22" data-composition-points="1055,965;1080,965" d="M 1055 965 L 1080 965" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+        <path data-edge-from="finalize" data-edge-to="account" data-edge-key="23" data-composition-points="1197.5,1010;1197.5,1075" d="M 1197.5 1010 L 1197.5 1075" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+        <path data-edge-from="account" data-edge-to="decode" data-edge-key="24" data-composition-points="1080,1120;1055,1120" d="M 1080 1120 L 1055 1120" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+        <path data-edge-from="decode" data-edge-to="common" data-edge-key="25" data-composition-points="820,1120;795,1120" d="M 820 1120 L 795 1120" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+        <path data-edge-from="common" data-edge-to="loss" data-edge-key="26" data-composition-points="560,1120;535,1120" d="M 560 1120 L 535 1120" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+        <path data-edge-from="loss" data-edge-to="preflight" data-edge-key="27" data-composition-points="300,1120;275,1120" d="M 300 1120 L 275 1120" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+        <path data-edge-from="freeze" data-edge-to="factory" data-edge-key="28" data-composition-points="1197.5,600;1197.5,765" d="M 1197.5 600 L 1197.5 765" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+        <path data-edge-from="policy" data-edge-to="repetitions" data-edge-key="29" data-composition-points="275,1375;300,1375" d="M 275 1375 L 300 1375" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+        <path data-edge-from="repetitions" data-edge-to="duration" data-edge-key="30" data-composition-points="535,1375;560,1375" d="M 535 1375 L 560 1375" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+        <path data-edge-from="duration" data-edge-to="timing" data-edge-key="31" data-composition-points="795,1375;820,1375" d="M 795 1375 L 820 1375" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+        <path data-edge-from="timing" data-edge-to="resource" data-edge-key="32" data-composition-points="1055,1375;1080,1375" d="M 1055 1375 L 1080 1375" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+        <path data-edge-from="resource" data-edge-to="formal-check" data-edge-key="33" data-composition-points="1197.5,1420;1197.5,1485" d="M 1197.5 1420 L 1197.5 1485" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+        <path data-edge-from="formal-check" data-edge-to="query" data-edge-key="34" data-composition-points="1080,1530;1055,1530" d="M 1080 1530 L 1055 1530" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+        <path data-edge-from="query" data-edge-to="stream" data-edge-key="35" data-composition-points="820,1530;795,1530" d="M 820 1530 L 795 1530" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+        <path data-edge-from="stream" data-edge-to="record" data-edge-key="36" data-composition-points="560,1530;535,1530" d="M 560 1530 L 535 1530" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+        <path data-edge-from="record" data-edge-to="append" data-edge-key="37" data-composition-points="300,1530;275,1530" d="M 300 1530 L 275 1530" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+        <path data-edge-from="preflight" data-edge-to="policy" data-edge-label="PASS" data-edge-key="38" data-composition-points="157.5,1165;157.5,1330" d="M 157.5 1165 L 157.5 1330" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+        <path data-edge-from="read" data-edge-to="eligibility" data-edge-key="39" data-composition-points="275,1785;300,1785" d="M 275 1785 L 300 1785" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+        <path data-edge-from="eligibility" data-edge-to="aggregate" data-edge-key="40" data-composition-points="535,1785;560,1785" d="M 535 1785 L 560 1785" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+        <path data-edge-from="aggregate" data-edge-to="robust" data-edge-key="41" data-composition-points="795,1785;820,1785" d="M 795 1785 L 820 1785" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+        <path data-edge-from="robust" data-edge-to="corpus" data-edge-key="42" data-composition-points="1055,1785;1080,1785" d="M 1055 1785 L 1080 1785" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+        <path data-edge-from="corpus" data-edge-to="groups" data-edge-key="43" data-composition-points="1197.5,1830;1197.5,1895" d="M 1197.5 1830 L 1197.5 1895" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+        <path data-edge-from="groups" data-edge-to="pareto" data-edge-key="44" data-composition-points="1080,1940;1055,1940" d="M 1080 1940 L 1055 1940" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+        <path data-edge-from="pareto" data-edge-to="coverage" data-edge-key="45" data-composition-points="820,1940;795,1940" d="M 820 1940 L 795 1940" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+        <path data-edge-from="coverage" data-edge-to="tables" data-edge-key="46" data-composition-points="560,1940;535,1940" d="M 560 1940 L 535 1940" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+        <path data-edge-from="tables" data-edge-to="report" data-edge-key="47" data-composition-points="300,1940;275,1940" d="M 300 1940 L 275 1940" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+        <path data-edge-from="append" data-edge-to="read" data-edge-key="48" data-composition-points="157.5,1575;157.5,1740" d="M 157.5 1575 L 157.5 1740" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+        <path data-edge-from="preflight" data-edge-to="diagnostic" data-edge-label="失败" data-edge-key="49" data-composition-points="157.5,1165;157.5,1189;326,1189;326,1230;350,1230" d="M 157.5 1165 L 157.5 1181 Q 157.5 1189 165.5 1189 L 318 1189 Q 326 1189 326 1197 L 326 1222 Q 326 1230 334 1230 L 350 1230" class="a-security" stroke-width="1.5" marker-end="url(#arrowhead-security)"/>
+
+        <!-- Components -->
+        <g id="node-cli" data-node-id="cli" data-node-label="命令入口与配置解析" tabindex="0" role="button" aria-label="聚焦命令入口与配置解析，run 子命令 · 配置 / 测量 / 报告, 01 数据准备 / Data Preparation" aria-pressed="false" data-node-kind="frontend" data-node-sublabel="run 子命令 · 配置 / 测量 / 报告" data-node-tag="cli.main · load_experiment_config" data-node-context="01 数据准备 / Data Preparation">
+          <title>命令入口与配置解析 · run 子命令 · 配置 / 测量 / 报告 · 01 数据准备 / Data Preparation · cli.main · load_experiment_config</title>
+          <rect x="40" y="100" width="235" height="90" rx="6" class="c-mask"/>
+          <rect x="40" y="100" width="235" height="90" rx="6" class="c-frontend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="frontend" class="semantic-sigil s-frontend" transform="translate(46 106) scale(0.6875)">
+            <rect x="2" y="3" width="12" height="10" rx="2"/>
+            <path d="M2 6.5h12"/>
+            <circle cx="4.1" cy="4.8" r=".7" class="sigil-fill"/>
+            <circle cx="6.3" cy="4.8" r=".7" class="sigil-fill"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="157.5" y="143" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">命令入口与配置解析</text>
+        <text data-detail="context" x="157.5" y="159" class="t-muted" font-size="9" text-anchor="middle">run 子命令 · 配置 / 测量 / 报告</text>
+        <text data-detail="fine" x="157.5" y="182" class="t-frontend" font-size="7" text-anchor="middle">cli.main · load_experiment_config</text>
+        </g>
+
+        <g id="node-runset" data-node-id="runset" data-node-label="Run Set 初始化与恢复" tabindex="0" role="button" aria-label="聚焦Run Set 初始化与恢复，冻结 TOML / Environment · 锁与一致性检查, 01 数据准备 / Data Preparation" aria-pressed="false" data-node-kind="backend" data-node-sublabel="冻结 TOML / Environment · 锁与一致性检查" data-node-tag="runner.initialize_run_set" data-node-context="01 数据准备 / Data Preparation">
+          <title>Run Set 初始化与恢复 · 冻结 TOML / Environment · 锁与一致性检查 · 01 数据准备 / Data Preparation · runner.initialize_run_set</title>
+          <rect x="300" y="100" width="235" height="90" rx="6" class="c-mask"/>
+          <rect x="300" y="100" width="235" height="90" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(306 106) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="417.5" y="143" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Run Set 初始化与恢复</text>
+        <text data-detail="context" x="417.5" y="159" class="t-muted" font-size="9" text-anchor="middle">冻结 TOML / Environment · 锁与一致性检查</text>
+        <text data-detail="fine" x="417.5" y="182" class="t-backend" font-size="7" text-anchor="middle">runner.initialize_run_set</text>
+        </g>
+
+        <g id="node-dataset" data-node-id="dataset" data-node-label="数据集注册与源文件校验" tabindex="0" role="button" aria-label="聚焦数据集注册与源文件校验，Manifest / DatasetID / source SHA-256, 01 数据准备 / Data Preparation" aria-pressed="false" data-node-kind="database" data-node-sublabel="Manifest / DatasetID / source SHA-256" data-node-tag="datasets.registry.DatasetRegistry" data-node-context="01 数据准备 / Data Preparation">
+          <title>数据集注册与源文件校验 · Manifest / DatasetID / source SHA-256 · 01 数据准备 / Data Preparation · datasets.registry.DatasetRegistry</title>
+          <rect x="560" y="100" width="235" height="90" rx="6" class="c-mask"/>
+          <rect x="560" y="100" width="235" height="90" rx="6" class="c-database" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="database" class="semantic-sigil s-database" transform="translate(566 106) scale(0.6875)">
+            <ellipse cx="8" cy="4" rx="5" ry="2"/>
+            <path d="M3 4v8c0 1.1 2.2 2 5 2s5-.9 5-2V4M3 8c0 1.1 2.2 2 5 2s5-.9 5-2"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="677.5" y="143" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">数据集注册与源文件校验</text>
+        <text data-detail="context" x="677.5" y="159" class="t-muted" font-size="9" text-anchor="middle">Manifest / DatasetID / source SHA-256</text>
+        <text data-detail="fine" x="677.5" y="182" class="t-database" font-size="7" text-anchor="middle">datasets.registry.DatasetRegistry</text>
+        </g>
+
+        <g id="node-load" data-node-id="load" data-node-label="加载数据与特征分析" tabindex="0" role="button" aria-label="聚焦加载数据与特征分析，CanonicalDataset · T / V / Topology, 01 数据准备 / Data Preparation" aria-pressed="false" data-node-kind="backend" data-node-sublabel="CanonicalDataset · T / V / Topology" data-node-tag="load_dataset · characterize" data-node-context="01 数据准备 / Data Preparation">
+          <title>加载数据与特征分析 · CanonicalDataset · T / V / Topology · 01 数据准备 / Data Preparation · load_dataset · characterize</title>
+          <rect x="820" y="100" width="235" height="90" rx="6" class="c-mask"/>
+          <rect x="820" y="100" width="235" height="90" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(826 106) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="937.5" y="143" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">加载数据与特征分析</text>
+        <text data-detail="context" x="937.5" y="159" class="t-muted" font-size="9" text-anchor="middle">CanonicalDataset · T / V / Topology</text>
+        <text data-detail="fine" x="937.5" y="182" class="t-backend" font-size="7" text-anchor="middle">load_dataset · characterize</text>
+        </g>
+
+        <g id="node-canonical" data-node-id="canonical" data-node-label="写入并复用 Canonical 工件" tabindex="0" role="button" aria-label="聚焦写入并复用 Canonical 工件，二进制 + Manifest + characterization, 01 数据准备 / Data Preparation" aria-pressed="false" data-node-kind="database" data-node-sublabel="二进制 + Manifest + characterization" data-node-tag="prepare_dataset · load_preparation_result" data-node-context="01 数据准备 / Data Preparation">
+          <title>写入并复用 Canonical 工件 · 二进制 + Manifest + characterization · 01 数据准备 / Data Preparation · prepare_dataset · load_preparation_result</title>
+          <rect x="1080" y="100" width="235" height="90" rx="6" class="c-mask"/>
+          <rect x="1080" y="100" width="235" height="90" rx="6" class="c-database" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="database" class="semantic-sigil s-database" transform="translate(1086 106) scale(0.6875)">
+            <ellipse cx="8" cy="4" rx="5" ry="2"/>
+            <path d="M3 4v8c0 1.1 2.2 2 5 2s5-.9 5-2V4M3 8c0 1.1 2.2 2 5 2s5-.9 5-2"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="1197.5" y="143" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">写入并复用 Canonical 工件</text>
+        <text data-detail="context" x="1197.5" y="159" class="t-muted" font-size="9" text-anchor="middle">二进制 + Manifest + characterization</text>
+        <text data-detail="fine" x="1197.5" y="182" class="t-database" font-size="7" text-anchor="middle">prepare_dataset · load_preparation_result</text>
+        </g>
+
+        <g id="node-registry" data-node-id="registry" data-node-label="Codec / Source / Alias 注册" tabindex="0" role="button" aria-label="聚焦Codec / Source / Alias 注册，AlgorithmID · 源码身份 · 工件定位, 02 能力与配置 / Capability &amp; Configuration" aria-pressed="false" data-node-kind="database" data-node-sublabel="AlgorithmID · 源码身份 · 工件定位" data-node-tag="CodecRegistry · adapter_artifacts" data-node-context="02 能力与配置 / Capability &amp; Configuration">
+          <title>Codec / Source / Alias 注册 · AlgorithmID · 源码身份 · 工件定位 · 02 能力与配置 / Capability &amp; Configuration · CodecRegistry · adapter_artifacts</title>
+          <rect x="1080" y="355" width="235" height="90" rx="6" class="c-mask"/>
+          <rect x="1080" y="355" width="235" height="90" rx="6" class="c-database" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="database" class="semantic-sigil s-database" transform="translate(1086 361) scale(0.6875)">
+            <ellipse cx="8" cy="4" rx="5" ry="2"/>
+            <path d="M3 4v8c0 1.1 2.2 2 5 2s5-.9 5-2V4M3 8c0 1.1 2.2 2 5 2s5-.9 5-2"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="1197.5" y="398" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Codec / Source / Alias 注册</text>
+        <text data-detail="context" x="1197.5" y="414" class="t-muted" font-size="9" text-anchor="middle">AlgorithmID · 源码身份 · 工件定位</text>
+        <text data-detail="fine" x="1197.5" y="437" class="t-database" font-size="7" text-anchor="middle">CodecRegistry · adapter_artifacts</text>
+        </g>
+
+        <g id="node-sweep" data-node-id="sweep" data-node-label="参数扫描与 ConfigID 生成" tabindex="0" role="button" aria-label="聚焦参数扫描与 ConfigID 生成，算法参数 × 框架参数 · 配置状态, 02 能力与配置 / Capability &amp; Configuration" aria-pressed="false" data-node-kind="backend" data-node-sublabel="算法参数 × 框架参数 · 配置状态" data-node-tag="planning.sweep.expand_sweep" data-node-context="02 能力与配置 / Capability &amp; Configuration">
+          <title>参数扫描与 ConfigID 生成 · 算法参数 × 框架参数 · 配置状态 · 02 能力与配置 / Capability &amp; Configuration · planning.sweep.expand_sweep</title>
+          <rect x="820" y="355" width="235" height="90" rx="6" class="c-mask"/>
+          <rect x="820" y="355" width="235" height="90" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(826 361) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="937.5" y="398" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">参数扫描与 ConfigID 生成</text>
+        <text data-detail="context" x="937.5" y="414" class="t-muted" font-size="9" text-anchor="middle">算法参数 × 框架参数 · 配置状态</text>
+        <text data-detail="fine" x="937.5" y="437" class="t-backend" font-size="7" text-anchor="middle">planning.sweep.expand_sweep</text>
+        </g>
+
+        <g id="node-descriptor" data-node-id="descriptor" data-node-label="展开数据集与 Benchmark Track" tabindex="0" role="button" aria-label="聚焦展开数据集与 Benchmark Track，Dataset × Algorithm × Track × Config, 02 能力与配置 / Capability &amp; Configuration" aria-pressed="false" data-node-kind="backend" data-node-sublabel="Dataset × Algorithm × Track × Config" data-node-tag="descriptor_from_layer1_artifacts" data-node-context="02 能力与配置 / Capability &amp; Configuration">
+          <title>展开数据集与 Benchmark Track · Dataset × Algorithm × Track × Config · 02 能力与配置 / Capability &amp; Configuration · descriptor_from_layer1_artifacts</title>
+          <rect x="560" y="355" width="235" height="90" rx="6" class="c-mask"/>
+          <rect x="560" y="355" width="235" height="90" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(566 361) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="677.5" y="398" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">展开数据集与 Benchmark Track</text>
+        <text data-detail="context" x="677.5" y="414" class="t-muted" font-size="9" text-anchor="middle">Dataset × Algorithm × Track × Config</text>
+        <text data-detail="fine" x="677.5" y="437" class="t-backend" font-size="7" text-anchor="middle">descriptor_from_layer1_artifacts</text>
+        </g>
+
+        <g id="node-preprocess-plan" data-node-id="preprocess-plan" data-node-label="声明算法预处理计划" tabindex="0" role="button" aria-label="聚焦声明算法预处理计划，参数决定 stages / semantic_class, 02 能力与配置 / Capability &amp; Configuration" aria-pressed="false" data-node-kind="backend" data-node-sublabel="参数决定 stages / semantic_class" data-node-tag="preprocess.contracts.build_preprocess_plan" data-node-context="02 能力与配置 / Capability &amp; Configuration">
+          <title>声明算法预处理计划 · 参数决定 stages / semantic_class · 02 能力与配置 / Capability &amp; Configuration · preprocess.contracts.build_preprocess_plan</title>
+          <rect x="300" y="355" width="235" height="90" rx="6" class="c-mask"/>
+          <rect x="300" y="355" width="235" height="90" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(306 361) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="417.5" y="398" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">声明算法预处理计划</text>
+        <text data-detail="context" x="417.5" y="414" class="t-muted" font-size="9" text-anchor="middle">参数决定 stages / semantic_class</text>
+        <text data-detail="fine" x="417.5" y="437" class="t-backend" font-size="7" text-anchor="middle">preprocess.contracts.build_preprocess_plan</text>
+        </g>
+
+        <g id="node-negotiate" data-node-id="negotiate" data-node-label="四态能力协商与兼容计划" tabindex="0" role="button" aria-label="聚焦四态能力协商与兼容计划，DIRECT_SUPPORTED / UNSUPPORTED, 02 能力与配置 / Capability &amp; Configuration" aria-pressed="false" data-node-kind="security" data-node-sublabel="DIRECT_SUPPORTED / UNSUPPORTED" data-node-tag="negotiate · ADAPTER_LOSSLESS / ADAPTER_LOSSY" data-node-context="02 能力与配置 / Capability &amp; Configuration">
+          <title>四态能力协商与兼容计划 · DIRECT_SUPPORTED / UNSUPPORTED · 02 能力与配置 / Capability &amp; Configuration · negotiate · ADAPTER_LOSSLESS / ADAPTER_LOSSY</title>
+          <rect x="40" y="355" width="235" height="90" rx="6" class="c-mask"/>
+          <rect x="40" y="355" width="235" height="90" rx="6" class="c-security" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="security" class="semantic-sigil s-security" transform="translate(46 361) scale(0.6875)">
+            <path d="M8 2.2 13 4v3.5c0 3.1-1.8 5.4-5 6.5-3.2-1.1-5-3.4-5-6.5V4Z"/>
+            <path d="m5.8 8 1.5 1.5 3-3"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="157.5" y="398" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">四态能力协商与兼容计划</text>
+        <text data-detail="context" x="157.5" y="414" class="t-muted" font-size="9" text-anchor="middle">DIRECT_SUPPORTED / UNSUPPORTED</text>
+        <text data-detail="fine" x="157.5" y="437" class="t-security" font-size="7" text-anchor="middle">negotiate · ADAPTER_LOSSLESS / ADAPTER_LOSSY</text>
+        </g>
+
+        <g id="node-resolve" data-node-id="resolve" data-node-label="解析真实执行路径" tabindex="0" role="button" aria-label="聚焦解析真实执行路径，ISA / 回退 / 亲和性 / 工件哈希, 02 能力与配置 / Capability &amp; Configuration" aria-pressed="false" data-node-kind="backend" data-node-sublabel="ISA / 回退 / 亲和性 / 工件哈希" data-node-tag="planning.resolution.resolve_execution" data-node-context="02 能力与配置 / Capability &amp; Configuration">
+          <title>解析真实执行路径 · ISA / 回退 / 亲和性 / 工件哈希 · 02 能力与配置 / Capability &amp; Configuration · planning.resolution.resolve_execution</title>
+          <rect x="40" y="510" width="235" height="90" rx="6" class="c-mask"/>
+          <rect x="40" y="510" width="235" height="90" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(46 516) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="157.5" y="553" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">解析真实执行路径</text>
+        <text data-detail="context" x="157.5" y="569" class="t-muted" font-size="9" text-anchor="middle">ISA / 回退 / 亲和性 / 工件哈希</text>
+        <text data-detail="fine" x="157.5" y="592" class="t-backend" font-size="7" text-anchor="middle">planning.resolution.resolve_execution</text>
+        </g>
+
+        <g id="node-semantic-key" data-node-id="semantic-key" data-node-label="构造语义可比性键" tabindex="0" role="button" aria-label="聚焦构造语义可比性键，Track / LossMode / dtype / 拓扑 / 误差界, 02 能力与配置 / Capability &amp; Configuration" aria-pressed="false" data-node-kind="backend" data-node-sublabel="Track / LossMode / dtype / 拓扑 / 误差界" data-node-tag="SemanticComparabilityKey" data-node-context="02 能力与配置 / Capability &amp; Configuration">
+          <title>构造语义可比性键 · Track / LossMode / dtype / 拓扑 / 误差界 · 02 能力与配置 / Capability &amp; Configuration · SemanticComparabilityKey</title>
+          <rect x="300" y="510" width="235" height="90" rx="6" class="c-mask"/>
+          <rect x="300" y="510" width="235" height="90" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(306 516) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="417.5" y="553" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">构造语义可比性键</text>
+        <text data-detail="context" x="417.5" y="569" class="t-muted" font-size="9" text-anchor="middle">Track / LossMode / dtype / 拓扑 / 误差界</text>
+        <text data-detail="fine" x="417.5" y="592" class="t-backend" font-size="7" text-anchor="middle">SemanticComparabilityKey</text>
+        </g>
+
+        <g id="node-execution-key" data-node-id="execution-key" data-node-label="构造执行与资源比较键" tabindex="0" role="button" aria-label="聚焦构造执行与资源比较键，语义键 → 执行策略 → 资源采集策略, 02 能力与配置 / Capability &amp; Configuration" aria-pressed="false" data-node-kind="backend" data-node-sublabel="语义键 → 执行策略 → 资源采集策略" data-node-tag="ExecutionComparabilityKey / ResourceProfileKey" data-node-context="02 能力与配置 / Capability &amp; Configuration">
+          <title>构造执行与资源比较键 · 语义键 → 执行策略 → 资源采集策略 · 02 能力与配置 / Capability &amp; Configuration · ExecutionComparabilityKey / ResourceProfileKey</title>
+          <rect x="560" y="510" width="235" height="90" rx="6" class="c-mask"/>
+          <rect x="560" y="510" width="235" height="90" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(566 516) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="677.5" y="553" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">构造执行与资源比较键</text>
+        <text data-detail="context" x="677.5" y="569" class="t-muted" font-size="9" text-anchor="middle">语义键 → 执行策略 → 资源采集策略</text>
+        <text data-detail="fine" x="677.5" y="592" class="t-backend" font-size="7" text-anchor="middle">ExecutionComparabilityKey / ResourceProfileKey</text>
+        </g>
+
+        <g id="node-task" data-node-id="task" data-node-label="创建确定性 BenchmarkTask" tabindex="0" role="button" aria-label="聚焦创建确定性 BenchmarkTask，携带兼容 / 预处理 / 执行 / 资源限制, 02 能力与配置 / Capability &amp; Configuration" aria-pressed="false" data-node-kind="backend" data-node-sublabel="携带兼容 / 预处理 / 执行 / 资源限制" data-node-tag="create_task · TaskID / ExecutionPathHash" data-node-context="02 能力与配置 / Capability &amp; Configuration">
+          <title>创建确定性 BenchmarkTask · 携带兼容 / 预处理 / 执行 / 资源限制 · 02 能力与配置 / Capability &amp; Configuration · create_task · TaskID / ExecutionPathHash</title>
+          <rect x="820" y="510" width="235" height="90" rx="6" class="c-mask"/>
+          <rect x="820" y="510" width="235" height="90" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(826 516) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="937.5" y="553" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">创建确定性 BenchmarkTask</text>
+        <text data-detail="context" x="937.5" y="569" class="t-muted" font-size="9" text-anchor="middle">携带兼容 / 预处理 / 执行 / 资源限制</text>
+        <text data-detail="fine" x="937.5" y="592" class="t-backend" font-size="7" text-anchor="middle">create_task · TaskID / ExecutionPathHash</text>
+        </g>
+
+        <g id="node-freeze" data-node-id="freeze" data-node-label="冻结任务宇宙与注册快照" tabindex="0" role="button" aria-label="聚焦冻结任务宇宙与注册快照，TaskID 排序 · 完整记录不可执行配置, 02 能力与配置 / Capability &amp; Configuration" aria-pressed="false" data-node-kind="database" data-node-sublabel="TaskID 排序 · 完整记录不可执行配置" data-node-tag="task_plan.jsonl / resolved_configs.json" data-node-context="02 能力与配置 / Capability &amp; Configuration">
+          <title>冻结任务宇宙与注册快照 · TaskID 排序 · 完整记录不可执行配置 · 02 能力与配置 / Capability &amp; Configuration · task_plan.jsonl / resolved_configs.json</title>
+          <rect x="1080" y="510" width="235" height="90" rx="6" class="c-mask"/>
+          <rect x="1080" y="510" width="235" height="90" rx="6" class="c-database" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="database" class="semantic-sigil s-database" transform="translate(1086 516) scale(0.6875)">
+            <ellipse cx="8" cy="4" rx="5" ry="2"/>
+            <path d="M3 4v8c0 1.1 2.2 2 5 2s5-.9 5-2V4M3 8c0 1.1 2.2 2 5 2s5-.9 5-2"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="1197.5" y="553" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">冻结任务宇宙与注册快照</text>
+        <text data-detail="context" x="1197.5" y="569" class="t-muted" font-size="9" text-anchor="middle">TaskID 排序 · 完整记录不可执行配置</text>
+        <text data-detail="fine" x="1197.5" y="592" class="t-database" font-size="7" text-anchor="middle">task_plan.jsonl / resolved_configs.json</text>
+        </g>
+
+        <g id="node-factory" data-node-id="factory" data-node-label="适配器创建与源工件门控" tabindex="0" role="button" aria-label="聚焦适配器创建与源工件门控，源身份 / License / Build / AdapterID, 03 执行验证 / Execution &amp; Validation" aria-pressed="false" data-node-kind="backend" data-node-sublabel="源身份 / License / Build / AdapterID" data-node-tag="create_adapter · preflight_task" data-node-context="03 执行验证 / Execution &amp; Validation">
+          <title>适配器创建与源工件门控 · 源身份 / License / Build / AdapterID · 03 执行验证 / Execution &amp; Validation · create_adapter · preflight_task</title>
+          <rect x="1080" y="765" width="235" height="90" rx="6" class="c-mask"/>
+          <rect x="1080" y="765" width="235" height="90" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(1086 771) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="1197.5" y="808" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">适配器创建与源工件门控</text>
+        <text data-detail="context" x="1197.5" y="824" class="t-muted" font-size="9" text-anchor="middle">源身份 / License / Build / AdapterID</text>
+        <text data-detail="fine" x="1197.5" y="847" class="t-backend" font-size="7" text-anchor="middle">create_adapter · preflight_task</text>
+        </g>
+
+        <g id="node-route" data-node-id="route" data-node-label="按 Track 路由 Canonical" tabindex="0" role="button" aria-label="聚焦按 Track 路由 Canonical，TIMESTAMP: T · VALUE: V + Validity, 03 执行验证 / Execution &amp; Validation" aria-pressed="false" data-node-kind="backend" data-node-sublabel="TIMESTAMP: T · VALUE: V + Validity" data-node-tag="SYSTEM: T + V + Validity / SegmentPlan" data-node-context="03 执行验证 / Execution &amp; Validation">
+          <title>按 Track 路由 Canonical · TIMESTAMP: T · VALUE: V + Validity · 03 执行验证 / Execution &amp; Validation · SYSTEM: T + V + Validity / SegmentPlan</title>
+          <rect x="820" y="765" width="235" height="90" rx="6" class="c-mask"/>
+          <rect x="820" y="765" width="235" height="90" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(826 771) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="937.5" y="808" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">按 Track 路由 Canonical</text>
+        <text data-detail="context" x="937.5" y="824" class="t-muted" font-size="9" text-anchor="middle">TIMESTAMP: T · VALUE: V + Validity</text>
+        <text data-detail="fine" x="937.5" y="847" class="t-backend" font-size="7" text-anchor="middle">SYSTEM: T + V + Validity / SegmentPlan</text>
+        </g>
+
+        <g id="node-input" data-node-id="input" data-node-label="输入契约校验" tabindex="0" role="button" aria-label="聚焦输入契约校验，shape / dtype / 拓扑 / hash / 配对, 03 执行验证 / Execution &amp; Validation" aria-pressed="false" data-node-kind="security" data-node-sublabel="shape / dtype / 拓扑 / hash / 配对" data-node-tag="validation.input.validate_routed_input" data-node-context="03 执行验证 / Execution &amp; Validation">
+          <title>输入契约校验 · shape / dtype / 拓扑 / hash / 配对 · 03 执行验证 / Execution &amp; Validation · validation.input.validate_routed_input</title>
+          <rect x="560" y="765" width="235" height="90" rx="6" class="c-mask"/>
+          <rect x="560" y="765" width="235" height="90" rx="6" class="c-security" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="security" class="semantic-sigil s-security" transform="translate(566 771) scale(0.6875)">
+            <path d="M8 2.2 13 4v3.5c0 3.1-1.8 5.4-5 6.5-3.2-1.1-5-3.4-5-6.5V4Z"/>
+            <path d="m5.8 8 1.5 1.5 3-3"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="677.5" y="808" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">输入契约校验</text>
+        <text data-detail="context" x="677.5" y="824" class="t-muted" font-size="9" text-anchor="middle">shape / dtype / 拓扑 / hash / 配对</text>
+        <text data-detail="fine" x="677.5" y="847" class="t-security" font-size="7" text-anchor="middle">validation.input.validate_routed_input</text>
+        </g>
+
+        <g id="node-compat" data-node-id="compat" data-node-label="应用兼容适配并校验" tabindex="0" role="button" aria-label="聚焦应用兼容适配并校验，逐缓冲转换 · 原始引用与输入哈希保留, 03 执行验证 / Execution &amp; Validation" aria-pressed="false" data-node-kind="backend" data-node-sublabel="逐缓冲转换 · 原始引用与输入哈希保留" data-node-tag="prepare_execution_input / validate_prepared_input" data-node-context="03 执行验证 / Execution &amp; Validation">
+          <title>应用兼容适配并校验 · 逐缓冲转换 · 原始引用与输入哈希保留 · 03 执行验证 / Execution &amp; Validation · prepare_execution_input / validate_prepared_input</title>
+          <rect x="300" y="765" width="235" height="90" rx="6" class="c-mask"/>
+          <rect x="300" y="765" width="235" height="90" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(306 771) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="417.5" y="808" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">应用兼容适配并校验</text>
+        <text data-detail="context" x="417.5" y="824" class="t-muted" font-size="9" text-anchor="middle">逐缓冲转换 · 原始引用与输入哈希保留</text>
+        <text data-detail="fine" x="417.5" y="847" class="t-backend" font-size="7" text-anchor="middle">prepare_execution_input / validate_prepared_input</text>
+        </g>
+
+        <g id="node-preprocess-test" data-node-id="preprocess-test" data-node-label="验证注册预处理执行器" tabindex="0" role="button" aria-label="聚焦验证注册预处理执行器，声明与实际 stages 一致 · 阶段证据, 03 执行验证 / Execution &amp; Validation" aria-pressed="false" data-node-kind="security" data-node-sublabel="声明与实际 stages 一致 · 阶段证据" data-node-tag="reviewed_pipeline_executor / validate_pipeline_stages" data-node-context="03 执行验证 / Execution &amp; Validation">
+          <title>验证注册预处理执行器 · 声明与实际 stages 一致 · 阶段证据 · 03 执行验证 / Execution &amp; Validation · reviewed_pipeline_executor / validate_pipeline_stages</title>
+          <rect x="40" y="765" width="235" height="90" rx="6" class="c-mask"/>
+          <rect x="40" y="765" width="235" height="90" rx="6" class="c-security" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="security" class="semantic-sigil s-security" transform="translate(46 771) scale(0.6875)">
+            <path d="M8 2.2 13 4v3.5c0 3.1-1.8 5.4-5 6.5-3.2-1.1-5-3.4-5-6.5V4Z"/>
+            <path d="m5.8 8 1.5 1.5 3-3"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="157.5" y="808" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">验证注册预处理执行器</text>
+        <text data-detail="context" x="157.5" y="824" class="t-muted" font-size="9" text-anchor="middle">声明与实际 stages 一致 · 阶段证据</text>
+        <text data-detail="fine" x="157.5" y="847" class="t-security" font-size="7" text-anchor="middle">reviewed_pipeline_executor / validate_pipeline_stages</text>
+        </g>
+
+        <g id="node-boundary" data-node-id="boundary" data-node-label="边界与内存安全测试" tabindex="0" role="button" aria-label="聚焦边界与内存安全测试，极短输入 / 容量边界 / canary / 确定性, 03 执行验证 / Execution &amp; Validation" aria-pressed="false" data-node-kind="security" data-node-sublabel="极短输入 / 容量边界 / canary / 确定性" data-node-tag="validation.boundary.run_boundary_suite" data-node-context="03 执行验证 / Execution &amp; Validation">
+          <title>边界与内存安全测试 · 极短输入 / 容量边界 / canary / 确定性 · 03 执行验证 / Execution &amp; Validation · validation.boundary.run_boundary_suite</title>
+          <rect x="40" y="920" width="235" height="90" rx="6" class="c-mask"/>
+          <rect x="40" y="920" width="235" height="90" rx="6" class="c-security" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="security" class="semantic-sigil s-security" transform="translate(46 926) scale(0.6875)">
+            <path d="M8 2.2 13 4v3.5c0 3.1-1.8 5.4-5 6.5-3.2-1.1-5-3.4-5-6.5V4Z"/>
+            <path d="m5.8 8 1.5 1.5 3-3"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="157.5" y="963" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">边界与内存安全测试</text>
+        <text data-detail="context" x="157.5" y="979" class="t-muted" font-size="9" text-anchor="middle">极短输入 / 容量边界 / canary / 确定性</text>
+        <text data-detail="fine" x="157.5" y="1002" class="t-security" font-size="7" text-anchor="middle">validation.boundary.run_boundary_suite</text>
+        </g>
+
+        <g id="node-isolation" data-node-id="isolation" data-node-label="隔离执行最小 Round-trip" tabindex="0" role="button" aria-label="聚焦隔离执行最小 Round-trip，超时 / 内存限制 / CPU affinity, 03 执行验证 / Execution &amp; Validation" aria-pressed="false" data-node-kind="security" data-node-sublabel="超时 / 内存限制 / CPU affinity" data-node-tag="run_isolated · perform_roundtrip" data-node-context="03 执行验证 / Execution &amp; Validation">
+          <title>隔离执行最小 Round-trip · 超时 / 内存限制 / CPU affinity · 03 执行验证 / Execution &amp; Validation · run_isolated · perform_roundtrip</title>
+          <rect x="300" y="920" width="235" height="90" rx="6" class="c-mask"/>
+          <rect x="300" y="920" width="235" height="90" rx="6" class="c-security" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="security" class="semantic-sigil s-security" transform="translate(306 926) scale(0.6875)">
+            <path d="M8 2.2 13 4v3.5c0 3.1-1.8 5.4-5 6.5-3.2-1.1-5-3.4-5-6.5V4Z"/>
+            <path d="m5.8 8 1.5 1.5 3-3"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="417.5" y="963" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">隔离执行最小 Round-trip</text>
+        <text data-detail="context" x="417.5" y="979" class="t-muted" font-size="9" text-anchor="middle">超时 / 内存限制 / CPU affinity</text>
+        <text data-detail="fine" x="417.5" y="1002" class="t-security" font-size="7" text-anchor="middle">run_isolated · perform_roundtrip</text>
+        </g>
+
+        <g id="node-session" data-node-id="session" data-node-label="创建编码 Session 与输出区" tabindex="0" role="button" aria-label="聚焦创建编码 Session 与输出区，output_bound · 缓冲分配 · 输入快照, 03 执行验证 / Execution &amp; Validation" aria-pressed="false" data-node-kind="backend" data-node-sublabel="output_bound · 缓冲分配 · 输入快照" data-node-tag="adapter.create_session · _encode" data-node-context="03 执行验证 / Execution &amp; Validation">
+          <title>创建编码 Session 与输出区 · output_bound · 缓冲分配 · 输入快照 · 03 执行验证 / Execution &amp; Validation · adapter.create_session · _encode</title>
+          <rect x="560" y="920" width="235" height="90" rx="6" class="c-mask"/>
+          <rect x="560" y="920" width="235" height="90" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(566 926) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="677.5" y="963" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">创建编码 Session 与输出区</text>
+        <text data-detail="context" x="677.5" y="979" class="t-muted" font-size="9" text-anchor="middle">output_bound · 缓冲分配 · 输入快照</text>
+        <text data-detail="fine" x="677.5" y="1002" class="t-backend" font-size="7" text-anchor="middle">adapter.create_session · _encode</text>
+        </g>
+
+        <g id="node-compress" data-node-id="compress" data-node-label="增量编码" tabindex="0" role="button" aria-label="聚焦增量编码，compress_update → 已用长度校验, 03 执行验证 / Execution &amp; Validation" aria-pressed="false" data-node-kind="backend" data-node-sublabel="compress_update → 已用长度校验" data-node-tag="编码过程中检查输入及配对引用" data-node-context="03 执行验证 / Execution &amp; Validation">
+          <title>增量编码 · compress_update → 已用长度校验 · 03 执行验证 / Execution &amp; Validation · 编码过程中检查输入及配对引用</title>
+          <rect x="820" y="920" width="235" height="90" rx="6" class="c-mask"/>
+          <rect x="820" y="920" width="235" height="90" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(826 926) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="937.5" y="963" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">增量编码</text>
+        <text data-detail="context" x="937.5" y="979" class="t-muted" font-size="9" text-anchor="middle">compress_update → 已用长度校验</text>
+        <text data-detail="fine" x="937.5" y="1002" class="t-backend" font-size="7" text-anchor="middle">编码过程中检查输入及配对引用</text>
+        </g>
+
+        <g id="node-finalize" data-node-id="finalize" data-node-label="强制 Finalize 与释放 Session" tabindex="0" role="button" aria-label="聚焦强制 Finalize 与释放 Session，写入尾部 / flush · 输出长度 / canary, 03 执行验证 / Execution &amp; Validation" aria-pressed="false" data-node-kind="backend" data-node-sublabel="写入尾部 / flush · 输出长度 / canary" data-node-tag="session.finalize · session.close" data-node-context="03 执行验证 / Execution &amp; Validation">
+          <title>强制 Finalize 与释放 Session · 写入尾部 / flush · 输出长度 / canary · 03 执行验证 / Execution &amp; Validation · session.finalize · session.close</title>
+          <rect x="1080" y="920" width="235" height="90" rx="6" class="c-mask"/>
+          <rect x="1080" y="920" width="235" height="90" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(1086 926) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="1197.5" y="963" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">强制 Finalize 与释放 Session</text>
+        <text data-detail="context" x="1197.5" y="979" class="t-muted" font-size="9" text-anchor="middle">写入尾部 / flush · 输出长度 / canary</text>
+        <text data-detail="fine" x="1197.5" y="1002" class="t-backend" font-size="7" text-anchor="middle">session.finalize · session.close</text>
+        </g>
+
+        <g id="node-account" data-node-id="account" data-node-label="完整比特成本记账" tabindex="0" role="button" aria-label="聚焦完整比特成本记账，payload / header / index / metadata 等, 03 执行验证 / Execution &amp; Validation" aria-pressed="false" data-node-kind="backend" data-node-sublabel="payload / header / index / metadata 等" data-node-tag="session.accounting · FinalBits" data-node-context="03 执行验证 / Execution &amp; Validation">
+          <title>完整比特成本记账 · payload / header / index / metadata 等 · 03 执行验证 / Execution &amp; Validation · session.accounting · FinalBits</title>
+          <rect x="1080" y="1075" width="235" height="90" rx="6" class="c-mask"/>
+          <rect x="1080" y="1075" width="235" height="90" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(1086 1081) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="1197.5" y="1118" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">完整比特成本记账</text>
+        <text data-detail="context" x="1197.5" y="1134" class="t-muted" font-size="9" text-anchor="middle">payload / header / index / metadata 等</text>
+        <text data-detail="fine" x="1197.5" y="1157" class="t-backend" font-size="7" text-anchor="middle">session.accounting · FinalBits</text>
+        </g>
+
+        <g id="node-decode" data-node-id="decode" data-node-label="独立解码与适配视图恢复" tabindex="0" role="button" aria-label="聚焦独立解码与适配视图恢复，新 Session → decompress → close, 03 执行验证 / Execution &amp; Validation" aria-pressed="false" data-node-kind="backend" data-node-sublabel="新 Session → decompress → close" data-node-tag="解码后恢复原始 dtype / 形状视图" data-node-context="03 执行验证 / Execution &amp; Validation">
+          <title>独立解码与适配视图恢复 · 新 Session → decompress → close · 03 执行验证 / Execution &amp; Validation · 解码后恢复原始 dtype / 形状视图</title>
+          <rect x="820" y="1075" width="235" height="90" rx="6" class="c-mask"/>
+          <rect x="820" y="1075" width="235" height="90" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(826 1081) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="937.5" y="1118" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">独立解码与适配视图恢复</text>
+        <text data-detail="context" x="937.5" y="1134" class="t-muted" font-size="9" text-anchor="middle">新 Session → decompress → close</text>
+        <text data-detail="fine" x="937.5" y="1157" class="t-backend" font-size="7" text-anchor="middle">解码后恢复原始 dtype / 形状视图</text>
+        </g>
+
+        <g id="node-common" data-node-id="common" data-node-label="公共正确性检查" tabindex="0" role="button" aria-label="聚焦公共正确性检查，通道顺序 / T / Validity / T-V 配对, 03 执行验证 / Execution &amp; Validation" aria-pressed="false" data-node-kind="security" data-node-sublabel="通道顺序 / T / Validity / T-V 配对" data-node-tag="输入不变性 · canary · 确定性" data-node-context="03 执行验证 / Execution &amp; Validation">
+          <title>公共正确性检查 · 通道顺序 / T / Validity / T-V 配对 · 03 执行验证 / Execution &amp; Validation · 输入不变性 · canary · 确定性</title>
+          <rect x="560" y="1075" width="235" height="90" rx="6" class="c-mask"/>
+          <rect x="560" y="1075" width="235" height="90" rx="6" class="c-security" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="security" class="semantic-sigil s-security" transform="translate(566 1081) scale(0.6875)">
+            <path d="M8 2.2 13 4v3.5c0 3.1-1.8 5.4-5 6.5-3.2-1.1-5-3.4-5-6.5V4Z"/>
+            <path d="m5.8 8 1.5 1.5 3-3"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="677.5" y="1118" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">公共正确性检查</text>
+        <text data-detail="context" x="677.5" y="1134" class="t-muted" font-size="9" text-anchor="middle">通道顺序 / T / Validity / T-V 配对</text>
+        <text data-detail="fine" x="677.5" y="1157" class="t-security" font-size="7" text-anchor="middle">输入不变性 · canary · 确定性</text>
+        </g>
+
+        <g id="node-loss" data-node-id="loss" data-node-label="按 LossMode 验证重建" tabindex="0" role="button" aria-label="聚焦按 LossMode 验证重建，无损位精确 · 有界误差 / 质量评估, 03 执行验证 / Execution &amp; Validation" aria-pressed="false" data-node-kind="security" data-node-sublabel="无损位精确 · 有界误差 / 质量评估" data-node-tag="SUMMARY / UNBOUNDED / RATE 按各自契约" data-node-context="03 执行验证 / Execution &amp; Validation">
+          <title>按 LossMode 验证重建 · 无损位精确 · 有界误差 / 质量评估 · 03 执行验证 / Execution &amp; Validation · SUMMARY / UNBOUNDED / RATE 按各自契约</title>
+          <rect x="300" y="1075" width="235" height="90" rx="6" class="c-mask"/>
+          <rect x="300" y="1075" width="235" height="90" rx="6" class="c-security" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="security" class="semantic-sigil s-security" transform="translate(306 1081) scale(0.6875)">
+            <path d="M8 2.2 13 4v3.5c0 3.1-1.8 5.4-5 6.5-3.2-1.1-5-3.4-5-6.5V4Z"/>
+            <path d="m5.8 8 1.5 1.5 3-3"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="417.5" y="1118" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">按 LossMode 验证重建</text>
+        <text data-detail="context" x="417.5" y="1134" class="t-muted" font-size="9" text-anchor="middle">无损位精确 · 有界误差 / 质量评估</text>
+        <text data-detail="fine" x="417.5" y="1157" class="t-security" font-size="7" text-anchor="middle">SUMMARY / UNBOUNDED / RATE 按各自契约</text>
+        </g>
+
+        <g id="node-preflight" data-node-id="preflight" data-node-label="形成 Preflight 资格结论" tabindex="0" role="button" aria-label="聚焦形成 Preflight 资格结论，PASS 才进入预热与正式重复, 03 执行验证 / Execution &amp; Validation" aria-pressed="false" data-node-kind="security" data-node-sublabel="PASS 才进入预热与正式重复" data-node-tag="失败携带阶段 / 原因 / accounting 证据" data-node-context="03 执行验证 / Execution &amp; Validation">
+          <title>形成 Preflight 资格结论 · PASS 才进入预热与正式重复 · 03 执行验证 / Execution &amp; Validation · 失败携带阶段 / 原因 / accounting 证据</title>
+          <rect x="40" y="1075" width="235" height="90" rx="6" class="c-mask"/>
+          <rect x="40" y="1075" width="235" height="90" rx="6" class="c-security" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="security" class="semantic-sigil s-security" transform="translate(46 1081) scale(0.6875)">
+            <path d="M8 2.2 13 4v3.5c0 3.1-1.8 5.4-5 6.5-3.2-1.1-5-3.4-5-6.5V4Z"/>
+            <path d="m5.8 8 1.5 1.5 3-3"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="157.5" y="1118" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">形成 Preflight 资格结论</text>
+        <text data-detail="context" x="157.5" y="1134" class="t-muted" font-size="9" text-anchor="middle">PASS 才进入预热与正式重复</text>
+        <text data-detail="fine" x="157.5" y="1157" class="t-security" font-size="7" text-anchor="middle">失败携带阶段 / 原因 / accounting 证据</text>
+        </g>
+
+        <g id="node-policy" data-node-id="policy" data-node-label="冻结测量策略并执行预热" tabindex="0" role="button" aria-label="聚焦冻结测量策略并执行预热，warmup 次数 + 时长 · 测量模式, 04 性能测评 / Performance Evaluation" aria-pressed="false" data-node-kind="backend" data-node-sublabel="warmup 次数 + 时长 · 测量模式" data-node-tag="MeasurementPolicy · perform_warmup" data-node-context="04 性能测评 / Performance Evaluation">
+          <title>冻结测量策略并执行预热 · warmup 次数 + 时长 · 测量模式 · 04 性能测评 / Performance Evaluation · MeasurementPolicy · perform_warmup</title>
+          <rect x="40" y="1330" width="235" height="90" rx="6" class="c-mask"/>
+          <rect x="40" y="1330" width="235" height="90" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(46 1336) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="157.5" y="1373" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">冻结测量策略并执行预热</text>
+        <text data-detail="context" x="157.5" y="1389" class="t-muted" font-size="9" text-anchor="middle">warmup 次数 + 时长 · 测量模式</text>
+        <text data-detail="fine" x="157.5" y="1412" class="t-backend" font-size="7" text-anchor="middle">MeasurementPolicy · perform_warmup</text>
+        </g>
+
+        <g id="node-repetitions" data-node-id="repetitions" data-node-label="隔离执行正式重复实验" tabindex="0" role="button" aria-label="聚焦隔离执行正式重复实验，每轮独立对象 · 复用完整编解码内核, 04 性能测评 / Performance Evaluation" aria-pressed="false" data-node-kind="backend" data-node-sublabel="每轮独立对象 · 复用完整编解码内核" data-node-tag="execute_task · perform_measured_roundtrip" data-node-context="04 性能测评 / Performance Evaluation">
+          <title>隔离执行正式重复实验 · 每轮独立对象 · 复用完整编解码内核 · 04 性能测评 / Performance Evaluation · execute_task · perform_measured_roundtrip</title>
+          <rect x="300" y="1330" width="235" height="90" rx="6" class="c-mask"/>
+          <rect x="300" y="1330" width="235" height="90" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(306 1336) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="417.5" y="1373" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">隔离执行正式重复实验</text>
+        <text data-detail="context" x="417.5" y="1389" class="t-muted" font-size="9" text-anchor="middle">每轮独立对象 · 复用完整编解码内核</text>
+        <text data-detail="fine" x="417.5" y="1412" class="t-backend" font-size="7" text-anchor="middle">execute_task · perform_measured_roundtrip</text>
+        </g>
+
+        <g id="node-duration" data-node-id="duration" data-node-label="最短时长与内循环控制" tabindex="0" role="button" aria-label="聚焦最短时长与内循环控制，所选范围的编码 / 解码时长门控, 04 性能测评 / Performance Evaluation" aria-pressed="false" data-node-kind="backend" data-node-sublabel="所选范围的编码 / 解码时长门控" data-node-tag="inner_iterations · max_inner_iterations" data-node-context="04 性能测评 / Performance Evaluation">
+          <title>最短时长与内循环控制 · 所选范围的编码 / 解码时长门控 · 04 性能测评 / Performance Evaluation · inner_iterations · max_inner_iterations</title>
+          <rect x="560" y="1330" width="235" height="90" rx="6" class="c-mask"/>
+          <rect x="560" y="1330" width="235" height="90" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(566 1336) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="677.5" y="1373" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">最短时长与内循环控制</text>
+        <text data-detail="context" x="677.5" y="1389" class="t-muted" font-size="9" text-anchor="middle">所选范围的编码 / 解码时长门控</text>
+        <text data-detail="fine" x="677.5" y="1412" class="t-backend" font-size="7" text-anchor="middle">inner_iterations · max_inner_iterations</text>
+        </g>
+
+        <g id="node-timing" data-node-id="timing" data-node-label="分范围累计计时与吞吐" tabindex="0" role="button" aria-label="聚焦分范围累计计时与吞吐，CORE / PIPELINE / E2E · wall / CPU, 04 性能测评 / Performance Evaluation" aria-pressed="false" data-node-kind="backend" data-node-sublabel="CORE / PIPELINE / E2E · wall / CPU" data-node-tag="可选 NATIVE / pipeline stage telemetry" data-node-context="04 性能测评 / Performance Evaluation">
+          <title>分范围累计计时与吞吐 · CORE / PIPELINE / E2E · wall / CPU · 04 性能测评 / Performance Evaluation · 可选 NATIVE / pipeline stage telemetry</title>
+          <rect x="820" y="1330" width="235" height="90" rx="6" class="c-mask"/>
+          <rect x="820" y="1330" width="235" height="90" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(826 1336) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="937.5" y="1373" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">分范围累计计时与吞吐</text>
+        <text data-detail="context" x="937.5" y="1389" class="t-muted" font-size="9" text-anchor="middle">CORE / PIPELINE / E2E · wall / CPU</text>
+        <text data-detail="fine" x="937.5" y="1412" class="t-backend" font-size="7" text-anchor="middle">可选 NATIVE / pipeline stage telemetry</text>
+        </g>
+
+        <g id="node-resource" data-node-id="resource" data-node-label="同步采集进程资源" tabindex="0" role="button" aria-label="聚焦同步采集进程资源，CPU · RSS / PSS / USS · I/O / faults, 04 性能测评 / Performance Evaluation" aria-pressed="false" data-node-kind="backend" data-node-sublabel="CPU · RSS / PSS / USS · I/O / faults" data-node-tag="ResourceSampler.start / stop" data-node-context="04 性能测评 / Performance Evaluation">
+          <title>同步采集进程资源 · CPU · RSS / PSS / USS · I/O / faults · 04 性能测评 / Performance Evaluation · ResourceSampler.start / stop</title>
+          <rect x="1080" y="1330" width="235" height="90" rx="6" class="c-mask"/>
+          <rect x="1080" y="1330" width="235" height="90" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(1086 1336) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="1197.5" y="1373" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">同步采集进程资源</text>
+        <text data-detail="context" x="1197.5" y="1389" class="t-muted" font-size="9" text-anchor="middle">CPU · RSS / PSS / USS · I/O / faults</text>
+        <text data-detail="fine" x="1197.5" y="1412" class="t-backend" font-size="7" text-anchor="middle">ResourceSampler.start / stop</text>
+        </g>
+
+        <g id="node-formal-check" data-node-id="formal-check" data-node-label="逐次正确性与资源资格校验" tabindex="0" role="button" aria-label="聚焦逐次正确性与资源资格校验，正式重复仍检查重建 / 安全 / 资源预算, 04 性能测评 / Performance Evaluation" aria-pressed="false" data-node-kind="security" data-node-sublabel="正式重复仍检查重建 / 安全 / 资源预算" data-node-tag="validate_common_correctness · resource eligibility" data-node-context="04 性能测评 / Performance Evaluation">
+          <title>逐次正确性与资源资格校验 · 正式重复仍检查重建 / 安全 / 资源预算 · 04 性能测评 / Performance Evaluation · validate_common_correctness · resource eligibility</title>
+          <rect x="1080" y="1485" width="235" height="90" rx="6" class="c-mask"/>
+          <rect x="1080" y="1485" width="235" height="90" rx="6" class="c-security" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="security" class="semantic-sigil s-security" transform="translate(1086 1491) scale(0.6875)">
+            <path d="M8 2.2 13 4v3.5c0 3.1-1.8 5.4-5 6.5-3.2-1.1-5-3.4-5-6.5V4Z"/>
+            <path d="m5.8 8 1.5 1.5 3-3"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="1197.5" y="1528" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">逐次正确性与资源资格校验</text>
+        <text data-detail="context" x="1197.5" y="1544" class="t-muted" font-size="9" text-anchor="middle">正式重复仍检查重建 / 安全 / 资源预算</text>
+        <text data-detail="fine" x="1197.5" y="1567" class="t-security" font-size="7" text-anchor="middle">validate_common_correctness · resource eligibility</text>
+        </g>
+
+        <g id="node-query" data-node-id="query" data-node-label="查询 / 随机访问工作负载" tabindex="0" role="button" aria-label="聚焦查询 / 随机访问工作负载，配置请求 + query / random_access 能力, 04 性能测评 / Performance Evaluation" aria-pressed="false" data-node-kind="backend" data-node-sublabel="配置请求 + query / random_access 能力" data-node-tag="固定 seed · WorkloadID · 延迟 / 放大率" data-node-context="04 性能测评 / Performance Evaluation">
+          <title>查询 / 随机访问工作负载 · 配置请求 + query / random_access 能力 · 04 性能测评 / Performance Evaluation · 固定 seed · WorkloadID · 延迟 / 放大率</title>
+          <rect x="820" y="1485" width="235" height="90" rx="6" class="c-mask"/>
+          <rect x="820" y="1485" width="235" height="90" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(826 1491) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="937.5" y="1528" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">查询 / 随机访问工作负载</text>
+        <text data-detail="context" x="937.5" y="1544" class="t-muted" font-size="9" text-anchor="middle">配置请求 + query / random_access 能力</text>
+        <text data-detail="fine" x="937.5" y="1567" class="t-backend" font-size="7" text-anchor="middle">固定 seed · WorkloadID · 延迟 / 放大率</text>
+        </g>
+
+        <g id="node-stream" data-node-id="stream" data-node-label="流式工作负载与状态测量" tabindex="0" role="button" aria-label="聚焦流式工作负载与状态测量，配置请求 + streaming 能力, 04 性能测评 / Performance Evaluation" aria-pressed="false" data-node-kind="backend" data-node-sublabel="配置请求 + streaming 能力" data-node-tag="首输出 / 分块延迟 · 状态 / 缓冲 / reset" data-node-context="04 性能测评 / Performance Evaluation">
+          <title>流式工作负载与状态测量 · 配置请求 + streaming 能力 · 04 性能测评 / Performance Evaluation · 首输出 / 分块延迟 · 状态 / 缓冲 / reset</title>
+          <rect x="560" y="1485" width="235" height="90" rx="6" class="c-mask"/>
+          <rect x="560" y="1485" width="235" height="90" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(566 1491) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="677.5" y="1528" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">流式工作负载与状态测量</text>
+        <text data-detail="context" x="677.5" y="1544" class="t-muted" font-size="9" text-anchor="middle">配置请求 + streaming 能力</text>
+        <text data-detail="fine" x="677.5" y="1567" class="t-backend" font-size="7" text-anchor="middle">首输出 / 分块延迟 · 状态 / 缓冲 / reset</text>
+        </g>
+
+        <g id="node-record" data-node-id="record" data-node-label="创建原始 RunRecord" tabindex="0" role="button" aria-label="聚焦创建原始 RunRecord，同一 RunID 关联正确性 / 计时 / 资源, 04 性能测评 / Performance Evaluation" aria-pressed="false" data-node-kind="database" data-node-sublabel="同一 RunID 关联正确性 / 计时 / 资源" data-node-tag="PASS 或诊断状态 · query / streaming 结果" data-node-context="04 性能测评 / Performance Evaluation">
+          <title>创建原始 RunRecord · 同一 RunID 关联正确性 / 计时 / 资源 · 04 性能测评 / Performance Evaluation · PASS 或诊断状态 · query / streaming 结果</title>
+          <rect x="300" y="1485" width="235" height="90" rx="6" class="c-mask"/>
+          <rect x="300" y="1485" width="235" height="90" rx="6" class="c-database" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="database" class="semantic-sigil s-database" transform="translate(306 1491) scale(0.6875)">
+            <ellipse cx="8" cy="4" rx="5" ry="2"/>
+            <path d="M3 4v8c0 1.1 2.2 2 5 2s5-.9 5-2V4M3 8c0 1.1 2.2 2 5 2s5-.9 5-2"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="417.5" y="1528" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">创建原始 RunRecord</text>
+        <text data-detail="context" x="417.5" y="1544" class="t-muted" font-size="9" text-anchor="middle">同一 RunID 关联正确性 / 计时 / 资源</text>
+        <text data-detail="fine" x="417.5" y="1567" class="t-database" font-size="7" text-anchor="middle">PASS 或诊断状态 · query / streaming 结果</text>
+        </g>
+
+        <g id="node-append" data-node-id="append" data-node-label="追加证据与恢复进度" tabindex="0" role="button" aria-label="聚焦追加证据与恢复进度，run_components.jsonl → runs.csv 投影, 04 性能测评 / Performance Evaluation" aria-pressed="false" data-node-kind="database" data-node-sublabel="run_components.jsonl → runs.csv 投影" data-node-tag="events.jsonl · bitstreams · 未完成重复恢复" data-node-context="04 性能测评 / Performance Evaluation">
+          <title>追加证据与恢复进度 · run_components.jsonl → runs.csv 投影 · 04 性能测评 / Performance Evaluation · events.jsonl · bitstreams · 未完成重复恢复</title>
+          <rect x="40" y="1485" width="235" height="90" rx="6" class="c-mask"/>
+          <rect x="40" y="1485" width="235" height="90" rx="6" class="c-database" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="database" class="semantic-sigil s-database" transform="translate(46 1491) scale(0.6875)">
+            <ellipse cx="8" cy="4" rx="5" ry="2"/>
+            <path d="M3 4v8c0 1.1 2.2 2 5 2s5-.9 5-2V4M3 8c0 1.1 2.2 2 5 2s5-.9 5-2"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="157.5" y="1528" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">追加证据与恢复进度</text>
+        <text data-detail="context" x="157.5" y="1544" class="t-muted" font-size="9" text-anchor="middle">run_components.jsonl → runs.csv 投影</text>
+        <text data-detail="fine" x="157.5" y="1567" class="t-database" font-size="7" text-anchor="middle">events.jsonl · bitstreams · 未完成重复恢复</text>
+        </g>
+
+        <g id="node-read" data-node-id="read" data-node-label="读取冻结任务和原始证据" tabindex="0" role="button" aria-label="聚焦读取冻结任务和原始证据，TaskID / RunID 唯一性 · provenance, 05 统计分析与报告 / Statistics &amp; Reporting" aria-pressed="false" data-node-kind="database" data-node-sublabel="TaskID / RunID 唯一性 · provenance" data-node-tag="analyze_run_set · source hashes" data-node-context="05 统计分析与报告 / Statistics &amp; Reporting">
+          <title>读取冻结任务和原始证据 · TaskID / RunID 唯一性 · provenance · 05 统计分析与报告 / Statistics &amp; Reporting · analyze_run_set · source hashes</title>
+          <rect x="40" y="1740" width="235" height="90" rx="6" class="c-mask"/>
+          <rect x="40" y="1740" width="235" height="90" rx="6" class="c-database" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="database" class="semantic-sigil s-database" transform="translate(46 1746) scale(0.6875)">
+            <ellipse cx="8" cy="4" rx="5" ry="2"/>
+            <path d="M3 4v8c0 1.1 2.2 2 5 2s5-.9 5-2V4M3 8c0 1.1 2.2 2 5 2s5-.9 5-2"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="157.5" y="1783" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">读取冻结任务和原始证据</text>
+        <text data-detail="context" x="157.5" y="1799" class="t-muted" font-size="9" text-anchor="middle">TaskID / RunID 唯一性 · provenance</text>
+        <text data-detail="fine" x="157.5" y="1822" class="t-database" font-size="7" text-anchor="middle">analyze_run_set · source hashes</text>
+        </g>
+
+        <g id="node-eligibility" data-node-id="eligibility" data-node-label="按分析维度筛选资格" tabindex="0" role="button" aria-label="聚焦按分析维度筛选资格，PASS / 正确性 / accounting / 测量契约, 05 统计分析与报告 / Statistics &amp; Reporting" aria-pressed="false" data-node-kind="security" data-node-sublabel="PASS / 正确性 / accounting / 测量契约" data-node-tag="_eligibility · 排除原因全部保留" data-node-context="05 统计分析与报告 / Statistics &amp; Reporting">
+          <title>按分析维度筛选资格 · PASS / 正确性 / accounting / 测量契约 · 05 统计分析与报告 / Statistics &amp; Reporting · _eligibility · 排除原因全部保留</title>
+          <rect x="300" y="1740" width="235" height="90" rx="6" class="c-mask"/>
+          <rect x="300" y="1740" width="235" height="90" rx="6" class="c-security" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="security" class="semantic-sigil s-security" transform="translate(306 1746) scale(0.6875)">
+            <path d="M8 2.2 13 4v3.5c0 3.1-1.8 5.4-5 6.5-3.2-1.1-5-3.4-5-6.5V4Z"/>
+            <path d="m5.8 8 1.5 1.5 3-3"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="417.5" y="1783" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">按分析维度筛选资格</text>
+        <text data-detail="context" x="417.5" y="1799" class="t-muted" font-size="9" text-anchor="middle">PASS / 正确性 / accounting / 测量契约</text>
+        <text data-detail="fine" x="417.5" y="1822" class="t-security" font-size="7" text-anchor="middle">_eligibility · 排除原因全部保留</text>
+        </g>
+
+        <g id="node-aggregate" data-node-id="aggregate" data-node-label="按配置与实际执行路径聚合" tabindex="0" role="button" aria-label="聚焦按配置与实际执行路径聚合，Dataset + ConfigID + ExecutionPathHash 等, 05 统计分析与报告 / Statistics &amp; Reporting" aria-pressed="false" data-node-kind="backend" data-node-sublabel="Dataset + ConfigID + ExecutionPathHash 等" data-node-tag="_summaries · 合格正式 repetitions" data-node-context="05 统计分析与报告 / Statistics &amp; Reporting">
+          <title>按配置与实际执行路径聚合 · Dataset + ConfigID + ExecutionPathHash 等 · 05 统计分析与报告 / Statistics &amp; Reporting · _summaries · 合格正式 repetitions</title>
+          <rect x="560" y="1740" width="235" height="90" rx="6" class="c-mask"/>
+          <rect x="560" y="1740" width="235" height="90" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(566 1746) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="677.5" y="1783" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">按配置与实际执行路径聚合</text>
+        <text data-detail="context" x="677.5" y="1799" class="t-muted" font-size="9" text-anchor="middle">Dataset + ConfigID + ExecutionPathHash 等</text>
+        <text data-detail="fine" x="677.5" y="1822" class="t-backend" font-size="7" text-anchor="middle">_summaries · 合格正式 repetitions</text>
+        </g>
+
+        <g id="node-robust" data-node-id="robust" data-node-label="稳健统计与 Bootstrap 区间" tabindex="0" role="button" aria-label="聚焦稳健统计与 Bootstrap 区间，median / 分位数 / 离散度 / 置信区间, 05 统计分析与报告 / Statistics &amp; Reporting" aria-pressed="false" data-node-kind="backend" data-node-sublabel="median / 分位数 / 离散度 / 置信区间" data-node-tag="descriptive_statistics · deterministic bootstrap" data-node-context="05 统计分析与报告 / Statistics &amp; Reporting">
+          <title>稳健统计与 Bootstrap 区间 · median / 分位数 / 离散度 / 置信区间 · 05 统计分析与报告 / Statistics &amp; Reporting · descriptive_statistics · deterministic bootstrap</title>
+          <rect x="820" y="1740" width="235" height="90" rx="6" class="c-mask"/>
+          <rect x="820" y="1740" width="235" height="90" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(826 1746) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="937.5" y="1783" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">稳健统计与 Bootstrap 区间</text>
+        <text data-detail="context" x="937.5" y="1799" class="t-muted" font-size="9" text-anchor="middle">median / 分位数 / 离散度 / 置信区间</text>
+        <text data-detail="fine" x="937.5" y="1822" class="t-backend" font-size="7" text-anchor="middle">descriptive_statistics · deterministic bootstrap</text>
+        </g>
+
+        <g id="node-corpus" data-node-id="corpus" data-node-label="生成分数据集与 Corpus 指标" tabindex="0" role="button" aria-label="聚焦生成分数据集与 Corpus 指标，先 per-dataset · 再 micro / GeoMean, 05 统计分析与报告 / Statistics &amp; Reporting" aria-pressed="false" data-node-kind="backend" data-node-sublabel="先 per-dataset · 再 micro / GeoMean" data-node-tag="_corpus_summaries · 不合并为综合总分" data-node-context="05 统计分析与报告 / Statistics &amp; Reporting">
+          <title>生成分数据集与 Corpus 指标 · 先 per-dataset · 再 micro / GeoMean · 05 统计分析与报告 / Statistics &amp; Reporting · _corpus_summaries · 不合并为综合总分</title>
+          <rect x="1080" y="1740" width="235" height="90" rx="6" class="c-mask"/>
+          <rect x="1080" y="1740" width="235" height="90" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(1086 1746) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="1197.5" y="1783" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">生成分数据集与 Corpus 指标</text>
+        <text data-detail="context" x="1197.5" y="1799" class="t-muted" font-size="9" text-anchor="middle">先 per-dataset · 再 micro / GeoMean</text>
+        <text data-detail="fine" x="1197.5" y="1822" class="t-backend" font-size="7" text-anchor="middle">_corpus_summaries · 不合并为综合总分</text>
+        </g>
+
+        <g id="node-groups" data-node-id="groups" data-node-label="按层级比较键建立分析视图" tabindex="0" role="button" aria-label="聚焦按层级比较键建立分析视图，空间质量: Semantic · 速度: Execution, 05 统计分析与报告 / Statistics &amp; Reporting" aria-pressed="false" data-node-kind="backend" data-node-sublabel="空间质量: Semantic · 速度: Execution" data-node-tag="资源: ResourceProfileKey · _comparability_groups" data-node-context="05 统计分析与报告 / Statistics &amp; Reporting">
+          <title>按层级比较键建立分析视图 · 空间质量: Semantic · 速度: Execution · 05 统计分析与报告 / Statistics &amp; Reporting · 资源: ResourceProfileKey · _comparability_groups</title>
+          <rect x="1080" y="1895" width="235" height="90" rx="6" class="c-mask"/>
+          <rect x="1080" y="1895" width="235" height="90" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(1086 1901) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="1197.5" y="1938" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">按层级比较键建立分析视图</text>
+        <text data-detail="context" x="1197.5" y="1954" class="t-muted" font-size="9" text-anchor="middle">空间质量: Semantic · 速度: Execution</text>
+        <text data-detail="fine" x="1197.5" y="1977" class="t-backend" font-size="7" text-anchor="middle">资源: ResourceProfileKey · _comparability_groups</text>
+        </g>
+
+        <g id="node-pareto" data-node-id="pareto" data-node-label="计算 Pareto 与逐指标排名" tabindex="0" role="button" aria-label="聚焦计算 Pareto 与逐指标排名，同数据集 / profile / 比较键内计算, 05 统计分析与报告 / Statistics &amp; Reporting" aria-pressed="false" data-node-kind="backend" data-node-sublabel="同数据集 / profile / 比较键内计算" data-node-tag="_pareto_rows · _ranking_rows · DENSE_EXACT" data-node-context="05 统计分析与报告 / Statistics &amp; Reporting">
+          <title>计算 Pareto 与逐指标排名 · 同数据集 / profile / 比较键内计算 · 05 统计分析与报告 / Statistics &amp; Reporting · _pareto_rows · _ranking_rows · DENSE_EXACT</title>
+          <rect x="820" y="1895" width="235" height="90" rx="6" class="c-mask"/>
+          <rect x="820" y="1895" width="235" height="90" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(826 1901) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="937.5" y="1938" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">计算 Pareto 与逐指标排名</text>
+        <text data-detail="context" x="937.5" y="1954" class="t-muted" font-size="9" text-anchor="middle">同数据集 / profile / 比较键内计算</text>
+        <text data-detail="fine" x="937.5" y="1977" class="t-backend" font-size="7" text-anchor="middle">_pareto_rows · _ranking_rows · DENSE_EXACT</text>
+        </g>
+
+        <g id="node-coverage" data-node-id="coverage" data-node-label="按冻结任务全集统计覆盖率" tabindex="0" role="button" aria-label="聚焦按冻结任务全集统计覆盖率，PASS / UNSUPPORTED / FAIL / OOM / TIMEOUT, 05 统计分析与报告 / Statistics &amp; Reporting" aria-pressed="false" data-node-kind="backend" data-node-sublabel="PASS / UNSUPPORTED / FAIL / OOM / TIMEOUT" data-node-tag="_coverage · 包含未产生 PASS 的任务" data-node-context="05 统计分析与报告 / Statistics &amp; Reporting">
+          <title>按冻结任务全集统计覆盖率 · PASS / UNSUPPORTED / FAIL / OOM / TIMEOUT · 05 统计分析与报告 / Statistics &amp; Reporting · _coverage · 包含未产生 PASS 的任务</title>
+          <rect x="560" y="1895" width="235" height="90" rx="6" class="c-mask"/>
+          <rect x="560" y="1895" width="235" height="90" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(566 1901) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="677.5" y="1938" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">按冻结任务全集统计覆盖率</text>
+        <text data-detail="context" x="677.5" y="1954" class="t-muted" font-size="9" text-anchor="middle">PASS / UNSUPPORTED / FAIL / OOM / TIMEOUT</text>
+        <text data-detail="fine" x="677.5" y="1977" class="t-backend" font-size="7" text-anchor="middle">_coverage · 包含未产生 PASS 的任务</text>
+        </g>
+
+        <g id="node-tables" data-node-id="tables" data-node-label="写入统计与分析表" tabindex="0" role="button" aria-label="聚焦写入统计与分析表，summary / eligibility / corpus 等表, 05 统计分析与报告 / Statistics &amp; Reporting" aria-pressed="false" data-node-kind="database" data-node-sublabel="summary / eligibility / corpus 等表" data-node-tag="rankings.csv / pareto.csv / coverage.csv" data-node-context="05 统计分析与报告 / Statistics &amp; Reporting">
+          <title>写入统计与分析表 · summary / eligibility / corpus 等表 · 05 统计分析与报告 / Statistics &amp; Reporting · rankings.csv / pareto.csv / coverage.csv</title>
+          <rect x="300" y="1895" width="235" height="90" rx="6" class="c-mask"/>
+          <rect x="300" y="1895" width="235" height="90" rx="6" class="c-database" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="database" class="semantic-sigil s-database" transform="translate(306 1901) scale(0.6875)">
+            <ellipse cx="8" cy="4" rx="5" ry="2"/>
+            <path d="M3 4v8c0 1.1 2.2 2 5 2s5-.9 5-2V4M3 8c0 1.1 2.2 2 5 2s5-.9 5-2"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="417.5" y="1938" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">写入统计与分析表</text>
+        <text data-detail="context" x="417.5" y="1954" class="t-muted" font-size="9" text-anchor="middle">summary / eligibility / corpus 等表</text>
+        <text data-detail="fine" x="417.5" y="1977" class="t-database" font-size="7" text-anchor="middle">rankings.csv / pareto.csv / coverage.csv</text>
+        </g>
+
+        <g id="node-report" data-node-id="report" data-node-label="生成可追溯实验报告" tabindex="0" role="button" aria-label="聚焦生成可追溯实验报告，report.json / report.md / report.html, 05 统计分析与报告 / Statistics &amp; Reporting" aria-pressed="false" data-node-kind="frontend" data-node-sublabel="report.json / report.md / report.html" data-node-tag="generate_report · coverage / Pareto SVG" data-node-context="05 统计分析与报告 / Statistics &amp; Reporting">
+          <title>生成可追溯实验报告 · report.json / report.md / report.html · 05 统计分析与报告 / Statistics &amp; Reporting · generate_report · coverage / Pareto SVG</title>
+          <rect x="40" y="1895" width="235" height="90" rx="6" class="c-mask"/>
+          <rect x="40" y="1895" width="235" height="90" rx="6" class="c-frontend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="frontend" class="semantic-sigil s-frontend" transform="translate(46 1901) scale(0.6875)">
+            <rect x="2" y="3" width="12" height="10" rx="2"/>
+            <path d="M2 6.5h12"/>
+            <circle cx="4.1" cy="4.8" r=".7" class="sigil-fill"/>
+            <circle cx="6.3" cy="4.8" r=".7" class="sigil-fill"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="157.5" y="1938" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">生成可追溯实验报告</text>
+        <text data-detail="context" x="157.5" y="1954" class="t-muted" font-size="9" text-anchor="middle">report.json / report.md / report.html</text>
+        <text data-detail="fine" x="157.5" y="1977" class="t-frontend" font-size="7" text-anchor="middle">generate_report · coverage / Pareto SVG</text>
+        </g>
+
+        <g id="node-diagnostic" data-node-id="diagnostic" data-node-label="预检失败：写入诊断记录" tabindex="0" role="button" aria-label="聚焦预检失败：写入诊断记录，失败 / 超时 / OOM / 不支持, 架构组件" aria-pressed="false" data-node-kind="database" data-node-sublabel="失败 / 超时 / OOM / 不支持" data-node-tag="record_kind=DIAGNOSTIC · 不进入正式测量" data-node-context="架构组件">
+          <title>预检失败：写入诊断记录 · 失败 / 超时 / OOM / 不支持 · 架构组件 · record_kind=DIAGNOSTIC · 不进入正式测量</title>
+          <rect x="350" y="1190" width="265" height="80" rx="6" class="c-mask"/>
+          <rect x="350" y="1190" width="265" height="80" rx="6" class="c-database" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="database" class="semantic-sigil s-database" transform="translate(356 1196) scale(0.6875)">
+            <ellipse cx="8" cy="4" rx="5" ry="2"/>
+            <path d="M3 4v8c0 1.1 2.2 2 5 2s5-.9 5-2V4M3 8c0 1.1 2.2 2 5 2s5-.9 5-2"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="482.5" y="1228" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">预检失败：写入诊断记录</text>
+        <text data-detail="context" x="482.5" y="1244" class="t-muted" font-size="9" text-anchor="middle">失败 / 超时 / OOM / 不支持</text>
+        <text data-detail="fine" x="482.5" y="1262" class="t-database" font-size="7" text-anchor="middle">record_kind=DIAGNOSTIC · 不进入正式测量</text>
+        </g>
+
+        <!-- Connection labels -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <g data-detail="context" data-edge-from="preflight" data-edge-to="policy" data-edge-label="PASS" data-edge-key="38">
+          <rect x="94.5" y="1169" width="30" height="14" rx="3" class="c-mask"/>
+          <text x="109.5" y="1179" class="t-backend" font-size="8" text-anchor="middle">PASS</text>
+        </g>
+
+
+
+
+
+
+
+
+
+
+        <g data-detail="context" data-edge-from="preflight" data-edge-to="diagnostic" data-edge-label="失败" data-edge-key="49">
+          <rect x="295" y="1225" width="30" height="14" rx="3" class="c-mask"/>
+          <text x="310" y="1235" class="t-security" font-size="8" text-anchor="middle">失败</text>
+        </g>
+
+        <!-- Boundary labels (foreground masks keep routes out of titles) -->
+        <g data-graph-role="structural-frame-label" data-composition-frame-id="0" data-composition-frame-kind="region" data-composition-frame-label="01 数据准备 / Data Preparation">
+          <rect data-graph-role="structural-frame-label-mask" x="19" y="80" width="172" height="16" rx="3" class="c-mask"/>
+          <text data-boundary-label="" x="23" y="93" class="t-cloud" font-size="9" font-weight="600">01 数据准备 / Data Preparation</text>
+        </g>
+
+        <g data-graph-role="structural-frame-label" data-composition-frame-id="1" data-composition-frame-kind="region" data-composition-frame-label="02 能力与配置 / Capability &amp; Configuration">
+          <rect data-graph-role="structural-frame-label-mask" x="19" y="335" width="236.79999999999998" height="16" rx="3" class="c-mask"/>
+          <text data-boundary-label="" x="23" y="348" class="t-cloud" font-size="9" font-weight="600">02 能力与配置 / Capability &amp; Configuration</text>
+        </g>
+
+        <g data-graph-role="structural-frame-label" data-composition-frame-id="2" data-composition-frame-kind="region" data-composition-frame-label="03 执行验证 / Execution &amp; Validation">
+          <rect data-graph-role="structural-frame-label-mask" x="19" y="745" width="204.4" height="16" rx="3" class="c-mask"/>
+          <text data-boundary-label="" x="23" y="758" class="t-cloud" font-size="9" font-weight="600">03 执行验证 / Execution &amp; Validation</text>
+        </g>
+
+        <g data-graph-role="structural-frame-label" data-composition-frame-id="3" data-composition-frame-kind="region" data-composition-frame-label="04 性能测评 / Performance Evaluation">
+          <rect data-graph-role="structural-frame-label-mask" x="19" y="1310" width="204.4" height="16" rx="3" class="c-mask"/>
+          <text data-boundary-label="" x="23" y="1323" class="t-cloud" font-size="9" font-weight="600">04 性能测评 / Performance Evaluation</text>
+        </g>
+
+        <g data-graph-role="structural-frame-label" data-composition-frame-id="4" data-composition-frame-kind="region" data-composition-frame-label="05 统计分析与报告 / Statistics &amp; Reporting">
+          <rect data-graph-role="structural-frame-label-mask" x="19" y="1720" width="236.79999999999998" height="16" rx="3" class="c-mask"/>
+          <text data-boundary-label="" x="23" y="1733" class="t-cloud" font-size="9" font-weight="600">05 统计分析与报告 / Statistics &amp; Reporting</text>
+        </g>
+
+        <!-- Legend -->
+        <g data-legend="" data-legend-bridge="">
+          <text x="40" y="2069" class="t-primary" font-size="12" font-weight="650">图例</text>
+          <g data-legend-semantic-kind="frontend" data-legend-kind="frontend" data-legend-label="前端" data-legend-x="40" data-legend-baseline="2089" data-legend-width="63">
+            <rect x="40" y="2080" width="16" height="10" rx="2.5" class="c-frontend" stroke-width="1"/>
+            <text x="62" y="2089" class="t-muted" font-size="10" font-weight="500">前端</text>
+          </g>
+          <g data-legend-semantic-kind="backend" data-legend-kind="backend" data-legend-label="后端" data-legend-x="125" data-legend-baseline="2089" data-legend-width="63">
+            <rect x="125" y="2080" width="16" height="10" rx="2.5" class="c-backend" stroke-width="1"/>
+            <text x="147" y="2089" class="t-muted" font-size="10" font-weight="500">后端</text>
+          </g>
+          <g data-legend-semantic-kind="database" data-legend-kind="database" data-legend-label="数据库" data-legend-x="210" data-legend-baseline="2089" data-legend-width="73">
+            <rect x="210" y="2080" width="16" height="10" rx="2.5" class="c-database" stroke-width="1"/>
+            <text x="232" y="2089" class="t-muted" font-size="10" font-weight="500">数据库</text>
+          </g>
+          <g data-legend-semantic-kind="security" data-legend-kind="security" data-legend-label="安全" data-legend-x="305" data-legend-baseline="2089" data-legend-width="63">
+            <rect x="305" y="2080" width="16" height="10" rx="2.5" class="c-security" stroke-width="1"/>
+            <text x="327" y="2089" class="t-muted" font-size="10" font-weight="500">安全</text>
+          </g>
+        </g>
+      </svg>

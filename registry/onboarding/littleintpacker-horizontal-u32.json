@@ -1,0 +1,147 @@
+{
+  "schema_version": "tscb.source-onboarding.v2",
+  "source_artifact_id": "v2:source-artifact:sha256:9f964d577f7ed79bfa4d342974c0955aba7e9a8d690f957bbd0afa7dce8102b2",
+  "repository": "https://github.com/fast-pack/LittleIntPacker",
+  "commit": "8777f574a5ab3c653881371819383c986292843c",
+  "dirty": false,
+  "submodules": [],
+  "implementation_files": [
+    "adapters/littleintpacker/vendor/littleintpacker/src/horizontalpacking32.c",
+    "adapters/littleintpacker/vendor/littleintpacker/src/bitpacking32.c"
+  ],
+  "public_api_files": [
+    "adapters/littleintpacker/vendor/littleintpacker/include/bitpacking.h"
+  ],
+  "benchmark_files": [
+    "adapters/littleintpacker/vendor/littleintpacker/benchmarks/bitpackingbenchmark.c"
+  ],
+  "test_files": [
+    "adapters/littleintpacker/vendor/littleintpacker/tests/unit.c",
+    "adapters/littleintpacker/tests/source_api_probe.c",
+    "adapters/littleintpacker/tests/abi_qualification.cpp",
+    "adapters/littleintpacker/tests/native_faults.cpp",
+    "tests/adapters/test_littleintpacker.py"
+  ],
+  "license_files": [
+    "adapters/littleintpacker/vendor/littleintpacker/LICENSE"
+  ],
+  "third_party_dependencies": [],
+  "object_level_candidates": [
+    "P0_PRIMITIVE"
+  ],
+  "input_contract": {
+    "dtype": "<u4",
+    "value_minimum": 0,
+    "value_maximum": 4294967295,
+    "shape": "CONTIGUOUS_VECTOR",
+    "ownership": "BORROWED_IMMUTABLE",
+    "max_count": 16777216,
+    "alignment_bytes": 1,
+    "external_padding_bytes": 0
+  },
+  "output_contract": {
+    "kind": "TSCB_LIP1_UINT32_HORIZONTAL_CHECKED_DESCRIPTOR_V1",
+    "self_contained": true,
+    "capacity_is_not_size": true,
+    "descriptor_sha256": true,
+    "native_frame_checksum": "FNV1A64"
+  },
+  "lifecycle_contract": {
+    "update": "ONCE",
+    "finalize": "MANDATORY_ZERO_BYTES",
+    "reset": "MODE_ZERO_ONLY",
+    "output_bound": "44 + descriptor bytes + 40 + ceil(N * actual_width / 8); exact bound",
+    "return_length": "tscb_buffer_v1.used_bytes is exact; capacity is not size",
+    "error_codes": {
+      "0": "OK",
+      "1": "INVALID_ARGUMENT",
+      "2": "UNSUPPORTED",
+      "3": "DST_TOO_SMALL",
+      "4": "CODEC_ERROR",
+      "5": "FINALIZE_REQUIRED",
+      "6": "ABI_MISMATCH"
+    },
+    "width_policy": "FIXED_0_TO_32_OR_AUTO_WHOLE_OBJECT_MINIMUM_NO_DELTA_OR_TRANSFORM",
+    "original_api_pair": [
+      "pack32",
+      "horizontalunpack32"
+    ]
+  },
+  "stream_components": [
+    "descriptor",
+    "sha256",
+    "native_magic",
+    "count",
+    "codec_kind",
+    "actual_width",
+    "width_mode",
+    "payload_length",
+    "values",
+    "tail_padding",
+    "fnv64"
+  ],
+  "upstream_tests": [
+    {
+      "name": "original_source_failures_retained",
+      "status": "PASS",
+      "log_sha256": "eb5857286d3936f3083d4b74b2b59b5d750e90aad26d00d8c99233d3b772156a",
+      "evidence": "build/source-audits/littleintpacker_source_tests.json"
+    },
+    {
+      "name": "patched_complete_upstream_and_source_api_matrix",
+      "status": "PASS",
+      "log_sha256": "4bd2299c5535a47d67e9a527f7b69626cdc95d8ebd8fd40033eb331dfd612615",
+      "evidence": "build/source-audits/littleintpacker_patched_tests.json"
+    },
+    {
+      "name": "bounded_native_three_profiles",
+      "status": "PASS",
+      "log_sha256": "206532e01cc985e15953836e39b3c7e878ccaff3ae366c8947de184910460dc2",
+      "evidence": "build/source-audits/littleintpacker_native_tests.json"
+    },
+    {
+      "name": "direct_sdk",
+      "status": "PASS",
+      "log_sha256": "c9ab0e878f8a61d5db4f58537cfb6edd19f5656dfc229e8c1cdabcd92a03aed3",
+      "evidence": "build/source-audits/littleintpacker-sdk-20261007-2/report.json"
+    }
+  ],
+  "builds": [
+    {
+      "kind": "release",
+      "artifact_sha256": "8e8546b67e53fef1dddab16b550dfc32e4f465f2084b9f6cb18e63f97eeb9e19",
+      "compile_commands_sha256": "3774f04c5c7efd83b325b073894cc687ab2fce83060459b4675119469be727d6"
+    },
+    {
+      "kind": "debug",
+      "artifact_sha256": "fc0acf569015b33223b9e5f7bc3bc937abcace3e8fa1d37732229cf712dd7fe1",
+      "compile_commands_sha256": "d5f870b1de70baaad77a271db1624ec389e2a6e816c6f5ec47c60311d40caa48"
+    },
+    {
+      "kind": "sanitizer",
+      "artifact_sha256": "b37f3279e62c1b259aca8a13c4b8b02cc821efd1b65ba8adeaa4d84e52458322",
+      "compile_commands_sha256": "79a4f53fd6c1c93b574f982fc66ae2c53bb4745e6ae0afd13e96ec7d3b164091"
+    }
+  ],
+  "license_decision": {
+    "spdx": "Apache-2.0",
+    "status": "RUN_ALLOWED",
+    "reason": "Apache-2.0 original files retained; build-only correction notice and patch lock preserved."
+  },
+  "known_limitations": [
+    "VALUE/UTS uint32 primitive; other input domains and track pipelines require separate review.",
+    "Five original API pairs retained; BMI2 decoder requires AVX2+BMI2, HORIZONTAL SSSE3+SSE4.1.",
+    "No implicit Delta/ZigZag/quantization/truncation; AUTO is explicit whole-vector minimum width.",
+    "No streaming/query/random access; full object includes all metadata and checksum.",
+    "ASan+UBSan qualified; detect_leaks=0 does not qualify LeakSanitizer.",
+    "Direct SDK and registry admission are not five-layer/formal qualification."
+  ],
+  "unsupported_reason_codes": [
+    "LITTLEINTPACKER_SUPPLIED_WIDTH_OUT_OF_RANGE",
+    "NON_DECLARED_DTYPE",
+    "MULTIVARIATE_NOT_REGISTERED",
+    "STREAMING_UNREGISTERED",
+    "ISA_UNSUPPORTED"
+  ],
+  "source_onboarding_id": "v2:source-onboarding:sha256:22c437942ebdaed60c2f249f6708161897823092e0e5e74155d5ec77fe1db8b6"
+}

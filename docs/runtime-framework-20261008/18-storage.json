@@ -1,0 +1,219 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "TSDataCompressBenchMark · 追加日志、位流与幂等持久化",
+    "locale": "zh-CN",
+    "quality_profile": "showcase",
+    "viewBox": [
+      1150,
+      755
+    ],
+    "legend": {
+      "mode": "auto",
+      "entries": {
+        "frontend": {
+          "label": "入口 / 报告"
+        },
+        "backend": {
+          "label": "控制 / 执行"
+        },
+        "database": {
+          "label": "文件证据"
+        },
+        "security": {
+          "label": "资格 / 校验"
+        },
+        "external": {
+          "label": "外部来源"
+        }
+      }
+    }
+  },
+  "components": [
+    {
+      "id": "tscb-18-storage-n1",
+      "type": "backend",
+      "label": "RunRecord.create",
+      "sublabel": "内容身份 RunID",
+      "pos": [
+        60,
+        85
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-18-storage-n2",
+      "type": "backend",
+      "label": "重复即时回调",
+      "sublabel": "persist_repetition",
+      "pos": [
+        450,
+        85
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-18-storage-n3",
+      "type": "backend",
+      "label": "原始记录去重",
+      "sublabel": "append_run_record",
+      "pos": [
+        840,
+        85
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-18-storage-n4",
+      "type": "database",
+      "label": "原始 JSONL",
+      "sublabel": "run_components.jsonl",
+      "pos": [
+        840,
+        335
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-18-storage-n5",
+      "type": "database",
+      "label": "投影 CSV",
+      "sublabel": "rebuild_runs_csv",
+      "pos": [
+        450,
+        335
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-18-storage-n6",
+      "type": "database",
+      "label": "位流独立保存",
+      "sublabel": "artifacts/<RunID>.bin",
+      "pos": [
+        60,
+        335
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-18-storage-n7",
+      "type": "database",
+      "label": "预检 / 预热证据",
+      "sublabel": "preflight / warmup",
+      "pos": [
+        60,
+        585
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-18-storage-n8",
+      "type": "database",
+      "label": "事件日志",
+      "sublabel": "append_event",
+      "pos": [
+        450,
+        585
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-18-storage-n9",
+      "type": "backend",
+      "label": "层完成状态文件",
+      "sublabel": "layer3 / layer4",
+      "pos": [
+        840,
+        585
+      ],
+      "size": [
+        250,
+        95
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "tscb-18-storage-e0",
+      "to": "tscb-18-storage-n2",
+      "label": "进入",
+      "from": "tscb-18-storage-n1"
+    },
+    {
+      "id": "tscb-18-storage-e1",
+      "to": "tscb-18-storage-n3",
+      "label": "生成",
+      "from": "tscb-18-storage-n2"
+    },
+    {
+      "id": "tscb-18-storage-e2",
+      "to": "tscb-18-storage-n4",
+      "label": "传递",
+      "from": "tscb-18-storage-n3",
+      "labelAt": [
+        965.0,
+        194.0
+      ]
+    },
+    {
+      "id": "tscb-18-storage-e3",
+      "to": "tscb-18-storage-n5",
+      "label": "执行",
+      "from": "tscb-18-storage-n4"
+    },
+    {
+      "id": "tscb-18-storage-e4",
+      "to": "tscb-18-storage-n6",
+      "label": "得到",
+      "from": "tscb-18-storage-n5"
+    },
+    {
+      "id": "tscb-18-storage-e5",
+      "to": "tscb-18-storage-n7",
+      "label": "核对",
+      "from": "tscb-18-storage-n6",
+      "labelAt": [
+        185.0,
+        444.0
+      ]
+    },
+    {
+      "id": "tscb-18-storage-e6",
+      "to": "tscb-18-storage-n8",
+      "label": "冻结",
+      "from": "tscb-18-storage-n7"
+    },
+    {
+      "id": "tscb-18-storage-e7",
+      "to": "tscb-18-storage-n9",
+      "label": "输出",
+      "from": "tscb-18-storage-n8"
+    }
+  ]
+}

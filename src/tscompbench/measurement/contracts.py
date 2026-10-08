@@ -47,8 +47,21 @@ class MeasurementPolicy:
     def repetition_min_ns(self) -> int:
         return int(Decimal(self.min_repetition_seconds) * Decimal(1_000_000_000))
 
+    def duration_satisfied(self, encode_ns: int, decode_ns: int, e2e_ns: int) -> bool:
+        """Each reported direction must reach the configured measurement duration."""
+        minimum = self.repetition_min_ns
+        return (
+            encode_ns >= minimum
+            and decode_ns >= minimum
+            and (self.timing_scope != "E2E" or e2e_ns >= minimum)
+        )
+
     def to_document(self) -> dict[str, Any]:
-        return {"schema_version": "tscb.measurement-policy.v2", **asdict(self)}
+        return {
+            "schema_version": "tscb.measurement-policy.v2",
+            **asdict(self),
+            "minimum_duration_boundary": "PER_SELECTED_DIRECTION_WITH_E2E_V1",
+        }
 
 
 @dataclass(frozen=True)
@@ -100,6 +113,8 @@ class TimingObservation:
     native_timing_enabled: bool = False
     native_timing_boundary: str | None = None
     native_timing_clock: str | None = None
+    native_input_bytes_per_iteration: int | None = None
+    pipeline_stage_timings: dict[str, Any] | None = None
 
     def to_document(self) -> dict[str, Any]:
         return {"schema_version": "tscb.timing-observation.v2", **asdict(self)}

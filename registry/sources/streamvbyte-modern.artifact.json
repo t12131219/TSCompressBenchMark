@@ -1,0 +1,170 @@
+{
+  "schema_version": "tscb.source-artifact.v2",
+  "key": "streamvbyte-modern-7c472d7",
+  "kind": "VENDORED_UPSTREAM_SOURCE_CLOSURE",
+  "identity": {
+    "kind": "VENDORED_UPSTREAM_SOURCE_CLOSURE",
+    "key": "streamvbyte-modern-7c472d7",
+    "repository": "https://github.com/fast-pack/streamvbyte",
+    "commit": "7c472d7d4d63c8bc65a88f310ccfc695a0eaf1ce",
+    "source_closure_sha256": "87fa73286143ab91d5a2cf972e27e218be2c773d3fff47cdf56586f4f69d53a2",
+    "patch_series": [
+      {
+        "path": "adapters/streamvbyte_modern/patches/0001-unaligned-control-store.patch",
+        "sha256": "23683c89310df2711671ae729173189d1954abbe442c3dff38c38a2345ab2837"
+      },
+      {
+        "path": "adapters/streamvbyte_modern/patches/0002-upstream-test-safety.patch",
+        "sha256": "1455e688bf0b0e1ed3f9d39c098252bf7c78aca1f7e1feda289a7fc928643fa4"
+      }
+    ],
+    "selection": "WORKBOOK_CANONICAL_SOURCE_AFTER_LOCAL_BENCHMARK_VARIANT_REVIEW",
+    "benchmark_reference": "dblalock/lzbench@580c4f085381f31b1ad669525ed04e63cbc385f3:fastpfor/streamvbyte.c",
+    "copy_policy": "UNMODIFIED_VENDOR_WITH_REPLAYED_SAFETY_PATCHES"
+  },
+  "license": {
+    "spdx": "Apache-2.0 AND BSD-3-Clause",
+    "status": "RUN_ALLOWED",
+    "redistribution": "ALLOWED_WITH_LICENSE_NOTICES",
+    "files": [
+      "adapters/streamvbyte_modern/vendor/streamvbyte/LICENSE",
+      "adapters/streamvbyte_modern/vendor/streamvbyte/src/streamvbyte_isadetection.h"
+    ]
+  },
+  "build": {
+    "recipe": "PYTHONPATH=src python tools/build_codec.py <key> --profile all",
+    "patches": [
+      "adapters/streamvbyte_modern/patches/0001-unaligned-control-store.patch",
+      "adapters/streamvbyte_modern/patches/0002-upstream-test-safety.patch"
+    ],
+    "submodules": [],
+    "translation_units": [
+      "adapters/streamvbyte_modern/native/tscb_streamvbyte_modern.c",
+      "src/streamvbyte_encode.c",
+      "src/streamvbyte_decode.c"
+    ],
+    "source_closure": [
+      {
+        "path": "adapters/streamvbyte_modern/vendor/streamvbyte/LICENSE",
+        "sha256": "cb5e8e7e5f4a3988e1063c142c60dc2df75605f4c46515e776e3aca6df976e14"
+      },
+      {
+        "path": "adapters/streamvbyte_modern/vendor/streamvbyte/AUTHORS",
+        "sha256": "1d47734e69472271ea24ed5712d9b269a45dcadf7227c364fcb6814a04e34111"
+      },
+      {
+        "path": "adapters/streamvbyte_modern/vendor/streamvbyte/README.md",
+        "sha256": "e90548c9a75af258701f071364c06d85c8aa0ce8081eaccba1a06d3bd3f03c74"
+      },
+      {
+        "path": "adapters/streamvbyte_modern/vendor/streamvbyte/Makefile",
+        "sha256": "f330fb459771cf15b8447307ad1b4d13829f0e5034afadd86ed0f918c546b7a3"
+      },
+      {
+        "path": "adapters/streamvbyte_modern/vendor/streamvbyte/CMakeLists.txt",
+        "sha256": "68c647809e0f10afa950b1258fb6a86a975edd68d292c5935af1c2468f0bc275"
+      },
+      {
+        "path": "adapters/streamvbyte_modern/vendor/streamvbyte/src/streamvbyte_0124_decode.c",
+        "sha256": "0a02b8da72af7fdd4f5df15266460002cfb6389d045e9e6a73335dee40122d70"
+      },
+      {
+        "path": "adapters/streamvbyte_modern/vendor/streamvbyte/src/streamvbyte_0124_encode.c",
+        "sha256": "103e88e5aa1539aac21dbdd427687406b6b6f718a967eb80335c2409e07376e0"
+      },
+      {
+        "path": "adapters/streamvbyte_modern/vendor/streamvbyte/src/streamvbyte_arm_decode.c",
+        "sha256": "3746b7e67e656dd0dff77e45d7309dacf3f5ff741303a6c95ca6991dbce7c818"
+      },
+      {
+        "path": "adapters/streamvbyte_modern/vendor/streamvbyte/src/streamvbyte_arm_encode.c",
+        "sha256": "2320b6c534c42ac211790a916460530331848b0f24289cf747f23bc33c92e250"
+      },
+      {
+        "path": "adapters/streamvbyte_modern/vendor/streamvbyte/src/streamvbyte_decode.c",
+        "sha256": "1da5bd79c49c4ea4329b69033b2f050c0c97c7e676c7f76fe848e5f17043920f"
+      },
+      {
+        "path": "adapters/streamvbyte_modern/vendor/streamvbyte/src/streamvbyte_encode.c",
+        "sha256": "3e39605549664581e25d7729992efbde2898cb87814ac9a9bdadfa928676b71c"
+      },
+      {
+        "path": "adapters/streamvbyte_modern/vendor/streamvbyte/src/streamvbyte_isadetection.h",
+        "sha256": "72d07b8f4502411bfaeedcc95a8b65b9cd0e69e7cc11a4c2683349664159d1e8"
+      },
+      {
+        "path": "adapters/streamvbyte_modern/vendor/streamvbyte/src/streamvbyte_shuffle_tables_0124_decode.h",
+        "sha256": "de210a341d7e253237fa68bb0959f412bedc9dbeabc0634e5b0ba02a58f66b73"
+      },
+      {
+        "path": "adapters/streamvbyte_modern/vendor/streamvbyte/src/streamvbyte_shuffle_tables_0124_encode.h",
+        "sha256": "7ecca770dfeae877c823360629aab05862a84de961c57a56112793e6fc9301ea"
+      },
+      {
+        "path": "adapters/streamvbyte_modern/vendor/streamvbyte/src/streamvbyte_shuffle_tables_decode.h",
+        "sha256": "8b39730f8e22534c42b3915cebb3865a445781e860fdb15ffabcb4954798b081"
+      },
+      {
+        "path": "adapters/streamvbyte_modern/vendor/streamvbyte/src/streamvbyte_shuffle_tables_encode.h",
+        "sha256": "c3f5c3c8a48f24017c8569624c632b434aa65785ae8bf87445efbfaf2a8f52ea"
+      },
+      {
+        "path": "adapters/streamvbyte_modern/vendor/streamvbyte/src/streamvbyte_x64_decode.c",
+        "sha256": "e0b0d3d4626041445deff3bd3fe217b079f55e683911e206fbd46e5577f850ec"
+      },
+      {
+        "path": "adapters/streamvbyte_modern/vendor/streamvbyte/src/streamvbyte_x64_encode.c",
+        "sha256": "f077c311ee16579aa7990a8ff21baf3302f67f4ebc9073920b1b30fd5b779051"
+      },
+      {
+        "path": "adapters/streamvbyte_modern/vendor/streamvbyte/src/streamvbyte_zigzag.c",
+        "sha256": "3254e67edb0d3a4f9ebefe1eff15808ec7a21667c84fa01c4e1465cb15305f9a"
+      },
+      {
+        "path": "adapters/streamvbyte_modern/vendor/streamvbyte/src/streamvbytedelta.c",
+        "sha256": "69c1a5e75b6a35bb944fb3e34f6a31571c706f77ff50d36006eebae3331813bf"
+      },
+      {
+        "path": "adapters/streamvbyte_modern/vendor/streamvbyte/src/streamvbytedelta_decode.c",
+        "sha256": "e3f20c21b4440b88cf649a883ea9825b63fe0209e4bb9eae11fed72a49d1ad6a"
+      },
+      {
+        "path": "adapters/streamvbyte_modern/vendor/streamvbyte/src/streamvbytedelta_encode.c",
+        "sha256": "7512250382e9a1a19d1e7f89980864ceea2cd9113986a1d4549408dc03226fe7"
+      },
+      {
+        "path": "adapters/streamvbyte_modern/vendor/streamvbyte/src/streamvbytedelta_x64_decode.c",
+        "sha256": "f7977d72330c2191a858d20cd00248498a4e2802e7422e8e01958ba86cc28197"
+      },
+      {
+        "path": "adapters/streamvbyte_modern/vendor/streamvbyte/src/streamvbytedelta_x64_encode.c",
+        "sha256": "82701448883d99d37b8db58f9e94aada6e695cfdd5d89409894da87d90116317"
+      },
+      {
+        "path": "adapters/streamvbyte_modern/vendor/streamvbyte/include/streamvbyte.h",
+        "sha256": "25cab4f6714214758cbcf94fc04e989cd88c406e58059d9c35abe33bf7c9513a"
+      },
+      {
+        "path": "adapters/streamvbyte_modern/vendor/streamvbyte/include/streamvbyte_zigzag.h",
+        "sha256": "4f509a54716c4ba1fbf428296ea85250a7271d8df554c38be118698a6c6e487d"
+      },
+      {
+        "path": "adapters/streamvbyte_modern/vendor/streamvbyte/include/streamvbytedelta.h",
+        "sha256": "6be04132689e37f71163a9504305c94aec084336ee570d8f3fa8fee1628cbabc"
+      },
+      {
+        "path": "adapters/streamvbyte_modern/vendor/streamvbyte/tests/perf.c",
+        "sha256": "0dc924df98f80b087751b87b0bf5a207a789055adacfaa9466907a66ad06ddaf"
+      },
+      {
+        "path": "adapters/streamvbyte_modern/vendor/streamvbyte/tests/unit.c",
+        "sha256": "eba10ba9e09ca12ded73a3d00574be4352084a6efe8c88e6ee73f2238bdb6382"
+      },
+      {
+        "path": "adapters/streamvbyte_modern/vendor/streamvbyte/tests/writeseq.c",
+        "sha256": "ba075f7a06ce1cad90f8a46fd57214e99c101fb7858180b9b7ca464bb3be0d73"
+      }
+    ],
+    "admission_card": "adapters/streamvbyte_modern/SOURCE_ADMISSION.md"
+  }
+}

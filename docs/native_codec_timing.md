@@ -61,8 +61,9 @@ codec-input bytes divided by summed per-dataset median native time and are missi
 if any dataset is missing native timing. CORE/PIPELINE auxiliary rates use canonical
 bytes. Reports show all three layers side by side, retaining existing selected metrics.
 
-Nanosecond units do not imply nanosecond accuracy. The selected-scope duration
-threshold does not guarantee a long enough native interval. Differences between
+Nanosecond units do not imply nanosecond accuracy. Each selected encode/decode direction
+must reach the configured repetition duration; E2E also checks its complete duration.
+This threshold does not guarantee a long enough native interval. Differences between
 CORE/NATIVE/PIPELINE are diagnostic, not a disturbance-free exact decomposition.
 Frame/raw, streaming/one-shot, context reuse, build flags, and hardware differences
 still prevent automatic equivalence with lzbench. Existing run evidence and XLSX

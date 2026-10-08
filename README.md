@@ -1,404 +1,212 @@
-# Time Series Compression Benchmark V2
+# TSDataCompressBenchMark
 
-This repository implements the Python control plane and normative contracts for a
-source-driven time-series compression benchmark. Layers 1 through 5 are implemented:
-deterministic data preparation now feeds versioned source/codec registries, four-state
-capability negotiation, explicit adapter and preprocess plans, parameter expansion,
-deterministic task planning, runtime execution-path resolution, and hierarchical
-comparability keys. The third layer adds Track-safe routing, input validation,
-boundary/safety preflight, isolated codec lifecycles, mandatory Finalize, bit-first
-accounting, lossless/lossy correctness gates, append-only raw evidence, and resumable
-qualification execution. The fourth layer adds frozen measurement profiles, normative
-warmup/repetition/min-duration control, scope-separated timing, process resource
-evidence, deterministic query-workload identities, streaming capability gates, and
-raw performance fields linked to the same correctness-qualified RunID.
-The fifth layer reads only frozen task/raw evidence, records per-analysis exclusion
-reasons, aggregates same-path PASS repetitions with robust statistics and deterministic
-bootstrap intervals, computes per-dataset then corpus metrics, and publishes nested-key
-Pareto/ranking/coverage views plus machine and human-readable reports.
+TSDataCompressBenchMark 是一个以源码身份、输入契约和原始证据为基础的时间序列压缩基准框架。Python 控制面负责数据准备、能力协商、任务规划、隔离执行、性能测量与统计报告；具体算法通过原生适配器接入。项目比较的是明确声明的压缩对象、配置和执行路径，保留不支持、错误、超时及资源压力记录。
 
-The source collection remains read-only under
-`/home/fzg/PycharmProjects/Compression_Source_Code/Source_Code`. Phase 4 copies only the
-reviewed translation-unit closure needed by an adapter. The native codecs are LZ4 Frame
-1.10.0, Zstd Frame 1.5.7, Snappy Raw 1.2.2, Brotli Stream 1.2.0, zlib DEFLATE
-1.3.2 (`deflate-zlib`, RFC1950 wrapper), and XZ LZMA2 5.8.3 (`xz-stream`), taken from
-lzbench's vendored sources at a pinned commit. LZSS 0.9.1 (`lzss-raw`) uses the
-spreadsheet's original alexkazik Rust implementation, driven through the same C ABI;
-lzbench's different LZSSE formats are not substituted. Michael Dipperstein's native C
-offset12/length4 binary-tree implementation is separately registered as
-`lzss-dipperstein-c`; it is not a replacement or shared ranking identity. The explicitly requested
-LZSSE8 Optimal Parse (`lzsse8-raw`, level 12, SSE4.1) is registered separately,
-with immutable lzbench source and a hashed build-time safety patch. Their source, license, build, ABI,
-accounting, and five-layer evidence are recorded under `registry/onboarding`.
+本文描述 **2026-10-08 当前工作区**。Python 包版本为 `0.1.0`，数据与运行契约属于 V2；两者是不同的版本体系。本次状态说明见 [RELEASE_DESCRIPTION.md](RELEASE_DESCRIPTION.md)。
 
-## Environment
+## 当前状态
 
-Completed C++ rewrites are integrated through the same five-layer runner. The new
-contracts include approximate symbolic/sparse/audio pipelines, timestamp encoding,
-joint Prometheus chunks/histograms, and neural byte codecs. See
-[the integration profiles and reproduction commands](adapters/completed_rewrites/README.md)
-and [the integration audit](docs/completed_rewrite_integration_review.md).
-Each profile has explicit input/runtime limits; qualification is scoped to those
-registered profiles. Synthetic acceptance fixtures do not establish corpus performance.
+五层框架已经实现，能够完成从注册数据到可追溯报告的闭环。算法接入仍按来源、API、数据域和运行配置逐项验证。
 
-Use the supplied environment:
+| 项目 | 当前状态与含义 |
+| --- | --- |
+| Codec 注册表 | 67 个清单：63 个非 oracle 入口、4 个框架测试 oracle；注册数量不等于完整算法验收数量 |
+| 数据集注册表 | 22 个清单，包含真实数据和合成验证 fixture |
+| 其他注册身份 | 118 个 SourceArtifact、4 个 Codec 别名；SourceArtifact 不等于可运行算法 |
+| 全量接入清单 | 保留 221 个逻辑条目，其中 115 个原生核心候选；完整逻辑条目验收计数为 0 |
+| 最近原生入口证据刷新 | 2026-10-07 的 13 个入口通过限定范围重新资格验证；1882 条正式批次记录，1775 条有效测量记录 |
+| 能力边界 | 查询、流式、ISA、数据类型与 LossMode 依清单和运行配置门控；没有统一的全算法、全数据域支持声明 |
+
+计数来自当前注册表和保存的审计记录。`registry/native_integration_plan.json` 是接入工作清单快照，其逐条状态可能早于最新专项审计；判断某入口当前资格时，应同时核查接入卡、工件及 SDK 依赖哈希、新运行批次和独立审计。已通过限定范围的 primitive 或 pipeline 不会自动使整个逻辑条目完成。
+
+最近状态依据：[原生入口证据刷新](docs/native_codec_evidence_refresh.md)、[方向最短时长修正](docs/minimum_duration_direction_self_check.md)、[全量工作清单](registry/native_integration_plan.json)。详细 `build/` 与 `runs/` 证据保留在本机，通常不随 Git 分发。
+
+## 运行结构
+
+| 层 | 主要模块 | 实际职责 |
+| --- | --- | --- |
+| 1 数据准备 | `datasets/`、`configuration.py`、`environment.py`、`runner.py` | 加载配置、冻结环境、核查数据源，加载 CanonicalDataset，分析特征并写入 Canonical 工件 |
+| 2 能力与任务规划 | `codecs/`、`planning/`、`preprocess/contracts.py` | 扫描参数，按 Dataset × Algorithm × Track × Config 协商能力，生成适配/预处理计划、执行路径及可比性键，冻结任务宇宙 |
+| 3 执行与验证 | `adapters/`、`execution/`、`validation/`、`accounting/` | 源与构建门控、输入校验、实际兼容适配、预处理阶段验证、边界测试、最小往返及正式重复正确性检查 |
+| 4 性能测量 | `execution/repetition.py`、`measurement/` | 预热与正式重复中的计时、最短时长循环、同步资源采集，以及按能力执行的查询和流式工作负载 |
+| 5 统计与报告 | `statistics/`、`reporting/` | 读取冻结任务和原始证据，先筛选资格，再聚合，生成分数据集及 corpus 指标、Pareto、逐指标排名、覆盖率和报告 |
+
+实际执行顺序：
+
+```text
+初始化 / 恢复 Run Set
+  → 数据准备
+  → 参数展开、能力协商、执行解析与任务冻结
+  → 对每个任务执行 Preflight
+      ├─ 失败 / 不支持：保存诊断
+      └─ 通过：预热 → 正式重复
+                    → 适配、完整编解码、计时及同步资源采集
+                    → 逐次正确性与资源检查
+                    → 可选查询 / 流式工作负载
+                    → 追加原始 Run 证据
+  → 单独调用 run report：资格过滤 → 聚合 → 分组分析 → 报告
+```
+
+第 2 层冻结计划，实际适配与阶段验证在执行时发生。第 3、4 层共享 `execute_task`，性能测量发生在正式编解码重复中。`run validate` 会完成准备、规划和执行；`run report` 读取已有证据，不重新调用 Codec。
+
+[源码展开架构图](docs/main-runtime-framework-20261008/framework.html)可辅助阅读。它展示职责和步骤展开，包含调用容器及同步观察关系，所有箭头不能都解释为严格串行函数调用；浏览器交互尚未验证。
+
+## 数据、算法与比较契约
+
+### 数据与 Track
+
+- DatasetID 绑定内容哈希和声明语义；源 CSV/NPZ 的文件大小只用于 provenance，不作为压缩比的原始数据分母。
+- 加载器按 Manifest 处理形状、dtype、时间戳、值与 Validity；拒绝未声明的转换、排序、填充、插值或 reshape。
+- 特征分析记录 exact / sampled 模式，Canonical 工件具有版本、布局和哈希。
+- `TIMESTAMP` 使用 T；`VALUE` 使用 V 和适用的 Validity；`SYSTEM` 要求共同的 T/V，生成 SegmentPlan 并由适配器实现具体对象封装。框架没有任意 T Codec 与 V Codec 自动组合的通用装配器。
+- UTS、同步 MTS 和原生多维数据的支持范围由各 Codec 清单决定。PEMS 保留原始三维结构，框架不会为其虚构时间轴。
+
+### 能力、身份与成本
+
+能力协商返回 `DIRECT_SUPPORTED`、`ADAPTER_LOSSLESS`、`ADAPTER_LOSSY` 或 `UNSUPPORTED`。非法参数点和不支持的任务保留在任务宇宙中，附带明确原因。
+
+SourceArtifactID 标识源工件，AlgorithmID 标识注册算法合同，ConfigID 标识展开配置，ExecutionPathHash 标识实际工件、适配器、环境、ISA、线程和回退等执行事实。三层比较键依次为：
+
+| 比较维度 | 必须匹配的键 |
+| --- | --- |
+| 空间与质量 | SemanticComparabilityKey |
+| 速度、查询与流式执行条件 | ExecutionComparabilityKey，包含语义键 |
+| CPU、内存等资源 | ResourceProfileKey，包含执行键 |
+
+编解码内核要求 `compress_update → finalize → accounting → 独立解码`，即使 Finalize 输出 0 字节也必须发生。FinalBits 计入完整对象及外部必要侧信息成本，输出容量不等于压缩大小。模型、字典、索引或共享 T/V 码流的成本遵循具体账本；不能凭内部拆分字段为 0 就判断其免费。
+
+无损值检查整数精确恢复或 IEEE 位一致；有界有损检查真实误差违反；无界有损记录质量而不虚构误差保证。`SUMMARY_ONLY` 和 `RATE_CONTROLLED_LOSSY` 使用各自合同，其中 rate gate 不应解释为已完成通用码率验收。框架 oracle 用于验证流程，不参与正式算法排名。
+
+## 已注册入口
+
+以下是注册覆盖，具体可用数据域和资格以 Manifest、接入卡及当前审计为准。
+
+| 类别 | 入口 |
+| --- | --- |
+| 通用字节压缩 | `lz4-frame`、`zstd-frame`、`snappy-raw`、`brotli-stream`、`deflate-zlib`、`bzip2-stream`、`xz-stream` |
+| LZSS / LZSSE | `lzss-raw`、`lzss-dipperstein-c`、`lzsse2-raw`、`lzsse8-raw`；不同来源与格式保持独立身份 |
+| 浮点与时间序列无损 | `alp`、`alp-rd`、`chimp`、`chimp128`、`elf`、`elf-plus`、`elf-star`、`self-star`、`neats-lossless-i64`、`leats-lossless-i64` |
+| 时间戳与联合对象 | `delta-varint`、`influxdb-tsm-adaptive-timestamp`、`prometheus-xor-chunk`、`prometheus-xor2-chunk`、`prometheus-histogram-st`、`prometheus-float-histogram-st` |
+| 熵编码与 Sprintz | `huff0`、`fse`、`sprintz-delta`、`sprintz-fire`、`sprintz-fire-huff0`，以及历史受限的 `sprintz-delta-u8`、`sprintz-fire-u8` |
+| 整数 primitive 与 pipeline | StreamVByte 两个 uint32 入口及两个 checked int64 pipeline；MaskedVByte 与 Delta；SIMDComp、Delta、FOR；FastDifferential；Simple9、Simple9hacked、Simple16、Simple8b_RLE；LittleIntPacker 五个入口 |
+| 有损与模型压缩 | `zfp-accuracy-1d`、`serf-qt`、`serf-xor`、`abba`、`fabba`、`tristan`、`corad`、`deepzip`、`dzip`、`walloc-1d` |
+| 框架 oracle | `oracle-direct`、`oracle-lossless-adapter`、`oracle-lossy-adapter`、`oracle-native-nd-only` |
+
+`lz77` 是 `deflate-zlib` 的来源映射别名；`gorilla`、`delta-of-delta` 和 `second-order-difference` 映射到 `prometheus-xor-chunk`。别名共享规范身份，不增加排名算法；完整 DEFLATE 或联合 Prometheus chunk 不能宣称为隔离的纯 primitive。
+
+完整可选 key 可通过 `codecs list` 查询。重点资料：[StreamVByte](docs/streamvbyte_modern_self_check.md)、[SIMDComp](docs/simdcomp_self_check.md)、[MaskedVByte](docs/maskedvbyte_self_check.md)、[FastDifferential](docs/fast_differential_self_check.md)、[Simple8b_RLE](docs/fastpfor_simple8b_rle_source_review.md)、[重写包接入](adapters/completed_rewrites/README.md)。专项自检文档中的早期批次可能已被后续重新资格验证替代，应优先核对最新证据刷新记录。
+
+## 环境与快速开始
+
+### 环境
+
+`pyproject.toml` 要求 Python **>=3.14**、NumPy **>=2.5,<3**。现有验证环境为 Conda `CompressBench14`；以下命令从仓库根目录执行，通过 `PYTHONPATH=src` 使用源码，不要求预先安装包。
+
+```bash
+conda activate CompressBench14
+export PYTHONPATH=src
+python -m tscompbench --help
+python -m tscompbench datasets list
+python -m tscompbench codecs list
+python -m tscompbench codecs verify
+python -m tscompbench datasets verify
+```
+
+新环境也可使用兼容的 Python 执行 `python -m pip install -e .` 安装控制面；原生算法仍需单独构建。当前原生验证主要在 Linux x86_64 进行，编译器、ISA、系统库、模型和 runtime 依赖由具体 adapter 的构建脚本及源锁指定。`debug` 仅对已声明该配方的入口支持；`--profile all` 会执行该入口支持的构建组合。
+
+`datasets/`、`build/`、`runs/` 和独立重写工作区通常被 Git 忽略。新 checkout 需要准备 Manifest 指定的数据和依赖；`datasets verify` 会核对文件存在与哈希，不负责下载数据。合成数据有对应 `tools/generate_*_fixture.py`，应使用匹配的生成器与固定参数。源资料目录保持只读，安全补丁只应用于构建副本。
+
+### 跑通一个资格实验
+
+以已提供的 LZ4 配置为例，需要匹配的 `national_illness` 数据。现有合格工件可直接使用；首次运行需要构建，并满足清单要求的原生/SDK 证据门控。
+
+```bash
+python tools/build_codec.py lz4-frame --profile all
+python -m tscompbench run validate \
+  configs/experiments/lz4-frame-qualification.toml \
+  --output-root runs --run-set-id lz4-local-qualification
+python -m tscompbench run report \
+  configs/experiments/lz4-frame-qualification.toml \
+  --output-root runs --run-set-id lz4-local-qualification --resume
+```
+
+`QUALIFICATION` 用于边界和接入检查，不参加正式性能排名；出现空 `summary.csv` 可以是预期结果。检查 raw、诊断、eligibility 和 coverage，而不是只看汇总行数。
+
+### 正式实验与恢复
+
+以下配置比较 LZ4 / Zstd，需要对应构建和已通过门控的执行工件。
+
+```bash
+python tools/build_codec.py zstd-frame --profile all
+python -m tscompbench run validate \
+  configs/experiments/zstd-lz4-formal-comparison.toml \
+  --output-root runs --run-set-id zstd-lz4-local-formal
+python -m tscompbench run report \
+  configs/experiments/zstd-lz4-formal-comparison.toml \
+  --output-root runs --run-set-id zstd-lz4-local-formal --resume
+```
+
+从已有批次恢复时，对同一配置、输出目录和 RunSetID 的 `run validate` 加 `--resume`。已有路径拒绝覆盖；恢复会核对冻结配置、环境、工件和日志。修改冻结条件后应使用新 RunSetID，不覆盖或补写旧批次。
+
+其他分步命令为 `run init`、`run prepare`、`run plan`。CPU affinity 必须属于当前进程可用集合；示例中的历史 CPU 0 不应直接当作另一台机器的默认值。
+
+## 测量与结果阅读
+
+`FORMAL` 要求至少 3 次且累计 >=0.5 秒预热，至少 10 次预定重复，配置的重复最短时长为 1–3 秒。当前循环分别检查**所选范围的编码和解码方向**；E2E 还检查完整对象时长。共享计时规则在 2026-10-07 修正过，旧的总时长达标记录不能自动当作当前方向门禁合格。
+
+CORE、PIPELINE 和 E2E 同时保留；E2E 输入是内存中的 Canonical 路由视图，不包含文件读取。每个内循环对象独立创建、Finalize、解码和关闭。可选 NATIVE 与阶段计时是辅助观察，缺失值保留 null，不替代主范围时长门控，也不自动等同于上游 benchmark 的 kernel 时间。详见[计时边界](docs/native_codec_timing.md)。
+
+资源采集目前主要支持 PROCESS CPU、RSS/PSS/USS、faults、I/O 等；进程树、设备、perf counter 和 Energy 在没有有效采集器时明确记为未采集或不支持。系统换页或线程超预算产生 `RESOURCE_PRESSURE` / `OVERSUBSCRIBED`，保留观测并按资格规则排除。
+
+Query / Random Access 目前由 NeaTS、LeaTS 清单声明支持；persistent streaming 由 LZ4、Zstd、Brotli、DEFLATE、bzip2、XZ 清单声明支持。两类工作负载都要求配置请求开启及适配器协议支持；注册能力声明仍不等于每个新配置已取得当前正式资格。
+
+典型输出：
+
+```text
+runs/<run-set-id>/
+  frozen_config.json / environment.json / run-set.json
+  datasets/<key>/*canonical.tscb / *manifest.json / *characterization.json
+  task_plan.jsonl / resolved_configs.json / *_registry_snapshot.json
+  events.jsonl                 # 生命周期与失败事件
+  run_components.jsonl        # 权威的完整原始 Run 证据
+  runs.csv                    # 可恢复的平面投影
+  eligibility.csv / summary.csv / corpus_summary.csv
+  comparability.csv / coverage.csv / pareto.csv / ranking.csv
+  report/report.json / report.md / report.html
+  report/coverage.svg / space-encode.svg / space-decode.svg
+```
+
+统计层先过滤资格，再按 DatasetID、AlgorithmID、ConfigID、ExecutionPathHash、ProfileID 和记录 schema 分组。预定重复必须完整且不重复，合格组至少有 10 次有效正式重复；压力记录不删除、不用补轮替换。报告保留 median、P25/P75、mean、SD/CV、确定性 Bootstrap 区间和 contributing RunIDs。排名只在相应比较键内进行，Coverage 独立发布，不形成跨 Track、LossMode、对象层级或设备的加权总分。
+
+## 开发、证据与限制
 
 ```bash
 PYTHONPATH=src conda run -n CompressBench14 python -m pytest
-conda run -n CompressBench14 python tools/generate_sprintz_fixture.py
-conda run -n CompressBench14 python tools/build_codec.py sprintz-delta-u8 --profile all
-conda run -n CompressBench14 python tools/build_codec.py sprintz-fire-u8 --profile all
-conda run -n CompressBench14 python tools/qualify_sprintz_native.py
-PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
-  configs/experiments/sprintz-u8-qualification.toml --output-root runs
-PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
-  configs/experiments/sprintz-u8-formal.toml --output-root runs
-PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run report \
-  configs/experiments/sprintz-u8-formal.toml --output-root runs \
-  --run-set-id <existing-run-set-id> --resume
-conda run -n CompressBench14 python tools/generate_sprintz_i16_mts_fixture.py
-conda run -n CompressBench14 python tools/build_codec.py sprintz-delta --profile all
-conda run -n CompressBench14 python tools/build_codec.py sprintz-fire --profile all
-conda run -n CompressBench14 python tools/qualify_sprintz.py
-PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
-  configs/experiments/sprintz-qualification.toml --output-root runs
-PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
-  configs/experiments/sprintz-formal.toml --output-root runs
-PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run report \
-  configs/experiments/sprintz-formal.toml --output-root runs \
-  --run-set-id <existing-run-set-id> --resume
-PYTHONPATH=src conda run -n CompressBench14 python tools/build_codec.py huff0 --profile all
-PYTHONPATH=src conda run -n CompressBench14 python tools/build_codec.py fse --profile all
-PYTHONPATH=src conda run -n CompressBench14 python tools/qualify_entropy_fse.py
-PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
-  configs/experiments/entropy-fse-formal.toml --output-root runs
-PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench datasets verify
-PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench codecs verify
-PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench codecs classify-sources
-PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench datasets prepare etth1 --output build/data
-PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run init \
-  configs/experiments/data-preparation-smoke.toml --output-root runs
-PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run plan \
-  configs/experiments/capability-configuration-smoke.toml --output-root runs
-PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
-  configs/experiments/capability-configuration-smoke.toml --output-root runs
-PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
-  configs/experiments/performance-evaluation-smoke.toml --output-root runs
-PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run report \
-  configs/experiments/performance-evaluation-smoke.toml --output-root runs \
-  --run-set-id <existing-run-set-id> --resume
-
-# Build and qualify the native codecs.
-conda run -n CompressBench14 python tools/build_codec.py lz4-frame --profile all
-conda run -n CompressBench14 python tools/build_codec.py zstd-frame --profile all
-conda run -n CompressBench14 python tools/build_codec.py snappy-raw --profile all
-conda run -n CompressBench14 python tools/build_codec.py brotli-stream --profile all
-conda run -n CompressBench14 python tools/build_codec.py deflate-zlib --profile all
-conda run -n CompressBench14 python adapters/deflate_zlib/tests/run_native_tests.py
-conda run -n CompressBench14 python tools/build_codec.py bzip2-stream --profile all
-conda run -n CompressBench14 python adapters/bzip2_stream/tests/run_native_tests.py
-conda run -n CompressBench14 python tools/build_codec.py xz-stream --profile all
-conda run -n CompressBench14 python adapters/xz_stream/tests/run_native_tests.py
-conda run -n CompressBench14 python tools/build_codec.py zfp-accuracy-1d --profile all
-conda run -n CompressBench14 python adapters/zfp/tests/run_native_tests.py
-conda run -n CompressBench14 python tools/build_codec.py lzss-raw --profile all
-conda run -n CompressBench14 python tools/qualify_lzss.py
-conda run -n CompressBench14 python tools/build_codec.py lzss-dipperstein-c --profile all
-conda run -n CompressBench14 python tools/qualify_lzss_dipperstein.py
-conda run -n CompressBench14 python tools/build_codec.py lzsse8-raw --profile all
-conda run -n CompressBench14 python tools/qualify_lzsse8.py
-PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
-  configs/experiments/lzsse8-raw-qualification.toml --output-root runs
-PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
-  configs/experiments/lzsse8-raw-formal.toml --output-root runs
-PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
-  configs/experiments/lz4-frame-qualification.toml --output-root runs
-PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
-  configs/experiments/zstd-frame-qualification.toml --output-root runs
-PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
-  configs/experiments/snappy-raw-qualification.toml --output-root runs
-PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
-  configs/experiments/brotli-stream-qualification.toml --output-root runs
-PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
-  configs/experiments/deflate-zlib-qualification.toml --output-root runs
-PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
-  configs/experiments/bzip2-stream-qualification.toml --output-root runs
-PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
-  configs/experiments/xz-stream-qualification.toml --output-root runs
-PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
-  configs/experiments/zfp-accuracy-1d-qualification.toml --output-root runs
-
-ALP and ALP-RD use the audited `cwida/ALP` C++ source closure as two forced, non-overlapping
-schemes:
-
-```bash
-conda run -n CompressBench14 python tools/build_codec.py alp --profile all
-conda run -n CompressBench14 python tools/build_codec.py alp-rd --profile all
-PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
-  configs/experiments/alp-qualification.toml --output-root runs
-PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
-  configs/experiments/alp-formal.toml --output-root runs
+PYTHONPATH=src conda run -n CompressBench14 python -m pytest \
+  tests/unit/test_measurement.py tests/unit/test_statistics.py \
+  tests/integration/test_layer5_reporting.py
 ```
 
-Serf-Qt and Serf-XOR use the audited upstream C++ benchmark implementation as separate
-lossy AlgorithmIDs. Both accept homogeneous little-endian float32/float64 VALUE UTS and
-synchronous MTS, enforce a positive absolute error bound, and fully charge their project
-container and native frame. Qt resets at every block; XOR carries adaptive state only
-across finite blocks in one column. Non-finite or unsafe-to-quantize blocks use an
-explicitly charged raw exception record. The vendored source is CC BY-NC 4.0, so
-redistribution and commercial use remain restricted. See the
-[Serf admission review](docs/serf_admission_review.md) and
-[Serf five-layer self-check](docs/serf_self_check.md).
+pytest 及需要的原生依赖应在开发环境中安装。算法专属 source / native / SDK / run auditor 位于 `tools/`；必须按对应接入文档运行。共享执行源码或二进制变化可能使旧证据失效，工厂会拒绝漂移；编译成功、注册成功、会话创建成功和历史 PASS 都不能单独代替当前五层资格。最近刷新流程见[原生入口证据刷新](docs/native_codec_evidence_refresh.md)。
 
-```bash
-conda run -n CompressBench14 python tools/build_codec.py serf-qt --profile all
-conda run -n CompressBench14 python tools/build_codec.py serf-xor --profile all
-conda run -n CompressBench14 python adapters/serf/tests/run_native_tests.py
-PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
-  configs/experiments/serf-qualification.toml --output-root runs
-PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
-  configs/experiments/serf-formal.toml --output-root runs
-```
+当前尚未完成全量 221 条目验收，也没有所有算法在统一真实语料上的最终排名。合成 uint32 / uint28 UTS 资格不覆盖真实 int64 timestamp 或 float 数据；checked int64 StreamVByte pipeline 的现有范围只覆盖其登记数据和配置。DCT、DWT、PCA 当前继续跳过；TerraCodec 两个阻塞重写包未进入已完成接入声明。
 
-NeaTS and LeaTS use the audited `and-gue/NeaTS` C++ source at one pinned commit but
-remain separate AlgorithmIDs for nonlinear and linear piecewise models. The admitted
-path is lossless signed int8/int16/int32/int64 VALUE UTS or synchronous MTS, scalar,
-single-threaded and column-independent. Model fitting happens inside every compression;
-there is no external checkpoint or training split, and all serialized model/index bytes
-are charged. See the [NeaTS/LeaTS admission review](docs/neats_leats_admission_review.md)
-and [five-layer self-check](docs/neats_leats_self_check.md).
+部分重写入口依赖冻结模型、MKL 或 LibTorch，CPU-only profile 不意味着 GPU/训练/查询/增量流式全部支持。sanitizer 证据有明确范围，未重新插桩的外部二进制和未执行的 LeakSanitizer 不包含在通过声明中。详见[重写接入范围](adapters/completed_rewrites/README.md)。
 
-```bash
-conda run -n CompressBench14 python tools/build_codec.py neats-lossless-i64 --profile all
-conda run -n CompressBench14 python tools/build_codec.py leats-lossless-i64 --profile all
-conda run -n CompressBench14 python adapters/neats/tests/run_native_tests.py
-PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
-  configs/experiments/neats-leats-qualification.toml --output-root runs
-PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
-  configs/experiments/neats-leats-formal.toml --output-root runs
-```
+本项目代码的许可证见 [LICENSE](LICENSE)；各 vendored 源码、模型和 runtime 的许可证遵循各自源锁及接入卡，不能用项目许可证覆盖上游条款。
 
-# A FORMAL run uses >=3 warmups, >=0.5 s warmup time, 10 raw repetitions,
-# and >=1 s of selected-scope work in every repetition.
-PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
-  configs/experiments/zstd-lz4-formal-comparison.toml --output-root runs
-PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
-  configs/experiments/snappy-lz4-zstd-formal-comparison.toml --output-root runs
-PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
-  configs/experiments/brotli-stream-formal.toml --output-root runs
-PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
-  configs/experiments/deflate-zlib-formal.toml --output-root runs
-PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
-  configs/experiments/deflate-zlib-streaming-qualification.toml --output-root runs
-PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
-  configs/experiments/deflate-zlib-streaming-formal.toml --output-root runs
-PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
-  configs/experiments/bzip2-stream-formal.toml --output-root runs
-PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
-  configs/experiments/xz-stream-formal.toml --output-root runs
-```
+## 目录导航
 
-The package can also be invoked with `PYTHONPATH=src` without installing it.
+| 路径 | 内容 |
+| --- | --- |
+| `src/tscompbench/` | 五层控制面与 Python adapter |
+| `native/include/` | Canonical、C ABI 与计时接口 |
+| `adapters/` | 冻结源码、binding、补丁、合同及算法测试 |
+| `registry/` | Dataset、Codec、SourceArtifact、别名与 onboarding 清单 |
+| `schemas/v2/` | 配置、任务、运行、账本、统计与报告契约 |
+| `configs/experiments/` | QUALIFICATION / FORMAL 实验配置 |
+| `fixtures/`、`tests/` | 受控数据、golden vectors 与回归测试 |
+| `tools/` | 构建、冻结、资格验证、接入和独立审计 |
+| `docs/` | 专项自检、接入范围与架构资料 |
 
-Sprintz is registered through the two codec APIs actually exposed upstream:
-`sprintz-delta` and `sprintz-fire` (FIRE is named XFF in parts of lzbench).
-Both admit homogeneous signed/unsigned 8-bit and little-endian 16-bit integer
-UTS or synchronous MTS with 1--128 dimensions on AVX2/BMI2/LZCNT. The older
-`sprintz-delta-u8` and `sprintz-fire-u8` IDs preserve the earlier restricted
-single-channel evidence; they are not aliases for the expanded codecs. There
-is no predictor-neutral upstream Sprintz API from which an honest single
-`sprintz` AlgorithmID could be derived. Both registered datasets are synthetic
-and their generated NPZ files are intentionally ignored by Git. See the
-[Sprintz admission review](docs/sprintz_admission_review.md) for source hashes,
-safety patches, residual limitations and five-layer evidence.
-
-The paper-defined full pipeline is separately registered as `sprintz-fire-huff0`
-(`P2_PIPELINE`): FIRE/XFF prediction, Sprintz bit packing and zero-block RLE, followed
-by one Huff0 block. It supports the same integer UTS/MTS domain but limits canonical
-raw input to 120 KiB so the entropy stage remains a single bounded block. Raw and
-constant Huff0 outcomes are explicit, charged modes. See the
-[SprintzFIRE+Huf admission review](docs/sprintz_fire_huff0_admission_review.md).
-
-```bash
-conda run -n CompressBench14 python tools/qualify_sprintz_fire_huff0.py
-PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
-  configs/experiments/sprintz-fire-huff0-qualification.toml --output-root runs
-PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
-  configs/experiments/sprintz-fire-huff0-formal.toml --output-root runs
-```
-
-Native codec API timings are enabled by default for LZ4, Zstd, Snappy, Brotli, DEFLATE,
-bzip2, XZ, LZSS, LZSSE8, Huff0, FSE, Sprintz-Delta, Sprintz-FIRE, SprintzFIRE+Huf,
-ALP, ALP-RD, Serf-Qt, Serf-XOR, NeaTS and LeaTS (including the historical restricted u8 Sprintz
-registrations).
-Disable them with `native_timing = [false]` in `[sweep]`. They supplement CORE and
-PIPELINE rather than replacing the selected timing scope. See
-[native codec timing](docs/native_codec_timing.md) and the formal example in
-`configs/experiments/native-timing-formal-comparison.toml`.
-
-XZ uses a persistent `lzma_code()` LZMA2 stream, preset 6, one CPU thread, no data check and
-mandatory structural CRC32. Its index and headers are fully charged. Raw LZMA/.lzma, EXTREME,
-BCJ/delta and multithreading are not registered. See [XZ self-check](docs/xz_stream_self_check.md).
-
-The spreadsheet's `LZ77` row points to zlib/RFC1951, the same executable codec as
-DEFLATE. Select `algorithms = ["lz77"]` to use its audited mapping to `deflate-zlib`.
-This measures complete DEFLATE (dictionary matching plus Huffman), not pure LZ77.
-Selecting both names generates one canonical task, not duplicate ranking entries.
-`codecs list` discloses mappings separately; runs freeze codec_alias_snapshot.json.
-See [LZ77 mapping self-check](docs/lz77_self_check.md).
-
-All registered aliases are usable in experiment `algorithms` and in `build_codec.py`:
-
-| Selectable alias | Implementation | Track |
-|---|---|---|
-| `lz77` | `deflate-zlib` | VALUE / TIMESTAMP |
-| `gorilla` | `prometheus-xor-chunk` | SYSTEM |
-| `delta-of-delta` | `prometheus-xor-chunk` | SYSTEM |
-| `second-order-difference` | `prometheus-xor-chunk` | SYSTEM |
-
-For example, use `algorithms = ["gorilla"]` with `tracks = ["SYSTEM"]` in the
-Prometheus XOR experiment configuration. `delta-of-delta` and `second-order-difference`
-can replace `gorilla` in that same configuration. The frozen configuration retains
-the selected alias, and `codec_alias_snapshot.json` records its mapping. Execution,
-build artifacts and statistics use the canonical codec identity. Selecting several
-aliases of the same implementation produces one task per canonical configuration.
-
-```bash
-python tools/build_codec.py lz77 --profile all
-python tools/build_codec.py gorilla --profile all
-python tools/build_codec.py delta-of-delta --profile all
-python tools/build_codec.py second-order-difference --profile all
-```
-
-DEFLATE, LZ4 Frame, Zstd Frame, Brotli, bzip2 and xz each have separately keyed native
-streaming workload profiles. They keep one
-zlib encoder/decoder context across caller-sized blocks, uses explicit block-major
-buffer order, reports first-output/block latency and state/buffer limits, and requires
-one final `Z_FINISH`. Streaming results are not merged with one-shot repetition timing;
-see `configs/experiments/deflate-zlib-streaming-*.toml` and the DEFLATE self-check.
-
-The spreadsheet label `BZ2 (Huffman Coding)` is registered as `bzip2-stream`, a
-complete bzip2 1.0.8 BWT + MTF/RLE + Huffman codec rather than a pure Huffman
-primitive. The default is level 9, single-thread scalar execution, normal-memory
-decode and one exact stream; all bzip2 stream bytes are charged. See the
-[bzip2 five-layer self-check](docs/bzip2_stream_self_check.md).
-
-LZSS fixes EI=10/EJ=4/initial byte 0x20, upstream safe code and stack work buffers.
-Its one-shot call flushes bits internally; mandatory Finalize acknowledges completion
-with zero bytes. Exact token/decoded-length/zero-tail validation supplements upstream
-EOF tolerance, and all descriptors/token/padding bytes are charged. Alternative LZSS
-parameters, LZSSE, streaming and query are not qualified by this variant. See
-[LZSS five-layer self-check](docs/lzss_raw_self_check.md), including sanitizer coverage
-and the void dependency's redistribution-review limitation.
-
-`lzss-dipperstein-c` retains Michael Dipperstein's 12/4 bitstream, 4096-byte
-space-filled window and binary-tree matcher. A hashed out-of-tree patch fixes upstream
-sentinel out-of-bounds operations and is release-bitstream-equivalent on 48 retained
-cases. The original Rust `lzss-raw` and all its evidence remain available; the two
-AlgorithmIDs and rankings are never merged. See
-[Dipperstein C LZSS self-check](docs/lzss_dipperstein_c_self_check.md).
-
-```bash
-PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
-  configs/experiments/lz77-qualification.toml --output-root runs
-PYTHONPATH=src conda run -n CompressBench14 python -m tscompbench run validate \
-  configs/experiments/lz77-formal.toml --output-root runs
-```
-
-## Layer 1 invariants
-
-- Dataset identity is derived from content hashes and declared semantics, never an
-  absolute path.
-- CSV/NPZ file size is provenance only and is never used as the compression denominator.
-- Timestamp, value, validity, topology, and physical layout are separate contracts.
-- Loaders reject undeclared casts, sorting, filling, interpolation, reshaping, and null
-  handling.
-- PEMS arrays retain their native three-dimensional shape and have no synthesized time
-  axis.
-- Characterization receives immutable arrays and records whether metrics are exact or
-  sampled.
-- The canonical stream is versioned, little-endian, sequentially readable from C/C++,
-  and protected by SHA-256.
-- Run sets are append-only, refuse overwrite, serialize preparation with a lock, and
-  reuse only identity- and hash-verified artifacts after an interrupted run.
-
-## Layer 2 invariants
-
-- A source folder or upstream benchmark is evidence, never automatic codec qualification.
-- All 221 logical source entries receive a deterministic pre-onboarding classification;
-  only reviewed codec manifests receive an AlgorithmID.
-- Capability negotiation always returns DIRECT_SUPPORTED, ADAPTER_LOSSLESS,
-  ADAPTER_LOSSY, or UNSUPPORTED with structured reasons.
-- Adapter operations disclose before/after descriptors, copies, allocations, padding,
-  side-information bits, timing scopes, inverse mapping, and validation method.
-- Algorithmic preprocessing has a separate versioned plan and independent validator.
-- ConfigID includes expanded codec defaults and framework seed; invalid parameter points
-  remain present with SCHEMA_ERROR.
-- Unsupported tasks remain in deterministic task_plan.jsonl and never invoke a codec.
-- ExecutionPathHash binds the loaded artifact hash, adapter/source identity, environment,
-  requested/actual ISA, affinity, thread/process budget, alignment, tail, and fallback.
-- Semantic, execution, and resource keys are nested in that order; unknown facts are not
-  removed to manufacture comparability.
-
-## Layer 3 invariants
-
-- Timestamp, Value, and SYSTEM routes cannot leak data objects across Track boundaries;
-  SYSTEM requires a hashed common SegmentPlan.
-- Boundary/safety and minimal correctness pass before formal repetitions. Unsupported
-  tasks remain diagnostic rows and never call a codec.
-- A codec lifecycle is `update -> finalize -> accounting -> independent decode`; capacity
-  is not size, and only finalized used bytes enter FinalBits.
-- Lossless values use integer exactness or IEEE byte equality. Error-bounded lossy values
-  use raw violations as a hard gate; numerical tolerance is diagnostic only.
-- Correctness, accounting, timing, and resource observations come from the same formal
-  repetition; they are never spliced from separate correctness and speed runs.
-- Complete evidence is append-only JSONL; `runs.csv` is an atomic recoverable projection.
-  Batch-0 oracles validate the harness and are never leaderboard eligible.
-
-## Layer 4 invariants
-
-- `FORMAL` profiles enforce at least three warmups and 0.5 seconds, at least ten raw
-  repetitions, and a registered 1–3 second minimum duration per repetition.
-- Minimum-duration loops default to `INDEPENDENT_OBJECT`: every inner iteration creates,
-  finalizes, decodes, and closes an independent codec object.
-- CORE, PIPELINE, and in-memory E2E boundaries are retained together; the selected scope
-  determines direct throughput comparison and is part of ExecutionComparabilityKey.
-- CPU user/system/total time, equivalent cores, core-seconds/GB, baseline/peak/incremental
-  memory, faults, context switches, I/O, thread count, and swap evidence are raw fields.
-- A requested resource scope that is unavailable is explicitly `UNSUPPORTED`; it is not
-  silently replaced by zero. Perf counters and energy likewise retain null values plus a
-  reason when no active collector exists.
-- Query sets are seeded and generated outside timers from the standard range/projection
-  matrix. Query and streaming paths run only when codec capability and adapter protocol
-  both exist; Batch-0 oracles therefore report NOT_REQUESTED/UNSUPPORTED, never invented
-  latency.
-- `QUALIFICATION` profiles remain available for fast framework tests and are never enough
-  to make a third-party codec leaderboard-eligible.
-
-## Layer 5 invariants
-
-- `run_components.jsonl` and `task_plan.jsonl` are hashed read-only inputs. Derived files
-  never rewrite raw evidence or invoke a codec.
-- Eligibility is recorded for space/quality, performance, and resource analyses. Every
-  excluded repetition retains explicit reason codes in `eligibility.csv`.
-- `summary.csv` groups only formal, complete, PASS repetitions with the same DatasetID,
-  AlgorithmID, ConfigID, ExecutionPathHash, ProfileID, and RunRecord schema. Incomplete
-  or duplicate repetition groups are excluded as a whole.
-- Times are normalized by declared independent inner iterations. Median, P25/P75, mean,
-  sample SD, CV, and deterministic bootstrap median intervals are retained; fastest-only
-  values never become the ranking statistic.
-- Per-dataset summaries are primary. `corpus_summary.csv` separately publishes micro
-  size/throughput, compression-factor geometric mean, peak-memory max/p95, and CPU cost.
-- Coverage uses the frozen task universe and exposes partial/failed/unsupported/OOM/
-  timeout outcomes. Coverage is never converted into a weighted score.
-- Space, speed, and resource comparisons respectively require Semantic, Execution, and
-  Resource keys. Pareto and dense per-metric ranks never cross those boundaries.
-- `comparability.csv` expands each key into readable semantic, execution, and resource
-  contexts, including TimingScope, ISA/device, thread budget, fallback, and adapter scope.
-- The HTML report embeds deterministic SVG coverage and space/throughput charts. Each
-  throughput chart is split by DatasetID, ExecutionComparabilityKey, and ProfileID so
-  visually adjacent points remain directly comparable.
-- Every summary carries its RunIDs, input/bitstream/canonical hashes, SourceArtifactID,
-  adapter/binary hash, EnvironmentID, ConfigID, ExecutionPathHash, and comparison keys.
-
-LZSSE8 evidence and limitations: [five-layer self-check](docs/lzsse8_raw_self_check.md).
+阅读顺序：[发布状态说明](RELEASE_DESCRIPTION.md) → [最近证据刷新](docs/native_codec_evidence_refresh.md) → 对应算法接入卡与实验配置。历史变化见 [CHANGELOG.md](CHANGELOG.md)，文件保留规则见 [Git tracking policy](docs/git_tracking_policy.md)。

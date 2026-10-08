@@ -1,0 +1,1165 @@
+{
+  "title": "TSDataCompressBenchMark · 五层运行框架与数据流",
+  "phases": [
+    {
+      "id": "data",
+      "title": "数据准备",
+      "en": "Data Preparation",
+      "duties": [
+        "统一数据输入",
+        "保留原始语义",
+        "冻结可复用数据基础"
+      ],
+      "outputs": [
+        "DatasetID / Manifest 快照",
+        "*.canonical.tscb",
+        "*.characterization.json",
+        "preparation-record.json",
+        "冻结配置 / environment.json"
+      ],
+      "constraints": [
+        "校验源文件 SHA-256",
+        "不隐式排序或重采样",
+        "保留 shape / dtype / validity",
+        "保留 timestamp 来源与 topology",
+        "复用工件须验证一致性"
+      ]
+    },
+    {
+      "id": "plan",
+      "title": "能力与配置",
+      "en": "Capability & Configuration",
+      "duties": [
+        "注册算法与来源",
+        "展开完整参数空间",
+        "生成任务与可比性键"
+      ],
+      "outputs": [
+        "AlgorithmID / SourceArtifactID",
+        "ConfigID / resolved_configs.json",
+        "显式适配与预处理计划",
+        "ExecutionPathHash / 三级键",
+        "task_plan.jsonl / 注册快照"
+      ],
+      "constraints": [
+        "按数据与参数匹配能力",
+        "此阶段制定计划，不执行适配",
+        "实际 ISA / fallback 可追溯",
+        "冻结完整任务全集",
+        "不静默丢弃不支持组合"
+      ]
+    },
+    {
+      "id": "exec",
+      "title": "执行验证",
+      "en": "Execution & Validation",
+      "duties": [
+        "Track 安全路由",
+        "预检与隔离执行",
+        "逐次验证完整编解码"
+      ],
+      "outputs": [
+        "Preflight / Warmup 记录",
+        "逐次 Correctness 与原因",
+        "FinalBits / 完整成本",
+        "bitstream / input 与输出哈希",
+        "PASS 与各类失败诊断"
+      ],
+      "constraints": [
+        "输入 / canary / 边界检查",
+        "超时与内存限制、进程隔离",
+        "Finalize 必须计入完整对象",
+        "每次正式 repetition 仍验证",
+        "不同 LossMode 按契约检查"
+      ]
+    },
+    {
+      "id": "measure",
+      "title": "性能测评",
+      "en": "Performance Evaluation",
+      "duties": [
+        "与正式实验共享执行",
+        "分口径计时与资源采集",
+        "条件查询与流式工作负载"
+      ],
+      "outputs": [
+        "Encode / Decode / E2E 计时",
+        "CORE / PIPELINE 分离",
+        "同次 CPU / Memory / I/O",
+        "条件 Query / Streaming 结果",
+        "RunID / 原始记录 / CSV 投影"
+      ],
+      "constraints": [
+        "编码、解码分别满足最短时长",
+        "E2E 模式还须 E2E 达标",
+        "Query / Streaming 请求且支持",
+        "Energy / counters 未激活时",
+        "记录 NOT_COLLECTED / UNSUPPORTED"
+      ]
+    },
+    {
+      "id": "stats",
+      "title": "统计分析与报告",
+      "en": "Statistics & Reporting",
+      "duties": [
+        "证据资格过滤",
+        "分层比较与完整覆盖率",
+        "统计、排名与最终报告"
+      ],
+      "outputs": [
+        "eligibility.csv / summary.csv",
+        "corpus_summary.csv",
+        "comparability.csv / pareto.csv",
+        "ranking.csv / coverage.csv",
+        "机器报告 / Markdown / HTML"
+      ],
+      "constraints": [
+        "只读冻结证据，不再调用 codec",
+        "资格过滤先于统计聚合",
+        "性能计划完整且至少 10 次",
+        "仅在相应可比性组内比较",
+        "Coverage 不是综合评分"
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "id": "entry",
+      "phase": "data",
+      "label": "命令入口与配置",
+      "detail": "CLI / ExperimentConfig",
+      "lines": [
+        "CLI / Benchmark Runner",
+        "加载 ExperimentConfig"
+      ],
+      "source": [
+        "cli.py:main",
+        "configuration.py:load_experiment_config"
+      ],
+      "role": "process"
+    },
+    {
+      "id": "freeze",
+      "phase": "data",
+      "label": "Run Set 初始化与恢复",
+      "detail": "配置 / Environment 冻结",
+      "lines": [
+        "冻结配置与 Environment",
+        "锁、恢复与一致性校验"
+      ],
+      "source": [
+        "runner.py:initialize_run_set"
+      ],
+      "role": "process"
+    },
+    {
+      "id": "dataset",
+      "phase": "data",
+      "label": "数据集注册与校验",
+      "detail": "DatasetRegistry / Manifest",
+      "lines": [
+        "DatasetRegistry / Manifest",
+        "校验源文件 SHA-256"
+      ],
+      "source": [
+        "datasets/registry.py:DatasetRegistry"
+      ],
+      "role": "process"
+    },
+    {
+      "id": "loader",
+      "phase": "data",
+      "label": "规范化数据加载",
+      "detail": "load_dataset / 内存表示",
+      "lines": [
+        "load_dataset",
+        "保留 T / V / validity / shape"
+      ],
+      "source": [
+        "datasets/loaders.py:load_dataset"
+      ],
+      "role": "process"
+    },
+    {
+      "id": "characterize",
+      "phase": "data",
+      "label": "数据特征分析",
+      "detail": "Timestamp / Value / Topology",
+      "lines": [
+        "characterize",
+        "Timestamp / Value / Topology"
+      ],
+      "source": [
+        "datasets/characterize.py:characterize"
+      ],
+      "role": "process"
+    },
+    {
+      "id": "canonical",
+      "phase": "data",
+      "label": "Canonical 工件生成",
+      "detail": "二进制 / 分析 / 准备记录",
+      "lines": [
+        "写 Canonical Binary Data",
+        "Manifest / 特征 / 准备记录"
+      ],
+      "source": [
+        "datasets/prepare.py:prepare_dataset"
+      ],
+      "role": "artifact"
+    },
+    {
+      "id": "registry",
+      "phase": "plan",
+      "label": "Codec / Source 注册",
+      "detail": "AlgorithmID / 来源与工件",
+      "lines": [
+        "Codec / Source Registry",
+        "AlgorithmID / 工件身份"
+      ],
+      "source": [
+        "codecs/registry.py:CodecRegistry",
+        "adapters/factory.py:adapter_artifacts"
+      ],
+      "role": "process"
+    },
+    {
+      "id": "sweep",
+      "phase": "plan",
+      "label": "参数扫描与配置生成",
+      "detail": "ConfigID / 完整参数空间",
+      "lines": [
+        "Parameter Sweep",
+        "ConfigID / 完整参数空间"
+      ],
+      "source": [
+        "planning/sweep.py:expand_sweep"
+      ],
+      "role": "process"
+    },
+    {
+      "id": "universe",
+      "phase": "plan",
+      "label": "展开完整候选组合",
+      "detail": "Dataset × Algorithm × Track × Config",
+      "lines": [
+        "遍历 Dataset × Algorithm",
+        "× Track × Config / Profile"
+      ],
+      "source": [
+        "runner.py:plan_run_set"
+      ],
+      "role": "process"
+    },
+    {
+      "id": "negotiate",
+      "phase": "plan",
+      "label": "能力协商与四态结果",
+      "detail": "直接 / 无损适配 / 有损适配 / 不支持",
+      "lines": [
+        "DIRECT_SUPPORTED",
+        "ADAPTER_LOSSLESS",
+        "ADAPTER_LOSSY",
+        "UNSUPPORTED"
+      ],
+      "source": [
+        "codecs/negotiation.py:negotiate"
+      ],
+      "role": "process"
+    },
+    {
+      "id": "plans",
+      "phase": "plan",
+      "label": "显式适配与预处理计划",
+      "detail": "计划制定 · 执行时验证",
+      "lines": [
+        "Compatibility / Preprocess Plan",
+        "此处制定，Layer 3 执行验证"
+      ],
+      "source": [
+        "codecs/negotiation.py:negotiate",
+        "preprocess/contracts.py:build_preprocess_plan"
+      ],
+      "role": "process"
+    },
+    {
+      "id": "resolution",
+      "phase": "plan",
+      "label": "执行路径解析",
+      "detail": "ISA / Device / Threads / Fallback",
+      "lines": [
+        "Execution Resolution",
+        "ISA / Device / Threads / Fallback"
+      ],
+      "source": [
+        "planning/resolution.py:resolve_execution"
+      ],
+      "role": "process"
+    },
+    {
+      "id": "keys",
+      "phase": "plan",
+      "label": "层级可比性键",
+      "detail": "Semantic → Execution → Resource",
+      "lines": [
+        "ExecutionPathHash",
+        "Semantic / Execution / Resource 键"
+      ],
+      "source": [
+        "planning/resolution.py:build_comparability_keys"
+      ],
+      "role": "process"
+    },
+    {
+      "id": "tasks",
+      "phase": "plan",
+      "label": "冻结任务与注册快照",
+      "detail": "BenchmarkTask / task_plan.jsonl",
+      "lines": [
+        "BenchmarkTask / task_plan.jsonl",
+        "保留不支持任务与状态原因"
+      ],
+      "source": [
+        "planning/tasks.py:create_task",
+        "runner.py:plan_run_set"
+      ],
+      "role": "artifact"
+    },
+    {
+      "id": "track",
+      "phase": "exec",
+      "label": "按 Benchmark Track 路由",
+      "detail": "TIMESTAMP / VALUE / SYSTEM",
+      "lines": [
+        "TIMESTAMP：时间戳",
+        "VALUE：值 / validity",
+        "SYSTEM：T + V / Segment Plan"
+      ],
+      "source": [
+        "execution/routing.py:route_canonical_artifact"
+      ],
+      "role": "process"
+    },
+    {
+      "id": "gates",
+      "phase": "exec",
+      "label": "任务、源码与工件门控",
+      "detail": "Source / Build / Executor",
+      "lines": [
+        "任务状态 / 源码 / 构建工件",
+        "已注册的预处理执行器"
+      ],
+      "source": [
+        "execution/preflight.py:preflight_task"
+      ],
+      "role": "process"
+    },
+    {
+      "id": "input",
+      "phase": "exec",
+      "label": "输入校验",
+      "detail": "Input Validation",
+      "lines": [
+        "Input Validation",
+        "输入描述、哈希与契约"
+      ],
+      "source": [
+        "validation/input.py:validate_routed_input"
+      ],
+      "role": "process"
+    },
+    {
+      "id": "adapter",
+      "phase": "exec",
+      "label": "实际适配与适配后验证",
+      "detail": "Compatibility Adapter",
+      "lines": [
+        "Compatibility Adapter",
+        "Post-Adapter Validation"
+      ],
+      "source": [
+        "execution/preparation.py:prepare_execution_input"
+      ],
+      "role": "process"
+    },
+    {
+      "id": "preprocess",
+      "phase": "exec",
+      "label": "可选预处理阶段验证",
+      "detail": "Preprocess Stage Validation",
+      "lines": [
+        "可选 Preprocess Stage Validation",
+        "声明、执行器与阶段证据一致"
+      ],
+      "source": [
+        "preprocess/runtime.py:validate_pipeline_stages"
+      ],
+      "role": "process"
+    },
+    {
+      "id": "boundary",
+      "phase": "exec",
+      "label": "边界与安全 Dry-run",
+      "detail": "Boundary / Safety Suite",
+      "lines": [
+        "Boundary / Safety Dry-run",
+        "空输入、边界、容量与内存安全"
+      ],
+      "source": [
+        "validation/boundary.py:run_boundary_suite"
+      ],
+      "role": "process"
+    },
+    {
+      "id": "minimal",
+      "phase": "exec",
+      "label": "最小完整 Roundtrip",
+      "detail": "独立编解码 / Common Correctness",
+      "lines": [
+        "最小完整 Roundtrip",
+        "Common Correctness"
+      ],
+      "source": [
+        "execution/preflight.py:preflight_task"
+      ],
+      "role": "process"
+    },
+    {
+      "id": "preflight",
+      "phase": "exec",
+      "label": "Preflight 是否通过",
+      "detail": "正确性与安全门控",
+      "lines": [
+        "Preflight",
+        "正确性 / 安全是否通过"
+      ],
+      "source": [
+        "execution/preflight.py:preflight_task"
+      ],
+      "role": "decision"
+    },
+    {
+      "id": "warmup",
+      "phase": "exec",
+      "label": "预热 Warmup",
+      "detail": "次数与预热时长门槛",
+      "lines": [
+        "Warmup",
+        "预热次数与时长门槛"
+      ],
+      "source": [
+        "execution/repetition.py:perform_warmup"
+      ],
+      "role": "process"
+    },
+    {
+      "id": "formal",
+      "phase": "exec",
+      "label": "正式重复实验",
+      "detail": "Formal Repetitions / 独立对象",
+      "lines": [
+        "Formal Repetitions",
+        "独立对象 / 逐次验证 / 时长内循环"
+      ],
+      "source": [
+        "execution/orchestrator.py:execute_task",
+        "execution/repetition.py:perform_measured_roundtrip"
+      ],
+      "role": "process"
+    },
+    {
+      "id": "diagnostic",
+      "phase": "exec",
+      "label": "失败诊断与状态证据",
+      "detail": "失败原因 / DIAGNOSTIC",
+      "lines": [
+        "UNSUPPORTED / BUILD_UNAVAILABLE",
+        "ISA_UNSUPPORTED / CORRECTNESS_FAIL",
+        "BOUND_VIOLATION / MEMORY_SAFETY_FAIL",
+        "TIMEOUT / OOM / CRASHED"
+      ],
+      "source": [
+        "execution/orchestrator.py:execute_task"
+      ],
+      "role": "failure"
+    },
+    {
+      "id": "compress",
+      "phase": "exec",
+      "label": "独立 Context 与编码",
+      "detail": "Compress Update",
+      "lines": [
+        "独立 Context",
+        "Compress Update"
+      ],
+      "source": [
+        "execution/repetition.py:_encode"
+      ],
+      "role": "process"
+    },
+    {
+      "id": "finalize",
+      "phase": "exec",
+      "label": "强制 Finalize / Flush",
+      "detail": "结束写入 / 完整对象",
+      "lines": [
+        "Finalize / Flush",
+        "结束写入，包含尾部字节"
+      ],
+      "source": [
+        "execution/repetition.py:_encode"
+      ],
+      "role": "process"
+    },
+    {
+      "id": "accounting",
+      "phase": "exec",
+      "label": "完整对象成本计量",
+      "detail": "Accounting Ledger / FinalBits",
+      "lines": [
+        "Accounting Ledger / FinalBits",
+        "metadata / index / padding / side info"
+      ],
+      "source": [
+        "accounting/ledger.py:AccountingLedger"
+      ],
+      "role": "process"
+    },
+    {
+      "id": "decompress",
+      "phase": "exec",
+      "label": "独立 Context 解码",
+      "detail": "Decompress",
+      "lines": [
+        "独立解码 Context",
+        "Decompress / 重建结果"
+      ],
+      "source": [
+        "execution/repetition.py:perform_roundtrip"
+      ],
+      "role": "process"
+    },
+    {
+      "id": "correctness",
+      "phase": "exec",
+      "label": "公共正确性与 LossMode",
+      "detail": "T / V / Validity / Pairing",
+      "lines": [
+        "Common Correctness",
+        "shape / channel / T-V pairing",
+        "输入不可变 / canary / determinism"
+      ],
+      "source": [
+        "validation/correctness.py:validate_common_correctness"
+      ],
+      "role": "process"
+    },
+    {
+      "id": "lossless",
+      "phase": "exec",
+      "label": "Lossless 按位还原",
+      "detail": "值数据 dtype / IEEE bits",
+      "lines": [
+        "Lossless",
+        "值数据按位还原 / dtype"
+      ],
+      "source": [
+        "validation/correctness.py:validate_common_correctness"
+      ],
+      "role": "validation"
+    },
+    {
+      "id": "lossy",
+      "phase": "exec",
+      "label": "Lossy 按模式验证",
+      "detail": "误差界或质量 · 区分模式",
+      "lines": [
+        "Error-bounded：误差界 + 质量",
+        "Unbounded：质量，无误差保证",
+        "Rate：实际 FinalBits / 目标记录",
+        "Summary：无重建，安全检查"
+      ],
+      "source": [
+        "validation/correctness.py:validate_common_correctness"
+      ],
+      "role": "validation"
+    },
+    {
+      "id": "policy",
+      "phase": "measure",
+      "label": "同次正式实验测量策略",
+      "detail": "冻结 MeasurementPolicy",
+      "lines": [
+        "冻结 MeasurementPolicy",
+        "共享 repetition，非第二轮实验"
+      ],
+      "source": [
+        "measurement/contracts.py:MeasurementPolicy"
+      ],
+      "role": "process"
+    },
+    {
+      "id": "timing",
+      "phase": "measure",
+      "label": "分范围计时与时长控制",
+      "detail": "CORE / PIPELINE / E2E",
+      "lines": [
+        "CORE / PIPELINE / E2E 分离",
+        "Encode、Decode 各自达标",
+        "native / stage timing 有条件补充"
+      ],
+      "source": [
+        "execution/repetition.py:perform_measured_roundtrip",
+        "measurement/contracts.py:MeasurementPolicy"
+      ],
+      "role": "process"
+    },
+    {
+      "id": "resources",
+      "phase": "measure",
+      "label": "同步进程资源观测",
+      "detail": "CPU / Memory / I/O",
+      "lines": [
+        "同一次 repetition 采集资源",
+        "CPU / Memory / I/O",
+        "Energy / counters：如实 availability"
+      ],
+      "source": [
+        "measurement/resources.py:ResourceSampler"
+      ],
+      "role": "process"
+    },
+    {
+      "id": "workloads",
+      "phase": "measure",
+      "label": "条件工作负载调度",
+      "detail": "Profile 请求且 codec 支持",
+      "lines": [
+        "Profile 请求且 codec 支持",
+        "Query / Streaming 隔离执行"
+      ],
+      "source": [
+        "execution/orchestrator.py:execute_task"
+      ],
+      "role": "process"
+    },
+    {
+      "id": "raw",
+      "phase": "measure",
+      "label": "原始证据与可恢复投影",
+      "detail": "run_components.jsonl / runs.csv",
+      "lines": [
+        "追加 run_components.jsonl",
+        "runs.csv：可重建扁平投影",
+        "events.jsonl：运行事件"
+      ],
+      "source": [
+        "storage/runs.py:append_run_record",
+        "storage/events.py:append_event"
+      ],
+      "role": "artifact"
+    },
+    {
+      "id": "query",
+      "phase": "measure",
+      "label": "Query / Random Access",
+      "detail": "请求且支持时执行",
+      "lines": [
+        "Query / Random Access",
+        "请求且支持：延迟 / 放大 / 正确性"
+      ],
+      "source": [
+        "measurement/workloads.py:execute_query_workload"
+      ],
+      "role": "optional"
+    },
+    {
+      "id": "streaming",
+      "phase": "measure",
+      "label": "Streaming Benchmark",
+      "detail": "请求且支持时执行",
+      "lines": [
+        "Streaming Benchmark",
+        "请求且支持：块延迟 / 状态 / checkpoint"
+      ],
+      "source": [
+        "measurement/workloads.py:execute_streaming_workload"
+      ],
+      "role": "optional"
+    },
+    {
+      "id": "evidence",
+      "phase": "stats",
+      "label": "读取冻结任务与原始证据",
+      "detail": "只读 task / raw / provenance",
+      "lines": [
+        "冻结任务 / raw / provenance",
+        "只读，校验完整证据链"
+      ],
+      "source": [
+        "statistics/engine.py:analyze_run_set"
+      ],
+      "role": "process"
+    },
+    {
+      "id": "eligibility",
+      "phase": "stats",
+      "label": "资格过滤与排除原因",
+      "detail": "Eligibility Filtering",
+      "lines": [
+        "正式模式 / 来源 / 正确性 / 计量",
+        "完整重复与路径 / 排除原因"
+      ],
+      "source": [
+        "statistics/engine.py:_eligibility"
+      ],
+      "role": "process"
+    },
+    {
+      "id": "summary",
+      "phase": "stats",
+      "label": "合格重复的逐数据集统计",
+      "detail": "median / quantiles / bootstrap CI",
+      "lines": [
+        "Dataset + Algorithm + Config",
+        "ExecutionPath + Profile + schema",
+        "median / 分位数 / bootstrap CI"
+      ],
+      "source": [
+        "statistics/engine.py:_summaries"
+      ],
+      "role": "process"
+    },
+    {
+      "id": "corpus",
+      "phase": "stats",
+      "label": "Corpus 汇总与分层比较",
+      "detail": "Semantic → Execution → Resource",
+      "lines": [
+        "先逐数据集，后 corpus 汇总",
+        "Semantic：空间 / 质量",
+        "Execution：性能 → Resource：资源"
+      ],
+      "source": [
+        "statistics/engine.py:_corpus_summaries",
+        "statistics/engine.py:_comparability_groups"
+      ],
+      "role": "process"
+    },
+    {
+      "id": "pareto",
+      "phase": "stats",
+      "label": "Pareto 与单指标排名",
+      "detail": "同数据集 / 同键 / 同 Profile",
+      "lines": [
+        "Pareto / 单指标排名",
+        "只在相应可比性组内比较"
+      ],
+      "source": [
+        "statistics/engine.py:_pareto_rows",
+        "statistics/engine.py:_ranking_rows"
+      ],
+      "role": "process"
+    },
+    {
+      "id": "report",
+      "phase": "stats",
+      "label": "最终结果与报告生成",
+      "detail": "CSV / 机器报告 / Markdown / HTML",
+      "lines": [
+        "Result / Report Generator",
+        "CSV / 机器报告 / Markdown / HTML"
+      ],
+      "source": [
+        "reporting/generator.py:generate_report"
+      ],
+      "role": "artifact"
+    },
+    {
+      "id": "coverage",
+      "phase": "stats",
+      "label": "冻结任务全集 Coverage",
+      "detail": "保留无 PASS 的任务",
+      "lines": [
+        "Coverage：冻结任务全集",
+        "包括无 PASS / 不支持 / 失败",
+        "不把覆盖率换算成评分"
+      ],
+      "source": [
+        "statistics/engine.py:_coverage"
+      ],
+      "role": "process"
+    }
+  ],
+  "edges": [
+    {
+      "id": "entry--freeze",
+      "source": "entry",
+      "target": "freeze",
+      "label": "",
+      "kind": "flow"
+    },
+    {
+      "id": "freeze--dataset",
+      "source": "freeze",
+      "target": "dataset",
+      "label": "",
+      "kind": "flow"
+    },
+    {
+      "id": "dataset--loader",
+      "source": "dataset",
+      "target": "loader",
+      "label": "",
+      "kind": "flow"
+    },
+    {
+      "id": "loader--characterize",
+      "source": "loader",
+      "target": "characterize",
+      "label": "",
+      "kind": "flow"
+    },
+    {
+      "id": "characterize--canonical",
+      "source": "characterize",
+      "target": "canonical",
+      "label": "",
+      "kind": "flow"
+    },
+    {
+      "id": "canonical--registry",
+      "source": "canonical",
+      "target": "registry",
+      "label": "",
+      "kind": "flow"
+    },
+    {
+      "id": "registry--sweep",
+      "source": "registry",
+      "target": "sweep",
+      "label": "",
+      "kind": "flow"
+    },
+    {
+      "id": "sweep--universe",
+      "source": "sweep",
+      "target": "universe",
+      "label": "",
+      "kind": "flow"
+    },
+    {
+      "id": "universe--negotiate",
+      "source": "universe",
+      "target": "negotiate",
+      "label": "",
+      "kind": "flow"
+    },
+    {
+      "id": "negotiate--plans",
+      "source": "negotiate",
+      "target": "plans",
+      "label": "",
+      "kind": "flow"
+    },
+    {
+      "id": "plans--resolution",
+      "source": "plans",
+      "target": "resolution",
+      "label": "",
+      "kind": "flow"
+    },
+    {
+      "id": "resolution--keys",
+      "source": "resolution",
+      "target": "keys",
+      "label": "",
+      "kind": "flow"
+    },
+    {
+      "id": "keys--tasks",
+      "source": "keys",
+      "target": "tasks",
+      "label": "",
+      "kind": "flow"
+    },
+    {
+      "id": "input--adapter",
+      "source": "input",
+      "target": "adapter",
+      "label": "",
+      "kind": "flow"
+    },
+    {
+      "id": "adapter--preprocess",
+      "source": "adapter",
+      "target": "preprocess",
+      "label": "",
+      "kind": "flow"
+    },
+    {
+      "id": "preprocess--boundary",
+      "source": "preprocess",
+      "target": "boundary",
+      "label": "",
+      "kind": "flow"
+    },
+    {
+      "id": "boundary--minimal",
+      "source": "boundary",
+      "target": "minimal",
+      "label": "",
+      "kind": "flow"
+    },
+    {
+      "id": "minimal--preflight",
+      "source": "minimal",
+      "target": "preflight",
+      "label": "",
+      "kind": "flow"
+    },
+    {
+      "id": "preflight--warmup",
+      "source": "preflight",
+      "target": "warmup",
+      "label": "通过",
+      "kind": "flow"
+    },
+    {
+      "id": "warmup--formal",
+      "source": "warmup",
+      "target": "formal",
+      "label": "",
+      "kind": "flow"
+    },
+    {
+      "id": "preflight--diagnostic",
+      "source": "preflight",
+      "target": "diagnostic",
+      "label": "失败留证",
+      "kind": "error"
+    },
+    {
+      "id": "formal--compress",
+      "source": "formal",
+      "target": "compress",
+      "label": "对象展开",
+      "kind": "expansion"
+    },
+    {
+      "id": "compress--finalize",
+      "source": "compress",
+      "target": "finalize",
+      "label": "",
+      "kind": "flow"
+    },
+    {
+      "id": "finalize--accounting",
+      "source": "finalize",
+      "target": "accounting",
+      "label": "",
+      "kind": "flow"
+    },
+    {
+      "id": "accounting--decompress",
+      "source": "accounting",
+      "target": "decompress",
+      "label": "",
+      "kind": "flow"
+    },
+    {
+      "id": "decompress--correctness",
+      "source": "decompress",
+      "target": "correctness",
+      "label": "",
+      "kind": "flow"
+    },
+    {
+      "id": "correctness--lossless",
+      "source": "correctness",
+      "target": "lossless",
+      "label": "无损",
+      "kind": "flow"
+    },
+    {
+      "id": "correctness--lossy",
+      "source": "correctness",
+      "target": "lossy",
+      "label": "有损或摘要",
+      "kind": "flow"
+    },
+    {
+      "id": "formal--policy",
+      "source": "formal",
+      "target": "policy",
+      "label": "同次采集",
+      "kind": "scope"
+    },
+    {
+      "id": "policy--timing",
+      "source": "policy",
+      "target": "timing",
+      "label": "",
+      "kind": "flow"
+    },
+    {
+      "id": "policy--resources",
+      "source": "policy",
+      "target": "resources",
+      "label": "同步资源",
+      "kind": "scope"
+    },
+    {
+      "id": "timing--workloads",
+      "source": "timing",
+      "target": "workloads",
+      "label": "",
+      "kind": "flow"
+    },
+    {
+      "id": "workloads--query",
+      "source": "workloads",
+      "target": "query",
+      "label": "请求且支持",
+      "kind": "conditional"
+    },
+    {
+      "id": "workloads--streaming",
+      "source": "workloads",
+      "target": "streaming",
+      "label": "请求且支持",
+      "kind": "conditional"
+    },
+    {
+      "id": "workloads--raw",
+      "source": "workloads",
+      "target": "raw",
+      "label": "同次运行记录",
+      "kind": "flow"
+    },
+    {
+      "id": "diagnostic--raw",
+      "source": "diagnostic",
+      "target": "raw",
+      "label": "诊断记录",
+      "kind": "evidence"
+    },
+    {
+      "id": "raw--evidence",
+      "source": "raw",
+      "target": "evidence",
+      "label": "",
+      "kind": "flow"
+    },
+    {
+      "id": "evidence--eligibility",
+      "source": "evidence",
+      "target": "eligibility",
+      "label": "",
+      "kind": "flow"
+    },
+    {
+      "id": "eligibility--summary",
+      "source": "eligibility",
+      "target": "summary",
+      "label": "",
+      "kind": "flow"
+    },
+    {
+      "id": "summary--corpus",
+      "source": "summary",
+      "target": "corpus",
+      "label": "",
+      "kind": "flow"
+    },
+    {
+      "id": "pareto--report",
+      "source": "pareto",
+      "target": "report",
+      "label": "",
+      "kind": "flow"
+    },
+    {
+      "id": "evidence--coverage",
+      "source": "evidence",
+      "target": "coverage",
+      "label": "任务全集",
+      "kind": "evidence"
+    },
+    {
+      "id": "coverage--report",
+      "source": "coverage",
+      "target": "report",
+      "label": "覆盖率",
+      "kind": "flow"
+    },
+    {
+      "id": "tasks--gates",
+      "source": "tasks",
+      "target": "gates",
+      "label": "",
+      "kind": "flow"
+    },
+    {
+      "id": "gates--track",
+      "source": "gates",
+      "target": "track",
+      "label": "",
+      "kind": "flow"
+    },
+    {
+      "id": "track--input",
+      "source": "track",
+      "target": "input",
+      "label": "",
+      "kind": "flow"
+    },
+    {
+      "id": "summary--pareto",
+      "source": "summary",
+      "target": "pareto",
+      "label": "",
+      "kind": "flow"
+    },
+    {
+      "id": "corpus--report",
+      "source": "corpus",
+      "target": "report",
+      "label": "汇总结果",
+      "kind": "evidence"
+    },
+    {
+      "id": "resources--raw",
+      "source": "resources",
+      "target": "raw",
+      "label": "资源证据",
+      "kind": "evidence"
+    },
+    {
+      "id": "query--raw",
+      "source": "query",
+      "target": "raw",
+      "label": "查询结果",
+      "kind": "evidence"
+    },
+    {
+      "id": "streaming--raw",
+      "source": "streaming",
+      "target": "raw",
+      "label": "流式结果",
+      "kind": "evidence"
+    }
+  ],
+  "expansion": {
+    "parent": "formal",
+    "nodes": [
+      "compress",
+      "finalize",
+      "accounting",
+      "decompress",
+      "correctness",
+      "lossless",
+      "lossy"
+    ]
+  }
+}

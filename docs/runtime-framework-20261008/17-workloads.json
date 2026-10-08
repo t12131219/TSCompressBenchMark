@@ -1,0 +1,219 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "TSDataCompressBenchMark · 查询、Streaming 与资源资格",
+    "locale": "zh-CN",
+    "quality_profile": "showcase",
+    "viewBox": [
+      1150,
+      755
+    ],
+    "legend": {
+      "mode": "auto",
+      "entries": {
+        "frontend": {
+          "label": "入口 / 报告"
+        },
+        "backend": {
+          "label": "控制 / 执行"
+        },
+        "database": {
+          "label": "文件证据"
+        },
+        "security": {
+          "label": "资格 / 校验"
+        },
+        "external": {
+          "label": "外部来源"
+        }
+      }
+    }
+  },
+  "components": [
+    {
+      "id": "tscb-17-workloads-n1",
+      "type": "backend",
+      "label": "正式重复结果",
+      "sublabel": "observation",
+      "pos": [
+        60,
+        85
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-17-workloads-n2",
+      "type": "backend",
+      "label": "查询集合与身份",
+      "sublabel": "build_query_workload",
+      "pos": [
+        450,
+        85
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-17-workloads-n3",
+      "type": "backend",
+      "label": "features 能力门",
+      "sublabel": "unavailable_workloads",
+      "pos": [
+        840,
+        85
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-17-workloads-n4",
+      "type": "backend",
+      "label": "隔离查询执行",
+      "sublabel": "execute_query_workload",
+      "pos": [
+        840,
+        335
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-17-workloads-n5",
+      "type": "backend",
+      "label": "隔离流式执行",
+      "sublabel": "execute_streaming_workload",
+      "pos": [
+        450,
+        335
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-17-workloads-n6",
+      "type": "security",
+      "label": "流式最终校验",
+      "sublabel": "stream_decompress / accounting",
+      "pos": [
+        60,
+        335
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-17-workloads-n7",
+      "type": "backend",
+      "label": "workload 失败传播",
+      "sublabel": "INCOMPARABLE",
+      "pos": [
+        60,
+        585
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-17-workloads-n8",
+      "type": "security",
+      "label": "swap / 超额线程门",
+      "sublabel": "RESOURCE_PRESSURE / OVERSUBSCRIBED",
+      "pos": [
+        450,
+        585
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-17-workloads-n9",
+      "type": "backend",
+      "label": "指标缺失与资格",
+      "sublabel": "resource / counter / energy",
+      "pos": [
+        840,
+        585
+      ],
+      "size": [
+        250,
+        95
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "tscb-17-workloads-e0",
+      "to": "tscb-17-workloads-n2",
+      "label": "构造请求",
+      "from": "tscb-17-workloads-n1"
+    },
+    {
+      "id": "tscb-17-workloads-e1",
+      "to": "tscb-17-workloads-n3",
+      "label": "能力判定",
+      "from": "tscb-17-workloads-n2"
+    },
+    {
+      "id": "tscb-17-workloads-e2",
+      "to": "tscb-17-workloads-n4",
+      "label": "查询分支",
+      "from": "tscb-17-workloads-n3",
+      "labelAt": [
+        965.0,
+        194.0
+      ]
+    },
+    {
+      "id": "tscb-17-workloads-e3",
+      "to": "tscb-17-workloads-n5",
+      "label": "另一路 streaming",
+      "from": "tscb-17-workloads-n4"
+    },
+    {
+      "id": "tscb-17-workloads-e4",
+      "to": "tscb-17-workloads-n6",
+      "label": "最终验证",
+      "from": "tscb-17-workloads-n5"
+    },
+    {
+      "id": "tscb-17-workloads-e5",
+      "to": "tscb-17-workloads-n7",
+      "label": "映射状态",
+      "from": "tscb-17-workloads-n6",
+      "labelAt": [
+        185.0,
+        444.0
+      ]
+    },
+    {
+      "id": "tscb-17-workloads-e6",
+      "to": "tscb-17-workloads-n8",
+      "label": "资源门",
+      "from": "tscb-17-workloads-n7"
+    },
+    {
+      "id": "tscb-17-workloads-e7",
+      "to": "tscb-17-workloads-n9",
+      "label": "可用性证据",
+      "from": "tscb-17-workloads-n8"
+    }
+  ]
+}

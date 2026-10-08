@@ -1,0 +1,163 @@
+{
+  "schema_version": "tscb.source-onboarding.v2",
+  "source_artifact_id": "v2:source-artifact:sha256:d8ceb9f284dcbca4eb4a7a911975f21fbab2c8616806432e96dc2e51ab326128",
+  "repository": "https://github.com/lemire/simdcomp",
+  "commit": "d5301778fe5045ca8099252de5a6ed8016a287df",
+  "dirty": false,
+  "submodules": [],
+  "implementation_files": [
+    "adapters/simdcomp/vendor/simdcomp/src/simdbitpacking.c",
+    "adapters/simdcomp/vendor/simdcomp/src/simdintegratedbitpacking.c",
+    "adapters/simdcomp/vendor/simdcomp/src/simdfor.c",
+    "adapters/simdcomp/vendor/simdcomp/src/simdcomputil.c",
+    "adapters/simdcomp/vendor/simdcomp/src/simdpackedselect.c",
+    "adapters/simdcomp/vendor/simdcomp/src/simdpackedsearch.c",
+    "adapters/simdcomp/vendor/simdcomp/src/avxbitpacking.c"
+  ],
+  "public_api_files": [
+    "adapters/simdcomp/vendor/simdcomp/include/simdcomp.h",
+    "adapters/simdcomp/vendor/simdcomp/include/portability.h",
+    "adapters/simdcomp/vendor/simdcomp/include/neon128.h",
+    "adapters/simdcomp/vendor/simdcomp/include/simdbitpacking.h",
+    "adapters/simdcomp/vendor/simdcomp/include/simdintegratedbitpacking.h",
+    "adapters/simdcomp/vendor/simdcomp/include/simdcomputil.h",
+    "adapters/simdcomp/vendor/simdcomp/include/simdfor.h",
+    "adapters/simdcomp/vendor/simdcomp/include/avxbitpacking.h",
+    "adapters/simdcomp/vendor/simdcomp/include/avx512bitpacking.h"
+  ],
+  "benchmark_files": [
+    "adapters/simdcomp/vendor/simdcomp/benchmarks/benchmark.c",
+    "adapters/simdcomp/vendor/simdcomp/benchmarks/bitpackingbenchmark.cpp"
+  ],
+  "test_files": [
+    "adapters/simdcomp/vendor/simdcomp/tests/unit.c",
+    "adapters/simdcomp/vendor/simdcomp/tests/unit_chars.c",
+    "adapters/simdcomp/tests/source_guard.c",
+    "adapters/simdcomp/tests/avx2_guard.c",
+    "adapters/simdcomp/tests/abi_qualification.c",
+    "tests/adapters/test_simdcomp.py"
+  ],
+  "license_files": [
+    "adapters/simdcomp/vendor/simdcomp/LICENSE"
+  ],
+  "third_party_dependencies": [],
+  "object_level_candidates": [
+    "P2_PIPELINE"
+  ],
+  "input_contract": {
+    "dtype": "<u4",
+    "shape": "CONTIGUOUS_VECTOR",
+    "ownership": "BORROWED_IMMUTABLE",
+    "max_count": 16777216,
+    "alignment_bytes": 1,
+    "external_padding_bytes": 0
+  },
+  "output_contract": {
+    "kind": "TSCB_SBP1_UINT32_FOR_CHECKED_DESCRIPTOR_V1",
+    "self_contained": true,
+    "capacity_is_not_size": true,
+    "descriptor_sha256": true,
+    "native_frame_checksum": "FNV1A64"
+  },
+  "lifecycle_contract": {
+    "update": "ONCE",
+    "finalize": "MANDATORY_ZERO_BYTES",
+    "reset": "MODE_ZERO_ONLY",
+    "output_bound": "44 + descriptor bytes + checked SBP1 bound; capacity is not size",
+    "return_length": "tscb_buffer_v1.used_bytes is exact; capacity is not size",
+    "error_codes": {
+      "0": "OK",
+      "1": "INVALID_ARGUMENT",
+      "2": "UNSUPPORTED",
+      "3": "DST_TOO_SMALL",
+      "4": "CODEC_ERROR",
+      "5": "FINALIZE_REQUIRED",
+      "6": "ABI_MISMATCH"
+    },
+    "starting_point": "SERIALIZED_UINT32_BASE",
+    "stage_execution": "FUSED_SOURCE_FOR_BITPACK",
+    "source_apis": [
+      "LENGTH",
+      "FULL"
+    ]
+  },
+  "stream_components": [
+    "descriptor",
+    "sha256",
+    "native_magic",
+    "count",
+    "seed",
+    "wire_mode",
+    "block_size",
+    "block_count",
+    "reserved",
+    "body_length",
+    "block_records",
+    "original_lane_payload",
+    "padding",
+    "fnv64"
+  ],
+  "upstream_tests": [
+    {
+      "name": "source_original_failures_retained",
+      "status": "PASS",
+      "evidence": "build/source-audits/simdcomp-source-patched-guards.json",
+      "log_sha256": "4cc71f61e178240e9273cda974e8a1e80887263706b485cfabf91cad1f89d2ab"
+    },
+    {
+      "name": "avx2_source",
+      "status": "PASS",
+      "evidence": "build/source-audits/simdcomp_avx2_source_tests.json",
+      "log_sha256": "b8b8d322bdf9cb788a87717923213697265836767ff0d78ea67bfe372f0b4139"
+    },
+    {
+      "name": "bounded_native",
+      "status": "PASS",
+      "evidence": "build/source-audits/simdcomp_native_tests.json",
+      "log_sha256": "e28e5cf6678c49ed3b2a88811eba3f22bdad0c5efc2a3142e1e15d00a7a31f09"
+    },
+    {
+      "name": "direct_sdk",
+      "status": "PASS",
+      "evidence": "build/source-audits/simdcomp_sdk_tests.json",
+      "log_sha256": "3312b5c6e05ece18561b96838f7c4ab059a9e030a7a83b220730d1c6fb910026"
+    }
+  ],
+  "builds": [
+    {
+      "kind": "release",
+      "artifact_sha256": "7b904c3d3b6c0bf5976ad75eddb4cc6bc28b86d7ea634804740a547ca3c1409c",
+      "compile_commands_sha256": "7ba9dbcd6a1f4480955d8b5b2ceb5cf0b3f0ee988857c734775b8bdceb006cc7"
+    },
+    {
+      "kind": "debug",
+      "artifact_sha256": "ffcf777cb3edc29cb2ae9193c82294a8eae5bdc8f02434f6e7dd9bf9f8a815d1",
+      "compile_commands_sha256": "3e00fda360076565a0957c16c8f47e3aff05ccdf9928b9018f4dfe21c821f2dd"
+    },
+    {
+      "kind": "sanitizer",
+      "artifact_sha256": "5149f17bb90dd4b815b04c69f0cfd09f9a0c324590c3dd80183fe0a8785434bb",
+      "compile_commands_sha256": "d8114980014986169748aedf0b2c40f364d3b3d548c4d1be4b1d82e766d23c4e"
+    }
+  ],
+  "license_decision": {
+    "spdx": "BSD-3-Clause",
+    "status": "RUN_ALLOWED",
+    "reason": "Original notices retained; four explicit build-only patches"
+  },
+  "known_limitations": [
+    "uint32 UTS only; checked int64 Timestamp and other domains/ISAs remain pending.",
+    "SSE4.1 and separate AVX2 objects; AVX2 tails use explicit SSE length APIs.",
+    "Original source failures retained; patches never modify original vendor bytes.",
+    "A/B source API fused; stage times unavailable; no backend C; D mandatory.",
+    "Disable A selects distinct plain P0; FOR LENGTH/FULL have distinct wire modes.",
+    "Linux x86_64; no runtime fallback/query/streaming; leak detection disabled."
+  ],
+  "unsupported_reason_codes": [
+    "NON_DECLARED_DTYPE",
+    "MULTIVARIATE_NOT_REGISTERED",
+    "STREAMING_UNREGISTERED",
+    "ISA_UNSUPPORTED"
+  ],
+  "source_onboarding_id": "v2:source-onboarding:sha256:a150f4250c08f6446cdeff500b6d78e4ba31d309a65ae18e662ee02387941476"
+}

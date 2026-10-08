@@ -1,0 +1,156 @@
+{
+  "schema_version": "tscb.source-artifact.v2",
+  "key": "fastpfor-simple8b-rle-2457e1e-patched",
+  "kind": "VENDORED_UPSTREAM_SOURCE_CLOSURE",
+  "identity": {
+    "kind": "VENDORED_UPSTREAM_SOURCE_CLOSURE",
+    "key": "fastpfor-simple8b-rle-2457e1e-patched",
+    "repository": "https://github.com/fast-pack/FastPFOR",
+    "commit": "2457e1ed1af35bbf7f4c509c863fa9797e637cb3",
+    "source_closure_sha256": "9daab5d37899b4abedee66921150f6eaeb0feb6fd87d8af7cb7121ab4ad5bb9d",
+    "patch_series": [
+      {
+        "path": "adapters/fastpfor_simple8b_rle/patches/0001-complete-length-word-access-and-tail.patch",
+        "sha256": "5629cfc08ac5adc416679f8f80552ef02a1337c7e35dc52dc4a8b0854a9bade7"
+      }
+    ],
+    "copy_policy": "TRACKED_PINNED_BYTES_EQUAL_NO_PATCH",
+    "selection": "WORKBOOK_RLE_PIN_BENCHMARK_COPY_DIFFERS_NOT_A_STANDALONE_LZBENCH_ENTRY"
+  },
+  "license": {
+    "spdx": "Apache-2.0",
+    "status": "RUN_ALLOWED",
+    "redistribution": "ALLOWED_WITH_LICENSE_NOTICE",
+    "files": [
+      "adapters/fastpfor_simple8b_rle/vendor/fastpfor/LICENSE"
+    ]
+  },
+  "build": {
+    "recipe": "PYTHONPATH=src taskset -c 2 python tools/build_codec.py fastpfor-simple8b-rle-u32 --profile all",
+    "patches": [
+      {
+        "path": "adapters/fastpfor_simple8b_rle/patches/0001-complete-length-word-access-and-tail.patch",
+        "sha256": "5629cfc08ac5adc416679f8f80552ef02a1337c7e35dc52dc4a8b0854a9bade7"
+      }
+    ],
+    "submodules": [],
+    "source_closure": [
+      {
+        "path": "adapters/fastpfor_simple8b_rle/vendor/fastpfor/LICENSE",
+        "upstream_path": "LICENSE",
+        "role": "ORIGINAL_ALGORITHM",
+        "bytes": 10273,
+        "sha256": "73ba74dfaa520b49a401b5d21459a8523a146f3b7518a833eea5efa85130bf68"
+      },
+      {
+        "path": "adapters/fastpfor_simple8b_rle/vendor/fastpfor/AUTHORS",
+        "upstream_path": "AUTHORS",
+        "role": "ORIGINAL_ALGORITHM",
+        "bytes": 178,
+        "sha256": "55b36c85a5f135fc52cc58ba0694fca1305ecd0010a9fcf940727688aeab4a27"
+      },
+      {
+        "path": "adapters/fastpfor_simple8b_rle/vendor/fastpfor/README.md",
+        "upstream_path": "README.md",
+        "role": "ORIGINAL_ALGORITHM",
+        "bytes": 12763,
+        "sha256": "6ab400e9cad8c776e214f6581d4a07a2e2f8356d3adc6f73f460579f77c4fc3c"
+      },
+      {
+        "path": "adapters/fastpfor_simple8b_rle/vendor/fastpfor/headers/common.h",
+        "upstream_path": "headers/common.h",
+        "role": "ORIGINAL_ALGORITHM",
+        "bytes": 1220,
+        "sha256": "44d4a82ea76b251852b16d785fe39d600780b9b9d746c5be3664e27f778abc4e"
+      },
+      {
+        "path": "adapters/fastpfor_simple8b_rle/vendor/fastpfor/headers/codecs.h",
+        "upstream_path": "headers/codecs.h",
+        "role": "ORIGINAL_ALGORITHM",
+        "bytes": 6258,
+        "sha256": "f8f6bd99d7a0edb5a537bbc5fcc191980fe17e86f0aebb1aa92b6160307504df"
+      },
+      {
+        "path": "adapters/fastpfor_simple8b_rle/vendor/fastpfor/headers/util.h",
+        "upstream_path": "headers/util.h",
+        "role": "ORIGINAL_ALGORITHM",
+        "bytes": 12429,
+        "sha256": "dbc1e7a7583e171db0637c3ec348c79ba0ce70ab28d4c7a6526c6941b55363d1"
+      },
+      {
+        "path": "adapters/fastpfor_simple8b_rle/vendor/fastpfor/headers/bitpacking.h",
+        "upstream_path": "headers/bitpacking.h",
+        "role": "ORIGINAL_ALGORITHM",
+        "bytes": 29366,
+        "sha256": "3542087d2bcd4adc596a6ce37b245689024c208f1f4b1779a26218c18776b616"
+      },
+      {
+        "path": "adapters/fastpfor_simple8b_rle/vendor/fastpfor/headers/bitpackinghelpers.h",
+        "upstream_path": "headers/bitpackinghelpers.h",
+        "role": "ORIGINAL_ALGORITHM",
+        "bytes": 18451,
+        "sha256": "5bb307d6ffe610a328bf8df4a81d00f17983e3aa065f069e23d27d53bcb19a2c"
+      },
+      {
+        "path": "adapters/fastpfor_simple8b_rle/vendor/fastpfor/headers/simple8b_rle.h",
+        "upstream_path": "headers/simple8b_rle.h",
+        "role": "ORIGINAL_ALGORITHM",
+        "bytes": 11513,
+        "sha256": "1c15b6d3dded69421328aa6a5c2d8b5800718cec52c2260aabf4bbcce9bc218e"
+      },
+      {
+        "path": "adapters/fastpfor_simple8b_rle/references/fastpfor/src/codecfactory.cpp",
+        "upstream_path": "src/codecfactory.cpp",
+        "role": "BENCHMARK_AND_TEST_REFERENCE",
+        "bytes": 7469,
+        "sha256": "1ae55db5c5b987e77496dab1ded98d43951f4f0a1bd9b147027b3960fd2f8102"
+      },
+      {
+        "path": "adapters/fastpfor_simple8b_rle/references/fastpfor/src/unit.cpp",
+        "upstream_path": "src/unit.cpp",
+        "role": "BENCHMARK_AND_TEST_REFERENCE",
+        "bytes": 7178,
+        "sha256": "5f0d212ab48822a4f17aed13fd90c327de4adaa687f20a405310a4b89a6e3ec4"
+      },
+      {
+        "path": "adapters/fastpfor_simple8b_rle/references/fastpfor/src/inmemorybenchmark.cpp",
+        "upstream_path": "src/inmemorybenchmark.cpp",
+        "role": "BENCHMARK_AND_TEST_REFERENCE",
+        "bytes": 5083,
+        "sha256": "38279eb82d99122033fae1cee67b00f2e183af4121451069a01d71e9cebfeb30"
+      },
+      {
+        "path": "adapters/fastpfor_simple8b_rle/references/fastpfor/headers/cpubenchmark.h",
+        "upstream_path": "headers/cpubenchmark.h",
+        "role": "BENCHMARK_AND_TEST_REFERENCE",
+        "bytes": 4501,
+        "sha256": "0135f8dfd0d0ab262fbc4bc5e43939e5d925dbb8f06bff45d1b8c4c10d978b0f"
+      },
+      {
+        "path": "adapters/fastpfor_simple8b_rle/references/fastpfor/headers/deltautil.h",
+        "upstream_path": "headers/deltautil.h",
+        "role": "BENCHMARK_AND_TEST_REFERENCE",
+        "bytes": 19231,
+        "sha256": "5fe222ffbe833e0e94cbf9b6ce38b80ce07cafaa86bc79434c982aec3db29857"
+      },
+      {
+        "path": "adapters/fastpfor_simple8b_rle/references/fastpfor/unittest/test_simple8b.cpp",
+        "upstream_path": "unittest/test_simple8b.cpp",
+        "role": "BENCHMARK_AND_TEST_REFERENCE",
+        "bytes": 380,
+        "sha256": "6829a4dea03aa50d42802d175256465c9c022bbdc3e8cd8a7cb533f8c03ab5f0"
+      },
+      {
+        "path": "adapters/fastpfor_simple8b_rle/references/fastpfor/CMakeLists.txt",
+        "upstream_path": "CMakeLists.txt",
+        "role": "BENCHMARK_AND_TEST_REFERENCE",
+        "bytes": 9245,
+        "sha256": "379c2c7502ac11a4e4cc73cb585897c4633d9618597c8ee4c2c505827c332f74"
+      }
+    ],
+    "translation_units": [
+      "adapters/fastpfor_simple8b_rle/native/tscb_fastpfor_simple8b_rle.cpp"
+    ],
+    "admission_card": "adapters/fastpfor_simple8b_rle/SOURCE_ADMISSION.md"
+  }
+}

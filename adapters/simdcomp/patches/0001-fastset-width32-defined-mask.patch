@@ -1,0 +1,11 @@
+--- a/src/simdbitpacking.c
++++ b/src/simdbitpacking.c
+@@ -14341,7 +14341,7 @@
+   const int bitsinlane = (index / 4) * b; /* how many bits in lane */
+   const int firstwordinlane = bitsinlane / 32;
+   const int secondwordinlane = (bitsinlane + b - 1) / 32;
+-  const uint32_t mask = (1U << b) - 1;
++  const uint32_t mask = b == 32 ? UINT32_MAX : (1U << b) - 1;
+   if (b == 0)
+     return;
+   /* we zero */

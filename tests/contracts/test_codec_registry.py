@@ -21,9 +21,23 @@ def _registries() -> tuple[SourceRegistry, CodecRegistry]:
 
 def test_codec_manifests_reference_audited_sources_and_have_stable_ids() -> None:
     sources, codecs = _registries()
-    assert len(codecs) == 48
+    assert len(codecs) == 67
+    assert "fastpfor-simple8b-rle-u32" in codecs.keys()
     assert {
-        "chimp", "chimp128", "elf", "elf-plus", "elf-star", "self-star", "prometheus-xor-chunk"
+        "littleintpacker-pack32-u32",
+        "littleintpacker-turbo-u32",
+        "littleintpacker-sc-u32",
+        "littleintpacker-bmi2-u32",
+        "littleintpacker-horizontal-u32",
+    } <= set(codecs.keys())
+    assert {
+        "chimp",
+        "chimp128",
+        "elf",
+        "elf-plus",
+        "elf-star",
+        "self-star",
+        "prometheus-xor-chunk",
     } <= set(codecs.keys())
     assert "alp" in codecs.keys()
     assert "alp-rd" in codecs.keys()
@@ -120,3 +134,13 @@ def test_source_onboarding_requires_build_lifecycle_and_license_evidence() -> No
     assert first["source_onboarding_id"] == validate_onboarding_card(first)["source_onboarding_id"]
     with pytest.raises(CodecContractError, match="license-blocked"):
         validate_onboarding_card({**card, "license_decision": {"status": "BLOCKED"}})
+
+
+@pytest.mark.parametrize("flags", [None, [], "ssse3", [1], [""], ["ssse3", "ssse3"], [["ssse3"]]])
+def test_malformed_required_cpu_flags_are_rejected(tmp_path, flags):
+    sources, codecs = _registries()
+    document = json.loads(json.dumps(codecs.get("oracle-direct").document))
+    document["execution"]["required_cpu_flags"] = flags
+    (tmp_path / "oracle-direct.json").write_text(json.dumps(document))
+    with pytest.raises(CodecContractError, match="invalid required_cpu_flags"):
+        CodecRegistry(tmp_path, sources).get("oracle-direct")

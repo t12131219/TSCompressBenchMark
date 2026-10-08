@@ -1,0 +1,219 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "TSDataCompressBenchMark · L2 · 参数展开与任务全集",
+    "locale": "zh-CN",
+    "quality_profile": "showcase",
+    "viewBox": [
+      1150,
+      755
+    ],
+    "legend": {
+      "mode": "auto",
+      "entries": {
+        "frontend": {
+          "label": "入口 / 报告"
+        },
+        "backend": {
+          "label": "控制 / 执行"
+        },
+        "database": {
+          "label": "文件证据"
+        },
+        "security": {
+          "label": "资格 / 校验"
+        },
+        "external": {
+          "label": "外部来源"
+        }
+      }
+    }
+  },
+  "components": [
+    {
+      "id": "tscb-07-planning-n1",
+      "type": "backend",
+      "label": "前置 L1 与算法检查",
+      "sublabel": "plan_run_set",
+      "pos": [
+        60,
+        85
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-07-planning-n2",
+      "type": "backend",
+      "label": "算法规范化",
+      "sublabel": "aliases → manifest.key",
+      "pos": [
+        450,
+        85
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-07-planning-n3",
+      "type": "backend",
+      "label": "参数 sweep",
+      "sublabel": "expand_sweep",
+      "pos": [
+        840,
+        85
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-07-planning-n4",
+      "type": "backend",
+      "label": "数据集 × Track",
+      "sublabel": "DataDescriptor",
+      "pos": [
+        840,
+        335
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-07-planning-n5",
+      "type": "backend",
+      "label": "显式预处理计划",
+      "sublabel": "build_preprocess_plan",
+      "pos": [
+        450,
+        335
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-07-planning-n6",
+      "type": "backend",
+      "label": "能力协商",
+      "sublabel": "negotiate",
+      "pos": [
+        60,
+        335
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-07-planning-n7",
+      "type": "backend",
+      "label": "实际运行路径解析",
+      "sublabel": "resolve_execution",
+      "pos": [
+        60,
+        585
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-07-planning-n8",
+      "type": "backend",
+      "label": "可比键与 TaskID",
+      "sublabel": "create_task",
+      "pos": [
+        450,
+        585
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-07-planning-n9",
+      "type": "database",
+      "label": "冻结任务全集",
+      "sublabel": "write_task_plan",
+      "pos": [
+        840,
+        585
+      ],
+      "size": [
+        250,
+        95
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "tscb-07-planning-e0",
+      "to": "tscb-07-planning-n2",
+      "label": "进入",
+      "from": "tscb-07-planning-n1"
+    },
+    {
+      "id": "tscb-07-planning-e1",
+      "to": "tscb-07-planning-n3",
+      "label": "生成",
+      "from": "tscb-07-planning-n2"
+    },
+    {
+      "id": "tscb-07-planning-e2",
+      "to": "tscb-07-planning-n4",
+      "label": "传递",
+      "from": "tscb-07-planning-n3",
+      "labelAt": [
+        965.0,
+        194.0
+      ]
+    },
+    {
+      "id": "tscb-07-planning-e3",
+      "to": "tscb-07-planning-n5",
+      "label": "执行",
+      "from": "tscb-07-planning-n4"
+    },
+    {
+      "id": "tscb-07-planning-e4",
+      "to": "tscb-07-planning-n6",
+      "label": "得到",
+      "from": "tscb-07-planning-n5"
+    },
+    {
+      "id": "tscb-07-planning-e5",
+      "to": "tscb-07-planning-n7",
+      "label": "核对",
+      "from": "tscb-07-planning-n6",
+      "labelAt": [
+        185.0,
+        444.0
+      ]
+    },
+    {
+      "id": "tscb-07-planning-e6",
+      "to": "tscb-07-planning-n8",
+      "label": "冻结",
+      "from": "tscb-07-planning-n7"
+    },
+    {
+      "id": "tscb-07-planning-e7",
+      "to": "tscb-07-planning-n9",
+      "label": "输出",
+      "from": "tscb-07-planning-n8"
+    }
+  ]
+}

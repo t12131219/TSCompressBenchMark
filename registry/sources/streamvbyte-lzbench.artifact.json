@@ -1,0 +1,51 @@
+{
+  "schema_version": "tscb.source-artifact.v2",
+  "key": "streamvbyte-lzbench-580c4f0",
+  "kind": "VENDORED_BENCHMARK_SOURCE_CLOSURE",
+  "identity": {
+    "kind": "VENDORED_BENCHMARK_SOURCE_CLOSURE",
+    "key": "streamvbyte-lzbench-580c4f0",
+    "benchmark_repository": "https://github.com/dblalock/lzbench",
+    "benchmark_commit": "580c4f085381f31b1ad669525ed04e63cbc385f3",
+    "benchmark_path": "fastpfor/streamvbyte.c",
+    "upstream_reference_repository": "https://github.com/fast-pack/streamvbyte",
+    "upstream_reference_commit": "7c472d7d4d63c8bc65a88f310ccfc695a0eaf1ce",
+    "source_closure_sha256": "2ae3648e5e1122981110bbd4d77ff48ee6b5a1b19498237cd144a158a6788960",
+    "patch_sha256": "96bf8d02dce3aa9ed9e86f9ae9d49d763c27fbef77e5421dee7b1538cb55316c",
+    "copy_policy": "UNMODIFIED_VENDOR_WITH_REPLAYED_SAFETY_PATCH"
+  },
+  "license": {
+    "spdx": "Apache-2.0",
+    "status": "RUN_ALLOWED",
+    "redistribution": "ALLOWED_WITH_LICENSE_NOTICE",
+    "files": [
+      "adapters/streamvbyte/vendor/fastpfor/LICENSE",
+      "adapters/streamvbyte/vendor/fastpfor/streamvariablebyte.h"
+    ]
+  },
+  "build": {
+    "recipe": "PYTHONPATH=src python tools/build_codec.py <key> --profile all",
+    "patches": [
+      "adapters/streamvbyte/patches/0001-unaligned-access.patch"
+    ],
+    "submodules": [],
+    "translation_units": [
+      "adapters/streamvbyte/native/tscb_streamvbyte.c",
+      "adapters/streamvbyte/vendor/fastpfor/streamvbyte.c"
+    ],
+    "source_closure": [
+      {
+        "path": "adapters/streamvbyte/vendor/fastpfor/LICENSE",
+        "sha256": "73ba74dfaa520b49a401b5d21459a8523a146f3b7518a833eea5efa85130bf68"
+      },
+      {
+        "path": "adapters/streamvbyte/vendor/fastpfor/streamvariablebyte.h",
+        "sha256": "26d8acff8201426da3b1b241f6e4209524cade779f8b09046164fb3c4fe2bf14"
+      },
+      {
+        "path": "adapters/streamvbyte/vendor/fastpfor/streamvbyte.c",
+        "sha256": "c3594e068cc4d42d1ae86e19e7c746c24df677dfb886653969f807a6fda08f6b"
+      }
+    ]
+  }
+}

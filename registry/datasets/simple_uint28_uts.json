@@ -1,0 +1,73 @@
+{
+  "schema_version": "tscb.dataset-manifest.v2",
+  "key": "simple_uint28_uts",
+  "display_name": "Synthetic uint28 domain in uint32 storage UTS for Simple9/16",
+  "source": {
+    "uri": "generated:tools/generate_fastpfor_simple_fixture.py@20261007",
+    "retrieved_at": "2026-10-07",
+    "notes": "Synthetic uint32 values, not observed timestamps, rescaled epochs or a real-world ranking corpus"
+  },
+  "license": {
+    "spdx": "CC0-1.0",
+    "status": "RUN_ALLOWED"
+  },
+  "file": {
+    "path": "fixtures/datasets/simple_uint28_uts.npz",
+    "bytes": 33038,
+    "sha256": "90865a4c5b08b93b667ca52d707397632b9e632144c9102d95d5ccbc569f4285",
+    "format": "npz"
+  },
+  "parser": {
+    "name": "numpy.npz",
+    "version": "runtime-recorded",
+    "allow_pickle": false,
+    "array_key": "values",
+    "expected_keys": [
+      "values"
+    ]
+  },
+  "logical": {
+    "topology": "UTS",
+    "axes": [
+      "time"
+    ],
+    "timestamp": {
+      "origin": "NONE",
+      "reason": "Synthetic value-only primitive corpus has no timestamp values"
+    },
+    "value": {
+      "kind": "NPZ_ARRAY",
+      "array": {
+        "dtype": "<u4",
+        "unit": "count",
+        "entity": "synthetic-sequence",
+        "feature": "value",
+        "required_layout": "ROW_MAJOR_CONTIG"
+      },
+      "representation": "NATIVE_ND_PRESERVED"
+    },
+    "validity": {
+      "shape": "NONE",
+      "missing_tokens": [],
+      "nan_is_null": false
+    },
+    "canonical": {
+      "format_version": "tscb-canonical-v1",
+      "byte_order": "little"
+    }
+  },
+  "expected": {
+    "shape": [
+      8193
+    ],
+    "dtype": "<u4",
+    "array_keys": [
+      "values"
+    ]
+  },
+  "split": {
+    "policy": "UNSPECIFIED",
+    "learned_eligible": false,
+    "reason": "Synthetic non-learned primitive fixture"
+  }
+}

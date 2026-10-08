@@ -1,0 +1,3117 @@
+{
+  "basis": "current-working-tree-file-bytes",
+  "captured_at": "2026-10-08T05:19:28.452451+00:00",
+  "repository": "/home/fzg/PycharmProjects/TSDataCompressBenchMark",
+  "pinned_commit_validation": false,
+  "source_edits_by_this_task": false,
+  "nodes": [
+    {
+      "id": "entry",
+      "phase": "data",
+      "label": "命令入口与配置",
+      "evidence": [
+        {
+          "path": "src/tscompbench/cli.py",
+          "symbol": "main",
+          "line": 76,
+          "end_line": 210,
+          "sha256": "9ce15256aaa7a44c403adfd51ea475156aa794d6db9c3421c5a9494faf681595"
+        },
+        {
+          "path": "src/tscompbench/configuration.py",
+          "symbol": "load_experiment_config",
+          "line": 396,
+          "end_line": 475,
+          "sha256": "214c5a451f901257c77cc61d7330fea8bcae5f235659dc3fc1de2318a21edb38"
+        }
+      ]
+    },
+    {
+      "id": "freeze",
+      "phase": "data",
+      "label": "Run Set 初始化与恢复",
+      "evidence": [
+        {
+          "path": "src/tscompbench/runner.py",
+          "symbol": "initialize_run_set",
+          "line": 186,
+          "end_line": 280,
+          "sha256": "1cddafd48ad12cb34b1defd32f6f63d40c435dbf83150d7d1dc7ddd7d6ba5384"
+        },
+        {
+          "path": "src/tscompbench/environment.py",
+          "symbol": "capture_environment",
+          "line": 152,
+          "end_line": 219,
+          "sha256": "e76338e0286818fda10682d0287e2a1b8db33c900228ae1db462414729b26494"
+        },
+        {
+          "path": "src/tscompbench/runner.py",
+          "symbol": "prepare_run_set",
+          "line": 281,
+          "end_line": 341,
+          "sha256": "1cddafd48ad12cb34b1defd32f6f63d40c435dbf83150d7d1dc7ddd7d6ba5384"
+        }
+      ]
+    },
+    {
+      "id": "dataset",
+      "phase": "data",
+      "label": "数据集注册与校验",
+      "evidence": [
+        {
+          "path": "src/tscompbench/datasets/registry.py",
+          "symbol": "DatasetRegistry",
+          "line": 66,
+          "end_line": 298,
+          "sha256": "367ba068bec84739c483a7547bf86e994b8043ee8615b8b1221e23827212202f"
+        }
+      ]
+    },
+    {
+      "id": "loader",
+      "phase": "data",
+      "label": "规范化数据加载",
+      "evidence": [
+        {
+          "path": "src/tscompbench/datasets/loaders.py",
+          "symbol": "load_dataset",
+          "line": 314,
+          "end_line": 326,
+          "sha256": "6970968ef9fbee401ef34c8539d0c797cc276e9984644eba95ae628810e12f07"
+        }
+      ]
+    },
+    {
+      "id": "characterize",
+      "phase": "data",
+      "label": "数据特征分析",
+      "evidence": [
+        {
+          "path": "src/tscompbench/datasets/characterize.py",
+          "symbol": "characterize",
+          "line": 235,
+          "end_line": 294,
+          "sha256": "1a4676f53c5bd1a52ce6c4776762f7ca6b99c34ef4f2d46255c1d794bbd1e542"
+        }
+      ]
+    },
+    {
+      "id": "canonical",
+      "phase": "data",
+      "label": "Canonical 工件生成",
+      "evidence": [
+        {
+          "path": "src/tscompbench/datasets/prepare.py",
+          "symbol": "prepare_dataset",
+          "line": 108,
+          "end_line": 171,
+          "sha256": "a9cd61a9c74356149d36d1bc44fa102bad7441e2d89663c170a741af2e7ec2d5"
+        },
+        {
+          "path": "src/tscompbench/datasets/canonical.py",
+          "symbol": "write_canonical",
+          "line": 56,
+          "end_line": 116,
+          "sha256": "7823607c1502bdd75c369dff3119c87be565b26df6908bc1906564d3c987ce1a"
+        }
+      ]
+    },
+    {
+      "id": "registry",
+      "phase": "plan",
+      "label": "Codec / Source 注册",
+      "evidence": [
+        {
+          "path": "src/tscompbench/codecs/registry.py",
+          "symbol": "CodecRegistry",
+          "line": 98,
+          "end_line": 414,
+          "sha256": "09b82dcbf77e010096d14184c6968a94d8177597cd441cf9f9d0d4e79d6437aa"
+        },
+        {
+          "path": "src/tscompbench/adapters/factory.py",
+          "symbol": "adapter_artifacts",
+          "line": 64,
+          "end_line": 257,
+          "sha256": "6c1036f2586ab371824f304d2370610af8ef2bbf2841174f2f30c5085d33d0a4"
+        },
+        {
+          "path": "src/tscompbench/codecs/registry.py",
+          "symbol": "SourceRegistry",
+          "line": 40,
+          "end_line": 97,
+          "sha256": "09b82dcbf77e010096d14184c6968a94d8177597cd441cf9f9d0d4e79d6437aa"
+        },
+        {
+          "path": "src/tscompbench/codecs/models.py",
+          "symbol": "CodecManifest",
+          "line": 64,
+          "end_line": 103,
+          "sha256": "0fc0d5c2018a173a8c57a1989c0c20017cc7f1def423b761c2904d8051344fbb"
+        }
+      ]
+    },
+    {
+      "id": "sweep",
+      "phase": "plan",
+      "label": "参数扫描与配置生成",
+      "evidence": [
+        {
+          "path": "src/tscompbench/planning/sweep.py",
+          "symbol": "expand_sweep",
+          "line": 82,
+          "end_line": 139,
+          "sha256": "bff6866be4c2dd7931d77b9ca8a56779e6dcb2f733540d11bab3ee43b36fce97"
+        }
+      ]
+    },
+    {
+      "id": "universe",
+      "phase": "plan",
+      "label": "展开完整候选组合",
+      "evidence": [
+        {
+          "path": "src/tscompbench/runner.py",
+          "symbol": "plan_run_set",
+          "line": 342,
+          "end_line": 547,
+          "sha256": "1cddafd48ad12cb34b1defd32f6f63d40c435dbf83150d7d1dc7ddd7d6ba5384"
+        }
+      ]
+    },
+    {
+      "id": "negotiate",
+      "phase": "plan",
+      "label": "能力协商与四态结果",
+      "evidence": [
+        {
+          "path": "src/tscompbench/codecs/negotiation.py",
+          "symbol": "negotiate",
+          "line": 242,
+          "end_line": 508,
+          "sha256": "294d57f737a54f1029de0640222e1b7616b3667924f5b0d708285202b48bfb84"
+        }
+      ]
+    },
+    {
+      "id": "plans",
+      "phase": "plan",
+      "label": "显式适配与预处理计划",
+      "evidence": [
+        {
+          "path": "src/tscompbench/codecs/negotiation.py",
+          "symbol": "negotiate",
+          "line": 242,
+          "end_line": 508,
+          "sha256": "294d57f737a54f1029de0640222e1b7616b3667924f5b0d708285202b48bfb84"
+        },
+        {
+          "path": "src/tscompbench/preprocess/contracts.py",
+          "symbol": "build_preprocess_plan",
+          "line": 69,
+          "end_line": 111,
+          "sha256": "16e596bbce1e418033a2e843cd68a67632f28388b013c0d5dcefa3e393a3f1a2"
+        }
+      ]
+    },
+    {
+      "id": "resolution",
+      "phase": "plan",
+      "label": "执行路径解析",
+      "evidence": [
+        {
+          "path": "src/tscompbench/planning/resolution.py",
+          "symbol": "resolve_execution",
+          "line": 32,
+          "end_line": 185,
+          "sha256": "d31405f56bbd9274a930dc94cec684a6124b5b8f88a39cf5fdd077d69cd5909a"
+        }
+      ]
+    },
+    {
+      "id": "keys",
+      "phase": "plan",
+      "label": "层级可比性键",
+      "evidence": [
+        {
+          "path": "src/tscompbench/planning/resolution.py",
+          "symbol": "build_comparability_keys",
+          "line": 186,
+          "end_line": 282,
+          "sha256": "d31405f56bbd9274a930dc94cec684a6124b5b8f88a39cf5fdd077d69cd5909a"
+        },
+        {
+          "path": "src/tscompbench/planning/models.py",
+          "symbol": "ComparabilityKeys",
+          "line": 59,
+          "end_line": 70,
+          "sha256": "66d7ff48d3afc347c3d18a03055133c74dd41019e5f588e306d2e468273100ac"
+        }
+      ]
+    },
+    {
+      "id": "tasks",
+      "phase": "plan",
+      "label": "冻结任务与注册快照",
+      "evidence": [
+        {
+          "path": "src/tscompbench/planning/tasks.py",
+          "symbol": "create_task",
+          "line": 16,
+          "end_line": 72,
+          "sha256": "f2754922e6a1db88f7747a02438db289011b1f9643f34bce9a3b8237075f2b31"
+        },
+        {
+          "path": "src/tscompbench/runner.py",
+          "symbol": "plan_run_set",
+          "line": 342,
+          "end_line": 547,
+          "sha256": "1cddafd48ad12cb34b1defd32f6f63d40c435dbf83150d7d1dc7ddd7d6ba5384"
+        },
+        {
+          "path": "src/tscompbench/planning/models.py",
+          "symbol": "BenchmarkTask",
+          "line": 72,
+          "end_line": 96,
+          "sha256": "66d7ff48d3afc347c3d18a03055133c74dd41019e5f588e306d2e468273100ac"
+        }
+      ]
+    },
+    {
+      "id": "track",
+      "phase": "exec",
+      "label": "按 Benchmark Track 路由",
+      "evidence": [
+        {
+          "path": "src/tscompbench/execution/routing.py",
+          "symbol": "route_canonical_artifact",
+          "line": 51,
+          "end_line": 130,
+          "sha256": "13f9ffad2f4618cefeb3ccb9cca8252de731e552563db3c59a9105ad557fb71e"
+        }
+      ]
+    },
+    {
+      "id": "gates",
+      "phase": "exec",
+      "label": "任务、源码与工件门控",
+      "evidence": [
+        {
+          "path": "src/tscompbench/execution/preflight.py",
+          "symbol": "preflight_task",
+          "line": 93,
+          "end_line": 300,
+          "sha256": "3c900fe56456b5cca518252e4a4279f44e068324421d1b5bac3bbfe0b31e0f58"
+        }
+      ]
+    },
+    {
+      "id": "input",
+      "phase": "exec",
+      "label": "输入校验",
+      "evidence": [
+        {
+          "path": "src/tscompbench/validation/input.py",
+          "symbol": "validate_routed_input",
+          "line": 44,
+          "end_line": 94,
+          "sha256": "f8530e73613868e801160d06ea09f1131a682ea7a3ad32f55de5cd88bd5b7444"
+        }
+      ]
+    },
+    {
+      "id": "adapter",
+      "phase": "exec",
+      "label": "实际适配与适配后验证",
+      "evidence": [
+        {
+          "path": "src/tscompbench/execution/preparation.py",
+          "symbol": "prepare_execution_input",
+          "line": 23,
+          "end_line": 82,
+          "sha256": "9a761afb833b565138475fba34092032cb2872754b8a820c4fae711948595fb5"
+        },
+        {
+          "path": "src/tscompbench/adapters/compatibility.py",
+          "symbol": "apply_compatibility_plan",
+          "line": 52,
+          "end_line": 133,
+          "sha256": "b5cead91befe4e35abf903c83f23bd8f43b2648050c75f7e44785b5c38862f80"
+        },
+        {
+          "path": "src/tscompbench/adapters/compatibility.py",
+          "symbol": "validate_prepared_input",
+          "line": 134,
+          "end_line": 165,
+          "sha256": "b5cead91befe4e35abf903c83f23bd8f43b2648050c75f7e44785b5c38862f80"
+        }
+      ]
+    },
+    {
+      "id": "preprocess",
+      "phase": "exec",
+      "label": "可选预处理阶段验证",
+      "evidence": [
+        {
+          "path": "src/tscompbench/preprocess/runtime.py",
+          "symbol": "validate_pipeline_stages",
+          "line": 58,
+          "end_line": 68,
+          "sha256": "58dd04356ebbc226a156b84a644cfb5366130ada6a5f17cfa09ee0be2e6226e5"
+        },
+        {
+          "path": "src/tscompbench/preprocess/runtime.py",
+          "symbol": "reviewed_pipeline_executor",
+          "line": 33,
+          "end_line": 57,
+          "sha256": "58dd04356ebbc226a156b84a644cfb5366130ada6a5f17cfa09ee0be2e6226e5"
+        }
+      ]
+    },
+    {
+      "id": "boundary",
+      "phase": "exec",
+      "label": "边界与安全 Dry-run",
+      "evidence": [
+        {
+          "path": "src/tscompbench/validation/boundary.py",
+          "symbol": "run_boundary_suite",
+          "line": 334,
+          "end_line": 548,
+          "sha256": "f429a470570060553ff3fe1eb65d174e91397f7f63b7f19a62f71f5b57d0efff"
+        }
+      ]
+    },
+    {
+      "id": "minimal",
+      "phase": "exec",
+      "label": "最小完整 Roundtrip",
+      "evidence": [
+        {
+          "path": "src/tscompbench/execution/preflight.py",
+          "symbol": "preflight_task",
+          "line": 93,
+          "end_line": 300,
+          "sha256": "3c900fe56456b5cca518252e4a4279f44e068324421d1b5bac3bbfe0b31e0f58"
+        }
+      ]
+    },
+    {
+      "id": "preflight",
+      "phase": "exec",
+      "label": "Preflight 是否通过",
+      "evidence": [
+        {
+          "path": "src/tscompbench/execution/preflight.py",
+          "symbol": "preflight_task",
+          "line": 93,
+          "end_line": 300,
+          "sha256": "3c900fe56456b5cca518252e4a4279f44e068324421d1b5bac3bbfe0b31e0f58"
+        }
+      ]
+    },
+    {
+      "id": "warmup",
+      "phase": "exec",
+      "label": "预热 Warmup",
+      "evidence": [
+        {
+          "path": "src/tscompbench/execution/repetition.py",
+          "symbol": "perform_warmup",
+          "line": 345,
+          "end_line": 381,
+          "sha256": "9a9b4733255b6804df10b31c5b5358434b69de272c203e0a3b16932e33d75e54"
+        }
+      ]
+    },
+    {
+      "id": "formal",
+      "phase": "exec",
+      "label": "正式重复实验",
+      "evidence": [
+        {
+          "path": "src/tscompbench/execution/orchestrator.py",
+          "symbol": "execute_task",
+          "line": 86,
+          "end_line": 448,
+          "sha256": "57f34360126f452510fb08de6d43c413718845552f2bff984c71a15d3be1c03a"
+        },
+        {
+          "path": "src/tscompbench/execution/repetition.py",
+          "symbol": "perform_measured_roundtrip",
+          "line": 382,
+          "end_line": 652,
+          "sha256": "9a9b4733255b6804df10b31c5b5358434b69de272c203e0a3b16932e33d75e54"
+        },
+        {
+          "path": "src/tscompbench/execution/isolation.py",
+          "symbol": "run_isolated",
+          "line": 65,
+          "end_line": 117,
+          "sha256": "54ad3c67e6ac82dad196140c52843e584df072095a0e9375cedd3d0bd1d9ea90"
+        }
+      ]
+    },
+    {
+      "id": "diagnostic",
+      "phase": "exec",
+      "label": "失败诊断与状态证据",
+      "evidence": [
+        {
+          "path": "src/tscompbench/execution/orchestrator.py",
+          "symbol": "execute_task",
+          "line": 86,
+          "end_line": 448,
+          "sha256": "57f34360126f452510fb08de6d43c413718845552f2bff984c71a15d3be1c03a"
+        }
+      ]
+    },
+    {
+      "id": "compress",
+      "phase": "exec",
+      "label": "独立 Context 与编码",
+      "evidence": [
+        {
+          "path": "src/tscompbench/execution/repetition.py",
+          "symbol": "_encode",
+          "line": 166,
+          "end_line": 233,
+          "sha256": "9a9b4733255b6804df10b31c5b5358434b69de272c203e0a3b16932e33d75e54"
+        }
+      ]
+    },
+    {
+      "id": "finalize",
+      "phase": "exec",
+      "label": "强制 Finalize / Flush",
+      "evidence": [
+        {
+          "path": "src/tscompbench/execution/repetition.py",
+          "symbol": "_encode",
+          "line": 166,
+          "end_line": 233,
+          "sha256": "9a9b4733255b6804df10b31c5b5358434b69de272c203e0a3b16932e33d75e54"
+        }
+      ]
+    },
+    {
+      "id": "accounting",
+      "phase": "exec",
+      "label": "完整对象成本计量",
+      "evidence": [
+        {
+          "path": "src/tscompbench/accounting/ledger.py",
+          "symbol": "AccountingLedger",
+          "line": 14,
+          "end_line": 142,
+          "sha256": "2ba12396c5c79130e643ae5a7d8b3e9d8683c26fdd352ab6786455cc05a9f153"
+        }
+      ]
+    },
+    {
+      "id": "decompress",
+      "phase": "exec",
+      "label": "独立 Context 解码",
+      "evidence": [
+        {
+          "path": "src/tscompbench/execution/repetition.py",
+          "symbol": "perform_roundtrip",
+          "line": 234,
+          "end_line": 310,
+          "sha256": "9a9b4733255b6804df10b31c5b5358434b69de272c203e0a3b16932e33d75e54"
+        }
+      ]
+    },
+    {
+      "id": "correctness",
+      "phase": "exec",
+      "label": "公共正确性与 LossMode",
+      "evidence": [
+        {
+          "path": "src/tscompbench/validation/correctness.py",
+          "symbol": "validate_common_correctness",
+          "line": 51,
+          "end_line": 236,
+          "sha256": "05413254ac81af186db0535ec3448f187064ab6e098b9ed5d1e583000b17f7d9"
+        }
+      ]
+    },
+    {
+      "id": "lossless",
+      "phase": "exec",
+      "label": "Lossless 按位还原",
+      "evidence": [
+        {
+          "path": "src/tscompbench/validation/correctness.py",
+          "symbol": "validate_common_correctness",
+          "line": 51,
+          "end_line": 236,
+          "sha256": "05413254ac81af186db0535ec3448f187064ab6e098b9ed5d1e583000b17f7d9"
+        }
+      ]
+    },
+    {
+      "id": "lossy",
+      "phase": "exec",
+      "label": "Lossy 按模式验证",
+      "evidence": [
+        {
+          "path": "src/tscompbench/validation/correctness.py",
+          "symbol": "validate_common_correctness",
+          "line": 51,
+          "end_line": 236,
+          "sha256": "05413254ac81af186db0535ec3448f187064ab6e098b9ed5d1e583000b17f7d9"
+        },
+        {
+          "path": "src/tscompbench/validation/lossy.py",
+          "symbol": "validate_error_bound",
+          "line": 187,
+          "end_line": 278,
+          "sha256": "488e1078e9e601020a5b22d08ae4eb2e4f791c8202aa90b758c85b04e52b1c1e"
+        },
+        {
+          "path": "src/tscompbench/validation/lossy.py",
+          "symbol": "profile_unbounded_loss",
+          "line": 279,
+          "end_line": 302,
+          "sha256": "488e1078e9e601020a5b22d08ae4eb2e4f791c8202aa90b758c85b04e52b1c1e"
+        }
+      ]
+    },
+    {
+      "id": "policy",
+      "phase": "measure",
+      "label": "同次正式实验测量策略",
+      "evidence": [
+        {
+          "path": "src/tscompbench/measurement/contracts.py",
+          "symbol": "MeasurementPolicy",
+          "line": 9,
+          "end_line": 66,
+          "sha256": "087e18b022aa64f4b63cbb43abf1c37d838f66f089399b0118eef3e069731381"
+        }
+      ]
+    },
+    {
+      "id": "timing",
+      "phase": "measure",
+      "label": "分范围计时与时长控制",
+      "evidence": [
+        {
+          "path": "src/tscompbench/execution/repetition.py",
+          "symbol": "perform_measured_roundtrip",
+          "line": 382,
+          "end_line": 652,
+          "sha256": "9a9b4733255b6804df10b31c5b5358434b69de272c203e0a3b16932e33d75e54"
+        },
+        {
+          "path": "src/tscompbench/measurement/contracts.py",
+          "symbol": "MeasurementPolicy",
+          "line": 9,
+          "end_line": 66,
+          "sha256": "087e18b022aa64f4b63cbb43abf1c37d838f66f089399b0118eef3e069731381"
+        }
+      ]
+    },
+    {
+      "id": "resources",
+      "phase": "measure",
+      "label": "同步进程资源观测",
+      "evidence": [
+        {
+          "path": "src/tscompbench/measurement/resources.py",
+          "symbol": "ResourceSampler",
+          "line": 195,
+          "end_line": 359,
+          "sha256": "c7ed11df070e5e291d8c8e71430c421ce3b45a098a64e12036d505310c07becf"
+        }
+      ]
+    },
+    {
+      "id": "workloads",
+      "phase": "measure",
+      "label": "条件工作负载调度",
+      "evidence": [
+        {
+          "path": "src/tscompbench/execution/orchestrator.py",
+          "symbol": "execute_task",
+          "line": 86,
+          "end_line": 448,
+          "sha256": "57f34360126f452510fb08de6d43c413718845552f2bff984c71a15d3be1c03a"
+        }
+      ]
+    },
+    {
+      "id": "raw",
+      "phase": "measure",
+      "label": "原始证据与可恢复投影",
+      "evidence": [
+        {
+          "path": "src/tscompbench/storage/runs.py",
+          "symbol": "append_run_record",
+          "line": 434,
+          "end_line": 463,
+          "sha256": "9061c6416d603264dbfca08df57af83a850ffb2d3162afed29b8dd5c8429ff6b"
+        },
+        {
+          "path": "src/tscompbench/storage/events.py",
+          "symbol": "append_event",
+          "line": 15,
+          "end_line": 43,
+          "sha256": "361e0681c05ff5ab8f1153e0d5a6818c7b1fd7ef3a557bdd8b40b4fa6269defd"
+        }
+      ]
+    },
+    {
+      "id": "query",
+      "phase": "measure",
+      "label": "Query / Random Access",
+      "evidence": [
+        {
+          "path": "src/tscompbench/measurement/workloads.py",
+          "symbol": "execute_query_workload",
+          "line": 58,
+          "end_line": 160,
+          "sha256": "65f996254329784683baeb162f555eb3f9b0d998420cdd0818eb0ac72cde8dbe"
+        }
+      ]
+    },
+    {
+      "id": "streaming",
+      "phase": "measure",
+      "label": "Streaming Benchmark",
+      "evidence": [
+        {
+          "path": "src/tscompbench/measurement/workloads.py",
+          "symbol": "execute_streaming_workload",
+          "line": 161,
+          "end_line": 308,
+          "sha256": "65f996254329784683baeb162f555eb3f9b0d998420cdd0818eb0ac72cde8dbe"
+        }
+      ]
+    },
+    {
+      "id": "evidence",
+      "phase": "stats",
+      "label": "读取冻结任务与原始证据",
+      "evidence": [
+        {
+          "path": "src/tscompbench/statistics/engine.py",
+          "symbol": "analyze_run_set",
+          "line": 1116,
+          "end_line": 1181,
+          "sha256": "dddf61282f0f3c17c579b4afca0773d9b0a228f75c9014c59ce3016cec8b80b7"
+        }
+      ]
+    },
+    {
+      "id": "eligibility",
+      "phase": "stats",
+      "label": "资格过滤与排除原因",
+      "evidence": [
+        {
+          "path": "src/tscompbench/statistics/engine.py",
+          "symbol": "_eligibility",
+          "line": 326,
+          "end_line": 435,
+          "sha256": "dddf61282f0f3c17c579b4afca0773d9b0a228f75c9014c59ce3016cec8b80b7"
+        }
+      ]
+    },
+    {
+      "id": "summary",
+      "phase": "stats",
+      "label": "合格重复的逐数据集统计",
+      "evidence": [
+        {
+          "path": "src/tscompbench/statistics/engine.py",
+          "symbol": "_summaries",
+          "line": 644,
+          "end_line": 786,
+          "sha256": "dddf61282f0f3c17c579b4afca0773d9b0a228f75c9014c59ce3016cec8b80b7"
+        },
+        {
+          "path": "src/tscompbench/statistics/core.py",
+          "symbol": "descriptive_statistics",
+          "line": 56,
+          "end_line": 90,
+          "sha256": "600cf6417d61cf1105c58dcaf97b91149eec9c6286d2fb7e6129b4d24e9c5aca"
+        }
+      ]
+    },
+    {
+      "id": "corpus",
+      "phase": "stats",
+      "label": "Corpus 汇总与分层比较",
+      "evidence": [
+        {
+          "path": "src/tscompbench/statistics/engine.py",
+          "symbol": "_corpus_summaries",
+          "line": 787,
+          "end_line": 879,
+          "sha256": "dddf61282f0f3c17c579b4afca0773d9b0a228f75c9014c59ce3016cec8b80b7"
+        },
+        {
+          "path": "src/tscompbench/statistics/engine.py",
+          "symbol": "_comparability_groups",
+          "line": 939,
+          "end_line": 1016,
+          "sha256": "dddf61282f0f3c17c579b4afca0773d9b0a228f75c9014c59ce3016cec8b80b7"
+        }
+      ]
+    },
+    {
+      "id": "pareto",
+      "phase": "stats",
+      "label": "Pareto 与单指标排名",
+      "evidence": [
+        {
+          "path": "src/tscompbench/statistics/engine.py",
+          "symbol": "_pareto_rows",
+          "line": 1017,
+          "end_line": 1074,
+          "sha256": "dddf61282f0f3c17c579b4afca0773d9b0a228f75c9014c59ce3016cec8b80b7"
+        },
+        {
+          "path": "src/tscompbench/statistics/engine.py",
+          "symbol": "_ranking_rows",
+          "line": 1075,
+          "end_line": 1115,
+          "sha256": "dddf61282f0f3c17c579b4afca0773d9b0a228f75c9014c59ce3016cec8b80b7"
+        },
+        {
+          "path": "src/tscompbench/statistics/core.py",
+          "symbol": "pareto_front",
+          "line": 91,
+          "end_line": 131,
+          "sha256": "600cf6417d61cf1105c58dcaf97b91149eec9c6286d2fb7e6129b4d24e9c5aca"
+        },
+        {
+          "path": "src/tscompbench/statistics/core.py",
+          "symbol": "rank_values",
+          "line": 132,
+          "end_line": 143,
+          "sha256": "600cf6417d61cf1105c58dcaf97b91149eec9c6286d2fb7e6129b4d24e9c5aca"
+        }
+      ]
+    },
+    {
+      "id": "report",
+      "phase": "stats",
+      "label": "最终结果与报告生成",
+      "evidence": [
+        {
+          "path": "src/tscompbench/reporting/generator.py",
+          "symbol": "generate_report",
+          "line": 685,
+          "end_line": 874,
+          "sha256": "1b870ac53ad857b9da0247a0862367b6f2f2d432d677418f62d6e41636347656"
+        }
+      ]
+    },
+    {
+      "id": "coverage",
+      "phase": "stats",
+      "label": "冻结任务全集 Coverage",
+      "evidence": [
+        {
+          "path": "src/tscompbench/statistics/engine.py",
+          "symbol": "_coverage",
+          "line": 880,
+          "end_line": 938,
+          "sha256": "dddf61282f0f3c17c579b4afca0773d9b0a228f75c9014c59ce3016cec8b80b7"
+        }
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "entry--freeze",
+      "source": "entry",
+      "target": "freeze",
+      "label": "",
+      "kind": "flow",
+      "meaning": "CLI run 子命令初始化/恢复 Run Set。",
+      "evidence": [
+        {
+          "path": "src/tscompbench/cli.py",
+          "symbol": "main",
+          "line": 154,
+          "snippet": "run_set = initialize_run_set(",
+          "sha256": "9ce15256aaa7a44c403adfd51ea475156aa794d6db9c3421c5a9494faf681595"
+        }
+      ]
+    },
+    {
+      "id": "freeze--dataset",
+      "source": "freeze",
+      "target": "dataset",
+      "label": "",
+      "kind": "flow",
+      "meaning": "冻结环境之后准备数据；先校验可复用记录，否则调用 prepare_dataset。",
+      "evidence": [
+        {
+          "path": "src/tscompbench/runner.py",
+          "symbol": "prepare_run_set",
+          "line": 310,
+          "snippet": "result = prepare_dataset(",
+          "sha256": "1cddafd48ad12cb34b1defd32f6f63d40c435dbf83150d7d1dc7ddd7d6ba5384"
+        }
+      ]
+    },
+    {
+      "id": "dataset--loader",
+      "source": "dataset",
+      "target": "loader",
+      "label": "",
+      "kind": "flow",
+      "meaning": "prepare_dataset 先 registry.load(verify_source=True)，随后加载规范化内存。",
+      "evidence": [
+        {
+          "path": "src/tscompbench/datasets/prepare.py",
+          "symbol": "prepare_dataset",
+          "line": 115,
+          "snippet": "manifest = registry.load(key, verify_source=True)",
+          "sha256": "a9cd61a9c74356149d36d1bc44fa102bad7441e2d89663c170a741af2e7ec2d5"
+        },
+        {
+          "path": "src/tscompbench/datasets/prepare.py",
+          "symbol": "prepare_dataset",
+          "line": 116,
+          "snippet": "dataset = load_dataset(manifest)",
+          "sha256": "a9cd61a9c74356149d36d1bc44fa102bad7441e2d89663c170a741af2e7ec2d5"
+        }
+      ]
+    },
+    {
+      "id": "loader--characterize",
+      "source": "loader",
+      "target": "characterize",
+      "label": "",
+      "kind": "flow",
+      "meaning": "特征分析读取加载完成的内存数据，不依赖新写出的二进制。",
+      "evidence": [
+        {
+          "path": "src/tscompbench/datasets/prepare.py",
+          "symbol": "prepare_dataset",
+          "line": 134,
+          "snippet": "characterization = characterize(dataset, characterization_profile)",
+          "sha256": "a9cd61a9c74356149d36d1bc44fa102bad7441e2d89663c170a741af2e7ec2d5"
+        }
+      ]
+    },
+    {
+      "id": "characterize--canonical",
+      "source": "characterize",
+      "target": "canonical",
+      "label": "",
+      "kind": "flow",
+      "meaning": "分析后才 write_canonical；相关记录来自同一份已加载数据。",
+      "evidence": [
+        {
+          "path": "src/tscompbench/datasets/prepare.py",
+          "symbol": "prepare_dataset",
+          "line": 135,
+          "snippet": "canonical = write_canonical(dataset, canonical_path)",
+          "sha256": "a9cd61a9c74356149d36d1bc44fa102bad7441e2d89663c170a741af2e7ec2d5"
+        }
+      ]
+    },
+    {
+      "id": "canonical--registry",
+      "source": "canonical",
+      "target": "registry",
+      "label": "",
+      "kind": "flow",
+      "meaning": "数据准备结果是 Layer 2 规划前提；不是 Canonical 文件调用 CodecRegistry。",
+      "evidence": [
+        {
+          "path": "src/tscompbench/runner.py",
+          "symbol": "plan_run_set",
+          "line": 351,
+          "snippet": "preparations = prepare_run_set(run_set, dataset_registry)",
+          "sha256": "1cddafd48ad12cb34b1defd32f6f63d40c435dbf83150d7d1dc7ddd7d6ba5384"
+        },
+        {
+          "path": "src/tscompbench/runner.py",
+          "symbol": "plan_run_set",
+          "line": 392,
+          "snippet": "manifest = codec_registry.get(algorithm_key)",
+          "sha256": "1cddafd48ad12cb34b1defd32f6f63d40c435dbf83150d7d1dc7ddd7d6ba5384"
+        }
+      ]
+    },
+    {
+      "id": "registry--sweep",
+      "source": "registry",
+      "target": "sweep",
+      "label": "",
+      "kind": "flow",
+      "meaning": "按注册 manifest 扫描完整配置空间。",
+      "evidence": [
+        {
+          "path": "src/tscompbench/runner.py",
+          "symbol": "plan_run_set",
+          "line": 411,
+          "snippet": "configs = expand_sweep(",
+          "sha256": "1cddafd48ad12cb34b1defd32f6f63d40c435dbf83150d7d1dc7ddd7d6ba5384"
+        }
+      ]
+    },
+    {
+      "id": "sweep--universe",
+      "source": "sweep",
+      "target": "universe",
+      "label": "",
+      "kind": "flow",
+      "meaning": "配置与 dataset/track 逐一组合；Profile 已冻结。",
+      "evidence": [
+        {
+          "path": "src/tscompbench/runner.py",
+          "symbol": "plan_run_set",
+          "line": 426,
+          "snippet": "for dataset_key in run_set.config.datasets:",
+          "sha256": "1cddafd48ad12cb34b1defd32f6f63d40c435dbf83150d7d1dc7ddd7d6ba5384"
+        },
+        {
+          "path": "src/tscompbench/runner.py",
+          "symbol": "plan_run_set",
+          "line": 436,
+          "snippet": "for track_name in run_set.config.tracks:",
+          "sha256": "1cddafd48ad12cb34b1defd32f6f63d40c435dbf83150d7d1dc7ddd7d6ba5384"
+        },
+        {
+          "path": "src/tscompbench/runner.py",
+          "symbol": "plan_run_set",
+          "line": 416,
+          "snippet": "for config in configs:",
+          "sha256": "1cddafd48ad12cb34b1defd32f6f63d40c435dbf83150d7d1dc7ddd7d6ba5384"
+        }
+      ]
+    },
+    {
+      "id": "universe--negotiate",
+      "source": "universe",
+      "target": "negotiate",
+      "label": "",
+      "kind": "flow",
+      "meaning": "从 Layer 1 工件生成 track 数据描述，再按配置协商。",
+      "evidence": [
+        {
+          "path": "src/tscompbench/runner.py",
+          "symbol": "plan_run_set",
+          "line": 437,
+          "snippet": "descriptor = descriptor_from_layer1_artifacts(",
+          "sha256": "1cddafd48ad12cb34b1defd32f6f63d40c435dbf83150d7d1dc7ddd7d6ba5384"
+        },
+        {
+          "path": "src/tscompbench/runner.py",
+          "symbol": "plan_run_set",
+          "line": 444,
+          "snippet": "compatibility = negotiate(",
+          "sha256": "1cddafd48ad12cb34b1defd32f6f63d40c435dbf83150d7d1dc7ddd7d6ba5384"
+        }
+      ]
+    },
+    {
+      "id": "negotiate--plans",
+      "source": "negotiate",
+      "target": "plans",
+      "label": "",
+      "kind": "flow",
+      "meaning": "四态是替代结果，CompatibilityPlan 含显式适配；PreprocessPlan 独立制定。图中逻辑计划整理不宣称严格函数先后。",
+      "evidence": [
+        {
+          "path": "src/tscompbench/runner.py",
+          "symbol": "plan_run_set",
+          "line": 443,
+          "snippet": "preprocess = build_preprocess_plan(manifest.document, config.parameters)",
+          "sha256": "1cddafd48ad12cb34b1defd32f6f63d40c435dbf83150d7d1dc7ddd7d6ba5384"
+        },
+        {
+          "path": "src/tscompbench/runner.py",
+          "symbol": "plan_run_set",
+          "line": 444,
+          "snippet": "compatibility = negotiate(",
+          "sha256": "1cddafd48ad12cb34b1defd32f6f63d40c435dbf83150d7d1dc7ddd7d6ba5384"
+        }
+      ]
+    },
+    {
+      "id": "plans--resolution",
+      "source": "plans",
+      "target": "resolution",
+      "label": "",
+      "kind": "flow",
+      "meaning": "执行解析接收 CompatibilityPlan，并纳入 preprocess/工件/冻结资源口径。",
+      "evidence": [
+        {
+          "path": "src/tscompbench/runner.py",
+          "symbol": "plan_run_set",
+          "line": 447,
+          "snippet": "execution = resolve_execution(",
+          "sha256": "1cddafd48ad12cb34b1defd32f6f63d40c435dbf83150d7d1dc7ddd7d6ba5384"
+        }
+      ]
+    },
+    {
+      "id": "resolution--keys",
+      "source": "resolution",
+      "target": "keys",
+      "label": "",
+      "kind": "flow",
+      "meaning": "解析路径是层级可比性键的输入。",
+      "evidence": [
+        {
+          "path": "src/tscompbench/runner.py",
+          "symbol": "plan_run_set",
+          "line": 456,
+          "snippet": "comparability = build_comparability_keys(",
+          "sha256": "1cddafd48ad12cb34b1defd32f6f63d40c435dbf83150d7d1dc7ddd7d6ba5384"
+        }
+      ]
+    },
+    {
+      "id": "keys--tasks",
+      "source": "keys",
+      "target": "tasks",
+      "label": "",
+      "kind": "flow",
+      "meaning": "create_task 冻结 compatibility、preprocess、execution、comparability；不支持组合保留。",
+      "evidence": [
+        {
+          "path": "src/tscompbench/runner.py",
+          "symbol": "plan_run_set",
+          "line": 465,
+          "snippet": "create_task(",
+          "sha256": "1cddafd48ad12cb34b1defd32f6f63d40c435dbf83150d7d1dc7ddd7d6ba5384"
+        },
+        {
+          "path": "src/tscompbench/runner.py",
+          "symbol": "plan_run_set",
+          "line": 510,
+          "snippet": "write_task_plan(run_set.path / \"task_plan.jsonl\", ordered_tasks)",
+          "sha256": "1cddafd48ad12cb34b1defd32f6f63d40c435dbf83150d7d1dc7ddd7d6ba5384"
+        }
+      ]
+    },
+    {
+      "id": "input--adapter",
+      "source": "input",
+      "target": "adapter",
+      "label": "",
+      "kind": "flow",
+      "meaning": "输入验证后实际 apply CompatibilityPlan，并调用 post-adapter validator。",
+      "evidence": [
+        {
+          "path": "src/tscompbench/execution/preflight.py",
+          "symbol": "preflight_task",
+          "line": 133,
+          "snippet": "prepared = prepare_execution_input(routed, task.compatibility, max_abs_error=max_abs_error)",
+          "sha256": "3c900fe56456b5cca518252e4a4279f44e068324421d1b5bac3bbfe0b31e0f58"
+        },
+        {
+          "path": "src/tscompbench/execution/preparation.py",
+          "symbol": "prepare_execution_input",
+          "line": 45,
+          "snippet": "validate_prepared_input(",
+          "sha256": "9a761afb833b565138475fba34092032cb2872754b8a820c4fae711948595fb5"
+        }
+      ]
+    },
+    {
+      "id": "adapter--preprocess",
+      "source": "adapter",
+      "target": "preprocess",
+      "label": "",
+      "kind": "flow",
+      "meaning": "有声明 stages 时运行已注册的阶段验证，非所有任务必经额外处理。",
+      "evidence": [
+        {
+          "path": "src/tscompbench/execution/preflight.py",
+          "symbol": "preflight_task",
+          "line": 144,
+          "snippet": "if task.preprocess.stages:",
+          "sha256": "3c900fe56456b5cca518252e4a4279f44e068324421d1b5bac3bbfe0b31e0f58"
+        },
+        {
+          "path": "src/tscompbench/execution/preflight.py",
+          "symbol": "preflight_task",
+          "line": 146,
+          "snippet": "validate_pipeline_stages,",
+          "sha256": "3c900fe56456b5cca518252e4a4279f44e068324421d1b5bac3bbfe0b31e0f58"
+        }
+      ]
+    },
+    {
+      "id": "preprocess--boundary",
+      "source": "preprocess",
+      "target": "boundary",
+      "label": "",
+      "kind": "flow",
+      "meaning": "可选 stage validation 成功后，隔离 Boundary/Safety suite。",
+      "evidence": [
+        {
+          "path": "src/tscompbench/execution/preflight.py",
+          "symbol": "preflight_task",
+          "line": 174,
+          "snippet": "boundary_call = run_isolated(",
+          "sha256": "3c900fe56456b5cca518252e4a4279f44e068324421d1b5bac3bbfe0b31e0f58"
+        }
+      ]
+    },
+    {
+      "id": "boundary--minimal",
+      "source": "boundary",
+      "target": "minimal",
+      "label": "",
+      "kind": "flow",
+      "meaning": "Boundary 成功后执行最小完整 roundtrip。",
+      "evidence": [
+        {
+          "path": "src/tscompbench/execution/preflight.py",
+          "symbol": "preflight_task",
+          "line": 223,
+          "snippet": "perform_roundtrip,",
+          "sha256": "3c900fe56456b5cca518252e4a4279f44e068324421d1b5bac3bbfe0b31e0f58"
+        }
+      ]
+    },
+    {
+      "id": "minimal--preflight",
+      "source": "minimal",
+      "target": "preflight",
+      "label": "",
+      "kind": "flow",
+      "meaning": "最小 roundtrip 与 Common Correctness 共同产生 PreflightResult。",
+      "evidence": [
+        {
+          "path": "src/tscompbench/execution/preflight.py",
+          "symbol": "preflight_task",
+          "line": 259,
+          "snippet": "correctness = validate_common_correctness(",
+          "sha256": "3c900fe56456b5cca518252e4a4279f44e068324421d1b5bac3bbfe0b31e0f58"
+        }
+      ]
+    },
+    {
+      "id": "preflight--warmup",
+      "source": "preflight",
+      "target": "warmup",
+      "label": "通过",
+      "kind": "flow",
+      "meaning": "仅 eligible_for_formal_repetitions 通过才能进入预热。",
+      "evidence": [
+        {
+          "path": "src/tscompbench/execution/orchestrator.py",
+          "symbol": "execute_task",
+          "line": 126,
+          "snippet": "if not preflight.eligible_for_formal_repetitions or prepared is None:",
+          "sha256": "57f34360126f452510fb08de6d43c413718845552f2bff984c71a15d3be1c03a"
+        },
+        {
+          "path": "src/tscompbench/execution/orchestrator.py",
+          "symbol": "execute_task",
+          "line": 158,
+          "snippet": "perform_warmup,",
+          "sha256": "57f34360126f452510fb08de6d43c413718845552f2bff984c71a15d3be1c03a"
+        }
+      ]
+    },
+    {
+      "id": "warmup--formal",
+      "source": "warmup",
+      "target": "formal",
+      "label": "",
+      "kind": "flow",
+      "meaning": "Warmup 是独立预热门槛，后续正式 repetition 含自身最短时长内循环。",
+      "evidence": [
+        {
+          "path": "src/tscompbench/execution/orchestrator.py",
+          "symbol": "execute_task",
+          "line": 212,
+          "snippet": "perform_measured_roundtrip,",
+          "sha256": "57f34360126f452510fb08de6d43c413718845552f2bff984c71a15d3be1c03a"
+        }
+      ]
+    },
+    {
+      "id": "preflight--diagnostic",
+      "source": "preflight",
+      "target": "diagnostic",
+      "label": "失败留证",
+      "kind": "error",
+      "meaning": "失败原因写结构化 DIAGNOSTIC，通过 callback 保留，不静默删除。",
+      "evidence": [
+        {
+          "path": "src/tscompbench/execution/orchestrator.py",
+          "symbol": "execute_task",
+          "line": 130,
+          "snippet": "record_kind=\"DIAGNOSTIC\",",
+          "sha256": "57f34360126f452510fb08de6d43c413718845552f2bff984c71a15d3be1c03a"
+        },
+        {
+          "path": "src/tscompbench/execution/orchestrator.py",
+          "symbol": "execute_task",
+          "line": 145,
+          "snippet": "record_callback(record, None)",
+          "sha256": "57f34360126f452510fb08de6d43c413718845552f2bff984c71a15d3be1c03a"
+        }
+      ]
+    },
+    {
+      "id": "formal--compress",
+      "source": "formal",
+      "target": "compress",
+      "label": "对象展开",
+      "kind": "expansion",
+      "meaning": "局部展开父节点 formal：每个内循环迭代是独立完整对象，不代表再执行一次 benchmark。",
+      "evidence": [
+        {
+          "path": "src/tscompbench/execution/repetition.py",
+          "symbol": "perform_measured_roundtrip",
+          "line": 432,
+          "snippet": "while True:",
+          "sha256": "9a9b4733255b6804df10b31c5b5358434b69de272c203e0a3b16932e33d75e54"
+        },
+        {
+          "path": "src/tscompbench/execution/repetition.py",
+          "symbol": "perform_measured_roundtrip",
+          "line": 438,
+          "snippet": "artifact, enc_wall, enc_cpu, immutable, canary = _encode(",
+          "sha256": "9a9b4733255b6804df10b31c5b5358434b69de272c203e0a3b16932e33d75e54"
+        }
+      ]
+    },
+    {
+      "id": "compress--finalize",
+      "source": "compress",
+      "target": "finalize",
+      "label": "",
+      "kind": "flow",
+      "meaning": "独立 session.compress_update 后强制 finalize。",
+      "evidence": [
+        {
+          "path": "src/tscompbench/execution/repetition.py",
+          "symbol": "_encode",
+          "line": 188,
+          "snippet": "updated = session.compress_update(routed, memoryview(storage)[:capacity])",
+          "sha256": "9a9b4733255b6804df10b31c5b5358434b69de272c203e0a3b16932e33d75e54"
+        },
+        {
+          "path": "src/tscompbench/execution/repetition.py",
+          "symbol": "_encode",
+          "line": 203,
+          "snippet": "finalized = session.finalize(memoryview(storage)[updated:capacity])",
+          "sha256": "9a9b4733255b6804df10b31c5b5358434b69de272c203e0a3b16932e33d75e54"
+        }
+      ]
+    },
+    {
+      "id": "finalize--accounting",
+      "source": "finalize",
+      "target": "accounting",
+      "label": "",
+      "kind": "flow",
+      "meaning": "完整 stream 包括 update+finalize 字节，session.accounting 计算完整解码所需成本。",
+      "evidence": [
+        {
+          "path": "src/tscompbench/execution/repetition.py",
+          "symbol": "_encode",
+          "line": 209,
+          "snippet": "stream = bytes(storage[: updated + finalized])",
+          "sha256": "9a9b4733255b6804df10b31c5b5358434b69de272c203e0a3b16932e33d75e54"
+        },
+        {
+          "path": "src/tscompbench/execution/repetition.py",
+          "symbol": "_encode",
+          "line": 210,
+          "snippet": "ledger = session.accounting(stream, routed)",
+          "sha256": "9a9b4733255b6804df10b31c5b5358434b69de272c203e0a3b16932e33d75e54"
+        }
+      ]
+    },
+    {
+      "id": "accounting--decompress",
+      "source": "accounting",
+      "target": "decompress",
+      "label": "",
+      "kind": "flow",
+      "meaning": "完成编码 ledger 后，独立解码 Context 重建完整 stream。",
+      "evidence": [
+        {
+          "path": "src/tscompbench/execution/repetition.py",
+          "symbol": "perform_measured_roundtrip",
+          "line": 446,
+          "snippet": "session = adapter.create_session(parameters)",
+          "sha256": "9a9b4733255b6804df10b31c5b5358434b69de272c203e0a3b16932e33d75e54"
+        },
+        {
+          "path": "src/tscompbench/execution/repetition.py",
+          "symbol": "perform_measured_roundtrip",
+          "line": 450,
+          "snippet": "decoded = session.decompress(artifact.stream)",
+          "sha256": "9a9b4733255b6804df10b31c5b5358434b69de272c203e0a3b16932e33d75e54"
+        }
+      ]
+    },
+    {
+      "id": "decompress--correctness",
+      "source": "decompress",
+      "target": "correctness",
+      "label": "",
+      "kind": "flow",
+      "meaning": "每次正式 repetition 的结果由 orchestrator 进行 Common Correctness。最终内循环对象提供结果证据；输入/canary/确定性跨内循环累计。",
+      "evidence": [
+        {
+          "path": "src/tscompbench/execution/orchestrator.py",
+          "symbol": "execute_task",
+          "line": 261,
+          "snippet": "correctness = validate_common_correctness(",
+          "sha256": "57f34360126f452510fb08de6d43c413718845552f2bff984c71a15d3be1c03a"
+        }
+      ]
+    },
+    {
+      "id": "correctness--lossless",
+      "source": "correctness",
+      "target": "lossless",
+      "label": "无损",
+      "kind": "flow",
+      "meaning": "LOSSLESS 值数据 dtype 一致并按 C-order 字节还原。",
+      "evidence": [
+        {
+          "path": "src/tscompbench/validation/correctness.py",
+          "symbol": "validate_common_correctness",
+          "line": 126,
+          "snippet": "if loss_mode is LossMode.LOSSLESS:",
+          "sha256": "05413254ac81af186db0535ec3448f187064ab6e098b9ed5d1e583000b17f7d9"
+        }
+      ]
+    },
+    {
+      "id": "correctness--lossy",
+      "source": "correctness",
+      "target": "lossy",
+      "label": "有损或摘要",
+      "kind": "flow",
+      "meaning": "Error-bounded 检查界与质量；Unbounded 只有质量；Rate 记录目标，actual FinalBits 的 rate gate 留待 rate profile；Summary 无重建但仍安全校验。",
+      "evidence": [
+        {
+          "path": "src/tscompbench/validation/correctness.py",
+          "symbol": "validate_common_correctness",
+          "line": 199,
+          "snippet": "if loss_mode is LossMode.ERROR_BOUNDED_LOSSY:",
+          "sha256": "05413254ac81af186db0535ec3448f187064ab6e098b9ed5d1e583000b17f7d9"
+        },
+        {
+          "path": "src/tscompbench/validation/correctness.py",
+          "symbol": "validate_common_correctness",
+          "line": 234,
+          "snippet": "diagnostics[\"rate_gate\"] = \"DEFERRED_TO_RATE_PROFILE_WITH_ACTUAL_FINAL_BITS\"",
+          "sha256": "05413254ac81af186db0535ec3448f187064ab6e098b9ed5d1e583000b17f7d9"
+        }
+      ]
+    },
+    {
+      "id": "formal--policy",
+      "source": "formal",
+      "target": "policy",
+      "label": "同次采集",
+      "kind": "scope",
+      "meaning": "同一次执行的职责投影：runner 将冻结 policy 传给执行器，非验证后重新运行 benchmark。",
+      "evidence": [
+        {
+          "path": "src/tscompbench/runner.py",
+          "symbol": "execute_run_set",
+          "line": 589,
+          "snippet": "measurement_policy = MeasurementPolicy.from_profile(",
+          "sha256": "1cddafd48ad12cb34b1defd32f6f63d40c435dbf83150d7d1dc7ddd7d6ba5384"
+        },
+        {
+          "path": "src/tscompbench/execution/orchestrator.py",
+          "symbol": "execute_task",
+          "line": 212,
+          "snippet": "perform_measured_roundtrip,",
+          "sha256": "57f34360126f452510fb08de6d43c413718845552f2bff984c71a15d3be1c03a"
+        }
+      ]
+    },
+    {
+      "id": "policy--timing",
+      "source": "policy",
+      "target": "timing",
+      "label": "",
+      "kind": "flow",
+      "meaning": "正式 repetition 使用冻结 policy 控制范围与最短时长。",
+      "evidence": [
+        {
+          "path": "src/tscompbench/execution/repetition.py",
+          "symbol": "perform_measured_roundtrip",
+          "line": 508,
+          "snippet": "if policy.duration_satisfied(selected_encode, selected_decode, e2e):",
+          "sha256": "9a9b4733255b6804df10b31c5b5358434b69de272c203e0a3b16932e33d75e54"
+        }
+      ]
+    },
+    {
+      "id": "policy--resources",
+      "source": "policy",
+      "target": "resources",
+      "label": "同步资源",
+      "kind": "scope",
+      "meaning": "ResourceSampler 与正式 repetition 共用起止边界。",
+      "evidence": [
+        {
+          "path": "src/tscompbench/execution/repetition.py",
+          "symbol": "perform_measured_roundtrip",
+          "line": 401,
+          "snippet": "sampler = ResourceSampler(",
+          "sha256": "9a9b4733255b6804df10b31c5b5358434b69de272c203e0a3b16932e33d75e54"
+        },
+        {
+          "path": "src/tscompbench/execution/repetition.py",
+          "symbol": "perform_measured_roundtrip",
+          "line": 410,
+          "snippet": "sampler.start(start_wall)",
+          "sha256": "9a9b4733255b6804df10b31c5b5358434b69de272c203e0a3b16932e33d75e54"
+        }
+      ]
+    },
+    {
+      "id": "timing--workloads",
+      "source": "timing",
+      "target": "workloads",
+      "label": "",
+      "kind": "flow",
+      "meaning": "正式编解码结果之后，条件工作负载分别在隔离 worker 执行；连线不是并发声明。",
+      "evidence": [
+        {
+          "path": "src/tscompbench/execution/orchestrator.py",
+          "symbol": "execute_task",
+          "line": 320,
+          "snippet": "workloads = unavailable_workloads(",
+          "sha256": "57f34360126f452510fb08de6d43c413718845552f2bff984c71a15d3be1c03a"
+        }
+      ]
+    },
+    {
+      "id": "workloads--query",
+      "source": "workloads",
+      "target": "query",
+      "label": "请求且支持",
+      "kind": "conditional",
+      "meaning": "Profile 请求且 manifest.query 或 random_access 才执行；否则记录明确不可用状态。",
+      "evidence": [
+        {
+          "path": "src/tscompbench/execution/orchestrator.py",
+          "symbol": "execute_task",
+          "line": 305,
+          "snippet": "if measurement_policy.query_workload:",
+          "sha256": "57f34360126f452510fb08de6d43c413718845552f2bff984c71a15d3be1c03a"
+        },
+        {
+          "path": "src/tscompbench/execution/orchestrator.py",
+          "symbol": "execute_task",
+          "line": 335,
+          "snippet": "execute_query_workload,",
+          "sha256": "57f34360126f452510fb08de6d43c413718845552f2bff984c71a15d3be1c03a"
+        }
+      ]
+    },
+    {
+      "id": "workloads--streaming",
+      "source": "workloads",
+      "target": "streaming",
+      "label": "请求且支持",
+      "kind": "conditional",
+      "meaning": "Profile 请求且 manifest.streaming 才执行；与 Query 按代码顺序分别隔离。",
+      "evidence": [
+        {
+          "path": "src/tscompbench/execution/orchestrator.py",
+          "symbol": "execute_task",
+          "line": 368,
+          "snippet": "if measurement_policy.streaming_workload and bool(",
+          "sha256": "57f34360126f452510fb08de6d43c413718845552f2bff984c71a15d3be1c03a"
+        },
+        {
+          "path": "src/tscompbench/execution/orchestrator.py",
+          "symbol": "execute_task",
+          "line": 372,
+          "snippet": "execute_streaming_workload,",
+          "sha256": "57f34360126f452510fb08de6d43c413718845552f2bff984c71a15d3be1c03a"
+        }
+      ]
+    },
+    {
+      "id": "workloads--raw",
+      "source": "workloads",
+      "target": "raw",
+      "label": "同次运行记录",
+      "kind": "flow",
+      "meaning": "workload 结果与正式运行记录汇合，通过 record_callback 追加原始记录。",
+      "evidence": [
+        {
+          "path": "src/tscompbench/execution/orchestrator.py",
+          "symbol": "execute_task",
+          "line": 437,
+          "snippet": "record_callback(record, observation.encoded.stream)",
+          "sha256": "57f34360126f452510fb08de6d43c413718845552f2bff984c71a15d3be1c03a"
+        }
+      ]
+    },
+    {
+      "id": "diagnostic--raw",
+      "source": "diagnostic",
+      "target": "raw",
+      "label": "诊断记录",
+      "kind": "evidence",
+      "meaning": "不支持、预检、warmup 失败等诊断也进入权威证据。正式失败保留原 FORMAL_REPETITION 状态，不统改为 DIAGNOSTIC。",
+      "evidence": [
+        {
+          "path": "src/tscompbench/execution/orchestrator.py",
+          "symbol": "execute_task",
+          "line": 145,
+          "snippet": "record_callback(record, None)",
+          "sha256": "57f34360126f452510fb08de6d43c413718845552f2bff984c71a15d3be1c03a"
+        },
+        {
+          "path": "src/tscompbench/storage/runs.py",
+          "symbol": "append_run_record",
+          "line": 442,
+          "snippet": "components_path = run_path / \"run_components.jsonl\"",
+          "sha256": "9061c6416d603264dbfca08df57af83a850ffb2d3162afed29b8dd5c8429ff6b"
+        }
+      ]
+    },
+    {
+      "id": "raw--evidence",
+      "source": "raw",
+      "target": "evidence",
+      "label": "",
+      "kind": "flow",
+      "meaning": "统计读取 run_components.jsonl 与冻结 task/provenance，runs.csv 不是权威统计输入。",
+      "evidence": [
+        {
+          "path": "src/tscompbench/statistics/engine.py",
+          "symbol": "analyze_run_set",
+          "line": 1143,
+          "snippet": "records = _read_jsonl(raw_path)",
+          "sha256": "dddf61282f0f3c17c579b4afca0773d9b0a228f75c9014c59ce3016cec8b80b7"
+        }
+      ]
+    },
+    {
+      "id": "evidence--eligibility",
+      "source": "evidence",
+      "target": "eligibility",
+      "label": "",
+      "kind": "flow",
+      "meaning": "完整冻结证据核对后先做资格过滤。",
+      "evidence": [
+        {
+          "path": "src/tscompbench/statistics/engine.py",
+          "symbol": "analyze_run_set",
+          "line": 1155,
+          "snippet": "eligibility, _ = _eligibility(",
+          "sha256": "dddf61282f0f3c17c579b4afca0773d9b0a228f75c9014c59ce3016cec8b80b7"
+        }
+      ]
+    },
+    {
+      "id": "eligibility--summary",
+      "source": "eligibility",
+      "target": "summary",
+      "label": "",
+      "kind": "flow",
+      "meaning": "仅合格 repetition 进入逐数据集统计，PASS 本身不足。",
+      "evidence": [
+        {
+          "path": "src/tscompbench/statistics/engine.py",
+          "symbol": "analyze_run_set",
+          "line": 1162,
+          "snippet": "summaries = _summaries(run_path, records, tasks, eligibility, policy)",
+          "sha256": "dddf61282f0f3c17c579b4afca0773d9b0a228f75c9014c59ce3016cec8b80b7"
+        },
+        {
+          "path": "src/tscompbench/statistics/engine.py",
+          "symbol": "_summaries",
+          "line": 659,
+          "snippet": "if record.get(\"run_id\") not in performance_ids:",
+          "sha256": "dddf61282f0f3c17c579b4afca0773d9b0a228f75c9014c59ce3016cec8b80b7"
+        }
+      ]
+    },
+    {
+      "id": "summary--corpus",
+      "source": "summary",
+      "target": "corpus",
+      "label": "",
+      "kind": "flow",
+      "meaning": "先逐数据集统计，再基于 summaries 作 corpus 汇总；图中同框呈现分层比较职责，其 group universe 同时来自 tasks。",
+      "evidence": [
+        {
+          "path": "src/tscompbench/statistics/engine.py",
+          "symbol": "analyze_run_set",
+          "line": 1176,
+          "snippet": "corpus_summaries=tuple(_corpus_summaries(summaries)),",
+          "sha256": "dddf61282f0f3c17c579b4afca0773d9b0a228f75c9014c59ce3016cec8b80b7"
+        },
+        {
+          "path": "src/tscompbench/statistics/engine.py",
+          "symbol": "analyze_run_set",
+          "line": 1178,
+          "snippet": "comparability_groups=tuple(_comparability_groups(tasks)),",
+          "sha256": "dddf61282f0f3c17c579b4afca0773d9b0a228f75c9014c59ce3016cec8b80b7"
+        }
+      ]
+    },
+    {
+      "id": "pareto--report",
+      "source": "pareto",
+      "target": "report",
+      "label": "",
+      "kind": "flow",
+      "meaning": "AnalysisBundle 的对应输出交给报告生成器，只读分析，不重新调用 codec。",
+      "evidence": [
+        {
+          "path": "src/tscompbench/reporting/generator.py",
+          "symbol": "generate_report",
+          "line": 689,
+          "snippet": "bundle = analyze_run_set(run_path, policy)",
+          "sha256": "1b870ac53ad857b9da0247a0862367b6f2f2d432d677418f62d6e41636347656"
+        }
+      ]
+    },
+    {
+      "id": "evidence--coverage",
+      "source": "evidence",
+      "target": "coverage",
+      "label": "任务全集",
+      "kind": "evidence",
+      "meaning": "读取节点包含冻结 task 全集，Coverage 使用 tasks+records；包括无 PASS 任务，不从合格 summary 推算。",
+      "evidence": [
+        {
+          "path": "src/tscompbench/statistics/engine.py",
+          "symbol": "analyze_run_set",
+          "line": 1163,
+          "snippet": "coverage = _coverage(tasks, records)",
+          "sha256": "dddf61282f0f3c17c579b4afca0773d9b0a228f75c9014c59ce3016cec8b80b7"
+        }
+      ]
+    },
+    {
+      "id": "coverage--report",
+      "source": "coverage",
+      "target": "report",
+      "label": "覆盖率",
+      "kind": "flow",
+      "meaning": "AnalysisBundle 的对应输出交给报告生成器，只读分析，不重新调用 codec。",
+      "evidence": [
+        {
+          "path": "src/tscompbench/reporting/generator.py",
+          "symbol": "generate_report",
+          "line": 689,
+          "snippet": "bundle = analyze_run_set(run_path, policy)",
+          "sha256": "1b870ac53ad857b9da0247a0862367b6f2f2d432d677418f62d6e41636347656"
+        }
+      ]
+    },
+    {
+      "id": "tasks--gates",
+      "source": "tasks",
+      "target": "gates",
+      "label": "",
+      "kind": "flow",
+      "meaning": "execute_task 首先执行 preflight；不合格组合返回 DIAGNOSTIC 而非正式 repetition。",
+      "evidence": [
+        {
+          "path": "src/tscompbench/execution/orchestrator.py",
+          "symbol": "execute_task",
+          "line": 106,
+          "snippet": "preflight, prepared = preflight_task(",
+          "sha256": "57f34360126f452510fb08de6d43c413718845552f2bff984c71a15d3be1c03a"
+        },
+        {
+          "path": "src/tscompbench/execution/orchestrator.py",
+          "symbol": "execute_task",
+          "line": 130,
+          "snippet": "record_kind=\"DIAGNOSTIC\",",
+          "sha256": "57f34360126f452510fb08de6d43c413718845552f2bff984c71a15d3be1c03a"
+        }
+      ]
+    },
+    {
+      "id": "gates--track",
+      "source": "gates",
+      "target": "track",
+      "label": "",
+      "kind": "flow",
+      "meaning": "任务状态、来源、工件与注册执行器门控后，才路由 Canonical。",
+      "evidence": [
+        {
+          "path": "src/tscompbench/execution/preflight.py",
+          "symbol": "preflight_task",
+          "line": 119,
+          "snippet": "if not reviewed_pipeline_executor(manifest.document, adapter, task.preprocess, parameters):",
+          "sha256": "3c900fe56456b5cca518252e4a4279f44e068324421d1b5bac3bbfe0b31e0f58"
+        },
+        {
+          "path": "src/tscompbench/execution/preflight.py",
+          "symbol": "preflight_task",
+          "line": 126,
+          "snippet": "routed = route_canonical_artifact(artifact, task.track)",
+          "sha256": "3c900fe56456b5cca518252e4a4279f44e068324421d1b5bac3bbfe0b31e0f58"
+        }
+      ]
+    },
+    {
+      "id": "track--input",
+      "source": "track",
+      "target": "input",
+      "label": "",
+      "kind": "flow",
+      "meaning": "TIMESTAMP / VALUE / SYSTEM 为当前任务所选 Track；路由后输入验证。",
+      "evidence": [
+        {
+          "path": "src/tscompbench/execution/preflight.py",
+          "symbol": "preflight_task",
+          "line": 127,
+          "snippet": "input_validation = validate_routed_input(routed, task)",
+          "sha256": "3c900fe56456b5cca518252e4a4279f44e068324421d1b5bac3bbfe0b31e0f58"
+        }
+      ]
+    },
+    {
+      "id": "summary--pareto",
+      "source": "summary",
+      "target": "pareto",
+      "label": "",
+      "kind": "flow",
+      "meaning": "Pareto 与单指标排名从合格 summaries 生成，组内比较。",
+      "evidence": [
+        {
+          "path": "src/tscompbench/statistics/engine.py",
+          "symbol": "analyze_run_set",
+          "line": 1179,
+          "snippet": "pareto=tuple(_pareto_rows(summaries)),",
+          "sha256": "dddf61282f0f3c17c579b4afca0773d9b0a228f75c9014c59ce3016cec8b80b7"
+        },
+        {
+          "path": "src/tscompbench/statistics/engine.py",
+          "symbol": "analyze_run_set",
+          "line": 1180,
+          "snippet": "rankings=tuple(_ranking_rows(summaries)),",
+          "sha256": "dddf61282f0f3c17c579b4afca0773d9b0a228f75c9014c59ce3016cec8b80b7"
+        }
+      ]
+    },
+    {
+      "id": "corpus--report",
+      "source": "corpus",
+      "target": "report",
+      "label": "汇总结果",
+      "kind": "evidence",
+      "meaning": "AnalysisBundle 的对应输出交给报告生成器，只读分析，不重新调用 codec。",
+      "evidence": [
+        {
+          "path": "src/tscompbench/reporting/generator.py",
+          "symbol": "generate_report",
+          "line": 689,
+          "snippet": "bundle = analyze_run_set(run_path, policy)",
+          "sha256": "1b870ac53ad857b9da0247a0862367b6f2f2d432d677418f62d6e41636347656"
+        }
+      ]
+    },
+    {
+      "id": "resources--raw",
+      "source": "resources",
+      "target": "raw",
+      "label": "资源证据",
+      "kind": "evidence",
+      "meaning": "同次 resource observation 写入结构化 record，不是第二次资源压测。",
+      "evidence": [
+        {
+          "path": "src/tscompbench/execution/orchestrator.py",
+          "symbol": "execute_task",
+          "line": 277,
+          "snippet": "if status is RunStatus.PASS and observation.resources.swap_observed is True:",
+          "sha256": "57f34360126f452510fb08de6d43c413718845552f2bff984c71a15d3be1c03a"
+        }
+      ]
+    },
+    {
+      "id": "query--raw",
+      "source": "query",
+      "target": "raw",
+      "label": "查询结果",
+      "kind": "evidence",
+      "meaning": "隔离 Query 的 status/原因/latency 等进入本次 workload 字段。",
+      "evidence": [
+        {
+          "path": "src/tscompbench/execution/orchestrator.py",
+          "symbol": "execute_task",
+          "line": 365,
+          "snippet": "query=query_document,",
+          "sha256": "57f34360126f452510fb08de6d43c413718845552f2bff984c71a15d3be1c03a"
+        }
+      ]
+    },
+    {
+      "id": "streaming--raw",
+      "source": "streaming",
+      "target": "raw",
+      "label": "流式结果",
+      "kind": "evidence",
+      "meaning": "隔离 Streaming 的 status/原因/块状态等进入本次 workload 字段。",
+      "evidence": [
+        {
+          "path": "src/tscompbench/execution/orchestrator.py",
+          "symbol": "execute_task",
+          "line": 404,
+          "snippet": "streaming=streaming_document,",
+          "sha256": "57f34360126f452510fb08de6d43c413718845552f2bff984c71a15d3be1c03a"
+        }
+      ]
+    }
+  ],
+  "supplementary_modules": [
+    {
+      "purpose": "冻结 Environment 指纹与能力/工具信息",
+      "path": "src/tscompbench/environment.py",
+      "symbol": "capture_environment",
+      "line": 152,
+      "end_line": 219,
+      "sha256": "e76338e0286818fda10682d0287e2a1b8db33c900228ae1db462414729b26494"
+    },
+    {
+      "purpose": "Manifest 与源 SHA-256 入口",
+      "path": "src/tscompbench/datasets/registry.py",
+      "symbol": "DatasetRegistry",
+      "line": 66,
+      "end_line": 298,
+      "sha256": "367ba068bec84739c483a7547bf86e994b8043ee8615b8b1221e23827212202f"
+    },
+    {
+      "purpose": "Canonical raw bits、数据描述与二进制工件",
+      "path": "src/tscompbench/datasets/canonical.py",
+      "symbol": "write_canonical",
+      "line": 56,
+      "end_line": 116,
+      "sha256": "7823607c1502bdd75c369dff3119c87be565b26df6908bc1906564d3c987ce1a"
+    },
+    {
+      "purpose": "只读数据特征",
+      "path": "src/tscompbench/datasets/characterize.py",
+      "symbol": "characterize",
+      "line": 235,
+      "end_line": 294,
+      "sha256": "1a4676f53c5bd1a52ce6c4776762f7ca6b99c34ef4f2d46255c1d794bbd1e542"
+    },
+    {
+      "purpose": "冻结输入描述",
+      "path": "src/tscompbench/codecs/models.py",
+      "symbol": "DataDescriptor",
+      "line": 27,
+      "end_line": 62,
+      "sha256": "0fc0d5c2018a173a8c57a1989c0c20017cc7f1def423b761c2904d8051344fbb"
+    },
+    {
+      "purpose": "协商与显式适配契约",
+      "path": "src/tscompbench/codecs/models.py",
+      "symbol": "CompatibilityPlan",
+      "line": 135,
+      "end_line": 189,
+      "sha256": "0fc0d5c2018a173a8c57a1989c0c20017cc7f1def423b761c2904d8051344fbb"
+    },
+    {
+      "purpose": "ISA/device/线程进程/affinity/fallback/工件身份",
+      "path": "src/tscompbench/planning/models.py",
+      "symbol": "ExecutionResolution",
+      "line": 22,
+      "end_line": 57,
+      "sha256": "66d7ff48d3afc347c3d18a03055133c74dd41019e5f588e306d2e468273100ac"
+    },
+    {
+      "purpose": "嵌套 Semantic/Execution/Resource 文档",
+      "path": "src/tscompbench/planning/models.py",
+      "symbol": "ComparabilityKeys",
+      "line": 59,
+      "end_line": 70,
+      "sha256": "66d7ff48d3afc347c3d18a03055133c74dd41019e5f588e306d2e468273100ac"
+    },
+    {
+      "purpose": "实际已注册 codec adapter 分派",
+      "path": "src/tscompbench/adapters/factory.py",
+      "symbol": "create_adapter",
+      "line": 258,
+      "end_line": 360,
+      "sha256": "6c1036f2586ab371824f304d2370610af8ef2bbf2841174f2f30c5085d33d0a4"
+    },
+    {
+      "purpose": "声明的预处理计划",
+      "path": "src/tscompbench/preprocess/contracts.py",
+      "symbol": "build_preprocess_plan",
+      "line": 69,
+      "end_line": 111,
+      "sha256": "16e596bbce1e418033a2e843cd68a67632f28388b013c0d5dcefa3e393a3f1a2"
+    },
+    {
+      "purpose": "已注册执行器门控",
+      "path": "src/tscompbench/preprocess/runtime.py",
+      "symbol": "reviewed_pipeline_executor",
+      "line": 33,
+      "end_line": 57,
+      "sha256": "58dd04356ebbc226a156b84a644cfb5366130ada6a5f17cfa09ee0be2e6226e5"
+    },
+    {
+      "purpose": "独立 worker、超时、内存与 affinity",
+      "path": "src/tscompbench/execution/isolation.py",
+      "symbol": "run_isolated",
+      "line": 65,
+      "end_line": 117,
+      "sha256": "54ad3c67e6ac82dad196140c52843e584df072095a0e9375cedd3d0bd1d9ea90"
+    },
+    {
+      "purpose": "Error-bounded 边界与质量",
+      "path": "src/tscompbench/validation/lossy.py",
+      "symbol": "validate_error_bound",
+      "line": 187,
+      "end_line": 278,
+      "sha256": "488e1078e9e601020a5b22d08ae4eb2e4f791c8202aa90b758c85b04e52b1c1e"
+    },
+    {
+      "purpose": "Unbounded 质量，无误差保证",
+      "path": "src/tscompbench/validation/lossy.py",
+      "symbol": "profile_unbounded_loss",
+      "line": 279,
+      "end_line": 302,
+      "sha256": "488e1078e9e601020a5b22d08ae4eb2e4f791c8202aa90b758c85b04e52b1c1e"
+    },
+    {
+      "purpose": "process CPU/memory/I/O；Energy/counters 未采集 availability",
+      "path": "src/tscompbench/measurement/resources.py",
+      "symbol": "ResourceSampler",
+      "line": 195,
+      "end_line": 359,
+      "sha256": "c7ed11df070e5e291d8c8e71430c421ce3b45a098a64e12036d505310c07becf"
+    },
+    {
+      "purpose": "encode 和 decode 各自达标；E2E 时还要 E2E 达标",
+      "path": "src/tscompbench/measurement/contracts.py",
+      "symbol": "duration_satisfied",
+      "line": 50,
+      "end_line": 58,
+      "sha256": "087e18b022aa64f4b63cbb43abf1c37d838f66f089399b0118eef3e069731381"
+    },
+    {
+      "purpose": "未请求/不支持工作负载状态",
+      "path": "src/tscompbench/measurement/workloads.py",
+      "symbol": "unavailable_workloads",
+      "line": 331,
+      "end_line": 389,
+      "sha256": "65f996254329784683baeb162f555eb3f9b0d998420cdd0818eb0ac72cde8dbe"
+    },
+    {
+      "purpose": "追加 JSONL、按 RunID 结构化证据及 CSV 投影",
+      "path": "src/tscompbench/storage/runs.py",
+      "symbol": "append_run_record",
+      "line": 434,
+      "end_line": 463,
+      "sha256": "9061c6416d603264dbfca08df57af83a850ffb2d3162afed29b8dd5c8429ff6b"
+    },
+    {
+      "purpose": "确定性 bootstrap 与分位数/离散度",
+      "path": "src/tscompbench/statistics/core.py",
+      "symbol": "descriptive_statistics",
+      "line": 56,
+      "end_line": 90,
+      "sha256": "600cf6417d61cf1105c58dcaf97b91149eec9c6286d2fb7e6129b4d24e9c5aca"
+    },
+    {
+      "purpose": "按分析类型审查性能/资源资格",
+      "path": "src/tscompbench/statistics/engine.py",
+      "symbol": "_analysis_reasons",
+      "line": 311,
+      "end_line": 325,
+      "sha256": "dddf61282f0f3c17c579b4afca0773d9b0a228f75c9014c59ce3016cec8b80b7"
+    }
+  ],
+  "contracts": [
+    {
+      "path": "configs/experiments/data-preparation-smoke.toml",
+      "sha256": "e4deeef91d2906a711b3a2ee1322ec260198997286e3f3eded22fde6abb60782",
+      "bytes": 183,
+      "working_tree_status": "clean",
+      "inspection": "契约参照；未在本图任务中执行 benchmark/test",
+      "symbols": [],
+      "line": 1
+    },
+    {
+      "path": "configs/experiments/capability-configuration-smoke.toml",
+      "sha256": "6f56a00a68cdb0ad1bd1a055359a0ee8c7eeaa73588bd5fe205fe032a301c2c2",
+      "bytes": 423,
+      "working_tree_status": "clean",
+      "inspection": "契约参照；未在本图任务中执行 benchmark/test",
+      "symbols": [],
+      "line": 1
+    },
+    {
+      "path": "configs/experiments/performance-evaluation-smoke.toml",
+      "sha256": "0c5613d189d96051da6799d0a143041f0883b97fbf59b44108e516dd369a2eaa",
+      "bytes": 945,
+      "working_tree_status": "clean",
+      "inspection": "契约参照；未在本图任务中执行 benchmark/test",
+      "symbols": [],
+      "line": 1
+    },
+    {
+      "path": "registry/datasets/national_illness.json",
+      "sha256": "890795849e4eeb6b7c015b5c08720625ef2723dd4848b7b7d07a7fa6e334b07e",
+      "bytes": 2261,
+      "working_tree_status": "clean",
+      "inspection": "契约参照；未在本图任务中执行 benchmark/test",
+      "symbols": [],
+      "line": 1
+    },
+    {
+      "path": "registry/codecs/lz4-frame.json",
+      "sha256": "65f9328c1e92de539209cfe258c435fa1e195b9fb76933fc58b1eb6eec780b4f",
+      "bytes": 3843,
+      "working_tree_status": "clean",
+      "inspection": "契约参照；未在本图任务中执行 benchmark/test",
+      "symbols": [],
+      "line": 1
+    },
+    {
+      "path": "registry/codecs/delta-maskedvbyte-u32.json",
+      "sha256": "d18b46af289f63b556fe92c4479b018a79f09c92de3d2aef02867c6e4291e9b8",
+      "bytes": 5305,
+      "working_tree_status": "?? registry/codecs/delta-maskedvbyte-u32.json",
+      "inspection": "契约参照；未在本图任务中执行 benchmark/test",
+      "symbols": [],
+      "line": 1
+    },
+    {
+      "path": "registry/sources/lz4-frame-lzbench.artifact.json",
+      "sha256": "fa7803bbe19fae2f8f65b4b5dba016e2eb899810bd54113479dc76d9ae0d4bde",
+      "bytes": 1634,
+      "working_tree_status": "clean",
+      "inspection": "契约参照；未在本图任务中执行 benchmark/test",
+      "symbols": [],
+      "line": 1
+    },
+    {
+      "path": "schemas/v2/experiment-config.schema.json",
+      "sha256": "44fed57583c5a12f21e11ea751e260993589cf7061b50e9f697d39c274757267",
+      "bytes": 3774,
+      "working_tree_status": "clean",
+      "inspection": "契约参照；未在本图任务中执行 benchmark/test",
+      "symbols": [],
+      "line": 1
+    },
+    {
+      "path": "schemas/v2/dataset-manifest.schema.json",
+      "sha256": "5058df196de476291ff2aa44b50223168a8354e32c1d0c9ceb64951d08e27c33",
+      "bytes": 1474,
+      "working_tree_status": "clean",
+      "inspection": "契约参照；未在本图任务中执行 benchmark/test",
+      "symbols": [],
+      "line": 1
+    },
+    {
+      "path": "schemas/v2/canonical-artifact-metadata.schema.json",
+      "sha256": "6f73427539e0c80d2980c19fb47524031badc76215e6d5a16d8b9a64ee734b75",
+      "bytes": 1599,
+      "working_tree_status": "clean",
+      "inspection": "契约参照；未在本图任务中执行 benchmark/test",
+      "symbols": [],
+      "line": 1
+    },
+    {
+      "path": "schemas/v2/dataset-characterization.schema.json",
+      "sha256": "dd9fa36206647aed20ae16c48280d368db64993c46efa9962a9c2dc8b7e06296",
+      "bytes": 916,
+      "working_tree_status": "clean",
+      "inspection": "契约参照；未在本图任务中执行 benchmark/test",
+      "symbols": [],
+      "line": 1
+    },
+    {
+      "path": "schemas/v2/codec-manifest.schema.json",
+      "sha256": "d2b00afeb6445e644a171a9455346472f36491de66da7da601af50e6007242e9",
+      "bytes": 1342,
+      "working_tree_status": "clean",
+      "inspection": "契约参照；未在本图任务中执行 benchmark/test",
+      "symbols": [],
+      "line": 1
+    },
+    {
+      "path": "schemas/v2/compatibility-plan.schema.json",
+      "sha256": "f8065e31edf43e3506cf83e50ef5c42c4ea77ba2a4951c9334ee4e35cc405750",
+      "bytes": 1212,
+      "working_tree_status": "clean",
+      "inspection": "契约参照；未在本图任务中执行 benchmark/test",
+      "symbols": [],
+      "line": 1
+    },
+    {
+      "path": "schemas/v2/preprocess-plan.schema.json",
+      "sha256": "a3e1f313323025382b17595bb485b281067893b9f00301e0b5f4fb1c87d0fc6e",
+      "bytes": 657,
+      "working_tree_status": "clean",
+      "inspection": "契约参照；未在本图任务中执行 benchmark/test",
+      "symbols": [],
+      "line": 1
+    },
+    {
+      "path": "schemas/v2/execution-resolution.schema.json",
+      "sha256": "27947f2f0aa1efe2095c1914fde4f7f5cfba27cb03cb18ef8596bff3895ca9f3",
+      "bytes": 2309,
+      "working_tree_status": "clean",
+      "inspection": "契约参照；未在本图任务中执行 benchmark/test",
+      "symbols": [],
+      "line": 1
+    },
+    {
+      "path": "schemas/v2/comparability-keys.schema.json",
+      "sha256": "3526b8b587091bc93d5e26f2b914493b6a376a264b9f93a5deaa7092c33c237b",
+      "bytes": 756,
+      "working_tree_status": "clean",
+      "inspection": "契约参照；未在本图任务中执行 benchmark/test",
+      "symbols": [],
+      "line": 1
+    },
+    {
+      "path": "schemas/v2/benchmark-task.schema.json",
+      "sha256": "8425c31ac63c3029521aed03a226a614b823bd2faa9daca0e87671a1b97ca86e",
+      "bytes": 1292,
+      "working_tree_status": "clean",
+      "inspection": "契约参照；未在本图任务中执行 benchmark/test",
+      "symbols": [],
+      "line": 1
+    },
+    {
+      "path": "schemas/v2/measurement-policy.schema.json",
+      "sha256": "40b36c59640322b21414c6675dc0095f0a2ea8d10ed7a7299e681e70007d92c2",
+      "bytes": 2619,
+      "working_tree_status": "clean",
+      "inspection": "契约参照；未在本图任务中执行 benchmark/test",
+      "symbols": [],
+      "line": 1
+    },
+    {
+      "path": "schemas/v2/run-record.schema.json",
+      "sha256": "bf146dbb413beac9b31ac2f964ea084fa0b49af8710b105b14d486df98ac1bd9",
+      "bytes": 4778,
+      "working_tree_status": "M schemas/v2/run-record.schema.json",
+      "inspection": "契约参照；未在本图任务中执行 benchmark/test",
+      "symbols": [],
+      "line": 1
+    },
+    {
+      "path": "schemas/v2/eligibility-record.schema.json",
+      "sha256": "ee6cc907a6d92a02ed989ddac976eb34914df8605c0773403aa089cd3c8d0c06",
+      "bytes": 885,
+      "working_tree_status": "clean",
+      "inspection": "契约参照；未在本图任务中执行 benchmark/test",
+      "symbols": [],
+      "line": 1
+    },
+    {
+      "path": "schemas/v2/summary-record.schema.json",
+      "sha256": "996f278e76154392d2ba5962240b91faddd53f87d953aaf88d6271fc0211d071",
+      "bytes": 3895,
+      "working_tree_status": "M schemas/v2/summary-record.schema.json",
+      "inspection": "契约参照；未在本图任务中执行 benchmark/test",
+      "symbols": [],
+      "line": 1
+    },
+    {
+      "path": "schemas/v2/corpus-summary-record.schema.json",
+      "sha256": "1ba9010eaa96f34377017f28f4253f53f1f415468411a86264ee79069b0f153b",
+      "bytes": 1939,
+      "working_tree_status": "clean",
+      "inspection": "契约参照；未在本图任务中执行 benchmark/test",
+      "symbols": [],
+      "line": 1
+    },
+    {
+      "path": "schemas/v2/report.schema.json",
+      "sha256": "f6251d30cfd86bfb5e1c746360a40644377ca945888b6e2f6d017b39a63477a7",
+      "bytes": 1603,
+      "working_tree_status": "clean",
+      "inspection": "契约参照；未在本图任务中执行 benchmark/test",
+      "symbols": [],
+      "line": 1
+    },
+    {
+      "path": "tests/unit/test_canonical.py",
+      "sha256": "3e0d41e63f4616247f46955237ab39747724aea8b40829e0f89890c0e75cfec5",
+      "bytes": 1065,
+      "working_tree_status": "clean",
+      "inspection": "契约参照；未在本图任务中执行 benchmark/test",
+      "symbols": [
+        {
+          "symbol": "test_canonical_bytes_are_deterministic_and_self_checking",
+          "line": 8
+        }
+      ],
+      "line": 1
+    },
+    {
+      "path": "tests/unit/test_negotiation.py",
+      "sha256": "102fd73dfd87aa1a6cfe429aa6988a784de40cc76698e2330d6d8c54364a276a",
+      "bytes": 4003,
+      "working_tree_status": "clean",
+      "inspection": "契约参照；未在本图任务中执行 benchmark/test",
+      "symbols": [
+        {
+          "symbol": "_codecs",
+          "line": 24
+        },
+        {
+          "symbol": "_descriptor",
+          "line": 29
+        },
+        {
+          "symbol": "test_four_state_negotiation_and_adapter_validation",
+          "line": 51
+        },
+        {
+          "symbol": "test_native_lossy_codec_uses_its_declared_loss_mode",
+          "line": 76
+        },
+        {
+          "symbol": "test_rewrite_capacity_limits_are_rejected_during_planning",
+          "line": 91
+        }
+      ],
+      "line": 1
+    },
+    {
+      "path": "tests/unit/test_preprocess.py",
+      "sha256": "538efdfc0d8322e84c6a9c7c419b2a6409d84acb3bd08848f0c6a6f276e40edb",
+      "bytes": 1504,
+      "working_tree_status": "clean",
+      "inspection": "契约参照；未在本图任务中执行 benchmark/test",
+      "symbols": [
+        {
+          "symbol": "test_preprocess_is_separate_from_adapter_and_validated_by_declared_semantics",
+          "line": 13
+        },
+        {
+          "symbol": "test_lossy_preprocess_cannot_validate_without_its_own_bound",
+          "line": 29
+        }
+      ],
+      "line": 1
+    },
+    {
+      "path": "tests/unit/test_execution_validation.py",
+      "sha256": "884ef8d63f82192dc990a1873073daa4075035dfe69abe803e186888f2fde497",
+      "bytes": 6228,
+      "working_tree_status": "clean",
+      "inspection": "契约参照；未在本图任务中执行 benchmark/test",
+      "symbols": [
+        {
+          "symbol": "_route",
+          "line": 22
+        },
+        {
+          "symbol": "test_track_routing_never_leaks_timestamp_into_value_and_requires_system_segment",
+          "line": 38
+        },
+        {
+          "symbol": "test_oracle_requires_finalize_and_accounts_real_written_bytes",
+          "line": 87
+        },
+        {
+          "symbol": "test_loss_gate_uses_raw_violation_as_hard_failure_and_numerical_as_diagnostic",
+          "line": 97
+        },
+        {
+          "symbol": "test_mts_global_and_per_channel_range_bounds_are_not_conflated",
+          "line": 113
+        },
+        {
+          "symbol": "test_boundary_suite_covers_capacity_special_values_layout_and_stream_edges",
+          "line": 140
+        },
+        {
+          "symbol": "test_worker_isolation_classifies_timeout_and_oom",
+          "line": 153
+        }
+      ],
+      "line": 1
+    },
+    {
+      "path": "tests/unit/test_measurement.py",
+      "sha256": "3301bde447b7e266d9af4740218305e8db8f04907beb5536d80764f55a53cbcc",
+      "bytes": 13373,
+      "working_tree_status": "M tests/unit/test_measurement.py",
+      "inspection": "契约参照；未在本图任务中执行 benchmark/test",
+      "symbols": [
+        {
+          "symbol": "_route",
+          "line": 35
+        },
+        {
+          "symbol": "_compatibility",
+          "line": 52
+        },
+        {
+          "symbol": "_policy",
+          "line": 85
+        },
+        {
+          "symbol": "test_formal_profile_enforces_normative_warmup_repetition_and_duration",
+          "line": 116
+        },
+        {
+          "symbol": "test_measured_repetition_reuses_layer3_lifecycle_and_records_scope_resources",
+          "line": 141
+        },
+        {
+          "symbol": "test_minimum_duration_cannot_be_satisfied_by_the_faster_direction_or_sum",
+          "line": 165
+        },
+        {
+          "symbol": "test_query_matrix_is_seeded_and_covers_point_full_and_projection_widths",
+          "line": 177
+        },
+        {
+          "symbol": "test_native_timing_accumulates_same_inner_iterations_and_keeps_legacy_missing",
+          "line": 185
+        },
+        {
+          "symbol": "Session",
+          "line": 186
+        },
+        {
+          "symbol": "__init__",
+          "line": 187
+        },
+        {
+          "symbol": "__getattr__",
+          "line": 190
+        },
+        {
+          "symbol": "native_timing",
+          "line": 193
+        },
+        {
+          "symbol": "Adapter",
+          "line": 196
+        },
+        {
+          "symbol": "create_session",
+          "line": 199
+        },
+        {
+          "symbol": "test_adapter_can_declare_a_nonstandard_native_timing_boundary",
+          "line": 223
+        },
+        {
+          "symbol": "Session",
+          "line": 224
+        },
+        {
+          "symbol": "__init__",
+          "line": 225
+        },
+        {
+          "symbol": "__getattr__",
+          "line": 228
+        },
+        {
+          "symbol": "native_timing",
+          "line": 231
+        },
+        {
+          "symbol": "Adapter",
+          "line": 234
+        },
+        {
+          "symbol": "create_session",
+          "line": 238
+        },
+        {
+          "symbol": "test_query_engine_times_only_pregenerated_requests_and_checks_exact_slices",
+          "line": 248
+        },
+        {
+          "symbol": "Session",
+          "line": 251
+        },
+        {
+          "symbol": "query",
+          "line": 252
+        },
+        {
+          "symbol": "close",
+          "line": 261
+        },
+        {
+          "symbol": "Adapter",
+          "line": 264
+        },
+        {
+          "symbol": "create_session",
+          "line": 265
+        },
+        {
+          "symbol": "test_query_engine_projects_native_matrix_channels",
+          "line": 285
+        },
+        {
+          "symbol": "Session",
+          "line": 301
+        },
+        {
+          "symbol": "query",
+          "line": 302
+        },
+        {
+          "symbol": "close",
+          "line": 318
+        },
+        {
+          "symbol": "Adapter",
+          "line": 321
+        },
+        {
+          "symbol": "create_session",
+          "line": 322
+        },
+        {
+          "symbol": "test_streaming_engine_drives_blocks_finalizes_accounts_and_verifies_output",
+          "line": 340
+        },
+        {
+          "symbol": "Session",
+          "line": 343
+        },
+        {
+          "symbol": "stream_start",
+          "line": 344
+        },
+        {
+          "symbol": "stream_push",
+          "line": 347
+        },
+        {
+          "symbol": "stream_finalize",
+          "line": 351
+        },
+        {
+          "symbol": "stream_limits",
+          "line": 354
+        },
+        {
+          "symbol": "stream_accounting",
+          "line": 357
+        },
+        {
+          "symbol": "stream_decompress",
+          "line": 365
+        },
+        {
+          "symbol": "close",
+          "line": 369
+        },
+        {
+          "symbol": "Adapter",
+          "line": 372
+        },
+        {
+          "symbol": "create_stream_session",
+          "line": 373
+        }
+      ],
+      "line": 1
+    },
+    {
+      "path": "tests/unit/test_statistics.py",
+      "sha256": "9592b870fe58d2f752e7fa6f1eaa187cc725a3a92854f1866c03b17b5c5b2eba",
+      "bytes": 6128,
+      "working_tree_status": "clean",
+      "inspection": "契约参照；未在本图任务中执行 benchmark/test",
+      "symbols": [
+        {
+          "symbol": "test_descriptive_statistics_are_deterministic_and_not_fastest_only",
+          "line": 10
+        },
+        {
+          "symbol": "test_pareto_and_dense_ranking_keep_tradeoffs_explicit",
+          "line": 31
+        },
+        {
+          "symbol": "test_reporting_policy_is_frozen_in_experiment_configuration",
+          "line": 47
+        },
+        {
+          "symbol": "test_auxiliary_native_summary_does_not_publish_partial_totals",
+          "line": 72
+        },
+        {
+          "symbol": "test_auxiliary_native_summary_accepts_one_declared_nonstandard_boundary",
+          "line": 90
+        },
+        {
+          "symbol": "test_auxiliary_native_summary_rejects_mixed_boundaries",
+          "line": 111
+        },
+        {
+          "symbol": "test_corpus_native_throughput_requires_every_dataset",
+          "line": 132
+        }
+      ],
+      "line": 1
+    },
+    {
+      "path": "tests/integration/test_layer2_plan.py",
+      "sha256": "c0cf6b9a035b61e018f92420f068307142b7ffe81566d1530d317bc30e584e04",
+      "bytes": 2170,
+      "working_tree_status": "clean",
+      "inspection": "契约参照；未在本图任务中执行 benchmark/test",
+      "symbols": [
+        {
+          "symbol": "test_layer2_plan_consumes_layer1_artifacts_and_keeps_all_capability_states",
+          "line": 12
+        }
+      ],
+      "line": 1
+    },
+    {
+      "path": "tests/integration/test_layer3_execution.py",
+      "sha256": "02f78b5c017d0f8a7d68de8e80c3ad8bc8d5f9ebf8342a953f13bbfeb60c0ac3",
+      "bytes": 7125,
+      "working_tree_status": "clean",
+      "inspection": "契约参照；未在本图任务中执行 benchmark/test",
+      "symbols": [
+        {
+          "symbol": "test_layer3_executes_preflight_finalize_accounting_and_same_run_correctness",
+          "line": 17
+        },
+        {
+          "symbol": "test_preflight_fault_taxonomy_is_not_collapsed_into_generic_codec_failure",
+          "line": 89
+        },
+        {
+          "symbol": "status",
+          "line": 135
+        }
+      ],
+      "line": 1
+    },
+    {
+      "path": "tests/integration/test_layer5_reporting.py",
+      "sha256": "bc47582c905bf9e6840bcdabb857230878d7f1b08dc265634276da24253ea398",
+      "bytes": 17509,
+      "working_tree_status": "M tests/integration/test_layer5_reporting.py",
+      "inspection": "契约参照；未在本图任务中执行 benchmark/test",
+      "symbols": [
+        {
+          "symbol": "_write_jsonl",
+          "line": 12
+        },
+        {
+          "symbol": "test_statistics_rechecks_each_direction_despite_claimed_duration_pass",
+          "line": 20
+        },
+        {
+          "symbol": "test_unbounded_quality_eligibility_uses_frozen_task_semantics",
+          "line": 34
+        },
+        {
+          "symbol": "test_failed_repetitions_remain_in_coverage_and_ten_valid_observations_can_be_analyzed",
+          "line": 54
+        },
+        {
+          "symbol": "_task",
+          "line": 92
+        },
+        {
+          "symbol": "_record",
+          "line": 128
+        },
+        {
+          "symbol": "test_layer5_filters_groups_uses_frozen_coverage_and_preserves_raw_evidence",
+          "line": 246
+        }
+      ],
+      "line": 1
+    },
+    {
+      "path": "tests/unit/test_formal_direction_duration_audit.py",
+      "sha256": "a00969bc51008073bd95d0270a9d17d2135eddda9e0dff74db2bff463ad51e35",
+      "bytes": 1444,
+      "working_tree_status": "?? tests/unit/test_formal_direction_duration_audit.py",
+      "inspection": "契约参照；未在本图任务中执行 benchmark/test",
+      "symbols": [
+        {
+          "symbol": "checker",
+          "line": 11
+        },
+        {
+          "symbol": "test_total_duration_and_pass_flag_cannot_hide_short_direction",
+          "line": 19
+        },
+        {
+          "symbol": "test_both_directions_meet_the_exact_threshold",
+          "line": 24
+        },
+        {
+          "symbol": "test_missing_or_invalid_saved_nanoseconds_are_rejected",
+          "line": 30
+        },
+        {
+          "symbol": "test_failed_duration_claim_is_not_promoted",
+          "line": 35
+        }
+      ],
+      "line": 1
+    }
+  ],
+  "files": [
+    {
+      "path": "src/tscompbench/cli.py",
+      "sha256": "9ce15256aaa7a44c403adfd51ea475156aa794d6db9c3421c5a9494faf681595",
+      "bytes": 8223,
+      "working_tree_status": "clean"
+    },
+    {
+      "path": "src/tscompbench/configuration.py",
+      "sha256": "214c5a451f901257c77cc61d7330fea8bcae5f235659dc3fc1de2318a21edb38",
+      "bytes": 18048,
+      "working_tree_status": "clean"
+    },
+    {
+      "path": "src/tscompbench/runner.py",
+      "sha256": "1cddafd48ad12cb34b1defd32f6f63d40c435dbf83150d7d1dc7ddd7d6ba5384",
+      "bytes": 32173,
+      "working_tree_status": "M src/tscompbench/runner.py"
+    },
+    {
+      "path": "src/tscompbench/environment.py",
+      "sha256": "e76338e0286818fda10682d0287e2a1b8db33c900228ae1db462414729b26494",
+      "bytes": 7852,
+      "working_tree_status": "clean"
+    },
+    {
+      "path": "src/tscompbench/datasets/registry.py",
+      "sha256": "367ba068bec84739c483a7547bf86e994b8043ee8615b8b1221e23827212202f",
+      "bytes": 11381,
+      "working_tree_status": "clean"
+    },
+    {
+      "path": "src/tscompbench/datasets/loaders.py",
+      "sha256": "6970968ef9fbee401ef34c8539d0c797cc276e9984644eba95ae628810e12f07",
+      "bytes": 13107,
+      "working_tree_status": "clean"
+    },
+    {
+      "path": "src/tscompbench/datasets/characterize.py",
+      "sha256": "1a4676f53c5bd1a52ce6c4776762f7ca6b99c34ef4f2d46255c1d794bbd1e542",
+      "bytes": 11429,
+      "working_tree_status": "clean"
+    },
+    {
+      "path": "src/tscompbench/datasets/prepare.py",
+      "sha256": "a9cd61a9c74356149d36d1bc44fa102bad7441e2d89663c170a741af2e7ec2d5",
+      "bytes": 7086,
+      "working_tree_status": "clean"
+    },
+    {
+      "path": "src/tscompbench/datasets/canonical.py",
+      "sha256": "7823607c1502bdd75c369dff3119c87be565b26df6908bc1906564d3c987ce1a",
+      "bytes": 7177,
+      "working_tree_status": "clean"
+    },
+    {
+      "path": "src/tscompbench/codecs/registry.py",
+      "sha256": "09b82dcbf77e010096d14184c6968a94d8177597cd441cf9f9d0d4e79d6437aa",
+      "bytes": 17231,
+      "working_tree_status": "M src/tscompbench/codecs/registry.py"
+    },
+    {
+      "path": "src/tscompbench/adapters/factory.py",
+      "sha256": "6c1036f2586ab371824f304d2370610af8ef2bbf2841174f2f30c5085d33d0a4",
+      "bytes": 19218,
+      "working_tree_status": "M src/tscompbench/adapters/factory.py"
+    },
+    {
+      "path": "src/tscompbench/codecs/models.py",
+      "sha256": "0fc0d5c2018a173a8c57a1989c0c20017cc7f1def423b761c2904d8051344fbb",
+      "bytes": 6134,
+      "working_tree_status": "clean"
+    },
+    {
+      "path": "src/tscompbench/planning/sweep.py",
+      "sha256": "bff6866be4c2dd7931d77b9ca8a56779e6dcb2f733540d11bab3ee43b36fce97",
+      "bytes": 5914,
+      "working_tree_status": "clean"
+    },
+    {
+      "path": "src/tscompbench/codecs/negotiation.py",
+      "sha256": "294d57f737a54f1029de0640222e1b7616b3667924f5b0d708285202b48bfb84",
+      "bytes": 20583,
+      "working_tree_status": "clean"
+    },
+    {
+      "path": "src/tscompbench/preprocess/contracts.py",
+      "sha256": "16e596bbce1e418033a2e843cd68a67632f28388b013c0d5dcefa3e393a3f1a2",
+      "bytes": 6228,
+      "working_tree_status": "M src/tscompbench/preprocess/contracts.py"
+    },
+    {
+      "path": "src/tscompbench/planning/resolution.py",
+      "sha256": "d31405f56bbd9274a930dc94cec684a6124b5b8f88a39cf5fdd077d69cd5909a",
+      "bytes": 11777,
+      "working_tree_status": "M src/tscompbench/planning/resolution.py"
+    },
+    {
+      "path": "src/tscompbench/planning/models.py",
+      "sha256": "66d7ff48d3afc347c3d18a03055133c74dd41019e5f588e306d2e468273100ac",
+      "bytes": 2608,
+      "working_tree_status": "clean"
+    },
+    {
+      "path": "src/tscompbench/planning/tasks.py",
+      "sha256": "f2754922e6a1db88f7747a02438db289011b1f9643f34bce9a3b8237075f2b31",
+      "bytes": 3453,
+      "working_tree_status": "clean"
+    },
+    {
+      "path": "src/tscompbench/execution/routing.py",
+      "sha256": "13f9ffad2f4618cefeb3ccb9cca8252de731e552563db3c59a9105ad557fb71e",
+      "bytes": 5262,
+      "working_tree_status": "clean"
+    },
+    {
+      "path": "src/tscompbench/execution/preflight.py",
+      "sha256": "3c900fe56456b5cca518252e4a4279f44e068324421d1b5bac3bbfe0b31e0f58",
+      "bytes": 11412,
+      "working_tree_status": "M src/tscompbench/execution/preflight.py"
+    },
+    {
+      "path": "src/tscompbench/validation/input.py",
+      "sha256": "f8530e73613868e801160d06ea09f1131a682ea7a3ad32f55de5cd88bd5b7444",
+      "bytes": 4316,
+      "working_tree_status": "clean"
+    },
+    {
+      "path": "src/tscompbench/execution/preparation.py",
+      "sha256": "9a761afb833b565138475fba34092032cb2872754b8a820c4fae711948595fb5",
+      "bytes": 2726,
+      "working_tree_status": "clean"
+    },
+    {
+      "path": "src/tscompbench/adapters/compatibility.py",
+      "sha256": "b5cead91befe4e35abf903c83f23bd8f43b2648050c75f7e44785b5c38862f80",
+      "bytes": 6618,
+      "working_tree_status": "clean"
+    },
+    {
+      "path": "src/tscompbench/preprocess/runtime.py",
+      "sha256": "58dd04356ebbc226a156b84a644cfb5366130ada6a5f17cfa09ee0be2e6226e5",
+      "bytes": 2974,
+      "working_tree_status": "?? src/tscompbench/preprocess/runtime.py"
+    },
+    {
+      "path": "src/tscompbench/validation/boundary.py",
+      "sha256": "f429a470570060553ff3fe1eb65d174e91397f7f63b7f19a62f71f5b57d0efff",
+      "bytes": 22588,
+      "working_tree_status": "clean"
+    },
+    {
+      "path": "src/tscompbench/execution/repetition.py",
+      "sha256": "9a9b4733255b6804df10b31c5b5358434b69de272c203e0a3b16932e33d75e54",
+      "bytes": 26186,
+      "working_tree_status": "M src/tscompbench/execution/repetition.py"
+    },
+    {
+      "path": "src/tscompbench/execution/orchestrator.py",
+      "sha256": "57f34360126f452510fb08de6d43c413718845552f2bff984c71a15d3be1c03a",
+      "bytes": 17575,
+      "working_tree_status": "M src/tscompbench/execution/orchestrator.py"
+    },
+    {
+      "path": "src/tscompbench/execution/isolation.py",
+      "sha256": "54ad3c67e6ac82dad196140c52843e584df072095a0e9375cedd3d0bd1d9ea90",
+      "bytes": 3633,
+      "working_tree_status": "clean"
+    },
+    {
+      "path": "src/tscompbench/accounting/ledger.py",
+      "sha256": "2ba12396c5c79130e643ae5a7d8b3e9d8683c26fdd352ab6786455cc05a9f153",
+      "bytes": 5277,
+      "working_tree_status": "clean"
+    },
+    {
+      "path": "src/tscompbench/validation/correctness.py",
+      "sha256": "05413254ac81af186db0535ec3448f187064ab6e098b9ed5d1e583000b17f7d9",
+      "bytes": 9046,
+      "working_tree_status": "clean"
+    },
+    {
+      "path": "src/tscompbench/validation/lossy.py",
+      "sha256": "488e1078e9e601020a5b22d08ae4eb2e4f791c8202aa90b758c85b04e52b1c1e",
+      "bytes": 11601,
+      "working_tree_status": "clean"
+    },
+    {
+      "path": "src/tscompbench/measurement/contracts.py",
+      "sha256": "087e18b022aa64f4b63cbb43abf1c37d838f66f089399b0118eef3e069731381",
+      "bytes": 4050,
+      "working_tree_status": "M src/tscompbench/measurement/contracts.py"
+    },
+    {
+      "path": "src/tscompbench/measurement/resources.py",
+      "sha256": "c7ed11df070e5e291d8c8e71430c421ce3b45a098a64e12036d505310c07becf",
+      "bytes": 13749,
+      "working_tree_status": "clean"
+    },
+    {
+      "path": "src/tscompbench/storage/runs.py",
+      "sha256": "9061c6416d603264dbfca08df57af83a850ffb2d3162afed29b8dd5c8429ff6b",
+      "bytes": 21359,
+      "working_tree_status": "clean"
+    },
+    {
+      "path": "src/tscompbench/storage/events.py",
+      "sha256": "361e0681c05ff5ab8f1153e0d5a6818c7b1fd7ef3a557bdd8b40b4fa6269defd",
+      "bytes": 2177,
+      "working_tree_status": "clean"
+    },
+    {
+      "path": "src/tscompbench/measurement/workloads.py",
+      "sha256": "65f996254329784683baeb162f555eb3f9b0d998420cdd0818eb0ac72cde8dbe",
+      "bytes": 15075,
+      "working_tree_status": "clean"
+    },
+    {
+      "path": "src/tscompbench/statistics/engine.py",
+      "sha256": "dddf61282f0f3c17c579b4afca0773d9b0a228f75c9014c59ce3016cec8b80b7",
+      "bytes": 50217,
+      "working_tree_status": "M src/tscompbench/statistics/engine.py"
+    },
+    {
+      "path": "src/tscompbench/statistics/core.py",
+      "sha256": "600cf6417d61cf1105c58dcaf97b91149eec9c6286d2fb7e6129b4d24e9c5aca",
+      "bytes": 5914,
+      "working_tree_status": "clean"
+    },
+    {
+      "path": "src/tscompbench/reporting/generator.py",
+      "sha256": "1b870ac53ad857b9da0247a0862367b6f2f2d432d677418f62d6e41636347656",
+      "bytes": 35508,
+      "working_tree_status": "M src/tscompbench/reporting/generator.py"
+    },
+    {
+      "path": "configs/experiments/data-preparation-smoke.toml",
+      "sha256": "e4deeef91d2906a711b3a2ee1322ec260198997286e3f3eded22fde6abb60782",
+      "bytes": 183,
+      "working_tree_status": "clean"
+    },
+    {
+      "path": "configs/experiments/capability-configuration-smoke.toml",
+      "sha256": "6f56a00a68cdb0ad1bd1a055359a0ee8c7eeaa73588bd5fe205fe032a301c2c2",
+      "bytes": 423,
+      "working_tree_status": "clean"
+    },
+    {
+      "path": "configs/experiments/performance-evaluation-smoke.toml",
+      "sha256": "0c5613d189d96051da6799d0a143041f0883b97fbf59b44108e516dd369a2eaa",
+      "bytes": 945,
+      "working_tree_status": "clean"
+    },
+    {
+      "path": "registry/datasets/national_illness.json",
+      "sha256": "890795849e4eeb6b7c015b5c08720625ef2723dd4848b7b7d07a7fa6e334b07e",
+      "bytes": 2261,
+      "working_tree_status": "clean"
+    },
+    {
+      "path": "registry/codecs/lz4-frame.json",
+      "sha256": "65f9328c1e92de539209cfe258c435fa1e195b9fb76933fc58b1eb6eec780b4f",
+      "bytes": 3843,
+      "working_tree_status": "clean"
+    },
+    {
+      "path": "registry/codecs/delta-maskedvbyte-u32.json",
+      "sha256": "d18b46af289f63b556fe92c4479b018a79f09c92de3d2aef02867c6e4291e9b8",
+      "bytes": 5305,
+      "working_tree_status": "?? registry/codecs/delta-maskedvbyte-u32.json"
+    },
+    {
+      "path": "registry/sources/lz4-frame-lzbench.artifact.json",
+      "sha256": "fa7803bbe19fae2f8f65b4b5dba016e2eb899810bd54113479dc76d9ae0d4bde",
+      "bytes": 1634,
+      "working_tree_status": "clean"
+    },
+    {
+      "path": "schemas/v2/experiment-config.schema.json",
+      "sha256": "44fed57583c5a12f21e11ea751e260993589cf7061b50e9f697d39c274757267",
+      "bytes": 3774,
+      "working_tree_status": "clean"
+    },
+    {
+      "path": "schemas/v2/dataset-manifest.schema.json",
+      "sha256": "5058df196de476291ff2aa44b50223168a8354e32c1d0c9ceb64951d08e27c33",
+      "bytes": 1474,
+      "working_tree_status": "clean"
+    },
+    {
+      "path": "schemas/v2/canonical-artifact-metadata.schema.json",
+      "sha256": "6f73427539e0c80d2980c19fb47524031badc76215e6d5a16d8b9a64ee734b75",
+      "bytes": 1599,
+      "working_tree_status": "clean"
+    },
+    {
+      "path": "schemas/v2/dataset-characterization.schema.json",
+      "sha256": "dd9fa36206647aed20ae16c48280d368db64993c46efa9962a9c2dc8b7e06296",
+      "bytes": 916,
+      "working_tree_status": "clean"
+    },
+    {
+      "path": "schemas/v2/codec-manifest.schema.json",
+      "sha256": "d2b00afeb6445e644a171a9455346472f36491de66da7da601af50e6007242e9",
+      "bytes": 1342,
+      "working_tree_status": "clean"
+    },
+    {
+      "path": "schemas/v2/compatibility-plan.schema.json",
+      "sha256": "f8065e31edf43e3506cf83e50ef5c42c4ea77ba2a4951c9334ee4e35cc405750",
+      "bytes": 1212,
+      "working_tree_status": "clean"
+    },
+    {
+      "path": "schemas/v2/preprocess-plan.schema.json",
+      "sha256": "a3e1f313323025382b17595bb485b281067893b9f00301e0b5f4fb1c87d0fc6e",
+      "bytes": 657,
+      "working_tree_status": "clean"
+    },
+    {
+      "path": "schemas/v2/execution-resolution.schema.json",
+      "sha256": "27947f2f0aa1efe2095c1914fde4f7f5cfba27cb03cb18ef8596bff3895ca9f3",
+      "bytes": 2309,
+      "working_tree_status": "clean"
+    },
+    {
+      "path": "schemas/v2/comparability-keys.schema.json",
+      "sha256": "3526b8b587091bc93d5e26f2b914493b6a376a264b9f93a5deaa7092c33c237b",
+      "bytes": 756,
+      "working_tree_status": "clean"
+    },
+    {
+      "path": "schemas/v2/benchmark-task.schema.json",
+      "sha256": "8425c31ac63c3029521aed03a226a614b823bd2faa9daca0e87671a1b97ca86e",
+      "bytes": 1292,
+      "working_tree_status": "clean"
+    },
+    {
+      "path": "schemas/v2/measurement-policy.schema.json",
+      "sha256": "40b36c59640322b21414c6675dc0095f0a2ea8d10ed7a7299e681e70007d92c2",
+      "bytes": 2619,
+      "working_tree_status": "clean"
+    },
+    {
+      "path": "schemas/v2/run-record.schema.json",
+      "sha256": "bf146dbb413beac9b31ac2f964ea084fa0b49af8710b105b14d486df98ac1bd9",
+      "bytes": 4778,
+      "working_tree_status": "M schemas/v2/run-record.schema.json"
+    },
+    {
+      "path": "schemas/v2/eligibility-record.schema.json",
+      "sha256": "ee6cc907a6d92a02ed989ddac976eb34914df8605c0773403aa089cd3c8d0c06",
+      "bytes": 885,
+      "working_tree_status": "clean"
+    },
+    {
+      "path": "schemas/v2/summary-record.schema.json",
+      "sha256": "996f278e76154392d2ba5962240b91faddd53f87d953aaf88d6271fc0211d071",
+      "bytes": 3895,
+      "working_tree_status": "M schemas/v2/summary-record.schema.json"
+    },
+    {
+      "path": "schemas/v2/corpus-summary-record.schema.json",
+      "sha256": "1ba9010eaa96f34377017f28f4253f53f1f415468411a86264ee79069b0f153b",
+      "bytes": 1939,
+      "working_tree_status": "clean"
+    },
+    {
+      "path": "schemas/v2/report.schema.json",
+      "sha256": "f6251d30cfd86bfb5e1c746360a40644377ca945888b6e2f6d017b39a63477a7",
+      "bytes": 1603,
+      "working_tree_status": "clean"
+    },
+    {
+      "path": "tests/unit/test_canonical.py",
+      "sha256": "3e0d41e63f4616247f46955237ab39747724aea8b40829e0f89890c0e75cfec5",
+      "bytes": 1065,
+      "working_tree_status": "clean"
+    },
+    {
+      "path": "tests/unit/test_negotiation.py",
+      "sha256": "102fd73dfd87aa1a6cfe429aa6988a784de40cc76698e2330d6d8c54364a276a",
+      "bytes": 4003,
+      "working_tree_status": "clean"
+    },
+    {
+      "path": "tests/unit/test_preprocess.py",
+      "sha256": "538efdfc0d8322e84c6a9c7c419b2a6409d84acb3bd08848f0c6a6f276e40edb",
+      "bytes": 1504,
+      "working_tree_status": "clean"
+    },
+    {
+      "path": "tests/unit/test_execution_validation.py",
+      "sha256": "884ef8d63f82192dc990a1873073daa4075035dfe69abe803e186888f2fde497",
+      "bytes": 6228,
+      "working_tree_status": "clean"
+    },
+    {
+      "path": "tests/unit/test_measurement.py",
+      "sha256": "3301bde447b7e266d9af4740218305e8db8f04907beb5536d80764f55a53cbcc",
+      "bytes": 13373,
+      "working_tree_status": "M tests/unit/test_measurement.py"
+    },
+    {
+      "path": "tests/unit/test_statistics.py",
+      "sha256": "9592b870fe58d2f752e7fa6f1eaa187cc725a3a92854f1866c03b17b5c5b2eba",
+      "bytes": 6128,
+      "working_tree_status": "clean"
+    },
+    {
+      "path": "tests/integration/test_layer2_plan.py",
+      "sha256": "c0cf6b9a035b61e018f92420f068307142b7ffe81566d1530d317bc30e584e04",
+      "bytes": 2170,
+      "working_tree_status": "clean"
+    },
+    {
+      "path": "tests/integration/test_layer3_execution.py",
+      "sha256": "02f78b5c017d0f8a7d68de8e80c3ad8bc8d5f9ebf8342a953f13bbfeb60c0ac3",
+      "bytes": 7125,
+      "working_tree_status": "clean"
+    },
+    {
+      "path": "tests/integration/test_layer5_reporting.py",
+      "sha256": "bc47582c905bf9e6840bcdabb857230878d7f1b08dc265634276da24253ea398",
+      "bytes": 17509,
+      "working_tree_status": "M tests/integration/test_layer5_reporting.py"
+    },
+    {
+      "path": "tests/unit/test_formal_direction_duration_audit.py",
+      "sha256": "a00969bc51008073bd95d0270a9d17d2135eddda9e0dff74db2bff463ad51e35",
+      "bytes": 1444,
+      "working_tree_status": "?? tests/unit/test_formal_direction_duration_audit.py"
+    }
+  ],
+  "counts": {
+    "nodes": 46,
+    "edges": 51,
+    "files": 72
+  }
+}

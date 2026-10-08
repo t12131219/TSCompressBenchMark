@@ -1,0 +1,219 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "TSDataCompressBenchMark · 初始化、环境与冻结",
+    "locale": "zh-CN",
+    "quality_profile": "showcase",
+    "viewBox": [
+      1150,
+      755
+    ],
+    "legend": {
+      "mode": "auto",
+      "entries": {
+        "frontend": {
+          "label": "入口 / 报告"
+        },
+        "backend": {
+          "label": "控制 / 执行"
+        },
+        "database": {
+          "label": "文件证据"
+        },
+        "security": {
+          "label": "资格 / 校验"
+        },
+        "external": {
+          "label": "外部来源"
+        }
+      }
+    }
+  },
+  "components": [
+    {
+      "id": "tscb-03-init-n1",
+      "type": "backend",
+      "label": "TOML 严格配置",
+      "sublabel": "load_experiment_config",
+      "pos": [
+        60,
+        85
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-03-init-n2",
+      "type": "backend",
+      "label": "测量配置约束",
+      "sublabel": "BenchmarkProfile",
+      "pos": [
+        450,
+        85
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-03-init-n3",
+      "type": "backend",
+      "label": "安全运行集路径",
+      "sublabel": "_default_run_set_id",
+      "pos": [
+        840,
+        85
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-03-init-n4",
+      "type": "backend",
+      "label": "工作区探测",
+      "sublabel": "_probe_workspace",
+      "pos": [
+        840,
+        335
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-03-init-n5",
+      "type": "security",
+      "label": "互斥锁 / 分支",
+      "sublabel": "fcntl.flock",
+      "pos": [
+        450,
+        335
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-03-init-n6",
+      "type": "security",
+      "label": "恢复身份核验",
+      "sublabel": "resume gate",
+      "pos": [
+        60,
+        335
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-03-init-n7",
+      "type": "backend",
+      "label": "环境捕获",
+      "sublabel": "capture_environment",
+      "pos": [
+        60,
+        585
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-03-init-n8",
+      "type": "database",
+      "label": "冻结初始证据",
+      "sublabel": "run-set / config / environment",
+      "pos": [
+        450,
+        585
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-03-init-n9",
+      "type": "backend",
+      "label": "事件与释放锁",
+      "sublabel": "RUN_SET_CREATED / RESUMED",
+      "pos": [
+        840,
+        585
+      ],
+      "size": [
+        250,
+        95
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "tscb-03-init-e0",
+      "to": "tscb-03-init-n2",
+      "label": "进入",
+      "from": "tscb-03-init-n1"
+    },
+    {
+      "id": "tscb-03-init-e1",
+      "to": "tscb-03-init-n3",
+      "label": "生成",
+      "from": "tscb-03-init-n2"
+    },
+    {
+      "id": "tscb-03-init-e2",
+      "to": "tscb-03-init-n4",
+      "label": "传递",
+      "from": "tscb-03-init-n3",
+      "labelAt": [
+        965.0,
+        194.0
+      ]
+    },
+    {
+      "id": "tscb-03-init-e3",
+      "to": "tscb-03-init-n5",
+      "label": "执行",
+      "from": "tscb-03-init-n4"
+    },
+    {
+      "id": "tscb-03-init-e4",
+      "to": "tscb-03-init-n6",
+      "label": "得到",
+      "from": "tscb-03-init-n5"
+    },
+    {
+      "id": "tscb-03-init-e5",
+      "to": "tscb-03-init-n7",
+      "label": "核对",
+      "from": "tscb-03-init-n6",
+      "labelAt": [
+        185.0,
+        444.0
+      ]
+    },
+    {
+      "id": "tscb-03-init-e6",
+      "to": "tscb-03-init-n8",
+      "label": "冻结",
+      "from": "tscb-03-init-n7"
+    },
+    {
+      "id": "tscb-03-init-e7",
+      "to": "tscb-03-init-n9",
+      "label": "输出",
+      "from": "tscb-03-init-n8"
+    }
+  ]
+}

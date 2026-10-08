@@ -281,6 +281,27 @@ def _base_reasons(
     policy = (record.get("diagnostics") or {}).get("measurement_policy")
     if not isinstance(policy, dict) or policy.get("measurement_mode") != "FORMAL":
         reasons.append("MEASUREMENT_MODE_NOT_FORMAL")
+    elif isinstance(timing, dict):
+        try:
+            minimum = Decimal(str(policy["min_repetition_seconds"])) * Decimal(1_000_000_000)
+            if not minimum.is_finite() or minimum < 1_000_000_000:
+                raise ValueError("invalid formal minimum")
+        except (KeyError, ValueError, ArithmeticError):
+            reasons.append("MIN_DURATION_POLICY_INVALID")
+        else:
+            if any(
+                not isinstance(timing.get(field), int)
+                or isinstance(timing.get(field), bool)
+                or timing[field] < minimum
+                for field in ("selected_encode_wall_ns", "selected_decode_wall_ns")
+            ) or (
+                timing.get("timing_scope") == "E2E"
+                and (
+                    not isinstance(timing.get("e2e_wall_ns"), int)
+                    or timing["e2e_wall_ns"] < minimum
+                )
+            ):
+                reasons.append("PER_DIRECTION_MIN_DURATION_NOT_SATISFIED")
     valid_artifact, artifact_reason = _artifact_valid(run_path, record)
     if not valid_artifact:
         reasons.append(artifact_reason)
@@ -516,9 +537,18 @@ def _auxiliary_timing_fields(
                     or timing.get("native_timing_boundary") != native_boundary
                     or native_clock is None
                     or timing.get("native_timing_clock") != native_clock
-                    or not isinstance(timing.get("codec_input_bytes_per_iteration"), int)
-                    or isinstance(timing["codec_input_bytes_per_iteration"], bool)
-                    or timing["codec_input_bytes_per_iteration"] < 0
+                    or type(
+                        timing.get(
+                            "native_input_bytes_per_iteration",
+                            timing.get("codec_input_bytes_per_iteration"),
+                        )
+                    )
+                    is not int
+                    or timing.get(
+                        "native_input_bytes_per_iteration",
+                        timing["codec_input_bytes_per_iteration"],
+                    )
+                    < 0
                 ):
                     continue
                 observations.append(record)
@@ -532,11 +562,12 @@ def _auxiliary_timing_fields(
                 decimal_divide(
                     sum(
                         int(
-                            item["timing"][
-                                "codec_input_bytes_per_iteration"
-                                if scope == "native"
-                                else "canonical_bytes_per_iteration"
-                            ]
+                            item["timing"].get(
+                                "native_input_bytes_per_iteration",
+                                item["timing"]["codec_input_bytes_per_iteration"],
+                            )
+                            if scope == "native"
+                            else item["timing"]["canonical_bytes_per_iteration"]
                         )
                         * int(item["timing"]["inner_iterations"])
                         for item in observations
@@ -556,6 +587,57 @@ def _auxiliary_timing_fields(
     result["codec_input_bytes_per_iteration"] = group[0]["timing"].get(
         "codec_input_bytes_per_iteration"
     )
+    result["native_input_bytes_per_iteration"] = group[0]["timing"].get(
+        "native_input_bytes_per_iteration",
+        group[0]["timing"].get("codec_input_bytes_per_iteration"),
+    )
+    stage_docs = [record["timing"].get("pipeline_stage_timings") for record in group]
+    result["pipeline_stage_timings"] = None
+    if all(isinstance(doc, dict) for doc in stage_docs):
+        stages = {}
+        for direction in ("encode", "decode"):
+            first = stage_docs[0][direction]
+            stages[direction] = {
+                key: first[key] for key in ("executor_id", "timing_enabled", "timing_boundary")
+            }
+            stages[direction]["stages"] = {}
+            for slot in "ABCD":
+                observations = [
+                    (record, doc[direction]["stages"][slot])
+                    for record, doc in zip(group, stage_docs, strict=True)
+                    if doc[direction]["executor_id"] == first["executor_id"]
+                    and doc[direction]["timing_boundary"] == first["timing_boundary"]
+                    and doc[direction]["stages"][slot]["enabled"]
+                    == first["stages"][slot]["enabled"]
+                    and doc[direction]["stages"][slot]["observation_count"]
+                    == record["timing"]["inner_iterations"]
+                    and type(doc[direction]["stages"][slot]["wall_ns"]) is int
+                ]
+                values = (
+                    [
+                        decimal_divide(stage["wall_ns"], record["timing"]["inner_iterations"])
+                        for record, stage in observations
+                    ]
+                    if len(observations) == len(group)
+                    else []
+                )
+                stages[direction]["stages"][slot] = {
+                    **{
+                        key: first["stages"][slot][key]
+                        for key in (
+                            "enabled",
+                            "input_bytes",
+                            "output_bytes",
+                            "final_contribution_bits",
+                        )
+                    },
+                    "observation_count": len(observations),
+                    **_stats_fields("wall_ns", values, policy=policy, seed=seed),
+                }
+        result["pipeline_stage_timings"] = {
+            "schema_version": "tscb.pipeline-stage-summary.v1",
+            **stages,
+        }
     return result
 
 

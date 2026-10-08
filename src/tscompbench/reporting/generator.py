@@ -81,6 +81,8 @@ _TABLE_FIELDS = {
         "semantic_encode_mb_per_second_micro",
         "semantic_decode_mb_per_second_micro",
         "resource_observation_count",
+        "native_input_bytes_per_iteration",
+        "pipeline_stage_timings",
         *(f"{prefix}_{suffix}" for prefix in _STATISTIC_PREFIXES for suffix in _STATISTIC_SUFFIXES),
     ),
     "corpus_summary.csv": (
@@ -485,7 +487,8 @@ def _markdown(report: dict[str, Any]) -> str:
             "native_timing_boundary field for its exact inclusions and exclusions. It is not "
             "automatically lzbench-equivalent. "
             "CORE measures adapter calls; PIPELINE includes outer preparation and accounting. "
-            "NATIVE uses codec-input bytes; CORE/PIPELINE use canonical bytes. "
+            "NATIVE uses native_input_bytes_per_iteration (the actual backend representation); "
+            "CORE/PIPELINE use canonical bytes. "
             "All rates below are total bytes / total time, in decimal MB/s. "
             "Missing/disabled/incomplete native observations are n/a. Native clock instrumentation "
             "adds overhead; selected-scope minimum duration does not guarantee native duration.",
@@ -494,16 +497,22 @@ def _markdown(report: dict[str, Any]) -> str:
             "PIPELINE encode | PIPELINE decode |",
             "|---|---|---:|---:|---:|---:|---:|---:|",
             *(
-                "| " + " | ".join(
+                "| "
+                + " | ".join(
                     str(row.get(field)) if row.get(field) is not None else "n/a"
                     for field in (
-                        "dataset_id", "algorithm_id",
-                        "native_encode_mb_per_second_micro", "native_decode_mb_per_second_micro",
-                        "core_encode_mb_per_second_micro", "core_decode_mb_per_second_micro",
+                        "dataset_id",
+                        "algorithm_id",
+                        "native_encode_mb_per_second_micro",
+                        "native_decode_mb_per_second_micro",
+                        "core_encode_mb_per_second_micro",
+                        "core_decode_mb_per_second_micro",
                         "pipeline_encode_mb_per_second_micro",
                         "pipeline_decode_mb_per_second_micro",
                     )
-                ) + " |" for row in report["summaries"]
+                )
+                + " |"
+                for row in report["summaries"]
             ),
             "",
             "## Cross-dataset aggregates",
@@ -563,17 +572,29 @@ def _html(markdown_report: str, report: dict[str, Any]) -> str:
     )
     if not summary_rows:
         summary_rows = '<tr><td colspan="8">No performance-eligible summary rows.</td></tr>'
-    timing_rows = "".join(
-        "<tr>" + "".join(
-            f"<td>{html.escape(str(row.get(field)) if row.get(field) is not None else 'n/a')}</td>"
-            for field in (
-                "dataset_id", "algorithm_id",
-                "native_encode_mb_per_second_micro", "native_decode_mb_per_second_micro",
-                "core_encode_mb_per_second_micro", "core_decode_mb_per_second_micro",
-                "pipeline_encode_mb_per_second_micro", "pipeline_decode_mb_per_second_micro",
+    timing_rows = (
+        "".join(
+            "<tr>"
+            + "".join(
+                "<td>"
+                + html.escape(str(row.get(field)) if row.get(field) is not None else "n/a")
+                + "</td>"
+                for field in (
+                    "dataset_id",
+                    "algorithm_id",
+                    "native_encode_mb_per_second_micro",
+                    "native_decode_mb_per_second_micro",
+                    "core_encode_mb_per_second_micro",
+                    "core_decode_mb_per_second_micro",
+                    "pipeline_encode_mb_per_second_micro",
+                    "pipeline_decode_mb_per_second_micro",
+                )
             )
-        ) + "</tr>" for row in report["summaries"]
-    ) or '<tr><td colspan="8">No performance-eligible summary rows.</td></tr>'
+            + "</tr>"
+            for row in report["summaries"]
+        )
+        or '<tr><td colspan="8">No performance-eligible summary rows.</td></tr>'
+    )
     comparison_rows = "".join(
         "<tr>"
         f"<td>{html.escape(row['semantic_context'])}</td>"
@@ -687,6 +708,43 @@ def generate_report(run_path: Path, policy: dict[str, Any]) -> ReportResult:
     for name, path in table_paths.items():
         _atomic_csv(path, rows_by_name[name], _TABLE_FIELDS[name])
     table_hashes = {name: _sha256_file(path) for name, path in table_paths.items()}
+    stage_rows = tuple(
+        {
+            "summary_id": row["summary_id"],
+            "dataset_id": row["dataset_id"],
+            "algorithm_id": row["algorithm_id"],
+            "config_id": row["config_id"],
+            "direction": direction,
+            "stage": slot,
+            **observation,
+        }
+        for row in bundle.summaries
+        if row.get("pipeline_stage_timings") is not None
+        for direction in ("encode", "decode")
+        for slot, observation in row["pipeline_stage_timings"][direction]["stages"].items()
+    )
+    if stage_rows:
+        stage_path = run_path / "pipeline_stages.csv"
+        _atomic_csv(
+            stage_path,
+            stage_rows,
+            (
+                "summary_id",
+                "dataset_id",
+                "algorithm_id",
+                "config_id",
+                "direction",
+                "stage",
+                "enabled",
+                "input_bytes",
+                "output_bytes",
+                "final_contribution_bits",
+                "observation_count",
+                *(f"wall_ns_{name}" for name in _STATISTIC_SUFFIXES),
+            ),
+        )
+        table_paths["pipeline_stages.csv"] = stage_path
+        table_hashes["pipeline_stages.csv"] = _sha256_file(stage_path)
     package_root = Path(__file__).resolve().parents[1]
     source_hashes = {
         **bundle.source_hashes,

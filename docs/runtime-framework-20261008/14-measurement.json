@@ -1,0 +1,219 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "TSDataCompressBenchMark · L4 · 预热、正式重复与计时边界",
+    "locale": "zh-CN",
+    "quality_profile": "showcase",
+    "viewBox": [
+      1150,
+      755
+    ],
+    "legend": {
+      "mode": "auto",
+      "entries": {
+        "frontend": {
+          "label": "入口 / 报告"
+        },
+        "backend": {
+          "label": "控制 / 执行"
+        },
+        "database": {
+          "label": "文件证据"
+        },
+        "security": {
+          "label": "资格 / 校验"
+        },
+        "external": {
+          "label": "外部来源"
+        }
+      }
+    }
+  },
+  "components": [
+    {
+      "id": "tscb-14-measurement-n1",
+      "type": "backend",
+      "label": "冻结测量策略",
+      "sublabel": "MeasurementPolicy",
+      "pos": [
+        60,
+        85
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-14-measurement-n2",
+      "type": "backend",
+      "label": "隔离预热",
+      "sublabel": "perform_warmup",
+      "pos": [
+        450,
+        85
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-14-measurement-n3",
+      "type": "backend",
+      "label": "每个正式重复",
+      "sublabel": "perform_measured_roundtrip",
+      "pos": [
+        840,
+        85
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-14-measurement-n4",
+      "type": "backend",
+      "label": "CORE encode / decode",
+      "sublabel": "Python API wall / CPU",
+      "pos": [
+        840,
+        335
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-14-measurement-n5",
+      "type": "backend",
+      "label": "PIPELINE / E2E",
+      "sublabel": "CANONICAL_MEMORY_ROUTED_VIEW",
+      "pos": [
+        450,
+        335
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-14-measurement-n6",
+      "type": "backend",
+      "label": "原生与阶段辅助计时",
+      "sublabel": "native / stage timing",
+      "pos": [
+        60,
+        335
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-14-measurement-n7",
+      "type": "backend",
+      "label": "内循环停止判定",
+      "sublabel": "duration_satisfied",
+      "pos": [
+        60,
+        585
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-14-measurement-n8",
+      "type": "backend",
+      "label": "资源与吞吐",
+      "sublabel": "ResourceSampler",
+      "pos": [
+        450,
+        585
+      ],
+      "size": [
+        250,
+        95
+      ]
+    },
+    {
+      "id": "tscb-14-measurement-n9",
+      "type": "backend",
+      "label": "同一重复证据",
+      "sublabel": "MeasuredRoundTripObservation",
+      "pos": [
+        840,
+        585
+      ],
+      "size": [
+        250,
+        95
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "tscb-14-measurement-e0",
+      "to": "tscb-14-measurement-n2",
+      "label": "进入",
+      "from": "tscb-14-measurement-n1"
+    },
+    {
+      "id": "tscb-14-measurement-e1",
+      "to": "tscb-14-measurement-n3",
+      "label": "生成",
+      "from": "tscb-14-measurement-n2"
+    },
+    {
+      "id": "tscb-14-measurement-e2",
+      "to": "tscb-14-measurement-n4",
+      "label": "传递",
+      "from": "tscb-14-measurement-n3",
+      "labelAt": [
+        965.0,
+        194.0
+      ]
+    },
+    {
+      "id": "tscb-14-measurement-e3",
+      "to": "tscb-14-measurement-n5",
+      "label": "执行",
+      "from": "tscb-14-measurement-n4"
+    },
+    {
+      "id": "tscb-14-measurement-e4",
+      "to": "tscb-14-measurement-n6",
+      "label": "得到",
+      "from": "tscb-14-measurement-n5"
+    },
+    {
+      "id": "tscb-14-measurement-e5",
+      "to": "tscb-14-measurement-n7",
+      "label": "核对",
+      "from": "tscb-14-measurement-n6",
+      "labelAt": [
+        185.0,
+        444.0
+      ]
+    },
+    {
+      "id": "tscb-14-measurement-e6",
+      "to": "tscb-14-measurement-n8",
+      "label": "冻结",
+      "from": "tscb-14-measurement-n7"
+    },
+    {
+      "id": "tscb-14-measurement-e7",
+      "to": "tscb-14-measurement-n9",
+      "label": "输出",
+      "from": "tscb-14-measurement-n8"
+    }
+  ]
+}

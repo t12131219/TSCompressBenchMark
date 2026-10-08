@@ -58,6 +58,8 @@
         "native_timing_enabled": {"type": "boolean"},
         "native_timing_boundary": {"enum": ["CODEC_API_ONLY_V1", null]},
         "native_timing_clock": {"enum": ["CLOCK_MONOTONIC", null]},
+        "native_input_bytes_per_iteration": {"type": ["integer", "null"], "minimum": 0},
+        "pipeline_stage_timings": {"type": ["object", "null"]},
         "pipeline_encode_wall_ns": {"type": "integer", "minimum": 0},
         "pipeline_decode_wall_ns": {"type": "integer", "minimum": 0},
         "e2e_wall_ns": {"type": "integer", "minimum": 0},

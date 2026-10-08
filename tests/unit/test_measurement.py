@@ -150,6 +150,8 @@ def test_measured_repetition_reuses_layer3_lifecycle_and_records_scope_resources
     assert warmup.threshold_satisfied
     assert observation.timing.inner_iterations > 1
     assert observation.timing.min_duration_satisfied
+    assert observation.timing.selected_encode_wall_ns >= policy.repetition_min_ns
+    assert observation.timing.selected_decode_wall_ns >= policy.repetition_min_ns
     assert observation.timing.pipeline_encode_wall_ns >= observation.timing.core_encode_wall_ns
     assert observation.timing.pipeline_decode_wall_ns >= observation.timing.core_decode_wall_ns
     assert observation.resources.actual_scope == "PROCESS"
@@ -157,6 +159,19 @@ def test_measured_repetition_reuses_layer3_lifecycle_and_records_scope_resources
     assert observation.resources.counter_observation["values"] is None
     assert observation.resources.energy_observation["joules"] is None
     assert observation.encoded.finalize_bytes > 0
+
+
+@pytest.mark.parametrize("scope", ["CORE", "PIPELINE", "E2E"])
+def test_minimum_duration_cannot_be_satisfied_by_the_faster_direction_or_sum(scope) -> None:
+    policy = _policy(timing_scope=scope, min_repetition_seconds="1")
+    assert not policy.duration_satisfied(1_800_000_000, 200_000_000, 2_000_000_000)
+    assert not policy.duration_satisfied(200_000_000, 1_800_000_000, 2_000_000_000)
+    assert policy.duration_satisfied(1_000_000_000, 1_000_000_000, 2_000_000_000)
+    if scope == "E2E":
+        assert not policy.duration_satisfied(1_000_000_000, 1_000_000_000, 999_999_999)
+    assert policy.to_document()["minimum_duration_boundary"] == (
+        "PER_SELECTED_DIRECTION_WITH_E2E_V1"
+    )
 
 
 def test_query_matrix_is_seeded_and_covers_point_full_and_projection_widths() -> None:
@@ -185,9 +200,7 @@ def test_native_timing_accumulates_same_inner_iterations_and_keeps_legacy_missin
             return Session()
 
     route = _route()
-    observation = perform_measured_roundtrip(
-        Adapter(), route, _compatibility(route), {}, _policy()
-    )
+    observation = perform_measured_roundtrip(Adapter(), route, _compatibility(route), {}, _policy())
     timing = observation.timing
     assert timing.native_timing_enabled
     assert timing.inner_iterations > 1

@@ -4,6 +4,7 @@ import argparse
 import hashlib
 import json
 import os
+import runpy
 import shlex
 import shutil
 import subprocess
@@ -836,6 +837,135 @@ def _delta_varint_command(output: Path, profile: str) -> list[str]:
     ]
 
 
+def _streamvbyte_command(
+    output: Path, profile: str, algorithm: str
+) -> tuple[list[str], dict[str, Any]]:
+    adapter = PROJECT_ROOT / "adapters/streamvbyte"
+    lock_path = adapter / "SOURCE_LOCK.json"
+    lock = json.loads(lock_path.read_text())
+    for entry in lock["files"]:
+        path = PROJECT_ROOT / entry["path"]
+        if _sha256(path) != entry["sha256"]:
+            raise RuntimeError(f"Stream VByte frozen source changed: {entry['path']}")
+    vendor = adapter / "vendor/fastpfor"
+    target = output.parent / "fastpfor"
+    target.mkdir(exist_ok=True)
+    original = vendor / "streamvbyte.c"
+    shutil.copyfile(original, target / "streamvbyte.c")
+    patch = adapter / "patches/0001-unaligned-access.patch"
+    _run(["patch", "--batch", "--fuzz=0", "-p1", "-d", str(target), "-i", str(patch)])
+    flags = ["-std=c11", "-fPIC", "-msse4.1", "-fno-tree-vectorize",
+             "-fno-strict-aliasing", "-Wall", "-Wextra", "-Wl,-Bsymbolic-functions"]
+    if profile == "release":
+        flags += ["-O3", "-DNDEBUG"]
+    elif profile == "debug":
+        flags += ["-O0", "-g"]
+    elif profile == "sanitizer":
+        flags += ["-O1", "-g", "-fsanitize=address,undefined", "-fno-omit-frame-pointer"]
+    else:
+        raise ValueError(f"unknown Stream VByte profile: {profile}")
+    command = [os.environ.get("CC", "cc"), *flags, "-shared",
+               f"-DTSCB_SVB_DELTA64={int(algorithm == 'delta-zigzag-streamvbyte64')}",
+               "-I", str(PROJECT_ROOT / "native/include"),
+               str(adapter / "native/tscb_streamvbyte.c"), str(target / "streamvbyte.c"),
+               "-o", str(output)]
+    evidence = {
+        "benchmark_repository": "https://github.com/dblalock/lzbench",
+        "benchmark_commit": "580c4f085381f31b1ad669525ed04e63cbc385f3",
+        "original_source_sha256": _sha256(original), "patch_sha256": _sha256(patch),
+        "compiled_source_sha256": _sha256(target / "streamvbyte.c"),
+        "binding_sha256": _sha256(adapter / "native/tscb_streamvbyte.c"),
+        "upstream_encoder": "SCALAR", "upstream_decoder": "SSE4_1_WITH_SCALAR_TAIL",
+        "runtime_fallback": False,
+        "source_lock_sha256": _sha256(lock_path),
+        "binding_sources": [
+            {"path": str(path.relative_to(PROJECT_ROOT)), "sha256": _sha256(path)}
+            for path in (
+                adapter / "native/tscb_streamvbyte.c", lock_path,
+                adapter / "native/tscb_streamvbyte_stages.h",
+                PROJECT_ROOT / "native/include/tscb_adapter_v1.h",
+                PROJECT_ROOT / "native/include/tscb_native_timing.h",
+                PROJECT_ROOT / "src/tscompbench/adapters/streamvbyte.py",
+                PROJECT_ROOT / "src/tscompbench/adapters/streamvbyte_pipeline.py",
+                PROJECT_ROOT / "src/tscompbench/adapters/factory.py",
+                PROJECT_ROOT / "src/tscompbench/preprocess/streamvbyte.py",
+                PROJECT_ROOT / "src/tscompbench/preprocess/runtime.py",
+                PROJECT_ROOT / "src/tscompbench/preprocess/streamvbyte_modern.py",
+                PROJECT_ROOT / "src/tscompbench/preprocess/contracts.py",
+                PROJECT_ROOT / "src/tscompbench/execution/preflight.py",
+                PROJECT_ROOT / "src/tscompbench/measurement/contracts.py",
+                PROJECT_ROOT / "src/tscompbench/adapters/native_timing.py",
+                PROJECT_ROOT / "src/tscompbench/adapters/deflate_zlib.py",
+                PROJECT_ROOT / "src/tscompbench/execution/protocol.py",
+                PROJECT_ROOT / "src/tscompbench/execution/repetition.py",
+                PROJECT_ROOT / "src/tscompbench/execution/orchestrator.py",
+            )
+        ],
+    }
+    return command, evidence
+
+
+def _streamvbyte_modern_command(
+    output: Path, profile: str, algorithm: str
+) -> tuple[list[str], dict[str, Any]]:
+    adapter = PROJECT_ROOT / "adapters/streamvbyte_modern"
+    lock_path = adapter / "SOURCE_LOCK.json"
+    lock = json.loads(lock_path.read_text())
+    for entry in lock["files"]:
+        if _sha256(PROJECT_ROOT / entry["path"]) != entry["sha256"]:
+            raise RuntimeError(f"modern Stream VByte frozen source changed: {entry['path']}")
+    vendor = adapter / "vendor/streamvbyte"
+    staging = output.parent / "streamvbyte"
+    shutil.copytree(vendor, staging, dirs_exist_ok=True)
+    patches = [PROJECT_ROOT / entry["path"] for entry in lock["files"]
+               if entry["path"].startswith("adapters/streamvbyte_modern/patches/")]
+    for patch in patches:
+        _run(["patch", "--batch", "--fuzz=0", "-p1", "-d", str(staging), "-i", str(patch)])
+    flags = ["-std=c11", "-fPIC", "-msse4.1", "-fno-strict-aliasing", "-Wall", "-Wextra",
+             "-Wl,-Bsymbolic-functions"]
+    flags += {"release": ["-O3", "-DNDEBUG"], "debug": ["-O0", "-g"],
+              "sanitizer": ["-O1", "-g", "-fsanitize=address,undefined",
+                            "-fno-omit-frame-pointer"]}[profile]
+    translation_units = [staging / "src" / name for name in
+                         ("streamvbyte_encode.c", "streamvbyte_decode.c")]
+    command = [os.environ.get("CC", "cc"), *flags, "-shared",
+               f"-DTSCB_SVB_DELTA64={int(algorithm == 'delta-zigzag-streamvbyte-modern64')}",
+               "-I", str(PROJECT_ROOT / "native/include"), "-I", str(staging / "include"),
+               str(adapter / "native/tscb_streamvbyte_modern.c"),
+               *[str(path) for path in translation_units], "-o", str(output)]
+    shared_binding = [
+        "adapters/streamvbyte/native/tscb_streamvbyte.c",
+        "adapters/streamvbyte/native/tscb_streamvbyte_stages.h",
+        "native/include/tscb_adapter_v1.h", "native/include/tscb_native_timing.h",
+        "src/tscompbench/adapters/streamvbyte.py",
+        "src/tscompbench/adapters/streamvbyte_pipeline.py",
+        "src/tscompbench/adapters/streamvbyte_modern.py",
+        "src/tscompbench/adapters/native_timing.py",
+        "src/tscompbench/adapters/deflate_zlib.py", "src/tscompbench/adapters/factory.py",
+        "src/tscompbench/preprocess/streamvbyte.py",
+        "src/tscompbench/preprocess/streamvbyte_modern.py",
+        "src/tscompbench/preprocess/contracts.py", "src/tscompbench/preprocess/runtime.py",
+        "src/tscompbench/execution/protocol.py", "src/tscompbench/execution/repetition.py",
+        "src/tscompbench/execution/preflight.py", "src/tscompbench/execution/orchestrator.py",
+        "src/tscompbench/measurement/contracts.py",
+        "adapters/streamvbyte_modern/native/tscb_streamvbyte_modern.c",
+        "adapters/streamvbyte_modern/SOURCE_LOCK.json",
+    ]
+    return command, {
+        "source_files": lock["files"], "upstream_repository": lock["repository"],
+        "upstream_commit": lock["commit"], "source_lock_sha256": _sha256(lock_path),
+        "patch_series": [{"path": str(p.relative_to(PROJECT_ROOT)), "sha256": _sha256(p)}
+                         for p in patches], "upstream_encoder": "SSE4_1_WITH_SCALAR_TAIL",
+        "upstream_decoder": "SSE4_1_WITH_SCALAR_TAIL", "runtime_fallback": False,
+        "compiled_source_closure": [{"path": str(path.relative_to(PROJECT_ROOT)),
+                                     "sha256": _sha256(path)}
+                                    for path in sorted((*((staging / "src").iterdir()),
+                                                        *((staging / "include").iterdir())))],
+        "binding_sources": [{"path": path, "sha256": _sha256(PROJECT_ROOT / path)}
+                            for path in shared_binding],
+    }
+
+
 def _rewrite_lossless_command(
     output: Path, profile: str, algorithm: str
 ) -> tuple[list[str], dict[str, Any]]:
@@ -870,11 +1000,38 @@ def _rewrite_lossless_command(
 
 
 def _build(algorithm: str, profile: str) -> dict[str, Any]:
+    if algorithm == "fastpfor-simple8b-rle-u32":
+        from audit_fastpfor_simple8b_rle_native import audit_build
+
+        # An existing build is verified in place; failed/partial evidence is never replaced.
+        directory = PROJECT_ROOT / "build/adapters/fastpfor_simple8b_rle/20261007-2" / profile
+        if not directory.exists():
+            recipe = runpy.run_path(str(PROJECT_ROOT / "adapters/fastpfor_simple8b_rle/build_native.py"))
+            recipe["build"](profile, "20261007-2")
+        return audit_build(profile)
+    if algorithm in {
+        "littleintpacker-pack32-u32", "littleintpacker-turbo-u32", "littleintpacker-sc-u32",
+        "littleintpacker-bmi2-u32", "littleintpacker-horizontal-u32",
+    }:
+        recipe = runpy.run_path(str(PROJECT_ROOT / "adapters/littleintpacker/build_native.py"))
+        return recipe["build"](profile)
     from build_completed_rewrite import KINDS
     from build_completed_rewrite import build as build_completed
 
     if algorithm in KINDS:
         return build_completed(algorithm, profile)
+    if algorithm == "fast-differential-u32":
+        recipe = runpy.run_path(str(PROJECT_ROOT / "adapters/fast_differential/build_native.py"))
+        return recipe["build"](profile)
+    if algorithm in ("maskedvbyte-u32", "delta-maskedvbyte-u32"):
+        recipe = runpy.run_path(str(PROJECT_ROOT / "adapters/maskedvbyte/build_native.py"))
+        return recipe["build"](profile)
+    if algorithm in ("simdcomp-u32", "delta-simdcomp-u32", "for-simdcomp-u32"):
+        recipe = runpy.run_path(str(PROJECT_ROOT / "adapters/simdcomp/build_native.py"))
+        return recipe["build"](profile)
+    if algorithm in ("simple9-u28", "simple9hacked-u28", "simple16-u28"):
+        recipe = runpy.run_path(str(PROJECT_ROOT / "adapters/fastpfor_simple/build_native.py"))
+        return recipe["build"](profile)
     directory_name = algorithm.replace("-", "_")
     output_dir = PROJECT_ROOT / "build" / "adapters" / directory_name / profile
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -885,6 +1042,10 @@ def _build(algorithm: str, profile: str) -> dict[str, Any]:
         "chimp", "chimp128", "elf-plus", "self-star", "prometheus-xor-chunk", "elf", "elf-star"
     ):
         command, dependency_evidence = _rewrite_lossless_command(output, profile, algorithm)
+    elif algorithm in ("streamvbyte-u32", "delta-zigzag-streamvbyte64"):
+        command, dependency_evidence = _streamvbyte_command(output, profile, algorithm)
+    elif algorithm in ("streamvbyte-modern-u32", "delta-zigzag-streamvbyte-modern64"):
+        command, dependency_evidence = _streamvbyte_modern_command(output, profile, algorithm)
     elif algorithm == "delta-varint":
         command = _delta_varint_command(output, profile)
         dependency_evidence = {
@@ -1099,6 +1260,18 @@ def _build(algorithm: str, profile: str) -> dict[str, Any]:
         "command_display": shlex.join(command),
         "build_log": log,
     }
+    if algorithm in ("streamvbyte-u32", "delta-zigzag-streamvbyte64"):
+        record["binding_sources"] = dependency_evidence["binding_sources"]
+        record["source_files"] = json.loads(
+            (PROJECT_ROOT / "adapters/streamvbyte/SOURCE_LOCK.json").read_text()
+        )["files"]
+        record["compiled_source_closure"] = [
+            {"path": str((output_dir / "fastpfor/streamvbyte.c").relative_to(PROJECT_ROOT)),
+             "sha256": dependency_evidence["compiled_source_sha256"]}
+        ]
+    elif algorithm in ("streamvbyte-modern-u32", "delta-zigzag-streamvbyte-modern64"):
+        for field in ("binding_sources", "source_files", "compiled_source_closure"):
+            record[field] = dependency_evidence[field]
     record_path = output_dir / "build-record.json"
     record_path.write_text(
         json.dumps(record, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
@@ -1120,6 +1293,15 @@ def main() -> int:
         "lzss-dipperstein-c", "lzsse8-raw", "alp", "alp-rd",
         "serf-qt", "serf-xor", "zfp-accuracy-1d",
         "neats-lossless-i64", "leats-lossless-i64", "delta-varint",
+        "streamvbyte-u32", "delta-zigzag-streamvbyte64",
+        "streamvbyte-modern-u32", "delta-zigzag-streamvbyte-modern64",
+        "fast-differential-u32",
+        "maskedvbyte-u32", "delta-maskedvbyte-u32",
+        "simdcomp-u32", "delta-simdcomp-u32", "for-simdcomp-u32",
+        "simple9-u28", "simple9hacked-u28", "simple16-u28",
+        "fastpfor-simple8b-rle-u32",
+        "littleintpacker-pack32-u32", "littleintpacker-turbo-u32", "littleintpacker-sc-u32",
+        "littleintpacker-bmi2-u32", "littleintpacker-horizontal-u32",
         "chimp", "chimp128", "elf-plus", "self-star", "prometheus-xor-chunk", "elf", "elf-star"
     )
     aliases = {}
@@ -1136,10 +1318,29 @@ def main() -> int:
         if target in algorithms:
             aliases[path.stem] = target
     parser.add_argument("algorithm", choices=(*algorithms, *aliases))
-    parser.add_argument("--profile", choices=("release", "sanitizer", "all"), default="release")
+    parser.add_argument(
+        "--profile", choices=("release", "debug", "sanitizer", "all"), default="release"
+    )
     arguments = parser.parse_args()
     profiles = ("release", "sanitizer") if arguments.profile == "all" else (arguments.profile,)
     algorithm = aliases.get(arguments.algorithm, arguments.algorithm)
+    three_profile_algorithms = {
+        "streamvbyte-u32", "delta-zigzag-streamvbyte64",
+        "streamvbyte-modern-u32", "delta-zigzag-streamvbyte-modern64",
+        "fast-differential-u32", "maskedvbyte-u32", "delta-maskedvbyte-u32",
+        "simdcomp-u32", "delta-simdcomp-u32", "for-simdcomp-u32",
+        "simple9-u28", "simple9hacked-u28", "simple16-u28",
+        "fastpfor-simple8b-rle-u32",
+        "littleintpacker-pack32-u32", "littleintpacker-turbo-u32", "littleintpacker-sc-u32",
+        "littleintpacker-bmi2-u32", "littleintpacker-horizontal-u32",
+    }
+    if algorithm in three_profile_algorithms and arguments.profile == "all":
+        profiles = ("release", "debug", "sanitizer")
+    elif arguments.profile == "debug":
+        if algorithm not in three_profile_algorithms:
+            parser.error(
+                "debug profile is registered only for explicitly qualified native recipes"
+            )
     records = [_build(algorithm, item) for item in profiles]
     print(json.dumps(records, ensure_ascii=False, indent=2, sort_keys=True))
     return 0

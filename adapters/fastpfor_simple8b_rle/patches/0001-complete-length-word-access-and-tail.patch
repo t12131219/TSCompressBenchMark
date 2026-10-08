@@ -1,0 +1,41 @@
+--- a/headers/simple8b_rle.h
++++ b/headers/simple8b_rle.h
+@@ -160,7 +160,8 @@
+                    input[inPos++];
+         }
+       }
+-      output[outPos++] = outVal;
++      memcpy(reinterpret_cast<unsigned char *>(output) +
++                 size_t(outPos++) * sizeof(uint64_t), &outVal, sizeof(outVal));
+     }
+     return outPos - outOffset;
+   }
+@@ -175,7 +176,9 @@
+     while (outPos < outEnd) {
+       uint32_t remainingCount = outEnd - outPos;
+ 
+-      uint64_t val = input[inPos++];
++      uint64_t val;
++      memcpy(&val, reinterpret_cast<const unsigned char *>(input) +
++                       size_t(inPos++) * sizeof(uint64_t), sizeof(val));
+       uint32_t code = static_cast<uint32_t>(val >> SIMPLE8B_BITSIZE);
+ 
+       // optional check for end-of-stream
+@@ -213,7 +216,7 @@
+         }
+ #else
+         uint32_t i = 0;
+-        for (; i < intNum; i += 8) {
++        for (; i + 8 <= intNum; i += 8) {
+           auto out = output + outPos + i;
+           out[0] = static_cast<uint32_t>(val & bitMask);
+           val >>= bitLen;
+@@ -268,7 +271,7 @@
+     // not much of an effect in practice on recent Intel processors.
+     uint64_t *out64 = reinterpret_cast<uint64_t *>(out);
+     auto count = Simple8b_Codec::Compress(in, 0, uint32_t(length), out64, 0);
+-    nvalue = count * 2;
++    nvalue = size_t(count) * 2 + (MarkLength ? 1 : 0);
+   }
+ 
+   const uint32_t *decodeArray(const uint32_t *in, const size_t length,

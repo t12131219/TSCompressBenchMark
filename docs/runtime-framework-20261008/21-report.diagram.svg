@@ -1,0 +1,197 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1150" height="755" viewBox="0 0 1150 755" role="img" lang="zh-CN" aria-labelledby="archify-diagram-title archify-diagram-description" data-preset="classic" data-quality-profile="showcase"><style>.m-emphasis{ fill: #34d399; }.c-frontend{ fill: rgba(8, 51, 68, 0.4);   stroke: #22d3ee; }.m-dashed{ fill: #a78bfa; }.c-backend{ fill: rgba(6, 78, 59, 0.4);    stroke: #34d399; }.t-muted{ fill: #94a3b8; }.m-security{ fill: #fb7185; }.c-mask{ fill: #0f172a; stroke: none; }.c-grid{ stroke: #1e293b; fill: none; }.c-database{ fill: rgba(76, 29, 149, 0.4);   stroke: #a78bfa; }.a-default{ stroke: #64748b; fill: none; }.m-default{ fill: #64748b; }.t-primary{ fill: #ffffff; }text{font-family:"Noto Sans CJK SC",sans-serif}.semantic-sigil{fill:none;stroke:#94a3b8;stroke-width:1.5}.sigil-fill{fill:#94a3b8;stroke:none}</style><rect width="1150" height="755" fill="#020617"/>
+        <title id="archify-diagram-title">TSDataCompressBenchMark · 覆盖率、Pareto、排名与报告输出</title>
+        <desc id="archify-diagram-description">由 Archify 生成的架构图。</desc>
+        <!-- Definitions -->
+        <defs>
+          <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" class="m-default" />
+          </marker>
+          <marker id="arrowhead-emphasis" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" class="m-emphasis" />
+          </marker>
+          <marker id="arrowhead-security" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" class="m-security" />
+          </marker>
+          <marker id="arrowhead-dashed" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" class="m-dashed" />
+          </marker>
+          <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+            <path d="M 40 0 L 0 0 0 40" class="c-grid" stroke-width="0.5"/>
+          </pattern>
+        </defs>
+
+        <!-- Background Grid -->
+        <rect width="100%" height="100%" fill="url(#grid)" />
+
+        <!-- Boundaries (behind everything) -->
+
+
+        <!-- Connection paths (before components for correct z-order) -->
+        <path data-edge-from="tscb-21-report-n1" data-edge-to="tscb-21-report-n2" data-edge-label="同组比较" data-edge-key="0" data-edge-id="tscb-21-report-e0" data-composition-points="310,132.5;450,132.5" d="M 310 132.5 L 450 132.5" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <path data-edge-from="tscb-21-report-n2" data-edge-to="tscb-21-report-n3" data-edge-label="多目标分析" data-edge-key="1" data-edge-id="tscb-21-report-e1" data-composition-points="700,132.5;840,132.5" d="M 700 132.5 L 840 132.5" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <path data-edge-from="tscb-21-report-n3" data-edge-to="tscb-21-report-n4" data-edge-label="单指标排名" data-edge-key="2" data-edge-id="tscb-21-report-e2" data-composition-points="965,180;965,335" d="M 965 180 L 965 335" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <path data-edge-from="tscb-21-report-n4" data-edge-to="tscb-21-report-n5" data-edge-label="导出表" data-edge-key="3" data-edge-id="tscb-21-report-e3" data-composition-points="840,382.5;700,382.5" d="M 840 382.5 L 700 382.5" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <path data-edge-from="tscb-21-report-n5" data-edge-to="tscb-21-report-n6" data-edge-label="生成图" data-edge-key="4" data-edge-id="tscb-21-report-e4" data-composition-points="450,382.5;310,382.5" d="M 450 382.5 L 310 382.5" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <path data-edge-from="tscb-21-report-n6" data-edge-to="tscb-21-report-n7" data-edge-label="生成报告" data-edge-key="5" data-edge-id="tscb-21-report-e5" data-composition-points="185,430;185,585" d="M 185 430 L 185 585" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <path data-edge-from="tscb-21-report-n7" data-edge-to="tscb-21-report-n8" data-edge-label="记录 hashes" data-edge-key="6" data-edge-id="tscb-21-report-e6" data-composition-points="310,632.5;450,632.5" d="M 310 632.5 L 450 632.5" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <path data-edge-from="tscb-21-report-n8" data-edge-to="tscb-21-report-n9" data-edge-label="返回" data-edge-key="7" data-edge-id="tscb-21-report-e7" data-composition-points="700,632.5;840,632.5" d="M 700 632.5 L 840 632.5" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+        <!-- Components -->
+        <g id="node-tscb-21-report-n1" data-node-id="tscb-21-report-n1" data-node-label="冻结任务覆盖率" tabindex="0" role="button" aria-label="聚焦冻结任务覆盖率，_coverage, 架构组件" aria-pressed="false" data-node-kind="backend" data-node-sublabel="_coverage" data-node-context="架构组件">
+          <title>冻结任务覆盖率 · _coverage · 架构组件</title>
+          <rect x="60" y="85" width="250" height="95" rx="6" class="c-mask"/>
+          <rect x="60" y="85" width="250" height="95" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(66 91) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="185" y="130.5" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">冻结任务覆盖率</text>
+        <text data-detail="context" x="185" y="146.5" class="t-muted" font-size="9" text-anchor="middle">_coverage</text>
+        </g>
+
+        <g id="node-tscb-21-report-n2" data-node-id="tscb-21-report-n2" data-node-label="嵌套可比组" tabindex="0" role="button" aria-label="聚焦嵌套可比组，_comparability_groups, 架构组件" aria-pressed="false" data-node-kind="backend" data-node-sublabel="_comparability_groups" data-node-context="架构组件">
+          <title>嵌套可比组 · _comparability_groups · 架构组件</title>
+          <rect x="450" y="85" width="250" height="95" rx="6" class="c-mask"/>
+          <rect x="450" y="85" width="250" height="95" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(456 91) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="575" y="130.5" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">嵌套可比组</text>
+        <text data-detail="context" x="575" y="146.5" class="t-muted" font-size="9" text-anchor="middle">_comparability_groups</text>
+        </g>
+
+        <g id="node-tscb-21-report-n3" data-node-id="tscb-21-report-n3" data-node-label="多目标 Pareto" tabindex="0" role="button" aria-label="聚焦多目标 Pareto，_pareto_rows, 架构组件" aria-pressed="false" data-node-kind="backend" data-node-sublabel="_pareto_rows" data-node-context="架构组件">
+          <title>多目标 Pareto · _pareto_rows · 架构组件</title>
+          <rect x="840" y="85" width="250" height="95" rx="6" class="c-mask"/>
+          <rect x="840" y="85" width="250" height="95" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(846 91) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="965" y="130.5" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">多目标 Pareto</text>
+        <text data-detail="context" x="965" y="146.5" class="t-muted" font-size="9" text-anchor="middle">_pareto_rows</text>
+        </g>
+
+        <g id="node-tscb-21-report-n4" data-node-id="tscb-21-report-n4" data-node-label="组内稠密排名" tabindex="0" role="button" aria-label="聚焦组内稠密排名，_ranking_rows, 架构组件" aria-pressed="false" data-node-kind="backend" data-node-sublabel="_ranking_rows" data-node-context="架构组件">
+          <title>组内稠密排名 · _ranking_rows · 架构组件</title>
+          <rect x="840" y="335" width="250" height="95" rx="6" class="c-mask"/>
+          <rect x="840" y="335" width="250" height="95" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(846 341) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="965" y="380.5" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">组内稠密排名</text>
+        <text data-detail="context" x="965" y="396.5" class="t-muted" font-size="9" text-anchor="middle">_ranking_rows</text>
+        </g>
+
+        <g id="node-tscb-21-report-n5" data-node-id="tscb-21-report-n5" data-node-label="七类 CSV 表" tabindex="0" role="button" aria-label="聚焦七类 CSV 表，generate_report, 架构组件" aria-pressed="false" data-node-kind="database" data-node-sublabel="generate_report" data-node-context="架构组件">
+          <title>七类 CSV 表 · generate_report · 架构组件</title>
+          <rect x="450" y="335" width="250" height="95" rx="6" class="c-mask"/>
+          <rect x="450" y="335" width="250" height="95" rx="6" class="c-database" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="database" class="semantic-sigil s-database" transform="translate(456 341) scale(0.6875)">
+            <ellipse cx="8" cy="4" rx="5" ry="2"/>
+            <path d="M3 4v8c0 1.1 2.2 2 5 2s5-.9 5-2V4M3 8c0 1.1 2.2 2 5 2s5-.9 5-2"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="575" y="380.5" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">七类 CSV 表</text>
+        <text data-detail="context" x="575" y="396.5" class="t-muted" font-size="9" text-anchor="middle">generate_report</text>
+        </g>
+
+        <g id="node-tscb-21-report-n6" data-node-id="tscb-21-report-n6" data-node-label="图表与可追溯证据" tabindex="0" role="button" aria-label="聚焦图表与可追溯证据，SVG + table hashes, 架构组件" aria-pressed="false" data-node-kind="backend" data-node-sublabel="SVG + table hashes" data-node-context="架构组件">
+          <title>图表与可追溯证据 · SVG + table hashes · 架构组件</title>
+          <rect x="60" y="335" width="250" height="95" rx="6" class="c-mask"/>
+          <rect x="60" y="335" width="250" height="95" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(66 341) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="185" y="380.5" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">图表与可追溯证据</text>
+        <text data-detail="context" x="185" y="396.5" class="t-muted" font-size="9" text-anchor="middle">SVG + table hashes</text>
+        </g>
+
+        <g id="node-tscb-21-report-n7" data-node-id="tscb-21-report-n7" data-node-label="机器与人读报告" tabindex="0" role="button" aria-label="聚焦机器与人读报告，report.json / md / html, 架构组件" aria-pressed="false" data-node-kind="frontend" data-node-sublabel="report.json / md / html" data-node-context="架构组件">
+          <title>机器与人读报告 · report.json / md / html · 架构组件</title>
+          <rect x="60" y="585" width="250" height="95" rx="6" class="c-mask"/>
+          <rect x="60" y="585" width="250" height="95" rx="6" class="c-frontend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="frontend" class="semantic-sigil s-frontend" transform="translate(66 591) scale(0.6875)">
+            <rect x="2" y="3" width="12" height="10" rx="2"/>
+            <path d="M2 6.5h12"/>
+            <circle cx="4.1" cy="4.8" r=".7" class="sigil-fill"/>
+            <circle cx="6.3" cy="4.8" r=".7" class="sigil-fill"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="185" y="630.5" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">机器与人读报告</text>
+        <text data-detail="context" x="185" y="646.5" class="t-muted" font-size="9" text-anchor="middle">report.json / md / html</text>
+        </g>
+
+        <g id="node-tscb-21-report-n8" data-node-id="tscb-21-report-n8" data-node-label="L5 统计收据" tabindex="0" role="button" aria-label="聚焦L5 统计收据，layer5-statistics.json, 架构组件" aria-pressed="false" data-node-kind="database" data-node-sublabel="layer5-statistics.json" data-node-context="架构组件">
+          <title>L5 统计收据 · layer5-statistics.json · 架构组件</title>
+          <rect x="450" y="585" width="250" height="95" rx="6" class="c-mask"/>
+          <rect x="450" y="585" width="250" height="95" rx="6" class="c-database" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="database" class="semantic-sigil s-database" transform="translate(456 591) scale(0.6875)">
+            <ellipse cx="8" cy="4" rx="5" ry="2"/>
+            <path d="M3 4v8c0 1.1 2.2 2 5 2s5-.9 5-2V4M3 8c0 1.1 2.2 2 5 2s5-.9 5-2"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="575" y="630.5" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">L5 统计收据</text>
+        <text data-detail="context" x="575" y="646.5" class="t-muted" font-size="9" text-anchor="middle">layer5-statistics.json</text>
+        </g>
+
+        <g id="node-tscb-21-report-n9" data-node-id="tscb-21-report-n9" data-node-label="CLI 返回与事件" tabindex="0" role="button" aria-label="聚焦CLI 返回与事件，LAYER_5_COMPLETED, 架构组件" aria-pressed="false" data-node-kind="backend" data-node-sublabel="LAYER_5_COMPLETED" data-node-context="架构组件">
+          <title>CLI 返回与事件 · LAYER_5_COMPLETED · 架构组件</title>
+          <rect x="840" y="585" width="250" height="95" rx="6" class="c-mask"/>
+          <rect x="840" y="585" width="250" height="95" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(846 591) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="965" y="630.5" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">CLI 返回与事件</text>
+        <text data-detail="context" x="965" y="646.5" class="t-muted" font-size="9" text-anchor="middle">LAYER_5_COMPLETED</text>
+        </g>
+
+        <!-- Connection labels -->
+        <g data-detail="context" data-edge-from="tscb-21-report-n1" data-edge-to="tscb-21-report-n2" data-edge-label="同组比较" data-edge-key="0" data-edge-id="tscb-21-report-e0">
+          <rect x="355.8" y="112.5" width="48.4" height="14" rx="3" class="c-mask"/>
+          <text x="380" y="122.5" class="t-muted" font-size="8" text-anchor="middle">同组比较</text>
+        </g>
+        <g data-detail="context" data-edge-from="tscb-21-report-n2" data-edge-to="tscb-21-report-n3" data-edge-label="多目标分析" data-edge-key="1" data-edge-id="tscb-21-report-e1">
+          <rect x="741" y="112.5" width="58" height="14" rx="3" class="c-mask"/>
+          <text x="770" y="122.5" class="t-muted" font-size="8" text-anchor="middle">多目标分析</text>
+        </g>
+        <g data-detail="context" data-edge-from="tscb-21-report-n3" data-edge-to="tscb-21-report-n4" data-edge-label="单指标排名" data-edge-key="2" data-edge-id="tscb-21-report-e2">
+          <rect x="936" y="184" width="58" height="14" rx="3" class="c-mask"/>
+          <text x="965" y="194" class="t-muted" font-size="8" text-anchor="middle">单指标排名</text>
+        </g>
+        <g data-detail="context" data-edge-from="tscb-21-report-n4" data-edge-to="tscb-21-report-n5" data-edge-label="导出表" data-edge-key="3" data-edge-id="tscb-21-report-e3">
+          <rect x="750.6" y="362.5" width="38.8" height="14" rx="3" class="c-mask"/>
+          <text x="770" y="372.5" class="t-muted" font-size="8" text-anchor="middle">导出表</text>
+        </g>
+        <g data-detail="context" data-edge-from="tscb-21-report-n5" data-edge-to="tscb-21-report-n6" data-edge-label="生成图" data-edge-key="4" data-edge-id="tscb-21-report-e4">
+          <rect x="360.6" y="362.5" width="38.8" height="14" rx="3" class="c-mask"/>
+          <text x="380" y="372.5" class="t-muted" font-size="8" text-anchor="middle">生成图</text>
+        </g>
+        <g data-detail="context" data-edge-from="tscb-21-report-n6" data-edge-to="tscb-21-report-n7" data-edge-label="生成报告" data-edge-key="5" data-edge-id="tscb-21-report-e5">
+          <rect x="160.8" y="434" width="48.4" height="14" rx="3" class="c-mask"/>
+          <text x="185" y="444" class="t-muted" font-size="8" text-anchor="middle">生成报告</text>
+        </g>
+        <g data-detail="context" data-edge-from="tscb-21-report-n7" data-edge-to="tscb-21-report-n8" data-edge-label="记录 hashes" data-edge-key="6" data-edge-id="tscb-21-report-e6">
+          <rect x="348.6" y="612.5" width="62.8" height="14" rx="3" class="c-mask"/>
+          <text x="380" y="622.5" class="t-muted" font-size="8" text-anchor="middle">记录 hashes</text>
+        </g>
+        <g data-detail="context" data-edge-from="tscb-21-report-n8" data-edge-to="tscb-21-report-n9" data-edge-label="返回" data-edge-key="7" data-edge-id="tscb-21-report-e7">
+          <rect x="755" y="612.5" width="30" height="14" rx="3" class="c-mask"/>
+          <text x="770" y="622.5" class="t-muted" font-size="8" text-anchor="middle">返回</text>
+        </g>
+
+        <!-- Boundary labels (foreground masks keep routes out of titles) -->
+
+
+        <!-- Legend -->
+        <g data-legend="" data-legend-bridge="">
+          <text x="40" y="719" class="t-primary" font-size="12" font-weight="650">图例</text>
+          <g data-legend-semantic-kind="frontend" data-legend-kind="frontend" data-legend-label="入口 / 报告" data-legend-x="40" data-legend-baseline="739" data-legend-width="98">
+            <rect x="40" y="730" width="16" height="10" rx="2.5" class="c-frontend" stroke-width="1"/>
+            <text x="62" y="739" class="t-muted" font-size="10" font-weight="500">入口 / 报告</text>
+          </g>
+          <g data-legend-semantic-kind="backend" data-legend-kind="backend" data-legend-label="控制 / 执行" data-legend-x="160" data-legend-baseline="739" data-legend-width="98">
+            <rect x="160" y="730" width="16" height="10" rx="2.5" class="c-backend" stroke-width="1"/>
+            <text x="182" y="739" class="t-muted" font-size="10" font-weight="500">控制 / 执行</text>
+          </g>
+          <g data-legend-semantic-kind="database" data-legend-kind="database" data-legend-label="文件证据" data-legend-x="280" data-legend-baseline="739" data-legend-width="83">
+            <rect x="280" y="730" width="16" height="10" rx="2.5" class="c-database" stroke-width="1"/>
+            <text x="302" y="739" class="t-muted" font-size="10" font-weight="500">文件证据</text>
+          </g>
+        </g>
+      </svg>

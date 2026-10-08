@@ -440,6 +440,7 @@ def plan_run_set(
                         BenchmarkTrack(track_name),
                     )
                     for config in configs:
+                        preprocess = build_preprocess_plan(manifest.document, config.parameters)
                         compatibility = negotiate(
                             manifest, descriptor, parameters=config.parameters
                         )

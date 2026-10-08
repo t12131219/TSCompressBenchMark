@@ -1,0 +1,56 @@
+{
+  "schema_version": "tscb.littleintpacker-patch-lock.v1",
+  "source_lock_sha256": "59ba003af2c1d0521ca73071b6c74b019746256f761e797edb8dbd8bbdfaafc4",
+  "patch": {
+    "path": "adapters/littleintpacker/patches/0001-zero-width-and-word-access.patch",
+    "sha256": "8f44ce97d1a63eb2de0c151aa462070c09f2884da5ebde1e1a887093a0d5beb6"
+  },
+  "changes": [
+    {
+      "upstream_path": "src/bitpacking32.c",
+      "original_sha256": "677d3698a499b9bae9126d2edc62b515252a248db4feaf2c93d4e4e79a9487f8",
+      "patched_sha256": "5eba5ad2f8d0058597799bb07f9515867e2abe03288377ba93ac49fbd08d947b",
+      "zero_width_fixes": 1,
+      "pointer_casts_removed": 64,
+      "word_loads": 528,
+      "word_stores": 528,
+      "word_bits": 32
+    },
+    {
+      "upstream_path": "src/turbobitpacking32.c",
+      "original_sha256": "d22cd7a91ce8c4e974495b9bc61d81eb5b272c8881ec3257a76872908729b233",
+      "patched_sha256": "204f800606d2e6927eb742e26211693c1db9033aaeb2217e02bb4c0528d0810c",
+      "zero_width_fixes": 1,
+      "pointer_casts_removed": 64,
+      "word_loads": 272,
+      "word_stores": 272,
+      "word_bits": 64
+    },
+    {
+      "upstream_path": "src/scpacking32.c",
+      "original_sha256": "a25f1998ff25c812ff8e138f853935a59a17a31a4cad51707374f8f121acce04",
+      "patched_sha256": "6b4de124b362520d3f264a3ed6cf348c957830e8a97de468055cd9bd61dd036d",
+      "zero_width_fixes": 1,
+      "pointer_casts_removed": 64,
+      "word_loads": 272,
+      "word_stores": 272,
+      "word_bits": 64
+    },
+    {
+      "upstream_path": "src/bmipacking32.c",
+      "original_sha256": "babaea37f6be38a918338bf2ce16451899294bca5525077d65c847b8613ff9da",
+      "patched_sha256": "a10939a294117724f14a15dc1bf7c31bb8da601cbbea6877b24ffac8a71f9ff1",
+      "zero_width_fixes": 1,
+      "pointer_casts_removed": 64,
+      "word_loads": 272,
+      "word_stores": 272,
+      "word_bits": 64
+    }
+  ],
+  "generator_sha256": "341d82597868b652eaa8dea407eff4c951e667836de3772f7a519074cc9e92b8",
+  "original_source_modified": false,
+  "semantic_change": "FIX_ZERO_WIDTH_DECODER_NO_WIRE_OR_KERNEL_SELECTION_CHANGE",
+  "alignment_change": "MEMCPY_WORD_ACCESS_PRESERVES_BYTE_COUNT_AND_PADDING_REQUIREMENTS",
+  "bounded_abi": "PENDING",
+  "benchmark_five_layers": "PENDING"
+}

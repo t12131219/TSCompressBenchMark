@@ -1,0 +1,11 @@
+--- a/src/avxbitpacking.c
++++ b/src/avxbitpacking.c
+@@ -6394,7 +6394,7 @@
+ 
+ static void avxunpackblock0(const __m256i *compressed, uint32_t *pout) {
+   (void)compressed;
+-  memset(pout, 0, 256);
++  memset(pout, 0, 256 * sizeof(*pout));
+ }
+ 
+ /* we packed 256 1-bit values, touching 1 256-bit words, using 16 bytes */

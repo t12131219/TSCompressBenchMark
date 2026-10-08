@@ -7,7 +7,9 @@
 - [x] Formal timing, resource collection, Finalize, accounting, decode, and correctness
   share the same isolated repetition and RunID.
 - [x] FORMAL profiles enforce warmup count >= 3, warmup duration >= 0.5 s,
-  repetitions >= 10, and selected-scope minimum duration in the registered 1–3 s range.
+  repetitions >= 10, and the selected encode and decode directions each reach the
+  configured minimum duration. E2E also checks its complete object duration.
+  The repetition loop and Layer 5 independently enforce this condition.
 - [x] Minimum-duration loops declare `INDEPENDENT_OBJECT`; every inner iteration creates
   fresh encode/decode sessions and a complete finalized object. Unsupported continuous
   stream semantics fail explicitly rather than reusing hidden state.
@@ -51,6 +53,13 @@
   all raw observations and does not select fastest runs.
 
 ## Verification evidence
+
+- 2026-10-07 correction: the earlier implementation stopped when encode plus decode
+  reached the minimum. It could publish a short decode interval with
+  `min_duration_satisfied=true`. Current tests cover both asymmetric directions,
+  CORE/PIPELINE/E2E, actual measured loops, and forged raw PASS claims. The earlier
+  formal acceptance below used the old combined threshold and requires requalification
+  against the current implementation. See `docs/minimum_duration_direction_self_check.md`.
 
 - `44 passed` under Python 3.14.5 in `CompressBench14`; compileall also passes.
 - Ruff 0.16.7 reports `All checks passed`, and all 76 Python files pass
