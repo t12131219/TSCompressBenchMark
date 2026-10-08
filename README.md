@@ -2,7 +2,7 @@
 
 TSDataCompressBenchMark 是一个以源码身份、输入契约和原始证据为基础的时间序列压缩基准框架。Python 控制面负责数据准备、能力协商、任务规划、隔离执行、性能测量与统计报告；具体算法通过原生适配器接入。项目比较的是明确声明的压缩对象、配置和执行路径，保留不支持、错误、超时及资源压力记录。
 
-本文描述 **2026-10-08 当前工作区**。Python 包版本为 `0.1.0`，数据与运行契约属于 V2；两者是不同的版本体系。本次状态说明见 [RELEASE_DESCRIPTION.md](RELEASE_DESCRIPTION.md)。
+本文对应截至 **2026-10-08 的源码状态**。Python 包版本为 `0.1.0`，数据与运行契约属于 V2；两者是不同的版本体系。本次状态说明见 [RELEASE_DESCRIPTION.md](RELEASE_DESCRIPTION.md)。
 
 ## 当前状态
 
@@ -19,7 +19,7 @@ TSDataCompressBenchMark 是一个以源码身份、输入契约和原始证据�
 
 计数来自当前注册表和保存的审计记录。`registry/native_integration_plan.json` 是接入工作清单快照，其逐条状态可能早于最新专项审计；判断某入口当前资格时，应同时核查接入卡、工件及 SDK 依赖哈希、新运行批次和独立审计。已通过限定范围的 primitive 或 pipeline 不会自动使整个逻辑条目完成。
 
-最近状态依据：[原生入口证据刷新](docs/native_codec_evidence_refresh.md)、[方向最短时长修正](docs/minimum_duration_direction_self_check.md)、[全量工作清单](registry/native_integration_plan.json)。详细 `build/` 与 `runs/` 证据保留在本机，通常不随 Git 分发。
+最近状态依据：[原生入口证据刷新](docs/native_codec_evidence_refresh.md)、[方向最短时长修正](docs/minimum_duration_direction_self_check.md)、[全量工作清单](registry/native_integration_plan.json)。详细 `build/` 与 `runs/` 证据由构建和运行生成，通常不随 Git 分发；文档中的历史计数不代表新机器的验证结果。
 
 ## 运行结构
 
@@ -49,7 +49,7 @@ TSDataCompressBenchMark 是一个以源码身份、输入契约和原始证据�
 
 第 2 层冻结计划，实际适配与阶段验证在执行时发生。第 3、4 层共享 `execute_task`，性能测量发生在正式编解码重复中。`run validate` 会完成准备、规划和执行；`run report` 读取已有证据，不重新调用 Codec。
 
-[源码展开架构图](docs/main-runtime-framework-20261008/framework.html)可辅助阅读。它展示职责和步骤展开，包含调用容器及同步观察关系，所有箭头不能都解释为严格串行函数调用；浏览器交互尚未验证。
+[源码展开架构图](docs/main-runtime-framework-20261008/framework.html)可辅助阅读。它展示职责和步骤展开，包含调用容器及同步观察关系，所有箭头不能都解释为严格串行函数调用。
 
 ## 数据、算法与比较契约
 
@@ -96,59 +96,268 @@ SourceArtifactID 标识源工件，AlgorithmID 标识注册算法合同，Config
 
 完整可选 key 可通过 `codecs list` 查询。重点资料：[StreamVByte](docs/streamvbyte_modern_self_check.md)、[SIMDComp](docs/simdcomp_self_check.md)、[MaskedVByte](docs/maskedvbyte_self_check.md)、[FastDifferential](docs/fast_differential_self_check.md)、[Simple8b_RLE](docs/fastpfor_simple8b_rle_source_review.md)、[重写包接入](adapters/completed_rewrites/README.md)。专项自检文档中的早期批次可能已被后续重新资格验证替代，应优先核对最新证据刷新记录。
 
-## 环境与快速开始
+## 环境配置与快速开始
 
-### 环境
+以下命令从仓库根目录执行。先配置 CPU 基础环境，再按实际使用的算法添加可选依赖。安装 Python 控制面不会安装原生 Codec、数据集、模型或 CUDA。
 
-`pyproject.toml` 要求 Python **>=3.14**、NumPy **>=2.5,<3**。现有验证环境为 Conda `CompressBench14`；以下命令从仓库根目录执行，通过 `PYTHONPATH=src` 使用源码，不要求预先安装包。
+### 1. 操作系统与系统工具
+
+当前原生构建与资源采集主要面向 **Linux x86_64**。下面给出 Ubuntu 22.04 / 24.04 的 CPU 环境配置；Debian 用户可安装对应同名软件包。Windows 建议使用 WSL2 Ubuntu，资源与性能结果应标明 WSL2 环境；macOS、ARM 和其他平台尚无全量原生资格声明。
 
 ```bash
-conda activate CompressBench14
-export PYTHONPATH=src
-python -m tscompbench --help
-python -m tscompbench datasets list
-python -m tscompbench codecs list
-python -m tscompbench codecs verify
-python -m tscompbench datasets verify
+sudo apt-get update
+sudo apt-get install -y \
+  build-essential cmake pkg-config git curl ca-certificates \
+  binutils util-linux procps
 ```
 
-新环境也可使用兼容的 Python 执行 `python -m pip install -e .` 安装控制面；原生算法仍需单独构建。当前原生验证主要在 Linux x86_64 进行，编译器、ISA、系统库、模型和 runtime 依赖由具体 adapter 的构建脚本及源锁指定。`debug` 仅对已声明该配方的入口支持；`--profile all` 会执行该入口支持的构建组合。
+| 系统依赖 | 用途 |
+| --- | --- |
+| `build-essential` | GCC、G++、make、C/C++ 标准库与开发头文件；基础 binding 使用 C11 / C++17，NeaTS/LeaTS binding 使用 GNU C++20 |
+| `cmake`、`pkg-config` | CMake 构建与依赖发现；建议 CMake >=3.22 |
+| `git` | 获取仓库，在构建副本上检查/应用冻结补丁 |
+| `binutils` | ELF、链接及原生工件检查工具 |
+| `util-linux`、`procps` | `lscpu`、`taskset`、进程和内存诊断；框架同时读取 Linux `/proc` |
+| `curl`、`ca-certificates` | 下载环境安装器和依赖时使用 HTTPS |
 
-`datasets/`、`build/`、`runs/` 和独立重写工作区通常被 Git 忽略。新 checkout 需要准备 Manifest 指定的数据和依赖；`datasets verify` 会核对文件存在与哈希，不负责下载数据。合成数据有对应 `tools/generate_*_fixture.py`，应使用匹配的生成器与固定参数。源资料目录保持只读，安全补丁只应用于构建副本。
+可选工具按算法安装：
 
-### 跑通一个资格实验
+```bash
+# ALP / ALP-RD 的默认配方使用 clang++；包含 Clang sanitizer runtime。
+sudo apt-get install -y clang libclang-rt-dev
 
-以已提供的 LZ4 配置为例，需要匹配的 `national_illness` 数据。现有合格工件可直接使用；首次运行需要构建，并满足清单要求的原生/SDK 证据门控。
+# lzss-raw 的冻结 Rust 实现使用 rustc，源码配方包含 edition 2021。
+sudo apt-get install -y rustc cargo
+
+# 仅在独立 DeepZip / DZip 构建中启用 HDF5 checkpoint importer 时安装。
+sudo apt-get install -y libhdf5-dev
+```
+
+LZ4、Zstd、Snappy、Brotli、zlib、bzip2、XZ、zfp 等当前配方编译 `adapters/` 中的冻结源码，**不要求安装系统 `liblz4-dev` / `libzstd-dev` 等来替代这些源码**。DZip 的 Eigen、MKLDNN 和 libbsc，WaLLoC 的 libwebp 也由冻结副本构建。上游 README 中独立 benchmark 的依赖不一定属于本框架 binding，例如 NeaTS 的上游 Squash benchmark 不在当前 binding 构建路径中。
+
+检查工具与机器 ISA：
+
+```bash
+gcc --version
+g++ --version
+cmake --version
+lscpu
+```
+
+CPU 标志必须满足所选入口清单：例如部分 StreamVByte 配方要求 AVX2，SIMDComp 使用 SSE4.1 和独立 AVX2 对象，Sprintz 还要求 BMI2/LZCNT，DZip 要求 AVX。虚拟机或容器隐藏 ISA 时，不能仅凭宿主机型号判断可用性。缺失 ISA 不通过静默替换算法解决。
+
+### 2. 获取仓库并创建 Conda 环境
+
+如果尚未安装 Conda，可选择 [Miniforge](https://github.com/conda-forge/miniforge)。下面的安装器适用于 Linux x86_64；其他架构应选择匹配的安装器。
+
+```bash
+curl -fL -o Miniforge3-Linux-x86_64.sh \
+  https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-x86_64.sh
+bash Miniforge3-Linux-x86_64.sh
+```
+
+安装时按提示选择自己的目录并初始化 bash；重新打开终端后执行 `conda --version`。已有 Miniconda、Anaconda 或 Miniforge 可直接使用，不依赖特定安装位置。
+
+```bash
+git clone https://github.com/t12131219/TSCompressBenchMark.git TSDataCompressBenchMark
+cd TSDataCompressBenchMark
+
+conda create -n tscompbench --override-channels -c conda-forge \
+  python=3.14 pip -y
+conda activate tscompbench
+
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
+python -m pip install -e .
+python -m pip check
+python -c 'import sys, numpy; print(sys.version); print("NumPy", numpy.__version__)'
+```
+
+`pyproject.toml` 的运行要求是 **Python >=3.14、NumPy >=2.5,<3**，构建后端要求 `setuptools>=77`；`pip install -e .` 会按这些约束安装依赖。此处 `tscompbench` 只是示例环境名，可以自行替换。当前控制面没有 pandas、SciPy、scikit-learn、PyTorch 或 TensorFlow 的必装依赖。
+
+[requirements.txt](requirements.txt) 固定了参考环境 `CompressBench14` 中已核实的 NumPy、setuptools、pytest 和 ruff 版本，并补充交付/收尾工具使用的 PyYAML。参考环境的 Python 为 3.14.5；环境名无需相同。该文件用于安装直接 Python 依赖，不是包含所有传递依赖和原生 runtime 的 Conda 锁文件；只运行控制面时也可仅执行 `pip install -e .`。
+
+如果包源暂时无法提供上述版本，安装会失败，应先解决包源或版本可用性；不能将 NumPy 1.x 或 Python 3.11 当作控制面的兼容替代。尤其不要为安装旧模型 runtime 降级此环境。
+
+不使用 Conda 时，也可在已有 Python 3.14 上创建 venv：
+
+```bash
+python3.14 -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
+python -m pip install -e .
+```
+
+如果选择直接运行源码而不安装 editable 包，仍需在 Python >=3.14 环境中安装运行依赖：
+
+```bash
+python -m pip install 'numpy>=2.5,<3'
+export PYTHONPATH="$PWD/src"
+```
+
+随后使用同样的 `python -m tscompbench` 命令。运行工具脚本时也应使用选定环境中的 `python`。
+
+### 3. CUDA、LibTorch 与 MKL 的选择
+
+| 使用范围 | 所需环境 |
+| --- | --- |
+| 控制面、oracle 和大多数常规 CPU Codec | 上述 Python + C/C++ 环境；不需要 NVIDIA GPU、CUDA 或 PyTorch |
+| 当前 DeepZip / DZip Benchmark binding | 冻结 C++ 源码与模型；构建驱动关闭 CUDA 和 HDF5 importer，不要求 Python PyTorch/TensorFlow |
+| TRISTAN / CORAD | 冻结 Intel MKL **2023.1.0，build `h213fc3f_46343`** 及依赖闭包；通用 OpenBLAS 不能代替已锁定 MKL 身份 |
+| WaLLoC 当前 binding | LibTorch **2.6.0+cu118、C++ ABI=0**，配套 CUDA runtime/cuDNN、CUDA **11.8 Toolkit / nvcc** 与冻结模型；当前 Benchmark 仍只声明 CPU profile |
+| 独立实现的 GPU/训练扩展 | 依各自能力矩阵、GPU 架构与 source/native/SDK/run 审计另行接入；安装 CUDA 不会增加注册能力 |
+
+**WaLLoC 依赖准备。** PyTorch 2.6.0+cu118 的 Python wheel 可作为 C++ 头文件和 LibTorch 库的分发方式；它不安装到 Python 3.14 控制面中。另建 Python 3.11 环境：
+
+```bash
+conda create -n tscompbench-torch --override-channels -c conda-forge \
+  python=3.11 pip -y
+conda run -n tscompbench-torch python -m pip install \
+  torch==2.6.0 --index-url https://download.pytorch.org/whl/cu118
+conda run -n tscompbench-torch python -c \
+  'import torch; print(torch.__version__, torch.version.cuda); print("CXX11 ABI", torch._C._GLIBCXX_USE_CXX11_ABI)'
+
+# 将 LibTorch 的位置传给构建驱动；随后仍使用 tscompbench 控制面环境。
+export WALLOC_TORCH_ROOT="$(conda run -n tscompbench-torch python -c \
+  'from pathlib import Path; import torch; print(Path(torch.__file__).parent)' | tail -n 1)"
+conda activate tscompbench
+```
+
+预期版本为 `2.6.0+cu118`、CUDA `11.8`、ABI 为 `False`（0）。当前配方直接链接 CUDA 版 LibTorch，CPU-only wheel 或 cu12x/cu13x wheel 都不能直接替换。wheel 提供的 CUDA runtime **不包含完整 nvcc 编译工具链**，还需安装 Toolkit。
+
+复现当前 CUDA 11.8 配方建议使用 Ubuntu 22.04 x86_64 和 GCC 11。下面的 NVIDIA APT 仓库地址只适用于该发行版；其他发行版应在 [CUDA 11.8 下载页](https://developer.nvidia.com/cuda-11-8-0-download-archive)选择对应安装方式，不能把 `ubuntu2204` 仓库用于 Ubuntu 24.04。
+
+```bash
+sudo apt-get install -y wget gcc-11 g++-11
+wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-keyring_1.1-1_all.deb
+sudo dpkg -i cuda-keyring_1.1-1_all.deb
+sudo apt-get update
+sudo apt-get install -y cuda-toolkit-11-8
+
+export PATH="/usr/local/cuda-11.8/bin:$PATH"
+nvcc --version
+```
+
+使用 `cuda-toolkit-11-8` 保持 Toolkit 版本固定；不要以滚动的 `cuda` 元包替代。当前框架驱动已写死 `/usr/local/cuda-11.8`，仅设置 PATH 或安装 Conda `cudatoolkit` 不会改写该路径。构建时可用 `CC=gcc-11 CXX=g++-11 CUDAHOSTCXX=g++-11` 指定 CUDA 11.8 兼容的 host 编译器；Ubuntu 24.04 默认 GCC 13 不是该配方的直接替代。
+
+仅准备当前 CPU profile 的构建依赖，不要求有可运行的 GPU；若要执行独立 GPU 验证，还需 NVIDIA GPU 和兼容驱动。CUDA 11.8 GA 对应的 Linux 驱动基线为 520.61.05，具体兼容规则见 [NVIDIA CUDA 兼容性文档](https://docs.nvidia.com/deploy/cuda-compatibility/)。在 Ubuntu 实体机上，可查看并安装系统推荐的兼容驱动；已具备兼容驱动时无需重装：
+
+```bash
+sudo apt-get install -y ubuntu-drivers-common
+ubuntu-drivers devices
+sudo ubuntu-drivers autoinstall
+# 安装完成后重启系统，再检查驱动。
+nvidia-smi
+```
+
+WSL2 使用 Windows 宿主机的 NVIDIA 驱动，容器使用宿主机驱动与 NVIDIA Container Toolkit，不在其中执行上述实体机驱动安装。`nvidia-smi` 显示的 CUDA 字段是驱动支持上限，已安装 Toolkit 版本以 `nvcc --version` 为准。WaLLoC 独立 CUDA 目标固定为 `sm75`，其他 GPU 架构需要单独核查，当前注册不包含 GPU 验收。
+
+**MKL 依赖准备。** 可在独立环境中准备锁定的 runtime，不改变控制面的 NumPy 依赖：
+
+```bash
+conda create -n tscompbench-mkl --override-channels -c defaults \
+  python=3.11 'mkl=2023.1.0=h213fc3f_46343' -y
+conda run -n tscompbench-mkl python -c \
+  'import sys; from pathlib import Path; print(Path(sys.prefix) / "lib" / "libmkl_rt.so.2")'
+```
+
+**当前迁移限制必须处理：** `tools/build_completed_rewrite.py` 仍固定了原验证机器的 MKL 前缀，TRISTAN/CORAD 的 `DEPENDENCY_LOCK.json` 也含绝对路径；当前没有可直接覆盖它们的 `TSCB_MKL_ROOT` 环境变量。上述命令只准备 runtime，不能让这两个 Benchmark 入口自动完成跨机器构建。迁移时需将构建配置和依赖定位机制适配到实际前缀，再核验锁定文件，重新构建并执行 source/native/SDK/run 审计，刷新注册证据。WaLLoC 的 `WALLOC_TORCH_ROOT` 已支持位置覆盖，但仍逐文件核对依赖 SHA-256；版本号一致也不代表所有依赖文件匹配。不要创建原作者目录、删掉哈希门禁或把历史 PASS 复制为本机验收。
+
+更多 runtime、模型及能力细节见[重写包接入](adapters/completed_rewrites/README.md)和对应 `DEPENDENCY_LOCK.json`。这些接入资料中的旧环境名、绝对路径和报告属于历史来源记录，不是用户必须采用的安装位置。
+
+### 4. 确认控制面与准备数据
+
+当前 CLI 的默认项目根目录推导不适合所有安装方式，因此以下所有命令都**显式传入 `--project-root .`，放在子命令之前**。editable 安装只提供 Python 包，仓库中的 registry/configs/源工件仍必需。
+
+```bash
+python -m tscompbench --project-root . --help
+python -m tscompbench --project-root . codecs list
+python -m tscompbench --project-root . codecs verify
+python -m tscompbench --project-root . datasets list
+```
+
+`codecs verify` 验证注册合同，不代表二进制已经构建或当前机器取得运行资格。数据准备按 `registry/datasets/<key>.json` 中的 `file.path`、字节数、SHA-256、parser 和逻辑契约进行；该路径相对于仓库根目录。
+
+`datasets/` 通常不随 Git 分发。以 LZ4 示例为例，需要取得匹配版本的 `national_illness.csv`，放在 `datasets/national_illness.csv`。该清单目前登记的是 `local:` 来源，没有自动下载地址；用户需从合法的数据提供方或已有数据归档取得内容并核对许可。不同格式或内容的同名 CSV 不能沿用旧 DatasetID，应登记新的 Manifest。
+
+```bash
+mkdir -p datasets
+# 将取得的数据放入 Manifest 指定的位置后，核对文件哈希。
+sha256sum datasets/national_illness.csv
+# 仅准备并核验一个实际要使用的数据集。
+python -m tscompbench --project-root . datasets prepare national_illness \
+  --output build/dataset-checks/national_illness
+# 仅在所有已注册数据文件齐全后执行全表校验。
+python -m tscompbench --project-root . datasets verify
+```
+
+`national_illness` 当前预期 SHA-256 为 `93601f64d2566dc796ca4305adad8b8560c2db1a1ff04543c3bd813a7263570a`。`datasets verify` 不负责下载文件；只准备部分数据时，全表校验因其他文件缺失而失败是可解释的结果。
+
+合成数据应使用匹配的 `tools/generate_*_fixture.py` 与固定参数。部分生成器会同时重写对应 Manifest，执行前应阅读脚本并检查生成后的变更；合成 fixture 不构成真实数据上的性能结论。`build/`、`runs/` 和独立重写工作区也通常被 Git 忽略，需要在自己的机器生成，参见[文件保留规则](docs/git_tracking_policy.md)。
+
+### 5. 跑通一个 CPU 资格实验
+
+以 LZ4 为例，在数据准备完成后构建本机工件。`--profile all` 执行该入口声明的构建组合，一般为 release + sanitizer，部分整数入口还包含 debug；不是所有入口都支持单独 `--profile debug`。
 
 ```bash
 python tools/build_codec.py lz4-frame --profile all
-python -m tscompbench run validate \
+python -m tscompbench --project-root . run validate \
   configs/experiments/lz4-frame-qualification.toml \
   --output-root runs --run-set-id lz4-local-qualification
-python -m tscompbench run report \
+python -m tscompbench --project-root . run report \
   configs/experiments/lz4-frame-qualification.toml \
   --output-root runs --run-set-id lz4-local-qualification --resume
 ```
 
-`QUALIFICATION` 用于边界和接入检查，不参加正式性能排名；出现空 `summary.csv` 可以是预期结果。检查 raw、诊断、eligibility 和 coverage，而不是只看汇总行数。
+对需要专项 source/native/SDK 门控的其他入口，仅运行 `build_codec.py` 不足以取得资格，还需按接入卡执行对应测试与 auditor，并生成匹配本机工件及依赖身份的证据。共享源码、编译器、runtime 或二进制改变都可能使旧证据失效。
 
-### 正式实验与恢复
+`QUALIFICATION` 用于边界和接入检查，不参加正式性能排名；空 `summary.csv` 可以是预期结果。检查 raw、诊断、eligibility 和 coverage。命令退出成功也不代表每个任务都 PASS，应读取任务级状态。
 
-以下配置比较 LZ4 / Zstd，需要对应构建和已通过门控的执行工件。
+### 6. 正式实验、线程与恢复
+
+以下配置在同一数据上比较 LZ4 / Zstd；应先完成资格检查，并构建两个入口：
 
 ```bash
 python tools/build_codec.py zstd-frame --profile all
-python -m tscompbench run validate \
+
+# 与示例的单线程预算一致；带线程池的其他算法按其清单配置。
+export OMP_NUM_THREADS=1
+export MKL_NUM_THREADS=1
+export OPENBLAS_NUM_THREADS=1
+
+python -m tscompbench --project-root . run validate \
   configs/experiments/zstd-lz4-formal-comparison.toml \
   --output-root runs --run-set-id zstd-lz4-local-formal
-python -m tscompbench run report \
+python -m tscompbench --project-root . run report \
   configs/experiments/zstd-lz4-formal-comparison.toml \
   --output-root runs --run-set-id zstd-lz4-local-formal --resume
 ```
 
-从已有批次恢复时，对同一配置、输出目录和 RunSetID 的 `run validate` 加 `--resume`。已有路径拒绝覆盖；恢复会核对冻结配置、环境、工件和日志。修改冻结条件后应使用新 RunSetID，不覆盖或补写旧批次。
+正式运行前核查 `profile` 的设备、线程/进程预算、超时、内存限制与 ISA，必要时复制 TOML 为自己的实验配置。保持足够空闲内存并减少其他负载，框架会保留换页和线程超预算证据。DZip 等线程池入口有独立进程线程预算，不能通过统一设置 1 将其声明为单线程算法。
 
-其他分步命令为 `run init`、`run prepare`、`run plan`。CPU affinity 必须属于当前进程可用集合；示例中的历史 CPU 0 不应直接当作另一台机器的默认值。
+CPU affinity 必须属于当前进程可用集合，可用下列命令查看，随后在自己的配置中选择；不要复制历史报告的 CPU 0、GPU 编号或机器内存参数。
+
+```bash
+python -c 'import os; print(sorted(os.sched_getaffinity(0)))'
+```
+
+从已有批次恢复时，对同一配置、输出目录和 RunSetID 的 `run validate` 加 `--resume`。已有路径拒绝覆盖；恢复会核对冻结配置、环境、工件和日志。首次运行需使用尚不存在的 RunSetID，条件改变后创建新批次。
+
+其他分步命令为 `run init`、`run prepare`、`run plan`。先准备与核验依赖，再冻结实验环境，避免在执行或恢复中改变 runtime、线程环境变量或工件。
+
+### 常见安装与运行问题
+
+| 现象 | 检查与处理 |
+| --- | --- |
+| `No module named tscompbench` | 激活正确环境，执行 `python -m pip install -e .`，或在仓库根目录设置 `PYTHONPATH="$PWD/src"` |
+| registry 为空或找不到配置 | 确认当前目录为仓库根目录，显式传 `--project-root .`；仅安装 wheel 不提供完整仓库资产 |
+| Python / NumPy 依赖无法解析 | 核查 Python >=3.14 和 NumPy >=2.5,<3 的可用包；不要混用旧模型环境 |
+| 缺少数据或 SHA-256 不匹配 | 按 Manifest 准备正确内容，或为新数据建立新身份；全表校验要求全部已注册文件 |
+| `clang++` / `rustc` / `nvcc` 找不到 | 按所选算法安装工具链；WaLLoC 还检查固定的 CUDA 11.8 路径 |
+| 缺失 `.so`、`ldd` 显示 `not found` | 构建本机工件、安装对应 runtime，核查配方的 RPATH 和依赖前缀；不要全局加入另一个 Conda 环境的 `lib/` 目录 |
+| dependency / SDK evidence drift | 按该入口接入流程重新生成并审计证据；历史报告不替代本机结果 |
+| 任务不支持、资源压力或空汇总 | 检查 Preflight、Run 原始状态、eligibility 与 coverage；QUALIFICATION 和不足资格的配置不产生正式排名 |
 
 ## 测量与结果阅读
 
@@ -181,13 +390,13 @@ runs/<run-set-id>/
 ## 开发、证据与限制
 
 ```bash
-PYTHONPATH=src conda run -n CompressBench14 python -m pytest
-PYTHONPATH=src conda run -n CompressBench14 python -m pytest \
+python -m pytest
+python -m pytest \
   tests/unit/test_measurement.py tests/unit/test_statistics.py \
   tests/integration/test_layer5_reporting.py
 ```
 
-pytest 及需要的原生依赖应在开发环境中安装。算法专属 source / native / SDK / run auditor 位于 `tools/`；必须按对应接入文档运行。共享执行源码或二进制变化可能使旧证据失效，工厂会拒绝漂移；编译成功、注册成功、会话创建成功和历史 PASS 都不能单独代替当前五层资格。最近刷新流程见[原生入口证据刷新](docs/native_codec_evidence_refresh.md)。
+以上命令使用已激活的控制面环境。完整测试集还会消费算法专属工件、数据与审计记录；新 checkout 仅配置基础环境时不保证全量测试通过。算法专属 source / native / SDK / run auditor 位于 `tools/`；必须按对应接入文档运行。共享执行源码或二进制变化可能使旧证据失效，工厂会拒绝漂移；编译成功、注册成功、会话创建成功和历史 PASS 都不能单独代替当前五层资格。最近刷新流程见[原生入口证据刷新](docs/native_codec_evidence_refresh.md)。
 
 当前尚未完成全量 221 条目验收，也没有所有算法在统一真实语料上的最终排名。合成 uint32 / uint28 UTS 资格不覆盖真实 int64 timestamp 或 float 数据；checked int64 StreamVByte pipeline 的现有范围只覆盖其登记数据和配置。DCT、DWT、PCA 当前继续跳过；TerraCodec 两个阻塞重写包未进入已完成接入声明。
 

@@ -1,0 +1,25 @@
+# Python >=3.14 is required by pyproject.toml.
+# Reference environment: CompressBench14, Python 3.14.5 (2026-10-08).
+# Install from the repository root:
+#   python -m pip install -r requirements.txt
+#   python -m pip install -e .
+# These are direct Python dependencies, not a full Conda environment lock.
+
+# Benchmark control-plane runtime (matches pyproject.toml: numpy>=2.5,<3).
+numpy==2.5.3
+
+# Package build backend; version verified in CompressBench14.
+setuptools==84.0.0
+
+# Regression tests and optional code checks; versions verified in CompressBench14.
+pytest==9.1.1
+ruff==0.16.7
+
+# YAML parsing for tools/verify_requested_lossless_delivery.py and
+# tools/finalize_requested_lossless_rewrites.py.
+# This dependency was not installed in the reference environment at inspection.
+PyYAML>=6.0.3,<7
+
+# Native compilers, CUDA, MKL, LibTorch, datasets and models are configured
+# separately as described in README.md. Do not install the legacy model
+# environment's PyTorch/TensorFlow dependencies into this Python 3.14 environment.
