@@ -29,6 +29,7 @@ def prepare_execution_input(
     buffers: list[LogicalBuffer] = []
     read = written = allocated = padding = 0
     copied = False
+    stages = []
     channel_index = 0
     for item in routed.buffers:
         if item.name == "validity":
@@ -52,10 +53,11 @@ def prepare_execution_input(
         buffers.append(
             LogicalBuffer(item.name, prepared.logical_array, prepared.logical_array.nbytes * 8)
         )
-        read += item.array.nbytes if prepared.telemetry.copied else 0
-        written += prepared.logical_array.nbytes if prepared.telemetry.copied else 0
-        allocated += int(prepared.storage.nbytes) if prepared.telemetry.copied else 0
+        read += prepared.telemetry.bytes_read
+        written += prepared.telemetry.bytes_written
+        allocated += prepared.telemetry.allocation_bytes
         padding += prepared.telemetry.padding_bytes
+        stages.extend({"buffer": item.name, **stage} for stage in prepared.telemetry.stages)
         copied = copied or prepared.telemetry.copied
         channel_index += 1
     codec_buffers = tuple(buffers)
@@ -78,5 +80,5 @@ def prepare_execution_input(
     return PreparedExecutionInput(
         original=routed,
         codec_input=codec_input,
-        telemetry=AdapterTelemetry(read, written, allocated, padding, copied),
+        telemetry=AdapterTelemetry(read, written, allocated, padding, copied, tuple(stages)),
     )

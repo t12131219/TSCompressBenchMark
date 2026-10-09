@@ -1,7 +1,6 @@
 {
   "schema_version": "tscb.source-onboarding.v2",
-  "source_onboarding_id": "v2:source-onboarding:sha256:df6e34f7d5fe852119a9f693faf366ab0376954898ecb58dc5a232a37352a00c",
-  "source_artifact_id": "v2:source-artifact:sha256:2113be7b547b92c71a10c9c9ea2745fc90a26e6f7d8eb9ce76f4d4e2309057f5",
+  "source_artifact_id": "v2:source-artifact:sha256:6bbe8e6fe0499c421679441e6e9836e951c2ccccf19bd96b37c8f84914a8c6fb",
   "repository": "https://github.com/Spatio-Temporal-Lab/Serf.git",
   "commit": "b38450b56825eabc96be8e25d6880127dc688c95",
   "dirty": false,
@@ -96,56 +95,70 @@
       "name": "project native release ABI smoke",
       "command": "conda run -n CompressBench14 python adapters/serf/tests/run_native_tests.py",
       "status": "PASS",
-      "evidence": "float32/float64; 0/1/2, 999/1000/1001/2001; non-finite raw exceptions; canaries, bound-minus-one, finalize and corruption"
+      "evidence": "Historical pre-correction source float32/float64; 0/1/2, 999/1000/1001/2001; non-finite raw exceptions; canaries, bound-minus-one, finalize and corruption"
     },
     {
       "name": "project native ASan/UBSan ABI smoke",
       "command": "conda run -n CompressBench14 python adapters/serf/tests/run_native_tests.py",
       "status": "PASS",
-      "evidence": "same matrix; sanitizer findings produced three replayed source patches and an aligned input copy in the C ABI shim"
+      "evidence": "Historical pre-correction source same matrix; sanitizer findings produced three replayed source patches and an aligned input copy in the C ABI shim"
     },
     {
       "name": "Python adapter, source closure and negotiation qualification",
       "command": "PYTHONPATH=src conda run -n CompressBench14 pytest -q tests/adapters/test_serf.py tests/unit/test_negotiation.py tests/unit/test_measurement.py tests/unit/test_statistics.py",
       "status": "PASS",
-      "evidence": "absolute-bound, IEEE edge, hostile frame, MTS, identity, lossy negotiation and declared native-boundary coverage"
+      "evidence": "Historical pre-correction source absolute-bound, IEEE edge, hostile frame, MTS, identity, lossy negotiation and declared native-boundary coverage"
     },
     {
       "name": "five-layer qualification",
       "command": "tscompbench run validate configs/experiments/serf-qualification.toml",
       "status": "PASS",
-      "evidence": "runs/runset-20260920T062542Z-83ecd524822d; two tasks and 39/39 boundary cases per algorithm"
+      "evidence": "Historical pre-correction source runs/runset-20260920T062542Z-83ecd524822d; two tasks and 39/39 boundary cases per algorithm"
     },
     {
       "name": "five-layer formal exchange-rate run",
       "command": "tscompbench run validate/report configs/experiments/serf-formal.toml",
       "status": "PASS",
-      "evidence": "runs/runset-20260920T062606Z-db4b8711b0a0; 20 eligible PASS repetitions, two summaries, two coverage tasks and zero raw absolute-error violations"
+      "evidence": "Historical pre-correction source runs/runset-20260920T062606Z-db4b8711b0a0; 20 eligible PASS repetitions, two summaries, two coverage tasks and zero raw absolute-error violations"
+    },
+    {
+      "name": "Strict XOR native release and ASan/UBSan regressions",
+      "command": "python adapters/serf/tests/run_native_tests.py",
+      "status": "PASS",
+      "evidence": "serf_qt: release: abi_smoke\nserf ABI smoke PASS\nserf_qt: sanitizer: abi_smoke\nserf ABI smoke PASS\nserf_xor: release: abi_smoke\nserf ABI smoke PASS\nserf_xor: sanitizer: abi_smoke\nserf ABI smoke PASS\n",
+      "log_sha256": "3fd11fe85c33d07293bc41b37801b9eaf0766e34fab388ebd65c31550491c559"
+    },
+    {
+      "name": "Strict XOR float32/float64 decimal endpoint and adapter regressions",
+      "command": "pytest -q tests/adapters/test_serf.py tests/contracts/test_source_onboarding.py tests/contracts/test_codec_registry.py tests/contracts/test_source_catalog.py tests/unit/test_all_grid_summary.py",
+      "status": "PASS",
+      "evidence": "........................................................................ [100%]\n72 passed in 6.86s\n",
+      "log_sha256": "4e5c14f804950b49fa9ced798dd919c9898df652af0c3c52aa9ce352cdf9be67"
     }
   ],
   "builds": [
     {
       "profile": "SERF_QT_RELEASE_SCALAR",
-      "artifact_sha256": "5db2a8d301f05b019e5c0faac8c54bf915deb6ea77c016cd47f58da92b372273",
-      "compile_commands_sha256": "b190bfe7a92c7ff0889264b70589f60a024cebeb47f7d7b52c665fb8b5092c1a",
+      "artifact_sha256": "e5ca2b2312bcb23c6bd212f9b130c8496df7e41fb5e2620b34189b48bee7bd17",
+      "compile_commands_sha256": "f941981e6fe38b5b1bad267a80670f295c8d4c760186d56556343b5a04d5b52d",
       "compiler": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0"
     },
     {
-      "profile": "SERF_QT_ASAN_UBSAN_SCALAR",
-      "artifact_sha256": "9dc17b47551a0210d860f5f5968c9ce100ae2cdd6c5fb551beb09cab16bda31e",
-      "compile_commands_sha256": "68ffa6e59a42d55cec87612a7d319a54eb3b24970bc7b09dfad1379028841afc",
+      "profile": "SERF_QT_SANITIZER_SCALAR",
+      "artifact_sha256": "0931e82c7c403adbdd4d2d9f51687798c9e4bea91729ba36d4bd3fc4a210fa4e",
+      "compile_commands_sha256": "60c7f35a900edc8abed0fdb5a0b7bb231658c1463228e586c0f18b0fafb31149",
       "compiler": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0"
     },
     {
       "profile": "SERF_XOR_RELEASE_SCALAR",
-      "artifact_sha256": "9897dcd2b8e55840df9381c8cb5c5afd52aed64bf7922c524e155a01c2dd042d",
-      "compile_commands_sha256": "183d0e03748c6a4ba1c5a0832a44b5ec9e8fc02a62d08b59ea6b42354779d17b",
+      "artifact_sha256": "87aa5105cc09c290357915215b7abd836369e265d3e3d6e27a1923918ebfb937",
+      "compile_commands_sha256": "9ded2fe39ca45a19e0afa83b793f225deed8856beeb98df0d482ab6efd67ae31",
       "compiler": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0"
     },
     {
-      "profile": "SERF_XOR_ASAN_UBSAN_SCALAR",
-      "artifact_sha256": "d28b4b0a54275d2d16c5d33c1653b684205ce7086cef84c3f32437e1499dc8ea",
-      "compile_commands_sha256": "906bffda0036b7fe0e753f723d4a29cfc6b5bb86803891ff0051870be3761a4c",
+      "profile": "SERF_XOR_SANITIZER_SCALAR",
+      "artifact_sha256": "91b6b79c310181fb13dbd69db4a504fda5ce9c4246d0c844c4c8e7c51932e7d9",
+      "compile_commands_sha256": "ec95e8af389cc2a36b873478f8327ad6edc50f9c500ca00440e1d37803c321a6",
       "compiler": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0"
     }
   ],
@@ -161,12 +174,12 @@
     "Only a positive finite ABSOLUTE error bound is registered; relative, pointwise-relative, lossless and zero-bound modes are unsupported.",
     "Qt resets per block. XOR preserves adaptive state only across finite blocks in one column and resets after a raw exception; block size and state semantics are comparison facts.",
     "The native timing boundary covers complete native Serf frame encode/decode, not only upstream block calls and not an lzbench-equivalent kernel interval.",
-    "Three replayed patches define aliasing and shift behavior, bound prefix-mask indices and prevent input-bit-stream overread. The C ABI shim uses aligned copies for typed access.",
     "The CC BY-NC 4.0 source is admitted for noncommercial evaluation only; redistribution and commercial use require license review.",
     "Streaming, query and random access are not registered. Operation is one-shot, scalar CPU and single-threaded.",
     "Formal evidence covers only exchange_rate float64 at absolute error 0.001 and block size 1000; it is not a universal performance claim.",
     "Formal report evidence does not project raw-exception-block telemetry, so no claim that the real dataset used zero raw exception blocks is made.",
-    "LeakSanitizer is disabled under the host ptrace policy; ASan and UBSan remain enabled and fail-fast."
+    "LeakSanitizer is disabled under the host ptrace policy; ASan and UBSan remain enabled and fail-fast.",
+    "Three versioned patch bundles fix undefined bit operations, prefix-mask indices, strict XOR approximation comparisons, and reader overread. XOR comparisons use wide differences of actual decoder output and a downward working bound; approximate choices can differ from upstream. Historical formal receipts belong to the pre-correction source identity and are not current performance qualification."
   ],
   "unsupported_reason_codes": [
     "EXECUTION_ARTIFACT_MISSING",
@@ -181,5 +194,6 @@
     "ERROR_BOUND_REQUIRED",
     "STREAMING_UNSUPPORTED",
     "QUERY_UNSUPPORTED"
-  ]
+  ],
+  "source_onboarding_id": "v2:source-onboarding:sha256:22105434958568de5cb3d8fed0305035cf79595bf1a0af513510b0574d61c489"
 }

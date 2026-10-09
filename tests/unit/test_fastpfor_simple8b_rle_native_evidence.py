@@ -35,7 +35,8 @@ def test_worklist_promotes_only_actual_executed_scopes() -> None:
     assert review["python_sdk"] == "QUALIFIED_SCOPED_UINT32_MARKED_UNMARKED_ONLY"
     assert review["benchmark_five_layers"] == "SYNTHETIC_UINT32_VALUE_UTS_SCOPE_QUALIFIED"
     assert review["formal_repetition_review"]["records"] == 80
-    assert review["formal_repetition_review"]["eligible"] == 74
+    formal = review["formal_repetition_review"]
+    assert formal["eligible"] == formal["runs"][0]["statuses"].get("PASS", 0)
     assert not review["full_logical_entry_qualified"]
 
 

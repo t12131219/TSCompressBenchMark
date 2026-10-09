@@ -155,6 +155,39 @@ def test_zero_error_bound_is_explicitly_rejected(name):
         codec(name).create_session(parameters(name, error_bound="0"))
 
 
+@pytest.mark.parametrize("dtype", ["<f4", "<f8"])
+@pytest.mark.parametrize("sign", [-1, 1])
+def test_xor_rounded_decimal_endpoint_obeys_raw_bound(dtype, sign):
+    # IEEE 0.001 rounds above the declared decimal bound in both formats.
+    # Native subtraction and conversion of the working bound must not hide
+    # that excess, even when the framework's float64 bound rounds upward.
+    values = np.asarray([sign * 0.001, 0, sign * 0.002, 0], dtype=dtype)
+    result = perform_roundtrip(codec("serf-xor"), route(values), parameters("serf-xor"))
+    report = validate_error_bound(
+        {"value/000000": values},
+        {"value/000000": result.decoded.buffers[0].array},
+        error_bound_type="ABSOLUTE", error_bound="0.001",
+    )
+    assert report.raw_violation_count == 0
+    error = np.abs(values.astype(np.longdouble) -
+                   result.decoded.buffers[0].array.astype(np.longdouble))
+    assert np.all(error <= np.longdouble("0.001"))
+
+
+def test_xor_traffic_previous_value_reuse_obeys_strict_bound():
+    # Reduced from traffic column 172. The old native comparison accepted
+    # 0.0011 for 0.0001 although their wide difference exceeds the bound.
+    values = np.asarray([0.013, 0.0004, 0.0088, 0.0184, 0.0016, 0.0001], dtype="<f8")
+    result = perform_roundtrip(codec("serf-xor"), route(values),
+                               parameters("serf-xor", block_size=1000))
+    report = validate_error_bound(
+        {"value/000000": values},
+        {"value/000000": result.decoded.buffers[0].array},
+        error_bound_type="ABSOLUTE", error_bound="0.001",
+    )
+    assert report.raw_violation_count == 0
+
+
 def test_source_closure_patch_set_and_registry_identity_are_reproducible():
     source_path = ROOT / "registry/sources/serf-upstream-benchmark.artifact.json"
     source = json.loads(source_path.read_text())

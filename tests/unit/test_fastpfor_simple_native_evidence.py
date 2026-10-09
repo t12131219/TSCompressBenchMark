@@ -57,6 +57,25 @@ def evidence(tmp_path: Path) -> Path:
         if not target.exists():
             target.parent.mkdir(parents=True, exist_ok=True)
             target.symlink_to(ROOT / item["path"])
+    card = json.loads((ROOT / "registry/onboarding/simple9-u28.json").read_text())
+    selected = next(item["evidence"] for item in card["upstream_tests"] if item["name"] == "direct_sdk")
+    current = json.loads((ROOT / selected).read_text())
+    current_out = ROOT / current.get("output_directory", "build/source-audits/fastpfor_simple-sdk")
+    mirror_out = tmp_path / "build/source-audits/fastpfor_simple-sdk"
+    for source in current_out.rglob("*"):
+        if source.is_file():
+            target = mirror_out / source.relative_to(current_out)
+            target.parent.mkdir(parents=True, exist_ok=True)
+            if target.exists() or target.is_symlink():
+                target.unlink()
+            target.symlink_to(source)
+    for item in current["source_snapshot"]:
+        target = tmp_path / item["path"]
+        if not target.exists():
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.symlink_to(ROOT / item["path"])
+    current["output_directory"] = "build/source-audits/fastpfor_simple-sdk"
+    (tmp_path / "build/source-audits/fastpfor_simple_sdk_tests.json").write_text(json.dumps(current))
     return tmp_path
 
 

@@ -17,6 +17,7 @@ from tscompbench.execution.protocol import (
     LogicalBuffer,
     OutputCapacityError,
     RoutedInput,
+    SourceDomainError,
 )
 from tscompbench.ids import canonical_json_bytes, stable_id
 
@@ -66,6 +67,10 @@ class _Library:
             ctypes.c_void_p, ctypes.POINTER(_Buffer)
         ]
         lib.tscb_finalize.restype = ctypes.c_uint32
+        lib.tscb_get_last_error.argtypes = [
+            ctypes.c_void_p, ctypes.POINTER(ctypes.c_char_p), ctypes.POINTER(ctypes.c_uint64)
+        ]
+        lib.tscb_get_last_error.restype = ctypes.c_uint32
         if lib.tscb_get_abi_version() != 1:
             raise ExecutionContractError("ALP adapter ABI version mismatch")
         pointer, length = ctypes.c_char_p(), ctypes.c_uint64()
@@ -200,12 +205,27 @@ class AlpSession:
             } for item in buffers],
         })
 
-    @staticmethod
-    def _check(status: int, operation: str) -> None:
+    def _check(self, status: int, operation: str) -> None:
+        if not status:
+            return
         if status == 3:
             raise OutputCapacityError(f"ALP {operation}: destination too small")
-        if status:
-            raise ExecutionContractError(f"ALP {operation} failed ({status})")
+        pointer, length = ctypes.c_char_p(), ctypes.c_uint64()
+        error_status = self._native.library.tscb_get_last_error(
+            self._handle, ctypes.byref(pointer), ctypes.byref(length)
+        )
+        detail = (
+            ctypes.string_at(pointer, length.value).decode("utf-8", errors="replace")
+            if not error_status and pointer else "native adapter supplied no error detail"
+        )
+        if (status == 2 and operation == "compress" and self.algorithm == "alp" and
+            detail == "input rowgroup selects ALP_RD; forced ALP identity forbids fallback"):
+            error = SourceDomainError(detail)
+            error.rejection_atomic = True
+            raise error
+        if detail == "ALP allocation failed":
+            raise MemoryError(f"ALP {operation} failed ({status}): {detail}")
+        raise ExecutionContractError(f"ALP {operation} failed ({status}): {detail}")
 
     @staticmethod
     def _storage(data: bytes) -> tuple[bytearray, Any]:
@@ -238,13 +258,15 @@ class AlpSession:
         )
         if len(destination) < len(preamble):
             raise OutputCapacityError("ALP container destination too small")
-        destination[:len(preamble)] = preamble
         frame_view = destination[len(preamble):]
         frame_array = (ctypes.c_ubyte * len(frame_view)).from_buffer(frame_view)
         target = _buffer(ctypes.addressof(frame_array), capacity=len(frame_view), used=0)
         self._check(self._native.library.tscb_compress(
             self._handle, ctypes.byref(source), ctypes.byref(target)
         ), "compress")
+        # Native refusals leave the frame untouched. Publish the descriptor only
+        # after success so a source-domain rejection leaves all output untouched.
+        destination[:len(preamble)] = preamble
         self._updated = True
         self._header = header
         return len(preamble) + int(target.used_bytes)

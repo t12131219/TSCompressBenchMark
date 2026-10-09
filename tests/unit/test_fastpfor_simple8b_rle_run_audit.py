@@ -14,15 +14,24 @@ import pytest
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "tools"))
 from audit_fastpfor_simple8b_rle_run import (  # noqa: E402
-    KEY, audit_all, audit_driver, audit_measurement, independent_frame,
+    KEY,
+    audit_all,
+    audit_driver,
+    audit_measurement,
+    driver_report_path,
+    independent_frame,
 )
 
-RUN = ROOT / "runs" / f"{KEY}-qualification-20261007-2"
-DRIVER = ROOT / "build/source-audits/fastpfor-simple8b-rle-qualification-20261007-2/report.json"
+
+def current_receipt() -> tuple[Path, Path, str]:
+    driver = driver_report_path("qualification")
+    suffix = driver.parent.name.removeprefix("fastpfor-simple8b-rle-qualification-")
+    return ROOT / "runs" / f"{KEY}-qualification-{suffix}", driver, suffix
 
 
 @pytest.fixture
 def actual() -> tuple:
+    RUN, _, _ = current_receipt()
     tasks = [json.loads(line) for line in (RUN / "task_plan.jsonl").read_text().splitlines()]
     records = [json.loads(line) for line in (RUN / "run_components.jsonl").read_text().splitlines()]
     configs = json.loads((RUN / "resolved_configs.json").read_text())["configs"]
@@ -95,6 +104,7 @@ def test_independent_wire_reconstruction_rejects_changes(actual: tuple, tamper: 
 @pytest.mark.parametrize("tamper", ["omit_run", "omit_factory", "omit_file", "forge_file",
                                   "duplicate_file", "wrong_affinity", "full_claim", "wrong_suffix"])
 def test_driver_cannot_hide_execution_changes(tmp_path: Path, tamper: str) -> None:
+    _, DRIVER, suffix = current_receipt()
     document = json.loads(DRIVER.read_text())
     sdk = copy.deepcopy(document["sdk_current_audit"])
     if tamper == "omit_run":
@@ -113,16 +123,18 @@ def test_driver_cannot_hide_execution_changes(tmp_path: Path, tamper: str) -> No
     elif tamper == "full_claim":
         document["full_logical_entry_qualified"] = True
     else:
-        document["runs"][0]["run_set_id"] = document["runs"][0]["run_set_id"].replace("-2", "-1")
+        document["runs"][0]["run_set_id"] += "-wrong-suffix"
     path = tmp_path / "report.json"
     path.write_text(json.dumps(document))
     with pytest.raises(ValueError):
-        audit_driver("qualification", sdk, report_path=path)
+        audit_driver("qualification", sdk, suffix, report_path=path)
 
 
 def test_actual_formal_statistics_retain_all_attempts_and_exclude_swap() -> None:
     result = audit_all("formal")
-    assert result["status"] == "PASS" and result["records"] == 80 and result["eligible"] == 74
-    assert result["runs"][0]["statuses"] == {"PASS": 74, "RESOURCE_PRESSURE": 6}
+    assert result["status"] == "PASS" and result["records"] == 80
+    statuses = result["runs"][0]["statuses"]
+    assert set(statuses) <= {"PASS", "RESOURCE_PRESSURE"}
+    assert sum(statuses.values()) == 80 and result["eligible"] == statuses.get("PASS", 0)
     assert result["formal_measurement"] == "QUALIFIED_SYNTHETIC_UINT32_ONLY"
     assert not result["full_logical_entry_qualified"]

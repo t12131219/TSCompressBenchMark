@@ -1,8 +1,7 @@
 diff --git a/src/utils/serf_utils_32.cc b/src/utils/serf_utils_32.cc
-index 05703e4..6f56a0a 100644
 --- a/src/utils/serf_utils_32.cc
 +++ b/src/utils/serf_utils_32.cc
-@@ -25,9 +25,11 @@ SerfUtils32::FindAppInt(float min_float, float max_float, uint32_t sign, float original, uint32_t last_int,
+@@ -22,11 +22,13 @@
    // may be negative zero
    uint32_t min = Float::FloatToIntBits(min_float) & 0x7fffffff;
    uint32_t max = Float::FloatToIntBits(max_float);
@@ -15,13 +14,33 @@ index 05703e4..6f56a0a 100644
 +      (leading_zeros == 0 ? 0U : UINT32_MAX << (32 - leading_zeros));
 +  int shift = 32 - leading_zeros > 31 ? 31 : 32 - leading_zeros;
    uint32_t result_int;
-   float diff;
+-  float diff;
++  long double diff;
    uint32_t append;
+   while (shift >= 0) {
+     uint32_t front = front_mask & min;
+@@ -35,7 +37,7 @@
+     append = rear | front;
+     if (append >= min && append <= max) {
+       result_int = append ^ sign;
+-      diff = Float::IntBitsToFloat(result_int) - original;
++      diff = static_cast<long double>(Float::IntBitsToFloat(result_int)) - original;
+       if (diff >= -max_diff && diff <= max_diff) {
+         return result_int;
+       }
+@@ -45,7 +47,7 @@
+     if (append <= max) {
+       // append must be greater than min
+       result_int = append ^ sign;
+-      diff = Float::IntBitsToFloat(result_int) - original;
++      diff = static_cast<long double>(Float::IntBitsToFloat(result_int)) - original;
+       if (diff >= -max_diff && diff <= max_diff) {
+         return result_int;
+       }
 diff --git a/src/utils/serf_utils_64.cc b/src/utils/serf_utils_64.cc
-index c498b24..760ee79 100644
 --- a/src/utils/serf_utils_64.cc
 +++ b/src/utils/serf_utils_64.cc
-@@ -27,9 +27,11 @@ uint64_t SerfUtils64::FindAppLong(double min_double, double max_double, uint64_t sign, double original,
+@@ -24,11 +24,13 @@
    // may be negative zero
    uint64_t min = Double::DoubleToLongBits(min_double) & 0x7fffffffffffffffULL;
    uint64_t max = Double::DoubleToLongBits(max_double);
@@ -34,5 +53,77 @@ index c498b24..760ee79 100644
 +      (leading_zeros == 0 ? 0ULL : UINT64_MAX << (64 - leading_zeros));
 +  int shift = 64 - leading_zeros > 63 ? 63 : 64 - leading_zeros;
    uint64_t result_long;
-   double diff;
+-  double diff;
++  long double diff;
    uint64_t append;
+   for (; shift >= 0; --shift) {
+     // 计算 front 和 rear，无分支
+@@ -42,7 +44,7 @@
+     result_long = condition1 ? (append ^ sign) : 0;
+ 
+     // 无分支计算 diff，并验证是否满足 diff 条件
+-    diff = Double::LongBitsToDouble(result_long) - adjust_digit - original;
++    diff = static_cast<long double>(Double::LongBitsToDouble(result_long) - adjust_digit) - original;
+     bool diff_satisfied = (diff >= -max_diff && diff <= max_diff);
+ 
+     // 如果满足条件，直接返回
+@@ -57,7 +59,7 @@
+     result_long = condition2 ? (append ^ sign) : 0;
+ 
+     // 再次检查 diff
+-    diff = Double::LongBitsToDouble(result_long) - adjust_digit - original;
++    diff = static_cast<long double>(Double::LongBitsToDouble(result_long) - adjust_digit) - original;
+     diff_satisfied = (diff >= -max_diff && diff <= max_diff);
+ 
+     if (condition2 && diff_satisfied) {
+@@ -100,7 +102,7 @@
+   int64_t front_mask = 0xffffffffffffffff << (64 - leading_zeros);
+   int shift = 64 - leading_zeros;
+   uint64_t result_long;
+-  double diff;
++  long double diff;
+   uint64_t append;
+   while (shift >= 0) {
+     uint64_t front = front_mask & min;
+@@ -109,7 +111,7 @@
+     append = rear | front;
+     if (append >= min && append <= max) {
+       result_long = append ^ sign;
+-      diff = Double::LongBitsToDouble(result_long) - adjust_digit - original;
++      diff = static_cast<long double>(Double::LongBitsToDouble(result_long) - adjust_digit) - original;
+       if (diff >= -max_diff && diff <= max_diff) {
+         return result_long;
+       }
+@@ -149,7 +151,7 @@
+   uint64_t max = Double::DoubleToLongBits(max_double);
+   int64_t front_mask = 0xffffffffffffffff;
+   uint64_t resultLong;
+-  double diff;
++  long double diff;
+   uint64_t append;
+   for (int i = 1; i <= 64; ++i) {
+     uint64_t mask = front_mask << (64 - i);
+diff --git a/src/compressor_32/serf_xor_compressor_32.cc b/src/compressor_32/serf_xor_compressor_32.cc
+--- a/src/compressor_32/serf_xor_compressor_32.cc
++++ b/src/compressor_32/serf_xor_compressor_32.cc
+@@ -9,7 +9,7 @@
+ void SerfXORCompressor32::AddValue(float v) {
+   uint32_t this_val;
+   // note we cannot let > maxDiff, because kNan - v > maxDiff is always false
+-  if (SERF_LIKELY(std::abs(Float::IntBitsToFloat(stored_val_) - v) > kMaxDiff)) {
++  if (SERF_LIKELY(std::abs(static_cast<long double>(Float::IntBitsToFloat(stored_val_)) - v) > kMaxDiff)) {
+     // in our implementation, we do not consider special cases and overflow case
+     this_val = SerfUtils32::FindAppInt(v - kMaxDiff, v + kMaxDiff, v, stored_val_, kMaxDiff);
+   } else {
+diff --git a/src/compressor/serf_xor_compressor.cc b/src/compressor/serf_xor_compressor.cc
+--- a/src/compressor/serf_xor_compressor.cc
++++ b/src/compressor/serf_xor_compressor.cc
+@@ -9,7 +9,7 @@
+ void SerfXORCompressor::AddValue(double v) {
+   uint64_t this_val;
+   // note we cannot let > max_diff_, because kNan - v > max_diff_ is always false
+-  if (SERF_LIKELY(std::abs(Double::LongBitsToDouble(stored_val_) - kAdjustDigit - v) > kMaxDiff)) {
++  if (SERF_LIKELY(std::abs(static_cast<long double>(Double::LongBitsToDouble(stored_val_) - kAdjustDigit) - v) > kMaxDiff)) {
+     // in our implementation, we do not consider special cases and overflow case
+     double adjust_value = v + kAdjustDigit;
+     this_val = SerfUtils64::FindAppLong(adjust_value - kMaxDiff, adjust_value + kMaxDiff, v, stored_val_,

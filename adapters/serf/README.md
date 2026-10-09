@@ -20,6 +20,11 @@ whether this path was absent.
 
 Three replayed patches replace undefined aliasing/shift operations, bound prefix-mask
 indices, and prevent the bit reader from dereferencing a word after the physical input.
-They do not change the selected approximation, valid bitstream, or entropy coding. The upstream
+The prefix-mask patch bundle also checks XOR candidate and previous-value errors in
+extended precision, using the decoder's actual adjusted double value. The native shim
+rounds the XOR working bound toward zero before float32/float64 approximation so a
+rounded-up binary bound cannot exceed the requested decimal bound. This correction
+can change the selected approximate value; XOR state, framing and entropy coding are
+preserved. The source artifact records this strict-bound execution variant. The upstream
 project declares CC BY-NC 4.0 in its README. Execution is allowed for evaluation, but
 redistribution and commercial use remain restricted and require separate review.

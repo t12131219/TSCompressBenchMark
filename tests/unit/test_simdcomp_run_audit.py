@@ -20,9 +20,11 @@ KEYS = ("simdcomp-u32", "delta-simdcomp-u32", "for-simdcomp-u32")
 
 
 def current_run(key: str, kind: str) -> Path:
-    evidence = json.loads(
-        (ROOT / f"build/source-audits/{key.replace('-', '_')}_five_layer_audit.json").read_text()
-    )
+    # Retain historical formal data for statistics tests; current codec checks
+    # consume current qualification evidence independently of formal ranking.
+    filename = (f"{key.replace('-', '_')}_five_layer_audit.json" if kind == "formal"
+                else f"{key.replace('-', '_')}_qualification_current_audit.json")
+    evidence = json.loads((ROOT / "build/source-audits" / filename).read_text())
     assert evidence["status"] == "PASS", "Current independently audited evidence is required"
     return ROOT / "runs" / evidence[f"{kind}_run"]
 

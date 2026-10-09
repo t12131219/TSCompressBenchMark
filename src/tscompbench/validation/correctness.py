@@ -44,7 +44,11 @@ def _restore_adapter_view(
             AdapterOperationKind.EXACT_WIDEN,
             AdapterOperationKind.LOSSY_CAST,
         }:
-            result = result.astype(original.dtype, copy=False)
+            if plan.effective_loss_mode is LossMode.LOSSLESS:
+                result = result.astype(original.dtype, copy=False)
+            # Keep lossy reconstructions in their decoded numeric domain.
+            # Casting to an integer canonical dtype truncates fractional errors
+            # (e.g. 100 - 1e-6 becomes 99) before the bound can be checked.
     return result
 
 
@@ -217,9 +221,14 @@ def validate_common_correctness(
             )
     elif loss_mode is LossMode.UNBOUNDED_LOSSY:
         for name in value_names:
-            if expected[name].array.dtype != restored[name].dtype or not np.all(
-                np.isfinite(restored[name])
-            ):
+            converted_dtype = expected[name].array.dtype
+            index = tuple(expected).index(name)
+            for operation in compatibility.operations:
+                if operation.kind in {
+                    AdapterOperationKind.EXACT_WIDEN, AdapterOperationKind.LOSSY_CAST,
+                }:
+                    converted_dtype = np.dtype(operation.after_descriptor["dtype_vector"][index])
+            if converted_dtype != restored[name].dtype or not np.all(np.isfinite(restored[name])):
                 return CorrectnessReport(
                     RunStatus.CORRECTNESS_FAIL, "LOSSY_FINITE_DTYPE", tuple(checks),
                     {"buffer": name},

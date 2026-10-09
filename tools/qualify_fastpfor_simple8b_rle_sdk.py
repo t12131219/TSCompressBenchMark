@@ -15,7 +15,10 @@ from pathlib import Path
 from audit_fastpfor_simple8b_rle_native import audit, identity, require
 
 ROOT = Path(__file__).resolve().parents[1]
-OUT = ROOT / "build/source-audits/fastpfor-simple8b-rle-sdk-20261007-1"
+SDK_SUFFIX = os.environ.get("TSCB_RLE_SDK_SUFFIX", "20261007-1")
+require(SDK_SUFFIX and Path(SDK_SUFFIX).name == SDK_SUFFIX and ".." not in SDK_SUFFIX,
+        "invalid SDK execution suffix")
+OUT = ROOT / "build/source-audits" / f"fastpfor-simple8b-rle-sdk-{SDK_SUFFIX}"
 REPORT = OUT / "report.json"
 
 
@@ -60,6 +63,7 @@ def main() -> None:
         "native_current_audit": native, "commands": [], "actual_cpu_affinity": [2],
         "python_sdk_audit": "PENDING", "benchmark_registration": "PENDING",
         "benchmark_five_layers": "PENDING", "full_logical_entry_qualified": False,
+        "execution_suffix": SDK_SUFFIX,
     }
 
     def save() -> None:

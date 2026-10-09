@@ -4,6 +4,8 @@ TSDataCompressBenchMark 是一个以源码身份、输入契约和原始证据�
 
 本文对应截至 **2026-10-08 的源码状态**。Python 包版本为 `0.1.0`，数据与运行契约属于 V2；两者是不同的版本体系。本次状态说明见 [RELEASE_DESCRIPTION.md](RELEASE_DESCRIPTION.md)。
 
+后续框架修改、算法接入与评测按 [V3 工程实施总计划](TimeSeries_Compression_Benchmark_V3_工程实施总计划.md)执行。计划版本独立于现有 Schema、canonical 格式与 ABI 版本；当前实现范围及待实施迁移见该计划。
+
 ## 当前状态
 
 五层框架已经实现，能够完成从注册数据到可追溯报告的闭环。算法接入仍按来源、API、数据域和运行配置逐项验证。
@@ -296,6 +298,8 @@ python -m tscompbench --project-root . datasets verify
 
 合成数据应使用匹配的 `tools/generate_*_fixture.py` 与固定参数。部分生成器会同时重写对应 Manifest，执行前应阅读脚本并检查生成后的变更；合成 fixture 不构成真实数据上的性能结论。`build/`、`runs/` 和独立重写工作区也通常被 Git 忽略，需要在自己的机器生成，参见[文件保留规则](docs/git_tracking_policy.md)。
 
+无后缀 canonical 现可通过 `datasets import-canonical PATH --key KEY` 正式登记。用全局 `--dataset-manifest-root PATH` 选择独立源登记目录，后续 prepare/run 命令使用同一路径；默认许可为 REVIEW_REQUIRED，应按实际来源登记许可状态。Dataset_Verify 的版本化生成器与全入口资格命令见 [V3 第一轮实施记录](docs/dataset_verify_v3_implementation.md)。统一容器不扩大算法原生数据域；特殊 IEEE 位模式、shape、时间戳和模型约束仍须通过协商与 Preflight。
+
 ### 5. 跑通一个 CPU 资格实验
 
 以 LZ4 为例，在数据准备完成后构建本机工件。`--profile all` 执行该入口声明的构建组合，一般为 release + sanitizer，部分整数入口还包含 debug；不是所有入口都支持单独 `--profile debug`。
@@ -363,7 +367,7 @@ python -c 'import os; print(sorted(os.sched_getaffinity(0)))'
 
 `FORMAL` 要求至少 3 次且累计 >=0.5 秒预热，至少 10 次预定重复，配置的重复最短时长为 1–3 秒。当前循环分别检查**所选范围的编码和解码方向**；E2E 还检查完整对象时长。共享计时规则在 2026-10-07 修正过，旧的总时长达标记录不能自动当作当前方向门禁合格。
 
-CORE、PIPELINE 和 E2E 同时保留；E2E 输入是内存中的 Canonical 路由视图，不包含文件读取。每个内循环对象独立创建、Finalize、解码和关闭。可选 NATIVE 与阶段计时是辅助观察，缺失值保留 null，不替代主范围时长门控，也不自动等同于上游 benchmark 的 kernel 时间。详见[计时边界](docs/native_codec_timing.md)。
+CORE、PIPELINE 和 E2E 同时保留；全部已注册入口的三模式接入验证见[逐项审查](docs/all_algorithm_timing_scopes.md)。E2E 输入是内存中的 Canonical 路由视图，不包含文件读取。每个内循环对象独立创建、Finalize、解码和关闭。可选 NATIVE 与阶段计时是辅助观察，缺失值保留 null，不替代主范围时长门控，也不自动等同于上游 benchmark 的 kernel 时间。详见[计时边界](docs/native_codec_timing.md)。
 
 资源采集目前主要支持 PROCESS CPU、RSS/PSS/USS、faults、I/O 等；进程树、设备、perf counter 和 Energy 在没有有效采集器时明确记为未采集或不支持。系统换页或线程超预算产生 `RESOURCE_PRESSURE` / `OVERSUBSCRIBED`，保留观测并按资格规则排除。
 

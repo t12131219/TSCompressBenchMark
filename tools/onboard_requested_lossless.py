@@ -139,7 +139,9 @@ def main():
                 "reason": source["license"]["redistribution"],
             },
             "known_limitations": [
-                "PIPELINE/E2E timing supported; native CORE rejected during planning",
+                "CORE/PIPELINE/E2E supported using harness session/object boundaries; "
+                "API-internal staging, framing, model work and decode materialization remain "
+                "in CORE. Optional native timing unavailable (null).",
                 "Full standalone frames charged as opaque bytes; wrapper components exact",
                 "No registered query/random-access/incremental Benchmark streaming profile",
                 "Preserve source domain; no raw fallback",

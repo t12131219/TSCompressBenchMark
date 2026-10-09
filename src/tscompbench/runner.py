@@ -591,11 +591,15 @@ def execute_run_set(
     )
     resolved = json.loads((run_set.path / "resolved_configs.json").read_text(encoding="utf-8"))
     parameters = {item["config_id"]: item["parameters"] for item in resolved["configs"]}
-    artifacts: dict[str, Any] = {}
+    # Keep paths, not every dataset's full payload. A multi-dataset run otherwise
+    # inherits the entire corpus in each isolated worker and can hit RLIMIT_AS
+    # while compressing a small, individually valid input.
+    artifact_paths: dict[str, Path] = {}
     project_root = Path(__file__).resolve().parents[2]
     for path in sorted((run_set.path / "datasets").glob("*/*.canonical.tscb")):
-        artifact = read_canonical(path, include_buffers=True)
-        artifacts[str(artifact.metadata["dataset_id"])] = artifact
+        metadata = read_canonical(path, include_buffers=False).metadata
+        artifact_paths[str(metadata["dataset_id"])] = path
+    current_artifact: Any = None
 
     progress = _layer3_progress(run_set.path)
     lock_path = run_set.path.parent / ".locks" / f"{run_set.run_set_id}.lock"
@@ -643,9 +647,14 @@ def execute_run_set(
                 if item.algorithm_id == task.algorithm_id
             )
             source = codec_registry.sources.get(manifest.source_artifact_id)
-            artifact = artifacts.get(task.dataset_id)
-            if artifact is None:
+            artifact_path = artifact_paths.get(task.dataset_id)
+            if artifact_path is None:
                 raise RunnerError(f"Layer 1 canonical artifact missing for {task.dataset_id}")
+            if current_artifact is None or current_artifact.metadata["dataset_id"] != task.dataset_id:
+                current_artifact = None
+                artifact = None
+                current_artifact = read_canonical(artifact_path, include_buffers=True)
+            artifact = current_artifact
             adapter = create_adapter(project_root, manifest)
             append_event(
                 run_set.path / "events.jsonl",

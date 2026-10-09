@@ -65,11 +65,12 @@ T/V 配对、输入不变、输出 canary、确定性与物理长度计费闭合
 所有计费包含描述符、校验、wrapper headers 和完整独立 frame。standalone frame
 保持 opaque：VALUE 计入 `value_bits`，Prometheus 联合 T/V 计入
 `unallocated_shared_bits`；不虚拆 timestamp/value bits。Benchmark 采用 `PIPELINE`
-计时，包含布局、复制、FFI 和容器开销。E2E 路径有额外接入回归验证；native `CORE`
-未注册，选择它会在规划阶段返回 `TIMING_SCOPE_UNSUPPORTED`。
+计时，包含布局、复制、FFI 和容器开销。当时 CORE 未注册。2026-10-08 已补齐
+CORE/PIPELINE/E2E 接入，CORE 使用 harness session API 边界；native 辅助计时仍为 null。
+新增验证见 [三模式审查](all_algorithm_timing_scopes.md)，下述旧正式批次保留其冻结身份。
 
 最终相关回归测试 **260 项通过**，包括 adapter、别名、注册表、源接入、角色协商、
-容量规划、源域拒绝、PIPELINE/E2E 五层接入及 CORE 规划拒绝。原生 ABI 的七项 ASan/UBSan 检查全部通过。
+容量规划、源域拒绝、当时的 PIPELINE/E2E 五层接入及 CORE 规划拒绝。原生 ABI 的七项 ASan/UBSan 检查全部通过。
 初次 `final` 运行的边界诊断、`final-v2` 的两项及 `final-v5` 的四项系统换页导致的
 `RESOURCE_PRESSURE` 记录保留。最终 `final-v6` 运行 21 项全部 PASS，其身份与哈希
 保存在机器审查报告所引用的 Benchmark 验收 JSON 中。

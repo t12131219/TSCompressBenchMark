@@ -212,7 +212,9 @@ class StreamVByteSession:
                 "count": int(array.size),
                 "timestamp_unit": routed.timestamp_unit,
                 "timestamp_epoch": routed.timestamp_epoch,
-                "value_units": list(routed.value_units),
+                "value_units": (
+                    [] if self.track is BenchmarkTrack.TIMESTAMP else list(routed.value_units)
+                ),
                 "buffer": {
                     "name": item.name,
                     "dtype": array.dtype.str,

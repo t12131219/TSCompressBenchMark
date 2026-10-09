@@ -23,11 +23,17 @@ def require(condition: bool, reason: str) -> None:
         raise RuntimeError(reason)
 
 
-def audit(root: Path = ROOT) -> dict:
+def audit(root: Path = ROOT, report_path: Path | None = None) -> dict:
     native = runpy.run_path(str(ROOT / "tools/audit_fastpfor_simple_native.py"))["audit"](root)
     upstream = audit_upstream(root)
-    report_path = root / "build/source-audits/fastpfor_simple_sdk_tests.json"
+    if report_path is None:
+        card_path = root / "registry/onboarding/simple9-u28.json"
+        card = json.loads(card_path.read_text()) if card_path.is_file() else {"upstream_tests": []}
+        records = [item for item in card["upstream_tests"] if Path(item["evidence"]).name in ("fastpfor_simple_sdk_tests.json", "report.json") and "sdk" in item["evidence"]]
+        report_path = root / records[0]["evidence"] if len(records) == 1 else root / "build/source-audits/fastpfor_simple_sdk_tests.json"
     report = json.loads(report_path.read_text())
+    out = root / report.get("output_directory", "build/source-audits/fastpfor_simple-sdk")
+    require(out.resolve().is_relative_to(root.resolve()), "SDK output escapes project")
     require(
         report["status"] == "PASS"
         and report["native_current_audit"] == native
@@ -37,10 +43,10 @@ def audit(root: Path = ROOT) -> dict:
     for field, path in (
         ("driver_sha256", root / "tools/qualify_fastpfor_simple_sdk.py"),
         ("native_auditor_sha256", root / "tools/audit_fastpfor_simple_native.py"),
-        ("junit_sha256", root / "build/source-audits/fastpfor_simple-sdk/pytest.xml"),
+        ("junit_sha256", out / "pytest.xml"),
         (
             "python_closure_sha256",
-            root / "build/source-audits/fastpfor_simple-sdk/python-closure.json",
+            out / "python-closure.json",
         ),
     ):
         require(report[field] == sha(path), "SDK evidence drift: " + field)
@@ -54,7 +60,7 @@ def audit(root: Path = ROOT) -> dict:
         and report["original_vendor_equal_file_count"] == 51,
         "original source comparison missing",
     )
-    junit_path = root / "build/source-audits/fastpfor_simple-sdk/pytest.xml"
+    junit_path = out / "pytest.xml"
     suites = ET.parse(junit_path).getroot().findall("testsuite")
     totals = {
         field: sum(int(s.get(field, "0")) for s in suites)
@@ -85,7 +91,7 @@ def audit(root: Path = ROOT) -> dict:
         "actual SDK testcase universe incomplete/duplicated/failed",
     )
     closure = json.loads(
-        (root / "build/source-audits/fastpfor_simple-sdk/python-closure.json").read_text()
+        (out / "python-closure.json").read_text()
     )
     require(
         closure["status"] == "PASS" and closure["source_snapshot"] == report["source_snapshot"],

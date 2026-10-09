@@ -336,7 +336,8 @@ def _measure_reverse_adapter(
             elif kind == "ENDIANNESS_CONVERSION":
                 current = current.byteswap().view(current.dtype.newbyteorder())
             elif kind in {"EXACT_WIDEN", "LOSSY_CAST"}:
-                current = current.astype(expected.array.dtype, copy=False)
+                if compatibility.effective_loss_mode.value == "LOSSLESS":
+                    current = current.astype(expected.array.dtype, copy=False)
         # A consumer-visible scalar read prevents a lazy backend from deferring work.
         if current.size:
             current.reshape(-1)[-1].item()
@@ -357,7 +358,9 @@ def perform_warmup(
     start = time.perf_counter_ns()
     elapsed = 0
     while count < policy.warmup_min_count or elapsed < policy.warmup_min_ns:
-        prepared = prepare_execution_input(routed, compatibility)
+        prepared = prepare_execution_input(
+            routed, compatibility, max_abs_error=parameters.get("error_bound")
+        )
         result = perform_roundtrip(
             adapter, prepared.codec_input, parameters, verify_determinism=False
         )
@@ -433,7 +436,9 @@ def perform_measured_roundtrip(
             e2e_start = time.perf_counter_ns()
             encode_phase_usage = _usage_pair()
             pipeline_start = time.perf_counter_ns()
-            prepared = prepare_execution_input(routed, compatibility)
+            prepared = prepare_execution_input(
+                routed, compatibility, max_abs_error=parameters.get("error_bound")
+            )
             codec_input_bytes = sum(item.array.nbytes for item in prepared.codec_input.buffers)
             artifact, enc_wall, enc_cpu, immutable, canary = _encode(
                 adapter, prepared.codec_input, parameters

@@ -240,7 +240,7 @@
   },
   "known_limitations": [
     "Explicit uint64 bit-field histogram records: gauge hint 3, schema 0, one positive bucket, no negative/custom buckets. Other native histogram layouts are not registered. Scalar CSV data is never reinterpreted as histograms.",
-    "PIPELINE/E2E supported; CORE/native timing unavailable and reported as null.",
+    "CORE/PIPELINE/E2E supported using harness session/object boundaries; API-internal staging, framing, model work and decode materialization remain in CORE. Optional native timing unavailable (null).",
     "Independent object profile; streaming/query/random access rejected during planning.",
     "Synthetic acceptance fixtures establish integration, not real-world performance or quality rankings."
   ],
@@ -252,5 +252,5 @@
     "SOURCE_DOMAIN_UNSUPPORTED",
     "ISA_UNSUPPORTED"
   ],
-  "source_onboarding_id": "v2:source-onboarding:sha256:f8837bd7701ac684df7edbb4002d7f51ee904bd3443574bba119dffbc69f5900"
+  "source_onboarding_id": "v2:source-onboarding:sha256:78ca002b4669206554ea79687ea395f12e9b0c3a06bbbccd43a779b8b26e1095"
 }

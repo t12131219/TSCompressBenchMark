@@ -344,7 +344,8 @@ def simple8b_rle_admission_review(commit: str | None) -> tuple[str, dict]:
 
 
 def simple8b_rle_sdk_and_run_review(review: dict) -> tuple[str, dict]:
-    from audit_fastpfor_simple8b_rle_sdk import DEFAULT_REPORT, audit as audit_sdk
+    from audit_fastpfor_simple8b_rle_sdk import DEFAULT_REPORT
+    from audit_fastpfor_simple8b_rle_sdk import audit as audit_sdk
 
     if not DEFAULT_REPORT.exists():
         return "PATCHED_RLE_BOUNDED_UINT32_ABI_QUALIFIED_SDK_AND_FIVE_LAYERS_PENDING", review
@@ -356,19 +357,23 @@ def simple8b_rle_sdk_and_run_review(review: dict) -> tuple[str, dict]:
         review.update(python_sdk="CURRENT_REQUALIFICATION_REQUIRED", python_sdk_failure=str(error))
         return "PATCHED_RLE_BOUNDED_ABI_QUALIFIED_CURRENT_SDK_REQUALIFICATION_REQUIRED", review
     try:
-        from audit_fastpfor_simple8b_rle_run import KEY, audit_all, source_and_runtime
+        from audit_fastpfor_simple8b_rle_run import (
+            audit_all,
+            driver_report_path,
+            source_and_runtime,
+        )
 
         registry = CodecRegistry(ROOT / "registry/codecs", SourceRegistry(ROOT / "registry/sources"))
         source_and_runtime(registry)
         review["benchmark_registration"] = "REGISTERED"
-        qualification_path = ROOT / "build/source-audits/fastpfor-simple8b-rle-qualification-20261007-2/report.json"
+        qualification_path = driver_report_path("qualification")
         if not qualification_path.exists():
             return "PATCHED_RLE_BOUNDED_ABI_SDK_REGISTERED_FIVE_LAYERS_PENDING", review
         qualification = audit_all("qualification")
         review.update(five_layer_qualification_review=qualification,
                       benchmark_five_layers="SYNTHETIC_UINT32_QUALIFICATION_PASSED_FORMAL_PENDING",
                       formal_measurement="PENDING")
-        formal_path = ROOT / "build/source-audits/fastpfor-simple8b-rle-formal-20261007-2/report.json"
+        formal_path = driver_report_path("formal")
         if formal_path.exists():
             formal_document = json.loads(formal_path.read_text())
             review["formal_execution_report_status"] = formal_document["status"]
@@ -441,6 +446,10 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     selective = parser.add_mutually_exclusive_group()
     selective.add_argument(
+        "--refresh-registration-identities-only", action="store_true",
+        help="Update current candidate references; preserve all historical qualification reviews.",
+    )
+    selective.add_argument(
         "--refresh-littleintpacker-only",
         action="store_true",
         help="Reaudit the two frozen source rows while retaining all other existing worklist rows.",
@@ -507,6 +516,30 @@ def main() -> None:
         default="delta-maskedvbyte-u32-qualification-20261007-2",
     )
     args = parser.parse_args()
+    if args.refresh_registration_identities_only:
+        output = ROOT / "registry/native_integration_plan.json"
+        document = json.loads(output.read_text())
+        registry = CodecRegistry(ROOT / "registry/codecs", SourceRegistry(ROOT / "registry/sources"))
+        changes = []
+        for entry in document["entries"]:
+            for candidate in entry.get("registered_candidates", []):
+                manifest = registry.get(candidate["key"])
+                if candidate["source_artifact_id"] != manifest.source_artifact_id:
+                    raise ValueError("source identity changed; source admission review required")
+                if candidate["algorithm_id"] != manifest.algorithm_id:
+                    changes.append({
+                        "audit_index": entry["audit_index"], "key": candidate["key"],
+                        "previous_algorithm_id": candidate["algorithm_id"],
+                        "current_algorithm_id": manifest.algorithm_id,
+                    })
+                    candidate["algorithm_id"] = manifest.algorithm_id
+        document.setdefault("registration_identity_refreshes", []).append({
+            "scope": "CURRENT_REFERENCES_ONLY_HISTORICAL_REVIEWS_NOT_RESIGNED",
+            "changes": changes,
+        })
+        output.write_text(json.dumps(document, ensure_ascii=False, indent=2) + "\n")
+        print(json.dumps({"updated_references": len(changes), "qualification_claims_changed": False}))
+        return
     if args.refresh_littleintpacker_only or args.refresh_simple8b_rle_only:
         output = ROOT / "registry/native_integration_plan.json"
         document = json.loads(output.read_text())

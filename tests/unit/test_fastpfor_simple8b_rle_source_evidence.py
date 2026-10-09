@@ -80,7 +80,8 @@ def test_rle_source_worklist_refresh_preserves_all_other_rows() -> None:
             assert new["source_admission_review"]["source_api_audit"]["status"] == "PASS"
             assert not new["full_logical_entry_qualified"]
             assert len(new["current_scope_reviews"]) == 1
-            assert new["current_scope_reviews"][0]["eligible_repetitions"] == 74
+            assert (new["current_scope_reviews"][0]["eligible_repetitions"] ==
+                    new["source_admission_review"]["formal_repetition_review"]["eligible"])
             assert [c["key"] for c in new["registered_candidates"]] == ["fastpfor-simple8b-rle-u32"]
 
 

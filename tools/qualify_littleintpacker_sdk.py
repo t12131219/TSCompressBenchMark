@@ -16,7 +16,9 @@ from audit_littleintpacker_native import audit, require, sha
 
 ROOT = Path(__file__).resolve().parents[1]
 ADAPTER = ROOT / "adapters/littleintpacker"
-EXECUTION_SUFFIX = "20261007-2"
+EXECUTION_SUFFIX = os.environ.get("TSCB_SDK_EXECUTION_SUFFIX", "20261007-2")
+if Path(EXECUTION_SUFFIX).name != EXECUTION_SUFFIX or ".." in EXECUTION_SUFFIX:
+    raise ValueError("unsafe SDK execution suffix")
 OUT = ROOT / "build/source-audits" / f"littleintpacker-sdk-{EXECUTION_SUFFIX}"
 REPORT = OUT / "report.json"
 

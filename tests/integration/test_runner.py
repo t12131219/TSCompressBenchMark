@@ -78,3 +78,52 @@ def test_resumed_run_rejects_tampered_layer_1_artifact(tmp_path) -> None:
     resumed = initialize_run_set(config_path, output, run_set_id="tampered-prepare", resume=True)
     with pytest.raises(Exception, match="trailing bytes"):
         prepare_run_set(resumed, registry)
+
+
+def test_multi_dataset_execution_loads_payload_only_when_its_task_starts(tmp_path, monkeypatch):
+    import json
+    import tomllib
+
+    import tscompbench.runner as runner
+    from tools.verify_all_timing_scopes import config_text
+    from tscompbench.codecs import CodecRegistry, SourceRegistry
+
+    document = tomllib.loads(
+        (PROJECT_ROOT / "configs/experiments/deflate-zlib-qualification.toml").read_text()
+    )
+    document.update(
+        datasets=["streamvbyte_u32_uts", "simple_uint28_uts"], algorithms=["oracle-direct"]
+    )
+    document["sweep"] = {"block_size": [1024], "isa": ["SCALAR"]}
+    file = tmp_path / "multi.toml"
+    file.write_text(config_text(document))
+    run = initialize_run_set(file, tmp_path / "runs", run_set_id="lazy")
+    original_read = runner.read_canonical
+    original_execute = runner.execute_task
+    payload_loads = []
+    executions = []
+
+    def read(path, *, include_buffers=True):
+        artifact = original_read(path, include_buffers=include_buffers)
+        if include_buffers:
+            payload_loads.append(artifact.metadata["dataset_id"])
+        return artifact
+
+    def execute(**kwargs):
+        dataset_id = kwargs["task"].dataset_id
+        assert payload_loads == executions + [dataset_id]
+        executions.append(dataset_id)
+        return original_execute(**kwargs)
+
+    monkeypatch.setattr(runner, "read_canonical", read)
+    monkeypatch.setattr(runner, "execute_task", execute)
+    registry = DatasetRegistry(PROJECT_ROOT / "registry/datasets", PROJECT_ROOT)
+    codecs = CodecRegistry(
+        PROJECT_ROOT / "registry/codecs", SourceRegistry(PROJECT_ROOT / "registry/sources")
+    )
+    runner.execute_run_set(run, registry, codecs)
+    records = [
+        json.loads(line) for line in (run.path / "run_components.jsonl").read_text().splitlines()
+    ]
+    assert len(executions) == 2 and len(records) == 2
+    assert all(record["correctness"]["status"] == "PASS" for record in records)

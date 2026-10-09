@@ -34,6 +34,25 @@ def codec(name):
     return SprintzAdapter(library, manifest.document["adapter"], name), manifest
 
 
+@pytest.mark.parametrize("name", ALGORITHMS)
+def test_registered_uint8_fixture_roundtrips_complete_runs(name):
+    from tscompbench.datasets import DatasetRegistry, load_dataset
+
+    dataset = load_dataset(DatasetRegistry(ROOT / "registry/datasets", ROOT).load("sprintz_u8_uts"))
+    values = np.ascontiguousarray(dataset.values[0].array)
+    values.flags.writeable = False
+    buffers = (LogicalBuffer("value/000000", values, values.nbytes * 8),)
+    routed = RoutedInput(
+        dataset_id=dataset.manifest.dataset_id, track=BenchmarkTrack.VALUE, buffers=buffers,
+        timestamp_reference=None, validity_reference=None, n=values.size, m=1,
+        canonical_raw_bits=values.nbytes * 8, input_sha256=hash_logical_buffers(buffers),
+    )
+    adapter, _ = codec(name)
+    result = perform_roundtrip(adapter, routed, {"native_timing": True})
+    assert result.decoded.buffers[0].array.tobytes() == values.tobytes()
+    assert result.input_immutable and result.canary_intact and result.determinism_match
+
+
 def route(dtype, rows, dimensions, seed=1):
     target = np.dtype(dtype)
     unsigned = np.dtype("u1" if target.itemsize == 1 else "<u2")

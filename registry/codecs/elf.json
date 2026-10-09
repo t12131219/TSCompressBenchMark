@@ -110,6 +110,7 @@
     "fallback_policy": "DISALLOWED_SOURCE_DOMAIN_ERRORS_REJECTED",
     "runtime_dispatch": false,
     "timing_scopes": [
+      "CORE",
       "PIPELINE",
       "E2E"
     ]
@@ -151,6 +152,12 @@
       "OPAQUE_COMPLETE_STANDALONE_CODEC_BYTES",
       "COLUMN_CODEC_BYTES",
       "OUTPUT_CAPACITY"
-    ]
+    ],
+    "timing_scope_boundaries": {
+      "CORE": "HARNESS_SESSION_API: compress_update + finalize / decompress; prepared routed input, created session and encode output capacity outside timer; includes API-internal descriptors, staging, copies, native frames, model work and decode materialization; reset via fresh independent session outside timer",
+      "PIPELINE": "HARNESS_OBJECT_PIPELINE: compatibility preparation, session creation, bound/capacity allocation, CORE, finalized stream materialization, accounting, native telemetry and close; decode includes inverse compatibility work",
+      "E2E": "CANONICAL_MEMORY_ROUTED_VIEW: complete encode/decode object pipeline and phase transitions; excludes file I/O and post-timing correctness/determinism checks",
+      "NATIVE": "UNAVAILABLE_NULL: no optional internal native timer; CORE uses harness wall clock, never inferred native duration"
+    }
   }
 }

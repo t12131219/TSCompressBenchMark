@@ -308,7 +308,8 @@ class SIMDCompSession:
             or type(item.logical_bits) is not int
             or item.logical_bits != array.nbytes * 8
             or type(routed.canonical_raw_bits) is not int
-            or routed.canonical_raw_bits != item.logical_bits
+            or routed.canonical_raw_bits < routed.n * routed.m * 8
+            or routed.canonical_raw_bits % 8
             or routed.validity_reference is not None
             or not isinstance(routed.timestamp_unit, str)
             or not isinstance(routed.timestamp_epoch, str)

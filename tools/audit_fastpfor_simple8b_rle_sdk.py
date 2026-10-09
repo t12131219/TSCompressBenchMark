@@ -25,7 +25,13 @@ COUNTS = {
 }
 
 
-def audit(report_path: Path = DEFAULT_REPORT) -> dict:
+def audit(report_path: Path | None = None) -> dict:
+    if report_path is None:
+        card_path = ROOT / "registry/onboarding/fastpfor-simple8b-rle-u32.json"
+        card = json.loads(card_path.read_text()) if card_path.is_file() else {}
+        tests = [t for t in card.get("upstream_tests", [])
+                 if t["name"] == "direct_python_sdk_466_tests"]
+        report_path = ROOT / tests[0]["evidence"] if len(tests) == 1 else DEFAULT_REPORT
     report = json.loads(report_path.read_text())
     require(report["status"] == "SDK_TESTS_EXECUTED_INDEPENDENT_AUDIT_PENDING"
             and report["scope"] == "DIRECT_PYTHON_UINT32_MARKED_UNMARKED_RLE_SDK_ONLY"

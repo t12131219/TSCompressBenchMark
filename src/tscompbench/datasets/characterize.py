@@ -33,6 +33,12 @@ def _entropy_from_counts(counts: np.ndarray[Any]) -> float:
     return float(-np.sum(probabilities * np.log2(probabilities)))
 
 
+def _json_float(value: Any) -> float | None:
+    """Unrepresentable diagnostic statistics are null, never invalid JSON floats."""
+    result = float(value)
+    return result if math.isfinite(result) else None
+
+
 def _acf(values: np.ndarray[Any], lag: int) -> float | None:
     if values.size <= lag:
         return None
@@ -41,16 +47,16 @@ def _acf(values: np.ndarray[Any], lag: int) -> float | None:
     valid = np.isfinite(left) & np.isfinite(right)
     if int(valid.sum()) < 2:
         return None
-    left = left[valid].astype(np.float64, copy=False)
-    right = right[valid].astype(np.float64, copy=False)
+    left = left[valid].astype(np.longdouble, copy=False)
+    right = right[valid].astype(np.longdouble, copy=False)
     left_centered = left - left.mean()
     right_centered = right - right.mean()
-    denominator = math.sqrt(float(np.dot(left_centered, left_centered))) * math.sqrt(
-        float(np.dot(right_centered, right_centered))
+    denominator = np.sqrt(np.dot(left_centered, left_centered)) * np.sqrt(
+        np.dot(right_centered, right_centered)
     )
     if denominator == 0:
         return None
-    return float(np.dot(left_centered, right_centered) / denominator)
+    return _json_float(np.dot(left_centered, right_centered) / denominator)
 
 
 def _sample_rows(values: np.ndarray[Any], indices: np.ndarray[Any] | None) -> np.ndarray[Any]:
@@ -85,16 +91,18 @@ def _value_statistics(
     else:
         nan_count = positive_inf_count = negative_inf_count = negative_zero_count = 0
         finite = selected
-    finite64 = finite.astype(np.float64, copy=False)
+    finite64 = finite.astype(np.longdouble, copy=False)
     if finite.size:
         quantiles = np.quantile(finite64, [0.01, 0.5, 0.99])
-        minimum = float(np.min(finite64))
-        maximum = float(np.max(finite64))
-        mean = float(np.mean(finite64))
-        std = float(np.std(finite64))
-        p01, p50, p99 = (float(value) for value in quantiles)
+        minimum = _json_float(np.min(finite64))
+        maximum = _json_float(np.max(finite64))
+        mean = _json_float(np.mean(finite64))
+        std = _json_float(np.std(finite64))
+        p01, p50, p99 = (_json_float(value) for value in quantiles)
+        value_range = _json_float(np.max(finite64) - np.min(finite64))
     else:
         minimum = maximum = mean = std = p01 = p50 = p99 = None
+        value_range = None
     patterns = _bit_patterns(selected)
     _, counts = np.unique(patterns, return_counts=True)
     unique_count = int(counts.size)
@@ -109,7 +117,7 @@ def _value_statistics(
         "mean": mean,
         "std": std,
         "max": maximum,
-        "range": None if minimum is None else maximum - minimum,
+        "range": value_range,
         "p01": p01,
         "p50": p50,
         "p99": p99,
@@ -125,6 +133,9 @@ def _value_statistics(
         "nan_ratio": None if total == 0 else nan_count / total,
         "inf_ratio": None if total == 0 else (positive_inf_count + negative_inf_count) / total,
         "acf": {str(lag): _acf(selected, lag) for lag in lags},
+        "statistics_numeric_policy": (
+            "EXTENDED_PRECISION_FINITE_TO_JSON_FLOAT_UNREPRESENTABLE_NULL_V1"
+        ),
     }
 
 

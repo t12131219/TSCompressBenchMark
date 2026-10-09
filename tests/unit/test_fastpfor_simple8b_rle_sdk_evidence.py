@@ -14,7 +14,7 @@ import pytest
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "tools"))
 from audit_fastpfor_simple8b_rle_native import identity  # noqa: E402
-from audit_fastpfor_simple8b_rle_sdk import DEFAULT_REPORT, audit  # noqa: E402
+from audit_fastpfor_simple8b_rle_sdk import audit  # noqa: E402
 
 
 def test_actual_sdk_keeps_full_entry_and_five_layers_unclaimed() -> None:
@@ -30,7 +30,8 @@ def test_actual_sdk_keeps_full_entry_and_five_layers_unclaimed() -> None:
     "raw_failure", "library_omitted", "native_evidence_changed", "full_claim", "five_layer_claim",
 ])
 def test_incomplete_or_forged_sdk_execution_is_rejected(tmp_path: Path, tamper: str) -> None:
-    document = json.loads(DEFAULT_REPORT.read_text())
+    current = audit()
+    document = json.loads((ROOT / current["sdk_report"]["path"]).read_text())
     original = ROOT / document["driver_snapshot"]["path"]
     # Relocate only a disposable evidence copy. All source/native identities stay real.
     for field, name in (("driver_snapshot", "driver.py"), ("junit", "pytest.xml"),

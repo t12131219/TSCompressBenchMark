@@ -292,8 +292,12 @@ class CompletedRewriteSession:
             contract["required_value_units"]
         ):
             raise ExecutionContractError("required value units mismatch")
-        if routed.canonical_raw_bits != sum(b.logical_bits for b in routed.buffers):
-            raise ExecutionContractError("canonical bit accounting mismatch")
+        # Canonical bits describe the original logical view. Compatibility
+        # preparation can widen its dtype; buffer bits describe the codec view.
+        if (type(routed.canonical_raw_bits) is not int
+            or routed.canonical_raw_bits < sum(b.array.size for b in routed.buffers) * 8
+            or routed.canonical_raw_bits % 8):
+            raise ExecutionContractError("invalid canonical bit accounting")
         allowed = (
             {"<i8"}
             if track is BenchmarkTrack.TIMESTAMP

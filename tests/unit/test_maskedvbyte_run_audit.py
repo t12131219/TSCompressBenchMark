@@ -20,7 +20,11 @@ KEYS = ("maskedvbyte-u32", "delta-maskedvbyte-u32")
 
 
 def current_run(key: str, kind: str) -> Path:
-    evidence = json.loads((ROOT / f"build/source-audits/{key}-five-layer-audit.json").read_text())
+    # Formal statistics use a historical immutable fixture. Current execution
+    # and rejection checks must use freshly audited qualification receipts.
+    filename = (f"{key}-five-layer-audit.json" if kind == "formal"
+                else f"{key}-qualification-current-audit.json")
+    evidence = json.loads((ROOT / "build/source-audits" / filename).read_text())
     assert evidence["status"] == "PASS", "Current independently audited evidence is required"
     return ROOT / "runs" / evidence[f"{kind}_run"]
 

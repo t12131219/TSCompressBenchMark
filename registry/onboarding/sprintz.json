@@ -1,6 +1,6 @@
 {
   "schema_version": "tscb.source-onboarding.v2",
-  "source_artifact_id": "v2:source-artifact:sha256:0d1d51f2d036919da1c4a77652c01fc6b93d847e12614c0a1b2b82edd530870c",
+  "source_artifact_id": "v2:source-artifact:sha256:a26eb4d896ea01cb2ad8e239fbe4ba922ab54a2d524a6c2b53fe03385e22718d",
   "repository": "https://github.com/dblalock/lzbench.git",
   "commit": "580c4f085381f31b1ad669525ed04e63cbc385f3",
   "dirty": false,
@@ -32,13 +32,25 @@
     "tools/qualify_sprintz.py",
     "tests/adapters/test_sprintz.py"
   ],
-  "license_files": ["adapters/sprintz/vendor/LICENSE"],
+  "license_files": [
+    "adapters/sprintz/vendor/LICENSE"
+  ],
   "third_party_dependencies": [],
-  "object_level_candidates": ["P1_STANDALONE_CODEC"],
+  "object_level_candidates": [
+    "P1_STANDALONE_CODEC"
+  ],
   "input_contract": {
     "kind": "HOMOGENEOUS_INTEGER_VALUE_MATRIX",
-    "dtypes": ["int8", "uint8", "little-endian int16", "little-endian uint16"],
-    "topologies": ["UTS", "SYNCHRONOUS_MTS"],
+    "dtypes": [
+      "int8",
+      "uint8",
+      "little-endian int16",
+      "little-endian uint16"
+    ],
+    "topologies": [
+      "UTS",
+      "SYNCHRONOUS_MTS"
+    ],
     "dimensions": "1..128",
     "maximum_elements": 131072,
     "ownership": "BORROWED_DURING_CALL",
@@ -70,54 +82,72 @@
       "profile": "release",
       "suite": "bounded-native-roundtrip-and-hostile-stream",
       "status": "PASS",
-      "evidence": "tools/qualify_sprintz.py; 8/16-bit, 1..128 dimensions, boundary/pattern/random roundtrips, truncation, mutation, capacity and canary checks"
+      "evidence": "Historical pre-rebuild identity: tools/qualify_sprintz.py; 8/16-bit, 1..128 dimensions, boundary/pattern/random roundtrips, truncation, mutation, capacity and canary checks"
     },
     {
       "profile": "asan-ubsan",
       "suite": "bounded-native-roundtrip-and-hostile-stream",
       "status": "PASS",
-      "evidence": "tools/qualify_sprintz.py with ASan/UBSan; alignment sanitizer excluded for documented packed x86 accesses"
+      "evidence": "Historical pre-rebuild identity: tools/qualify_sprintz.py with ASan/UBSan; alignment sanitizer excluded for documented packed x86 accesses"
     },
     {
       "profile": "asan-ubsan",
       "suite": "forced-generic-allocation-failure",
       "status": "PASS",
-      "evidence": "adapters/sprintz/tests/allocation_failure_full.cc wraps malloc/calloc and injects every generic-path allocation failure"
+      "evidence": "Historical pre-rebuild identity: adapters/sprintz/tests/allocation_failure_full.cc wraps malloc/calloc and injects every generic-path allocation failure"
     },
     {
       "profile": "formal",
       "suite": "five-layer-synthetic-i16-mts",
       "status": "PASS",
-      "evidence": "runs/runset-20260919T093811Z-e48ab64f58b0: 20 eligible PASS repetitions, two summaries and two PASS coverage tasks"
+      "evidence": "Historical pre-rebuild identity: runs/runset-20260919T093811Z-e48ab64f58b0: 20 eligible PASS repetitions, two summaries and two PASS coverage tasks"
+    },
+    {
+      "name": "Current release and ASan/UBSan native qualification",
+      "status": "PASS",
+      "evidence": "bounded Sprintz 8/16-bit UTS/MTS qualification passed\nSprintzFIRE+Huf native qualification passed\nbounded Sprintz 8/16-bit UTS/MTS qualification passed\nSprintzFIRE+Huf native qualification passed\nSprintz generic allocation-failure paths passed\nALL SPRINTZ NATIVE TESTS PASS\n",
+      "log_sha256": "32af0ef6e10b87f964929c7885856f5707b272a7792ea4585c42c767278780df"
+    },
+    {
+      "name": "Full-input uint8 fixture regression and adapter tests",
+      "status": "PASS",
+      "evidence": "........................................................................ [ 57%]\n.....................................................                    [100%]\n125 passed in 3.08s\n",
+      "log_sha256": "a45a44e5c2e4ab901199b0ae4138f081d0781f6ff7a8971f11e0da165322a7ab"
     }
   ],
   "builds": [
     {
-      "profile": "SPRINTZ_DELTA_RELEASE",
-      "artifact_sha256": "546e3026ebad20a92a1d4dd31cf94b17e1ade10f14e9666d966292a483d18c50",
-      "compile_commands_sha256": "db616be3abd56524bd23ef1e366b9f1437ded037e576fd094ef28f42ba5680d7"
+      "artifact_sha256": "16e01a672b71ce273451b7e56cf07cb2150255bad8909045989888c0daf1680a",
+      "compile_commands_sha256": "db616be3abd56524bd23ef1e366b9f1437ded037e576fd094ef28f42ba5680d7",
+      "compiler": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0",
+      "profile": "SPRINTZ_DELTA_RELEASE"
     },
     {
-      "profile": "SPRINTZ_DELTA_ASAN_UBSAN",
-      "artifact_sha256": "d184e1c97d5c2e1dd2fba52f84004a65ee27a7bfa7aaa282c33770ba81f6d571",
-      "compile_commands_sha256": "b4346e79f92392cf0111c6966b4ba74ef5e988812f18f726ee6413bc63da1bc5"
+      "artifact_sha256": "115c554533486822d943d093de8972b4a9a6fc5987c5ae62c17ad81b3a18f09f",
+      "compile_commands_sha256": "b4346e79f92392cf0111c6966b4ba74ef5e988812f18f726ee6413bc63da1bc5",
+      "compiler": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0",
+      "profile": "SPRINTZ_DELTA_SANITIZER"
     },
     {
-      "profile": "SPRINTZ_FIRE_RELEASE",
-      "artifact_sha256": "abb569818c9bf895aa8d27a5e2bf48012300ba1d895887412273f6e43fdb437d",
-      "compile_commands_sha256": "06554557e0daf8faa8511c70cf09daac46d93f9b9b280f3f1312c000af6f0b78"
+      "artifact_sha256": "c7acccdb359dbccce1fa990f0f61679741506f533c5df31abf57f9cd9a8b2282",
+      "compile_commands_sha256": "06554557e0daf8faa8511c70cf09daac46d93f9b9b280f3f1312c000af6f0b78",
+      "compiler": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0",
+      "profile": "SPRINTZ_FIRE_RELEASE"
     },
     {
-      "profile": "SPRINTZ_FIRE_ASAN_UBSAN",
-      "artifact_sha256": "5b4ebe234493055b539854932d422726a73b2269b18f12d18bb94d4fb6516a87",
-      "compile_commands_sha256": "9e8af57fcad7a0889f8afb39b6cbb11eef5ceeccc9ca5ff1d6f27ddae4064b10"
+      "artifact_sha256": "f0fa60a4cb4ea6e329314b30c4e86789707373846d11f5cce792f2006aa9fd93",
+      "compile_commands_sha256": "9e8af57fcad7a0889f8afb39b6cbb11eef5ceeccc9ca5ff1d6f27ddae4064b10",
+      "compiler": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0",
+      "profile": "SPRINTZ_FIRE_SANITIZER"
     }
   ],
   "license_decision": {
     "spdx": "Apache-2.0",
     "status": "RUN_ALLOWED",
     "redistribution": "ALLOWED_WITH_LICENSE_NOTICE",
-    "files": ["adapters/sprintz/vendor/LICENSE"]
+    "files": [
+      "adapters/sprintz/vendor/LICENSE"
+    ]
   },
   "known_limitations": [
     "Upstream defines Sprintz-Delta and Sprintz-FIRE/XFF as distinct codec APIs; no predictor-neutral Sprintz bitstream/API exists, so the benchmark keeps two AlgorithmIDs.",
@@ -127,7 +157,8 @@
     "ASan/UBSan qualification passes with -fno-sanitize=alignment because upstream deliberately uses packed unaligned x86 accesses; -fno-strict-aliasing is required. LeakSanitizer was not run because it is incompatible with the ptrace-managed host.",
     "AVX2, BMI2 and LZCNT are mandatory; there is no scalar fallback, runtime dispatch or non-x86 portability claim.",
     "One-shot single-thread operation only; streaming, query, random access and checksums are not registered.",
-    "Formal evidence uses one deterministic synthetic int16 MTS dataset and does not establish performance on real-world datasets. Failed diagnostic run sets remain append-only and are not reclassified."
+    "Formal evidence uses one deterministic synthetic int16 MTS dataset and does not establish performance on real-world datasets. Failed diagnostic run sets remain append-only and are not reclassified.",
+    "The native binding files are now content-hashed in SourceArtifactID. An old compiled full-Sprintz wrapper rejected a valid 2048-element uint8 fixture although the current registered wrapper source accepts it. Rebuilt release/sanitizer artifacts replace it; upstream source and compression strategy are unchanged. Historical formal results are not current-source performance qualification."
   ],
   "unsupported_reason_codes": [
     "EXECUTION_ARTIFACT_MISSING",
@@ -141,5 +172,6 @@
     "VALIDITY_SHAPE_UNSUPPORTED",
     "STREAMING_UNSUPPORTED",
     "QUERY_UNSUPPORTED"
-  ]
+  ],
+  "source_onboarding_id": "v2:source-onboarding:sha256:9734944735ab9d7c2a714ba892eed63633accc3982bc3780ee7f94d269e72395"
 }

@@ -472,7 +472,24 @@ def audit_rejected_run(run: Path, manifest, source: dict, runtime: str) -> dict:
     return {"records": len(records), "eligible": 0, "statuses": {"UNSUPPORTED": len(records)}}
 
 
-def audit_all(phase: str, suffix: str = "20261007-2") -> dict:
+def driver_report_path(phase: str) -> Path:
+    """Resolve the executed receipt selected by the current independent audit."""
+    pointer = ROOT / f"build/source-audits/fastpfor_simple8b_rle_{phase}_current_audit.json"
+    if pointer.exists():
+        document = json.loads(pointer.read_text())
+        if document.get("status") == "PASS":
+            path = verify(document["driver_evidence"])
+            require(path.name == "report.json" and
+                    path.parent.parent == ROOT / "build/source-audits" and
+                    path.parent.name.startswith(f"fastpfor-simple8b-rle-{phase}-"),
+                    "RLE current receipt path differs")
+            return path
+    return ROOT / f"build/source-audits/fastpfor-simple8b-rle-{phase}-20261007-2/report.json"
+
+
+def audit_all(phase: str, suffix: str | None = None) -> dict:
+    if suffix is None:
+        suffix = driver_report_path(phase).parent.name.removeprefix(f"fastpfor-simple8b-rle-{phase}-")
     sdk = audit_sdk()
     driver = audit_driver(phase, sdk, suffix)
     registry = CodecRegistry(ROOT / "registry/codecs", SourceRegistry(ROOT / "registry/sources"))

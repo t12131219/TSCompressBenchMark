@@ -166,7 +166,9 @@ def test_native_auditor_refuses_drift(snapshot: Path, target: str) -> None:
 
 @pytest.mark.parametrize("target", ["binding", "junit", "closure", "sdk_driver", "missing"])
 def test_sdk_auditor_refuses_drift(snapshot: Path, target: str) -> None:
-    report_path = ROOT / "build/source-audits/maskedvbyte-sdk-tests.json"
+    card = json.loads((ROOT / "registry/onboarding/maskedvbyte-u32.json").read_text())
+    selected = next(item["evidence"] for item in card["upstream_tests"] if item["name"] == "direct_sdk")
+    report_path = ROOT / selected
     report = json.loads(report_path.read_text())
     paths = {
         "build/source-audits/maskedvbyte-sdk-tests.json",
@@ -179,6 +181,11 @@ def test_sdk_auditor_refuses_drift(snapshot: Path, target: str) -> None:
         destination = snapshot / name
         destination.parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(ROOT / name, destination)
+    current_out = ROOT / report.get("output_directory", "build/source-audits/maskedvbyte-sdk")
+    for name in ("pytest.xml", "python-closure.json"):
+        shutil.copyfile(current_out / name, snapshot / "build/source-audits/maskedvbyte-sdk" / name)
+    report["output_directory"] = "build/source-audits/maskedvbyte-sdk"
+    (snapshot / "build/source-audits/maskedvbyte-sdk-tests.json").write_text(json.dumps(report))
     assert SDK_AUDIT(snapshot)["status"] == "PASS"
     files = {
         "binding": "src/tscompbench/adapters/maskedvbyte.py",

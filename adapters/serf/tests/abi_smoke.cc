@@ -41,6 +41,14 @@ template <typename T> bool roundtrip(size_t count, bool special) {
     std::vector<T> values(count);
     for (size_t i = 0; i < count; ++i)
         values[i] = static_cast<T>(std::sin(static_cast<double>(i) / 7.0) * 10.0);
+    if (!special && count >= 2) {
+        values[0] = static_cast<T>(0.001);
+        values[1] = static_cast<T>(-0.001);
+    }
+    if (!special && count == 6) {
+        const double traffic[] = {0.013, 0.0004, 0.0088, 0.0184, 0.0016, 0.0001};
+        for (size_t i = 0; i < count; ++i) values[i] = static_cast<T>(traffic[i]);
+    }
     if (special && count >= 5) {
         values[0] = T{0};
         values[1] = -T{0};
@@ -117,7 +125,7 @@ template <typename T> bool roundtrip(size_t count, bool special) {
 
 int main() {
     if (tscb_get_abi_version() != TSCB_ADAPTER_ABI_V1) return 1;
-    for (const size_t count : {size_t{0}, size_t{1}, size_t{2}, size_t{999},
+    for (const size_t count : {size_t{0}, size_t{1}, size_t{2}, size_t{6}, size_t{999},
                                size_t{1000}, size_t{1001}, size_t{2001}}) {
         if (!roundtrip<float>(count, false) || !roundtrip<double>(count, false)) return 2;
     }

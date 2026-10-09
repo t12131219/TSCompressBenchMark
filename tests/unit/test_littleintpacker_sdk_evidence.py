@@ -16,7 +16,7 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "tools"))
 from audit_littleintpacker_sdk import audit, sdk_report_path  # noqa: E402
 
-SDK_DIRECTORY = "build/source-audits/littleintpacker-sdk-20261007-2"
+SDK_DIRECTORY = str(sdk_report_path(ROOT).parent.relative_to(ROOT))
 
 
 def digest(path: Path) -> str:
@@ -42,6 +42,9 @@ def sdk_evidence(native_evidence: Path) -> Path:  # noqa: F811 - imported pytest
         native_evidence / SDK_DIRECTORY,
     )
     write(native_evidence / SDK_DIRECTORY / "report.json", report)
+    card = native_evidence / "registry/onboarding/littleintpacker-pack32-u32.json"
+    card.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(ROOT / "registry/onboarding/littleintpacker-pack32-u32.json", card)
     return native_evidence
 
 

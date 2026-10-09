@@ -254,7 +254,7 @@ template <typename T> bool encode_typed(const InputView& input, Writer& writer,
             if constexpr (std::is_same_v<T, double>) {
                 if (!compressor64)
                     compressor64 = std::make_unique<SerfXORCompressor>(
-                        input.block_size, input.error_bound, input.adjust_digit);
+                        input.block_size, std::nextafter(input.error_bound, 0.0), input.adjust_digit);
                 for (uint32_t i = 0; i < count; ++i) compressor64->AddValue(block[i]);
                 compressor64->Close();
                 valid_bits = compressor64->compressed_size_last_block();
@@ -262,7 +262,7 @@ template <typename T> bool encode_typed(const InputView& input, Writer& writer,
             } else {
                 if (!compressor32)
                     compressor32 = std::make_unique<SerfXORCompressor32>(
-                        input.block_size, static_cast<float>(input.error_bound));
+                        input.block_size, std::nextafter(static_cast<float>(input.error_bound), 0.0f));
                 for (uint32_t i = 0; i < count; ++i) compressor32->AddValue(block[i]);
                 compressor32->Close();
                 valid_bits = compressor32->compressed_size_last_block();

@@ -1,13 +1,26 @@
 from __future__ import annotations
 
 import hashlib
+import time
 from dataclasses import dataclass
 from typing import Any
 
 import numpy as np
 
 from tscompbench.codecs import CodecContractError, CompatibilityPlan
-from tscompbench.contracts import AdapterOperationKind, CapabilityStatus
+from tscompbench.contracts import AdapterOperationKind, CapabilityStatus, LossMode
+
+
+class CompatibilityDomainError(CodecContractError):
+    """A negotiated conversion cannot reversibly represent this actual input."""
+
+    reason_code = "ADAPTER_BIT_EXACT_DOMAIN_UNSUPPORTED"
+
+
+class LossyCompatibilityDomainError(CompatibilityDomainError):
+    """The specified cast cannot fit this input within the declared error budget."""
+
+    reason_code = "ADAPTER_ERROR_BOUND_DOMAIN_UNSUPPORTED"
 
 
 @dataclass(frozen=True)
@@ -17,6 +30,8 @@ class AdapterTelemetry:
     allocation_bytes: int
     padding_bytes: int
     copied: bool
+    stages: tuple[dict[str, Any], ...] = ()
+    allocation_measurement: str = "OBSERVED_NUMPY_OUTPUT_BUFFERS"
 
 
 @dataclass(frozen=True)
@@ -64,7 +79,10 @@ def apply_compatibility_plan(
     current = array
     storage: np.ndarray[Any] = current
     copied = False
+    stages: list[dict[str, Any]] = []
     for operation in plan.operations:
+        before = current
+        start = time.perf_counter_ns()
         if operation.kind in {
             AdapterOperationKind.CONTIGUOUS_COPY,
             AdapterOperationKind.GATHER_SCATTER,
@@ -114,17 +132,53 @@ def apply_compatibility_plan(
             )
         else:
             raise CodecContractError(f"unsupported compatibility operation: {operation.kind}")
+        elapsed = time.perf_counter_ns() - start
+        allocated = current is not before and not np.shares_memory(current, before)
+        # Count observable output allocations and data accesses, not allocator/RSS
+        # internals. A contiguous no-op or a transpose view costs zero copy bytes.
+        stage_padding = (
+            int(operation.padding_bytes)
+            if operation.kind is AdapterOperationKind.SAFE_OVERREAD_PADDING
+            else 0
+        )
+        stages.append(
+            {
+                "kind": operation.kind.value,
+                "before_dtype": before.dtype.str,
+                "before_shape": list(before.shape),
+                "after_dtype": current.dtype.str,
+                "after_shape": list(current.shape),
+                "input_bytes": int(before.nbytes),
+                "output_bytes": int(current.nbytes),
+                "bytes_read": int(before.nbytes) if allocated else 0,
+                "bytes_written": (
+                    int(storage.nbytes) + int(current.nbytes)
+                    if stage_padding
+                    else int(current.nbytes)
+                )
+                if allocated
+                else 0,
+                "allocation_bytes": int(storage.nbytes) if allocated else 0,
+                "padding_bytes": stage_padding,
+                "copied": allocated,
+                "wall_ns": elapsed,
+                "planned_bytes_read": operation.bytes_read,
+                "planned_bytes_written": operation.bytes_written,
+                "planned_allocation_bytes": operation.allocation_bytes,
+            }
+        )
     if _sha256(array) != original_hash:
         raise CodecContractError("compatibility adapter modified canonical input")
     return PreparedInput(
         logical_array=current,
         storage=storage,
         telemetry=AdapterTelemetry(
-            bytes_read=sum(item.bytes_read for item in plan.operations),
-            bytes_written=sum(item.bytes_written for item in plan.operations),
-            allocation_bytes=sum(item.allocation_bytes for item in plan.operations),
-            padding_bytes=sum(item.padding_bytes for item in plan.operations),
-            copied=copied,
+            bytes_read=sum(item["bytes_read"] for item in stages),
+            bytes_written=sum(item["bytes_written"] for item in stages),
+            allocation_bytes=sum(item["allocation_bytes"] for item in stages),
+            padding_bytes=sum(item["padding_bytes"] for item in stages),
+            copied=any(item["copied"] for item in stages),
+            stages=tuple(stages),
         ),
         original_sha256=original_hash,
         channel_index=channel_index,
@@ -151,15 +205,46 @@ def validate_prepared_input(
     if reconstructed.shape != original.shape:
         raise CodecContractError("adapter changed logical shape")
     if plan.status is CapabilityStatus.ADAPTER_LOSSY:
+        if plan.effective_loss_mode is LossMode.UNBOUNDED_LOSSY:
+            # The negotiated cast has no absolute-bound contract. Final lossy
+            # quality is measured against the canonical input by correctness.
+            return
         if max_abs_error is None:
             raise CodecContractError("lossy adapter validation requires a declared error bound")
         error = np.abs(reconstructed.astype(np.longdouble) - original.astype(np.longdouble))
         observed = np.max(error, initial=np.longdouble(0))
-        if observed > np.longdouble(max_abs_error):
+        if not np.isfinite(observed) or observed > np.longdouble(max_abs_error):
+            has_lossy_cast = any(
+                operation.kind is AdapterOperationKind.LOSSY_CAST for operation in plan.operations
+            )
+            # Independently reproduce the specified numerical cast. A corrupted
+            # prepared value remains an implementation error; an actual cast
+            # that exhausts the error budget is an input-domain refusal.
+            with np.errstate(all="ignore"):
+                expected_cast = original.astype(reconstructed.dtype, copy=True)
+            if has_lossy_cast and expected_cast.tobytes(order="C") == reconstructed.tobytes(
+                order="C"
+            ):
+                raise LossyCompatibilityDomainError(
+                    f"declared cast cannot meet the error bound: observed={observed}, "
+                    f"bound={max_abs_error}"
+                )
             raise CodecContractError(
                 f"lossy adapter bound violated: observed={observed}, bound={max_abs_error}"
             )
         return
     restored = reconstructed.astype(original.dtype, copy=False)
     if restored.tobytes(order="C") != original.tobytes(order="C"):
+        has_widen = any(
+            operation.kind is AdapterOperationKind.EXACT_WIDEN for operation in plan.operations
+        )
+        nan_domain_only = False
+        if has_widen and original.dtype.kind == "f":
+            bits_dtype = np.dtype(f"u{original.dtype.itemsize}")
+            mismatch = restored.view(bits_dtype) != original.view(bits_dtype)
+            nan_domain_only = bool(np.all(np.isnan(original)[mismatch]))
+        if nan_domain_only:
+            raise CompatibilityDomainError(
+                "exact widening cannot preserve this input's original bit patterns"
+            )
         raise CodecContractError("lossless adapter failed bit-exact post-adapter validation")

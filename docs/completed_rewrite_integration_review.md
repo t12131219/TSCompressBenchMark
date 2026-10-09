@@ -71,7 +71,7 @@
 
 - [x] 逐包盘点 16 个完成包与 2 个 BLOCKED 包；按实现入口注册，不混合损失模式和对象层级。
 - [x] SourceArtifact、Codec Manifest、接入卡和许可证决定已登记；副本与原文件逐项 SHA-256 核对。
-- [x] 参数默认值展开进入 ConfigID；不支持的 dtype、histogram 布局、CORE、query、streaming
+- [x] 参数默认值展开进入 ConfigID；不支持的 dtype、histogram 布局、query、streaming
   保留在任务宇宙。
 - [x] CPU、ISA、线程预算、affinity、fallback 及 Semantic→Execution→Resource 键明确。
 - [x] 正式任务的 AlgorithmID、AdapterID 与当前 manifest 相符；完整依赖聚合 hash 与当前执行闭包一致。
@@ -100,7 +100,8 @@ SYSTEM 原生联合帧计入 `unallocated_shared_bits`；内部字典/模型不�
 ### 第四层：性能评测（计划 9.10）
 
 - [x] 各入口 20 次完整原始观测、预热与最短时长通过审计；没有 fastest-only 筛选。
-- [x] 支持 PIPELINE/E2E；CORE 不支持。native 编码/解码辅助耗时为 null，没有套用其他 codec 能力。
+- [x] 原正式批次为 PIPELINE/E2E；2026-10-08 已新增 CORE 接入及三模式资格验证，见
+  [三模式审查](all_algorithm_timing_scopes.md)。native 辅助耗时仍为 null；旧批次身份保留。
 - [x] 模型加载、frame 处理和独立解码发生在真实路径；DeepZip、DZip、WaLLoC 解码使用帧内模型。
 - [x] DZip 保留两个各一个 worker 的 Eigen 池与调用线程，进程预算为 3，
   AVX+MKLDNN dispatch 显式记录。

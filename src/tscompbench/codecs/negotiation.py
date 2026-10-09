@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import math
 from dataclasses import asdict
 from typing import Any
 
@@ -37,9 +38,9 @@ def descriptor_from_dataset(dataset: CanonicalDataset, track: BenchmarkTrack) ->
     has_out_of_order = False
     has_negative_delta = False
     if timestamp is not None and timestamp.size > 1:
-        delta = np.diff(timestamp)
-        has_duplicates = bool(np.any(delta == 0))
-        has_out_of_order = bool(np.any(delta < 0))
+        # Subtracting extreme int64 epochs can overflow and invert the order.
+        has_duplicates = bool(np.any(timestamp[1:] == timestamp[:-1]))
+        has_out_of_order = bool(np.any(timestamp[1:] < timestamp[:-1]))
         has_negative_delta = has_out_of_order
 
     if track is BenchmarkTrack.TIMESTAMP:
@@ -69,7 +70,7 @@ def descriptor_from_dataset(dataset: CanonicalDataset, track: BenchmarkTrack) ->
         layout = str(physical["layout"])
         alignment = min(_alignment(item.array) for item in dataset.values)
         raw_bits = dataset.value_raw_bits + dataset.validity_raw_bits
-        m = len(dataset.values) if len(dataset.values) > 1 else (shape[1] if len(shape) > 1 else 1)
+        m = len(dataset.values) if len(dataset.values) > 1 else math.prod(shape[1:])
     else:
         dtype_vector = ((timestamp.dtype.str,) if timestamp is not None else ()) + tuple(
             item.array.dtype.str for item in dataset.values
@@ -81,7 +82,7 @@ def descriptor_from_dataset(dataset: CanonicalDataset, track: BenchmarkTrack) ->
         ]
         alignment = min(_alignment(item) for item in arrays)
         raw_bits = dataset.canonical_raw_bits
-        m = len(dataset.values) if len(dataset.values) > 1 else (shape[1] if len(shape) > 1 else 1)
+        m = len(dataset.values) if len(dataset.values) > 1 else math.prod(shape[1:])
 
     return DataDescriptor(
         dataset_id=dataset.dataset_id,
@@ -140,7 +141,7 @@ def descriptor_from_layer1_artifacts(
         raw_bits = int(metadata["accounting"]["value_raw_bits"]) + int(
             metadata["accounting"]["validity_raw_bits"]
         )
-        m = len(dtype_vector) if len(dtype_vector) > 1 else (shape[1] if len(shape) > 1 else 1)
+        m = len(dtype_vector) if len(dtype_vector) > 1 else math.prod(shape[1:])
     else:
         shape = tuple(int(item) for item in logical["value_shape"])
         dtype_vector = (("<i8",) if timestamp_present else ()) + tuple(
@@ -148,7 +149,11 @@ def descriptor_from_layer1_artifacts(
         )
         layout = "COMPOSITE_T_V"
         raw_bits = int(metadata["accounting"]["canonical_raw_bits"])
-        m = len(logical["value_columns"])
+        m = (
+            len(logical["value_columns"])
+            if len(logical["value_columns"]) > 1
+            else math.prod(shape[1:])
+        )
     return DataDescriptor(
         dataset_id=str(metadata["dataset_id"]),
         track=track,
@@ -395,6 +400,8 @@ def negotiate(
         before = dict(current)
         current["dtype_vector"] = converted
         target_bytes = sum(np.dtype(item).itemsize for item in converted) * descriptor.n
+        if len(converted) == 1:
+            target_bytes *= descriptor.m
         operations.append(
             _operation(
                 kind=(
@@ -412,9 +419,18 @@ def negotiate(
                 bytes_read=logical_bytes,
                 bytes_written=target_bytes,
                 allocation_bytes=target_bytes,
-                reverse_operation="CAST_TO_CANONICAL_DTYPE",
+                reverse_operation=(
+                    "CAST_TO_CANONICAL_DTYPE"
+                    if effective_requested_loss_mode is LossMode.LOSSLESS
+                    else "PRESERVE_DECODED_NUMERIC_DTYPE"
+                ),
                 validation_method=(
-                    "DECLARED_ERROR_BOUND" if lossy_conversion else "BIT_EXACT_AFTER_INVERSE"
+                    "UNBOUNDED_LOSS_QUALITY_PROFILE"
+                    if lossy_conversion
+                    and effective_requested_loss_mode is LossMode.UNBOUNDED_LOSSY
+                    else "DECLARED_ERROR_BOUND"
+                    if lossy_conversion
+                    else "BIT_EXACT_AFTER_INVERSE"
                 ),
             )
         )

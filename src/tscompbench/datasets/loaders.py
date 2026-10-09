@@ -313,11 +313,16 @@ def _load_npz(manifest: DatasetManifest) -> CanonicalDataset:
 
 def load_dataset(manifest: DatasetManifest) -> CanonicalDataset:
     source_hash_before = sha256_file(manifest.source_path)
+    if source_hash_before != manifest.document["file"]["sha256"]:
+        raise DatasetContractError("source hash changed since manifest verification")
     file_format = manifest.document["file"]["format"]
     if file_format == "csv":
         dataset = _load_csv(manifest)
     elif file_format == "npz":
         dataset = _load_npz(manifest)
+    elif file_format == "canonical":
+        from .canonical_source import load_canonical_source
+        dataset = load_canonical_source(manifest)
     else:
         raise DatasetContractError(f"unsupported source format: {file_format}")
     source_hash_after = sha256_file(manifest.source_path)

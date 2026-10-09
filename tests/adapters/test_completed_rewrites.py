@@ -77,6 +77,14 @@ def test_native_profile_independent_decode_and_complete_accounting(tmp_path, nam
         assert ledger.unallocated_shared_bits > 0
 
 
+def test_timestamp_boundary_accounting_counts_only_timestamp_elements():
+    from tscompbench.validation.boundary import run_boundary_suite
+
+    key = "influxdb-tsm-adaptive-timestamp"
+    result = run_boundary_suite(adapter(key), manifest(key), BenchmarkTrack.TIMESTAMP, {})
+    assert result.passed, [(o.case_id, o.reason) for o in result.observations if o.status != "PASS"]
+
+
 def forged(stream, mutate_descriptor=None, mutate_payload=None):
     magic, size, _, _ = _PREFIX.unpack_from(stream)
     descriptor = json.loads(stream[_PREFIX.size : _PREFIX.size + size])

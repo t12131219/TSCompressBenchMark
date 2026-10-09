@@ -148,7 +148,9 @@ def main():
             "citations": [
                 f"adapters/completed_rewrites/vendor/{package}/"
                 + (
-                    "contract.md"
+                    "contract_v1.md"
+                    if name == "deepzip"
+                    else "contract.md"
                     if (
                         ROOT / "adapters/completed_rewrites/vendor" / package / "contract.md"
                     ).is_file()
@@ -196,6 +198,10 @@ def main():
             inp.update(min_n=2, max_n=1048576, max_m=256)
         if system:
             inp["component_dtypes"] = {"timestamp": ["<i8"], "value": ["<f8"]}
+        if name == "prometheus-xor2-chunk":
+            # SYSTEM supplies paired T and V buffers. This composite role does
+            # not require transposing the value matrix's logical axes.
+            inp["layouts"] = ["COMPOSITE_T_V", "ROW_MAJOR_CONTIG", "SOA_COLUMNS"]
         if histogram:
             inp.update(
                 dtypes=["<i8", "<u8"],
@@ -265,7 +271,7 @@ def main():
             if name in {"tristan", "corad", "walloc-1d"}
             else ["SCALAR"],
             fallback_policy="DISALLOWED",
-            timing_scopes=["PIPELINE", "E2E"],
+            timing_scopes=["CORE", "PIPELINE", "E2E"],
         )
         if name == "dzip":
             doc["execution"]["threading"] = "CALLER_PLUS_TWO_PERSISTENT_SINGLE_WORKER_EIGEN_POOLS"

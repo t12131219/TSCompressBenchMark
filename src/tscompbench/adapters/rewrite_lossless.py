@@ -243,8 +243,6 @@ class RewriteLosslessSession:
                 raise ExecutionContractError("timestamp pairing reference mismatch")
             buffers = buffers[1:]
         matrix = len(buffers) == 1 and buffers[0].array.ndim == 2
-        if system and matrix:
-            raise ExecutionContractError("Prometheus requires SOA value columns")
         if not buffers or len(buffers) != (1 if matrix else routed.m):
             raise ExecutionContractError("rewrite requires all value columns")
         dtype = buffers[0].array.dtype
@@ -262,7 +260,11 @@ class RewriteLosslessSession:
             or routed.n * dtype.itemsize > 16777216
         ):
             raise ExecutionContractError("SElfStar session exceeds frozen standalone limits")
-        if routed.canonical_raw_bits != sum(b.logical_bits for b in routed.buffers):
+        if (
+            type(routed.canonical_raw_bits) is not int
+            or routed.canonical_raw_bits < sum(b.array.size for b in routed.buffers) * 8
+            or routed.canonical_raw_bits % 8
+        ):
             raise ExecutionContractError("rewrite raw bit accounting mismatch")
         return dtype, buffers, matrix
 
@@ -379,7 +381,7 @@ class RewriteLosslessSession:
             or info.get("dtype") not in ({"<f8"} if system else {"<f4", "<f8"})
             or info.get("block_size") != self.block_size
             or type(info.get("matrix")) is not bool
-            or (system and (info["matrix"] or not isinstance(info.get("segment_plan_id"), str)))
+            or (system and not isinstance(info.get("segment_plan_id"), str))
         ):
             raise ExecutionContractError("rewrite descriptor identity mismatch")
         n, m, descriptors = info.get("rows"), info.get("columns"), info.get("buffers")
@@ -396,9 +398,9 @@ class RewriteLosslessSession:
         names: set[str] = set()
         for i, b in enumerate(descriptors):
             timestamp = system and i == 0
-            shape = [n, m] if info["matrix"] else [n]
+            shape = [n, m] if info["matrix"] and not timestamp else [n]
             dtype = "<i8" if timestamp else info["dtype"]
-            bits = n * (m if info["matrix"] else 1) * np.dtype(dtype).itemsize * 8
+            bits = n * (m if info["matrix"] and not timestamp else 1) * np.dtype(dtype).itemsize * 8
             if (
                 not isinstance(b, dict)
                 or b.get("dtype") != dtype

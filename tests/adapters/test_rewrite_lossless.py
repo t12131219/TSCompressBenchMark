@@ -83,7 +83,7 @@ def route(n, width=8, m=2, matrix=False, system=False):
 @pytest.mark.parametrize("matrix", [False, True])
 def test_roundtrip_fresh_decoder_boundaries_layout_and_accounting(name, n, width, matrix):
     system = name == "prometheus-xor-chunk"
-    if system and (width != 8 or matrix):
+    if system and width != 8:
         return
     routed = route(n, width, matrix=matrix, system=system)
     observation = perform_roundtrip(codec(name), routed, {"block_size": 7, "isa": "SCALAR"})
@@ -98,6 +98,23 @@ def test_roundtrip_fresh_decoder_boundaries_layout_and_accounting(name, n, width
     assert {b.name: b.array.tobytes() for b in observation.decoded.buffers} == {
         b.name: b.array.tobytes() for b in routed.buffers
     }
+
+
+def test_prometheus_matrix_view_keeps_existing_native_column_stream():
+    streams = []
+    for matrix in (False, True):
+        routed = route(2, m=8, matrix=matrix, system=True)
+        observation = perform_roundtrip(
+            codec("prometheus-xor-chunk"), routed, {"block_size": 7, "isa": "SCALAR"}
+        )
+        stream = observation.encoded.stream
+        # The wrapper descriptor includes original layout; the RWF1 frame must
+        # remain identical for the same paired T/V samples and column order.
+        prefix = struct.Struct("<8sI32s")
+        _, header_size, _ = prefix.unpack_from(stream)
+        streams.append(stream[prefix.size + header_size :])
+        assert observation.encoded.ledger.canonical_raw_bits == 2 * 9 * 64
+    assert streams[0] == streams[1]
 
 
 @pytest.mark.parametrize("name", ALGORITHMS)

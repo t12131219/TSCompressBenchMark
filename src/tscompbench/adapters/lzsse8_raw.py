@@ -227,7 +227,10 @@ class Lzsse8RawSession:
             return
         if status == _STATUS_DST_TOO_SMALL:
             raise OutputCapacityError(f"{operation}: destination is too small")
-        raise ExecutionContractError(f"{operation} failed ({status}): {self._last_error()}")
+        detail = self._last_error()
+        if detail == "LZSSE8 optimal parse state allocation failed":
+            raise MemoryError(f"{operation} failed ({status}): {detail}")
+        raise ExecutionContractError(f"{operation} failed ({status}): {detail}")
 
     @staticmethod
     def _descriptor_header(routed: RoutedInput) -> bytes:

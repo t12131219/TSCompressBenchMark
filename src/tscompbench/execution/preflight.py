@@ -3,6 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any
 
+from tscompbench.adapters.compatibility import CompatibilityDomainError
 from tscompbench.codecs import CodecManifest
 from tscompbench.contracts import RunStatus
 from tscompbench.datasets.canonical import CanonicalArtifact
@@ -126,11 +127,17 @@ def preflight_task(
         routed = route_canonical_artifact(artifact, task.track)
         input_validation = validate_routed_input(routed, task)
         max_abs_error = (
-            str(parameters.get("error_bound"))
+            parameters.get("error_bound")
             if task.compatibility.status.value == "ADAPTER_LOSSY"
             else None
         )
         prepared = prepare_execution_input(routed, task.compatibility, max_abs_error=max_abs_error)
+    except CompatibilityDomainError as error:
+        return _failure(
+            RunStatus.UNSUPPORTED,
+            error.reason_code,
+            diagnostics={"error_type": type(error).__name__, "message": str(error)},
+        ), None
     except Exception as error:
         return _failure(
             RunStatus.SCHEMA_ERROR,

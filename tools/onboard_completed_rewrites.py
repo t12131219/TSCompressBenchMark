@@ -176,7 +176,9 @@ def main():
             "license_decision": source["license"],
             "known_limitations": LIMITATIONS[name]
             + [
-                "PIPELINE/E2E supported; CORE/native timing unavailable and reported as null.",
+                "CORE/PIPELINE/E2E supported using harness session/object boundaries; "
+                "API-internal staging, framing, model work and decode materialization remain "
+                "in CORE. Optional native timing unavailable (null).",
                 "Independent object profile; streaming/query/random access rejected during "
                 "planning.",
                 "Synthetic acceptance fixtures establish integration, not real-world performance "

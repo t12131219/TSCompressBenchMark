@@ -49,6 +49,9 @@ def sha256_file(path: Path, *, chunk_size: int = 1024 * 1024) -> str:
 
 
 def _identity_payload(document: dict[str, Any]) -> dict[str, Any]:
+    if document["schema_version"] == "tscb.canonical-source-manifest.v1":
+        from .canonical_source import identity_payload
+        return identity_payload(document)
     return {
         "schema_version": document["schema_version"],
         "content": {
@@ -114,6 +117,12 @@ class DatasetRegistry:
         if not isinstance(document, dict):
             raise DatasetContractError("manifest root must be an object")
         _validate_keys(document, required=_TOP_LEVEL_KEYS, label="manifest")
+        if document["schema_version"] == "tscb.canonical-source-manifest.v1":
+            if document["key"] != expected_key:
+                raise DatasetContractError("manifest key must match its filename")
+            from .canonical_source import validate_manifest
+            validate_manifest(document)
+            return
         if document["schema_version"] != "tscb.dataset-manifest.v2":
             raise DatasetContractError("unsupported dataset manifest schema_version")
         if document["key"] != expected_key:

@@ -250,7 +250,8 @@ class FastPFORSimpleSession:
             or type(item.logical_bits) is not int
             or item.logical_bits != array.nbytes * 8
             or type(routed.canonical_raw_bits) is not int
-            or routed.canonical_raw_bits != item.logical_bits
+            or routed.canonical_raw_bits < routed.n * routed.m * 8
+            or routed.canonical_raw_bits % 8
             or routed.validity_reference is not None
             or type(routed.value_units) is not tuple
             or len(routed.value_units) > 1

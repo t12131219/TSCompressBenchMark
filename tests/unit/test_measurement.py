@@ -1,3 +1,4 @@
+from dataclasses import replace
 from pathlib import Path
 
 import numpy as np
@@ -5,7 +6,13 @@ import pytest
 
 from tscompbench.accounting import AccountingLedger
 from tscompbench.adapters import OracleAdapter
-from tscompbench.codecs import CompatibilityPlan, DataDescriptor
+from tscompbench.codecs import (
+    CodecRegistry,
+    CompatibilityPlan,
+    DataDescriptor,
+    SourceRegistry,
+    negotiate,
+)
 from tscompbench.configuration import ConfigurationError, load_experiment_config
 from tscompbench.contracts import (
     BenchmarkTrack,
@@ -159,6 +166,38 @@ def test_measured_repetition_reuses_layer3_lifecycle_and_records_scope_resources
     assert observation.resources.counter_observation["values"] is None
     assert observation.resources.energy_observation["joules"] is None
     assert observation.encoded.finalize_bytes > 0
+
+
+@pytest.mark.parametrize("scope", ["CORE", "PIPELINE", "E2E"])
+def test_lossy_adapter_error_bound_reaches_warmup_and_every_inner_iteration(scope):
+    root = Path(__file__).resolve().parents[2]
+    codecs = CodecRegistry(root / "registry/codecs", SourceRegistry(root / "registry/sources"))
+    values = np.linspace(0.1, 0.9, 16, dtype="<f8")
+    values.flags.writeable = False
+    buffers = (LogicalBuffer("value/000000", values, values.nbytes * 8),)
+    route = replace(_route(), buffers=buffers, input_sha256=hash_logical_buffers(buffers))
+    descriptor = replace(_compatibility(route).input_descriptor, dtype_vector=("<f8",))
+    plan = negotiate(codecs.get("oracle-lossy-adapter"), descriptor)
+    assert plan.status is CapabilityStatus.ADAPTER_LOSSY
+    policy = _policy(timing_scope=scope)
+    parameters = {"error_bound": "0.000001"}
+    assert perform_warmup(OracleAdapter(), route, plan, parameters, policy).threshold_satisfied
+    result = perform_measured_roundtrip(OracleAdapter(), route, plan, parameters, policy)
+    assert result.timing.inner_iterations > 1
+    assert result.timing.min_duration_satisfied
+    np.testing.assert_allclose(
+        result.decoded.buffers[0].array, values, atol=float(parameters["error_bound"]), rtol=0
+    )
+    with pytest.raises(ValueError, match="requires a declared error bound"):
+        perform_warmup(OracleAdapter(), route, plan, {}, policy)
+    with pytest.raises(ValueError, match="requires a declared error bound"):
+        perform_measured_roundtrip(OracleAdapter(), route, plan, {}, policy)
+    from tscompbench.adapters.compatibility import LossyCompatibilityDomainError
+
+    with pytest.raises(LossyCompatibilityDomainError, match="cannot meet the error bound"):
+        perform_measured_roundtrip(
+            OracleAdapter(), route, plan, {"error_bound": "0.0000000001"}, policy
+        )
 
 
 @pytest.mark.parametrize("scope", ["CORE", "PIPELINE", "E2E"])

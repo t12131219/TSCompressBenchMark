@@ -16,8 +16,11 @@ from audit_simdcomp_native import audit, require, sha
 
 ROOT = Path(__file__).resolve().parents[1]
 ADAPTER = ROOT / "adapters/simdcomp"
-OUT = ROOT / "build/source-audits/simdcomp-sdk"
-REPORT = ROOT / "build/source-audits/simdcomp_sdk_tests.json"
+SDK_SUFFIX = os.environ.get("TSCB_SDK_EXECUTION_SUFFIX")
+if SDK_SUFFIX and (Path(SDK_SUFFIX).name != SDK_SUFFIX or ".." in SDK_SUFFIX):
+    raise ValueError("unsafe SDK execution suffix")
+OUT = ROOT / "build/source-audits" / ("simdcomp-sdk-" + SDK_SUFFIX if SDK_SUFFIX else "simdcomp-sdk")
+REPORT = OUT / "report.json" if SDK_SUFFIX else ROOT / "build/source-audits/simdcomp_sdk_tests.json"
 
 
 def worker() -> None:
@@ -63,8 +66,8 @@ def worker() -> None:
 
 
 def main() -> None:
-    OUT.mkdir(parents=True, exist_ok=True)
-    evidence: dict = {"status": "RUNNING", "commands": []}
+    OUT.mkdir(parents=True, exist_ok=not bool(SDK_SUFFIX))
+    evidence: dict = {"status": "RUNNING", "commands": [], "output_directory": str(OUT.relative_to(ROOT))}
 
     def save() -> None:
         REPORT.write_text(json.dumps(evidence, indent=2) + "\n")

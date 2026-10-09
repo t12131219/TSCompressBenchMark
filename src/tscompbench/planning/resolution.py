@@ -68,7 +68,7 @@ def resolve_execution(
         actual = "NOT_EXECUTED"
     elif (
         "timing_scopes" in execution
-        and profile.get("timing_scope") not in execution["timing_scopes"]
+        and profile.get("timing_scope", "PIPELINE") not in execution["timing_scopes"]
     ):
         status = RunStatus.UNSUPPORTED
         reason = "TIMING_SCOPE_UNSUPPORTED"

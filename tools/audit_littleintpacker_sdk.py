@@ -22,6 +22,12 @@ def require(condition: bool, reason: str) -> None:
 
 
 def sdk_report_path(root: Path = ROOT) -> Path:
+    card_path = root / "registry/onboarding/littleintpacker-pack32-u32.json"
+    if card_path.is_file():
+        card = json.loads(card_path.read_text())
+        tests = [t for t in card["upstream_tests"] if t["name"] == "direct_sdk"]
+        if len(tests) == 1:
+            return root / tests[0]["evidence"]
     current = root / "build/source-audits/littleintpacker-sdk-20261007-2/report.json"
     return current if current.exists() else root / "build/source-audits/littleintpacker_sdk_tests.json"
 

@@ -215,7 +215,9 @@ class FastDifferentialSession:
             or routed.m != 1
             or not item.name.startswith("value/")
             or item.logical_bits != array.nbytes * 8
-            or routed.canonical_raw_bits != item.logical_bits
+            or type(routed.canonical_raw_bits) is not int
+            or routed.canonical_raw_bits < routed.n * routed.m * 8
+            or routed.canonical_raw_bits % 8
             or routed.validity_reference is not None
             or len(routed.value_units) > 1
         ):

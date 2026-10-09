@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import hashlib
+import math
 from typing import Any
 
 import numpy as np
@@ -82,7 +83,7 @@ def route_canonical_artifact(
         )
         logical = artifact.metadata["logical_descriptor"]
         shape = tuple(int(value) for value in logical["value_shape"])
-        m = len(values) if len(values) > 1 else (shape[1] if len(shape) > 1 else 1)
+        m = len(values) if len(values) > 1 else math.prod(shape[1:])
     else:
         if timestamp is None or not values:
             raise ExecutionContractError("SYSTEM_REQUIRES_T_AND_V")
@@ -97,7 +98,8 @@ def route_canonical_artifact(
         segment_plan_id = stable_id("segment-plan", segment_plan)
         selected = ("timestamp", *values) + (("validity",) if validity is not None else ())
         canonical_raw_bits = int(accounting["canonical_raw_bits"])
-        m = len(values)
+        shape = artifact.metadata["logical_descriptor"]["value_shape"]
+        m = len(values) if len(values) > 1 else math.prod(shape[1:])
 
     buffers = tuple(
         LogicalBuffer(

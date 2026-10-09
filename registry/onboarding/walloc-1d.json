@@ -593,7 +593,7 @@
   },
   "known_limitations": [
     "CPU stereo float32 normalized-audio profile, official stereo_5x/stereo_20x models. Native zero-padding, WebP latent container, embedded full model and cropped reconstruction retained. No universal error bound; SIMD dependency dispatch, no scalar-kernel claim.",
-    "PIPELINE/E2E supported; CORE/native timing unavailable and reported as null.",
+    "CORE/PIPELINE/E2E supported using harness session/object boundaries; API-internal staging, framing, model work and decode materialization remain in CORE. Optional native timing unavailable (null).",
     "Independent object profile; streaming/query/random access rejected during planning.",
     "Synthetic acceptance fixtures establish integration, not real-world performance or quality rankings."
   ],
@@ -605,5 +605,5 @@
     "SOURCE_DOMAIN_UNSUPPORTED",
     "ISA_UNSUPPORTED"
   ],
-  "source_onboarding_id": "v2:source-onboarding:sha256:b27bd2135f325626127224e9c2df8b633ca92b4187337a2440a9a26a98b9ee57"
+  "source_onboarding_id": "v2:source-onboarding:sha256:ead5e1fddb3a2dcda4e06f54284e7f4e01fded335c04cc5854cb8913617d3175"
 }

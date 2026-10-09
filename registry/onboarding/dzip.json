@@ -893,7 +893,7 @@
   },
   "known_limitations": [
     "CPU bootstrap/combined profiles with explicitly seeded, untrained native initial model based on sorted input alphabet; full weights embedded and charged. No external fitting or quality claim for a trained model. Source rejects alphabet cardinality 9; empty input uses declared 256-symbol extension. AVX baseline plus MKLDNN dispatch; process thread budget 3 for caller and two Eigen one-worker pools.",
-    "PIPELINE/E2E supported; CORE/native timing unavailable and reported as null.",
+    "CORE/PIPELINE/E2E supported using harness session/object boundaries; API-internal staging, framing, model work and decode materialization remain in CORE. Optional native timing unavailable (null).",
     "Independent object profile; streaming/query/random access rejected during planning.",
     "Synthetic acceptance fixtures establish integration, not real-world performance or quality rankings."
   ],
@@ -905,5 +905,5 @@
     "SOURCE_DOMAIN_UNSUPPORTED",
     "ISA_UNSUPPORTED"
   ],
-  "source_onboarding_id": "v2:source-onboarding:sha256:c7ae143b4e5b1bd2f534c278a7c2203d48a765a09b0e7ba0837e4fc30604d095"
+  "source_onboarding_id": "v2:source-onboarding:sha256:6a877f53b9400ea6e26f5b4a81b4778441807a3c240aaa6a8222c9b527531abb"
 }

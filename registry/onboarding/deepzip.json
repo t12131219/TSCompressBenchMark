@@ -99,7 +99,7 @@
     "value_domain": {
       "kind": "FROZEN_SOURCE_WITH_BOUNDED_REJECTION",
       "unsupported_action": "REJECT_BEFORE_OUTPUT",
-      "oracle_evidence": "adapters/completed_rewrites/vendor/deepzip/contract.md",
+      "oracle_evidence": "adapters/completed_rewrites/vendor/deepzip/contract_v1.md",
       "rejection_reasons": [
         "MODEL_ALPHABET_UNSUPPORTED"
       ]
@@ -205,7 +205,7 @@
   },
   "known_limitations": [
     "CPU numerical profile; all 17 frozen model variants verified against native vocabulary width 4. Native byte alphabet 0..3 only; no byte remapping, CUDA or HDF5 importer in this profile. External checkpoint loading/hashing included in encode; independent decode uses embedded model.",
-    "PIPELINE/E2E supported; CORE/native timing unavailable and reported as null.",
+    "CORE/PIPELINE/E2E supported using harness session/object boundaries; API-internal staging, framing, model work and decode materialization remain in CORE. Optional native timing unavailable (null).",
     "Independent object profile; streaming/query/random access rejected during planning.",
     "Synthetic acceptance fixtures establish integration, not real-world performance or quality rankings."
   ],
@@ -217,5 +217,5 @@
     "SOURCE_DOMAIN_UNSUPPORTED",
     "ISA_UNSUPPORTED"
   ],
-  "source_onboarding_id": "v2:source-onboarding:sha256:34df67a60d0c00540dd6389ff40f8d0b4d6461311b3e0ff64983df6b32ace428"
+  "source_onboarding_id": "v2:source-onboarding:sha256:aa5c1a56a496e06bda46cc43458d0debd960a7b4833cdb9ad081654b6b638776"
 }

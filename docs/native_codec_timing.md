@@ -90,3 +90,21 @@ no separately amortized training phase. Decode checksum/global-header prevalidat
 outside, while loading the serialized per-column object and reconstruction are inside.
 The admitted build is scalar and single-threaded, so these measurements must not be
 presented as upstream AVX or benchmark-program timings.
+
+# 三种主计时范围的接入状态（2026-10-08）
+
+当前注册入口支持 `CORE`、`PIPELINE`、`E2E` 独立对象模式。18 个完成重写入口曾因
+`execution.timing_scopes` 只列出 PIPELINE/E2E 而在规划时拒绝 CORE，现已补齐。
+完整验证方法与逐项结果见 [三模式验证](all_algorithm_timing_scopes.md)。
+
+本项目 CORE 使用 harness 对 session API 的 wall clock：encode 为
+`compress_update + finalize`，decode 为 `decompress`。外层输入准备、context 创建、
+encode 输出容量申请在 CORE 之外；API 内部的描述符、staging、copy、完整帧、模型工作及
+decode 结果物化仍在 CORE 内。每次 inner iteration 用新 context，reset 通过新建 context
+实现；finalize 在 encode CORE 内。CORE 不表示纯 native kernel 时间。
+PIPELINE 包含外层准备、创建、bound/allocation、CORE、stream 物化、accounting、
+telemetry 和 close，decode 还包括逆兼容操作。E2E 包含完整对象 encode/decode 及阶段间开销，
+输入为内存中的 canonical routed view；文件读取及计时后的正确性检查不在边界内。
+
+缺少 native timer 的实现仍将 `native_*` 记录为 null，不能用 CORE 数值填入。
+注册声明变化会生成新 AlgorithmID；旧冻结运行及正式证据保持原身份和原结果。

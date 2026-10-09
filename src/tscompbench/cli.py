@@ -41,12 +41,22 @@ def _print_json(value: object) -> None:
 def _build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="tscompbench")
     parser.add_argument("--project-root", type=Path, default=_project_root())
+    parser.add_argument("--dataset-manifest-root", type=Path)
     groups = parser.add_subparsers(dest="group", required=True)
 
     datasets = groups.add_parser("datasets", help="Dataset registry and Layer 1 operations")
     dataset_commands = datasets.add_subparsers(dest="command", required=True)
     dataset_commands.add_parser("list")
     dataset_commands.add_parser("verify")
+    import_source = dataset_commands.add_parser("import-canonical")
+    import_source.add_argument("path", type=Path)
+    import_source.add_argument("--key", required=True)
+    import_source.add_argument("--license-spdx", default="NOASSERTION")
+    import_source.add_argument(
+        "--license-status",
+        choices=("RUN_ALLOWED", "REVIEW_REQUIRED", "REDISTRIBUTION_RESTRICTED", "BLOCKED"),
+        default="REVIEW_REQUIRED",
+    )
     prepare = dataset_commands.add_parser("prepare")
     prepare.add_argument("key")
     prepare.add_argument("--output", type=Path, required=True)
@@ -77,9 +87,26 @@ def main(argv: list[str] | None = None) -> int:
     parser = _build_parser()
     args = parser.parse_args(argv)
     root = args.project_root.resolve()
-    registry = _registry(root)
+    registry = _registry(root, args.dataset_manifest_root)
     try:
-        if args.group == "datasets" and args.command == "list":
+        if args.group == "datasets" and args.command == "import-canonical":
+            from tscompbench.datasets.canonical_source import register_canonical_source
+
+            target = register_canonical_source(
+                args.path,
+                root,
+                registry.manifest_root,
+                args.key,
+                license_info={"spdx": args.license_spdx, "status": args.license_status},
+            )
+            _print_json(
+                {
+                    "status": "PASS",
+                    "manifest": str(target),
+                    "dataset_id": registry.load(args.key).dataset_id,
+                }
+            )
+        elif args.group == "datasets" and args.command == "list":
             _print_json({"datasets": list(registry.keys())})
         elif args.group == "datasets" and args.command == "verify":
             manifests = registry.verify_all()

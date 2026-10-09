@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tscompbench.local/schemas/canonical-source/v1/dataset-manifest.schema.json",
+  "title": "Canonical source manifest v1 (independent of legacy CSV/NPZ v2)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "key", "display_name", "source", "license", "file", "parser", "logical", "expected", "split"],
+  "properties": {
+    "schema_version": {"const": "tscb.canonical-source-manifest.v1"},
+    "key": {"type": "string", "pattern": "^[a-z0-9][a-z0-9_-]*$"},
+    "display_name": {"type": "string", "minLength": 1},
+    "source": {"type": "object", "additionalProperties": false, "required": ["uri", "retrieved_at", "notes"], "properties": {"uri": {"type": "string"}, "retrieved_at": {"type": "string"}, "notes": {"type": "string"}}},
+    "license": {"type": "object", "required": ["spdx", "status"], "properties": {"spdx": {"type": "string"}, "status": {"enum": ["RUN_ALLOWED", "REVIEW_REQUIRED", "REDISTRIBUTION_RESTRICTED", "BLOCKED"]}}},
+    "file": {"type": "object", "additionalProperties": false, "required": ["path", "bytes", "sha256", "format"], "properties": {"path": {"type": "string"}, "bytes": {"type": "integer", "minimum": 0}, "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}, "format": {"const": "canonical"}}},
+    "parser": {"const": {"name": "tscb.canonical", "version": "1", "identity_policy": "tscb.dataset-content.v1"}},
+    "logical": {"type": "object"},
+    "expected": {"type": "object", "additionalProperties": false, "required": ["shape", "n_rows", "canonical_raw_bits", "semantic_content_sha256"], "properties": {"shape": {"type": "array", "items": {"type": "integer", "minimum": 0}}, "n_rows": {"type": "integer", "minimum": 0}, "canonical_raw_bits": {"type": "integer", "minimum": 0}, "semantic_content_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}},
+    "split": {"type": "object", "additionalProperties": false, "required": ["policy", "learned_eligible", "reason"], "properties": {"policy": {"type": "string"}, "learned_eligible": {"type": "boolean"}, "reason": {"type": "string"}}}
+  }
+}

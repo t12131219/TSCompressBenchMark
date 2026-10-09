@@ -20,10 +20,16 @@ def require(condition: bool, reason: str) -> None:
         raise RuntimeError(reason)
 
 
-def audit(root: Path = ROOT) -> dict:
+def audit(root: Path = ROOT, report_path: Path | None = None) -> dict:
     native = runpy.run_path(str(ROOT / "tools/audit_maskedvbyte_native.py"))["audit"](root)
-    report_path = root / "build/source-audits/maskedvbyte-sdk-tests.json"
+    if report_path is None:
+        card_path = root / "registry/onboarding/maskedvbyte-u32.json"
+        card = json.loads(card_path.read_text()) if card_path.is_file() else {"upstream_tests": []}
+        records = [item for item in card["upstream_tests"] if item["name"] == "direct_sdk"]
+        report_path = root / records[0]["evidence"] if len(records) == 1 else root / "build/source-audits/maskedvbyte-sdk-tests.json"
     report = json.loads(report_path.read_text())
+    out = root / report.get("output_directory", "build/source-audits/maskedvbyte-sdk")
+    require(out.resolve().is_relative_to(root.resolve()), "SDK output escapes project")
     require(
         report["status"] == "PASS" and report["native_current_audit"] == native,
         "SDK native evidence absent/stale",
@@ -31,8 +37,8 @@ def audit(root: Path = ROOT) -> dict:
     for field, path in (
         ("driver_sha256", root / "tools/qualify_maskedvbyte_sdk.py"),
         ("native_auditor_sha256", root / "tools/audit_maskedvbyte_native.py"),
-        ("junit_sha256", root / "build/source-audits/maskedvbyte-sdk/pytest.xml"),
-        ("python_closure_sha256", root / "build/source-audits/maskedvbyte-sdk/python-closure.json"),
+        ("junit_sha256", out / "pytest.xml"),
+        ("python_closure_sha256", out / "python-closure.json"),
     ):
         require(report[field] == sha(path), "SDK evidence drift: " + field)
     require(
@@ -45,7 +51,7 @@ def audit(root: Path = ROOT) -> dict:
         and report["original_vendor_equal_file_count"] == 11,
         "original source comparison missing",
     )
-    junit_path = root / "build/source-audits/maskedvbyte-sdk/pytest.xml"
+    junit_path = out / "pytest.xml"
     suites = ET.parse(junit_path).getroot().findall("testsuite")
     totals = {
         field: sum(int(s.get(field, "0")) for s in suites)
@@ -56,7 +62,7 @@ def audit(root: Path = ROOT) -> dict:
         "SDK tests incomplete/failed/skipped",
     )
     closure = json.loads(
-        (root / "build/source-audits/maskedvbyte-sdk/python-closure.json").read_text()
+        (out / "python-closure.json").read_text()
     )
     require(
         closure["status"] == "PASS" and closure["source_snapshot"] == report["source_snapshot"],

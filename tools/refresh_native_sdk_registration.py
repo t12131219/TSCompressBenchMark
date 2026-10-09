@@ -35,7 +35,7 @@ def sha(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def checked_sdk_report(family: str) -> dict | None:
+def checked_sdk_report(family: str, report_path: Path | None = None) -> dict | None:
     if family == 'fast-differential':
         from audit_fast_differential_native import audit
         native = audit()
@@ -57,11 +57,21 @@ def checked_sdk_report(family: str) -> dict | None:
             'simdcomp': 'audit_simdcomp_sdk',
             'fastpfor-simple': 'audit_fastpfor_simple_sdk',
         }[family])
-        module.audit()
+        if report_path is not None:
+            require(family in ('simdcomp', 'fastpfor-simple', 'maskedvbyte'), 'report override unsupported')
+            module.audit(ROOT, report_path)
+        else:
+            module.audit()
         name = {'maskedvbyte':'maskedvbyte-sdk-tests.json',
                 'simdcomp':'simdcomp_sdk_tests.json',
                 'fastpfor-simple':'fastpfor_simple_sdk_tests.json'}[family]
-        path = ROOT/'build/source-audits'/name
+        if report_path is None:
+            key = FAMILIES[family][0]
+            card = json.loads((ROOT / f'registry/onboarding/{key}.json').read_text())
+            tests = [item for item in card['upstream_tests'] if item['name'] == 'direct_sdk']
+            path = ROOT / tests[0]['evidence'] if len(tests) == 1 else ROOT/'build/source-audits'/name
+        else:
+            path = report_path
         report = json.loads(path.read_text())
     else:
         return None
@@ -77,13 +87,20 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--family', choices=(*FAMILIES, 'all'), default='all')
     parser.add_argument('--suffix', required=True)
+    parser.add_argument('--sdk-report', type=Path)
     args = parser.parse_args()
     require(args.suffix and Path(args.suffix).name == args.suffix and args.suffix not in ('.','..'),
             'unsafe refresh suffix')
     output = ROOT/'build/source-audits'/f'native-sdk-registry-refresh-{args.suffix}'
     require(not output.exists(), 'preserve previous registry refresh')
     families = FAMILIES if args.family == 'all' else {args.family:FAMILIES[args.family]}
-    sdk = {family:checked_sdk_report(family) for family in families}
+    require(args.sdk_report is None or args.family in ('simdcomp', 'fastpfor-simple', 'maskedvbyte'),
+            'SDK report override requires one supported family')
+    report_path = args.sdk_report.resolve() if args.sdk_report else None
+    if report_path is not None:
+        report_path.relative_to(ROOT)
+    sdk = {family:(checked_sdk_report(family, report_path) if report_path is not None
+                   else checked_sdk_report(family)) for family in families}
     registry = CodecRegistry(ROOT/'registry/codecs', SourceRegistry(ROOT/'registry/sources'))
     staged = []
     identities = []
@@ -112,6 +129,8 @@ def main() -> None:
                 build['artifact_sha256'] = record['artifact_sha256']
                 build['compile_commands_sha256'] = record['compile_commands_sha256']
             for test in card['upstream_tests']:
+                if report_path is not None and test['name'] == 'direct_sdk':
+                    test['evidence'] = str(report_path.relative_to(ROOT))
                 evidence_path = ROOT/test['evidence']
                 evidence = json.loads(evidence_path.read_text())
                 # These raw observations are qualified by the independent SDK

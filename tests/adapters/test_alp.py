@@ -7,7 +7,7 @@ import pytest
 from tscompbench.adapters import AlpAdapter
 from tscompbench.codecs import CodecRegistry, SourceRegistry
 from tscompbench.contracts import BenchmarkTrack
-from tscompbench.execution.protocol import ExecutionContractError, LogicalBuffer, RoutedInput
+from tscompbench.execution.protocol import ExecutionContractError, LogicalBuffer, RoutedInput, SourceDomainError
 from tscompbench.execution.repetition import perform_roundtrip
 from tscompbench.execution.routing import hash_logical_buffers
 
@@ -79,8 +79,21 @@ def test_truncated_and_trailing_native_frames_are_rejected(name):
 def test_forced_alp_never_silently_executes_alp_rd():
     rng = np.random.default_rng(20260920)
     values = rng.integers(0, 2**64, 4096, dtype="<u8").view("<f8")
-    with pytest.raises(ExecutionContractError, match=r"failed \(2\)"):
+    with pytest.raises(SourceDomainError, match="forced ALP identity forbids fallback") as raised:
         perform_roundtrip(codec("alp"), route(values), {})
+    assert raised.value.rejection_atomic
+
+
+@pytest.mark.parametrize("status,operation", [(2, "decompress"), (4, "compress")])
+def test_native_errors_are_not_generalized_to_source_domain_refusals(status, operation):
+    session = codec("alp").create_session({})
+    try:
+        with pytest.raises(ExecutionContractError) as raised:
+            session._check(status, operation)
+        assert not isinstance(raised.value, SourceDomainError)
+        assert "native adapter supplied no error detail" not in str(raised.value)
+    finally:
+        session.close()
 
 
 def test_two_dimensional_input_is_not_reduced_to_first_column():
