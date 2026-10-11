@@ -44,10 +44,65 @@
     "redistribution": "ORIGINAL_LICENSE_TERMS_APPLY"
   },
   "build": {
-    "recipe": "python tools/build_codec.py chimp --profile all",
+    "recipe": "python tools/build_codec.py chimp --profile all --output-root build/port-standard-v30-20261011/native-builds-v3",
     "frozen_lock": "adapters/rewrite_lossless/FROZEN_APIS.json",
     "translation_units": [
       "src/codec.cpp"
-    ]
+    ],
+    "current_build_records": [
+      {
+        "algorithm": "chimp",
+        "profile": "release",
+        "record": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/chimp/release/build-record.json",
+          "sha256": "f8917b894548e2ebf71a9c457e09722b392e1bcfa3b3c31e80bf3d5601c6fcf0"
+        },
+        "artifact": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/chimp/release/libtscb_chimp.so",
+          "sha256": "16175d1443399e47011295fa175e09cc3f3b7aa883fcb0a350709f399b87c3ac"
+        },
+        "compile_commands_sha256": "bc7044aeaa4b32b99313a35b55e568246dfc87ae2cde4275c5e88b3751edac34",
+        "dependency_capture": "ACTUAL_PER_TU_MD_COMPILATION_AND_LINK"
+      },
+      {
+        "algorithm": "chimp",
+        "profile": "sanitizer",
+        "record": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/chimp/sanitizer/build-record.json",
+          "sha256": "b8e9ef96bd77611f436997ea06f8ad09e761e33a4aa434a694eed57106d2adef"
+        },
+        "artifact": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/chimp/sanitizer/libtscb_chimp.so",
+          "sha256": "97af0517b4f92ec35c9625c0bd86466df8247d98160c613f9e5b65463810e87c"
+        },
+        "compile_commands_sha256": "e14cb8b93aecdff7005b25f66d9de5c558ebee122471eec62b35dde85b8da8be",
+        "dependency_capture": "ACTUAL_PER_TU_MD_COMPILATION_AND_LINK"
+      }
+    ],
+    "current_native_qualification": [
+      {
+        "algorithm": "chimp",
+        "profile": "release",
+        "build_dependency_status": "PASS",
+        "native_suite_status": "PASS",
+        "evidence": {
+          "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/qualification.json",
+          "sha256": "b86173f34c30d175552de327cc446dd8480aa02dd7a9ae56f12f60c0d93db174"
+        },
+        "source_full_parity": "NOT_ASSERTED"
+      },
+      {
+        "algorithm": "chimp",
+        "profile": "sanitizer",
+        "build_dependency_status": "PASS",
+        "native_suite_status": "PASS",
+        "evidence": {
+          "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/qualification.json",
+          "sha256": "b86173f34c30d175552de327cc446dd8480aa02dd7a9ae56f12f60c0d93db174"
+        },
+        "source_full_parity": "NOT_ASSERTED"
+      }
+    ],
+    "current_build_dependency_scope": "ACTUAL_PER_TU_MD_HEADERS_OBJECTS_SELECTED_TOOLCHAIN_AND_DYNAMIC_RUNTIME_PARTIAL_STATIC_LINK_CLOSURE"
   }
 }

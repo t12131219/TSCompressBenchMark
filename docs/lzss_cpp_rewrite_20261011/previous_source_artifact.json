@@ -1,0 +1,41 @@
+{
+  "schema_version": "tscb.source-artifact.v2",
+  "key": "lzss-alexkazik-0.9.1",
+  "kind": "VENDORED_UPSTREAM_SOURCE_CLOSURE",
+  "identity": {
+    "kind": "VENDORED_UPSTREAM_SOURCE_CLOSURE",
+    "key": "lzss-alexkazik-0.9.1",
+    "repository": "https://github.com/alexkazik/lzss",
+    "commit": "512b9163d8a936003c925e24f7f682eeaeda8307",
+    "version": "0.9.1",
+    "source_closure_sha256": "82cb61ecc9d31fd48a31624fd2b45f310fcf641d5fcd8e2dcca11d361feced2c",
+    "source_closure_file_count": 34,
+    "copy_policy": "UNMODIFIED_LIBRARY_BUILD_TEST_BENCH_LICENSE_AND_PINNED_VOID",
+    "execution_variant": "GENERIC_SAFE_EI10_EJ4_C32_STACK_SINGLE_THREAD",
+    "dependency": {
+      "name": "void",
+      "version": "1.0.2",
+      "crate_sha256": "6a02e4885ed3bc0f2de90ea6dd45ebcbb66dacffe03547fadbb0eeae2770887d"
+    },
+    "benchmark_source_exception": "LZBENCH_HAS_LZSSE_NOT_SPREADSHEET_OKUMURA_LZSS"
+  },
+  "license": {
+    "spdx": "MIT",
+    "status": "RUN_ALLOWED",
+    "redistribution": "REVIEW_REQUIRED_VOID_ARCHIVE_HAS_NO_LICENSE_TEXT",
+    "files": [
+      "adapters/lzss_raw/vendor/lzss/LICENSE",
+      "adapters/lzss_raw/vendor/void/Cargo.toml",
+      "adapters/lzss_raw/vendor/void/README.md"
+    ]
+  },
+  "build": {
+    "recipe": "conda run -n CompressBench14 python tools/build_codec.py lzss-raw --profile all",
+    "patches": [],
+    "submodules": [],
+    "build_system": "OFFLINE_RUSTC_STATICLIB_CPP_C_ABI",
+    "release_artifact": "build/adapters/lzss_raw/release/libtscb_lzss_raw.so",
+    "sanitizer_artifact": "build/adapters/lzss_raw/sanitizer/libtscb_lzss_raw.so",
+    "compile_command_evidence": "build/adapters/lzss_raw/<profile>/compile-command.json"
+  }
+}

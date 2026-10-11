@@ -1,0 +1,75 @@
+{
+  "display_name": "v32_qual_original_t_duplicate_v2",
+  "expected": {
+    "canonical_raw_bits": 16512,
+    "n_rows": 129,
+    "semantic_content_sha256": "fa5587751eb4dce180ef33f0773369580b3e7719e84a3e7373ada8c94e7e05c9",
+    "shape": [
+      129
+    ]
+  },
+  "file": {
+    "bytes": 3592,
+    "format": "canonical",
+    "path": "artifacts/comparisons/v32_20261010/sources/v32_qual_original_t_duplicate_v2.tscb",
+    "sha256": "0df959ce0de4464aaf4c51e4186e8a1ec23f711bccc2a30f7faf67049072b318"
+  },
+  "key": "v32_qual_original_t_duplicate_v2",
+  "license": {
+    "spdx": "CC0-1.0",
+    "status": "RUN_ALLOWED"
+  },
+  "logical": {
+    "axes": [
+      "time"
+    ],
+    "n_rows": 129,
+    "nan_is_null": false,
+    "schema_version": "tscb.logical-view.v2",
+    "timestamp": {
+      "dtype": "<i8",
+      "epoch": "UNIX",
+      "order_policy": "PRESERVE",
+      "origin": "GENERATED",
+      "present": true,
+      "unit": "s"
+    },
+    "topology": "UTS",
+    "validity_shape": "NONE",
+    "value_columns": [
+      {
+        "display_name": "synthetic-0",
+        "dtype": "<f8",
+        "entity": "synthetic",
+        "feature": "channel-0",
+        "name": "synthetic/000000",
+        "shape": [
+          129
+        ],
+        "strides": [
+          8
+        ],
+        "unit": "UNSPECIFIED"
+      }
+    ],
+    "value_shape": [
+      129
+    ]
+  },
+  "parser": {
+    "identity_policy": "tscb.dataset-content.v2",
+    "name": "tscb.canonical",
+    "version": "2"
+  },
+  "schema_version": "tscb.canonical-source-manifest.v1",
+  "source": {
+    "notes": "{\"domain_proof\": null, \"generation_spec\": {\"dtype\": \"<f8\", \"floating_scale\": \"1/16\", \"formula_version\": \"1\", \"kind\": \"SYNTHETIC_TIMESTAMP\", \"m\": 1, \"n\": 129, \"pattern\": \"duplicate\", \"rng\": \"numpy.PCG64\", \"seed\": 20261010, \"timestamp_payload_sha256\": \"107469288d52c8201ed09cf096802e098618a5597b99f0874920c127c61cea7e\", \"values_outside_timestamp_task\": true}, \"source_lineage_authentication\": \"GENERATOR_FULL_SPEC\", \"source_manifest\": null, \"source_sha256\": null}",
+    "retrieved_at": "LOCAL_GENERATED",
+    "uri": "local:synthetic"
+  },
+  "split": {
+    "learned_eligible": false,
+    "policy": "VALIDATION",
+    "reason": "Fixed typed task; synthetic pilot is independent; no model training."
+  }
+}

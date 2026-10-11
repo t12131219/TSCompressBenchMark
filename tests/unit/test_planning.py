@@ -9,6 +9,7 @@ from tscompbench.codecs import (
     negotiate,
 )
 from tscompbench.contracts import BenchmarkTrack, RunStatus, Topology, ValidityShape
+from tscompbench.ids import stable_id
 from tscompbench.planning import build_comparability_keys, expand_sweep, resolve_execution
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
@@ -100,6 +101,50 @@ def test_runtime_fallback_changes_execution_path_hash(tmp_path) -> None:
     assert fallback.execution_path_hash != scalar.execution_path_hash
 
 
+def test_alp_source_fallback_requires_explicit_planning_and_factory_opt_in(tmp_path):
+    from tscompbench.adapters import create_adapter
+    from tscompbench.adapters.source_reject_fallback import SourceRejectCompositeAdapter
+
+    manifest = _registry().get("alp")
+    compatibility = negotiate(manifest, _descriptor())
+    config = expand_sweep(manifest, {})[0]
+    artifact = tmp_path / "adapter.bin"
+    artifact.write_bytes(b"frozen-adapter")
+    environment = {
+        "environment_id": "v2:environment:sha256:" + "1" * 64,
+        "cpu": {"flags": [], "affinity": [0]},
+    }
+    profile = {
+        "threads": 1,
+        "processes": 1,
+        "runner_version": "test",
+        "allocation_policy": "PER_REPETITION",
+        "cache_policy": "WARM_INPUT",
+        "state_policy": "RESET_PER_REPETITION",
+        "gc_policy": "DISABLED_DURING_TIMING",
+        "jit_policy": "NOT_APPLICABLE",
+    }
+    direct = resolve_execution(
+        manifest, config, compatibility, environment, artifact_path=artifact, profile=profile
+    )
+    composite = resolve_execution(
+        manifest,
+        config,
+        compatibility,
+        environment,
+        artifact_path=artifact,
+        profile=profile,
+        source_reject_fallback=True,
+    )
+    default_adapter = create_adapter(PROJECT_ROOT, manifest)
+    composite_adapter = create_adapter(PROJECT_ROOT, manifest, source_reject_fallback=True)
+    assert not isinstance(default_adapter, SourceRejectCompositeAdapter)
+    assert isinstance(composite_adapter, SourceRejectCompositeAdapter)
+    assert direct.adapter_id == default_adapter.adapter_id
+    assert composite.adapter_id == composite_adapter.adapter_id
+    assert direct.execution_path_hash != composite.execution_path_hash
+
+
 def test_missing_execution_artifact_is_an_explicit_planning_result(tmp_path) -> None:
     manifest = _registry().get("lz4-frame")
     compatibility = negotiate(manifest, _descriptor())
@@ -172,8 +217,16 @@ def test_frame_profiles_compare_directly_while_raw_and_brotli_remain_separate(
     key_sets = []
     execution_paths = []
     for manifest_key in (
-        "lz4-frame", "zstd-frame", "snappy-raw", "brotli-stream", "deflate-zlib",
-        "xz-stream", "lzss-raw", "lzss-dipperstein-c", "lzsse8-raw", "lzsse2-raw",
+        "lz4-frame",
+        "zstd-frame",
+        "snappy-raw",
+        "brotli-stream",
+        "deflate-zlib",
+        "xz-stream",
+        "lzss-raw",
+        "lzss-dipperstein-c",
+        "lzsse8-raw",
+        "lzsse2-raw",
         "bzip2-stream",
     ):
         manifest = registry.get(manifest_key)
@@ -198,6 +251,30 @@ def test_frame_profiles_compare_directly_while_raw_and_brotli_remain_separate(
             )
         )
         execution_paths.append(execution.execution_path_hash)
+        legacy_identity = {
+            key: value
+            for key, value in execution.__dict__.items()
+            if key not in {"status", "reason_code", "execution_path_hash"}
+        }
+        assert stable_id("execution-path", legacy_identity) != execution.execution_path_hash
+        document = key_sets[-1].execution_document
+        assert document["measurement_worker_protocol"] == "WORKER_LOCAL_WARMUP_V1"
+        assert document["threshold_protocol"] == "LEGACY_V2"
+        assert document["recovery_protocol"] == "PERSISTED_DECODE_CONTEXT_V1"
+        legacy_document = {
+            key: value
+            for key, value in document.items()
+            if key
+            not in {
+                "measurement_worker_protocol",
+                "threshold_protocol",
+                "warmup_scope",
+                "context_scope",
+                "recovery_protocol",
+                "recovery_output",
+            }
+        }
+        assert stable_id("execution-comparability", legacy_document) != key_sets[-1].execution_key
         assert config.parameters["native_timing"] is True
         disabled = expand_sweep(manifest, {"native_timing": [False]})[0]
         assert disabled.status is RunStatus.PLANNED

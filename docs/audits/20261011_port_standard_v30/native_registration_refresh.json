@@ -1,0 +1,1575 @@
+{
+  "status": "PASS",
+  "current_native_report": {
+    "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/qualification.json",
+    "sha256": "b86173f34c30d175552de327cc446dd8480aa02dd7a9ae56f12f60c0d93db174"
+  },
+  "current_frame_report": {
+    "path": "docs/audits/20261011_port_standard_v30/frame_binding_qualification_v3/qualification.json",
+    "sha256": "0a47ea4c7609a1a27515846ddbe72dbd56fd0bd2b93e67ee9462e32cad8a8048"
+  },
+  "updates": [
+    {
+      "algorithm": "alp",
+      "source_artifact_id_unchanged": "v2:source-artifact:sha256:278dbf62ed78758b1efa488719f953e3900dbe99e9f7ad30789f025de5f2c074",
+      "adapter_before": {
+        "backend": "C_ABI_V1",
+        "version": "alp-ctypes-v1",
+        "factory": "ALP_CTYPES_V1",
+        "artifact_path": "build/adapters/alp/release/libtscb_alp.so",
+        "timing_boundary": "PYTHON_LAYOUT_FFI_AND_CONTAINER_INCLUDED",
+        "native_timing_capability": {
+          "optional": true,
+          "boundary": "CODEC_API_ONLY_V1",
+          "clock": "CLOCK_MONOTONIC",
+          "excludes": [
+            "CONTEXT_LIFECYCLE",
+            "PYTHON_LAYOUT_TRANSFORM",
+            "PYTHON_FFI_CONTAINER"
+          ]
+        },
+        "accounting_hooks": [
+          "FINAL_STREAM_LENGTH",
+          "COMPLETE_NATIVE_ALP_FRAME",
+          "OUTPUT_CAPACITY",
+          "FORCED_DECIMAL_ALP_NO_RD_FALLBACK"
+        ]
+      },
+      "adapter_after": {
+        "backend": "C_ABI_V1",
+        "version": "alp-ctypes-v1-port-standard-v30-20261011",
+        "factory": "ALP_CTYPES_V1",
+        "artifact_path": "build/port-standard-v30-20261011/native-builds-v3/alp/release/libtscb_alp.so",
+        "timing_boundary": "PYTHON_LAYOUT_FFI_AND_CONTAINER_INCLUDED",
+        "native_timing_capability": {
+          "optional": true,
+          "boundary": "CODEC_API_ONLY_V1",
+          "clock": "CLOCK_MONOTONIC",
+          "excludes": [
+            "CONTEXT_LIFECYCLE",
+            "PYTHON_LAYOUT_TRANSFORM",
+            "PYTHON_FFI_CONTAINER"
+          ]
+        },
+        "accounting_hooks": [
+          "FINAL_STREAM_LENGTH",
+          "COMPLETE_NATIVE_ALP_FRAME",
+          "OUTPUT_CAPACITY",
+          "FORCED_DECIMAL_ALP_NO_RD_FALLBACK"
+        ]
+      },
+      "scope_policy": "UNCHANGED_EXISTING_REGISTRATION_NO_ACTIVE_SCOPE_PROMOTION"
+    },
+    {
+      "algorithm": "alp-rd",
+      "source_artifact_id_unchanged": "v2:source-artifact:sha256:278dbf62ed78758b1efa488719f953e3900dbe99e9f7ad30789f025de5f2c074",
+      "adapter_before": {
+        "backend": "C_ABI_V1",
+        "version": "alp-ctypes-v1",
+        "factory": "ALP_CTYPES_V1",
+        "artifact_path": "build/adapters/alp_rd/release/libtscb_alp_rd.so",
+        "timing_boundary": "PYTHON_LAYOUT_FFI_AND_CONTAINER_INCLUDED",
+        "native_timing_capability": {
+          "optional": true,
+          "boundary": "CODEC_API_ONLY_V1",
+          "clock": "CLOCK_MONOTONIC",
+          "excludes": [
+            "CONTEXT_LIFECYCLE",
+            "PYTHON_LAYOUT_TRANSFORM",
+            "PYTHON_FFI_CONTAINER"
+          ]
+        },
+        "accounting_hooks": [
+          "FINAL_STREAM_LENGTH",
+          "COMPLETE_NATIVE_ALP_FRAME",
+          "OUTPUT_CAPACITY",
+          "FORCED_ALP_RD"
+        ]
+      },
+      "adapter_after": {
+        "backend": "C_ABI_V1",
+        "version": "alp-ctypes-v1-port-standard-v30-20261011",
+        "factory": "ALP_CTYPES_V1",
+        "artifact_path": "build/port-standard-v30-20261011/native-builds-v3/alp_rd/release/libtscb_alp_rd.so",
+        "timing_boundary": "PYTHON_LAYOUT_FFI_AND_CONTAINER_INCLUDED",
+        "native_timing_capability": {
+          "optional": true,
+          "boundary": "CODEC_API_ONLY_V1",
+          "clock": "CLOCK_MONOTONIC",
+          "excludes": [
+            "CONTEXT_LIFECYCLE",
+            "PYTHON_LAYOUT_TRANSFORM",
+            "PYTHON_FFI_CONTAINER"
+          ]
+        },
+        "accounting_hooks": [
+          "FINAL_STREAM_LENGTH",
+          "COMPLETE_NATIVE_ALP_FRAME",
+          "OUTPUT_CAPACITY",
+          "FORCED_ALP_RD"
+        ]
+      },
+      "scope_policy": "UNCHANGED_EXISTING_REGISTRATION_NO_ACTIVE_SCOPE_PROMOTION"
+    },
+    {
+      "algorithm": "brotli-stream",
+      "source_artifact_id_unchanged": "v2:source-artifact:sha256:fe9a7e9ee3c50bc85ed92108da5fee194a2440e81f64d60af4d6b2beedae4a66",
+      "adapter_before": {
+        "backend": "C_ABI_V1",
+        "version": "brotli-stream-ctypes-v2-streaming",
+        "factory": "BROTLI_STREAM_CTYPES_V1",
+        "artifact_path": "build/adapters/brotli_stream/release/libtscb_brotli_stream.so",
+        "timing_boundary": "PYTHON_FFI_CONTAINER_INCLUDED",
+        "native_timing_capability": {
+          "optional": true,
+          "boundary": "CODEC_API_ONLY_V1",
+          "clock": "CLOCK_MONOTONIC",
+          "excludes": [
+            "CONTEXT_LIFECYCLE",
+            "EXPLICIT_PREVALIDATION",
+            "PYTHON_FFI_CONTAINER"
+          ]
+        },
+        "accounting_hooks": [
+          "FINAL_STREAM_LENGTH",
+          "BROTLI_STREAM",
+          "OUTPUT_CAPACITY"
+        ]
+      },
+      "adapter_after": {
+        "backend": "C_ABI_V1",
+        "version": "brotli-stream-ctypes-v2-streaming-port-standard-v30-20261011",
+        "factory": "BROTLI_STREAM_CTYPES_V1",
+        "artifact_path": "build/port-standard-v30-20261011/native-builds-v3/brotli_stream/release/libtscb_brotli_stream.so",
+        "timing_boundary": "PYTHON_FFI_CONTAINER_INCLUDED",
+        "native_timing_capability": {
+          "optional": true,
+          "boundary": "CODEC_API_ONLY_V1",
+          "clock": "CLOCK_MONOTONIC",
+          "excludes": [
+            "CONTEXT_LIFECYCLE",
+            "EXPLICIT_PREVALIDATION",
+            "PYTHON_FFI_CONTAINER"
+          ]
+        },
+        "accounting_hooks": [
+          "FINAL_STREAM_LENGTH",
+          "BROTLI_STREAM",
+          "OUTPUT_CAPACITY"
+        ]
+      },
+      "scope_policy": "UNCHANGED_EXISTING_REGISTRATION_NO_ACTIVE_SCOPE_PROMOTION"
+    },
+    {
+      "algorithm": "bzip2-stream",
+      "source_artifact_id_unchanged": "v2:source-artifact:sha256:f041fc4fcf1048f7ee32161b6e0bbcb012828124c22cf218f520844bbcb370d3",
+      "adapter_before": {
+        "backend": "C_ABI_V1",
+        "version": "bzip2-stream-ctypes-v2-streaming",
+        "factory": "BZIP2_STREAM_CTYPES_V1",
+        "artifact_path": "build/adapters/bzip2_stream/release/libtscb_bzip2_stream.so",
+        "timing_boundary": "PYTHON_FFI_CONTAINER_INCLUDED",
+        "native_timing_capability": {
+          "optional": true,
+          "boundary": "CODEC_API_ONLY_V1",
+          "clock": "CLOCK_MONOTONIC",
+          "excludes": [
+            "CONTEXT_LIFECYCLE",
+            "EXPLICIT_PREVALIDATION",
+            "PYTHON_FFI_CONTAINER"
+          ]
+        },
+        "accounting_hooks": [
+          "FINAL_STREAM_LENGTH",
+          "COMPLETE_BZIP2_STREAM",
+          "OUTPUT_CAPACITY"
+        ]
+      },
+      "adapter_after": {
+        "backend": "C_ABI_V1",
+        "version": "bzip2-stream-ctypes-v2-streaming-port-standard-v30-20261011",
+        "factory": "BZIP2_STREAM_CTYPES_V1",
+        "artifact_path": "build/port-standard-v30-20261011/native-builds-v3/bzip2_stream/release/libtscb_bzip2_stream.so",
+        "timing_boundary": "PYTHON_FFI_CONTAINER_INCLUDED",
+        "native_timing_capability": {
+          "optional": true,
+          "boundary": "CODEC_API_ONLY_V1",
+          "clock": "CLOCK_MONOTONIC",
+          "excludes": [
+            "CONTEXT_LIFECYCLE",
+            "EXPLICIT_PREVALIDATION",
+            "PYTHON_FFI_CONTAINER"
+          ]
+        },
+        "accounting_hooks": [
+          "FINAL_STREAM_LENGTH",
+          "COMPLETE_BZIP2_STREAM",
+          "OUTPUT_CAPACITY"
+        ]
+      },
+      "scope_policy": "UNCHANGED_EXISTING_REGISTRATION_NO_ACTIVE_SCOPE_PROMOTION"
+    },
+    {
+      "algorithm": "chimp",
+      "source_artifact_id_unchanged": "v2:source-artifact:sha256:8282bd96eaf3c2ffc3b1c721a7b60484e056c148f92569e4ba78ce8048beca3f",
+      "adapter_before": {
+        "backend": "C_ABI_V1",
+        "version": "rewrite-lossless-ctypes-v1",
+        "factory": "REWRITE_LOSSLESS_CTYPES_V1",
+        "artifact_path": "build/adapters/chimp/release/libtscb_chimp.so",
+        "timing_boundary": "PYTHON_LAYOUT_FFI_DESCRIPTOR_AND_CHECKED_NATIVE_FRAME_INCLUDED",
+        "accounting_hooks": [
+          "FINAL_STREAM_LENGTH",
+          "DESCRIPTOR_AND_WRAPPER_OVERHEAD",
+          "OPAQUE_COMPLETE_STANDALONE_CODEC_BYTES",
+          "COLUMN_CODEC_BYTES",
+          "OUTPUT_CAPACITY"
+        ],
+        "timing_scope_boundaries": {
+          "CORE": "HARNESS_SESSION_API: compress_update + finalize / decompress; prepared routed input, created session and encode output capacity outside timer; includes API-internal descriptors, staging, copies, native frames, model work and decode materialization; reset via fresh independent session outside timer",
+          "PIPELINE": "HARNESS_OBJECT_PIPELINE: compatibility preparation, session creation, bound/capacity allocation, CORE, finalized stream materialization, accounting, native telemetry and close; decode includes inverse compatibility work",
+          "E2E": "CANONICAL_MEMORY_ROUTED_VIEW: complete encode/decode object pipeline and phase transitions; excludes file I/O and post-timing correctness/determinism checks",
+          "NATIVE": "UNAVAILABLE_NULL: no optional internal native timer; CORE uses harness wall clock, never inferred native duration"
+        }
+      },
+      "adapter_after": {
+        "backend": "C_ABI_V1",
+        "version": "rewrite-lossless-ctypes-v1-port-standard-v30-20261011",
+        "factory": "REWRITE_LOSSLESS_CTYPES_V1",
+        "artifact_path": "build/port-standard-v30-20261011/native-builds-v3/chimp/release/libtscb_chimp.so",
+        "timing_boundary": "PYTHON_LAYOUT_FFI_DESCRIPTOR_AND_CHECKED_NATIVE_FRAME_INCLUDED",
+        "accounting_hooks": [
+          "FINAL_STREAM_LENGTH",
+          "DESCRIPTOR_AND_WRAPPER_OVERHEAD",
+          "OPAQUE_COMPLETE_STANDALONE_CODEC_BYTES",
+          "COLUMN_CODEC_BYTES",
+          "OUTPUT_CAPACITY"
+        ],
+        "timing_scope_boundaries": {
+          "CORE": "HARNESS_SESSION_API: compress_update + finalize / decompress; prepared routed input, created session and encode output capacity outside timer; includes API-internal descriptors, staging, copies, native frames, model work and decode materialization; reset via fresh independent session outside timer",
+          "PIPELINE": "HARNESS_OBJECT_PIPELINE: compatibility preparation, session creation, bound/capacity allocation, CORE, finalized stream materialization, accounting, native telemetry and close; decode includes inverse compatibility work",
+          "E2E": "CANONICAL_MEMORY_ROUTED_VIEW: complete encode/decode object pipeline and phase transitions; excludes file I/O and post-timing correctness/determinism checks",
+          "NATIVE": "UNAVAILABLE_NULL: no optional internal native timer; CORE uses harness wall clock, never inferred native duration"
+        }
+      },
+      "scope_policy": "UNCHANGED_EXISTING_REGISTRATION_NO_ACTIVE_SCOPE_PROMOTION"
+    },
+    {
+      "algorithm": "chimp128",
+      "source_artifact_id_unchanged": "v2:source-artifact:sha256:666cb665752983780d19234d8e49429de8c0a4bedb599533eb72fd15b48727e6",
+      "adapter_before": {
+        "backend": "C_ABI_V1",
+        "version": "rewrite-lossless-ctypes-v1",
+        "factory": "REWRITE_LOSSLESS_CTYPES_V1",
+        "artifact_path": "build/adapters/chimp128/release/libtscb_chimp128.so",
+        "timing_boundary": "PYTHON_LAYOUT_FFI_DESCRIPTOR_AND_CHECKED_NATIVE_FRAME_INCLUDED",
+        "accounting_hooks": [
+          "FINAL_STREAM_LENGTH",
+          "DESCRIPTOR_AND_WRAPPER_OVERHEAD",
+          "OPAQUE_COMPLETE_STANDALONE_CODEC_BYTES",
+          "COLUMN_CODEC_BYTES",
+          "OUTPUT_CAPACITY"
+        ],
+        "timing_scope_boundaries": {
+          "CORE": "HARNESS_SESSION_API: compress_update + finalize / decompress; prepared routed input, created session and encode output capacity outside timer; includes API-internal descriptors, staging, copies, native frames, model work and decode materialization; reset via fresh independent session outside timer",
+          "PIPELINE": "HARNESS_OBJECT_PIPELINE: compatibility preparation, session creation, bound/capacity allocation, CORE, finalized stream materialization, accounting, native telemetry and close; decode includes inverse compatibility work",
+          "E2E": "CANONICAL_MEMORY_ROUTED_VIEW: complete encode/decode object pipeline and phase transitions; excludes file I/O and post-timing correctness/determinism checks",
+          "NATIVE": "UNAVAILABLE_NULL: no optional internal native timer; CORE uses harness wall clock, never inferred native duration"
+        }
+      },
+      "adapter_after": {
+        "backend": "C_ABI_V1",
+        "version": "rewrite-lossless-ctypes-v1-port-standard-v30-20261011",
+        "factory": "REWRITE_LOSSLESS_CTYPES_V1",
+        "artifact_path": "build/port-standard-v30-20261011/native-builds-v3/chimp128/release/libtscb_chimp128.so",
+        "timing_boundary": "PYTHON_LAYOUT_FFI_DESCRIPTOR_AND_CHECKED_NATIVE_FRAME_INCLUDED",
+        "accounting_hooks": [
+          "FINAL_STREAM_LENGTH",
+          "DESCRIPTOR_AND_WRAPPER_OVERHEAD",
+          "OPAQUE_COMPLETE_STANDALONE_CODEC_BYTES",
+          "COLUMN_CODEC_BYTES",
+          "OUTPUT_CAPACITY"
+        ],
+        "timing_scope_boundaries": {
+          "CORE": "HARNESS_SESSION_API: compress_update + finalize / decompress; prepared routed input, created session and encode output capacity outside timer; includes API-internal descriptors, staging, copies, native frames, model work and decode materialization; reset via fresh independent session outside timer",
+          "PIPELINE": "HARNESS_OBJECT_PIPELINE: compatibility preparation, session creation, bound/capacity allocation, CORE, finalized stream materialization, accounting, native telemetry and close; decode includes inverse compatibility work",
+          "E2E": "CANONICAL_MEMORY_ROUTED_VIEW: complete encode/decode object pipeline and phase transitions; excludes file I/O and post-timing correctness/determinism checks",
+          "NATIVE": "UNAVAILABLE_NULL: no optional internal native timer; CORE uses harness wall clock, never inferred native duration"
+        }
+      },
+      "scope_policy": "UNCHANGED_EXISTING_REGISTRATION_NO_ACTIVE_SCOPE_PROMOTION"
+    },
+    {
+      "algorithm": "deflate-zlib",
+      "source_artifact_id_unchanged": "v2:source-artifact:sha256:488e8ce467a7dba0196f8ba1ece20ba03be7167eefa3ab09c79bb914219c5518",
+      "adapter_before": {
+        "backend": "C_ABI_V1",
+        "version": "deflate-zlib-ctypes-v2-streaming",
+        "factory": "DEFLATE_ZLIB_CTYPES_V1",
+        "artifact_path": "build/adapters/deflate_zlib/release/libtscb_deflate_zlib.so",
+        "timing_boundary": "PYTHON_FFI_CONTAINER_INCLUDED",
+        "native_timing_capability": {
+          "optional": true,
+          "boundary": "CODEC_API_ONLY_V1",
+          "clock": "CLOCK_MONOTONIC",
+          "excludes": [
+            "CONTEXT_LIFECYCLE",
+            "EXPLICIT_PREVALIDATION",
+            "PYTHON_FFI_CONTAINER"
+          ]
+        },
+        "accounting_hooks": [
+          "FINAL_STREAM_LENGTH",
+          "ZLIB_HEADER_DEFLATE_PAYLOAD_ADLER32",
+          "OUTPUT_CAPACITY",
+          "STREAM_BLOCK_STATE_AND_BUFFER_LIMITS"
+        ]
+      },
+      "adapter_after": {
+        "backend": "C_ABI_V1",
+        "version": "deflate-zlib-ctypes-v2-streaming-port-standard-v30-20261011",
+        "factory": "DEFLATE_ZLIB_CTYPES_V1",
+        "artifact_path": "build/port-standard-v30-20261011/native-builds-v3/deflate_zlib/release/libtscb_deflate_zlib.so",
+        "timing_boundary": "PYTHON_FFI_CONTAINER_INCLUDED",
+        "native_timing_capability": {
+          "optional": true,
+          "boundary": "CODEC_API_ONLY_V1",
+          "clock": "CLOCK_MONOTONIC",
+          "excludes": [
+            "CONTEXT_LIFECYCLE",
+            "EXPLICIT_PREVALIDATION",
+            "PYTHON_FFI_CONTAINER"
+          ]
+        },
+        "accounting_hooks": [
+          "FINAL_STREAM_LENGTH",
+          "ZLIB_HEADER_DEFLATE_PAYLOAD_ADLER32",
+          "OUTPUT_CAPACITY",
+          "STREAM_BLOCK_STATE_AND_BUFFER_LIMITS"
+        ]
+      },
+      "scope_policy": "UNCHANGED_EXISTING_REGISTRATION_NO_ACTIVE_SCOPE_PROMOTION"
+    },
+    {
+      "algorithm": "elf",
+      "source_artifact_id_unchanged": "v2:source-artifact:sha256:c77ffff441c01660d4f4f45385e5a94601213d65cac2def67a7d28461d49eae7",
+      "adapter_before": {
+        "backend": "C_ABI_V1",
+        "version": "rewrite-lossless-ctypes-v1",
+        "factory": "REWRITE_LOSSLESS_CTYPES_V1",
+        "artifact_path": "build/adapters/elf/release/libtscb_elf.so",
+        "timing_boundary": "PYTHON_LAYOUT_FFI_DESCRIPTOR_AND_CHECKED_NATIVE_FRAME_INCLUDED",
+        "accounting_hooks": [
+          "FINAL_STREAM_LENGTH",
+          "DESCRIPTOR_AND_WRAPPER_OVERHEAD",
+          "OPAQUE_COMPLETE_STANDALONE_CODEC_BYTES",
+          "COLUMN_CODEC_BYTES",
+          "OUTPUT_CAPACITY"
+        ],
+        "timing_scope_boundaries": {
+          "CORE": "HARNESS_SESSION_API: compress_update + finalize / decompress; prepared routed input, created session and encode output capacity outside timer; includes API-internal descriptors, staging, copies, native frames, model work and decode materialization; reset via fresh independent session outside timer",
+          "PIPELINE": "HARNESS_OBJECT_PIPELINE: compatibility preparation, session creation, bound/capacity allocation, CORE, finalized stream materialization, accounting, native telemetry and close; decode includes inverse compatibility work",
+          "E2E": "CANONICAL_MEMORY_ROUTED_VIEW: complete encode/decode object pipeline and phase transitions; excludes file I/O and post-timing correctness/determinism checks",
+          "NATIVE": "UNAVAILABLE_NULL: no optional internal native timer; CORE uses harness wall clock, never inferred native duration"
+        }
+      },
+      "adapter_after": {
+        "backend": "C_ABI_V1",
+        "version": "rewrite-lossless-ctypes-v1-port-standard-v30-20261011",
+        "factory": "REWRITE_LOSSLESS_CTYPES_V1",
+        "artifact_path": "build/port-standard-v30-20261011/native-builds-v3/elf/release/libtscb_elf.so",
+        "timing_boundary": "PYTHON_LAYOUT_FFI_DESCRIPTOR_AND_CHECKED_NATIVE_FRAME_INCLUDED",
+        "accounting_hooks": [
+          "FINAL_STREAM_LENGTH",
+          "DESCRIPTOR_AND_WRAPPER_OVERHEAD",
+          "OPAQUE_COMPLETE_STANDALONE_CODEC_BYTES",
+          "COLUMN_CODEC_BYTES",
+          "OUTPUT_CAPACITY"
+        ],
+        "timing_scope_boundaries": {
+          "CORE": "HARNESS_SESSION_API: compress_update + finalize / decompress; prepared routed input, created session and encode output capacity outside timer; includes API-internal descriptors, staging, copies, native frames, model work and decode materialization; reset via fresh independent session outside timer",
+          "PIPELINE": "HARNESS_OBJECT_PIPELINE: compatibility preparation, session creation, bound/capacity allocation, CORE, finalized stream materialization, accounting, native telemetry and close; decode includes inverse compatibility work",
+          "E2E": "CANONICAL_MEMORY_ROUTED_VIEW: complete encode/decode object pipeline and phase transitions; excludes file I/O and post-timing correctness/determinism checks",
+          "NATIVE": "UNAVAILABLE_NULL: no optional internal native timer; CORE uses harness wall clock, never inferred native duration"
+        }
+      },
+      "scope_policy": "UNCHANGED_EXISTING_REGISTRATION_NO_ACTIVE_SCOPE_PROMOTION"
+    },
+    {
+      "algorithm": "elf-plus",
+      "source_artifact_id_unchanged": "v2:source-artifact:sha256:b6bce1fc1b44c663fb40c4dc5de609b9711c9d01c5f4f6d6fe08abd1b0e5a7f5",
+      "adapter_before": {
+        "backend": "C_ABI_V1",
+        "version": "rewrite-lossless-ctypes-v1",
+        "factory": "REWRITE_LOSSLESS_CTYPES_V1",
+        "artifact_path": "build/adapters/elf_plus/release/libtscb_elf_plus.so",
+        "timing_boundary": "PYTHON_LAYOUT_FFI_DESCRIPTOR_AND_CHECKED_NATIVE_FRAME_INCLUDED",
+        "accounting_hooks": [
+          "FINAL_STREAM_LENGTH",
+          "DESCRIPTOR_AND_WRAPPER_OVERHEAD",
+          "OPAQUE_COMPLETE_STANDALONE_CODEC_BYTES",
+          "COLUMN_CODEC_BYTES",
+          "OUTPUT_CAPACITY"
+        ],
+        "timing_scope_boundaries": {
+          "CORE": "HARNESS_SESSION_API: compress_update + finalize / decompress; prepared routed input, created session and encode output capacity outside timer; includes API-internal descriptors, staging, copies, native frames, model work and decode materialization; reset via fresh independent session outside timer",
+          "PIPELINE": "HARNESS_OBJECT_PIPELINE: compatibility preparation, session creation, bound/capacity allocation, CORE, finalized stream materialization, accounting, native telemetry and close; decode includes inverse compatibility work",
+          "E2E": "CANONICAL_MEMORY_ROUTED_VIEW: complete encode/decode object pipeline and phase transitions; excludes file I/O and post-timing correctness/determinism checks",
+          "NATIVE": "UNAVAILABLE_NULL: no optional internal native timer; CORE uses harness wall clock, never inferred native duration"
+        }
+      },
+      "adapter_after": {
+        "backend": "C_ABI_V1",
+        "version": "rewrite-lossless-ctypes-v1-port-standard-v30-20261011",
+        "factory": "REWRITE_LOSSLESS_CTYPES_V1",
+        "artifact_path": "build/port-standard-v30-20261011/native-builds-v3/elf_plus/release/libtscb_elf_plus.so",
+        "timing_boundary": "PYTHON_LAYOUT_FFI_DESCRIPTOR_AND_CHECKED_NATIVE_FRAME_INCLUDED",
+        "accounting_hooks": [
+          "FINAL_STREAM_LENGTH",
+          "DESCRIPTOR_AND_WRAPPER_OVERHEAD",
+          "OPAQUE_COMPLETE_STANDALONE_CODEC_BYTES",
+          "COLUMN_CODEC_BYTES",
+          "OUTPUT_CAPACITY"
+        ],
+        "timing_scope_boundaries": {
+          "CORE": "HARNESS_SESSION_API: compress_update + finalize / decompress; prepared routed input, created session and encode output capacity outside timer; includes API-internal descriptors, staging, copies, native frames, model work and decode materialization; reset via fresh independent session outside timer",
+          "PIPELINE": "HARNESS_OBJECT_PIPELINE: compatibility preparation, session creation, bound/capacity allocation, CORE, finalized stream materialization, accounting, native telemetry and close; decode includes inverse compatibility work",
+          "E2E": "CANONICAL_MEMORY_ROUTED_VIEW: complete encode/decode object pipeline and phase transitions; excludes file I/O and post-timing correctness/determinism checks",
+          "NATIVE": "UNAVAILABLE_NULL: no optional internal native timer; CORE uses harness wall clock, never inferred native duration"
+        }
+      },
+      "scope_policy": "UNCHANGED_EXISTING_REGISTRATION_NO_ACTIVE_SCOPE_PROMOTION"
+    },
+    {
+      "algorithm": "elf-star",
+      "source_artifact_id_unchanged": "v2:source-artifact:sha256:f880d919673dd94f4459a5a2c17d01d9911272d93eec15fbf2c1b4a58537f555",
+      "adapter_before": {
+        "backend": "C_ABI_V1",
+        "version": "rewrite-lossless-ctypes-v1",
+        "factory": "REWRITE_LOSSLESS_CTYPES_V1",
+        "artifact_path": "build/adapters/elf_star/release/libtscb_elf_star.so",
+        "timing_boundary": "PYTHON_LAYOUT_FFI_DESCRIPTOR_AND_CHECKED_NATIVE_FRAME_INCLUDED",
+        "accounting_hooks": [
+          "FINAL_STREAM_LENGTH",
+          "DESCRIPTOR_AND_WRAPPER_OVERHEAD",
+          "OPAQUE_COMPLETE_STANDALONE_CODEC_BYTES",
+          "COLUMN_CODEC_BYTES",
+          "OUTPUT_CAPACITY"
+        ],
+        "timing_scope_boundaries": {
+          "CORE": "HARNESS_SESSION_API: compress_update + finalize / decompress; prepared routed input, created session and encode output capacity outside timer; includes API-internal descriptors, staging, copies, native frames, model work and decode materialization; reset via fresh independent session outside timer",
+          "PIPELINE": "HARNESS_OBJECT_PIPELINE: compatibility preparation, session creation, bound/capacity allocation, CORE, finalized stream materialization, accounting, native telemetry and close; decode includes inverse compatibility work",
+          "E2E": "CANONICAL_MEMORY_ROUTED_VIEW: complete encode/decode object pipeline and phase transitions; excludes file I/O and post-timing correctness/determinism checks",
+          "NATIVE": "UNAVAILABLE_NULL: no optional internal native timer; CORE uses harness wall clock, never inferred native duration"
+        }
+      },
+      "adapter_after": {
+        "backend": "C_ABI_V1",
+        "version": "rewrite-lossless-ctypes-v1-port-standard-v30-20261011",
+        "factory": "REWRITE_LOSSLESS_CTYPES_V1",
+        "artifact_path": "build/port-standard-v30-20261011/native-builds-v3/elf_star/release/libtscb_elf_star.so",
+        "timing_boundary": "PYTHON_LAYOUT_FFI_DESCRIPTOR_AND_CHECKED_NATIVE_FRAME_INCLUDED",
+        "accounting_hooks": [
+          "FINAL_STREAM_LENGTH",
+          "DESCRIPTOR_AND_WRAPPER_OVERHEAD",
+          "OPAQUE_COMPLETE_STANDALONE_CODEC_BYTES",
+          "COLUMN_CODEC_BYTES",
+          "OUTPUT_CAPACITY"
+        ],
+        "timing_scope_boundaries": {
+          "CORE": "HARNESS_SESSION_API: compress_update + finalize / decompress; prepared routed input, created session and encode output capacity outside timer; includes API-internal descriptors, staging, copies, native frames, model work and decode materialization; reset via fresh independent session outside timer",
+          "PIPELINE": "HARNESS_OBJECT_PIPELINE: compatibility preparation, session creation, bound/capacity allocation, CORE, finalized stream materialization, accounting, native telemetry and close; decode includes inverse compatibility work",
+          "E2E": "CANONICAL_MEMORY_ROUTED_VIEW: complete encode/decode object pipeline and phase transitions; excludes file I/O and post-timing correctness/determinism checks",
+          "NATIVE": "UNAVAILABLE_NULL: no optional internal native timer; CORE uses harness wall clock, never inferred native duration"
+        }
+      },
+      "scope_policy": "UNCHANGED_EXISTING_REGISTRATION_NO_ACTIVE_SCOPE_PROMOTION"
+    },
+    {
+      "algorithm": "fse",
+      "source_artifact_id_unchanged": "v2:source-artifact:sha256:1b62e728c33885fb38e25d490d0c13841018f265b4cbd4b2c8a3fadfa04b6773",
+      "adapter_before": {
+        "backend": "C_ABI_V1",
+        "version": "fse-ctypes-v1",
+        "factory": "ENTROPY_FSE_CTYPES_V1",
+        "artifact_path": "build/adapters/fse/release/libtscb_fse.so",
+        "timing_boundary": "PYTHON_FFI_CONTAINER_INCLUDED",
+        "native_timing_capability": {
+          "optional": true,
+          "boundary": "CODEC_API_ONLY_V1",
+          "clock": "CLOCK_MONOTONIC",
+          "excludes": [
+            "CONTEXT_LIFECYCLE",
+            "PYTHON_FFI_CONTAINER",
+            "RAW_RLE_FALLBACK"
+          ]
+        },
+        "accounting_hooks": [
+          "FINAL_STREAM_LENGTH",
+          "EXACT_MODE_AND_LENGTH_HEADER",
+          "OUTPUT_CAPACITY"
+        ]
+      },
+      "adapter_after": {
+        "backend": "C_ABI_V1",
+        "version": "fse-ctypes-v1-port-standard-v30-20261011",
+        "factory": "ENTROPY_FSE_CTYPES_V1",
+        "artifact_path": "build/port-standard-v30-20261011/native-builds-v3/fse/release/libtscb_fse.so",
+        "timing_boundary": "PYTHON_FFI_CONTAINER_INCLUDED",
+        "native_timing_capability": {
+          "optional": true,
+          "boundary": "CODEC_API_ONLY_V1",
+          "clock": "CLOCK_MONOTONIC",
+          "excludes": [
+            "CONTEXT_LIFECYCLE",
+            "PYTHON_FFI_CONTAINER",
+            "RAW_RLE_FALLBACK"
+          ]
+        },
+        "accounting_hooks": [
+          "FINAL_STREAM_LENGTH",
+          "EXACT_MODE_AND_LENGTH_HEADER",
+          "OUTPUT_CAPACITY"
+        ]
+      },
+      "scope_policy": "UNCHANGED_EXISTING_REGISTRATION_NO_ACTIVE_SCOPE_PROMOTION"
+    },
+    {
+      "algorithm": "huff0",
+      "source_artifact_id_unchanged": "v2:source-artifact:sha256:1b62e728c33885fb38e25d490d0c13841018f265b4cbd4b2c8a3fadfa04b6773",
+      "adapter_before": {
+        "backend": "C_ABI_V1",
+        "version": "huff0-ctypes-v1",
+        "factory": "ENTROPY_FSE_CTYPES_V1",
+        "artifact_path": "build/adapters/huff0/release/libtscb_huff0.so",
+        "timing_boundary": "PYTHON_FFI_CONTAINER_INCLUDED",
+        "native_timing_capability": {
+          "optional": true,
+          "boundary": "CODEC_API_ONLY_V1",
+          "clock": "CLOCK_MONOTONIC",
+          "excludes": [
+            "CONTEXT_LIFECYCLE",
+            "PYTHON_FFI_CONTAINER",
+            "RAW_FALLBACK"
+          ]
+        },
+        "accounting_hooks": [
+          "FINAL_STREAM_LENGTH",
+          "EXACT_MODE_AND_LENGTH_HEADER",
+          "OUTPUT_CAPACITY"
+        ]
+      },
+      "adapter_after": {
+        "backend": "C_ABI_V1",
+        "version": "huff0-ctypes-v1-port-standard-v30-20261011",
+        "factory": "ENTROPY_FSE_CTYPES_V1",
+        "artifact_path": "build/port-standard-v30-20261011/native-builds-v3/huff0/release/libtscb_huff0.so",
+        "timing_boundary": "PYTHON_FFI_CONTAINER_INCLUDED",
+        "native_timing_capability": {
+          "optional": true,
+          "boundary": "CODEC_API_ONLY_V1",
+          "clock": "CLOCK_MONOTONIC",
+          "excludes": [
+            "CONTEXT_LIFECYCLE",
+            "PYTHON_FFI_CONTAINER",
+            "RAW_FALLBACK"
+          ]
+        },
+        "accounting_hooks": [
+          "FINAL_STREAM_LENGTH",
+          "EXACT_MODE_AND_LENGTH_HEADER",
+          "OUTPUT_CAPACITY"
+        ]
+      },
+      "scope_policy": "UNCHANGED_EXISTING_REGISTRATION_NO_ACTIVE_SCOPE_PROMOTION"
+    },
+    {
+      "algorithm": "leats-lossless-i64",
+      "source_artifact_id_unchanged": "v2:source-artifact:sha256:42743b152ad55dde6d0af6e4f6bf558bb709f22fe9bc37371af15b0144f650bb",
+      "adapter_before": {
+        "backend": "C_ABI_V1",
+        "version": "leats-ctypes-v1",
+        "factory": "NEATS_CTYPES_V1",
+        "artifact_path": "build/adapters/leats_lossless_i64/release/libtscb_leats_lossless_i64.so",
+        "timing_boundary": "PYTHON_LAYOUT_FFI_AND_CONTAINER_INCLUDED",
+        "native_timing_capability": {
+          "optional": true,
+          "boundary": "NATIVE_OBJECT_FIT_SERIALIZE_AND_LOAD_DECODE_V1",
+          "clock": "CLOCK_MONOTONIC",
+          "excludes": [
+            "CONTEXT_LIFECYCLE",
+            "ENCODED_OUTPUT_COPY",
+            "DECODE_FRAME_CHECKSUM_AND_HEADER_PARSE",
+            "PYTHON_LAYOUT_TRANSFORM",
+            "PYTHON_FFI_CONTAINER",
+            "QUERY_WORKLOAD_GENERATION"
+          ]
+        },
+        "accounting_hooks": [
+          "FINAL_STREAM_LENGTH",
+          "SERIALIZED_MODEL_AND_INDEX_BYTES",
+          "PER_COLUMN_BIAS",
+          "FRAME_CHECKSUM",
+          "OUTPUT_CAPACITY"
+        ]
+      },
+      "adapter_after": {
+        "backend": "C_ABI_V1",
+        "version": "leats-ctypes-v1-port-standard-v30-20261011",
+        "factory": "NEATS_CTYPES_V1",
+        "artifact_path": "build/port-standard-v30-20261011/native-builds-v3/leats_lossless_i64/release/libtscb_leats_lossless_i64.so",
+        "timing_boundary": "PYTHON_LAYOUT_FFI_AND_CONTAINER_INCLUDED",
+        "native_timing_capability": {
+          "optional": true,
+          "boundary": "NATIVE_OBJECT_FIT_SERIALIZE_AND_LOAD_DECODE_V1",
+          "clock": "CLOCK_MONOTONIC",
+          "excludes": [
+            "CONTEXT_LIFECYCLE",
+            "ENCODED_OUTPUT_COPY",
+            "DECODE_FRAME_CHECKSUM_AND_HEADER_PARSE",
+            "PYTHON_LAYOUT_TRANSFORM",
+            "PYTHON_FFI_CONTAINER",
+            "QUERY_WORKLOAD_GENERATION"
+          ]
+        },
+        "accounting_hooks": [
+          "FINAL_STREAM_LENGTH",
+          "SERIALIZED_MODEL_AND_INDEX_BYTES",
+          "PER_COLUMN_BIAS",
+          "FRAME_CHECKSUM",
+          "OUTPUT_CAPACITY"
+        ]
+      },
+      "scope_policy": "UNCHANGED_EXISTING_REGISTRATION_NO_ACTIVE_SCOPE_PROMOTION"
+    },
+    {
+      "algorithm": "lz4-frame",
+      "source_artifact_id_unchanged": "v2:source-artifact:sha256:68693355ce70e7eb3c672bb55303b7d380d420e3ec0626a4cef0588556f62679",
+      "adapter_before": {
+        "backend": "C_ABI_V1",
+        "version": "lz4-frame-ctypes-v2-streaming",
+        "factory": "LZ4_FRAME_CTYPES_V1",
+        "artifact_path": "build/adapters/lz4_frame/release/libtscb_lz4_frame.so",
+        "timing_boundary": "PYTHON_FFI_CONTAINER_INCLUDED",
+        "native_timing_capability": {
+          "optional": true,
+          "boundary": "CODEC_API_ONLY_V1",
+          "clock": "CLOCK_MONOTONIC",
+          "excludes": [
+            "CONTEXT_LIFECYCLE",
+            "EXPLICIT_PREVALIDATION",
+            "PYTHON_FFI_CONTAINER"
+          ]
+        },
+        "accounting_hooks": [
+          "FINAL_STREAM_INSPECTION",
+          "LZ4_FRAME_COMPONENTS",
+          "OUTPUT_CAPACITY"
+        ]
+      },
+      "adapter_after": {
+        "backend": "C_ABI_V1",
+        "version": "lz4-frame-ctypes-v2-streaming-port-standard-v30-20261011",
+        "factory": "LZ4_FRAME_CTYPES_V1",
+        "artifact_path": "build/port-standard-v30-20261011/native-builds-v3/lz4_frame/release/libtscb_lz4_frame.so",
+        "timing_boundary": "PYTHON_FFI_CONTAINER_INCLUDED",
+        "native_timing_capability": {
+          "optional": true,
+          "boundary": "CODEC_API_ONLY_V1",
+          "clock": "CLOCK_MONOTONIC",
+          "excludes": [
+            "CONTEXT_LIFECYCLE",
+            "EXPLICIT_PREVALIDATION",
+            "PYTHON_FFI_CONTAINER"
+          ]
+        },
+        "accounting_hooks": [
+          "FINAL_STREAM_INSPECTION",
+          "LZ4_FRAME_COMPONENTS",
+          "OUTPUT_CAPACITY"
+        ]
+      },
+      "scope_policy": "UNCHANGED_EXISTING_REGISTRATION_NO_ACTIVE_SCOPE_PROMOTION"
+    },
+    {
+      "algorithm": "lzss-dipperstein-c",
+      "source_artifact_id_unchanged": "v2:source-artifact:sha256:4c20671bce63b0af5096ff01677e538f12c25d15d74075b8790e8c758ac256a9",
+      "adapter_before": {
+        "backend": "C_ABI_V1",
+        "version": "lzss-dipperstein-c-ctypes-v1",
+        "factory": "LZSS_DIPPERSTEIN_CTYPES_V1",
+        "artifact_path": "build/adapters/lzss_dipperstein_c/release/libtscb_lzss_dipperstein_c.so",
+        "timing_boundary": "PYTHON_FFI_CONTAINER_INCLUDED",
+        "native_timing_capability": {
+          "optional": true,
+          "boundary": "UPSTREAM_FILE_API_ONLY_V1",
+          "clock": "CLOCK_MONOTONIC",
+          "excludes": [
+            "CONTEXT_LIFECYCLE",
+            "MEMORY_STREAM_SETUP",
+            "EXPLICIT_PREVALIDATION",
+            "PYTHON_FFI_CONTAINER"
+          ]
+        },
+        "accounting_hooks": [
+          "FINAL_STREAM_INSPECTION",
+          "LZSS_OFFSET12_LENGTH4_TOKEN_AND_PADDING_BITS",
+          "OUTPUT_CAPACITY"
+        ]
+      },
+      "adapter_after": {
+        "backend": "C_ABI_V1",
+        "version": "lzss-dipperstein-c-ctypes-v1-port-standard-v30-20261011",
+        "factory": "LZSS_DIPPERSTEIN_CTYPES_V1",
+        "artifact_path": "build/port-standard-v30-20261011/native-builds-v3/lzss_dipperstein_c/release/libtscb_lzss_dipperstein_c.so",
+        "timing_boundary": "PYTHON_FFI_CONTAINER_INCLUDED",
+        "native_timing_capability": {
+          "optional": true,
+          "boundary": "UPSTREAM_FILE_API_ONLY_V1",
+          "clock": "CLOCK_MONOTONIC",
+          "excludes": [
+            "CONTEXT_LIFECYCLE",
+            "MEMORY_STREAM_SETUP",
+            "EXPLICIT_PREVALIDATION",
+            "PYTHON_FFI_CONTAINER"
+          ]
+        },
+        "accounting_hooks": [
+          "FINAL_STREAM_INSPECTION",
+          "LZSS_OFFSET12_LENGTH4_TOKEN_AND_PADDING_BITS",
+          "OUTPUT_CAPACITY"
+        ]
+      },
+      "scope_policy": "UNCHANGED_EXISTING_REGISTRATION_NO_ACTIVE_SCOPE_PROMOTION"
+    },
+    {
+      "algorithm": "lzss-raw",
+      "source_artifact_id_unchanged": "v2:source-artifact:sha256:9579e054e8623059d897c666c92d1703fc092e51b91a33d7de988fb6c2695b92",
+      "adapter_before": {
+        "backend": "C_ABI_V1",
+        "version": "lzss-raw-cpp-ctypes-v2",
+        "factory": "LZSS_RAW_CTYPES_V1",
+        "artifact_path": "build/adapters/lzss_raw/release/libtscb_lzss_raw.so",
+        "timing_boundary": "PYTHON_FFI_CONTAINER_INCLUDED",
+        "native_timing_capability": {
+          "optional": true,
+          "boundary": "CODEC_API_ONLY_V1",
+          "clock": "CLOCK_MONOTONIC",
+          "excludes": [
+            "CONTEXT_LIFECYCLE",
+            "EXPLICIT_PREVALIDATION",
+            "PYTHON_FFI_CONTAINER"
+          ]
+        },
+        "accounting_hooks": [
+          "FINAL_STREAM_INSPECTION",
+          "LZSS_TOKEN_AND_PADDING_BITS",
+          "OUTPUT_CAPACITY"
+        ]
+      },
+      "adapter_after": {
+        "backend": "C_ABI_V1",
+        "version": "lzss-raw-cpp-ctypes-v2-port-standard-v30-20261011",
+        "factory": "LZSS_RAW_CTYPES_V1",
+        "artifact_path": "build/port-standard-v30-20261011/native-builds-v3/lzss_raw/release/libtscb_lzss_raw.so",
+        "timing_boundary": "PYTHON_FFI_CONTAINER_INCLUDED",
+        "native_timing_capability": {
+          "optional": true,
+          "boundary": "CODEC_API_ONLY_V1",
+          "clock": "CLOCK_MONOTONIC",
+          "excludes": [
+            "CONTEXT_LIFECYCLE",
+            "EXPLICIT_PREVALIDATION",
+            "PYTHON_FFI_CONTAINER"
+          ]
+        },
+        "accounting_hooks": [
+          "FINAL_STREAM_INSPECTION",
+          "LZSS_TOKEN_AND_PADDING_BITS",
+          "OUTPUT_CAPACITY"
+        ]
+      },
+      "scope_policy": "UNCHANGED_EXISTING_REGISTRATION_NO_ACTIVE_SCOPE_PROMOTION"
+    },
+    {
+      "algorithm": "lzsse2-raw",
+      "source_artifact_id_unchanged": "v2:source-artifact:sha256:61ad2f0403009960c989cb555caf070a4dad8c3095eebc501a09eeddb9912dfd",
+      "adapter_before": {
+        "backend": "C_ABI_V1",
+        "version": "lzsse2-raw-ctypes-v1",
+        "factory": "LZSSE2_RAW_CTYPES_V1",
+        "artifact_path": "build/adapters/lzsse2_raw/release/libtscb_lzsse2_raw.so",
+        "timing_boundary": "PYTHON_FFI_CONTAINER_INCLUDED",
+        "native_timing_capability": {
+          "optional": true,
+          "boundary": "CODEC_API_ONLY_V1",
+          "clock": "CLOCK_MONOTONIC",
+          "excludes": [
+            "CONTEXT_LIFECYCLE",
+            "EXPLICIT_PREVALIDATION",
+            "PYTHON_FFI_CONTAINER"
+          ]
+        },
+        "accounting_hooks": [
+          "FINAL_STREAM_INSPECTION",
+          "EXACT_RAW_OR_COMPRESSED_LENGTH",
+          "OUTPUT_CAPACITY"
+        ]
+      },
+      "adapter_after": {
+        "backend": "C_ABI_V1",
+        "version": "lzsse2-raw-ctypes-v1-port-standard-v30-20261011",
+        "factory": "LZSSE2_RAW_CTYPES_V1",
+        "artifact_path": "build/port-standard-v30-20261011/native-builds-v3/lzsse2_raw/release/libtscb_lzsse2_raw.so",
+        "timing_boundary": "PYTHON_FFI_CONTAINER_INCLUDED",
+        "native_timing_capability": {
+          "optional": true,
+          "boundary": "CODEC_API_ONLY_V1",
+          "clock": "CLOCK_MONOTONIC",
+          "excludes": [
+            "CONTEXT_LIFECYCLE",
+            "EXPLICIT_PREVALIDATION",
+            "PYTHON_FFI_CONTAINER"
+          ]
+        },
+        "accounting_hooks": [
+          "FINAL_STREAM_INSPECTION",
+          "EXACT_RAW_OR_COMPRESSED_LENGTH",
+          "OUTPUT_CAPACITY"
+        ]
+      },
+      "scope_policy": "UNCHANGED_EXISTING_REGISTRATION_NO_ACTIVE_SCOPE_PROMOTION"
+    },
+    {
+      "algorithm": "lzsse8-raw",
+      "source_artifact_id_unchanged": "v2:source-artifact:sha256:e30217f7e46c3b78d490f5d8a032d67e39c866429f5a35b65405b91f256a7181",
+      "adapter_before": {
+        "backend": "C_ABI_V1",
+        "version": "lzsse8-raw-ctypes-v1",
+        "factory": "LZSSE8_RAW_CTYPES_V1",
+        "artifact_path": "build/adapters/lzsse8_raw/release/libtscb_lzsse8_raw.so",
+        "timing_boundary": "PYTHON_FFI_CONTAINER_INCLUDED",
+        "native_timing_capability": {
+          "optional": true,
+          "boundary": "CODEC_API_ONLY_V1",
+          "clock": "CLOCK_MONOTONIC",
+          "excludes": [
+            "CONTEXT_LIFECYCLE",
+            "EXPLICIT_PREVALIDATION",
+            "PYTHON_FFI_CONTAINER"
+          ]
+        },
+        "accounting_hooks": [
+          "FINAL_STREAM_INSPECTION",
+          "EXACT_RAW_OR_COMPRESSED_LENGTH",
+          "OUTPUT_CAPACITY"
+        ]
+      },
+      "adapter_after": {
+        "backend": "C_ABI_V1",
+        "version": "lzsse8-raw-ctypes-v1-port-standard-v30-20261011",
+        "factory": "LZSSE8_RAW_CTYPES_V1",
+        "artifact_path": "build/port-standard-v30-20261011/native-builds-v3/lzsse8_raw/release/libtscb_lzsse8_raw.so",
+        "timing_boundary": "PYTHON_FFI_CONTAINER_INCLUDED",
+        "native_timing_capability": {
+          "optional": true,
+          "boundary": "CODEC_API_ONLY_V1",
+          "clock": "CLOCK_MONOTONIC",
+          "excludes": [
+            "CONTEXT_LIFECYCLE",
+            "EXPLICIT_PREVALIDATION",
+            "PYTHON_FFI_CONTAINER"
+          ]
+        },
+        "accounting_hooks": [
+          "FINAL_STREAM_INSPECTION",
+          "EXACT_RAW_OR_COMPRESSED_LENGTH",
+          "OUTPUT_CAPACITY"
+        ]
+      },
+      "scope_policy": "UNCHANGED_EXISTING_REGISTRATION_NO_ACTIVE_SCOPE_PROMOTION"
+    },
+    {
+      "algorithm": "neats-lossless-i64",
+      "source_artifact_id_unchanged": "v2:source-artifact:sha256:42743b152ad55dde6d0af6e4f6bf558bb709f22fe9bc37371af15b0144f650bb",
+      "adapter_before": {
+        "backend": "C_ABI_V1",
+        "version": "neats-ctypes-v1",
+        "factory": "NEATS_CTYPES_V1",
+        "artifact_path": "build/adapters/neats_lossless_i64/release/libtscb_neats_lossless_i64.so",
+        "timing_boundary": "PYTHON_LAYOUT_FFI_AND_CONTAINER_INCLUDED",
+        "native_timing_capability": {
+          "optional": true,
+          "boundary": "NATIVE_OBJECT_FIT_SERIALIZE_AND_LOAD_DECODE_V1",
+          "clock": "CLOCK_MONOTONIC",
+          "excludes": [
+            "CONTEXT_LIFECYCLE",
+            "ENCODED_OUTPUT_COPY",
+            "DECODE_FRAME_CHECKSUM_AND_HEADER_PARSE",
+            "PYTHON_LAYOUT_TRANSFORM",
+            "PYTHON_FFI_CONTAINER",
+            "QUERY_WORKLOAD_GENERATION"
+          ]
+        },
+        "accounting_hooks": [
+          "FINAL_STREAM_LENGTH",
+          "SERIALIZED_MODEL_AND_INDEX_BYTES",
+          "PER_COLUMN_BIAS",
+          "FRAME_CHECKSUM",
+          "OUTPUT_CAPACITY"
+        ]
+      },
+      "adapter_after": {
+        "backend": "C_ABI_V1",
+        "version": "neats-ctypes-v1-port-standard-v30-20261011",
+        "factory": "NEATS_CTYPES_V1",
+        "artifact_path": "build/port-standard-v30-20261011/native-builds-v3/neats_lossless_i64/release/libtscb_neats_lossless_i64.so",
+        "timing_boundary": "PYTHON_LAYOUT_FFI_AND_CONTAINER_INCLUDED",
+        "native_timing_capability": {
+          "optional": true,
+          "boundary": "NATIVE_OBJECT_FIT_SERIALIZE_AND_LOAD_DECODE_V1",
+          "clock": "CLOCK_MONOTONIC",
+          "excludes": [
+            "CONTEXT_LIFECYCLE",
+            "ENCODED_OUTPUT_COPY",
+            "DECODE_FRAME_CHECKSUM_AND_HEADER_PARSE",
+            "PYTHON_LAYOUT_TRANSFORM",
+            "PYTHON_FFI_CONTAINER",
+            "QUERY_WORKLOAD_GENERATION"
+          ]
+        },
+        "accounting_hooks": [
+          "FINAL_STREAM_LENGTH",
+          "SERIALIZED_MODEL_AND_INDEX_BYTES",
+          "PER_COLUMN_BIAS",
+          "FRAME_CHECKSUM",
+          "OUTPUT_CAPACITY"
+        ]
+      },
+      "scope_policy": "UNCHANGED_EXISTING_REGISTRATION_NO_ACTIVE_SCOPE_PROMOTION"
+    },
+    {
+      "algorithm": "self-star",
+      "source_artifact_id_unchanged": "v2:source-artifact:sha256:0bf9402d37197cde38cf24b12b04172381e9aba46b4baead62314241b3349139",
+      "adapter_before": {
+        "backend": "C_ABI_V1",
+        "version": "rewrite-lossless-ctypes-v1",
+        "factory": "REWRITE_LOSSLESS_CTYPES_V1",
+        "artifact_path": "build/adapters/self_star/release/libtscb_self_star.so",
+        "timing_boundary": "PYTHON_LAYOUT_FFI_DESCRIPTOR_AND_CHECKED_NATIVE_FRAME_INCLUDED",
+        "accounting_hooks": [
+          "FINAL_STREAM_LENGTH",
+          "DESCRIPTOR_AND_WRAPPER_OVERHEAD",
+          "OPAQUE_COMPLETE_STANDALONE_CODEC_BYTES",
+          "COLUMN_CODEC_BYTES",
+          "OUTPUT_CAPACITY"
+        ],
+        "timing_scope_boundaries": {
+          "CORE": "HARNESS_SESSION_API: compress_update + finalize / decompress; prepared routed input, created session and encode output capacity outside timer; includes API-internal descriptors, staging, copies, native frames, model work and decode materialization; reset via fresh independent session outside timer",
+          "PIPELINE": "HARNESS_OBJECT_PIPELINE: compatibility preparation, session creation, bound/capacity allocation, CORE, finalized stream materialization, accounting, native telemetry and close; decode includes inverse compatibility work",
+          "E2E": "CANONICAL_MEMORY_ROUTED_VIEW: complete encode/decode object pipeline and phase transitions; excludes file I/O and post-timing correctness/determinism checks",
+          "NATIVE": "UNAVAILABLE_NULL: no optional internal native timer; CORE uses harness wall clock, never inferred native duration"
+        }
+      },
+      "adapter_after": {
+        "backend": "C_ABI_V1",
+        "version": "rewrite-lossless-ctypes-v1-port-standard-v30-20261011",
+        "factory": "REWRITE_LOSSLESS_CTYPES_V1",
+        "artifact_path": "build/port-standard-v30-20261011/native-builds-v3/self_star/release/libtscb_self_star.so",
+        "timing_boundary": "PYTHON_LAYOUT_FFI_DESCRIPTOR_AND_CHECKED_NATIVE_FRAME_INCLUDED",
+        "accounting_hooks": [
+          "FINAL_STREAM_LENGTH",
+          "DESCRIPTOR_AND_WRAPPER_OVERHEAD",
+          "OPAQUE_COMPLETE_STANDALONE_CODEC_BYTES",
+          "COLUMN_CODEC_BYTES",
+          "OUTPUT_CAPACITY"
+        ],
+        "timing_scope_boundaries": {
+          "CORE": "HARNESS_SESSION_API: compress_update + finalize / decompress; prepared routed input, created session and encode output capacity outside timer; includes API-internal descriptors, staging, copies, native frames, model work and decode materialization; reset via fresh independent session outside timer",
+          "PIPELINE": "HARNESS_OBJECT_PIPELINE: compatibility preparation, session creation, bound/capacity allocation, CORE, finalized stream materialization, accounting, native telemetry and close; decode includes inverse compatibility work",
+          "E2E": "CANONICAL_MEMORY_ROUTED_VIEW: complete encode/decode object pipeline and phase transitions; excludes file I/O and post-timing correctness/determinism checks",
+          "NATIVE": "UNAVAILABLE_NULL: no optional internal native timer; CORE uses harness wall clock, never inferred native duration"
+        }
+      },
+      "scope_policy": "UNCHANGED_EXISTING_REGISTRATION_NO_ACTIVE_SCOPE_PROMOTION"
+    },
+    {
+      "algorithm": "serf-qt",
+      "source_artifact_id_unchanged": "v2:source-artifact:sha256:6bbe8e6fe0499c421679441e6e9836e951c2ccccf19bd96b37c8f84914a8c6fb",
+      "adapter_before": {
+        "backend": "C_ABI_V1",
+        "version": "serf-ctypes-v1",
+        "factory": "SERF_CTYPES_V1",
+        "artifact_path": "build/adapters/serf_qt/release/libtscb_serf_qt.so",
+        "timing_boundary": "PYTHON_LAYOUT_FFI_AND_CONTAINER_INCLUDED",
+        "native_timing_capability": {
+          "optional": true,
+          "boundary": "NATIVE_SERF_FRAME_ENCODE_DECODE_V1",
+          "clock": "CLOCK_MONOTONIC",
+          "excludes": [
+            "CONTEXT_LIFECYCLE",
+            "NATIVE_INPUT_DESCRIPTOR_PARSE",
+            "ENCODED_OUTPUT_COPY",
+            "DECODE_FRAME_CHECKSUM_AND_HEADER_PARSE",
+            "PYTHON_LAYOUT_TRANSFORM",
+            "PYTHON_FFI_CONTAINER"
+          ]
+        },
+        "accounting_hooks": [
+          "FINAL_STREAM_LENGTH",
+          "EXACT_VALID_BITS_PER_BLOCK",
+          "COMPLETE_NATIVE_SERF_FRAME",
+          "RAW_EXCEPTION_BLOCKS_CHARGED",
+          "OUTPUT_CAPACITY"
+        ]
+      },
+      "adapter_after": {
+        "backend": "C_ABI_V1",
+        "version": "serf-ctypes-v1-port-standard-v30-20261011",
+        "factory": "SERF_CTYPES_V1",
+        "artifact_path": "build/port-standard-v30-20261011/native-builds-v3/serf_qt/release/libtscb_serf_qt.so",
+        "timing_boundary": "PYTHON_LAYOUT_FFI_AND_CONTAINER_INCLUDED",
+        "native_timing_capability": {
+          "optional": true,
+          "boundary": "NATIVE_SERF_FRAME_ENCODE_DECODE_V1",
+          "clock": "CLOCK_MONOTONIC",
+          "excludes": [
+            "CONTEXT_LIFECYCLE",
+            "NATIVE_INPUT_DESCRIPTOR_PARSE",
+            "ENCODED_OUTPUT_COPY",
+            "DECODE_FRAME_CHECKSUM_AND_HEADER_PARSE",
+            "PYTHON_LAYOUT_TRANSFORM",
+            "PYTHON_FFI_CONTAINER"
+          ]
+        },
+        "accounting_hooks": [
+          "FINAL_STREAM_LENGTH",
+          "EXACT_VALID_BITS_PER_BLOCK",
+          "COMPLETE_NATIVE_SERF_FRAME",
+          "RAW_EXCEPTION_BLOCKS_CHARGED",
+          "OUTPUT_CAPACITY"
+        ]
+      },
+      "scope_policy": "UNCHANGED_EXISTING_REGISTRATION_NO_ACTIVE_SCOPE_PROMOTION"
+    },
+    {
+      "algorithm": "serf-xor",
+      "source_artifact_id_unchanged": "v2:source-artifact:sha256:6bbe8e6fe0499c421679441e6e9836e951c2ccccf19bd96b37c8f84914a8c6fb",
+      "adapter_before": {
+        "backend": "C_ABI_V1",
+        "version": "serf-ctypes-v1",
+        "factory": "SERF_CTYPES_V1",
+        "artifact_path": "build/adapters/serf_xor/release/libtscb_serf_xor.so",
+        "timing_boundary": "PYTHON_LAYOUT_FFI_AND_CONTAINER_INCLUDED",
+        "native_timing_capability": {
+          "optional": true,
+          "boundary": "NATIVE_SERF_FRAME_ENCODE_DECODE_V1",
+          "clock": "CLOCK_MONOTONIC",
+          "excludes": [
+            "CONTEXT_LIFECYCLE",
+            "NATIVE_INPUT_DESCRIPTOR_PARSE",
+            "ENCODED_OUTPUT_COPY",
+            "DECODE_FRAME_CHECKSUM_AND_HEADER_PARSE",
+            "PYTHON_LAYOUT_TRANSFORM",
+            "PYTHON_FFI_CONTAINER"
+          ]
+        },
+        "accounting_hooks": [
+          "FINAL_STREAM_LENGTH",
+          "EXACT_VALID_BITS_PER_BLOCK",
+          "COMPLETE_NATIVE_SERF_FRAME",
+          "RAW_EXCEPTION_BLOCKS_CHARGED",
+          "OUTPUT_CAPACITY"
+        ]
+      },
+      "adapter_after": {
+        "backend": "C_ABI_V1",
+        "version": "serf-ctypes-v1-port-standard-v30-20261011",
+        "factory": "SERF_CTYPES_V1",
+        "artifact_path": "build/port-standard-v30-20261011/native-builds-v3/serf_xor/release/libtscb_serf_xor.so",
+        "timing_boundary": "PYTHON_LAYOUT_FFI_AND_CONTAINER_INCLUDED",
+        "native_timing_capability": {
+          "optional": true,
+          "boundary": "NATIVE_SERF_FRAME_ENCODE_DECODE_V1",
+          "clock": "CLOCK_MONOTONIC",
+          "excludes": [
+            "CONTEXT_LIFECYCLE",
+            "NATIVE_INPUT_DESCRIPTOR_PARSE",
+            "ENCODED_OUTPUT_COPY",
+            "DECODE_FRAME_CHECKSUM_AND_HEADER_PARSE",
+            "PYTHON_LAYOUT_TRANSFORM",
+            "PYTHON_FFI_CONTAINER"
+          ]
+        },
+        "accounting_hooks": [
+          "FINAL_STREAM_LENGTH",
+          "EXACT_VALID_BITS_PER_BLOCK",
+          "COMPLETE_NATIVE_SERF_FRAME",
+          "RAW_EXCEPTION_BLOCKS_CHARGED",
+          "OUTPUT_CAPACITY"
+        ]
+      },
+      "scope_policy": "UNCHANGED_EXISTING_REGISTRATION_NO_ACTIVE_SCOPE_PROMOTION"
+    },
+    {
+      "algorithm": "snappy-raw",
+      "source_artifact_id_unchanged": "v2:source-artifact:sha256:e63a21a66a2ebd8fec7b8caa2b477a157b01033ea458fa3be9eab481bb26771d",
+      "adapter_before": {
+        "backend": "C_ABI_V1",
+        "version": "snappy-raw-ctypes-v1",
+        "factory": "SNAPPY_RAW_CTYPES_V1",
+        "artifact_path": "build/adapters/snappy_raw/release/libtscb_snappy_raw.so",
+        "timing_boundary": "PYTHON_FFI_CONTAINER_INCLUDED",
+        "native_timing_capability": {
+          "optional": true,
+          "boundary": "CODEC_API_ONLY_V1",
+          "clock": "CLOCK_MONOTONIC",
+          "excludes": [
+            "CONTEXT_LIFECYCLE",
+            "EXPLICIT_PREVALIDATION",
+            "PYTHON_FFI_CONTAINER"
+          ]
+        },
+        "accounting_hooks": [
+          "FINAL_STREAM_INSPECTION",
+          "SNAPPY_RAW_COMPONENTS",
+          "OUTPUT_CAPACITY"
+        ]
+      },
+      "adapter_after": {
+        "backend": "C_ABI_V1",
+        "version": "snappy-raw-ctypes-v1-port-standard-v30-20261011",
+        "factory": "SNAPPY_RAW_CTYPES_V1",
+        "artifact_path": "build/port-standard-v30-20261011/native-builds-v3/snappy_raw/release/libtscb_snappy_raw.so",
+        "timing_boundary": "PYTHON_FFI_CONTAINER_INCLUDED",
+        "native_timing_capability": {
+          "optional": true,
+          "boundary": "CODEC_API_ONLY_V1",
+          "clock": "CLOCK_MONOTONIC",
+          "excludes": [
+            "CONTEXT_LIFECYCLE",
+            "EXPLICIT_PREVALIDATION",
+            "PYTHON_FFI_CONTAINER"
+          ]
+        },
+        "accounting_hooks": [
+          "FINAL_STREAM_INSPECTION",
+          "SNAPPY_RAW_COMPONENTS",
+          "OUTPUT_CAPACITY"
+        ]
+      },
+      "scope_policy": "UNCHANGED_EXISTING_REGISTRATION_NO_ACTIVE_SCOPE_PROMOTION"
+    },
+    {
+      "algorithm": "sprintz-delta",
+      "source_artifact_id_unchanged": "v2:source-artifact:sha256:a26eb4d896ea01cb2ad8e239fbe4ba922ab54a2d524a6c2b53fe03385e22718d",
+      "adapter_before": {
+        "backend": "C_ABI_V1",
+        "version": "sprintz-ctypes-v2",
+        "factory": "SPRINTZ_CTYPES_V1",
+        "artifact_path": "build/adapters/sprintz_delta/release/libtscb_sprintz_delta.so",
+        "timing_boundary": "PYTHON_SOA_INTERLEAVE_FFI_AND_CONTAINER_INCLUDED",
+        "native_timing_capability": {
+          "optional": true,
+          "boundary": "CODEC_API_ONLY_V1",
+          "clock": "CLOCK_MONOTONIC",
+          "excludes": [
+            "CONTEXT_LIFECYCLE",
+            "PYTHON_SOA_INTERLEAVE",
+            "PYTHON_FFI_CONTAINER"
+          ]
+        },
+        "accounting_hooks": [
+          "FINAL_STREAM_LENGTH",
+          "NATIVE_ENVELOPE",
+          "NATIVE_HEADER",
+          "OUTPUT_CAPACITY"
+        ]
+      },
+      "adapter_after": {
+        "backend": "C_ABI_V1",
+        "version": "sprintz-ctypes-v2-port-standard-v30-20261011",
+        "factory": "SPRINTZ_CTYPES_V1",
+        "artifact_path": "build/port-standard-v30-20261011/native-builds-v3/sprintz_delta/release/libtscb_sprintz_delta.so",
+        "timing_boundary": "PYTHON_SOA_INTERLEAVE_FFI_AND_CONTAINER_INCLUDED",
+        "native_timing_capability": {
+          "optional": true,
+          "boundary": "CODEC_API_ONLY_V1",
+          "clock": "CLOCK_MONOTONIC",
+          "excludes": [
+            "CONTEXT_LIFECYCLE",
+            "PYTHON_SOA_INTERLEAVE",
+            "PYTHON_FFI_CONTAINER"
+          ]
+        },
+        "accounting_hooks": [
+          "FINAL_STREAM_LENGTH",
+          "NATIVE_ENVELOPE",
+          "NATIVE_HEADER",
+          "OUTPUT_CAPACITY"
+        ]
+      },
+      "scope_policy": "UNCHANGED_EXISTING_REGISTRATION_NO_ACTIVE_SCOPE_PROMOTION"
+    },
+    {
+      "algorithm": "sprintz-delta-u8",
+      "source_artifact_id_unchanged": "v2:source-artifact:sha256:af92b504c16f247d9e34136d14a489b47d26610edee41353c663297ea9a9ad5a",
+      "adapter_before": {
+        "backend": "C_ABI_V1",
+        "version": "sprintz-u8-ctypes-v1",
+        "factory": "SPRINTZ8_CTYPES_V1",
+        "artifact_path": "build/adapters/sprintz_delta_u8/release/libtscb_sprintz_delta_u8.so",
+        "timing_boundary": "PYTHON_FFI_CONTAINER_INCLUDED",
+        "native_timing_capability": {
+          "optional": true,
+          "boundary": "CODEC_API_ONLY_V1",
+          "clock": "CLOCK_MONOTONIC",
+          "excludes": [
+            "CONTEXT_LIFECYCLE",
+            "PYTHON_FFI_CONTAINER"
+          ]
+        },
+        "accounting_hooks": [
+          "FINAL_STREAM_LENGTH",
+          "NATIVE_HEADER",
+          "OUTPUT_CAPACITY"
+        ]
+      },
+      "adapter_after": {
+        "backend": "C_ABI_V1",
+        "version": "sprintz-u8-ctypes-v1-port-standard-v30-20261011",
+        "factory": "SPRINTZ8_CTYPES_V1",
+        "artifact_path": "build/port-standard-v30-20261011/native-builds-v3/sprintz_delta_u8/release/libtscb_sprintz_delta_u8.so",
+        "timing_boundary": "PYTHON_FFI_CONTAINER_INCLUDED",
+        "native_timing_capability": {
+          "optional": true,
+          "boundary": "CODEC_API_ONLY_V1",
+          "clock": "CLOCK_MONOTONIC",
+          "excludes": [
+            "CONTEXT_LIFECYCLE",
+            "PYTHON_FFI_CONTAINER"
+          ]
+        },
+        "accounting_hooks": [
+          "FINAL_STREAM_LENGTH",
+          "NATIVE_HEADER",
+          "OUTPUT_CAPACITY"
+        ]
+      },
+      "scope_policy": "UNCHANGED_EXISTING_REGISTRATION_NO_ACTIVE_SCOPE_PROMOTION"
+    },
+    {
+      "algorithm": "sprintz-fire",
+      "source_artifact_id_unchanged": "v2:source-artifact:sha256:a26eb4d896ea01cb2ad8e239fbe4ba922ab54a2d524a6c2b53fe03385e22718d",
+      "adapter_before": {
+        "backend": "C_ABI_V1",
+        "version": "sprintz-ctypes-v2",
+        "factory": "SPRINTZ_CTYPES_V1",
+        "artifact_path": "build/adapters/sprintz_fire/release/libtscb_sprintz_fire.so",
+        "timing_boundary": "PYTHON_SOA_INTERLEAVE_FFI_AND_CONTAINER_INCLUDED",
+        "native_timing_capability": {
+          "optional": true,
+          "boundary": "CODEC_API_ONLY_V1",
+          "clock": "CLOCK_MONOTONIC",
+          "excludes": [
+            "CONTEXT_LIFECYCLE",
+            "PYTHON_SOA_INTERLEAVE",
+            "PYTHON_FFI_CONTAINER"
+          ]
+        },
+        "accounting_hooks": [
+          "FINAL_STREAM_LENGTH",
+          "NATIVE_ENVELOPE",
+          "NATIVE_HEADER",
+          "OUTPUT_CAPACITY"
+        ]
+      },
+      "adapter_after": {
+        "backend": "C_ABI_V1",
+        "version": "sprintz-ctypes-v2-port-standard-v30-20261011",
+        "factory": "SPRINTZ_CTYPES_V1",
+        "artifact_path": "build/port-standard-v30-20261011/native-builds-v3/sprintz_fire/release/libtscb_sprintz_fire.so",
+        "timing_boundary": "PYTHON_SOA_INTERLEAVE_FFI_AND_CONTAINER_INCLUDED",
+        "native_timing_capability": {
+          "optional": true,
+          "boundary": "CODEC_API_ONLY_V1",
+          "clock": "CLOCK_MONOTONIC",
+          "excludes": [
+            "CONTEXT_LIFECYCLE",
+            "PYTHON_SOA_INTERLEAVE",
+            "PYTHON_FFI_CONTAINER"
+          ]
+        },
+        "accounting_hooks": [
+          "FINAL_STREAM_LENGTH",
+          "NATIVE_ENVELOPE",
+          "NATIVE_HEADER",
+          "OUTPUT_CAPACITY"
+        ]
+      },
+      "scope_policy": "UNCHANGED_EXISTING_REGISTRATION_NO_ACTIVE_SCOPE_PROMOTION"
+    },
+    {
+      "algorithm": "sprintz-fire-huff0",
+      "source_artifact_id_unchanged": "v2:source-artifact:sha256:c1c3ca949d70ffb8c1c37f15f350299bed1cc9b3c141a307dd5f848b0e69469d",
+      "adapter_before": {
+        "backend": "C_ABI_V1",
+        "version": "sprintz-fire-huff0-ctypes-v1",
+        "factory": "SPRINTZ_CTYPES_V1",
+        "artifact_path": "build/adapters/sprintz_fire_huff0/release/libtscb_sprintz_fire_huff0.so",
+        "timing_boundary": "PYTHON_SOA_INTERLEAVE_FFI_AND_CONTAINER_INCLUDED",
+        "native_timing_capability": {
+          "optional": true,
+          "boundary": "SPRINTZ_FIRE_AND_HUFF0_CODEC_APIS_V1",
+          "clock": "CLOCK_MONOTONIC",
+          "excludes": [
+            "CONTEXT_LIFECYCLE",
+            "PYTHON_SOA_INTERLEAVE",
+            "PYTHON_FFI_CONTAINER"
+          ]
+        },
+        "accounting_hooks": [
+          "FINAL_STREAM_LENGTH",
+          "PIPELINE_ENVELOPE",
+          "EXACT_SPRINTZ_INTERMEDIATE_LENGTH",
+          "HUFF0_MODE",
+          "EXACT_HUFF0_PAYLOAD_LENGTH",
+          "OUTPUT_CAPACITY"
+        ]
+      },
+      "adapter_after": {
+        "backend": "C_ABI_V1",
+        "version": "sprintz-fire-huff0-ctypes-v1-port-standard-v30-20261011",
+        "factory": "SPRINTZ_CTYPES_V1",
+        "artifact_path": "build/port-standard-v30-20261011/native-builds-v3/sprintz_fire_huff0/release/libtscb_sprintz_fire_huff0.so",
+        "timing_boundary": "PYTHON_SOA_INTERLEAVE_FFI_AND_CONTAINER_INCLUDED",
+        "native_timing_capability": {
+          "optional": true,
+          "boundary": "SPRINTZ_FIRE_AND_HUFF0_CODEC_APIS_V1",
+          "clock": "CLOCK_MONOTONIC",
+          "excludes": [
+            "CONTEXT_LIFECYCLE",
+            "PYTHON_SOA_INTERLEAVE",
+            "PYTHON_FFI_CONTAINER"
+          ]
+        },
+        "accounting_hooks": [
+          "FINAL_STREAM_LENGTH",
+          "PIPELINE_ENVELOPE",
+          "EXACT_SPRINTZ_INTERMEDIATE_LENGTH",
+          "HUFF0_MODE",
+          "EXACT_HUFF0_PAYLOAD_LENGTH",
+          "OUTPUT_CAPACITY"
+        ]
+      },
+      "scope_policy": "UNCHANGED_EXISTING_REGISTRATION_NO_ACTIVE_SCOPE_PROMOTION"
+    },
+    {
+      "algorithm": "sprintz-fire-u8",
+      "source_artifact_id_unchanged": "v2:source-artifact:sha256:af92b504c16f247d9e34136d14a489b47d26610edee41353c663297ea9a9ad5a",
+      "adapter_before": {
+        "backend": "C_ABI_V1",
+        "version": "sprintz-u8-ctypes-v1",
+        "factory": "SPRINTZ8_CTYPES_V1",
+        "artifact_path": "build/adapters/sprintz_fire_u8/release/libtscb_sprintz_fire_u8.so",
+        "timing_boundary": "PYTHON_FFI_CONTAINER_INCLUDED",
+        "native_timing_capability": {
+          "optional": true,
+          "boundary": "CODEC_API_ONLY_V1",
+          "clock": "CLOCK_MONOTONIC",
+          "excludes": [
+            "CONTEXT_LIFECYCLE",
+            "PYTHON_FFI_CONTAINER"
+          ]
+        },
+        "accounting_hooks": [
+          "FINAL_STREAM_LENGTH",
+          "NATIVE_HEADER",
+          "OUTPUT_CAPACITY"
+        ]
+      },
+      "adapter_after": {
+        "backend": "C_ABI_V1",
+        "version": "sprintz-u8-ctypes-v1-port-standard-v30-20261011",
+        "factory": "SPRINTZ8_CTYPES_V1",
+        "artifact_path": "build/port-standard-v30-20261011/native-builds-v3/sprintz_fire_u8/release/libtscb_sprintz_fire_u8.so",
+        "timing_boundary": "PYTHON_FFI_CONTAINER_INCLUDED",
+        "native_timing_capability": {
+          "optional": true,
+          "boundary": "CODEC_API_ONLY_V1",
+          "clock": "CLOCK_MONOTONIC",
+          "excludes": [
+            "CONTEXT_LIFECYCLE",
+            "PYTHON_FFI_CONTAINER"
+          ]
+        },
+        "accounting_hooks": [
+          "FINAL_STREAM_LENGTH",
+          "NATIVE_HEADER",
+          "OUTPUT_CAPACITY"
+        ]
+      },
+      "scope_policy": "UNCHANGED_EXISTING_REGISTRATION_NO_ACTIVE_SCOPE_PROMOTION"
+    },
+    {
+      "algorithm": "xz-stream",
+      "source_artifact_id_unchanged": "v2:source-artifact:sha256:e51531a640977f677d6fe69f3350582773ef4c090a5e2c194c083b10b6255988",
+      "adapter_before": {
+        "backend": "C_ABI_V1",
+        "version": "xz-stream-ctypes-v2-streaming",
+        "factory": "XZ_STREAM_CTYPES_V1",
+        "artifact_path": "build/adapters/xz_stream/release/libtscb_xz_stream.so",
+        "timing_boundary": "PYTHON_FFI_CONTAINER_INCLUDED",
+        "native_timing_capability": {
+          "optional": true,
+          "boundary": "CODEC_API_ONLY_V1",
+          "clock": "CLOCK_MONOTONIC",
+          "excludes": [
+            "EXPLICIT_CONTEXT_LIFECYCLE",
+            "EXPLICIT_PREVALIDATION",
+            "PYTHON_FFI_CONTAINER"
+          ]
+        },
+        "accounting_hooks": [
+          "FINAL_STREAM_LENGTH",
+          "XZ_BLOCK_INDEX_STRUCTURAL_CRC",
+          "OUTPUT_CAPACITY"
+        ]
+      },
+      "adapter_after": {
+        "backend": "C_ABI_V1",
+        "version": "xz-stream-ctypes-v2-streaming-port-standard-v30-20261011",
+        "factory": "XZ_STREAM_CTYPES_V1",
+        "artifact_path": "build/port-standard-v30-20261011/native-builds-v3/xz_stream/release/libtscb_xz_stream.so",
+        "timing_boundary": "PYTHON_FFI_CONTAINER_INCLUDED",
+        "native_timing_capability": {
+          "optional": true,
+          "boundary": "CODEC_API_ONLY_V1",
+          "clock": "CLOCK_MONOTONIC",
+          "excludes": [
+            "EXPLICIT_CONTEXT_LIFECYCLE",
+            "EXPLICIT_PREVALIDATION",
+            "PYTHON_FFI_CONTAINER"
+          ]
+        },
+        "accounting_hooks": [
+          "FINAL_STREAM_LENGTH",
+          "XZ_BLOCK_INDEX_STRUCTURAL_CRC",
+          "OUTPUT_CAPACITY"
+        ]
+      },
+      "scope_policy": "UNCHANGED_EXISTING_REGISTRATION_NO_ACTIVE_SCOPE_PROMOTION"
+    },
+    {
+      "algorithm": "zfp-accuracy-1d",
+      "source_artifact_id_unchanged": "v2:source-artifact:sha256:6d5881b5b75bccc7781c0037a89e78da958cdef81ac14d263e326d6de431193f",
+      "adapter_before": {
+        "backend": "C_ABI_V1",
+        "version": "zfp-ctypes-v1",
+        "factory": "ZFP_CTYPES_V1",
+        "artifact_path": "build/adapters/zfp_accuracy_1d/release/libtscb_zfp_accuracy_1d.so",
+        "timing_boundary": "PYTHON_LAYOUT_FFI_AND_CONTAINER_INCLUDED",
+        "native_timing_capability": {
+          "optional": true,
+          "boundary": "NATIVE_ZFP_ACCURACY_1D_FRAME_ENCODE_DECODE_V1",
+          "clock": "CLOCK_MONOTONIC",
+          "excludes": [
+            "CONTEXT_LIFECYCLE",
+            "NATIVE_INPUT_DESCRIPTOR_PARSE",
+            "ENCODED_OUTPUT_COPY",
+            "DECODE_FRAME_CHECKSUM_AND_HEADER_PARSE",
+            "PYTHON_LAYOUT_TRANSFORM",
+            "PYTHON_FFI_CONTAINER"
+          ]
+        },
+        "accounting_hooks": [
+          "FINAL_STREAM_LENGTH",
+          "COMPLETE_NATIVE_ZFP_FRAME",
+          "FULL_ZFP_HEADER_PER_COLUMN",
+          "RAW_EXCEPTION_COLUMNS_CHARGED",
+          "REQUESTED_AND_ACTUAL_TOLERANCE_RECORDED",
+          "OUTPUT_CAPACITY"
+        ]
+      },
+      "adapter_after": {
+        "backend": "C_ABI_V1",
+        "version": "zfp-ctypes-v1-port-standard-v30-20261011",
+        "factory": "ZFP_CTYPES_V1",
+        "artifact_path": "build/port-standard-v30-20261011/native-builds-v3/zfp_accuracy_1d/release/libtscb_zfp_accuracy_1d.so",
+        "timing_boundary": "PYTHON_LAYOUT_FFI_AND_CONTAINER_INCLUDED",
+        "native_timing_capability": {
+          "optional": true,
+          "boundary": "NATIVE_ZFP_ACCURACY_1D_FRAME_ENCODE_DECODE_V1",
+          "clock": "CLOCK_MONOTONIC",
+          "excludes": [
+            "CONTEXT_LIFECYCLE",
+            "NATIVE_INPUT_DESCRIPTOR_PARSE",
+            "ENCODED_OUTPUT_COPY",
+            "DECODE_FRAME_CHECKSUM_AND_HEADER_PARSE",
+            "PYTHON_LAYOUT_TRANSFORM",
+            "PYTHON_FFI_CONTAINER"
+          ]
+        },
+        "accounting_hooks": [
+          "FINAL_STREAM_LENGTH",
+          "COMPLETE_NATIVE_ZFP_FRAME",
+          "FULL_ZFP_HEADER_PER_COLUMN",
+          "RAW_EXCEPTION_COLUMNS_CHARGED",
+          "REQUESTED_AND_ACTUAL_TOLERANCE_RECORDED",
+          "OUTPUT_CAPACITY"
+        ]
+      },
+      "scope_policy": "UNCHANGED_EXISTING_REGISTRATION_NO_ACTIVE_SCOPE_PROMOTION"
+    },
+    {
+      "algorithm": "zstd-frame",
+      "source_artifact_id_unchanged": "v2:source-artifact:sha256:893e7c7c0ef2d09d06a92e4ee6191f7f4b090718da5e88e82f23b12a8f82f237",
+      "adapter_before": {
+        "backend": "C_ABI_V1",
+        "version": "zstd-frame-ctypes-v2-streaming",
+        "factory": "ZSTD_FRAME_CTYPES_V1",
+        "artifact_path": "build/adapters/zstd_frame/release/libtscb_zstd_frame.so",
+        "timing_boundary": "PYTHON_FFI_CONTAINER_INCLUDED",
+        "native_timing_capability": {
+          "optional": true,
+          "boundary": "CODEC_API_ONLY_V1",
+          "clock": "CLOCK_MONOTONIC",
+          "excludes": [
+            "CONTEXT_LIFECYCLE",
+            "EXPLICIT_PREVALIDATION",
+            "PYTHON_FFI_CONTAINER"
+          ]
+        },
+        "accounting_hooks": [
+          "FINAL_STREAM_INSPECTION",
+          "ZSTD_FRAME_COMPONENTS",
+          "OUTPUT_CAPACITY"
+        ]
+      },
+      "adapter_after": {
+        "backend": "C_ABI_V1",
+        "version": "zstd-frame-ctypes-v2-streaming-port-standard-v30-20261011",
+        "factory": "ZSTD_FRAME_CTYPES_V1",
+        "artifact_path": "build/port-standard-v30-20261011/native-builds-v3/zstd_frame/release/libtscb_zstd_frame.so",
+        "timing_boundary": "PYTHON_FFI_CONTAINER_INCLUDED",
+        "native_timing_capability": {
+          "optional": true,
+          "boundary": "CODEC_API_ONLY_V1",
+          "clock": "CLOCK_MONOTONIC",
+          "excludes": [
+            "CONTEXT_LIFECYCLE",
+            "EXPLICIT_PREVALIDATION",
+            "PYTHON_FFI_CONTAINER"
+          ]
+        },
+        "accounting_hooks": [
+          "FINAL_STREAM_INSPECTION",
+          "ZSTD_FRAME_COMPONENTS",
+          "OUTPUT_CAPACITY"
+        ]
+      },
+      "scope_policy": "UNCHANGED_EXISTING_REGISTRATION_NO_ACTIVE_SCOPE_PROMOTION"
+    }
+  ],
+  "scope_policy": "NO_ACTIVITY_OR_SCOPE_CHANGES"
+}

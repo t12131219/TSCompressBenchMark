@@ -1,0 +1,133 @@
+{
+  "schema_version": "tscb.source-artifact.v2",
+  "key": "zfp-upstream-benchmark",
+  "kind": "VENDORED_UPSTREAM_BENCHMARK_SOURCE_CLOSURE",
+  "identity": {
+    "kind": "VENDORED_UPSTREAM_BENCHMARK_SOURCE_CLOSURE",
+    "key": "zfp-upstream-benchmark",
+    "benchmark_repository": "https://github.com/LLNL/zfp.git",
+    "benchmark_commit": "c0c2c40b30d99f1787664b51c593fb6e0d729253",
+    "benchmark_paths": [
+      "examples/speed.c",
+      "tests/testzfp.cpp",
+      "tests/src/endtoend/serialExecBase.c"
+    ],
+    "spreadsheet_evidence": [
+      "参考TSBench row 14",
+      "Value-Compress row 65"
+    ],
+    "upstream_repository": "https://github.com/LLNL/zfp.git",
+    "upstream_commit": "c0c2c40b30d99f1787664b51c593fb6e0d729253",
+    "source_path": "adapters/zfp/vendor/zfp",
+    "source_closure_sha256": "98e179e7aa8ccc6bf81d38c917ada7387a0e8bfbc74ac343bf156fcadfb2d591",
+    "source_closure_file_count": 94,
+    "execution_variant": "ZFP_FIXED_ACCURACY_FLOAT32_FLOAT64_SERIAL_1D_PER_COLUMN"
+  },
+  "license": {
+    "spdx": "BSD-3-Clause",
+    "status": "RUN_ALLOWED",
+    "redistribution": "ALLOWED_WITH_NOTICE",
+    "files": [
+      "adapters/zfp/vendor/zfp/LICENSE"
+    ]
+  },
+  "build": {
+    "recipe": "conda run -n CompressBench14 python tools/build_codec.py zfp-accuracy-1d --profile all --output-root build/port-standard-v30-20261011/native-builds-v3",
+    "patches": [],
+    "submodules": [],
+    "translation_units": [
+      "adapters/zfp/native/tscb_zfp.c",
+      "adapters/zfp/vendor/zfp/src/zfp.c",
+      "adapters/zfp/vendor/zfp/src/bitstream.c",
+      "adapters/zfp/vendor/zfp/src/encode1f.c",
+      "adapters/zfp/vendor/zfp/src/encode1d.c",
+      "adapters/zfp/vendor/zfp/src/encode1i.c",
+      "adapters/zfp/vendor/zfp/src/encode1l.c",
+      "adapters/zfp/vendor/zfp/src/decode1f.c",
+      "adapters/zfp/vendor/zfp/src/decode1d.c",
+      "adapters/zfp/vendor/zfp/src/decode1i.c",
+      "adapters/zfp/vendor/zfp/src/decode1l.c",
+      "adapters/zfp/vendor/zfp/src/encode2f.c",
+      "adapters/zfp/vendor/zfp/src/encode2d.c",
+      "adapters/zfp/vendor/zfp/src/encode2i.c",
+      "adapters/zfp/vendor/zfp/src/encode2l.c",
+      "adapters/zfp/vendor/zfp/src/decode2f.c",
+      "adapters/zfp/vendor/zfp/src/decode2d.c",
+      "adapters/zfp/vendor/zfp/src/decode2i.c",
+      "adapters/zfp/vendor/zfp/src/decode2l.c",
+      "adapters/zfp/vendor/zfp/src/encode3f.c",
+      "adapters/zfp/vendor/zfp/src/encode3d.c",
+      "adapters/zfp/vendor/zfp/src/encode3i.c",
+      "adapters/zfp/vendor/zfp/src/encode3l.c",
+      "adapters/zfp/vendor/zfp/src/decode3f.c",
+      "adapters/zfp/vendor/zfp/src/decode3d.c",
+      "adapters/zfp/vendor/zfp/src/decode3i.c",
+      "adapters/zfp/vendor/zfp/src/decode3l.c",
+      "adapters/zfp/vendor/zfp/src/encode4f.c",
+      "adapters/zfp/vendor/zfp/src/encode4d.c",
+      "adapters/zfp/vendor/zfp/src/encode4i.c",
+      "adapters/zfp/vendor/zfp/src/encode4l.c",
+      "adapters/zfp/vendor/zfp/src/decode4f.c",
+      "adapters/zfp/vendor/zfp/src/decode4d.c",
+      "adapters/zfp/vendor/zfp/src/decode4i.c",
+      "adapters/zfp/vendor/zfp/src/decode4l.c"
+    ],
+    "release_artifact": "build/port-standard-v30-20261011/native-builds-v3/zfp_accuracy_1d/release/libtscb_zfp_accuracy_1d.so",
+    "sanitizer_artifact": "build/port-standard-v30-20261011/native-builds-v3/zfp_accuracy_1d/sanitizer/libtscb_zfp_accuracy_1d.so",
+    "current_build_records": [
+      {
+        "algorithm": "zfp-accuracy-1d",
+        "profile": "release",
+        "record": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/zfp_accuracy_1d/release/build-record.json",
+          "sha256": "88760961080bb5369d4c4be57bf8f12aca07ece654973871d95e4ed543d317a7"
+        },
+        "artifact": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/zfp_accuracy_1d/release/libtscb_zfp_accuracy_1d.so",
+          "sha256": "7b1897b84e9b5f6ad261134a7dd5dccba5e398893ddbd5320b216ddcef898a61"
+        },
+        "compile_commands_sha256": "ac09db4a453a640c16ca34283e940f090624edf67d257bee3f4c085b0fef9a8c",
+        "dependency_capture": "ACTUAL_PER_TU_MD_COMPILATION_AND_LINK"
+      },
+      {
+        "algorithm": "zfp-accuracy-1d",
+        "profile": "sanitizer",
+        "record": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/zfp_accuracy_1d/sanitizer/build-record.json",
+          "sha256": "18764fadd367952f7fb241c6a98797c449530597cfd9c338467872af410e97f7"
+        },
+        "artifact": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/zfp_accuracy_1d/sanitizer/libtscb_zfp_accuracy_1d.so",
+          "sha256": "9755081926d7702855ccab550981c3e78f8a35c62d9c60d40c4cf323b45038c2"
+        },
+        "compile_commands_sha256": "91c9e0486cbc7b907c92b99caaa461f44a403c3b74ca56a68a60e0e748424df1",
+        "dependency_capture": "ACTUAL_PER_TU_MD_COMPILATION_AND_LINK"
+      }
+    ],
+    "current_native_qualification": [
+      {
+        "algorithm": "zfp-accuracy-1d",
+        "profile": "release",
+        "build_dependency_status": "PASS",
+        "native_suite_status": "PASS",
+        "evidence": {
+          "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/qualification.json",
+          "sha256": "b86173f34c30d175552de327cc446dd8480aa02dd7a9ae56f12f60c0d93db174"
+        },
+        "source_full_parity": "NOT_ASSERTED"
+      },
+      {
+        "algorithm": "zfp-accuracy-1d",
+        "profile": "sanitizer",
+        "build_dependency_status": "PASS",
+        "native_suite_status": "PASS",
+        "evidence": {
+          "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/qualification.json",
+          "sha256": "b86173f34c30d175552de327cc446dd8480aa02dd7a9ae56f12f60c0d93db174"
+        },
+        "source_full_parity": "NOT_ASSERTED"
+      }
+    ],
+    "current_build_dependency_scope": "ACTUAL_PER_TU_MD_HEADERS_OBJECTS_SELECTED_TOOLCHAIN_AND_DYNAMIC_RUNTIME_PARTIAL_STATIC_LINK_CLOSURE"
+  }
+}

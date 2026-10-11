@@ -6,7 +6,7 @@ from pathlib import Path
 import numpy as np
 import pytest
 
-from tscompbench.adapters import Lzsse2RawAdapter
+from tscompbench.adapters.factory import create_adapter
 from tscompbench.adapters.lzsse2_raw import Lzsse2RawSession
 from tscompbench.codecs import CodecRegistry, SourceRegistry, validate_onboarding_card
 from tscompbench.contracts import BenchmarkTrack
@@ -21,9 +21,7 @@ ROOT = Path(__file__).resolve().parents[2]
 def adapter():
     registry = CodecRegistry(ROOT / "registry/codecs", SourceRegistry(ROOT / "registry/sources"))
     manifest = registry.get("lzsse2-raw")
-    return Lzsse2RawAdapter(
-        ROOT / manifest.document["adapter"]["artifact_path"], manifest.document["adapter"]
-    ), manifest
+    return create_adapter(ROOT, manifest), manifest
 
 
 def route(n, pattern):
@@ -141,7 +139,21 @@ def test_source_closure_patch_and_admission_card():
     assert hashlib.sha256(patch.read_bytes()).hexdigest() == source["identity"]["patch_sha256"]
     card = json.loads((ROOT / "registry/onboarding/lzsse2-raw.json").read_text())
     assert validate_onboarding_card(card)["source_artifact_id"] == manifest.source_artifact_id
-    assert len(card["builds"]) == 2
+    current = [
+        build
+        for build in card["builds"]
+        if build.get("evidence_kind") == "CURRENT_REAL_BUILD_DEPENDENCIES_VERIFIED"
+    ]
+    assert {build["profile"] for build in current} == {"RELEASE", "SANITIZER"}
+    for build in current:
+        record_path = ROOT / build["build_record"]["path"]
+        assert (
+            hashlib.sha256(record_path.read_bytes()).hexdigest() == build["build_record"]["sha256"]
+        )
+        record = json.loads(record_path.read_text())
+        assert record["artifact_sha256"] == build["artifact_sha256"]
+        assert record["compile_commands_sha256"] == build["compile_commands_sha256"]
+    assert any(build.get("evidence_kind") == "HISTORICAL_BUILD_RECORD" for build in card["builds"])
 
 
 @pytest.mark.parametrize("mutation", ["truncate", "trailing", "concat", "bad_offset", "header"])
@@ -186,10 +198,23 @@ def test_unregistered_variants_rejected(parameters):
         driver.create_session(parameters)
 
 
-@pytest.mark.parametrize("mutation", [
-    "negative_shape", "bool_shape", "bad_rank", "dtype", "length", "logical_bits",
-    "duplicate", "limit", "raw_bool", "raw_mismatch", "not_object", "wrong_variant",
-])
+@pytest.mark.parametrize(
+    "mutation",
+    [
+        "negative_shape",
+        "bool_shape",
+        "bad_rank",
+        "dtype",
+        "length",
+        "logical_bits",
+        "duplicate",
+        "limit",
+        "raw_bool",
+        "raw_mismatch",
+        "not_object",
+        "wrong_variant",
+    ],
+)
 def test_invalid_descriptors_and_variant_rejected_before_decode(mutation):
     driver, _ = adapter()
     encoded = perform_roundtrip(driver, route(512, "ieee"), {}).encoded.stream
@@ -238,10 +263,19 @@ def test_handcrafted_two_literal_and_carried_match_format():
     assert len(payload) == 51
     assert reference_decode(payload, 128) == b"A" * 128
     header = {
-        "schema_version": "tscb.lzsse2-raw-container.v1", "raw_storage": 0,
-        "track": "VALUE", "segment_plan_id": None,
-        "buffers": [{"dtype": "|u1", "shape": [128], "payload_bytes": 128,
-                     "logical_bits": 1024, "name": "value/000000"}],
+        "schema_version": "tscb.lzsse2-raw-container.v1",
+        "raw_storage": 0,
+        "track": "VALUE",
+        "segment_plan_id": None,
+        "buffers": [
+            {
+                "dtype": "|u1",
+                "shape": [128],
+                "payload_bytes": 128,
+                "logical_bits": 1024,
+                "name": "value/000000",
+            }
+        ],
     }
     metadata = json.dumps(header).encode()
     stream = struct.pack("<8sI", b"TSCBLS2\x00", len(metadata)) + metadata + payload

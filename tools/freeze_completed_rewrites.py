@@ -8,18 +8,7 @@ import shutil
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-PACKAGES = (
-    "abba",
-    "fabba",
-    "influxdb-tsm-adaptive-timestamp",
-    "prometheus-xor2-chunk",
-    "prometheus-histogram-st",
-    "tristan",
-    "corad",
-    "deepzip",
-    "dzip",
-    "walloc-1d",
-)
+PACKAGES = ("abba", "fabba", "deepzip", "dzip")
 
 
 def sha(path):

@@ -48,6 +48,6 @@ def test_layer2_plan_consumes_layer1_artifacts_and_keeps_all_capability_states(
         for item in tasks
     )
     summary = json.loads((run_set.path / "layer2-plan.json").read_text())
-    assert summary["source_logical_entry_count"] == 221
+    assert summary["source_logical_entry_count"] == 176
     assert (run_set.path / "task_plan.jsonl").is_file()
     assert "LAYER_2_COMPLETED" in (run_set.path / "events.jsonl").read_text()

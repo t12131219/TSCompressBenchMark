@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "tscb.expected-outcome-matrix.v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "contract_id",
+    "corpus_id",
+    "config_map_id",
+    "entries"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "tscb.expected-outcome-matrix.v1"
+    },
+    "contract_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "corpus_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "config_map_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "entries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "dataset_id",
+          "member_id",
+          "config_key",
+          "expected"
+        ],
+        "properties": {
+          "dataset_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "member_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "config_key": {
+            "type": "string",
+            "minLength": 1
+          },
+          "expected": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "outcome",
+              "origin",
+              "stage",
+              "reason",
+              "evidence"
+            ],
+            "properties": {
+              "outcome": {
+                "type": "string",
+                "enum": [
+                  "PASS",
+                  "REJECT",
+                  "BLOCKED"
+                ]
+              },
+              "origin": {
+                "type": "string",
+                "enum": [
+                  "TASK",
+                  "SOURCE_DOMAIN",
+                  "ADAPTER",
+                  "COMPOSITION",
+                  "ENVIRONMENT",
+                  "SOURCE"
+                ]
+              },
+              "stage": {
+                "type": "string",
+                "minLength": 1
+              },
+              "reason": {
+                "type": "string",
+                "minLength": 1
+              },
+              "evidence": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "minItems": 1,
+                "uniqueItems": false
+              }
+            }
+          }
+        }
+      },
+      "minItems": 1,
+      "uniqueItems": false
+    }
+  }
+}

@@ -1,0 +1,4348 @@
+{
+  "schema_version": "tscb.algorithm-scope.v1",
+  "selection": {
+    "path": "algorithm_implementation_plan.csv",
+    "sha256": "536dda0cdb068da2014b1a0638d6cca7e7f1cb92a750d4528ead272d5e1b665c",
+    "record_count": 163
+  },
+  "policy": {
+    "all_recommendation_categories_retained": true,
+    "merged_variants_retained": true,
+    "source_inventory_is_not_active_algorithm_scope": true,
+    "registration_is_not_qualification": true,
+    "benchmark_references_are_not_additional_algorithms": true,
+    "explicit_user_removals_override_csv_candidates": true,
+    "local_rewrite_inventory_is_not_active_registration": true
+  },
+  "records": [
+    {
+      "id": "V1",
+      "name": "LZ77",
+      "recommendation": "组件/配置/来源保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "LZ77"
+        }
+      ]
+    },
+    {
+      "id": "V2",
+      "name": "LZSS",
+      "recommendation": "扩展保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "LZSS"
+        }
+      ]
+    },
+    {
+      "id": "V3",
+      "name": "LZW",
+      "recommendation": "扩展保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "LZW"
+        }
+      ]
+    },
+    {
+      "id": "V4",
+      "name": "DEFLATE",
+      "recommendation": "主集合保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "DEFLATE"
+        }
+      ]
+    },
+    {
+      "id": "V5",
+      "name": "LZ4",
+      "recommendation": "主集合保留",
+      "merged_ids": [
+        "V117"
+      ],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "LZ4"
+        },
+        {
+          "group": "ValueCompress",
+          "name": "Xilinx LZ4 HLS Decompression Optimization"
+        }
+      ]
+    },
+    {
+      "id": "V6",
+      "name": "Snappy",
+      "recommendation": "主集合保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "Snappy"
+        }
+      ]
+    },
+    {
+      "id": "V7",
+      "name": "Zstandard (Zstd)",
+      "recommendation": "主集合保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "Zstandard (Zstd)"
+        }
+      ]
+    },
+    {
+      "id": "V8",
+      "name": "Brotli",
+      "recommendation": "主集合保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "Brotli"
+        }
+      ]
+    },
+    {
+      "id": "V9",
+      "name": "LZMA / xz",
+      "recommendation": "主集合保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "LZMA / xz"
+        }
+      ]
+    },
+    {
+      "id": "V10",
+      "name": "TRISTAN",
+      "recommendation": "扩展保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "TRISTAN"
+        }
+      ]
+    },
+    {
+      "id": "V11",
+      "name": "CORAD",
+      "recommendation": "扩展保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "CORAD"
+        }
+      ]
+    },
+    {
+      "id": "V12",
+      "name": "A-LZSS",
+      "recommendation": "扩展保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "A-LZSS"
+        }
+      ]
+    },
+    {
+      "id": "V13",
+      "name": "D-LZW (Differential LZW)",
+      "recommendation": "扩展保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "D-LZW (Differential LZW)"
+        }
+      ]
+    },
+    {
+      "id": "V19",
+      "name": "ABBA",
+      "recommendation": "主集合保留",
+      "merged_ids": [
+        "V39"
+      ],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "ABBA"
+        },
+        {
+          "group": "ValueCompress",
+          "name": "ABBA / fABBA compression stage"
+        }
+      ]
+    },
+    {
+      "id": "V20",
+      "name": "fABBA",
+      "recommendation": "主集合保留",
+      "merged_ids": [
+        "V39"
+      ],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "ABBA / fABBA compression stage"
+        },
+        {
+          "group": "ValueCompress",
+          "name": "fABBA"
+        }
+      ]
+    },
+    {
+      "id": "V21",
+      "name": "PAA (Piecewise Aggregate Approximation)",
+      "recommendation": "主集合保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "PAA (Piecewise Aggregate Approximation)"
+        }
+      ]
+    },
+    {
+      "id": "V22",
+      "name": "PMC (Poor Man's Compression)",
+      "recommendation": "主集合保留",
+      "merged_ids": [
+        "V23"
+      ],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "PMC (Poor Man's Compression)"
+        },
+        {
+          "group": "ValueCompress",
+          "name": "PMC-Mean"
+        }
+      ]
+    },
+    {
+      "id": "V24",
+      "name": "PLA",
+      "recommendation": "主集合保留",
+      "merged_ids": [
+        "V125"
+      ],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "APCA / PLA threshold control"
+        },
+        {
+          "group": "ValueCompress",
+          "name": "PLA"
+        }
+      ]
+    },
+    {
+      "id": "V25",
+      "name": "Sliding Window PLA",
+      "recommendation": "主集合保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "Sliding Window PLA"
+        }
+      ]
+    },
+    {
+      "id": "V26",
+      "name": "Bottom-Up PLA",
+      "recommendation": "主集合保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "Bottom-Up PLA"
+        }
+      ]
+    },
+    {
+      "id": "V27",
+      "name": "Top-Down PLA",
+      "recommendation": "主集合保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "Top-Down PLA"
+        }
+      ]
+    },
+    {
+      "id": "V28",
+      "name": "SWAB",
+      "recommendation": "主集合保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "SWAB"
+        }
+      ]
+    },
+    {
+      "id": "V29",
+      "name": "Swinging Door Trending (SDT/SWING)",
+      "recommendation": "主集合保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "Swinging Door Trending (SDT/SWING)"
+        }
+      ]
+    },
+    {
+      "id": "V30",
+      "name": "LTC (Lightweight Temporal Compression)",
+      "recommendation": "主集合保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "LTC (Lightweight Temporal Compression)"
+        }
+      ]
+    },
+    {
+      "id": "V31",
+      "name": "APCA (Adaptive Piecewise Constant Approximation)",
+      "recommendation": "主集合保留",
+      "merged_ids": [
+        "V125"
+      ],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "APCA (Adaptive Piecewise Constant Approximation)"
+        },
+        {
+          "group": "ValueCompress",
+          "name": "APCA / PLA threshold control"
+        }
+      ]
+    },
+    {
+      "id": "V32",
+      "name": "PPA (Piecewise Polynomial Approximation)",
+      "recommendation": "扩展保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "PPA (Piecewise Polynomial Approximation)"
+        }
+      ]
+    },
+    {
+      "id": "V33",
+      "name": "Adaptive Approximation",
+      "recommendation": "扩展保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "Adaptive Approximation"
+        }
+      ]
+    },
+    {
+      "id": "V34",
+      "name": "Smart-Grid Compression",
+      "recommendation": "扩展保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "Smart-Grid Compression"
+        }
+      ]
+    },
+    {
+      "id": "V35",
+      "name": "Sim-Piece",
+      "recommendation": "主集合保留",
+      "merged_ids": [
+        "V129"
+      ],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "Sim-Piece"
+        },
+        {
+          "group": "ValueCompress",
+          "name": "Sim-Piece / Mix-Piece epsilon sweep"
+        }
+      ]
+    },
+    {
+      "id": "V36",
+      "name": "Mix-Piece",
+      "recommendation": "主集合保留",
+      "merged_ids": [
+        "V129"
+      ],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "Mix-Piece"
+        },
+        {
+          "group": "ValueCompress",
+          "name": "Sim-Piece / Mix-Piece epsilon sweep"
+        }
+      ]
+    },
+    {
+      "id": "V40",
+      "name": "DFT / Fourier coefficient truncation",
+      "recommendation": "扩展保留",
+      "merged_ids": [
+        "V41"
+      ],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "DFT / Fourier coefficient truncation"
+        },
+        {
+          "group": "ValueCompress",
+          "name": "FFT + coefficient selection"
+        }
+      ]
+    },
+    {
+      "id": "V42",
+      "name": "DCT",
+      "recommendation": "扩展保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "DCT"
+        }
+      ]
+    },
+    {
+      "id": "V43",
+      "name": "DWT (Discrete Wavelet Transform)",
+      "recommendation": "扩展保留",
+      "merged_ids": [
+        "V44"
+      ],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "DWT (Discrete Wavelet Transform)"
+        },
+        {
+          "group": "ValueCompress",
+          "name": "Haar Wavelet Compression"
+        }
+      ]
+    },
+    {
+      "id": "V45",
+      "name": "Wavelet Packet Compression",
+      "recommendation": "扩展保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "Wavelet Packet Compression"
+        }
+      ]
+    },
+    {
+      "id": "V46",
+      "name": "PCA",
+      "recommendation": "扩展保留",
+      "merged_ids": [
+        "V47"
+      ],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "Incremental PCA"
+        },
+        {
+          "group": "ValueCompress",
+          "name": "PCA"
+        }
+      ]
+    },
+    {
+      "id": "V48",
+      "name": "SVD / Truncated SVD",
+      "recommendation": "组件/配置/来源保留",
+      "merged_ids": [
+        "V49"
+      ],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "Randomized SVD"
+        },
+        {
+          "group": "ValueCompress",
+          "name": "SVD / Truncated SVD"
+        }
+      ]
+    },
+    {
+      "id": "V51",
+      "name": "Delta Encoding",
+      "recommendation": "组件/配置/来源保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "Delta Encoding"
+        }
+      ]
+    },
+    {
+      "id": "V52",
+      "name": "Delta-of-Delta / Second-order Difference",
+      "recommendation": "组件/配置/来源保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "Delta-of-Delta / Second-order Difference"
+        }
+      ]
+    },
+    {
+      "id": "V55",
+      "name": "Sprintz-Delta",
+      "recommendation": "主集合保留",
+      "merged_ids": [
+        "T83",
+        "T98",
+        "T100"
+      ],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "Sprintz + Huffman/entropy backend"
+        },
+        {
+          "group": "TimeStampCompress",
+          "name": "Sprintz Zero-block Encoding"
+        },
+        {
+          "group": "TimeStampCompress",
+          "name": "Sprintz-Delta"
+        },
+        {
+          "group": "ValueCompress",
+          "name": "Sprintz-Delta"
+        }
+      ]
+    },
+    {
+      "id": "V56",
+      "name": "Sprintz-FIRE",
+      "recommendation": "主集合保留",
+      "merged_ids": [
+        "T83",
+        "T99",
+        "T100"
+      ],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "Sprintz + Huffman/entropy backend"
+        },
+        {
+          "group": "TimeStampCompress",
+          "name": "Sprintz Zero-block Encoding"
+        },
+        {
+          "group": "TimeStampCompress",
+          "name": "Sprintz-FIRE"
+        },
+        {
+          "group": "ValueCompress",
+          "name": "Sprintz-FIRE"
+        }
+      ]
+    },
+    {
+      "id": "V57",
+      "name": "FPC",
+      "recommendation": "主集合保留",
+      "merged_ids": [
+        "V58",
+        "V59"
+      ],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "DFCM predictor"
+        },
+        {
+          "group": "ValueCompress",
+          "name": "FCM predictor"
+        },
+        {
+          "group": "ValueCompress",
+          "name": "FPC"
+        }
+      ]
+    },
+    {
+      "id": "V60",
+      "name": "Gorilla",
+      "recommendation": "主集合保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "Gorilla"
+        }
+      ]
+    },
+    {
+      "id": "V61",
+      "name": "TSXor",
+      "recommendation": "扩展保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "TSXor"
+        }
+      ]
+    },
+    {
+      "id": "V62",
+      "name": "Chimp",
+      "recommendation": "主集合保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "Chimp"
+        }
+      ]
+    },
+    {
+      "id": "V63",
+      "name": "Chimp128",
+      "recommendation": "主集合保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "Chimp128"
+        }
+      ]
+    },
+    {
+      "id": "V64",
+      "name": "Patas",
+      "recommendation": "主集合保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "Patas"
+        }
+      ]
+    },
+    {
+      "id": "V65",
+      "name": "Elf",
+      "recommendation": "主集合保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "Elf"
+        }
+      ]
+    },
+    {
+      "id": "V66",
+      "name": "Elf+",
+      "recommendation": "主集合保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "Elf+"
+        }
+      ]
+    },
+    {
+      "id": "V67",
+      "name": "Elf* / SElf*",
+      "recommendation": "主集合保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "Elf* / SElf*"
+        }
+      ]
+    },
+    {
+      "id": "V68",
+      "name": "ALP",
+      "recommendation": "主集合保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "ALP"
+        }
+      ]
+    },
+    {
+      "id": "V69",
+      "name": "ALP_RD",
+      "recommendation": "主集合保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "ALP_RD"
+        }
+      ]
+    },
+    {
+      "id": "V70",
+      "name": "Camel",
+      "recommendation": "扩展保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "Camel"
+        }
+      ]
+    },
+    {
+      "id": "V73",
+      "name": "RLBE",
+      "recommendation": "主集合保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "RLBE"
+        }
+      ]
+    },
+    {
+      "id": "V74",
+      "name": "RAKE",
+      "recommendation": "扩展保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "RAKE"
+        }
+      ]
+    },
+    {
+      "id": "V75",
+      "name": "Huffman Coding",
+      "recommendation": "组件/配置/来源保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "Huffman Coding"
+        }
+      ]
+    },
+    {
+      "id": "V76",
+      "name": "Arithmetic Coding",
+      "recommendation": "组件/配置/来源保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "Arithmetic Coding"
+        }
+      ]
+    },
+    {
+      "id": "V77",
+      "name": "ANS / rANS / tANS",
+      "recommendation": "组件/配置/来源保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "ANS / rANS / tANS"
+        }
+      ]
+    },
+    {
+      "id": "V79",
+      "name": "Golomb-Rice Coding",
+      "recommendation": "组件/配置/来源保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "Golomb-Rice Coding"
+        }
+      ]
+    },
+    {
+      "id": "V80",
+      "name": "DPCM",
+      "recommendation": "组件/配置/来源保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "DPCM"
+        }
+      ]
+    },
+    {
+      "id": "V83",
+      "name": "Dead-zone Quantization",
+      "recommendation": "组件/配置/来源保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "Dead-zone Quantization"
+        }
+      ]
+    },
+    {
+      "id": "V84",
+      "name": "SZ / SZ3",
+      "recommendation": "主集合保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "SZ / SZ3"
+        }
+      ]
+    },
+    {
+      "id": "V85",
+      "name": "Serf-Qt",
+      "recommendation": "主集合保留",
+      "merged_ids": [
+        "V126"
+      ],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "Serf"
+        },
+        {
+          "group": "ValueCompress",
+          "name": "Serf-Qt"
+        }
+      ]
+    },
+    {
+      "id": "V86",
+      "name": "Serf-XOR",
+      "recommendation": "主集合保留",
+      "merged_ids": [
+        "V126"
+      ],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "Serf"
+        },
+        {
+          "group": "ValueCompress",
+          "name": "Serf-XOR"
+        }
+      ]
+    },
+    {
+      "id": "V87",
+      "name": "zfp",
+      "recommendation": "主集合保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "zfp"
+        }
+      ]
+    },
+    {
+      "id": "V90",
+      "name": "DeepZip",
+      "recommendation": "扩展保留",
+      "merged_ids": [
+        "V98"
+      ],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "DeepZip"
+        },
+        {
+          "group": "ValueCompress",
+          "name": "DeepZip / RNN Predictor"
+        }
+      ]
+    },
+    {
+      "id": "V91",
+      "name": "DZip",
+      "recommendation": "扩展保留",
+      "merged_ids": [
+        "V99"
+      ],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "DZip"
+        },
+        {
+          "group": "ValueCompress",
+          "name": "DZip combined model"
+        }
+      ]
+    },
+    {
+      "id": "V100",
+      "name": "NeaTS / LeaTS",
+      "recommendation": "主集合保留",
+      "merged_ids": [
+        "V109"
+      ],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "NeaTS / LeaTS"
+        },
+        {
+          "group": "ValueCompress",
+          "name": "NeaTS / LeaTS family"
+        }
+      ]
+    },
+    {
+      "id": "V108",
+      "name": "WaLLoC (1D Codec)",
+      "recommendation": "扩展保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "WaLLoC (1D Codec)"
+        }
+      ]
+    },
+    {
+      "id": "V111",
+      "name": "NVIDIA nvCOMP",
+      "recommendation": "组件/配置/来源保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "NVIDIA nvCOMP"
+        }
+      ]
+    },
+    {
+      "id": "V112",
+      "name": "cuSZ / pSZ",
+      "recommendation": "扩展保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "cuSZ / pSZ"
+        }
+      ]
+    },
+    {
+      "id": "V113",
+      "name": "cuSZp / SZp-CUDA",
+      "recommendation": "扩展保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "cuSZp / SZp-CUDA"
+        }
+      ]
+    },
+    {
+      "id": "V114",
+      "name": "Falcon",
+      "recommendation": "扩展保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "Falcon"
+        }
+      ]
+    },
+    {
+      "id": "V116",
+      "name": "AMD/Xilinx Vitis Data Compression Library",
+      "recommendation": "组件/配置/来源保留",
+      "merged_ids": [
+        "V117"
+      ],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "AMD/Xilinx Vitis Data Compression Library"
+        },
+        {
+          "group": "ValueCompress",
+          "name": "Xilinx LZ4 HLS Decompression Optimization"
+        }
+      ]
+    },
+    {
+      "id": "V118",
+      "name": "Intel QAT / QATzip",
+      "recommendation": "组件/配置/来源保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "Intel QAT / QATzip"
+        }
+      ]
+    },
+    {
+      "id": "V119",
+      "name": "Huff0",
+      "recommendation": "组件/配置/来源保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "Huff0"
+        }
+      ]
+    },
+    {
+      "id": "V120",
+      "name": "FSE",
+      "recommendation": "组件/配置/来源保留",
+      "merged_ids": [
+        "V78"
+      ],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "FSE"
+        },
+        {
+          "group": "ValueCompress",
+          "name": "FSE (Finite State Entropy)"
+        }
+      ]
+    },
+    {
+      "id": "V121",
+      "name": "Range/Arithmetic Coding",
+      "recommendation": "组件/配置/来源保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "Range/Arithmetic Coding"
+        }
+      ]
+    },
+    {
+      "id": "V122",
+      "name": "Canonical Huffman Coding",
+      "recommendation": "组件/配置/来源保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "Canonical Huffman Coding"
+        }
+      ]
+    },
+    {
+      "id": "V123",
+      "name": "Absolute Error Bound",
+      "recommendation": "组件/配置/来源保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "Absolute Error Bound"
+        }
+      ]
+    },
+    {
+      "id": "V124",
+      "name": "Relative / Range-relative Error Bound",
+      "recommendation": "组件/配置/来源保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "Relative / Range-relative Error Bound"
+        }
+      ]
+    },
+    {
+      "id": "V127",
+      "name": "Learned rate-distortion objective",
+      "recommendation": "组件/配置/来源保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "Learned rate-distortion objective"
+        }
+      ]
+    },
+    {
+      "id": "V130",
+      "name": "TerseTS unified framework",
+      "recommendation": "组件/配置/来源保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "ValueCompress",
+          "name": "TerseTS unified framework"
+        }
+      ]
+    },
+    {
+      "id": "T1",
+      "name": "First-order Delta / D-gap",
+      "recommendation": "组件/配置/来源保留",
+      "merged_ids": [
+        "T6",
+        "T86",
+        "T93"
+      ],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "First-order DPCM"
+        },
+        {
+          "group": "TimeStampCompress",
+          "name": "First-order Delta / D-gap"
+        },
+        {
+          "group": "TimeStampCompress",
+          "name": "Previous-value Predictor"
+        },
+        {
+          "group": "TimeStampCompress",
+          "name": "SIMD Differential Coding"
+        }
+      ]
+    },
+    {
+      "id": "T2",
+      "name": "Delta + VarInt",
+      "recommendation": "主集合保留",
+      "merged_ids": [
+        "T96"
+      ],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "DPCM + VarInt"
+        },
+        {
+          "group": "TimeStampCompress",
+          "name": "Delta + VarInt"
+        }
+      ]
+    },
+    {
+      "id": "T3",
+      "name": "Delta + ZigZag + VarInt",
+      "recommendation": "主集合保留",
+      "merged_ids": [
+        "T96"
+      ],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "DPCM + VarInt"
+        },
+        {
+          "group": "TimeStampCompress",
+          "name": "Delta + ZigZag + VarInt"
+        }
+      ]
+    },
+    {
+      "id": "T4",
+      "name": "Delta + Masked VByte",
+      "recommendation": "主集合保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "Delta + Masked VByte"
+        }
+      ]
+    },
+    {
+      "id": "T5",
+      "name": "Delta + Stream VByte",
+      "recommendation": "主集合保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "Delta + Stream VByte"
+        }
+      ]
+    },
+    {
+      "id": "T7",
+      "name": "Parquet DELTA_BINARY_PACKED",
+      "recommendation": "主集合保留",
+      "merged_ids": [
+        "T37",
+        "T56",
+        "T75"
+      ],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "Parquet DELTA_BINARY_PACKED"
+        },
+        {
+          "group": "TimeStampCompress",
+          "name": "Parquet Delta Binary Packing"
+        },
+        {
+          "group": "TimeStampCompress",
+          "name": "Parquet ZigZag metadata coding"
+        },
+        {
+          "group": "TimeStampCompress",
+          "name": "Parquet min-delta frame"
+        }
+      ]
+    },
+    {
+      "id": "T10",
+      "name": "Generic Delta-of-Delta (D2)",
+      "recommendation": "组件/配置/来源保留",
+      "merged_ids": [
+        "T88",
+        "T94"
+      ],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "Generic Delta-of-Delta (D2)"
+        },
+        {
+          "group": "TimeStampCompress",
+          "name": "Last-delta Predictor"
+        },
+        {
+          "group": "TimeStampCompress",
+          "name": "Second-order DPCM"
+        }
+      ]
+    },
+    {
+      "id": "T11",
+      "name": "Gorilla Timestamp Delta-of-Delta",
+      "recommendation": "主集合保留",
+      "merged_ids": [
+        "T102"
+      ],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "Facebook Gorilla Timestamp Codec"
+        },
+        {
+          "group": "TimeStampCompress",
+          "name": "Gorilla Timestamp Delta-of-Delta"
+        }
+      ]
+    },
+    {
+      "id": "T12",
+      "name": "Prometheus XOR Chunk Timestamp Codec",
+      "recommendation": "扩展保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "Prometheus XOR Chunk Timestamp Codec"
+        }
+      ]
+    },
+    {
+      "id": "T15",
+      "name": "IoTDB TS_2DIFF",
+      "recommendation": "主集合保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "IoTDB TS_2DIFF"
+        }
+      ]
+    },
+    {
+      "id": "T17",
+      "name": "RedisTimeSeries Gorilla DoubleDelta",
+      "recommendation": "主集合保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "RedisTimeSeries Gorilla DoubleDelta"
+        }
+      ]
+    },
+    {
+      "id": "T18",
+      "name": "TurboPFor Gorilla-style Timestamp",
+      "recommendation": "扩展保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "TurboPFor Gorilla-style Timestamp"
+        }
+      ]
+    },
+    {
+      "id": "T23",
+      "name": "Base-128 Varint / Protobuf Varint",
+      "recommendation": "组件/配置/来源保留",
+      "merged_ids": [
+        "T24",
+        "T26",
+        "T32"
+      ],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "Base-128 Varint / Protobuf Varint"
+        },
+        {
+          "group": "TimeStampCompress",
+          "name": "Snappy-style Varint32"
+        },
+        {
+          "group": "TimeStampCompress",
+          "name": "ULEB128"
+        },
+        {
+          "group": "TimeStampCompress",
+          "name": "Variable Byte (VByte)"
+        }
+      ]
+    },
+    {
+      "id": "T25",
+      "name": "SLEB128",
+      "recommendation": "组件/配置/来源保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "SLEB128"
+        }
+      ]
+    },
+    {
+      "id": "T27",
+      "name": "Stream VByte",
+      "recommendation": "主集合保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "Stream VByte"
+        }
+      ]
+    },
+    {
+      "id": "T28",
+      "name": "Masked VByte",
+      "recommendation": "主集合保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "Masked VByte"
+        }
+      ]
+    },
+    {
+      "id": "T29",
+      "name": "Group Varint",
+      "recommendation": "扩展保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "Group Varint"
+        }
+      ]
+    },
+    {
+      "id": "T30",
+      "name": "TurboByte / SIMD Group Varint",
+      "recommendation": "扩展保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "TurboByte / SIMD Group Varint"
+        }
+      ]
+    },
+    {
+      "id": "T31",
+      "name": "Varint-G8IU",
+      "recommendation": "扩展保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "Varint-G8IU"
+        }
+      ]
+    },
+    {
+      "id": "T34",
+      "name": "Protobuf ZigZag64",
+      "recommendation": "组件/配置/来源保留",
+      "merged_ids": [
+        "T33",
+        "T39"
+      ],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "Protobuf ZigZag32"
+        },
+        {
+          "group": "TimeStampCompress",
+          "name": "Protobuf ZigZag64"
+        },
+        {
+          "group": "TimeStampCompress",
+          "name": "TurboPFor ZigZag Transform"
+        }
+      ]
+    },
+    {
+      "id": "T35",
+      "name": "Delta + ZigZag",
+      "recommendation": "组件/配置/来源保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "Delta + ZigZag"
+        }
+      ]
+    },
+    {
+      "id": "T36",
+      "name": "Delta-of-Delta + ZigZag",
+      "recommendation": "组件/配置/来源保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "Delta-of-Delta + ZigZag"
+        }
+      ]
+    },
+    {
+      "id": "T38",
+      "name": "IoTDB ZIGZAG Encoding",
+      "recommendation": "组件/配置/来源保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "IoTDB ZIGZAG Encoding"
+        }
+      ]
+    },
+    {
+      "id": "T40",
+      "name": "Elias Gamma Code",
+      "recommendation": "组件/配置/来源保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "Elias Gamma Code"
+        }
+      ]
+    },
+    {
+      "id": "T41",
+      "name": "Elias Delta Code",
+      "recommendation": "组件/配置/来源保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "Elias Delta Code"
+        }
+      ]
+    },
+    {
+      "id": "T42",
+      "name": "Elias Gamma after Delta",
+      "recommendation": "扩展保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "Elias Gamma after Delta"
+        }
+      ]
+    },
+    {
+      "id": "T43",
+      "name": "Elias Gamma after Delta-of-Delta + sign mapping",
+      "recommendation": "扩展保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "Elias Gamma after Delta-of-Delta + sign mapping"
+        }
+      ]
+    },
+    {
+      "id": "T44",
+      "name": "Exp-Golomb (Gamma-related universal code)",
+      "recommendation": "组件/配置/来源保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "Exp-Golomb (Gamma-related universal code)"
+        }
+      ]
+    },
+    {
+      "id": "T45",
+      "name": "Golomb Coding",
+      "recommendation": "组件/配置/来源保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "Golomb Coding"
+        }
+      ]
+    },
+    {
+      "id": "T46",
+      "name": "Golomb-Rice Coding",
+      "recommendation": "组件/配置/来源保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "Golomb-Rice Coding"
+        }
+      ]
+    },
+    {
+      "id": "T47",
+      "name": "Partitioned Rice Coding",
+      "recommendation": "扩展保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "Partitioned Rice Coding"
+        }
+      ]
+    },
+    {
+      "id": "T48",
+      "name": "ZigZag/Folded Residual + Rice",
+      "recommendation": "扩展保留",
+      "merged_ids": [
+        "T97"
+      ],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "DPCM + Rice"
+        },
+        {
+          "group": "TimeStampCompress",
+          "name": "ZigZag/Folded Residual + Rice"
+        }
+      ]
+    },
+    {
+      "id": "T49",
+      "name": "Adaptive Rice Parameter per Block",
+      "recommendation": "组件/配置/来源保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "Adaptive Rice Parameter per Block"
+        }
+      ]
+    },
+    {
+      "id": "T50",
+      "name": "Fixed-width Bit Packing",
+      "recommendation": "组件/配置/来源保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "Fixed-width Bit Packing"
+        }
+      ]
+    },
+    {
+      "id": "T51",
+      "name": "Binary Packing",
+      "recommendation": "组件/配置/来源保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "Binary Packing"
+        }
+      ]
+    },
+    {
+      "id": "T52",
+      "name": "SIMD-BP128 / BP128",
+      "recommendation": "主集合保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "SIMD-BP128 / BP128"
+        }
+      ]
+    },
+    {
+      "id": "T53",
+      "name": "SIMDComp",
+      "recommendation": "扩展保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "SIMDComp"
+        }
+      ]
+    },
+    {
+      "id": "T54",
+      "name": "LittleIntPacker",
+      "recommendation": "扩展保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "LittleIntPacker"
+        }
+      ]
+    },
+    {
+      "id": "T55",
+      "name": "TurboPack / TurboPFor Bit Packing",
+      "recommendation": "扩展保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "TurboPack / TurboPFor Bit Packing"
+        }
+      ]
+    },
+    {
+      "id": "T58",
+      "name": "Simple-8b",
+      "recommendation": "主集合保留",
+      "merged_ids": [
+        "T84"
+      ],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "Simple-8b"
+        },
+        {
+          "group": "TimeStampCompress",
+          "name": "Simple8b zero selectors / repeated-value path"
+        }
+      ]
+    },
+    {
+      "id": "T59",
+      "name": "InfluxDB Simple8b",
+      "recommendation": "主集合保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "InfluxDB Simple8b"
+        }
+      ]
+    },
+    {
+      "id": "T60",
+      "name": "Simple8b-RLE",
+      "recommendation": "主集合保留",
+      "merged_ids": [
+        "T61",
+        "T84"
+      ],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "Reverse-decodable Simple8b-RLE"
+        },
+        {
+          "group": "TimeStampCompress",
+          "name": "Simple8b zero selectors / repeated-value path"
+        },
+        {
+          "group": "TimeStampCompress",
+          "name": "Simple8b-RLE"
+        }
+      ]
+    },
+    {
+      "id": "T62",
+      "name": "Simple-9",
+      "recommendation": "扩展保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "Simple-9"
+        }
+      ]
+    },
+    {
+      "id": "T63",
+      "name": "Simple-16",
+      "recommendation": "扩展保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "Simple-16"
+        }
+      ]
+    },
+    {
+      "id": "T64",
+      "name": "Variable Simple",
+      "recommendation": "扩展保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "Variable Simple"
+        }
+      ]
+    },
+    {
+      "id": "T65",
+      "name": "FastPFOR Simple8b_RLE",
+      "recommendation": "主集合保留",
+      "merged_ids": [
+        "T84"
+      ],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "FastPFOR Simple8b_RLE"
+        },
+        {
+          "group": "TimeStampCompress",
+          "name": "Simple8b zero selectors / repeated-value path"
+        }
+      ]
+    },
+    {
+      "id": "T66",
+      "name": "Frame of Reference (FOR)",
+      "recommendation": "组件/配置/来源保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "Frame of Reference (FOR)"
+        }
+      ]
+    },
+    {
+      "id": "T67",
+      "name": "Delta-FOR",
+      "recommendation": "主集合保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "Delta-FOR"
+        }
+      ]
+    },
+    {
+      "id": "T68",
+      "name": "Patched Frame-of-Reference (PFOR / PForDelta)",
+      "recommendation": "主集合保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "Patched Frame-of-Reference (PFOR / PForDelta)"
+        }
+      ]
+    },
+    {
+      "id": "T69",
+      "name": "NewPFor / NewPFD",
+      "recommendation": "扩展保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "NewPFor / NewPFD"
+        }
+      ]
+    },
+    {
+      "id": "T70",
+      "name": "OptPFor / OptPFD",
+      "recommendation": "扩展保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "OptPFor / OptPFD"
+        }
+      ]
+    },
+    {
+      "id": "T71",
+      "name": "FastPFOR",
+      "recommendation": "主集合保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "FastPFOR"
+        }
+      ]
+    },
+    {
+      "id": "T72",
+      "name": "SIMD-FastPFOR",
+      "recommendation": "主集合保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "SIMD-FastPFOR"
+        }
+      ]
+    },
+    {
+      "id": "T73",
+      "name": "TurboPFor",
+      "recommendation": "主集合保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "TurboPFor"
+        }
+      ]
+    },
+    {
+      "id": "T74",
+      "name": "Adaptive Frame of Reference (AFOR)",
+      "recommendation": "扩展保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "Adaptive Frame of Reference (AFOR)"
+        }
+      ]
+    },
+    {
+      "id": "T76",
+      "name": "Constant-Delta RLE",
+      "recommendation": "主集合保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "Constant-Delta RLE"
+        }
+      ]
+    },
+    {
+      "id": "T78",
+      "name": "Delta-of-Delta Zero-run RLE",
+      "recommendation": "主集合保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "Delta-of-Delta Zero-run RLE"
+        }
+      ]
+    },
+    {
+      "id": "T80",
+      "name": "TurboPFor Delta/ZigZag + RLE",
+      "recommendation": "扩展保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "TurboPFor Delta/ZigZag + RLE"
+        }
+      ]
+    },
+    {
+      "id": "T82",
+      "name": "Zero Run-Length Encoding (Zero-RLE)",
+      "recommendation": "组件/配置/来源保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "Zero Run-Length Encoding (Zero-RLE)"
+        }
+      ]
+    },
+    {
+      "id": "T87",
+      "name": "Fixed-stride Predictor",
+      "recommendation": "主集合保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "Fixed-stride Predictor"
+        }
+      ]
+    },
+    {
+      "id": "T103",
+      "name": "RedisTimeSeries Gorilla implementation",
+      "recommendation": "扩展保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "RedisTimeSeries Gorilla implementation"
+        }
+      ]
+    },
+    {
+      "id": "T105",
+      "name": "Prometheus XOR Chunk",
+      "recommendation": "主集合保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "Prometheus XOR Chunk"
+        }
+      ]
+    },
+    {
+      "id": "T106",
+      "name": "Prometheus XOR2 Chunk",
+      "recommendation": "主集合保留",
+      "merged_ids": [
+        "T13"
+      ],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "Prometheus XOR2 Chunk"
+        },
+        {
+          "group": "TimeStampCompress",
+          "name": "Prometheus XOR2 Timestamp Codec"
+        }
+      ]
+    },
+    {
+      "id": "T107",
+      "name": "Prometheus Histogram Chunk timestamp path",
+      "recommendation": "扩展保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "Prometheus Histogram Chunk timestamp path"
+        }
+      ]
+    },
+    {
+      "id": "T108",
+      "name": "Prometheus Histogram-ST / FloatHistogram-ST",
+      "recommendation": "扩展保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "Prometheus Histogram-ST / FloatHistogram-ST"
+        }
+      ]
+    },
+    {
+      "id": "T109",
+      "name": "IoTDB TS_2DIFF + LZ4",
+      "recommendation": "主集合保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "IoTDB TS_2DIFF + LZ4"
+        }
+      ]
+    },
+    {
+      "id": "T110",
+      "name": "IoTDB RLE + LZ4",
+      "recommendation": "主集合保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "IoTDB RLE + LZ4"
+        }
+      ]
+    },
+    {
+      "id": "T111",
+      "name": "IoTDB GORILLA + LZ4",
+      "recommendation": "主集合保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "IoTDB GORILLA + LZ4"
+        }
+      ]
+    },
+    {
+      "id": "T112",
+      "name": "IoTDB ZIGZAG + LZ4",
+      "recommendation": "主集合保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "IoTDB ZIGZAG + LZ4"
+        }
+      ]
+    },
+    {
+      "id": "T113",
+      "name": "IoTDB SPRINTZ（仅编码 / 编码 + LZ4）",
+      "recommendation": "主集合保留",
+      "merged_ids": [
+        "T101"
+      ],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "IoTDB SPRINTZ Encoding"
+        },
+        {
+          "group": "TimeStampCompress",
+          "name": "IoTDB SPRINTZ（仅编码 / 编码 + LZ4）"
+        }
+      ]
+    },
+    {
+      "id": "T114",
+      "name": "IoTDB CHIMP + LZ4",
+      "recommendation": "主集合保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "IoTDB CHIMP + LZ4"
+        }
+      ]
+    },
+    {
+      "id": "T115",
+      "name": "IoTDB RLBE + LZ4",
+      "recommendation": "主集合保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "IoTDB RLBE + LZ4"
+        }
+      ]
+    },
+    {
+      "id": "T116",
+      "name": "IoTDB PLAIN + LZ4/ZSTD",
+      "recommendation": "主集合保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "IoTDB PLAIN + LZ4/ZSTD"
+        }
+      ]
+    },
+    {
+      "id": "T121",
+      "name": "TSM Adaptive Timestamp Encoder",
+      "recommendation": "主集合保留",
+      "merged_ids": [
+        "T8",
+        "T77",
+        "T117",
+        "T118",
+        "T119",
+        "T120"
+      ],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "InfluxDB TSM Delta preprocessing"
+        },
+        {
+          "group": "TimeStampCompress",
+          "name": "InfluxDB TSM Timestamp RLE"
+        },
+        {
+          "group": "TimeStampCompress",
+          "name": "TSM Adaptive Timestamp Encoder"
+        },
+        {
+          "group": "TimeStampCompress",
+          "name": "TSM Delta + Decimal Scaling"
+        },
+        {
+          "group": "TimeStampCompress",
+          "name": "TSM RLE Path"
+        },
+        {
+          "group": "TimeStampCompress",
+          "name": "TSM Simple8b Path"
+        },
+        {
+          "group": "TimeStampCompress",
+          "name": "TSM Uncompressed Fallback"
+        }
+      ]
+    },
+    {
+      "id": "T122",
+      "name": "ClickHouse CODEC(Delta)",
+      "recommendation": "主集合保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "ClickHouse CODEC(Delta)"
+        }
+      ]
+    },
+    {
+      "id": "T123",
+      "name": "ClickHouse CODEC(DoubleDelta)",
+      "recommendation": "主集合保留",
+      "merged_ids": [
+        "T14",
+        "T104"
+      ],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "ClickHouse CODEC(DoubleDelta)"
+        },
+        {
+          "group": "TimeStampCompress",
+          "name": "ClickHouse Gorilla/DoubleDelta pipeline"
+        }
+      ]
+    },
+    {
+      "id": "T124",
+      "name": "CODEC(DoubleDelta, ZSTD)",
+      "recommendation": "主集合保留",
+      "merged_ids": [
+        "T104"
+      ],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "CODEC(DoubleDelta, ZSTD)"
+        },
+        {
+          "group": "TimeStampCompress",
+          "name": "ClickHouse Gorilla/DoubleDelta pipeline"
+        }
+      ]
+    },
+    {
+      "id": "T125",
+      "name": "CODEC(DoubleDelta, LZ4)",
+      "recommendation": "主集合保留",
+      "merged_ids": [
+        "T104"
+      ],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "CODEC(DoubleDelta, LZ4)"
+        },
+        {
+          "group": "TimeStampCompress",
+          "name": "ClickHouse Gorilla/DoubleDelta pipeline"
+        }
+      ]
+    },
+    {
+      "id": "T127",
+      "name": "TimescaleDB Hypercore Integer/Timestamp Compression",
+      "recommendation": "主集合保留",
+      "merged_ids": [
+        "T9"
+      ],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "TimescaleDB Delta"
+        },
+        {
+          "group": "TimeStampCompress",
+          "name": "TimescaleDB Hypercore Integer/Timestamp Compression"
+        }
+      ]
+    },
+    {
+      "id": "T128",
+      "name": "TimescaleDB DeltaDelta + Simple8b-RLE",
+      "recommendation": "主集合保留",
+      "merged_ids": [
+        "T9",
+        "T16",
+        "T79"
+      ],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "Timescale Simple8b-RLE over ZigZag D2"
+        },
+        {
+          "group": "TimeStampCompress",
+          "name": "TimescaleDB Delta"
+        },
+        {
+          "group": "TimeStampCompress",
+          "name": "TimescaleDB DeltaDelta"
+        },
+        {
+          "group": "TimeStampCompress",
+          "name": "TimescaleDB DeltaDelta + Simple8b-RLE"
+        }
+      ]
+    },
+    {
+      "id": "T129",
+      "name": "InfluxDB 3 / Parquet Timestamp Path",
+      "recommendation": "扩展保留",
+      "merged_ids": [],
+      "source_names": [
+        {
+          "group": "TimeStampCompress",
+          "name": "InfluxDB 3 / Parquet Timestamp Path"
+        }
+      ]
+    }
+  ],
+  "source_aliases": [
+    {
+      "group": "ValueCompress",
+      "name": "NeaTS",
+      "records": [
+        "V100"
+      ]
+    },
+    {
+      "group": "TimeStampCompress",
+      "name": "IoTDB SPRINTZ + LZ4",
+      "records": [
+        "T113"
+      ]
+    }
+  ],
+  "benchmark_references": {
+    "TerseTS": [
+      "V130"
+    ],
+    "Data-Stream-Compression": [
+      "V10",
+      "V11",
+      "V12",
+      "V13"
+    ],
+    "CORAD": [
+      "V11"
+    ],
+    "Sprintz": [
+      "V55",
+      "V56"
+    ],
+    "Chimp": [
+      "V62",
+      "V63"
+    ],
+    "Elf": [
+      "V65",
+      "V66",
+      "V67"
+    ],
+    "SElfStar": [
+      "V67"
+    ],
+    "Serf": [
+      "V85",
+      "V86"
+    ],
+    "ALP / FastLanes": [
+      "V68",
+      "V69"
+    ],
+    "Mix-Piece / Sim-Piece": [
+      "V35",
+      "V36"
+    ],
+    "ModelarDB": [
+      "V22",
+      "V24"
+    ],
+    "SZ ecosystem": [
+      "V84"
+    ],
+    "zfp": [
+      "V87"
+    ],
+    "NeaTS": [
+      "V100"
+    ],
+    "WaLLoC": [
+      "V108"
+    ],
+    "lzbench": [],
+    "NVIDIA nvCOMP": [
+      "V111"
+    ],
+    "AMD/Xilinx Vitis Data Compression": [
+      "V116"
+    ],
+    "Intel QAT/QATzip": [
+      "V118"
+    ],
+    "FiniteStateEntropy": [
+      "V119",
+      "V120"
+    ]
+  },
+  "registered_codecs": {
+    "abba": [
+      "V19"
+    ],
+    "alp": [
+      "V68"
+    ],
+    "alp-rd": [
+      "V69"
+    ],
+    "brotli-stream": [
+      "V8"
+    ],
+    "chimp": [
+      "V62"
+    ],
+    "chimp128": [
+      "V63"
+    ],
+    "deepzip": [
+      "V90"
+    ],
+    "deflate-zlib": [
+      "V1",
+      "V4"
+    ],
+    "dzip": [
+      "V91"
+    ],
+    "elf": [
+      "V65"
+    ],
+    "elf-plus": [
+      "V66"
+    ],
+    "elf-star": [
+      "V67"
+    ],
+    "fabba": [
+      "V20"
+    ],
+    "fse": [
+      "V120"
+    ],
+    "huff0": [
+      "V119"
+    ],
+    "leats-lossless-i64": [
+      "V100"
+    ],
+    "lz4-frame": [
+      "V5"
+    ],
+    "lzss-dipperstein-c": [
+      "V2"
+    ],
+    "lzss-raw": [
+      "V2"
+    ],
+    "neats-lossless-i64": [
+      "V100"
+    ],
+    "self-star": [
+      "V67"
+    ],
+    "serf-qt": [
+      "V85"
+    ],
+    "serf-xor": [
+      "V86"
+    ],
+    "simdcomp-u32": [
+      "T53"
+    ],
+    "snappy-raw": [
+      "V6"
+    ],
+    "sprintz-delta": [
+      "V55"
+    ],
+    "sprintz-delta-u8": [
+      "V55"
+    ],
+    "sprintz-fire": [
+      "V56"
+    ],
+    "sprintz-fire-huff0": [
+      "V56",
+      "V119"
+    ],
+    "sprintz-fire-u8": [
+      "V56"
+    ],
+    "xz-stream": [
+      "V9"
+    ],
+    "zfp-accuracy-1d": [
+      "V87"
+    ],
+    "zstd-frame": [
+      "V7"
+    ]
+  },
+  "framework_oracles": [
+    "oracle-direct",
+    "oracle-lossless-adapter",
+    "oracle-lossy-adapter",
+    "oracle-native-nd-only"
+  ],
+  "removed_codecs": [
+    "corad",
+    "delta-maskedvbyte-u32",
+    "delta-simdcomp-u32",
+    "delta-varint",
+    "delta-zigzag-streamvbyte-modern64",
+    "delta-zigzag-streamvbyte64",
+    "fast-differential-u32",
+    "fastpfor-simple8b-rle-u32",
+    "for-simdcomp-u32",
+    "influxdb-tsm-adaptive-timestamp",
+    "littleintpacker-bmi2-u32",
+    "littleintpacker-horizontal-u32",
+    "littleintpacker-pack32-u32",
+    "littleintpacker-sc-u32",
+    "littleintpacker-turbo-u32",
+    "maskedvbyte-u32",
+    "prometheus-float-histogram-st",
+    "prometheus-histogram-st",
+    "prometheus-xor-chunk",
+    "prometheus-xor2-chunk",
+    "simple16-u28",
+    "simple9-u28",
+    "simple9hacked-u28",
+    "streamvbyte-modern-u32",
+    "streamvbyte-u32",
+    "tristan",
+    "walloc-1d"
+  ],
+  "removed_rewrite_packages": [
+    "terracodec-flextec",
+    "terracodec-tec-tt"
+  ],
+  "selected_source_entries": [
+    {
+      "audit_index": 1,
+      "asset_group": "ValueCompress",
+      "source_sheet": "Value-Compress",
+      "source_row": "2",
+      "name": "LZ77",
+      "repository": "madler/zlib"
+    },
+    {
+      "audit_index": 2,
+      "asset_group": "ValueCompress",
+      "source_sheet": "Value-Compress",
+      "source_row": "3",
+      "name": "LZSS",
+      "repository": "alexkazik/lzss"
+    },
+    {
+      "audit_index": 3,
+      "asset_group": "ValueCompress",
+      "source_sheet": "Value-Compress",
+      "source_row": "4",
+      "name": "DEFLATE",
+      "repository": "madler/zlib"
+    },
+    {
+      "audit_index": 4,
+      "asset_group": "ValueCompress",
+      "source_sheet": "Value-Compress",
+      "source_row": "5",
+      "name": "LZ4",
+      "repository": "lz4/lz4"
+    },
+    {
+      "audit_index": 5,
+      "asset_group": "ValueCompress",
+      "source_sheet": "Value-Compress",
+      "source_row": "6",
+      "name": "Snappy",
+      "repository": "google/snappy"
+    },
+    {
+      "audit_index": 6,
+      "asset_group": "ValueCompress",
+      "source_sheet": "Value-Compress",
+      "source_row": "7",
+      "name": "Zstandard (Zstd)",
+      "repository": "facebook/zstd"
+    },
+    {
+      "audit_index": 7,
+      "asset_group": "ValueCompress",
+      "source_sheet": "Value-Compress",
+      "source_row": "8",
+      "name": "Brotli",
+      "repository": "google/brotli"
+    },
+    {
+      "audit_index": 8,
+      "asset_group": "ValueCompress",
+      "source_sheet": "Value-Compress",
+      "source_row": "9",
+      "name": "LZMA / xz",
+      "repository": "tukaani-project/xz"
+    },
+    {
+      "audit_index": 9,
+      "asset_group": "ValueCompress",
+      "source_sheet": "Value-Compress",
+      "source_row": "10",
+      "name": "TRISTAN",
+      "repository": "eXascaleInfolab/CORAD"
+    },
+    {
+      "audit_index": 10,
+      "asset_group": "ValueCompress",
+      "source_sheet": "Value-Compress",
+      "source_row": "11",
+      "name": "CORAD",
+      "repository": "eXascaleInfolab/CORAD"
+    },
+    {
+      "audit_index": 11,
+      "asset_group": "ValueCompress",
+      "source_sheet": "Value-Compress",
+      "source_row": "12",
+      "name": "A-LZSS",
+      "repository": "alexkazik/lzss"
+    },
+    {
+      "audit_index": 15,
+      "asset_group": "ValueCompress",
+      "source_sheet": "Value-Compress",
+      "source_row": "16",
+      "name": "ABBA",
+      "repository": "nla-group/ABBA"
+    },
+    {
+      "audit_index": 16,
+      "asset_group": "ValueCompress",
+      "source_sheet": "Value-Compress",
+      "source_row": "17",
+      "name": "fABBA",
+      "repository": "nla-group/fABBA"
+    },
+    {
+      "audit_index": 17,
+      "asset_group": "ValueCompress",
+      "source_sheet": "Value-Compress",
+      "source_row": "18",
+      "name": "PMC (Poor Man's Compression)",
+      "repository": "hcmut-huan/Data-Stream-Compression"
+    },
+    {
+      "audit_index": 18,
+      "asset_group": "ValueCompress",
+      "source_sheet": "Value-Compress",
+      "source_row": "19",
+      "name": "PLA",
+      "repository": "hcmut-huan/Data-Stream-Compression"
+    },
+    {
+      "audit_index": 19,
+      "asset_group": "ValueCompress",
+      "source_sheet": "Value-Compress",
+      "source_row": "20",
+      "name": "Sliding Window PLA",
+      "repository": "hcmut-huan/Data-Stream-Compression"
+    },
+    {
+      "audit_index": 20,
+      "asset_group": "ValueCompress",
+      "source_sheet": "Value-Compress",
+      "source_row": "21",
+      "name": "Bottom-Up PLA",
+      "repository": "hcmut-huan/Data-Stream-Compression"
+    },
+    {
+      "audit_index": 21,
+      "asset_group": "ValueCompress",
+      "source_sheet": "Value-Compress",
+      "source_row": "22",
+      "name": "Top-Down PLA",
+      "repository": "hcmut-huan/Data-Stream-Compression"
+    },
+    {
+      "audit_index": 22,
+      "asset_group": "ValueCompress",
+      "source_sheet": "Value-Compress",
+      "source_row": "23",
+      "name": "SWAB",
+      "repository": "hcmut-huan/Data-Stream-Compression"
+    },
+    {
+      "audit_index": 23,
+      "asset_group": "ValueCompress",
+      "source_sheet": "Value-Compress",
+      "source_row": "24",
+      "name": "LTC (Lightweight Temporal Compression)",
+      "repository": "hcmut-huan/Data-Stream-Compression"
+    },
+    {
+      "audit_index": 24,
+      "asset_group": "ValueCompress",
+      "source_sheet": "Value-Compress",
+      "source_row": "25",
+      "name": "PPA (Piecewise Polynomial Approximation)",
+      "repository": "lemire/PiecewiseLinearTimeSeriesApproximation"
+    },
+    {
+      "audit_index": 25,
+      "asset_group": "ValueCompress",
+      "source_sheet": "Value-Compress",
+      "source_row": "26",
+      "name": "Adaptive Approximation",
+      "repository": "hcmut-huan/Data-Stream-Compression"
+    },
+    {
+      "audit_index": 26,
+      "asset_group": "ValueCompress",
+      "source_sheet": "Value-Compress",
+      "source_row": "27",
+      "name": "Smart-Grid Compression",
+      "repository": "hcmut-huan/Data-Stream-Compression"
+    },
+    {
+      "audit_index": 27,
+      "asset_group": "ValueCompress",
+      "source_sheet": "Value-Compress",
+      "source_row": "28",
+      "name": "Sim-Piece",
+      "repository": "xkitsios/Mix-Piece_Sim-Piece"
+    },
+    {
+      "audit_index": 28,
+      "asset_group": "ValueCompress",
+      "source_sheet": "Value-Compress",
+      "source_row": "29",
+      "name": "Mix-Piece",
+      "repository": "xkitsios/Mix-Piece_Sim-Piece"
+    },
+    {
+      "audit_index": 30,
+      "asset_group": "ValueCompress",
+      "source_sheet": "Value-Compress",
+      "source_row": "31",
+      "name": "ABBA / fABBA compression stage",
+      "repository": "nla-group/fABBA"
+    },
+    {
+      "audit_index": 31,
+      "asset_group": "ValueCompress",
+      "source_sheet": "Value-Compress",
+      "source_row": "32",
+      "name": "DFT / Fourier coefficient truncation",
+      "repository": "scipy/scipy"
+    },
+    {
+      "audit_index": 32,
+      "asset_group": "ValueCompress",
+      "source_sheet": "Value-Compress",
+      "source_row": "33",
+      "name": "FFT + coefficient selection",
+      "repository": "scipy/scipy"
+    },
+    {
+      "audit_index": 33,
+      "asset_group": "ValueCompress",
+      "source_sheet": "Value-Compress",
+      "source_row": "34",
+      "name": "DCT",
+      "repository": "scipy/scipy"
+    },
+    {
+      "audit_index": 34,
+      "asset_group": "ValueCompress",
+      "source_sheet": "Value-Compress",
+      "source_row": "35",
+      "name": "DWT (Discrete Wavelet Transform)",
+      "repository": "PyWavelets/pywt"
+    },
+    {
+      "audit_index": 35,
+      "asset_group": "ValueCompress",
+      "source_sheet": "Value-Compress",
+      "source_row": "36",
+      "name": "Haar Wavelet Compression",
+      "repository": "PyWavelets/pywt"
+    },
+    {
+      "audit_index": 36,
+      "asset_group": "ValueCompress",
+      "source_sheet": "Value-Compress",
+      "source_row": "37",
+      "name": "Wavelet Packet Compression",
+      "repository": "PyWavelets/pywt"
+    },
+    {
+      "audit_index": 37,
+      "asset_group": "ValueCompress",
+      "source_sheet": "Value-Compress",
+      "source_row": "38",
+      "name": "PCA",
+      "repository": "scikit-learn/scikit-learn"
+    },
+    {
+      "audit_index": 38,
+      "asset_group": "ValueCompress",
+      "source_sheet": "Value-Compress",
+      "source_row": "39",
+      "name": "Incremental PCA",
+      "repository": "scikit-learn/scikit-learn"
+    },
+    {
+      "audit_index": 39,
+      "asset_group": "ValueCompress",
+      "source_sheet": "Value-Compress",
+      "source_row": "40",
+      "name": "SVD / Truncated SVD",
+      "repository": "scikit-learn/scikit-learn"
+    },
+    {
+      "audit_index": 40,
+      "asset_group": "ValueCompress",
+      "source_sheet": "Value-Compress",
+      "source_row": "41",
+      "name": "Randomized SVD",
+      "repository": "scikit-learn/scikit-learn"
+    },
+    {
+      "audit_index": 42,
+      "asset_group": "ValueCompress",
+      "source_sheet": "Value-Compress",
+      "source_row": "43",
+      "name": "Sprintz-Delta",
+      "repository": "dblalock/sprintz"
+    },
+    {
+      "audit_index": 43,
+      "asset_group": "ValueCompress",
+      "source_sheet": "Value-Compress",
+      "source_row": "44",
+      "name": "Sprintz-FIRE",
+      "repository": "dblalock/sprintz"
+    },
+    {
+      "audit_index": 44,
+      "asset_group": "ValueCompress",
+      "source_sheet": "Value-Compress",
+      "source_row": "45",
+      "name": "FPC",
+      "repository": "spenczar/fpc"
+    },
+    {
+      "audit_index": 45,
+      "asset_group": "ValueCompress",
+      "source_sheet": "Value-Compress",
+      "source_row": "46",
+      "name": "FCM predictor",
+      "repository": "spenczar/fpc"
+    },
+    {
+      "audit_index": 46,
+      "asset_group": "ValueCompress",
+      "source_sheet": "Value-Compress",
+      "source_row": "47",
+      "name": "DFCM predictor",
+      "repository": "spenczar/fpc"
+    },
+    {
+      "audit_index": 47,
+      "asset_group": "ValueCompress",
+      "source_sheet": "Value-Compress",
+      "source_row": "48",
+      "name": "TSXor",
+      "repository": "andybbruno/TSXor"
+    },
+    {
+      "audit_index": 48,
+      "asset_group": "ValueCompress",
+      "source_sheet": "Value-Compress",
+      "source_row": "49",
+      "name": "Chimp",
+      "repository": "panagiotisl/chimp"
+    },
+    {
+      "audit_index": 49,
+      "asset_group": "ValueCompress",
+      "source_sheet": "Value-Compress",
+      "source_row": "50",
+      "name": "Chimp128",
+      "repository": "Spatio-Temporal-Lab/elf"
+    },
+    {
+      "audit_index": 50,
+      "asset_group": "ValueCompress",
+      "source_sheet": "Value-Compress",
+      "source_row": "51",
+      "name": "Patas",
+      "repository": "miikka/floatbungler"
+    },
+    {
+      "audit_index": 51,
+      "asset_group": "ValueCompress",
+      "source_sheet": "Value-Compress",
+      "source_row": "52",
+      "name": "Elf",
+      "repository": "Spatio-Temporal-Lab/elf"
+    },
+    {
+      "audit_index": 52,
+      "asset_group": "ValueCompress",
+      "source_sheet": "Value-Compress",
+      "source_row": "53",
+      "name": "Elf+",
+      "repository": "Spatio-Temporal-Lab/elf"
+    },
+    {
+      "audit_index": 53,
+      "asset_group": "ValueCompress",
+      "source_sheet": "Value-Compress",
+      "source_row": "54",
+      "name": "Elf* / SElf*",
+      "repository": "hcmut-huan/Data-Stream-Compression"
+    },
+    {
+      "audit_index": 54,
+      "asset_group": "ValueCompress",
+      "source_sheet": "Value-Compress",
+      "source_row": "55",
+      "name": "ALP",
+      "repository": "cwida/ALP"
+    },
+    {
+      "audit_index": 55,
+      "asset_group": "ValueCompress",
+      "source_sheet": "Value-Compress",
+      "source_row": "56",
+      "name": "ALP_RD",
+      "repository": "cwida/ALP"
+    },
+    {
+      "audit_index": 56,
+      "asset_group": "ValueCompress",
+      "source_sheet": "Value-Compress",
+      "source_row": "57",
+      "name": "Camel",
+      "repository": "yoyo185644/camel"
+    },
+    {
+      "audit_index": 57,
+      "asset_group": "ValueCompress",
+      "source_sheet": "Value-Compress",
+      "source_row": "58",
+      "name": "Huffman Coding",
+      "repository": "nayuki/Reference-Huffman-coding"
+    },
+    {
+      "audit_index": 58,
+      "asset_group": "ValueCompress",
+      "source_sheet": "Value-Compress",
+      "source_row": "59",
+      "name": "Arithmetic Coding",
+      "repository": "nayuki/Reference-arithmetic-coding"
+    },
+    {
+      "audit_index": 59,
+      "asset_group": "ValueCompress",
+      "source_sheet": "Value-Compress",
+      "source_row": "60",
+      "name": "ANS / rANS / tANS",
+      "repository": "Cyan4973/FiniteStateEntropy"
+    },
+    {
+      "audit_index": 60,
+      "asset_group": "ValueCompress",
+      "source_sheet": "Value-Compress",
+      "source_row": "61",
+      "name": "FSE (Finite State Entropy)",
+      "repository": "Cyan4973/FiniteStateEntropy"
+    },
+    {
+      "audit_index": 61,
+      "asset_group": "ValueCompress",
+      "source_sheet": "Value-Compress",
+      "source_row": "62",
+      "name": "SZ / SZ3",
+      "repository": "szcompressor/SZ3"
+    },
+    {
+      "audit_index": 62,
+      "asset_group": "ValueCompress",
+      "source_sheet": "Value-Compress",
+      "source_row": "63",
+      "name": "Serf-Qt",
+      "repository": "Spatio-Temporal-Lab/Serf"
+    },
+    {
+      "audit_index": 63,
+      "asset_group": "ValueCompress",
+      "source_sheet": "Value-Compress",
+      "source_row": "64",
+      "name": "Serf-XOR",
+      "repository": "Spatio-Temporal-Lab/Serf"
+    },
+    {
+      "audit_index": 64,
+      "asset_group": "ValueCompress",
+      "source_sheet": "Value-Compress",
+      "source_row": "65",
+      "name": "zfp",
+      "repository": "LLNL/zfp"
+    },
+    {
+      "audit_index": 65,
+      "asset_group": "ValueCompress",
+      "source_sheet": "Value-Compress",
+      "source_row": "66",
+      "name": "DeepZip",
+      "repository": "mohit1997/DeepZip"
+    },
+    {
+      "audit_index": 66,
+      "asset_group": "ValueCompress",
+      "source_sheet": "Value-Compress",
+      "source_row": "67",
+      "name": "DZip",
+      "repository": "mohit1997/DZip"
+    },
+    {
+      "audit_index": 68,
+      "asset_group": "ValueCompress",
+      "source_sheet": "Value-Compress",
+      "source_row": "69",
+      "name": "DeepZip / RNN Predictor",
+      "repository": "mohit1997/DeepZip"
+    },
+    {
+      "audit_index": 69,
+      "asset_group": "ValueCompress",
+      "source_sheet": "Value-Compress",
+      "source_row": "70",
+      "name": "DZip combined model",
+      "repository": "mohit1997/DZip"
+    },
+    {
+      "audit_index": 70,
+      "asset_group": "ValueCompress",
+      "source_sheet": "Value-Compress",
+      "source_row": "71",
+      "name": "NeaTS",
+      "repository": "and-gue/NeaTS"
+    },
+    {
+      "audit_index": 73,
+      "asset_group": "ValueCompress",
+      "source_sheet": "Value-Compress",
+      "source_row": "74",
+      "name": "WaLLoC (1D Codec)",
+      "repository": "danjacobellis/walloc"
+    },
+    {
+      "audit_index": 74,
+      "asset_group": "ValueCompress",
+      "source_sheet": "Value-Compress",
+      "source_row": "75",
+      "name": "NeaTS / LeaTS family",
+      "repository": "and-gue/NeaTS"
+    },
+    {
+      "audit_index": 76,
+      "asset_group": "ValueCompress",
+      "source_sheet": "Value-Compress",
+      "source_row": "77",
+      "name": "NVIDIA nvCOMP",
+      "repository": "NVIDIA/nvcomp"
+    },
+    {
+      "audit_index": 77,
+      "asset_group": "ValueCompress",
+      "source_sheet": "Value-Compress",
+      "source_row": "78",
+      "name": "cuSZ / pSZ",
+      "repository": "szcompressor/cuSZ"
+    },
+    {
+      "audit_index": 78,
+      "asset_group": "ValueCompress",
+      "source_sheet": "Value-Compress",
+      "source_row": "79",
+      "name": "cuSZp / SZp-CUDA",
+      "repository": "szcompressor/cuSZp"
+    },
+    {
+      "audit_index": 79,
+      "asset_group": "ValueCompress",
+      "source_sheet": "Value-Compress",
+      "source_row": "80",
+      "name": "Falcon",
+      "repository": "Spatio-Temporal-Lab/Falcon"
+    },
+    {
+      "audit_index": 81,
+      "asset_group": "ValueCompress",
+      "source_sheet": "Value-Compress",
+      "source_row": "82",
+      "name": "AMD/Xilinx Vitis Data Compression Library",
+      "repository": "Xilinx/Vitis_Libraries"
+    },
+    {
+      "audit_index": 82,
+      "asset_group": "ValueCompress",
+      "source_sheet": "Value-Compress",
+      "source_row": "83",
+      "name": "Xilinx LZ4 HLS Decompression Optimization",
+      "repository": "Xilinx/lz4-decompression-opt"
+    },
+    {
+      "audit_index": 83,
+      "asset_group": "ValueCompress",
+      "source_sheet": "Value-Compress",
+      "source_row": "84",
+      "name": "Intel QAT / QATzip",
+      "repository": "intel/QATzip"
+    },
+    {
+      "audit_index": 84,
+      "asset_group": "ValueCompress",
+      "source_sheet": "Value-Compress",
+      "source_row": "85",
+      "name": "Huff0",
+      "repository": "Cyan4973/FiniteStateEntropy"
+    },
+    {
+      "audit_index": 85,
+      "asset_group": "ValueCompress",
+      "source_sheet": "Value-Compress",
+      "source_row": "86",
+      "name": "FSE",
+      "repository": "Cyan4973/FiniteStateEntropy"
+    },
+    {
+      "audit_index": 86,
+      "asset_group": "ValueCompress",
+      "source_sheet": "Value-Compress",
+      "source_row": "87",
+      "name": "Range/Arithmetic Coding",
+      "repository": "nayuki/Reference-arithmetic-coding"
+    },
+    {
+      "audit_index": 87,
+      "asset_group": "ValueCompress",
+      "source_sheet": "Value-Compress",
+      "source_row": "88",
+      "name": "Canonical Huffman Coding",
+      "repository": "nayuki/Reference-Huffman-coding"
+    },
+    {
+      "audit_index": 88,
+      "asset_group": "ValueCompress",
+      "source_sheet": "Value-Compress",
+      "source_row": "89",
+      "name": "Delta-of-Delta / Second-order Difference",
+      "repository": "prometheus/prometheus"
+    },
+    {
+      "audit_index": 89,
+      "asset_group": "ValueCompress",
+      "source_sheet": "Value-Compress",
+      "source_row": "90",
+      "name": "Gorilla",
+      "repository": "prometheus/prometheus"
+    },
+    {
+      "audit_index": 90,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "2",
+      "name": "First-order Delta / D-gap",
+      "repository": "lemire/FastDifferentialCoding"
+    },
+    {
+      "audit_index": 91,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "3",
+      "name": "Delta + VarInt",
+      "repository": "google/protobuf"
+    },
+    {
+      "audit_index": 92,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "4",
+      "name": "Delta + ZigZag + VarInt",
+      "repository": "protocolbuffers/protobuf"
+    },
+    {
+      "audit_index": 93,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "5",
+      "name": "Delta + Masked VByte",
+      "repository": "fast-pack/MaskedVByte"
+    },
+    {
+      "audit_index": 94,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "6",
+      "name": "Delta + Stream VByte",
+      "repository": "fast-pack/streamvbyte"
+    },
+    {
+      "audit_index": 95,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "7",
+      "name": "SIMD Differential Coding",
+      "repository": "lemire/FastDifferentialCoding"
+    },
+    {
+      "audit_index": 96,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "8",
+      "name": "Parquet DELTA_BINARY_PACKED",
+      "repository": "apache/parquet-format"
+    },
+    {
+      "audit_index": 97,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "9",
+      "name": "InfluxDB TSM Delta preprocessing",
+      "repository": "influxdata/influxdb"
+    },
+    {
+      "audit_index": 98,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "10",
+      "name": "TimescaleDB Delta",
+      "repository": "timescale/timescaledb"
+    },
+    {
+      "audit_index": 99,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "11",
+      "name": "Generic Delta-of-Delta (D2)",
+      "repository": "mattsta/varint"
+    },
+    {
+      "audit_index": 100,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "12",
+      "name": "Gorilla Timestamp Delta-of-Delta",
+      "repository": "RedisTimeSeries/RedisTimeSeries"
+    },
+    {
+      "audit_index": 101,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "13",
+      "name": "Prometheus XOR Chunk Timestamp Codec",
+      "repository": "prometheus/prometheus"
+    },
+    {
+      "audit_index": 102,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "14",
+      "name": "Prometheus XOR2 Timestamp Codec",
+      "repository": "prometheus/prometheus"
+    },
+    {
+      "audit_index": 103,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "15",
+      "name": "ClickHouse CODEC(DoubleDelta)",
+      "repository": "ClickHouse/ClickHouse"
+    },
+    {
+      "audit_index": 104,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "16",
+      "name": "IoTDB TS_2DIFF",
+      "repository": "apache/tsfile"
+    },
+    {
+      "audit_index": 105,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "17",
+      "name": "TimescaleDB DeltaDelta",
+      "repository": "timescale/timescaledb"
+    },
+    {
+      "audit_index": 106,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "18",
+      "name": "RedisTimeSeries Gorilla DoubleDelta",
+      "repository": "RedisTimeSeries/RedisTimeSeries"
+    },
+    {
+      "audit_index": 107,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "19",
+      "name": "TurboPFor Gorilla-style Timestamp",
+      "repository": "powturbo/TurboPFor-Integer-Compression"
+    },
+    {
+      "audit_index": 109,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "21",
+      "name": "Base-128 Varint / Protobuf Varint",
+      "repository": "protocolbuffers/protobuf"
+    },
+    {
+      "audit_index": 110,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "22",
+      "name": "ULEB128",
+      "repository": "apache/parquet-format"
+    },
+    {
+      "audit_index": 111,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "23",
+      "name": "Variable Byte (VByte)",
+      "repository": "fast-pack/FastPFOR"
+    },
+    {
+      "audit_index": 112,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "24",
+      "name": "Stream VByte",
+      "repository": "fast-pack/streamvbyte"
+    },
+    {
+      "audit_index": 113,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "25",
+      "name": "Masked VByte",
+      "repository": "fast-pack/MaskedVByte"
+    },
+    {
+      "audit_index": 114,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "26",
+      "name": "Group Varint",
+      "repository": "mattsta/varint"
+    },
+    {
+      "audit_index": 115,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "27",
+      "name": "TurboByte / SIMD Group Varint",
+      "repository": "powturbo/TurboPFor-Integer-Compression"
+    },
+    {
+      "audit_index": 116,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "28",
+      "name": "Varint-G8IU",
+      "repository": "fast-pack/FastPFOR"
+    },
+    {
+      "audit_index": 117,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "29",
+      "name": "Snappy-style Varint32",
+      "repository": "google/snappy"
+    },
+    {
+      "audit_index": 118,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "30",
+      "name": "Protobuf ZigZag32",
+      "repository": "protocolbuffers/protobuf"
+    },
+    {
+      "audit_index": 119,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "31",
+      "name": "Protobuf ZigZag64",
+      "repository": "protocolbuffers/protobuf"
+    },
+    {
+      "audit_index": 120,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "32",
+      "name": "Delta + ZigZag",
+      "repository": "powturbo/TurboPFor-Integer-Compression"
+    },
+    {
+      "audit_index": 121,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "33",
+      "name": "Delta-of-Delta + ZigZag",
+      "repository": "timescale/timescaledb"
+    },
+    {
+      "audit_index": 122,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "34",
+      "name": "Parquet ZigZag metadata coding",
+      "repository": "apache/parquet-format"
+    },
+    {
+      "audit_index": 123,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "35",
+      "name": "IoTDB ZIGZAG Encoding",
+      "repository": "apache/iotdb"
+    },
+    {
+      "audit_index": 124,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "36",
+      "name": "TurboPFor ZigZag Transform",
+      "repository": "powturbo/TurboPFor-Integer-Compression"
+    },
+    {
+      "audit_index": 125,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "37",
+      "name": "Elias Gamma Code",
+      "repository": "mattsta/varint"
+    },
+    {
+      "audit_index": 126,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "38",
+      "name": "Elias Delta Code",
+      "repository": "simongog/sdsl-lite"
+    },
+    {
+      "audit_index": 127,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "39",
+      "name": "Elias Gamma after Delta",
+      "repository": "mattsta/varint"
+    },
+    {
+      "audit_index": 128,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "40",
+      "name": "Elias Gamma after Delta-of-Delta + sign mapping",
+      "repository": "mattsta/varint"
+    },
+    {
+      "audit_index": 129,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "41",
+      "name": "Golomb Coding",
+      "repository": "MichaelDipperstein/rice"
+    },
+    {
+      "audit_index": 130,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "42",
+      "name": "Golomb-Rice Coding",
+      "repository": "MichaelDipperstein/rice"
+    },
+    {
+      "audit_index": 131,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "43",
+      "name": "Partitioned Rice Coding",
+      "repository": "xiph/flac"
+    },
+    {
+      "audit_index": 132,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "44",
+      "name": "ZigZag/Folded Residual + Rice",
+      "repository": "xiph/flac"
+    },
+    {
+      "audit_index": 133,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "45",
+      "name": "Adaptive Rice Parameter per Block",
+      "repository": "MichaelDipperstein/rice"
+    },
+    {
+      "audit_index": 134,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "46",
+      "name": "Fixed-width Bit Packing",
+      "repository": "fast-pack/LittleIntPacker"
+    },
+    {
+      "audit_index": 135,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "47",
+      "name": "Binary Packing",
+      "repository": "fast-pack/FastPFOR"
+    },
+    {
+      "audit_index": 136,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "48",
+      "name": "SIMD-BP128 / BP128",
+      "repository": "powturbo/TurboPFor-Integer-Compression"
+    },
+    {
+      "audit_index": 137,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "49",
+      "name": "SIMDComp",
+      "repository": "lemire/simdcomp"
+    },
+    {
+      "audit_index": 138,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "50",
+      "name": "LittleIntPacker",
+      "repository": "fast-pack/LittleIntPacker"
+    },
+    {
+      "audit_index": 139,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "51",
+      "name": "TurboPack / TurboPFor Bit Packing",
+      "repository": "powturbo/TurboPFor-Integer-Compression"
+    },
+    {
+      "audit_index": 140,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "52",
+      "name": "Parquet Delta Binary Packing",
+      "repository": "apache/parquet-format"
+    },
+    {
+      "audit_index": 141,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "53",
+      "name": "Simple-8b",
+      "repository": "influxdata/influxdb"
+    },
+    {
+      "audit_index": 142,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "54",
+      "name": "InfluxDB Simple8b",
+      "repository": "influxdata/influxdb"
+    },
+    {
+      "audit_index": 143,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "55",
+      "name": "Simple8b-RLE",
+      "repository": "timescale/timescaledb"
+    },
+    {
+      "audit_index": 144,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "56",
+      "name": "Reverse-decodable Simple8b-RLE",
+      "repository": "timescale/timescaledb"
+    },
+    {
+      "audit_index": 145,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "57",
+      "name": "Simple-9",
+      "repository": "fast-pack/FastPFOR"
+    },
+    {
+      "audit_index": 146,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "58",
+      "name": "Simple-16",
+      "repository": "fast-pack/FastPFOR"
+    },
+    {
+      "audit_index": 147,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "59",
+      "name": "Variable Simple",
+      "repository": "powturbo/TurboPFor-Integer-Compression"
+    },
+    {
+      "audit_index": 148,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "60",
+      "name": "FastPFOR Simple8b_RLE",
+      "repository": "fast-pack/FastPFOR"
+    },
+    {
+      "audit_index": 149,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "61",
+      "name": "Frame of Reference (FOR)",
+      "repository": "fast-pack/FrameOfReference"
+    },
+    {
+      "audit_index": 150,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "62",
+      "name": "Delta-FOR",
+      "repository": "mattsta/varint"
+    },
+    {
+      "audit_index": 151,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "63",
+      "name": "Patched Frame-of-Reference (PFOR / PForDelta)",
+      "repository": "fast-pack/FastPFOR"
+    },
+    {
+      "audit_index": 152,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "64",
+      "name": "NewPFor / NewPFD",
+      "repository": "fast-pack/FastPFOR"
+    },
+    {
+      "audit_index": 153,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "65",
+      "name": "OptPFor / OptPFD",
+      "repository": "fast-pack/FastPFOR"
+    },
+    {
+      "audit_index": 154,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "66",
+      "name": "FastPFOR",
+      "repository": "fast-pack/FastPFOR"
+    },
+    {
+      "audit_index": 155,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "67",
+      "name": "SIMD-FastPFOR",
+      "repository": "fast-pack/FastPFOR"
+    },
+    {
+      "audit_index": 156,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "68",
+      "name": "TurboPFor",
+      "repository": "powturbo/TurboPFor-Integer-Compression"
+    },
+    {
+      "audit_index": 157,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "69",
+      "name": "Adaptive Frame of Reference (AFOR)",
+      "repository": "fast-pack/FastPFOR"
+    },
+    {
+      "audit_index": 158,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "70",
+      "name": "Parquet min-delta frame",
+      "repository": "apache/parquet-format"
+    },
+    {
+      "audit_index": 159,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "71",
+      "name": "InfluxDB TSM Timestamp RLE",
+      "repository": "influxdata/influxdb"
+    },
+    {
+      "audit_index": 160,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "72",
+      "name": "Timescale Simple8b-RLE over ZigZag D2",
+      "repository": "timescale/timescaledb"
+    },
+    {
+      "audit_index": 161,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "73",
+      "name": "TurboPFor Delta/ZigZag + RLE",
+      "repository": "powturbo/TurboPFor-Integer-Compression"
+    },
+    {
+      "audit_index": 163,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "75",
+      "name": "Sprintz Zero-block Encoding",
+      "repository": "dblalock/sprintz"
+    },
+    {
+      "audit_index": 164,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "76",
+      "name": "Simple8b zero selectors / repeated-value path",
+      "repository": "fast-pack/FastPFOR"
+    },
+    {
+      "audit_index": 165,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "77",
+      "name": "Last-delta Predictor",
+      "repository": "RedisTimeSeries/RedisTimeSeries"
+    },
+    {
+      "audit_index": 166,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "78",
+      "name": "DPCM + VarInt",
+      "repository": "protocolbuffers/protobuf"
+    },
+    {
+      "audit_index": 167,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "79",
+      "name": "DPCM + Rice",
+      "repository": "xiph/flac"
+    },
+    {
+      "audit_index": 168,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "80",
+      "name": "Sprintz-Delta",
+      "repository": "dblalock/sprintz"
+    },
+    {
+      "audit_index": 169,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "81",
+      "name": "Sprintz-FIRE",
+      "repository": "dblalock/sprintz"
+    },
+    {
+      "audit_index": 170,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "82",
+      "name": "Sprintz + Huffman/entropy backend",
+      "repository": "dblalock/sprintz"
+    },
+    {
+      "audit_index": 171,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "83",
+      "name": "IoTDB SPRINTZ Encoding",
+      "repository": "apache/iotdb"
+    },
+    {
+      "audit_index": 172,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "84",
+      "name": "Facebook Gorilla Timestamp Codec",
+      "repository": "RedisTimeSeries/RedisTimeSeries"
+    },
+    {
+      "audit_index": 173,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "85",
+      "name": "RedisTimeSeries Gorilla implementation",
+      "repository": "RedisTimeSeries/RedisTimeSeries"
+    },
+    {
+      "audit_index": 174,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "86",
+      "name": "ClickHouse Gorilla/DoubleDelta pipeline",
+      "repository": "ClickHouse/ClickHouse"
+    },
+    {
+      "audit_index": 175,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "87",
+      "name": "Prometheus XOR Chunk",
+      "repository": "prometheus/prometheus"
+    },
+    {
+      "audit_index": 176,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "88",
+      "name": "Prometheus XOR2 Chunk",
+      "repository": "prometheus/prometheus"
+    },
+    {
+      "audit_index": 177,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "89",
+      "name": "Prometheus Histogram Chunk timestamp path",
+      "repository": "prometheus/prometheus"
+    },
+    {
+      "audit_index": 178,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "90",
+      "name": "Prometheus Histogram-ST / FloatHistogram-ST",
+      "repository": "prometheus/prometheus"
+    },
+    {
+      "audit_index": 179,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "91",
+      "name": "IoTDB TS_2DIFF + LZ4",
+      "repository": "apache/tsfile"
+    },
+    {
+      "audit_index": 180,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "92",
+      "name": "IoTDB RLE + LZ4",
+      "repository": "apache/iotdb"
+    },
+    {
+      "audit_index": 181,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "93",
+      "name": "IoTDB GORILLA + LZ4",
+      "repository": "apache/iotdb"
+    },
+    {
+      "audit_index": 182,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "94",
+      "name": "IoTDB ZIGZAG + LZ4",
+      "repository": "apache/iotdb"
+    },
+    {
+      "audit_index": 183,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "95",
+      "name": "IoTDB SPRINTZ + LZ4",
+      "repository": "apache/iotdb"
+    },
+    {
+      "audit_index": 184,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "96",
+      "name": "IoTDB CHIMP + LZ4",
+      "repository": "apache/iotdb"
+    },
+    {
+      "audit_index": 185,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "97",
+      "name": "IoTDB RLBE + LZ4",
+      "repository": "apache/iotdb"
+    },
+    {
+      "audit_index": 186,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "98",
+      "name": "IoTDB PLAIN + LZ4/ZSTD",
+      "repository": "apache/iotdb"
+    },
+    {
+      "audit_index": 187,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "99",
+      "name": "TSM Delta + Decimal Scaling",
+      "repository": "influxdata/influxdb"
+    },
+    {
+      "audit_index": 188,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "100",
+      "name": "TSM RLE Path",
+      "repository": "influxdata/influxdb"
+    },
+    {
+      "audit_index": 189,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "101",
+      "name": "TSM Simple8b Path",
+      "repository": "influxdata/influxdb"
+    },
+    {
+      "audit_index": 190,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "102",
+      "name": "TSM Uncompressed Fallback",
+      "repository": "influxdata/influxdb"
+    },
+    {
+      "audit_index": 191,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "103",
+      "name": "TSM Adaptive Timestamp Encoder",
+      "repository": "influxdata/influxdb"
+    },
+    {
+      "audit_index": 192,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "104",
+      "name": "ClickHouse CODEC(Delta)",
+      "repository": "ClickHouse/ClickHouse"
+    },
+    {
+      "audit_index": 193,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "105",
+      "name": "ClickHouse CODEC(DoubleDelta)",
+      "repository": "ClickHouse/ClickHouse"
+    },
+    {
+      "audit_index": 194,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "106",
+      "name": "CODEC(DoubleDelta, ZSTD)",
+      "repository": "ClickHouse/ClickHouse"
+    },
+    {
+      "audit_index": 195,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "107",
+      "name": "CODEC(DoubleDelta, LZ4)",
+      "repository": "ClickHouse/ClickHouse"
+    },
+    {
+      "audit_index": 197,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "109",
+      "name": "TimescaleDB Hypercore Integer/Timestamp Compression",
+      "repository": "timescale/timescaledb"
+    },
+    {
+      "audit_index": 198,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "110",
+      "name": "TimescaleDB DeltaDelta + Simple8b-RLE",
+      "repository": "timescale/timescaledb"
+    },
+    {
+      "audit_index": 199,
+      "asset_group": "TimeStampCompress",
+      "source_sheet": "TimeStanp-Compress",
+      "source_row": "111",
+      "name": "InfluxDB 3 / Parquet Timestamp Path",
+      "repository": "influxdata/influxdb"
+    },
+    {
+      "audit_index": 200,
+      "asset_group": "TSBench",
+      "source_sheet": "参考TSBench",
+      "source_row": "2",
+      "name": "TerseTS",
+      "repository": "cmcuza/TerseTS"
+    },
+    {
+      "audit_index": 201,
+      "asset_group": "TSBench",
+      "source_sheet": "参考TSBench",
+      "source_row": "3",
+      "name": "Data-Stream-Compression",
+      "repository": "hcmut-huan/Data-Stream-Compression"
+    },
+    {
+      "audit_index": 202,
+      "asset_group": "TSBench",
+      "source_sheet": "参考TSBench",
+      "source_row": "4",
+      "name": "CORAD",
+      "repository": "eXascaleInfolab/CORAD"
+    },
+    {
+      "audit_index": 203,
+      "asset_group": "TSBench",
+      "source_sheet": "参考TSBench",
+      "source_row": "5",
+      "name": "Sprintz",
+      "repository": "dblalock/sprintz"
+    },
+    {
+      "audit_index": 204,
+      "asset_group": "TSBench",
+      "source_sheet": "参考TSBench",
+      "source_row": "6",
+      "name": "Chimp",
+      "repository": "panagiotisl/chimp"
+    },
+    {
+      "audit_index": 205,
+      "asset_group": "TSBench",
+      "source_sheet": "参考TSBench",
+      "source_row": "7",
+      "name": "Elf",
+      "repository": "Spatio-Temporal-Lab/elf"
+    },
+    {
+      "audit_index": 206,
+      "asset_group": "TSBench",
+      "source_sheet": "参考TSBench",
+      "source_row": "8",
+      "name": "SElfStar",
+      "repository": "Spatio-Temporal-Lab/SElfStar"
+    },
+    {
+      "audit_index": 207,
+      "asset_group": "TSBench",
+      "source_sheet": "参考TSBench",
+      "source_row": "9",
+      "name": "Serf",
+      "repository": "Spatio-Temporal-Lab/Serf"
+    },
+    {
+      "audit_index": 208,
+      "asset_group": "TSBench",
+      "source_sheet": "参考TSBench",
+      "source_row": "10",
+      "name": "ALP / FastLanes",
+      "repository": "cwida/ALP"
+    },
+    {
+      "audit_index": 209,
+      "asset_group": "TSBench",
+      "source_sheet": "参考TSBench",
+      "source_row": "11",
+      "name": "Mix-Piece / Sim-Piece",
+      "repository": "xkitsios/Mix-Piece_Sim-Piece"
+    },
+    {
+      "audit_index": 210,
+      "asset_group": "TSBench",
+      "source_sheet": "参考TSBench",
+      "source_row": "12",
+      "name": "ModelarDB",
+      "repository": "modelardb/ModelarDB-RS"
+    },
+    {
+      "audit_index": 211,
+      "asset_group": "TSBench",
+      "source_sheet": "参考TSBench",
+      "source_row": "13",
+      "name": "SZ ecosystem",
+      "repository": null
+    },
+    {
+      "audit_index": 212,
+      "asset_group": "TSBench",
+      "source_sheet": "参考TSBench",
+      "source_row": "14",
+      "name": "zfp",
+      "repository": "LLNL/zfp"
+    },
+    {
+      "audit_index": 214,
+      "asset_group": "TSBench",
+      "source_sheet": "参考TSBench",
+      "source_row": "16",
+      "name": "NeaTS",
+      "repository": "and-gue/NeaTS"
+    },
+    {
+      "audit_index": 216,
+      "asset_group": "TSBench",
+      "source_sheet": "参考TSBench",
+      "source_row": "18",
+      "name": "WaLLoC",
+      "repository": "danjacobellis/walloc"
+    },
+    {
+      "audit_index": 217,
+      "asset_group": "TSBench",
+      "source_sheet": "参考TSBench",
+      "source_row": "19",
+      "name": "lzbench",
+      "repository": "inikep/lzbench"
+    },
+    {
+      "audit_index": 218,
+      "asset_group": "TSBench",
+      "source_sheet": "参考TSBench",
+      "source_row": "20",
+      "name": "NVIDIA nvCOMP",
+      "repository": "NVIDIA/nvcomp"
+    },
+    {
+      "audit_index": 219,
+      "asset_group": "TSBench",
+      "source_sheet": "参考TSBench",
+      "source_row": "21",
+      "name": "AMD/Xilinx Vitis Data Compression",
+      "repository": "Xilinx/Vitis_Libraries"
+    },
+    {
+      "audit_index": 220,
+      "asset_group": "TSBench",
+      "source_sheet": "参考TSBench",
+      "source_row": "22",
+      "name": "Intel QAT/QATzip",
+      "repository": "intel/QATzip"
+    },
+    {
+      "audit_index": 221,
+      "asset_group": "TSBench",
+      "source_sheet": "参考TSBench",
+      "source_row": "23",
+      "name": "FiniteStateEntropy",
+      "repository": "Cyan4973/FiniteStateEntropy"
+    }
+  ],
+  "rewrite_packages": {
+    "abba": [
+      "abba"
+    ],
+    "chimp": [
+      "chimp",
+      "chimp128"
+    ],
+    "deepzip": [
+      "deepzip"
+    ],
+    "dzip": [
+      "dzip"
+    ],
+    "elf": [
+      "elf"
+    ],
+    "elf-plus": [
+      "elf-plus"
+    ],
+    "elf-star": [
+      "elf-star"
+    ],
+    "fabba": [
+      "fabba"
+    ],
+    "self-star": [
+      "self-star"
+    ]
+  },
+  "retained_out_of_scope_registrations": [
+    "bzip2-stream",
+    "lzsse2-raw",
+    "lzsse8-raw"
+  ],
+  "previously_declared_removed_but_still_registered": [
+    "bzip2-stream",
+    "lzsse2-raw",
+    "lzsse8-raw"
+  ],
+  "excluded_plan_records": [
+    "T1",
+    "T105",
+    "T106",
+    "T108",
+    "T12",
+    "T121",
+    "T2",
+    "T27",
+    "T28",
+    "T3",
+    "T4",
+    "T5",
+    "T54",
+    "T62",
+    "T63",
+    "T65",
+    "V10",
+    "V108",
+    "V11"
+  ],
+  "removed_codec_aliases": [
+    "delta-of-delta",
+    "gorilla",
+    "second-order-difference"
+  ],
+  "rewrite_package_inventory": [
+    "abba",
+    "chimp",
+    "corad",
+    "deepzip",
+    "dzip",
+    "elf",
+    "elf-plus",
+    "elf-star",
+    "fabba",
+    "influxdb-tsm-adaptive-timestamp",
+    "prometheus-histogram-st",
+    "prometheus-xor-chunk",
+    "prometheus-xor2-chunk",
+    "self-star",
+    "tristan",
+    "walloc-1d"
+  ],
+  "retired_integration_rewrite_packages": [
+    "corad",
+    "influxdb-tsm-adaptive-timestamp",
+    "prometheus-histogram-st",
+    "prometheus-xor-chunk",
+    "prometheus-xor2-chunk",
+    "tristan",
+    "walloc-1d"
+  ],
+  "removal_history": [
+    {
+      "date": "2026-10-10",
+      "reason": "EXPLICIT_USER_REQUEST",
+      "codec_keys": [
+        "corad",
+        "delta-maskedvbyte-u32",
+        "delta-simdcomp-u32",
+        "delta-varint",
+        "delta-zigzag-streamvbyte-modern64",
+        "delta-zigzag-streamvbyte64",
+        "fast-differential-u32",
+        "fastpfor-simple8b-rle-u32",
+        "for-simdcomp-u32",
+        "influxdb-tsm-adaptive-timestamp",
+        "littleintpacker-bmi2-u32",
+        "littleintpacker-horizontal-u32",
+        "littleintpacker-pack32-u32",
+        "littleintpacker-sc-u32",
+        "littleintpacker-turbo-u32",
+        "maskedvbyte-u32",
+        "prometheus-float-histogram-st",
+        "prometheus-histogram-st",
+        "prometheus-xor-chunk",
+        "prometheus-xor2-chunk",
+        "simple16-u28",
+        "simple9-u28",
+        "simple9hacked-u28",
+        "streamvbyte-modern-u32",
+        "streamvbyte-u32",
+        "tristan",
+        "walloc-1d"
+      ],
+      "aliases": [
+        "delta-of-delta",
+        "gorilla",
+        "second-order-difference"
+      ],
+      "original_csv_sha256_preserved": "536dda0cdb068da2014b1a0638d6cca7e7f1cb92a750d4528ead272d5e1b665c",
+      "original_and_independent_rewrite_sources_preserved": true
+    }
+  ]
+}

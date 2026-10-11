@@ -1,0 +1,31 @@
+Restricted PATH: /tmp/tscb-lzss-no-rust-20261011-5khocyqc/bin
+Tool lookup: {"rustc": null, "cargo": null}
+c++ --version
+c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0
+Copyright (C) 2021 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+
+c++ -print-prog-name=cc1plus
+/usr/lib/gcc/x86_64-linux-gnu/11/cc1plus
+
+c++ -print-prog-name=collect2
+/usr/lib/gcc/x86_64-linux-gnu/11/collect2
+
+c++ -std=c++17 -fPIC -Wall -Wextra -Werror -O3 -DNDEBUG -shared -Wl,--no-undefined -I /home/fzg/PycharmProjects/TSDataCompressBenchMark/native/include -I /home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/lzss_raw/native /home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/lzss_raw/native/tscb_lzss_raw.cc /home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/lzss_raw/native/lzss_raw_codec.cc -o /tmp/tscb-lzss-no-rust-20261011-5khocyqc/libtscb_lzss_raw.so
+
+c++ -std=c++17 -Wall -Wextra -Werror -UNDEBUG -O3 -I /home/fzg/PycharmProjects/TSDataCompressBenchMark/native/include -I /home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/lzss_raw/native /home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/lzss_raw/native/qualification.cc -L /tmp/tscb-lzss-no-rust-20261011-5khocyqc -Wl,-rpath,/tmp/tscb-lzss-no-rust-20261011-5khocyqc -ltscb_lzss_raw -o /tmp/tscb-lzss-no-rust-20261011-5khocyqc/abi-qualification
+
+/tmp/tscb-lzss-no-rust-20261011-5khocyqc/abi-qualification
+PASS: 39 native cases; exact decode, capacity, canary, immutable input, overlap, tails, lifecycle, timing
+
+c++ -std=c++17 -Wall -Wextra -Werror -UNDEBUG -O3 -I /home/fzg/PycharmProjects/TSDataCompressBenchMark/native/include -I /home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/lzss_raw/native /home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/lzss_raw/tests/test_decoder_contract.cc -L /tmp/tscb-lzss-no-rust-20261011-5khocyqc -Wl,-rpath,/tmp/tscb-lzss-no-rust-20261011-5khocyqc -ltscb_lzss_raw -o /tmp/tscb-lzss-no-rust-20261011-5khocyqc/decoder-contract
+
+/tmp/tscb-lzss-no-rust-20261011-5khocyqc/decoder-contract
+PASS: 16442 hand-built valid streams; 587 malformed streams/descriptors rejected atomically; all offsets/lengths, initial dictionary, overlap/wrap, padding, truncation, exact lengths, overflow preflight, canaries
+
+c++ -std=c++17 -Wall -Wextra -Werror -UNDEBUG -O3 -I /home/fzg/PycharmProjects/TSDataCompressBenchMark/native/include -I /home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/lzss_raw/native /home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/lzss_raw/tests/codec_cli.cc -L /tmp/tscb-lzss-no-rust-20261011-5khocyqc -Wl,-rpath,/tmp/tscb-lzss-no-rust-20261011-5khocyqc -ltscb_lzss_raw -o /tmp/tscb-lzss-no-rust-20261011-5khocyqc/codec-cli
+
+/home/fzg/anaconda3/bin/python /home/fzg/PycharmProjects/TSDataCompressBenchMark/tools/verify_lzss_cpp.py --library /tmp/tscb-lzss-no-rust-20261011-5khocyqc/libtscb_lzss_raw.so --runner /tmp/tscb-lzss-no-rust-20261011-5khocyqc/codec-cli --output /tmp/tscb-lzss-no-rust-20261011-5khocyqc/bitstream_replay.json
+{"status": "PASS", "case_count": 282, "output": "/tmp/tscb-lzss-no-rust-20261011-5khocyqc/bitstream_replay.json"}

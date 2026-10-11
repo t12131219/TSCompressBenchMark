@@ -1,0 +1,119 @@
+{
+  "schema_version": "tscb.port-native-evidence-index.v1",
+  "status": "PASS_WITH_EXPLICIT_SCOPE_LIMITS",
+  "artifacts": [
+    {
+      "path": "docs/audits/20261011_port_standard_v30/general_native_builds_v3/build_status.json",
+      "sha256": "414d13c94bc0448d747f1b150704da7a6f06ab322e8620dd8a29144ab87e0a81"
+    },
+    {
+      "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/qualification.json",
+      "sha256": "b86173f34c30d175552de327cc446dd8480aa02dd7a9ae56f12f60c0d93db174"
+    },
+    {
+      "path": "docs/audits/20261011_port_standard_v30/frame_binding_qualification_v3/qualification.json",
+      "sha256": "0a47ea4c7609a1a27515846ddbe72dbd56fd0bd2b93e67ee9462e32cad8a8048"
+    },
+    {
+      "path": "docs/audits/20261011_port_standard_v30/sprintz_lowdim_source_parity.log",
+      "sha256": "829dd999ca9460c27fd26c5f4e2e5f89585fb4abd6effdbc5cc321d060b614f8"
+    },
+    {
+      "path": "docs/audits/20261011_port_standard_v30/native_registration_refresh.json",
+      "sha256": "adf5095b0450d5be0cff192e1a7be750f1b47a5cd599a71958075bd402a6580a"
+    },
+    {
+      "path": "docs/audits/20261011_port_standard_v30/current_registered_native_adapter_tests.log",
+      "sha256": "8babf2c5bfdb07bc44772824eb023099a4eaa63288157b014ae71131d73f38de"
+    },
+    {
+      "path": "docs/audits/20261011_port_standard_v30/updated_onboarding_native_adapter_tests.log",
+      "sha256": "4de64934605dc63b561f8b2a59ff4a7fa10d1068e8dfcae0f632ddefa3a3b684"
+    }
+  ],
+  "drivers_and_selected_inputs": [
+    {
+      "path": "tools/build_codec.py",
+      "sha256": "f4534ffc9575eb8626f54d2340f129e980617b89c873c66f2520e65ad936f649"
+    },
+    {
+      "path": "tools/verify_frame_binding_contract.py",
+      "sha256": "7318d73ba1d9812ad681e3358360dadc34dc59a4faa26d9406cf300bc346ffcb"
+    },
+    {
+      "path": "tools/verify_general_native_builds.py",
+      "sha256": "9baf8fef539c8aa07c04bcce6503257cf924a9164b576a5e2663086ea0f5f578"
+    },
+    {
+      "path": "tools/qualify_sprintz_native.py",
+      "sha256": "4f46585da275fb299112c3d8e321f44849603c053e3ab274d3a971a0b83d18a6"
+    },
+    {
+      "path": "src/tscompbench/adapters/factory.py",
+      "sha256": "f3608ddf5a06857db11a91d3d0b63586703f36a4008de807d21f1b5b4f2c461c"
+    },
+    {
+      "path": "src/tscompbench/adapters/build_evidence.py",
+      "sha256": "2d51e775a5eb82efc8a13d077868a03037b1b25bd302b18d9fa46c042784d532"
+    },
+    {
+      "path": "tests/native/frame_byte_api_contract.c",
+      "sha256": "bda4a6fa38681b96daefef6e90fc0fcbd03202e82ca03d88266bb5a9a790cca4"
+    },
+    {
+      "path": "tests/unit/test_general_native_build_closure.py",
+      "sha256": "751ab332314c9687cd4c5339197bd3b25cb08f5c53fe4b20b9df1405421e82ca"
+    },
+    {
+      "path": "tests/unit/test_adapter_build_evidence.py",
+      "sha256": "8d0786e81ecb6af6cfd63a7dd6ba1e9882d09cb61cb5af016c031a8717104c54"
+    },
+    {
+      "path": "adapters/lzsse2_raw/tests/abi_smoke.cc",
+      "sha256": "49a2d09c542f6519291514610d8519a56366d260d40654c1ba6261289fba52d0"
+    },
+    {
+      "path": "adapters/sprintz/patches/0001-lowdim-byte-safety.patch",
+      "sha256": "8cbc4309b2f12bf514cff20cb6e4e195cd752f6d834b929759a8e63693af484a"
+    },
+    {
+      "path": "adapters/sprintz/vendor/sprintz/bitpack.h",
+      "sha256": "49ecd9f46b9d0b9e2b7aa6ae650fc898a3bf2ced53c61c5427fe587d3580fbe7"
+    },
+    {
+      "path": "adapters/sprintz/vendor/sprintz/sprintz_delta_lowdim.cpp",
+      "sha256": "5a51d6c94a5df7a2fd66303a6eb0e823ff332127b71dedbac6c6af7079c0e11f"
+    },
+    {
+      "path": "adapters/sprintz/vendor/sprintz/sprintz_xff_lowdim.cpp",
+      "sha256": "ebd7345fbca90312067736406271bfb717bd46ec92559caa2de6a6c620977297"
+    }
+  ],
+  "fresh_native_build_records": 62,
+  "declared_dependency_paths_checked": 17024,
+  "generic_native_test_executables": 60,
+  "frame_native_test_executables": 8,
+  "frame_finite_legal_parity_cases": 590,
+  "frame_cross_decode_direction_cases": 1180,
+  "sprintz_lowdim_finite_source_parity_streams": 128,
+  "owned_python_regression": {
+    "first_run": {
+      "passed": 390,
+      "failed": 2
+    },
+    "repair_rerun": {
+      "passed": 2,
+      "failed": 0
+    },
+    "single_run_392_pass_claim": false
+  },
+  "source_full_parity": "NOT_ASSERTED",
+  "activity_or_algorithm_scope_changes": false,
+  "limits": [
+    "Compiler program discovery is not exec tracing.",
+    "Implicit static startup/runtime archives are not all pinned.",
+    "ASan/UBSan does not instrument system runtime; LeakSanitizer disabled.",
+    "No upstream/paper FULL_PARITY or Benchmark/SDK qualification is inferred from native tests.",
+    "Three retained regression objects are not promoted to active algorithms."
+  ]
+}

@@ -34,24 +34,21 @@ def evidence(tmp_path: Path) -> Path:
             tmp_path / relative,
             copy_function=lambda src, dst: os.symlink(src, dst),
         )
-    snapshot = json.loads((ROOT / "build/source-audits/simdcomp_sdk_tests.json").read_text())[
-        "source_snapshot"
-    ]
-    for relative in [
-        *(i["path"] for i in snapshot),
+    for relative in (
         "tools/freeze_simdcomp_source.py",
         "tools/qualify_simdcomp_upstream.py",
         "tools/qualify_simdcomp_avx2.py",
         "tests/native/native_timing_smoke.c",
-    ]:
+    ):
         target = tmp_path / relative
-        if not target.exists():
-            target.parent.mkdir(parents=True, exist_ok=True)
-            target.symlink_to(ROOT / relative)
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.symlink_to(ROOT / relative)
     for path in (ROOT / "build/source-audits").glob("simdcomp*.json"):
         (tmp_path / "build/source-audits" / path.name).write_bytes(path.read_bytes())
     card = json.loads((ROOT / "registry/onboarding/simdcomp-u32.json").read_text())
-    selected = next(item["evidence"] for item in card["upstream_tests"] if item["name"] == "direct_sdk")
+    selected = next(
+        item["evidence"] for item in card["upstream_tests"] if item["name"] == "direct_sdk"
+    )
     current = json.loads((ROOT / selected).read_text())
     current_out = ROOT / current.get("output_directory", "build/source-audits/simdcomp-sdk")
     mirror_out = tmp_path / "build/source-audits/simdcomp-sdk"
@@ -85,8 +82,8 @@ def mutate(path: Path, change) -> None:
 
 def test_complete_direct_sdk_does_not_claim_five_layers(evidence: Path) -> None:
     result = audit(evidence)
-    assert result["status"] == "PASS" and result["test_count"] == 888
-    assert set(result["keys"]) == {"simdcomp-u32", "delta-simdcomp-u32", "for-simdcomp-u32"}
+    assert result["status"] == "PASS" and result["test_count"] == 504
+    assert set(result["keys"]) == {"simdcomp-u32"}
     assert result["benchmark_registration"] == result["benchmark_five_layers"] == "PENDING"
     assert not result["full_logical_entries_qualified"]
 
@@ -95,9 +92,9 @@ def test_complete_direct_sdk_does_not_claim_five_layers(evidence: Path) -> None:
     "relative",
     [
         "src/tscompbench/adapters/simdcomp.py",
-        "src/tscompbench/adapters/maskedvbyte.py",
-        "src/tscompbench/preprocess/simdcomp.py",
+        "src/tscompbench/adapters/native_buffers.py",
         "src/tscompbench/adapters/native_timing.py",
+        "src/tscompbench/execution/recovery.py",
         "tests/adapters/test_simdcomp.py",
         "tools/qualify_simdcomp_sdk.py",
         "build/source-audits/simdcomp-sdk/pytest.xml",
@@ -112,7 +109,10 @@ def test_consumed_sdk_source_or_report_drift_is_rejected(evidence: Path, relativ
 
 @pytest.mark.parametrize(
     "tamper",
-    ["claim_five_layers", "omit_worker", "omit_dependency", "omit_buffer_helper", "wrong_total"],
+    [
+        "claim_five_layers", "omit_worker", "omit_dependency", "omit_buffer_helper",
+        "omit_recovery", "wrong_total",
+    ],
 )
 def test_forged_direct_sdk_success_is_rejected(evidence: Path, tamper: str) -> None:
     path = evidence / "build/source-audits/simdcomp_sdk_tests.json"
@@ -125,11 +125,10 @@ def test_forged_direct_sdk_success_is_rejected(evidence: Path, tamper: str) -> N
         elif tamper == "wrong_total":
             doc["test_totals"]["tests"] = 1
         else:
-            omitted = (
-                "src/tscompbench/adapters/maskedvbyte.py"
-                if tamper == "omit_buffer_helper"
-                else "src/tscompbench/adapters/simdcomp.py"
-            )
+            omitted = {
+                "omit_buffer_helper": "src/tscompbench/adapters/native_buffers.py",
+                "omit_recovery": "src/tscompbench/execution/recovery.py",
+            }.get(tamper, "src/tscompbench/adapters/simdcomp.py")
             doc["source_snapshot"] = [i for i in doc["source_snapshot"] if i["path"] != omitted]
             doc["source_snapshot_sha256"] = hashlib.sha256(
                 json.dumps(doc["source_snapshot"], sort_keys=True).encode()

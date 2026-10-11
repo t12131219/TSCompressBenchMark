@@ -1,0 +1,89 @@
+{
+  "schema_version": "tscb.source-onboarding.v2",
+  "source_artifact_id": "v2:source-artifact:sha256:1b62e728c33885fb38e25d490d0c13841018f265b4cbd4b2c8a3fadfa04b6773",
+  "repository": "https://github.com/Cyan4973/FiniteStateEntropy.git",
+  "commit": "9f30e0918f87bd835fa040d922a208d7b219e50b",
+  "dirty": false,
+  "submodules": [],
+  "implementation_files": [
+    "lib/fse_compress.c", "lib/fse_decompress.c", "lib/huf_compress.c",
+    "lib/huf_decompress.c", "lib/entropy_common.c", "lib/hist.c"
+  ],
+  "public_api_files": ["lib/fse.h", "lib/huf.h"],
+  "benchmark_files": ["programs/fullbench.c", "programs/bench.c"],
+  "test_files": ["adapters/entropy_fse/native/qualification.c", "tools/qualify_entropy_fse.py", "tests/adapters/test_entropy_fse.py"],
+  "license_files": ["LICENSE"],
+  "third_party_dependencies": [],
+  "object_level_candidates": ["P1_STANDALONE_CODEC"],
+  "input_contract": {
+    "kind": "BYTE_VIEW", "maximum_single_block_bytes": 131072,
+    "ownership": "BORROWED_DURING_CALL", "mutation": "FORBIDDEN"
+  },
+  "output_contract": {
+    "kind": "TSCB_DESCRIPTOR_PLUS_NINE_BYTE_BLOCK_HEADER_AND_HUFF0_OR_FSE_PAYLOAD",
+    "modes": ["RAW", "RLE_FSE_ONLY", "COMPRESSED"], "actual_written_length": true
+  },
+  "lifecycle_contract": {
+    "output_bound": "nine-byte block header plus max(vendor compressBound, input bytes)",
+    "return_length": "actual block bytes; vendor zero return is not a compressed stream",
+    "error_codes": "stable tscb_status_v1 including UNSUPPORTED and DST_TOO_SMALL",
+    "finalize": "required, emits zero bytes, repeated call rejected",
+    "reset": "new context per independent repetition; C ABI reset clears counters"
+  },
+  "stream_components": {
+    "descriptor": "12-byte prefix plus canonical JSON describing buffers and logical type",
+    "block_header": "one mode byte and eight-byte little-endian exact decoded length",
+    "payload": "vendor compressed bytes, one RLE symbol or exact raw bytes",
+    "accounting": "all serialized bytes charged once; no external side information"
+  },
+  "upstream_tests": [
+    {
+      "name": "upstream make check on isolated checkout copy",
+      "status": "PASS",
+      "evidence": "make -C /tmp/tscb-fse-upstream-check-20260919 check; 1048575-byte generated sample roundtripped with FSE, Huff0 and zlibh; diff succeeded. Upstream fuzzers and test-all were not run."
+    },
+    {
+      "name": "project native harness against benchmark-vendored C API",
+      "status": "PASS",
+      "evidence": "Release roundtrip and ASan/UBSan 39 size/pattern cases per variant"
+    },
+    {
+      "name": "project Python adapter and boundary suite",
+      "status": "PASS",
+      "evidence": "58 pytest cases; compressed/raw/RLE paths, length and descriptor accounting, malformed stream rejection"
+    }
+  ],
+  "builds": [
+    {
+      "profile": "HUFF0_RELEASE", "artifact_sha256": "45a858aaab387a28253102647887f161aacca8ecb690e3836b4e3a2e654c4bdb",
+      "compile_commands_sha256": "19610d828404198a33aed16c1555f21e40905160bbfdd3b977cd6b47ef34673f"
+    },
+    {
+      "profile": "FSE_RELEASE", "artifact_sha256": "d0dcb0cc3ed5257755bdcb60b1d334d2df7e637d0fa228a5719f5d96eecd4e55",
+      "compile_commands_sha256": "dc4f7827b08f41adad9cdf979b0762e1eda1a54aff8cbc6b704c6f57ea26fc60"
+    },
+    {
+      "profile": "HUFF0_ASAN_UBSAN", "artifact_sha256": "d9e04f23ff32df7864be120ab9c48388fb51c4d28a66f27093afb56a4b9385f9",
+      "compile_commands_sha256": "4d85aaeb06300aa3f7defba110945828a81ab40d308048f2b0a2a7f9beef2386"
+    },
+    {
+      "profile": "FSE_ASAN_UBSAN", "artifact_sha256": "2c3520a3feeffaa3d6d1b3af5ccd67a1eec07ee4b2a70a6737ef1e953153c411",
+      "compile_commands_sha256": "17a5d5ba5eedba0b1ad3e99e29bc1075fb885da27e3c8b7a8fa11950fee32593"
+    }
+  ],
+  "license_decision": {
+    "spdx": "BSD-2-Clause", "status": "RUN_ALLOWED",
+    "redistribution": "ALLOWED_WITH_LICENSE_NOTICE"
+  },
+  "known_limitations": [
+    "Value byte view only; source entropy library has no timestamp semantics.",
+    "Huff0 supports at most 128 KiB per native block; current FSE adapter shares this conservative bound.",
+    "Raw/RLE fallback is a distinct path recorded in the serialized mode byte; native API timing is supplemental and may be zero for fallback.",
+    "Single-block object only; streaming, arbitrary segmentation and dictionary sharing are not registered.",
+    "The benchmark's fastest-only timing loop is not reused; the project applies its formal repetition policy."
+  ],
+  "unsupported_reason_codes": [
+    "SINGLE_BLOCK_LENGTH_LIMIT", "VALIDITY_SHAPE_UNSUPPORTED", "STREAMING_UNSUPPORTED",
+    "QUERY_UNSUPPORTED", "ISA_UNSUPPORTED"
+  ]
+}

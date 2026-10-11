@@ -1,5 +1,7 @@
 # 已完成重写算法：五层接入验收记录
 
+> 本文为 2026-10-06 的历史资格快照，包含后来退出的入口。当前范围与新验证见[算法退出记录](algorithm_retirement_20261010.md)和[当前算法对照](registered_algorithms_20261010.md)；历史 FORMAL 不自动取得新闭包资格。
+
 验收日期：2026-10-06。结论：**PASS，限定于已注册的 CPU 独立对象 profile**。
 
 在编写本次代码前，已完整阅读《TimeSeries Compression Benchmark V2 工程实施总计划》

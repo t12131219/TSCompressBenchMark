@@ -11,7 +11,7 @@ from pathlib import Path
 import numpy as np
 import pytest
 
-from tscompbench.adapters import LzssRawAdapter
+from tscompbench.adapters.factory import create_adapter
 from tscompbench.adapters.lzss_raw import LzssRawSession, _buffer
 from tscompbench.codecs import CodecRegistry, SourceRegistry, validate_onboarding_card
 from tscompbench.contracts import BenchmarkTrack, RunStatus
@@ -22,15 +22,12 @@ from tscompbench.planning import expand_sweep
 from tscompbench.validation import run_boundary_suite
 
 ROOT = Path(__file__).resolve().parents[2]
-LIBRARY = ROOT / "build/adapters/lzss_raw/release/libtscb_lzss_raw.so"
 
 
 def _adapter():
-    if not LIBRARY.is_file():
-        subprocess.run([sys.executable, "tools/build_codec.py", "lzss-raw"], cwd=ROOT, check=True)
     registry = CodecRegistry(ROOT / "registry/codecs", SourceRegistry(ROOT / "registry/sources"))
     manifest = registry.get("lzss-raw")
-    return LzssRawAdapter(LIBRARY, manifest.document["adapter"]), manifest
+    return create_adapter(ROOT, manifest), manifest
 
 
 def _route(n=8):
@@ -233,20 +230,67 @@ def test_native_golden_vector_bound_state_reset_and_timing():
 
 
 def test_source_closure_digest():
-    root = ROOT / "adapters/lzss_raw/vendor"
+    _adapter()
     source = json.loads((ROOT / "registry/sources/lzss-alexkazik.artifact.json").read_text())
-    files = sorted(path for path in root.rglob("*") if path.is_file())
+    closure = source["identity"]["source_closure"]
+    assert closure == sorted(closure, key=lambda entry: entry["path"])
     digest = hashlib.sha256()
-    for path in files:
-        digest.update(path.relative_to(root).as_posix().encode() + b"\0")
-        digest.update(path.read_bytes())
-    assert len(files) == source["identity"]["source_closure_file_count"] == 34
+    for entry in closure:
+        data = (ROOT / entry["path"]).read_bytes()
+        assert hashlib.sha256(data).hexdigest() == entry["sha256"]
+        digest.update(entry["path"].encode() + b"\0")
+        digest.update(data)
+    assert len(closure) == source["identity"]["source_closure_file_count"] == 5
     assert digest.hexdigest() == source["identity"]["source_closure_sha256"]
+    for profile in ("release", "sanitizer"):
+        record_path = ROOT / source["build"][f"{profile}_artifact"]
+        record_path = record_path.parent / "build-record.json"
+        # A clean adapter test run builds release; the qualifier builds both profiles.
+        if profile == "sanitizer" and not record_path.exists():
+            continue
+        record = json.loads(record_path.read_text())
+        actual = {entry["path"]: entry["sha256"] for entry in record["compiled_source_closure"]}
+        assert all(actual.get(entry["path"]) == entry["sha256"] for entry in closure)
+        assert record["core_execution_language"] == "C++17"
+        assert "rustc" not in record["command_display"]
+        assert "cargo" not in record["command_display"]
 
 
-def test_upstream_closure_identity_is_pinned():
+def test_cpp_profile_and_original_provenance_are_pinned():
     source = json.loads((ROOT / "registry/sources/lzss-alexkazik.artifact.json").read_text())
-    assert (
-        source["identity"]["source_closure_sha256"]
-        == "82cb61ecc9d31fd48a31624fd2b45f310fcf641d5fcd8e2dcca11d361feced2c"
+    identity = source["identity"]
+    assert identity["kind"] == "CPP_TRANSLATED_PROFILE_SOURCE_CLOSURE"
+    assert identity["commit"] == "512b9163d8a936003c925e24f7f682eeaeda8307"
+    assert identity["translation_scope"] == "REGISTERED_GENERIC_EI10_EJ4_C32_PROFILE_ONLY"
+    assert identity["implementation_language"] == "C++17"
+    fixture = json.loads(
+        (ROOT / "adapters/lzss_raw/tests/fixtures/reference_vectors.json").read_text()
     )
+    assert fixture["reference"]["commit"] == identity["commit"]
+    assert fixture["reference"]["native_library_sha256"] == (
+        "95a6d962a98cf03960f44e8b3afa50fbf5b939909c13c7d2beea5836a7dc1fc0"
+    )
+    assert not (ROOT / "adapters/lzss_raw/vendor").exists()
+    assert not list((ROOT / "adapters/lzss_raw").rglob("*.rs"))
+
+
+def test_original_bitstream_vectors(tmp_path):
+    _, manifest = _adapter()
+    library = ROOT / manifest.document["adapter"]["artifact_path"]
+    report = tmp_path / "bitstream-replay.json"
+    subprocess.run(
+        [
+            sys.executable,
+            str(ROOT / "tools/verify_lzss_cpp.py"),
+            "--library",
+            str(library),
+            "--output",
+            str(report),
+        ],
+        cwd=ROOT,
+        check=True,
+        timeout=120,
+    )
+    evidence = json.loads(report.read_text())
+    assert evidence["status"] == "PASS" and evidence["case_count"] == 282
+    assert evidence["library"]["sha256"] == hashlib.sha256(library.read_bytes()).hexdigest()

@@ -1,0 +1,74 @@
+{
+  "display_name": "v32_weather_u8_bytes_n4096_c4",
+  "expected": {
+    "canonical_raw_bits": 1048576,
+    "n_rows": 131072,
+    "semantic_content_sha256": "39a932d28b6112f239076f79ef62e503b42d99533a4fc2e3821de6f8e9b5f998",
+    "shape": [
+      131072
+    ]
+  },
+  "file": {
+    "bytes": 132326,
+    "format": "canonical",
+    "path": "artifacts/comparisons/v32_20261010/sources/v32_weather_u8_bytes_n4096_c4.tscb",
+    "sha256": "9d4023072ea28805e5a4f9b1e6d4f56954da390009b16e1dc7882f8b5e92b1a8"
+  },
+  "key": "v32_weather_u8_bytes_n4096_c4",
+  "license": {
+    "spdx": "UNSPECIFIED",
+    "status": "REVIEW_REQUIRED"
+  },
+  "logical": {
+    "axes": [
+      "time"
+    ],
+    "n_rows": 131072,
+    "nan_is_null": false,
+    "schema_version": "tscb.logical-view.v2",
+    "timestamp": {
+      "epoch": "NOT_APPLICABLE",
+      "order_policy": "PRESERVE",
+      "origin": "NONE",
+      "present": false,
+      "unit": "NOT_APPLICABLE"
+    },
+    "topology": "UTS",
+    "validity_shape": "NONE",
+    "value_columns": [
+      {
+        "display_name": "serialized-u8",
+        "dtype": "|u1",
+        "entity": "weather",
+        "feature": "source-value-bytes",
+        "name": "serialized-u8",
+        "shape": [
+          131072
+        ],
+        "strides": [
+          1
+        ],
+        "unit": "BYTE"
+      }
+    ],
+    "value_shape": [
+      131072
+    ]
+  },
+  "parser": {
+    "identity_policy": "tscb.dataset-content.v1",
+    "name": "tscb.canonical",
+    "version": "1"
+  },
+  "schema_version": "tscb.canonical-source-manifest.v1",
+  "source": {
+    "notes": "{\"domain_proof\": {\"actual_maximum\": 255, \"actual_minimum\": 0, \"allowed_range\": [0, 255], \"byte_count\": 131072, \"comparison_recovery_domain\": \"ORIGINAL_UINT8_BYTE_OBJECT_ONLY\", \"injective_byte_serialization\": true, \"logical_channels\": 1, \"logical_rank\": 1, \"lossy_transform\": false, \"original_dtype\": \"|u1\", \"source_byte_count\": 131072, \"source_column_boundaries_predeclared\": true}, \"first_party_project_reference\": \"https://www.bgc-jena.mpg.de/wetter/\", \"generation_spec\": {\"domain_limit_bytes\": 131072, \"floating_object_recovery_claim\": false, \"kind\": \"REAL_SENSOR_F64_BYTES_TO_UINT8_OBJECT\", \"model_symbol_task\": false, \"original_comparison_object\": \"UINT8_BYTE_STREAM\", \"parent_dataset_id\": \"v2:dataset:sha256:d2005d6eaf1ce1dd29bd9417237558fda0c9b8bdbdf415c948a74d2d444aac5c\", \"parent_file_sha256\": \"34ee981d07313e51da2a50bb600072c8ae4a69cb4b0651f4cb93a069d7a2ba63\", \"row_start\": 0, \"row_stop\": 4096, \"selected_columns\": [\"p (mbar)\", \"T (degC)\", \"Tpot (K)\", \"Tdew (degC)\"], \"serialization\": \"COLUMN_ORDER_ORIGINAL_LE_F64_BYTES_AS_UINT8_V1\", \"source_key\": \"weather\", \"source_manifest\": \"registry/datasets/weather.json\", \"source_payload_sha256\": \"38484d535c79787eaac06708694f1e0996754e370074bf1d92a1bbf1d5ee5d99\", \"split_policy\": \"PREDECLARED_TEST_SOURCE_WINDOW_NO_RESULT_SELECTION\", \"timestamp_policy\": \"SOURCE_TIMESTAMPS_OUTSIDE_UINT8_OBJECT\", \"window_reason\": \"Existing Sprintz uint8 UTS max_n is 131072; 4096 rows x 4 source f64 columns serialize to at most 131072 bytes.\", \"window_selection_rule\": \"PREDECLARED_CAPABILITY_BOUND_NO_RESULT_SELECTION\"}, \"source_lineage_authentication\": \"LOCAL_MANIFEST_ONLY_NOT_EXTERNALLY_AUTHENTICATED\", \"source_manifest\": \"registry/datasets/weather.json\", \"source_sha256\": \"34ee981d07313e51da2a50bb600072c8ae4a69cb4b0651f4cb93a069d7a2ba63\"}",
+    "retrieved_at": "UNSPECIFIED",
+    "uri": "local:datasets/weather.csv"
+  },
+  "split": {
+    "learned_eligible": false,
+    "policy": "TEST",
+    "reason": "Frozen whole-object CPU comparison; no learned split or source generalization claimed."
+  }
+}

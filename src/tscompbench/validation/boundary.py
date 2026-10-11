@@ -261,9 +261,6 @@ def _values(case: BoundaryCase) -> np.ndarray[Any]:
 def _routed(
     case: BoundaryCase,
     track: BenchmarkTrack,
-    *,
-    logical_record: str | None = None,
-    floating_histogram: bool = False,
 ) -> RoutedInput:
     arrays: list[LogicalBuffer] = []
     if track in {BenchmarkTrack.TIMESTAMP, BenchmarkTrack.SYSTEM}:
@@ -288,30 +285,6 @@ def _routed(
             values = _values(case)
             arrays.append(LogicalBuffer(f"value/{index:06d}", values, values.nbytes * 8))
     units = ()
-    if logical_record == "PROMETHEUS_GAUGE_SCHEMA0_ONE_POSITIVE_BUCKET_V1":
-        if track is not BenchmarkTrack.SYSTEM or case.m != 6:
-            raise ExecutionContractError("Histogram-ST boundary record dimensions")
-        count = np.arange(case.n, dtype="<u8") + 1
-        zero = np.zeros(case.n, dtype="<u8")
-        bucket = count.copy()
-        if floating_histogram:
-            count = count.astype("<f8").view("<u8")
-            bucket = bucket.astype("<f8").view("<u8")
-        fields = [zero.copy(), count, zero.copy(), _values(case), zero.copy(), bucket]
-        arrays = [arrays[0]] + [
-            LogicalBuffer(f"value/{i:06d}", field, field.nbytes * 8)
-            for i, field in enumerate(fields)
-        ]
-        for item in arrays:
-            item.array.flags.writeable = False
-        units = (
-            "HISTOGRAM_ST_INT64_BITS",
-            "HISTOGRAM_COUNT_BITS",
-            "HISTOGRAM_ZERO_COUNT_BITS",
-            "HISTOGRAM_SUM_BINARY64_BITS",
-            "HISTOGRAM_ZERO_THRESHOLD_BINARY64_BITS",
-            "HISTOGRAM_BUCKET_BITS",
-        )
     buffers = tuple(arrays)
     canonical_raw_bits = sum(item.logical_bits for item in buffers)
     timestamp_reference = arrays[0].array if arrays and arrays[0].name == "timestamp" else None
@@ -348,8 +321,6 @@ def run_boundary_suite(
         routed = _routed(
             case,
             track,
-            logical_record=manifest.document["input"].get("logical_record"),
-            floating_histogram=manifest.key == "prometheus-float-histogram-st",
         )
         required_units = manifest.document["input"].get("required_value_units")
         if required_units:

@@ -1,0 +1,52 @@
+{
+  "schema_version": "tscb.source-artifact.v2",
+  "key": "alp-cwida-benchmark",
+  "kind": "VENDORED_UPSTREAM_BENCHMARK_SOURCE_CLOSURE_WITH_PATCH",
+  "identity": {
+    "kind": "VENDORED_UPSTREAM_BENCHMARK_SOURCE_CLOSURE_WITH_PATCH",
+    "key": "alp-cwida-benchmark",
+    "benchmark_repository": "https://github.com/cwida/ALP.git",
+    "benchmark_commit": "31ca0ed11c93c99d3f5b5c30e01a3e1c3832d3ce",
+    "benchmark_paths": [
+      "benchmarks/benchmark.cpp",
+      "publication/source_code/bench_speed/bench_alp_encode.cpp",
+      "publication/source_code/bench_speed/bench_alp_without_sampling.cpp"
+    ],
+    "upstream_repository": "https://github.com/cwida/ALP.git",
+    "upstream_commit": "31ca0ed11c93c99d3f5b5c30e01a3e1c3832d3ce",
+    "source_path": "adapters/alp/vendor/alp",
+    "source_closure_sha256": "93c9744b4f14b1b7932239eea5cc516b0ea7e2161f1fbd89bac534d1222eb8a3",
+    "patch_set_sha256": "fa08ba3297a269155cdf44534afa18c672a8853efec4ca737c06dec643af7d14",
+    "execution_variant": "ALP_OR_ALP_RD_FLOAT32_FLOAT64_VECTOR1024_ROWGROUP102400_SCALAR_FASTLANES"
+  },
+  "license": {
+    "spdx": "MIT",
+    "status": "RUN_ALLOWED",
+    "redistribution": "ALLOWED_WITH_LICENSE_NOTICE",
+    "files": ["adapters/alp/vendor/LICENSE"]
+  },
+  "build": {
+    "recipe": "conda run -n CompressBench14 python tools/build_codec.py <alp|alp-rd> --profile all",
+    "patches": [
+      "adapters/alp/patches/0001-float-factor-array-bound.patch",
+      "adapters/alp/patches/0002-decoder-multiply-domain.patch",
+      "adapters/alp/patches/0003-encoded-integer-range.patch"
+    ],
+    "submodules": [],
+    "translation_units": [
+      "adapters/alp/native/tscb_alp.cc",
+      "adapters/alp/vendor/alp/src/fastlanes_ffor.cpp",
+      "adapters/alp/vendor/alp/src/fastlanes_unffor.cpp",
+      "adapters/alp/vendor/alp/src/fastlanes_generated_ffor.cpp",
+      "adapters/alp/vendor/alp/src/fastlanes_generated_unffor.cpp"
+    ],
+    "release_artifacts": {
+      "alp": "build/adapters/alp/release/libtscb_alp.so",
+      "alp-rd": "build/adapters/alp_rd/release/libtscb_alp_rd.so"
+    },
+    "sanitizer_artifacts": {
+      "alp": "build/adapters/alp/sanitizer/libtscb_alp.so",
+      "alp-rd": "build/adapters/alp_rd/sanitizer/libtscb_alp_rd.so"
+    }
+  }
+}

@@ -1,0 +1,337 @@
+{
+  "schema_version": "tscb.independent-model-path-static-review.v1",
+  "generated_at": "2026-10-11T09:46:57.801390+00:00",
+  "status": "PASS_STATIC_LIMITED_MODEL_PATH_REVIEW",
+  "reviewer": "/root/final_gap_check/build_closure_review",
+  "review_kind": "READ_ONLY_STATIC_SOURCE_AND_TEST_REVIEW",
+  "read_references": [
+    {
+      "path": "src/tscompbench/adapters/completed_rewrites.py",
+      "sha256": "0e904ed93b6b46477418b73bb34091192860265223945d04979df331f7ace21c",
+      "bytes": 26345
+    },
+    {
+      "path": "tests/unit/test_completed_model_location.py",
+      "sha256": "7a9caf1e07e7b767e6bedf1cbff297364c2a4ca09b862fcbfe46dd1aa7957e8f",
+      "bytes": 2403
+    },
+    {
+      "path": "src/tscompbench/adapters/factory.py",
+      "sha256": "d7885ba61cca12cc39eebc31bdaf48074ecaf78a22a9d286c63daad462ed7634",
+      "bytes": 18542
+    },
+    {
+      "path": "src/tscompbench/adapters/build_evidence.py",
+      "sha256": "5e5f2f4ca69d33dce1ff4a4675c2a6a14bb15ed0a15ae361154fdd389208478e",
+      "bytes": 15116
+    },
+    {
+      "path": "tools/register_completed_rewrites.py",
+      "sha256": "877533c8634ef8d2a69179c361ea23be0c84acd87c708cc6b6f0706190c3bf81",
+      "bytes": 10559
+    },
+    {
+      "path": "tests/adapters/test_completed_rewrites.py",
+      "sha256": "5d1f1e6f3b48e7776c21a1c414962996c76a51cdbf1429464c059ea1f06e7752",
+      "bytes": 7198
+    },
+    {
+      "path": "registry/codecs/deepzip.json",
+      "sha256": "c8fa9c94264d2b1518991be836bd3abe022bbfc9d844749ede3cc7fb43427ceb",
+      "bytes": 11503
+    }
+  ],
+  "source_locations": {
+    "_registered_model_path": [
+      {
+        "line": 47,
+        "end_line": 68
+      }
+    ],
+    "__init__": [
+      {
+        "line": 92,
+        "end_line": 139
+      }
+    ],
+    "_ensure_model": [
+      {
+        "line": 141,
+        "end_line": 167
+      }
+    ]
+  },
+  "source_snapshots_unchanged": true,
+  "reference_drifts": [],
+  "registered_artifact": {
+    "path": "build/port-standard-v30-20261011/adapters/deepzip/release/libtscb_deepzip.so",
+    "relative_component_count": 6,
+    "expected_parent_index": 5,
+    "expected_checkout_root": "/home/fzg/PycharmProjects/TSDataCompressBenchMark",
+    "layout_suffix_matches_by_static_inspection": true
+  },
+  "actual_findings": [
+    {
+      "severity": "PASS",
+      "finding": "The helper removes the fixed parents[4] assumption. It derives a lexical root from the registered artifact component count and verifies that root / registered artifact equals the actual absolute artifact path.",
+      "location": "src/tscompbench/adapters/completed_rewrites.py:47"
+    },
+    {
+      "severity": "PASS",
+      "finding": "Both artifact and model declarations reject non-string, empty, NUL, POSIX absolute, and any parent-traversal component before root derivation.",
+      "location": "src/tscompbench/adapters/completed_rewrites.py:49"
+    },
+    {
+      "severity": "PASS",
+      "finding": "Resolved model containment is checked against the resolved derived root. A model leaf or ancestor symlink pointing outside that root is rejected by the same predicate; the new test expressly covers an escaping directory symlink.",
+      "location": "src/tscompbench/adapters/completed_rewrites.py:66"
+    },
+    {
+      "severity": "PASS",
+      "finding": "Production factory supplies the registered lexical project-root/artifact path; upstream project_path validates actual artifact containment, and verified_build_dependencies validates model containment, existence, and SHA before returning the adapter. Session _ensure_model rechecks content SHA before native model use.",
+      "locations": [
+        "src/tscompbench/adapters/factory.py:124",
+        "src/tscompbench/adapters/factory.py:168",
+        "src/tscompbench/adapters/factory.py:276",
+        "src/tscompbench/adapters/build_evidence.py:26",
+        "src/tscompbench/adapters/build_evidence.py:263",
+        "src/tscompbench/adapters/completed_rewrites.py:141"
+      ]
+    },
+    {
+      "severity": "PASS",
+      "finding": "All 17 registered DeepZip model paths are present, resolve inside the checkout, and match their declared SHA at this read-only inspection. Current registered artifact has 6 path components and resolves the intended checkout root at parent index 5."
+    }
+  ],
+  "new_test_static_coverage": {
+    "test_functions": [
+      {
+        "name": "test_model_uses_registered_project_root_for_any_build_depth",
+        "line": 17,
+        "end_line": 26
+      },
+      {
+        "name": "test_model_location_rejects_unsafe_registered_paths",
+        "line": 31,
+        "end_line": 36
+      },
+      {
+        "name": "test_model_location_rejects_artifact_from_another_registered_layout",
+        "line": 39,
+        "end_line": 45
+      },
+      {
+        "name": "test_model_location_rejects_symlink_escape",
+        "line": 48,
+        "end_line": 59
+      }
+    ],
+    "parametrized_case_count_by_reading": 15,
+    "cases": [
+      {
+        "area": "registered build depth",
+        "count": 3,
+        "description": "legacy deeper layout, current port-standard layout, and custom deeper nested output"
+      },
+      {
+        "area": "unsafe declarations",
+        "count": 10,
+        "description": "None, empty, absolute, traversal, and NUL applied independently to artifact_path and model path"
+      },
+      {
+        "area": "artifact layout mismatch",
+        "count": 1
+      },
+      {
+        "area": "escaping ancestor symlink",
+        "count": 1
+      }
+    ],
+    "adequacy": "Sufficient direct regression coverage for the fixed root-depth bug and the explicit safe-relative-path/containment contract. No blocker identified by static inspection.",
+    "unexecuted_and_not_explicitly_tested": [
+      "No tests executed by this independent reviewer.",
+      "Leaf-symlink escape, in-root symlink acceptance, nested traversal, non-string values other than None, and excessive relative-depth branch are not separately instantiated in the new test file; their static predicates are shared with covered cases.",
+      "The depth-only unit tests do not instantiate CompletedRewriteSession or prove native model use in a changed build layout."
+    ]
+  },
+  "registered_model_reference_check_count": 17,
+  "registered_model_references": [
+    {
+      "model_key": "FC",
+      "path": "adapters/completed_rewrites/vendor/deepzip/models/FC.dzm",
+      "sha256": "bedf6693e2fa556990dc82563974965ffd7dd1835f088b06a80382bffb8cf42b",
+      "registered_sha256": "bedf6693e2fa556990dc82563974965ffd7dd1835f088b06a80382bffb8cf42b",
+      "hash_match": true,
+      "is_file": true,
+      "resolved_path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/vendor/deepzip/models/FC.dzm",
+      "resolved_inside_checkout": true
+    },
+    {
+      "model_key": "FC_4layer",
+      "path": "adapters/completed_rewrites/vendor/deepzip/models/FC_4layer.dzm",
+      "sha256": "6eeaabfec6dcdc17e4d750b99cf7ee18334fd55f3805cce2eaa6bb1116846642",
+      "registered_sha256": "6eeaabfec6dcdc17e4d750b99cf7ee18334fd55f3805cce2eaa6bb1116846642",
+      "hash_match": true,
+      "is_file": true,
+      "resolved_path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/vendor/deepzip/models/FC_4layer.dzm",
+      "resolved_inside_checkout": true
+    },
+    {
+      "model_key": "FC_4layer_16bit",
+      "path": "adapters/completed_rewrites/vendor/deepzip/models/FC_4layer_16bit.dzm",
+      "sha256": "a5c3e0a202e821831303abf40480ba03a45b839562b9d8f7f3129bbb0c7f5614",
+      "registered_sha256": "a5c3e0a202e821831303abf40480ba03a45b839562b9d8f7f3129bbb0c7f5614",
+      "hash_match": true,
+      "is_file": true,
+      "resolved_path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/vendor/deepzip/models/FC_4layer_16bit.dzm",
+      "resolved_inside_checkout": true
+    },
+    {
+      "model_key": "FC_4layer_big",
+      "path": "adapters/completed_rewrites/vendor/deepzip/models/FC_4layer_big.dzm",
+      "sha256": "25633556588c421e7ae67038d5949f99621ac58420d585b07277320596570e77",
+      "registered_sha256": "25633556588c421e7ae67038d5949f99621ac58420d585b07277320596570e77",
+      "hash_match": true,
+      "is_file": true,
+      "resolved_path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/vendor/deepzip/models/FC_4layer_big.dzm",
+      "resolved_inside_checkout": true
+    },
+    {
+      "model_key": "GRU_multi",
+      "path": "adapters/completed_rewrites/vendor/deepzip/models/GRU_multi.dzm",
+      "sha256": "96b0826d1dc7d829d39d48615d9524d6e31d3abcb0321bdbbeae79f0d5182192",
+      "registered_sha256": "96b0826d1dc7d829d39d48615d9524d6e31d3abcb0321bdbbeae79f0d5182192",
+      "hash_match": true,
+      "is_file": true,
+      "resolved_path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/vendor/deepzip/models/GRU_multi.dzm",
+      "resolved_inside_checkout": true
+    },
+    {
+      "model_key": "GRU_multi_16bit",
+      "path": "adapters/completed_rewrites/vendor/deepzip/models/GRU_multi_16bit.dzm",
+      "sha256": "4c601892b682644c0a566f531f41e97be572de78f1a1a63000b519df73b2c0d6",
+      "registered_sha256": "4c601892b682644c0a566f531f41e97be572de78f1a1a63000b519df73b2c0d6",
+      "hash_match": true,
+      "is_file": true,
+      "resolved_path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/vendor/deepzip/models/GRU_multi_16bit.dzm",
+      "resolved_inside_checkout": true
+    },
+    {
+      "model_key": "GRU_multi_big",
+      "path": "adapters/completed_rewrites/vendor/deepzip/models/GRU_multi_big.dzm",
+      "sha256": "2e37bb54e02c2774ace90afcce43e79a37137b765b9b6c118bba098b1fa02325",
+      "registered_sha256": "2e37bb54e02c2774ace90afcce43e79a37137b765b9b6c118bba098b1fa02325",
+      "hash_match": true,
+      "is_file": true,
+      "resolved_path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/vendor/deepzip/models/GRU_multi_big.dzm",
+      "resolved_inside_checkout": true
+    },
+    {
+      "model_key": "LSTM_multi",
+      "path": "adapters/completed_rewrites/vendor/deepzip/models/LSTM_multi.dzm",
+      "sha256": "25234dd1104135c963f919f843188e2e0fe6a2d3c52472f16455aea660a54984",
+      "registered_sha256": "25234dd1104135c963f919f843188e2e0fe6a2d3c52472f16455aea660a54984",
+      "hash_match": true,
+      "is_file": true,
+      "resolved_path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/vendor/deepzip/models/LSTM_multi.dzm",
+      "resolved_inside_checkout": true
+    },
+    {
+      "model_key": "LSTM_multi_16bit",
+      "path": "adapters/completed_rewrites/vendor/deepzip/models/LSTM_multi_16bit.dzm",
+      "sha256": "b4ea66dfc1317953dd4d5128d7813d6841aef7fa099b806b26189c44a9f7a324",
+      "registered_sha256": "b4ea66dfc1317953dd4d5128d7813d6841aef7fa099b806b26189c44a9f7a324",
+      "hash_match": true,
+      "is_file": true,
+      "resolved_path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/vendor/deepzip/models/LSTM_multi_16bit.dzm",
+      "resolved_inside_checkout": true
+    },
+    {
+      "model_key": "LSTM_multi_big",
+      "path": "adapters/completed_rewrites/vendor/deepzip/models/LSTM_multi_big.dzm",
+      "sha256": "b942a15d617c8e8c4f88cf22930e4c99dfb4acbac8944c3ea6c078bc960af8ee",
+      "registered_sha256": "b942a15d617c8e8c4f88cf22930e4c99dfb4acbac8944c3ea6c078bc960af8ee",
+      "hash_match": true,
+      "is_file": true,
+      "resolved_path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/vendor/deepzip/models/LSTM_multi_big.dzm",
+      "resolved_inside_checkout": true
+    },
+    {
+      "model_key": "LSTM_multi_bn",
+      "path": "adapters/completed_rewrites/vendor/deepzip/models/LSTM_multi_bn.dzm",
+      "sha256": "a13418c3e3f0872ae4c18d5a4382163537a40b96685156b59721ff2dfbf36354",
+      "registered_sha256": "a13418c3e3f0872ae4c18d5a4382163537a40b96685156b59721ff2dfbf36354",
+      "hash_match": true,
+      "is_file": true,
+      "resolved_path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/vendor/deepzip/models/LSTM_multi_bn.dzm",
+      "resolved_inside_checkout": true
+    },
+    {
+      "model_key": "LSTM_multi_selu_16bit",
+      "path": "adapters/completed_rewrites/vendor/deepzip/models/LSTM_multi_selu_16bit.dzm",
+      "sha256": "7875896ec0e6c737e4642b74c83c61cc978e7252fc80a1d1e60475f109b05b76",
+      "registered_sha256": "7875896ec0e6c737e4642b74c83c61cc978e7252fc80a1d1e60475f109b05b76",
+      "hash_match": true,
+      "is_file": true,
+      "resolved_path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/vendor/deepzip/models/LSTM_multi_selu_16bit.dzm",
+      "resolved_inside_checkout": true
+    },
+    {
+      "model_key": "biGRU_16bit",
+      "path": "adapters/completed_rewrites/vendor/deepzip/models/biGRU_16bit.dzm",
+      "sha256": "463468e5752fed82aa27cb0af9d1e14caaae143abd99eb8d6b2f6f00bf91eacf",
+      "registered_sha256": "463468e5752fed82aa27cb0af9d1e14caaae143abd99eb8d6b2f6f00bf91eacf",
+      "hash_match": true,
+      "is_file": true,
+      "resolved_path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/vendor/deepzip/models/biGRU_16bit.dzm",
+      "resolved_inside_checkout": true
+    },
+    {
+      "model_key": "biGRU_big",
+      "path": "adapters/completed_rewrites/vendor/deepzip/models/biGRU_big.dzm",
+      "sha256": "6eba690e83c061154c7dfbbf61829d01f93282fd76836a4ff32e2c67550f7b8d",
+      "registered_sha256": "6eba690e83c061154c7dfbbf61829d01f93282fd76836a4ff32e2c67550f7b8d",
+      "hash_match": true,
+      "is_file": true,
+      "resolved_path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/vendor/deepzip/models/biGRU_big.dzm",
+      "resolved_inside_checkout": true
+    },
+    {
+      "model_key": "biLSTM",
+      "path": "adapters/completed_rewrites/vendor/deepzip/models/biLSTM.dzm",
+      "sha256": "5bc81e75a5e558fd2bbc62efd037d7458ed756ff3992941b82ef7c944d8b8a99",
+      "registered_sha256": "5bc81e75a5e558fd2bbc62efd037d7458ed756ff3992941b82ef7c944d8b8a99",
+      "hash_match": true,
+      "is_file": true,
+      "resolved_path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/vendor/deepzip/models/biLSTM.dzm",
+      "resolved_inside_checkout": true
+    },
+    {
+      "model_key": "biLSTM_16bit",
+      "path": "adapters/completed_rewrites/vendor/deepzip/models/biLSTM_16bit.dzm",
+      "sha256": "a15f2b0b543655c429cd2d6d64c3b7a857aaf85a6c2c01fcfd592a9262abfd7c",
+      "registered_sha256": "a15f2b0b543655c429cd2d6d64c3b7a857aaf85a6c2c01fcfd592a9262abfd7c",
+      "hash_match": true,
+      "is_file": true,
+      "resolved_path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/vendor/deepzip/models/biLSTM_16bit.dzm",
+      "resolved_inside_checkout": true
+    },
+    {
+      "model_key": "biGRU",
+      "path": "adapters/completed_rewrites/vendor/deepzip/tests/fixtures/biGRU.dzm",
+      "sha256": "1c5c9924d758c587cec55002d8e53d5a435f8d1c5a87459a068604772545af6e",
+      "registered_sha256": "1c5c9924d758c587cec55002d8e53d5a435f8d1c5a87459a068604772545af6e",
+      "hash_match": true,
+      "is_file": true,
+      "resolved_path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/vendor/deepzip/tests/fixtures/biGRU.dzm",
+      "resolved_inside_checkout": true
+    }
+  ],
+  "blocking_findings": [],
+  "scope_limits": [
+    "Static source/test inspection and read-only reference SHA/path checks only; no helper, test, codec, native function, benchmark, or audit CLI was executed.",
+    "The helper derives a relocatable lexical root from a matching artifact suffix; upstream factory/project_path/build evidence provide the trusted checkout and file identity. Direct construction of CompletedRewriteAdapter bypasses those factory gates.",
+    "resolve containment and later SHA reads are filesystem snapshots; this review does not prove immunity to a concurrent symlink/file replacement or native reopen race.",
+    "Does not grant complete N1 closure, N0-N5/G0-G6, FULL_PARITY, native safety, source parity, or current formal performance."
+  ]
+}

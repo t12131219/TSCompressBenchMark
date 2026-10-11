@@ -1,0 +1,220 @@
+{
+  "schema_version": "tscb.source-onboarding.v2",
+  "source_artifact_id": "v2:source-artifact:sha256:8282bd96eaf3c2ffc3b1c721a7b60484e056c148f92569e4ba78ce8048beca3f",
+  "repository": "https://github.com/panagiotisl/chimp",
+  "commit": "320d397157c7e0696b3c64dc1711fc17a3add3da",
+  "dirty": false,
+  "submodules": [],
+  "implementation_files": [
+    "adapters/rewrite_lossless/vendor/chimp/src/codec.cpp"
+  ],
+  "public_api_files": [
+    "adapters/rewrite_lossless/vendor/chimp/include/chimp.hpp"
+  ],
+  "benchmark_files": [
+    "adapters/rewrite_lossless/native/tscb_rewrite_lossless.cc"
+  ],
+  "test_files": [
+    "adapters/rewrite_lossless/tests/qualification.cc",
+    "tests/adapters/test_rewrite_lossless.py"
+  ],
+  "license_files": [
+    "adapters/rewrite_lossless/vendor/chimp/LICENSES/Apache-2.0.md"
+  ],
+  "third_party_dependencies": [
+    {
+      "scope": "NATIVE_SYSTEM_RUNTIME",
+      "name": "Linux C/C++ runtime",
+      "reference_runtime_not_linked": true
+    }
+  ],
+  "object_level_candidates": [
+    "P1_STANDALONE_CODEC"
+  ],
+  "input_contract": {
+    "topologies": [
+      "UTS",
+      "SYNCHRONOUS_MTS"
+    ],
+    "dtypes": [
+      "<f4",
+      "<f8"
+    ],
+    "ranks": [
+      1,
+      2
+    ],
+    "layouts": [
+      "ROW_MAJOR_CONTIG",
+      "SOA_COLUMNS"
+    ],
+    "endianness": [
+      "little"
+    ],
+    "alignment_bytes": 1,
+    "min_n": 0,
+    "max_n": 16777216,
+    "min_m": 1,
+    "max_m": 65535,
+    "validity_shapes": [
+      "NONE"
+    ],
+    "homogeneous_itemsize": true,
+    "max_total_raw_bytes": 134217728,
+    "value_coupling_mode": "COLUMN_INDEPENDENT",
+    "timestamp_semantics": {
+      "preserve_order": true,
+      "duplicates": true,
+      "out_of_order": true,
+      "negative_delta": true,
+      "absolute_epoch": true,
+      "overflow_policy": "NOT_APPLICABLE_VALUE_ONLY"
+    },
+    "value_domain": {
+      "kind": "FROZEN_SOURCE_WITH_BOUNDED_REJECTION",
+      "unsupported_action": "REJECT_BEFORE_OUTPUT",
+      "oracle_evidence": "Compression_Rewrite/Source/chimp/golden/source_audit.json",
+      "rejection_reasons": [
+        "canonical NaN is END"
+      ]
+    },
+    "max_total_elements": 16777216
+  },
+  "output_contract": {
+    "self_contained": true,
+    "actual_written_length": true,
+    "capacity_is_not_size": true,
+    "framing": "TSCB_DESCRIPTOR_SHA256_AND_RWF1_FNV64_CHECKED_STANDALONE_FRAMES",
+    "components": "OPAQUE_STANDALONE_CODEC_BYTES_WITH_EXACT_WRAPPER_ACCOUNTING_V1"
+  },
+  "lifecycle_contract": {
+    "output_bound": "FROZEN_STANDALONE_API_BOUND_PLUS_EXACT_WRAPPER_BOUND",
+    "return_length": "actual_used_bytes",
+    "error_codes": [
+      "DST_TOO_SMALL",
+      "SOURCE_DOMAIN_UNSUPPORTED",
+      "INVALID_ARGUMENT",
+      "CODEC_ERROR"
+    ],
+    "finalize": "REQUIRED_ZERO_BYTE_FINALIZE",
+    "reset": "MODE_ZERO_ONLY"
+  },
+  "stream_components": [
+    "descriptor",
+    "descriptor_checksum",
+    "native_header",
+    "record_headers",
+    "standalone_frames",
+    "native_checksum"
+  ],
+  "upstream_tests": [
+    {
+      "status": "PASS",
+      "name": "current standalone original differential",
+      "log_sha256": "826153d15b122fb6e56e9a5761fdb9e397366ab0b62799c620c7a75dd719578b",
+      "evidence_kind": "HISTORICAL_OR_SEPARATE_UPSTREAM_EVIDENCE"
+    },
+    {
+      "status": "PASS",
+      "name": "ASan/UBSan native ABI qualification",
+      "log_sha256": "d97d7b06d604625a9452619e5938790562e955df5be49cb3b97373706a0e11e2",
+      "evidence_kind": "HISTORICAL_OR_SEPARATE_UPSTREAM_EVIDENCE"
+    },
+    {
+      "algorithm": "chimp",
+      "profile": "release",
+      "name": "current build dependency and finite native API verification",
+      "status": "PASS",
+      "evidence": {
+        "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/qualification.json",
+        "sha256": "b86173f34c30d175552de327cc446dd8480aa02dd7a9ae56f12f60c0d93db174"
+      },
+      "evidence_kind": "CURRENT_REAL_BUILD_DEPENDENCIES_WITH_SELECTED_NATIVE_TESTS",
+      "native_suite_status": "PASS",
+      "source_full_parity": "NOT_ASSERTED"
+    },
+    {
+      "algorithm": "chimp",
+      "profile": "sanitizer",
+      "name": "current build dependency and finite native API verification",
+      "status": "PASS",
+      "evidence": {
+        "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/qualification.json",
+        "sha256": "b86173f34c30d175552de327cc446dd8480aa02dd7a9ae56f12f60c0d93db174"
+      },
+      "evidence_kind": "CURRENT_REAL_BUILD_DEPENDENCIES_WITH_SELECTED_NATIVE_TESTS",
+      "native_suite_status": "PASS",
+      "source_full_parity": "NOT_ASSERTED"
+    }
+  ],
+  "builds": [
+    {
+      "kind": "release",
+      "artifact_sha256": "16175d1443399e47011295fa175e09cc3f3b7aa883fcb0a350709f399b87c3ac",
+      "compile_commands_sha256": "0e792cc5bb78c6c461e5863b804ec0999fcab439bffde3467ee8686f4bc7d181",
+      "evidence_kind": "HISTORICAL_BUILD_RECORD"
+    },
+    {
+      "kind": "sanitizer",
+      "artifact_sha256": "97af0517b4f92ec35c9625c0bd86466df8247d98160c613f9e5b65463810e87c",
+      "compile_commands_sha256": "075ce52dcd13750856360bdd6d8369a685b7d368407fca936c56e145e93800dd",
+      "evidence_kind": "HISTORICAL_BUILD_RECORD"
+    },
+    {
+      "algorithm": "chimp",
+      "profile": "RELEASE",
+      "artifact_sha256": "16175d1443399e47011295fa175e09cc3f3b7aa883fcb0a350709f399b87c3ac",
+      "compile_commands_sha256": "bc7044aeaa4b32b99313a35b55e568246dfc87ae2cde4275c5e88b3751edac34",
+      "compiler": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0",
+      "evidence_kind": "CURRENT_REAL_BUILD_DEPENDENCIES_VERIFIED",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/chimp/release/build-record.json",
+        "sha256": "f8917b894548e2ebf71a9c457e09722b392e1bcfa3b3c31e80bf3d5601c6fcf0"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/chimp/release/libtscb_chimp.so",
+        "sha256": "16175d1443399e47011295fa175e09cc3f3b7aa883fcb0a350709f399b87c3ac"
+      },
+      "qualification_scope": "BUILD_CLOSURE_AND_SELECTED_FINITE_NATIVE_SUITE_NOT_SOURCE_FULL_PARITY"
+    },
+    {
+      "algorithm": "chimp",
+      "profile": "SANITIZER",
+      "artifact_sha256": "97af0517b4f92ec35c9625c0bd86466df8247d98160c613f9e5b65463810e87c",
+      "compile_commands_sha256": "e14cb8b93aecdff7005b25f66d9de5c558ebee122471eec62b35dde85b8da8be",
+      "compiler": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0",
+      "evidence_kind": "CURRENT_REAL_BUILD_DEPENDENCIES_VERIFIED",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/chimp/sanitizer/build-record.json",
+        "sha256": "b8e9ef96bd77611f436997ea06f8ad09e761e33a4aa434a694eed57106d2adef"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/chimp/sanitizer/libtscb_chimp.so",
+        "sha256": "97af0517b4f92ec35c9625c0bd86466df8247d98160c613f9e5b65463810e87c"
+      },
+      "qualification_scope": "BUILD_CLOSURE_AND_SELECTED_FINITE_NATIVE_SUITE_NOT_SOURCE_FULL_PARITY"
+    }
+  ],
+  "license_decision": {
+    "spdx": "Apache-2.0",
+    "status": "RUN_ALLOWED",
+    "reason": "ORIGINAL_LICENSE_TERMS_APPLY"
+  },
+  "known_limitations": [
+    "CORE/PIPELINE/E2E supported using harness session/object boundaries; API-internal staging, framing, model work and decode materialization remain in CORE. Optional native timing unavailable (null).",
+    "Full standalone frames charged as opaque bytes; wrapper components exact",
+    "No registered query/random-access/incremental Benchmark streaming profile",
+    "Preserve source domain; no raw fallback",
+    "Standalone multi-block source state preserved in SElfStar sessions",
+    "2026-10-11: new isolated builds pin actual per-TU compiler dependencies, objects, selected toolchain executables and linked dynamic runtime files. These records do not pin every implicit static startup/runtime archive and do not grant source FULL_PARITY or change active algorithm scope. Historical runs retain their original artifact identities."
+  ],
+  "unsupported_reason_codes": [
+    "TRACK_OR_DTYPE_UNSUPPORTED",
+    "SOURCE_DOMAIN_UNSUPPORTED",
+    "STREAMING_PROFILE_NOT_REGISTERED",
+    "QUERY_UNSUPPORTED",
+    "VALIDITY_UNSUPPORTED",
+    "TIMING_SCOPE_UNSUPPORTED"
+  ],
+  "source_onboarding_id": "v2:source-onboarding:sha256:ab4a7d5906e6d587605be9f9e67b9a3bc771268e5fa1fc3816bee822db58c62a"
+}

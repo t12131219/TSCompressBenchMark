@@ -47,7 +47,7 @@ def main():
     assert consumption["release_index_sha256"] == sha(release_path)
     assert consumption["frozen_lock_sha256"] == sha(frozen_path)
     pytest_log = ROOT / "build/rewrite_review/final-pytest.log"
-    match = re.search(r"(\d+) passed in ([\d.]+)s", pytest_log.read_text())
+    match = re.search("(\\d+) passed in ([\\d.]+)s", pytest_log.read_text())
     assert match and "failed" not in pytest_log.read_text()
     results = []
     for name in previous["scope"]:
@@ -55,11 +55,7 @@ def main():
         package = ROOT / "Compression_Rewrite/ReWrite" / pkg
         current = package / "validation/current/report.json"
         qualification = read_pass(current)
-        differential = package / (
-            "validation/original-public-api/report.json"
-            if pkg == "prometheus-xor-chunk"
-            else "validation/differential/report.json"
-        )
+        differential = package / "validation/differential/report.json"
         read_pass(differential)
         codec = registry.get(name)
         records = []
@@ -89,9 +85,7 @@ def main():
             "source_artifact_id": codec.source_artifact_id,
             "source_oracle_cases_per_package": delivery["all_cases"],
             "dataset_cases_per_package": delivery["dataset_cases"],
-            "oracle_dataset_selection": "ALL_ROWS_ALL_VALUE_COLUMNS_OF_FOUR_CSV_FILES"
-            if (pkg == "prometheus-xor-chunk")
-            else "FIRST_1000_ROWS_EVERY_VALUE_COLUMN_OF_THREE_CSV_FILES; binary32/64",
+            "oracle_dataset_selection": "FIRST_1000_ROWS_EVERY_VALUE_COLUMN_OF_THREE_CSV_FILES; binary32/64",
             "standalone_qualification": evidence(current),
             "differential": evidence(differential),
             "declared_platforms": qualification["declared_platforms"],
@@ -114,17 +108,8 @@ def main():
         "scope": previous["scope"],
         "skipped_by_user": previous["skipped_by_user"],
         "inputs": previous["inputs"],
-        "document_instruction_precedence": (
-            "The user's integration request authorizes separate Benchmark "
-            "adapters/registry changes; "
-            "the document's rewrite-only boundary still governs standalone packages. "
-            "The explicit local license exception covers Elf/Elf+/Elf*/SElf*."
-        ),
-        "aliases": [
-            item
-            for item in registry.alias_documents()
-            if item["canonical_key"] == "prometheus-xor-chunk"
-        ],
+        "document_instruction_precedence": "The user's integration request authorizes separate Benchmark adapters/registry changes; the document's rewrite-only boundary still governs standalone packages. The explicit local license exception covers Elf/Elf+/Elf*/SElf*.",
+        "aliases": [item for item in registry.alias_documents() if False],
         "results": results,
         "unique_standalone_packages": len(deliveries),
         "independent_registered_identities": len(results),
@@ -149,25 +134,15 @@ def main():
         "preserved_diagnostics": [
             {
                 "path": "runs/requested-lossless-value-20261006-final-v2",
-                "reason": (
-                    "Two RESOURCE_PRESSURE measurements caused by SYSTEM_VMSTAT swap observation; "
-                    "preflight passed. Preserved and excluded from final qualification evidence."
-                ),
+                "reason": "Two RESOURCE_PRESSURE measurements caused by SYSTEM_VMSTAT swap observation; preflight passed. Preserved and excluded from final qualification evidence.",
             },
             {
                 "path": "runs/requested-lossless-value-20261006-final-v5",
-                "reason": (
-                    "Four SYSTEM_VMSTAT swap observations invalidated timing; "
-                    "all preflights passed. "
-                    "Preserved and excluded from final qualification evidence."
-                ),
+                "reason": "Four SYSTEM_VMSTAT swap observations invalidated timing; all preflights passed. Preserved and excluded from final qualification evidence.",
             },
             {
                 "path": "runs/requested-lossless-value-20261006-final",
-                "reason": (
-                    "Initial boundary contract diagnostics; retained after role-dtype "
-                    "and source-domain fixes."
-                ),
+                "reason": "Initial boundary contract diagnostics; retained after role-dtype and source-domain fixes.",
             },
         ],
         "source_closure_restoration": [

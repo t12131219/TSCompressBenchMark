@@ -25,17 +25,54 @@ MAX_METADATA_BYTES = 16 * 1024 * 1024
 MAX_BUFFERS = 100_000
 
 
-def semantic_content_sha256(metadata: dict[str, object]) -> str:
+def semantic_content_sha256(
+    metadata: dict[str, object], *, policy: str = "tscb.dataset-content.v1"
+) -> str:
     """Transport-independent identity; physical strides and embedded IDs are excluded.
 
     Payload hashes are verified by read_canonical before this fingerprint is used.
     This is a new identity policy, not a reinterpretation of legacy content IDs.
     """
-    logical = json.loads(json.dumps(metadata["logical_descriptor"]))
-    for column in logical["value_columns"]:
-        column.pop("strides", None)
+    descriptor = metadata["logical_descriptor"]
+    if policy == "tscb.dataset-content.v1":
+        # Historical policy remains byte-for-byte reproducible.
+        logical = json.loads(json.dumps(descriptor))
+        for column in logical["value_columns"]:
+            column.pop("strides", None)
+    elif policy == "tscb.dataset-content.v2":
+        # Presentation, paths, physical layout and provenance never define
+        # the scientific object. New semantic fields require a new policy.
+        logical = {
+            key: descriptor[key]
+            for key in (
+                "schema_version",
+                "topology",
+                "axes",
+                "n_rows",
+                "value_shape",
+                "validity_shape",
+                "nan_is_null",
+            )
+        }
+        logical["timestamp"] = (
+            {"present": False}
+            if not descriptor["timestamp"]["present"]
+            else {
+                key: descriptor["timestamp"][key]
+                for key in ("present", "origin", "unit", "epoch", "order_policy")
+            }
+        )
+        logical["value_columns"] = [
+            {key: column[key] for key in ("name", "dtype", "shape", "unit", "entity", "feature")}
+            for column in descriptor["value_columns"]
+        ]
+        for key in ("time_axis", "coordinate_policy", "null_recovery_contract", "pairing"):
+            if key in descriptor:
+                logical[key] = descriptor[key]
+    else:
+        raise DatasetContractError("unknown dataset content identity policy")
     payload = {
-        "policy": "tscb.dataset-content.v1",
+        "policy": policy,
         "logical": logical,
         "buffers": [
             {key: item[key] for key in ("name", "dtype", "shape", "logical_bits", "payload_sha256")}

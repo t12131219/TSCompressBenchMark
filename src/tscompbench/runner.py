@@ -31,6 +31,8 @@ from tscompbench.datasets.prepare import (
 from tscompbench.datasets.registry import DatasetRegistry, sha256_file
 from tscompbench.environment import capture_environment
 from tscompbench.execution.orchestrator import execute_task
+from tscompbench.execution.recovery import DecodeContext
+from tscompbench.ids import canonical_json_bytes
 from tscompbench.measurement import MeasurementPolicy
 from tscompbench.planning import (
     BenchmarkTask,
@@ -650,7 +652,10 @@ def execute_run_set(
             artifact_path = artifact_paths.get(task.dataset_id)
             if artifact_path is None:
                 raise RunnerError(f"Layer 1 canonical artifact missing for {task.dataset_id}")
-            if current_artifact is None or current_artifact.metadata["dataset_id"] != task.dataset_id:
+            if (
+                current_artifact is None
+                or current_artifact.metadata["dataset_id"] != task.dataset_id
+            ):
                 current_artifact = None
                 artifact = None
                 current_artifact = read_canonical(artifact_path, include_buffers=True)
@@ -662,13 +667,45 @@ def execute_run_set(
                 {"task_id": task.task_id, "adapter_id": adapter.adapter_id},
             )
 
-            def persist_repetition(record: Any, stream: bytes | None) -> None:
-                append_run_record(run_set.path, record)
+            def persist_repetition(
+                record: Any,
+                stream: bytes | None,
+                *,
+                task: BenchmarkTask = task,
+                manifest: Any = manifest,
+            ) -> None:
                 if stream is not None:
+                    recovery = record.diagnostics["independent_recovery"]
+                    recovery_context = DecodeContext(
+                        canonical_json_bytes(recovery["context_document"])
+                    )
+                    if (
+                        recovery_context.sha256 != recovery["context_sha256"]
+                        or len(recovery_context.serialized) * 8
+                        != recovery["required_external_bits"]
+                    ):
+                        raise RunnerError("observed decode context differs from persisted evidence")
+                    artifact_name = record.run_id.rsplit(":", 1)[-1]
                     _write_or_verify_bytes(
-                        run_set.path / "artifacts" / f"{record.run_id.rsplit(':', 1)[-1]}.bin",
+                        run_set.path / "artifacts" / f"{artifact_name}.decode.json",
+                        recovery_context.serialized,
+                    )
+                    _write_or_verify_json(
+                        run_set.path / "artifacts" / f"{artifact_name}.decoder.json",
+                        {
+                            "schema_version": "tscb.decoder-dependency.v1",
+                            "codec_key": manifest.key,
+                            "manifest": manifest.document,
+                            "execution_path_hash": task.execution.execution_path_hash,
+                            "artifact_sha256": task.execution.artifact_sha256,
+                            "cost_role": "DECLARED_PUBLIC_DECODER_PROGRAM",
+                        },
+                    )
+                    _write_or_verify_bytes(
+                        run_set.path / "artifacts" / f"{artifact_name}.bin",
                         stream,
                     )
+                append_run_record(run_set.path, record)
 
             result = execute_task(
                 run_set_id=run_set.run_set_id,

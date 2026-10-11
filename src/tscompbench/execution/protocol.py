@@ -25,6 +25,16 @@ class SourceDomainError(ExecutionContractError):
         self.rejection_atomic = False
 
 
+class WorkerMeasurementError(ExecutionContractError):
+    """Preserve the failed worker phase and evidence through process isolation."""
+
+    def __init__(self, error: BaseException, stage: str, evidence: dict[str, Any]):
+        super().__init__(str(error))
+        self.original_exception_type = type(error).__name__
+        self.worker_failure_stage = stage
+        self.worker_measurement_evidence = evidence
+
+
 @dataclass(frozen=True)
 class LogicalBuffer:
     name: str
@@ -88,6 +98,7 @@ class EncodedArtifact:
     ledger: AccountingLedger
     native_encode_wall_ns: int | None = None
     codec_telemetry: dict[str, Any] | None = None
+    recovery_context: bytes | None = None
 
     def __post_init__(self) -> None:
         if self.update_bytes < 0 or self.finalize_bytes < 0:

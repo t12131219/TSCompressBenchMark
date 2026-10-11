@@ -1,6 +1,6 @@
 # NeaTS / LeaTS lossless integer admission review
 
-Date: 2026-09-20  
+Date: 2026-09-20; provenance correction: 2026-10-11
 Environment: `CompressBench14`  
 Canonical project: `/home/fzg/PycharmProjects/TSDataCompressBenchMark`
 
@@ -21,14 +21,28 @@ serialized objects and bitstreams are not aliases and their results are not merg
 
 ## Patches and native execution
 
-Three hashed build-time patches, with combined SHA-256
-`76172f500afe359f5c5831e0db33f2ae559e3a91e5fe8088fe1c405216d44268`, are replayed
-outside the immutable vendor closure. The first replaces C++23-only helpers and the
+The compiled vendor is an **already patched native scalar variant**. The original
+three `.patch` files were explanatory notes, not executable build patches; the
+former claim that the build replayed them outside an immutable upstream vendor
+was incorrect. On 2026-10-11 they were replaced by an ordered unified patch series,
+with combined SHA-256
+`43ed9bfbea3cf84bccc341427c2f242c76441bb66c3d82a85aa26e1a9041178f`
+under `RELATIVE_PATH_NUL_FILE_BYTES_V1`. The first replaces C++23-only helpers and the
 upstream SIMD residual writer with GCC 11-compatible scalar code. The second restores
 LeaTS serialization/load code that is commented or references the wrong fields upstream.
 The third makes LeaTS encode use the same double-precision predictor evaluation as
 decode. Without that correction, the 4096-by-4 qualification object had 24 reconstructed
 values differing by one.
+
+The [current patch replay verifier](../tools/verify_neats_patch_replay.py) reads the
+clean frozen upstream checkout, applies each patch in an isolated temporary tree,
+and proves all 172 files equal the compiled vendor. The [replay record](audits/20261011_rewrite_native/neats_patch_replay.json)
+records per-step pre/post hashes and the complete file mapping. This proves patch
+provenance; it does not execute an unmodified upstream codec or grant SOURCE_PARITY,
+standalone FULL_PARITY or fresh Benchmark eligibility. The archived explanatory
+notes remain in `docs/audits/20261011_rewrite_native/neats_previous_patch_notes/`.
+The corrected patch identity changes SourceArtifactID; the old ID and run sets
+listed in this historical review are not current qualification of that new identity.
 
 Python drives two separately linked C++20 artifacts through C ABI v1. Compiler automatic
 vectorization is disabled, so the admitted path is scalar, CPU-only and single-threaded.

@@ -1,0 +1,44 @@
+{
+  "schema_version": "tscb.source-artifact.v2",
+  "key": "lzsse8-raw-lzbench-2019-04-18",
+  "kind": "VENDORED_BENCHMARK_SOURCE_CLOSURE",
+  "identity": {
+    "kind": "VENDORED_BENCHMARK_SOURCE_CLOSURE",
+    "key": "lzsse8-raw-lzbench-2019-04-18",
+    "benchmark_repository": "https://github.com/inikep/lzbench.git",
+    "benchmark_commit": "fa871e66b3543a70fd4d060f7c12719343ff4ac3",
+    "benchmark_path": "lz/lzsse/lzsse8",
+    "benchmark_version": "2019-04-18",
+    "upstream_reference_repository": "https://github.com/ConorStokes/LZSSE",
+    "source_closure_sha256": "7cec9c0598058e8501aa4a37d0c841b03f2a3a4617f911acdbdbf9709aee6cf2",
+    "source_closure_file_count": 5,
+    "copy_policy": "UNMODIFIED_VENDOR_BUILD_TIME_AUDITED_PATCH",
+    "patch_sha256": "f0ab56c80d3d2c807b7636c0134b2c1593827ca9af68b715ab8c71925f0a8c49",
+    "execution_variant": "LZSSE8_OPTIMAL_LEVEL12_SSE4_1_SINGLE_THREAD"
+  },
+  "license": {
+    "spdx": "BSD-2-Clause",
+    "status": "RUN_ALLOWED",
+    "redistribution": "ALLOWED_WITH_LICENSE_NOTICE",
+    "files": [
+      "adapters/lzsse8_raw/vendor/lzsse/LICENSE",
+      "adapters/lzsse8_raw/vendor/lzsse/lzsse8/lzsse8_platform.h"
+    ]
+  },
+  "build": {
+    "recipe": "PYTHONPATH=src conda run -n CompressBench14 python tools/build_codec.py lzsse8-raw --profile all",
+    "patches": [
+      {
+        "path": "adapters/lzsse8_raw/patches/0001-allocation-unaligned-pointer-safety.patch",
+        "sha256": "f0ab56c80d3d2c807b7636c0134b2c1593827ca9af68b715ab8c71925f0a8c49"
+      }
+    ],
+    "submodules": [],
+    "translation_units": [
+      "adapters/lzsse8_raw/native/tscb_lzsse8_raw.cc",
+      "build/adapters/lzsse8_raw/<profile>/lzsse8.cpp"
+    ],
+    "release_artifact": "build/adapters/lzsse8_raw/release/libtscb_lzsse8_raw.so",
+    "sanitizer_artifact": "build/adapters/lzsse8_raw/sanitizer/libtscb_lzsse8_raw.so"
+  }
+}

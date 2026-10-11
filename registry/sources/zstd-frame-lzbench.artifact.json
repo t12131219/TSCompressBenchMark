@@ -26,8 +26,15 @@
     ]
   },
   "build": {
-    "recipe": "PYTHONPATH=src conda run -n CompressBench14 python tools/build_codec.py zstd-frame --profile all",
-    "patches": [],
+    "recipe": "PYTHONPATH=src conda run -n CompressBench14 python tools/build_codec.py zstd-frame --profile all --output-root build/port-standard-v30-20261011/native-builds-v3",
+    "patches": [
+      {
+        "path": "adapters/zstd_frame/patches/0001-output-descriptor-eof-state.patch",
+        "sha256": "a9f71c212bbda879e6108bb6307a8276918e8b91664a22fc29a263757bb440e0",
+        "classification": "PROJECT_BINDING_API_SAFETY_VENDOR_UNMODIFIED",
+        "legal_bitstream_semantics_changed": false
+      }
+    ],
     "submodules": [],
     "translation_units": [
       "adapters/zstd_frame/native/tscb_zstd_frame.c",
@@ -57,7 +64,66 @@
       "adapters/zstd_frame/vendor/zstd/lib/decompress/zstd_decompress.c",
       "adapters/zstd_frame/vendor/zstd/lib/decompress/zstd_decompress_block.c"
     ],
-    "release_artifact": "build/adapters/zstd_frame/release/libtscb_zstd_frame.so",
-    "sanitizer_artifact": "build/adapters/zstd_frame/sanitizer/libtscb_zstd_frame.so"
+    "release_artifact": "build/port-standard-v30-20261011/native-builds-v3/zstd_frame/release/libtscb_zstd_frame.so",
+    "sanitizer_artifact": "build/port-standard-v30-20261011/native-builds-v3/zstd_frame/sanitizer/libtscb_zstd_frame.so",
+    "current_build_records": [
+      {
+        "algorithm": "zstd-frame",
+        "profile": "release",
+        "record": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/zstd_frame/release/build-record.json",
+          "sha256": "2c1a3a474c8f981c1311c44da755920a30a2419c41c8626a4309d8e832993ef2"
+        },
+        "artifact": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/zstd_frame/release/libtscb_zstd_frame.so",
+          "sha256": "9d707065f32b6e495f203146d62ce86ed3a26de512dee7eb4e56ba0a5cec4767"
+        },
+        "compile_commands_sha256": "a6746cdfca2fb24951473a2cfb9065d8067ca3579d59f3fd307ad4000f533a42",
+        "dependency_capture": "ACTUAL_PER_TU_MD_COMPILATION_AND_LINK"
+      },
+      {
+        "algorithm": "zstd-frame",
+        "profile": "sanitizer",
+        "record": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/zstd_frame/sanitizer/build-record.json",
+          "sha256": "4c0ad4eb0d8fc8a4c6697bf5a6cbd30b389a1bc68d9c7a84e9e13e06d5c70084"
+        },
+        "artifact": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/zstd_frame/sanitizer/libtscb_zstd_frame.so",
+          "sha256": "07115817011966371a77757afc3ad5a85aff01fc144244103cc1e1072de67f69"
+        },
+        "compile_commands_sha256": "5cea7662cd77adfe6e4c2b4ecbbc24ba9b2878b293016f1c2dcf062e1e22ea62",
+        "dependency_capture": "ACTUAL_PER_TU_MD_COMPILATION_AND_LINK"
+      }
+    ],
+    "current_native_qualification": [
+      {
+        "algorithm": "zstd-frame",
+        "profile": "release",
+        "build_dependency_status": "PASS",
+        "native_suite_status": "NOT_RUN_IN_THIS_DRIVER",
+        "evidence": {
+          "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/qualification.json",
+          "sha256": "b86173f34c30d175552de327cc446dd8480aa02dd7a9ae56f12f60c0d93db174"
+        },
+        "source_full_parity": "NOT_ASSERTED"
+      },
+      {
+        "algorithm": "zstd-frame",
+        "profile": "sanitizer",
+        "build_dependency_status": "PASS",
+        "native_suite_status": "NOT_RUN_IN_THIS_DRIVER",
+        "evidence": {
+          "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/qualification.json",
+          "sha256": "b86173f34c30d175552de327cc446dd8480aa02dd7a9ae56f12f60c0d93db174"
+        },
+        "source_full_parity": "NOT_ASSERTED"
+      }
+    ],
+    "current_build_dependency_scope": "ACTUAL_PER_TU_MD_HEADERS_OBJECTS_SELECTED_TOOLCHAIN_AND_DYNAMIC_RUNTIME_PARTIAL_STATIC_LINK_CLOSURE",
+    "frame_binding_qualification": {
+      "path": "docs/audits/20261011_port_standard_v30/frame_binding_qualification_v3/qualification.json",
+      "sha256": "0a47ea4c7609a1a27515846ddbe72dbd56fd0bd2b93e67ee9462e32cad8a8048"
+    }
   }
 }

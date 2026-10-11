@@ -1,0 +1,63 @@
+{
+  "schema_version": "tscb.source-artifact.v2",
+  "key": "zstd-frame-lzbench-1.5.7",
+  "kind": "VENDORED_BENCHMARK_SOURCE_CLOSURE",
+  "identity": {
+    "kind": "VENDORED_BENCHMARK_SOURCE_CLOSURE",
+    "key": "zstd-frame-lzbench-1.5.7",
+    "benchmark_repository": "https://github.com/inikep/lzbench.git",
+    "benchmark_commit": "fa871e66b3543a70fd4d060f7c12719343ff4ac3",
+    "benchmark_path": "lz/zstd",
+    "benchmark_version": "1.5.7",
+    "upstream_reference_repository": "https://github.com/facebook/zstd.git",
+    "upstream_reference_commit": "d9c0c7e2cf8a8bf9fb98d3bee546dcf8dc9ac59a",
+    "source_closure_sha256": "70ce1616c3aee76722bb3a5379a6efe425b183af0197f4d5afe9b7c2e8ae8ed3",
+    "copy_policy": "UNMODIFIED_SELECTED_SINGLE_THREAD_TRANSLATION_UNIT_CLOSURE",
+    "execution_variant": "FRAME_SCALAR_SINGLE_THREAD_NO_DICTIONARY_NO_LEGACY_NO_ASM"
+  },
+  "license": {
+    "spdx": "BSD-3-Clause OR GPL-2.0-only",
+    "selected": "BSD-3-Clause",
+    "status": "RUN_ALLOWED",
+    "redistribution": "ALLOWED_WITH_LICENSE_NOTICE",
+    "files": [
+      "adapters/zstd_frame/vendor/zstd/LICENSE",
+      "adapters/zstd_frame/vendor/zstd/COPYING"
+    ]
+  },
+  "build": {
+    "recipe": "PYTHONPATH=src conda run -n CompressBench14 python tools/build_codec.py zstd-frame --profile all",
+    "patches": [],
+    "submodules": [],
+    "translation_units": [
+      "adapters/zstd_frame/native/tscb_zstd_frame.c",
+      "adapters/zstd_frame/vendor/zstd/lib/common/debug.c",
+      "adapters/zstd_frame/vendor/zstd/lib/common/entropy_common.c",
+      "adapters/zstd_frame/vendor/zstd/lib/common/error_private.c",
+      "adapters/zstd_frame/vendor/zstd/lib/common/fse_decompress.c",
+      "adapters/zstd_frame/vendor/zstd/lib/common/pool.c",
+      "adapters/zstd_frame/vendor/zstd/lib/common/threading.c",
+      "adapters/zstd_frame/vendor/zstd/lib/common/xxhash.c",
+      "adapters/zstd_frame/vendor/zstd/lib/common/zstd_common.c",
+      "adapters/zstd_frame/vendor/zstd/lib/compress/fse_compress.c",
+      "adapters/zstd_frame/vendor/zstd/lib/compress/hist.c",
+      "adapters/zstd_frame/vendor/zstd/lib/compress/huf_compress.c",
+      "adapters/zstd_frame/vendor/zstd/lib/compress/zstd_compress.c",
+      "adapters/zstd_frame/vendor/zstd/lib/compress/zstd_compress_literals.c",
+      "adapters/zstd_frame/vendor/zstd/lib/compress/zstd_compress_sequences.c",
+      "adapters/zstd_frame/vendor/zstd/lib/compress/zstd_compress_superblock.c",
+      "adapters/zstd_frame/vendor/zstd/lib/compress/zstd_double_fast.c",
+      "adapters/zstd_frame/vendor/zstd/lib/compress/zstd_fast.c",
+      "adapters/zstd_frame/vendor/zstd/lib/compress/zstd_lazy.c",
+      "adapters/zstd_frame/vendor/zstd/lib/compress/zstd_ldm.c",
+      "adapters/zstd_frame/vendor/zstd/lib/compress/zstd_opt.c",
+      "adapters/zstd_frame/vendor/zstd/lib/compress/zstd_preSplit.c",
+      "adapters/zstd_frame/vendor/zstd/lib/decompress/huf_decompress.c",
+      "adapters/zstd_frame/vendor/zstd/lib/decompress/zstd_ddict.c",
+      "adapters/zstd_frame/vendor/zstd/lib/decompress/zstd_decompress.c",
+      "adapters/zstd_frame/vendor/zstd/lib/decompress/zstd_decompress_block.c"
+    ],
+    "release_artifact": "build/adapters/zstd_frame/release/libtscb_zstd_frame.so",
+    "sanitizer_artifact": "build/adapters/zstd_frame/sanitizer/libtscb_zstd_frame.so"
+  }
+}

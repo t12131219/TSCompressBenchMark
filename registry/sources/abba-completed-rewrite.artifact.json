@@ -56,7 +56,7 @@
       },
       {
         "path": "adapters/completed_rewrites/vendor/abba/src/canonical/abba.cpp",
-        "sha256": "15b08bbf99c241efc0b2a715720a14bafbeed4986d731a359e9e33a428cab24f"
+        "sha256": "3bc7e025acf1e73262b8096959dc9a9c508c917b4f8e9398a6230a797109a2de"
       },
       {
         "path": "adapters/completed_rewrites/vendor/abba/src/canonical/ckmeans/Ckmeans.1d.dp.cpp",
@@ -156,7 +156,15 @@
       "path": "adapters/completed_rewrites/provenance/abba/SOURCE_MANIFEST.yaml",
       "sha256": "466469c4ddcfcd08ae5c64f26df0079a4c9cfba60209e83553d4650047910deb",
       "original": "Compression_Rewrite/Source/abba/SOURCE_MANIFEST.yaml"
-    }
+    },
+    "patch_series": [
+      {
+        "path": "adapters/completed_rewrites/patches/abba-0001-reconstruction-capacity-cast.patch",
+        "sha256": "0301d9ccdcb3f58cf3e1cd7e9589d1af71d2e2bbf09712594f8e67efcee7cd32",
+        "classification": "INVALID_INPUT_CAPACITY_AND_FLOAT_CAST_SAFETY",
+        "legal_bitstream_semantics_changed": false
+      }
+    ]
   },
   "license": {
     "spdx": "MIT",
@@ -171,8 +179,40 @@
     "redistribution": "LOCAL_EXECUTION_ONLY; ORIGINAL_NOTICES_RETAINED; NO_UPSTREAM_LICENSE_GRANT_INVENTED"
   },
   "build": {
-    "recipe": "python tools/build_codec.py abba --profile all",
+    "recipe": "python tools/build_completed_rewrite.py abba --profile all --output-root build/port-standard-v30-20261011/adapters",
     "frozen_lock": "adapters/completed_rewrites/FROZEN_SOURCES.json",
-    "standalone_package": "abba"
+    "standalone_package": "abba",
+    "patches": [
+      {
+        "path": "adapters/completed_rewrites/patches/abba-0001-reconstruction-capacity-cast.patch",
+        "sha256": "0301d9ccdcb3f58cf3e1cd7e9589d1af71d2e2bbf09712594f8e67efcee7cd32",
+        "classification": "INVALID_INPUT_CAPACITY_AND_FLOAT_CAST_SAFETY",
+        "legal_bitstream_semantics_changed": false
+      }
+    ],
+    "native_qualification": [
+      {
+        "status": "PASS",
+        "name": "release: current C++ standalone and framework ABI tests",
+        "evidence": "docs/audits/20261011_porting_standard/completed_native_r1-ready6/abba/release/qualification.json",
+        "evidence_sha256": "5e64f04a657b375193c0b4a41ae6a2c47139fb775c1c354405f9e12100b8a92b",
+        "log": "docs/audits/20261011_porting_standard/completed_native_r1-ready6/abba/release/qualification.log",
+        "log_sha256": "a4259e1242305f128d769fdd5e358ebb46fa08e967a4dd25ae817d61df0e6367",
+        "scope": "CURRENT_FROZEN_CPP_STANDALONE_AND_FRAMEWORK_BINDING_TESTS",
+        "sanitizer_scope": "NOT_APPLICABLE",
+        "source_language_parity": "NOT_GRANTED_BY_CPP_TESTS"
+      },
+      {
+        "status": "PASS",
+        "name": "sanitizer: current C++ standalone and framework ABI tests",
+        "evidence": "docs/audits/20261011_porting_standard/completed_native_r1-ready6/abba/sanitizer/qualification.json",
+        "evidence_sha256": "9a518c260899fecf56c9eab56b940395486608d4bd83ea4d82c4b98d535f2c94",
+        "log": "docs/audits/20261011_porting_standard/completed_native_r1-ready6/abba/sanitizer/qualification.log",
+        "log_sha256": "cf088d633935c5ebd32a10cf0aa41b19eb71fdf17ec7f1d67dcc34cc358febcd",
+        "scope": "CURRENT_FROZEN_CPP_STANDALONE_AND_FRAMEWORK_BINDING_TESTS",
+        "sanitizer_scope": "FRAMEWORK_BINDING_AND_FROZEN_CPP_SOURCES; EXTERNAL_BINARY_RUNTIMES_NOT_INSTRUMENTED; LEAK_CHECK_DISABLED",
+        "source_language_parity": "NOT_GRANTED_BY_CPP_TESTS"
+      }
+    ]
   }
 }

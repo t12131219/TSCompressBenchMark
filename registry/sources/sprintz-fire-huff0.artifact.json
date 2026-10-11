@@ -38,7 +38,7 @@
     ]
   },
   "build": {
-    "recipe": "conda run -n CompressBench14 python tools/build_codec.py sprintz-fire-huff0 --profile all",
+    "recipe": "conda run -n CompressBench14 python tools/build_codec.py sprintz-fire-huff0 --profile all --output-root build/port-standard-v30-20261011/native-builds-v3",
     "patches": [
       "adapters/sprintz/patches/0001-lowdim-byte-safety.patch",
       "adapters/sprintz/patches/0002-generic-allocation-safety.patch",
@@ -59,7 +59,62 @@
       "adapters/entropy_fse/vendor/lib/entropy_common.c",
       "adapters/entropy_fse/vendor/lib/hist.c"
     ],
-    "release_artifact": "build/adapters/sprintz_fire_huff0/release/libtscb_sprintz_fire_huff0.so",
-    "sanitizer_artifact": "build/adapters/sprintz_fire_huff0/sanitizer/libtscb_sprintz_fire_huff0.so"
+    "release_artifact": "build/port-standard-v30-20261011/native-builds-v3/sprintz_fire_huff0/release/libtscb_sprintz_fire_huff0.so",
+    "sanitizer_artifact": "build/port-standard-v30-20261011/native-builds-v3/sprintz_fire_huff0/sanitizer/libtscb_sprintz_fire_huff0.so",
+    "current_build_records": [
+      {
+        "algorithm": "sprintz-fire-huff0",
+        "profile": "release",
+        "record": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/sprintz_fire_huff0/release/build-record.json",
+          "sha256": "26d02bec5bd653fd24b65c96d899c0988afe2febc5899fb3e39f0d97b3ec3538"
+        },
+        "artifact": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/sprintz_fire_huff0/release/libtscb_sprintz_fire_huff0.so",
+          "sha256": "aadba7e509b067932aa915e09b6ba7ce550923a9aeada522d9740b765dc49315"
+        },
+        "compile_commands_sha256": "ffadb64537ebc7625dfbac5989e24ff31439ff65e75df81d96a6b6a9c6e944b6",
+        "dependency_capture": "ACTUAL_PER_TU_MD_COMPILATION_AND_LINK"
+      },
+      {
+        "algorithm": "sprintz-fire-huff0",
+        "profile": "sanitizer",
+        "record": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/sprintz_fire_huff0/sanitizer/build-record.json",
+          "sha256": "cf15faa95a685dc7b1ebee9d9980da0841de42e3d8cf7200b954b71adfe776ef"
+        },
+        "artifact": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/sprintz_fire_huff0/sanitizer/libtscb_sprintz_fire_huff0.so",
+          "sha256": "b2ebae1a2885fbcc5c99719784ca60ac7a008bf20ce9a53879c2329e1bccc40c"
+        },
+        "compile_commands_sha256": "cb50956275de16c393b2933a6993accade0f655093e57224e517c064ac6d8c05",
+        "dependency_capture": "ACTUAL_PER_TU_MD_COMPILATION_AND_LINK"
+      }
+    ],
+    "current_native_qualification": [
+      {
+        "algorithm": "sprintz-fire-huff0",
+        "profile": "release",
+        "build_dependency_status": "PASS",
+        "native_suite_status": "PASS",
+        "evidence": {
+          "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/qualification.json",
+          "sha256": "b86173f34c30d175552de327cc446dd8480aa02dd7a9ae56f12f60c0d93db174"
+        },
+        "source_full_parity": "NOT_ASSERTED"
+      },
+      {
+        "algorithm": "sprintz-fire-huff0",
+        "profile": "sanitizer",
+        "build_dependency_status": "PASS",
+        "native_suite_status": "PASS",
+        "evidence": {
+          "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/qualification.json",
+          "sha256": "b86173f34c30d175552de327cc446dd8480aa02dd7a9ae56f12f60c0d93db174"
+        },
+        "source_full_parity": "NOT_ASSERTED"
+      }
+    ],
+    "current_build_dependency_scope": "ACTUAL_PER_TU_MD_HEADERS_OBJECTS_SELECTED_TOOLCHAIN_AND_DYNAMIC_RUNTIME_PARTIAL_STATIC_LINK_CLOSURE"
   }
 }

@@ -143,9 +143,9 @@
   },
   "adapter": {
     "backend": "C_ABI_V1",
-    "version": "rewrite-lossless-ctypes-v1",
+    "version": "rewrite-lossless-ctypes-v1-port-standard-v30-20261011",
     "factory": "REWRITE_LOSSLESS_CTYPES_V1",
-    "artifact_path": "build/adapters/elf_plus/release/libtscb_elf_plus.so",
+    "artifact_path": "build/port-standard-v30-20261011/native-builds-v3/elf_plus/release/libtscb_elf_plus.so",
     "timing_boundary": "PYTHON_LAYOUT_FFI_DESCRIPTOR_AND_CHECKED_NATIVE_FRAME_INCLUDED",
     "accounting_hooks": [
       "FINAL_STREAM_LENGTH",
@@ -159,6 +159,10 @@
       "PIPELINE": "HARNESS_OBJECT_PIPELINE: compatibility preparation, session creation, bound/capacity allocation, CORE, finalized stream materialization, accounting, native telemetry and close; decode includes inverse compatibility work",
       "E2E": "CANONICAL_MEMORY_ROUTED_VIEW: complete encode/decode object pipeline and phase transitions; excludes file I/O and post-timing correctness/determinism checks",
       "NATIVE": "UNAVAILABLE_NULL: no optional internal native timer; CORE uses harness wall clock, never inferred native duration"
+    },
+    "runtime_profile": {
+      "path": "docs/audits/20261011_port_standard_v30/runtime_profiles_v2/profiles/elf-plus.json",
+      "sha256": "fd3d3c05195292f0d9f5a4bbe4d5297cb12c72b50a5e92e6589aba5a3d9c900a"
     }
   }
 }

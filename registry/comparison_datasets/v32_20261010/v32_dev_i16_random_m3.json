@@ -1,0 +1,105 @@
+{
+  "display_name": "v32_dev_i16_random_m3",
+  "expected": {
+    "canonical_raw_bits": 49296,
+    "n_rows": 1027,
+    "semantic_content_sha256": "3773e70f951189a216137bc8689e5db3cfe0536f10e31eef3e2861fec7968834",
+    "shape": [
+      1027,
+      3
+    ]
+  },
+  "file": {
+    "bytes": 8345,
+    "format": "canonical",
+    "path": "artifacts/comparisons/v32_20261010/sources/v32_dev_i16_random_m3.tscb",
+    "sha256": "40f98e88c47821156187dc1466fd80ca5dc2882ec8c2d62671b35a0908abe985"
+  },
+  "key": "v32_dev_i16_random_m3",
+  "license": {
+    "spdx": "CC0-1.0",
+    "status": "RUN_ALLOWED"
+  },
+  "logical": {
+    "axes": [
+      "time",
+      "feature"
+    ],
+    "n_rows": 1027,
+    "nan_is_null": false,
+    "schema_version": "tscb.logical-view.v2",
+    "timestamp": {
+      "epoch": "NOT_APPLICABLE",
+      "order_policy": "PRESERVE",
+      "origin": "NONE",
+      "present": false,
+      "unit": "NOT_APPLICABLE"
+    },
+    "topology": "SYNCHRONOUS_MTS",
+    "validity_shape": "NONE",
+    "value_columns": [
+      {
+        "display_name": "synthetic-0",
+        "dtype": "<i2",
+        "entity": "synthetic",
+        "feature": "channel-0",
+        "name": "synthetic/000000",
+        "shape": [
+          1027
+        ],
+        "strides": [
+          2
+        ],
+        "unit": "count"
+      },
+      {
+        "display_name": "synthetic-1",
+        "dtype": "<i2",
+        "entity": "synthetic",
+        "feature": "channel-1",
+        "name": "synthetic/000001",
+        "shape": [
+          1027
+        ],
+        "strides": [
+          2
+        ],
+        "unit": "count"
+      },
+      {
+        "display_name": "synthetic-2",
+        "dtype": "<i2",
+        "entity": "synthetic",
+        "feature": "channel-2",
+        "name": "synthetic/000002",
+        "shape": [
+          1027
+        ],
+        "strides": [
+          2
+        ],
+        "unit": "count"
+      }
+    ],
+    "value_shape": [
+      1027,
+      3
+    ]
+  },
+  "parser": {
+    "identity_policy": "tscb.dataset-content.v1",
+    "name": "tscb.canonical",
+    "version": "1"
+  },
+  "schema_version": "tscb.canonical-source-manifest.v1",
+  "source": {
+    "notes": "{\"domain_proof\": null, \"first_party_project_reference\": null, \"generation_spec\": {\"dtype\": \"<i2\", \"floating_scale\": \"1\", \"formula_version\": \"1\", \"kind\": \"SYNTHETIC\", \"m\": 3, \"n\": 1027, \"pattern\": \"random\", \"rng\": \"numpy.PCG64\", \"seed\": 20261011}, \"source_lineage_authentication\": \"GENERATOR_FULL_SPEC\", \"source_manifest\": null, \"source_sha256\": null}",
+    "retrieved_at": "LOCAL_GENERATED",
+    "uri": "local:synthetic"
+  },
+  "split": {
+    "learned_eligible": false,
+    "policy": "VALIDATION",
+    "reason": "Frozen whole-object CPU comparison; no learned split or source generalization claimed."
+  }
+}

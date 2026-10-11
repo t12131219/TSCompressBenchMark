@@ -25,16 +25,7 @@ from tscompbench.planning.sweep import PlanningError, _normalize_value, _validat
 
 _PREFIX = struct.Struct("<8sI32s32s")
 _RECORD = struct.Struct("<QQ")
-_MAGIC = b"TSCBCR1\0"
-_HISTOGRAMS = {"prometheus-histogram-st", "prometheus-float-histogram-st"}
-_HISTOGRAM_UNITS = (
-    "HISTOGRAM_ST_INT64_BITS",
-    "HISTOGRAM_COUNT_BITS",
-    "HISTOGRAM_ZERO_COUNT_BITS",
-    "HISTOGRAM_SUM_BINARY64_BITS",
-    "HISTOGRAM_ZERO_THRESHOLD_BINARY64_BITS",
-    "HISTOGRAM_BUCKET_BITS",
-)
+_MAGIC = b"TSCBCR1\x00"
 
 
 class _Config(ctypes.Structure):
@@ -51,6 +42,30 @@ def _domain(reason: str) -> None:
     error = SourceDomainError(reason)
     error.rejection_atomic = True
     raise error
+
+
+def _registered_model_path(path: Path, manifest: dict[str, Any], record: dict[str, Any]) -> Path:
+    artifact_name, model_name = manifest.get("artifact_path"), record.get("path")
+    for name in (artifact_name, model_name):
+        if (
+            not isinstance(name, str)
+            or not name
+            or "\0" in name
+            or Path(name).is_absolute()
+            or ".." in Path(name).parts
+        ):
+            raise ExecutionContractError("unsafe registered artifact or model path")
+    relative = Path(artifact_name)
+    artifact = path.absolute()
+    if len(relative.parts) > len(artifact.parents):
+        raise ExecutionContractError("artifact differs from registered model root")
+    root = artifact.parents[len(relative.parts) - 1]
+    if root / relative != artifact:
+        raise ExecutionContractError("artifact differs from registered model root")
+    model = root / model_name
+    if not model.resolve().is_relative_to(root.resolve()):
+        raise ExecutionContractError("registered model escapes project")
+    return model
 
 
 @dataclass(frozen=True)
@@ -77,7 +92,7 @@ class CompletedRewriteSession:
     def __init__(
         self, path: Path, manifest: dict[str, Any], algorithm: str, parameters: dict[str, Any]
     ):
-        self.algorithm, self.manifest = algorithm, manifest
+        self.algorithm, self.manifest = (algorithm, manifest)
         self.parameters = self._parameters(parameters)
         parameters = self.parameters
         self._library = ctypes.CDLL(str(path))
@@ -86,7 +101,7 @@ class CompletedRewriteSession:
         lib.rw_algorithm.restype = ctypes.c_char_p
         if lib.rw_version() != 1 or lib.rw_algorithm().decode() != algorithm:
             raise ExecutionContractError("completed rewrite binary identity mismatch")
-        ptr, size = ctypes.c_void_p, ctypes.c_size_t
+        ptr, size = (ctypes.c_void_p, ctypes.c_size_t)
         lib.rw_bound.argtypes = [
             ctypes.POINTER(_Config),
             ptr,
@@ -118,7 +133,7 @@ class CompletedRewriteSession:
         model_key = parameters.get("model_key")
         if model_key is not None:
             record = manifest["models"][model_key]
-            model = path.resolve().parents[4] / record["path"]
+            model = _registered_model_path(path, manifest, record)
             self._model = str(model).encode()
             self._alphabet_size = record.get("alphabet_size")
             self._model_record = record
@@ -163,10 +178,12 @@ class CompletedRewriteSession:
             }
             _validate_constraints(normalized, contract["constraints"])
             if any(
-                isinstance(value, str)
-                and specs[key]["type"] == "decimal-string"
-                and not np.isfinite(float(value))
-                for key, value in normalized.items()
+                (
+                    isinstance(value, str)
+                    and specs[key]["type"] == "decimal-string"
+                    and (not np.isfinite(float(value)))
+                    for key, value in normalized.items()
+                )
             ):
                 raise PlanningError("decimal parameter exceeds native binary64 range")
             return normalized
@@ -177,7 +194,7 @@ class CompletedRewriteSession:
         p = self.parameters
         c = _Config(rows, columns, 0, 0, 0, 0, p.get("model_seed", 0), 0, 0, 0, 0, self._model)
         if self.algorithm == "abba":
-            c.a, c.b, c.c, c.d = p["min_k"], p["max_k"], p["max_len"], p["norm"]
+            c.a, c.b, c.c, c.d = (p["min_k"], p["max_k"], p["max_len"], p["norm"])
             c.x, c.y, c.z = (
                 float(p["compression_tolerance"]),
                 float(p["digitization_tolerance"]),
@@ -186,15 +203,7 @@ class CompletedRewriteSession:
             c.mode = int(p["clustering"] == "INCREMENTAL")
         elif self.algorithm == "fabba":
             c.a = p["max_len"]
-            c.x, c.y, c.z = float(p["tolerance"]), float(p["alpha"]), float(p["scl"])
-        elif self.algorithm == "influxdb-tsm-adaptive-timestamp":
-            c.mode = int(p["encoding_profile"] == "BATCH")
-        elif self.algorithm in {"tristan", "corad"}:
-            c.a, c.b, c.c, c.d = p["window_size"], p["atoms"], p["nonzeros"], p["requested_n_iter"]
-            c.x = float(p["alpha"])
-            c.mode = p["solver"]
-            if self.algorithm == "corad":
-                c.y = float(p["correlation_threshold"])
+            c.x, c.y, c.z = (float(p["tolerance"]), float(p["alpha"]), float(p["scl"]))
         elif self.algorithm == "deepzip":
             c.a = p["lanes"]
         elif self.algorithm == "dzip":
@@ -221,14 +230,6 @@ class CompletedRewriteSession:
             status = getattr(self._library, "rw_" + operation)(*args)
         if status == 3:
             raise OutputCapacityError("completed rewrite native output capacity")
-        if (
-            status
-            and self.algorithm in {"tristan", "corad"}
-            and operation == "encode"
-            and error.value.decode()
-            in {"Invalid population standard deviation", "Nonfinite normalized input"}
-        ):
-            _domain("NORMALIZATION_ARITHMETIC_UNSUPPORTED")
         if status:
             raise ExecutionContractError(
                 f"{self.algorithm} {operation}: {error.value.decode(errors='replace')}"
@@ -240,13 +241,7 @@ class CompletedRewriteSession:
         return output.raw[: used.value]
 
     def _validate(self, routed: RoutedInput) -> None:
-        track = (
-            BenchmarkTrack.TIMESTAMP
-            if self.algorithm == "influxdb-tsm-adaptive-timestamp"
-            else BenchmarkTrack.SYSTEM
-            if self.algorithm == "prometheus-xor2-chunk" or self.algorithm in _HISTOGRAMS
-            else BenchmarkTrack.VALUE
-        )
+        track = BenchmarkTrack.VALUE
         if routed.track is not track or routed.validity_reference is not None:
             raise ExecutionContractError("unsupported rewrite track/validity")
         contract = self.manifest["input_contract"]
@@ -268,7 +263,7 @@ class CompletedRewriteSession:
                 raise ExecutionContractError("timestamp pairing reference mismatch")
             if track is BenchmarkTrack.TIMESTAMP and len(names) != 1:
                 raise ExecutionContractError("timestamp track has extra fields")
-            if track is BenchmarkTrack.SYSTEM and not routed.segment_plan_id:
+            if track is BenchmarkTrack.SYSTEM and (not routed.segment_plan_id):
                 raise ExecutionContractError("system segment plan required")
         elif "timestamp" in names:
             raise ExecutionContractError("value track contains timestamps")
@@ -283,7 +278,7 @@ class CompletedRewriteSession:
             [value_names[0]]
             if len(value_names) == 1
             and routed.buffers[-1].array.ndim == 2
-            and value_names[0] in {"value/matrix", "value/000000"}
+            and (value_names[0] in {"value/matrix", "value/000000"})
             else [f"value/{i:06d}" for i in range(routed.m)]
         )
         if value_names and value_names != expected_names:
@@ -292,21 +287,17 @@ class CompletedRewriteSession:
             contract["required_value_units"]
         ):
             raise ExecutionContractError("required value units mismatch")
-        # Canonical bits describe the original logical view. Compatibility
-        # preparation can widen its dtype; buffer bits describe the codec view.
-        if (type(routed.canonical_raw_bits) is not int
+        if (
+            type(routed.canonical_raw_bits) is not int
             or routed.canonical_raw_bits < sum(b.array.size for b in routed.buffers) * 8
-            or routed.canonical_raw_bits % 8):
+            or routed.canonical_raw_bits % 8
+        ):
             raise ExecutionContractError("invalid canonical bit accounting")
         allowed = (
             {"<i8"}
             if track is BenchmarkTrack.TIMESTAMP
-            else {"<u8"}
-            if self.algorithm in _HISTOGRAMS
             else {"<u1", "|u1"}
             if self.algorithm in {"deepzip", "dzip"}
-            else {"<f4"}
-            if self.algorithm == "walloc-1d"
             else {"<f8"}
         )
         for b in routed.buffers:
@@ -317,7 +308,7 @@ class CompletedRewriteSession:
                 raise ExecutionContractError("rewrite dtype unsupported")
             if b.logical_bits != b.array.nbytes * 8:
                 raise ExecutionContractError("logical buffer bits mismatch")
-        if self.algorithm in {"abba", "fabba", "tristan", "corad", "walloc-1d"}:
+        if self.algorithm in {"abba", "fabba"}:
             if any(not np.all(np.isfinite(b.array)) for b in routed.buffers):
                 _domain("FINITE_INPUT_REQUIRED")
         if self.algorithm in {"abba", "fabba"} and routed.n < 2:
@@ -333,14 +324,6 @@ class CompletedRewriteSession:
                     )
                 if np.any(~np.isfinite(error)) or np.any(error > np.finfo(np.float64).eps):
                     _domain("SEGMENT_ENDPOINT_ARITHMETIC_UNSUPPORTED")
-        if self.algorithm in {"tristan", "corad"}:
-            size = self.parameters["window_size"]
-            if routed.n < size or routed.n % size:
-                _domain("INCOMPLETE_WINDOW_UNSUPPORTED")
-            for b in routed.buffers:
-                a = b.array.reshape(routed.n, -1)
-                if np.any(np.all(a == a[0], axis=0)):
-                    _domain("CONSTANT_COLUMN_UNSUPPORTED")
         if self.algorithm == "deepzip" and any(
             np.any(b.array >= self._alphabet_size) for b in routed.buffers
         ):
@@ -349,12 +332,6 @@ class CompletedRewriteSession:
             np.unique(column).size == 9 for column in self._columns(routed)
         ):
             _domain("MODEL_ALPHABET_UNSUPPORTED")
-        if self.algorithm == "walloc-1d" and routed.m != 2:
-            raise ExecutionContractError("WaLLoC stereo input required")
-        if self.algorithm in _HISTOGRAMS and (
-            routed.m != 6 or routed.n > 16383 or tuple(routed.value_units) != _HISTOGRAM_UNITS
-        ):
-            raise ExecutionContractError("explicit Histogram-ST record schema required")
 
     def _columns(self, routed: RoutedInput) -> list[np.ndarray[Any]]:
         value = [b.array for b in routed.buffers if b.name != "timestamp"]
@@ -372,27 +349,6 @@ class CompletedRewriteSession:
         if routed.track is BenchmarkTrack.TIMESTAMP:
             return [(routed.buffers[0].array.tobytes(), self._config(routed.n), routed.n * 8)]
         columns = self._columns(routed)
-        if self.algorithm in _HISTOGRAMS:
-            a = np.column_stack([routed.buffers[0].array.view("<u8"), *columns])
-            return [(a.tobytes(), self._config(routed.n, 7), a.nbytes)]
-        if self.algorithm == "prometheus-xor2-chunk":
-            if routed.n > 65535:
-                raise ExecutionContractError("XOR2 sample limit")
-            timestamps = routed.buffers[0].array.view("<u8")
-            result = []
-            for column in columns:
-                a = np.empty((routed.n, 3), dtype="<u8")
-                a[:, 0] = np.uint64(self.parameters["start_timestamp"] % (1 << 64))
-                a[:, 1] = timestamps
-                a[:, 2] = column.view("<u8")
-                result.append((a.tobytes(), self._config(routed.n), routed.n * 24))
-            return result
-        if self.algorithm in {"tristan", "corad"}:
-            a = np.column_stack(columns)
-            return [(a.tobytes(), self._config(routed.n, routed.m), a.nbytes)]
-        if self.algorithm == "walloc-1d":
-            a = np.stack(columns)
-            return [(a.tobytes(), self._config(routed.n, routed.m), a.nbytes)]
         return [
             (np.ascontiguousarray(a).tobytes(), self._config(routed.n), a.nbytes) for a in columns
         ]
@@ -427,7 +383,10 @@ class CompletedRewriteSession:
             _PREFIX.size
             + len(self._header(routed))
             + sum(
-                _RECORD.size + self._native("bound", data, c) for data, c, _ in self._inputs(routed)
+                (
+                    _RECORD.size + self._native("bound", data, c)
+                    for data, c, _ in self._inputs(routed)
+                )
             )
         )
 
@@ -504,30 +463,14 @@ class CompletedRewriteSession:
             offset += length
             if len(records) > 65535:
                 raise ExecutionContractError("too many rewrite records")
-        expected = (
-            1
-            if self.algorithm
-            in {"tristan", "corad", "walloc-1d", "influxdb-tsm-adaptive-timestamp"}
-            or self.algorithm in _HISTOGRAMS
-            else desc["columns"]
-        )
+        expected = desc["columns"]
         if len(records) != expected:
             raise ExecutionContractError("rewrite record count mismatch")
-        stride = (
-            56
-            if self.algorithm in _HISTOGRAMS
-            else 24
-            if self.algorithm == "prometheus-xor2-chunk"
-            else np.dtype(desc["buffers"][-1]["dtype"]).itemsize
-        )
-        raw_size = (
-            desc["rows"]
-            * stride
-            * (desc["columns"] if self.algorithm in {"tristan", "corad", "walloc-1d"} else 1)
-        )
-        if any(capacity != raw_size for _, capacity in records):
+        stride = np.dtype(desc["buffers"][-1]["dtype"]).itemsize
+        raw_size = desc["rows"] * stride * 1
+        if any((capacity != raw_size for _, capacity in records)):
             raise ExecutionContractError("decoded record capacity differs from logical dimensions")
-        return desc, records, _PREFIX.size + size + len(records) * _RECORD.size
+        return (desc, records, _PREFIX.size + size + len(records) * _RECORD.size)
 
     def _check_descriptor(self, desc):
         if not isinstance(desc, dict) or set(desc) != {
@@ -544,23 +487,17 @@ class CompletedRewriteSession:
             "buffers",
         }:
             raise ValueError("descriptor keys")
-        n, m = desc["rows"], desc["columns"]
+        n, m = (desc["rows"], desc["columns"])
         contract = self.manifest["input_contract"]
         if (
             type(n) is not int
             or type(m) is not int
-            or not contract["min_n"] <= n <= contract["max_n"]
-            or not contract["min_m"] <= m <= contract["max_m"]
-            or n * m > 16777216
+            or (not contract["min_n"] <= n <= contract["max_n"])
+            or (not contract["min_m"] <= m <= contract["max_m"])
+            or (n * m > 16777216)
         ):
             raise ValueError("dimensions")
-        track = (
-            "TIMESTAMP"
-            if self.algorithm == "influxdb-tsm-adaptive-timestamp"
-            else "SYSTEM"
-            if self.algorithm == "prometheus-xor2-chunk" or self.algorithm in _HISTOGRAMS
-            else "VALUE"
-        )
+        track = "VALUE"
         if desc["track"] != track or self._parameters(desc["parameters"]) != desc["parameters"]:
             raise ValueError("track or parameters")
         buffers = desc["buffers"]
@@ -576,7 +513,7 @@ class CompletedRewriteSession:
         if [b["name"] for b in values] != expected_names and track != "TIMESTAMP":
             raise ValueError("value roles")
         if track in {"SYSTEM", "TIMESTAMP"} and (
-            buffers[0]["name"] != "timestamp" or track == "TIMESTAMP" and len(buffers) != 1
+            buffers[0]["name"] != "timestamp" or (track == "TIMESTAMP" and len(buffers) != 1)
         ):
             raise ValueError("timestamp role")
         for b in buffers:
@@ -593,7 +530,7 @@ class CompletedRewriteSession:
                 b["dtype"] not in allowed
                 or b["shape"] != ([n, m] if is_matrix else [n])
                 or type(b["logical_bits"]) is not int
-                or b["logical_bits"] != n * (m if is_matrix else 1) * dtype.itemsize * 8
+                or (b["logical_bits"] != n * (m if is_matrix else 1) * dtype.itemsize * 8)
             ):
                 raise ValueError("logical buffer descriptor")
         if (
@@ -607,7 +544,7 @@ class CompletedRewriteSession:
             or any(not isinstance(x, str) for x in desc["value_units"])
         ):
             raise ValueError("units")
-        if track == "SYSTEM" and not isinstance(desc["segment_plan_id"], str):
+        if track == "SYSTEM" and (not isinstance(desc["segment_plan_id"], str)):
             raise ValueError("segment plan")
 
     def decompress(self, stream: bytes) -> DecodedOutput:
@@ -615,35 +552,12 @@ class CompletedRewriteSession:
             raise ExecutionContractError("session closed")
         desc, records, _ = self._parse(stream)
         decoded = [self._native("decode", data, capacity=capacity) for data, capacity in records]
-        if any(len(data) != capacity for data, (_, capacity) in zip(decoded, records, strict=True)):
+        if any(
+            (len(data) != capacity for data, (_, capacity) in zip(decoded, records, strict=True))
+        ):
             raise ExecutionContractError("native decoded length differs from descriptor")
-        n, m = desc["rows"], desc["columns"]
-        if self.algorithm in _HISTOGRAMS:
-            a = np.frombuffer(decoded[0], dtype="<u8").reshape(n, 7)
-            arrays = [a[:, 0].view("<i8"), *[a[:, i] for i in range(1, 7)]]
-        elif self.algorithm == "prometheus-xor2-chunk":
-            triples = [np.frombuffer(data, dtype="<u8").reshape(n, 3) for data in decoded]
-            if any(not np.array_equal(a[:, 1], triples[0][:, 1]) for a in triples):
-                raise ExecutionContractError("XOR2 timestamp pairing mismatch")
-            if any(
-                np.any(a[:, 0] != (desc["parameters"]["start_timestamp"] % (1 << 64)))
-                for a in triples
-            ):
-                raise ExecutionContractError("XOR2 start timestamp mismatch")
-            arrays = [triples[0][:, 1].view("<i8"), *[a[:, 2].view("<f8") for a in triples]]
-        elif self.algorithm in {"tristan", "corad", "walloc-1d"}:
-            dtype = desc["buffers"][0]["dtype"]
-            matrix = np.frombuffer(decoded[0], dtype=dtype).reshape(
-                (m, n) if self.algorithm == "walloc-1d" else (n, m)
-            )
-            if self.algorithm == "walloc-1d":
-                matrix = matrix.T
-            arrays = (
-                [matrix]
-                if len(desc["buffers"]) == 1 and len(desc["buffers"][0]["shape"]) == 2
-                else [matrix[:, i] for i in range(m)]
-            )
-        elif len(desc["buffers"]) == 1 and len(desc["buffers"][0]["shape"]) == 2:
+        n, m = (desc["rows"], desc["columns"])
+        if len(desc["buffers"]) == 1 and len(desc["buffers"][0]["shape"]) == 2:
             arrays = [
                 np.column_stack(
                     [np.frombuffer(data, dtype=desc["buffers"][0]["dtype"]) for data in decoded]
@@ -657,7 +571,7 @@ class CompletedRewriteSession:
         if (
             desc["track"] == "SYSTEM"
             and len(desc["buffers"]) == 2
-            and desc["buffers"][1]["shape"] == [n, m]
+            and (desc["buffers"][1]["shape"] == [n, m])
         ):
             arrays = [arrays[0], np.column_stack(arrays[1:])]
         buffers = []
@@ -688,7 +602,7 @@ class CompletedRewriteSession:
             if routed.track is BenchmarkTrack.TIMESTAMP
             else "value_bits"
         )
-        components[bucket] = sum(len(frame) * 8 for frame, _ in records)
+        components[bucket] = sum((len(frame) * 8 for frame, _ in records))
         return AccountingLedger(
             track=routed.track,
             **components,

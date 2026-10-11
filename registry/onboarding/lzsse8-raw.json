@@ -65,35 +65,66 @@
       "suite": "project-exact-buffer-guard-canary-180-roundtrips-2048-hostile-streams",
       "status": "PASS",
       "log_sha256": "8aa1f1549dbc0cbb300cdf7ca3b753405dec0180455189f760a7fa78f0100bf1",
-      "evidence": "build/source-audits/lzsse8-native-tests-20260918.log"
+      "evidence": "build/source-audits/lzsse8-native-tests-20260918.log",
+      "evidence_kind": "HISTORICAL_OR_SEPARATE_UPSTREAM_EVIDENCE"
     },
     {
       "profile": "sanitizer",
       "suite": "project-exact-buffer-guard-canary-180-roundtrips-2048-hostile-streams",
       "status": "PASS",
       "log_sha256": "8aa1f1549dbc0cbb300cdf7ca3b753405dec0180455189f760a7fa78f0100bf1",
-      "evidence": "build/source-audits/lzsse8-native-tests-20260918.log"
+      "evidence": "build/source-audits/lzsse8-native-tests-20260918.log",
+      "evidence_kind": "HISTORICAL_OR_SEPARATE_UPSTREAM_EVIDENCE"
     },
     {
       "profile": "release",
       "suite": "unmodified-vendor-compare",
       "status": "PASS",
       "log_sha256": "8aa1f1549dbc0cbb300cdf7ca3b753405dec0180455189f760a7fa78f0100bf1",
-      "evidence": "build/source-audits/lzsse8-native-tests-20260918.log"
+      "evidence": "build/source-audits/lzsse8-native-tests-20260918.log",
+      "evidence_kind": "HISTORICAL_OR_SEPARATE_UPSTREAM_EVIDENCE"
     },
     {
       "profile": "release",
       "suite": "release-allocation-failure",
       "status": "PASS",
       "log_sha256": "8aa1f1549dbc0cbb300cdf7ca3b753405dec0180455189f760a7fa78f0100bf1",
-      "evidence": "build/source-audits/lzsse8-native-tests-20260918.log"
+      "evidence": "build/source-audits/lzsse8-native-tests-20260918.log",
+      "evidence_kind": "HISTORICAL_OR_SEPARATE_UPSTREAM_EVIDENCE"
     },
     {
       "profile": "sanitizer",
       "suite": "sanitizer-allocation-failure",
       "status": "PASS",
       "log_sha256": "8aa1f1549dbc0cbb300cdf7ca3b753405dec0180455189f760a7fa78f0100bf1",
-      "evidence": "build/source-audits/lzsse8-native-tests-20260918.log"
+      "evidence": "build/source-audits/lzsse8-native-tests-20260918.log",
+      "evidence_kind": "HISTORICAL_OR_SEPARATE_UPSTREAM_EVIDENCE"
+    },
+    {
+      "algorithm": "lzsse8-raw",
+      "profile": "release",
+      "name": "current build dependency and finite native API verification",
+      "status": "PASS",
+      "evidence": {
+        "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/qualification.json",
+        "sha256": "b86173f34c30d175552de327cc446dd8480aa02dd7a9ae56f12f60c0d93db174"
+      },
+      "evidence_kind": "CURRENT_REAL_BUILD_DEPENDENCIES_WITH_SELECTED_NATIVE_TESTS",
+      "native_suite_status": "PASS",
+      "source_full_parity": "NOT_ASSERTED"
+    },
+    {
+      "algorithm": "lzsse8-raw",
+      "profile": "sanitizer",
+      "name": "current build dependency and finite native API verification",
+      "status": "PASS",
+      "evidence": {
+        "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/qualification.json",
+        "sha256": "b86173f34c30d175552de327cc446dd8480aa02dd7a9ae56f12f60c0d93db174"
+      },
+      "evidence_kind": "CURRENT_REAL_BUILD_DEPENDENCIES_WITH_SELECTED_NATIVE_TESTS",
+      "native_suite_status": "PASS",
+      "source_full_parity": "NOT_ASSERTED"
     }
   ],
   "builds": [
@@ -101,13 +132,49 @@
       "profile": "release",
       "artifact_sha256": "2d4c07a356eee879279732d3cafd88e605d4d6030d4361ee8db913bf86063f30",
       "compile_commands_sha256": "9514005794753f01ece98d395bd2c1041e986a572040d9f1ad6302b9b1a3d3b1",
-      "compiler": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0"
+      "compiler": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0",
+      "evidence_kind": "HISTORICAL_BUILD_RECORD"
     },
     {
       "profile": "sanitizer",
       "artifact_sha256": "1eb6e3aa5c9c713a344144f0537ac279e8e69528247cb5d8d98e6dc67c813b2e",
       "compile_commands_sha256": "76d3aedffd2875b3d518e85f8be6163b2d142c6c44a2cadca722b41d6b07a2d3",
-      "compiler": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0"
+      "compiler": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0",
+      "evidence_kind": "HISTORICAL_BUILD_RECORD"
+    },
+    {
+      "algorithm": "lzsse8-raw",
+      "profile": "RELEASE",
+      "artifact_sha256": "2d4c07a356eee879279732d3cafd88e605d4d6030d4361ee8db913bf86063f30",
+      "compile_commands_sha256": "31f991b93acc0bc266b25326fac70a64dd94273c578b4552c93f480d13b24c0f",
+      "compiler": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0",
+      "evidence_kind": "CURRENT_REAL_BUILD_DEPENDENCIES_VERIFIED",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/lzsse8_raw/release/build-record.json",
+        "sha256": "2e9bb0792d0e8c074f4cca6917c6f7a7b8da05ddbaa10226d2ece2885020e733"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/lzsse8_raw/release/libtscb_lzsse8_raw.so",
+        "sha256": "2d4c07a356eee879279732d3cafd88e605d4d6030d4361ee8db913bf86063f30"
+      },
+      "qualification_scope": "BUILD_CLOSURE_AND_SELECTED_FINITE_NATIVE_SUITE_NOT_SOURCE_FULL_PARITY"
+    },
+    {
+      "algorithm": "lzsse8-raw",
+      "profile": "SANITIZER",
+      "artifact_sha256": "cb7d954b628a460cb47e96cd7905714459c2d2cf773b6e24aa72cd7e64ef7502",
+      "compile_commands_sha256": "5dc12e0f6a8c751cf34578cfff4a61e549fe29042ad4fbebac3f07d4f8a8b521",
+      "compiler": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0",
+      "evidence_kind": "CURRENT_REAL_BUILD_DEPENDENCIES_VERIFIED",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/lzsse8_raw/sanitizer/build-record.json",
+        "sha256": "6019776f3b981acdbad621e8e53ad991a4af2ca8c71740ae6cd9f82200cd4022"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/lzsse8_raw/sanitizer/libtscb_lzsse8_raw.so",
+        "sha256": "cb7d954b628a460cb47e96cd7905714459c2d2cf773b6e24aa72cd7e64ef7502"
+      },
+      "qualification_scope": "BUILD_CLOSURE_AND_SELECTED_FINITE_NATIVE_SUITE_NOT_SOURCE_FULL_PARITY"
     }
   ],
   "license_decision": {
@@ -128,7 +195,8 @@
     "No checksum: structurally valid corruption may decode; common bit-exact validation remains mandatory. Empty/short/incompressible inputs can legitimately use vendor raw mode.",
     "ASan/UBSan covers patched codec and C ABI; exact guard-backed buffer tests have no external safe-overread padding. LeakSanitizer disabled under host ptrace policy.",
     "One complete stream per routed object, full-matrix byte view preserves all IEEE payloads. block_size controls framework boundary fixtures, not an implicit segmentation stage. Streaming/query/random-access are unsupported.",
-    "Decoded byte work limit is INT32_MAX; allocation also depends on large optimal state and per-byte Arrival storage. Worker memory limit may produce OOM rather than claiming all theoretical lengths fit physical RAM."
+    "Decoded byte work limit is INT32_MAX; allocation also depends on large optimal state and per-byte Arrival storage. Worker memory limit may produce OOM rather than claiming all theoretical lengths fit physical RAM.",
+    "2026-10-11: new isolated builds pin actual per-TU compiler dependencies, objects, selected toolchain executables and linked dynamic runtime files. These records do not pin every implicit static startup/runtime archive and do not grant source FULL_PARITY or change active algorithm scope. Historical runs retain their original artifact identities."
   ],
   "unsupported_reason_codes": [
     "CPU_MISSING_REQUESTED_ISA",
@@ -138,5 +206,6 @@
     "QUERY_UNSUPPORTED",
     "STREAMING_PROTOCOL_NOT_REGISTERED",
     "LZSSE8_VARIANT_NOT_REGISTERED"
-  ]
+  ],
+  "source_onboarding_id": "v2:source-onboarding:sha256:2431626ec45c094b2247f49740a22a32403accbd587365311efed9c4ac248042"
 }

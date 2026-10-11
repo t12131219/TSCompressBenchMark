@@ -1,6 +1,6 @@
 {
   "schema_version": "tscb.source-onboarding.v2",
-  "source_artifact_id": "v2:source-artifact:sha256:f8ce781c683909cb34da83d2c8e1184b9d1e2fac53145666b4cc6f374c7ff3de",
+  "source_artifact_id": "v2:source-artifact:sha256:aa2cd50543999b212c51e9647aa943ff18083a205f01d930ddbe0f4229a3d440",
   "repository": "https://github.com/nla-group/fABBA",
   "commit": "4066a5fc778f50f4bee1c41d8f3ab3ee4a3ff6ad",
   "dirty": false,
@@ -21,6 +21,7 @@
   ],
   "test_files": [
     "adapters/completed_rewrites/tests/qualification.cpp",
+    "tools/qualify_completed_rewrites_native.py",
     "tests/adapters/test_completed_rewrites.py",
     "tests/integration/test_completed_rewrites_qualification.py"
   ],
@@ -32,6 +33,10 @@
     "adapters/completed_rewrites/vendor/fabba/LICENSES/glibc-copyright.txt"
   ],
   "third_party_dependencies": [
+    {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/adapters/fabba/release/cmake/standalone/libfabba_c.so",
+      "sha256": "300aa6d69b1f416d8091dadfa8bd35727a5942613b17bb62f714804ae014fcaf"
+    },
     {
       "path": "/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
       "sha256": "9eb34cb2da3ae2a9398cc09b3cd2d069563ec40d9858cb711af15cd23fa80abf"
@@ -131,32 +136,41 @@
   "upstream_tests": [
     {
       "status": "PASS",
-      "name": "release: upstream CTest and framework ABI qualification",
-      "log_sha256": "d4de930df5ff7ec55c84b3e7baf0aff3294cdc53b6bbe4abde787580b8650142",
-      "log": "build/adapters/fabba/release/qualification.log",
-      "scope": "NOT_APPLICABLE"
+      "name": "release: current C++ standalone and framework ABI tests",
+      "evidence": "docs/audits/20261011_porting_standard/completed_native_r1-ready6/fabba/release/qualification.json",
+      "evidence_sha256": "b268155790340345bf2f104afb8f5e13f19ab275c8bd62a9cbc0ebff03a1257b",
+      "log": "docs/audits/20261011_porting_standard/completed_native_r1-ready6/fabba/release/qualification.log",
+      "log_sha256": "c7add47514ed15e2265e437ce4f56618220eb4aee7714b54e4fe43172f54c579",
+      "scope": "CURRENT_FROZEN_CPP_STANDALONE_AND_FRAMEWORK_BINDING_TESTS",
+      "sanitizer_scope": "NOT_APPLICABLE",
+      "source_language_parity": "NOT_GRANTED_BY_CPP_TESTS"
     },
     {
       "status": "PASS",
-      "name": "sanitizer: upstream CTest and framework ABI qualification",
-      "log_sha256": "39409c868dac175409800d1702d670422cd9b2d363ab8e72c91db3478a906cb6",
-      "log": "build/adapters/fabba/sanitizer/qualification.log",
-      "scope": "FRAMEWORK_BINDING_AND_FROZEN_CPP_SOURCES; EXTERNAL_BINARY_RUNTIMES_NOT_INSTRUMENTED; LEAK_CHECK_DISABLED"
+      "name": "sanitizer: current C++ standalone and framework ABI tests",
+      "evidence": "docs/audits/20261011_porting_standard/completed_native_r1-ready6/fabba/sanitizer/qualification.json",
+      "evidence_sha256": "5afc35eb5a228c0a360ba5c8155bb1d79cc3f1c5eedb79ad540f09fda1875c9a",
+      "log": "docs/audits/20261011_porting_standard/completed_native_r1-ready6/fabba/sanitizer/qualification.log",
+      "log_sha256": "71b8b092f3a24c6520e2ccb3fc68f9d6e67cd215d90c2a26555e8ef7d3c1245e",
+      "scope": "CURRENT_FROZEN_CPP_STANDALONE_AND_FRAMEWORK_BINDING_TESTS",
+      "sanitizer_scope": "FRAMEWORK_BINDING_AND_FROZEN_CPP_SOURCES; EXTERNAL_BINARY_RUNTIMES_NOT_INSTRUMENTED; LEAK_CHECK_DISABLED",
+      "source_language_parity": "NOT_GRANTED_BY_CPP_TESTS"
     }
   ],
   "builds": [
     {
       "kind": "release",
-      "artifact_sha256": "8ceb40269c2094a9fc7481d504c39057171f2b15ae4ea7767317309d2eb4af81",
-      "compile_commands_sha256": "8e0a08743f6c7da8f3dedffc35289893d54c814a20c48aa3dd9485a1c038494f",
-      "build_record_sha256": "1d8fc52e49b1c2d4e039981ae72e43fbe3a41246fa6be90973f31cf9d9dffc5e",
+      "artifact_sha256": "04a78711e3e2ed1f92d003accfdd4ad5af88961bc5efaf080ac91d9ddd60ccba",
+      "compile_commands_sha256": "5b6bcec72480e2ddc43e8c209ca5e573dc7fd9606f4269c59d06d904f728cb9b",
+      "build_record_sha256": "8f0208e6cd897d0527047d22c3490cc9baa10629194f2c97e9b27432ba139119",
+      "build_record": "build/port-standard-v30-20261011/adapters/fabba/release/build-record.json",
       "compiler": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0\nCopyright (C) 2021 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
       "configure_command": [
         "cmake",
         "-S",
-        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/adapters/fabba/release/recipe",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/adapters/fabba/release/recipe",
         "-B",
-        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/adapters/fabba/release/cmake",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/adapters/fabba/release/cmake",
         "-DCMAKE_BUILD_TYPE=Release",
         "-DCMAKE_CXX_FLAGS=-fno-fast-math -ffp-contract=off",
         "-DCMAKE_C_FLAGS=-fno-fast-math -ffp-contract=off",
@@ -164,31 +178,30 @@
         "-DDEEPZIP_WITH_HDF5=OFF",
         "-DDEEPZIP_WITH_CUDA=OFF",
         "-DDZIP_WITH_HDF5=OFF",
-        "-DDZIP_WITH_CUDA=OFF",
-        "-DTRISTAN_MKL_ROOT=/home/fzg/anaconda3"
+        "-DDZIP_WITH_CUDA=OFF"
       ]
     },
     {
       "kind": "sanitizer",
-      "artifact_sha256": "efba4772eef01793ecbdc8ea12983f9618b4766b7bade281132537604910a548",
-      "compile_commands_sha256": "6bccb760789b879da69094826db4057969aeb1628f800115c94da35fced60c1a",
-      "build_record_sha256": "eb5ea14a332473b2eab82a407b791f214e6fd1454b1c4547d14d3638a9bd78dd",
+      "artifact_sha256": "7298275cefd56129d8356e2764eb35760b90090544a900f5e73299cc66f19e98",
+      "compile_commands_sha256": "880f4d7421c7b788a8ab73414a0b0a880be418f7c23c44dc19d2fcb7cc506766",
+      "build_record_sha256": "5a4428f26d5629094b29279053a54ec149c3638bf000e6f8497efb4d3aa64689",
+      "build_record": "build/port-standard-v30-20261011/adapters/fabba/sanitizer/build-record.json",
       "compiler": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0\nCopyright (C) 2021 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
       "configure_command": [
         "cmake",
         "-S",
-        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/adapters/fabba/sanitizer/recipe",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/adapters/fabba/sanitizer/recipe",
         "-B",
-        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/adapters/fabba/sanitizer/cmake",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/adapters/fabba/sanitizer/cmake",
         "-DCMAKE_BUILD_TYPE=Release",
-        "-DCMAKE_CXX_FLAGS=-fno-fast-math -ffp-contract=off -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer",
-        "-DCMAKE_C_FLAGS=-fno-fast-math -ffp-contract=off -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer",
+        "-DCMAKE_CXX_FLAGS=-fno-fast-math -ffp-contract=off -O1 -g -fsanitize=address,undefined -fsanitize=float-cast-overflow -fno-omit-frame-pointer",
+        "-DCMAKE_C_FLAGS=-fno-fast-math -ffp-contract=off -O1 -g -fsanitize=address,undefined -fsanitize=float-cast-overflow -fno-omit-frame-pointer",
         "-DCMAKE_EXE_LINKER_FLAGS=-no-pie",
         "-DDEEPZIP_WITH_HDF5=OFF",
         "-DDEEPZIP_WITH_CUDA=OFF",
         "-DDZIP_WITH_HDF5=OFF",
-        "-DDZIP_WITH_CUDA=OFF",
-        "-DTRISTAN_MKL_ROOT=/home/fzg/anaconda3"
+        "-DDZIP_WITH_CUDA=OFF"
       ]
     }
   ],
@@ -208,7 +221,8 @@
     "Finite binary64; positive scl; one native worker; no universal error bound.",
     "CORE/PIPELINE/E2E supported using harness session/object boundaries; API-internal staging, framing, model work and decode materialization remain in CORE. Optional native timing unavailable (null).",
     "Independent object profile; streaming/query/random access rejected during planning.",
-    "Synthetic acceptance fixtures establish integration, not real-world performance or quality rankings."
+    "Synthetic acceptance fixtures establish integration, not real-world performance or quality rankings.",
+    "Current C++ standalone/binding tests do not grant fresh source-language parity, complete upstream capability parity or standalone G0-G6 REWRITE_DONE."
   ],
   "unsupported_reason_codes": [
     "TRACK_OR_DTYPE_UNSUPPORTED",
@@ -218,5 +232,5 @@
     "SOURCE_DOMAIN_UNSUPPORTED",
     "ISA_UNSUPPORTED"
   ],
-  "source_onboarding_id": "v2:source-onboarding:sha256:3d0daa37d873c425baab10e957f57b6b234d03f5901b7d4cddd96c620edc8d6a"
+  "source_onboarding_id": "v2:source-onboarding:sha256:120a1f40675357008411662ee9be5a195773bc958bea321470b63fe32ec5b4a6"
 }

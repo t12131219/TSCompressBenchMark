@@ -1,0 +1,119 @@
+{
+  "display_name": "v32_qual_f64_periodic_m4",
+  "expected": {
+    "canonical_raw_bits": 65792,
+    "n_rows": 257,
+    "semantic_content_sha256": "5e839ff6265724b2436296cdd09cc376d7d10b37833ddeaf686a4ddd18b849cf",
+    "shape": [
+      257,
+      4
+    ]
+  },
+  "file": {
+    "bytes": 10882,
+    "format": "canonical",
+    "path": "artifacts/comparisons/v32_20261010/sources/v32_qual_f64_periodic_m4.tscb",
+    "sha256": "279856da2e2548edd88bc3a026e729def7515f94047caa2ced709721cedd839d"
+  },
+  "key": "v32_qual_f64_periodic_m4",
+  "license": {
+    "spdx": "CC0-1.0",
+    "status": "RUN_ALLOWED"
+  },
+  "logical": {
+    "axes": [
+      "time",
+      "feature"
+    ],
+    "n_rows": 257,
+    "nan_is_null": false,
+    "schema_version": "tscb.logical-view.v2",
+    "timestamp": {
+      "epoch": "NOT_APPLICABLE",
+      "order_policy": "PRESERVE",
+      "origin": "NONE",
+      "present": false,
+      "unit": "NOT_APPLICABLE"
+    },
+    "topology": "SYNCHRONOUS_MTS",
+    "validity_shape": "NONE",
+    "value_columns": [
+      {
+        "display_name": "synthetic-0",
+        "dtype": "<f8",
+        "entity": "synthetic",
+        "feature": "channel-0",
+        "name": "synthetic/000000",
+        "shape": [
+          257
+        ],
+        "strides": [
+          8
+        ],
+        "unit": "UNSPECIFIED"
+      },
+      {
+        "display_name": "synthetic-1",
+        "dtype": "<f8",
+        "entity": "synthetic",
+        "feature": "channel-1",
+        "name": "synthetic/000001",
+        "shape": [
+          257
+        ],
+        "strides": [
+          8
+        ],
+        "unit": "UNSPECIFIED"
+      },
+      {
+        "display_name": "synthetic-2",
+        "dtype": "<f8",
+        "entity": "synthetic",
+        "feature": "channel-2",
+        "name": "synthetic/000002",
+        "shape": [
+          257
+        ],
+        "strides": [
+          8
+        ],
+        "unit": "UNSPECIFIED"
+      },
+      {
+        "display_name": "synthetic-3",
+        "dtype": "<f8",
+        "entity": "synthetic",
+        "feature": "channel-3",
+        "name": "synthetic/000003",
+        "shape": [
+          257
+        ],
+        "strides": [
+          8
+        ],
+        "unit": "UNSPECIFIED"
+      }
+    ],
+    "value_shape": [
+      257,
+      4
+    ]
+  },
+  "parser": {
+    "identity_policy": "tscb.dataset-content.v1",
+    "name": "tscb.canonical",
+    "version": "1"
+  },
+  "schema_version": "tscb.canonical-source-manifest.v1",
+  "source": {
+    "notes": "{\"domain_proof\": null, \"first_party_project_reference\": null, \"generation_spec\": {\"dtype\": \"<f8\", \"floating_scale\": \"1/16\", \"formula_version\": \"1\", \"kind\": \"SYNTHETIC\", \"m\": 4, \"n\": 257, \"pattern\": \"periodic\", \"rng\": \"numpy.PCG64\", \"seed\": 20261010}, \"source_lineage_authentication\": \"GENERATOR_FULL_SPEC\", \"source_manifest\": null, \"source_sha256\": null}",
+    "retrieved_at": "LOCAL_GENERATED",
+    "uri": "local:synthetic"
+  },
+  "split": {
+    "learned_eligible": false,
+    "policy": "VALIDATION",
+    "reason": "Frozen whole-object CPU comparison; no learned split or source generalization claimed."
+  }
+}

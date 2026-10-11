@@ -1,0 +1,239 @@
+{
+  "schema_version": "tscb.source-artifact.v2",
+  "key": "simdcomp-d530177",
+  "kind": "VENDORED_UPSTREAM_SOURCE_CLOSURE",
+  "identity": {
+    "kind": "VENDORED_UPSTREAM_SOURCE_CLOSURE",
+    "key": "simdcomp-d530177",
+    "repository": "https://github.com/lemire/simdcomp",
+    "commit": "d5301778fe5045ca8099252de5a6ed8016a287df",
+    "source_closure_sha256": "e3d0170891a12bef696a0a77f2fa789501868d1a019b27b441fa7dbf3730eb18",
+    "patch_series": [
+      {
+        "path": "adapters/simdcomp/patches/0001-fastset-width32-defined-mask.patch",
+        "sha256": "3ee59c3b5b646e9f102adf8ae85f91de6d3507142b18341f3917b37a27538c94"
+      },
+      {
+        "path": "adapters/simdcomp/patches/0002-empty-and-missing-search-bounds.patch",
+        "sha256": "851a521bd796c2f5806c4375d66b1a749cd1f25ace50ba36ee38cc335a8c74b2"
+      },
+      {
+        "path": "adapters/simdcomp/patches/0003-width32-absolute-mutation-semantics.patch",
+        "sha256": "d1a380d6fda4fbb750b6b5d9e0ab3a9014c094ae94dc388e3a398c7a29ede0e0"
+      },
+      {
+        "path": "adapters/simdcomp/patches/avx2/0001-zero-width-unpack-byte-count.patch",
+        "sha256": "1a9fd0334cfa279977cb615dd6f2069536dd253554491f3746432a5e9e2206f6"
+      }
+    ],
+    "selection": "EXACT_WORKBOOK_SOURCE_BENCHMARK_FORMAT_DIFFERENCES_RETAINED",
+    "benchmark_reference": "FastPFOR SIMDBinaryPacking has a different API/wire; original SIMDComp benchmarks retained as references only",
+    "copy_policy": "UNMODIFIED_VENDOR_PLUS_EXPLICIT_BUILD_ONLY_SOURCE_FIXES"
+  },
+  "license": {
+    "spdx": "BSD-3-Clause",
+    "status": "RUN_ALLOWED",
+    "redistribution": "ALLOWED_WITH_LICENSE_NOTICE",
+    "files": [
+      "adapters/simdcomp/vendor/simdcomp/LICENSE"
+    ]
+  },
+  "build": {
+    "recipe": "python tools/build_codec.py simdcomp-u32 --profile all",
+    "patches": [
+      {
+        "path": "adapters/simdcomp/patches/0001-fastset-width32-defined-mask.patch",
+        "sha256": "3ee59c3b5b646e9f102adf8ae85f91de6d3507142b18341f3917b37a27538c94"
+      },
+      {
+        "path": "adapters/simdcomp/patches/0002-empty-and-missing-search-bounds.patch",
+        "sha256": "851a521bd796c2f5806c4375d66b1a749cd1f25ace50ba36ee38cc335a8c74b2"
+      },
+      {
+        "path": "adapters/simdcomp/patches/0003-width32-absolute-mutation-semantics.patch",
+        "sha256": "d1a380d6fda4fbb750b6b5d9e0ab3a9014c094ae94dc388e3a398c7a29ede0e0"
+      },
+      {
+        "path": "adapters/simdcomp/patches/avx2/0001-zero-width-unpack-byte-count.patch",
+        "sha256": "1a9fd0334cfa279977cb615dd6f2069536dd253554491f3746432a5e9e2206f6"
+      }
+    ],
+    "submodules": [],
+    "source_closure": [
+      {
+        "upstream_path": "README.md",
+        "path": "adapters/simdcomp/vendor/simdcomp/README.md",
+        "sha256": "1eed2c2c7bfa96074aa693a869128f93594c5e42999ceb6b923e5159115c0174",
+        "bytes": 10449
+      },
+      {
+        "upstream_path": "LICENSE",
+        "path": "adapters/simdcomp/vendor/simdcomp/LICENSE",
+        "sha256": "97c29b617215c9be39c374d0a8fcbcecc5cbc302a486b1f62966c1981b6dc750",
+        "bytes": 1489
+      },
+      {
+        "upstream_path": "CMakeLists.txt",
+        "path": "adapters/simdcomp/vendor/simdcomp/CMakeLists.txt",
+        "sha256": "fbc179fe5d4c9d507516f4a9f9f32224439f54441beb0f39e7d1ea4d8115b95c",
+        "bytes": 6737
+      },
+      {
+        "upstream_path": "cmake/simdcompConfig.cmake.in",
+        "path": "adapters/simdcomp/vendor/simdcomp/cmake/simdcompConfig.cmake.in",
+        "sha256": "4c1974c149208b8672c0204b917fcac85e4d3f5fa0f755b64a2d9335e73d6a39",
+        "bytes": 112
+      },
+      {
+        "upstream_path": "cmake/simdcomp.pc.in",
+        "path": "adapters/simdcomp/vendor/simdcomp/cmake/simdcomp.pc.in",
+        "sha256": "c68b4b1b572c0736d9f87d5f713c3985d8b711ec894b96f8722d89f1fb1d076f",
+        "bytes": 317
+      },
+      {
+        "upstream_path": "include/simdcomp.h",
+        "path": "adapters/simdcomp/vendor/simdcomp/include/simdcomp.h",
+        "sha256": "fbea7671ab91b9f71b5974a17b6b400b09eb12863c16d4d54b73e11ef6780677",
+        "bytes": 357
+      },
+      {
+        "upstream_path": "include/portability.h",
+        "path": "adapters/simdcomp/vendor/simdcomp/include/portability.h",
+        "sha256": "a92e7df862f1078827b503de9084b2712c226e8e38aec7f9a7ac31ae16abd0c6",
+        "bytes": 2621
+      },
+      {
+        "upstream_path": "include/neon128.h",
+        "path": "adapters/simdcomp/vendor/simdcomp/include/neon128.h",
+        "sha256": "a46aa90ef3a49b3cfd788c6c750553e99823c3ae715f70aed95f84f0a71c1bda",
+        "bytes": 7776
+      },
+      {
+        "upstream_path": "include/simdbitpacking.h",
+        "path": "adapters/simdcomp/vendor/simdcomp/include/simdbitpacking.h",
+        "sha256": "6a1364bce1dd38caa50bbebb0751517b59e077cd3142486aebe8ec03979f605e",
+        "bytes": 3367
+      },
+      {
+        "upstream_path": "include/simdintegratedbitpacking.h",
+        "path": "adapters/simdcomp/vendor/simdcomp/include/simdintegratedbitpacking.h",
+        "sha256": "f36bb3f98b3929bda5fb4e52bcb8e6da6d44995edf0d5e7e68a2acdcce50cbe3",
+        "bytes": 4106
+      },
+      {
+        "upstream_path": "include/simdcomputil.h",
+        "path": "adapters/simdcomp/vendor/simdcomp/include/simdcomputil.h",
+        "sha256": "ca18de5d69bc94e4b01c2e9ed17eff07e5bbef267ce45519c391d9b8a4af105c",
+        "bytes": 1799
+      },
+      {
+        "upstream_path": "include/simdfor.h",
+        "path": "adapters/simdcomp/vendor/simdcomp/include/simdfor.h",
+        "sha256": "7e3f2acc9c612d7bab380f757a908eeada28b6a1168c75e04e96cffb90cc9d6c",
+        "bytes": 3020
+      },
+      {
+        "upstream_path": "include/avxbitpacking.h",
+        "path": "adapters/simdcomp/vendor/simdcomp/include/avxbitpacking.h",
+        "sha256": "d649d6bddf02105c3fca20ac498b8af5de2d44845d574e2d739207b915ea5cbd",
+        "bytes": 932
+      },
+      {
+        "upstream_path": "include/avx512bitpacking.h",
+        "path": "adapters/simdcomp/vendor/simdcomp/include/avx512bitpacking.h",
+        "sha256": "beefa885bb319cc8c5e28f14109ac65ac8760912d5699c08ee0cee4c2a903698",
+        "bytes": 995
+      },
+      {
+        "upstream_path": "src/simdbitpacking.c",
+        "path": "adapters/simdcomp/vendor/simdcomp/src/simdbitpacking.c",
+        "sha256": "96e3e1b2df58e1e81f5e85b261f61a8623b85f60256ab2e2a4aa9e1fea331648",
+        "bytes": 431104
+      },
+      {
+        "upstream_path": "src/simdintegratedbitpacking.c",
+        "path": "adapters/simdcomp/vendor/simdcomp/src/simdintegratedbitpacking.c",
+        "sha256": "7ea00226fd2831bd62a7022df4f3a52ebfe70598cc1946c7db3d3711d6479ee1",
+        "bytes": 660020
+      },
+      {
+        "upstream_path": "src/simdcomputil.c",
+        "path": "adapters/simdcomp/vendor/simdcomp/src/simdcomputil.c",
+        "sha256": "5cd9f4e6ec30087fbf8e7bb9b0faaaeb6a4c046bdd44a2e504c2f3f973b4437e",
+        "bytes": 7813
+      },
+      {
+        "upstream_path": "src/simdfor.c",
+        "path": "adapters/simdcomp/vendor/simdcomp/src/simdfor.c",
+        "sha256": "f69f93cb85053a8c2dda3f6e364d29b211ecba1c10b929d854483a2e440fa34a",
+        "bytes": 403578
+      },
+      {
+        "upstream_path": "src/simdpackedselect.c",
+        "path": "adapters/simdcomp/vendor/simdcomp/src/simdpackedselect.c",
+        "sha256": "fcd7d06d213532b888166757775ebba095a6ace96ecbe772b8cc387a0aec811d",
+        "bytes": 387900
+      },
+      {
+        "upstream_path": "src/simdpackedsearch.c",
+        "path": "adapters/simdcomp/vendor/simdcomp/src/simdpackedsearch.c",
+        "sha256": "5596ea0996048e51cd925409e8a023ee1b7e3e94356c52927f51fb378ab5b642",
+        "bytes": 477264
+      },
+      {
+        "upstream_path": "src/avxbitpacking.c",
+        "path": "adapters/simdcomp/vendor/simdcomp/src/avxbitpacking.c",
+        "sha256": "3243729ab45e9e9a0b1ae3f9eee2c50a7c8905e1bbd2ad43eada3bb49df59237",
+        "bytes": 468328
+      },
+      {
+        "upstream_path": "src/avx512bitpacking.c",
+        "path": "adapters/simdcomp/vendor/simdcomp/src/avx512bitpacking.c",
+        "sha256": "f92d6c0a7c2bc2e016450e77d4d3120b5986b2d5b830226de021e23db5fe6067",
+        "bytes": 469304
+      },
+      {
+        "upstream_path": "tests/unit.c",
+        "path": "adapters/simdcomp/vendor/simdcomp/tests/unit.c",
+        "sha256": "2f7dfe7a8e8292a7bf0a632129ea89e4e97b7cde6e0c934c16d81e7587cd5b76",
+        "bytes": 30460
+      },
+      {
+        "upstream_path": "tests/unit_chars.c",
+        "path": "adapters/simdcomp/vendor/simdcomp/tests/unit_chars.c",
+        "sha256": "1d1c4cd13a6008d246b38c02e2eb34478570ef1b9fa8fb987207dbb5d0bd19ad",
+        "bytes": 3131
+      },
+      {
+        "upstream_path": "example/example.c",
+        "path": "adapters/simdcomp/vendor/simdcomp/example/example.c",
+        "sha256": "be0bd3a8ed0dfebbb2d3ffd1cde05d83414a16c102dc421a4c1654aa95ebbdf2",
+        "bytes": 6866
+      },
+      {
+        "upstream_path": "benchmarks/benchmark.c",
+        "path": "adapters/simdcomp/vendor/simdcomp/benchmarks/benchmark.c",
+        "sha256": "02fc6ec9af68b754ffed1e345eba9f9bd90612c8b0e1cf0a2ee29731fd1b475b",
+        "bytes": 6614
+      },
+      {
+        "upstream_path": "benchmarks/bitpackingbenchmark.cpp",
+        "path": "adapters/simdcomp/vendor/simdcomp/benchmarks/bitpackingbenchmark.cpp",
+        "sha256": "dfe003c3277e49f97ec156d815316d526e5848a2b1927a54403646d7688ad69a",
+        "bytes": 6036
+      }
+    ],
+    "translation_units": [
+      "adapters/simdcomp/native/tscb_simdcomp.c",
+      "adapters/simdcomp/native/avx2_bridge.c",
+      "adapters/simdcomp/vendor/simdcomp/src/simdbitpacking.c",
+      "adapters/simdcomp/vendor/simdcomp/src/simdintegratedbitpacking.c",
+      "adapters/simdcomp/vendor/simdcomp/src/simdfor.c",
+      "adapters/simdcomp/vendor/simdcomp/src/simdcomputil.c",
+      "adapters/simdcomp/vendor/simdcomp/src/simdpackedselect.c",
+      "adapters/simdcomp/vendor/simdcomp/src/simdpackedsearch.c",
+      "adapters/simdcomp/vendor/simdcomp/src/avxbitpacking.c"
+    ],
+    "admission_card": "adapters/simdcomp/SOURCE_ADMISSION.md"
+  }
+}

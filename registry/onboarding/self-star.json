@@ -120,24 +120,144 @@
     {
       "status": "PASS",
       "name": "current standalone original differential",
-      "log_sha256": "59b3e64d3a8df0a271b7b95efade732a05acbc65b6d4875ab7649325be62f1f6"
+      "log_sha256": "59b3e64d3a8df0a271b7b95efade732a05acbc65b6d4875ab7649325be62f1f6",
+      "evidence_kind": "HISTORICAL_OR_SEPARATE_UPSTREAM_EVIDENCE"
     },
     {
       "status": "PASS",
       "name": "ASan/UBSan native ABI qualification",
-      "log_sha256": "708b60a5cb37d83a792d65a9aecad74e1a53d7960d2baefe77187f0f9953553f"
+      "log_sha256": "708b60a5cb37d83a792d65a9aecad74e1a53d7960d2baefe77187f0f9953553f",
+      "evidence_kind": "HISTORICAL_OR_SEPARATE_UPSTREAM_EVIDENCE"
+    },
+    {
+      "algorithm": "self-star",
+      "profile": "release",
+      "name": "current build dependency and finite native API verification",
+      "status": "PASS",
+      "evidence": {
+        "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/qualification.json",
+        "sha256": "b86173f34c30d175552de327cc446dd8480aa02dd7a9ae56f12f60c0d93db174"
+      },
+      "evidence_kind": "CURRENT_REAL_BUILD_DEPENDENCIES_WITH_SELECTED_NATIVE_TESTS",
+      "native_suite_status": "PASS",
+      "source_full_parity": "NOT_ASSERTED"
+    },
+    {
+      "algorithm": "self-star",
+      "profile": "sanitizer",
+      "name": "current build dependency and finite native API verification",
+      "status": "PASS",
+      "evidence": {
+        "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/qualification.json",
+        "sha256": "b86173f34c30d175552de327cc446dd8480aa02dd7a9ae56f12f60c0d93db174"
+      },
+      "evidence_kind": "CURRENT_REAL_BUILD_DEPENDENCIES_WITH_SELECTED_NATIVE_TESTS",
+      "native_suite_status": "PASS",
+      "source_full_parity": "NOT_ASSERTED"
+    },
+    {
+      "name": "current finite ABI and independently executed source differential",
+      "status": "PASS_SCOPED",
+      "evidence_kind": "CURRENT_INDEPENDENT_EVIDENCE_SCOPES",
+      "native_qualification": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v4/qualification.json",
+        "sha256": "4435d1ab23ceb5e7ae58c360d2bd85e66d2b299472afd3890fb3ebff0c721f7c"
+      },
+      "source_qualification": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/source-oracles-final/report.json",
+        "sha256": "710455285c5de0c424803115b904945628b9d8ab5797366148d3c5a3d7f862fe"
+      },
+      "source_package": "self-star",
+      "source_case_count": 89,
+      "case_status_counts": {
+        "PASS": 89
+      },
+      "legal_source_cases": 89,
+      "source_end_marker_cases": 0,
+      "network_cases": 6,
+      "archived_source_failure_native_rejection_cases": 0,
+      "fresh_original_java_executed": true,
+      "archived_rejections_fresh_original_java_executed": false,
+      "source_test_scope": "FRESH_ORIGINAL_JAVA_SOURCE_AND_CANONICAL_CORE_CLI_DIFFERENTIAL",
+      "source_full_parity": "NOT_GRANTED",
+      "standalone_g0_g6": "NOT_GRANTED",
+      "complete_n1_compile_link_trace": "NOT_GRANTED"
+    },
+    {
+      "name": "current finite ABI and independently executed source differential",
+      "status": "PASS_SCOPED",
+      "evidence_kind": "CURRENT_INDEPENDENT_EVIDENCE_SCOPES",
+      "native_qualification": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v4/qualification.json",
+        "sha256": "4435d1ab23ceb5e7ae58c360d2bd85e66d2b299472afd3890fb3ebff0c721f7c"
+      },
+      "source_qualification": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/source-oracles-final/report.json",
+        "sha256": "710455285c5de0c424803115b904945628b9d8ab5797366148d3c5a3d7f862fe"
+      },
+      "source_package": "self-star",
+      "source_case_count": 89,
+      "case_status_counts": {
+        "PASS": 89
+      },
+      "legal_source_cases": 89,
+      "source_end_marker_cases": 0,
+      "network_cases": 6,
+      "archived_source_failure_native_rejection_cases": 0,
+      "fresh_original_java_executed": true,
+      "archived_rejections_fresh_original_java_executed": false,
+      "source_test_scope": "FRESH_ORIGINAL_JAVA_SOURCE_AND_CANONICAL_CORE_CLI_DIFFERENTIAL",
+      "source_full_parity": "NOT_GRANTED",
+      "standalone_g0_g6": "NOT_GRANTED",
+      "complete_n1_compile_link_trace": "NOT_GRANTED"
     }
   ],
   "builds": [
     {
       "kind": "release",
       "artifact_sha256": "f81a8481f021488620df94f4e0de6bce451cb4090def1ff04ed9759fc987bad3",
-      "compile_commands_sha256": "0458dd091a9d55f85d99149f17c4e61a700e0ca5b5d1f1152440d690ef3009b6"
+      "compile_commands_sha256": "f1b1161698d837784bff3548b8d263e435fcd3196694288c66b517144011eb9c",
+      "evidence_kind": "HISTORICAL_BUILD_RECORD"
     },
     {
       "kind": "sanitizer",
-      "artifact_sha256": "d920fb9b19bd2bf7778dff0053d4d0122ce40c65d713682138a33afccb6f2274",
-      "compile_commands_sha256": "5d45dfbce4d303826488507082b2c396a3188e6cde07fbdf43091d9361db88fb"
+      "artifact_sha256": "febf493d45946e43ddc0e237b010a51dee9aa847ed9e18590c1318982cf896b2",
+      "compile_commands_sha256": "e7ab03455d07c0808d2074fc56081a5fa64a40315579aa190f856c1c8f753af6",
+      "evidence_kind": "HISTORICAL_BUILD_RECORD"
+    },
+    {
+      "algorithm": "self-star",
+      "profile": "RELEASE",
+      "artifact_sha256": "f81a8481f021488620df94f4e0de6bce451cb4090def1ff04ed9759fc987bad3",
+      "compile_commands_sha256": "7b9e67436cbc39846242f32079587742cba43a1a0ebd347b39392b63a47dd98d",
+      "compiler": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0",
+      "evidence_kind": "CURRENT_REAL_BUILD_DEPENDENCIES_VERIFIED",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/self_star/release/build-record.json",
+        "sha256": "aed562e0ea244659f86ffbbe75dbb77cd14ea47647f7f16a03fdf42ba83cea36"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/self_star/release/libtscb_self_star.so",
+        "sha256": "f81a8481f021488620df94f4e0de6bce451cb4090def1ff04ed9759fc987bad3"
+      },
+      "qualification_scope": "BUILD_CLOSURE_AND_SELECTED_FINITE_NATIVE_SUITE_NOT_SOURCE_FULL_PARITY"
+    },
+    {
+      "algorithm": "self-star",
+      "profile": "SANITIZER",
+      "artifact_sha256": "febf493d45946e43ddc0e237b010a51dee9aa847ed9e18590c1318982cf896b2",
+      "compile_commands_sha256": "1c3856f9eec4921bacb72c6d7109df11c8d7882793c8a14e77ffd1c549091768",
+      "compiler": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0",
+      "evidence_kind": "CURRENT_REAL_BUILD_DEPENDENCIES_VERIFIED",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/self_star/sanitizer/build-record.json",
+        "sha256": "8f68c6fbb3f0a4c17fc91a3b435e34968373f8f8917e8941e5c7b49957558f25"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/self_star/sanitizer/libtscb_self_star.so",
+        "sha256": "febf493d45946e43ddc0e237b010a51dee9aa847ed9e18590c1318982cf896b2"
+      },
+      "qualification_scope": "BUILD_CLOSURE_AND_SELECTED_FINITE_NATIVE_SUITE_NOT_SOURCE_FULL_PARITY"
     }
   ],
   "license_decision": {
@@ -150,7 +270,10 @@
     "Full standalone frames charged as opaque bytes; wrapper components exact",
     "No registered query/random-access/incremental Benchmark streaming profile",
     "Preserve source domain; no raw fallback",
-    "Standalone multi-block source state preserved in SElfStar sessions"
+    "Standalone multi-block source state preserved in SElfStar sessions",
+    "2026-10-11: new isolated builds pin actual per-TU compiler dependencies, objects, selected toolchain executables and linked dynamic runtime files. These records do not pin every implicit static startup/runtime archive and do not grant source FULL_PARITY or change active algorithm scope. Historical runs retain their original artifact identities.",
+    "Fresh source differential tests shared canonical C++ cores through isolated CLI builds; registered libraries and Python wrappers have separate finite API tests. Declared build hashes do not grant full N1 trace, G0-G6 or all source capabilities.",
+    "Fresh source differential tests shared canonical C++ cores through isolated CLI builds; registered libraries and Python wrappers have separate finite API tests. Declared build hashes do not grant full N1 trace, G0-G6 or all source capabilities."
   ],
   "unsupported_reason_codes": [
     "TRACK_OR_DTYPE_UNSUPPORTED",
@@ -160,5 +283,5 @@
     "VALIDITY_UNSUPPORTED",
     "TIMING_SCOPE_UNSUPPORTED"
   ],
-  "source_onboarding_id": "v2:source-onboarding:sha256:c3d0c795deae9329584139cf8201dd621ed975766568889866a721bf0a8c958c"
+  "source_onboarding_id": "v2:source-onboarding:sha256:7b96716f946de20da511fd6eb0d153a6e062e9bc2129725611919e57b03697a4"
 }

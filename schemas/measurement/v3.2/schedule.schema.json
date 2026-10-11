@@ -1,0 +1,144 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "tscb.schedule.v3.2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "run_set_id",
+    "protocol_id",
+    "seed",
+    "blocks",
+    "rounds_per_block",
+    "max_retries",
+    "randomization",
+    "dataset_methods",
+    "trials",
+    "schedule_id"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "tscb.schedule.v3.2"
+    },
+    "run_set_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "protocol_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "seed": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9223372036854775807
+    },
+    "blocks": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 9223372036854775807
+    },
+    "rounds_per_block": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 9223372036854775807
+    },
+    "max_retries": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 10
+    },
+    "randomization": {
+      "const": "SHA256_KEYED_ORDER_V1"
+    },
+    "dataset_methods": {
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": {
+        "type": "string",
+        "minLength": 1
+      },
+      "additionalProperties": {
+        "type": "object",
+        "minProperties": 1,
+        "propertyNames": {
+          "type": "string",
+          "minLength": 1
+        },
+        "additionalProperties": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "trials": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 1000000,
+      "items": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "tscb.schedule-trial.v3.2",
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "trial_id",
+          "pair_id",
+          "dataset_id",
+          "method_id",
+          "execution_job_id",
+          "block_index",
+          "round_index",
+          "repetition_index",
+          "sequence_index"
+        ],
+        "properties": {
+          "trial_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "pair_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "dataset_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "method_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "execution_job_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "block_index": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9223372036854775807
+          },
+          "round_index": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9223372036854775807
+          },
+          "repetition_index": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9223372036854775807
+          },
+          "sequence_index": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9223372036854775807
+          }
+        }
+      }
+    },
+    "schedule_id": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "description": "Runtime regenerates the complete schedule from the frozen design and seed and verifies every trial and identity."
+}

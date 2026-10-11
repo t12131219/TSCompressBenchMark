@@ -8,7 +8,10 @@ from tscompbench.runner import execute_run_set, initialize_run_set, report_run_s
 ROOT = Path(__file__).resolve().parents[2]
 
 
-def test_lzss_dipperstein_five_layer_qualification_and_append_only_resume(tmp_path):
+def test_lzss_dipperstein_five_layer_qualification_and_append_only_resume(
+    tmp_path,
+    assert_current_artifact_evidence,
+):
     config = ROOT / "configs/experiments/lzss-dipperstein-c-qualification.toml"
     run = initialize_run_set(config, tmp_path / "runs", run_set_id="lzss-dipperstein-five-layer")
     datasets = DatasetRegistry(ROOT / "registry/datasets", ROOT)
@@ -21,9 +24,7 @@ def test_lzss_dipperstein_five_layer_qualification_and_append_only_resume(tmp_pa
     raw = (run.path / "run_components.jsonl").read_bytes()
     evidence = json.loads(raw)
     assert evidence["diagnostics"]["same_repetition_correctness_and_measurement"]
-    assert evidence["accounting"]["final_bits"] == (
-        evidence["accounting"]["final_physical_bytes"] * 8
-    )
+    assert_current_artifact_evidence(run.path, evidence)
     assert evidence["finalize_bytes"] == 0
     assert evidence["timing"]["native_encode_wall_ns"] > 0
     assert evidence["timing"]["native_decode_wall_ns"] > 0

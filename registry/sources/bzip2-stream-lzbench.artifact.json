@@ -19,10 +19,12 @@
     "spdx": "bzip2-1.0.6",
     "status": "RUN_ALLOWED",
     "redistribution": "ALLOWED_WITH_LICENSE_NOTICE",
-    "files": ["adapters/bzip2_stream/vendor/bzip2/LICENSE"]
+    "files": [
+      "adapters/bzip2_stream/vendor/bzip2/LICENSE"
+    ]
   },
   "build": {
-    "recipe": "PYTHONPATH=src conda run -n CompressBench14 python tools/build_codec.py bzip2-stream --profile all",
+    "recipe": "PYTHONPATH=src conda run -n CompressBench14 python tools/build_codec.py bzip2-stream --profile all --output-root build/port-standard-v30-20261011/native-builds-v3",
     "patches": [],
     "submodules": [],
     "translation_units": [
@@ -35,7 +37,62 @@
       "adapters/bzip2_stream/vendor/bzip2/decompress.c",
       "adapters/bzip2_stream/vendor/bzip2/bzlib.c"
     ],
-    "release_artifact": "build/adapters/bzip2_stream/release/libtscb_bzip2_stream.so",
-    "sanitizer_artifact": "build/adapters/bzip2_stream/sanitizer/libtscb_bzip2_stream.so"
+    "release_artifact": "build/port-standard-v30-20261011/native-builds-v3/bzip2_stream/release/libtscb_bzip2_stream.so",
+    "sanitizer_artifact": "build/port-standard-v30-20261011/native-builds-v3/bzip2_stream/sanitizer/libtscb_bzip2_stream.so",
+    "current_build_records": [
+      {
+        "algorithm": "bzip2-stream",
+        "profile": "release",
+        "record": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/bzip2_stream/release/build-record.json",
+          "sha256": "30b5b04cea7fe76ece6ecad152e531d0e019951a04f5d1078325d324ad326eaf"
+        },
+        "artifact": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/bzip2_stream/release/libtscb_bzip2_stream.so",
+          "sha256": "7bc7954041f804700160177fe1d3808aecdda7664b98143a1107e3213e079e4b"
+        },
+        "compile_commands_sha256": "4caef584345ebf26192a59f7dfae339486e49ada4f24596169203728d5f9727a",
+        "dependency_capture": "ACTUAL_PER_TU_MD_COMPILATION_AND_LINK"
+      },
+      {
+        "algorithm": "bzip2-stream",
+        "profile": "sanitizer",
+        "record": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/bzip2_stream/sanitizer/build-record.json",
+          "sha256": "9050a659aef21b50dee04fa28ab447432212b5b0d062555a7cc94a96c7766a0d"
+        },
+        "artifact": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/bzip2_stream/sanitizer/libtscb_bzip2_stream.so",
+          "sha256": "13ae1bda03234d074664ad03d9105d6fc34d52aa7362414ba98436e296ad92e7"
+        },
+        "compile_commands_sha256": "2d67c345ae8eef17b6bac6e5c0d8184387a645cf31da64fdcd77b8455a31fa62",
+        "dependency_capture": "ACTUAL_PER_TU_MD_COMPILATION_AND_LINK"
+      }
+    ],
+    "current_native_qualification": [
+      {
+        "algorithm": "bzip2-stream",
+        "profile": "release",
+        "build_dependency_status": "PASS",
+        "native_suite_status": "PASS",
+        "evidence": {
+          "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/qualification.json",
+          "sha256": "b86173f34c30d175552de327cc446dd8480aa02dd7a9ae56f12f60c0d93db174"
+        },
+        "source_full_parity": "NOT_ASSERTED"
+      },
+      {
+        "algorithm": "bzip2-stream",
+        "profile": "sanitizer",
+        "build_dependency_status": "PASS",
+        "native_suite_status": "PASS",
+        "evidence": {
+          "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/qualification.json",
+          "sha256": "b86173f34c30d175552de327cc446dd8480aa02dd7a9ae56f12f60c0d93db174"
+        },
+        "source_full_parity": "NOT_ASSERTED"
+      }
+    ],
+    "current_build_dependency_scope": "ACTUAL_PER_TU_MD_HEADERS_OBJECTS_SELECTED_TOOLCHAIN_AND_DYNAMIC_RUNTIME_PARTIAL_STATIC_LINK_CLOSURE"
   }
 }

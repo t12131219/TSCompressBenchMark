@@ -2,15 +2,13 @@ from __future__ import annotations
 
 import bz2
 import hashlib
-import subprocess
-import sys
 from pathlib import Path
 
 import numpy as np
 import pytest
 
-from tscompbench.adapters import Bzip2StreamAdapter
 from tscompbench.adapters.bzip2_stream import Bzip2StreamSession
+from tscompbench.adapters.factory import create_adapter
 from tscompbench.codecs import CodecRegistry, SourceRegistry
 from tscompbench.contracts import BenchmarkTrack
 from tscompbench.execution.protocol import ExecutionContractError, LogicalBuffer, RoutedInput
@@ -19,19 +17,12 @@ from tscompbench.execution.routing import hash_logical_buffers
 from tscompbench.validation import run_boundary_suite
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
-LIBRARY = PROJECT_ROOT / "build/adapters/bzip2_stream/release/libtscb_bzip2_stream.so"
 
 
 def _adapter_and_manifest():
-    if not LIBRARY.is_file():
-        subprocess.run(
-            [sys.executable, "tools/build_codec.py", "bzip2-stream", "--profile", "release"],
-            cwd=PROJECT_ROOT,
-            check=True,
-        )
     sources = SourceRegistry(PROJECT_ROOT / "registry/sources")
     manifest = CodecRegistry(PROJECT_ROOT / "registry/codecs", sources).get("bzip2-stream")
-    return Bzip2StreamAdapter(LIBRARY, manifest.document["adapter"]), manifest
+    return create_adapter(PROJECT_ROOT, manifest), manifest
 
 
 def _route(n: int = 4) -> RoutedInput:
@@ -98,9 +89,7 @@ def test_framework_boundary_suite():
     assert report.passed, [item for item in report.observations if item.status != "PASS"]
 
 
-@pytest.mark.parametrize(
-    "mutation", ["truncated", "trailing", "concatenated", "crc", "header"]
-)
+@pytest.mark.parametrize("mutation", ["truncated", "trailing", "concatenated", "crc", "header"])
 def test_decoder_rejects_nonexact_or_corrupt_streams(mutation):
     adapter, _ = _adapter_and_manifest()
     result = perform_roundtrip(adapter, _route(32), {"compression_level": 9})

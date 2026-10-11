@@ -14,7 +14,7 @@ from tscompbench.datasets import DatasetRegistry
 from tscompbench.runner import execute_run_set, initialize_run_set, report_run_set
 
 ROOT = Path(__file__).resolve().parents[1]
-KEYS = ("simdcomp-u32", "delta-simdcomp-u32", "for-simdcomp-u32")
+KEYS = ("simdcomp-u32",)
 
 
 def main() -> None:

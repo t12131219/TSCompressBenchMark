@@ -15,29 +15,45 @@
     "lz/xz/src/liblzma/lz/lz_decoder.c"
   ],
   "public_api_files": [
-    "lz/xz/src/liblzma/api/lzma.h", "lz/xz/src/liblzma/api/lzma/container.h"
+    "lz/xz/src/liblzma/api/lzma.h",
+    "lz/xz/src/liblzma/api/lzma/container.h"
   ],
-  "benchmark_files": ["bench/lz_codecs.cpp", "bench/lzbench.h", "Makefile"],
+  "benchmark_files": [
+    "bench/lz_codecs.cpp",
+    "bench/lzbench.h",
+    "Makefile"
+  ],
   "test_files": [
-    "lz/xz/tests/test_index.c", "lz/xz/tests/test_vli.c",
+    "lz/xz/tests/test_index.c",
+    "lz/xz/tests/test_vli.c",
     "adapters/xz_stream/tests/abi_smoke.c",
     "adapters/xz_stream/tests/vendor_roundtrip.c",
     "adapters/xz_stream/tests/symbol_interposition.c",
     "adapters/xz_stream/tests/run_native_tests.py",
     "tests/adapters/test_xz_stream.py"
   ],
-  "license_files": ["lz/xz/COPYING", "lz/xz/COPYING.0BSD"],
+  "license_files": [
+    "lz/xz/COPYING",
+    "lz/xz/COPYING.0BSD"
+  ],
   "third_party_dependencies": [],
-  "object_level_candidates": ["P1_STANDALONE_CODEC"],
+  "object_level_candidates": [
+    "P1_STANDALONE_CODEC"
+  ],
   "input_contract": {
-    "kind": "BYTE_VIEW", "length_type": "size_t", "alignment_bytes": 1,
-    "zero_length": "SUPPORTED", "ownership": "BORROWED_DURING_CALL",
+    "kind": "BYTE_VIEW",
+    "length_type": "size_t",
+    "alignment_bytes": 1,
+    "zero_length": "SUPPORTED",
+    "ownership": "BORROWED_DURING_CALL",
     "mutation": "FORBIDDEN_BY_ADAPTER_CONTRACT"
   },
   "output_contract": {
     "kind": "XZ_LZMA2_IN_TSCB_DESCRIPTOR_CONTAINER",
-    "self_contained": true, "actual_written_length": true,
-    "capacity_is_not_size": true, "framing": "ONE_XZ_STREAM",
+    "self_contained": true,
+    "actual_written_length": true,
+    "capacity_is_not_size": true,
+    "framing": "ONE_XZ_STREAM",
     "checksum": "NO_DATA_CHECK_MANDATORY_STRUCTURAL_CRC32",
     "dictionary": "NO_EXTERNAL_DICTIONARY_INTERNAL_LZMA2_WINDOW"
   },
@@ -65,19 +81,48 @@
       "name": "vendored liblzma CTest",
       "command": "ctest --test-dir build/adapters/xz_stream/<profile>/vendor-build --output-on-failure -R ^test_[a-z_]+$",
       "status": "PASS",
-      "evidence": "Release and ASan/UBSan: filter_flags/filter_str/index/index_hash/stream_flags/vli PASS. Six disabled-feature tests SKIP: bcj_exact_size/block_header/check/hardware/lzip_decoder/memlimit. CLI shell suites excluded; native-tests.log preserves actual results."
+      "evidence": "Release and ASan/UBSan: filter_flags/filter_str/index/index_hash/stream_flags/vli PASS. Six disabled-feature tests SKIP: bcj_exact_size/block_header/check/hardware/lzip_decoder/memlimit. CLI shell suites excluded; native-tests.log preserves actual results.",
+      "evidence_kind": "HISTORICAL_OR_SEPARATE_UPSTREAM_EVIDENCE"
     },
     {
       "name": "project direct vendored API harness",
       "command": "conda run -n CompressBench14 python adapters/xz_stream/tests/run_native_tests.py",
       "status": "PASS",
-      "evidence": "100 deterministic cases seed 20260918, presets 0-9, Release and ASan/UBSan; lzma_easy_buffer_encode/lzma_stream_buffer_decode. This is not lzbench's multithreaded entrypoint."
+      "evidence": "100 deterministic cases seed 20260918, presets 0-9, Release and ASan/UBSan; lzma_easy_buffer_encode/lzma_stream_buffer_decode. This is not lzbench's multithreaded entrypoint.",
+      "evidence_kind": "HISTORICAL_OR_SEPARATE_UPSTREAM_EVIDENCE"
     },
     {
       "name": "project ABI lifecycle and competing global symbols",
       "command": "run_native_tests.py: abi_smoke and LD_PRELOAD symbol_interposition",
       "status": "PASS",
-      "evidence": "Empty/tiny/64-KiB tails, exact bound and canaries, input immutability, independent decode, structural CRC corruption, trailing-byte rejection, capacity errors, mandatory/repeated Finalize, reset and counters. Competing global lzma_easy_buffer_encode cannot replace bound vendor function."
+      "evidence": "Empty/tiny/64-KiB tails, exact bound and canaries, input immutability, independent decode, structural CRC corruption, trailing-byte rejection, capacity errors, mandatory/repeated Finalize, reset and counters. Competing global lzma_easy_buffer_encode cannot replace bound vendor function.",
+      "evidence_kind": "HISTORICAL_OR_SEPARATE_UPSTREAM_EVIDENCE"
+    },
+    {
+      "algorithm": "xz-stream",
+      "profile": "release",
+      "name": "current build dependency and finite native API verification",
+      "status": "PASS",
+      "evidence": {
+        "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/qualification.json",
+        "sha256": "b86173f34c30d175552de327cc446dd8480aa02dd7a9ae56f12f60c0d93db174"
+      },
+      "evidence_kind": "CURRENT_REAL_BUILD_DEPENDENCIES_WITH_SELECTED_NATIVE_TESTS",
+      "native_suite_status": "PASS",
+      "source_full_parity": "NOT_ASSERTED"
+    },
+    {
+      "algorithm": "xz-stream",
+      "profile": "sanitizer",
+      "name": "current build dependency and finite native API verification",
+      "status": "PASS",
+      "evidence": {
+        "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/qualification.json",
+        "sha256": "b86173f34c30d175552de327cc446dd8480aa02dd7a9ae56f12f60c0d93db174"
+      },
+      "evidence_kind": "CURRENT_REAL_BUILD_DEPENDENCIES_WITH_SELECTED_NATIVE_TESTS",
+      "native_suite_status": "PASS",
+      "source_full_parity": "NOT_ASSERTED"
     }
   ],
   "builds": [
@@ -86,18 +131,56 @@
       "artifact_sha256": "edaefa8d7630d607405baecee40acfe53cb8df628baf37750d6d1bb4ec7214bb",
       "compile_commands_sha256": "9c9f52d9bb36222599109e9ecd476aab4e2455a1f4e4537b63977519efae36b6",
       "compiler": "GCC 11.4.0",
-      "flags": "-O3 -DNDEBUG -std=c11 -fPIC; static PIC liblzma, XZ_THREADS=no, lzma1/lzma2 only, CRC32 only, specialized dispatch/SIMD disabled, LZMA_LZ_DECODER_CONFIG=1; -Wl,-Bsymbolic-functions -Wl,--no-undefined; complete dependency commands and archive hash persisted"
+      "flags": "-O3 -DNDEBUG -std=c11 -fPIC; static PIC liblzma, XZ_THREADS=no, lzma1/lzma2 only, CRC32 only, specialized dispatch/SIMD disabled, LZMA_LZ_DECODER_CONFIG=1; -Wl,-Bsymbolic-functions -Wl,--no-undefined; complete dependency commands and archive hash persisted",
+      "evidence_kind": "HISTORICAL_BUILD_RECORD"
     },
     {
       "profile": "ASAN_UBSAN_SCALAR_SINGLE_THREAD",
       "artifact_sha256": "8efca409eac0618078228fcf71f5fd65e9d18c661e3faa7d3409ea4b5582f1bb",
       "compile_commands_sha256": "7a3bdadd604b291c9057927b4d1cb8c2965166be464f9f17d3031e3bd5753127",
       "compiler": "GCC 11.4.0",
-      "flags": "-O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined; same scalar single-thread dependency configuration and local ELF function binding"
+      "flags": "-O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined; same scalar single-thread dependency configuration and local ELF function binding",
+      "evidence_kind": "HISTORICAL_BUILD_RECORD"
+    },
+    {
+      "algorithm": "xz-stream",
+      "profile": "RELEASE",
+      "artifact_sha256": "edaefa8d7630d607405baecee40acfe53cb8df628baf37750d6d1bb4ec7214bb",
+      "compile_commands_sha256": "5b5850ed2a6445b5ecf7bcc9780261b7434db9e3f594480a6eb2f0d9120475f1",
+      "compiler": "cc (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0",
+      "evidence_kind": "CURRENT_REAL_BUILD_DEPENDENCIES_VERIFIED",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/xz_stream/release/build-record.json",
+        "sha256": "127cb6d348f4a8ce66d188e3a7764e6f4891a18024d063562cb5624395e0f2fc"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/xz_stream/release/libtscb_xz_stream.so",
+        "sha256": "edaefa8d7630d607405baecee40acfe53cb8df628baf37750d6d1bb4ec7214bb"
+      },
+      "qualification_scope": "BUILD_CLOSURE_AND_SELECTED_FINITE_NATIVE_SUITE_NOT_SOURCE_FULL_PARITY"
+    },
+    {
+      "algorithm": "xz-stream",
+      "profile": "SANITIZER",
+      "artifact_sha256": "531da0b6db69ab6c4243bf356831472967c856cc3ccfbe7eb0f829284173ea56",
+      "compile_commands_sha256": "a36ed80b48ae0db2a869621216222a21431e9036babd580fb2fbe31c4b69aa28",
+      "compiler": "cc (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0",
+      "evidence_kind": "CURRENT_REAL_BUILD_DEPENDENCIES_VERIFIED",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/xz_stream/sanitizer/build-record.json",
+        "sha256": "b841b2c1d683b80315339c12c2295df71f1a36b55daab2ae8156b8e9dc2de44e"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/xz_stream/sanitizer/libtscb_xz_stream.so",
+        "sha256": "531da0b6db69ab6c4243bf356831472967c856cc3ccfbe7eb0f829284173ea56"
+      },
+      "qualification_scope": "BUILD_CLOSURE_AND_SELECTED_FINITE_NATIVE_SUITE_NOT_SOURCE_FULL_PARITY"
     }
   ],
   "license_decision": {
-    "spdx": "0BSD", "status": "RUN_ALLOWED", "redistribution": "ALLOWED_WITH_RETAINED_LICENSE_FILES"
+    "spdx": "0BSD",
+    "status": "RUN_ALLOWED",
+    "redistribution": "ALLOWED_WITH_RETAINED_LICENSE_FILES"
   },
   "known_limitations": [
     "Spreadsheet Value-Compress!B9 lists LZMA / xz. The registered xz profile uses persistent lzma_code() LZMA2 contexts; raw LZMA/.lzma, EXTREME, BCJ/delta, dictionaries and multithreading remain unregistered.",
@@ -108,12 +191,17 @@
     "Decoder memory limit is 1 GiB; worker resource isolation remains separately enforced. Index presence does not advertise random access or query capability.",
     "Clean upstream comparison 9fc6f5cd8774ebef8d4e030f7081fb6984c0dc3f also reports 5.8.3 but differs in index/stream-buffer decoder/API/hardware files. No sources are mixed; lzma2_encoder.c is byte-identical.",
     "LeakSanitizer is disabled under host ptrace policy; ASan/UBSan remain enabled. XZ_SANDBOX=no affects unused vendor CLI build configuration, not Python framework process isolation.",
-    "Default VALUE national_illness formal qualification does not claim formal performance coverage of every dataset, track or preset."
+    "Default VALUE national_illness formal qualification does not claim formal performance coverage of every dataset, track or preset.",
+    "2026-10-11: new isolated builds pin actual per-TU compiler dependencies, objects, selected toolchain executables and linked dynamic runtime files. These records do not pin every implicit static startup/runtime archive and do not grant source FULL_PARITY or change active algorithm scope. Historical runs retain their original artifact identities."
   ],
   "unsupported_reason_codes": [
-    "EXECUTION_ARTIFACT_MISSING", "VALIDITY_SHAPE_UNSUPPORTED",
-    "DICTIONARY_MODE_NOT_REGISTERED", "CHECKSUM_MODE_NOT_REGISTERED",
-    "QUERY_UNSUPPORTED", "STREAMING_PROTOCOL_NOT_REGISTERED",
+    "EXECUTION_ARTIFACT_MISSING",
+    "VALIDITY_SHAPE_UNSUPPORTED",
+    "DICTIONARY_MODE_NOT_REGISTERED",
+    "CHECKSUM_MODE_NOT_REGISTERED",
+    "QUERY_UNSUPPORTED",
+    "STREAMING_PROTOCOL_NOT_REGISTERED",
     "SINGLE_UPDATE_LENGTH_LIMIT"
-  ]
+  ],
+  "source_onboarding_id": "v2:source-onboarding:sha256:e46342aeae3fb25a8284f98075f9387ce5ea94a3d95b77c34e943d019910e63e"
 }

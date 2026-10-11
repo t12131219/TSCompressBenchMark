@@ -3,15 +3,13 @@ from __future__ import annotations
 import ctypes
 import hashlib
 import json
-import subprocess
-import sys
 import tomllib
 from pathlib import Path
 
 import numpy as np
 import pytest
 
-from tscompbench.adapters import LzssDippersteinAdapter
+from tscompbench.adapters.factory import create_adapter
 from tscompbench.adapters.lzss_dipperstein import LzssDippersteinSession
 from tscompbench.adapters.lzss_raw import _PREFIX, _buffer
 from tscompbench.codecs import CodecRegistry, SourceRegistry, validate_onboarding_card
@@ -23,25 +21,26 @@ from tscompbench.planning import expand_sweep
 from tscompbench.validation import run_boundary_suite
 
 ROOT = Path(__file__).resolve().parents[2]
-LIBRARY = ROOT / "build/adapters/lzss_dipperstein_c/release/libtscb_lzss_dipperstein_c.so"
 
 
 def _adapter():
-    if not LIBRARY.is_file():
-        subprocess.run(
-            [sys.executable, "tools/build_codec.py", "lzss-dipperstein-c"], cwd=ROOT, check=True
-        )
     registry = CodecRegistry(ROOT / "registry/codecs", SourceRegistry(ROOT / "registry/sources"))
     manifest = registry.get("lzss-dipperstein-c")
-    return LzssDippersteinAdapter(LIBRARY, manifest.document["adapter"]), manifest
+    return create_adapter(ROOT, manifest), manifest
 
 
 def _route(n=8):
     bits = np.resize(
         np.asarray(
             [
-                0, 0x8000000000000000, 0x7FF0000000000000, 0xFFF0000000000000,
-                0x7FF8000000000001, 0x7FF8000000000123, 1, 0x3FF0000000000001,
+                0,
+                0x8000000000000000,
+                0x7FF0000000000000,
+                0xFFF0000000000000,
+                0x7FF8000000000001,
+                0x7FF8000000000123,
+                1,
+                0x3FF0000000000001,
             ],
             dtype="<u8",
         ),
@@ -55,8 +54,13 @@ def _route(n=8):
         for index, array in enumerate(arrays)
     )
     return RoutedInput(
-        dataset_id="dataset:lzss-dipperstein", track=BenchmarkTrack.VALUE, buffers=buffers,
-        timestamp_reference=None, validity_reference=None, n=n, m=2,
+        dataset_id="dataset:lzss-dipperstein",
+        track=BenchmarkTrack.VALUE,
+        buffers=buffers,
+        timestamp_reference=None,
+        validity_reference=None,
+        n=n,
+        m=2,
         canonical_raw_bits=sum(item.logical_bits for item in buffers),
         input_sha256=hash_logical_buffers(buffers),
     )
@@ -159,8 +163,7 @@ def test_reject_partial_tokens_extra_bytes_and_nonzero_padding(mutation):
 
 @pytest.mark.parametrize(
     "key,value",
-    [("offset_bits", 11), ("length_bits", 5), ("initial_byte", 0),
-     ("match_finder", "BRUTE_FORCE")],
+    [("offset_bits", 11), ("length_bits", 5), ("initial_byte", 0), ("match_finder", "BRUTE_FORCE")],
 )
 def test_fixed_variant_is_not_silently_changed(key, value):
     adapter, _ = _adapter()
@@ -203,9 +206,7 @@ def test_native_golden_vector_bound_canary_state_reset_and_timing():
 
 def test_source_closure_digest_and_pinned_identity():
     root = ROOT / "adapters/lzss_dipperstein/vendor/lzss"
-    source = json.loads(
-        (ROOT / "registry/sources/lzss-dipperstein-c.artifact.json").read_text()
-    )
+    source = json.loads((ROOT / "registry/sources/lzss-dipperstein-c.artifact.json").read_text())
     files = sorted(path for path in root.rglob("*") if path.is_file())
     digest = hashlib.sha256()
     for path in files:

@@ -7,19 +7,23 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-import numpy as np
-
 from tscompbench.accounting import AccountingLedger
 from tscompbench.contracts import BenchmarkTrack
 from tscompbench.execution.protocol import (
     DecodedOutput,
     ExecutionContractError,
-    LogicalBuffer,
     OutputCapacityError,
     RoutedInput,
 )
 from tscompbench.ids import canonical_json_bytes
 
+from .byte_container import (
+    DEFAULT_MAX_OUTPUT_BYTES,
+    MAX_METADATA_BYTES,
+    decode_byte_payload,
+    parse_byte_metadata,
+    validate_byte_descriptors,
+)
 from .native_timing import NativeTimingProbe
 
 _ABI_VERSION = 1
@@ -105,9 +109,7 @@ class _NativeLibrary:
             )
         )
         if status != _STATUS_OK:
-            raise ExecutionContractError(
-                "LZSS adapter failed to expose its native manifest"
-            )
+            raise ExecutionContractError("LZSS adapter failed to expose its native manifest")
         manifest = json.loads(ctypes.string_at(manifest_pointer, manifest_length.value))
         if manifest.get("algorithm") != variant.algorithm:
             raise ExecutionContractError("loaded C ABI artifact is not the LZSS adapter")
@@ -117,9 +119,7 @@ class _NativeLibrary:
             or manifest.get("checksum") != "NONE"
             or manifest.get("threading") != "SINGLE_THREAD"
         ):
-            raise ExecutionContractError(
-                "LZSS artifact violates the registered execution mode"
-            )
+            raise ExecutionContractError("LZSS artifact violates the registered execution mode")
 
     def _bind(self) -> None:
         library = self.library
@@ -173,24 +173,20 @@ class _LzssSession:
         self._native = _NativeLibrary(library_path, self._VARIANT)
         self._handle = ctypes.c_void_p()
         config = canonical_json_bytes(
-            {
-                key: parameters.get(key, value)
-                for key, value in self._VARIANT.native_config.items()
-            }
+            {key: parameters.get(key, value) for key, value in self._VARIANT.native_config.items()}
         )
         status = int(
             self._native.library.tscb_create(config, len(config), ctypes.byref(self._handle))
         )
         if status != _STATUS_OK or not self._handle.value:
-            raise ExecutionContractError(
-                f"native LZSS adapter create failed with status {status}"
-            )
+            raise ExecutionContractError(f"native LZSS adapter create failed with status {status}")
         self._updated = False
         self._finalized = False
         self._header = b""
         try:
             self._native_timing = NativeTimingProbe(
-                self._native.library, self._handle,
+                self._native.library,
+                self._handle,
                 enabled=bool(parameters.get("native_timing", True)),
             )
         except Exception:
@@ -305,11 +301,13 @@ class _LzssSession:
         magic, header_length = _PREFIX.unpack_from(stream)
         if magic != cls._VARIANT.magic:
             raise ExecutionContractError("invalid LZSS container magic")
+        if header_length > MAX_METADATA_BYTES:
+            raise ExecutionContractError("byte container metadata exceeds decoder resource limit")
         header_end = _PREFIX.size + header_length
         if header_end > len(stream):
             raise ExecutionContractError("truncated LZSS container metadata")
         try:
-            header = json.loads(stream[_PREFIX.size : header_end].decode("utf-8"))
+            header = parse_byte_metadata(stream[_PREFIX.size : header_end])
         except (UnicodeDecodeError, json.JSONDecodeError) as error:
             raise ExecutionContractError("invalid LZSS container metadata") from error
         if not isinstance(header, dict):
@@ -337,9 +335,7 @@ class _LzssSession:
 
         while produced < expected_bytes:
             literal = read(1)
-            token = read(
-                8 if literal else cls._VARIANT.offset_bits + cls._VARIANT.length_bits
-            )
+            token = read(8 if literal else cls._VARIANT.offset_bits + cls._VARIANT.length_bits)
             length_mask = (1 << cls._VARIANT.length_bits) - 1
             produced += 1 if literal else (token & length_mask) + cls._VARIANT.minimum_match
             if produced > expected_bytes:
@@ -354,9 +350,7 @@ class _LzssSession:
             raise ExecutionContractError("accounting before finalize is forbidden")
         header, raw_stream = self._parse_container(stream)
         if canonical_json_bytes(header) != self._header:
-            raise ExecutionContractError(
-                "LZSS descriptor metadata changed after compression"
-            )
+            raise ExecutionContractError("LZSS descriptor metadata changed after compression")
         parts = self._inspect_lzss_stream(
             raw_stream, sum(item.array.nbytes for item in routed.buffers)
         )
@@ -380,36 +374,15 @@ class _LzssSession:
             **components,
         )
 
-    def decompress(self, stream: bytes) -> DecodedOutput:
+    def decompress(
+        self, stream: bytes, *, max_output_bytes: int = DEFAULT_MAX_OUTPUT_BYTES
+    ) -> DecodedOutput:
         header, frame = self._parse_container(stream)
-        descriptors = header.get("buffers")
-        if not isinstance(descriptors, list):
-            raise ExecutionContractError("LZSS container has no buffer descriptors")
-        output_bytes = 0
-        names: set[str] = set()
-        for item in descriptors:
-            try:
-                dtype = np.dtype(item["dtype"])
-                shape = item["shape"]
-                length = item["payload_bytes"]
-                if (dtype.str not in {"<i8", "<i4", "<i2", "|i1", "<u8", "<u4",
-                                      "<u2", "|u1", "<f8", "<f4"}
-                        or not isinstance(shape, list) or not 1 <= len(shape) <= 4
-                        or any(type(n) is not int or n < 0 for n in shape)
-                        or type(length) is not int or length < 0
-                        or type(item["logical_bits"]) is not int
-                        or item["logical_bits"] != length * 8
-                        or not isinstance(item["name"], str) or item["name"] in names):
-                    raise ValueError("descriptor outside registered contract")
-                size = dtype.itemsize
-                for n in shape:
-                    size *= n
-                if size != length:
-                    raise ValueError("shape/length mismatch")
-                output_bytes += length
-                names.add(item["name"])
-            except (KeyError, ValueError, TypeError) as error:
-                raise ExecutionContractError("invalid LZSS buffer descriptor") from error
+        descriptors, output_bytes = validate_byte_descriptors(
+            header, max_output_bytes=max_output_bytes
+        )
+        if any(item["dtype"] == "|b1" for item in descriptors):
+            raise ExecutionContractError("LZSS descriptor dtype outside registered contract")
         self._inspect_lzss_stream(frame, output_bytes)
         input_storage = bytearray(frame) if frame else bytearray(1)
         output_storage = bytearray(max(1, output_bytes))
@@ -425,36 +398,13 @@ class _LzssSession:
         self._check(status, "decompress")
         if int(output_buffer.used_bytes) != output_bytes:
             raise ExecutionContractError("LZSS decoded byte count does not match metadata")
-        payload = memoryview(output_storage)[:output_bytes]
-        cursor = 0
-        decoded: list[LogicalBuffer] = []
-        for descriptor in descriptors:
-            length = int(descriptor["payload_bytes"])
-            dtype = np.dtype(str(descriptor["dtype"]))
-            shape = tuple(int(value) for value in descriptor["shape"])
-            expected = int(np.prod(shape, dtype=np.int64)) * dtype.itemsize
-            if expected != length or cursor + length > output_bytes:
-                raise ExecutionContractError("LZSS descriptor shape/dtype is inconsistent")
-            array = np.frombuffer(payload[cursor : cursor + length], dtype=dtype).copy()
-            array = array.reshape(shape)
-            array.flags.writeable = False
-            decoded.append(
-                LogicalBuffer(
-                    name=str(descriptor["name"]),
-                    array=array,
-                    logical_bits=int(descriptor["logical_bits"]),
-                )
-            )
-            cursor += length
-        if cursor != output_bytes:
-            raise ExecutionContractError("LZSS container contains undeclared decoded bytes")
-        return DecodedOutput(tuple(decoded))
+        return decode_byte_payload(
+            header, memoryview(output_storage)[:output_bytes], max_output_bytes=max_output_bytes
+        )
 
     def close(self) -> None:
         if self._handle.value:
             status = int(self._native.library.tscb_destroy(self._handle))
             self._handle = ctypes.c_void_p()
             if status != _STATUS_OK:
-                raise ExecutionContractError(
-                    f"native LZSS adapter destroy failed ({status})"
-                )
+                raise ExecutionContractError(f"native LZSS adapter destroy failed ({status})")

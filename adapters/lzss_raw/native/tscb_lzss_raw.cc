@@ -1,8 +1,6 @@
 #include "tscb_native_timing.h"
+#include "lzss_raw_codec.h"
 #include <cstddef>
-
-extern "C" uint32_t lzss_encode(const void*, size_t, void*, size_t, size_t*, void*);
-extern "C" uint32_t lzss_decode(const void*, size_t, void*, size_t, void*);
 
 #include <cinttypes>
 #include <cstdint>
@@ -26,7 +24,7 @@ static const char TSCB_MANIFEST_JSON[] =
     "{\"abi_version\":1,\"algorithm\":\"lzss-raw\","
     "\"checksum\":\"NONE\",\"framing\":\"NONE\","
     "\"dictionary\":\"NONE\","
-    "\"library\":\"alexkazik-lzss-0.9.1-safe\","
+    "\"library\":\"tscb-alexkazik-lzss-0.9.1-cpp\","
     "\"stream\":\"LZSS_EI10_EJ4_C32\",\"threading\":\"SINGLE_THREAD\"}";
 
 static void set_error(tscb_codec_handle_v1* handle, const char* message) {
@@ -55,42 +53,7 @@ static bool disjoint(const tscb_buffer_v1* input, const tscb_buffer_v1* output) 
         || a + input->used_bytes <= b || b + output->capacity_bytes <= a;
 }
 
-// Validate framing without implementing or substituting the native decoder.
-static bool strict_stream(const uint8_t* data, uint64_t length, uint64_t expected) {
-    uint64_t bit = 0, produced = 0;
-    auto read = [&](unsigned count, uint32_t& value) {
-        if (bit + count > length * 8U) return false;
-        value = 0;
-        for (unsigned i = 0; i < count; ++i, ++bit)
-            value = (value << 1U) | ((data[bit / 8U] >> (7U - bit % 8U)) & 1U);
-        return true;
-    };
-    while (produced < expected) {
-        uint32_t flag, token;
-        if (!read(1, flag) || !read(flag ? 8 : 14, token)) return false;
-        produced += flag ? 1 : (token & 15U) + 2U;
-        if (produced > expected) return false;
-    }
-    if (length * 8U - bit > 7U) return false;
-    uint32_t padding;
-    return read(static_cast<unsigned>(length * 8U - bit), padding) && padding == 0;
-}
-
 extern "C" {
-
-__attribute__((visibility("hidden"))) uint64_t tscb_lzss_clock(void* opaque) {
-    return tscb_native_now(static_cast<tscb_native_timer*>(opaque));
-}
-
-__attribute__((visibility("hidden"))) void tscb_lzss_interval(
-    void* opaque, uint32_t decode, uint64_t start, uint64_t end
-) {
-    auto* timer = static_cast<tscb_native_timer*>(opaque);
-    if (!timer->enabled || !timer->available) return;
-    uint64_t& total = decode ? timer->decode_ns : timer->encode_ns;
-    if (end < start || UINT64_MAX - total < end - start) timer->available = 0;
-    else total += end - start;
-}
 
 TSCB_NATIVE_TIMING_API
 
@@ -189,27 +152,16 @@ tscb_status_v1 tscb_compress(
         set_error(handle, "LZSS compression requires literal worst-case capacity");
         return TSCB_STATUS_DST_TOO_SMALL_V1;
     }
-    static const char empty = 0;
-    const char* source = input->data == nullptr
+    static const uint8_t empty = 0;
+    const uint8_t* source = input->data == nullptr
         ? &empty
-        : static_cast<const char*>(input->data);
+        : static_cast<const uint8_t*>(input->data);
     size_t written = 0;
-    try {
-        uint32_t encoded;
-        encoded = lzss_encode(
-            source, static_cast<size_t>(input->used_bytes), output->data,
-            static_cast<size_t>(output->capacity_bytes), &written, &handle->native_timer);
-        if (encoded == 7) {
-            handle->native_timer.available = 0;
-            set_error(handle, "LZSS Rust source panicked; no unwind crossed FFI");
-            return TSCB_STATUS_CODEC_ERROR_V1;
-        }
-        if (encoded != 0) { set_error(handle, "LZSS source encode failed"); return static_cast<tscb_status_v1>(encoded); }
-    } catch (...) {
-        set_error(handle, "LZSS RawCompress raised an exception");
-        handle->native_timer.available = 0;
-        return TSCB_STATUS_CODEC_ERROR_V1;
-    }
+    // Validation and capacity rejection precede the first output write. The
+    // actual codec uses only fixed stack buffers and has a noexcept API.
+    TSCB_TIME_CODEC(handle->native_timer, encode_ns,
+        written = tscb_lzss_raw::encode(source, static_cast<size_t>(input->used_bytes),
+                                      static_cast<uint8_t*>(output->data)));
     if (written > output->capacity_bytes) {
         set_error(handle, "LZSS RawCompress exceeded the declared output capacity");
         return TSCB_STATUS_CODEC_ERROR_V1;
@@ -259,21 +211,20 @@ tscb_status_v1 tscb_decompress(
         return TSCB_STATUS_INVALID_ARGUMENT_V1;
     }
     if (input->used_bytes > UINT32_MAX || output->capacity_bytes > UINT32_MAX
-        || !strict_stream(static_cast<const uint8_t*>(input->data), input->used_bytes,
-                          output->capacity_bytes)) {
+        || !tscb_lzss_raw::strict_stream(static_cast<const uint8_t*>(input->data),
+                                        static_cast<size_t>(input->used_bytes),
+                                        static_cast<size_t>(output->capacity_bytes))) {
         set_error(handle, "invalid LZSS token coverage, decoded length or padding");
         return TSCB_STATUS_CODEC_ERROR_V1;
     }
     static uint8_t empty = 0;
-    uint32_t decoded;
-    decoded = lzss_decode(
-        input->data == nullptr ? &empty : input->data,
-        static_cast<size_t>(input->used_bytes),
-        output->data == nullptr ? &empty : output->data,
-        static_cast<size_t>(output->capacity_bytes), &handle->native_timer);
-    if (decoded == 7) handle->native_timer.available = 0;
-    if (decoded != 0) { set_error(handle, "LZSS exact source decode failed"); return TSCB_STATUS_CODEC_ERROR_V1; }
     size_t expected = static_cast<size_t>(output->capacity_bytes);
+    TSCB_TIME_CODEC(handle->native_timer, decode_ns,
+        tscb_lzss_raw::decode(
+            input->data == nullptr ? &empty : static_cast<const uint8_t*>(input->data),
+            static_cast<size_t>(input->used_bytes),
+            output->data == nullptr ? &empty : static_cast<uint8_t*>(output->data),
+            expected));
 
     output->used_bytes = expected;
     return TSCB_STATUS_OK_V1;

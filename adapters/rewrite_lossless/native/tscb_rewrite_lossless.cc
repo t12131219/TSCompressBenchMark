@@ -6,8 +6,6 @@
 #include "elf_plus.hpp"
 #elif TSCB_REWRITE_KIND == 4
 #include "self_star.hpp"
-#elif TSCB_REWRITE_KIND == 5
-#include "prometheus_xor_chunk.hpp"
 #elif TSCB_REWRITE_KIND == 6
 #include "elf_vldb.hpp"
 #elif TSCB_REWRITE_KIND == 7
@@ -41,8 +39,6 @@ Header header(const std::uint8_t* p,std::size_t n,bool frame){
     need(p[5]==TSCB_REWRITE_KIND&&(h.width==4||h.width==8)&&h.columns&&h.block&&h.block<=65535&&h.rows<=max_elements/h.columns,"invalid dimensions");
 #if TSCB_REWRITE_KIND == 4
     need(h.block<=16384&&(h.rows+h.block-1)/h.block<=1024&&h.rows*h.width<=16777216,"SElfStar session limits");
-#elif TSCB_REWRITE_KIND == 5
-    need(h.width==8,"Prometheus joint chunk requires binary64");
 #elif TSCB_REWRITE_KIND == 6
     need(h.block<=16384,"Elf block limit");
 #elif TSCB_REWRITE_KIND == 7
@@ -52,7 +48,7 @@ Header header(const std::uint8_t* p,std::size_t n,bool frame){
     if(frame){
         need(h.records==(TSCB_REWRITE_KIND==4?(h.rows?h.columns:0):nb*h.columns),"record count mismatch");
         need(load(p+n-8,8)==hash(p,n-8),"native checksum mismatch");
-    }else need(n==20+(h.rows*h.columns+(TSCB_REWRITE_KIND==5?h.rows:0))*h.width,"input length mismatch");
+    }else need(n==20+(h.rows*h.columns)*h.width,"input length mismatch");
     return h;
 }
 std::uint64_t bound(const Header& h){
@@ -70,8 +66,6 @@ std::uint64_t bound(const Header& h){
         b=elf_vldb::compress_bound(count,static_cast<elf_vldb::Width>(h.width*8));
 #elif TSCB_REWRITE_KIND == 7
         b=elf_star::compress_bound(count,static_cast<elf_star::Width>(h.width*8));
-#elif TSCB_REWRITE_KIND == 5
-        auto s=prometheus_xor::max_compressed_size(count,&b);need(s.ok(),s.message);
 #endif
         result+=h.columns*(12+b);
     }return result;
@@ -80,7 +74,7 @@ std::uint64_t bound(const Header& h){
 Bytes encode(const std::uint8_t* p,std::size_t size){
     auto h=header(p,size,false);Bytes out(p,p+20);std::memcpy(out.data(),"RWF1",4);
     const auto nb=(h.rows+h.block-1)/h.block;store(out,TSCB_REWRITE_KIND==4?(h.rows?h.columns:0):nb*h.columns,8);
-    auto values=p+20+(TSCB_REWRITE_KIND==5?h.rows*8:0);
+    auto values=p+20;
     for(unsigned col=0;col<h.columns;col++){
 #if TSCB_REWRITE_KIND == 4
         if(!h.rows)continue;
@@ -98,11 +92,6 @@ Bytes encode(const std::uint8_t* p,std::size_t size){
             bytes=elf_vldb::compress(q,count,static_cast<elf_vldb::Width>(h.width*8)).bytes;
 #elif TSCB_REWRITE_KIND == 7
             bytes=elf_star::compress(q,count,static_cast<elf_star::Width>(h.width*8)).bytes;
-#elif TSCB_REWRITE_KIND == 5
-            std::vector<prometheus_xor::Sample> samples(count);
-            for(std::size_t i=0;i<count;i++){const auto t=load(p+20+(start+i)*8,8);std::memcpy(&samples[i].timestamp,&t,8);samples[i].value_bits=load(q+i*8,8);}
-            std::size_t n=0;auto status=prometheus_xor::max_compressed_size(count,&n);need(status.ok(),status.message);bytes.resize(n);
-            status=prometheus_xor::encode(samples.data(),count,bytes.data(),bytes.size(),&n);need(status.ok(),status.message);bytes.resize(n);
 #endif
             store(out,count,4);store(out,bytes.size(),8);out.insert(out.end(),bytes.begin(),bytes.end());
         }
@@ -112,7 +101,7 @@ Bytes encode(const std::uint8_t* p,std::size_t size){
 }
 Bytes decode(const std::uint8_t* p,std::size_t size){
     auto h=header(p,size,true);need(size<=bound(h),"encoded object exceeds bound");
-    const auto tv=TSCB_REWRITE_KIND==5?h.rows*8:0;Bytes out(static_cast<std::size_t>(h.rows*h.columns*h.width+tv));std::size_t pos=28;
+    const auto tv=0;Bytes out(static_cast<std::size_t>(h.rows*h.columns*h.width+tv));std::size_t pos=28;
     const auto nb=(h.rows+h.block-1)/h.block;
     for(unsigned col=0;col<h.columns;col++){
         const auto records=TSCB_REWRITE_KIND==4?(h.rows?1:0):nb;
@@ -131,10 +120,6 @@ Bytes decode(const std::uint8_t* p,std::size_t size){
 #elif TSCB_REWRITE_KIND == 4
             auto session=self_star::decompress(p+pos,static_cast<std::size_t>(len));need(!session.network&&static_cast<unsigned>(session.width)==h.width*8&&session.blocks.size()==nb,"SElfStar identity/block count mismatch");
             for(std::size_t i=0;i<session.blocks.size();i++){const auto& b=session.blocks[i];need(b.size()==std::min<std::uint64_t>(h.block,h.rows-i*h.block)*h.width,"SElfStar block geometry mismatch");decoded.insert(decoded.end(),b.begin(),b.end());}
-#elif TSCB_REWRITE_KIND == 5
-            std::vector<prometheus_xor::Sample> samples(static_cast<std::size_t>(count));std::size_t written=0;auto status=prometheus_xor::decode(p+pos,static_cast<std::size_t>(len),samples.data(),samples.size(),&written);need(status.ok(),status.message);need(written==count,"Prometheus count mismatch");
-            for(std::size_t i=0;i<samples.size();i++){std::uint64_t t;std::memcpy(&t,&samples[i].timestamp,8);Bytes bits;store(bits,t,8);
-                if(col==0)std::memcpy(out.data()+(start+i)*8,bits.data(),8);else need(std::memcmp(out.data()+(start+i)*8,bits.data(),8)==0,"T/V pairing mismatch across columns");store(decoded,samples[i].value_bits,8);}
 #endif
             need(decoded.size()==count*h.width,"decoded record size mismatch");if(!decoded.empty())std::memcpy(out.data()+tv+(col*h.rows+start)*h.width,decoded.data(),decoded.size());pos+=static_cast<std::size_t>(len);
         }

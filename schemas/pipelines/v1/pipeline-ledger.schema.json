@@ -1,0 +1,45 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "canonical_raw_bits",
+    "payload_physical_bits",
+    "metadata_physical_bits",
+    "final_bits",
+    "artifact_physical_bits",
+    "required_external_bits"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "tscb.pipeline-ledger.v1"
+    },
+    "canonical_raw_bits": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "payload_physical_bits": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "metadata_physical_bits": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "final_bits": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "artifact_physical_bits": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "required_external_bits": {
+      "type": "integer",
+      "minimum": 0
+    }
+  },
+  "title": "Bit ledger of the actual finalized P2 frame and all child streams",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "tscb.pipeline-ledger.v1"
+}

@@ -21,15 +21,12 @@ def _registries() -> tuple[SourceRegistry, CodecRegistry]:
 
 def test_codec_manifests_reference_audited_sources_and_have_stable_ids() -> None:
     sources, codecs = _registries()
-    assert len(codecs) == 67
-    assert "fastpfor-simple8b-rle-u32" in codecs.keys()
-    assert {
-        "littleintpacker-pack32-u32",
-        "littleintpacker-turbo-u32",
-        "littleintpacker-sc-u32",
-        "littleintpacker-bmi2-u32",
-        "littleintpacker-horizontal-u32",
-    } <= set(codecs.keys())
+    scope = json.loads((PROJECT_ROOT / "registry/algorithm_scope.json").read_text())
+    assert len(codecs) == 40
+    assert not set(scope["removed_codecs"]) & set(codecs.keys())
+    assert not set(scope["removed_codec_aliases"]) & {
+        item["key"] for item in codecs.alias_documents()
+    }
     assert {
         "chimp",
         "chimp128",
@@ -37,7 +34,6 @@ def test_codec_manifests_reference_audited_sources_and_have_stable_ids() -> None
         "elf-plus",
         "elf-star",
         "self-star",
-        "prometheus-xor-chunk",
     } <= set(codecs.keys())
     assert "alp" in codecs.keys()
     assert "alp-rd" in codecs.keys()
@@ -63,7 +59,6 @@ def test_codec_manifests_reference_audited_sources_and_have_stable_ids() -> None
     assert "lz4-frame" in codecs.keys()
     assert "zstd-frame" in codecs.keys()
     assert "snappy-raw" in codecs.keys()
-    assert "delta-varint" in codecs.keys()
     first = {item.key: item.algorithm_id for item in codecs.verify_all()}
     second = {
         item.key: item.algorithm_id
@@ -73,13 +68,13 @@ def test_codec_manifests_reference_audited_sources_and_have_stable_ids() -> None
     assert all(codecs.get(key).source_artifact_id in sources for key in codecs.keys())
 
 
-def test_all_221_logical_source_entries_are_classified_without_auto_qualification() -> None:
+def test_active_logical_source_entries_are_classified_without_auto_qualification() -> None:
     sources, codecs = _registries()
     report = classify_logical_entries(
         sources.catalog, codecs.root / "logical_classification_rules.json"
     )
-    assert report["entry_count"] == 221
-    assert len({item["classification_id"] for item in report["entries"]}) == 221
+    assert report["entry_count"] == sources.catalog["summary"]["logical_entry_count"] == 176
+    assert len({item["classification_id"] for item in report["entries"]}) == report["entry_count"]
     assert all(
         item["independent_algorithm_decision"]
         in {"PENDING_SOURCE_ONBOARDING_REVIEW", "REFERENCE_ONLY_NO_ALGORITHM_ID"}

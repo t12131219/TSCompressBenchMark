@@ -11,11 +11,11 @@ from audit_simdcomp_sdk import audit, require, sha
 
 from tscompbench.codecs import validate_onboarding_card
 from tscompbench.ids import canonical_json_bytes, stable_id
-from tscompbench.preprocess.simdcomp import EXECUTOR_IDS, STAGE_SPECS
 
+EXECUTOR_IDS, STAGE_SPECS = ({}, {})
 ROOT = Path(__file__).resolve().parents[1]
 ADAPTER = ROOT / "adapters/simdcomp"
-KEYS = {"simdcomp-u32": "PLAIN", "delta-simdcomp-u32": "DELTA", "for-simdcomp-u32": "FOR"}
+KEYS = {"simdcomp-u32": "PLAIN"}
 
 
 def write(path: Path, document: dict) -> None:
@@ -40,8 +40,7 @@ def main() -> None:
         "source_closure_sha256": hashlib.sha256(canonical_json_bytes(lock["files"])).hexdigest(),
         "patch_series": patches,
         "selection": "EXACT_WORKBOOK_SOURCE_BENCHMARK_FORMAT_DIFFERENCES_RETAINED",
-        "benchmark_reference": "FastPFOR SIMDBinaryPacking has a different API/wire; "
-        "original SIMDComp benchmarks retained as references only",
+        "benchmark_reference": "FastPFOR SIMDBinaryPacking has a different API/wire; original SIMDComp benchmarks retained as references only",
         "copy_policy": "UNMODIFIED_VENDOR_PLUS_EXPLICIT_BUILD_ONLY_SOURCE_FIXES",
     }
     source_id = stable_id("source-artifact", identity)
@@ -81,9 +80,9 @@ def main() -> None:
             "admission_card": "adapters/simdcomp/SOURCE_ADMISSION.md",
         },
     }
-    base = json.loads((ROOT / "registry/codecs/maskedvbyte-u32.json").read_text())
-    base_card = json.loads((ROOT / "registry/onboarding/maskedvbyte-u32.json").read_text())
-    documents, cards = [], []
+    base = json.loads((ROOT / "registry/codecs/simdcomp-u32.json").read_text())
+    base_card = json.loads((ROOT / "registry/onboarding/simdcomp-u32.json").read_text())
+    documents, cards = ([], [])
     for key, coding in KEYS.items():
         pipeline = coding != "PLAIN"
         document = copy.deepcopy(base)
@@ -117,7 +116,9 @@ def main() -> None:
         apis = (
             ["MASKED", "WITHOUTMASK"]
             if coding == "DELTA"
-            else (["LENGTH", "FULL"] if coding == "FOR" else ["LENGTH", "MASKED", "WITHOUTMASK"])
+            else ["LENGTH", "FULL"]
+            if coding == "FOR"
+            else ["LENGTH", "MASKED", "WITHOUTMASK"]
         )
         document["parameters"] = {
             "type": "object",

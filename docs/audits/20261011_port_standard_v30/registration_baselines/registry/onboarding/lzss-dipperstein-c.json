@@ -1,0 +1,120 @@
+{
+  "schema_version": "tscb.source-onboarding.v2",
+  "source_artifact_id": "v2:source-artifact:sha256:4c20671bce63b0af5096ff01677e538f12c25d15d74075b8790e8c758ac256a9",
+  "repository": "https://github.com/MichaelDipperstein/lzss",
+  "commit": "65b6882ff1cc225f9c6fcd947def7b1adb21d578",
+  "dirty": false,
+  "submodules": [
+    {
+      "path": "bitfile",
+      "repository": "https://github.com/MichaelDipperstein/bitfile",
+      "commit": "2e6132f75cbe16842a9ab81af7756ed9ac1cdbe0"
+    }
+  ],
+  "implementation_files": ["lzss.c", "tree.c", "bitfile/bitfile.c"],
+  "public_api_files": ["lzss.h", "lzlocal.h", "bitfile/bitfile.h"],
+  "benchmark_files": ["README"],
+  "test_files": ["adapters/lzss_dipperstein/native/qualification.c"],
+  "license_files": [
+    "COPYING", "COPYING.LESSER", "bitfile/COPYING", "bitfile/COPYING.LESSER"
+  ],
+  "third_party_dependencies": [
+    {
+      "name": "MichaelDipperstein/bitfile",
+      "commit": "2e6132f75cbe16842a9ab81af7756ed9ac1cdbe0"
+    }
+  ],
+  "object_level_candidates": ["P1_STANDALONE_CODEC"],
+  "input_contract": {
+    "kind": "BYTE_VIEW",
+    "length_type": "uint32_t registered work limit",
+    "zero_length": "SUPPORTED_BY_ABI_EMPTY_STREAM_FAST_PATH",
+    "ownership": "BORROWED_DURING_CALL",
+    "mutation": "FORBIDDEN",
+    "overlap": "FORBIDDEN_AND_CHECKED",
+    "alignment_bytes": 1,
+    "safe_overread_bytes": 0
+  },
+  "output_contract": {
+    "kind": "LZSS_OFFSET12_LE_NUMERIC_LENGTH4_MSB_BIT_IO_WITH_TSCB_DESCRIPTORS",
+    "self_contained": true,
+    "actual_written_length": true,
+    "capacity_is_not_size": true,
+    "checksum": "NONE"
+  },
+  "lifecycle_contract": {
+    "output_bound": "n + ceil(n/8); every literal costs 9 bits and every reference costs 17 bits for at least 3 bytes",
+    "return_length": "open_memstream exact byte count",
+    "error_codes": "tscb_status_v1 with strict prevalidation",
+    "finalize": "REQUIRED_NOOP_ONE_SHOT_FINALIZE; upstream bitfile flush occurs in EncodeLZSS",
+    "reset": "NEW_CONTEXT_PER_OBJECT; ABI reset clears state and timing"
+  },
+  "stream_components": {
+    "outer_container": "12-byte unique prefix plus canonical dtype/shape/name/track descriptors",
+    "raw_format": "MSB-first bit I/O; literal 1+8 bits; reference 0 then offset low byte + offset high nibble + 4-bit adjusted length on the qualified little-endian host",
+    "dictionary": "fixed 4096-byte space-filled window; binary-tree matcher; no external bits",
+    "padding": "0..7 zero low bits, independently inspected and charged",
+    "decode_validation": "exact token coverage and decoded length before the EOF-tolerant upstream decoder",
+    "accounting": "exact token, padding, descriptor and prefix bits from the finalized physical stream"
+  },
+  "upstream_tests": [
+    {
+      "profile": "release",
+      "suite": "project-abi-qualification-48-roundtrips-hostile-streams",
+      "status": "PASS",
+      "log_sha256": "c50e10cf9ede3151bec789ea824b4a5c26102366e3411e752ff0c56e36710686",
+      "evidence": "build/source-audits/lzss-dipperstein-native-tests-20260919.log"
+    },
+    {
+      "profile": "sanitizer",
+      "suite": "project-abi-qualification-48-roundtrips-hostile-streams",
+      "status": "PASS",
+      "log_sha256": "c50e10cf9ede3151bec789ea824b4a5c26102366e3411e752ff0c56e36710686",
+      "evidence": "build/source-audits/lzss-dipperstein-native-tests-20260919.log"
+    },
+    {
+      "profile": "release",
+      "suite": "patched-vs-unmodified-upstream-bitstream-48-cases",
+      "status": "PASS",
+      "log_sha256": "c50e10cf9ede3151bec789ea824b4a5c26102366e3411e752ff0c56e36710686",
+      "evidence": "build/source-audits/lzss-dipperstein-native-tests-20260919.log"
+    }
+  ],
+  "builds": [
+    {
+      "kind": "release",
+      "profile": "release",
+      "artifact_sha256": "64639cd65686096f31d46137ae2b70f8ab028e3f673152866e4e53e92f24d8e5",
+      "compile_commands_sha256": "ee3fe90a553387275d7e5a373e7ddaaf78756cb4695a29691cc8e00e2942cad5",
+      "compiler": "cc (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0"
+    },
+    {
+      "kind": "sanitizer",
+      "profile": "sanitizer",
+      "artifact_sha256": "288d655eac391629bda6c46f65e72684226efd1079e4f79c989d0cabb26c7491",
+      "compile_commands_sha256": "0efde503aae550a0e658d5bec7e71f2afa2321fbe474e8015593977d0345076b",
+      "compiler": "cc (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0"
+    }
+  ],
+  "license_decision": {
+    "spdx": "LGPL-3.0-or-later",
+    "status": "RUN_ALLOWED",
+    "redistribution": "ALLOWED_SUBJECT_TO_LGPL_3_OR_LATER"
+  },
+  "known_limitations": [
+    "This is an explicitly requested independent C LZSS AlgorithmID, not the spreadsheet-selected alexkazik/lzss implementation; results must not be merged or directly ranked as the same implementation.",
+    "Fixed offset12/length4, space-filled 4096-byte window, binary-tree matcher, scalar single-thread execution only.",
+    "Upstream compressor and matcher use static global work state, so concurrent calls in one process are forbidden.",
+    "The vendored 12-file closure remains byte-identical. A hashed build patch removes binary-tree sentinel out-of-bounds accesses; patched/unmodified release streams match on 48 retained cases.",
+    "The ABI emits/accepts the canonical empty stream without entering upstream bitfile code because upstream EncodeLZSS leaks its bitfile wrapper on the empty-input early return and zero-length fmemopen behavior differed under sanitizer.",
+    "No checksum: structurally valid corruption may decode; benchmark common bit-exact validation remains mandatory.",
+    "GRUB is decode-only and uses grouped flag bytes, so it is reference-only and is not linked or claimed byte-compatible.",
+    "The shared Python LZSS container/session machinery is implementation-neutral preparation for a future C-only migration; Rust lzss-raw remains registered and all prior evidence stays append-only."
+  ],
+  "unsupported_reason_codes": [
+    "EXECUTION_ARTIFACT_MISSING", "VALIDITY_SHAPE_UNSUPPORTED",
+    "INPUT_EXCEEDS_REGISTERED_LIMIT", "QUERY_UNSUPPORTED",
+    "STREAMING_PROTOCOL_NOT_REGISTERED", "LZSS_DIPPERSTEIN_VARIANT_NOT_REGISTERED",
+    "MULTI_THREAD_UNSUPPORTED"
+  ]
+}

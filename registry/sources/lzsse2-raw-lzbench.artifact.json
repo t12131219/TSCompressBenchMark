@@ -26,7 +26,7 @@
     ]
   },
   "build": {
-    "recipe": "PYTHONPATH=src conda run -n CompressBench14 python tools/build_codec.py lzsse2-raw --profile all",
+    "recipe": "PYTHONPATH=src conda run -n CompressBench14 python tools/build_codec.py lzsse2-raw --profile all --output-root build/port-standard-v30-20261011/native-builds-v3",
     "patches": [
       {
         "path": "adapters/lzsse2_raw/patches/0001-allocation-unaligned-pointer-safety.patch",
@@ -36,9 +36,64 @@
     "submodules": [],
     "translation_units": [
       "adapters/lzsse2_raw/native/tscb_lzsse2_raw.cc",
-      "build/adapters/lzsse2_raw/<profile>/lzsse2.cpp"
+      "build/port-standard-v30-20261011/native-builds-v3/lzsse2_raw/<profile>/lzsse2.cpp"
     ],
-    "release_artifact": "build/adapters/lzsse2_raw/release/libtscb_lzsse2_raw.so",
-    "sanitizer_artifact": "build/adapters/lzsse2_raw/sanitizer/libtscb_lzsse2_raw.so"
+    "release_artifact": "build/port-standard-v30-20261011/native-builds-v3/lzsse2_raw/release/libtscb_lzsse2_raw.so",
+    "sanitizer_artifact": "build/port-standard-v30-20261011/native-builds-v3/lzsse2_raw/sanitizer/libtscb_lzsse2_raw.so",
+    "current_build_records": [
+      {
+        "algorithm": "lzsse2-raw",
+        "profile": "release",
+        "record": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/lzsse2_raw/release/build-record.json",
+          "sha256": "56dc3c85969e74b43573fdbf3610ca8f67c86618afbde42752c1098e427e9814"
+        },
+        "artifact": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/lzsse2_raw/release/libtscb_lzsse2_raw.so",
+          "sha256": "bd7ca6a3d3d2d533f39c7d87ffda05f7093feb063ee6780c7488bbcc23943a68"
+        },
+        "compile_commands_sha256": "656c35557c9584def91546e1d037b3588425e6f088677bda87880d6f5b9d970b",
+        "dependency_capture": "ACTUAL_PER_TU_MD_COMPILATION_AND_LINK"
+      },
+      {
+        "algorithm": "lzsse2-raw",
+        "profile": "sanitizer",
+        "record": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/lzsse2_raw/sanitizer/build-record.json",
+          "sha256": "d655054aa5fb8ea9a57dde66885c415dd3038e181883099b7ac38dbc6ab64ff5"
+        },
+        "artifact": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/lzsse2_raw/sanitizer/libtscb_lzsse2_raw.so",
+          "sha256": "5e47c449221ac6f49fe8c9cf02bdc90fb4d6f186a730562c668572c3fb5b742d"
+        },
+        "compile_commands_sha256": "8cd3d90e74818d56a02028e95b3c278cfdc16846b0ead4956bf13f00dbd116c3",
+        "dependency_capture": "ACTUAL_PER_TU_MD_COMPILATION_AND_LINK"
+      }
+    ],
+    "current_native_qualification": [
+      {
+        "algorithm": "lzsse2-raw",
+        "profile": "release",
+        "build_dependency_status": "PASS",
+        "native_suite_status": "PASS",
+        "evidence": {
+          "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/qualification.json",
+          "sha256": "b86173f34c30d175552de327cc446dd8480aa02dd7a9ae56f12f60c0d93db174"
+        },
+        "source_full_parity": "NOT_ASSERTED"
+      },
+      {
+        "algorithm": "lzsse2-raw",
+        "profile": "sanitizer",
+        "build_dependency_status": "PASS",
+        "native_suite_status": "PASS",
+        "evidence": {
+          "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/qualification.json",
+          "sha256": "b86173f34c30d175552de327cc446dd8480aa02dd7a9ae56f12f60c0d93db174"
+        },
+        "source_full_parity": "NOT_ASSERTED"
+      }
+    ],
+    "current_build_dependency_scope": "ACTUAL_PER_TU_MD_HEADERS_OBJECTS_SELECTED_TOOLCHAIN_AND_DYNAMIC_RUNTIME_PARTIAL_STATIC_LINK_CLOSURE"
   }
 }

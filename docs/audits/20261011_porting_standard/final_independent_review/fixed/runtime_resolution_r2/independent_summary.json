@@ -1,0 +1,77 @@
+{
+  "status": "PASS_LIMITED_RUNTIME_INDEPENDENT_REVIEW",
+  "result": {
+    "path": "docs/audits/20261011_porting_standard/final_independent_review/fixed/runtime_resolution_r2/result.json",
+    "sha256": "29b4c9f33d5a4efc24a93a5441c3d9d167be6588d3015108fbcaed23e79a0ba7"
+  },
+  "case_count": 14,
+  "saved_hash_status_counts": {
+    "PASS": 14
+  },
+  "production_factory_status_counts": {
+    "PASS": 3,
+    "REJECTED": 11
+  },
+  "rejected_cases_native_operation_count": 0,
+  "actual_postload_rejection_cases": [
+    {
+      "profile": "legacy",
+      "constructor_calls": 1,
+      "post_load_guard_calls": 1,
+      "session_constructor_calls": 0,
+      "toy_operation_calls": 0,
+      "reason": "lz4-frame: unregistered runtime resolver or mapped SONAME replacement"
+    },
+    {
+      "profile": "profile_good",
+      "constructor_calls": 1,
+      "post_load_guard_calls": 1,
+      "session_constructor_calls": 0,
+      "toy_operation_calls": 0,
+      "reason": "lz4-frame: unregistered mapped runtime SONAME selection"
+    }
+  ],
+  "baseline_values": [
+    {
+      "profile": "legacy",
+      "toy_value": 11,
+      "artifact_loaded_and_verified_before_lazy_session": true,
+      "post_load_guard_calls": 1
+    },
+    {
+      "profile": "profile_good",
+      "toy_value": 11,
+      "artifact_loaded_and_verified_before_lazy_session": true,
+      "post_load_guard_calls": 1
+    },
+    {
+      "profile": "profile_alternative",
+      "toy_value": 22,
+      "artifact_loaded_and_verified_before_lazy_session": true,
+      "post_load_guard_calls": 1
+    }
+  ],
+  "profile_bound_to_adapter_artifact_execution": true,
+  "source_snapshots_unchanged": true,
+  "read_only_reference_check_count": 71,
+  "reference_drifts": [],
+  "static_loaded_guard_chain": [
+    "src/tscompbench/adapters/factory.py:357 load_verified_runtime",
+    "src/tscompbench/adapters/factory.py:361 retain admitted CDLL handle",
+    "src/tscompbench/adapters/runtime_evidence.py:321 verify effective runtime before load",
+    "src/tscompbench/adapters/runtime_evidence.py:323 actual CDLL",
+    "src/tscompbench/adapters/runtime_evidence.py:326 verify actual maps after load"
+  ],
+  "scope_limits": [
+    "Does not grant complete static-link/toolchain N1 closure.",
+    "Does not grant full source parity, N0-N5/G0-G6, FULL_PARITY, codec safety or current formal performance.",
+    "Only demonstrated loader substitution/interposition cases and DT_NEEDED paths are covered."
+  ],
+  "initial_harness_error_preserved": {
+    "cause": "Independent probe used nonexistent CapabilityStatus.SUPPORTED; guard behavior succeeded, identity helper failed. Original result and script preserved.",
+    "result": {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_porting_standard/final_independent_review/fixed/runtime_resolution_r1/result.json",
+      "sha256": "4675dcb2fdfff395b324becf7f63ab2f69a404e802bebf8699b82aca8a8d68f0"
+    }
+  }
+}

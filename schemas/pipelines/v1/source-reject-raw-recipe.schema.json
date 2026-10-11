@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "tscb.source-reject-raw-recipe.v2",
+  "title": "Source domain refusal to deterministic raw block fallback recipe",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "child", "block_size", "tail_policy", "allowed_rejection", "stages"],
+  "properties": {
+    "schema_version": {"const": "tscb.source-reject-raw-recipe.v2"},
+    "child": {"type": "object", "additionalProperties": false, "required": ["codec_key", "parameters"], "properties": {"codec_key": {"type": "string", "minLength": 1}, "parameters": {"type": "object"}}},
+    "block_size": {"type": "integer", "minimum": 1, "maximum": 16777216},
+    "tail_policy": {"const": "SOURCE_REJECT_TO_RAW_BLOCK"},
+    "allowed_rejection": {"const": "SOURCE_DOMAIN_ONLY"},
+    "stages": {"const": ["SOURCE_ATTEMPT", "CODEC_OR_RAW_BLOCK", "ASSEMBLY"]}
+  }
+}

@@ -15,12 +15,18 @@ from tscompbench.contracts import BenchmarkTrack
 from tscompbench.execution.protocol import (
     DecodedOutput,
     ExecutionContractError,
-    LogicalBuffer,
     OutputCapacityError,
     RoutedInput,
 )
 from tscompbench.ids import canonical_json_bytes, stable_id
 
+from .byte_container import (
+    DEFAULT_MAX_OUTPUT_BYTES,
+    MAX_METADATA_BYTES,
+    decode_byte_payload,
+    parse_byte_metadata,
+    validate_byte_descriptors,
+)
 from .native_timing import NativeTimingProbe
 
 _ABI_VERSION = 1
@@ -225,7 +231,8 @@ class DeflateZlibSession:
         self._window_bits = int(parameters.get("window_bits", 15))
         try:
             self._native_timing = NativeTimingProbe(
-                self._native.library, self._handle,
+                self._native.library,
+                self._handle,
                 enabled=bool(parameters.get("native_timing", True)),
             )
         except Exception:
@@ -341,11 +348,13 @@ class DeflateZlibSession:
         magic, header_length = _PREFIX.unpack_from(stream)
         if magic != _MAGIC:
             raise ExecutionContractError("invalid zlib DEFLATE container magic")
+        if header_length > MAX_METADATA_BYTES:
+            raise ExecutionContractError("byte container metadata exceeds decoder resource limit")
         header_end = _PREFIX.size + header_length
         if header_end > len(stream):
             raise ExecutionContractError("truncated zlib DEFLATE container metadata")
         try:
-            header = json.loads(stream[_PREFIX.size : header_end].decode("utf-8"))
+            header = parse_byte_metadata(stream[_PREFIX.size : header_end])
         except (UnicodeDecodeError, json.JSONDecodeError) as error:
             raise ExecutionContractError("invalid zlib DEFLATE container metadata") from error
         if header.get("schema_version") != "tscb.deflate-zlib-container.v1":
@@ -413,12 +422,11 @@ class DeflateZlibSession:
             **components,
         )
 
-    def decompress(self, stream: bytes) -> DecodedOutput:
+    def decompress(
+        self, stream: bytes, *, max_output_bytes: int = DEFAULT_MAX_OUTPUT_BYTES
+    ) -> DecodedOutput:
         header, frame = self._parse_container(stream)
-        descriptors = header.get("buffers")
-        if not isinstance(descriptors, list):
-            raise ExecutionContractError("zlib DEFLATE container has no buffer descriptors")
-        output_bytes = sum(int(item["payload_bytes"]) for item in descriptors)
+        _, output_bytes = validate_byte_descriptors(header, max_output_bytes=max_output_bytes)
         input_storage = bytearray(frame) if frame else bytearray(1)
         output_storage = bytearray(max(1, output_bytes))
         input_array = (ctypes.c_ubyte * len(input_storage)).from_buffer(input_storage)
@@ -433,58 +441,13 @@ class DeflateZlibSession:
         self._check(status, "decompress")
         if int(output_buffer.used_bytes) != output_bytes:
             raise ExecutionContractError("zlib DEFLATE decoded byte count does not match metadata")
-        return self._decoded_output(header, memoryview(output_storage)[:output_bytes])
+        return decode_byte_payload(
+            header, memoryview(output_storage)[:output_bytes], max_output_bytes=max_output_bytes
+        )
 
     @staticmethod
     def _decoded_output(header: dict[str, Any], payload: memoryview) -> DecodedOutput:
-        descriptors = header.get("buffers")
-        if not isinstance(descriptors, list):
-            raise ExecutionContractError("zlib DEFLATE container has no buffer descriptors")
-        output_bytes = len(payload)
-        if header.get("payload_layout") == "BLOCK_MAJOR_BUFFER_ORDER":
-            block_size = int(header.get("stream_block_size", 0))
-            total_n = int(descriptors[0]["shape"][0]) if descriptors else 0
-            if block_size < 1 or any(int(item["shape"][0]) != total_n for item in descriptors):
-                raise ExecutionContractError("invalid streaming block-layout descriptor")
-            separated = [bytearray() for _ in descriptors]
-            payload_cursor = 0
-            for offset in range(0, total_n, block_size):
-                rows = min(block_size, total_n - offset)
-                for index, descriptor in enumerate(descriptors):
-                    dtype = np.dtype(str(descriptor["dtype"]))
-                    shape = tuple(int(value) for value in descriptor["shape"])
-                    row_width = int(np.prod(shape[1:], dtype=np.int64)) if len(shape) > 1 else 1
-                    length = rows * row_width * dtype.itemsize
-                    if payload_cursor + length > output_bytes:
-                        raise ExecutionContractError("truncated streaming block-layout payload")
-                    separated[index].extend(payload[payload_cursor : payload_cursor + length])
-                    payload_cursor += length
-            if payload_cursor != output_bytes:
-                raise ExecutionContractError("streaming block-layout payload has trailing bytes")
-            payload = memoryview(bytearray().join(separated))
-        cursor = 0
-        decoded: list[LogicalBuffer] = []
-        for descriptor in descriptors:
-            length = int(descriptor["payload_bytes"])
-            dtype = np.dtype(str(descriptor["dtype"]))
-            shape = tuple(int(value) for value in descriptor["shape"])
-            expected = int(np.prod(shape, dtype=np.int64)) * dtype.itemsize
-            if expected != length or cursor + length > output_bytes:
-                raise ExecutionContractError("zlib DEFLATE descriptor shape/dtype is inconsistent")
-            array = np.frombuffer(payload[cursor : cursor + length], dtype=dtype).copy()
-            array = array.reshape(shape)
-            array.flags.writeable = False
-            decoded.append(
-                LogicalBuffer(
-                    name=str(descriptor["name"]),
-                    array=array,
-                    logical_bits=int(descriptor["logical_bits"]),
-                )
-            )
-            cursor += length
-        if cursor != output_bytes:
-            raise ExecutionContractError("zlib DEFLATE container contains undeclared decoded bytes")
-        return DecodedOutput(tuple(decoded))
+        return decode_byte_payload(header, payload)
 
     def close(self) -> None:
         if self._handle.value:
@@ -555,16 +518,12 @@ class DeflateZlibStreamSession(DeflateZlibSession):
     def _storage_buffer(data: bytes | bytearray) -> tuple[bytearray, Any, _Buffer]:
         storage = bytearray(data) if data else bytearray(1)
         array = (ctypes.c_ubyte * len(storage)).from_buffer(storage)
-        return storage, array, _buffer(
-            ctypes.addressof(array), capacity=len(data), used=len(data)
-        )
+        return storage, array, _buffer(ctypes.addressof(array), capacity=len(data), used=len(data))
 
     def _stream_state_bytes(self) -> int:
         state = ctypes.c_uint64()
         status = int(
-            self._native.library.tscb_zlib_stream_state_bytes(
-                self._handle, ctypes.byref(state)
-            )
+            self._native.library.tscb_zlib_stream_state_bytes(self._handle, ctypes.byref(state))
         )
         self._check(status, "stream_state_bytes")
         return int(state.value)
@@ -636,12 +595,11 @@ class DeflateZlibStreamSession(DeflateZlibSession):
             "buffer_bytes": 0,
         }
 
-    def stream_decompress(self, stream: bytes) -> DecodedOutput:
+    def stream_decompress(
+        self, stream: bytes, *, max_output_bytes: int = DEFAULT_MAX_OUTPUT_BYTES
+    ) -> DecodedOutput:
         header, frame = self._parse_container(stream)
-        descriptors = header.get("buffers")
-        if not isinstance(descriptors, list):
-            raise ExecutionContractError("zlib DEFLATE container has no buffer descriptors")
-        output_bytes = sum(int(item["payload_bytes"]) for item in descriptors)
+        _, output_bytes = validate_byte_descriptors(header, max_output_bytes=max_output_bytes)
         status = int(self._native.library.tscb_zlib_stream_decoder_reset(self._handle))
         self._check(status, "stream_decoder_reset")
         output_storage = bytearray(max(1, output_bytes))
@@ -653,14 +611,10 @@ class DeflateZlibStreamSession(DeflateZlibSession):
             del input_storage
             remaining = output_bytes - output_cursor
             output_view = (
-                output_storage
-                if remaining == 0
-                else memoryview(output_storage)[output_cursor:]
+                output_storage if remaining == 0 else memoryview(output_storage)[output_cursor:]
             )
             output_array = (ctypes.c_ubyte * max(1, remaining)).from_buffer(output_view)
-            output_buffer = _buffer(
-                ctypes.addressof(output_array), capacity=remaining, used=0
-            )
+            output_buffer = _buffer(ctypes.addressof(output_array), capacity=remaining, used=0)
             ended = ctypes.c_uint32()
             status = int(
                 self._native.library.tscb_zlib_stream_decompress_update(
@@ -679,4 +633,6 @@ class DeflateZlibStreamSession(DeflateZlibSession):
         self._check(status, "stream_decoder_finish")
         if not stream_ended or output_cursor != output_bytes:
             raise ExecutionContractError("zlib streaming decode length is not exact")
-        return self._decoded_output(header, memoryview(output_storage)[:output_bytes])
+        return decode_byte_payload(
+            header, memoryview(output_storage)[:output_bytes], max_output_bytes=max_output_bytes
+        )

@@ -1,0 +1,307 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "tscb.comparison-contract.v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "name",
+    "revision",
+    "research_question",
+    "estimand",
+    "mode",
+    "track",
+    "recovery",
+    "fidelity",
+    "cost_boundary",
+    "timing_boundary",
+    "workload",
+    "state",
+    "resources",
+    "selection_policy",
+    "measurement_protocol_id",
+    "analysis_policy_id"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "tscb.comparison-contract.v1"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "revision": {
+      "type": "string",
+      "minLength": 1
+    },
+    "research_question": {
+      "type": "string",
+      "minLength": 1
+    },
+    "estimand": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "population",
+        "outcome",
+        "aggregation",
+        "weight_unit"
+      ],
+      "properties": {
+        "population": {
+          "type": "string",
+          "enum": [
+            "FIXED_CORPUS",
+            "SOURCE_GENERALIZATION"
+          ]
+        },
+        "outcome": {
+          "type": "string",
+          "minLength": 1
+        },
+        "aggregation": {
+          "type": "string",
+          "minLength": 1
+        },
+        "weight_unit": {
+          "type": "string",
+          "enum": [
+            "DATASET",
+            "SOURCE",
+            "RAW_BITS"
+          ]
+        }
+      }
+    },
+    "mode": {
+      "type": "string",
+      "enum": [
+        "COMPLETE_OBJECT",
+        "COMMON_NATIVE_API"
+      ]
+    },
+    "track": {
+      "type": "string",
+      "enum": [
+        "VALUE",
+        "TIMESTAMP",
+        "SYSTEM"
+      ]
+    },
+    "recovery": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mode",
+        "null_semantics",
+        "coordinate_policy"
+      ],
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": [
+            "EXACT_GRID",
+            "APPROX_GRID"
+          ]
+        },
+        "null_semantics": {
+          "type": "string",
+          "enum": [
+            "BITWISE",
+            "SEMANTIC"
+          ]
+        },
+        "coordinate_policy": {
+          "type": "string",
+          "enum": [
+            "PRESERVE_ORIGINAL_GRID",
+            "NOT_APPLICABLE"
+          ]
+        }
+      }
+    },
+    "fidelity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "error_metric",
+        "threshold",
+        "unit",
+        "quality_metrics"
+      ],
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "LOSSLESS",
+            "FIXED_ERROR",
+            "QUALITY_CURVE"
+          ]
+        },
+        "error_metric": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "threshold": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "unit": {
+          "type": "string",
+          "minLength": 1
+        },
+        "quality_metrics": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        }
+      }
+    },
+    "cost_boundary": {
+      "type": "string",
+      "enum": [
+        "SCHEMA_BOUND_OBJECT",
+        "SELF_CONTAINED_OBJECT",
+        "NATIVE_COMPONENT"
+      ]
+    },
+    "timing_boundary": {
+      "type": "string",
+      "enum": [
+        "PIPELINE",
+        "E2E",
+        "CORE_API"
+      ]
+    },
+    "workload": {
+      "type": "string",
+      "enum": [
+        "WHOLE_OBJECT",
+        "API_COMPONENT"
+      ]
+    },
+    "state": {
+      "type": "string",
+      "enum": [
+        "INDEPENDENT_OBJECT",
+        "CONTINUOUS_STREAM"
+      ]
+    },
+    "resources": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "device",
+        "threads",
+        "processes",
+        "memory_limit_bytes",
+        "machine_policy_id",
+        "isa_policy",
+        "allowed_isa"
+      ],
+      "properties": {
+        "device": {
+          "const": "CPU"
+        },
+        "threads": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "processes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "memory_limit_bytes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "machine_policy_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "isa_policy": {
+          "type": "string",
+          "enum": [
+            "ANY_AVAILABLE",
+            "FIXED"
+          ]
+        },
+        "allowed_isa": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        }
+      }
+    },
+    "selection_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "max_configs_per_method",
+        "selection_dataset_ids",
+        "objective",
+        "tie_break",
+        "selection_cost_policy"
+      ],
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "FROZEN_DEFAULT",
+            "FULL_GRID",
+            "VALIDATION_SELECT"
+          ]
+        },
+        "max_configs_per_method": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "selection_dataset_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "objective": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "tie_break": {
+          "type": "string",
+          "minLength": 1
+        },
+        "selection_cost_policy": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "measurement_protocol_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "analysis_policy_id": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}

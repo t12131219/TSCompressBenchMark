@@ -1,0 +1,179 @@
+{
+  "schema_version": "tscb.source-onboarding.v2",
+  "source_artifact_id": "v2:source-artifact:sha256:2f06ee31d72141e1d9103cb98194a9dc181b08fbf5912f78b2bc4faf2cd54946",
+  "repository": "https://github.com/alexkazik/lzss",
+  "commit": "512b9163d8a936003c925e24f7f682eeaeda8307",
+  "dirty": false,
+  "submodules": [],
+  "implementation_files": [
+    "lzss/src/dynamic/compress.rs",
+    "lzss/src/dynamic/decompress.rs",
+    "lzss/src/bits.rs",
+    "lzss/src/generic/mod.rs",
+    "lzss/build.rs"
+  ],
+  "public_api_files": [
+    "lzss/src/lib.rs",
+    "lzss/src/slice_safe.rs"
+  ],
+  "benchmark_files": [
+    "lzss/benches/benchmark.rs"
+  ],
+  "test_files": [
+    "lzss/tests/generic.rs",
+    "lzss/tests/dynamic.rs",
+    "lzss/tests/generic_in_place.rs",
+    "lzss/src/generic/mod.rs"
+  ],
+  "license_files": [
+    "LICENSE",
+    "void/Cargo.toml",
+    "void/README.md"
+  ],
+  "third_party_dependencies": [
+    {
+      "name": "void",
+      "version": "1.0.2",
+      "crate_sha256": "6a02e4885ed3bc0f2de90ea6dd45ebcbb66dacffe03547fadbb0eeae2770887d"
+    }
+  ],
+  "object_level_candidates": [
+    "P1_STANDALONE_CODEC"
+  ],
+  "input_contract": {
+    "kind": "BYTE_VIEW",
+    "length_type": "size_t, registered UINT32_MAX work limit",
+    "zero_length": "SUPPORTED",
+    "ownership": "BORROWED_DURING_CALL",
+    "mutation": "FORBIDDEN",
+    "overlap": "FORBIDDEN_AND_CHECKED"
+  },
+  "output_contract": {
+    "kind": "LZSS_EI10_EJ4_C32_WITH_TSCB_VERSIONED_DESCRIPTORS",
+    "self_contained": true,
+    "actual_written_length": true,
+    "capacity_is_not_size": true,
+    "checksum": "NONE"
+  },
+  "lifecycle_contract": {
+    "output_bound": "n + ceil(n/8); every reference costs <=9 bits per decoded byte",
+    "return_length": "SliceWriter exact written bytes",
+    "error_codes": "tscb_status_v1; catch_unwind prevents Rust unwind across FFI",
+    "finalize": "REQUIRED_NOOP_ONE_SHOT_FINALIZE; BitWriter.flush included in update",
+    "reset": "NEW_CONTEXT_PER_OBJECT; ABI reset clears state/timing"
+  },
+  "stream_components": {
+    "outer_container": "12-byte versioned prefix plus canonical JSON descriptors",
+    "raw_format": "MSB-first literal 1+8 bits or reference 1+10+4 bits",
+    "padding": "0..7 zero low bits; inspected and separately charged",
+    "decode_validation": "Independent token coverage/exact decoded length/zero pad, then original decoder",
+    "dictionary": "1024-byte fixed initial 0x20 window, no external dictionary bytes"
+  },
+  "upstream_tests": [
+    {
+      "profile": "release",
+      "suite": "upstream-library",
+      "status": "PASS",
+      "log_sha256": "010bf6f922d22034b579f60681095c601c5e3d4574ee4fc3a4d3b1c11a80769d",
+      "evidence": "build/source-audits/lzss-native-tests-20260918.log"
+    },
+    {
+      "profile": "release",
+      "suite": "upstream-generic_in_place",
+      "status": "PASS",
+      "log_sha256": "010bf6f922d22034b579f60681095c601c5e3d4574ee4fc3a4d3b1c11a80769d",
+      "evidence": "build/source-audits/lzss-native-tests-20260918.log"
+    },
+    {
+      "profile": "release",
+      "suite": "upstream-generic",
+      "status": "PASS",
+      "log_sha256": "010bf6f922d22034b579f60681095c601c5e3d4574ee4fc3a4d3b1c11a80769d",
+      "evidence": "build/source-audits/lzss-native-tests-20260918.log"
+    },
+    {
+      "profile": "release",
+      "suite": "upstream-dynamic",
+      "status": "PASS",
+      "log_sha256": "010bf6f922d22034b579f60681095c601c5e3d4574ee4fc3a4d3b1c11a80769d",
+      "evidence": "build/source-audits/lzss-native-tests-20260918.log"
+    },
+    {
+      "profile": "release",
+      "suite": "upstream-doctests",
+      "status": "PASS",
+      "log_sha256": "010bf6f922d22034b579f60681095c601c5e3d4574ee4fc3a4d3b1c11a80769d",
+      "evidence": "build/source-audits/lzss-native-tests-20260918.log"
+    },
+    {
+      "profile": "release",
+      "suite": "abi-qualification-39-cases",
+      "status": "PASS",
+      "log_sha256": "010bf6f922d22034b579f60681095c601c5e3d4574ee4fc3a4d3b1c11a80769d",
+      "evidence": "build/source-audits/lzss-native-tests-20260918.log"
+    },
+    {
+      "profile": "sanitizer",
+      "suite": "upstream-library",
+      "status": "PASS",
+      "log_sha256": "010bf6f922d22034b579f60681095c601c5e3d4574ee4fc3a4d3b1c11a80769d",
+      "evidence": "build/source-audits/lzss-native-tests-20260918.log"
+    },
+    {
+      "profile": "sanitizer",
+      "suite": "upstream-generic_in_place",
+      "status": "PASS",
+      "log_sha256": "010bf6f922d22034b579f60681095c601c5e3d4574ee4fc3a4d3b1c11a80769d",
+      "evidence": "build/source-audits/lzss-native-tests-20260918.log"
+    },
+    {
+      "profile": "sanitizer",
+      "suite": "abi-qualification-39-cases",
+      "status": "PASS",
+      "log_sha256": "010bf6f922d22034b579f60681095c601c5e3d4574ee4fc3a4d3b1c11a80769d",
+      "evidence": "build/source-audits/lzss-native-tests-20260918.log"
+    }
+  ],
+  "builds": [
+    {
+      "profile": "release",
+      "artifact_sha256": "95a6d962a98cf03960f44e8b3afa50fbf5b939909c13c7d2beea5836a7dc1fc0",
+      "compile_commands_sha256": "09b94c416ed68f8542d9a3179b4b8177a323f95184c2cbada202cc8237a68c8a",
+      "compiler": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0"
+    },
+    {
+      "profile": "sanitizer",
+      "artifact_sha256": "a6657b73c4a7feaf04c8e408c4fecf0aba09a6770c45f1d0416d40686bb39fbc",
+      "compile_commands_sha256": "3a9b8ddc95a72e686380d19de79ca923345e82e957d2ba7fc47909742bef0b47",
+      "compiler": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0"
+    }
+  ],
+  "license_decision": {
+    "spdx": "MIT",
+    "status": "RUN_ALLOWED",
+    "redistribution": "REVIEW_REQUIRED_VOID_ARCHIVE_HAS_NO_LICENSE_TEXT",
+    "files": [
+      "adapters/lzss_raw/vendor/lzss/LICENSE",
+      "adapters/lzss_raw/vendor/void/Cargo.toml",
+      "adapters/lzss_raw/vendor/void/README.md"
+    ]
+  },
+  "known_limitations": [
+    "Actual spreadsheet-selected native implementation is Rust, not C/C++; Python drives it through existing C ABI. No rewritten algorithm is claimed.",
+    "Local lzbench has LZSSE2/4/8, not the specified Okumura EI10/EJ4 LZSS. Analysis document coverage claim is corrected by source review; source exception is explicit.",
+    "Original library EOF tolerance is insufficient: project independently rejects truncated tokens, surplus bytes and nonzero padding. No checksum means arbitrary structurally valid payload changes cannot be detected without common correctness.",
+    "Fixed benchmark parameters EI10/EJ4/C32, stack work buffers, safe/std/alloc features, one thread, one stream per routed object; streaming/query/random access and alternative parameters are unregistered.",
+    "Rust sanitizer uses pinned host stable rustc with RUSTC_BOOTSTRAP=1 and -Zsanitizer=address; codec and FFI are instrumented, prebuilt std is not. C++ ABI is ASan/UBSan; LSan disabled due host ptrace policy.",
+    "void 1.0.2 archive matches original Cargo.lock SHA256 and declares MIT in Cargo.toml/README but contains no license text. Local execution allowed; redistribution requires license review.",
+    "Criterion benchmark source informs parameters/API, but Criterion timing and best-time summaries are not imported. Offline rustc runs actual original sources/build generator/tests without fetching Criterion.",
+    "block_size is a framework boundary fixture parameter, not a second LZSS window or an implicit segmentation stage."
+  ],
+  "unsupported_reason_codes": [
+    "EXECUTION_ARTIFACT_MISSING",
+    "VALIDITY_SHAPE_UNSUPPORTED",
+    "LZSS_VARIANT_NOT_REGISTERED",
+    "QUERY_UNSUPPORTED",
+    "STREAMING_PROTOCOL_NOT_REGISTERED",
+    "INPUT_EXCEEDS_REGISTERED_LIMIT"
+  ]
+}

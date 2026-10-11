@@ -21,7 +21,7 @@ static tscb_buffer_v1 buffer(void* data, uint64_t capacity, uint64_t used) {
 
 static int round_trip(size_t size) {
     static const char config[] =
-        "{\"compression_level\":1,\"content_checksum\":false}";
+        "{\"compression_level\":12,\"content_checksum\":false}";
     tscb_codec_handle_v1* encode = nullptr;
     tscb_codec_handle_v1* decode = nullptr;
     auto* source = static_cast<unsigned char*>(std::malloc(size == 0 ? 1 : size));
@@ -73,9 +73,9 @@ int main() {
         || round_trip(0) || round_trip(1) || round_trip(2)
         || round_trip(65535) || round_trip(65536) || round_trip(65537)
         || round_trip(131073)) {
-        std::fputs("Snappy raw C ABI smoke failed\n", stderr);
+        std::fputs("LZSSE raw C ABI smoke failed\n", stderr);
         return 1;
     }
-    std::puts("Snappy raw C ABI smoke passed");
+    std::puts("LZSSE raw C ABI smoke passed");
     return 0;
 }

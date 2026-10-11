@@ -4,6 +4,7 @@ import argparse
 import hashlib
 import json
 import os
+import re
 import runpy
 import shlex
 import shutil
@@ -38,6 +39,162 @@ def _run(command: list[str]) -> str:
     return completed.stdout
 
 
+def _file_entry(path: Path) -> dict[str, str]:
+    path = path.resolve(strict=True)
+    label = str(path.relative_to(PROJECT_ROOT)) if path.is_relative_to(PROJECT_ROOT) else str(path)
+    return {"path": label, "sha256": _sha256(path)}
+
+
+def _make_dependencies(path: Path, *, directory: Path) -> list[Path]:
+    """Read compiler-generated Make dependencies, including system headers."""
+    content = path.read_text(encoding="utf-8").replace("\\\n", " ")
+    if ":" not in content:
+        raise RuntimeError(f"invalid compiler dependency file: {path}")
+    # GCC escapes whitespace, backslashes and '#'; shlex handles those tokens.
+    values = shlex.split(content.split(":", 1)[1], comments=False)
+    return [(directory / value).resolve(strict=True) for value in values]
+
+
+def _compile_with_dependencies(command: list[str], output: Path) -> tuple[dict[str, Any], str]:
+    """Compile actual TUs separately so every object has its own -MD closure.
+
+    A single gcc invocation with several sources overwrites one -MF file. The
+    object commands below preserve the original preprocessing/codegen flags;
+    the final link retains the recipe's original source ordering and libraries.
+    """
+    sources = [item for item in command[1:] if Path(item).suffix in {".c", ".cc", ".cpp"}]
+    if not sources or len(set(sources)) != len(sources):
+        raise RuntimeError("build recipe must declare unique translation units")
+    object_dir = output.parent / "objects"
+    object_dir.mkdir(exist_ok=True)
+    compile_flags: list[str] = []
+    skip_next = False
+    for item in command[1:]:
+        if skip_next:
+            skip_next = False
+            continue
+        if item == "-o":
+            skip_next = True
+        elif (
+            item in sources
+            or item == "-shared"
+            or item.startswith("-Wl,")
+            or item.startswith("-l")
+            or Path(item).suffix in {".a", ".o", ".so"}
+        ):
+            continue
+        else:
+            compile_flags.append(item)
+    objects, depfiles, closure, actual_commands = [], [], set(), []
+    log = ""
+    substitutions = {}
+    for index, source in enumerate(sources):
+        object_path = object_dir / f"{index:03d}_{Path(source).stem}.o"
+        depfile = object_path.with_suffix(".o.d")
+        actual = [
+            command[0],
+            *compile_flags,
+            "-c",
+            "-MD",
+            "-MF",
+            str(depfile),
+            "-MT",
+            str(object_path),
+            source,
+            "-o",
+            str(object_path),
+        ]
+        log += _run(actual)
+        actual_commands.append(actual)
+        closure.update(_make_dependencies(depfile, directory=PROJECT_ROOT))
+        objects.append(_file_entry(object_path))
+        depfiles.append(_file_entry(depfile))
+        substitutions[source] = str(object_path)
+    # XZ's static library was built by CMake before the adapter. Consume the
+    # dependency files of precisely that archive's target, rather than its tests.
+    dependency_build = output.parent / "vendor-build"
+    if dependency_build.exists():
+        archive_depfiles = sorted((dependency_build / "CMakeFiles/liblzma.dir").rglob("*.o.d"))
+        if not archive_depfiles:
+            raise RuntimeError("liblzma archive has no compiler dependency files")
+        for depfile in archive_depfiles:
+            closure.update(_make_dependencies(depfile, directory=dependency_build))
+            depfiles.append(_file_entry(depfile))
+    link_command = [substitutions.get(item, item) for item in command]
+    log += _run(link_command)
+    runtime_listing = _run(["ldd", str(output)])
+    if "not found" in runtime_listing:
+        raise RuntimeError(f"unresolved newly built runtime dependency:\n{runtime_listing}")
+    runtime_paths = {
+        Path(match.group(1)).resolve(strict=True)
+        for match in re.finditer(r"(?:=>\s*)?(/[^\s]+)\s+\(0x", runtime_listing)
+    }
+    listing_path = output.parent / "runtime-dependencies.txt"
+    listing_path.write_text(runtime_listing, encoding="utf-8")
+    compiler = shutil.which(command[0])
+    if compiler is None:
+        raise RuntimeError(f"compiler executable not found: {command[0]}")
+    compiler_path = Path(compiler).resolve(strict=True)
+    programs = [("compiler_driver", compiler_path)]
+    clang = "clang version" in _run([command[0], "--version"])
+    if clang:
+        # This recipe uses Clang's integrated frontend and assembler. clang++
+        # is usually a symlink to clang, so its resolved name has no '++'.
+        programs += [
+            ("integrated_compiler_frontend", compiler_path),
+            ("integrated_assembler", compiler_path),
+        ]
+        external_programs = [("linker", "ld")]
+    else:
+        frontend = "cc1plus" if "++" in command[0] else "cc1"
+        external_programs = [
+            ("compiler_frontend", frontend),
+            ("assembler", "as"),
+            ("linker_driver", "collect2"),
+            ("linker", "ld"),
+        ]
+    for role, name in external_programs:
+        selected = _run([command[0], f"-print-prog-name={name}"]).strip()
+        resolved = shutil.which(selected)
+        if resolved is None:
+            raise RuntimeError(f"selected toolchain executable not found: {selected}")
+        programs.append((role, Path(resolved).resolve(strict=True)))
+    if dependency_build.exists():
+        # The retained XZ route additionally links a CMake-built static archive.
+        for name in ("ar", "ranlib"):
+            selected = _run([command[0], f"-print-prog-name={name}"]).strip()
+            resolved = shutil.which(selected)
+            if resolved is None:
+                raise RuntimeError(f"selected archive tool not found: {selected}")
+            programs.append((name, Path(resolved).resolve(strict=True)))
+    toolchain_programs = [
+        {
+            "role": role,
+            **_file_entry(path),
+            "version_command": [str(path), "--version"],
+            "version": _run([str(path), "--version"]),
+        }
+        for role, path in programs
+    ]
+    evidence = {
+        "dependency_capture": "ACTUAL_PER_TU_MD_COMPILATION_AND_LINK",
+        "translation_unit_commands": actual_commands,
+        "link_command": link_command,
+        "compiled_source_closure": [_file_entry(path) for path in sorted(closure)],
+        "objects": objects,
+        "compiler_dependency_files": depfiles,
+        "toolchain_files": [_file_entry(path) for _, path in programs],
+        "toolchain_programs": toolchain_programs,
+        "toolchain_discovery": "CLANG_INTEGRATED_FRONTEND_ASSEMBLER_AND_PRINT_PROG_NAME_LINKER"
+        if clang
+        else "GCC_DRIVER_PRINT_PROG_NAME_FOR_REGISTERED_FLAGS",
+        "runtime_dependencies": [_file_entry(path) for path in sorted(runtime_paths)],
+        "runtime_dependency_listing": [_file_entry(listing_path)],
+        "build_driver_files": [_file_entry(Path(__file__))],
+    }
+    return evidence, log
+
+
 def _lz4_command(output: Path, profile: str) -> list[str]:
     adapter = PROJECT_ROOT / "adapters" / "lz4_frame"
     vendor = adapter / "vendor" / "lz4" / "lib"
@@ -45,12 +202,7 @@ def _lz4_command(output: Path, profile: str) -> list[str]:
     if profile == "release":
         flags += ["-O3", "-DNDEBUG"]
     elif profile == "sanitizer":
-        flags += [
-            "-O1",
-            "-g",
-            "-fno-omit-frame-pointer",
-            "-fsanitize=address,undefined",
-        ]
+        flags += ["-O1", "-g", "-fno-omit-frame-pointer", "-fsanitize=address,undefined"]
     else:
         raise ValueError(f"unknown build profile: {profile}")
     return [
@@ -81,14 +233,29 @@ def _entropy_command(output: Path, profile: str, algorithm: str) -> list[str]:
     else:
         raise ValueError(f"unknown build profile: {profile}")
     return [
-        os.environ.get("CC", "cc"), *flags, "-shared", "-fno-common",
+        os.environ.get("CC", "cc"),
+        *flags,
+        "-shared",
+        "-fno-common",
         f"-DTSCB_HUFF0={int(algorithm == 'huff0')}",
-        "-I", str(PROJECT_ROOT / "native/include"), "-I", str(vendor),
+        "-I",
+        str(PROJECT_ROOT / "native/include"),
+        "-I",
+        str(vendor),
         str(PROJECT_ROOT / "adapters/entropy_fse/native/tscb_entropy.c"),
-        *(str(vendor / name) for name in (
-            "fse_compress.c", "fse_decompress.c", "huf_compress.c",
-            "huf_decompress.c", "entropy_common.c", "hist.c",
-        )), "-o", str(output),
+        *(
+            str(vendor / name)
+            for name in (
+                "fse_compress.c",
+                "fse_decompress.c",
+                "huf_compress.c",
+                "huf_decompress.c",
+                "entropy_common.c",
+                "hist.c",
+            )
+        ),
+        "-o",
+        str(output),
     ]
 
 
@@ -103,8 +270,7 @@ def _sprintz_command(output: Path, profile: str, algorithm: str) -> list[str]:
     directory = str(output.parent.relative_to(PROJECT_ROOT))
     _run(["git", "apply", "--check", f"--directory={directory}", str(patch)])
     _run(["git", "apply", f"--directory={directory}", str(patch)])
-    flags = ["-std=c++17", "-fPIC", "-Wno-ignored-attributes", "-w",
-             "-mavx2", "-mbmi2", "-mlzcnt"]
+    flags = ["-std=c++17", "-fPIC", "-Wno-ignored-attributes", "-w", "-mavx2", "-mbmi2", "-mlzcnt"]
     if profile == "release":
         flags += ["-O3", "-DNDEBUG"]
     elif profile == "sanitizer":
@@ -112,13 +278,21 @@ def _sprintz_command(output: Path, profile: str, algorithm: str) -> list[str]:
     else:
         raise ValueError(f"unknown build profile: {profile}")
     return [
-        os.environ.get("CXX", "c++"), *flags, "-shared", "-Wl,-Bsymbolic-functions",
+        os.environ.get("CXX", "c++"),
+        *flags,
+        "-shared",
+        "-Wl,-Bsymbolic-functions",
         f"-DTSCB_SPRINTZ_FIRE={int(algorithm == 'sprintz-fire-u8')}",
-        "-I", str(PROJECT_ROOT / "native/include"), "-I", str(vendor),
+        "-I",
+        str(PROJECT_ROOT / "native/include"),
+        "-I",
+        str(vendor),
         str(adapter / "native/tscb_sprintz8.cc"),
         str(adapter / "native/bounded_lowdim.cc"),
         str(target / "sprintz_delta_lowdim.cpp"),
-        str(target / "sprintz_xff_lowdim.cpp"), "-o", str(output),
+        str(target / "sprintz_xff_lowdim.cpp"),
+        "-o",
+        str(output),
     ]
 
 
@@ -146,26 +320,44 @@ def _sprintz_full_command(output: Path, profile: str, algorithm: str) -> list[st
         _run(["git", "apply", "--check", f"--directory={directory}", str(patch)])
         _run(["git", "apply", f"--directory={directory}", str(patch)])
     flags = [
-        "-std=c++17", "-fPIC", "-Wno-ignored-attributes", "-w",
-        "-mavx2", "-mbmi2", "-mlzcnt", "-fno-strict-aliasing",
+        "-std=c++17",
+        "-fPIC",
+        "-Wno-ignored-attributes",
+        "-w",
+        "-mavx2",
+        "-mbmi2",
+        "-mlzcnt",
+        "-fno-strict-aliasing",
     ]
     if profile == "release":
         flags += ["-O3", "-DNDEBUG"]
     elif profile == "sanitizer":
         flags += [
-            "-O1", "-g", "-fno-omit-frame-pointer", "-fsanitize=address,undefined",
+            "-O1",
+            "-g",
+            "-fno-omit-frame-pointer",
+            "-fsanitize=address,undefined",
             "-fno-sanitize=alignment",
         ]
     else:
         raise ValueError(f"unknown build profile: {profile}")
     return [
-        os.environ.get("CXX", "c++"), *flags, "-shared", "-Wl,-Bsymbolic-functions",
+        os.environ.get("CXX", "c++"),
+        *flags,
+        "-shared",
+        "-Wl,-Bsymbolic-functions",
         f"-DTSCB_SPRINTZ_FIRE={int(algorithm == 'sprintz-fire')}",
-        "-I", str(PROJECT_ROOT / "native/include"), "-I", str(target), "-I", str(vendor),
+        "-I",
+        str(PROJECT_ROOT / "native/include"),
+        "-I",
+        str(target),
+        "-I",
+        str(vendor),
         str(adapter / "native/tscb_sprintz.cc"),
         str(adapter / "native/bounded_sprintz.cc"),
         *(str(target / name) for name in sources),
-        "-o", str(output),
+        "-o",
+        str(output),
     ]
 
 
@@ -203,27 +395,46 @@ def _sprintz_fire_huff0_command(output: Path, profile: str) -> list[str]:
         _run(["git", "apply", "--check", f"--directory={directory}", str(patch)])
         _run(["git", "apply", f"--directory={directory}", str(patch)])
     flags = [
-        "-std=c++17", "-fPIC", "-Wno-ignored-attributes", "-w",
-        "-mavx2", "-mbmi2", "-mlzcnt", "-fno-strict-aliasing",
+        "-std=c++17",
+        "-fPIC",
+        "-Wno-ignored-attributes",
+        "-w",
+        "-mavx2",
+        "-mbmi2",
+        "-mlzcnt",
+        "-fno-strict-aliasing",
     ]
     if profile == "release":
         flags += ["-O3", "-DNDEBUG"]
     elif profile == "sanitizer":
         flags += [
-            "-O1", "-g", "-fno-omit-frame-pointer", "-fsanitize=address,undefined",
+            "-O1",
+            "-g",
+            "-fno-omit-frame-pointer",
+            "-fsanitize=address,undefined",
             "-fno-sanitize=alignment",
         ]
     else:
         raise ValueError(f"unknown build profile: {profile}")
     return [
-        os.environ.get("CXX", "c++"), *flags, "-shared", "-Wl,-Bsymbolic-functions",
-        "-I", str(PROJECT_ROOT / "native/include"), "-I", str(target),
-        "-I", str(vendor), "-I", str(entropy),
+        os.environ.get("CXX", "c++"),
+        *flags,
+        "-shared",
+        "-Wl,-Bsymbolic-functions",
+        "-I",
+        str(PROJECT_ROOT / "native/include"),
+        "-I",
+        str(target),
+        "-I",
+        str(vendor),
+        "-I",
+        str(entropy),
         str(adapter / "native/tscb_sprintz_fire_huff0.cc"),
         str(adapter / "native/bounded_sprintz.cc"),
         *(str(target / name) for name in sprintz_sources),
         *(str(entropy / name) for name in entropy_sources),
-        "-o", str(output),
+        "-o",
+        str(output),
     ]
 
 
@@ -243,12 +454,7 @@ def _zstd_command(output: Path, profile: str) -> list[str]:
     if profile == "release":
         flags += ["-O3", "-DNDEBUG"]
     elif profile == "sanitizer":
-        flags += [
-            "-O1",
-            "-g",
-            "-fno-omit-frame-pointer",
-            "-fsanitize=address,undefined",
-        ]
+        flags += ["-O1", "-g", "-fno-omit-frame-pointer", "-fsanitize=address,undefined"]
     else:
         raise ValueError(f"unknown build profile: {profile}")
     source_files = [
@@ -291,12 +497,7 @@ def _snappy_command(output: Path, profile: str) -> list[str]:
     if profile == "release":
         flags += ["-O3", "-DNDEBUG"]
     elif profile == "sanitizer":
-        flags += [
-            "-O1",
-            "-g",
-            "-fno-omit-frame-pointer",
-            "-fsanitize=address,undefined",
-        ]
+        flags += ["-O1", "-g", "-fno-omit-frame-pointer", "-fsanitize=address,undefined"]
     else:
         raise ValueError(f"unknown build profile: {profile}")
     return [
@@ -335,12 +536,7 @@ def _lzsse2_command(output: Path, profile: str) -> list[str]:
     if profile == "release":
         flags += ["-O3", "-DNDEBUG"]
     elif profile == "sanitizer":
-        flags += [
-            "-O1",
-            "-g",
-            "-fno-omit-frame-pointer",
-            "-fsanitize=address,undefined",
-        ]
+        flags += ["-O1", "-g", "-fno-omit-frame-pointer", "-fsanitize=address,undefined"]
     else:
         raise ValueError(f"unknown build profile: {profile}")
     return [
@@ -378,12 +574,7 @@ def _lzsse8_command(output: Path, profile: str) -> list[str]:
     if profile == "release":
         flags += ["-O3", "-DNDEBUG"]
     elif profile == "sanitizer":
-        flags += [
-            "-O1",
-            "-g",
-            "-fno-omit-frame-pointer",
-            "-fsanitize=address,undefined",
-        ]
+        flags += ["-O1", "-g", "-fno-omit-frame-pointer", "-fsanitize=address,undefined"]
     else:
         raise ValueError(f"unknown build profile: {profile}")
     return [
@@ -409,12 +600,7 @@ def _brotli_command(output: Path, profile: str) -> list[str]:
     if profile == "release":
         flags += ["-O3", "-DNDEBUG"]
     elif profile == "sanitizer":
-        flags += [
-            "-O1",
-            "-g",
-            "-fno-omit-frame-pointer",
-            "-fsanitize=address,undefined",
-        ]
+        flags += ["-O1", "-g", "-fno-omit-frame-pointer", "-fsanitize=address,undefined"]
     else:
         raise ValueError(f"unknown build profile: {profile}")
     source_files = sorted(
@@ -457,12 +643,7 @@ def _deflate_zlib_command(output: Path, profile: str) -> list[str]:
     if profile == "release":
         flags += ["-O3", "-DNDEBUG"]
     elif profile == "sanitizer":
-        flags += [
-            "-O1",
-            "-g",
-            "-fno-omit-frame-pointer",
-            "-fsanitize=address,undefined",
-        ]
+        flags += ["-O1", "-g", "-fno-omit-frame-pointer", "-fsanitize=address,undefined"]
     else:
         raise ValueError(f"unknown build profile: {profile}")
     source_names = (
@@ -515,12 +696,7 @@ def _bzip2_command(output: Path, profile: str) -> list[str]:
     if profile == "release":
         flags += ["-O3", "-DNDEBUG"]
     elif profile == "sanitizer":
-        flags += [
-            "-O1",
-            "-g",
-            "-fno-omit-frame-pointer",
-            "-fsanitize=address,undefined",
-        ]
+        flags += ["-O1", "-g", "-fno-omit-frame-pointer", "-fsanitize=address,undefined"]
     else:
         raise ValueError(f"unknown build profile: {profile}")
     source_names = (
@@ -555,36 +731,76 @@ def _xz_command(output: Path, profile: str) -> tuple[list[str], dict[str, Any], 
     if profile == "sanitizer":
         flags += " -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined"
     configure = [
-        "cmake", "-S", str(vendor), "-B", str(dependency_build),
+        "cmake",
+        "-S",
+        str(vendor),
+        "-B",
+        str(dependency_build),
         f"-DCMAKE_C_COMPILER={os.environ.get('CC', 'cc')}",
-        f"-DCMAKE_BUILD_TYPE={'Release' if profile == 'release' else 'Debug'}",
-        "-DCMAKE_POSITION_INDEPENDENT_CODE=ON", "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON",
-        f"-DCMAKE_C_FLAGS={flags}", "-DBUILD_SHARED_LIBS=OFF", "-DBUILD_TESTING=ON",
-        "-DXZ_THREADS=no", "-DXZ_NLS=OFF", "-DXZ_CHECKS=crc32", "-DXZ_SANDBOX=no",
-        "-DXZ_ENCODERS=lzma1;lzma2", "-DXZ_DECODERS=lzma1;lzma2",
-        "-DXZ_MICROLZMA_ENCODER=OFF", "-DXZ_MICROLZMA_DECODER=OFF", "-DXZ_LZIP_DECODER=OFF",
-        "-DXZ_CLMUL_CRC=OFF", "-DXZ_ARM64_CRC32=OFF", "-DXZ_LOONGARCH_CRC32=OFF",
-        "-DXZ_ASM_I386=OFF", "-DHAVE__MM_MOVEMASK_EPI8=OFF",
-        "-DXZ_TOOL_XZ=OFF", "-DXZ_TOOL_XZDEC=OFF", "-DXZ_TOOL_LZMADEC=OFF",
-        "-DXZ_TOOL_LZMAINFO=OFF", "-DXZ_TOOL_SCRIPTS=OFF", "-DXZ_DOC=OFF",
+        f"-DCMAKE_BUILD_TYPE={('Release' if profile == 'release' else 'Debug')}",
+        "-DCMAKE_POSITION_INDEPENDENT_CODE=ON",
+        "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON",
+        f"-DCMAKE_C_FLAGS={flags}",
+        "-DBUILD_SHARED_LIBS=OFF",
+        "-DBUILD_TESTING=ON",
+        "-DXZ_THREADS=no",
+        "-DXZ_NLS=OFF",
+        "-DXZ_CHECKS=crc32",
+        "-DXZ_SANDBOX=no",
+        "-DXZ_ENCODERS=lzma1;lzma2",
+        "-DXZ_DECODERS=lzma1;lzma2",
+        "-DXZ_MICROLZMA_ENCODER=OFF",
+        "-DXZ_MICROLZMA_DECODER=OFF",
+        "-DXZ_LZIP_DECODER=OFF",
+        "-DXZ_CLMUL_CRC=OFF",
+        "-DXZ_ARM64_CRC32=OFF",
+        "-DXZ_LOONGARCH_CRC32=OFF",
+        "-DXZ_ASM_I386=OFF",
+        "-DHAVE__MM_MOVEMASK_EPI8=OFF",
+        "-DXZ_TOOL_XZ=OFF",
+        "-DXZ_TOOL_XZDEC=OFF",
+        "-DXZ_TOOL_LZMADEC=OFF",
+        "-DXZ_TOOL_LZMAINFO=OFF",
+        "-DXZ_TOOL_SCRIPTS=OFF",
+        "-DXZ_DOC=OFF",
     ]
     build = ["cmake", "--build", str(dependency_build), "--parallel", "2"]
     log = _run(configure) + _run(build)
     dependency_commands = json.loads((dependency_build / "compile_commands.json").read_text())
     command = [
-        os.environ.get("CC", "cc"), "-std=c11", "-fPIC", "-Wall", "-Wextra", "-Werror",
-        *( ["-O3", "-DNDEBUG"] if profile == "release" else
-           ["-O1", "-g", "-fno-omit-frame-pointer", "-fsanitize=address,undefined"] ),
-        "-shared", "-Wl,-Bsymbolic-functions", "-Wl,--no-undefined",
-        "-I", str(PROJECT_ROOT / "native/include"), "-I", str(vendor / "src/liblzma/api"),
-        str(adapter / "native/tscb_xz_stream.c"), str(dependency_build / "liblzma.a"),
-        "-o", str(output),
+        os.environ.get("CC", "cc"),
+        "-std=c11",
+        "-fPIC",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        *(
+            ["-O3", "-DNDEBUG"]
+            if profile == "release"
+            else ["-O1", "-g", "-fno-omit-frame-pointer", "-fsanitize=address,undefined"]
+        ),
+        "-shared",
+        "-Wl,-Bsymbolic-functions",
+        "-Wl,--no-undefined",
+        "-I",
+        str(PROJECT_ROOT / "native/include"),
+        "-I",
+        str(vendor / "src/liblzma/api"),
+        str(adapter / "native/tscb_xz_stream.c"),
+        str(dependency_build / "liblzma.a"),
+        "-o",
+        str(output),
     ]
-    return command, {
-        "dependency_configure": configure, "dependency_build": build,
-        "dependency_compile_commands": dependency_commands,
-        "dependency_archive_sha256": _sha256(dependency_build / "liblzma.a"),
-    }, log
+    return (
+        command,
+        {
+            "dependency_configure": configure,
+            "dependency_build": build,
+            "dependency_compile_commands": dependency_commands,
+            "dependency_archive_sha256": _sha256(dependency_build / "liblzma.a"),
+        },
+        log,
+    )
 
 
 def _lzss_dipperstein_command(output: Path, profile: str) -> list[str]:
@@ -594,69 +810,95 @@ def _lzss_dipperstein_command(output: Path, profile: str) -> list[str]:
     patched_tree = output.parent / "tree.c"
     _run(["patch", "--batch", "--output", str(patched_tree), str(vendor / "tree.c"), str(patch)])
     return [
-        os.environ.get("CC", "cc"), "-std=c11", "-fPIC", "-Wall", "-Wextra", "-Werror",
-        *(["-O3", "-DNDEBUG"] if profile == "release" else
-          ["-O1", "-g", "-fno-omit-frame-pointer", "-fsanitize=address,undefined"]),
-        "-shared", "-Wl,--no-undefined", "-I", str(PROJECT_ROOT / "native/include"),
-        "-I", str(vendor), "-I", str(vendor / "bitfile"),
+        os.environ.get("CC", "cc"),
+        "-std=c11",
+        "-fPIC",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        *(
+            ["-O3", "-DNDEBUG"]
+            if profile == "release"
+            else ["-O1", "-g", "-fno-omit-frame-pointer", "-fsanitize=address,undefined"]
+        ),
+        "-shared",
+        "-Wl,--no-undefined",
+        "-I",
+        str(PROJECT_ROOT / "native/include"),
+        "-I",
+        str(vendor),
+        "-I",
+        str(vendor / "bitfile"),
         str(adapter / "native/tscb_lzss_dipperstein.c"),
-        str(vendor / "lzss.c"), str(patched_tree),
+        str(vendor / "lzss.c"),
+        str(patched_tree),
         str(vendor / "bitfile/bitfile.c"),
-        "-o", str(output),
+        "-o",
+        str(output),
     ]
 
 
 def _lzss_command(output: Path, profile: str) -> tuple[list[str], dict[str, Any], str]:
     adapter = PROJECT_ROOT / "adapters/lzss_raw"
-    vendor = adapter / "vendor/lzss/lzss"
-    dependency = output.parent / "rust-build"
-    dependency.mkdir(parents=True, exist_ok=True)
-    flags = ["-C", "relocation-model=pic", "-C", "opt-level=3"]
-    rust_environment: dict[str, str] = {}
-    if profile == "sanitizer":
-        flags = ["-C", "relocation-model=pic", "-C", "opt-level=1", "-g",
-                 "-C", "debug-assertions=yes", "-Z", "sanitizer=address"]
-        rust_environment = {"RUSTC_BOOTSTRAP": "1"}
-    features = ["--cfg", 'feature="std"', "--cfg", 'feature="alloc"',
-                "--cfg", 'feature="safe"']
-    commands = [
-        ["rustc", str(adapter / "vendor/void/src/lib.rs"), "--crate-name", "void",
-         "--crate-type", "rlib", "--cfg", 'feature="std"', *flags,
-         "-o", str(dependency / "libvoid.rlib")],
-        ["rustc", str(vendor / "build.rs"), "-o", str(dependency / "generate")],
-        [str(dependency / "generate")],
-        ["rustc", str(vendor / "src/lib.rs"), "--edition=2021", "--crate-name", "lzss",
-         "--crate-type", "rlib", *features, *flags,
-         "--extern", f"void={dependency / 'libvoid.rlib'}", "-L", str(dependency),
-         "-o", str(dependency / "liblzss.rlib")],
-        ["rustc", str(adapter / "native/ffi.rs"), "--edition=2021",
-         "--crate-name", "tscb_lzss", "--crate-type", "staticlib", *flags,
-         "--extern", f"lzss={dependency / 'liblzss.rlib'}", "-L", str(dependency),
-         "-o", str(dependency / "libtscb_lzss.a")],
+    flags = ["-std=c++17", "-fPIC", "-Wall", "-Wextra", "-Werror"]
+    if profile == "release":
+        flags += ["-O3", "-DNDEBUG"]
+    elif profile == "sanitizer":
+        flags += ["-O1", "-g", "-fno-omit-frame-pointer", "-fsanitize=address,undefined"]
+    else:
+        raise ValueError(f"unknown build profile: {profile}")
+    sources = [
+        adapter / "native/tscb_lzss_raw.cc",
+        adapter / "native/lzss_raw_codec.cc",
     ]
-    log = ""
-    environment = {**os.environ, **rust_environment, "OUT_DIR": str(dependency)}
-    for command in commands:
-        completed = subprocess.run(command, cwd=vendor, env=environment, text=True,
-                                   stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-        log += completed.stdout
-        if completed.returncode:
-            raise RuntimeError(f"Rust build failed: {shlex.join(command)}\n{completed.stdout}")
+    closure = [
+        *sources,
+        adapter / "native/lzss_raw_codec.h",
+        PROJECT_ROOT / "native/include/tscb_adapter_v1.h",
+        PROJECT_ROOT / "native/include/tscb_native_timing.h",
+    ]
     command = [
-        os.environ.get("CXX", "c++"), "-std=c++17", "-fPIC", "-Wall", "-Wextra", "-Werror",
-        *(["-O3", "-DNDEBUG"] if profile == "release" else
-          ["-O1", "-g", "-fno-omit-frame-pointer", "-fsanitize=address,undefined"]),
-        "-shared", "-Wl,--exclude-libs,ALL", "-I", str(PROJECT_ROOT / "native/include"),
-        str(adapter / "native/tscb_lzss_raw.cc"), str(dependency / "libtscb_lzss.a"),
-        "-lpthread", "-ldl", "-lm", "-o", str(output),
+        os.environ.get("CXX", "c++"),
+        *flags,
+        "-shared",
+        "-Wl,--no-undefined",
+        "-I",
+        str(PROJECT_ROOT / "native/include"),
+        "-I",
+        str(adapter / "native"),
+        *map(str, sources),
+        "-o",
+        str(output),
     ]
-    return command, {
-        "dependency_commands": commands, "dependency_environment": rust_environment,
-        "rustc": _run(["rustc", "--version"]),
-        "dependency_archive_sha256": _sha256(dependency / "libtscb_lzss.a"),
-        "sanitizer_coverage": "RUST_CODEC_AND_FFI_ASAN_CPP_ASAN_UBSAN_STD_UNINSTRUMENTED"
-        if profile == "sanitizer" else "NOT_APPLICABLE",
-    }, log
+    license_path = adapter / "LICENSE"
+    evidence = {
+        "implementation": "CPP17_REGISTERED_EI10_EJ4_C32_PROFILE",
+        "core_execution_language": "C++17",
+        "source_reference_commit": "512b9163d8a936003c925e24f7f682eeaeda8307",
+        "compiler_flags": flags,
+        "compiled_source_closure": [
+            {"path": str(path.relative_to(PROJECT_ROOT)), "sha256": _sha256(path)}
+            for path in sorted(closure)
+        ],
+        "native_timing_boundary": {
+            "encode": "C++ core encode, including dictionary initialization",
+            "decode": "C++ core decode, including dictionary initialization",
+            "excluded": "ABI validation, strict bitstream validation, Python marshaling",
+        },
+        "license": {
+            "spdx": "MIT",
+            "files": [
+                {
+                    "path": str(license_path.relative_to(PROJECT_ROOT)),
+                    "sha256": _sha256(license_path),
+                }
+            ],
+        },
+        "sanitizer_coverage": "CPP_CORE_AND_ABI_ASAN_UBSAN_SYSTEM_RUNTIME_UNINSTRUMENTED"
+        if profile == "sanitizer"
+        else "NOT_APPLICABLE",
+    }
+    return command, evidence, ""
 
 
 def _alp_command(output: Path, profile: str, algorithm: str) -> list[str]:
@@ -674,29 +916,41 @@ def _alp_command(output: Path, profile: str, algorithm: str) -> list[str]:
         _run(["git", "apply", "--check", f"--directory={directory}", str(patch)])
         _run(["git", "apply", f"--directory={directory}", str(patch)])
     flags = [
-        "-std=c++17", "-fPIC", "-Wall", "-Wextra", "-Werror",
-        "-Wno-unused-parameter", "-Wno-pass-failed",
+        "-std=c++17",
+        "-fPIC",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-Wno-unused-parameter",
+        "-Wno-pass-failed",
     ]
     if profile == "release":
         flags += ["-O3", "-DNDEBUG"]
     elif profile == "sanitizer":
-        flags += [
-            "-O1", "-g", "-fno-omit-frame-pointer",
-            "-fsanitize=address,undefined",
-        ]
+        flags += ["-O1", "-g", "-fno-omit-frame-pointer", "-fsanitize=address,undefined"]
     else:
         raise ValueError(f"unknown build profile: {profile}")
     return [
-        os.environ.get("CXX", "clang++"), *flags, "-shared",
+        os.environ.get("CXX", "clang++"),
+        *flags,
+        "-shared",
         f"-DTSCB_ALP_RD={int(algorithm == 'alp-rd')}",
-        "-I", str(PROJECT_ROOT / "native/include"),
-        "-I", str(target / "include"),
+        "-I",
+        str(PROJECT_ROOT / "native/include"),
+        "-I",
+        str(target / "include"),
         str(adapter / "native/tscb_alp.cc"),
-        *(str(target / "src" / name) for name in (
-            "fastlanes_ffor.cpp", "fastlanes_unffor.cpp",
-            "fastlanes_generated_ffor.cpp", "fastlanes_generated_unffor.cpp",
-        )),
-        "-o", str(output),
+        *(
+            str(target / "src" / name)
+            for name in (
+                "fastlanes_ffor.cpp",
+                "fastlanes_unffor.cpp",
+                "fastlanes_generated_ffor.cpp",
+                "fastlanes_generated_unffor.cpp",
+            )
+        ),
+        "-o",
+        str(output),
     ]
 
 
@@ -715,16 +969,21 @@ def _serf_command(output: Path, profile: str, algorithm: str) -> list[str]:
         _run(["git", "apply", "--check", f"--directory={directory}", str(patch)])
         _run(["git", "apply", f"--directory={directory}", str(patch)])
     flags = [
-        "-std=c++17", "-fPIC", "-Wall", "-Wextra", "-Werror",
-        "-Wno-vla", "-Wno-parentheses", "-Wno-unused-parameter",
-        "-Wno-reorder", "-Wno-sign-compare",
+        "-std=c++17",
+        "-fPIC",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-Wno-vla",
+        "-Wno-parentheses",
+        "-Wno-unused-parameter",
+        "-Wno-reorder",
+        "-Wno-sign-compare",
     ]
     if profile == "release":
         flags += ["-O3", "-DNDEBUG"]
     elif profile == "sanitizer":
-        flags += [
-            "-O1", "-g", "-fno-omit-frame-pointer", "-fsanitize=address,undefined",
-        ]
+        flags += ["-O1", "-g", "-fno-omit-frame-pointer", "-fsanitize=address,undefined"]
     else:
         raise ValueError(f"unknown build profile: {profile}")
     source_names = (
@@ -745,12 +1004,19 @@ def _serf_command(output: Path, profile: str, algorithm: str) -> list[str]:
         "utils/serf_utils_64.cc",
     )
     return [
-        os.environ.get("CXX", "c++"), *flags, "-shared", "-Wl,--no-undefined",
+        os.environ.get("CXX", "c++"),
+        *flags,
+        "-shared",
+        "-Wl,--no-undefined",
         f"-DTSCB_SERF_XOR={int(algorithm == 'serf-xor')}",
-        "-I", str(PROJECT_ROOT / "native/include"), "-I", str(target / "src"),
+        "-I",
+        str(PROJECT_ROOT / "native/include"),
+        "-I",
+        str(target / "src"),
         str(adapter / "native/tscb_serf.cc"),
         *(str(target / "src" / name) for name in source_names),
-        "-o", str(output),
+        "-o",
+        str(output),
     ]
 
 
@@ -761,29 +1027,61 @@ def _zfp_command(output: Path, profile: str) -> list[str]:
     if profile == "release":
         flags += ["-O3", "-DNDEBUG"]
     elif profile == "sanitizer":
-        flags += [
-            "-O1", "-g", "-fno-omit-frame-pointer", "-fsanitize=address,undefined",
-        ]
+        flags += ["-O1", "-g", "-fno-omit-frame-pointer", "-fsanitize=address,undefined"]
     else:
         raise ValueError(f"unknown build profile: {profile}")
     source_names = (
-        "zfp.c", "bitstream.c",
-        "encode1f.c", "encode1d.c", "encode1i.c", "encode1l.c",
-        "decode1f.c", "decode1d.c", "decode1i.c", "decode1l.c",
-        "encode2f.c", "encode2d.c", "encode2i.c", "encode2l.c",
-        "decode2f.c", "decode2d.c", "decode2i.c", "decode2l.c",
-        "encode3f.c", "encode3d.c", "encode3i.c", "encode3l.c",
-        "decode3f.c", "decode3d.c", "decode3i.c", "decode3l.c",
-        "encode4f.c", "encode4d.c", "encode4i.c", "encode4l.c",
-        "decode4f.c", "decode4d.c", "decode4i.c", "decode4l.c",
+        "zfp.c",
+        "bitstream.c",
+        "encode1f.c",
+        "encode1d.c",
+        "encode1i.c",
+        "encode1l.c",
+        "decode1f.c",
+        "decode1d.c",
+        "decode1i.c",
+        "decode1l.c",
+        "encode2f.c",
+        "encode2d.c",
+        "encode2i.c",
+        "encode2l.c",
+        "decode2f.c",
+        "decode2d.c",
+        "decode2i.c",
+        "decode2l.c",
+        "encode3f.c",
+        "encode3d.c",
+        "encode3i.c",
+        "encode3l.c",
+        "decode3f.c",
+        "decode3d.c",
+        "decode3i.c",
+        "decode3l.c",
+        "encode4f.c",
+        "encode4d.c",
+        "encode4i.c",
+        "encode4l.c",
+        "decode4f.c",
+        "decode4d.c",
+        "decode4i.c",
+        "decode4l.c",
     )
     return [
-        os.environ.get("CC", "cc"), *flags, "-shared", "-Wl,--no-undefined",
-        "-I", str(PROJECT_ROOT / "native/include"),
-        "-I", str(vendor / "include"), "-I", str(vendor / "src"),
+        os.environ.get("CC", "cc"),
+        *flags,
+        "-shared",
+        "-Wl,--no-undefined",
+        "-I",
+        str(PROJECT_ROOT / "native/include"),
+        "-I",
+        str(vendor / "include"),
+        "-I",
+        str(vendor / "src"),
         str(adapter / "native/tscb_zfp.c"),
         *(str(vendor / "src" / name) for name in source_names),
-        "-lm", "-o", str(output),
+        "-lm",
+        "-o",
+        str(output),
     ]
 
 
@@ -791,179 +1089,40 @@ def _neats_command(output: Path, profile: str, algorithm: str) -> list[str]:
     adapter = PROJECT_ROOT / "adapters" / "neats"
     vendor = adapter / "vendor" / "neats"
     flags = [
-        "-std=gnu++20", "-fPIC", "-Wall", "-Wextra", "-Wpedantic",
-        "-Wno-comment", "-Wno-unknown-pragmas", "-fno-tree-vectorize",
+        "-std=gnu++20",
+        "-fPIC",
+        "-Wall",
+        "-Wextra",
+        "-Wpedantic",
+        "-Wno-comment",
+        "-Wno-unknown-pragmas",
+        "-fno-tree-vectorize",
         "-fno-tree-slp-vectorize",
     ]
     if profile == "release":
         flags += ["-O3", "-DNDEBUG"]
     elif profile == "sanitizer":
-        flags += [
-            "-O1", "-g", "-fno-omit-frame-pointer", "-fsanitize=address,undefined",
-        ]
+        flags += ["-O1", "-g", "-fno-omit-frame-pointer", "-fsanitize=address,undefined"]
     else:
         raise ValueError(f"unknown build profile: {profile}")
     return [
-        os.environ.get("CXX", "c++"), *flags, "-shared", "-Wl,--no-undefined",
+        os.environ.get("CXX", "c++"),
+        *flags,
+        "-shared",
+        "-Wl,--no-undefined",
         f"-DTSCB_NEATS={int(algorithm == 'neats-lossless-i64')}",
-        "-I", str(PROJECT_ROOT / "native/include"),
-        "-I", str(vendor / "include"),
-        "-I", str(vendor / "lib/sdsl-lite/include"),
-        "-I", str(vendor / "lib/sux"),
+        "-I",
+        str(PROJECT_ROOT / "native/include"),
+        "-I",
+        str(vendor / "include"),
+        "-I",
+        str(vendor / "lib/sdsl-lite/include"),
+        "-I",
+        str(vendor / "lib/sux"),
         str(adapter / "native/tscb_neats.cc"),
-        "-o", str(output),
+        "-o",
+        str(output),
     ]
-
-
-def _delta_varint_command(output: Path, profile: str) -> list[str]:
-    adapter = PROJECT_ROOT / "adapters" / "delta_varint"
-    vendor = adapter / "vendor" / "varint"
-    flags = ["-std=c11", "-fPIC", "-Wall", "-Wextra", "-Werror",
-             "-Wno-unused-parameter", "-Wno-stringop-overread",
-             "-Wno-stringop-overflow", "-Wl,-Bsymbolic-functions"]
-    if profile == "release":
-        flags += ["-O3", "-DNDEBUG"]
-    elif profile == "sanitizer":
-        flags += ["-O1", "-g", "-fno-omit-frame-pointer",
-                  "-fsanitize=address,undefined"]
-    else:
-        raise ValueError(f"unknown build profile: {profile}")
-    return [
-        os.environ.get("CC", "cc"), *flags, "-shared",
-        "-I", str(PROJECT_ROOT / "native/include"), "-I", str(vendor),
-        str(adapter / "native/tscb_delta_varint.c"),
-        str(vendor / "varintDelta.c"), str(vendor / "varintExternal.c"),
-        "-o", str(output),
-    ]
-
-
-def _streamvbyte_command(
-    output: Path, profile: str, algorithm: str
-) -> tuple[list[str], dict[str, Any]]:
-    adapter = PROJECT_ROOT / "adapters/streamvbyte"
-    lock_path = adapter / "SOURCE_LOCK.json"
-    lock = json.loads(lock_path.read_text())
-    for entry in lock["files"]:
-        path = PROJECT_ROOT / entry["path"]
-        if _sha256(path) != entry["sha256"]:
-            raise RuntimeError(f"Stream VByte frozen source changed: {entry['path']}")
-    vendor = adapter / "vendor/fastpfor"
-    target = output.parent / "fastpfor"
-    target.mkdir(exist_ok=True)
-    original = vendor / "streamvbyte.c"
-    shutil.copyfile(original, target / "streamvbyte.c")
-    patch = adapter / "patches/0001-unaligned-access.patch"
-    _run(["patch", "--batch", "--fuzz=0", "-p1", "-d", str(target), "-i", str(patch)])
-    flags = ["-std=c11", "-fPIC", "-msse4.1", "-fno-tree-vectorize",
-             "-fno-strict-aliasing", "-Wall", "-Wextra", "-Wl,-Bsymbolic-functions"]
-    if profile == "release":
-        flags += ["-O3", "-DNDEBUG"]
-    elif profile == "debug":
-        flags += ["-O0", "-g"]
-    elif profile == "sanitizer":
-        flags += ["-O1", "-g", "-fsanitize=address,undefined", "-fno-omit-frame-pointer"]
-    else:
-        raise ValueError(f"unknown Stream VByte profile: {profile}")
-    command = [os.environ.get("CC", "cc"), *flags, "-shared",
-               f"-DTSCB_SVB_DELTA64={int(algorithm == 'delta-zigzag-streamvbyte64')}",
-               "-I", str(PROJECT_ROOT / "native/include"),
-               str(adapter / "native/tscb_streamvbyte.c"), str(target / "streamvbyte.c"),
-               "-o", str(output)]
-    evidence = {
-        "benchmark_repository": "https://github.com/dblalock/lzbench",
-        "benchmark_commit": "580c4f085381f31b1ad669525ed04e63cbc385f3",
-        "original_source_sha256": _sha256(original), "patch_sha256": _sha256(patch),
-        "compiled_source_sha256": _sha256(target / "streamvbyte.c"),
-        "binding_sha256": _sha256(adapter / "native/tscb_streamvbyte.c"),
-        "upstream_encoder": "SCALAR", "upstream_decoder": "SSE4_1_WITH_SCALAR_TAIL",
-        "runtime_fallback": False,
-        "source_lock_sha256": _sha256(lock_path),
-        "binding_sources": [
-            {"path": str(path.relative_to(PROJECT_ROOT)), "sha256": _sha256(path)}
-            for path in (
-                adapter / "native/tscb_streamvbyte.c", lock_path,
-                adapter / "native/tscb_streamvbyte_stages.h",
-                PROJECT_ROOT / "native/include/tscb_adapter_v1.h",
-                PROJECT_ROOT / "native/include/tscb_native_timing.h",
-                PROJECT_ROOT / "src/tscompbench/adapters/streamvbyte.py",
-                PROJECT_ROOT / "src/tscompbench/adapters/streamvbyte_pipeline.py",
-                PROJECT_ROOT / "src/tscompbench/adapters/factory.py",
-                PROJECT_ROOT / "src/tscompbench/preprocess/streamvbyte.py",
-                PROJECT_ROOT / "src/tscompbench/preprocess/runtime.py",
-                PROJECT_ROOT / "src/tscompbench/preprocess/streamvbyte_modern.py",
-                PROJECT_ROOT / "src/tscompbench/preprocess/contracts.py",
-                PROJECT_ROOT / "src/tscompbench/execution/preflight.py",
-                PROJECT_ROOT / "src/tscompbench/measurement/contracts.py",
-                PROJECT_ROOT / "src/tscompbench/adapters/native_timing.py",
-                PROJECT_ROOT / "src/tscompbench/adapters/deflate_zlib.py",
-                PROJECT_ROOT / "src/tscompbench/execution/protocol.py",
-                PROJECT_ROOT / "src/tscompbench/execution/repetition.py",
-                PROJECT_ROOT / "src/tscompbench/execution/orchestrator.py",
-            )
-        ],
-    }
-    return command, evidence
-
-
-def _streamvbyte_modern_command(
-    output: Path, profile: str, algorithm: str
-) -> tuple[list[str], dict[str, Any]]:
-    adapter = PROJECT_ROOT / "adapters/streamvbyte_modern"
-    lock_path = adapter / "SOURCE_LOCK.json"
-    lock = json.loads(lock_path.read_text())
-    for entry in lock["files"]:
-        if _sha256(PROJECT_ROOT / entry["path"]) != entry["sha256"]:
-            raise RuntimeError(f"modern Stream VByte frozen source changed: {entry['path']}")
-    vendor = adapter / "vendor/streamvbyte"
-    staging = output.parent / "streamvbyte"
-    shutil.copytree(vendor, staging, dirs_exist_ok=True)
-    patches = [PROJECT_ROOT / entry["path"] for entry in lock["files"]
-               if entry["path"].startswith("adapters/streamvbyte_modern/patches/")]
-    for patch in patches:
-        _run(["patch", "--batch", "--fuzz=0", "-p1", "-d", str(staging), "-i", str(patch)])
-    flags = ["-std=c11", "-fPIC", "-msse4.1", "-fno-strict-aliasing", "-Wall", "-Wextra",
-             "-Wl,-Bsymbolic-functions"]
-    flags += {"release": ["-O3", "-DNDEBUG"], "debug": ["-O0", "-g"],
-              "sanitizer": ["-O1", "-g", "-fsanitize=address,undefined",
-                            "-fno-omit-frame-pointer"]}[profile]
-    translation_units = [staging / "src" / name for name in
-                         ("streamvbyte_encode.c", "streamvbyte_decode.c")]
-    command = [os.environ.get("CC", "cc"), *flags, "-shared",
-               f"-DTSCB_SVB_DELTA64={int(algorithm == 'delta-zigzag-streamvbyte-modern64')}",
-               "-I", str(PROJECT_ROOT / "native/include"), "-I", str(staging / "include"),
-               str(adapter / "native/tscb_streamvbyte_modern.c"),
-               *[str(path) for path in translation_units], "-o", str(output)]
-    shared_binding = [
-        "adapters/streamvbyte/native/tscb_streamvbyte.c",
-        "adapters/streamvbyte/native/tscb_streamvbyte_stages.h",
-        "native/include/tscb_adapter_v1.h", "native/include/tscb_native_timing.h",
-        "src/tscompbench/adapters/streamvbyte.py",
-        "src/tscompbench/adapters/streamvbyte_pipeline.py",
-        "src/tscompbench/adapters/streamvbyte_modern.py",
-        "src/tscompbench/adapters/native_timing.py",
-        "src/tscompbench/adapters/deflate_zlib.py", "src/tscompbench/adapters/factory.py",
-        "src/tscompbench/preprocess/streamvbyte.py",
-        "src/tscompbench/preprocess/streamvbyte_modern.py",
-        "src/tscompbench/preprocess/contracts.py", "src/tscompbench/preprocess/runtime.py",
-        "src/tscompbench/execution/protocol.py", "src/tscompbench/execution/repetition.py",
-        "src/tscompbench/execution/preflight.py", "src/tscompbench/execution/orchestrator.py",
-        "src/tscompbench/measurement/contracts.py",
-        "adapters/streamvbyte_modern/native/tscb_streamvbyte_modern.c",
-        "adapters/streamvbyte_modern/SOURCE_LOCK.json",
-    ]
-    return command, {
-        "source_files": lock["files"], "upstream_repository": lock["repository"],
-        "upstream_commit": lock["commit"], "source_lock_sha256": _sha256(lock_path),
-        "patch_series": [{"path": str(p.relative_to(PROJECT_ROOT)), "sha256": _sha256(p)}
-                         for p in patches], "upstream_encoder": "SSE4_1_WITH_SCALAR_TAIL",
-        "upstream_decoder": "SSE4_1_WITH_SCALAR_TAIL", "runtime_fallback": False,
-        "compiled_source_closure": [{"path": str(path.relative_to(PROJECT_ROOT)),
-                                     "sha256": _sha256(path)}
-                                    for path in sorted((*((staging / "src").iterdir()),
-                                                        *((staging / "include").iterdir())))],
-        "binding_sources": [{"path": path, "sha256": _sha256(PROJECT_ROOT / path)}
-                            for path in shared_binding],
-    }
 
 
 def _rewrite_lossless_command(
@@ -978,89 +1137,69 @@ def _rewrite_lossless_command(
             raise RuntimeError(f"frozen standalone API changed: {record['path']}")
     vendor = adapter / "vendor" / entry["package"]
     command = [
-        "c++", "-std=c++17", "-fPIC", "-fvisibility=hidden", "-shared",
-        "-Wl,--no-undefined", "-Wall", "-Wextra", "-Wpedantic",
-        "-fno-fast-math", "-ffp-contract=off", "-pthread",
-        f"-DTSCB_REWRITE_KIND={entry['kind']}", f'-DTSCB_REWRITE_KEY="{algorithm}"',
-        "-I", str(PROJECT_ROOT / "native/include"), "-I", str(vendor / "include"),
+        "c++",
+        "-std=c++17",
+        "-fPIC",
+        "-fvisibility=hidden",
+        "-shared",
+        "-Wl,--no-undefined",
+        "-Wall",
+        "-Wextra",
+        "-Wpedantic",
+        "-fno-fast-math",
+        "-ffp-contract=off",
+        "-pthread",
+        f"-DTSCB_REWRITE_KIND={entry['kind']}",
+        f'-DTSCB_REWRITE_KEY="{algorithm}"',
+        "-I",
+        str(PROJECT_ROOT / "native/include"),
+        "-I",
+        str(vendor / "include"),
         str(adapter / "native/tscb_rewrite_lossless.cc"),
         *[str(vendor / p) for p in entry["translation_units"]],
-        "-o", str(output),
+        "-o",
+        str(output),
     ]
     command[1:1] = (
         ["-O3", "-DNDEBUG"]
         if profile == "release"
         else ["-O1", "-g", "-fsanitize=address,undefined", "-fno-omit-frame-pointer"]
     )
-    return command, {
-        "frozen_api_lock_sha256": _sha256(adapter / "FROZEN_APIS.json"),
-        "source_closure": entry["files"],
-        "standalone_package": entry["package"],
-    }
+    return (
+        command,
+        {
+            "frozen_api_lock_sha256": _sha256(adapter / "FROZEN_APIS.json"),
+            "source_closure": entry["files"],
+            "standalone_package": entry["package"],
+        },
+    )
 
 
-def _build(algorithm: str, profile: str) -> dict[str, Any]:
-    if algorithm == "fastpfor-simple8b-rle-u32":
-        from audit_fastpfor_simple8b_rle_native import audit_build
-
-        # An existing build is verified in place; failed/partial evidence is never replaced.
-        directory = PROJECT_ROOT / "build/adapters/fastpfor_simple8b_rle/20261007-2" / profile
-        if not directory.exists():
-            recipe = runpy.run_path(str(PROJECT_ROOT / "adapters/fastpfor_simple8b_rle/build_native.py"))
-            recipe["build"](profile, "20261007-2")
-        return audit_build(profile)
-    if algorithm in {
-        "littleintpacker-pack32-u32", "littleintpacker-turbo-u32", "littleintpacker-sc-u32",
-        "littleintpacker-bmi2-u32", "littleintpacker-horizontal-u32",
-    }:
-        recipe = runpy.run_path(str(PROJECT_ROOT / "adapters/littleintpacker/build_native.py"))
-        return recipe["build"](profile)
+def _build(algorithm: str, profile: str, *, output_root: Path | None = None) -> dict[str, Any]:
     from build_completed_rewrite import KINDS
     from build_completed_rewrite import build as build_completed
 
     if algorithm in KINDS:
-        return build_completed(algorithm, profile)
-    if algorithm == "fast-differential-u32":
-        recipe = runpy.run_path(str(PROJECT_ROOT / "adapters/fast_differential/build_native.py"))
-        return recipe["build"](profile)
-    if algorithm in ("maskedvbyte-u32", "delta-maskedvbyte-u32"):
-        recipe = runpy.run_path(str(PROJECT_ROOT / "adapters/maskedvbyte/build_native.py"))
-        return recipe["build"](profile)
-    if algorithm in ("simdcomp-u32", "delta-simdcomp-u32", "for-simdcomp-u32"):
+        return build_completed(algorithm, profile, output_root=output_root)
+    if algorithm in ("simdcomp-u32",):
+        if output_root is not None:
+            raise ValueError("SIMDComp custom output roots require its dedicated build recipe")
         recipe = runpy.run_path(str(PROJECT_ROOT / "adapters/simdcomp/build_native.py"))
         return recipe["build"](profile)
-    if algorithm in ("simple9-u28", "simple9hacked-u28", "simple16-u28"):
-        recipe = runpy.run_path(str(PROJECT_ROOT / "adapters/fastpfor_simple/build_native.py"))
-        return recipe["build"](profile)
+    driver_entry = _file_entry(Path(__file__))
     directory_name = algorithm.replace("-", "_")
-    output_dir = PROJECT_ROOT / "build" / "adapters" / directory_name / profile
+    root = (output_root or PROJECT_ROOT / "build/adapters").resolve()
+    if not root.is_relative_to(PROJECT_ROOT):
+        raise ValueError("build output root must stay inside the project")
+    output_dir = root / directory_name / profile
+    if output_root is not None and output_dir.exists():
+        raise FileExistsError(f"refusing to overwrite historical build: {output_dir}")
     output_dir.mkdir(parents=True, exist_ok=True)
     output = output_dir / f"libtscb_{directory_name}.so"
     dependency_evidence: dict[str, Any] = {}
     dependency_log = ""
-    if algorithm in (
-        "chimp", "chimp128", "elf-plus", "self-star", "prometheus-xor-chunk", "elf", "elf-star"
-    ):
+    if algorithm in ("chimp", "chimp128", "elf-plus", "self-star", "elf", "elf-star"):
         command, dependency_evidence = _rewrite_lossless_command(output, profile, algorithm)
-    elif algorithm in ("streamvbyte-u32", "delta-zigzag-streamvbyte64"):
-        command, dependency_evidence = _streamvbyte_command(output, profile, algorithm)
-    elif algorithm in ("streamvbyte-modern-u32", "delta-zigzag-streamvbyte-modern64"):
-        command, dependency_evidence = _streamvbyte_modern_command(output, profile, algorithm)
-    elif algorithm == "delta-varint":
-        command = _delta_varint_command(output, profile)
-        dependency_evidence = {
-            "upstream_repository": "https://github.com/mattsta/varint",
-            "upstream_commit": "81ba89cd76f079649de49f5726f50f8a1344b21d",
-            "source_closure": [
-                "adapters/delta_varint/vendor/varint/varint.h",
-                "adapters/delta_varint/vendor/varint/varintExternal.h",
-                "adapters/delta_varint/vendor/varint/varintExternal.c",
-                "adapters/delta_varint/vendor/varint/varintDelta.h",
-                "adapters/delta_varint/vendor/varint/varintDelta.c",
-                "adapters/delta_varint/vendor/varint/endianIsLittle.h",
-            ],
-            "variant": "SIGNED_INT64_BASE_PLUS_ZIGZAG_DELTA_EXTERNAL_WIDTH",
-        }
     elif algorithm in ("serf-qt", "serf-xor"):
         command = _serf_command(output, profile, algorithm)
         dependency_evidence = {
@@ -1076,9 +1215,13 @@ def _build(algorithm: str, profile: str) -> dict[str, Any]:
             "patched_translation_unit_sha256": [
                 _sha256(output_dir / "serf/src/utils" / name)
                 for name in (
-                    "double.h", "float.h", "zig_zag_codec.h",
-                    "output_bit_stream.cc", "input_bit_stream.cc",
-                    "serf_utils_32.cc", "serf_utils_64.cc",
+                    "double.h",
+                    "float.h",
+                    "zig_zag_codec.h",
+                    "output_bit_stream.cc",
+                    "input_bit_stream.cc",
+                    "serf_utils_32.cc",
+                    "serf_utils_64.cc",
                 )
             ],
         }
@@ -1116,15 +1259,22 @@ def _build(algorithm: str, profile: str) -> dict[str, Any]:
                     "0003-encoded-integer-range.patch",
                 )
             ],
-            "patched_encoder_sha256": _sha256(
-                output_dir / "alp/include/alp/encoder.hpp"
-            ),
+            "patched_encoder_sha256": _sha256(output_dir / "alp/include/alp/encoder.hpp"),
             "source_encoder_sha256": _sha256(
                 PROJECT_ROOT / "adapters/alp/vendor/alp/include/alp/encoder.hpp"
             ),
         }
     elif algorithm == "lz4-frame":
         command = _lz4_command(output, profile)
+        dependency_evidence = {
+            "patches": [
+                _file_entry(
+                    PROJECT_ROOT
+                    / "adapters/lz4_frame/patches/0001-output-descriptor-eof-state.patch"
+                )
+            ],
+            "binding_patch_scope": "PROJECT_C_ABI_WRAPPER_ONLY_VENDOR_UNMODIFIED",
+        }
     elif algorithm in ("huff0", "fse"):
         command = _entropy_command(output, profile, algorithm)
     elif algorithm in ("sprintz-delta-u8", "sprintz-fire-u8"):
@@ -1151,18 +1301,19 @@ def _build(algorithm: str, profile: str) -> dict[str, Any]:
             "patched_translation_unit_sha256": [
                 _sha256(output_dir / "sprintz" / name)
                 for name in (
-                    "sprintz.cpp", "sprintz_delta_lowdim.cpp", "sprintz_xff_lowdim.cpp",
-                    "sprintz_delta_rle.cpp", "sprintz_xff_rle.cpp", "format.cpp",
+                    "sprintz.cpp",
+                    "sprintz_delta_lowdim.cpp",
+                    "sprintz_xff_lowdim.cpp",
+                    "sprintz_delta_rle.cpp",
+                    "sprintz_xff_rle.cpp",
+                    "format.cpp",
                 )
             ],
         }
     elif algorithm == "sprintz-fire-huff0":
         command = _sprintz_fire_huff0_command(output, profile)
         dependency_evidence = {
-            "source_artifact_dependencies": [
-                "sprintz-lzbench",
-                "entropy-fse-benchmark",
-            ],
+            "source_artifact_dependencies": ["sprintz-lzbench", "entropy-fse-benchmark"],
             "patch_sha256": [
                 _sha256(PROJECT_ROOT / "adapters/sprintz/patches" / name)
                 for name in (
@@ -1174,20 +1325,34 @@ def _build(algorithm: str, profile: str) -> dict[str, Any]:
             "patched_translation_unit_sha256": [
                 _sha256(output_dir / "sprintz" / name)
                 for name in (
-                    "sprintz.cpp", "sprintz_delta_lowdim.cpp", "sprintz_xff_lowdim.cpp",
-                    "sprintz_delta_rle.cpp", "sprintz_xff_rle.cpp", "format.cpp",
+                    "sprintz.cpp",
+                    "sprintz_delta_lowdim.cpp",
+                    "sprintz_xff_lowdim.cpp",
+                    "sprintz_delta_rle.cpp",
+                    "sprintz_xff_rle.cpp",
+                    "format.cpp",
                 )
             ],
         }
     elif algorithm == "zstd-frame":
         command = _zstd_command(output, profile)
+        dependency_evidence = {
+            "patches": [
+                _file_entry(
+                    PROJECT_ROOT
+                    / "adapters/zstd_frame/patches/0001-output-descriptor-eof-state.patch"
+                )
+            ],
+            "binding_patch_scope": "PROJECT_C_ABI_WRAPPER_ONLY_VENDOR_UNMODIFIED",
+        }
     elif algorithm == "snappy-raw":
         command = _snappy_command(output, profile)
     elif algorithm == "lzsse8-raw":
         command = _lzsse8_command(output, profile)
         dependency_evidence = {
             "patch_sha256": _sha256(
-                PROJECT_ROOT / "adapters/lzsse8_raw/patches"
+                PROJECT_ROOT
+                / "adapters/lzsse8_raw/patches"
                 / "0001-allocation-unaligned-pointer-safety.patch"
             ),
             "patched_translation_unit_sha256": _sha256(output_dir / "lzsse8.cpp"),
@@ -1199,7 +1364,8 @@ def _build(algorithm: str, profile: str) -> dict[str, Any]:
         command = _lzsse2_command(output, profile)
         dependency_evidence = {
             "patch_sha256": _sha256(
-                PROJECT_ROOT / "adapters/lzsse2_raw/patches"
+                PROJECT_ROOT
+                / "adapters/lzsse2_raw/patches"
                 / "0001-allocation-unaligned-pointer-safety.patch"
             ),
             "patched_translation_unit_sha256": _sha256(output_dir / "lzsse2.cpp"),
@@ -1219,7 +1385,8 @@ def _build(algorithm: str, profile: str) -> dict[str, Any]:
         command = _lzss_dipperstein_command(output, profile)
         vendor = PROJECT_ROOT / "adapters/lzss_dipperstein/vendor/lzss"
         patch = (
-            PROJECT_ROOT / "adapters/lzss_dipperstein/patches"
+            PROJECT_ROOT
+            / "adapters/lzss_dipperstein/patches"
             / "0001-binary-tree-sentinel-bounds.patch"
         )
         dependency_evidence = {
@@ -1229,15 +1396,19 @@ def _build(algorithm: str, profile: str) -> dict[str, Any]:
             "patched_tree_sha256": _sha256(output_dir / "tree.c"),
             "source_tree_sha256": _sha256(vendor / "tree.c"),
             "unmodified_source_sha256": [
-                _sha256(vendor / name)
-                for name in ("lzss.c", "tree.c", "bitfile/bitfile.c")
+                _sha256(vendor / name) for name in ("lzss.c", "tree.c", "bitfile/bitfile.c")
             ],
         }
     elif algorithm == "xz-stream":
         command, dependency_evidence, dependency_log = _xz_command(output, profile)
     else:
         raise ValueError(f"unknown algorithm: {algorithm}")
-    log = dependency_log + _run(command)
+    closure_evidence, compilation_log = _compile_with_dependencies(command, output)
+    if _file_entry(Path(__file__)) != driver_entry:
+        raise RuntimeError("build driver changed during compilation; use a new output root")
+    closure_evidence["build_driver_files"] = [driver_entry]
+    dependency_evidence.update(closure_evidence)
+    log = dependency_log + compilation_log
     command_document = {
         "schema_version": "tscb.compile-command.v1",
         "profile": profile,
@@ -1247,8 +1418,7 @@ def _build(algorithm: str, profile: str) -> dict[str, Any]:
     command_bytes = json.dumps(
         command_document, ensure_ascii=False, sort_keys=True, separators=(",", ":")
     ).encode("utf-8")
-    if dependency_evidence:
-        (output_dir / "compile-command.json").write_bytes(command_bytes + b"\n")
+    (output_dir / "compile-command.json").write_bytes(command_bytes + b"\n")
     record = {
         "schema_version": "tscb.build-artifact.v1",
         "algorithm": algorithm,
@@ -1260,22 +1430,10 @@ def _build(algorithm: str, profile: str) -> dict[str, Any]:
         "command_display": shlex.join(command),
         "build_log": log,
     }
-    if algorithm in ("streamvbyte-u32", "delta-zigzag-streamvbyte64"):
-        record["binding_sources"] = dependency_evidence["binding_sources"]
-        record["source_files"] = json.loads(
-            (PROJECT_ROOT / "adapters/streamvbyte/SOURCE_LOCK.json").read_text()
-        )["files"]
-        record["compiled_source_closure"] = [
-            {"path": str((output_dir / "fastpfor/streamvbyte.c").relative_to(PROJECT_ROOT)),
-             "sha256": dependency_evidence["compiled_source_sha256"]}
-        ]
-    elif algorithm in ("streamvbyte-modern-u32", "delta-zigzag-streamvbyte-modern64"):
-        for field in ("binding_sources", "source_files", "compiled_source_closure"):
-            record[field] = dependency_evidence[field]
+    record.update(dependency_evidence)
     record_path = output_dir / "build-record.json"
     record_path.write_text(
-        json.dumps(record, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
-        encoding="utf-8",
+        json.dumps(record, ensure_ascii=False, indent=2, sort_keys=True) + "\n", encoding="utf-8"
     )
     return record
 
@@ -1283,26 +1441,42 @@ def _build(algorithm: str, profile: str) -> dict[str, Any]:
 def main() -> int:
     parser = argparse.ArgumentParser(description="Build a frozen source codec adapter")
     algorithms = (
-        "abba", "fabba", "influxdb-tsm-adaptive-timestamp", "prometheus-xor2-chunk",
-        "tristan", "corad", "deepzip", "dzip", "walloc-1d",
-        "prometheus-histogram-st", "prometheus-float-histogram-st",
-        "huff0", "fse", "sprintz-delta-u8", "sprintz-fire-u8",
-        "sprintz-delta", "sprintz-fire", "sprintz-fire-huff0",
-        "lz4-frame", "zstd-frame", "snappy-raw", "lzsse2-raw", "brotli-stream",
-        "deflate-zlib", "bzip2-stream", "xz-stream", "lzss-raw",
-        "lzss-dipperstein-c", "lzsse8-raw", "alp", "alp-rd",
-        "serf-qt", "serf-xor", "zfp-accuracy-1d",
-        "neats-lossless-i64", "leats-lossless-i64", "delta-varint",
-        "streamvbyte-u32", "delta-zigzag-streamvbyte64",
-        "streamvbyte-modern-u32", "delta-zigzag-streamvbyte-modern64",
-        "fast-differential-u32",
-        "maskedvbyte-u32", "delta-maskedvbyte-u32",
-        "simdcomp-u32", "delta-simdcomp-u32", "for-simdcomp-u32",
-        "simple9-u28", "simple9hacked-u28", "simple16-u28",
-        "fastpfor-simple8b-rle-u32",
-        "littleintpacker-pack32-u32", "littleintpacker-turbo-u32", "littleintpacker-sc-u32",
-        "littleintpacker-bmi2-u32", "littleintpacker-horizontal-u32",
-        "chimp", "chimp128", "elf-plus", "self-star", "prometheus-xor-chunk", "elf", "elf-star"
+        "abba",
+        "fabba",
+        "deepzip",
+        "dzip",
+        "huff0",
+        "fse",
+        "sprintz-delta-u8",
+        "sprintz-fire-u8",
+        "sprintz-delta",
+        "sprintz-fire",
+        "sprintz-fire-huff0",
+        "lz4-frame",
+        "zstd-frame",
+        "snappy-raw",
+        "lzsse2-raw",
+        "brotli-stream",
+        "deflate-zlib",
+        "bzip2-stream",
+        "xz-stream",
+        "lzss-raw",
+        "lzss-dipperstein-c",
+        "lzsse8-raw",
+        "alp",
+        "alp-rd",
+        "serf-qt",
+        "serf-xor",
+        "zfp-accuracy-1d",
+        "neats-lossless-i64",
+        "leats-lossless-i64",
+        "simdcomp-u32",
+        "chimp",
+        "chimp128",
+        "elf-plus",
+        "self-star",
+        "elf",
+        "elf-star",
     )
     aliases = {}
     for path in sorted((PROJECT_ROOT / "registry/codecs/aliases").glob("*.json")):
@@ -1311,7 +1485,7 @@ def main() -> int:
             document.get("schema_version") != "tscb.codec-alias.v2"
             or document.get("mapping_kind") != "SPREADSHEET_SOURCE_MAPPING_NOT_NEW_CODEC"
             or document.get("key") != path.stem
-            or path.stem in algorithms
+            or (path.stem in algorithms)
         ):
             parser.error(f"invalid codec alias: {path.name}")
         target = document.get("canonical_key")
@@ -1321,27 +1495,26 @@ def main() -> int:
     parser.add_argument(
         "--profile", choices=("release", "debug", "sanitizer", "all"), default="release"
     )
+    parser.add_argument(
+        "--output-root",
+        type=Path,
+        help="new project-local build root; existing profile folders are never overwritten",
+    )
     arguments = parser.parse_args()
     profiles = ("release", "sanitizer") if arguments.profile == "all" else (arguments.profile,)
     algorithm = aliases.get(arguments.algorithm, arguments.algorithm)
-    three_profile_algorithms = {
-        "streamvbyte-u32", "delta-zigzag-streamvbyte64",
-        "streamvbyte-modern-u32", "delta-zigzag-streamvbyte-modern64",
-        "fast-differential-u32", "maskedvbyte-u32", "delta-maskedvbyte-u32",
-        "simdcomp-u32", "delta-simdcomp-u32", "for-simdcomp-u32",
-        "simple9-u28", "simple9hacked-u28", "simple16-u28",
-        "fastpfor-simple8b-rle-u32",
-        "littleintpacker-pack32-u32", "littleintpacker-turbo-u32", "littleintpacker-sc-u32",
-        "littleintpacker-bmi2-u32", "littleintpacker-horizontal-u32",
-    }
+    three_profile_algorithms = {"simdcomp-u32"}
     if algorithm in three_profile_algorithms and arguments.profile == "all":
         profiles = ("release", "debug", "sanitizer")
     elif arguments.profile == "debug":
         if algorithm not in three_profile_algorithms:
-            parser.error(
-                "debug profile is registered only for explicitly qualified native recipes"
-            )
-    records = [_build(algorithm, item) for item in profiles]
+            parser.error("debug profile is registered only for explicitly qualified native recipes")
+    records = [
+        _build(algorithm, item, output_root=arguments.output_root)
+        if arguments.output_root is not None
+        else _build(algorithm, item)
+        for item in profiles
+    ]
     print(json.dumps(records, ensure_ascii=False, indent=2, sort_keys=True))
     return 0
 

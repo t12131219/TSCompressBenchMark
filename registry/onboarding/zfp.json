@@ -29,13 +29,23 @@
     "configs/experiments/zfp-accuracy-1d-qualification.toml",
     "configs/experiments/zfp-accuracy-1d-formal.toml"
   ],
-  "license_files": ["adapters/zfp/vendor/zfp/LICENSE"],
+  "license_files": [
+    "adapters/zfp/vendor/zfp/LICENSE"
+  ],
   "third_party_dependencies": [],
-  "object_level_candidates": ["P1_STANDALONE_CODEC"],
+  "object_level_candidates": [
+    "P1_STANDALONE_CODEC"
+  ],
   "input_contract": {
     "kind": "HOMOGENEOUS_FLOAT_VALUE_COLUMNS",
-    "dtypes": ["little-endian float32", "little-endian float64"],
-    "topologies": ["UTS", "SYNCHRONOUS_MTS"],
+    "dtypes": [
+      "little-endian float32",
+      "little-endian float64"
+    ],
+    "topologies": [
+      "UTS",
+      "SYNCHRONOUS_MTS"
+    ],
     "mode": "FIXED_ACCURACY",
     "error_bound": "positive finite ABSOLUTE decimal",
     "dimensionality": "independent 1D field per column",
@@ -74,13 +84,41 @@
       "profile": "release",
       "suite": "project native ABI smoke across float32/float64 and 1D tail boundaries",
       "status": "PASS",
-      "evidence": "conda run -n CompressBench14 python adapters/zfp/tests/run_native_tests.py"
+      "evidence": "conda run -n CompressBench14 python adapters/zfp/tests/run_native_tests.py",
+      "evidence_kind": "HISTORICAL_OR_SEPARATE_UPSTREAM_EVIDENCE"
     },
     {
       "profile": "sanitizer",
       "suite": "same ABI smoke under ASan/UBSan including corruption, canary and bound-minus-one",
       "status": "PASS",
-      "evidence": "conda run -n CompressBench14 python adapters/zfp/tests/run_native_tests.py"
+      "evidence": "conda run -n CompressBench14 python adapters/zfp/tests/run_native_tests.py",
+      "evidence_kind": "HISTORICAL_OR_SEPARATE_UPSTREAM_EVIDENCE"
+    },
+    {
+      "algorithm": "zfp-accuracy-1d",
+      "profile": "release",
+      "name": "current build dependency and finite native API verification",
+      "status": "PASS",
+      "evidence": {
+        "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/qualification.json",
+        "sha256": "b86173f34c30d175552de327cc446dd8480aa02dd7a9ae56f12f60c0d93db174"
+      },
+      "evidence_kind": "CURRENT_REAL_BUILD_DEPENDENCIES_WITH_SELECTED_NATIVE_TESTS",
+      "native_suite_status": "PASS",
+      "source_full_parity": "NOT_ASSERTED"
+    },
+    {
+      "algorithm": "zfp-accuracy-1d",
+      "profile": "sanitizer",
+      "name": "current build dependency and finite native API verification",
+      "status": "PASS",
+      "evidence": {
+        "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/qualification.json",
+        "sha256": "b86173f34c30d175552de327cc446dd8480aa02dd7a9ae56f12f60c0d93db174"
+      },
+      "evidence_kind": "CURRENT_REAL_BUILD_DEPENDENCIES_WITH_SELECTED_NATIVE_TESTS",
+      "native_suite_status": "PASS",
+      "source_full_parity": "NOT_ASSERTED"
     }
   ],
   "builds": [
@@ -89,14 +127,50 @@
       "profile": "release",
       "artifact_sha256": "7b1897b84e9b5f6ad261134a7dd5dccba5e398893ddbd5320b216ddcef898a61",
       "compile_commands_sha256": "2f7fbeb259b0df3ffdabfe1d5a090b2caa80291619651f29fdd3a8ccdb532471",
-      "compiler": "cc (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0"
+      "compiler": "cc (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0",
+      "evidence_kind": "HISTORICAL_BUILD_RECORD"
     },
     {
       "kind": "sanitizer",
       "profile": "sanitizer",
       "artifact_sha256": "9755081926d7702855ccab550981c3e78f8a35c62d9c60d40c4cf323b45038c2",
       "compile_commands_sha256": "64f5ce3cf2742d6cd83d099c87a089012daea5d826cc41a7023fd73e0261e2e4",
-      "compiler": "cc (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0"
+      "compiler": "cc (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0",
+      "evidence_kind": "HISTORICAL_BUILD_RECORD"
+    },
+    {
+      "algorithm": "zfp-accuracy-1d",
+      "profile": "RELEASE",
+      "artifact_sha256": "7b1897b84e9b5f6ad261134a7dd5dccba5e398893ddbd5320b216ddcef898a61",
+      "compile_commands_sha256": "ac09db4a453a640c16ca34283e940f090624edf67d257bee3f4c085b0fef9a8c",
+      "compiler": "cc (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0",
+      "evidence_kind": "CURRENT_REAL_BUILD_DEPENDENCIES_VERIFIED",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/zfp_accuracy_1d/release/build-record.json",
+        "sha256": "88760961080bb5369d4c4be57bf8f12aca07ece654973871d95e4ed543d317a7"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/zfp_accuracy_1d/release/libtscb_zfp_accuracy_1d.so",
+        "sha256": "7b1897b84e9b5f6ad261134a7dd5dccba5e398893ddbd5320b216ddcef898a61"
+      },
+      "qualification_scope": "BUILD_CLOSURE_AND_SELECTED_FINITE_NATIVE_SUITE_NOT_SOURCE_FULL_PARITY"
+    },
+    {
+      "algorithm": "zfp-accuracy-1d",
+      "profile": "SANITIZER",
+      "artifact_sha256": "9755081926d7702855ccab550981c3e78f8a35c62d9c60d40c4cf323b45038c2",
+      "compile_commands_sha256": "91c9e0486cbc7b907c92b99caaa461f44a403c3b74ca56a68a60e0e748424df1",
+      "compiler": "cc (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0",
+      "evidence_kind": "CURRENT_REAL_BUILD_DEPENDENCIES_VERIFIED",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/zfp_accuracy_1d/sanitizer/build-record.json",
+        "sha256": "18764fadd367952f7fb241c6a98797c449530597cfd9c338467872af410e97f7"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/zfp_accuracy_1d/sanitizer/libtscb_zfp_accuracy_1d.so",
+        "sha256": "9755081926d7702855ccab550981c3e78f8a35c62d9c60d40c4cf323b45038c2"
+      },
+      "qualification_scope": "BUILD_CLOSURE_AND_SELECTED_FINITE_NATIVE_SUITE_NOT_SOURCE_FULL_PARITY"
     }
   ],
   "license_decision": {
@@ -110,7 +184,8 @@
     "Fixed-rate, fixed-precision and reversible modes require separate AlgorithmIDs and are not accepted by this adapter.",
     "OpenMP, CUDA, strided fields, validity masks, query and streaming protocols are not registered.",
     "Columns containing NaN, infinity, negative zero or subnormal values use fully charged raw exception records; this policy is part of the algorithm identity.",
-    "The benchmark validates the requested raw absolute error bound independently even though zfp rounds the requested tolerance down to an actual power of two."
+    "The benchmark validates the requested raw absolute error bound independently even though zfp rounds the requested tolerance down to an actual power of two.",
+    "2026-10-11: new isolated builds pin actual per-TU compiler dependencies, objects, selected toolchain executables and linked dynamic runtime files. These records do not pin every implicit static startup/runtime archive and do not grant source FULL_PARITY or change active algorithm scope. Historical runs retain their original artifact identities."
   ],
   "unsupported_reason_codes": [
     "EXECUTION_ARTIFACT_MISSING",
@@ -122,5 +197,6 @@
     "ZFP_NATIVE_ND_NOT_REGISTERED",
     "MULTI_THREAD_UNSUPPORTED",
     "DEVICE_UNSUPPORTED"
-  ]
+  ],
+  "source_onboarding_id": "v2:source-onboarding:sha256:37cca7ef0441677791f8f8ce9113d9650f4daac2f3efeb938500bc7c4f2c4820"
 }

@@ -2,13 +2,16 @@ from __future__ import annotations
 
 import gc
 import hashlib
+import os
 import resource
 import time
+from collections.abc import Callable
 from dataclasses import dataclass
 from decimal import Decimal
+from pathlib import Path
 from typing import Any
 
-from tscompbench.codecs import CompatibilityPlan
+from tscompbench.codecs import CodecManifest, CompatibilityPlan
 from tscompbench.measurement import (
     MeasurementPolicy,
     ResourceSampler,
@@ -27,7 +30,9 @@ from .protocol import (
     ExecutionContractError,
     RoutedInput,
     SourceDomainError,
+    WorkerMeasurementError,
 )
+from .recovery import DecodeContext, bind_decode_context, restore_decoded_output
 from .routing import hash_logical_buffers, hash_reference_array
 
 _CANARY = bytes.fromhex("a55ac33c966969963cc35aa5") * 3
@@ -99,6 +104,15 @@ class MeasuredRoundTripObservation:
     determinism_match: bool | None
     lifecycle_trace: tuple[str, ...]
     codec_telemetry: dict[str, Any] | None = None
+
+
+@dataclass(frozen=True)
+class MeasuredWorkerObservation:
+    """One outer worker, with warmup and sampling in that exact process."""
+
+    observation: MeasuredRoundTripObservation
+    warmup: WarmupObservation
+    worker_evidence: dict[str, Any]
 
 
 def _codec_telemetry(session: Any) -> dict[str, Any] | None:
@@ -323,24 +337,8 @@ def _measure_reverse_adapter(
     original: RoutedInput,
     decoded: DecodedOutput,
     compatibility: CompatibilityPlan,
-) -> None:
-    """Materialize declared inverse adapter work without changing validation evidence."""
-
-    by_name = decoded.by_name()
-    for expected in original.buffers:
-        current = by_name[expected.name].array
-        for operation in reversed(compatibility.operations):
-            kind = operation.kind.value
-            if kind == "TRANSPOSE_COPY" and current.ndim >= 2:
-                current = current.T
-            elif kind == "ENDIANNESS_CONVERSION":
-                current = current.byteswap().view(current.dtype.newbyteorder())
-            elif kind in {"EXACT_WIDEN", "LOSSY_CAST"}:
-                if compatibility.effective_loss_mode.value == "LOSSLESS":
-                    current = current.astype(expected.array.dtype, copy=False)
-        # A consumer-visible scalar read prevents a lazy backend from deferring work.
-        if current.size:
-            current.reshape(-1)[-1].item()
+) -> DecodedOutput:
+    return restore_decoded_output(decoded, DecodeContext.from_routed(original, compatibility))
 
 
 def perform_warmup(
@@ -349,6 +347,8 @@ def perform_warmup(
     compatibility: CompatibilityPlan,
     parameters: dict[str, Any],
     policy: MeasurementPolicy,
+    *,
+    iteration_callback: Callable[[dict[str, Any]], None] | None = None,
 ) -> WarmupObservation:
     if policy.iteration_semantics != "INDEPENDENT_OBJECT":
         raise ExecutionContractError(
@@ -358,6 +358,7 @@ def perform_warmup(
     start = time.perf_counter_ns()
     elapsed = 0
     while count < policy.warmup_min_count or elapsed < policy.warmup_min_ns:
+        iteration_started_ns = time.perf_counter_ns()
         prepared = prepare_execution_input(
             routed, compatibility, max_abs_error=parameters.get("error_bound")
         )
@@ -367,6 +368,17 @@ def perform_warmup(
         _measure_reverse_adapter(routed, result.decoded, compatibility)
         count += 1
         elapsed = time.perf_counter_ns() - start
+        if iteration_callback is not None:
+            iteration_callback(
+                {
+                    "iteration_index": count - 1,
+                    "worker_pid": os.getpid(),
+                    "started_ns": iteration_started_ns,
+                    "finished_ns": start + elapsed,
+                    "encode_wall_ns": result.timing.encode_wall_ns,
+                    "decode_wall_ns": result.timing.decode_wall_ns,
+                }
+            )
         if count >= policy.max_inner_iterations:
             break
     satisfied = count >= policy.warmup_min_count and elapsed >= policy.warmup_min_ns
@@ -380,6 +392,107 @@ def perform_warmup(
         iteration_semantics=policy.iteration_semantics,
         threshold_satisfied=True,
     )
+
+
+def perform_declared_worker_measurement(
+    project_root: Path,
+    codec_key: str,
+    manifest_document: dict[str, Any],
+    algorithm_id: str,
+    routed: RoutedInput,
+    compatibility: CompatibilityPlan,
+    parameters: dict[str, Any],
+    policy: MeasurementPolicy,
+    source_reject_fallback: bool = False,
+) -> MeasuredWorkerObservation:
+    """Load the declared codec in a new interpreter before local warmup.
+
+    Native handles and an encoder from the parent are never pickled or inherited.
+    This encoding worker receives original data; the separate recovery worker
+    continues to receive only the persisted stream and decoder dependencies.
+    """
+    from tscompbench.adapters.factory import create_adapter
+
+    manifest = CodecManifest(codec_key, manifest_document, algorithm_id)
+    adapter = create_adapter(
+        project_root,
+        manifest,
+        source_reject_fallback=source_reject_fallback,
+    )
+    return perform_worker_measurement(adapter, routed, compatibility, parameters, policy)
+
+
+def perform_worker_measurement(
+    adapter: CodecAdapter,
+    routed: RoutedInput,
+    compatibility: CompatibilityPlan,
+    parameters: dict[str, Any],
+    policy: MeasurementPolicy,
+) -> MeasuredWorkerObservation:
+    """Warm this worker before starting its measured/resource sampling boundary.
+
+    This proves only the declared local warmup. Fresh codec contexts per object
+    remain part of the lifecycle, and fork inheritance does not prove cold start.
+    The v2 fixed thresholds remain legacy; no statistical steady-state claim is
+    inferred from satisfying them.
+    """
+
+    worker_pid = os.getpid()
+    iterations: list[dict[str, Any]] = []
+    evidence: dict[str, Any] = {
+        "schema_version": "tscb.worker-measurement-evidence.v1",
+        "measurement_worker_protocol": "WORKER_LOCAL_WARMUP_V1",
+        "threshold_protocol": policy.measurement_protocol_id,
+        "clock": "PERF_COUNTER_NS",
+        "worker_pid": worker_pid,
+        "parent_pid": os.getppid(),
+        "outer_unit": "ISOLATED_WORKER_PROCESS",
+        "warmup_scope": "EACH_MEASUREMENT_WORKER",
+        "context_scope": "FRESH_ENCODE_AND_DECODE_CONTEXT_PER_INNER_OBJECT",
+        "cache_policy": policy.cache_policy,
+        "state_policy": policy.state_policy,
+        "cold_start_proven": False,
+        "steady_state_proven": False,
+        "warmup_excluded_from_timing": True,
+        "resource_peak_rss_scope": "PROCESS_LIFETIME_INCLUDING_WARMUP",
+        "thread_monitor_interval_ns": policy.thread_monitor_interval_ns,
+        "thread_monitor_scope": (
+            "PARENT_LIFECYCLE_SAMPLED_LOWER_BOUND_NO_EXTRA_WORKER_THREAD"
+            if policy.thread_monitor_interval_ns is not None
+            else "NOT_OBSERVED_BY_PARENT"
+        ),
+        "warmup_worker_pid": worker_pid,
+        "warmup_started_ns": time.perf_counter_ns(),
+        "warmup_finished_ns": None,
+        "warmup": None,
+        "warmup_iterations": iterations,
+        "measurement_worker_pid": None,
+        "measurement_started_ns": None,
+        "measurement_finished_ns": None,
+    }
+    try:
+        warmup = perform_warmup(
+            adapter,
+            routed,
+            compatibility,
+            parameters,
+            policy,
+            iteration_callback=iterations.append,
+        )
+    except Exception as error:
+        evidence["warmup_finished_ns"] = time.perf_counter_ns()
+        raise WorkerMeasurementError(error, "WORKER_LOCAL_WARMUP", evidence) from error
+    evidence["warmup_finished_ns"] = time.perf_counter_ns()
+    evidence["warmup"] = warmup.to_document()
+    evidence["measurement_worker_pid"] = os.getpid()
+    evidence["measurement_started_ns"] = time.perf_counter_ns()
+    try:
+        observation = perform_measured_roundtrip(adapter, routed, compatibility, parameters, policy)
+    except Exception as error:
+        evidence["measurement_finished_ns"] = time.perf_counter_ns()
+        raise WorkerMeasurementError(error, "MEASURED_REPETITION", evidence) from error
+    evidence["measurement_finished_ns"] = time.perf_counter_ns()
+    return MeasuredWorkerObservation(observation, warmup, evidence)
 
 
 def perform_measured_roundtrip(
@@ -408,6 +521,7 @@ def perform_measured_roundtrip(
         energy_method=policy.energy_method,
         allocated_logical_cpus=policy.threads * policy.processes,
         canonical_bytes=canonical_bytes,
+        enabled=policy.resource_collector_enabled,
     )
     start_wall = time.perf_counter_ns()
     sampler.start(start_wall)
@@ -436,6 +550,12 @@ def perform_measured_roundtrip(
             e2e_start = time.perf_counter_ns()
             encode_phase_usage = _usage_pair()
             pipeline_start = time.perf_counter_ns()
+            decode_context = DecodeContext.from_routed(
+                routed,
+                compatibility,
+                adapter_id=adapter.adapter_id,
+                parameters=parameters,
+            )
             prepared = prepare_execution_input(
                 routed, compatibility, max_abs_error=parameters.get("error_bound")
             )
@@ -443,6 +563,7 @@ def perform_measured_roundtrip(
             artifact, enc_wall, enc_cpu, immutable, canary = _encode(
                 adapter, prepared.codec_input, parameters
             )
+            artifact = bind_decode_context(artifact, decode_context)
             encode_phase_end = time.perf_counter_ns()
             encode_phase_delta = _usage_delta(encode_phase_usage, _usage_pair())
 
@@ -459,7 +580,7 @@ def perform_measured_roundtrip(
                 last_decoder_telemetry = _codec_telemetry(session)
             finally:
                 session.close()
-            _measure_reverse_adapter(routed, decoded, compatibility)
+            decoded = restore_decoded_output(decoded, decode_context)
             decode_phase_end = time.perf_counter_ns()
             decode_phase_delta = _usage_delta(decode_phase_usage, _usage_pair())
 

@@ -11,12 +11,17 @@ from tscompbench.accounting import AccountingLedger
 from tscompbench.execution.protocol import (
     DecodedOutput,
     ExecutionContractError,
-    LogicalBuffer,
     OutputCapacityError,
     RoutedInput,
 )
 from tscompbench.ids import canonical_json_bytes
 from tscompbench.measurement.workloads import StreamPushResult
+
+from .byte_container import (
+    DEFAULT_MAX_OUTPUT_BYTES,
+    decode_byte_payload,
+    validate_byte_descriptors,
+)
 
 _STATUS_OK = 0
 _STATUS_DST_TOO_SMALL = 3
@@ -27,7 +32,9 @@ _MAX_RANK = 8
 
 def bind_stream_symbols(library: Any, buffer_type: Any) -> None:
     library.tscb_stream_update.argtypes = [
-        ctypes.c_void_p, ctypes.POINTER(buffer_type), ctypes.POINTER(buffer_type)
+        ctypes.c_void_p,
+        ctypes.POINTER(buffer_type),
+        ctypes.POINTER(buffer_type),
     ]
     library.tscb_stream_update.restype = ctypes.c_uint32
     library.tscb_stream_finalize.argtypes = [ctypes.c_void_p, ctypes.POINTER(buffer_type)]
@@ -158,9 +165,11 @@ class NativeByteStreamingSession:
         output_storage = bytearray(max(1, bound))
         output_array = (ctypes.c_ubyte * len(output_storage)).from_buffer(output_storage)
         output_buffer = self._buffer(ctypes.addressof(output_array), capacity=bound, used=0)
-        status = int(self._native.library.tscb_stream_update(
-            self._handle, ctypes.byref(input_buffer), ctypes.byref(output_buffer)
-        ))
+        status = int(
+            self._native.library.tscb_stream_update(
+                self._handle, ctypes.byref(input_buffer), ctypes.byref(output_buffer)
+            )
+        )
         self._check(status, "stream_update")
         self._updated = True
         self._consumed_n += chunk.n
@@ -188,9 +197,7 @@ class NativeByteStreamingSession:
         output_buffer = self._buffer(ctypes.addressof(output_array), capacity=bound, used=0)
         self._check(
             int(
-                self._native.library.tscb_stream_finalize(
-                    self._handle, ctypes.byref(output_buffer)
-                )
+                self._native.library.tscb_stream_finalize(self._handle, ctypes.byref(output_buffer))
             ),
             "stream_finalize",
         )
@@ -213,46 +220,16 @@ class NativeByteStreamingSession:
 
     @staticmethod
     def _decode_output(header: dict[str, Any], payload: memoryview) -> DecodedOutput:
-        descriptors = header.get("buffers")
-        if not isinstance(descriptors, list):
-            raise ExecutionContractError("stream container has no buffer descriptors")
-        total_n = int(descriptors[0]["shape"][0]) if descriptors else 0
-        block_size = int(header.get("stream_block_size", 0))
-        if header.get("payload_layout") != "BLOCK_MAJOR_BUFFER_ORDER" or block_size < 1:
-            raise ExecutionContractError("stream payload layout metadata is missing")
-        separated = [bytearray() for _ in descriptors]
-        cursor = 0
-        for offset in range(0, total_n, block_size):
-            rows = min(block_size, total_n - offset)
-            for index, descriptor in enumerate(descriptors):
-                dtype = np.dtype(str(descriptor["dtype"]))
-                shape = tuple(int(value) for value in descriptor["shape"])
-                row_width = int(np.prod(shape[1:], dtype=np.int64)) if len(shape) > 1 else 1
-                length = rows * row_width * dtype.itemsize
-                if cursor + length > len(payload):
-                    raise ExecutionContractError("truncated stream payload")
-                separated[index].extend(payload[cursor : cursor + length])
-                cursor += length
-        if cursor != len(payload):
-            raise ExecutionContractError("stream payload has trailing bytes")
-        decoded: list[LogicalBuffer] = []
-        for descriptor, data in zip(descriptors, separated, strict=True):
-            dtype = np.dtype(str(descriptor["dtype"]))
-            shape = tuple(int(value) for value in descriptor["shape"])
-            array = np.frombuffer(data, dtype=dtype).copy().reshape(shape)
-            array.flags.writeable = False
-            decoded.append(
-                LogicalBuffer(str(descriptor["name"]), array, int(descriptor["logical_bits"]))
-            )
-        return DecodedOutput(tuple(decoded))
+        return decode_byte_payload(header, payload)
 
-    def stream_decompress(self, stream: bytes) -> DecodedOutput:
+    def stream_decompress(
+        self, stream: bytes, *, max_output_bytes: int = DEFAULT_MAX_OUTPUT_BYTES
+    ) -> DecodedOutput:
         parsed = self._owner._parse_container(stream)
         header, frame = parsed[:2]
-        descriptors = header.get("buffers")
-        if not isinstance(descriptors, list):
-            raise ExecutionContractError("stream container has no descriptors")
-        output_bytes = sum(int(item["payload_bytes"]) for item in descriptors)
+        _, output_bytes = validate_byte_descriptors(header, max_output_bytes=max_output_bytes)
+        if header.get("payload_layout") != "BLOCK_MAJOR_BUFFER_ORDER":
+            raise ExecutionContractError("stream payload layout metadata is missing")
         self._check(
             int(self._native.library.tscb_stream_decoder_reset(self._handle)),
             "stream_decoder_reset",
@@ -265,9 +242,7 @@ class NativeByteStreamingSession:
             input_storage, input_array, input_buffer = self._bytes_buffer(compressed)
             remaining = output_bytes - output_cursor
             output_view = (
-                output_storage
-                if remaining == 0
-                else memoryview(output_storage)[output_cursor:]
+                output_storage if remaining == 0 else memoryview(output_storage)[output_cursor:]
             )
             output_array = (ctypes.c_ubyte * max(1, remaining)).from_buffer(output_view)
             output_buffer = self._buffer(ctypes.addressof(output_array), capacity=remaining, used=0)
@@ -295,7 +270,9 @@ class NativeByteStreamingSession:
             raise ExecutionContractError(
                 "stream decode did not produce the exact descriptor length"
             )
-        return self._decode_output(header, memoryview(output_storage)[:output_bytes])
+        return decode_byte_payload(
+            header, memoryview(output_storage)[:output_bytes], max_output_bytes=max_output_bytes
+        )
 
     def close(self) -> None:
         self._owner.close()

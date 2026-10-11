@@ -82,37 +82,95 @@
       "profile": "release",
       "suite": "bounded-native-roundtrip-and-hostile-stream",
       "status": "PASS",
-      "evidence": "Historical pre-rebuild identity: tools/qualify_sprintz.py; 8/16-bit, 1..128 dimensions, boundary/pattern/random roundtrips, truncation, mutation, capacity and canary checks"
+      "evidence": "Historical pre-rebuild identity: tools/qualify_sprintz.py; 8/16-bit, 1..128 dimensions, boundary/pattern/random roundtrips, truncation, mutation, capacity and canary checks",
+      "evidence_kind": "HISTORICAL_OR_SEPARATE_UPSTREAM_EVIDENCE"
     },
     {
       "profile": "asan-ubsan",
       "suite": "bounded-native-roundtrip-and-hostile-stream",
       "status": "PASS",
-      "evidence": "Historical pre-rebuild identity: tools/qualify_sprintz.py with ASan/UBSan; alignment sanitizer excluded for documented packed x86 accesses"
+      "evidence": "Historical pre-rebuild identity: tools/qualify_sprintz.py with ASan/UBSan; alignment sanitizer excluded for documented packed x86 accesses",
+      "evidence_kind": "HISTORICAL_OR_SEPARATE_UPSTREAM_EVIDENCE"
     },
     {
       "profile": "asan-ubsan",
       "suite": "forced-generic-allocation-failure",
       "status": "PASS",
-      "evidence": "Historical pre-rebuild identity: adapters/sprintz/tests/allocation_failure_full.cc wraps malloc/calloc and injects every generic-path allocation failure"
+      "evidence": "Historical pre-rebuild identity: adapters/sprintz/tests/allocation_failure_full.cc wraps malloc/calloc and injects every generic-path allocation failure",
+      "evidence_kind": "HISTORICAL_OR_SEPARATE_UPSTREAM_EVIDENCE"
     },
     {
       "profile": "formal",
       "suite": "five-layer-synthetic-i16-mts",
       "status": "PASS",
-      "evidence": "Historical pre-rebuild identity: runs/runset-20260919T093811Z-e48ab64f58b0: 20 eligible PASS repetitions, two summaries and two PASS coverage tasks"
+      "evidence": "Historical pre-rebuild identity: runs/runset-20260919T093811Z-e48ab64f58b0: 20 eligible PASS repetitions, two summaries and two PASS coverage tasks",
+      "evidence_kind": "HISTORICAL_OR_SEPARATE_UPSTREAM_EVIDENCE"
     },
     {
       "name": "Current release and ASan/UBSan native qualification",
       "status": "PASS",
       "evidence": "bounded Sprintz 8/16-bit UTS/MTS qualification passed\nSprintzFIRE+Huf native qualification passed\nbounded Sprintz 8/16-bit UTS/MTS qualification passed\nSprintzFIRE+Huf native qualification passed\nSprintz generic allocation-failure paths passed\nALL SPRINTZ NATIVE TESTS PASS\n",
-      "log_sha256": "32af0ef6e10b87f964929c7885856f5707b272a7792ea4585c42c767278780df"
+      "log_sha256": "32af0ef6e10b87f964929c7885856f5707b272a7792ea4585c42c767278780df",
+      "evidence_kind": "HISTORICAL_OR_SEPARATE_UPSTREAM_EVIDENCE"
     },
     {
       "name": "Full-input uint8 fixture regression and adapter tests",
       "status": "PASS",
       "evidence": "........................................................................ [ 57%]\n.....................................................                    [100%]\n125 passed in 3.08s\n",
-      "log_sha256": "a45a44e5c2e4ab901199b0ae4138f081d0781f6ff7a8971f11e0da165322a7ab"
+      "log_sha256": "a45a44e5c2e4ab901199b0ae4138f081d0781f6ff7a8971f11e0da165322a7ab",
+      "evidence_kind": "HISTORICAL_OR_SEPARATE_UPSTREAM_EVIDENCE"
+    },
+    {
+      "algorithm": "sprintz-delta",
+      "profile": "release",
+      "name": "current build dependency and finite native API verification",
+      "status": "PASS",
+      "evidence": {
+        "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/qualification.json",
+        "sha256": "b86173f34c30d175552de327cc446dd8480aa02dd7a9ae56f12f60c0d93db174"
+      },
+      "evidence_kind": "CURRENT_REAL_BUILD_DEPENDENCIES_WITH_SELECTED_NATIVE_TESTS",
+      "native_suite_status": "PASS",
+      "source_full_parity": "NOT_ASSERTED"
+    },
+    {
+      "algorithm": "sprintz-delta",
+      "profile": "sanitizer",
+      "name": "current build dependency and finite native API verification",
+      "status": "PASS",
+      "evidence": {
+        "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/qualification.json",
+        "sha256": "b86173f34c30d175552de327cc446dd8480aa02dd7a9ae56f12f60c0d93db174"
+      },
+      "evidence_kind": "CURRENT_REAL_BUILD_DEPENDENCIES_WITH_SELECTED_NATIVE_TESTS",
+      "native_suite_status": "PASS",
+      "source_full_parity": "NOT_ASSERTED"
+    },
+    {
+      "algorithm": "sprintz-fire",
+      "profile": "release",
+      "name": "current build dependency and finite native API verification",
+      "status": "PASS",
+      "evidence": {
+        "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/qualification.json",
+        "sha256": "b86173f34c30d175552de327cc446dd8480aa02dd7a9ae56f12f60c0d93db174"
+      },
+      "evidence_kind": "CURRENT_REAL_BUILD_DEPENDENCIES_WITH_SELECTED_NATIVE_TESTS",
+      "native_suite_status": "PASS",
+      "source_full_parity": "NOT_ASSERTED"
+    },
+    {
+      "algorithm": "sprintz-fire",
+      "profile": "sanitizer",
+      "name": "current build dependency and finite native API verification",
+      "status": "PASS",
+      "evidence": {
+        "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/qualification.json",
+        "sha256": "b86173f34c30d175552de327cc446dd8480aa02dd7a9ae56f12f60c0d93db174"
+      },
+      "evidence_kind": "CURRENT_REAL_BUILD_DEPENDENCIES_WITH_SELECTED_NATIVE_TESTS",
+      "native_suite_status": "PASS",
+      "source_full_parity": "NOT_ASSERTED"
     }
   ],
   "builds": [
@@ -120,25 +178,97 @@
       "artifact_sha256": "16e01a672b71ce273451b7e56cf07cb2150255bad8909045989888c0daf1680a",
       "compile_commands_sha256": "db616be3abd56524bd23ef1e366b9f1437ded037e576fd094ef28f42ba5680d7",
       "compiler": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0",
-      "profile": "SPRINTZ_DELTA_RELEASE"
+      "profile": "SPRINTZ_DELTA_RELEASE",
+      "evidence_kind": "HISTORICAL_BUILD_RECORD"
     },
     {
       "artifact_sha256": "115c554533486822d943d093de8972b4a9a6fc5987c5ae62c17ad81b3a18f09f",
       "compile_commands_sha256": "b4346e79f92392cf0111c6966b4ba74ef5e988812f18f726ee6413bc63da1bc5",
       "compiler": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0",
-      "profile": "SPRINTZ_DELTA_SANITIZER"
+      "profile": "SPRINTZ_DELTA_SANITIZER",
+      "evidence_kind": "HISTORICAL_BUILD_RECORD"
     },
     {
       "artifact_sha256": "c7acccdb359dbccce1fa990f0f61679741506f533c5df31abf57f9cd9a8b2282",
       "compile_commands_sha256": "06554557e0daf8faa8511c70cf09daac46d93f9b9b280f3f1312c000af6f0b78",
       "compiler": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0",
-      "profile": "SPRINTZ_FIRE_RELEASE"
+      "profile": "SPRINTZ_FIRE_RELEASE",
+      "evidence_kind": "HISTORICAL_BUILD_RECORD"
     },
     {
       "artifact_sha256": "f0fa60a4cb4ea6e329314b30c4e86789707373846d11f5cce792f2006aa9fd93",
       "compile_commands_sha256": "9e8af57fcad7a0889f8afb39b6cbb11eef5ceeccc9ca5ff1d6f27ddae4064b10",
       "compiler": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0",
-      "profile": "SPRINTZ_FIRE_SANITIZER"
+      "profile": "SPRINTZ_FIRE_SANITIZER",
+      "evidence_kind": "HISTORICAL_BUILD_RECORD"
+    },
+    {
+      "algorithm": "sprintz-delta",
+      "profile": "RELEASE",
+      "artifact_sha256": "16e01a672b71ce273451b7e56cf07cb2150255bad8909045989888c0daf1680a",
+      "compile_commands_sha256": "97193e1899b8ef3046304d2b8276749b940164163d442e12d99876dcaf401d50",
+      "compiler": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0",
+      "evidence_kind": "CURRENT_REAL_BUILD_DEPENDENCIES_VERIFIED",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/sprintz_delta/release/build-record.json",
+        "sha256": "d7dc1cd59856f83f20d239a51ea7da4a3bb3e8beb84e1be1bc9944712c0454e9"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/sprintz_delta/release/libtscb_sprintz_delta.so",
+        "sha256": "16e01a672b71ce273451b7e56cf07cb2150255bad8909045989888c0daf1680a"
+      },
+      "qualification_scope": "BUILD_CLOSURE_AND_SELECTED_FINITE_NATIVE_SUITE_NOT_SOURCE_FULL_PARITY"
+    },
+    {
+      "algorithm": "sprintz-delta",
+      "profile": "SANITIZER",
+      "artifact_sha256": "9e227645b626b9e237bbc12e2869beae2aebe40de3cce3e9c8c310291074c0cb",
+      "compile_commands_sha256": "b12138da40ece339097e21401f617bd040f71d7233b515ce3230d3a14cb47c4a",
+      "compiler": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0",
+      "evidence_kind": "CURRENT_REAL_BUILD_DEPENDENCIES_VERIFIED",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/sprintz_delta/sanitizer/build-record.json",
+        "sha256": "1eb85d86b3de1091617e8542d1c0a88952e3c1f8a7c168ae12c6745b72e22a61"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/sprintz_delta/sanitizer/libtscb_sprintz_delta.so",
+        "sha256": "9e227645b626b9e237bbc12e2869beae2aebe40de3cce3e9c8c310291074c0cb"
+      },
+      "qualification_scope": "BUILD_CLOSURE_AND_SELECTED_FINITE_NATIVE_SUITE_NOT_SOURCE_FULL_PARITY"
+    },
+    {
+      "algorithm": "sprintz-fire",
+      "profile": "RELEASE",
+      "artifact_sha256": "c7acccdb359dbccce1fa990f0f61679741506f533c5df31abf57f9cd9a8b2282",
+      "compile_commands_sha256": "7d80399b43eb4f8420258e1fbe9c663935d1649df4f0e2eeb7266465af4d7075",
+      "compiler": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0",
+      "evidence_kind": "CURRENT_REAL_BUILD_DEPENDENCIES_VERIFIED",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/sprintz_fire/release/build-record.json",
+        "sha256": "db091da162c5d0c59e8bbcf628c9b92a006a2bc9676cfa24b1389f6e2cc01c1e"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/sprintz_fire/release/libtscb_sprintz_fire.so",
+        "sha256": "c7acccdb359dbccce1fa990f0f61679741506f533c5df31abf57f9cd9a8b2282"
+      },
+      "qualification_scope": "BUILD_CLOSURE_AND_SELECTED_FINITE_NATIVE_SUITE_NOT_SOURCE_FULL_PARITY"
+    },
+    {
+      "algorithm": "sprintz-fire",
+      "profile": "SANITIZER",
+      "artifact_sha256": "1101a9eff5823672c2bdea9cc6c7c917bae3b419463d6ea27948fbcee2d90713",
+      "compile_commands_sha256": "55f2d052b984ad76ab54283a89b7f782c1f9c33cc0b775004a777dfbe463b13b",
+      "compiler": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0",
+      "evidence_kind": "CURRENT_REAL_BUILD_DEPENDENCIES_VERIFIED",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/sprintz_fire/sanitizer/build-record.json",
+        "sha256": "3c68bbd2d7a14d45a8f4a8cd5aa6c7a871d30cac6c77ae0a5463154b4b186608"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/sprintz_fire/sanitizer/libtscb_sprintz_fire.so",
+        "sha256": "1101a9eff5823672c2bdea9cc6c7c917bae3b419463d6ea27948fbcee2d90713"
+      },
+      "qualification_scope": "BUILD_CLOSURE_AND_SELECTED_FINITE_NATIVE_SUITE_NOT_SOURCE_FULL_PARITY"
     }
   ],
   "license_decision": {
@@ -158,7 +288,8 @@
     "AVX2, BMI2 and LZCNT are mandatory; there is no scalar fallback, runtime dispatch or non-x86 portability claim.",
     "One-shot single-thread operation only; streaming, query, random access and checksums are not registered.",
     "Formal evidence uses one deterministic synthetic int16 MTS dataset and does not establish performance on real-world datasets. Failed diagnostic run sets remain append-only and are not reclassified.",
-    "The native binding files are now content-hashed in SourceArtifactID. An old compiled full-Sprintz wrapper rejected a valid 2048-element uint8 fixture although the current registered wrapper source accepts it. Rebuilt release/sanitizer artifacts replace it; upstream source and compression strategy are unchanged. Historical formal results are not current-source performance qualification."
+    "The native binding files are now content-hashed in SourceArtifactID. An old compiled full-Sprintz wrapper rejected a valid 2048-element uint8 fixture although the current registered wrapper source accepts it. Rebuilt release/sanitizer artifacts replace it; upstream source and compression strategy are unchanged. Historical formal results are not current-source performance qualification.",
+    "2026-10-11: new isolated builds pin actual per-TU compiler dependencies, objects, selected toolchain executables and linked dynamic runtime files. These records do not pin every implicit static startup/runtime archive and do not grant source FULL_PARITY or change active algorithm scope. Historical runs retain their original artifact identities."
   ],
   "unsupported_reason_codes": [
     "EXECUTION_ARTIFACT_MISSING",
@@ -173,5 +304,5 @@
     "STREAMING_UNSUPPORTED",
     "QUERY_UNSUPPORTED"
   ],
-  "source_onboarding_id": "v2:source-onboarding:sha256:9734944735ab9d7c2a714ba892eed63633accc3982bc3780ee7f94d269e72395"
+  "source_onboarding_id": "v2:source-onboarding:sha256:c7dae8434679c975613c99ca297f760c9da6f1d704011a06217a6f6089c989b1"
 }

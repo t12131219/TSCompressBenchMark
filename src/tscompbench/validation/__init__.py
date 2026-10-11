@@ -2,6 +2,14 @@ from .boundary import BoundaryCase, BoundarySuiteReport, build_boundary_suite, r
 from .correctness import CorrectnessReport, validate_common_correctness
 from .input import InputValidationError, InputValidationReport, validate_routed_input
 from .lossy import LossValidationError, LossValidationReport, validate_error_bound
+from .task_validators import (
+    TaskValidationError,
+    TaskValidationRequest,
+    TaskValidationResult,
+    TaskValidatorSpec,
+    register_task_validator,
+    validate_registered_task,
+)
 
 __all__ = [
     "BoundaryCase",
@@ -11,9 +19,15 @@ __all__ = [
     "InputValidationReport",
     "LossValidationError",
     "LossValidationReport",
+    "TaskValidationError",
+    "TaskValidationRequest",
+    "TaskValidationResult",
+    "TaskValidatorSpec",
     "build_boundary_suite",
     "run_boundary_suite",
     "validate_common_correctness",
     "validate_error_bound",
     "validate_routed_input",
+    "register_task_validator",
+    "validate_registered_task",
 ]

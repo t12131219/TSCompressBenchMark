@@ -1,0 +1,117 @@
+{
+  "schema_version": "tscb.codec-manifest.v2",
+  "key": "zfp-accuracy-1d",
+  "identity": {
+    "display_name": "zfp fixed-accuracy 1D (serial C)",
+    "family": "ZFP",
+    "citations": [
+      "benchmark:LLNL/zfp@c0c2c40b30d9:examples/speed.c",
+      "test:LLNL/zfp@c0c2c40b30d9:tests/testzfp.cpp",
+      "spreadsheet:Value-Compress-row-65:zfp"
+    ],
+    "source_artifact_id": "v2:source-artifact:sha256:6d5881b5b75bccc7781c0037a89e78da958cdef81ac14d263e326d6de431193f"
+  },
+  "classification": {
+    "object_level": "P1_STANDALONE_CODEC",
+    "implementation_class": "CONVENTIONAL",
+    "tracks": ["VALUE"],
+    "subtracks": ["V3"]
+  },
+  "input": {
+    "topologies": ["UTS", "SYNCHRONOUS_MTS"],
+    "dtypes": ["<f4", "<f8"],
+    "ranks": [1, 2],
+    "layouts": ["ROW_MAJOR_CONTIG", "SOA_COLUMNS"],
+    "endianness": ["little"],
+    "alignment_bytes": 1,
+    "min_n": 0,
+    "max_n": 16777216,
+    "min_m": 1,
+    "max_m": 65535,
+    "validity_shapes": ["NONE"],
+    "homogeneous_itemsize": true,
+    "max_total_raw_bytes": 134217728,
+    "value_coupling_mode": "COLUMN_INDEPENDENT",
+    "timestamp_semantics": {
+      "preserve_order": true,
+      "duplicates": true,
+      "out_of_order": true,
+      "negative_delta": true,
+      "absolute_epoch": true,
+      "overflow_policy": "NOT_APPLICABLE_VALUE_ONLY"
+    }
+  },
+  "semantics": {
+    "loss_modes": ["ERROR_BOUNDED_LOSSY"],
+    "error_bound_types": ["ABSOLUTE"],
+    "reconstruction_modes": ["APPROX_GRID"],
+    "rebuild_protocol": "TSCB_ZFP_FIXED_ACCURACY_1D_CONTAINER_V1",
+    "preprocess_class": "NONE",
+    "preprocess_stages": [],
+    "decodability_profile": "SELF_CONTAINED_DESCRIPTOR_FULL_ZFP_HEADER_AND_FRAME_CHECKSUM",
+    "bitstream_separability": "PER_COLUMN_1D_FIELD"
+  },
+  "lifecycle": {
+    "block_semantics": "UPSTREAM_ZFP_1D_BLOCKS_OF_4_PER_COLUMN",
+    "state_semantics": "INDEPENDENT_ZFP_STREAM_PER_COLUMN",
+    "reset": "NEW_CONTEXT_REQUIRED",
+    "finalize": "REQUIRED_ZERO_BYTE_FINALIZE",
+    "safe_overread_bytes": 0,
+    "tail_policy": "UPSTREAM_PARTIAL_1D_BLOCK_WITH_EXACT_FIELD_LENGTH",
+    "dictionary": "NONE",
+    "model": "ZFP_ORTHOGONAL_BLOCK_TRANSFORM_FIXED_ACCURACY",
+    "index": "NONE"
+  },
+  "execution": {
+    "backends": ["C_ABI_V1"],
+    "isa": ["SCALAR"],
+    "devices": ["CPU"],
+    "threading": "SINGLE_THREAD",
+    "fallback_policy": "REGISTERED_RAW_COLUMN_FOR_NAN_INFINITY_NEGATIVE_ZERO_OR_SUBNORMAL_ONLY",
+    "runtime_dispatch": false
+  },
+  "features": {"streaming": false, "query": false, "random_access": false},
+  "parameters": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "mode": {"type": "string", "enum": ["FIXED_ACCURACY"], "default": "FIXED_ACCURACY"},
+      "error_bound_type": {"type": "string", "enum": ["ABSOLUTE"], "default": "ABSOLUTE"},
+      "error_bound": {"type": "decimal-string", "default": "0.001"},
+      "dimensionality": {"type": "string", "enum": ["1D_PER_COLUMN"], "default": "1D_PER_COLUMN"},
+      "header": {"type": "string", "enum": ["FULL"], "default": "FULL"},
+      "backend": {"type": "string", "enum": ["SERIAL"], "default": "SERIAL"},
+      "native_timing": {"type": "boolean", "default": true},
+      "isa": {"type": "string", "enum": ["SCALAR"], "default": "SCALAR"}
+    },
+    "constraints": []
+  },
+  "adapter": {
+    "backend": "C_ABI_V1",
+    "version": "zfp-ctypes-v1",
+    "factory": "ZFP_CTYPES_V1",
+    "artifact_path": "build/adapters/zfp_accuracy_1d/release/libtscb_zfp_accuracy_1d.so",
+    "timing_boundary": "PYTHON_LAYOUT_FFI_AND_CONTAINER_INCLUDED",
+    "native_timing_capability": {
+      "optional": true,
+      "boundary": "NATIVE_ZFP_ACCURACY_1D_FRAME_ENCODE_DECODE_V1",
+      "clock": "CLOCK_MONOTONIC",
+      "excludes": [
+        "CONTEXT_LIFECYCLE",
+        "NATIVE_INPUT_DESCRIPTOR_PARSE",
+        "ENCODED_OUTPUT_COPY",
+        "DECODE_FRAME_CHECKSUM_AND_HEADER_PARSE",
+        "PYTHON_LAYOUT_TRANSFORM",
+        "PYTHON_FFI_CONTAINER"
+      ]
+    },
+    "accounting_hooks": [
+      "FINAL_STREAM_LENGTH",
+      "COMPLETE_NATIVE_ZFP_FRAME",
+      "FULL_ZFP_HEADER_PER_COLUMN",
+      "RAW_EXCEPTION_COLUMNS_CHARGED",
+      "REQUESTED_AND_ACTUAL_TOLERANCE_RECORDED",
+      "OUTPUT_CAPACITY"
+    ]
+  }
+}

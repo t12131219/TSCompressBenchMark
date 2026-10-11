@@ -1,0 +1,139 @@
+{
+  "schema_version": "tscb.source-artifact.v2",
+  "key": "entropy-fse-benchmark",
+  "kind": "VENDORED_BENCHMARK_SOURCE_CLOSURE",
+  "identity": {
+    "kind": "VENDORED_BENCHMARK_SOURCE_CLOSURE",
+    "key": "entropy-fse-benchmark",
+    "benchmark_repository": "https://github.com/Cyan4973/FiniteStateEntropy.git",
+    "benchmark_commit": "9f30e0918f87bd835fa040d922a208d7b219e50b",
+    "benchmark_path": "programs/fullbench.c",
+    "source_path": "adapters/entropy_fse/vendor/lib",
+    "source_closure_sha256": "af5899be99f7f09551bed864832f9b80be2069a4bb8798b30486296e4d17aa8a",
+    "execution_variant": "HUF_COMPRESS_DECOMPRESS_OR_FSE_COMPRESS_DECOMPRESS_SINGLE_BLOCK"
+  },
+  "license": {
+    "spdx": "BSD-2-Clause",
+    "status": "RUN_ALLOWED",
+    "redistribution": "ALLOWED_WITH_LICENSE_NOTICE",
+    "files": [
+      "adapters/entropy_fse/vendor/LICENSE"
+    ]
+  },
+  "build": {
+    "recipe": "PYTHONPATH=src conda run -n CompressBench14 python tools/build_codec.py <huff0|fse> --profile all --output-root build/port-standard-v30-20261011/native-builds-v3",
+    "patches": [],
+    "submodules": [],
+    "translation_units": [
+      "adapters/entropy_fse/native/tscb_entropy.c",
+      "adapters/entropy_fse/vendor/lib/*.c"
+    ],
+    "release_artifact": "build/port-standard-v30-20261011/native-builds-v3/<huff0|fse>/release/libtscb_<huff0|fse>.so",
+    "sanitizer_artifact": "build/port-standard-v30-20261011/native-builds-v3/<huff0|fse>/sanitizer/libtscb_<huff0|fse>.so",
+    "current_build_records": [
+      {
+        "algorithm": "fse",
+        "profile": "release",
+        "record": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/fse/release/build-record.json",
+          "sha256": "c51ff57ac6f6759ea5693bb5d4e5b6b14c04ae10f1ed47fcbedbe43019bf3979"
+        },
+        "artifact": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/fse/release/libtscb_fse.so",
+          "sha256": "d0dcb0cc3ed5257755bdcb60b1d334d2df7e637d0fa228a5719f5d96eecd4e55"
+        },
+        "compile_commands_sha256": "79382f557133520c4752c8944f7446ae82a34977e91ea2bb8bb97d5985ab3b76",
+        "dependency_capture": "ACTUAL_PER_TU_MD_COMPILATION_AND_LINK"
+      },
+      {
+        "algorithm": "fse",
+        "profile": "sanitizer",
+        "record": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/fse/sanitizer/build-record.json",
+          "sha256": "37ebd16ea553766bc370dc9e0c934e7b9690bc082838fcbc47d7952f757c5858"
+        },
+        "artifact": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/fse/sanitizer/libtscb_fse.so",
+          "sha256": "2c3520a3feeffaa3d6d1b3af5ccd67a1eec07ee4b2a70a6737ef1e953153c411"
+        },
+        "compile_commands_sha256": "1bff903b85741aff39f4b601611a110382f50f0e80687a6f081bcffe097cc2a9",
+        "dependency_capture": "ACTUAL_PER_TU_MD_COMPILATION_AND_LINK"
+      },
+      {
+        "algorithm": "huff0",
+        "profile": "release",
+        "record": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/huff0/release/build-record.json",
+          "sha256": "f3403db544b5ec376e36a6511fc0013da9e287f6e85e4344b969d6a7e41751be"
+        },
+        "artifact": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/huff0/release/libtscb_huff0.so",
+          "sha256": "45a858aaab387a28253102647887f161aacca8ecb690e3836b4e3a2e654c4bdb"
+        },
+        "compile_commands_sha256": "555dd2ff180dd01550e9b9f48638ee1f2c6b2b8d60c6921f37c017e63cd0ab77",
+        "dependency_capture": "ACTUAL_PER_TU_MD_COMPILATION_AND_LINK"
+      },
+      {
+        "algorithm": "huff0",
+        "profile": "sanitizer",
+        "record": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/huff0/sanitizer/build-record.json",
+          "sha256": "fa3a35d7706f2754459d4de4bd205e83ab22037a0693d69ccfaffee4c75138eb"
+        },
+        "artifact": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/huff0/sanitizer/libtscb_huff0.so",
+          "sha256": "d9e04f23ff32df7864be120ab9c48388fb51c4d28a66f27093afb56a4b9385f9"
+        },
+        "compile_commands_sha256": "7008412bea73266356e3c5165c71c7189140887a7f2db6441304859a4fe16e4d",
+        "dependency_capture": "ACTUAL_PER_TU_MD_COMPILATION_AND_LINK"
+      }
+    ],
+    "current_native_qualification": [
+      {
+        "algorithm": "fse",
+        "profile": "release",
+        "build_dependency_status": "PASS",
+        "native_suite_status": "NOT_RUN_IN_THIS_DRIVER",
+        "evidence": {
+          "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/qualification.json",
+          "sha256": "b86173f34c30d175552de327cc446dd8480aa02dd7a9ae56f12f60c0d93db174"
+        },
+        "source_full_parity": "NOT_ASSERTED"
+      },
+      {
+        "algorithm": "fse",
+        "profile": "sanitizer",
+        "build_dependency_status": "PASS",
+        "native_suite_status": "NOT_RUN_IN_THIS_DRIVER",
+        "evidence": {
+          "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/qualification.json",
+          "sha256": "b86173f34c30d175552de327cc446dd8480aa02dd7a9ae56f12f60c0d93db174"
+        },
+        "source_full_parity": "NOT_ASSERTED"
+      },
+      {
+        "algorithm": "huff0",
+        "profile": "release",
+        "build_dependency_status": "PASS",
+        "native_suite_status": "NOT_RUN_IN_THIS_DRIVER",
+        "evidence": {
+          "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/qualification.json",
+          "sha256": "b86173f34c30d175552de327cc446dd8480aa02dd7a9ae56f12f60c0d93db174"
+        },
+        "source_full_parity": "NOT_ASSERTED"
+      },
+      {
+        "algorithm": "huff0",
+        "profile": "sanitizer",
+        "build_dependency_status": "PASS",
+        "native_suite_status": "NOT_RUN_IN_THIS_DRIVER",
+        "evidence": {
+          "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/qualification.json",
+          "sha256": "b86173f34c30d175552de327cc446dd8480aa02dd7a9ae56f12f60c0d93db174"
+        },
+        "source_full_parity": "NOT_ASSERTED"
+      }
+    ],
+    "current_build_dependency_scope": "ACTUAL_PER_TU_MD_HEADERS_OBJECTS_SELECTED_TOOLCHAIN_AND_DYNAMIC_RUNTIME_PARTIAL_STATIC_LINK_CLOSURE"
+  }
+}

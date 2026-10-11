@@ -1,7 +1,10 @@
 from __future__ import annotations
 
+import hashlib
+import time
 from collections.abc import Callable
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Any
 
 from tscompbench.codecs import CodecManifest
@@ -17,17 +20,19 @@ from tscompbench.measurement import (
     execute_streaming_workload,
     unavailable_workloads,
 )
+from tscompbench.measurement.thread_monitor import thread_budget_evidence, unobserved_threads
 from tscompbench.planning import BenchmarkTask
 from tscompbench.storage import RunRecord
 from tscompbench.validation import validate_common_correctness
 
-from .isolation import run_isolated
+from .isolation import IsolatedCallResult, run_isolated
 from .preflight import PreflightResult, preflight_task
 from .protocol import CodecAdapter
+from .recovery import DecodeContext
 from .repetition import (
-    MeasuredRoundTripObservation,
-    perform_measured_roundtrip,
-    perform_warmup,
+    MeasuredWorkerObservation,
+    perform_declared_worker_measurement,
+    perform_worker_measurement,
 )
 from .routing import hash_logical_buffers
 
@@ -83,6 +88,30 @@ def _worker_failure_status(
     return status
 
 
+def _verified_worker_measurement(call: IsolatedCallResult) -> bool:
+    if not isinstance(call.value, MeasuredWorkerObservation):
+        return False
+    evidence = call.value.worker_evidence
+    boundaries = (
+        evidence.get("warmup_started_ns"),
+        evidence.get("warmup_finished_ns"),
+        evidence.get("measurement_started_ns"),
+        evidence.get("measurement_finished_ns"),
+    )
+    return (
+        call.worker_pid is not None
+        and call.worker_exit_confirmed
+        and evidence.get("measurement_worker_protocol") == "WORKER_LOCAL_WARMUP_V1"
+        and evidence.get("worker_pid")
+        == evidence.get("warmup_worker_pid")
+        == evidence.get("measurement_worker_pid")
+        == call.worker_pid
+        and call.value.warmup.threshold_satisfied
+        and all(isinstance(value, int) for value in boundaries)
+        and tuple(sorted(boundaries)) == boundaries
+    )
+
+
 def execute_task(
     *,
     run_set_id: str,
@@ -95,6 +124,7 @@ def execute_task(
     measurement_policy: MeasurementPolicy,
     repetitions: int = 1,
     repetition_indices: tuple[int, ...] | None = None,
+    trial_deadline_ns: int | None = None,
     event_callback: Callable[[str, dict[str, Any]], None] | None = None,
     record_callback: Callable[[RunRecord, bytes | None], None] | None = None,
 ) -> TaskExecutionResult:
@@ -111,6 +141,7 @@ def execute_task(
         adapter,
         parameters,
         cpu_affinity=task.execution.cpu_affinity,
+        deadline_ns=trial_deadline_ns,
     )
     if event_callback is not None:
         event_callback(
@@ -145,58 +176,9 @@ def execute_task(
             record_callback(record, None)
         return TaskExecutionResult(preflight, (record,), (), None)
 
-    if event_callback is not None:
-        event_callback(
-            "TASK_WARMING",
-            {
-                "task_id": task.task_id,
-                "minimum_count": measurement_policy.warmup_min_count,
-                "minimum_seconds": measurement_policy.warmup_min_seconds,
-            },
-        )
-    warmup_call = run_isolated(
-        perform_warmup,
-        adapter,
-        prepared.original,
-        task.compatibility,
-        parameters,
-        measurement_policy,
-        timeout_seconds=float(task.resource_limits["timeout_seconds"]),
-        memory_limit_bytes=int(task.resource_limits["memory_limit_bytes"]),
-        cpu_affinity=task.execution.cpu_affinity,
-    )
-    if warmup_call.status is not RunStatus.PASS or not isinstance(
-        warmup_call.value, WarmupObservation
-    ):
-        status = _worker_failure_status(
-            warmup_call.status, warmup_call.exception_type, warmup_call.message
-        )
-        record = _base_record(
-            task,
-            run_set_id=run_set_id,
-            record_kind="DIAGNOSTIC",
-            repetition_index=None,
-            status=status,
-            reason_code="WARMUP_FAILED",
-            benchmark_eligible=False,
-            input_sha256=prepared.original.input_sha256,
-            diagnostics={
-                "exception_type": warmup_call.exception_type,
-                "message": warmup_call.message,
-                "exit_code": warmup_call.exit_code,
-                "limit_method": warmup_call.limit_method,
-            },
-        )
-        if record_callback is not None:
-            record_callback(record, None)
-        return TaskExecutionResult(preflight, (record,), (), None)
-    warmup = warmup_call.value
-    if event_callback is not None:
-        event_callback(
-            "TASK_WARMUP_COMPLETED",
-            {"task_id": task.task_id, **warmup.to_document()},
-        )
-
+    # Keep the legacy task-level summary for existing consumers. Complete local
+    # warmup evidence belongs to each repetition record, including resumed ones.
+    warmup: WarmupObservation | None = None
     records: list[RunRecord] = []
     streams: list[tuple[str, bytes]] = []
     indices = tuple(range(repetitions)) if repetition_indices is None else repetition_indices
@@ -205,31 +187,77 @@ def execute_task(
     for repetition in indices:
         if event_callback is not None:
             event_callback(
+                "TASK_WARMING",
+                {
+                    "task_id": task.task_id,
+                    "repetition_index": repetition,
+                    "warmup_scope": "EACH_MEASUREMENT_WORKER",
+                    "measurement_worker_protocol": "WORKER_LOCAL_WARMUP_V1",
+                    "minimum_count": measurement_policy.warmup_min_count,
+                    "minimum_seconds": measurement_policy.warmup_min_seconds,
+                },
+            )
+            event_callback(
                 "REPETITION_RUNNING",
                 {"task_id": task.task_id, "repetition_index": repetition},
             )
+        if measurement_policy.worker_start_method == "spawn":
+            worker_function = perform_declared_worker_measurement
+            worker_args = (
+                Path(__file__).resolve().parents[3],
+                manifest.key,
+                manifest.document,
+                manifest.algorithm_id,
+                prepared.original,
+                task.compatibility,
+                parameters,
+                measurement_policy,
+                manifest.key == "alp"
+                and type(adapter).__name__ == "SourceRejectCompositeAdapter",
+            )
+        else:
+            worker_function = perform_worker_measurement
+            worker_args = (
+                adapter,
+                prepared.original,
+                task.compatibility,
+                parameters,
+                measurement_policy,
+            )
         call = run_isolated(
-            perform_measured_roundtrip,
-            adapter,
-            prepared.original,
-            task.compatibility,
-            parameters,
-            measurement_policy,
+            worker_function,
+            *worker_args,
             timeout_seconds=float(task.resource_limits["timeout_seconds"]),
             memory_limit_bytes=int(task.resource_limits["memory_limit_bytes"]),
             cpu_affinity=task.execution.cpu_affinity,
+            start_method=measurement_policy.worker_start_method,
+            thread_monitor_interval_ns=measurement_policy.thread_monitor_interval_ns,
+            deadline_ns=trial_deadline_ns,
         )
-        if call.status is not RunStatus.PASS or not isinstance(
-            call.value, MeasuredRoundTripObservation
-        ):
-            status = _worker_failure_status(call.status, call.exception_type, call.message)
+        thread_evidence = thread_budget_evidence(
+            call.thread_observation or unobserved_threads(call.worker_pid),
+            thread_budget=measurement_policy.threads * measurement_policy.processes,
+        )
+        worker_lifecycle = {**call.lifecycle_document(), "thread_budget_evidence": thread_evidence}
+        if call.status is not RunStatus.PASS or not _verified_worker_measurement(call):
+            status = _worker_failure_status(
+                RunStatus.CRASHED if call.status is RunStatus.PASS else call.status,
+                call.exception_type,
+                call.message,
+            )
             record = _base_record(
                 task,
                 run_set_id=run_set_id,
                 record_kind="FORMAL_REPETITION",
                 repetition_index=repetition,
                 status=status,
-                reason_code="FORMAL_REPETITION_WORKER_FAILED",
+                reason_code=(
+                    "WORKER_MEASUREMENT_EVIDENCE_INVALID"
+                    if call.status is RunStatus.PASS
+                    else "WORKER_LOCAL_WARMUP_FAILED"
+                    if call.worker_failure_stage == "WORKER_LOCAL_WARMUP"
+                    else "FORMAL_REPETITION_WORKER_FAILED"
+                ),
                 benchmark_eligible=False,
                 input_sha256=prepared.original.input_sha256,
                 diagnostics={
@@ -237,6 +265,9 @@ def execute_task(
                     "message": call.message,
                     "exit_code": call.exit_code,
                     "limit_method": call.limit_method,
+                    "worker_lifecycle": worker_lifecycle,
+                    "thread_budget_evidence": thread_evidence,
+                    "worker_measurement": call.worker_measurement_evidence,
                 },
             )
             records.append(record)
@@ -252,7 +283,30 @@ def execute_task(
                     },
                 )
             continue
-        observation = call.value
+        worker_observation = call.value
+        observation = worker_observation.observation
+        if warmup is None:
+            warmup = worker_observation.warmup
+        if event_callback is not None:
+            event_callback(
+                "TASK_WARMUP_COMPLETED",
+                {
+                    "task_id": task.task_id,
+                    "repetition_index": repetition,
+                    "worker_pid": call.worker_pid,
+                    "warmup_scope": "EACH_MEASUREMENT_WORKER",
+                    **worker_observation.warmup.to_document(),
+                },
+            )
+            event_callback(
+                "REPETITION_WORKER_COMPLETED",
+                {
+                    "task_id": task.task_id,
+                    "repetition_index": repetition,
+                    "worker_lifecycle": worker_lifecycle,
+                    "worker_measurement": worker_observation.worker_evidence,
+                },
+            )
         if event_callback is not None:
             event_callback(
                 "REPETITION_VALIDATING",
@@ -271,6 +325,7 @@ def execute_task(
                 == prepared.original.input_sha256
             ),
             canary_intact=observation.canary_intact,
+            decoded_is_restored=True,
         )
         status = correctness.status
         resource_reason: str | None = None
@@ -279,13 +334,16 @@ def execute_task(
             resource_reason = "SWAP_OBSERVED_DURING_FORMAL_REPETITION"
         observed_threads = observation.resources.thread_count_after
         thread_budget = measurement_policy.threads * measurement_policy.processes
-        if (
-            status is RunStatus.PASS
-            and observed_threads is not None
-            and observed_threads > thread_budget
+        if status is RunStatus.PASS and (
+            thread_evidence["observed_excess"]
+            or (observed_threads is not None and observed_threads > thread_budget)
         ):
             status = RunStatus.OVERSUBSCRIBED
-            resource_reason = "OBSERVED_THREADS_EXCEED_FROZEN_BUDGET"
+            resource_reason = (
+                "SAMPLED_THREADS_EXCEED_FROZEN_BUDGET"
+                if thread_evidence["observed_excess"]
+                else "OBSERVED_THREADS_EXCEED_FROZEN_BUDGET"
+            )
         if event_callback is not None:
             event_callback(
                 "REPETITION_ACCOUNTING_VERIFIED",
@@ -343,6 +401,7 @@ def execute_task(
                 timeout_seconds=float(task.resource_limits["timeout_seconds"]),
                 memory_limit_bytes=int(task.resource_limits["memory_limit_bytes"]),
                 cpu_affinity=task.execution.cpu_affinity,
+                deadline_ns=trial_deadline_ns,
             )
             if query_call.status is RunStatus.PASS and isinstance(query_call.value, dict):
                 query_document = query_call.value
@@ -378,6 +437,7 @@ def execute_task(
                 timeout_seconds=float(task.resource_limits["timeout_seconds"]),
                 memory_limit_bytes=int(task.resource_limits["memory_limit_bytes"]),
                 cpu_affinity=task.execution.cpu_affinity,
+                deadline_ns=trial_deadline_ns,
             )
             if streaming_call.status is RunStatus.PASS and isinstance(streaming_call.value, dict):
                 streaming_document = streaming_call.value
@@ -403,6 +463,9 @@ def execute_task(
                 query=workloads.query,
                 streaming=streaming_document,
             )
+        if trial_deadline_ns is not None and time.perf_counter_ns() >= trial_deadline_ns:
+            status = RunStatus.TIMEOUT
+            reason = "TRIAL_DEADLINE_EXHAUSTED_DURING_PARENT_VALIDATION"
         record = _base_record(
             task,
             run_set_id=run_set_id,
@@ -423,6 +486,33 @@ def execute_task(
                 "adapter_telemetry": prepared.telemetry.__dict__,
                 "codec_telemetry": observation.codec_telemetry,
                 "worker_limit_method": call.limit_method,
+                "worker_lifecycle": worker_lifecycle,
+                "thread_budget_evidence": thread_evidence,
+                "worker_measurement": worker_observation.worker_evidence,
+                "measurement_worker_protocol": "WORKER_LOCAL_WARMUP_V1",
+                "threshold_protocol": measurement_policy.measurement_protocol_id,
+                "absolute_trial_deadline_ns": trial_deadline_ns,
+                "independent_recovery": {
+                    "protocol": "PERSISTED_DECODE_CONTEXT_V1",
+                    "context_sha256": (
+                        None
+                        if observation.encoded.recovery_context is None
+                        else hashlib.sha256(observation.encoded.recovery_context).hexdigest()
+                    ),
+                    "required_external_bits": (
+                        None
+                        if observation.encoded.recovery_context is None
+                        else len(observation.encoded.recovery_context) * 8
+                    ),
+                    "context_document": (
+                        None
+                        if observation.encoded.recovery_context is None
+                        else DecodeContext(observation.encoded.recovery_context).to_document()
+                    ),
+                    "output_materialization": "OWNED_CANONICAL_BUFFERS",
+                    "qualification_evidence_scope": "TASK_PREFLIGHT_FRESH_WORKER_ONLY",
+                    "qualification": preflight.diagnostics.get("independent_recovery"),
+                },
                 "same_repetition_correctness_and_measurement": True,
                 "measurement_policy": measurement_policy.to_document(),
                 "resource_measurement_eligible": (

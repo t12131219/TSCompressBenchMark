@@ -8,19 +8,23 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-import numpy as np
-
 from tscompbench.accounting import AccountingLedger
 from tscompbench.contracts import BenchmarkTrack
 from tscompbench.execution.protocol import (
     DecodedOutput,
     ExecutionContractError,
-    LogicalBuffer,
     OutputCapacityError,
     RoutedInput,
 )
 from tscompbench.ids import canonical_json_bytes, stable_id
 
+from .byte_container import (
+    DEFAULT_MAX_OUTPUT_BYTES,
+    MAX_METADATA_BYTES,
+    decode_byte_payload,
+    parse_byte_metadata,
+    validate_byte_descriptors,
+)
 from .native_streaming import NativeByteStreamingSession, bind_stream_symbols
 from .native_timing import NativeTimingProbe
 
@@ -94,9 +98,7 @@ class _NativeLibrary:
             )
         )
         if status != _STATUS_OK:
-            raise ExecutionContractError(
-                "xz LZMA2 adapter failed to expose its native manifest"
-            )
+            raise ExecutionContractError("xz LZMA2 adapter failed to expose its native manifest")
         manifest = json.loads(ctypes.string_at(manifest_pointer, manifest_length.value))
         if manifest.get("algorithm") != "xz-stream":
             raise ExecutionContractError("loaded C ABI artifact is not the xz LZMA2 adapter")
@@ -107,9 +109,7 @@ class _NativeLibrary:
             or manifest.get("structural_check") != "CRC32"
             or manifest.get("threading") != "SINGLE_THREAD"
         ):
-            raise ExecutionContractError(
-                "xz LZMA2 artifact violates the registered execution mode"
-            )
+            raise ExecutionContractError("xz LZMA2 artifact violates the registered execution mode")
 
     def _bind(self) -> None:
         library = self.library
@@ -202,7 +202,8 @@ class XzStreamSession:
         self._header = b""
         try:
             self._native_timing = NativeTimingProbe(
-                self._native.library, self._handle,
+                self._native.library,
+                self._handle,
                 enabled=bool(parameters.get("native_timing", True)),
             )
         except Exception:
@@ -318,11 +319,13 @@ class XzStreamSession:
         magic, header_length = _PREFIX.unpack_from(stream)
         if magic != _MAGIC:
             raise ExecutionContractError("invalid xz LZMA2 container magic")
+        if header_length > MAX_METADATA_BYTES:
+            raise ExecutionContractError("byte container metadata exceeds decoder resource limit")
         header_end = _PREFIX.size + header_length
         if header_end > len(stream):
             raise ExecutionContractError("truncated xz LZMA2 container metadata")
         try:
-            header = json.loads(stream[_PREFIX.size : header_end].decode("utf-8"))
+            header = parse_byte_metadata(stream[_PREFIX.size : header_end])
         except (UnicodeDecodeError, json.JSONDecodeError) as error:
             raise ExecutionContractError("invalid xz LZMA2 container metadata") from error
         if header.get("schema_version") != "tscb.xz-stream-container.v1":
@@ -369,9 +372,12 @@ class XzStreamSession:
         if records not in (0, 1):
             raise ExecutionContractError("one-shot xz object must contain zero or one block")
         components = {
-            "container_bytes": 16, "block_metadata_bytes": 0,
-            "checksum_bytes": 12, "index_bytes": index_size - 4,
-            "payload_bytes": 0, "padding_bytes": 0,
+            "container_bytes": 16,
+            "block_metadata_bytes": 0,
+            "checksum_bytes": 12,
+            "index_bytes": index_size - 4,
+            "payload_bytes": 0,
+            "padding_bytes": 0,
         }
         cursor = 12
         uncompressed_total = 0
@@ -385,7 +391,7 @@ class XzStreamSession:
             physical_size = (unpadded + 3) & ~3
             if unpadded <= header_size or cursor + physical_size > index_start:
                 raise ExecutionContractError("xz block size does not match the index")
-            block_header = stream[cursor:cursor + header_size]
+            block_header = stream[cursor : cursor + header_size]
             crc(block_header[:-4], block_header[-4:])
             flags = block_header[1]
             if flags & 0x3F:
@@ -401,11 +407,15 @@ class XzStreamSession:
                     raise ExecutionContractError("xz block decoded-size field is inconsistent")
             filter_id, offset = vli(block_header[:-4], offset)
             property_size, offset = vli(block_header[:-4], offset)
-            if (filter_id != 0x21 or property_size != 1 or offset >= header_size - 4
-                    or block_header[offset] > 40):
+            if (
+                filter_id != 0x21
+                or property_size != 1
+                or offset >= header_size - 4
+                or block_header[offset] > 40
+            ):
                 raise ExecutionContractError("xz block is not the registered LZMA2 filter")
-            if any(block_header[offset + 1:-4]) or any(
-                stream[cursor + unpadded:cursor + physical_size]
+            if any(block_header[offset + 1 : -4]) or any(
+                stream[cursor + unpadded : cursor + physical_size]
             ):
                 raise ExecutionContractError("xz header/block padding is nonzero")
             components["payload_bytes"] += unpadded - header_size
@@ -414,8 +424,12 @@ class XzStreamSession:
             components["padding_bytes"] += physical_size - unpadded
             cursor += physical_size
             uncompressed_total += uncompressed
-        if (cursor != index_start or any(index[position:-4])
-                or len(index[position:-4]) > 3 or uncompressed_total != expected_bytes):
+        if (
+            cursor != index_start
+            or any(index[position:-4])
+            or len(index[position:-4]) > 3
+            or uncompressed_total != expected_bytes
+        ):
             raise ExecutionContractError(
                 "xz block/index coverage or decoded length is inconsistent"
             )
@@ -428,9 +442,7 @@ class XzStreamSession:
             raise ExecutionContractError("accounting before finalize is forbidden")
         header, xz_stream = self._parse_container(stream)
         if canonical_json_bytes(header) != self._header:
-            raise ExecutionContractError(
-                "xz LZMA2 descriptor metadata changed after compression"
-            )
+            raise ExecutionContractError("xz LZMA2 descriptor metadata changed after compression")
         parts = self._inspect_xz_stream(
             xz_stream, sum(item.array.nbytes for item in routed.buffers)
         )
@@ -456,13 +468,11 @@ class XzStreamSession:
             **components,
         )
 
-    def decompress(self, stream: bytes) -> DecodedOutput:
+    def decompress(
+        self, stream: bytes, *, max_output_bytes: int = DEFAULT_MAX_OUTPUT_BYTES
+    ) -> DecodedOutput:
         header, frame = self._parse_container(stream)
-        descriptors = header.get("buffers")
-        if not isinstance(descriptors, list):
-            raise ExecutionContractError("xz LZMA2 container has no buffer descriptors")
-        output_bytes = sum(int(item["payload_bytes"]) for item in descriptors)
-        self._inspect_xz_stream(frame, output_bytes)
+        _, output_bytes = validate_byte_descriptors(header, max_output_bytes=max_output_bytes)
         input_storage = bytearray(frame) if frame else bytearray(1)
         output_storage = bytearray(max(1, output_bytes))
         input_array = (ctypes.c_ubyte * len(input_storage)).from_buffer(input_storage)
@@ -477,36 +487,13 @@ class XzStreamSession:
         self._check(status, "decompress")
         if int(output_buffer.used_bytes) != output_bytes:
             raise ExecutionContractError("xz LZMA2 decoded byte count does not match metadata")
-        payload = memoryview(output_storage)[:output_bytes]
-        cursor = 0
-        decoded: list[LogicalBuffer] = []
-        for descriptor in descriptors:
-            length = int(descriptor["payload_bytes"])
-            dtype = np.dtype(str(descriptor["dtype"]))
-            shape = tuple(int(value) for value in descriptor["shape"])
-            expected = int(np.prod(shape, dtype=np.int64)) * dtype.itemsize
-            if expected != length or cursor + length > output_bytes:
-                raise ExecutionContractError("xz LZMA2 descriptor shape/dtype is inconsistent")
-            array = np.frombuffer(payload[cursor : cursor + length], dtype=dtype).copy()
-            array = array.reshape(shape)
-            array.flags.writeable = False
-            decoded.append(
-                LogicalBuffer(
-                    name=str(descriptor["name"]),
-                    array=array,
-                    logical_bits=int(descriptor["logical_bits"]),
-                )
-            )
-            cursor += length
-        if cursor != output_bytes:
-            raise ExecutionContractError("xz LZMA2 container contains undeclared decoded bytes")
-        return DecodedOutput(tuple(decoded))
+        return decode_byte_payload(
+            header, memoryview(output_storage)[:output_bytes], max_output_bytes=max_output_bytes
+        )
 
     def close(self) -> None:
         if self._handle.value:
             status = int(self._native.library.tscb_destroy(self._handle))
             self._handle = ctypes.c_void_p()
             if status != _STATUS_OK:
-                raise ExecutionContractError(
-                    f"native xz LZMA2 adapter destroy failed ({status})"
-                )
+                raise ExecutionContractError(f"native xz LZMA2 adapter destroy failed ({status})")

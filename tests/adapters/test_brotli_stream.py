@@ -1,12 +1,10 @@
 from __future__ import annotations
 
-import subprocess
-import sys
 from pathlib import Path
 
 import numpy as np
 
-from tscompbench.adapters import BrotliStreamAdapter
+from tscompbench.adapters.factory import create_adapter
 from tscompbench.codecs import CodecRegistry, SourceRegistry
 from tscompbench.contracts import BenchmarkTrack
 from tscompbench.execution.protocol import LogicalBuffer, RoutedInput
@@ -15,24 +13,12 @@ from tscompbench.execution.routing import hash_logical_buffers
 from tscompbench.validation import run_boundary_suite
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
-LIBRARY = PROJECT_ROOT / "build/adapters/brotli_stream/release/libtscb_brotli_stream.so"
-
-
-def _ensure_library() -> None:
-    if LIBRARY.is_file():
-        return
-    subprocess.run(
-        [sys.executable, "tools/build_codec.py", "brotli-stream", "--profile", "release"],
-        cwd=PROJECT_ROOT,
-        check=True,
-    )
 
 
 def _adapter_and_manifest():
-    _ensure_library()
     sources = SourceRegistry(PROJECT_ROOT / "registry/sources")
     manifest = CodecRegistry(PROJECT_ROOT / "registry/codecs", sources).get("brotli-stream")
-    return BrotliStreamAdapter(LIBRARY, manifest.document["adapter"]), manifest
+    return create_adapter(PROJECT_ROOT, manifest), manifest
 
 
 def test_brotli_stream_round_trip_preserves_multiple_buffers_and_ieee_bits() -> None:

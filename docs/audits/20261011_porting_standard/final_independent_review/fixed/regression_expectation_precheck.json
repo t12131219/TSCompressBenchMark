@@ -1,0 +1,52 @@
+{
+  "status": "PASS_PURE_FILE_PRE_FIX_EXPECTATION_REVIEW",
+  "scope": "NO_PYTEST_OR_ADAPTER_EXECUTION",
+  "before_tests_unchanged": true,
+  "before_manifest": {
+    "path": "docs/audits/20261011_porting_standard/regression_test_expectation_repair_r1/before-manifest.json",
+    "sha256": "092f26484c34b811f0f58ea7c1755ea7f37b2cc1b2e81b8a5e628aaa7d41f0a7"
+  },
+  "test_references": [
+    {
+      "path": "tests/adapters/test_neats.py",
+      "sha256": "3aa81de6ee74966a0452a67bea7ffa9f5def555c4bf3d313750ed29db328f38e"
+    },
+    {
+      "path": "docs/audits/20261011_porting_standard/regression_test_expectation_repair_r1/before/tests/adapters/test_neats.py",
+      "sha256": "3aa81de6ee74966a0452a67bea7ffa9f5def555c4bf3d313750ed29db328f38e"
+    },
+    {
+      "path": "tests/integration/test_simdcomp_qualification.py",
+      "sha256": "ca095b64ffcabb4f0a3088979c889dad1a261d788deac5756f8cc2867e89d4a6"
+    },
+    {
+      "path": "docs/audits/20261011_porting_standard/regression_test_expectation_repair_r1/before/tests/integration/test_simdcomp_qualification.py",
+      "sha256": "ca095b64ffcabb4f0a3088979c889dad1a261d788deac5756f8cc2867e89d4a6"
+    }
+  ],
+  "neats_source": {
+    "path": "registry/sources/neats-upstream-benchmark.artifact.json",
+    "sha256": "450061a20351387164b7d3cea9c6b6bb30872c652ee700407d0be17324e8e43e"
+  },
+  "patch_files": [
+    {
+      "path": "adapters/neats/patches/0001-gcc11-scalar-compatibility.patch",
+      "sha256": "6115f599faf40b9c962a52138d102fcdffef6bbaeb017bef67a1337e73c440fe"
+    },
+    {
+      "path": "adapters/neats/patches/0002-leats-serialization.patch",
+      "sha256": "351d0be557ce560600647c226b2a21872c7a5ed57a3d28db344389c619c1c213"
+    },
+    {
+      "path": "adapters/neats/patches/0003-leats-predictor-precision.patch",
+      "sha256": "c8a4744b638484c194c97606b88160256d180fd03a2dda39b29982c859de2640"
+    }
+  ],
+  "declared_protocol": "RELATIVE_PATH_NUL_FILE_BYTES_V1",
+  "declared_patch_set_sha256": "43ed9bfbea3cf84bccc341427c2f242c76441bb66c3d82a85aa26e1a9041178f",
+  "patch_directory_relative_name_nul_raw_sha256": "43ed9bfbea3cf84bccc341427c2f242c76441bb66c3d82a85aa26e1a9041178f",
+  "repository_relative_name_nul_raw_sha256": "6593de48409de9d73794ada3743fb514be5d4ee2e93fd032e969416bc9400cbe",
+  "old_sha256sum_text_sha256": "3205edecbfbe8edc28939d72fc98a74ada2b899e64566c7502dde440d7287bf5",
+  "protocol_relative_name_root": "adapters/neats/patches",
+  "simd_review": "Old expected drift|missing accepts only error text; required exception class remains AdapterFactoryError. Exact runtime profile identity mismatch diagnosis awaits actual pytest traceback."
+}

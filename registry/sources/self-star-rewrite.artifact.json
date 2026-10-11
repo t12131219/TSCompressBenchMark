@@ -64,10 +64,65 @@
     "redistribution": "NO_EXTERNAL_PUBLICATION; user-authorized local run/rewrite; unknown upstream grant"
   },
   "build": {
-    "recipe": "python tools/build_codec.py self-star --profile all",
+    "recipe": "python tools/build_codec.py self-star --profile all --output-root build/port-standard-v30-20261011/native-builds-v3",
     "frozen_lock": "adapters/rewrite_lossless/FROZEN_APIS.json",
     "translation_units": [
       "src/codec.cpp"
-    ]
+    ],
+    "current_build_records": [
+      {
+        "algorithm": "self-star",
+        "profile": "release",
+        "record": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/self_star/release/build-record.json",
+          "sha256": "aed562e0ea244659f86ffbbe75dbb77cd14ea47647f7f16a03fdf42ba83cea36"
+        },
+        "artifact": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/self_star/release/libtscb_self_star.so",
+          "sha256": "f81a8481f021488620df94f4e0de6bce451cb4090def1ff04ed9759fc987bad3"
+        },
+        "compile_commands_sha256": "7b9e67436cbc39846242f32079587742cba43a1a0ebd347b39392b63a47dd98d",
+        "dependency_capture": "ACTUAL_PER_TU_MD_COMPILATION_AND_LINK"
+      },
+      {
+        "algorithm": "self-star",
+        "profile": "sanitizer",
+        "record": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/self_star/sanitizer/build-record.json",
+          "sha256": "8f68c6fbb3f0a4c17fc91a3b435e34968373f8f8917e8941e5c7b49957558f25"
+        },
+        "artifact": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/self_star/sanitizer/libtscb_self_star.so",
+          "sha256": "febf493d45946e43ddc0e237b010a51dee9aa847ed9e18590c1318982cf896b2"
+        },
+        "compile_commands_sha256": "1c3856f9eec4921bacb72c6d7109df11c8d7882793c8a14e77ffd1c549091768",
+        "dependency_capture": "ACTUAL_PER_TU_MD_COMPILATION_AND_LINK"
+      }
+    ],
+    "current_native_qualification": [
+      {
+        "algorithm": "self-star",
+        "profile": "release",
+        "build_dependency_status": "PASS",
+        "native_suite_status": "PASS",
+        "evidence": {
+          "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/qualification.json",
+          "sha256": "b86173f34c30d175552de327cc446dd8480aa02dd7a9ae56f12f60c0d93db174"
+        },
+        "source_full_parity": "NOT_ASSERTED"
+      },
+      {
+        "algorithm": "self-star",
+        "profile": "sanitizer",
+        "build_dependency_status": "PASS",
+        "native_suite_status": "PASS",
+        "evidence": {
+          "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/qualification.json",
+          "sha256": "b86173f34c30d175552de327cc446dd8480aa02dd7a9ae56f12f60c0d93db174"
+        },
+        "source_full_parity": "NOT_ASSERTED"
+      }
+    ],
+    "current_build_dependency_scope": "ACTUAL_PER_TU_MD_HEADERS_OBJECTS_SELECTED_TOOLCHAIN_AND_DYNAMIC_RUNTIME_PARTIAL_STATIC_LINK_CLOSURE"
   }
 }

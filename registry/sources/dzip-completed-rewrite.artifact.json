@@ -4492,8 +4492,32 @@
     "redistribution": "LOCAL_EXECUTION_ONLY; ORIGINAL_NOTICES_RETAINED; NO_UPSTREAM_LICENSE_GRANT_INVENTED"
   },
   "build": {
-    "recipe": "python tools/build_codec.py dzip --profile all",
+    "recipe": "python tools/build_completed_rewrite.py dzip --profile all --output-root build/port-standard-v30-20261011/adapters",
     "frozen_lock": "adapters/completed_rewrites/FROZEN_SOURCES.json",
-    "standalone_package": "dzip"
+    "standalone_package": "dzip",
+    "native_qualification": [
+      {
+        "status": "PASS",
+        "name": "release: current C++ standalone and framework ABI tests",
+        "evidence": "docs/audits/20261011_porting_standard/completed_native_r1-dzip/dzip/release/qualification.json",
+        "evidence_sha256": "a505c5a48183c991b6c3710acabeb368ace8461c0d31e027a5406fbbba544407",
+        "log": "docs/audits/20261011_porting_standard/completed_native_r1-dzip/dzip/release/qualification.log",
+        "log_sha256": "434031cceeb9a2a10cbbfa2c4be91148ec4aa141a5a58b92ac55997461067abc",
+        "scope": "CURRENT_FROZEN_CPP_STANDALONE_AND_FRAMEWORK_BINDING_TESTS",
+        "sanitizer_scope": "NOT_APPLICABLE",
+        "source_language_parity": "NOT_GRANTED_BY_CPP_TESTS"
+      },
+      {
+        "status": "PASS",
+        "name": "sanitizer: current C++ standalone and framework ABI tests",
+        "evidence": "docs/audits/20261011_porting_standard/completed_native_r1-dzip/dzip/sanitizer/qualification.json",
+        "evidence_sha256": "7af6a3e9f8541889db170eec602be91360a69a460e17affe09172f91b59d74c9",
+        "log": "docs/audits/20261011_porting_standard/completed_native_r1-dzip/dzip/sanitizer/qualification.log",
+        "log_sha256": "f20ad95d24d8b7c9b83b868ca10b1dc4692b9dcb0d250bc8c795a4e96f06a908",
+        "scope": "CURRENT_FROZEN_CPP_STANDALONE_AND_FRAMEWORK_BINDING_TESTS",
+        "sanitizer_scope": "FRAMEWORK_BINDING_AND_FROZEN_CPP_SOURCES; EXTERNAL_BINARY_RUNTIMES_NOT_INSTRUMENTED; LEAK_CHECK_DISABLED",
+        "source_language_parity": "NOT_GRANTED_BY_CPP_TESTS"
+      }
+    ]
   }
 }

@@ -14,22 +14,58 @@
   "classification": {
     "object_level": "P1_STANDALONE_CODEC",
     "implementation_class": "CONVENTIONAL",
-    "tracks": ["TIMESTAMP", "VALUE"],
-    "subtracks": ["T1", "V0"]
+    "tracks": [
+      "TIMESTAMP",
+      "VALUE"
+    ],
+    "subtracks": [
+      "T1",
+      "V0"
+    ]
   },
   "input": {
-    "topologies": ["UTS", "SYNCHRONOUS_MTS", "NATIVE_ND_ARRAY"],
-    "dtypes": ["<i8", "<i4", "<i2", "|i1", "<u8", "<u4", "<u2", "|u1", "<f8", "<f4"],
-    "ranks": [1, 2, 3, 4],
-    "layouts": ["ROW_MAJOR_CONTIG", "COLUMN_MAJOR_CONTIG", "SOA_COLUMNS", "STRIDED_VIEW", "NOT_APPLICABLE"],
-    "endianness": ["little"],
+    "topologies": [
+      "UTS",
+      "SYNCHRONOUS_MTS",
+      "NATIVE_ND_ARRAY"
+    ],
+    "dtypes": [
+      "<i8",
+      "<i4",
+      "<i2",
+      "|i1",
+      "<u8",
+      "<u4",
+      "<u2",
+      "|u1",
+      "<f8",
+      "<f4"
+    ],
+    "ranks": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "layouts": [
+      "ROW_MAJOR_CONTIG",
+      "COLUMN_MAJOR_CONTIG",
+      "SOA_COLUMNS",
+      "STRIDED_VIEW",
+      "NOT_APPLICABLE"
+    ],
+    "endianness": [
+      "little"
+    ],
     "alignment_bytes": 1,
     "min_n": 0,
     "max_n": 4294967295,
     "min_m": 1,
     "max_m": 1048576,
     "max_total_raw_bytes": 4294967295,
-    "validity_shapes": ["NONE"],
+    "validity_shapes": [
+      "NONE"
+    ],
     "value_coupling_mode": "FULL_MATRIX",
     "timestamp_semantics": {
       "preserve_order": true,
@@ -41,9 +77,13 @@
     }
   },
   "semantics": {
-    "loss_modes": ["LOSSLESS"],
+    "loss_modes": [
+      "LOSSLESS"
+    ],
     "error_bound_types": [],
-    "reconstruction_modes": ["EXACT_GRID"],
+    "reconstruction_modes": [
+      "EXACT_GRID"
+    ],
     "rebuild_protocol": "TSCB_BUFFER_DESCRIPTOR_CONTAINER_V1",
     "preprocess_class": "NONE",
     "preprocess_stages": [],
@@ -62,9 +102,15 @@
     "index": "NONE"
   },
   "execution": {
-    "backends": ["C_ABI_V1"],
-    "isa": ["SCALAR"],
-    "devices": ["CPU"],
+    "backends": [
+      "C_ABI_V1"
+    ],
+    "isa": [
+      "SCALAR"
+    ],
+    "devices": [
+      "CPU"
+    ],
     "threading": "SINGLE_THREAD",
     "fallback_policy": "DISALLOWED",
     "runtime_dispatch": false
@@ -78,28 +124,79 @@
     "type": "object",
     "additionalProperties": false,
     "properties": {
-      "native_timing": {"type": "boolean", "default": true},
-      "block_size": {"type": "integer", "minimum": 1, "maximum": 1048576, "default": 65536},
-      "isa": {"type": "string", "enum": ["SCALAR"], "default": "SCALAR"},
-      "offset_bits": {"type": "integer", "enum": [12], "default": 12},
-      "length_bits": {"type": "integer", "enum": [4], "default": 4},
-      "initial_byte": {"type": "integer", "enum": [32], "default": 32},
-      "match_finder": {"type": "string", "enum": ["BINARY_TREE"], "default": "BINARY_TREE"}
+      "native_timing": {
+        "type": "boolean",
+        "default": true
+      },
+      "block_size": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 1048576,
+        "default": 65536
+      },
+      "isa": {
+        "type": "string",
+        "enum": [
+          "SCALAR"
+        ],
+        "default": "SCALAR"
+      },
+      "offset_bits": {
+        "type": "integer",
+        "enum": [
+          12
+        ],
+        "default": 12
+      },
+      "length_bits": {
+        "type": "integer",
+        "enum": [
+          4
+        ],
+        "default": 4
+      },
+      "initial_byte": {
+        "type": "integer",
+        "enum": [
+          32
+        ],
+        "default": 32
+      },
+      "match_finder": {
+        "type": "string",
+        "enum": [
+          "BINARY_TREE"
+        ],
+        "default": "BINARY_TREE"
+      }
     },
     "constraints": []
   },
   "adapter": {
     "backend": "C_ABI_V1",
-    "version": "lzss-dipperstein-c-ctypes-v1",
+    "version": "lzss-dipperstein-c-ctypes-v1-port-standard-v30-20261011",
     "factory": "LZSS_DIPPERSTEIN_CTYPES_V1",
-    "artifact_path": "build/adapters/lzss_dipperstein_c/release/libtscb_lzss_dipperstein_c.so",
+    "artifact_path": "build/port-standard-v30-20261011/native-builds-v3/lzss_dipperstein_c/release/libtscb_lzss_dipperstein_c.so",
     "timing_boundary": "PYTHON_FFI_CONTAINER_INCLUDED",
     "native_timing_capability": {
       "optional": true,
       "boundary": "UPSTREAM_FILE_API_ONLY_V1",
       "clock": "CLOCK_MONOTONIC",
-      "excludes": ["CONTEXT_LIFECYCLE", "MEMORY_STREAM_SETUP", "EXPLICIT_PREVALIDATION", "PYTHON_FFI_CONTAINER"]
+      "excludes": [
+        "CONTEXT_LIFECYCLE",
+        "MEMORY_STREAM_SETUP",
+        "EXPLICIT_PREVALIDATION",
+        "PYTHON_FFI_CONTAINER"
+      ]
     },
-    "accounting_hooks": ["FINAL_STREAM_INSPECTION", "LZSS_OFFSET12_LENGTH4_TOKEN_AND_PADDING_BITS", "OUTPUT_CAPACITY"]
+    "accounting_hooks": [
+      "FINAL_STREAM_INSPECTION",
+      "LZSS_OFFSET12_LENGTH4_TOKEN_AND_PADDING_BITS",
+      "OUTPUT_CAPACITY"
+    ],
+    "runtime_profile": {
+      "path": "docs/audits/20261011_port_standard_v30/runtime_profiles_v2/profiles/lzss-dipperstein-c.json",
+      "sha256": "ad7e236acb82234163bc52a6fa610547a948250b1e061e462d7de0c1b3321a43"
+    }
   }
 }

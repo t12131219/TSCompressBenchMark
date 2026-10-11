@@ -19,8 +19,6 @@ PROFILES = {
         for key in [
             "abba",
             "fabba",
-            "tristan",
-            "corad",
             "chimp",
             "chimp128",
             "elf",
@@ -29,15 +27,8 @@ PROFILES = {
             "self-star",
         ]
     },
-    "influxdb-tsm-adaptive-timestamp": ("rewrite_float_mts", "TIMESTAMP"),
-    **{
-        key: ("rewrite_float_mts", "SYSTEM")
-        for key in ["prometheus-xor2-chunk", "prometheus-xor-chunk"]
-    },
+    **{key: ("rewrite_float_mts", "SYSTEM") for key in []},
     **{key: ("rewrite_byte_uts", "VALUE") for key in ["deepzip", "dzip"]},
-    "walloc-1d": ("rewrite_audio_stereo", "VALUE"),
-    "prometheus-histogram-st": ("rewrite_histogram_int", "SYSTEM"),
-    "prometheus-float-histogram-st": ("rewrite_histogram_float", "SYSTEM"),
 }
 
 
@@ -68,15 +59,7 @@ def configuration(name, mode, repetitions=20):
         )
     else:
         text = text.replace("repetitions = 10", f"repetitions = {repetitions}")
-    if name in {
-        "chimp",
-        "chimp128",
-        "elf",
-        "elf-plus",
-        "elf-star",
-        "self-star",
-        "prometheus-xor-chunk",
-    }:
+    if name in {"chimp", "chimp128", "elf", "elf-plus", "elf-star", "self-star"}:
         text += '[sweep]\nblock_size = [1000]\nisa = ["SCALAR"]\n'
     path = ROOT / "configs/experiments" / f"completed-rewrites-{name}-{mode.lower()}.toml"
     path.write_text(text)
@@ -114,9 +97,11 @@ def main():
             "PASS"
             if len(components) == expected
             and all(
-                c["status"] in {"PASS", "RESOURCE_PRESSURE"}
-                and c["correctness"]["status"] == "PASS"
-                for c in components
+
+                    c["status"] in {"PASS", "RESOURCE_PRESSURE"}
+                    and c["correctness"]["status"] == "PASS"
+                    for c in components
+
             )
             and all(r.preflight.eligible_for_formal_repetitions for r in results)
             else "FAIL"
@@ -126,11 +111,11 @@ def main():
         with (run.path / "summary.csv").open() as stream:
             summaries = list(csv.DictReader(stream))
         summary_count = min((int(row["n"]) for row in summaries), default=0)
-        if status == "PASS" and args.mode == "FORMAL" and eligible < 10:
+        if status == "PASS" and args.mode == "FORMAL" and (eligible < 10):
             status = "FAIL_INSUFFICIENT_ELIGIBLE_FORMAL_OBSERVATIONS"
         elif status == "PASS" and excluded:
             status = "PASS_WITH_RESOURCE_EXCLUSIONS"
-        if status.startswith("PASS") and args.mode == "FORMAL" and summary_count < 10:
+        if status.startswith("PASS") and args.mode == "FORMAL" and (summary_count < 10):
             status = "FAIL_INSUFFICIENT_STATISTICAL_OBSERVATIONS"
         group = {
             "algorithm": name,
@@ -146,7 +131,7 @@ def main():
             "artifacts": [
                 {"path": str(p.relative_to(ROOT)), "sha256": sha(p)}
                 for p in sorted(run.path.rglob("*"))
-                if p.is_file() and ("canonical" not in p.parts)
+                if p.is_file() and "canonical" not in p.parts
             ],
         }
         groups.append(group)

@@ -6,14 +6,31 @@
   "dirty": false,
   "submodules": [],
   "implementation_files": [
-    "lz/zlib/adler32.c", "lz/zlib/compress.c", "lz/zlib/crc32.c",
-    "lz/zlib/deflate.c", "lz/zlib/gzclose.c", "lz/zlib/gzlib.c",
-    "lz/zlib/gzread.c", "lz/zlib/gzwrite.c", "lz/zlib/infback.c",
-    "lz/zlib/inffast.c", "lz/zlib/inflate.c", "lz/zlib/inftrees.c",
-    "lz/zlib/trees.c", "lz/zlib/uncompr.c", "lz/zlib/zutil.c"
+    "lz/zlib/adler32.c",
+    "lz/zlib/compress.c",
+    "lz/zlib/crc32.c",
+    "lz/zlib/deflate.c",
+    "lz/zlib/gzclose.c",
+    "lz/zlib/gzlib.c",
+    "lz/zlib/gzread.c",
+    "lz/zlib/gzwrite.c",
+    "lz/zlib/infback.c",
+    "lz/zlib/inffast.c",
+    "lz/zlib/inflate.c",
+    "lz/zlib/inftrees.c",
+    "lz/zlib/trees.c",
+    "lz/zlib/uncompr.c",
+    "lz/zlib/zutil.c"
   ],
-  "public_api_files": ["lz/zlib/zlib.h", "lz/zlib/zconf.h"],
-  "benchmark_files": ["bench/lz_codecs.cpp", "bench/lzbench.h", "Makefile"],
+  "public_api_files": [
+    "lz/zlib/zlib.h",
+    "lz/zlib/zconf.h"
+  ],
+  "benchmark_files": [
+    "bench/lz_codecs.cpp",
+    "bench/lzbench.h",
+    "Makefile"
+  ],
   "test_files": [
     "adapters/deflate_zlib/tests/abi_smoke.c",
     "adapters/deflate_zlib/tests/vendor_roundtrip.c",
@@ -21,9 +38,13 @@
     "adapters/deflate_zlib/tests/symbol_interposition.c",
     "tests/adapters/test_deflate_zlib.py"
   ],
-  "license_files": ["lz/zlib/LICENSE"],
+  "license_files": [
+    "lz/zlib/LICENSE"
+  ],
   "third_party_dependencies": [],
-  "object_level_candidates": ["P1_STANDALONE_CODEC"],
+  "object_level_candidates": [
+    "P1_STANDALONE_CODEC"
+  ],
   "input_contract": {
     "kind": "BYTE_VIEW",
     "length_type": "uInt",
@@ -62,13 +83,41 @@
       "name": "benchmark-vendored zlib API deterministic roundtrip harness",
       "command": "conda run -n CompressBench14 python adapters/deflate_zlib/tests/run_native_tests.py",
       "status": "PASS",
-      "evidence": "compress2/uncompress passed 100 deterministic cases (seed 20260918), levels 0-9, Release and ASan/UBSan; project harness, not a claim that the upstream test suite was run"
+      "evidence": "compress2/uncompress passed 100 deterministic cases (seed 20260918), levels 0-9, Release and ASan/UBSan; project harness, not a claim that the upstream test suite was run",
+      "evidence_kind": "HISTORICAL_OR_SEPARATE_UPSTREAM_EVIDENCE"
     },
     {
       "name": "project C ABI lifecycle smoke",
       "command": "run_native_tests.py: abi_smoke.c in Release and ASan/UBSan",
       "status": "PASS",
-      "evidence": "N=0/1/2/65535/65536/65537/131073; independent decode, checksum rejection, reset/reuse, bound, timed update/finalize/decode, finalize-required/repeated-finalize and insufficient-capacity rejection; persistent stream update/finalize and incremental decode cases pass in Release and ASan/UBSan"
+      "evidence": "N=0/1/2/65535/65536/65537/131073; independent decode, checksum rejection, reset/reuse, bound, timed update/finalize/decode, finalize-required/repeated-finalize and insufficient-capacity rejection; persistent stream update/finalize and incremental decode cases pass in Release and ASan/UBSan",
+      "evidence_kind": "HISTORICAL_OR_SEPARATE_UPSTREAM_EVIDENCE"
+    },
+    {
+      "algorithm": "deflate-zlib",
+      "profile": "release",
+      "name": "current build dependency and finite native API verification",
+      "status": "PASS",
+      "evidence": {
+        "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/qualification.json",
+        "sha256": "b86173f34c30d175552de327cc446dd8480aa02dd7a9ae56f12f60c0d93db174"
+      },
+      "evidence_kind": "CURRENT_REAL_BUILD_DEPENDENCIES_WITH_SELECTED_NATIVE_TESTS",
+      "native_suite_status": "PASS",
+      "source_full_parity": "NOT_ASSERTED"
+    },
+    {
+      "algorithm": "deflate-zlib",
+      "profile": "sanitizer",
+      "name": "current build dependency and finite native API verification",
+      "status": "PASS",
+      "evidence": {
+        "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/qualification.json",
+        "sha256": "b86173f34c30d175552de327cc446dd8480aa02dd7a9ae56f12f60c0d93db174"
+      },
+      "evidence_kind": "CURRENT_REAL_BUILD_DEPENDENCIES_WITH_SELECTED_NATIVE_TESTS",
+      "native_suite_status": "PASS",
+      "source_full_parity": "NOT_ASSERTED"
     }
   ],
   "builds": [
@@ -77,14 +126,50 @@
       "artifact_sha256": "e96a6e98996d30482f12e7a19e6ddc5721d787dacbae32ee69f45a792efc9430",
       "compile_commands_sha256": "e722f3b06818a809a4ff99b6473f16ac8c596f5c3dfad7ee0fce76a9907e27c6",
       "compiler": "GCC 11.4.0",
-      "flags": "-O3 -DNDEBUG -std=c11 -fPIC -DZ_HAVE_UNISTD_H -Wall -Wextra -Werror -Wl,-Bsymbolic-functions"
+      "flags": "-O3 -DNDEBUG -std=c11 -fPIC -DZ_HAVE_UNISTD_H -Wall -Wextra -Werror -Wl,-Bsymbolic-functions",
+      "evidence_kind": "HISTORICAL_BUILD_RECORD"
     },
     {
       "profile": "ASAN_UBSAN_SCALAR_SINGLE_THREAD",
       "artifact_sha256": "3df1caabf12c7717d8f2dc71234046df3dd1620dfce89004e5ae64c7dfea0382",
       "compile_commands_sha256": "f3ae0ab9e0c202d5dd9bcc22178f16b29b80937c3c16b9c2a61b3699849f0741",
       "compiler": "GCC 11.4.0",
-      "flags": "-O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined -std=c11 -fPIC -DZ_HAVE_UNISTD_H -Wall -Wextra -Werror -Wl,-Bsymbolic-functions"
+      "flags": "-O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined -std=c11 -fPIC -DZ_HAVE_UNISTD_H -Wall -Wextra -Werror -Wl,-Bsymbolic-functions",
+      "evidence_kind": "HISTORICAL_BUILD_RECORD"
+    },
+    {
+      "algorithm": "deflate-zlib",
+      "profile": "RELEASE",
+      "artifact_sha256": "e96a6e98996d30482f12e7a19e6ddc5721d787dacbae32ee69f45a792efc9430",
+      "compile_commands_sha256": "e01eb1ebf2ee5a5ff7dcc65ffafb0fcb010dc090a74489521c4784ea32216157",
+      "compiler": "cc (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0",
+      "evidence_kind": "CURRENT_REAL_BUILD_DEPENDENCIES_VERIFIED",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/deflate_zlib/release/build-record.json",
+        "sha256": "6441c84606e1745a9d457af78c12c235692296a616370861f7ce28b872142aba"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/deflate_zlib/release/libtscb_deflate_zlib.so",
+        "sha256": "e96a6e98996d30482f12e7a19e6ddc5721d787dacbae32ee69f45a792efc9430"
+      },
+      "qualification_scope": "BUILD_CLOSURE_AND_SELECTED_FINITE_NATIVE_SUITE_NOT_SOURCE_FULL_PARITY"
+    },
+    {
+      "algorithm": "deflate-zlib",
+      "profile": "SANITIZER",
+      "artifact_sha256": "3df1caabf12c7717d8f2dc71234046df3dd1620dfce89004e5ae64c7dfea0382",
+      "compile_commands_sha256": "474953609ec36f3ee9d21f27c628ae1e6f40696e490e0892e65a810203349b97",
+      "compiler": "cc (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0",
+      "evidence_kind": "CURRENT_REAL_BUILD_DEPENDENCIES_VERIFIED",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/deflate_zlib/sanitizer/build-record.json",
+        "sha256": "0f7f21e1c4a8c10a918862969f9c715e5f13c2095ab68ebb57e113478f4f20d5"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/deflate_zlib/sanitizer/libtscb_deflate_zlib.so",
+        "sha256": "3df1caabf12c7717d8f2dc71234046df3dd1620dfce89004e5ae64c7dfea0382"
+      },
+      "qualification_scope": "BUILD_CLOSURE_AND_SELECTED_FINITE_NATIVE_SUITE_NOT_SOURCE_FULL_PARITY"
     }
   ],
   "license_decision": {
@@ -99,12 +184,16 @@
     "A zlib stream does not store uncompressed length. Independent allocation uses the TSCB descriptor, not encoder state.",
     "The single-update ABI accepts input and output capacities at most UINT_MAX; deflateBound above UINT_MAX is unsupported.",
     "The benchmark-vendored tree is 1.3.2; the comparison-only upstream checkout e3dc0a85b7032e98380dec011bc8f2c2ee0d8fca is 1.3.2.1 and differs. No sources are mixed or automatically upgraded.",
-    "LeakSanitizer is disabled under the host ptrace policy; ASan/UBSan remain enabled."
+    "LeakSanitizer is disabled under the host ptrace policy; ASan/UBSan remain enabled.",
+    "2026-10-11: new isolated builds pin actual per-TU compiler dependencies, objects, selected toolchain executables and linked dynamic runtime files. These records do not pin every implicit static startup/runtime archive and do not grant source FULL_PARITY or change active algorithm scope. Historical runs retain their original artifact identities."
   ],
   "unsupported_reason_codes": [
-    "EXECUTION_ARTIFACT_MISSING", "VALIDITY_SHAPE_UNSUPPORTED",
-    "DICTIONARY_MODE_NOT_REGISTERED", "CHECKSUM_MODE_NOT_REGISTERED",
+    "EXECUTION_ARTIFACT_MISSING",
+    "VALIDITY_SHAPE_UNSUPPORTED",
+    "DICTIONARY_MODE_NOT_REGISTERED",
+    "CHECKSUM_MODE_NOT_REGISTERED",
     "QUERY_UNSUPPORTED",
     "SINGLE_UPDATE_LENGTH_LIMIT"
-  ]
+  ],
+  "source_onboarding_id": "v2:source-onboarding:sha256:daa53cfdcdc34bd95e077832e2a9e9a679fcd5e431a23d0c4ea7a30d0aafde24"
 }

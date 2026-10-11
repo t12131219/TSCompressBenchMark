@@ -1,0 +1,88 @@
+--- a/adapters/zstd_frame/native/tscb_zstd_frame.c
++++ b/adapters/zstd_frame/native/tscb_zstd_frame.c
+@@ -121,6 +121,12 @@
+     return 1;
+ }
+ 
++static int tscb_output_buffer_is_valid(const tscb_buffer_v1 *buffer) {
++    return tscb_buffer_shape_is_valid(buffer) && buffer->data != NULL
++        && buffer->capacity_bytes <= (uint64_t)SIZE_MAX
++        && buffer->capacity_bytes <= UINTPTR_MAX - (uintptr_t)buffer->data;
++}
++
+ static tscb_status_v1 tscb_configure_context(tscb_codec_handle_v1 *handle) {
+     size_t code;
+     code = ZSTD_CCtx_reset(handle->compression_context, ZSTD_reset_session_and_parameters);
+@@ -289,8 +295,8 @@
+     ZSTD_inBuffer source;
+     ZSTD_outBuffer destination;
+     size_t code;
+-    if (handle == NULL || output == NULL || !tscb_buffer_shape_is_valid(input)
+-        || output->data == NULL || output->used_bytes > output->capacity_bytes) {
++    if (handle == NULL || !tscb_output_buffer_is_valid(output)
++        || !tscb_buffer_shape_is_valid(input)) {
+         return TSCB_STATUS_INVALID_ARGUMENT_V1;
+     }
+     if (handle->update_called || handle->finalized) {
+@@ -345,8 +351,7 @@
+     ZSTD_inBuffer source = {NULL, 0U, 0U};
+     ZSTD_outBuffer destination;
+     size_t remaining;
+-    if (handle == NULL || output == NULL || output->data == NULL
+-        || output->used_bytes > output->capacity_bytes) {
++    if (handle == NULL || !tscb_output_buffer_is_valid(output)) {
+         return TSCB_STATUS_INVALID_ARGUMENT_V1;
+     }
+     if (!handle->update_called) {
+@@ -408,8 +413,8 @@
+     ZSTD_inBuffer source;
+     ZSTD_outBuffer destination;
+     size_t remaining;
+-    if (handle == NULL || !tscb_buffer_shape_is_valid(input) || output == NULL
+-        || output->data == NULL || output->capacity_bytes > (uint64_t)SIZE_MAX
++    if (handle == NULL || !tscb_buffer_shape_is_valid(input)
++        || !tscb_output_buffer_is_valid(output)
+         || input->used_bytes > (uint64_t)SIZE_MAX) {
+         return TSCB_STATUS_INVALID_ARGUMENT_V1;
+     }
+@@ -464,8 +469,11 @@
+     ZSTD_inBuffer source;
+     ZSTD_outBuffer destination;
+     size_t code;
+-    if (handle == NULL || output == NULL || !tscb_buffer_shape_is_valid(input)
+-        || output->data == NULL || output->used_bytes > output->capacity_bytes) {
++    if (handle == NULL || !tscb_output_buffer_is_valid(output)
++        || !tscb_buffer_shape_is_valid(input)) {
++        return TSCB_STATUS_INVALID_ARGUMENT_V1;
++    }
++    if (input->used_bytes > (uint64_t)SIZE_MAX) {
+         return TSCB_STATUS_INVALID_ARGUMENT_V1;
+     }
+     if (handle->finalized || handle->stream_mode == 1) {
+@@ -509,8 +517,8 @@
+     ZSTD_inBuffer source = {NULL, 0U, 0U};
+     ZSTD_outBuffer destination;
+     size_t remaining;
+-    if (handle == NULL || output == NULL || output->data == NULL
+-        || output->used_bytes > output->capacity_bytes) return TSCB_STATUS_INVALID_ARGUMENT_V1;
++    if (handle == NULL || !tscb_output_buffer_is_valid(output))
++        return TSCB_STATUS_INVALID_ARGUMENT_V1;
+     if (handle->finalized || handle->stream_mode == 1) {
+         tscb_set_error(handle, "Zstd stream finalize repeated or mixed with one-shot");
+         return TSCB_STATUS_CODEC_ERROR_V1;
+@@ -558,8 +566,13 @@
+     ZSTD_outBuffer destination;
+     size_t remaining;
+     if (handle == NULL || handle->stream_decoder == NULL || stream_end == NULL
+-        || !tscb_buffer_shape_is_valid(input) || output == NULL || output->data == NULL) {
+-        return TSCB_STATUS_INVALID_ARGUMENT_V1;
++        || !tscb_buffer_shape_is_valid(input) || !tscb_output_buffer_is_valid(output)
++        || input->used_bytes > (uint64_t)SIZE_MAX) {
++        return TSCB_STATUS_INVALID_ARGUMENT_V1;
++    }
++    if (handle->stream_decoder_finished) {
++        tscb_set_error(handle, "Zstd stream already reached EOF; reset before another update");
++        return TSCB_STATUS_CODEC_ERROR_V1;
+     }
+     source.src = input->data; source.size = (size_t)input->used_bytes; source.pos = 0U;
+     destination.dst = output->data; destination.size = (size_t)output->capacity_bytes; destination.pos = 0U;

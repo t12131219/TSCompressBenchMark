@@ -7,19 +7,23 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-import numpy as np
-
 from tscompbench.accounting import AccountingLedger
 from tscompbench.contracts import BenchmarkTrack
 from tscompbench.execution.protocol import (
     DecodedOutput,
     ExecutionContractError,
-    LogicalBuffer,
     OutputCapacityError,
     RoutedInput,
 )
 from tscompbench.ids import canonical_json_bytes, stable_id
 
+from .byte_container import (
+    DEFAULT_MAX_OUTPUT_BYTES,
+    MAX_METADATA_BYTES,
+    decode_byte_payload,
+    parse_byte_metadata,
+    validate_byte_descriptors,
+)
 from .native_streaming import NativeByteStreamingSession, bind_stream_symbols
 from .native_timing import NativeTimingProbe
 
@@ -177,9 +181,7 @@ class Lz4FrameSession:
             {
                 "block_checksum": bool(parameters.get("block_checksum", False)),
                 "block_mode": (
-                    0
-                    if parameters.get("block_mode", "INDEPENDENT") == "INDEPENDENT"
-                    else 1
+                    0 if parameters.get("block_mode", "INDEPENDENT") == "INDEPENDENT" else 1
                 ),
                 "block_size_id": int(parameters.get("block_size_id", 4)),
                 "compression_level": int(parameters.get("compression_level", 0)),
@@ -187,9 +189,7 @@ class Lz4FrameSession:
             }
         )
         status = int(
-            self._native.library.tscb_create(
-                config, len(config), ctypes.byref(self._handle)
-            )
+            self._native.library.tscb_create(config, len(config), ctypes.byref(self._handle))
         )
         if status != _STATUS_OK or not self._handle.value:
             raise ExecutionContractError(f"native LZ4 adapter create failed with status {status}")
@@ -199,7 +199,8 @@ class Lz4FrameSession:
         self._native_stream_offset = 0
         try:
             self._native_timing = NativeTimingProbe(
-                self._native.library, self._handle,
+                self._native.library,
+                self._handle,
                 enabled=bool(parameters.get("native_timing", True)),
             )
         except Exception:
@@ -304,12 +305,8 @@ class Lz4FrameSession:
         if self._finalized:
             raise ExecutionContractError("repeated finalize is forbidden")
         output_array = (ctypes.c_ubyte * len(destination)).from_buffer(destination)
-        output_buffer = _buffer(
-            ctypes.addressof(output_array), capacity=len(destination), used=0
-        )
-        status = int(
-            self._native.library.tscb_finalize(self._handle, ctypes.byref(output_buffer))
-        )
+        output_buffer = _buffer(ctypes.addressof(output_array), capacity=len(destination), used=0)
+        status = int(self._native.library.tscb_finalize(self._handle, ctypes.byref(output_buffer)))
         self._check(status, "finalize")
         self._finalized = True
         return int(output_buffer.used_bytes)
@@ -321,11 +318,13 @@ class Lz4FrameSession:
         magic, header_length = _PREFIX.unpack_from(stream)
         if magic != _MAGIC:
             raise ExecutionContractError("invalid LZ4 container magic")
+        if header_length > MAX_METADATA_BYTES:
+            raise ExecutionContractError("byte container metadata exceeds decoder resource limit")
         header_end = _PREFIX.size + header_length
         if header_end > len(stream):
             raise ExecutionContractError("truncated LZ4 container metadata")
         try:
-            header = json.loads(stream[_PREFIX.size : header_end].decode("utf-8"))
+            header = parse_byte_metadata(stream[_PREFIX.size : header_end])
         except (UnicodeDecodeError, json.JSONDecodeError) as error:
             raise ExecutionContractError("invalid LZ4 container metadata") from error
         if header.get("schema_version") != "tscb.lz4-frame-container.v1":
@@ -403,22 +402,17 @@ class Lz4FrameSession:
             **components,
         )
 
-    def decompress(self, stream: bytes) -> DecodedOutput:
+    def decompress(
+        self, stream: bytes, *, max_output_bytes: int = DEFAULT_MAX_OUTPUT_BYTES
+    ) -> DecodedOutput:
         header, frame, _ = self._parse_container(stream)
-        descriptors = header.get("buffers")
-        if not isinstance(descriptors, list):
-            raise ExecutionContractError("LZ4 container has no buffer descriptors")
-        output_bytes = sum(int(item["payload_bytes"]) for item in descriptors)
+        _, output_bytes = validate_byte_descriptors(header, max_output_bytes=max_output_bytes)
         input_storage = bytearray(frame) if frame else bytearray(1)
         output_storage = bytearray(max(1, output_bytes))
         input_array = (ctypes.c_ubyte * len(input_storage)).from_buffer(input_storage)
         output_array = (ctypes.c_ubyte * len(output_storage)).from_buffer(output_storage)
-        input_buffer = _buffer(
-            ctypes.addressof(input_array), capacity=len(frame), used=len(frame)
-        )
-        output_buffer = _buffer(
-            ctypes.addressof(output_array), capacity=output_bytes, used=0
-        )
+        input_buffer = _buffer(ctypes.addressof(input_array), capacity=len(frame), used=len(frame))
+        output_buffer = _buffer(ctypes.addressof(output_array), capacity=output_bytes, used=0)
         status = int(
             self._native.library.tscb_decompress(
                 self._handle, ctypes.byref(input_buffer), ctypes.byref(output_buffer)
@@ -427,30 +421,9 @@ class Lz4FrameSession:
         self._check(status, "decompress")
         if int(output_buffer.used_bytes) != output_bytes:
             raise ExecutionContractError("LZ4 decoded byte count does not match metadata")
-        payload = memoryview(output_storage)[:output_bytes]
-        cursor = 0
-        decoded: list[LogicalBuffer] = []
-        for descriptor in descriptors:
-            length = int(descriptor["payload_bytes"])
-            dtype = np.dtype(str(descriptor["dtype"]))
-            shape = tuple(int(value) for value in descriptor["shape"])
-            expected = int(np.prod(shape, dtype=np.int64)) * dtype.itemsize
-            if expected != length or cursor + length > output_bytes:
-                raise ExecutionContractError("LZ4 descriptor shape/dtype is inconsistent")
-            array = np.frombuffer(payload[cursor : cursor + length], dtype=dtype).copy()
-            array = array.reshape(shape)
-            array.flags.writeable = False
-            decoded.append(
-                LogicalBuffer(
-                    name=str(descriptor["name"]),
-                    array=array,
-                    logical_bits=int(descriptor["logical_bits"]),
-                )
-            )
-            cursor += length
-        if cursor != output_bytes:
-            raise ExecutionContractError("LZ4 container contains undeclared decoded bytes")
-        return DecodedOutput(tuple(decoded))
+        return decode_byte_payload(
+            header, memoryview(output_storage)[:output_bytes], max_output_bytes=max_output_bytes
+        )
 
     def close(self) -> None:
         if self._handle.value:

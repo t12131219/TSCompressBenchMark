@@ -1,0 +1,119 @@
+{
+  "display_name": "v32_pems04_i16_mts",
+  "expected": {
+    "canonical_raw_bits": 524288,
+    "n_rows": 8192,
+    "semantic_content_sha256": "d2c0ee38d392319b9bc8f51105af85004d6868f0058f42bca43e4e06a832bdcd",
+    "shape": [
+      8192,
+      4
+    ]
+  },
+  "file": {
+    "bytes": 68322,
+    "format": "canonical",
+    "path": "artifacts/comparisons/v32_20261010/sources/v32_pems04_i16_mts.tscb",
+    "sha256": "1129dd3e63f69a69ef1b1002e55144a1d8f82ee7613457ee97e611474834d2de"
+  },
+  "key": "v32_pems04_i16_mts",
+  "license": {
+    "spdx": "UNSPECIFIED",
+    "status": "REVIEW_REQUIRED"
+  },
+  "logical": {
+    "axes": [
+      "time",
+      "feature"
+    ],
+    "n_rows": 8192,
+    "nan_is_null": false,
+    "schema_version": "tscb.logical-view.v2",
+    "timestamp": {
+      "epoch": "NOT_APPLICABLE",
+      "order_policy": "PRESERVE",
+      "origin": "NONE",
+      "present": false,
+      "unit": "NOT_APPLICABLE"
+    },
+    "topology": "SYNCHRONOUS_MTS",
+    "validity_shape": "NONE",
+    "value_columns": [
+      {
+        "display_name": "sensor-0-feature-0",
+        "dtype": "<i2",
+        "entity": "PEMS04-sensor-0",
+        "feature": "feature-0",
+        "name": "sensor/000000/feature/000000",
+        "shape": [
+          8192
+        ],
+        "strides": [
+          2
+        ],
+        "unit": "UNSPECIFIED"
+      },
+      {
+        "display_name": "sensor-1-feature-0",
+        "dtype": "<i2",
+        "entity": "PEMS04-sensor-1",
+        "feature": "feature-0",
+        "name": "sensor/000001/feature/000000",
+        "shape": [
+          8192
+        ],
+        "strides": [
+          2
+        ],
+        "unit": "UNSPECIFIED"
+      },
+      {
+        "display_name": "sensor-2-feature-0",
+        "dtype": "<i2",
+        "entity": "PEMS04-sensor-2",
+        "feature": "feature-0",
+        "name": "sensor/000002/feature/000000",
+        "shape": [
+          8192
+        ],
+        "strides": [
+          2
+        ],
+        "unit": "UNSPECIFIED"
+      },
+      {
+        "display_name": "sensor-3-feature-0",
+        "dtype": "<i2",
+        "entity": "PEMS04-sensor-3",
+        "feature": "feature-0",
+        "name": "sensor/000003/feature/000000",
+        "shape": [
+          8192
+        ],
+        "strides": [
+          2
+        ],
+        "unit": "UNSPECIFIED"
+      }
+    ],
+    "value_shape": [
+      8192,
+      4
+    ]
+  },
+  "parser": {
+    "identity_policy": "tscb.dataset-content.v1",
+    "name": "tscb.canonical",
+    "version": "1"
+  },
+  "schema_version": "tscb.canonical-source-manifest.v1",
+  "source": {
+    "notes": "{\"domain_proof\": {\"exact_round_trip\": true, \"finite\": true, \"full_source_selected_feature_values\": 5216544, \"integral\": true, \"lossy_transform\": false, \"maximum\": \"919.0\", \"minimum\": \"0.0\", \"target_dtype\": \"<i2\"}, \"first_party_project_reference\": \"https://pems.dot.ca.gov/\", \"generation_spec\": {\"dtype_policy\": \"PROVED_EXACT_I16_NUMERIC_REPRESENTATION_NO_QUANTIZATION\", \"kind\": \"REAL_INTEGER_VALUE_WINDOW\", \"parent_dataset_id\": \"v2:dataset:sha256:4bf03b094f9eab57b81b2ed579339ccb272cb7096ffbe0d74fdc7914bde460ae\", \"parent_file_sha256\": \"95a3c9b720fffdb85f0330d09bfab41b0b3cad0ca86c0d7d5f3accacb4ac999a\", \"row_start\": 0, \"row_stop\": 8192, \"selected_columns\": [\"sensor/000000/feature/000000\", \"sensor/000001/feature/000000\", \"sensor/000002/feature/000000\", \"sensor/000003/feature/000000\"], \"source_feature\": \"FEATURE_AXIS_0\", \"source_key\": \"pems04\", \"timestamp_policy\": \"VALUE_TRACK_SOURCE_TIMESTAMPS_OUTSIDE_OBJECT\"}, \"source_lineage_authentication\": \"LOCAL_MANIFEST_ONLY_NOT_EXTERNALLY_AUTHENTICATED\", \"source_manifest\": \"registry/datasets/pems04.json\", \"source_sha256\": \"95a3c9b720fffdb85f0330d09bfab41b0b3cad0ca86c0d7d5f3accacb4ac999a\"}",
+    "retrieved_at": "UNSPECIFIED",
+    "uri": "local:datasets/pems04.npz"
+  },
+  "split": {
+    "learned_eligible": false,
+    "policy": "TEST",
+    "reason": "Frozen whole-object CPU comparison; no learned split or source generalization claimed."
+  }
+}

@@ -9,6 +9,7 @@ import json
 import re
 from pathlib import Path
 
+from algorithm_scope import load_scope
 from build_completed_rewrite import KINDS
 from qualify_completed_rewrites import PROFILES
 
@@ -18,7 +19,7 @@ from tscompbench.ids import canonical_json_bytes, stable_id
 from tscompbench.reporting import generate_report
 
 ROOT = Path(__file__).resolve().parents[1]
-EXISTING = ("chimp", "chimp128", "elf", "elf-plus", "elf-star", "self-star", "prometheus-xor-chunk")
+EXISTING = ("chimp", "chimp128", "elf", "elf-plus", "elf-star", "self-star")
 BLOCKED = ("terracodec-flextec", "terracodec-tec-tt")
 
 
@@ -92,12 +93,15 @@ def main():
     inventory = []
     issues = []
     packages = {name: [name] for name in lock["packages"]}
-    packages["prometheus-histogram-st"].append("prometheus-float-histogram-st")
     for name in EXISTING:
         package = old_lock["algorithms"][name]["package"]
         packages.setdefault(package, []).append(name)
     original_root = ROOT / "Compression_Rewrite/ReWrite"
-    assert {p.name for p in original_root.iterdir() if p.is_dir()} == set(packages) | set(BLOCKED)
+    active_scope = load_scope()
+    assert {p.name for p in original_root.iterdir() if p.is_dir()} == set(
+        active_scope["rewrite_package_inventory"]
+    )
+    assert set(packages) == set(active_scope["rewrite_packages"])
     for package, names in sorted(packages.items()):
         port = original_root / package / "PORT_MANIFEST.yaml"
         assert "REWRITE_DONE" in port.read_text() and "BLOCKED" not in port.read_text()
@@ -117,8 +121,9 @@ def main():
                 if name in KINDS:
                     frozen = lock["packages"][package]
                     assert frozen["port_manifest_sha256"] == sha(port)
-                    assert sha(ROOT / frozen["source_manifest"]["path"]) == (
-                        frozen["source_manifest"]["sha256"]
+                    assert (
+                        sha(ROOT / frozen["source_manifest"]["path"])
+                        == (frozen["source_manifest"]["sha256"])
                     )
                     for file in frozen["files"]:
                         assert (
@@ -244,7 +249,7 @@ def main():
         "normative_references": [
             {"path": p, "sha256": sha(ROOT / p)}
             for p in (
-                "TimeSeries_Compression_Benchmark_V2_工程实施总计划.md",
+                "TimeSeries_Compression_Benchmark_V3_工程实施总计划.md",
                 "Compression_Algorithm_CPP_Porting_Standard_v2.0.md",
             )
         ],

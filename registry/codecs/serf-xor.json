@@ -13,21 +13,41 @@
   "classification": {
     "object_level": "P1_STANDALONE_CODEC",
     "implementation_class": "CONVENTIONAL",
-    "tracks": ["VALUE"],
-    "subtracks": ["V3"]
+    "tracks": [
+      "VALUE"
+    ],
+    "subtracks": [
+      "V3"
+    ]
   },
   "input": {
-    "topologies": ["UTS", "SYNCHRONOUS_MTS"],
-    "dtypes": ["<f8", "<f4"],
-    "ranks": [1, 2],
-    "layouts": ["ROW_MAJOR_CONTIG", "SOA_COLUMNS"],
-    "endianness": ["little"],
+    "topologies": [
+      "UTS",
+      "SYNCHRONOUS_MTS"
+    ],
+    "dtypes": [
+      "<f8",
+      "<f4"
+    ],
+    "ranks": [
+      1,
+      2
+    ],
+    "layouts": [
+      "ROW_MAJOR_CONTIG",
+      "SOA_COLUMNS"
+    ],
+    "endianness": [
+      "little"
+    ],
     "alignment_bytes": 1,
     "min_n": 0,
     "max_n": 16777216,
     "min_m": 1,
     "max_m": 65535,
-    "validity_shapes": ["NONE"],
+    "validity_shapes": [
+      "NONE"
+    ],
     "homogeneous_itemsize": true,
     "max_total_raw_bytes": 134217728,
     "value_coupling_mode": "COLUMN_INDEPENDENT",
@@ -41,9 +61,15 @@
     }
   },
   "semantics": {
-    "loss_modes": ["ERROR_BOUNDED_LOSSY"],
-    "error_bound_types": ["ABSOLUTE"],
-    "reconstruction_modes": ["APPROX_GRID"],
+    "loss_modes": [
+      "ERROR_BOUNDED_LOSSY"
+    ],
+    "error_bound_types": [
+      "ABSOLUTE"
+    ],
+    "reconstruction_modes": [
+      "APPROX_GRID"
+    ],
     "rebuild_protocol": "TSCB_SERF_XOR_CONTAINER_V1_ABSOLUTE_ERROR",
     "preprocess_class": "NONE",
     "preprocess_stages": [],
@@ -62,32 +88,70 @@
     "index": "NONE"
   },
   "execution": {
-    "backends": ["C_ABI_V1"],
-    "isa": ["SCALAR"],
-    "devices": ["CPU"],
+    "backends": [
+      "C_ABI_V1"
+    ],
+    "isa": [
+      "SCALAR"
+    ],
+    "devices": [
+      "CPU"
+    ],
     "threading": "SINGLE_THREAD",
     "fallback_policy": "REGISTERED_RAW_EXCEPTION_BLOCK_FOR_NONFINITE_OR_OVERFLOW_INPUT_ONLY",
     "runtime_dispatch": true
   },
-  "features": {"streaming": false, "query": false, "random_access": false},
+  "features": {
+    "streaming": false,
+    "query": false,
+    "random_access": false
+  },
   "parameters": {
     "type": "object",
     "additionalProperties": false,
     "properties": {
-      "block_size": {"type": "integer", "minimum": 1, "maximum": 65535, "default": 1000},
-      "error_bound_type": {"type": "string", "enum": ["ABSOLUTE"], "default": "ABSOLUTE"},
-      "error_bound": {"type": "decimal-string", "default": "0.001"},
-      "adjust_digit": {"type": "integer", "minimum": -1000000000, "maximum": 1000000000, "default": 0},
-      "native_timing": {"type": "boolean", "default": true},
-      "isa": {"type": "string", "enum": ["SCALAR"], "default": "SCALAR"}
+      "block_size": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 65535,
+        "default": 1000
+      },
+      "error_bound_type": {
+        "type": "string",
+        "enum": [
+          "ABSOLUTE"
+        ],
+        "default": "ABSOLUTE"
+      },
+      "error_bound": {
+        "type": "decimal-string",
+        "default": "0.001"
+      },
+      "adjust_digit": {
+        "type": "integer",
+        "minimum": -1000000000,
+        "maximum": 1000000000,
+        "default": 0
+      },
+      "native_timing": {
+        "type": "boolean",
+        "default": true
+      },
+      "isa": {
+        "type": "string",
+        "enum": [
+          "SCALAR"
+        ],
+        "default": "SCALAR"
+      }
     },
     "constraints": []
   },
   "adapter": {
     "backend": "C_ABI_V1",
-    "version": "serf-ctypes-v1",
+    "version": "serf-ctypes-v1-port-standard-v30-20261011",
     "factory": "SERF_CTYPES_V1",
-    "artifact_path": "build/adapters/serf_xor/release/libtscb_serf_xor.so",
+    "artifact_path": "build/port-standard-v30-20261011/native-builds-v3/serf_xor/release/libtscb_serf_xor.so",
     "timing_boundary": "PYTHON_LAYOUT_FFI_AND_CONTAINER_INCLUDED",
     "native_timing_capability": {
       "optional": true,
@@ -108,6 +172,10 @@
       "COMPLETE_NATIVE_SERF_FRAME",
       "RAW_EXCEPTION_BLOCKS_CHARGED",
       "OUTPUT_CAPACITY"
-    ]
+    ],
+    "runtime_profile": {
+      "path": "docs/audits/20261011_port_standard_v30/runtime_profiles_v2/profiles/serf-xor.json",
+      "sha256": "204d2001bb8f33b10b252a5a3c4b544ed9f5a2385a0ccac2fc6084c55fa8f596"
+    }
   }
 }

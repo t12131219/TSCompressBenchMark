@@ -1,0 +1,254 @@
+{
+  "schema_version": "tscb.source-onboarding.v2",
+  "source_artifact_id": "v2:source-artifact:sha256:f880d919673dd94f4459a5a2c17d01d9911272d93eec15fbf2c1b4a58537f555",
+  "repository": "https://github.com/Spatio-Temporal-Lab/SElfStar",
+  "commit": "457ceb0033e98d516fef42e39d17c9d4b8abbfdb",
+  "dirty": false,
+  "submodules": [],
+  "implementation_files": [
+    "adapters/rewrite_lossless/vendor/elf-star/src/codec.cpp"
+  ],
+  "public_api_files": [
+    "adapters/rewrite_lossless/vendor/elf-star/include/elf_star.hpp"
+  ],
+  "benchmark_files": [
+    "adapters/rewrite_lossless/native/tscb_rewrite_lossless.cc"
+  ],
+  "test_files": [
+    "adapters/rewrite_lossless/tests/qualification.cc",
+    "tests/adapters/test_rewrite_lossless.py"
+  ],
+  "license_files": [
+    "adapters/rewrite_lossless/vendor/elf-star/LICENSES/LOCAL_PERMISSION.md",
+    "adapters/rewrite_lossless/vendor/elf-star/LOCAL_WORKFLOW_DECISIONS.md"
+  ],
+  "third_party_dependencies": [
+    {
+      "scope": "NATIVE_SYSTEM_RUNTIME",
+      "name": "Linux C/C++ runtime",
+      "reference_runtime_not_linked": true
+    }
+  ],
+  "object_level_candidates": [
+    "P1_STANDALONE_CODEC"
+  ],
+  "input_contract": {
+    "topologies": [
+      "UTS",
+      "SYNCHRONOUS_MTS"
+    ],
+    "dtypes": [
+      "<f4",
+      "<f8"
+    ],
+    "ranks": [
+      1,
+      2
+    ],
+    "layouts": [
+      "ROW_MAJOR_CONTIG",
+      "SOA_COLUMNS"
+    ],
+    "endianness": [
+      "little"
+    ],
+    "alignment_bytes": 1,
+    "min_n": 0,
+    "max_n": 16777216,
+    "min_m": 1,
+    "max_m": 65535,
+    "validity_shapes": [
+      "NONE"
+    ],
+    "homogeneous_itemsize": true,
+    "max_total_raw_bytes": 134217728,
+    "value_coupling_mode": "COLUMN_INDEPENDENT",
+    "timestamp_semantics": {
+      "preserve_order": true,
+      "duplicates": true,
+      "out_of_order": true,
+      "negative_delta": true,
+      "absolute_epoch": true,
+      "overflow_policy": "NOT_APPLICABLE_VALUE_ONLY"
+    },
+    "value_domain": {
+      "kind": "FROZEN_SOURCE_WITH_BOUNDED_REJECTION",
+      "unsupported_action": "REJECT_BEFORE_OUTPUT",
+      "oracle_evidence": "Compression_Rewrite/ReWrite/elf-star/validation/source-domain/report.json",
+      "rejection_reasons": [
+        "NaN is END, outside lossless domain",
+        "source rejects decimal scale",
+        "source significance loop does not terminate",
+        "source beta symbol outside table",
+        "source decimal recovery is not lossless"
+      ]
+    },
+    "max_total_elements": 16777216
+  },
+  "output_contract": {
+    "self_contained": true,
+    "actual_written_length": true,
+    "capacity_is_not_size": true,
+    "framing": "TSCB_DESCRIPTOR_SHA256_AND_RWF1_FNV64_CHECKED_STANDALONE_FRAMES",
+    "components": "OPAQUE_STANDALONE_CODEC_BYTES_WITH_EXACT_WRAPPER_ACCOUNTING_V1"
+  },
+  "lifecycle_contract": {
+    "output_bound": "FROZEN_STANDALONE_API_BOUND_PLUS_EXACT_WRAPPER_BOUND",
+    "return_length": "actual_used_bytes",
+    "error_codes": [
+      "DST_TOO_SMALL",
+      "SOURCE_DOMAIN_UNSUPPORTED",
+      "INVALID_ARGUMENT",
+      "CODEC_ERROR"
+    ],
+    "finalize": "REQUIRED_ZERO_BYTE_FINALIZE",
+    "reset": "MODE_ZERO_ONLY"
+  },
+  "stream_components": [
+    "descriptor",
+    "descriptor_checksum",
+    "native_header",
+    "record_headers",
+    "standalone_frames",
+    "native_checksum"
+  ],
+  "upstream_tests": [
+    {
+      "status": "PASS",
+      "name": "current standalone original differential",
+      "log_sha256": "6ebae13b3b92f2bbef0214c0949c243424d86bf2106214d08045d368480eacfd",
+      "evidence_kind": "HISTORICAL_OR_SEPARATE_UPSTREAM_EVIDENCE"
+    },
+    {
+      "status": "PASS",
+      "name": "ASan/UBSan native ABI qualification",
+      "log_sha256": "3e4ec118dc5fd4d9bb4fd27ee3ceed8562a77b3a535c876582af128252872fa5",
+      "evidence_kind": "HISTORICAL_OR_SEPARATE_UPSTREAM_EVIDENCE"
+    },
+    {
+      "algorithm": "elf-star",
+      "profile": "release",
+      "name": "current build dependency and finite native API verification",
+      "status": "PASS",
+      "evidence": {
+        "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/qualification.json",
+        "sha256": "b86173f34c30d175552de327cc446dd8480aa02dd7a9ae56f12f60c0d93db174"
+      },
+      "evidence_kind": "CURRENT_REAL_BUILD_DEPENDENCIES_WITH_SELECTED_NATIVE_TESTS",
+      "native_suite_status": "PASS",
+      "source_full_parity": "NOT_ASSERTED"
+    },
+    {
+      "algorithm": "elf-star",
+      "profile": "sanitizer",
+      "name": "current build dependency and finite native API verification",
+      "status": "PASS",
+      "evidence": {
+        "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/qualification.json",
+        "sha256": "b86173f34c30d175552de327cc446dd8480aa02dd7a9ae56f12f60c0d93db174"
+      },
+      "evidence_kind": "CURRENT_REAL_BUILD_DEPENDENCIES_WITH_SELECTED_NATIVE_TESTS",
+      "native_suite_status": "PASS",
+      "source_full_parity": "NOT_ASSERTED"
+    },
+    {
+      "name": "current finite ABI and independently executed source differential",
+      "status": "PASS_SCOPED",
+      "evidence_kind": "CURRENT_INDEPENDENT_EVIDENCE_SCOPES",
+      "native_qualification": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v4/qualification.json",
+        "sha256": "4435d1ab23ceb5e7ae58c360d2bd85e66d2b299472afd3890fb3ebff0c721f7c"
+      },
+      "source_qualification": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/source-oracles-final/report.json",
+        "sha256": "710455285c5de0c424803115b904945628b9d8ab5797366148d3c5a3d7f862fe"
+      },
+      "source_package": "elf-star",
+      "source_case_count": 109,
+      "case_status_counts": {
+        "PASS": 109
+      },
+      "legal_source_cases": 109,
+      "source_end_marker_cases": 0,
+      "network_cases": 0,
+      "archived_source_failure_native_rejection_cases": 0,
+      "fresh_original_java_executed": true,
+      "archived_rejections_fresh_original_java_executed": false,
+      "source_test_scope": "FRESH_ORIGINAL_JAVA_SOURCE_AND_CANONICAL_CORE_CLI_DIFFERENTIAL",
+      "source_full_parity": "NOT_GRANTED",
+      "standalone_g0_g6": "NOT_GRANTED",
+      "complete_n1_compile_link_trace": "NOT_GRANTED"
+    }
+  ],
+  "builds": [
+    {
+      "kind": "release",
+      "artifact_sha256": "fadc683592149e938d3b371604558282fc9c965397a220841fb03391950bafcd",
+      "compile_commands_sha256": "e6ce6baf9af6ef6cdad6d5e903eb46b4131ccbd0ba8cc6832e3264a39f66c2e1",
+      "evidence_kind": "HISTORICAL_BUILD_RECORD"
+    },
+    {
+      "kind": "sanitizer",
+      "artifact_sha256": "58e791723e639d5d12f7cf4de780972b0c1ca77db91dc5e46ee75e7c567e8eed",
+      "compile_commands_sha256": "7550a3377d6dafea6d584deb6f8918f6653af3e686340ff698526c7491f0ed00",
+      "evidence_kind": "HISTORICAL_BUILD_RECORD"
+    },
+    {
+      "algorithm": "elf-star",
+      "profile": "RELEASE",
+      "artifact_sha256": "fadc683592149e938d3b371604558282fc9c965397a220841fb03391950bafcd",
+      "compile_commands_sha256": "9b8cf3d05b7aaa4a1e91e7e7e1e283e1086748629275dd39c16c01b61e42b9b0",
+      "compiler": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0",
+      "evidence_kind": "CURRENT_REAL_BUILD_DEPENDENCIES_VERIFIED",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/elf_star/release/build-record.json",
+        "sha256": "1f151a93d8da2c3df44241fc8c64843ba0465d2b618dc0d45375c8e121c7c18a"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/elf_star/release/libtscb_elf_star.so",
+        "sha256": "fadc683592149e938d3b371604558282fc9c965397a220841fb03391950bafcd"
+      },
+      "qualification_scope": "BUILD_CLOSURE_AND_SELECTED_FINITE_NATIVE_SUITE_NOT_SOURCE_FULL_PARITY"
+    },
+    {
+      "algorithm": "elf-star",
+      "profile": "SANITIZER",
+      "artifact_sha256": "58e791723e639d5d12f7cf4de780972b0c1ca77db91dc5e46ee75e7c567e8eed",
+      "compile_commands_sha256": "d1650d9b0ac9424a14ef4c1698c2b13e84ae75e1e07cc1f8b078ca2b1e353421",
+      "compiler": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0",
+      "evidence_kind": "CURRENT_REAL_BUILD_DEPENDENCIES_VERIFIED",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/elf_star/sanitizer/build-record.json",
+        "sha256": "b8c2ee7518365c023d61c0779d0bf2d9df259284ef7812878b1b716479a2487c"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/elf_star/sanitizer/libtscb_elf_star.so",
+        "sha256": "58e791723e639d5d12f7cf4de780972b0c1ca77db91dc5e46ee75e7c567e8eed"
+      },
+      "qualification_scope": "BUILD_CLOSURE_AND_SELECTED_FINITE_NATIVE_SUITE_NOT_SOURCE_FULL_PARITY"
+    }
+  ],
+  "license_decision": {
+    "spdx": "NOASSERTION",
+    "status": "REDISTRIBUTION_RESTRICTED",
+    "reason": "NO_EXTERNAL_PUBLICATION; user-authorized local run/rewrite; unknown upstream grant"
+  },
+  "known_limitations": [
+    "CORE/PIPELINE/E2E supported using harness session/object boundaries; API-internal staging, framing, model work and decode materialization remain in CORE. Optional native timing unavailable (null).",
+    "Full standalone frames charged as opaque bytes; wrapper components exact",
+    "No registered query/random-access/incremental Benchmark streaming profile",
+    "Preserve source domain; no raw fallback",
+    "Standalone multi-block source state preserved in SElfStar sessions",
+    "2026-10-11: new isolated builds pin actual per-TU compiler dependencies, objects, selected toolchain executables and linked dynamic runtime files. These records do not pin every implicit static startup/runtime archive and do not grant source FULL_PARITY or change active algorithm scope. Historical runs retain their original artifact identities.",
+    "Fresh source differential tests shared canonical C++ cores through isolated CLI builds; registered libraries and Python wrappers have separate finite API tests. Declared build hashes do not grant full N1 trace, G0-G6 or all source capabilities."
+  ],
+  "unsupported_reason_codes": [
+    "TRACK_OR_DTYPE_UNSUPPORTED",
+    "SOURCE_DOMAIN_UNSUPPORTED",
+    "STREAMING_PROFILE_NOT_REGISTERED",
+    "QUERY_UNSUPPORTED",
+    "VALIDITY_UNSUPPORTED",
+    "TIMING_SCOPE_UNSUPPORTED"
+  ],
+  "source_onboarding_id": "v2:source-onboarding:sha256:99f79b732b93e93185dc47cfdf5ea5990cfbd0c2acda67c4135e9b89f543fde9"
+}

@@ -1,13 +1,11 @@
 from __future__ import annotations
 
-import subprocess
-import sys
 from pathlib import Path
 
 import numpy as np
 import pytest
 
-from tscompbench.adapters import SnappyRawAdapter
+from tscompbench.adapters.factory import create_adapter
 from tscompbench.adapters.snappy_raw import SnappyRawSession
 from tscompbench.codecs import CodecRegistry, SourceRegistry
 from tscompbench.contracts import BenchmarkTrack
@@ -17,24 +15,12 @@ from tscompbench.execution.routing import hash_logical_buffers
 from tscompbench.validation import run_boundary_suite
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
-LIBRARY = PROJECT_ROOT / "build/adapters/snappy_raw/release/libtscb_snappy_raw.so"
-
-
-def _ensure_library() -> None:
-    if LIBRARY.is_file():
-        return
-    subprocess.run(
-        [sys.executable, "tools/build_codec.py", "snappy-raw", "--profile", "release"],
-        cwd=PROJECT_ROOT,
-        check=True,
-    )
 
 
 def _adapter_and_manifest():
-    _ensure_library()
     sources = SourceRegistry(PROJECT_ROOT / "registry/sources")
     manifest = CodecRegistry(PROJECT_ROOT / "registry/codecs", sources).get("snappy-raw")
-    return SnappyRawAdapter(LIBRARY, manifest.document["adapter"]), manifest
+    return create_adapter(PROJECT_ROOT, manifest), manifest
 
 
 @pytest.mark.parametrize("content_checksum", [False])

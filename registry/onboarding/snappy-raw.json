@@ -15,15 +15,22 @@
     "lz/snappy/snappy-sinksource.h",
     "lz/snappy/snappy-stubs-public.h"
   ],
-  "benchmark_files": ["bench/lz_codecs.cpp", "Makefile"],
+  "benchmark_files": [
+    "bench/lz_codecs.cpp",
+    "Makefile"
+  ],
   "test_files": [
     "lz/snappy/snappy_compress_fuzzer.cc",
     "lz/snappy/snappy_uncompress_fuzzer.cc",
     "lz/snappy/snappy_unittest.cc"
   ],
-  "license_files": ["lz/snappy/COPYING"],
+  "license_files": [
+    "lz/snappy/COPYING"
+  ],
   "third_party_dependencies": [],
-  "object_level_candidates": ["P1_STANDALONE_CODEC"],
+  "object_level_candidates": [
+    "P1_STANDALONE_CODEC"
+  ],
   "input_contract": {
     "kind": "BYTE_VIEW",
     "length_type": "uint32 stream prefix constrained through size_t API",
@@ -59,31 +66,62 @@
       "name": "lzbench-vendored Snappy compression fuzzer harness",
       "command": "snappy_compress_fuzzer.cc with deterministic seed 20260917 and 100 inputs",
       "status": "PASS",
-      "evidence": "Snappy compression fuzzer harness passed 100 deterministic cases"
+      "evidence": "Snappy compression fuzzer harness passed 100 deterministic cases",
+      "evidence_kind": "HISTORICAL_OR_SEPARATE_UPSTREAM_EVIDENCE"
     },
     {
       "name": "current native-timing build C ABI smoke (2026-10-05)",
       "command": "python tools/refresh_snappy_evidence.py; Release and ASan/UBSan over N=0/1/2/65535/65536/65537/131073",
       "status": "PASS",
-      "evidence": "docs/snappy_raw_evidence_refresh.json; exact round trip, independent decode, bound enforcement, zero-byte finalize and repeated-finalize rejection"
+      "evidence": "docs/snappy_raw_evidence_refresh.json; exact round trip, independent decode, bound enforcement, zero-byte finalize and repeated-finalize rejection",
+      "evidence_kind": "HISTORICAL_OR_SEPARATE_UPSTREAM_EVIDENCE"
     },
     {
       "name": "current adapter and native timing regression tests (2026-10-05)",
       "command": "pytest -q tests/adapters/test_snappy_raw.py; pytest -q tests/adapters/test_native_timing.py -k snappy_raw",
       "status": "PASS",
-      "evidence": "docs/snappy_raw_evidence_refresh.json; 9 adapter tests and 6 native timing tests passed"
+      "evidence": "docs/snappy_raw_evidence_refresh.json; 9 adapter tests and 6 native timing tests passed",
+      "evidence_kind": "HISTORICAL_OR_SEPARATE_UPSTREAM_EVIDENCE"
     },
     {
       "name": "current AlgorithmID qualification (2026-10-05)",
       "command": "tscompbench run validate configs/experiments/snappy-raw-qualification.toml --output-root runs",
       "status": "PASS",
-      "evidence": "docs/snappy_raw_evidence_refresh.json; runset-20261005T092712Z-a89763b0308a; 1/1 correctness PASS, performance not eligible (QUALIFICATION)"
+      "evidence": "docs/snappy_raw_evidence_refresh.json; runset-20261005T092712Z-a89763b0308a; 1/1 correctness PASS, performance not eligible (QUALIFICATION)",
+      "evidence_kind": "HISTORICAL_OR_SEPARATE_UPSTREAM_EVIDENCE"
     },
     {
       "name": "current AlgorithmID formal measurement (2026-10-05)",
       "command": "tscompbench run validate configs/experiments/snappy-raw-formal.toml --output-root runs",
       "status": "RESOURCE_PRESSURE",
-      "evidence": "docs/snappy_raw_evidence_refresh.json; runset-20261005T092726Z-b248fb2d87c3; 10/10 correctness PASS, 9/10 raw repetitions eligible, 1 swap rejection; whole formal report has 0 eligible runs and no ranked summary"
+      "evidence": "docs/snappy_raw_evidence_refresh.json; runset-20261005T092726Z-b248fb2d87c3; 10/10 correctness PASS, 9/10 raw repetitions eligible, 1 swap rejection; whole formal report has 0 eligible runs and no ranked summary",
+      "evidence_kind": "HISTORICAL_OR_SEPARATE_UPSTREAM_EVIDENCE"
+    },
+    {
+      "algorithm": "snappy-raw",
+      "profile": "release",
+      "name": "current build dependency and finite native API verification",
+      "status": "PASS",
+      "evidence": {
+        "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/qualification.json",
+        "sha256": "b86173f34c30d175552de327cc446dd8480aa02dd7a9ae56f12f60c0d93db174"
+      },
+      "evidence_kind": "CURRENT_REAL_BUILD_DEPENDENCIES_WITH_SELECTED_NATIVE_TESTS",
+      "native_suite_status": "PASS",
+      "source_full_parity": "NOT_ASSERTED"
+    },
+    {
+      "algorithm": "snappy-raw",
+      "profile": "sanitizer",
+      "name": "current build dependency and finite native API verification",
+      "status": "PASS",
+      "evidence": {
+        "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/qualification.json",
+        "sha256": "b86173f34c30d175552de327cc446dd8480aa02dd7a9ae56f12f60c0d93db174"
+      },
+      "evidence_kind": "CURRENT_REAL_BUILD_DEPENDENCIES_WITH_SELECTED_NATIVE_TESTS",
+      "native_suite_status": "PASS",
+      "source_full_parity": "NOT_ASSERTED"
     }
   ],
   "builds": [
@@ -95,7 +133,8 @@
       "validation_evidence": "docs/snappy_raw_evidence_refresh.json",
       "compile_commands_sha256": "16675dbb081e5e2ae28372ef479296f9999fa27851645dd9bf07e76bd8b8a6e6",
       "compiler": "GCC 11.4.0",
-      "flags": "-O3 -DNDEBUG with all registered Snappy SIMD and CRC feature macros disabled"
+      "flags": "-O3 -DNDEBUG with all registered Snappy SIMD and CRC feature macros disabled",
+      "evidence_kind": "HISTORICAL_BUILD_RECORD"
     },
     {
       "profile": "ASAN_UBSAN_SCALAR_SINGLE_THREAD",
@@ -105,7 +144,42 @@
       "validation_evidence": "docs/snappy_raw_evidence_refresh.json",
       "compile_commands_sha256": "8b24fe4a9872e6be6f24de2f1cde60ed05ecf3d59947fd504223706f8a0228e2",
       "compiler": "GCC 11.4.0",
-      "flags": "-O1 -g -fsanitize=address,undefined with the same scalar feature defines"
+      "flags": "-O1 -g -fsanitize=address,undefined with the same scalar feature defines",
+      "evidence_kind": "HISTORICAL_BUILD_RECORD"
+    },
+    {
+      "algorithm": "snappy-raw",
+      "profile": "RELEASE",
+      "artifact_sha256": "fa7e16cdb385bb73383aa4ed58ef2868e1c568c6de3b0e62989d96526235d493",
+      "compile_commands_sha256": "9677eebf04b383dff3f2863e9cfa8cca3b9e7b78cbfa2e6a5d2294e3fc9e1af1",
+      "compiler": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0",
+      "evidence_kind": "CURRENT_REAL_BUILD_DEPENDENCIES_VERIFIED",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/snappy_raw/release/build-record.json",
+        "sha256": "e83dc0c3187b8b02589d79e6b68cd4c19836fbf00a1dc5eeca32cede6c8fd948"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/snappy_raw/release/libtscb_snappy_raw.so",
+        "sha256": "fa7e16cdb385bb73383aa4ed58ef2868e1c568c6de3b0e62989d96526235d493"
+      },
+      "qualification_scope": "BUILD_CLOSURE_AND_SELECTED_FINITE_NATIVE_SUITE_NOT_SOURCE_FULL_PARITY"
+    },
+    {
+      "algorithm": "snappy-raw",
+      "profile": "SANITIZER",
+      "artifact_sha256": "641dfac78a563ccb58e8fadf647377ae4a35e0655f14aaf5fb6b99b30f0fd145",
+      "compile_commands_sha256": "b309db47e5d60fe5840f7d94d234893edb356dfc3e5c99f8f2d85f6d4dbd21f5",
+      "compiler": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0",
+      "evidence_kind": "CURRENT_REAL_BUILD_DEPENDENCIES_VERIFIED",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/snappy_raw/sanitizer/build-record.json",
+        "sha256": "0731a083782aebd474b61afd7f7d482bad2db9baae23ddc0050768d2e3dc8004"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/snappy_raw/sanitizer/libtscb_snappy_raw.so",
+        "sha256": "641dfac78a563ccb58e8fadf647377ae4a35e0655f14aaf5fb6b99b30f0fd145"
+      },
+      "qualification_scope": "BUILD_CLOSURE_AND_SELECTED_FINITE_NATIVE_SUITE_NOT_SOURCE_FULL_PARITY"
     }
   ],
   "license_decision": {
@@ -119,7 +193,8 @@
     "The registered variant fixes compression level 1, scalar feature macros, one CPU thread, and one raw stream per independently measured object.",
     "The Python FFI descriptor serialization and contiguous byte materialization are included in the declared adapter boundary.",
     "LeakSanitizer cannot run under the host container ptrace policy; ASan/UBSan qualification uses detect_leaks=0.",
-    "2026-10-05 current AlgorithmID correctness and qualification passed, but formal measurement attempts detected host swap activity; retain RESOURCE_PRESSURE and do not publish a formal ranked summary. Historical pre-native-timing builds and runs remain in docs/snappy_raw_evidence_refresh.json and docs/snappy_raw_self_check.md."
+    "2026-10-05 current AlgorithmID correctness and qualification passed, but formal measurement attempts detected host swap activity; retain RESOURCE_PRESSURE and do not publish a formal ranked summary. Historical pre-native-timing builds and runs remain in docs/snappy_raw_evidence_refresh.json and docs/snappy_raw_self_check.md.",
+    "2026-10-11: new isolated builds pin actual per-TU compiler dependencies, objects, selected toolchain executables and linked dynamic runtime files. These records do not pin every implicit static startup/runtime archive and do not grant source FULL_PARITY or change active algorithm scope. Historical runs retain their original artifact identities."
   ],
   "unsupported_reason_codes": [
     "EXECUTION_ARTIFACT_MISSING",
@@ -130,5 +205,6 @@
     "DICTIONARY_MODE_NOT_REGISTERED",
     "QUERY_UNSUPPORTED",
     "STREAMING_PROTOCOL_NOT_REGISTERED"
-  ]
+  ],
+  "source_onboarding_id": "v2:source-onboarding:sha256:51a9f2f46cc3aa116ed5d78af975ef6eeb9155accdc03417aadbe6bcdc32285c"
 }

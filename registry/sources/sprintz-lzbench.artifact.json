@@ -34,7 +34,7 @@
     ]
   },
   "build": {
-    "recipe": "conda run -n CompressBench14 python tools/build_codec.py <sprintz-delta|sprintz-fire> --profile all",
+    "recipe": "conda run -n CompressBench14 python tools/build_codec.py <sprintz-delta|sprintz-fire> --profile all --output-root build/port-standard-v30-20261011/native-builds-v3",
     "patches": [
       "adapters/sprintz/patches/0001-lowdim-byte-safety.patch",
       "adapters/sprintz/patches/0002-generic-allocation-safety.patch"
@@ -51,12 +51,117 @@
       "adapters/sprintz/vendor/sprintz/format.cpp"
     ],
     "release_artifacts": {
-      "sprintz-delta": "build/adapters/sprintz_delta/release/libtscb_sprintz_delta.so",
-      "sprintz-fire": "build/adapters/sprintz_fire/release/libtscb_sprintz_fire.so"
+      "sprintz-delta": "build/port-standard-v30-20261011/native-builds-v3/sprintz_delta/release/libtscb_sprintz_delta.so",
+      "sprintz-fire": "build/port-standard-v30-20261011/native-builds-v3/sprintz_fire/release/libtscb_sprintz_fire.so"
     },
     "sanitizer_artifacts": {
-      "sprintz-delta": "build/adapters/sprintz_delta/sanitizer/libtscb_sprintz_delta.so",
-      "sprintz-fire": "build/adapters/sprintz_fire/sanitizer/libtscb_sprintz_fire.so"
-    }
+      "sprintz-delta": "build/port-standard-v30-20261011/native-builds-v3/sprintz_delta/sanitizer/libtscb_sprintz_delta.so",
+      "sprintz-fire": "build/port-standard-v30-20261011/native-builds-v3/sprintz_fire/sanitizer/libtscb_sprintz_fire.so"
+    },
+    "current_build_records": [
+      {
+        "algorithm": "sprintz-delta",
+        "profile": "release",
+        "record": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/sprintz_delta/release/build-record.json",
+          "sha256": "d7dc1cd59856f83f20d239a51ea7da4a3bb3e8beb84e1be1bc9944712c0454e9"
+        },
+        "artifact": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/sprintz_delta/release/libtscb_sprintz_delta.so",
+          "sha256": "16e01a672b71ce273451b7e56cf07cb2150255bad8909045989888c0daf1680a"
+        },
+        "compile_commands_sha256": "97193e1899b8ef3046304d2b8276749b940164163d442e12d99876dcaf401d50",
+        "dependency_capture": "ACTUAL_PER_TU_MD_COMPILATION_AND_LINK"
+      },
+      {
+        "algorithm": "sprintz-delta",
+        "profile": "sanitizer",
+        "record": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/sprintz_delta/sanitizer/build-record.json",
+          "sha256": "1eb85d86b3de1091617e8542d1c0a88952e3c1f8a7c168ae12c6745b72e22a61"
+        },
+        "artifact": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/sprintz_delta/sanitizer/libtscb_sprintz_delta.so",
+          "sha256": "9e227645b626b9e237bbc12e2869beae2aebe40de3cce3e9c8c310291074c0cb"
+        },
+        "compile_commands_sha256": "b12138da40ece339097e21401f617bd040f71d7233b515ce3230d3a14cb47c4a",
+        "dependency_capture": "ACTUAL_PER_TU_MD_COMPILATION_AND_LINK"
+      },
+      {
+        "algorithm": "sprintz-fire",
+        "profile": "release",
+        "record": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/sprintz_fire/release/build-record.json",
+          "sha256": "db091da162c5d0c59e8bbcf628c9b92a006a2bc9676cfa24b1389f6e2cc01c1e"
+        },
+        "artifact": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/sprintz_fire/release/libtscb_sprintz_fire.so",
+          "sha256": "c7acccdb359dbccce1fa990f0f61679741506f533c5df31abf57f9cd9a8b2282"
+        },
+        "compile_commands_sha256": "7d80399b43eb4f8420258e1fbe9c663935d1649df4f0e2eeb7266465af4d7075",
+        "dependency_capture": "ACTUAL_PER_TU_MD_COMPILATION_AND_LINK"
+      },
+      {
+        "algorithm": "sprintz-fire",
+        "profile": "sanitizer",
+        "record": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/sprintz_fire/sanitizer/build-record.json",
+          "sha256": "3c68bbd2d7a14d45a8f4a8cd5aa6c7a871d30cac6c77ae0a5463154b4b186608"
+        },
+        "artifact": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/sprintz_fire/sanitizer/libtscb_sprintz_fire.so",
+          "sha256": "1101a9eff5823672c2bdea9cc6c7c917bae3b419463d6ea27948fbcee2d90713"
+        },
+        "compile_commands_sha256": "55f2d052b984ad76ab54283a89b7f782c1f9c33cc0b775004a777dfbe463b13b",
+        "dependency_capture": "ACTUAL_PER_TU_MD_COMPILATION_AND_LINK"
+      }
+    ],
+    "current_native_qualification": [
+      {
+        "algorithm": "sprintz-delta",
+        "profile": "release",
+        "build_dependency_status": "PASS",
+        "native_suite_status": "PASS",
+        "evidence": {
+          "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/qualification.json",
+          "sha256": "b86173f34c30d175552de327cc446dd8480aa02dd7a9ae56f12f60c0d93db174"
+        },
+        "source_full_parity": "NOT_ASSERTED"
+      },
+      {
+        "algorithm": "sprintz-delta",
+        "profile": "sanitizer",
+        "build_dependency_status": "PASS",
+        "native_suite_status": "PASS",
+        "evidence": {
+          "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/qualification.json",
+          "sha256": "b86173f34c30d175552de327cc446dd8480aa02dd7a9ae56f12f60c0d93db174"
+        },
+        "source_full_parity": "NOT_ASSERTED"
+      },
+      {
+        "algorithm": "sprintz-fire",
+        "profile": "release",
+        "build_dependency_status": "PASS",
+        "native_suite_status": "PASS",
+        "evidence": {
+          "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/qualification.json",
+          "sha256": "b86173f34c30d175552de327cc446dd8480aa02dd7a9ae56f12f60c0d93db174"
+        },
+        "source_full_parity": "NOT_ASSERTED"
+      },
+      {
+        "algorithm": "sprintz-fire",
+        "profile": "sanitizer",
+        "build_dependency_status": "PASS",
+        "native_suite_status": "PASS",
+        "evidence": {
+          "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/qualification.json",
+          "sha256": "b86173f34c30d175552de327cc446dd8480aa02dd7a9ae56f12f60c0d93db174"
+        },
+        "source_full_parity": "NOT_ASSERTED"
+      }
+    ],
+    "current_build_dependency_scope": "ACTUAL_PER_TU_MD_HEADERS_OBJECTS_SELECTED_TOOLCHAIN_AND_DYNAMIC_RUNTIME_PARTIAL_STATIC_LINK_CLOSURE"
   }
 }

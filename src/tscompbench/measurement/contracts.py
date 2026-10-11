@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from dataclasses import asdict, dataclass
+from dataclasses import MISSING, asdict, dataclass, fields
 from decimal import Decimal
 from typing import Any
 
@@ -31,13 +31,28 @@ class MeasurementPolicy:
     streaming_workload: bool
     query_count: int
     seed: int
+    measurement_protocol_id: str = "LEGACY_V2"
+    encode_min_ns: int | None = None
+    decode_min_ns: int | None = None
+    worker_start_method: str | None = None
+    resource_collector_enabled: bool = True
+    thread_monitor_interval_ns: int | None = None
+
+    def __post_init__(self) -> None:
+        if self.thread_monitor_interval_ns is not None and (
+            type(self.thread_monitor_interval_ns) is not int
+            or not 1_000_000 <= self.thread_monitor_interval_ns <= 2**63 - 1
+        ):
+            raise ValueError("thread monitor interval must be a finite integer >= 1ms")
 
     @classmethod
     def from_profile(cls, profile: Any, *, seed: int) -> MeasurementPolicy:
-        return cls(
-            **{name: getattr(profile, name) for name in cls.__dataclass_fields__ if name != "seed"},
-            seed=seed,
-        )
+        values = {
+            field.name: getattr(profile, field.name)
+            for field in fields(cls)
+            if field.name != "seed" and (hasattr(profile, field.name) or field.default is MISSING)
+        }
+        return cls(**values, seed=seed)
 
     @property
     def warmup_min_ns(self) -> int:
@@ -51,15 +66,28 @@ class MeasurementPolicy:
         """Each reported direction must reach the configured measurement duration."""
         minimum = self.repetition_min_ns
         return (
-            encode_ns >= minimum
-            and decode_ns >= minimum
+            encode_ns >= (minimum if self.encode_min_ns is None else self.encode_min_ns)
+            and decode_ns >= (minimum if self.decode_min_ns is None else self.decode_min_ns)
             and (self.timing_scope != "E2E" or e2e_ns >= minimum)
         )
 
     def to_document(self) -> dict[str, Any]:
+        values = asdict(self)
+        if self.measurement_protocol_id == "LEGACY_V2":
+            for key in (
+                "measurement_protocol_id",
+                "encode_min_ns",
+                "decode_min_ns",
+                "worker_start_method",
+                "resource_collector_enabled",
+                "thread_monitor_interval_ns",
+            ):
+                values.pop(key)
         return {
-            "schema_version": "tscb.measurement-policy.v2",
-            **asdict(self),
+            "schema_version": "tscb.measurement-policy.v2"
+            if self.measurement_protocol_id == "LEGACY_V2"
+            else "tscb.measurement-policy.v3",
+            **values,
             "minimum_duration_boundary": "PER_SELECTED_DIRECTION_WITH_E2E_V1",
         }
 

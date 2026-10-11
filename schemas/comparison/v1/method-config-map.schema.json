@@ -1,0 +1,181 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "tscb.method-config-map.v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "contract_id",
+    "selection_policy",
+    "members"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "tscb.method-config-map.v1"
+    },
+    "contract_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "selection_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "max_configs_per_method",
+        "selection_dataset_ids",
+        "objective",
+        "tie_break",
+        "selection_cost_policy"
+      ],
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "FROZEN_DEFAULT",
+            "FULL_GRID",
+            "VALIDATION_SELECT"
+          ]
+        },
+        "max_configs_per_method": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "selection_dataset_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "objective": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "tie_break": {
+          "type": "string",
+          "minLength": 1
+        },
+        "selection_cost_policy": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "members": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "member_id",
+          "configs"
+        ],
+        "properties": {
+          "member_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "configs": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "config_key",
+                "parameters",
+                "framework_parameters",
+                "loss_mode",
+                "guarantee"
+              ],
+              "properties": {
+                "config_key": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "parameters": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": [
+                      "string",
+                      "integer",
+                      "boolean"
+                    ]
+                  }
+                },
+                "framework_parameters": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": [
+                      "string",
+                      "integer",
+                      "boolean"
+                    ]
+                  }
+                },
+                "loss_mode": {
+                  "type": "string",
+                  "enum": [
+                    "LOSSLESS",
+                    "ERROR_BOUNDED_LOSSY",
+                    "UNBOUNDED_LOSSY",
+                    "RATE_CONTROLLED_LOSSY"
+                  ]
+                },
+                "guarantee": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "kind",
+                    "metric",
+                    "threshold",
+                    "unit",
+                    "original_domain_total"
+                  ],
+                  "properties": {
+                    "kind": {
+                      "type": "string",
+                      "enum": [
+                        "LOSSLESS",
+                        "PROVEN_BOUND",
+                        "UNBOUNDED",
+                        "RATE_CONTROLLED"
+                      ]
+                    },
+                    "metric": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "threshold": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "unit": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "original_domain_total": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            },
+            "minItems": 1,
+            "uniqueItems": false
+          }
+        }
+      },
+      "minItems": 1,
+      "uniqueItems": false
+    }
+  }
+}

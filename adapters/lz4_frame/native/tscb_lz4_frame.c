@@ -122,6 +122,12 @@ static int tscb_buffer_shape_is_valid(const tscb_buffer_v1 *buffer) {
     return 1;
 }
 
+static int tscb_output_buffer_is_valid(const tscb_buffer_v1 *buffer) {
+    return tscb_buffer_shape_is_valid(buffer) && buffer->data != NULL
+        && buffer->capacity_bytes <= (uint64_t)SIZE_MAX
+        && buffer->capacity_bytes <= UINTPTR_MAX - (uintptr_t)buffer->data;
+}
+
 static tscb_status_v1 tscb_new_compression_context(tscb_codec_handle_v1 *handle) {
     size_t code;
     if (handle->compression_context != NULL) {
@@ -274,8 +280,8 @@ tscb_status_v1 tscb_compress(
     size_t header_size;
     size_t update_size;
     tscb_status_v1 status;
-    if (handle == NULL || output == NULL || !tscb_buffer_shape_is_valid(input)
-        || output->data == NULL || output->used_bytes > output->capacity_bytes) {
+    if (handle == NULL || !tscb_output_buffer_is_valid(output)
+        || !tscb_buffer_shape_is_valid(input)) {
         return TSCB_STATUS_INVALID_ARGUMENT_V1;
     }
     if (handle->update_called || handle->finalized) {
@@ -325,8 +331,7 @@ tscb_status_v1 tscb_compress(
 tscb_status_v1 tscb_finalize(tscb_codec_handle_v1 *handle, tscb_buffer_v1 *output) {
     size_t written;
     tscb_status_v1 status;
-    if (handle == NULL || output == NULL || output->data == NULL
-        || output->used_bytes > output->capacity_bytes) {
+    if (handle == NULL || !tscb_output_buffer_is_valid(output)) {
         return TSCB_STATUS_INVALID_ARGUMENT_V1;
     }
     if (!handle->update_called) {
@@ -374,8 +379,8 @@ tscb_status_v1 tscb_decompress(
     size_t code;
     size_t source_position = 0U;
     size_t destination_position = 0U;
-    if (handle == NULL || !tscb_buffer_shape_is_valid(input) || output == NULL
-        || output->data == NULL || output->capacity_bytes > (uint64_t)SIZE_MAX
+    if (handle == NULL || !tscb_buffer_shape_is_valid(input)
+        || !tscb_output_buffer_is_valid(output)
         || input->used_bytes > (uint64_t)SIZE_MAX) {
         return TSCB_STATUS_INVALID_ARGUMENT_V1;
     }
@@ -425,8 +430,8 @@ tscb_status_v1 tscb_stream_update(tscb_codec_handle_v1 *handle,
     const tscb_buffer_v1 *input, tscb_buffer_v1 *output) {
     size_t written;
     tscb_status_v1 status;
-    if (handle == NULL || output == NULL || !tscb_buffer_shape_is_valid(input)
-        || output->data == NULL || output->used_bytes > output->capacity_bytes) {
+    if (handle == NULL || !tscb_output_buffer_is_valid(output)
+        || !tscb_buffer_shape_is_valid(input)) {
         return TSCB_STATUS_INVALID_ARGUMENT_V1;
     }
     if (handle->finalized || handle->stream_mode == 1) {
@@ -468,8 +473,8 @@ tscb_status_v1 tscb_stream_update(tscb_codec_handle_v1 *handle,
 tscb_status_v1 tscb_stream_finalize(tscb_codec_handle_v1 *handle, tscb_buffer_v1 *output) {
     size_t written;
     tscb_status_v1 status;
-    if (handle == NULL || output == NULL || output->data == NULL
-        || output->used_bytes > output->capacity_bytes) return TSCB_STATUS_INVALID_ARGUMENT_V1;
+    if (handle == NULL || !tscb_output_buffer_is_valid(output))
+        return TSCB_STATUS_INVALID_ARGUMENT_V1;
     if (handle->finalized || handle->stream_mode == 1) {
         tscb_set_error(handle, "LZ4 stream finalize repeated or mixed with one-shot");
         return TSCB_STATUS_CODEC_ERROR_V1;
@@ -520,8 +525,13 @@ tscb_status_v1 tscb_stream_decompress_update(tscb_codec_handle_v1 *handle,
     size_t destination_size;
     size_t code;
     if (handle == NULL || handle->stream_decoder == NULL || stream_end == NULL
-        || !tscb_buffer_shape_is_valid(input) || output == NULL || output->data == NULL) {
+        || !tscb_buffer_shape_is_valid(input) || !tscb_output_buffer_is_valid(output)
+        || input->used_bytes > (uint64_t)SIZE_MAX) {
         return TSCB_STATUS_INVALID_ARGUMENT_V1;
+    }
+    if (handle->stream_decoder_finished) {
+        tscb_set_error(handle, "LZ4 stream already reached EOF; reset before another update");
+        return TSCB_STATUS_CODEC_ERROR_V1;
     }
     source_size = (size_t)input->used_bytes;
     destination_size = (size_t)output->capacity_bytes;

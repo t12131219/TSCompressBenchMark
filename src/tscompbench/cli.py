@@ -80,6 +80,16 @@ def _build_parser() -> argparse.ArgumentParser:
         command.add_argument("--output-root", type=Path, required=True)
         command.add_argument("--run-set-id")
         command.add_argument("--resume", action="store_true")
+    comparisons = groups.add_parser("comparison", help="Frozen V3.2 common-task comparisons")
+    comparison_commands = comparisons.add_subparsers(dest="command", required=True)
+    for name in ("plan", "qualify", "pilot", "formal"):
+        command = comparison_commands.add_parser(name)
+        command.add_argument("bundle", type=Path)
+        command.add_argument("--output-root", type=Path, required=True)
+        command.add_argument("--run-set-id", required=True)
+        command.add_argument("--resume", action="store_true")
+    comparison_report = comparison_commands.add_parser("report")
+    comparison_report.add_argument("run_path", type=Path)
     return parser
 
 
@@ -177,6 +187,59 @@ def main(argv: list[str] | None = None) -> int:
                         "classification_report_id": report["classification_report_id"],
                     }
                 )
+        elif args.group == "comparison":
+            from tscompbench.comparison.runner import (
+                execute_comparison,
+                pilot_comparison,
+                prepare_comparison,
+                qualify_comparison,
+                report_comparison,
+            )
+
+            if args.command == "report":
+                response = report_comparison(args.run_path)
+            else:
+                comparison = prepare_comparison(
+                    args.bundle,
+                    args.output_root,
+                    root,
+                    registry,
+                    _codec_registry(root),
+                    run_set_id=args.run_set_id,
+                    resume=args.resume,
+                )
+                response = {
+                    "status": "PLANNED",
+                    "comparison_id": comparison.plan["comparison_id"],
+                    "path": str(comparison.path),
+                    "cells": len(comparison.cells),
+                    "schedule_trials": len(comparison.schedule.trials),
+                }
+                if args.command == "qualify":
+                    evidence = qualify_comparison(comparison, registry)
+                    response = {
+                        "status": evidence["status"],
+                        "qualification_id": evidence["qualification_id"],
+                        "failure_count": evidence["failure_count"],
+                        "observed_cases": len(evidence["evidence"]),
+                        "path": str(comparison.path / "qualification.json"),
+                    }
+                elif args.command == "pilot":
+                    evidence = pilot_comparison(comparison, registry)
+                    response = {
+                        "status": evidence["status"],
+                        "pilot_id": evidence["pilot_id"],
+                        "members": len(evidence["members"]),
+                        "path": str(comparison.path / "pilot.json"),
+                    }
+                elif args.command == "formal":
+                    qualification = json.loads((comparison.path / "qualification.json").read_text())
+                    if qualification["status"] != "PASS":
+                        raise ValueError("frozen common-task qualification is incomplete")
+                    response = execute_comparison(
+                        comparison, json.loads((comparison.path / "pilot.json").read_text())
+                    )
+            _print_json(response)
         elif args.group == "run":
             run_set = initialize_run_set(
                 args.config,

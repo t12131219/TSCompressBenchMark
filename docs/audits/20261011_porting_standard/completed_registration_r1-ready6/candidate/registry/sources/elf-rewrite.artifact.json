@@ -1,0 +1,58 @@
+{
+  "schema_version": "tscb.source-artifact.v2",
+  "key": "elf-rewrite",
+  "kind": "FROZEN_STANDALONE_CPP_REWRITE_PUBLIC_API",
+  "identity": {
+    "kind": "FROZEN_STANDALONE_CPP_REWRITE_PUBLIC_API",
+    "key": "elf",
+    "package": "elf",
+    "api_files": [
+      {
+        "path": "adapters/rewrite_lossless/vendor/elf/LICENSES/LOCAL_PERMISSION.md",
+        "sha256": "47909df39ec3a16a7fa3ae2d5df05331d33ec977616f81f5c6ff2202b5726d76"
+      },
+      {
+        "path": "adapters/rewrite_lossless/vendor/elf/LOCAL_WORKFLOW_DECISIONS.md",
+        "sha256": "b9ba8f8269c92ba732fd7853148740c8e34f352b846beff18ebc3e35ab18b0c1"
+      },
+      {
+        "path": "adapters/rewrite_lossless/vendor/elf/README.md",
+        "sha256": "5bb2f0936a5b32e582a819d4ba05123c96c0741d6789d2cc85784657222d47c6"
+      },
+      {
+        "path": "adapters/rewrite_lossless/vendor/elf/UPSTREAM_PROVENANCE.json",
+        "sha256": "03d00b0a1a452af68d3ea892be66b33de2f54baf5a042046c63fad367816a6f5"
+      },
+      {
+        "path": "adapters/rewrite_lossless/vendor/elf/contract.md",
+        "sha256": "0e0444b08cace02d93dd7e519a6d954c80764489a1d5674c61ec582263c4dac1"
+      },
+      {
+        "path": "adapters/rewrite_lossless/vendor/elf/include/elf_vldb.hpp",
+        "sha256": "c46b4db9714cd48a8c5a22c9a563ed9d2b0c58b177a6f8752a5dc78fe06ae560"
+      },
+      {
+        "path": "adapters/rewrite_lossless/vendor/elf/src/codec.cpp",
+        "sha256": "2c2fd0dbecffb6488f507050ca7adecd89804eaee744fc94eff80818f7d93746"
+      }
+    ],
+    "variant": "elf",
+    "wrapper": "RWF1_COLUMN_SESSIONS_V1"
+  },
+  "license": {
+    "spdx": "NOASSERTION",
+    "status": "REDISTRIBUTION_RESTRICTED",
+    "files": [
+      "adapters/rewrite_lossless/vendor/elf/LICENSES/LOCAL_PERMISSION.md",
+      "adapters/rewrite_lossless/vendor/elf/LOCAL_WORKFLOW_DECISIONS.md"
+    ],
+    "redistribution": "NO_EXTERNAL_PUBLICATION; user-authorized local run/rewrite; unknown upstream grant"
+  },
+  "build": {
+    "recipe": "python tools/build_codec.py elf --profile all",
+    "frozen_lock": "adapters/rewrite_lossless/FROZEN_APIS.json",
+    "translation_units": [
+      "src/codec.cpp"
+    ]
+  }
+}

@@ -14,21 +14,57 @@
   "classification": {
     "object_level": "P1_STANDALONE_CODEC",
     "implementation_class": "CONVENTIONAL",
-    "tracks": ["TIMESTAMP", "VALUE"],
-    "subtracks": ["T1", "V0"]
+    "tracks": [
+      "TIMESTAMP",
+      "VALUE"
+    ],
+    "subtracks": [
+      "T1",
+      "V0"
+    ]
   },
   "input": {
-    "topologies": ["UTS", "SYNCHRONOUS_MTS", "NATIVE_ND_ARRAY"],
-    "dtypes": ["<i8", "<i4", "<i2", "|i1", "<u8", "<u4", "<u2", "|u1", "<f8", "<f4"],
-    "ranks": [1, 2, 3, 4],
-    "layouts": ["ROW_MAJOR_CONTIG", "COLUMN_MAJOR_CONTIG", "SOA_COLUMNS", "STRIDED_VIEW", "NOT_APPLICABLE"],
-    "endianness": ["little"],
+    "topologies": [
+      "UTS",
+      "SYNCHRONOUS_MTS",
+      "NATIVE_ND_ARRAY"
+    ],
+    "dtypes": [
+      "<i8",
+      "<i4",
+      "<i2",
+      "|i1",
+      "<u8",
+      "<u4",
+      "<u2",
+      "|u1",
+      "<f8",
+      "<f4"
+    ],
+    "ranks": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "layouts": [
+      "ROW_MAJOR_CONTIG",
+      "COLUMN_MAJOR_CONTIG",
+      "SOA_COLUMNS",
+      "STRIDED_VIEW",
+      "NOT_APPLICABLE"
+    ],
+    "endianness": [
+      "little"
+    ],
     "alignment_bytes": 1,
     "min_n": 0,
     "max_n": 9223372036854775807,
     "min_m": 1,
     "max_m": 1048576,
-    "validity_shapes": ["NONE"],
+    "validity_shapes": [
+      "NONE"
+    ],
     "value_coupling_mode": "FULL_MATRIX",
     "timestamp_semantics": {
       "preserve_order": true,
@@ -40,9 +76,13 @@
     }
   },
   "semantics": {
-    "loss_modes": ["LOSSLESS"],
+    "loss_modes": [
+      "LOSSLESS"
+    ],
     "error_bound_types": [],
-    "reconstruction_modes": ["EXACT_GRID"],
+    "reconstruction_modes": [
+      "EXACT_GRID"
+    ],
     "rebuild_protocol": "TSCB_BUFFER_DESCRIPTOR_CONTAINER_V1",
     "preprocess_class": "NONE",
     "preprocess_stages": [],
@@ -61,9 +101,15 @@
     "index": "NONE"
   },
   "execution": {
-    "backends": ["C_ABI_V1"],
-    "isa": ["SCALAR"],
-    "devices": ["CPU"],
+    "backends": [
+      "C_ABI_V1"
+    ],
+    "isa": [
+      "SCALAR"
+    ],
+    "devices": [
+      "CPU"
+    ],
     "threading": "SINGLE_THREAD",
     "fallback_policy": "DISALLOWED",
     "runtime_dispatch": false
@@ -77,27 +123,69 @@
     "type": "object",
     "additionalProperties": false,
     "properties": {
-      "native_timing": {"type": "boolean", "default": true},
-      "block_size": {"type": "integer", "minimum": 1, "maximum": 1048576, "default": 65536},
-      "stream_decode_chunk_bytes": {"type": "integer", "minimum": 1, "maximum": 1048576, "default": 16384},
-      "compression_level": {"type": "integer", "minimum": 0, "maximum": 9, "default": 6},
-      "window_bits": {"type": "integer", "minimum": 9, "maximum": 15, "default": 15},
-      "isa": {"type": "string", "enum": ["SCALAR"], "default": "SCALAR"}
+      "native_timing": {
+        "type": "boolean",
+        "default": true
+      },
+      "block_size": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 1048576,
+        "default": 65536
+      },
+      "stream_decode_chunk_bytes": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 1048576,
+        "default": 16384
+      },
+      "compression_level": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 9,
+        "default": 6
+      },
+      "window_bits": {
+        "type": "integer",
+        "minimum": 9,
+        "maximum": 15,
+        "default": 15
+      },
+      "isa": {
+        "type": "string",
+        "enum": [
+          "SCALAR"
+        ],
+        "default": "SCALAR"
+      }
     },
     "constraints": []
   },
   "adapter": {
     "backend": "C_ABI_V1",
-    "version": "deflate-zlib-ctypes-v2-streaming",
+    "version": "deflate-zlib-ctypes-v2-streaming-port-standard-v30-20261011",
     "factory": "DEFLATE_ZLIB_CTYPES_V1",
-    "artifact_path": "build/adapters/deflate_zlib/release/libtscb_deflate_zlib.so",
+    "artifact_path": "build/port-standard-v30-20261011/native-builds-v3/deflate_zlib/release/libtscb_deflate_zlib.so",
     "timing_boundary": "PYTHON_FFI_CONTAINER_INCLUDED",
     "native_timing_capability": {
       "optional": true,
       "boundary": "CODEC_API_ONLY_V1",
       "clock": "CLOCK_MONOTONIC",
-      "excludes": ["CONTEXT_LIFECYCLE", "EXPLICIT_PREVALIDATION", "PYTHON_FFI_CONTAINER"]
+      "excludes": [
+        "CONTEXT_LIFECYCLE",
+        "EXPLICIT_PREVALIDATION",
+        "PYTHON_FFI_CONTAINER"
+      ]
     },
-    "accounting_hooks": ["FINAL_STREAM_LENGTH", "ZLIB_HEADER_DEFLATE_PAYLOAD_ADLER32", "OUTPUT_CAPACITY", "STREAM_BLOCK_STATE_AND_BUFFER_LIMITS"]
+    "accounting_hooks": [
+      "FINAL_STREAM_LENGTH",
+      "ZLIB_HEADER_DEFLATE_PAYLOAD_ADLER32",
+      "OUTPUT_CAPACITY",
+      "STREAM_BLOCK_STATE_AND_BUFFER_LIMITS"
+    ],
+    "runtime_profile": {
+      "path": "docs/audits/20261011_port_standard_v30/runtime_profiles_v2/profiles/deflate-zlib.json",
+      "sha256": "2c035884ee984a53f756c8768fe7a6fb07a09029675c39ade0b92fd50a3761aa"
+    }
   }
 }

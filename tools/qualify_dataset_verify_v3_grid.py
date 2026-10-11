@@ -38,25 +38,16 @@ def selected_entries(index, canonical_key):
         if (
             spec.get("group") == "main"
             and spec.get("tier") == "4KiB"
-            and spec.get("profile") == "slow"
-        ) or entry["group"] in ("boundary_n2", "ieee_special"):
+            and (spec.get("profile") == "slow")
+            or entry["group"] in ("boundary_n2", "ieee_special")
+        ):
             keys.append(entry["key"])
-        # Exercise four payload scales on a compressible input in native integer
-        # and generic byte methods without inventing model training budgets.
         if (
-            canonical_key
-            in (
-                "deflate-zlib",
-                "zstd-frame",
-                "lz4-frame",
-                "streamvbyte-u32",
-                "simple9-u28",
-                "sprintz-fire",
-            )
+            canonical_key in ("deflate-zlib", "zstd-frame", "lz4-frame", "sprintz-fire")
             and spec.get("group") == "main"
-            and spec.get("tier") != "4KiB"
-            and spec.get("profile") == "slow"
-            and spec.get("dtype") in ("uint8", "uint32", "float64", "int16")
+            and (spec.get("tier") != "4KiB")
+            and (spec.get("profile") == "slow")
+            and (spec.get("dtype") in ("uint8", "uint32", "float64", "int16"))
         ):
             keys.append(entry["key"])
     keys.append(index["codec_fixtures"][canonical_key])
@@ -151,7 +142,7 @@ def main(args):
                 error = "child process did not save a summary"
             if error:
                 summary["failures"].append({"key": key, "error": error})
-            if returncode and not any(f["key"] == key for f in summary["failures"]):
+            if returncode and (not any(f["key"] == key for f in summary["failures"])):
                 summary["failures"].append({"key": key, "exit_code": returncode})
             save()
             print(key, "PASS" if returncode == 0 else "FAIL", f"CPU={cpu}", flush=True)
@@ -192,8 +183,6 @@ def main(args):
                 "min_repetition_seconds": "0",
                 "query_workload": False,
                 "streaming_workload": False,
-                # Explicitly frozen AS budget, not an RSS claim. 1 GiB templates
-                # can sit below imported numerical-library virtual mappings.
                 "memory_limit_bytes": 8589934592,
             }
             config["reporting"] = {
@@ -219,8 +208,11 @@ def main(args):
                 correctness = (record.get("correctness") or {}).get("status")
                 if record["eligibility"] or not (
                     status in ("UNSUPPORTED", "ISA_UNSUPPORTED")
-                    or correctness == "PASS"
-                    and status in ("PASS", "RESOURCE_PRESSURE", "OVERSUBSCRIBED", "INCOMPARABLE")
+                    or (
+                        correctness == "PASS"
+                        and status
+                        in ("PASS", "RESOURCE_PRESSURE", "OVERSUBSCRIBED", "INCOMPARABLE")
+                    )
                 ):
                     summary["failures"].append(
                         {

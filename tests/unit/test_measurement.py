@@ -1,3 +1,5 @@
+import multiprocessing as mp
+import os
 from dataclasses import replace
 from pathlib import Path
 
@@ -18,6 +20,7 @@ from tscompbench.contracts import (
     BenchmarkTrack,
     CapabilityStatus,
     LossMode,
+    RunStatus,
     Topology,
     ValidityShape,
 )
@@ -27,7 +30,13 @@ from tscompbench.execution import (
     RoutedInput,
     hash_logical_buffers,
 )
-from tscompbench.execution.repetition import perform_measured_roundtrip, perform_warmup
+from tscompbench.execution.isolation import run_isolated
+from tscompbench.execution.orchestrator import _verified_worker_measurement
+from tscompbench.execution.repetition import (
+    perform_measured_roundtrip,
+    perform_warmup,
+    perform_worker_measurement,
+)
 from tscompbench.measurement import (
     MeasurementPolicy,
     QueryRequest,
@@ -118,6 +127,146 @@ def _policy(**overrides) -> MeasurementPolicy:
     }
     values.update(overrides)
     return MeasurementPolicy(**values)
+
+
+class _ProcessLocalCountingSession:
+    def __init__(self, index: int):
+        self.session = OracleAdapter().create_session({})
+        self.index = index
+
+    def __getattr__(self, name):
+        return getattr(self.session, name)
+
+    def codec_telemetry(self):
+        return {"worker_pid": os.getpid(), "session_index": self.index}
+
+
+class _ProcessLocalCountingAdapter:
+    adapter_id = "process-local-counting"
+    deterministic = True
+
+    def __init__(self, *, fail_at_session: int | None = None):
+        self.sessions_by_pid: dict[int, int] = {}
+        self.fail_at_session = fail_at_session
+
+    def create_session(self, parameters):
+        worker_pid = os.getpid()
+        index = self.sessions_by_pid.get(worker_pid, 0) + 1
+        self.sessions_by_pid[worker_pid] = index
+        if index == self.fail_at_session:
+            raise MemoryError("process-local warmup probe")
+        return _ProcessLocalCountingSession(index)
+
+
+def _isolated_measurement(function, adapter, policy):
+    route = _route()
+    return run_isolated(
+        function,
+        adapter,
+        route,
+        _compatibility(route),
+        {},
+        policy,
+        timeout_seconds=5,
+    )
+
+
+def test_separate_warmup_worker_cannot_warm_a_measurement_worker() -> None:
+    adapter = _ProcessLocalCountingAdapter()
+    policy = _policy(min_repetition_seconds="0")
+    warming = _isolated_measurement(perform_warmup, adapter, policy)
+    measuring = _isolated_measurement(perform_measured_roundtrip, adapter, policy)
+    assert warming.status is measuring.status is RunStatus.PASS
+    assert warming.worker_pid != measuring.worker_pid
+    assert warming.value.completed_iterations == 2
+    # A genuinely distinct process starts with its first encoder context.
+    assert measuring.value.codec_telemetry["encode"]["session_index"] == 1
+    assert adapter.sessions_by_pid == {}
+
+
+def test_each_measurement_worker_warms_its_own_process_and_retains_fresh_contexts() -> None:
+    adapter = _ProcessLocalCountingAdapter()
+    policy = _policy(min_repetition_seconds="0")
+    calls = [_isolated_measurement(perform_worker_measurement, adapter, policy) for _ in range(3)]
+    assert len({call.worker_pid for call in calls}) == 3
+    for call in calls:
+        assert call.status is RunStatus.PASS
+        evidence = call.value.worker_evidence
+        assert call.worker_exit_confirmed
+        assert call.worker_pid != call.parent_pid == os.getpid()
+        assert (
+            evidence["warmup_worker_pid"] == evidence["measurement_worker_pid"] == call.worker_pid
+        )
+        assert evidence["warmup"]["completed_iterations"] == 2
+        assert len(evidence["warmup_iterations"]) == 2
+        assert {item["worker_pid"] for item in evidence["warmup_iterations"]} == {call.worker_pid}
+        assert (
+            call.parent_started_ns
+            <= call.worker_started_ns
+            <= evidence["warmup_started_ns"]
+            < evidence["warmup_finished_ns"]
+            <= evidence["measurement_started_ns"]
+            < evidence["measurement_finished_ns"]
+            <= call.parent_finished_ns
+        )
+        # Two warmup objects create independent encoders and decoders. The first
+        # measured object starts in the fifth context of this same process.
+        assert call.value.observation.codec_telemetry["encode"]["session_index"] == 5
+        assert call.value.observation.codec_telemetry["decode"]["session_index"] == 6
+        assert evidence["warmup_excluded_from_timing"]
+        assert not evidence["cold_start_proven"]
+        assert not evidence["steady_state_proven"]
+    assert adapter.sessions_by_pid == {}
+
+
+def test_worker_local_evidence_cannot_claim_warmup_from_a_different_process() -> None:
+    call = _isolated_measurement(
+        perform_worker_measurement,
+        _ProcessLocalCountingAdapter(),
+        _policy(min_repetition_seconds="0"),
+    )
+    assert _verified_worker_measurement(call)
+    forged = replace(
+        call.value,
+        worker_evidence={**call.value.worker_evidence, "warmup_worker_pid": call.worker_pid + 1},
+    )
+    assert not _verified_worker_measurement(replace(call, value=forged))
+
+
+@pytest.mark.parametrize(
+    ("fail_at_session", "stage"), [(1, "WORKER_LOCAL_WARMUP"), (5, "MEASURED_REPETITION")]
+)
+def test_worker_phase_failure_retains_original_taxonomy_and_local_warmup_evidence(
+    fail_at_session,
+    stage,
+) -> None:
+    call = _isolated_measurement(
+        perform_worker_measurement,
+        _ProcessLocalCountingAdapter(fail_at_session=fail_at_session),
+        _policy(min_repetition_seconds="0"),
+    )
+    assert call.status is RunStatus.OOM
+    assert call.exception_type == "MemoryError"
+    assert call.worker_failure_stage == stage
+    assert call.worker_exit_confirmed
+    evidence = call.worker_measurement_evidence
+    assert evidence["worker_pid"] == call.worker_pid
+    if stage == "WORKER_LOCAL_WARMUP":
+        assert evidence["warmup"] is None
+        assert evidence["measurement_started_ns"] is None
+    else:
+        assert evidence["warmup"]["threshold_satisfied"]
+        assert evidence["measurement_finished_ns"] >= evidence["measurement_started_ns"]
+
+
+@pytest.mark.skipif("spawn" not in mp.get_all_start_methods(), reason="spawn unavailable")
+def test_isolated_worker_can_select_spawn_and_records_its_lifecycle() -> None:
+    call = run_isolated(os.getpid, timeout_seconds=5, start_method="spawn")
+    assert call.status is RunStatus.PASS
+    assert call.value == call.worker_pid != os.getpid()
+    assert call.start_method == "spawn"
+    assert call.worker_exit_confirmed
+    assert call.lifecycle_document()["parent_state_inheritance"] == "SPAWN_ARGUMENTS"
 
 
 def test_formal_profile_enforces_normative_warmup_repetition_and_duration(tmp_path) -> None:
@@ -233,6 +382,7 @@ def test_native_timing_accumulates_same_inner_iterations_and_keeps_legacy_missin
             return (7, 11)
 
     class Adapter:
+        adapter_id = "test-native-timing"
         deterministic = True
 
         def create_session(self, parameters):
@@ -271,6 +421,7 @@ def test_adapter_can_declare_a_nonstandard_native_timing_boundary():
             return (7, 11)
 
     class Adapter:
+        adapter_id = "test-native-timing"
         deterministic = True
         native_timing_boundary = "NATIVE_SERF_FRAME_ENCODE_DECODE_V1"
 
@@ -424,3 +575,13 @@ def test_streaming_engine_drives_blocks_finalizes_accounts_and_verifies_output()
     assert result["state_bytes"] == 8
     assert result["final_bits"] == route.canonical_raw_bits
     assert result["correctness"] == "PASS_EXACT_STREAM_RECONSTRUCTION"
+
+
+def test_optional_parent_thread_sampling_preserves_legacy_policy_document():
+    legacy = _policy()
+    monitored = replace(legacy, thread_monitor_interval_ns=1_000_000)
+    assert monitored.to_document() == legacy.to_document()
+    new = replace(monitored, measurement_protocol_id="frozen-new-protocol")
+    assert new.to_document()["thread_monitor_interval_ns"] == 1_000_000
+    with pytest.raises(ValueError):
+        replace(new, thread_monitor_interval_ns=True)

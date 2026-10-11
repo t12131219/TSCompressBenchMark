@@ -1,0 +1,75 @@
+{
+  "display_name": "v32_qual_original_t_regular_v2",
+  "expected": {
+    "canonical_raw_bits": 16512,
+    "n_rows": 129,
+    "semantic_content_sha256": "7678819b3d5daf6293f798213924530dde14035160891e83e7040c6b20debd24",
+    "shape": [
+      129
+    ]
+  },
+  "file": {
+    "bytes": 3592,
+    "format": "canonical",
+    "path": "artifacts/comparisons/v32_20261010/sources/v32_qual_original_t_regular_v2.tscb",
+    "sha256": "9c615e3f9b732604db27a6393c5af5cfdb528d45a542cafaa7608ac7a84cc85d"
+  },
+  "key": "v32_qual_original_t_regular_v2",
+  "license": {
+    "spdx": "CC0-1.0",
+    "status": "RUN_ALLOWED"
+  },
+  "logical": {
+    "axes": [
+      "time"
+    ],
+    "n_rows": 129,
+    "nan_is_null": false,
+    "schema_version": "tscb.logical-view.v2",
+    "timestamp": {
+      "dtype": "<i8",
+      "epoch": "UNIX",
+      "order_policy": "PRESERVE",
+      "origin": "GENERATED",
+      "present": true,
+      "unit": "s"
+    },
+    "topology": "UTS",
+    "validity_shape": "NONE",
+    "value_columns": [
+      {
+        "display_name": "synthetic-0",
+        "dtype": "<f8",
+        "entity": "synthetic",
+        "feature": "channel-0",
+        "name": "synthetic/000000",
+        "shape": [
+          129
+        ],
+        "strides": [
+          8
+        ],
+        "unit": "UNSPECIFIED"
+      }
+    ],
+    "value_shape": [
+      129
+    ]
+  },
+  "parser": {
+    "identity_policy": "tscb.dataset-content.v2",
+    "name": "tscb.canonical",
+    "version": "2"
+  },
+  "schema_version": "tscb.canonical-source-manifest.v1",
+  "source": {
+    "notes": "{\"domain_proof\": null, \"generation_spec\": {\"dtype\": \"<f8\", \"floating_scale\": \"1/16\", \"formula_version\": \"1\", \"kind\": \"SYNTHETIC_TIMESTAMP\", \"m\": 1, \"n\": 129, \"pattern\": \"regular\", \"rng\": \"numpy.PCG64\", \"seed\": 20261010, \"timestamp_payload_sha256\": \"96b49ae1b03ea7fddcedeeb5d59c54c7931ad533380c99cfb8aece1baf53110e\", \"values_outside_timestamp_task\": true}, \"source_lineage_authentication\": \"GENERATOR_FULL_SPEC\", \"source_manifest\": null, \"source_sha256\": null}",
+    "retrieved_at": "LOCAL_GENERATED",
+    "uri": "local:synthetic"
+  },
+  "split": {
+    "learned_eligible": false,
+    "policy": "VALIDATION",
+    "reason": "Fixed typed task; synthetic pilot is independent; no model training."
+  }
+}

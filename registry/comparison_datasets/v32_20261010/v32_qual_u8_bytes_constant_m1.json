@@ -1,0 +1,74 @@
+{
+  "display_name": "v32_qual_u8_bytes_constant_m1",
+  "expected": {
+    "canonical_raw_bits": 2056,
+    "n_rows": 257,
+    "semantic_content_sha256": "826b23136b9bd832d3159a3b1610165ee6bac7686fb7ed4e38d0fb7be14ef51b",
+    "shape": [
+      257
+    ]
+  },
+  "file": {
+    "bytes": 1451,
+    "format": "canonical",
+    "path": "artifacts/comparisons/v32_20261010/sources/v32_qual_u8_bytes_constant_m1.tscb",
+    "sha256": "bd5b5149dfa67ad1aca5a033a87c66449dec9cfe89e699108497016b51e4bf61"
+  },
+  "key": "v32_qual_u8_bytes_constant_m1",
+  "license": {
+    "spdx": "CC0-1.0",
+    "status": "RUN_ALLOWED"
+  },
+  "logical": {
+    "axes": [
+      "time"
+    ],
+    "n_rows": 257,
+    "nan_is_null": false,
+    "schema_version": "tscb.logical-view.v2",
+    "timestamp": {
+      "epoch": "NOT_APPLICABLE",
+      "order_policy": "PRESERVE",
+      "origin": "NONE",
+      "present": false,
+      "unit": "NOT_APPLICABLE"
+    },
+    "topology": "UTS",
+    "validity_shape": "NONE",
+    "value_columns": [
+      {
+        "display_name": "byte",
+        "dtype": "|u1",
+        "entity": "synthetic",
+        "feature": "byte",
+        "name": "byte",
+        "shape": [
+          257
+        ],
+        "strides": [
+          1
+        ],
+        "unit": "BYTE"
+      }
+    ],
+    "value_shape": [
+      257
+    ]
+  },
+  "parser": {
+    "identity_policy": "tscb.dataset-content.v1",
+    "name": "tscb.canonical",
+    "version": "1"
+  },
+  "schema_version": "tscb.canonical-source-manifest.v1",
+  "source": {
+    "notes": "{\"domain_proof\": null, \"first_party_project_reference\": null, \"generation_spec\": {\"allowed_range\": [0, 255], \"dtype\": \"|u1\", \"formula_version\": \"1\", \"kind\": \"SYNTHETIC_UINT8_BYTE_OBJECT\", \"m\": 1, \"n\": 257, \"pattern\": \"constant\", \"rng\": \"numpy.PCG64\", \"seed\": 20261010}, \"source_lineage_authentication\": \"GENERATOR_FULL_SPEC\", \"source_manifest\": null, \"source_sha256\": null}",
+    "retrieved_at": "LOCAL_GENERATED",
+    "uri": "local:synthetic"
+  },
+  "split": {
+    "learned_eligible": false,
+    "policy": "VALIDATION",
+    "reason": "Frozen whole-object CPU comparison; no learned split or source generalization claimed."
+  }
+}

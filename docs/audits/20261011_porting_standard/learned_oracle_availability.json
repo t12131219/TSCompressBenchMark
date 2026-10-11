@@ -1,0 +1,215 @@
+{
+  "schema_version": 1,
+  "status": "CURRENT_CPU_SUBSET_AVAILABLE_FRESH_FULL_SOURCE_PARITY_NOT_EXECUTED",
+  "full_parity_granted": false,
+  "benchmark_qualification_granted": false,
+  "formal_granted": false,
+  "archived_metadata": {
+    "path": "docs/rewrite_cleanup/20261006-integration/historical_metadata.tar.gz",
+    "sha256": "f3c706f219e7f268d99d3eb411a8dcab0f707783850a0376dcd3f4a0444886ea",
+    "preserved_entries": {
+      "Source/deepzip/ORACLE_ENVIRONMENT_LOCK.json": {
+        "sha256": "388967012b649fc195746a484658b25b75dc903bb8bb06d4973579dda2f8bf12",
+        "bytes": 1529930,
+        "conda_packages": 30,
+        "conda_acquisition_bytes": 558937418,
+        "pip_acquisition_archives": 31
+      },
+      "Source/deepzip/model_oracle.py": {
+        "sha256": "0ee0fd0e6629d3de5d48293f6fe4f00201ffc540acaf8db42c26232a4d0222a7",
+        "bytes": 6102
+      },
+      "Source/dzip/capture_oracle.py": {
+        "sha256": "74bbd580f4d5aee79b836a18d4b36437d7168c761f0eb7abc93faaca9c6ae70d",
+        "bytes": 8680
+      },
+      "Source/deepzip/ENVIRONMENT.md": {
+        "sha256": "bc461e321ec34bcc84f466567c982c6c738955498ec3cd8b4f9b64106ac5651e",
+        "bytes": 2031
+      }
+    }
+  },
+  "environment_probe": {
+    "conda_environment_inspection": [
+      {
+        "environment": "/home/fzg/anaconda3/envs/ArchCanvas",
+        "tensorflow_package_directories": []
+      },
+      {
+        "environment": "/home/fzg/anaconda3/envs/CompressBench",
+        "tensorflow_package_directories": []
+      },
+      {
+        "environment": "/home/fzg/anaconda3/envs/CompressBench14",
+        "tensorflow_package_directories": []
+      },
+      {
+        "environment": "/home/fzg/anaconda3/envs/TFB",
+        "tensorflow_package_directories": []
+      },
+      {
+        "environment": "/home/fzg/anaconda3/envs/TFB_py311",
+        "tensorflow_package_directories": []
+      },
+      {
+        "environment": "/home/fzg/anaconda3/envs/models",
+        "tensorflow_package_directories": []
+      }
+    ],
+    "locked_executables": [
+      {
+        "path": "/tmp/tscb-deepzip-oracle-rebuilt/bin/python",
+        "exists": false
+      },
+      {
+        "path": "/tmp/tscb-dzip-oracle-cpu/bin/python",
+        "exists": false
+      }
+    ],
+    "gpu_command": [
+      "nvidia-smi",
+      "--query-gpu=name,driver_version",
+      "--format=csv,noheader"
+    ],
+    "gpu_exit_code": 9,
+    "gpu_stdout": "NVIDIA-SMI has failed because it couldn't communicate with the NVIDIA driver. Make sure that the latest NVIDIA driver is installed and running.\n\n",
+    "gpu_stderr": ""
+  },
+  "deepzip": {
+    "declared_source_runtime": "Python3.6.13/TF-GPU1.8.0/Keras2.2.2/NumPy1.16.4/CUDA9/cuDNN7.1.2",
+    "current_variant": "CPU_ALPHABET_0_TO_3_17_SEEDED_UNTRAINED_ORIGINAL_CONSTRUCTOR_FIXTURES",
+    "deployed_models": {
+      "FC": {
+        "path": "adapters/completed_rewrites/vendor/deepzip/models/FC.dzm",
+        "expected_sha256": "bedf6693e2fa556990dc82563974965ffd7dd1835f088b06a80382bffb8cf42b",
+        "actual_sha256": "bedf6693e2fa556990dc82563974965ffd7dd1835f088b06a80382bffb8cf42b",
+        "alphabet_size": 4
+      },
+      "FC_4layer": {
+        "path": "adapters/completed_rewrites/vendor/deepzip/models/FC_4layer.dzm",
+        "expected_sha256": "6eeaabfec6dcdc17e4d750b99cf7ee18334fd55f3805cce2eaa6bb1116846642",
+        "actual_sha256": "6eeaabfec6dcdc17e4d750b99cf7ee18334fd55f3805cce2eaa6bb1116846642",
+        "alphabet_size": 4
+      },
+      "FC_4layer_16bit": {
+        "path": "adapters/completed_rewrites/vendor/deepzip/models/FC_4layer_16bit.dzm",
+        "expected_sha256": "a5c3e0a202e821831303abf40480ba03a45b839562b9d8f7f3129bbb0c7f5614",
+        "actual_sha256": "a5c3e0a202e821831303abf40480ba03a45b839562b9d8f7f3129bbb0c7f5614",
+        "alphabet_size": 4
+      },
+      "FC_4layer_big": {
+        "path": "adapters/completed_rewrites/vendor/deepzip/models/FC_4layer_big.dzm",
+        "expected_sha256": "25633556588c421e7ae67038d5949f99621ac58420d585b07277320596570e77",
+        "actual_sha256": "25633556588c421e7ae67038d5949f99621ac58420d585b07277320596570e77",
+        "alphabet_size": 4
+      },
+      "GRU_multi": {
+        "path": "adapters/completed_rewrites/vendor/deepzip/models/GRU_multi.dzm",
+        "expected_sha256": "96b0826d1dc7d829d39d48615d9524d6e31d3abcb0321bdbbeae79f0d5182192",
+        "actual_sha256": "96b0826d1dc7d829d39d48615d9524d6e31d3abcb0321bdbbeae79f0d5182192",
+        "alphabet_size": 4
+      },
+      "GRU_multi_16bit": {
+        "path": "adapters/completed_rewrites/vendor/deepzip/models/GRU_multi_16bit.dzm",
+        "expected_sha256": "4c601892b682644c0a566f531f41e97be572de78f1a1a63000b519df73b2c0d6",
+        "actual_sha256": "4c601892b682644c0a566f531f41e97be572de78f1a1a63000b519df73b2c0d6",
+        "alphabet_size": 4
+      },
+      "GRU_multi_big": {
+        "path": "adapters/completed_rewrites/vendor/deepzip/models/GRU_multi_big.dzm",
+        "expected_sha256": "2e37bb54e02c2774ace90afcce43e79a37137b765b9b6c118bba098b1fa02325",
+        "actual_sha256": "2e37bb54e02c2774ace90afcce43e79a37137b765b9b6c118bba098b1fa02325",
+        "alphabet_size": 4
+      },
+      "LSTM_multi": {
+        "path": "adapters/completed_rewrites/vendor/deepzip/models/LSTM_multi.dzm",
+        "expected_sha256": "25234dd1104135c963f919f843188e2e0fe6a2d3c52472f16455aea660a54984",
+        "actual_sha256": "25234dd1104135c963f919f843188e2e0fe6a2d3c52472f16455aea660a54984",
+        "alphabet_size": 4
+      },
+      "LSTM_multi_16bit": {
+        "path": "adapters/completed_rewrites/vendor/deepzip/models/LSTM_multi_16bit.dzm",
+        "expected_sha256": "b4ea66dfc1317953dd4d5128d7813d6841aef7fa099b806b26189c44a9f7a324",
+        "actual_sha256": "b4ea66dfc1317953dd4d5128d7813d6841aef7fa099b806b26189c44a9f7a324",
+        "alphabet_size": 4
+      },
+      "LSTM_multi_big": {
+        "path": "adapters/completed_rewrites/vendor/deepzip/models/LSTM_multi_big.dzm",
+        "expected_sha256": "b942a15d617c8e8c4f88cf22930e4c99dfb4acbac8944c3ea6c078bc960af8ee",
+        "actual_sha256": "b942a15d617c8e8c4f88cf22930e4c99dfb4acbac8944c3ea6c078bc960af8ee",
+        "alphabet_size": 4
+      },
+      "LSTM_multi_bn": {
+        "path": "adapters/completed_rewrites/vendor/deepzip/models/LSTM_multi_bn.dzm",
+        "expected_sha256": "a13418c3e3f0872ae4c18d5a4382163537a40b96685156b59721ff2dfbf36354",
+        "actual_sha256": "a13418c3e3f0872ae4c18d5a4382163537a40b96685156b59721ff2dfbf36354",
+        "alphabet_size": 4
+      },
+      "LSTM_multi_selu_16bit": {
+        "path": "adapters/completed_rewrites/vendor/deepzip/models/LSTM_multi_selu_16bit.dzm",
+        "expected_sha256": "7875896ec0e6c737e4642b74c83c61cc978e7252fc80a1d1e60475f109b05b76",
+        "actual_sha256": "7875896ec0e6c737e4642b74c83c61cc978e7252fc80a1d1e60475f109b05b76",
+        "alphabet_size": 4
+      },
+      "biGRU_16bit": {
+        "path": "adapters/completed_rewrites/vendor/deepzip/models/biGRU_16bit.dzm",
+        "expected_sha256": "463468e5752fed82aa27cb0af9d1e14caaae143abd99eb8d6b2f6f00bf91eacf",
+        "actual_sha256": "463468e5752fed82aa27cb0af9d1e14caaae143abd99eb8d6b2f6f00bf91eacf",
+        "alphabet_size": 4
+      },
+      "biGRU_big": {
+        "path": "adapters/completed_rewrites/vendor/deepzip/models/biGRU_big.dzm",
+        "expected_sha256": "6eba690e83c061154c7dfbbf61829d01f93282fd76836a4ff32e2c67550f7b8d",
+        "actual_sha256": "6eba690e83c061154c7dfbbf61829d01f93282fd76836a4ff32e2c67550f7b8d",
+        "alphabet_size": 4
+      },
+      "biLSTM": {
+        "path": "adapters/completed_rewrites/vendor/deepzip/models/biLSTM.dzm",
+        "expected_sha256": "5bc81e75a5e558fd2bbc62efd037d7458ed756ff3992941b82ef7c944d8b8a99",
+        "actual_sha256": "5bc81e75a5e558fd2bbc62efd037d7458ed756ff3992941b82ef7c944d8b8a99",
+        "alphabet_size": 4
+      },
+      "biLSTM_16bit": {
+        "path": "adapters/completed_rewrites/vendor/deepzip/models/biLSTM_16bit.dzm",
+        "expected_sha256": "a15f2b0b543655c429cd2d6d64c3b7a857aaf85a6c2c01fcfd592a9262abfd7c",
+        "actual_sha256": "a15f2b0b543655c429cd2d6d64c3b7a857aaf85a6c2c01fcfd592a9262abfd7c",
+        "alphabet_size": 4
+      },
+      "biGRU": {
+        "path": "adapters/completed_rewrites/vendor/deepzip/tests/fixtures/biGRU.dzm",
+        "expected_sha256": "1c5c9924d758c587cec55002d8e53d5a435f8d1c5a87459a068604772545af6e",
+        "actual_sha256": "1c5c9924d758c587cec55002d8e53d5a435f8d1c5a87459a068604772545af6e",
+        "alphabet_size": 4
+      }
+    },
+    "model_probability_evidence": "docs/audits/20261011_rewrite_native/completed_agent_evidence.json",
+    "model_probability_evidence_kind": "CURRENT_CPP_AGAINST_ARCHIVED_TF_PROBABILITY_VALUES_51_CONTEXTS",
+    "trained_xor20_authority_checkpoint": {
+      "path": "/home/fzg/PycharmProjects/Compression_Source_Code/Source_Code/_repos/mohit1997_DeepZip/data/trained_models/xor20/biGRU.hdf5",
+      "status": "AVAILABLE_AUTHORITY_NOT_DEPLOYED",
+      "sha256": "11c83907881b14ed3c670b6b37cacad06fc9657872c520bd772693cb04919fe2",
+      "bytes": 170192,
+      "alphabet_size": 2
+    },
+    "fresh_full_source_status": "NOT_RUN_MISSING_RESTORED_REFERENCE_RUNTIME_AND_WORKING_CUDA_DRIVER",
+    "hdf5_cuda_current_build": "DISABLED_NOT_CURRENT_BENCH_PROFILE"
+  },
+  "dzip": {
+    "declared_source_runtime": "Python3.6.13/TF-CPU1.14.0/Keras2.2.2/NumPy1.16.4",
+    "current_variant": "NATIVE_SEEDED_UNTRAINED_INPUT_ALPHABET_BOOTSTRAP_OR_COMBINED",
+    "source_seed_initializer_equivalent": false,
+    "source_loaded_trained_PRNN_equivalent": false,
+    "fresh_full_source_status": "NOT_RUN_LOCKED_CPU_REFERENCE_RUNTIME_AND_OLD_MODEL_TRAJECTORIES_NOT_RESTORED",
+    "available_reference_recipe": "Compression_Rewrite/Source/dzip/TOOLCHAIN_MANIFEST.yaml",
+    "current_native_frame_stores_model_and_alphabet": true,
+    "hdf5_cuda_current_build": "DISABLED_NOT_CURRENT_BENCH_PROFILE"
+  },
+  "rules": [
+    "TOOL-001",
+    "CAP-002",
+    "EVID-001",
+    "EVID-002",
+    "XFER-001"
+  ],
+  "limitation": "These availability checks are not a failed source execution, a waiver, or an independent G0-G6/CAP completion."
+}

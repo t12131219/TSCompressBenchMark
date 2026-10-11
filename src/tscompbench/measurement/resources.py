@@ -89,10 +89,10 @@ class _Snapshot:
     swap_out_pages: int | None
 
 
-def _snapshot(wall_ns: int) -> _Snapshot:
+def _snapshot(wall_ns: int, *, include_proc: bool = True) -> _Snapshot:
     usage = resource.getrusage(resource.RUSAGE_SELF)
-    io = _proc_io()
-    swap = _swap_counters()
+    io = _proc_io() if include_proc else None
+    swap = _swap_counters() if include_proc else None
     # Linux ru_maxrss is KiB. This project currently supports Linux execution only.
     return _Snapshot(
         wall_ns=wall_ns,
@@ -105,14 +105,14 @@ def _snapshot(wall_ns: int) -> _Snapshot:
         block_input_operations=int(usage.ru_inblock),
         block_output_operations=int(usage.ru_oublock),
         max_rss_bytes=int(usage.ru_maxrss) * 1024,
-        current_rss_bytes=_current_rss_bytes(),
+        current_rss_bytes=_current_rss_bytes() if include_proc else None,
         logical_read_bytes=None if io is None else io.get("rchar"),
         logical_write_bytes=None if io is None else io.get("wchar"),
         physical_read_bytes=None if io is None else io.get("read_bytes"),
         physical_write_bytes=None if io is None else io.get("write_bytes"),
         read_syscalls=None if io is None else io.get("syscr"),
         write_syscalls=None if io is None else io.get("syscw"),
-        thread_count=_status_value("Threads"),
+        thread_count=_status_value("Threads") if include_proc else None,
         swap_in_pages=None if swap is None else swap[0],
         swap_out_pages=None if swap is None else swap[1],
     )
@@ -208,6 +208,7 @@ class ResourceSampler:
         energy_method: str,
         allocated_logical_cpus: int,
         canonical_bytes: int,
+        enabled: bool = True,
     ) -> None:
         self.requested_scope = requested_scope
         self.memory_accounting_scope = memory_accounting_scope
@@ -215,20 +216,21 @@ class ResourceSampler:
         self.energy_method = energy_method
         self.allocated_logical_cpus = allocated_logical_cpus
         self.canonical_bytes = canonical_bytes
+        self.enabled = enabled
         self._before: _Snapshot | None = None
         self._overhead_ns = 0
 
     def start(self, wall_ns: int) -> None:
         overhead_start = time.perf_counter_ns()
-        self._before = _snapshot(wall_ns)
+        self._before = _snapshot(wall_ns, include_proc=self.enabled)
         self._overhead_ns += time.perf_counter_ns() - overhead_start
 
     def stop(self, wall_ns: int) -> ResourceObservation:
         if self._before is None:
             raise RuntimeError("resource sampler was not started")
         overhead_start = time.perf_counter_ns()
-        after = _snapshot(wall_ns)
-        pss, uss = _smaps_rollup()
+        after = _snapshot(wall_ns, include_proc=self.enabled)
+        pss, uss = _smaps_rollup() if self.enabled else (None, None)
         self._overhead_ns += time.perf_counter_ns() - overhead_start
         before = self._before
         user = max(Decimal(0), after.user_seconds - before.user_seconds)
@@ -248,7 +250,11 @@ class ResourceSampler:
         )
         baseline = before.current_rss_bytes
         incremental = None if baseline is None else max(0, after.max_rss_bytes - baseline)
-        if self.requested_scope == "PROCESS":
+        if not self.enabled:
+            actual_scope = "PROCESS_CPU_ONLY"
+            availability = "NOT_COLLECTED"
+            reason = "DEVELOPMENT_COLLECTOR_PERTURBATION_CONTROL"
+        elif self.requested_scope == "PROCESS":
             actual_scope = "PROCESS"
             availability = "AVAILABLE"
             reason = "GETRUSAGE_AND_PROC_SELF"

@@ -33,10 +33,15 @@
     {
       "name": "xxHash",
       "relationship": "VENDORED_BY_LZ4_SOURCE_CLOSURE",
-      "files": ["lz/lz4/lib/xxhash.c", "lz/lz4/lib/xxhash.h"]
+      "files": [
+        "lz/lz4/lib/xxhash.c",
+        "lz/lz4/lib/xxhash.h"
+      ]
     }
   ],
-  "object_level_candidates": ["P1_STANDALONE_CODEC"],
+  "object_level_candidates": [
+    "P1_STANDALONE_CODEC"
+  ],
   "input_contract": {
     "kind": "BYTE_VIEW",
     "length_type": "size_t",
@@ -69,13 +74,50 @@
       "name": "lzbench-vendored LZ4 frametest",
       "command": "out-of-tree frametest -i100 -s20260917 --no-prompt",
       "status": "PASS",
-      "evidence": "Basic tests completed; 100 deterministic fuzz cases exited 0"
+      "evidence": "Basic tests completed; 100 deterministic fuzz cases exited 0",
+      "evidence_kind": "HISTORICAL_OR_SEPARATE_UPSTREAM_EVIDENCE"
     },
     {
       "name": "project C ABI smoke",
       "command": "release and ASan/UBSan executables over N=0/1/2/65535/65536/65537/131073",
       "status": "PASS",
-      "evidence": "LZ4 C ABI smoke passed; repeated finalize rejected"
+      "evidence": "LZ4 C ABI smoke passed; repeated finalize rejected",
+      "evidence_kind": "HISTORICAL_OR_SEPARATE_UPSTREAM_EVIDENCE"
+    },
+    {
+      "algorithm": "lz4-frame",
+      "profile": "release",
+      "name": "current build dependency and finite native API verification",
+      "status": "PASS",
+      "evidence": {
+        "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/qualification.json",
+        "sha256": "b86173f34c30d175552de327cc446dd8480aa02dd7a9ae56f12f60c0d93db174"
+      },
+      "evidence_kind": "CURRENT_REAL_BUILD_DEPENDENCIES_WITH_SELECTED_NATIVE_TESTS",
+      "native_suite_status": "NOT_RUN_IN_THIS_DRIVER",
+      "source_full_parity": "NOT_ASSERTED"
+    },
+    {
+      "algorithm": "lz4-frame",
+      "profile": "sanitizer",
+      "name": "current build dependency and finite native API verification",
+      "status": "PASS",
+      "evidence": {
+        "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/qualification.json",
+        "sha256": "b86173f34c30d175552de327cc446dd8480aa02dd7a9ae56f12f60c0d93db174"
+      },
+      "evidence_kind": "CURRENT_REAL_BUILD_DEPENDENCIES_WITH_SELECTED_NATIVE_TESTS",
+      "native_suite_status": "NOT_RUN_IN_THIS_DRIVER",
+      "source_full_parity": "NOT_ASSERTED"
+    },
+    {
+      "name": "current wrapper patch replay, invalid descriptor atomicity, EOF/reset, finite old/new encoding parity and bidirectional cross decode",
+      "status": "PASS",
+      "evidence": {
+        "path": "docs/audits/20261011_port_standard_v30/frame_binding_qualification_v3/qualification.json",
+        "sha256": "0a47ea4c7609a1a27515846ddbe72dbd56fd0bd2b93e67ee9462e32cad8a8048"
+      },
+      "evidence_kind": "CURRENT_PROJECT_BINDING_CONTRACT_PARITY_NOT_UPSTREAM_FULL_PARITY"
     }
   ],
   "builds": [
@@ -84,14 +126,50 @@
       "artifact_sha256": "4c85a0c0ff45bcc8d29cff00c804246ac1eade3a1afa1cafc702d86dbad40a55",
       "compile_commands_sha256": "08f78ed692683f000219992ee3dd3e1533622aa616b82e4ab3a9d4cd38bfb581",
       "compiler": "GCC 11.4.0",
-      "flags": "-O3 -DNDEBUG -fPIC -shared"
+      "flags": "-O3 -DNDEBUG -fPIC -shared",
+      "evidence_kind": "HISTORICAL_BUILD_RECORD"
     },
     {
       "profile": "ASAN_UBSAN",
       "artifact_sha256": "ce158b99f2ab50169ba4299c97c21a9233fdd2618bf10053c6b3d1c8471c1a56",
       "compile_commands_sha256": "d9df5e27e5b23deb031cf75d62ddf61e8ea257d881bb542dce38eeedc51e28c7",
       "compiler": "GCC 11.4.0",
-      "flags": "-O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined"
+      "flags": "-O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined",
+      "evidence_kind": "HISTORICAL_BUILD_RECORD"
+    },
+    {
+      "algorithm": "lz4-frame",
+      "profile": "RELEASE",
+      "artifact_sha256": "015b379d88be9f2ac07fcea2902839f9195bc21576d0fb59df95f20e658c039e",
+      "compile_commands_sha256": "a547e041351f87d3c9d3b3eb0b6b99d41ba362ca2ef8f71778eb3942f4ef8eb3",
+      "compiler": "cc (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0",
+      "evidence_kind": "CURRENT_REAL_BUILD_DEPENDENCIES_VERIFIED",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/lz4_frame/release/build-record.json",
+        "sha256": "876d8c14c37459766c193312c9fddb83c88c43ece4aac161fa3808cf56852362"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/lz4_frame/release/libtscb_lz4_frame.so",
+        "sha256": "015b379d88be9f2ac07fcea2902839f9195bc21576d0fb59df95f20e658c039e"
+      },
+      "qualification_scope": "BUILD_CLOSURE_AND_SELECTED_FINITE_NATIVE_SUITE_NOT_SOURCE_FULL_PARITY"
+    },
+    {
+      "algorithm": "lz4-frame",
+      "profile": "SANITIZER",
+      "artifact_sha256": "7a8fea0a6b2438241e942ab99317362f82b4cd5db5026f5b69a6bfe2f7cf672d",
+      "compile_commands_sha256": "4cc16773014535ff7f8caa361832808296bb485cc03bae164bae233dce184a6d",
+      "compiler": "cc (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0",
+      "evidence_kind": "CURRENT_REAL_BUILD_DEPENDENCIES_VERIFIED",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/lz4_frame/sanitizer/build-record.json",
+        "sha256": "c018b4247884e6685940613fec659a7e0586ec317d5523c3f04ecdb2bec3cdfe"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/lz4_frame/sanitizer/libtscb_lz4_frame.so",
+        "sha256": "7a8fea0a6b2438241e942ab99317362f82b4cd5db5026f5b69a6bfe2f7cf672d"
+      },
+      "qualification_scope": "BUILD_CLOSURE_AND_SELECTED_FINITE_NATIVE_SUITE_NOT_SOURCE_FULL_PARITY"
     }
   ],
   "license_decision": {
@@ -103,7 +181,8 @@
     "The lzbench benchmark table itself exercises the raw LZ4 block API; this adapter uses the complete LZ4 frame implementation vendored by the same benchmark.",
     "The project wrapper exposes persistent LZ4F_compressUpdate/compressEnd and incremental LZ4F_decompress contexts for the separately keyed streaming profile; query and random access remain unregistered.",
     "The Python FFI descriptor serialization and contiguous byte materialization are included in the declared adapter boundary.",
-    "LeakSanitizer cannot run under the host container ptrace policy; ASan/UBSan qualification ran with detect_leaks=0."
+    "LeakSanitizer cannot run under the host container ptrace policy; ASan/UBSan qualification ran with detect_leaks=0.",
+    "2026-10-11: new isolated builds pin actual per-TU compiler dependencies, objects, selected toolchain executables and linked dynamic runtime files. These records do not pin every implicit static startup/runtime archive and do not grant source FULL_PARITY or change active algorithm scope. Historical runs retain their original artifact identities."
   ],
   "unsupported_reason_codes": [
     "EXECUTION_ARTIFACT_MISSING",
@@ -111,5 +190,6 @@
     "NATIVE_SIZE_T_LIMIT",
     "QUERY_UNSUPPORTED",
     "STREAMING_PROTOCOL_NOT_REGISTERED"
-  ]
+  ],
+  "source_onboarding_id": "v2:source-onboarding:sha256:1e180ce7bba6af7f5b1f6b33e6c6d238cb9a480fa044e39c5619cfdf374337fe"
 }

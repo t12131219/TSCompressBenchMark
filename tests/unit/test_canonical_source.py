@@ -78,6 +78,58 @@ def test_semantic_identity_ignores_physical_stride_but_preserves_units(tmp_path)
     assert semantic_content_sha256(metadata) != semantic_content_sha256(changed)
 
 
+def test_v2_content_policy_excludes_labels_and_unknown_transport_fields(tmp_path):
+    metadata = sample(tmp_path).metadata
+    changed = copy.deepcopy(metadata)
+    logical = changed["logical_descriptor"]
+    logical["display_name"] = "renamed object"
+    logical["path"] = "/another/transport"
+    logical["provenance"] = {"note": "copied"}
+    logical["timestamp"]["display_name"] = "renamed time"
+    logical["value_columns"][0]["display_name"] = "renamed channel"
+    logical["value_columns"][0]["strides"] = [999]
+    logical["value_columns"][0]["path"] = "/another/column"
+    policy = "tscb.dataset-content.v2"
+    assert semantic_content_sha256(metadata, policy=policy) == semantic_content_sha256(
+        changed, policy=policy
+    )
+    assert semantic_content_sha256(metadata) != semantic_content_sha256(changed)
+    changed["logical_descriptor"]["value_columns"][0]["unit"] = "changed semantic unit"
+    assert semantic_content_sha256(metadata, policy=policy) != semantic_content_sha256(
+        changed, policy=policy
+    )
+
+
+def test_content_policy_is_versioned_and_unknown_policy_is_rejected(tmp_path):
+    metadata = sample(tmp_path).metadata
+    assert semantic_content_sha256(metadata) != semantic_content_sha256(
+        metadata, policy="tscb.dataset-content.v2"
+    )
+    with pytest.raises(DatasetContractError, match="identity policy"):
+        semantic_content_sha256(metadata, policy="unknown")
+
+
+def test_v2_canonical_source_dataset_identity_is_independent_of_split_use(tmp_path):
+    artifact = sample(tmp_path)
+    registry_root = tmp_path / "registry-v2"
+    for key, policy in (("train", "TRAIN"), ("test", "TEST")):
+        register_canonical_source(
+            artifact.path,
+            tmp_path,
+            registry_root,
+            key,
+            identity_policy="tscb.dataset-content.v2",
+            split={"policy": policy, "learned_eligible": True, "reason": "explicit usage"},
+            license_info={"spdx": "CC0-1.0", "status": "RUN_ALLOWED"},
+        )
+    registry = DatasetRegistry(registry_root, tmp_path)
+    assert registry.load("train").dataset_id == registry.load("test").dataset_id
+    assert (
+        load_dataset(registry.load("test")).canonical_raw_bits
+        == artifact.metadata["accounting"]["canonical_raw_bits"]
+    )
+
+
 def rewrite_metadata(path, mutate):
     data = path.read_bytes()
     _, major, minor, size, count = struct.unpack("<8sHHQI", data[:24])

@@ -19,15 +19,73 @@
     "spdx": "0BSD",
     "status": "RUN_ALLOWED",
     "redistribution": "ALLOWED",
-    "files": ["adapters/xz_stream/vendor/xz/COPYING", "adapters/xz_stream/vendor/xz/COPYING.0BSD"]
+    "files": [
+      "adapters/xz_stream/vendor/xz/COPYING",
+      "adapters/xz_stream/vendor/xz/COPYING.0BSD"
+    ]
   },
   "build": {
-    "recipe": "PYTHONPATH=src conda run -n CompressBench14 python tools/build_codec.py xz-stream --profile all",
+    "recipe": "PYTHONPATH=src conda run -n CompressBench14 python tools/build_codec.py xz-stream --profile all --output-root build/port-standard-v30-20261011/native-builds-v3",
     "patches": [],
     "submodules": [],
     "build_system": "VENDORED_CMAKE_STATIC_PIC_LIBLZMA_LINKED_INTO_PROJECT_C_ABI",
-    "compile_command_evidence": "build/adapters/xz_stream/<profile>/compile-command.json includes dependency configuration, all translation units and archive hash",
-    "release_artifact": "build/adapters/xz_stream/release/libtscb_xz_stream.so",
-    "sanitizer_artifact": "build/adapters/xz_stream/sanitizer/libtscb_xz_stream.so"
+    "compile_command_evidence": "build/port-standard-v30-20261011/native-builds-v3/xz_stream/<profile>/compile-command.json includes dependency configuration, all translation units and archive hash",
+    "release_artifact": "build/port-standard-v30-20261011/native-builds-v3/xz_stream/release/libtscb_xz_stream.so",
+    "sanitizer_artifact": "build/port-standard-v30-20261011/native-builds-v3/xz_stream/sanitizer/libtscb_xz_stream.so",
+    "current_build_records": [
+      {
+        "algorithm": "xz-stream",
+        "profile": "release",
+        "record": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/xz_stream/release/build-record.json",
+          "sha256": "127cb6d348f4a8ce66d188e3a7764e6f4891a18024d063562cb5624395e0f2fc"
+        },
+        "artifact": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/xz_stream/release/libtscb_xz_stream.so",
+          "sha256": "edaefa8d7630d607405baecee40acfe53cb8df628baf37750d6d1bb4ec7214bb"
+        },
+        "compile_commands_sha256": "5b5850ed2a6445b5ecf7bcc9780261b7434db9e3f594480a6eb2f0d9120475f1",
+        "dependency_capture": "ACTUAL_PER_TU_MD_COMPILATION_AND_LINK"
+      },
+      {
+        "algorithm": "xz-stream",
+        "profile": "sanitizer",
+        "record": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/xz_stream/sanitizer/build-record.json",
+          "sha256": "b841b2c1d683b80315339c12c2295df71f1a36b55daab2ae8156b8e9dc2de44e"
+        },
+        "artifact": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/xz_stream/sanitizer/libtscb_xz_stream.so",
+          "sha256": "531da0b6db69ab6c4243bf356831472967c856cc3ccfbe7eb0f829284173ea56"
+        },
+        "compile_commands_sha256": "a36ed80b48ae0db2a869621216222a21431e9036babd580fb2fbe31c4b69aa28",
+        "dependency_capture": "ACTUAL_PER_TU_MD_COMPILATION_AND_LINK"
+      }
+    ],
+    "current_native_qualification": [
+      {
+        "algorithm": "xz-stream",
+        "profile": "release",
+        "build_dependency_status": "PASS",
+        "native_suite_status": "PASS",
+        "evidence": {
+          "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/qualification.json",
+          "sha256": "b86173f34c30d175552de327cc446dd8480aa02dd7a9ae56f12f60c0d93db174"
+        },
+        "source_full_parity": "NOT_ASSERTED"
+      },
+      {
+        "algorithm": "xz-stream",
+        "profile": "sanitizer",
+        "build_dependency_status": "PASS",
+        "native_suite_status": "PASS",
+        "evidence": {
+          "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/qualification.json",
+          "sha256": "b86173f34c30d175552de327cc446dd8480aa02dd7a9ae56f12f60c0d93db174"
+        },
+        "source_full_parity": "NOT_ASSERTED"
+      }
+    ],
+    "current_build_dependency_scope": "ACTUAL_PER_TU_MD_HEADERS_OBJECTS_SELECTED_TOOLCHAIN_AND_DYNAMIC_RUNTIME_PARTIAL_STATIC_LINK_CLOSURE"
   }
 }

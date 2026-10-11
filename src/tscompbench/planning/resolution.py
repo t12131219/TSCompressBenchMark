@@ -4,6 +4,7 @@ import hashlib
 from pathlib import Path
 from typing import Any
 
+from tscompbench.adapters.source_reject_fallback import source_reject_composite_adapter_id
 from tscompbench.codecs import CodecManifest, CompatibilityPlan, DataDescriptor
 from tscompbench.contracts import CapabilityStatus, RunStatus
 from tscompbench.ids import canonical_json_bytes, stable_id
@@ -38,7 +39,10 @@ def resolve_execution(
     artifact_path: Path,
     profile: dict[str, Any],
     supporting_artifact_paths: tuple[Path, ...] = (),
+    source_reject_fallback: bool = False,
 ) -> ExecutionResolution:
+    if source_reject_fallback and manifest.key != "alp":
+        raise ValueError("source-reject composite is only registered for forced ALP")
     execution = manifest.document["execution"]
     requested = str(config.parameters.get("isa", execution["isa"][0]))
     available_flags = set(environment["cpu"].get("flags", []))
@@ -142,10 +146,13 @@ def resolve_execution(
         artifact_sha256 = hashlib.sha256(canonical_json_bytes(artifact_components)).hexdigest()
     elif artifact_available:
         artifact_sha256 = primary_artifact_sha256
+    adapter_id = stable_id("adapter", manifest.document["adapter"])
+    if source_reject_fallback:
+        adapter_id = source_reject_composite_adapter_id(adapter_id, manifest.key)
     identity = {
         "algorithm_id": manifest.algorithm_id,
         "source_artifact_id": manifest.source_artifact_id,
-        "adapter_id": stable_id("adapter", manifest.document["adapter"]),
+        "adapter_id": adapter_id,
         "backend": execution["backends"][0],
         "artifact_sha256": artifact_sha256,
         "toolchain_profile_id": stable_id("toolchain-profile", toolchain_document),
@@ -178,7 +185,15 @@ def resolve_execution(
     return ExecutionResolution(
         status=status,
         reason_code=reason,
-        execution_path_hash=stable_id("execution-path", identity),
+        execution_path_hash=stable_id(
+            "execution-path",
+            {
+                **identity,
+                "measurement_worker_protocol": "WORKER_LOCAL_WARMUP_V1",
+                "recovery_protocol": "PERSISTED_DECODE_CONTEXT_V1",
+                "recovery_output": "OWNED_CANONICAL_BUFFERS",
+            },
+        ),
         **identity,
     )
 
@@ -234,6 +249,12 @@ def build_comparability_keys(
     semantic_key = stable_id("semantic-comparability", semantic_document)
     execution_document = {
         "semantic_key": semantic_key,
+        "measurement_worker_protocol": "WORKER_LOCAL_WARMUP_V1",
+        "threshold_protocol": profile.get("measurement_protocol_id", "LEGACY_V2"),
+        "warmup_scope": "EACH_MEASUREMENT_WORKER",
+        "context_scope": "FRESH_ENCODE_AND_DECODE_CONTEXT_PER_INNER_OBJECT",
+        "recovery_protocol": "PERSISTED_DECODE_CONTEXT_V1",
+        "recovery_output": "OWNED_CANONICAL_BUFFERS",
         "measurement_mode": profile["measurement_mode"],
         "timing_scope": profile["timing_scope"],
         "e2e_input_mode": "CANONICAL_MEMORY_ROUTED_VIEW",

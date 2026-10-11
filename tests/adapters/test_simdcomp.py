@@ -29,10 +29,6 @@ CONFIGS = [
     ("simdcomp-u32", {"api": "LENGTH"}, 0),
     ("simdcomp-u32", {"api": "MASKED"}, 0),
     ("simdcomp-u32", {"api": "WITHOUTMASK"}, 0),
-    ("delta-simdcomp-u32", {"api": "MASKED", "starting_point": 2**32 - 1}, 1),
-    ("delta-simdcomp-u32", {"api": "WITHOUTMASK", "starting_point": 2**31}, 1),
-    ("for-simdcomp-u32", {"api": "LENGTH", "starting_point": 2**32 - 1}, 2),
-    ("for-simdcomp-u32", {"api": "FULL", "starting_point": 2**31}, 3),
     ("simdcomp-u32", {"api": "MASKED", "isa": "AVX2"}, 4),
     ("simdcomp-u32", {"api": "WITHOUTMASK", "isa": "AVX2"}, 4),
 ]
@@ -65,13 +61,13 @@ def routed(values: np.ndarray) -> RoutedInput:
 
 def split(stream: bytes) -> tuple[dict, bytes]:
     _, n, _ = PREFIX.unpack_from(stream)
-    return json.loads(stream[PREFIX.size : PREFIX.size + n]), stream[PREFIX.size + n :]
+    return (json.loads(stream[PREFIX.size : PREFIX.size + n]), stream[PREFIX.size + n :])
 
 
 def fnv(data: bytes) -> int:
     value = 14695981039346656037
     for byte in data:
-        value = ((value ^ byte) * 1099511628211) % (2**64)
+        value = (value ^ byte) * 1099511628211 % 2**64
     return value
 
 
@@ -101,10 +97,10 @@ def oracle(values: np.ndarray, mode: int, seed: int) -> tuple[bytes, int, int, i
         else:
             for i, x in enumerate(codes):
                 for bit in range(width):
-                    if x & (1 << bit):
+                    if x & 1 << bit:
                         pos = i // lanes * width + bit
                         at = (pos // 32 * lanes + i % lanes) * 4 + pos % 32 // 8
-                        wire[at] |= 1 << (pos % 8)
+                        wire[at] |= 1 << pos % 8
         body += struct.pack("<HBBI", len(logical), width, layout, len(wire)) + wire
         value_bits += len(logical) * width
         payload += len(wire)
@@ -115,7 +111,7 @@ def oracle(values: np.ndarray, mode: int, seed: int) -> tuple[bytes, int, int, i
         + body
     )
     frame += struct.pack("<Q", fnv(frame))
-    return bytes(frame), value_bits, payload * 8 - value_bits, blocks
+    return (bytes(frame), value_bits, payload * 8 - value_bits, blocks)
 
 
 @pytest.mark.parametrize("key,params,mode", CONFIGS)
@@ -312,7 +308,7 @@ def test_malformed_descriptor_frame_and_wire_mode(key: str, params: dict, mode: 
                 session.decompress(pack(bad, frame))
         for offset in [0, 8, 12, 16, 20, 24, 28, 32, 40, 42, 43, 44, len(frame) - 1]:
             bad = bytearray(frame)
-            bad[offset] ^= 0x80
+            bad[offset] ^= 128
             with pytest.raises(ExecutionContractError):
                 session.decompress(pack(info, bad))
         for n in [0, 1, 43, 44, len(encoded) - 1]:
@@ -376,9 +372,9 @@ def test_logical_contract_errors_are_rejected(changes: dict) -> None:
 
 def test_foreign_native_library_is_rejected() -> None:
     wrong = SIMDCompAdapter(
-        ROOT / "build/adapters/maskedvbyte_u32/release/libtscb_maskedvbyte_u32.so", {}
+        ROOT / "build/adapters/deflate_zlib/release/libtscb_deflate_zlib.so", {}
     )
-    with pytest.raises(ExecutionContractError, match="identity/path"):
+    with pytest.raises(ExecutionContractError, match="identity/path|ABI unavailable"):
         wrong.create_session({})
 
 
@@ -394,7 +390,7 @@ def test_decoder_cannot_change_wire_mode_or_identity(key: str, params: dict, mod
         other_key = key
         other = {"api": "FULL" if mode == 2 else "LENGTH"}
     else:
-        other_key, other = "simdcomp-u32", {}
+        other_key, other = ("simdcomp-u32", {})
     session = adapter(other_key).create_session(other)
     try:
         with pytest.raises(ExecutionContractError, match="wire mode|identity"):

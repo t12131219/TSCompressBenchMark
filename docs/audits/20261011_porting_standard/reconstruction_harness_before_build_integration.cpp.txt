@@ -1,0 +1,45 @@
+#include "abba.hpp"
+#include "fabba.hpp"
+#include <cmath>
+#include <cstddef>
+#include <iostream>
+#include <limits>
+#include <stdexcept>
+#include <string>
+#include <vector>
+
+template<class Center, class Reconstruct>
+void verify(Reconstruct reconstruct) {
+    // A binary64 SIZE_MAX comparison rounds up on 64-bit targets. The exact
+    // power of two must be rejected before conversion to size_t.
+    const double outside_size_t = std::ldexp(1.0, std::numeric_limits<std::size_t>::digits);
+    for (double length : {outside_size_t, 1000000000.0, 3.0}) {
+        bool rejected = false;
+        try {
+            reconstruct(0.0, std::vector<Center>{{length, 1.0}}, 3);
+        } catch (const std::invalid_argument&) {
+            rejected = true;
+        }
+        if (!rejected) throw std::runtime_error("unsafe reconstruction length accepted");
+    }
+    const auto values = reconstruct(0.0, std::vector<Center>{{2.0, 2.0}}, 3);
+    if (values != std::vector<double>{0.0, 1.0, 2.0})
+        throw std::runtime_error("valid reconstruction changed");
+    bool rejected = false;
+    try {
+        reconstruct(0.0, std::vector<Center>{{1.0, 1.0}, {2.0, 2.0}}, 3);
+    } catch (const std::invalid_argument&) {
+        rejected = true;
+    }
+    if (!rejected) throw std::runtime_error("aggregate reconstruction length accepted");
+}
+
+int main(int argc, char** argv) {
+    if (argc > 2) throw std::invalid_argument("expected optional abba/fabba selector");
+    const std::string selected = argc == 2 ? argv[1] : "both";
+    if (selected != "abba" && selected != "fabba" && selected != "both")
+        throw std::invalid_argument("unknown codec selector");
+    if (selected != "fabba") verify<abba::Center>(abba::reconstruct);
+    if (selected != "abba") verify<fabba::Center>(fabba::reconstruct);
+    std::cout << "PASS_ABBA_FABBA_RECONSTRUCTION_CAPACITY_AND_CAST_LIMITS\n";
+}

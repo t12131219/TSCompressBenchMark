@@ -1,0 +1,3516 @@
+{
+  "schema_version": "tscb.general-native-build-audit.v1",
+  "status": "PASS",
+  "driver": {
+    "path": "tools/verify_general_native_builds.py",
+    "sha256": "9baf8fef539c8aa07c04bcce6503257cf924a9164b576a5e2663086ea0f5f578"
+  },
+  "record_count": 62,
+  "results": [
+    {
+      "algorithm": "alp",
+      "profile": "release",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/alp/release/build-record.json",
+        "sha256": "d1c619b4ba92861a854c042e2001026341a532da422f317390fbd02dcdb22a3a"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/alp/release/libtscb_alp.so",
+        "sha256": "7709f581b3673c3d64b5960d8df2bc1f8979086a17e4be49641d8f1bc05000d4"
+      },
+      "declared_dependencies_status": "PASS",
+      "verified_dependency_count": 222,
+      "native_tests": [
+        {
+          "scope": "FINITE_DIRECT_C_ABI_TEST",
+          "source": {
+            "path": "adapters/alp/tests/abi_smoke.cc",
+            "sha256": "2ad050b4ce74b530aa7edf591f498451c3e26c63261d7dcc75de6be63b08da92"
+          },
+          "compile": {
+            "command": [
+              "clang++",
+              "-std=c++17",
+              "-UNDEBUG",
+              "-O2",
+              "-DTSCB_ALP_RD=0",
+              "-I",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/native/include",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/alp/tests/abi_smoke.cc",
+              "-L",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/alp/release",
+              "-Wl,-rpath,/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/alp/release",
+              "-ltscb_alp",
+              "-lm",
+              "-o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/alp_release_abi"
+            ],
+            "returncode": 0,
+            "output": ""
+          },
+          "run": {
+            "command": [
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/alp_release_abi"
+            ],
+            "returncode": 0,
+            "output": "ALP ABI qualification PASS\n"
+          },
+          "executable": {
+            "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/alp_release_abi",
+            "sha256": "5d683de872584a2d998a6bbc5fc54632ae15cdbb2abff64ff0bc78ef26828a8d"
+          }
+        }
+      ],
+      "abi_version": "PASS"
+    },
+    {
+      "algorithm": "alp",
+      "profile": "sanitizer",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/alp/sanitizer/build-record.json",
+        "sha256": "551e29c5349a4033bc946da2a680385d7b276fd2a026bc8af77ab6018225fee2"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/alp/sanitizer/libtscb_alp.so",
+        "sha256": "aff92c9875704d6a5f1648fdb7269c2a2378ab5c526b174debde7954d52c6b3a"
+      },
+      "declared_dependencies_status": "PASS",
+      "verified_dependency_count": 223,
+      "native_tests": [
+        {
+          "scope": "FINITE_DIRECT_C_ABI_TEST",
+          "source": {
+            "path": "adapters/alp/tests/abi_smoke.cc",
+            "sha256": "2ad050b4ce74b530aa7edf591f498451c3e26c63261d7dcc75de6be63b08da92"
+          },
+          "compile": {
+            "command": [
+              "clang++",
+              "-std=c++17",
+              "-UNDEBUG",
+              "-O1",
+              "-g",
+              "-fno-omit-frame-pointer",
+              "-fsanitize=address,undefined",
+              "-no-pie",
+              "-DTSCB_ALP_RD=0",
+              "-I",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/native/include",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/alp/tests/abi_smoke.cc",
+              "-L",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/alp/sanitizer",
+              "-Wl,-rpath,/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/alp/sanitizer",
+              "-ltscb_alp",
+              "-lm",
+              "-o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/alp_sanitizer_abi"
+            ],
+            "returncode": 0,
+            "output": ""
+          },
+          "run": {
+            "command": [
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/alp_sanitizer_abi"
+            ],
+            "returncode": 0,
+            "output": "ALP ABI qualification PASS\n"
+          },
+          "executable": {
+            "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/alp_sanitizer_abi",
+            "sha256": "c62fc048e14d81931d8ab8251cbeb2b40268248b4e6eaea1511514eec7996950"
+          }
+        }
+      ]
+    },
+    {
+      "algorithm": "alp-rd",
+      "profile": "release",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/alp_rd/release/build-record.json",
+        "sha256": "c61774e1199f01925829e8a3daf43f922daea3cb8d2e1f07250960e6f8cc4c95"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/alp_rd/release/libtscb_alp_rd.so",
+        "sha256": "41a38abd6a822107546b7246bedb86ac4fd037a4dc2285c9f8843a8fa42c376e"
+      },
+      "declared_dependencies_status": "PASS",
+      "verified_dependency_count": 222,
+      "native_tests": [
+        {
+          "scope": "FINITE_DIRECT_C_ABI_TEST",
+          "source": {
+            "path": "adapters/alp/tests/abi_smoke.cc",
+            "sha256": "2ad050b4ce74b530aa7edf591f498451c3e26c63261d7dcc75de6be63b08da92"
+          },
+          "compile": {
+            "command": [
+              "clang++",
+              "-std=c++17",
+              "-UNDEBUG",
+              "-O2",
+              "-DTSCB_ALP_RD=1",
+              "-I",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/native/include",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/alp/tests/abi_smoke.cc",
+              "-L",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/alp_rd/release",
+              "-Wl,-rpath,/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/alp_rd/release",
+              "-ltscb_alp_rd",
+              "-lm",
+              "-o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/alp-rd_release_abi"
+            ],
+            "returncode": 0,
+            "output": ""
+          },
+          "run": {
+            "command": [
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/alp-rd_release_abi"
+            ],
+            "returncode": 0,
+            "output": "ALP ABI qualification PASS\n"
+          },
+          "executable": {
+            "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/alp-rd_release_abi",
+            "sha256": "6aa3e62c878cfd8de5eceae7bd4a386a7cb68d5ea8763ccaa2e977d0e7ed48c1"
+          }
+        }
+      ],
+      "abi_version": "PASS"
+    },
+    {
+      "algorithm": "alp-rd",
+      "profile": "sanitizer",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/alp_rd/sanitizer/build-record.json",
+        "sha256": "0536019ddafa117afb8f856310eb758d32038d19306c49d0e5cc1f622f900fce"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/alp_rd/sanitizer/libtscb_alp_rd.so",
+        "sha256": "3bae4d4a69b7bd2ff39dd1d2bb2e06108523479e55fa634db6006566f90a9bbc"
+      },
+      "declared_dependencies_status": "PASS",
+      "verified_dependency_count": 223,
+      "native_tests": [
+        {
+          "scope": "FINITE_DIRECT_C_ABI_TEST",
+          "source": {
+            "path": "adapters/alp/tests/abi_smoke.cc",
+            "sha256": "2ad050b4ce74b530aa7edf591f498451c3e26c63261d7dcc75de6be63b08da92"
+          },
+          "compile": {
+            "command": [
+              "clang++",
+              "-std=c++17",
+              "-UNDEBUG",
+              "-O1",
+              "-g",
+              "-fno-omit-frame-pointer",
+              "-fsanitize=address,undefined",
+              "-no-pie",
+              "-DTSCB_ALP_RD=1",
+              "-I",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/native/include",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/alp/tests/abi_smoke.cc",
+              "-L",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/alp_rd/sanitizer",
+              "-Wl,-rpath,/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/alp_rd/sanitizer",
+              "-ltscb_alp_rd",
+              "-lm",
+              "-o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/alp-rd_sanitizer_abi"
+            ],
+            "returncode": 0,
+            "output": ""
+          },
+          "run": {
+            "command": [
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/alp-rd_sanitizer_abi"
+            ],
+            "returncode": 0,
+            "output": "ALP ABI qualification PASS\n"
+          },
+          "executable": {
+            "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/alp-rd_sanitizer_abi",
+            "sha256": "2fdc928fdf60f9939e7569338d52c01a782c596bfc1ffc77870ce7516804bed6"
+          }
+        }
+      ]
+    },
+    {
+      "algorithm": "brotli-stream",
+      "profile": "release",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/brotli_stream/release/build-record.json",
+        "sha256": "36bec20ce2aaceced2e10a407db8e9b08b71ad67ae572437e5afc34bad9f5628"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/brotli_stream/release/libtscb_brotli_stream.so",
+        "sha256": "4a335ef64ff710e966fce7dc019e26324a4cbf07d31a420bb6afa1324828e99c"
+      },
+      "declared_dependencies_status": "PASS",
+      "verified_dependency_count": 355,
+      "native_tests": [
+        {
+          "scope": "FINITE_DIRECT_C_ABI_TEST",
+          "source": {
+            "path": "adapters/brotli_stream/tests/abi_smoke.c",
+            "sha256": "9c06d32be30ddabf23baa5f678e1964cf992887f7b320bff47eb28bf270d6b4a"
+          },
+          "compile": {
+            "command": [
+              "cc",
+              "-std=c11",
+              "-UNDEBUG",
+              "-O2",
+              "-I",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/native/include",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/brotli_stream/tests/abi_smoke.c",
+              "-L",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/brotli_stream/release",
+              "-Wl,-rpath,/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/brotli_stream/release",
+              "-ltscb_brotli_stream",
+              "-lm",
+              "-o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/brotli-stream_release_abi"
+            ],
+            "returncode": 0,
+            "output": ""
+          },
+          "run": {
+            "command": [
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/brotli-stream_release_abi"
+            ],
+            "returncode": 0,
+            "output": "Brotli stream C ABI smoke passed\n"
+          },
+          "executable": {
+            "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/brotli-stream_release_abi",
+            "sha256": "0f6b721f72f6708e88fedc3770ddb92f134ec369abf576d2ca10cee948cb7978"
+          }
+        }
+      ],
+      "abi_version": "PASS"
+    },
+    {
+      "algorithm": "brotli-stream",
+      "profile": "sanitizer",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/brotli_stream/sanitizer/build-record.json",
+        "sha256": "8a165bf62d420d1b9c8ee6b926d8fc835c68506f2c5ee5ea898e1d328967afed"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/brotli_stream/sanitizer/libtscb_brotli_stream.so",
+        "sha256": "21893bbe974bd9cfad978a79b7f9eadc12c1c2095201be52ce39dc670aeb3733"
+      },
+      "declared_dependencies_status": "PASS",
+      "verified_dependency_count": 359,
+      "native_tests": [
+        {
+          "scope": "FINITE_DIRECT_C_ABI_TEST",
+          "source": {
+            "path": "adapters/brotli_stream/tests/abi_smoke.c",
+            "sha256": "9c06d32be30ddabf23baa5f678e1964cf992887f7b320bff47eb28bf270d6b4a"
+          },
+          "compile": {
+            "command": [
+              "cc",
+              "-std=c11",
+              "-UNDEBUG",
+              "-O1",
+              "-g",
+              "-fno-omit-frame-pointer",
+              "-fsanitize=address,undefined",
+              "-no-pie",
+              "-I",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/native/include",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/brotli_stream/tests/abi_smoke.c",
+              "-L",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/brotli_stream/sanitizer",
+              "-Wl,-rpath,/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/brotli_stream/sanitizer",
+              "-ltscb_brotli_stream",
+              "-lm",
+              "-o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/brotli-stream_sanitizer_abi"
+            ],
+            "returncode": 0,
+            "output": ""
+          },
+          "run": {
+            "command": [
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/brotli-stream_sanitizer_abi"
+            ],
+            "returncode": 0,
+            "output": "Brotli stream C ABI smoke passed\n"
+          },
+          "executable": {
+            "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/brotli-stream_sanitizer_abi",
+            "sha256": "08bdaf35aa8e69ef03085475a92323d921a99812995c3e88bc95f08c03d7cc1d"
+          }
+        }
+      ]
+    },
+    {
+      "algorithm": "bzip2-stream",
+      "profile": "release",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/bzip2_stream/release/build-record.json",
+        "sha256": "30b5b04cea7fe76ece6ecad152e531d0e019951a04f5d1078325d324ad326eaf"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/bzip2_stream/release/libtscb_bzip2_stream.so",
+        "sha256": "7bc7954041f804700160177fe1d3808aecdda7664b98143a1107e3213e079e4b"
+      },
+      "declared_dependencies_status": "PASS",
+      "verified_dependency_count": 109,
+      "native_tests": [
+        {
+          "scope": "FINITE_DIRECT_C_ABI_TEST",
+          "source": {
+            "path": "adapters/bzip2_stream/tests/abi_smoke.c",
+            "sha256": "57f30d88f1b4b18f1f0e84ed43adc5e90911552e9ffda65bda2309e1eb1ab6e7"
+          },
+          "compile": {
+            "command": [
+              "cc",
+              "-std=c11",
+              "-UNDEBUG",
+              "-O2",
+              "-I",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/native/include",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/bzip2_stream/tests/abi_smoke.c",
+              "-L",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/bzip2_stream/release",
+              "-Wl,-rpath,/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/bzip2_stream/release",
+              "-ltscb_bzip2_stream",
+              "-lm",
+              "-o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/bzip2-stream_release_abi"
+            ],
+            "returncode": 0,
+            "output": ""
+          },
+          "run": {
+            "command": [
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/bzip2-stream_release_abi"
+            ],
+            "returncode": 0,
+            "output": "bzip2 C ABI smoke passed empty/small/100k/900k boundaries\n"
+          },
+          "executable": {
+            "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/bzip2-stream_release_abi",
+            "sha256": "25b64b415ca25f700f68d07889e6265ccd3739da0bed639bf6f704779a5e8dff"
+          }
+        }
+      ],
+      "abi_version": "PASS"
+    },
+    {
+      "algorithm": "bzip2-stream",
+      "profile": "sanitizer",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/bzip2_stream/sanitizer/build-record.json",
+        "sha256": "9050a659aef21b50dee04fa28ab447432212b5b0d062555a7cc94a96c7766a0d"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/bzip2_stream/sanitizer/libtscb_bzip2_stream.so",
+        "sha256": "13ae1bda03234d074664ad03d9105d6fc34d52aa7362414ba98436e296ad92e7"
+      },
+      "declared_dependencies_status": "PASS",
+      "verified_dependency_count": 114,
+      "native_tests": [
+        {
+          "scope": "FINITE_DIRECT_C_ABI_TEST",
+          "source": {
+            "path": "adapters/bzip2_stream/tests/abi_smoke.c",
+            "sha256": "57f30d88f1b4b18f1f0e84ed43adc5e90911552e9ffda65bda2309e1eb1ab6e7"
+          },
+          "compile": {
+            "command": [
+              "cc",
+              "-std=c11",
+              "-UNDEBUG",
+              "-O1",
+              "-g",
+              "-fno-omit-frame-pointer",
+              "-fsanitize=address,undefined",
+              "-no-pie",
+              "-I",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/native/include",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/bzip2_stream/tests/abi_smoke.c",
+              "-L",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/bzip2_stream/sanitizer",
+              "-Wl,-rpath,/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/bzip2_stream/sanitizer",
+              "-ltscb_bzip2_stream",
+              "-lm",
+              "-o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/bzip2-stream_sanitizer_abi"
+            ],
+            "returncode": 0,
+            "output": ""
+          },
+          "run": {
+            "command": [
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/bzip2-stream_sanitizer_abi"
+            ],
+            "returncode": 0,
+            "output": "bzip2 C ABI smoke passed empty/small/100k/900k boundaries\n"
+          },
+          "executable": {
+            "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/bzip2-stream_sanitizer_abi",
+            "sha256": "95f772c448a352d910491166c46bcee1a85d0d82feca1923c875c3803f33fd9f"
+          }
+        }
+      ]
+    },
+    {
+      "algorithm": "chimp",
+      "profile": "release",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/chimp/release/build-record.json",
+        "sha256": "f8917b894548e2ebf71a9c457e09722b392e1bcfa3b3c31e80bf3d5601c6fcf0"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/chimp/release/libtscb_chimp.so",
+        "sha256": "16175d1443399e47011295fa175e09cc3f3b7aa883fcb0a350709f399b87c3ac"
+      },
+      "declared_dependencies_status": "PASS",
+      "verified_dependency_count": 251,
+      "native_tests": [
+        {
+          "scope": "FINITE_DIRECT_C_ABI_TEST",
+          "source": {
+            "path": "adapters/rewrite_lossless/tests/qualification.cc",
+            "sha256": "baa1d2530c01a93aecd48d3ecc3485c44d1cca1f16427fcb57f7f77d0f52ead3"
+          },
+          "compile": {
+            "command": [
+              "c++",
+              "-std=c++17",
+              "-UNDEBUG",
+              "-O2",
+              "-DTSCB_REWRITE_KIND=1",
+              "-DTSCB_REWRITE_KEY=\"chimp\"",
+              "-I",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/native/include",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/rewrite_lossless/tests/qualification.cc",
+              "-L",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/chimp/release",
+              "-Wl,-rpath,/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/chimp/release",
+              "-ltscb_chimp",
+              "-lm",
+              "-o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/chimp_release_abi"
+            ],
+            "returncode": 0,
+            "output": ""
+          },
+          "run": {
+            "command": [
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/chimp_release_abi"
+            ],
+            "returncode": 0,
+            "output": "chimp native ABI, fresh decoding, paired int64 extremes, bounds, protected output, lifecycle and malformed PASS\n"
+          },
+          "executable": {
+            "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/chimp_release_abi",
+            "sha256": "9472fa23a7654113bc242015814c42fef038e94c2a7be60685337242ff7545c0"
+          }
+        }
+      ],
+      "abi_version": "PASS"
+    },
+    {
+      "algorithm": "chimp",
+      "profile": "sanitizer",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/chimp/sanitizer/build-record.json",
+        "sha256": "b8e9ef96bd77611f436997ea06f8ad09e761e33a4aa434a694eed57106d2adef"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/chimp/sanitizer/libtscb_chimp.so",
+        "sha256": "97af0517b4f92ec35c9625c0bd86466df8247d98160c613f9e5b65463810e87c"
+      },
+      "declared_dependencies_status": "PASS",
+      "verified_dependency_count": 253,
+      "native_tests": [
+        {
+          "scope": "FINITE_DIRECT_C_ABI_TEST",
+          "source": {
+            "path": "adapters/rewrite_lossless/tests/qualification.cc",
+            "sha256": "baa1d2530c01a93aecd48d3ecc3485c44d1cca1f16427fcb57f7f77d0f52ead3"
+          },
+          "compile": {
+            "command": [
+              "c++",
+              "-std=c++17",
+              "-UNDEBUG",
+              "-O1",
+              "-g",
+              "-fno-omit-frame-pointer",
+              "-fsanitize=address,undefined",
+              "-no-pie",
+              "-DTSCB_REWRITE_KIND=1",
+              "-DTSCB_REWRITE_KEY=\"chimp\"",
+              "-I",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/native/include",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/rewrite_lossless/tests/qualification.cc",
+              "-L",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/chimp/sanitizer",
+              "-Wl,-rpath,/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/chimp/sanitizer",
+              "-ltscb_chimp",
+              "-lm",
+              "-o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/chimp_sanitizer_abi"
+            ],
+            "returncode": 0,
+            "output": ""
+          },
+          "run": {
+            "command": [
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/chimp_sanitizer_abi"
+            ],
+            "returncode": 0,
+            "output": "chimp native ABI, fresh decoding, paired int64 extremes, bounds, protected output, lifecycle and malformed PASS\n"
+          },
+          "executable": {
+            "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/chimp_sanitizer_abi",
+            "sha256": "2a2f2e340d3cfd4956525e89e33a9694dc1270c77237724e708c19146fcb7fdc"
+          }
+        }
+      ]
+    },
+    {
+      "algorithm": "chimp128",
+      "profile": "release",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/chimp128/release/build-record.json",
+        "sha256": "f1d4e2d8765a8822e5469ac8fae75f55ecc7193fd082a491da5338c7cbe6be93"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/chimp128/release/libtscb_chimp128.so",
+        "sha256": "3a823d5e6c8c9b25715aeea2023463ec2e8e892de04781304e69b4e5ab9c9476"
+      },
+      "declared_dependencies_status": "PASS",
+      "verified_dependency_count": 251,
+      "native_tests": [
+        {
+          "scope": "FINITE_DIRECT_C_ABI_TEST",
+          "source": {
+            "path": "adapters/rewrite_lossless/tests/qualification.cc",
+            "sha256": "baa1d2530c01a93aecd48d3ecc3485c44d1cca1f16427fcb57f7f77d0f52ead3"
+          },
+          "compile": {
+            "command": [
+              "c++",
+              "-std=c++17",
+              "-UNDEBUG",
+              "-O2",
+              "-DTSCB_REWRITE_KIND=2",
+              "-DTSCB_REWRITE_KEY=\"chimp128\"",
+              "-I",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/native/include",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/rewrite_lossless/tests/qualification.cc",
+              "-L",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/chimp128/release",
+              "-Wl,-rpath,/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/chimp128/release",
+              "-ltscb_chimp128",
+              "-lm",
+              "-o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/chimp128_release_abi"
+            ],
+            "returncode": 0,
+            "output": ""
+          },
+          "run": {
+            "command": [
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/chimp128_release_abi"
+            ],
+            "returncode": 0,
+            "output": "chimp128 native ABI, fresh decoding, paired int64 extremes, bounds, protected output, lifecycle and malformed PASS\n"
+          },
+          "executable": {
+            "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/chimp128_release_abi",
+            "sha256": "4875735eea8a8500efa8f8b0e7531e5b1554405f968dc78e90b503ccd46ab31f"
+          }
+        }
+      ],
+      "abi_version": "PASS"
+    },
+    {
+      "algorithm": "chimp128",
+      "profile": "sanitizer",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/chimp128/sanitizer/build-record.json",
+        "sha256": "c0b0dd729a975ae35676e51e4c9165ac242badbe50d955fed6b9ed4fcec40302"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/chimp128/sanitizer/libtscb_chimp128.so",
+        "sha256": "66a9b5e3021abd1f9171d74f4bb5554db527cd7209f481504befc2036e1a9c7e"
+      },
+      "declared_dependencies_status": "PASS",
+      "verified_dependency_count": 253,
+      "native_tests": [
+        {
+          "scope": "FINITE_DIRECT_C_ABI_TEST",
+          "source": {
+            "path": "adapters/rewrite_lossless/tests/qualification.cc",
+            "sha256": "baa1d2530c01a93aecd48d3ecc3485c44d1cca1f16427fcb57f7f77d0f52ead3"
+          },
+          "compile": {
+            "command": [
+              "c++",
+              "-std=c++17",
+              "-UNDEBUG",
+              "-O1",
+              "-g",
+              "-fno-omit-frame-pointer",
+              "-fsanitize=address,undefined",
+              "-no-pie",
+              "-DTSCB_REWRITE_KIND=2",
+              "-DTSCB_REWRITE_KEY=\"chimp128\"",
+              "-I",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/native/include",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/rewrite_lossless/tests/qualification.cc",
+              "-L",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/chimp128/sanitizer",
+              "-Wl,-rpath,/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/chimp128/sanitizer",
+              "-ltscb_chimp128",
+              "-lm",
+              "-o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/chimp128_sanitizer_abi"
+            ],
+            "returncode": 0,
+            "output": ""
+          },
+          "run": {
+            "command": [
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/chimp128_sanitizer_abi"
+            ],
+            "returncode": 0,
+            "output": "chimp128 native ABI, fresh decoding, paired int64 extremes, bounds, protected output, lifecycle and malformed PASS\n"
+          },
+          "executable": {
+            "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/chimp128_sanitizer_abi",
+            "sha256": "f6186fd6fbe2ab8d4e4c90f90c33f4a8f63b6e4bf0fd4ed1c5752c660dd9601e"
+          }
+        }
+      ]
+    },
+    {
+      "algorithm": "deflate-zlib",
+      "profile": "release",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/deflate_zlib/release/build-record.json",
+        "sha256": "6441c84606e1745a9d457af78c12c235692296a616370861f7ce28b872142aba"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/deflate_zlib/release/libtscb_deflate_zlib.so",
+        "sha256": "e96a6e98996d30482f12e7a19e6ddc5721d787dacbae32ee69f45a792efc9430"
+      },
+      "declared_dependencies_status": "PASS",
+      "verified_dependency_count": 160,
+      "native_tests": [
+        {
+          "scope": "FINITE_DIRECT_C_ABI_TEST",
+          "source": {
+            "path": "adapters/deflate_zlib/tests/abi_smoke.c",
+            "sha256": "ba6bd8105168b709190b4420877abc4fc79f700237fbbef1ff502addcb103b92"
+          },
+          "compile": {
+            "command": [
+              "cc",
+              "-std=c11",
+              "-UNDEBUG",
+              "-O2",
+              "-I",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/native/include",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/deflate_zlib/tests/abi_smoke.c",
+              "-L",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/deflate_zlib/release",
+              "-Wl,-rpath,/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/deflate_zlib/release",
+              "-ltscb_deflate_zlib",
+              "-lm",
+              "-o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/deflate-zlib_release_abi"
+            ],
+            "returncode": 0,
+            "output": ""
+          },
+          "run": {
+            "command": [
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/deflate-zlib_release_abi"
+            ],
+            "returncode": 0,
+            "output": "DEFLATE zlib C ABI smoke passed\n"
+          },
+          "executable": {
+            "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/deflate-zlib_release_abi",
+            "sha256": "0f55b31f1539929c1288bc3bcdffa795b7c60a31b72c669b115f2462e370d118"
+          }
+        }
+      ],
+      "abi_version": "PASS"
+    },
+    {
+      "algorithm": "deflate-zlib",
+      "profile": "sanitizer",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/deflate_zlib/sanitizer/build-record.json",
+        "sha256": "0f7f21e1c4a8c10a918862969f9c715e5f13c2095ab68ebb57e113478f4f20d5"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/deflate_zlib/sanitizer/libtscb_deflate_zlib.so",
+        "sha256": "3df1caabf12c7717d8f2dc71234046df3dd1620dfce89004e5ae64c7dfea0382"
+      },
+      "declared_dependencies_status": "PASS",
+      "verified_dependency_count": 165,
+      "native_tests": [
+        {
+          "scope": "FINITE_DIRECT_C_ABI_TEST",
+          "source": {
+            "path": "adapters/deflate_zlib/tests/abi_smoke.c",
+            "sha256": "ba6bd8105168b709190b4420877abc4fc79f700237fbbef1ff502addcb103b92"
+          },
+          "compile": {
+            "command": [
+              "cc",
+              "-std=c11",
+              "-UNDEBUG",
+              "-O1",
+              "-g",
+              "-fno-omit-frame-pointer",
+              "-fsanitize=address,undefined",
+              "-no-pie",
+              "-I",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/native/include",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/deflate_zlib/tests/abi_smoke.c",
+              "-L",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/deflate_zlib/sanitizer",
+              "-Wl,-rpath,/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/deflate_zlib/sanitizer",
+              "-ltscb_deflate_zlib",
+              "-lm",
+              "-o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/deflate-zlib_sanitizer_abi"
+            ],
+            "returncode": 0,
+            "output": ""
+          },
+          "run": {
+            "command": [
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/deflate-zlib_sanitizer_abi"
+            ],
+            "returncode": 0,
+            "output": "DEFLATE zlib C ABI smoke passed\n"
+          },
+          "executable": {
+            "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/deflate-zlib_sanitizer_abi",
+            "sha256": "6de08bf454d92c3db2605c95971beb2ee111d61ddbc5a8554369337ca48be0f1"
+          }
+        }
+      ]
+    },
+    {
+      "algorithm": "elf",
+      "profile": "release",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/elf/release/build-record.json",
+        "sha256": "f11652564064a158d958c7af637f727c82cd5bfbe7c9911257f7e7a090620592"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/elf/release/libtscb_elf.so",
+        "sha256": "861ab8d325ce9905836adc5a669f20b15b752043225df8030835e402f72b04d5"
+      },
+      "declared_dependencies_status": "PASS",
+      "verified_dependency_count": 281,
+      "native_tests": [
+        {
+          "scope": "FINITE_DIRECT_C_ABI_TEST",
+          "source": {
+            "path": "adapters/rewrite_lossless/tests/qualification.cc",
+            "sha256": "baa1d2530c01a93aecd48d3ecc3485c44d1cca1f16427fcb57f7f77d0f52ead3"
+          },
+          "compile": {
+            "command": [
+              "c++",
+              "-std=c++17",
+              "-UNDEBUG",
+              "-O2",
+              "-DTSCB_REWRITE_KIND=6",
+              "-DTSCB_REWRITE_KEY=\"elf\"",
+              "-I",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/native/include",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/rewrite_lossless/tests/qualification.cc",
+              "-L",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/elf/release",
+              "-Wl,-rpath,/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/elf/release",
+              "-ltscb_elf",
+              "-lm",
+              "-o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/elf_release_abi"
+            ],
+            "returncode": 0,
+            "output": ""
+          },
+          "run": {
+            "command": [
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/elf_release_abi"
+            ],
+            "returncode": 0,
+            "output": "elf native ABI, fresh decoding, paired int64 extremes, bounds, protected output, lifecycle and malformed PASS\n"
+          },
+          "executable": {
+            "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/elf_release_abi",
+            "sha256": "83e68266596eae38a8c1e8e88d42a8da253f1acaba2176b9306e89ff6219c056"
+          }
+        }
+      ],
+      "abi_version": "PASS"
+    },
+    {
+      "algorithm": "elf",
+      "profile": "sanitizer",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/elf/sanitizer/build-record.json",
+        "sha256": "1c7ac6a95fae3523e6345dcaff1fef74fb041c3aa4e6b7a0f75cb81a32aa3da4"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/elf/sanitizer/libtscb_elf.so",
+        "sha256": "a3dc9ebb088c28fcbbc770e18b0c56cc8ae4c5445c91043c0aaa200e7daae757"
+      },
+      "declared_dependencies_status": "PASS",
+      "verified_dependency_count": 283,
+      "native_tests": [
+        {
+          "scope": "FINITE_DIRECT_C_ABI_TEST",
+          "source": {
+            "path": "adapters/rewrite_lossless/tests/qualification.cc",
+            "sha256": "baa1d2530c01a93aecd48d3ecc3485c44d1cca1f16427fcb57f7f77d0f52ead3"
+          },
+          "compile": {
+            "command": [
+              "c++",
+              "-std=c++17",
+              "-UNDEBUG",
+              "-O1",
+              "-g",
+              "-fno-omit-frame-pointer",
+              "-fsanitize=address,undefined",
+              "-no-pie",
+              "-DTSCB_REWRITE_KIND=6",
+              "-DTSCB_REWRITE_KEY=\"elf\"",
+              "-I",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/native/include",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/rewrite_lossless/tests/qualification.cc",
+              "-L",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/elf/sanitizer",
+              "-Wl,-rpath,/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/elf/sanitizer",
+              "-ltscb_elf",
+              "-lm",
+              "-o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/elf_sanitizer_abi"
+            ],
+            "returncode": 0,
+            "output": ""
+          },
+          "run": {
+            "command": [
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/elf_sanitizer_abi"
+            ],
+            "returncode": 0,
+            "output": "elf native ABI, fresh decoding, paired int64 extremes, bounds, protected output, lifecycle and malformed PASS\n"
+          },
+          "executable": {
+            "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/elf_sanitizer_abi",
+            "sha256": "5c2fbe48f08c109d5f627ed77b33c72061f81e934a865a2663fed2a39f9f31e1"
+          }
+        }
+      ]
+    },
+    {
+      "algorithm": "elf-plus",
+      "profile": "release",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/elf_plus/release/build-record.json",
+        "sha256": "fc3dc49c3c2bf31ef8633f572ca04be17c5b5acc98e48ccf32395e1b00ef31de"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/elf_plus/release/libtscb_elf_plus.so",
+        "sha256": "497701eb38926cbe7f9ff80c858e64efa3ae90466c1bbc8cac1e15719cbf6fee"
+      },
+      "declared_dependencies_status": "PASS",
+      "verified_dependency_count": 284,
+      "native_tests": [
+        {
+          "scope": "FINITE_DIRECT_C_ABI_TEST",
+          "source": {
+            "path": "adapters/rewrite_lossless/tests/qualification.cc",
+            "sha256": "baa1d2530c01a93aecd48d3ecc3485c44d1cca1f16427fcb57f7f77d0f52ead3"
+          },
+          "compile": {
+            "command": [
+              "c++",
+              "-std=c++17",
+              "-UNDEBUG",
+              "-O2",
+              "-DTSCB_REWRITE_KIND=3",
+              "-DTSCB_REWRITE_KEY=\"elf-plus\"",
+              "-I",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/native/include",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/rewrite_lossless/tests/qualification.cc",
+              "-L",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/elf_plus/release",
+              "-Wl,-rpath,/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/elf_plus/release",
+              "-ltscb_elf_plus",
+              "-lm",
+              "-o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/elf-plus_release_abi"
+            ],
+            "returncode": 0,
+            "output": ""
+          },
+          "run": {
+            "command": [
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/elf-plus_release_abi"
+            ],
+            "returncode": 0,
+            "output": "elf-plus native ABI, fresh decoding, paired int64 extremes, bounds, protected output, lifecycle and malformed PASS\n"
+          },
+          "executable": {
+            "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/elf-plus_release_abi",
+            "sha256": "14948114368cafb48bb7ee0a86758290576aa9daeabc1f8138b4115f24ba0122"
+          }
+        }
+      ],
+      "abi_version": "PASS"
+    },
+    {
+      "algorithm": "elf-plus",
+      "profile": "sanitizer",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/elf_plus/sanitizer/build-record.json",
+        "sha256": "7234842f1127023023b43c32d785fe053bdc25e8a2fb913dc6c258bf82d9beaf"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/elf_plus/sanitizer/libtscb_elf_plus.so",
+        "sha256": "05a0aa9d84de0dfa676f96850250a74ab99577a2dc2dee94c08d475e6a545f4d"
+      },
+      "declared_dependencies_status": "PASS",
+      "verified_dependency_count": 286,
+      "native_tests": [
+        {
+          "scope": "FINITE_DIRECT_C_ABI_TEST",
+          "source": {
+            "path": "adapters/rewrite_lossless/tests/qualification.cc",
+            "sha256": "baa1d2530c01a93aecd48d3ecc3485c44d1cca1f16427fcb57f7f77d0f52ead3"
+          },
+          "compile": {
+            "command": [
+              "c++",
+              "-std=c++17",
+              "-UNDEBUG",
+              "-O1",
+              "-g",
+              "-fno-omit-frame-pointer",
+              "-fsanitize=address,undefined",
+              "-no-pie",
+              "-DTSCB_REWRITE_KIND=3",
+              "-DTSCB_REWRITE_KEY=\"elf-plus\"",
+              "-I",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/native/include",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/rewrite_lossless/tests/qualification.cc",
+              "-L",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/elf_plus/sanitizer",
+              "-Wl,-rpath,/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/elf_plus/sanitizer",
+              "-ltscb_elf_plus",
+              "-lm",
+              "-o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/elf-plus_sanitizer_abi"
+            ],
+            "returncode": 0,
+            "output": ""
+          },
+          "run": {
+            "command": [
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/elf-plus_sanitizer_abi"
+            ],
+            "returncode": 0,
+            "output": "elf-plus native ABI, fresh decoding, paired int64 extremes, bounds, protected output, lifecycle and malformed PASS\n"
+          },
+          "executable": {
+            "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/elf-plus_sanitizer_abi",
+            "sha256": "f46262dca4c40d0e40bb22e0a01fb9def6a2a81e17b3a364899d376ef67f2d99"
+          }
+        }
+      ]
+    },
+    {
+      "algorithm": "elf-star",
+      "profile": "release",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/elf_star/release/build-record.json",
+        "sha256": "1f151a93d8da2c3df44241fc8c64843ba0465d2b618dc0d45375c8e121c7c18a"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/elf_star/release/libtscb_elf_star.so",
+        "sha256": "fadc683592149e938d3b371604558282fc9c965397a220841fb03391950bafcd"
+      },
+      "declared_dependencies_status": "PASS",
+      "verified_dependency_count": 282,
+      "native_tests": [
+        {
+          "scope": "FINITE_DIRECT_C_ABI_TEST",
+          "source": {
+            "path": "adapters/rewrite_lossless/tests/qualification.cc",
+            "sha256": "baa1d2530c01a93aecd48d3ecc3485c44d1cca1f16427fcb57f7f77d0f52ead3"
+          },
+          "compile": {
+            "command": [
+              "c++",
+              "-std=c++17",
+              "-UNDEBUG",
+              "-O2",
+              "-DTSCB_REWRITE_KIND=7",
+              "-DTSCB_REWRITE_KEY=\"elf-star\"",
+              "-I",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/native/include",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/rewrite_lossless/tests/qualification.cc",
+              "-L",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/elf_star/release",
+              "-Wl,-rpath,/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/elf_star/release",
+              "-ltscb_elf_star",
+              "-lm",
+              "-o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/elf-star_release_abi"
+            ],
+            "returncode": 0,
+            "output": ""
+          },
+          "run": {
+            "command": [
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/elf-star_release_abi"
+            ],
+            "returncode": 0,
+            "output": "elf-star native ABI, fresh decoding, paired int64 extremes, bounds, protected output, lifecycle and malformed PASS\n"
+          },
+          "executable": {
+            "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/elf-star_release_abi",
+            "sha256": "4084645e50bde32219681db8161dd1e30448dc3f3321081585445b8a780aaccb"
+          }
+        }
+      ],
+      "abi_version": "PASS"
+    },
+    {
+      "algorithm": "elf-star",
+      "profile": "sanitizer",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/elf_star/sanitizer/build-record.json",
+        "sha256": "b8c2ee7518365c023d61c0779d0bf2d9df259284ef7812878b1b716479a2487c"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/elf_star/sanitizer/libtscb_elf_star.so",
+        "sha256": "58e791723e639d5d12f7cf4de780972b0c1ca77db91dc5e46ee75e7c567e8eed"
+      },
+      "declared_dependencies_status": "PASS",
+      "verified_dependency_count": 284,
+      "native_tests": [
+        {
+          "scope": "FINITE_DIRECT_C_ABI_TEST",
+          "source": {
+            "path": "adapters/rewrite_lossless/tests/qualification.cc",
+            "sha256": "baa1d2530c01a93aecd48d3ecc3485c44d1cca1f16427fcb57f7f77d0f52ead3"
+          },
+          "compile": {
+            "command": [
+              "c++",
+              "-std=c++17",
+              "-UNDEBUG",
+              "-O1",
+              "-g",
+              "-fno-omit-frame-pointer",
+              "-fsanitize=address,undefined",
+              "-no-pie",
+              "-DTSCB_REWRITE_KIND=7",
+              "-DTSCB_REWRITE_KEY=\"elf-star\"",
+              "-I",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/native/include",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/rewrite_lossless/tests/qualification.cc",
+              "-L",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/elf_star/sanitizer",
+              "-Wl,-rpath,/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/elf_star/sanitizer",
+              "-ltscb_elf_star",
+              "-lm",
+              "-o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/elf-star_sanitizer_abi"
+            ],
+            "returncode": 0,
+            "output": ""
+          },
+          "run": {
+            "command": [
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/elf-star_sanitizer_abi"
+            ],
+            "returncode": 0,
+            "output": "elf-star native ABI, fresh decoding, paired int64 extremes, bounds, protected output, lifecycle and malformed PASS\n"
+          },
+          "executable": {
+            "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/elf-star_sanitizer_abi",
+            "sha256": "b43915336049df290c73b4da99dde87bb50f474ce507d87751dfb8458563cd1b"
+          }
+        }
+      ]
+    },
+    {
+      "algorithm": "fse",
+      "profile": "release",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/fse/release/build-record.json",
+        "sha256": "c51ff57ac6f6759ea5693bb5d4e5b6b14c04ae10f1ed47fcbedbe43019bf3979"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/fse/release/libtscb_fse.so",
+        "sha256": "d0dcb0cc3ed5257755bdcb60b1d334d2df7e637d0fa228a5719f5d96eecd4e55"
+      },
+      "declared_dependencies_status": "PASS",
+      "verified_dependency_count": 105,
+      "native_tests": [],
+      "abi_version": "PASS"
+    },
+    {
+      "algorithm": "fse",
+      "profile": "sanitizer",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/fse/sanitizer/build-record.json",
+        "sha256": "37ebd16ea553766bc370dc9e0c934e7b9690bc082838fcbc47d7952f757c5858"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/fse/sanitizer/libtscb_fse.so",
+        "sha256": "2c3520a3feeffaa3d6d1b3af5ccd67a1eec07ee4b2a70a6737ef1e953153c411"
+      },
+      "declared_dependencies_status": "PASS",
+      "verified_dependency_count": 110,
+      "native_tests": []
+    },
+    {
+      "algorithm": "huff0",
+      "profile": "release",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/huff0/release/build-record.json",
+        "sha256": "f3403db544b5ec376e36a6511fc0013da9e287f6e85e4344b969d6a7e41751be"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/huff0/release/libtscb_huff0.so",
+        "sha256": "45a858aaab387a28253102647887f161aacca8ecb690e3836b4e3a2e654c4bdb"
+      },
+      "declared_dependencies_status": "PASS",
+      "verified_dependency_count": 105,
+      "native_tests": [],
+      "abi_version": "PASS"
+    },
+    {
+      "algorithm": "huff0",
+      "profile": "sanitizer",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/huff0/sanitizer/build-record.json",
+        "sha256": "fa3a35d7706f2754459d4de4bd205e83ab22037a0693d69ccfaffee4c75138eb"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/huff0/sanitizer/libtscb_huff0.so",
+        "sha256": "d9e04f23ff32df7864be120ab9c48388fb51c4d28a66f27093afb56a4b9385f9"
+      },
+      "declared_dependencies_status": "PASS",
+      "verified_dependency_count": 110,
+      "native_tests": []
+    },
+    {
+      "algorithm": "leats-lossless-i64",
+      "profile": "release",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/leats_lossless_i64/release/build-record.json",
+        "sha256": "5260814b034a49dc3883e91d5690e1e741aa1cafeebb09aa54055be649f9a0a5"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/leats_lossless_i64/release/libtscb_leats_lossless_i64.so",
+        "sha256": "7ca6b00bea90644c31d538a5435de32a6884243db236bc2de93c764635a6e239"
+      },
+      "declared_dependencies_status": "PASS",
+      "verified_dependency_count": 575,
+      "native_tests": [
+        {
+          "scope": "FINITE_DIRECT_C_ABI_TEST",
+          "source": {
+            "path": "adapters/neats/tests/abi_smoke.cc",
+            "sha256": "ad02108a0dbc3a0c6337382f380bc754adfe321ceb12f0c6d11e6665624df0f9"
+          },
+          "compile": {
+            "command": [
+              "c++",
+              "-std=c++20",
+              "-UNDEBUG",
+              "-O2",
+              "-DTSCB_TEST_NEATS=0",
+              "-I",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/native/include",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/neats/tests/abi_smoke.cc",
+              "-L",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/leats_lossless_i64/release",
+              "-Wl,-rpath,/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/leats_lossless_i64/release",
+              "-ltscb_leats_lossless_i64",
+              "-lm",
+              "-o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/leats-lossless-i64_release_abi"
+            ],
+            "returncode": 0,
+            "output": ""
+          },
+          "run": {
+            "command": [
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/leats-lossless-i64_release_abi"
+            ],
+            "returncode": 0,
+            "output": "NeaTS/LeaTS native ABI smoke: PASS\n"
+          },
+          "executable": {
+            "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/leats-lossless-i64_release_abi",
+            "sha256": "53c90b96de317c8c7cea487e1db3a9c4d8a5c8912549aabc515f11dfc6be3142"
+          }
+        }
+      ],
+      "abi_version": "PASS"
+    },
+    {
+      "algorithm": "leats-lossless-i64",
+      "profile": "sanitizer",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/leats_lossless_i64/sanitizer/build-record.json",
+        "sha256": "5c936c96f6d9be538235701f9a445ca0def7bba096e4a65fbb37fffb681a7133"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/leats_lossless_i64/sanitizer/libtscb_leats_lossless_i64.so",
+        "sha256": "c2320a70ed369444e2e73087703f58946d3325d4a23ffd6d41fe347f935778a8"
+      },
+      "declared_dependencies_status": "PASS",
+      "verified_dependency_count": 577,
+      "native_tests": [
+        {
+          "scope": "FINITE_DIRECT_C_ABI_TEST",
+          "source": {
+            "path": "adapters/neats/tests/abi_smoke.cc",
+            "sha256": "ad02108a0dbc3a0c6337382f380bc754adfe321ceb12f0c6d11e6665624df0f9"
+          },
+          "compile": {
+            "command": [
+              "c++",
+              "-std=c++20",
+              "-UNDEBUG",
+              "-O1",
+              "-g",
+              "-fno-omit-frame-pointer",
+              "-fsanitize=address,undefined",
+              "-no-pie",
+              "-DTSCB_TEST_NEATS=0",
+              "-I",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/native/include",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/neats/tests/abi_smoke.cc",
+              "-L",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/leats_lossless_i64/sanitizer",
+              "-Wl,-rpath,/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/leats_lossless_i64/sanitizer",
+              "-ltscb_leats_lossless_i64",
+              "-lm",
+              "-o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/leats-lossless-i64_sanitizer_abi"
+            ],
+            "returncode": 0,
+            "output": ""
+          },
+          "run": {
+            "command": [
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/leats-lossless-i64_sanitizer_abi"
+            ],
+            "returncode": 0,
+            "output": "NeaTS/LeaTS native ABI smoke: PASS\n"
+          },
+          "executable": {
+            "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/leats-lossless-i64_sanitizer_abi",
+            "sha256": "e81fedfcef1352747fc3d9caff14ad3f7d5e77f1a7dbfdba80ff0ac064afcb74"
+          }
+        }
+      ]
+    },
+    {
+      "algorithm": "lz4-frame",
+      "profile": "release",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/lz4_frame/release/build-record.json",
+        "sha256": "876d8c14c37459766c193312c9fddb83c88c43ece4aac161fa3808cf56852362"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/lz4_frame/release/libtscb_lz4_frame.so",
+        "sha256": "015b379d88be9f2ac07fcea2902839f9195bc21576d0fb59df95f20e658c039e"
+      },
+      "declared_dependencies_status": "PASS",
+      "verified_dependency_count": 103,
+      "native_tests": [],
+      "abi_version": "PASS"
+    },
+    {
+      "algorithm": "lz4-frame",
+      "profile": "sanitizer",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/lz4_frame/sanitizer/build-record.json",
+        "sha256": "c018b4247884e6685940613fec659a7e0586ec317d5523c3f04ecdb2bec3cdfe"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/lz4_frame/sanitizer/libtscb_lz4_frame.so",
+        "sha256": "7a8fea0a6b2438241e942ab99317362f82b4cd5db5026f5b69a6bfe2f7cf672d"
+      },
+      "declared_dependencies_status": "PASS",
+      "verified_dependency_count": 108,
+      "native_tests": []
+    },
+    {
+      "algorithm": "lzss-dipperstein-c",
+      "profile": "release",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/lzss_dipperstein_c/release/build-record.json",
+        "sha256": "2aa36aceeb66eb9f0a6617798d671e7fae3e20c2d3009d5670c00ed6d1195f4a"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/lzss_dipperstein_c/release/libtscb_lzss_dipperstein_c.so",
+        "sha256": "64639cd65686096f31d46137ae2b70f8ab028e3f673152866e4e53e92f24d8e5"
+      },
+      "declared_dependencies_status": "PASS",
+      "verified_dependency_count": 123,
+      "native_tests": [],
+      "abi_version": "PASS"
+    },
+    {
+      "algorithm": "lzss-dipperstein-c",
+      "profile": "sanitizer",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/lzss_dipperstein_c/sanitizer/build-record.json",
+        "sha256": "f8cffa821b87840c7e8332f333e56d987246a620812054bbafa6f816ece9bd3c"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/lzss_dipperstein_c/sanitizer/libtscb_lzss_dipperstein_c.so",
+        "sha256": "3e0c64a60b9bda6b4d1a7e6ae8b89342fd1d6410577705c87df46650b189c380"
+      },
+      "declared_dependencies_status": "PASS",
+      "verified_dependency_count": 128,
+      "native_tests": []
+    },
+    {
+      "algorithm": "lzss-raw",
+      "profile": "release",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/lzss_raw/release/build-record.json",
+        "sha256": "c7ddcf108cb5b4aad2b8aebdfc299ef81521a8556d32b8da636ac409db2f5e38"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/lzss_raw/release/libtscb_lzss_raw.so",
+        "sha256": "9b6034d6a5f6eb1589e23d35812476cbbba5e628a403eebfee75e97a757c0329"
+      },
+      "declared_dependencies_status": "PASS",
+      "verified_dependency_count": 174,
+      "native_tests": [
+        {
+          "scope": "FINITE_DIRECT_C_ABI_TEST",
+          "source": {
+            "path": "adapters/lzss_raw/tests/test_decoder_contract.cc",
+            "sha256": "0fda40bfab418b58de813ddfc07e7c4414c1ff8fb51ce98927967261fa5f31b8"
+          },
+          "compile": {
+            "command": [
+              "c++",
+              "-std=c++17",
+              "-UNDEBUG",
+              "-O2",
+              "-I",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/native/include",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/lzss_raw/tests/test_decoder_contract.cc",
+              "-L",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/lzss_raw/release",
+              "-Wl,-rpath,/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/lzss_raw/release",
+              "-ltscb_lzss_raw",
+              "-lm",
+              "-o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/lzss-raw_release_abi"
+            ],
+            "returncode": 0,
+            "output": ""
+          },
+          "run": {
+            "command": [
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/lzss-raw_release_abi"
+            ],
+            "returncode": 0,
+            "output": "PASS: 16442 hand-built valid streams; 587 malformed streams/descriptors rejected atomically; all offsets/lengths, initial dictionary, overlap/wrap, padding, truncation, exact lengths, overflow preflight, canaries\n"
+          },
+          "executable": {
+            "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/lzss-raw_release_abi",
+            "sha256": "0884ae4671f80f44f9bd093ca9e5e5a1dea69bcb779ce80d9745e1e4e1370374"
+          }
+        }
+      ],
+      "abi_version": "PASS"
+    },
+    {
+      "algorithm": "lzss-raw",
+      "profile": "sanitizer",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/lzss_raw/sanitizer/build-record.json",
+        "sha256": "95c2c2551daf5b967ef603a66ce349dd88e7cbeb6f527fefb511e4c5958263b7"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/lzss_raw/sanitizer/libtscb_lzss_raw.so",
+        "sha256": "134e60e40f738ba4f52dec374551e77ad1980374db9a1e88392f20f1aceed924"
+      },
+      "declared_dependencies_status": "PASS",
+      "verified_dependency_count": 176,
+      "native_tests": [
+        {
+          "scope": "FINITE_DIRECT_C_ABI_TEST",
+          "source": {
+            "path": "adapters/lzss_raw/tests/test_decoder_contract.cc",
+            "sha256": "0fda40bfab418b58de813ddfc07e7c4414c1ff8fb51ce98927967261fa5f31b8"
+          },
+          "compile": {
+            "command": [
+              "c++",
+              "-std=c++17",
+              "-UNDEBUG",
+              "-O1",
+              "-g",
+              "-fno-omit-frame-pointer",
+              "-fsanitize=address,undefined",
+              "-no-pie",
+              "-I",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/native/include",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/lzss_raw/tests/test_decoder_contract.cc",
+              "-L",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/lzss_raw/sanitizer",
+              "-Wl,-rpath,/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/lzss_raw/sanitizer",
+              "-ltscb_lzss_raw",
+              "-lm",
+              "-o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/lzss-raw_sanitizer_abi"
+            ],
+            "returncode": 0,
+            "output": ""
+          },
+          "run": {
+            "command": [
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/lzss-raw_sanitizer_abi"
+            ],
+            "returncode": 0,
+            "output": "PASS: 16442 hand-built valid streams; 587 malformed streams/descriptors rejected atomically; all offsets/lengths, initial dictionary, overlap/wrap, padding, truncation, exact lengths, overflow preflight, canaries\n"
+          },
+          "executable": {
+            "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/lzss-raw_sanitizer_abi",
+            "sha256": "e62e7949402041da42b06c6ca56f249f69015ac4e443ba0a9e96847be7cc2908"
+          }
+        }
+      ]
+    },
+    {
+      "algorithm": "lzsse2-raw",
+      "profile": "release",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/lzsse2_raw/release/build-record.json",
+        "sha256": "56dc3c85969e74b43573fdbf3610ca8f67c86618afbde42752c1098e427e9814"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/lzsse2_raw/release/libtscb_lzsse2_raw.so",
+        "sha256": "bd7ca6a3d3d2d533f39c7d87ffda05f7093feb063ee6780c7488bbcc23943a68"
+      },
+      "declared_dependencies_status": "PASS",
+      "verified_dependency_count": 204,
+      "native_tests": [
+        {
+          "scope": "FINITE_DIRECT_C_ABI_TEST",
+          "source": {
+            "path": "adapters/lzsse2_raw/tests/abi_smoke.cc",
+            "sha256": "49a2d09c542f6519291514610d8519a56366d260d40654c1ba6261289fba52d0"
+          },
+          "compile": {
+            "command": [
+              "c++",
+              "-std=c++17",
+              "-UNDEBUG",
+              "-O2",
+              "-I",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/native/include",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/lzsse2_raw/tests/abi_smoke.cc",
+              "-L",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/lzsse2_raw/release",
+              "-Wl,-rpath,/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/lzsse2_raw/release",
+              "-ltscb_lzsse2_raw",
+              "-lm",
+              "-o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/lzsse2-raw_release_abi"
+            ],
+            "returncode": 0,
+            "output": ""
+          },
+          "run": {
+            "command": [
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/lzsse2-raw_release_abi"
+            ],
+            "returncode": 0,
+            "output": "LZSSE raw C ABI smoke passed\n"
+          },
+          "executable": {
+            "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/lzsse2-raw_release_abi",
+            "sha256": "9cedeb648a776a1e564084726d490b478bb652512ee475a4de9c63141b30e9b0"
+          }
+        }
+      ],
+      "abi_version": "PASS"
+    },
+    {
+      "algorithm": "lzsse2-raw",
+      "profile": "sanitizer",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/lzsse2_raw/sanitizer/build-record.json",
+        "sha256": "d655054aa5fb8ea9a57dde66885c415dd3038e181883099b7ac38dbc6ab64ff5"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/lzsse2_raw/sanitizer/libtscb_lzsse2_raw.so",
+        "sha256": "5e47c449221ac6f49fe8c9cf02bdc90fb4d6f186a730562c668572c3fb5b742d"
+      },
+      "declared_dependencies_status": "PASS",
+      "verified_dependency_count": 206,
+      "native_tests": [
+        {
+          "scope": "FINITE_DIRECT_C_ABI_TEST",
+          "source": {
+            "path": "adapters/lzsse2_raw/tests/abi_smoke.cc",
+            "sha256": "49a2d09c542f6519291514610d8519a56366d260d40654c1ba6261289fba52d0"
+          },
+          "compile": {
+            "command": [
+              "c++",
+              "-std=c++17",
+              "-UNDEBUG",
+              "-O1",
+              "-g",
+              "-fno-omit-frame-pointer",
+              "-fsanitize=address,undefined",
+              "-no-pie",
+              "-I",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/native/include",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/lzsse2_raw/tests/abi_smoke.cc",
+              "-L",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/lzsse2_raw/sanitizer",
+              "-Wl,-rpath,/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/lzsse2_raw/sanitizer",
+              "-ltscb_lzsse2_raw",
+              "-lm",
+              "-o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/lzsse2-raw_sanitizer_abi"
+            ],
+            "returncode": 0,
+            "output": ""
+          },
+          "run": {
+            "command": [
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/lzsse2-raw_sanitizer_abi"
+            ],
+            "returncode": 0,
+            "output": "LZSSE raw C ABI smoke passed\n"
+          },
+          "executable": {
+            "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/lzsse2-raw_sanitizer_abi",
+            "sha256": "157f6c96e1fbaac078cfa5d3fcae9af44f877dbf8eaf7394c8ba0a362d742780"
+          }
+        }
+      ]
+    },
+    {
+      "algorithm": "lzsse8-raw",
+      "profile": "release",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/lzsse8_raw/release/build-record.json",
+        "sha256": "2e9bb0792d0e8c074f4cca6917c6f7a7b8da05ddbaa10226d2ece2885020e733"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/lzsse8_raw/release/libtscb_lzsse8_raw.so",
+        "sha256": "2d4c07a356eee879279732d3cafd88e605d4d6030d4361ee8db913bf86063f30"
+      },
+      "declared_dependencies_status": "PASS",
+      "verified_dependency_count": 204,
+      "native_tests": [
+        {
+          "scope": "FINITE_DIRECT_C_ABI_TEST",
+          "source": {
+            "path": "adapters/lzsse2_raw/tests/abi_smoke.cc",
+            "sha256": "49a2d09c542f6519291514610d8519a56366d260d40654c1ba6261289fba52d0"
+          },
+          "compile": {
+            "command": [
+              "c++",
+              "-std=c++17",
+              "-UNDEBUG",
+              "-O2",
+              "-I",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/native/include",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/lzsse2_raw/tests/abi_smoke.cc",
+              "-L",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/lzsse8_raw/release",
+              "-Wl,-rpath,/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/lzsse8_raw/release",
+              "-ltscb_lzsse8_raw",
+              "-lm",
+              "-o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/lzsse8-raw_release_abi"
+            ],
+            "returncode": 0,
+            "output": ""
+          },
+          "run": {
+            "command": [
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/lzsse8-raw_release_abi"
+            ],
+            "returncode": 0,
+            "output": "LZSSE raw C ABI smoke passed\n"
+          },
+          "executable": {
+            "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/lzsse8-raw_release_abi",
+            "sha256": "b2235548146edabcc3a1cbc012153ca5135e4b2ce5db8eb6bbec66faf76b8800"
+          }
+        }
+      ],
+      "abi_version": "PASS"
+    },
+    {
+      "algorithm": "lzsse8-raw",
+      "profile": "sanitizer",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/lzsse8_raw/sanitizer/build-record.json",
+        "sha256": "6019776f3b981acdbad621e8e53ad991a4af2ca8c71740ae6cd9f82200cd4022"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/lzsse8_raw/sanitizer/libtscb_lzsse8_raw.so",
+        "sha256": "cb7d954b628a460cb47e96cd7905714459c2d2cf773b6e24aa72cd7e64ef7502"
+      },
+      "declared_dependencies_status": "PASS",
+      "verified_dependency_count": 206,
+      "native_tests": [
+        {
+          "scope": "FINITE_DIRECT_C_ABI_TEST",
+          "source": {
+            "path": "adapters/lzsse2_raw/tests/abi_smoke.cc",
+            "sha256": "49a2d09c542f6519291514610d8519a56366d260d40654c1ba6261289fba52d0"
+          },
+          "compile": {
+            "command": [
+              "c++",
+              "-std=c++17",
+              "-UNDEBUG",
+              "-O1",
+              "-g",
+              "-fno-omit-frame-pointer",
+              "-fsanitize=address,undefined",
+              "-no-pie",
+              "-I",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/native/include",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/lzsse2_raw/tests/abi_smoke.cc",
+              "-L",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/lzsse8_raw/sanitizer",
+              "-Wl,-rpath,/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/lzsse8_raw/sanitizer",
+              "-ltscb_lzsse8_raw",
+              "-lm",
+              "-o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/lzsse8-raw_sanitizer_abi"
+            ],
+            "returncode": 0,
+            "output": ""
+          },
+          "run": {
+            "command": [
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/lzsse8-raw_sanitizer_abi"
+            ],
+            "returncode": 0,
+            "output": "LZSSE raw C ABI smoke passed\n"
+          },
+          "executable": {
+            "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/lzsse8-raw_sanitizer_abi",
+            "sha256": "30c610b14c68181c96608311c4b3f45c75459ee7b0cdb5f78501b3eeb1a326d7"
+          }
+        }
+      ]
+    },
+    {
+      "algorithm": "neats-lossless-i64",
+      "profile": "release",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/neats_lossless_i64/release/build-record.json",
+        "sha256": "7ed5419645ce80dd6c88d2288a5a03cfdf0285d68e470f5e7485e1555d3f5640"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/neats_lossless_i64/release/libtscb_neats_lossless_i64.so",
+        "sha256": "1a9a5fd26a454cb5161159fe2914aba785619ee6b6d51139a004fb1fdaffcf35"
+      },
+      "declared_dependencies_status": "PASS",
+      "verified_dependency_count": 575,
+      "native_tests": [
+        {
+          "scope": "FINITE_DIRECT_C_ABI_TEST",
+          "source": {
+            "path": "adapters/neats/tests/abi_smoke.cc",
+            "sha256": "ad02108a0dbc3a0c6337382f380bc754adfe321ceb12f0c6d11e6665624df0f9"
+          },
+          "compile": {
+            "command": [
+              "c++",
+              "-std=c++20",
+              "-UNDEBUG",
+              "-O2",
+              "-DTSCB_TEST_NEATS=1",
+              "-I",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/native/include",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/neats/tests/abi_smoke.cc",
+              "-L",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/neats_lossless_i64/release",
+              "-Wl,-rpath,/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/neats_lossless_i64/release",
+              "-ltscb_neats_lossless_i64",
+              "-lm",
+              "-o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/neats-lossless-i64_release_abi"
+            ],
+            "returncode": 0,
+            "output": ""
+          },
+          "run": {
+            "command": [
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/neats-lossless-i64_release_abi"
+            ],
+            "returncode": 0,
+            "output": "NeaTS/LeaTS native ABI smoke: PASS\n"
+          },
+          "executable": {
+            "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/neats-lossless-i64_release_abi",
+            "sha256": "0f52ad3ee6d7b5477298e7250f62f6f1ee861376134ed0a37867ddc3661ca164"
+          }
+        }
+      ],
+      "abi_version": "PASS"
+    },
+    {
+      "algorithm": "neats-lossless-i64",
+      "profile": "sanitizer",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/neats_lossless_i64/sanitizer/build-record.json",
+        "sha256": "71e574aec2a99ef3746555addd673ae7977cf61cf3fdac456552b1cb1c30b6a1"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/neats_lossless_i64/sanitizer/libtscb_neats_lossless_i64.so",
+        "sha256": "68712bc55693444e979419bbfff4d4c99737b9a5619177ab0c8c497729027ad6"
+      },
+      "declared_dependencies_status": "PASS",
+      "verified_dependency_count": 577,
+      "native_tests": [
+        {
+          "scope": "FINITE_DIRECT_C_ABI_TEST",
+          "source": {
+            "path": "adapters/neats/tests/abi_smoke.cc",
+            "sha256": "ad02108a0dbc3a0c6337382f380bc754adfe321ceb12f0c6d11e6665624df0f9"
+          },
+          "compile": {
+            "command": [
+              "c++",
+              "-std=c++20",
+              "-UNDEBUG",
+              "-O1",
+              "-g",
+              "-fno-omit-frame-pointer",
+              "-fsanitize=address,undefined",
+              "-no-pie",
+              "-DTSCB_TEST_NEATS=1",
+              "-I",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/native/include",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/neats/tests/abi_smoke.cc",
+              "-L",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/neats_lossless_i64/sanitizer",
+              "-Wl,-rpath,/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/neats_lossless_i64/sanitizer",
+              "-ltscb_neats_lossless_i64",
+              "-lm",
+              "-o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/neats-lossless-i64_sanitizer_abi"
+            ],
+            "returncode": 0,
+            "output": ""
+          },
+          "run": {
+            "command": [
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/neats-lossless-i64_sanitizer_abi"
+            ],
+            "returncode": 0,
+            "output": "NeaTS/LeaTS native ABI smoke: PASS\n"
+          },
+          "executable": {
+            "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/neats-lossless-i64_sanitizer_abi",
+            "sha256": "d4f0962642c701978b2d62dbe69372b78c21d747947f1cf0a0fd381fe57d3c79"
+          }
+        }
+      ]
+    },
+    {
+      "algorithm": "self-star",
+      "profile": "release",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/self_star/release/build-record.json",
+        "sha256": "aed562e0ea244659f86ffbbe75dbb77cd14ea47647f7f16a03fdf42ba83cea36"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/self_star/release/libtscb_self_star.so",
+        "sha256": "f81a8481f021488620df94f4e0de6bce451cb4090def1ff04ed9759fc987bad3"
+      },
+      "declared_dependencies_status": "PASS",
+      "verified_dependency_count": 285,
+      "native_tests": [
+        {
+          "scope": "FINITE_DIRECT_C_ABI_TEST",
+          "source": {
+            "path": "adapters/rewrite_lossless/tests/qualification.cc",
+            "sha256": "baa1d2530c01a93aecd48d3ecc3485c44d1cca1f16427fcb57f7f77d0f52ead3"
+          },
+          "compile": {
+            "command": [
+              "c++",
+              "-std=c++17",
+              "-UNDEBUG",
+              "-O2",
+              "-DTSCB_REWRITE_KIND=4",
+              "-DTSCB_REWRITE_KEY=\"self-star\"",
+              "-I",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/native/include",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/rewrite_lossless/tests/qualification.cc",
+              "-L",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/self_star/release",
+              "-Wl,-rpath,/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/self_star/release",
+              "-ltscb_self_star",
+              "-lm",
+              "-o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/self-star_release_abi"
+            ],
+            "returncode": 0,
+            "output": ""
+          },
+          "run": {
+            "command": [
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/self-star_release_abi"
+            ],
+            "returncode": 0,
+            "output": "self-star native ABI, fresh decoding, paired int64 extremes, bounds, protected output, lifecycle and malformed PASS\n"
+          },
+          "executable": {
+            "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/self-star_release_abi",
+            "sha256": "100ac348dbfb4d80d411831a0892cd811f4e720c76b184e1dbbb4098720a7b76"
+          }
+        }
+      ],
+      "abi_version": "PASS"
+    },
+    {
+      "algorithm": "self-star",
+      "profile": "sanitizer",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/self_star/sanitizer/build-record.json",
+        "sha256": "8f68c6fbb3f0a4c17fc91a3b435e34968373f8f8917e8941e5c7b49957558f25"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/self_star/sanitizer/libtscb_self_star.so",
+        "sha256": "febf493d45946e43ddc0e237b010a51dee9aa847ed9e18590c1318982cf896b2"
+      },
+      "declared_dependencies_status": "PASS",
+      "verified_dependency_count": 287,
+      "native_tests": [
+        {
+          "scope": "FINITE_DIRECT_C_ABI_TEST",
+          "source": {
+            "path": "adapters/rewrite_lossless/tests/qualification.cc",
+            "sha256": "baa1d2530c01a93aecd48d3ecc3485c44d1cca1f16427fcb57f7f77d0f52ead3"
+          },
+          "compile": {
+            "command": [
+              "c++",
+              "-std=c++17",
+              "-UNDEBUG",
+              "-O1",
+              "-g",
+              "-fno-omit-frame-pointer",
+              "-fsanitize=address,undefined",
+              "-no-pie",
+              "-DTSCB_REWRITE_KIND=4",
+              "-DTSCB_REWRITE_KEY=\"self-star\"",
+              "-I",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/native/include",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/rewrite_lossless/tests/qualification.cc",
+              "-L",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/self_star/sanitizer",
+              "-Wl,-rpath,/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/self_star/sanitizer",
+              "-ltscb_self_star",
+              "-lm",
+              "-o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/self-star_sanitizer_abi"
+            ],
+            "returncode": 0,
+            "output": ""
+          },
+          "run": {
+            "command": [
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/self-star_sanitizer_abi"
+            ],
+            "returncode": 0,
+            "output": "self-star native ABI, fresh decoding, paired int64 extremes, bounds, protected output, lifecycle and malformed PASS\n"
+          },
+          "executable": {
+            "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/self-star_sanitizer_abi",
+            "sha256": "b0a4d8580895f9b67aed604cb448088182f35a3a57353fa180eb31a520b65315"
+          }
+        }
+      ]
+    },
+    {
+      "algorithm": "serf-qt",
+      "profile": "release",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/serf_qt/release/build-record.json",
+        "sha256": "b8ec26ac31aecedabbd23f682b275d16ca868d76cce76495fec5e7de13de205a"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/serf_qt/release/libtscb_serf_qt.so",
+        "sha256": "e5ca2b2312bcb23c6bd212f9b130c8496df7e41fb5e2620b34189b48bee7bd17"
+      },
+      "declared_dependencies_status": "PASS",
+      "verified_dependency_count": 299,
+      "native_tests": [
+        {
+          "scope": "FINITE_DIRECT_C_ABI_TEST",
+          "source": {
+            "path": "adapters/serf/tests/abi_smoke.cc",
+            "sha256": "7e6cfdbb2e9061845a033af013cf83a4205b924a4f7abeeae5b445c1039554de"
+          },
+          "compile": {
+            "command": [
+              "c++",
+              "-std=c++17",
+              "-UNDEBUG",
+              "-O2",
+              "-DSMOKE_XOR=0",
+              "-I",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/native/include",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/serf/tests/abi_smoke.cc",
+              "-L",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/serf_qt/release",
+              "-Wl,-rpath,/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/serf_qt/release",
+              "-ltscb_serf_qt",
+              "-lm",
+              "-o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/serf-qt_release_abi"
+            ],
+            "returncode": 0,
+            "output": ""
+          },
+          "run": {
+            "command": [
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/serf-qt_release_abi"
+            ],
+            "returncode": 0,
+            "output": "serf ABI smoke PASS\n"
+          },
+          "executable": {
+            "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/serf-qt_release_abi",
+            "sha256": "29f3ce5ebb295bedbcf2309f90e0aff6707f6fc726262556c3fc9254d155165e"
+          }
+        }
+      ],
+      "abi_version": "PASS"
+    },
+    {
+      "algorithm": "serf-qt",
+      "profile": "sanitizer",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/serf_qt/sanitizer/build-record.json",
+        "sha256": "0677c271ae663616dace416bb58f403a6903ee6fd6428edd5c5ad47c6c7bb179"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/serf_qt/sanitizer/libtscb_serf_qt.so",
+        "sha256": "4c9ac36597e6fa42be5c0334482a5e2fd1093e2045ef977c2892f721e062b12a"
+      },
+      "declared_dependencies_status": "PASS",
+      "verified_dependency_count": 301,
+      "native_tests": [
+        {
+          "scope": "FINITE_DIRECT_C_ABI_TEST",
+          "source": {
+            "path": "adapters/serf/tests/abi_smoke.cc",
+            "sha256": "7e6cfdbb2e9061845a033af013cf83a4205b924a4f7abeeae5b445c1039554de"
+          },
+          "compile": {
+            "command": [
+              "c++",
+              "-std=c++17",
+              "-UNDEBUG",
+              "-O1",
+              "-g",
+              "-fno-omit-frame-pointer",
+              "-fsanitize=address,undefined",
+              "-no-pie",
+              "-DSMOKE_XOR=0",
+              "-I",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/native/include",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/serf/tests/abi_smoke.cc",
+              "-L",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/serf_qt/sanitizer",
+              "-Wl,-rpath,/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/serf_qt/sanitizer",
+              "-ltscb_serf_qt",
+              "-lm",
+              "-o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/serf-qt_sanitizer_abi"
+            ],
+            "returncode": 0,
+            "output": ""
+          },
+          "run": {
+            "command": [
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/serf-qt_sanitizer_abi"
+            ],
+            "returncode": 0,
+            "output": "serf ABI smoke PASS\n"
+          },
+          "executable": {
+            "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/serf-qt_sanitizer_abi",
+            "sha256": "cb54735e6da617830af79b122bae42c15daccc95e0a0d335738b35fff5b538c1"
+          }
+        }
+      ]
+    },
+    {
+      "algorithm": "serf-xor",
+      "profile": "release",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/serf_xor/release/build-record.json",
+        "sha256": "0e95b3d6de5831b8aad20c4dd93ecd4159e2bcdd13396efb54a9dfd6191a0bb4"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/serf_xor/release/libtscb_serf_xor.so",
+        "sha256": "87aa5105cc09c290357915215b7abd836369e265d3e3d6e27a1923918ebfb937"
+      },
+      "declared_dependencies_status": "PASS",
+      "verified_dependency_count": 299,
+      "native_tests": [
+        {
+          "scope": "FINITE_DIRECT_C_ABI_TEST",
+          "source": {
+            "path": "adapters/serf/tests/abi_smoke.cc",
+            "sha256": "7e6cfdbb2e9061845a033af013cf83a4205b924a4f7abeeae5b445c1039554de"
+          },
+          "compile": {
+            "command": [
+              "c++",
+              "-std=c++17",
+              "-UNDEBUG",
+              "-O2",
+              "-DSMOKE_XOR=1",
+              "-I",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/native/include",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/serf/tests/abi_smoke.cc",
+              "-L",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/serf_xor/release",
+              "-Wl,-rpath,/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/serf_xor/release",
+              "-ltscb_serf_xor",
+              "-lm",
+              "-o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/serf-xor_release_abi"
+            ],
+            "returncode": 0,
+            "output": ""
+          },
+          "run": {
+            "command": [
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/serf-xor_release_abi"
+            ],
+            "returncode": 0,
+            "output": "serf ABI smoke PASS\n"
+          },
+          "executable": {
+            "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/serf-xor_release_abi",
+            "sha256": "ee9498a65800d0fd5b0c4afeb1385fecf395b61cbe79bc9ad111e363e55ff8ef"
+          }
+        }
+      ],
+      "abi_version": "PASS"
+    },
+    {
+      "algorithm": "serf-xor",
+      "profile": "sanitizer",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/serf_xor/sanitizer/build-record.json",
+        "sha256": "e1934046716b0ac2dd1ed7158cebb28686818c775ee2e25ca444a98e7de707a4"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/serf_xor/sanitizer/libtscb_serf_xor.so",
+        "sha256": "413d94499865c3f43c694b73bafd9851d1f04bf854fd4b0c77caf7d21b21baa1"
+      },
+      "declared_dependencies_status": "PASS",
+      "verified_dependency_count": 301,
+      "native_tests": [
+        {
+          "scope": "FINITE_DIRECT_C_ABI_TEST",
+          "source": {
+            "path": "adapters/serf/tests/abi_smoke.cc",
+            "sha256": "7e6cfdbb2e9061845a033af013cf83a4205b924a4f7abeeae5b445c1039554de"
+          },
+          "compile": {
+            "command": [
+              "c++",
+              "-std=c++17",
+              "-UNDEBUG",
+              "-O1",
+              "-g",
+              "-fno-omit-frame-pointer",
+              "-fsanitize=address,undefined",
+              "-no-pie",
+              "-DSMOKE_XOR=1",
+              "-I",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/native/include",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/serf/tests/abi_smoke.cc",
+              "-L",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/serf_xor/sanitizer",
+              "-Wl,-rpath,/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/serf_xor/sanitizer",
+              "-ltscb_serf_xor",
+              "-lm",
+              "-o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/serf-xor_sanitizer_abi"
+            ],
+            "returncode": 0,
+            "output": ""
+          },
+          "run": {
+            "command": [
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/serf-xor_sanitizer_abi"
+            ],
+            "returncode": 0,
+            "output": "serf ABI smoke PASS\n"
+          },
+          "executable": {
+            "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/serf-xor_sanitizer_abi",
+            "sha256": "97694804eb29d543bceb75f5bcd330f55ce570059b699e86e1efe6d3bc352329"
+          }
+        }
+      ]
+    },
+    {
+      "algorithm": "snappy-raw",
+      "profile": "release",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/snappy_raw/release/build-record.json",
+        "sha256": "e83dc0c3187b8b02589d79e6b68cd4c19836fbf00a1dc5eeca32cede6c8fd948"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/snappy_raw/release/libtscb_snappy_raw.so",
+        "sha256": "fa7e16cdb385bb73383aa4ed58ef2868e1c568c6de3b0e62989d96526235d493"
+      },
+      "declared_dependencies_status": "PASS",
+      "verified_dependency_count": 249,
+      "native_tests": [
+        {
+          "scope": "FINITE_DIRECT_C_ABI_TEST",
+          "source": {
+            "path": "adapters/snappy_raw/tests/abi_smoke.cc",
+            "sha256": "aef074c79014fc19a1f94b25dd47e7e39ac0790caae2b08793a5001906c73ba4"
+          },
+          "compile": {
+            "command": [
+              "c++",
+              "-std=c++17",
+              "-UNDEBUG",
+              "-O2",
+              "-I",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/native/include",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/snappy_raw/tests/abi_smoke.cc",
+              "-L",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/snappy_raw/release",
+              "-Wl,-rpath,/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/snappy_raw/release",
+              "-ltscb_snappy_raw",
+              "-lm",
+              "-o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/snappy-raw_release_abi"
+            ],
+            "returncode": 0,
+            "output": ""
+          },
+          "run": {
+            "command": [
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/snappy-raw_release_abi"
+            ],
+            "returncode": 0,
+            "output": "Snappy raw C ABI smoke passed\n"
+          },
+          "executable": {
+            "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/snappy-raw_release_abi",
+            "sha256": "6d49ddb52960da767d8cd106da0a5c9605fd8abf2e3e5396b492c69125bf1818"
+          }
+        }
+      ],
+      "abi_version": "PASS"
+    },
+    {
+      "algorithm": "snappy-raw",
+      "profile": "sanitizer",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/snappy_raw/sanitizer/build-record.json",
+        "sha256": "0731a083782aebd474b61afd7f7d482bad2db9baae23ddc0050768d2e3dc8004"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/snappy_raw/sanitizer/libtscb_snappy_raw.so",
+        "sha256": "641dfac78a563ccb58e8fadf647377ae4a35e0655f14aaf5fb6b99b30f0fd145"
+      },
+      "declared_dependencies_status": "PASS",
+      "verified_dependency_count": 251,
+      "native_tests": [
+        {
+          "scope": "FINITE_DIRECT_C_ABI_TEST",
+          "source": {
+            "path": "adapters/snappy_raw/tests/abi_smoke.cc",
+            "sha256": "aef074c79014fc19a1f94b25dd47e7e39ac0790caae2b08793a5001906c73ba4"
+          },
+          "compile": {
+            "command": [
+              "c++",
+              "-std=c++17",
+              "-UNDEBUG",
+              "-O1",
+              "-g",
+              "-fno-omit-frame-pointer",
+              "-fsanitize=address,undefined",
+              "-no-pie",
+              "-I",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/native/include",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/snappy_raw/tests/abi_smoke.cc",
+              "-L",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/snappy_raw/sanitizer",
+              "-Wl,-rpath,/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/snappy_raw/sanitizer",
+              "-ltscb_snappy_raw",
+              "-lm",
+              "-o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/snappy-raw_sanitizer_abi"
+            ],
+            "returncode": 0,
+            "output": ""
+          },
+          "run": {
+            "command": [
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/snappy-raw_sanitizer_abi"
+            ],
+            "returncode": 0,
+            "output": "Snappy raw C ABI smoke passed\n"
+          },
+          "executable": {
+            "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/snappy-raw_sanitizer_abi",
+            "sha256": "90279618e7306a853f0ef18320189e8815789eb063b74a8de55cfa60f9c165bd"
+          }
+        }
+      ]
+    },
+    {
+      "algorithm": "sprintz-delta",
+      "profile": "release",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/sprintz_delta/release/build-record.json",
+        "sha256": "d7dc1cd59856f83f20d239a51ea7da4a3bb3e8beb84e1be1bc9944712c0454e9"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/sprintz_delta/release/libtscb_sprintz_delta.so",
+        "sha256": "16e01a672b71ce273451b7e56cf07cb2150255bad8909045989888c0daf1680a"
+      },
+      "declared_dependencies_status": "PASS",
+      "verified_dependency_count": 378,
+      "native_tests": [
+        {
+          "scope": "FINITE_BOUNDED_KERNEL_AND_ALLOCATION_FAILURE",
+          "source": {
+            "path": "adapters/sprintz/tests/bounded_sprintz_test.cc",
+            "sha256": "571924540b9beea4a70ddbf818137d2a192ddb45381da8a8bcb09b55492cd67e"
+          },
+          "compile": {
+            "command": [
+              "c++",
+              "-std=c++17",
+              "-UNDEBUG",
+              "-O2",
+              "-mavx2",
+              "-mbmi2",
+              "-mlzcnt",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/sprintz/tests/bounded_sprintz_test.cc",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_delta/release/objects/000_tscb_sprintz.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_delta/release/objects/001_bounded_sprintz.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_delta/release/objects/002_sprintz.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_delta/release/objects/003_sprintz_delta_lowdim.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_delta/release/objects/004_sprintz_xff_lowdim.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_delta/release/objects/005_sprintz_delta_rle.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_delta/release/objects/006_sprintz_xff_rle.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_delta/release/objects/007_format.o",
+              "-o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/sprintz-delta_release_bounded_sprintz_test"
+            ],
+            "returncode": 0,
+            "output": ""
+          },
+          "run": {
+            "command": [
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/sprintz-delta_release_bounded_sprintz_test"
+            ],
+            "returncode": 0,
+            "output": "bounded Sprintz 8/16-bit UTS/MTS qualification passed\n"
+          },
+          "executable": {
+            "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/sprintz-delta_release_bounded_sprintz_test",
+            "sha256": "3d24e374117ada202891c7896185c8c0f959c1b4608a4c976e91517facb3617b"
+          }
+        },
+        {
+          "scope": "FINITE_BOUNDED_KERNEL_AND_ALLOCATION_FAILURE",
+          "source": {
+            "path": "adapters/sprintz/tests/allocation_failure_full.cc",
+            "sha256": "18b39017336cdddf7900ebaf0a6635aa5de3c130f48d59b17cc8f8d8513a39af"
+          },
+          "compile": {
+            "command": [
+              "c++",
+              "-std=c++17",
+              "-UNDEBUG",
+              "-O2",
+              "-mavx2",
+              "-mbmi2",
+              "-mlzcnt",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/sprintz/tests/allocation_failure_full.cc",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_delta/release/objects/000_tscb_sprintz.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_delta/release/objects/001_bounded_sprintz.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_delta/release/objects/002_sprintz.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_delta/release/objects/003_sprintz_delta_lowdim.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_delta/release/objects/004_sprintz_xff_lowdim.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_delta/release/objects/005_sprintz_delta_rle.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_delta/release/objects/006_sprintz_xff_rle.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_delta/release/objects/007_format.o",
+              "-Wl,--wrap=malloc",
+              "-Wl,--wrap=calloc",
+              "-o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/sprintz-delta_release_allocation_failure_full"
+            ],
+            "returncode": 0,
+            "output": ""
+          },
+          "run": {
+            "command": [
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/sprintz-delta_release_allocation_failure_full"
+            ],
+            "returncode": 0,
+            "output": "Sprintz generic allocation-failure paths passed\n"
+          },
+          "executable": {
+            "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/sprintz-delta_release_allocation_failure_full",
+            "sha256": "b7eb2f8266a4c45a781e64e2f6d8e3ce8b44b62bb2ed2ce6cccf515c41123a8d"
+          }
+        }
+      ],
+      "abi_version": "PASS"
+    },
+    {
+      "algorithm": "sprintz-delta",
+      "profile": "sanitizer",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/sprintz_delta/sanitizer/build-record.json",
+        "sha256": "1eb85d86b3de1091617e8542d1c0a88952e3c1f8a7c168ae12c6745b72e22a61"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/sprintz_delta/sanitizer/libtscb_sprintz_delta.so",
+        "sha256": "9e227645b626b9e237bbc12e2869beae2aebe40de3cce3e9c8c310291074c0cb"
+      },
+      "declared_dependencies_status": "PASS",
+      "verified_dependency_count": 380,
+      "native_tests": [
+        {
+          "scope": "FINITE_BOUNDED_KERNEL_AND_ALLOCATION_FAILURE",
+          "source": {
+            "path": "adapters/sprintz/tests/bounded_sprintz_test.cc",
+            "sha256": "571924540b9beea4a70ddbf818137d2a192ddb45381da8a8bcb09b55492cd67e"
+          },
+          "compile": {
+            "command": [
+              "c++",
+              "-std=c++17",
+              "-UNDEBUG",
+              "-O1",
+              "-g",
+              "-fno-omit-frame-pointer",
+              "-fsanitize=address,undefined",
+              "-no-pie",
+              "-mavx2",
+              "-mbmi2",
+              "-mlzcnt",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/sprintz/tests/bounded_sprintz_test.cc",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_delta/sanitizer/objects/000_tscb_sprintz.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_delta/sanitizer/objects/001_bounded_sprintz.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_delta/sanitizer/objects/002_sprintz.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_delta/sanitizer/objects/003_sprintz_delta_lowdim.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_delta/sanitizer/objects/004_sprintz_xff_lowdim.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_delta/sanitizer/objects/005_sprintz_delta_rle.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_delta/sanitizer/objects/006_sprintz_xff_rle.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_delta/sanitizer/objects/007_format.o",
+              "-o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/sprintz-delta_sanitizer_bounded_sprintz_test"
+            ],
+            "returncode": 0,
+            "output": ""
+          },
+          "run": {
+            "command": [
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/sprintz-delta_sanitizer_bounded_sprintz_test"
+            ],
+            "returncode": 0,
+            "output": "bounded Sprintz 8/16-bit UTS/MTS qualification passed\n"
+          },
+          "executable": {
+            "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/sprintz-delta_sanitizer_bounded_sprintz_test",
+            "sha256": "3f9a104d1cd5485601f4132dc678a365cf59a8768d3b95f7e8723692bd24d1b3"
+          }
+        },
+        {
+          "scope": "FINITE_BOUNDED_KERNEL_AND_ALLOCATION_FAILURE",
+          "source": {
+            "path": "adapters/sprintz/tests/allocation_failure_full.cc",
+            "sha256": "18b39017336cdddf7900ebaf0a6635aa5de3c130f48d59b17cc8f8d8513a39af"
+          },
+          "compile": {
+            "command": [
+              "c++",
+              "-std=c++17",
+              "-UNDEBUG",
+              "-O1",
+              "-g",
+              "-fno-omit-frame-pointer",
+              "-fsanitize=address,undefined",
+              "-no-pie",
+              "-mavx2",
+              "-mbmi2",
+              "-mlzcnt",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/sprintz/tests/allocation_failure_full.cc",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_delta/sanitizer/objects/000_tscb_sprintz.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_delta/sanitizer/objects/001_bounded_sprintz.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_delta/sanitizer/objects/002_sprintz.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_delta/sanitizer/objects/003_sprintz_delta_lowdim.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_delta/sanitizer/objects/004_sprintz_xff_lowdim.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_delta/sanitizer/objects/005_sprintz_delta_rle.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_delta/sanitizer/objects/006_sprintz_xff_rle.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_delta/sanitizer/objects/007_format.o",
+              "-Wl,--wrap=malloc",
+              "-Wl,--wrap=calloc",
+              "-o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/sprintz-delta_sanitizer_allocation_failure_full"
+            ],
+            "returncode": 0,
+            "output": ""
+          },
+          "run": {
+            "command": [
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/sprintz-delta_sanitizer_allocation_failure_full"
+            ],
+            "returncode": 0,
+            "output": "Sprintz generic allocation-failure paths passed\n"
+          },
+          "executable": {
+            "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/sprintz-delta_sanitizer_allocation_failure_full",
+            "sha256": "fb4ce23ea693540e460b780503709a1bae07a7def948a4656861dbf49a1188b5"
+          }
+        }
+      ]
+    },
+    {
+      "algorithm": "sprintz-delta-u8",
+      "profile": "release",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/sprintz_delta_u8/release/build-record.json",
+        "sha256": "5cafffdb6684e3a4408ae8b48f9ddd85724f4d1d92662b244ba4be2719f9f51f"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/sprintz_delta_u8/release/libtscb_sprintz_delta_u8.so",
+        "sha256": "0cb242aa0169d40c3623440211c086b238355e8c94f8a57f371ad9c1fd96793f"
+      },
+      "declared_dependencies_status": "PASS",
+      "verified_dependency_count": 363,
+      "native_tests": [
+        {
+          "scope": "FINITE_BOUNDED_KERNEL_AND_ALLOCATION_FAILURE",
+          "source": {
+            "path": "adapters/sprintz/tests/bounded_lowdim_test.cc",
+            "sha256": "34b7fb687b0ad20774e46acf19dd59eed3d72e6c40b6d046c983f84ceb51ac2e"
+          },
+          "compile": {
+            "command": [
+              "c++",
+              "-std=c++17",
+              "-UNDEBUG",
+              "-O2",
+              "-mavx2",
+              "-mbmi2",
+              "-mlzcnt",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/sprintz/tests/bounded_lowdim_test.cc",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_delta_u8/release/objects/000_tscb_sprintz8.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_delta_u8/release/objects/001_bounded_lowdim.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_delta_u8/release/objects/002_sprintz_delta_lowdim.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_delta_u8/release/objects/003_sprintz_xff_lowdim.o",
+              "-o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/sprintz-delta-u8_release_bounded_lowdim_test"
+            ],
+            "returncode": 0,
+            "output": ""
+          },
+          "run": {
+            "command": [
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/sprintz-delta-u8_release_bounded_lowdim_test"
+            ],
+            "returncode": 0,
+            "output": "sprintz 8-bit bounded qualification roundtrips passed\n"
+          },
+          "executable": {
+            "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/sprintz-delta-u8_release_bounded_lowdim_test",
+            "sha256": "e2c6a8e099210efe6c535e912c8e3eb2a101d413959b5088f60fc30bb4da0ec1"
+          }
+        },
+        {
+          "scope": "FINITE_BOUNDED_KERNEL_AND_ALLOCATION_FAILURE",
+          "source": {
+            "path": "adapters/sprintz/tests/allocation_failure.cc",
+            "sha256": "8059cd010f49a712c0a4dd4ab54089ffc8387bbc93b63a1c1b4e068315163587"
+          },
+          "compile": {
+            "command": [
+              "c++",
+              "-std=c++17",
+              "-UNDEBUG",
+              "-O2",
+              "-mavx2",
+              "-mbmi2",
+              "-mlzcnt",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/sprintz/tests/allocation_failure.cc",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_delta_u8/release/objects/000_tscb_sprintz8.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_delta_u8/release/objects/001_bounded_lowdim.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_delta_u8/release/objects/002_sprintz_delta_lowdim.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_delta_u8/release/objects/003_sprintz_xff_lowdim.o",
+              "-Wl,--wrap=malloc",
+              "-Wl,--wrap=calloc",
+              "-o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/sprintz-delta-u8_release_allocation_failure"
+            ],
+            "returncode": 0,
+            "output": ""
+          },
+          "run": {
+            "command": [
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/sprintz-delta-u8_release_allocation_failure"
+            ],
+            "returncode": 0,
+            "output": "sprintz vendor allocation failure paths passed\n"
+          },
+          "executable": {
+            "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/sprintz-delta-u8_release_allocation_failure",
+            "sha256": "f52959a38fbae39df1b354c8624d8a1a69ff23809cca5339011e9553c0188a55"
+          }
+        }
+      ],
+      "abi_version": "PASS"
+    },
+    {
+      "algorithm": "sprintz-delta-u8",
+      "profile": "sanitizer",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/sprintz_delta_u8/sanitizer/build-record.json",
+        "sha256": "3dcfcc67828587191a7a868c65b3e2b3bc834da722a73fe9359ec15dac3756cf"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/sprintz_delta_u8/sanitizer/libtscb_sprintz_delta_u8.so",
+        "sha256": "c25182f66c83b0b452029c68296851d8b1d8e68f36f18eb602f14c36289fcf16"
+      },
+      "declared_dependencies_status": "PASS",
+      "verified_dependency_count": 365,
+      "native_tests": [
+        {
+          "scope": "FINITE_BOUNDED_KERNEL_AND_ALLOCATION_FAILURE",
+          "source": {
+            "path": "adapters/sprintz/tests/bounded_lowdim_test.cc",
+            "sha256": "34b7fb687b0ad20774e46acf19dd59eed3d72e6c40b6d046c983f84ceb51ac2e"
+          },
+          "compile": {
+            "command": [
+              "c++",
+              "-std=c++17",
+              "-UNDEBUG",
+              "-O1",
+              "-g",
+              "-fno-omit-frame-pointer",
+              "-fsanitize=address,undefined",
+              "-no-pie",
+              "-mavx2",
+              "-mbmi2",
+              "-mlzcnt",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/sprintz/tests/bounded_lowdim_test.cc",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_delta_u8/sanitizer/objects/000_tscb_sprintz8.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_delta_u8/sanitizer/objects/001_bounded_lowdim.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_delta_u8/sanitizer/objects/002_sprintz_delta_lowdim.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_delta_u8/sanitizer/objects/003_sprintz_xff_lowdim.o",
+              "-o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/sprintz-delta-u8_sanitizer_bounded_lowdim_test"
+            ],
+            "returncode": 0,
+            "output": ""
+          },
+          "run": {
+            "command": [
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/sprintz-delta-u8_sanitizer_bounded_lowdim_test"
+            ],
+            "returncode": 0,
+            "output": "sprintz 8-bit bounded qualification roundtrips passed\n"
+          },
+          "executable": {
+            "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/sprintz-delta-u8_sanitizer_bounded_lowdim_test",
+            "sha256": "bd0122424be45f7a94aab1de08e4f6cd37166593e1f990749ae1f34a366fbfe7"
+          }
+        },
+        {
+          "scope": "FINITE_BOUNDED_KERNEL_AND_ALLOCATION_FAILURE",
+          "source": {
+            "path": "adapters/sprintz/tests/allocation_failure.cc",
+            "sha256": "8059cd010f49a712c0a4dd4ab54089ffc8387bbc93b63a1c1b4e068315163587"
+          },
+          "compile": {
+            "command": [
+              "c++",
+              "-std=c++17",
+              "-UNDEBUG",
+              "-O1",
+              "-g",
+              "-fno-omit-frame-pointer",
+              "-fsanitize=address,undefined",
+              "-no-pie",
+              "-mavx2",
+              "-mbmi2",
+              "-mlzcnt",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/sprintz/tests/allocation_failure.cc",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_delta_u8/sanitizer/objects/000_tscb_sprintz8.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_delta_u8/sanitizer/objects/001_bounded_lowdim.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_delta_u8/sanitizer/objects/002_sprintz_delta_lowdim.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_delta_u8/sanitizer/objects/003_sprintz_xff_lowdim.o",
+              "-Wl,--wrap=malloc",
+              "-Wl,--wrap=calloc",
+              "-o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/sprintz-delta-u8_sanitizer_allocation_failure"
+            ],
+            "returncode": 0,
+            "output": ""
+          },
+          "run": {
+            "command": [
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/sprintz-delta-u8_sanitizer_allocation_failure"
+            ],
+            "returncode": 0,
+            "output": "sprintz vendor allocation failure paths passed\n"
+          },
+          "executable": {
+            "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/sprintz-delta-u8_sanitizer_allocation_failure",
+            "sha256": "e83cced3d0e7a6806734534998fec4dc9a1a10f4d109ba32f167f5d19d284694"
+          }
+        }
+      ]
+    },
+    {
+      "algorithm": "sprintz-fire",
+      "profile": "release",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/sprintz_fire/release/build-record.json",
+        "sha256": "db091da162c5d0c59e8bbcf628c9b92a006a2bc9676cfa24b1389f6e2cc01c1e"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/sprintz_fire/release/libtscb_sprintz_fire.so",
+        "sha256": "c7acccdb359dbccce1fa990f0f61679741506f533c5df31abf57f9cd9a8b2282"
+      },
+      "declared_dependencies_status": "PASS",
+      "verified_dependency_count": 378,
+      "native_tests": [
+        {
+          "scope": "FINITE_BOUNDED_KERNEL_AND_ALLOCATION_FAILURE",
+          "source": {
+            "path": "adapters/sprintz/tests/bounded_sprintz_test.cc",
+            "sha256": "571924540b9beea4a70ddbf818137d2a192ddb45381da8a8bcb09b55492cd67e"
+          },
+          "compile": {
+            "command": [
+              "c++",
+              "-std=c++17",
+              "-UNDEBUG",
+              "-O2",
+              "-mavx2",
+              "-mbmi2",
+              "-mlzcnt",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/sprintz/tests/bounded_sprintz_test.cc",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_fire/release/objects/000_tscb_sprintz.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_fire/release/objects/001_bounded_sprintz.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_fire/release/objects/002_sprintz.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_fire/release/objects/003_sprintz_delta_lowdim.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_fire/release/objects/004_sprintz_xff_lowdim.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_fire/release/objects/005_sprintz_delta_rle.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_fire/release/objects/006_sprintz_xff_rle.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_fire/release/objects/007_format.o",
+              "-o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/sprintz-fire_release_bounded_sprintz_test"
+            ],
+            "returncode": 0,
+            "output": ""
+          },
+          "run": {
+            "command": [
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/sprintz-fire_release_bounded_sprintz_test"
+            ],
+            "returncode": 0,
+            "output": "bounded Sprintz 8/16-bit UTS/MTS qualification passed\n"
+          },
+          "executable": {
+            "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/sprintz-fire_release_bounded_sprintz_test",
+            "sha256": "550a0817202477bccfcd1c06fb51f09a62c7183166546725b03be9ff779592df"
+          }
+        },
+        {
+          "scope": "FINITE_BOUNDED_KERNEL_AND_ALLOCATION_FAILURE",
+          "source": {
+            "path": "adapters/sprintz/tests/allocation_failure_full.cc",
+            "sha256": "18b39017336cdddf7900ebaf0a6635aa5de3c130f48d59b17cc8f8d8513a39af"
+          },
+          "compile": {
+            "command": [
+              "c++",
+              "-std=c++17",
+              "-UNDEBUG",
+              "-O2",
+              "-mavx2",
+              "-mbmi2",
+              "-mlzcnt",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/sprintz/tests/allocation_failure_full.cc",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_fire/release/objects/000_tscb_sprintz.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_fire/release/objects/001_bounded_sprintz.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_fire/release/objects/002_sprintz.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_fire/release/objects/003_sprintz_delta_lowdim.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_fire/release/objects/004_sprintz_xff_lowdim.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_fire/release/objects/005_sprintz_delta_rle.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_fire/release/objects/006_sprintz_xff_rle.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_fire/release/objects/007_format.o",
+              "-Wl,--wrap=malloc",
+              "-Wl,--wrap=calloc",
+              "-o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/sprintz-fire_release_allocation_failure_full"
+            ],
+            "returncode": 0,
+            "output": ""
+          },
+          "run": {
+            "command": [
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/sprintz-fire_release_allocation_failure_full"
+            ],
+            "returncode": 0,
+            "output": "Sprintz generic allocation-failure paths passed\n"
+          },
+          "executable": {
+            "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/sprintz-fire_release_allocation_failure_full",
+            "sha256": "0794fb64a1096970806ca06bf745dd3d01a80faeb8627978ce359c6c16137452"
+          }
+        }
+      ],
+      "abi_version": "PASS"
+    },
+    {
+      "algorithm": "sprintz-fire",
+      "profile": "sanitizer",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/sprintz_fire/sanitizer/build-record.json",
+        "sha256": "3c68bbd2d7a14d45a8f4a8cd5aa6c7a871d30cac6c77ae0a5463154b4b186608"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/sprintz_fire/sanitizer/libtscb_sprintz_fire.so",
+        "sha256": "1101a9eff5823672c2bdea9cc6c7c917bae3b419463d6ea27948fbcee2d90713"
+      },
+      "declared_dependencies_status": "PASS",
+      "verified_dependency_count": 380,
+      "native_tests": [
+        {
+          "scope": "FINITE_BOUNDED_KERNEL_AND_ALLOCATION_FAILURE",
+          "source": {
+            "path": "adapters/sprintz/tests/bounded_sprintz_test.cc",
+            "sha256": "571924540b9beea4a70ddbf818137d2a192ddb45381da8a8bcb09b55492cd67e"
+          },
+          "compile": {
+            "command": [
+              "c++",
+              "-std=c++17",
+              "-UNDEBUG",
+              "-O1",
+              "-g",
+              "-fno-omit-frame-pointer",
+              "-fsanitize=address,undefined",
+              "-no-pie",
+              "-mavx2",
+              "-mbmi2",
+              "-mlzcnt",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/sprintz/tests/bounded_sprintz_test.cc",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_fire/sanitizer/objects/000_tscb_sprintz.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_fire/sanitizer/objects/001_bounded_sprintz.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_fire/sanitizer/objects/002_sprintz.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_fire/sanitizer/objects/003_sprintz_delta_lowdim.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_fire/sanitizer/objects/004_sprintz_xff_lowdim.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_fire/sanitizer/objects/005_sprintz_delta_rle.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_fire/sanitizer/objects/006_sprintz_xff_rle.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_fire/sanitizer/objects/007_format.o",
+              "-o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/sprintz-fire_sanitizer_bounded_sprintz_test"
+            ],
+            "returncode": 0,
+            "output": ""
+          },
+          "run": {
+            "command": [
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/sprintz-fire_sanitizer_bounded_sprintz_test"
+            ],
+            "returncode": 0,
+            "output": "bounded Sprintz 8/16-bit UTS/MTS qualification passed\n"
+          },
+          "executable": {
+            "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/sprintz-fire_sanitizer_bounded_sprintz_test",
+            "sha256": "4e86864f5d298f2422de355b310fe993e26e8d9573a6c444b985c98fa17cf37b"
+          }
+        },
+        {
+          "scope": "FINITE_BOUNDED_KERNEL_AND_ALLOCATION_FAILURE",
+          "source": {
+            "path": "adapters/sprintz/tests/allocation_failure_full.cc",
+            "sha256": "18b39017336cdddf7900ebaf0a6635aa5de3c130f48d59b17cc8f8d8513a39af"
+          },
+          "compile": {
+            "command": [
+              "c++",
+              "-std=c++17",
+              "-UNDEBUG",
+              "-O1",
+              "-g",
+              "-fno-omit-frame-pointer",
+              "-fsanitize=address,undefined",
+              "-no-pie",
+              "-mavx2",
+              "-mbmi2",
+              "-mlzcnt",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/sprintz/tests/allocation_failure_full.cc",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_fire/sanitizer/objects/000_tscb_sprintz.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_fire/sanitizer/objects/001_bounded_sprintz.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_fire/sanitizer/objects/002_sprintz.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_fire/sanitizer/objects/003_sprintz_delta_lowdim.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_fire/sanitizer/objects/004_sprintz_xff_lowdim.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_fire/sanitizer/objects/005_sprintz_delta_rle.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_fire/sanitizer/objects/006_sprintz_xff_rle.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_fire/sanitizer/objects/007_format.o",
+              "-Wl,--wrap=malloc",
+              "-Wl,--wrap=calloc",
+              "-o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/sprintz-fire_sanitizer_allocation_failure_full"
+            ],
+            "returncode": 0,
+            "output": ""
+          },
+          "run": {
+            "command": [
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/sprintz-fire_sanitizer_allocation_failure_full"
+            ],
+            "returncode": 0,
+            "output": "Sprintz generic allocation-failure paths passed\n"
+          },
+          "executable": {
+            "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/sprintz-fire_sanitizer_allocation_failure_full",
+            "sha256": "ba2b318d1cb6edda9189ac863ee2492db4e51bcd917bae94b9c286db1ec6a314"
+          }
+        }
+      ]
+    },
+    {
+      "algorithm": "sprintz-fire-huff0",
+      "profile": "release",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/sprintz_fire_huff0/release/build-record.json",
+        "sha256": "26d02bec5bd653fd24b65c96d899c0988afe2febc5899fb3e39f0d97b3ec3538"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/sprintz_fire_huff0/release/libtscb_sprintz_fire_huff0.so",
+        "sha256": "aadba7e509b067932aa915e09b6ba7ce550923a9aeada522d9740b765dc49315"
+      },
+      "declared_dependencies_status": "PASS",
+      "verified_dependency_count": 406,
+      "native_tests": [
+        {
+          "scope": "FINITE_DIRECT_C_ABI_TEST",
+          "source": {
+            "path": "adapters/sprintz/tests/sprintz_fire_huff0_test.cc",
+            "sha256": "5a6df7be5574cbec63849dc170666cdb3a6451c8d81b57765346e03a5ede50ee"
+          },
+          "compile": {
+            "command": [
+              "c++",
+              "-std=c++17",
+              "-UNDEBUG",
+              "-O2",
+              "-I",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/native/include",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/sprintz/tests/sprintz_fire_huff0_test.cc",
+              "-L",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_fire_huff0/release",
+              "-Wl,-rpath,/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_fire_huff0/release",
+              "-ltscb_sprintz_fire_huff0",
+              "-lm",
+              "-o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/sprintz-fire-huff0_release_abi"
+            ],
+            "returncode": 0,
+            "output": ""
+          },
+          "run": {
+            "command": [
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/sprintz-fire-huff0_release_abi"
+            ],
+            "returncode": 0,
+            "output": "SprintzFIRE+Huf native qualification passed\n"
+          },
+          "executable": {
+            "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/sprintz-fire-huff0_release_abi",
+            "sha256": "4fdaaa54141c007e85e24e347e88a8e942914ad5a9dea8a9e35fd24ab2371913"
+          }
+        }
+      ],
+      "abi_version": "PASS"
+    },
+    {
+      "algorithm": "sprintz-fire-huff0",
+      "profile": "sanitizer",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/sprintz_fire_huff0/sanitizer/build-record.json",
+        "sha256": "cf15faa95a685dc7b1ebee9d9980da0841de42e3d8cf7200b954b71adfe776ef"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/sprintz_fire_huff0/sanitizer/libtscb_sprintz_fire_huff0.so",
+        "sha256": "b2ebae1a2885fbcc5c99719784ca60ac7a008bf20ce9a53879c2329e1bccc40c"
+      },
+      "declared_dependencies_status": "PASS",
+      "verified_dependency_count": 408,
+      "native_tests": [
+        {
+          "scope": "FINITE_DIRECT_C_ABI_TEST",
+          "source": {
+            "path": "adapters/sprintz/tests/sprintz_fire_huff0_test.cc",
+            "sha256": "5a6df7be5574cbec63849dc170666cdb3a6451c8d81b57765346e03a5ede50ee"
+          },
+          "compile": {
+            "command": [
+              "c++",
+              "-std=c++17",
+              "-UNDEBUG",
+              "-O1",
+              "-g",
+              "-fno-omit-frame-pointer",
+              "-fsanitize=address,undefined",
+              "-no-pie",
+              "-I",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/native/include",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/sprintz/tests/sprintz_fire_huff0_test.cc",
+              "-L",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_fire_huff0/sanitizer",
+              "-Wl,-rpath,/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_fire_huff0/sanitizer",
+              "-ltscb_sprintz_fire_huff0",
+              "-lm",
+              "-o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/sprintz-fire-huff0_sanitizer_abi"
+            ],
+            "returncode": 0,
+            "output": ""
+          },
+          "run": {
+            "command": [
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/sprintz-fire-huff0_sanitizer_abi"
+            ],
+            "returncode": 0,
+            "output": "SprintzFIRE+Huf native qualification passed\n"
+          },
+          "executable": {
+            "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/sprintz-fire-huff0_sanitizer_abi",
+            "sha256": "d222c0281f0819e0e2e74a8e05118a4c5e9abfe398219ced6850e1c3716e59f6"
+          }
+        }
+      ]
+    },
+    {
+      "algorithm": "sprintz-fire-u8",
+      "profile": "release",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/sprintz_fire_u8/release/build-record.json",
+        "sha256": "ba2a9969f71f09ca50352f050eec7c350a634d37d3b5977833a7dc234c68b9a5"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/sprintz_fire_u8/release/libtscb_sprintz_fire_u8.so",
+        "sha256": "39e813ed1e0cd1a7c50503daa423aa0f5e464ed04340d5c872632fe55c1747a3"
+      },
+      "declared_dependencies_status": "PASS",
+      "verified_dependency_count": 363,
+      "native_tests": [
+        {
+          "scope": "FINITE_BOUNDED_KERNEL_AND_ALLOCATION_FAILURE",
+          "source": {
+            "path": "adapters/sprintz/tests/bounded_lowdim_test.cc",
+            "sha256": "34b7fb687b0ad20774e46acf19dd59eed3d72e6c40b6d046c983f84ceb51ac2e"
+          },
+          "compile": {
+            "command": [
+              "c++",
+              "-std=c++17",
+              "-UNDEBUG",
+              "-O2",
+              "-mavx2",
+              "-mbmi2",
+              "-mlzcnt",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/sprintz/tests/bounded_lowdim_test.cc",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_fire_u8/release/objects/000_tscb_sprintz8.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_fire_u8/release/objects/001_bounded_lowdim.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_fire_u8/release/objects/002_sprintz_delta_lowdim.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_fire_u8/release/objects/003_sprintz_xff_lowdim.o",
+              "-o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/sprintz-fire-u8_release_bounded_lowdim_test"
+            ],
+            "returncode": 0,
+            "output": ""
+          },
+          "run": {
+            "command": [
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/sprintz-fire-u8_release_bounded_lowdim_test"
+            ],
+            "returncode": 0,
+            "output": "sprintz 8-bit bounded qualification roundtrips passed\n"
+          },
+          "executable": {
+            "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/sprintz-fire-u8_release_bounded_lowdim_test",
+            "sha256": "a5510c563236ef2f7b3056827b28ee9b9256ba7d2de73c02aa746c2bc629f01d"
+          }
+        },
+        {
+          "scope": "FINITE_BOUNDED_KERNEL_AND_ALLOCATION_FAILURE",
+          "source": {
+            "path": "adapters/sprintz/tests/allocation_failure.cc",
+            "sha256": "8059cd010f49a712c0a4dd4ab54089ffc8387bbc93b63a1c1b4e068315163587"
+          },
+          "compile": {
+            "command": [
+              "c++",
+              "-std=c++17",
+              "-UNDEBUG",
+              "-O2",
+              "-mavx2",
+              "-mbmi2",
+              "-mlzcnt",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/sprintz/tests/allocation_failure.cc",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_fire_u8/release/objects/000_tscb_sprintz8.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_fire_u8/release/objects/001_bounded_lowdim.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_fire_u8/release/objects/002_sprintz_delta_lowdim.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_fire_u8/release/objects/003_sprintz_xff_lowdim.o",
+              "-Wl,--wrap=malloc",
+              "-Wl,--wrap=calloc",
+              "-o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/sprintz-fire-u8_release_allocation_failure"
+            ],
+            "returncode": 0,
+            "output": ""
+          },
+          "run": {
+            "command": [
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/sprintz-fire-u8_release_allocation_failure"
+            ],
+            "returncode": 0,
+            "output": "sprintz vendor allocation failure paths passed\n"
+          },
+          "executable": {
+            "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/sprintz-fire-u8_release_allocation_failure",
+            "sha256": "ea139c0068ace3618c17cfbf3c3f2d9922af51cb75417a276c16bf2bdb8667f4"
+          }
+        }
+      ],
+      "abi_version": "PASS"
+    },
+    {
+      "algorithm": "sprintz-fire-u8",
+      "profile": "sanitizer",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/sprintz_fire_u8/sanitizer/build-record.json",
+        "sha256": "f6dae3ca6ad20e7c3bd30d9dec0eecac3126ef1bcb188f91444301e20b13b447"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/sprintz_fire_u8/sanitizer/libtscb_sprintz_fire_u8.so",
+        "sha256": "6c760456ca0f38a8485b7aca2e87e1cfa5c4869dedce108b4e0844731cb54c2d"
+      },
+      "declared_dependencies_status": "PASS",
+      "verified_dependency_count": 365,
+      "native_tests": [
+        {
+          "scope": "FINITE_BOUNDED_KERNEL_AND_ALLOCATION_FAILURE",
+          "source": {
+            "path": "adapters/sprintz/tests/bounded_lowdim_test.cc",
+            "sha256": "34b7fb687b0ad20774e46acf19dd59eed3d72e6c40b6d046c983f84ceb51ac2e"
+          },
+          "compile": {
+            "command": [
+              "c++",
+              "-std=c++17",
+              "-UNDEBUG",
+              "-O1",
+              "-g",
+              "-fno-omit-frame-pointer",
+              "-fsanitize=address,undefined",
+              "-no-pie",
+              "-mavx2",
+              "-mbmi2",
+              "-mlzcnt",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/sprintz/tests/bounded_lowdim_test.cc",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_fire_u8/sanitizer/objects/000_tscb_sprintz8.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_fire_u8/sanitizer/objects/001_bounded_lowdim.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_fire_u8/sanitizer/objects/002_sprintz_delta_lowdim.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_fire_u8/sanitizer/objects/003_sprintz_xff_lowdim.o",
+              "-o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/sprintz-fire-u8_sanitizer_bounded_lowdim_test"
+            ],
+            "returncode": 0,
+            "output": ""
+          },
+          "run": {
+            "command": [
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/sprintz-fire-u8_sanitizer_bounded_lowdim_test"
+            ],
+            "returncode": 0,
+            "output": "sprintz 8-bit bounded qualification roundtrips passed\n"
+          },
+          "executable": {
+            "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/sprintz-fire-u8_sanitizer_bounded_lowdim_test",
+            "sha256": "aa5584c8be336d0eda5fc4742f820a9448383aee8b1372773e3500e50fa39ed5"
+          }
+        },
+        {
+          "scope": "FINITE_BOUNDED_KERNEL_AND_ALLOCATION_FAILURE",
+          "source": {
+            "path": "adapters/sprintz/tests/allocation_failure.cc",
+            "sha256": "8059cd010f49a712c0a4dd4ab54089ffc8387bbc93b63a1c1b4e068315163587"
+          },
+          "compile": {
+            "command": [
+              "c++",
+              "-std=c++17",
+              "-UNDEBUG",
+              "-O1",
+              "-g",
+              "-fno-omit-frame-pointer",
+              "-fsanitize=address,undefined",
+              "-no-pie",
+              "-mavx2",
+              "-mbmi2",
+              "-mlzcnt",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/sprintz/tests/allocation_failure.cc",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_fire_u8/sanitizer/objects/000_tscb_sprintz8.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_fire_u8/sanitizer/objects/001_bounded_lowdim.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_fire_u8/sanitizer/objects/002_sprintz_delta_lowdim.o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/sprintz_fire_u8/sanitizer/objects/003_sprintz_xff_lowdim.o",
+              "-Wl,--wrap=malloc",
+              "-Wl,--wrap=calloc",
+              "-o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/sprintz-fire-u8_sanitizer_allocation_failure"
+            ],
+            "returncode": 0,
+            "output": ""
+          },
+          "run": {
+            "command": [
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/sprintz-fire-u8_sanitizer_allocation_failure"
+            ],
+            "returncode": 0,
+            "output": "sprintz vendor allocation failure paths passed\n"
+          },
+          "executable": {
+            "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/sprintz-fire-u8_sanitizer_allocation_failure",
+            "sha256": "fb0c27054995a507e976ad428e9ca2f02d2b67051585dac7a94f051f2ff0ce11"
+          }
+        }
+      ]
+    },
+    {
+      "algorithm": "xz-stream",
+      "profile": "release",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/xz_stream/release/build-record.json",
+        "sha256": "127cb6d348f4a8ce66d188e3a7764e6f4891a18024d063562cb5624395e0f2fc"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/xz_stream/release/libtscb_xz_stream.so",
+        "sha256": "edaefa8d7630d607405baecee40acfe53cb8df628baf37750d6d1bb4ec7214bb"
+      },
+      "declared_dependencies_status": "PASS",
+      "verified_dependency_count": 396,
+      "native_tests": [
+        {
+          "scope": "FINITE_DIRECT_C_ABI_TEST",
+          "source": {
+            "path": "adapters/xz_stream/tests/abi_smoke.c",
+            "sha256": "3034ea38a2ae3dda2828079bee35ffc304c75db6bde0b8ec6035f3f01eb57f2e"
+          },
+          "compile": {
+            "command": [
+              "cc",
+              "-std=c11",
+              "-UNDEBUG",
+              "-O2",
+              "-I",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/native/include",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/xz_stream/tests/abi_smoke.c",
+              "-L",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/xz_stream/release",
+              "-Wl,-rpath,/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/xz_stream/release",
+              "-ltscb_xz_stream",
+              "-lm",
+              "-o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/xz-stream_release_abi"
+            ],
+            "returncode": 0,
+            "output": ""
+          },
+          "run": {
+            "command": [
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/xz-stream_release_abi"
+            ],
+            "returncode": 0,
+            "output": "XZ LZMA2 C ABI smoke passed\n"
+          },
+          "executable": {
+            "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/xz-stream_release_abi",
+            "sha256": "4c9381970229769a6297a3ab4336dc44acd773bb652a6ea9c9f0c16b7ed9f4f7"
+          }
+        }
+      ],
+      "abi_version": "PASS"
+    },
+    {
+      "algorithm": "xz-stream",
+      "profile": "sanitizer",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/xz_stream/sanitizer/build-record.json",
+        "sha256": "b841b2c1d683b80315339c12c2295df71f1a36b55daab2ae8156b8e9dc2de44e"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/xz_stream/sanitizer/libtscb_xz_stream.so",
+        "sha256": "531da0b6db69ab6c4243bf356831472967c856cc3ccfbe7eb0f829284173ea56"
+      },
+      "declared_dependencies_status": "PASS",
+      "verified_dependency_count": 401,
+      "native_tests": [
+        {
+          "scope": "FINITE_DIRECT_C_ABI_TEST",
+          "source": {
+            "path": "adapters/xz_stream/tests/abi_smoke.c",
+            "sha256": "3034ea38a2ae3dda2828079bee35ffc304c75db6bde0b8ec6035f3f01eb57f2e"
+          },
+          "compile": {
+            "command": [
+              "cc",
+              "-std=c11",
+              "-UNDEBUG",
+              "-O1",
+              "-g",
+              "-fno-omit-frame-pointer",
+              "-fsanitize=address,undefined",
+              "-no-pie",
+              "-I",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/native/include",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/xz_stream/tests/abi_smoke.c",
+              "-L",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/xz_stream/sanitizer",
+              "-Wl,-rpath,/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/xz_stream/sanitizer",
+              "-ltscb_xz_stream",
+              "-lm",
+              "-o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/xz-stream_sanitizer_abi"
+            ],
+            "returncode": 0,
+            "output": ""
+          },
+          "run": {
+            "command": [
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/xz-stream_sanitizer_abi"
+            ],
+            "returncode": 0,
+            "output": "XZ LZMA2 C ABI smoke passed\n"
+          },
+          "executable": {
+            "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/xz-stream_sanitizer_abi",
+            "sha256": "edb008c93cfe83b9b6454849489d7be62a181a211eaee167fbca4fc3aea0e79b"
+          }
+        }
+      ]
+    },
+    {
+      "algorithm": "zfp-accuracy-1d",
+      "profile": "release",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/zfp_accuracy_1d/release/build-record.json",
+        "sha256": "88760961080bb5369d4c4be57bf8f12aca07ece654973871d95e4ed543d317a7"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/zfp_accuracy_1d/release/libtscb_zfp_accuracy_1d.so",
+        "sha256": "7b1897b84e9b5f6ad261134a7dd5dccba5e398893ddbd5320b216ddcef898a61"
+      },
+      "declared_dependencies_status": "PASS",
+      "verified_dependency_count": 244,
+      "native_tests": [
+        {
+          "scope": "FINITE_DIRECT_C_ABI_TEST",
+          "source": {
+            "path": "adapters/zfp/tests/abi_smoke.c",
+            "sha256": "3112177e8ae8400dbc3b963ab826be4eeea90f6f772f640d4ea0b9a47e076e27"
+          },
+          "compile": {
+            "command": [
+              "cc",
+              "-std=c11",
+              "-UNDEBUG",
+              "-O2",
+              "-I",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/native/include",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/zfp/tests/abi_smoke.c",
+              "-L",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/zfp_accuracy_1d/release",
+              "-Wl,-rpath,/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/zfp_accuracy_1d/release",
+              "-ltscb_zfp_accuracy_1d",
+              "-lm",
+              "-o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/zfp-accuracy-1d_release_abi"
+            ],
+            "returncode": 0,
+            "output": ""
+          },
+          "run": {
+            "command": [
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/zfp-accuracy-1d_release_abi"
+            ],
+            "returncode": 0,
+            "output": "zfp native ABI smoke: PASS\n"
+          },
+          "executable": {
+            "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/zfp-accuracy-1d_release_abi",
+            "sha256": "7a2aa1b28a2a77921c7d0f6a125e72c0f4f8653353262ae533d01c2d887dd081"
+          }
+        }
+      ],
+      "abi_version": "PASS"
+    },
+    {
+      "algorithm": "zfp-accuracy-1d",
+      "profile": "sanitizer",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/zfp_accuracy_1d/sanitizer/build-record.json",
+        "sha256": "18764fadd367952f7fb241c6a98797c449530597cfd9c338467872af410e97f7"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/zfp_accuracy_1d/sanitizer/libtscb_zfp_accuracy_1d.so",
+        "sha256": "9755081926d7702855ccab550981c3e78f8a35c62d9c60d40c4cf323b45038c2"
+      },
+      "declared_dependencies_status": "PASS",
+      "verified_dependency_count": 248,
+      "native_tests": [
+        {
+          "scope": "FINITE_DIRECT_C_ABI_TEST",
+          "source": {
+            "path": "adapters/zfp/tests/abi_smoke.c",
+            "sha256": "3112177e8ae8400dbc3b963ab826be4eeea90f6f772f640d4ea0b9a47e076e27"
+          },
+          "compile": {
+            "command": [
+              "cc",
+              "-std=c11",
+              "-UNDEBUG",
+              "-O1",
+              "-g",
+              "-fno-omit-frame-pointer",
+              "-fsanitize=address,undefined",
+              "-no-pie",
+              "-I",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/native/include",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/zfp/tests/abi_smoke.c",
+              "-L",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/zfp_accuracy_1d/sanitizer",
+              "-Wl,-rpath,/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/zfp_accuracy_1d/sanitizer",
+              "-ltscb_zfp_accuracy_1d",
+              "-lm",
+              "-o",
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/zfp-accuracy-1d_sanitizer_abi"
+            ],
+            "returncode": 0,
+            "output": ""
+          },
+          "run": {
+            "command": [
+              "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_port_standard_v30/general_native_qualification_v2/zfp-accuracy-1d_sanitizer_abi"
+            ],
+            "returncode": 0,
+            "output": "zfp native ABI smoke: PASS\n"
+          },
+          "executable": {
+            "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/zfp-accuracy-1d_sanitizer_abi",
+            "sha256": "4b9a337ebf9726598601569513957070207b452fd1a1d0d7132f2835fb07190f"
+          }
+        }
+      ]
+    },
+    {
+      "algorithm": "zstd-frame",
+      "profile": "release",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/zstd_frame/release/build-record.json",
+        "sha256": "2c1a3a474c8f981c1311c44da755920a30a2419c41c8626a4309d8e832993ef2"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/zstd_frame/release/libtscb_zstd_frame.so",
+        "sha256": "9d707065f32b6e495f203146d62ce86ed3a26de512dee7eb4e56ba0a5cec4767"
+      },
+      "declared_dependencies_status": "PASS",
+      "verified_dependency_count": 223,
+      "native_tests": [],
+      "abi_version": "PASS"
+    },
+    {
+      "algorithm": "zstd-frame",
+      "profile": "sanitizer",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/zstd_frame/sanitizer/build-record.json",
+        "sha256": "4c0ad4eb0d8fc8a4c6697bf5a6cbd30b389a1bc68d9c7a84e9e13e06d5c70084"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/zstd_frame/sanitizer/libtscb_zstd_frame.so",
+        "sha256": "07115817011966371a77757afc3ad5a85aff01fc144244103cc1e1072de67f69"
+      },
+      "declared_dependencies_status": "PASS",
+      "verified_dependency_count": 228,
+      "native_tests": []
+    }
+  ],
+  "scope": "DECLARED_REAL_BUILD_CLOSURES_AND_FINITE_NATIVE_API_TESTS",
+  "source_full_parity": "NOT_ASSERTED",
+  "limits": [
+    "Compiler selected programs are recorded via driver discovery, not exec tracing.",
+    "ldd covers dynamic runtime files; implicit static startup/runtime archives are not all pinned.",
+    "System libraries are uninstrumented; LeakSanitizer is disabled under host ptrace limitations.",
+    "Stored upstream/paper parity remains separate from these finite native API tests."
+  ]
+}

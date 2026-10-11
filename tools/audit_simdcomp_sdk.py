@@ -25,8 +25,17 @@ def audit(root: Path = ROOT, report_path: Path | None = None) -> dict:
     if report_path is None:
         card_path = root / "registry/onboarding/simdcomp-u32.json"
         card = json.loads(card_path.read_text()) if card_path.is_file() else {"upstream_tests": []}
-        records = [item for item in card["upstream_tests"] if Path(item["evidence"]).name in ("simdcomp_sdk_tests.json", "report.json") and "sdk" in item["evidence"]]
-        report_path = root / records[0]["evidence"] if len(records) == 1 else root / "build/source-audits/simdcomp_sdk_tests.json"
+        records = [
+            item
+            for item in card["upstream_tests"]
+            if Path(item["evidence"]).name in ("simdcomp_sdk_tests.json", "report.json")
+            and "sdk" in item["evidence"]
+        ]
+        report_path = (
+            root / records[0]["evidence"]
+            if len(records) == 1
+            else root / "build/source-audits/simdcomp_sdk_tests.json"
+        )
     report = json.loads(report_path.read_text())
     out = root / report.get("output_directory", "build/source-audits/simdcomp-sdk")
     require(out.resolve().is_relative_to(root.resolve()), "SDK output escapes project")
@@ -42,7 +51,7 @@ def audit(root: Path = ROOT, report_path: Path | None = None) -> dict:
     ):
         require(report[field] == sha(path), "SDK evidence drift: " + field)
     require(
-        report["qualification_scope"] == "DIRECT_PYTHON_UINT32_PLAIN_MODULAR_D1_AND_FIXED_FOR_SDK"
+        report["qualification_scope"] == "DIRECT_PYTHON_UINT32_PLAIN_SSE4_1_AND_AVX2_SDK"
         and report["benchmark_registration"] == report["benchmark_five_layers"] == "PENDING",
         "SDK scope or premature Benchmark claim",
     )
@@ -58,12 +67,10 @@ def audit(root: Path = ROOT, report_path: Path | None = None) -> dict:
         for field in ("tests", "failures", "errors", "skipped")
     }
     require(
-        totals == report["test_totals"] == {"tests": 888, "failures": 0, "errors": 0, "skipped": 0},
+        totals == report["test_totals"] == {"tests": 504, "failures": 0, "errors": 0, "skipped": 0},
         "SDK tests incomplete/failed/skipped",
     )
-    closure = json.loads(
-        (out / "python-closure.json").read_text()
-    )
+    closure = json.loads((out / "python-closure.json").read_text())
     require(
         closure["status"] == "PASS" and closure["source_snapshot"] == report["source_snapshot"],
         "actual imported SDK closure differs",
@@ -84,12 +91,11 @@ def audit(root: Path = ROOT, report_path: Path | None = None) -> dict:
         len(paths) == len(report["source_snapshot"])
         and {
             "src/tscompbench/adapters/simdcomp.py",
-            "src/tscompbench/adapters/deflate_zlib.py",
-            "src/tscompbench/adapters/maskedvbyte.py",
-            "src/tscompbench/preprocess/simdcomp.py",
+            "src/tscompbench/adapters/native_buffers.py",
             "src/tscompbench/adapters/native_timing.py",
             "src/tscompbench/execution/protocol.py",
             "src/tscompbench/execution/repetition.py",
+            "src/tscompbench/execution/recovery.py",
             "tests/adapters/test_simdcomp.py",
             "tools/qualify_simdcomp_sdk.py",
         }
@@ -98,7 +104,9 @@ def audit(root: Path = ROOT, report_path: Path | None = None) -> dict:
     )
     require(
         any(
-            c["returncode"] == 0 and c["command"][-1] == "--worker" and "888 passed" in c["stdout"]
+            c["returncode"] == 0
+            and c["command"][-1] == "--worker"
+            and ("504 passed" in c["stdout"])
             for c in report["commands"]
         ),
         "SDK worker execution output absent",
@@ -111,7 +119,7 @@ def audit(root: Path = ROOT, report_path: Path | None = None) -> dict:
         "test_count": totals["tests"],
         "actual_imported_project_file_count": len(paths),
         "source_snapshot_sha256": report["source_snapshot_sha256"],
-        "keys": ["simdcomp-u32", "delta-simdcomp-u32", "for-simdcomp-u32"],
+        "keys": ["simdcomp-u32"],
         "python_sdk": "QUALIFIED_SCOPED_UINT32_ONLY",
         "benchmark_registration": "PENDING",
         "benchmark_five_layers": "PENDING",

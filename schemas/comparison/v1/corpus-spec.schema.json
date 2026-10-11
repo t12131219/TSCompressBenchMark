@@ -1,0 +1,202 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "tscb.corpus-spec.v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "name",
+    "revision",
+    "selection_rule",
+    "sampling_design",
+    "exclusion_rule",
+    "datasets"
+  ],
+  "properties": {
+    "content_identity_policy": {
+      "type": "string",
+      "enum": ["tscb.dataset-content.v1", "tscb.dataset-content.v2"]
+    },
+    "schema_version": {
+      "const": "tscb.corpus-spec.v1"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "revision": {
+      "type": "string",
+      "minLength": 1
+    },
+    "selection_rule": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sampling_design": {
+      "type": "string",
+      "minLength": 1
+    },
+    "exclusion_rule": {
+      "type": "string",
+      "minLength": 1
+    },
+    "datasets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "dataset_id",
+          "logical_content_id",
+          "artifact_sha256",
+          "role",
+          "source_kind",
+          "source",
+          "parents",
+          "derivation",
+          "split",
+          "weight",
+          "domain_evidence"
+        ],
+        "properties": {
+          "dataset_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "logical_content_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "artifact_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "CORE",
+              "EXTENSION"
+            ]
+          },
+          "source_kind": {
+            "type": "string",
+            "enum": [
+              "REAL",
+              "SYNTHETIC"
+            ]
+          },
+          "source": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "family",
+              "entity",
+              "independence_unit",
+              "evidence"
+            ],
+            "properties": {
+              "family": {
+                "type": "string",
+                "minLength": 1
+              },
+              "entity": {
+                "type": "string",
+                "minLength": 1
+              },
+              "independence_unit": {
+                "type": "string",
+                "minLength": 1
+              },
+              "evidence": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "minItems": 1,
+                "uniqueItems": false
+              }
+            }
+          },
+          "parents": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "dataset_id",
+                "source_kind",
+                "family",
+                "entity",
+                "independence_unit"
+              ],
+              "properties": {
+                "dataset_id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "source_kind": {
+                  "type": "string",
+                  "enum": [
+                    "REAL",
+                    "SYNTHETIC"
+                  ]
+                },
+                "family": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "entity": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "independence_unit": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            },
+            "minItems": 0,
+            "uniqueItems": false
+          },
+          "derivation": {
+            "type": "string",
+            "enum": [
+              "ORIGINAL",
+              "RESAMPLE",
+              "COLUMN",
+              "WINDOW",
+              "QUANTIZED",
+              "SERIALIZATION",
+              "SYNTHETIC"
+            ]
+          },
+          "split": {
+            "type": "string",
+            "enum": [
+              "TEST",
+              "VALIDATION",
+              "TRAIN",
+              "UNSPLIT"
+            ]
+          },
+          "weight": {
+            "type": "string",
+            "minLength": 1
+          },
+          "domain_evidence": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "minItems": 1,
+            "uniqueItems": false
+          }
+        }
+      },
+      "minItems": 1,
+      "uniqueItems": false
+    }
+  }
+}

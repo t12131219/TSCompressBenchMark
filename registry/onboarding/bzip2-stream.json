@@ -6,12 +6,23 @@
   "dirty": false,
   "submodules": [],
   "implementation_files": [
-    "bwt/bzip2/blocksort.c", "bwt/bzip2/huffman.c", "bwt/bzip2/crctable.c",
-    "bwt/bzip2/randtable.c", "bwt/bzip2/compress.c", "bwt/bzip2/decompress.c",
+    "bwt/bzip2/blocksort.c",
+    "bwt/bzip2/huffman.c",
+    "bwt/bzip2/crctable.c",
+    "bwt/bzip2/randtable.c",
+    "bwt/bzip2/compress.c",
+    "bwt/bzip2/decompress.c",
     "bwt/bzip2/bzlib.c"
   ],
-  "public_api_files": ["bwt/bzip2/bzlib.h", "bwt/bzip2/bzlib_private.h"],
-  "benchmark_files": ["bench/symmetric_codecs.cpp", "bench/lzbench.h", "Makefile"],
+  "public_api_files": [
+    "bwt/bzip2/bzlib.h",
+    "bwt/bzip2/bzlib_private.h"
+  ],
+  "benchmark_files": [
+    "bench/symmetric_codecs.cpp",
+    "bench/lzbench.h",
+    "Makefile"
+  ],
   "test_files": [
     "adapters/bzip2_stream/tests/abi_smoke.c",
     "adapters/bzip2_stream/tests/vendor_roundtrip.c",
@@ -19,9 +30,13 @@
     "adapters/bzip2_stream/tests/symbol_interposition.c",
     "tests/adapters/test_bzip2_stream.py"
   ],
-  "license_files": ["bwt/bzip2/LICENSE"],
+  "license_files": [
+    "bwt/bzip2/LICENSE"
+  ],
   "third_party_dependencies": [],
-  "object_level_candidates": ["P1_STANDALONE_CODEC"],
+  "object_level_candidates": [
+    "P1_STANDALONE_CODEC"
+  ],
   "input_contract": {
     "kind": "BYTE_VIEW",
     "length_type": "unsigned int",
@@ -57,13 +72,41 @@
       "name": "benchmark-vendored libbz2 API deterministic roundtrip harness",
       "command": "conda run -n CompressBench14 python adapters/bzip2_stream/tests/run_native_tests.py",
       "status": "PASS",
-      "evidence": "BZ2_bzBuffToBuffCompress/Decompress passed 36 deterministic cases (seed 20260919), levels 1-9, Release and ASan/UBSan; project harness, not a claim that upstream's full test suite was run"
+      "evidence": "BZ2_bzBuffToBuffCompress/Decompress passed 36 deterministic cases (seed 20260919), levels 1-9, Release and ASan/UBSan; project harness, not a claim that upstream's full test suite was run",
+      "evidence_kind": "HISTORICAL_OR_SEPARATE_UPSTREAM_EVIDENCE"
     },
     {
       "name": "project C ABI lifecycle smoke",
       "command": "run_native_tests.py: abi_smoke.c in Release and ASan/UBSan",
       "status": "PASS",
-      "evidence": "N=0/1/2, level-1 100000-byte and level-9 900000-byte boundaries; exact decode, hostile streams, reset/reuse, actual-size-minus-one, canary, input immutability, native timing and lifecycle rejection"
+      "evidence": "N=0/1/2, level-1 100000-byte and level-9 900000-byte boundaries; exact decode, hostile streams, reset/reuse, actual-size-minus-one, canary, input immutability, native timing and lifecycle rejection",
+      "evidence_kind": "HISTORICAL_OR_SEPARATE_UPSTREAM_EVIDENCE"
+    },
+    {
+      "algorithm": "bzip2-stream",
+      "profile": "release",
+      "name": "current build dependency and finite native API verification",
+      "status": "PASS",
+      "evidence": {
+        "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/qualification.json",
+        "sha256": "b86173f34c30d175552de327cc446dd8480aa02dd7a9ae56f12f60c0d93db174"
+      },
+      "evidence_kind": "CURRENT_REAL_BUILD_DEPENDENCIES_WITH_SELECTED_NATIVE_TESTS",
+      "native_suite_status": "PASS",
+      "source_full_parity": "NOT_ASSERTED"
+    },
+    {
+      "algorithm": "bzip2-stream",
+      "profile": "sanitizer",
+      "name": "current build dependency and finite native API verification",
+      "status": "PASS",
+      "evidence": {
+        "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/qualification.json",
+        "sha256": "b86173f34c30d175552de327cc446dd8480aa02dd7a9ae56f12f60c0d93db174"
+      },
+      "evidence_kind": "CURRENT_REAL_BUILD_DEPENDENCIES_WITH_SELECTED_NATIVE_TESTS",
+      "native_suite_status": "PASS",
+      "source_full_parity": "NOT_ASSERTED"
     }
   ],
   "builds": [
@@ -72,14 +115,50 @@
       "artifact_sha256": "7bc7954041f804700160177fe1d3808aecdda7664b98143a1107e3213e079e4b",
       "compile_commands_sha256": "12cbd518bbbdff0416a58def131d562235811e12a4e473acb32a397d43d36500",
       "compiler": "GCC 11.4.0",
-      "flags": "-O3 -DNDEBUG -std=c11 -fPIC -Wl,-Bsymbolic-functions; three named upstream-only warning suppressions"
+      "flags": "-O3 -DNDEBUG -std=c11 -fPIC -Wl,-Bsymbolic-functions; three named upstream-only warning suppressions",
+      "evidence_kind": "HISTORICAL_BUILD_RECORD"
     },
     {
       "profile": "ASAN_UBSAN_SCALAR_SINGLE_THREAD",
       "artifact_sha256": "13ae1bda03234d074664ad03d9105d6fc34d52aa7362414ba98436e296ad92e7",
       "compile_commands_sha256": "03280461820d7ea2224c57fb8a5dfd44a143901c96afec9e7c0efd37f4f9d88b",
       "compiler": "GCC 11.4.0",
-      "flags": "-O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined -std=c11 -fPIC -Wl,-Bsymbolic-functions; three named upstream-only warning suppressions"
+      "flags": "-O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined -std=c11 -fPIC -Wl,-Bsymbolic-functions; three named upstream-only warning suppressions",
+      "evidence_kind": "HISTORICAL_BUILD_RECORD"
+    },
+    {
+      "algorithm": "bzip2-stream",
+      "profile": "RELEASE",
+      "artifact_sha256": "7bc7954041f804700160177fe1d3808aecdda7664b98143a1107e3213e079e4b",
+      "compile_commands_sha256": "4caef584345ebf26192a59f7dfae339486e49ada4f24596169203728d5f9727a",
+      "compiler": "cc (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0",
+      "evidence_kind": "CURRENT_REAL_BUILD_DEPENDENCIES_VERIFIED",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/bzip2_stream/release/build-record.json",
+        "sha256": "30b5b04cea7fe76ece6ecad152e531d0e019951a04f5d1078325d324ad326eaf"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/bzip2_stream/release/libtscb_bzip2_stream.so",
+        "sha256": "7bc7954041f804700160177fe1d3808aecdda7664b98143a1107e3213e079e4b"
+      },
+      "qualification_scope": "BUILD_CLOSURE_AND_SELECTED_FINITE_NATIVE_SUITE_NOT_SOURCE_FULL_PARITY"
+    },
+    {
+      "algorithm": "bzip2-stream",
+      "profile": "SANITIZER",
+      "artifact_sha256": "13ae1bda03234d074664ad03d9105d6fc34d52aa7362414ba98436e296ad92e7",
+      "compile_commands_sha256": "2d67c345ae8eef17b6bac6e5c0d8184387a645cf31da64fdcd77b8455a31fa62",
+      "compiler": "cc (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0",
+      "evidence_kind": "CURRENT_REAL_BUILD_DEPENDENCIES_VERIFIED",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/bzip2_stream/sanitizer/build-record.json",
+        "sha256": "9050a659aef21b50dee04fa28ab447432212b5b0d062555a7cc94a96c7766a0d"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/bzip2_stream/sanitizer/libtscb_bzip2_stream.so",
+        "sha256": "13ae1bda03234d074664ad03d9105d6fc34d52aa7362414ba98436e296ad92e7"
+      },
+      "qualification_scope": "BUILD_CLOSURE_AND_SELECTED_FINITE_NATIVE_SUITE_NOT_SOURCE_FULL_PARITY"
     }
   ],
   "license_decision": {
@@ -93,12 +172,18 @@
     "Registered defaults are level 9, effective workFactor 30, verbosity 0, normal-memory decode, one CPU thread and one independent stream. The separate profile uses persistent BZ2_bzCompress/BZ2_bzDecompress contexts; small-memory decode, work-factor sweeps and concatenated streams remain unregistered.",
     "The single-update ABI and documented output-bound representation are limited to UINT_MAX.",
     "Complete bzip2 stream bytes are conservatively charged to the routed bucket; internal BWT/MTF/RLE/Huffman bits, CRCs and padding are not guessed into overlapping sub-buckets.",
-    "LeakSanitizer is disabled under the host ptrace policy; ASan/UBSan remain enabled."
+    "LeakSanitizer is disabled under the host ptrace policy; ASan/UBSan remain enabled.",
+    "2026-10-11: new isolated builds pin actual per-TU compiler dependencies, objects, selected toolchain executables and linked dynamic runtime files. These records do not pin every implicit static startup/runtime archive and do not grant source FULL_PARITY or change active algorithm scope. Historical runs retain their original artifact identities."
   ],
   "unsupported_reason_codes": [
-    "EXECUTION_ARTIFACT_MISSING", "VALIDITY_SHAPE_UNSUPPORTED",
-    "SMALL_MEMORY_DECODE_NOT_REGISTERED", "WORK_FACTOR_NOT_REGISTERED",
-    "CONCATENATED_STREAM_NOT_REGISTERED", "QUERY_UNSUPPORTED",
-    "STREAMING_PROTOCOL_NOT_REGISTERED", "SINGLE_UPDATE_LENGTH_LIMIT"
-  ]
+    "EXECUTION_ARTIFACT_MISSING",
+    "VALIDITY_SHAPE_UNSUPPORTED",
+    "SMALL_MEMORY_DECODE_NOT_REGISTERED",
+    "WORK_FACTOR_NOT_REGISTERED",
+    "CONCATENATED_STREAM_NOT_REGISTERED",
+    "QUERY_UNSUPPORTED",
+    "STREAMING_PROTOCOL_NOT_REGISTERED",
+    "SINGLE_UPDATE_LENGTH_LIMIT"
+  ],
+  "source_onboarding_id": "v2:source-onboarding:sha256:6fb5f3fb499fed20e09184a5300430f6db75a73a393bd740eef7de3ccce63340"
 }

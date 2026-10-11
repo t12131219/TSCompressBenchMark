@@ -437,10 +437,14 @@ std::vector<double> reconstruct(const double first_value,
   for (const Center& piece : pieces) {
     if (!std::isfinite(piece.length) || !std::isfinite(piece.increment) ||
         piece.length < 1.0 || piece.length != std::floor(piece.length) ||
-        piece.length > static_cast<double>(std::numeric_limits<std::size_t>::max())) {
+        piece.length >= std::ldexp(
+                            1.0, std::numeric_limits<std::size_t>::digits)) {
       throw std::invalid_argument("invalid fABBA reconstruction piece");
     }
     const auto length = static_cast<std::size_t>(piece.length);
+    if (length > original_sample_count - result.size()) {
+      throw std::invalid_argument("fABBA reconstruction exceeds declared length");
+    }
     const double start = result.back();
     for (std::size_t position = 1; position <= length; ++position) {
       const double value = start +

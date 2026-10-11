@@ -15,21 +15,43 @@
   "classification": {
     "object_level": "P2_PIPELINE",
     "implementation_class": "CONVENTIONAL",
-    "tracks": ["VALUE"],
-    "subtracks": ["V0"]
+    "tracks": [
+      "VALUE"
+    ],
+    "subtracks": [
+      "V0"
+    ]
   },
   "input": {
-    "topologies": ["UTS", "SYNCHRONOUS_MTS"],
-    "dtypes": ["|i1", "|u1", "<i2", "<u2"],
-    "ranks": [1, 2],
-    "layouts": ["ROW_MAJOR_CONTIG", "SOA_COLUMNS"],
-    "endianness": ["little"],
+    "topologies": [
+      "UTS",
+      "SYNCHRONOUS_MTS"
+    ],
+    "dtypes": [
+      "|i1",
+      "|u1",
+      "<i2",
+      "<u2"
+    ],
+    "ranks": [
+      1,
+      2
+    ],
+    "layouts": [
+      "ROW_MAJOR_CONTIG",
+      "SOA_COLUMNS"
+    ],
+    "endianness": [
+      "little"
+    ],
     "alignment_bytes": 1,
     "min_n": 0,
     "max_n": 122880,
     "min_m": 1,
     "max_m": 128,
-    "validity_shapes": ["NONE"],
+    "validity_shapes": [
+      "NONE"
+    ],
     "homogeneous_itemsize": true,
     "max_total_raw_bytes": 122880,
     "value_coupling_mode": "FULL_MATRIX",
@@ -43,9 +65,13 @@
     }
   },
   "semantics": {
-    "loss_modes": ["LOSSLESS"],
+    "loss_modes": [
+      "LOSSLESS"
+    ],
     "error_bound_types": [],
-    "reconstruction_modes": ["EXACT_GRID"],
+    "reconstruction_modes": [
+      "EXACT_GRID"
+    ],
     "rebuild_protocol": "TSCB_SPRINTZ_FIRE_HUFF0_DESCRIPTOR_V1",
     "preprocess_class": "NONE",
     "preprocess_stages": [],
@@ -64,22 +90,37 @@
     "index": "NONE"
   },
   "execution": {
-    "backends": ["C_ABI_V1"],
-    "isa": ["AVX2_BMI2_LZCNT"],
-    "devices": ["CPU"],
+    "backends": [
+      "C_ABI_V1"
+    ],
+    "isa": [
+      "AVX2_BMI2_LZCNT"
+    ],
+    "devices": [
+      "CPU"
+    ],
     "threading": "SINGLE_THREAD",
     "fallback_policy": "EXPLICIT_HUFF0_RAW_MODE_ONLY",
     "runtime_dispatch": false
   },
-  "features": {"streaming": false, "query": false, "random_access": false},
+  "features": {
+    "streaming": false,
+    "query": false,
+    "random_access": false
+  },
   "parameters": {
     "type": "object",
     "additionalProperties": false,
     "properties": {
-      "native_timing": {"type": "boolean", "default": true},
+      "native_timing": {
+        "type": "boolean",
+        "default": true
+      },
       "isa": {
         "type": "string",
-        "enum": ["AVX2_BMI2_LZCNT"],
+        "enum": [
+          "AVX2_BMI2_LZCNT"
+        ],
         "default": "AVX2_BMI2_LZCNT"
       }
     },
@@ -87,15 +128,19 @@
   },
   "adapter": {
     "backend": "C_ABI_V1",
-    "version": "sprintz-fire-huff0-ctypes-v1",
+    "version": "sprintz-fire-huff0-ctypes-v1-port-standard-v30-20261011",
     "factory": "SPRINTZ_CTYPES_V1",
-    "artifact_path": "build/adapters/sprintz_fire_huff0/release/libtscb_sprintz_fire_huff0.so",
+    "artifact_path": "build/port-standard-v30-20261011/native-builds-v3/sprintz_fire_huff0/release/libtscb_sprintz_fire_huff0.so",
     "timing_boundary": "PYTHON_SOA_INTERLEAVE_FFI_AND_CONTAINER_INCLUDED",
     "native_timing_capability": {
       "optional": true,
       "boundary": "SPRINTZ_FIRE_AND_HUFF0_CODEC_APIS_V1",
       "clock": "CLOCK_MONOTONIC",
-      "excludes": ["CONTEXT_LIFECYCLE", "PYTHON_SOA_INTERLEAVE", "PYTHON_FFI_CONTAINER"]
+      "excludes": [
+        "CONTEXT_LIFECYCLE",
+        "PYTHON_SOA_INTERLEAVE",
+        "PYTHON_FFI_CONTAINER"
+      ]
     },
     "accounting_hooks": [
       "FINAL_STREAM_LENGTH",
@@ -104,6 +149,10 @@
       "HUFF0_MODE",
       "EXACT_HUFF0_PAYLOAD_LENGTH",
       "OUTPUT_CAPACITY"
-    ]
+    ],
+    "runtime_profile": {
+      "path": "docs/audits/20261011_port_standard_v30/runtime_profiles_v2/profiles/sprintz-fire-huff0.json",
+      "sha256": "d5d64b689b583ff342aa577187c99a0b8c6848a9546edaa3af510a51bccdbe72"
+    }
   }
 }

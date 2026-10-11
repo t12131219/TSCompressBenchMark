@@ -95,45 +95,104 @@
       "name": "project native release ABI smoke",
       "command": "conda run -n CompressBench14 python adapters/serf/tests/run_native_tests.py",
       "status": "PASS",
-      "evidence": "Historical pre-correction source float32/float64; 0/1/2, 999/1000/1001/2001; non-finite raw exceptions; canaries, bound-minus-one, finalize and corruption"
+      "evidence": "Historical pre-correction source float32/float64; 0/1/2, 999/1000/1001/2001; non-finite raw exceptions; canaries, bound-minus-one, finalize and corruption",
+      "evidence_kind": "HISTORICAL_OR_SEPARATE_UPSTREAM_EVIDENCE"
     },
     {
       "name": "project native ASan/UBSan ABI smoke",
       "command": "conda run -n CompressBench14 python adapters/serf/tests/run_native_tests.py",
       "status": "PASS",
-      "evidence": "Historical pre-correction source same matrix; sanitizer findings produced three replayed source patches and an aligned input copy in the C ABI shim"
+      "evidence": "Historical pre-correction source same matrix; sanitizer findings produced three replayed source patches and an aligned input copy in the C ABI shim",
+      "evidence_kind": "HISTORICAL_OR_SEPARATE_UPSTREAM_EVIDENCE"
     },
     {
       "name": "Python adapter, source closure and negotiation qualification",
       "command": "PYTHONPATH=src conda run -n CompressBench14 pytest -q tests/adapters/test_serf.py tests/unit/test_negotiation.py tests/unit/test_measurement.py tests/unit/test_statistics.py",
       "status": "PASS",
-      "evidence": "Historical pre-correction source absolute-bound, IEEE edge, hostile frame, MTS, identity, lossy negotiation and declared native-boundary coverage"
+      "evidence": "Historical pre-correction source absolute-bound, IEEE edge, hostile frame, MTS, identity, lossy negotiation and declared native-boundary coverage",
+      "evidence_kind": "HISTORICAL_OR_SEPARATE_UPSTREAM_EVIDENCE"
     },
     {
       "name": "five-layer qualification",
       "command": "tscompbench run validate configs/experiments/serf-qualification.toml",
       "status": "PASS",
-      "evidence": "Historical pre-correction source runs/runset-20260920T062542Z-83ecd524822d; two tasks and 39/39 boundary cases per algorithm"
+      "evidence": "Historical pre-correction source runs/runset-20260920T062542Z-83ecd524822d; two tasks and 39/39 boundary cases per algorithm",
+      "evidence_kind": "HISTORICAL_OR_SEPARATE_UPSTREAM_EVIDENCE"
     },
     {
       "name": "five-layer formal exchange-rate run",
       "command": "tscompbench run validate/report configs/experiments/serf-formal.toml",
       "status": "PASS",
-      "evidence": "Historical pre-correction source runs/runset-20260920T062606Z-db4b8711b0a0; 20 eligible PASS repetitions, two summaries, two coverage tasks and zero raw absolute-error violations"
+      "evidence": "Historical pre-correction source runs/runset-20260920T062606Z-db4b8711b0a0; 20 eligible PASS repetitions, two summaries, two coverage tasks and zero raw absolute-error violations",
+      "evidence_kind": "HISTORICAL_OR_SEPARATE_UPSTREAM_EVIDENCE"
     },
     {
       "name": "Strict XOR native release and ASan/UBSan regressions",
       "command": "python adapters/serf/tests/run_native_tests.py",
       "status": "PASS",
       "evidence": "serf_qt: release: abi_smoke\nserf ABI smoke PASS\nserf_qt: sanitizer: abi_smoke\nserf ABI smoke PASS\nserf_xor: release: abi_smoke\nserf ABI smoke PASS\nserf_xor: sanitizer: abi_smoke\nserf ABI smoke PASS\n",
-      "log_sha256": "3fd11fe85c33d07293bc41b37801b9eaf0766e34fab388ebd65c31550491c559"
+      "log_sha256": "3fd11fe85c33d07293bc41b37801b9eaf0766e34fab388ebd65c31550491c559",
+      "evidence_kind": "HISTORICAL_OR_SEPARATE_UPSTREAM_EVIDENCE"
     },
     {
       "name": "Strict XOR float32/float64 decimal endpoint and adapter regressions",
       "command": "pytest -q tests/adapters/test_serf.py tests/contracts/test_source_onboarding.py tests/contracts/test_codec_registry.py tests/contracts/test_source_catalog.py tests/unit/test_all_grid_summary.py",
       "status": "PASS",
       "evidence": "........................................................................ [100%]\n72 passed in 6.86s\n",
-      "log_sha256": "4e5c14f804950b49fa9ced798dd919c9898df652af0c3c52aa9ce352cdf9be67"
+      "log_sha256": "4e5c14f804950b49fa9ced798dd919c9898df652af0c3c52aa9ce352cdf9be67",
+      "evidence_kind": "HISTORICAL_OR_SEPARATE_UPSTREAM_EVIDENCE"
+    },
+    {
+      "algorithm": "serf-qt",
+      "profile": "release",
+      "name": "current build dependency and finite native API verification",
+      "status": "PASS",
+      "evidence": {
+        "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/qualification.json",
+        "sha256": "b86173f34c30d175552de327cc446dd8480aa02dd7a9ae56f12f60c0d93db174"
+      },
+      "evidence_kind": "CURRENT_REAL_BUILD_DEPENDENCIES_WITH_SELECTED_NATIVE_TESTS",
+      "native_suite_status": "PASS",
+      "source_full_parity": "NOT_ASSERTED"
+    },
+    {
+      "algorithm": "serf-qt",
+      "profile": "sanitizer",
+      "name": "current build dependency and finite native API verification",
+      "status": "PASS",
+      "evidence": {
+        "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/qualification.json",
+        "sha256": "b86173f34c30d175552de327cc446dd8480aa02dd7a9ae56f12f60c0d93db174"
+      },
+      "evidence_kind": "CURRENT_REAL_BUILD_DEPENDENCIES_WITH_SELECTED_NATIVE_TESTS",
+      "native_suite_status": "PASS",
+      "source_full_parity": "NOT_ASSERTED"
+    },
+    {
+      "algorithm": "serf-xor",
+      "profile": "release",
+      "name": "current build dependency and finite native API verification",
+      "status": "PASS",
+      "evidence": {
+        "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/qualification.json",
+        "sha256": "b86173f34c30d175552de327cc446dd8480aa02dd7a9ae56f12f60c0d93db174"
+      },
+      "evidence_kind": "CURRENT_REAL_BUILD_DEPENDENCIES_WITH_SELECTED_NATIVE_TESTS",
+      "native_suite_status": "PASS",
+      "source_full_parity": "NOT_ASSERTED"
+    },
+    {
+      "algorithm": "serf-xor",
+      "profile": "sanitizer",
+      "name": "current build dependency and finite native API verification",
+      "status": "PASS",
+      "evidence": {
+        "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/qualification.json",
+        "sha256": "b86173f34c30d175552de327cc446dd8480aa02dd7a9ae56f12f60c0d93db174"
+      },
+      "evidence_kind": "CURRENT_REAL_BUILD_DEPENDENCIES_WITH_SELECTED_NATIVE_TESTS",
+      "native_suite_status": "PASS",
+      "source_full_parity": "NOT_ASSERTED"
     }
   ],
   "builds": [
@@ -141,25 +200,97 @@
       "profile": "SERF_QT_RELEASE_SCALAR",
       "artifact_sha256": "e5ca2b2312bcb23c6bd212f9b130c8496df7e41fb5e2620b34189b48bee7bd17",
       "compile_commands_sha256": "f941981e6fe38b5b1bad267a80670f295c8d4c760186d56556343b5a04d5b52d",
-      "compiler": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0"
+      "compiler": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0",
+      "evidence_kind": "HISTORICAL_BUILD_RECORD"
     },
     {
       "profile": "SERF_QT_SANITIZER_SCALAR",
       "artifact_sha256": "0931e82c7c403adbdd4d2d9f51687798c9e4bea91729ba36d4bd3fc4a210fa4e",
       "compile_commands_sha256": "60c7f35a900edc8abed0fdb5a0b7bb231658c1463228e586c0f18b0fafb31149",
-      "compiler": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0"
+      "compiler": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0",
+      "evidence_kind": "HISTORICAL_BUILD_RECORD"
     },
     {
       "profile": "SERF_XOR_RELEASE_SCALAR",
       "artifact_sha256": "87aa5105cc09c290357915215b7abd836369e265d3e3d6e27a1923918ebfb937",
       "compile_commands_sha256": "9ded2fe39ca45a19e0afa83b793f225deed8856beeb98df0d482ab6efd67ae31",
-      "compiler": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0"
+      "compiler": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0",
+      "evidence_kind": "HISTORICAL_BUILD_RECORD"
     },
     {
       "profile": "SERF_XOR_SANITIZER_SCALAR",
       "artifact_sha256": "91b6b79c310181fb13dbd69db4a504fda5ce9c4246d0c844c4c8e7c51932e7d9",
       "compile_commands_sha256": "ec95e8af389cc2a36b873478f8327ad6edc50f9c500ca00440e1d37803c321a6",
-      "compiler": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0"
+      "compiler": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0",
+      "evidence_kind": "HISTORICAL_BUILD_RECORD"
+    },
+    {
+      "algorithm": "serf-qt",
+      "profile": "RELEASE",
+      "artifact_sha256": "e5ca2b2312bcb23c6bd212f9b130c8496df7e41fb5e2620b34189b48bee7bd17",
+      "compile_commands_sha256": "2768113f559c3baff79892cfba11286b6910db57a9cc2f0b0a1ac6d81d93f06b",
+      "compiler": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0",
+      "evidence_kind": "CURRENT_REAL_BUILD_DEPENDENCIES_VERIFIED",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/serf_qt/release/build-record.json",
+        "sha256": "b8ec26ac31aecedabbd23f682b275d16ca868d76cce76495fec5e7de13de205a"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/serf_qt/release/libtscb_serf_qt.so",
+        "sha256": "e5ca2b2312bcb23c6bd212f9b130c8496df7e41fb5e2620b34189b48bee7bd17"
+      },
+      "qualification_scope": "BUILD_CLOSURE_AND_SELECTED_FINITE_NATIVE_SUITE_NOT_SOURCE_FULL_PARITY"
+    },
+    {
+      "algorithm": "serf-qt",
+      "profile": "SANITIZER",
+      "artifact_sha256": "4c9ac36597e6fa42be5c0334482a5e2fd1093e2045ef977c2892f721e062b12a",
+      "compile_commands_sha256": "9e59ff76312a0e0193a14e9db176d41608ee30a1d60282f9ec341aa451d7ab1d",
+      "compiler": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0",
+      "evidence_kind": "CURRENT_REAL_BUILD_DEPENDENCIES_VERIFIED",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/serf_qt/sanitizer/build-record.json",
+        "sha256": "0677c271ae663616dace416bb58f403a6903ee6fd6428edd5c5ad47c6c7bb179"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/serf_qt/sanitizer/libtscb_serf_qt.so",
+        "sha256": "4c9ac36597e6fa42be5c0334482a5e2fd1093e2045ef977c2892f721e062b12a"
+      },
+      "qualification_scope": "BUILD_CLOSURE_AND_SELECTED_FINITE_NATIVE_SUITE_NOT_SOURCE_FULL_PARITY"
+    },
+    {
+      "algorithm": "serf-xor",
+      "profile": "RELEASE",
+      "artifact_sha256": "87aa5105cc09c290357915215b7abd836369e265d3e3d6e27a1923918ebfb937",
+      "compile_commands_sha256": "c209f1c82ab79faef2bc812bbeb2e5218774bdeb1935d6050ebef82cf5b6c1f5",
+      "compiler": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0",
+      "evidence_kind": "CURRENT_REAL_BUILD_DEPENDENCIES_VERIFIED",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/serf_xor/release/build-record.json",
+        "sha256": "0e95b3d6de5831b8aad20c4dd93ecd4159e2bcdd13396efb54a9dfd6191a0bb4"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/serf_xor/release/libtscb_serf_xor.so",
+        "sha256": "87aa5105cc09c290357915215b7abd836369e265d3e3d6e27a1923918ebfb937"
+      },
+      "qualification_scope": "BUILD_CLOSURE_AND_SELECTED_FINITE_NATIVE_SUITE_NOT_SOURCE_FULL_PARITY"
+    },
+    {
+      "algorithm": "serf-xor",
+      "profile": "SANITIZER",
+      "artifact_sha256": "413d94499865c3f43c694b73bafd9851d1f04bf854fd4b0c77caf7d21b21baa1",
+      "compile_commands_sha256": "5b765b3f7ad7e3b540c7d575b3ea5edbde6ef5374a35b6714293c811869c6106",
+      "compiler": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0",
+      "evidence_kind": "CURRENT_REAL_BUILD_DEPENDENCIES_VERIFIED",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/serf_xor/sanitizer/build-record.json",
+        "sha256": "e1934046716b0ac2dd1ed7158cebb28686818c775ee2e25ca444a98e7de707a4"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/serf_xor/sanitizer/libtscb_serf_xor.so",
+        "sha256": "413d94499865c3f43c694b73bafd9851d1f04bf854fd4b0c77caf7d21b21baa1"
+      },
+      "qualification_scope": "BUILD_CLOSURE_AND_SELECTED_FINITE_NATIVE_SUITE_NOT_SOURCE_FULL_PARITY"
     }
   ],
   "license_decision": {
@@ -179,7 +310,8 @@
     "Formal evidence covers only exchange_rate float64 at absolute error 0.001 and block size 1000; it is not a universal performance claim.",
     "Formal report evidence does not project raw-exception-block telemetry, so no claim that the real dataset used zero raw exception blocks is made.",
     "LeakSanitizer is disabled under the host ptrace policy; ASan and UBSan remain enabled and fail-fast.",
-    "Three versioned patch bundles fix undefined bit operations, prefix-mask indices, strict XOR approximation comparisons, and reader overread. XOR comparisons use wide differences of actual decoder output and a downward working bound; approximate choices can differ from upstream. Historical formal receipts belong to the pre-correction source identity and are not current performance qualification."
+    "Three versioned patch bundles fix undefined bit operations, prefix-mask indices, strict XOR approximation comparisons, and reader overread. XOR comparisons use wide differences of actual decoder output and a downward working bound; approximate choices can differ from upstream. Historical formal receipts belong to the pre-correction source identity and are not current performance qualification.",
+    "2026-10-11: new isolated builds pin actual per-TU compiler dependencies, objects, selected toolchain executables and linked dynamic runtime files. These records do not pin every implicit static startup/runtime archive and do not grant source FULL_PARITY or change active algorithm scope. Historical runs retain their original artifact identities."
   ],
   "unsupported_reason_codes": [
     "EXECUTION_ARTIFACT_MISSING",
@@ -195,5 +327,5 @@
     "STREAMING_UNSUPPORTED",
     "QUERY_UNSUPPORTED"
   ],
-  "source_onboarding_id": "v2:source-onboarding:sha256:22105434958568de5cb3d8fed0305035cf79595bf1a0af513510b0574d61c489"
+  "source_onboarding_id": "v2:source-onboarding:sha256:fc43cf55701f8db4b185f1c213205b3e92124e0389a4c32ce4a2ef3a98a149de"
 }

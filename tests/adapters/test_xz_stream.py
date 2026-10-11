@@ -2,15 +2,13 @@ from __future__ import annotations
 
 import hashlib
 import lzma
-import subprocess
-import sys
 import tomllib
 from pathlib import Path
 
 import numpy as np
 import pytest
 
-from tscompbench.adapters import XzStreamAdapter
+from tscompbench.adapters.factory import create_adapter
 from tscompbench.adapters.xz_stream import XzStreamSession
 from tscompbench.codecs import CodecRegistry, SourceRegistry
 from tscompbench.contracts import BenchmarkTrack, RunStatus
@@ -21,7 +19,6 @@ from tscompbench.planning import expand_sweep
 from tscompbench.validation import run_boundary_suite
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
-LIBRARY = PROJECT_ROOT / "build/adapters/xz_stream/release/libtscb_xz_stream.so"
 
 
 @pytest.mark.parametrize("profile", ["qualification", "formal"])
@@ -37,20 +34,28 @@ def test_checked_in_experiment_parameters_are_registered(profile):
 
 
 def _adapter_and_manifest():
-    if not LIBRARY.is_file():
-        subprocess.run([
-            sys.executable, "tools/build_codec.py", "xz-stream", "--profile", "release"
-        ], cwd=PROJECT_ROOT, check=True)
     sources = SourceRegistry(PROJECT_ROOT / "registry/sources")
     manifest = CodecRegistry(PROJECT_ROOT / "registry/codecs", sources).get("xz-stream")
-    return XzStreamAdapter(LIBRARY, manifest.document["adapter"]), manifest
+    return create_adapter(PROJECT_ROOT, manifest), manifest
 
 
 def _route(n=8):
-    bits = np.resize(np.asarray([
-        0, 0x8000000000000000, 0x7FF0000000000000, 0xFFF0000000000000,
-        0x7FF8000000000001, 0x7FF8000000000123, 1, 0x3FF0000000000001,
-    ], dtype="<u8"), n)
+    bits = np.resize(
+        np.asarray(
+            [
+                0,
+                0x8000000000000000,
+                0x7FF0000000000000,
+                0xFFF0000000000000,
+                0x7FF8000000000001,
+                0x7FF8000000000123,
+                1,
+                0x3FF0000000000001,
+            ],
+            dtype="<u8",
+        ),
+        n,
+    )
     arrays = (bits.view("<f8"), bits[::-1].copy().view("<f8"))
     for array in arrays:
         array.flags.writeable = False
@@ -59,8 +64,13 @@ def _route(n=8):
         for index, array in enumerate(arrays)
     )
     return RoutedInput(
-        dataset_id="dataset:xz-adapter", track=BenchmarkTrack.VALUE, buffers=buffers,
-        timestamp_reference=None, validity_reference=None, n=n, m=2,
+        dataset_id="dataset:xz-adapter",
+        track=BenchmarkTrack.VALUE,
+        buffers=buffers,
+        timestamp_reference=None,
+        validity_reference=None,
+        n=n,
+        m=2,
         canonical_raw_bits=sum(item.logical_bits for item in buffers),
         input_sha256=hash_logical_buffers(buffers),
     )
@@ -96,9 +106,16 @@ def test_ieee_buffers_bound_tail_independent_decoder_and_accounting(n, level):
 
 def test_framework_boundary_suite():
     adapter, manifest = _adapter_and_manifest()
-    report = run_boundary_suite(adapter, manifest, BenchmarkTrack.VALUE, {
-        "block_size": 8, "compression_level": 6, "isa": "SCALAR",
-    })
+    report = run_boundary_suite(
+        adapter,
+        manifest,
+        BenchmarkTrack.VALUE,
+        {
+            "block_size": 8,
+            "compression_level": 6,
+            "isa": "SCALAR",
+        },
+    )
     assert report.passed, [item for item in report.observations if item.status != "PASS"]
 
 
@@ -110,15 +127,15 @@ def test_native_decode_and_accounting_reject_malformed_streams(mutation):
     result = perform_roundtrip(adapter, _route(), {})
     container = result.encoded.stream
     _, frame = XzStreamSession._parse_container(container)
-    prefix = container[:-len(frame)]
+    prefix = container[: -len(frame)]
     offsets = {"header": 8, "index": -16, "footer": -12}
     damaged = bytearray(frame)
     if mutation in offsets:
         damaged[offsets[mutation]] ^= 1
     else:
-        damaged = {
-            "truncated": frame[:-1], "trailing": frame + b"x", "concat": frame + frame
-        }[mutation]
+        damaged = {"truncated": frame[:-1], "trailing": frame + b"x", "concat": frame + frame}[
+            mutation
+        ]
     session = adapter.create_session({})
     try:
         with pytest.raises(ExecutionContractError):
@@ -140,7 +157,7 @@ def test_other_data_check_not_silently_accepted():
     adapter, _ = _adapter_and_manifest()
     result = perform_roundtrip(adapter, _route(), {})
     _, frame = XzStreamSession._parse_container(result.encoded.stream)
-    prefix = result.encoded.stream[:-len(frame)]
+    prefix = result.encoded.stream[: -len(frame)]
     payload = b"".join(item.array.tobytes() for item in _route().buffers)
     checked = lzma.compress(payload, format=lzma.FORMAT_XZ, check=lzma.CHECK_CRC32)
     session = adapter.create_session({})

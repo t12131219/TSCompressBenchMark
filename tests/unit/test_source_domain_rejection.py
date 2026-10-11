@@ -42,7 +42,6 @@ def registry():
 
 def test_declared_source_rejection_never_excuses_output_mutation(monkeypatch):
     manifest = registry().get("chimp")
-    # Only test regular roundtrip axes: lifecycle and capacity have distinct checks.
     import tscompbench.validation.boundary as boundary
 
     cases = tuple(
@@ -65,10 +64,3 @@ def test_declared_source_rejection_never_excuses_output_mutation(monkeypatch):
     assert not run_boundary_suite(
         RejectingAdapter(False), undeclared, BenchmarkTrack.VALUE, {"block_size": 7}
     ).passed
-
-
-def test_system_boundary_uses_values_dtype_and_keeps_int64_timestamp_role():
-    cases = build_boundary_suite(registry().get("prometheus-xor-chunk"), {"block_size": 7})
-    assert cases
-    assert {q.dtype for q in cases} == {"<f8"}
-    assert any(q.axis == "TIMESTAMP" for q in cases)

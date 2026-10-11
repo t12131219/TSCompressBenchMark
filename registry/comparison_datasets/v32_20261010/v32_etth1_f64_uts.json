@@ -1,0 +1,74 @@
+{
+  "display_name": "v32_etth1_f64_uts",
+  "expected": {
+    "canonical_raw_bits": 524288,
+    "n_rows": 8192,
+    "semantic_content_sha256": "015703af2b3878962cc4c06dbc201b7ce97f282f366f590a84de68ee32b93c25",
+    "shape": [
+      8192
+    ]
+  },
+  "file": {
+    "bytes": 66756,
+    "format": "canonical",
+    "path": "artifacts/comparisons/v32_20261010/sources/v32_etth1_f64_uts.tscb",
+    "sha256": "44b16ce8a73729c6a20f777b68ca43f1924a83f7e3673fad3613fc58fd3b8205"
+  },
+  "key": "v32_etth1_f64_uts",
+  "license": {
+    "spdx": "UNSPECIFIED",
+    "status": "REVIEW_REQUIRED"
+  },
+  "logical": {
+    "axes": [
+      "time"
+    ],
+    "n_rows": 8192,
+    "nan_is_null": false,
+    "schema_version": "tscb.logical-view.v2",
+    "timestamp": {
+      "epoch": "NOT_APPLICABLE",
+      "order_policy": "PRESERVE",
+      "origin": "NONE",
+      "present": false,
+      "unit": "NOT_APPLICABLE"
+    },
+    "topology": "UTS",
+    "validity_shape": "NONE",
+    "value_columns": [
+      {
+        "display_name": "HUFL",
+        "dtype": "<f8",
+        "entity": "transformer",
+        "feature": "HUFL",
+        "name": "HUFL",
+        "shape": [
+          8192
+        ],
+        "strides": [
+          8
+        ],
+        "unit": "UNSPECIFIED"
+      }
+    ],
+    "value_shape": [
+      8192
+    ]
+  },
+  "parser": {
+    "identity_policy": "tscb.dataset-content.v1",
+    "name": "tscb.canonical",
+    "version": "1"
+  },
+  "schema_version": "tscb.canonical-source-manifest.v1",
+  "source": {
+    "notes": "{\"domain_proof\": {\"checked_values\": 8192, \"finite\": true, \"lossy_transform\": false, \"maximum\": [\"23.643999099731445\"], \"minimum\": [\"-18.753999710083008\"], \"original_dtype\": \"<f8\"}, \"first_party_project_reference\": \"https://github.com/zhouhaoyi/ETDataset\", \"generation_spec\": {\"dtype_policy\": \"PRESERVE_ORIGINAL_F64\", \"kind\": \"REAL_VALUE_WINDOW\", \"parent_dataset_id\": \"v2:dataset:sha256:206d91b396c6f28b9bce55f3e53fa8f89a746ed178d38c8da273a31ddfad62f2\", \"parent_file_sha256\": \"f18de3ad269cef59bb07b5438d79bb3042d3be49bdeecf01c1cd6d29695ee066\", \"row_start\": 0, \"row_stop\": 8192, \"selected_columns\": [\"HUFL\"], \"source_key\": \"etth1\", \"timestamp_policy\": \"VALUE_TRACK_SOURCE_TIMESTAMPS_OUTSIDE_OBJECT\"}, \"source_lineage_authentication\": \"LOCAL_MANIFEST_ONLY_NOT_EXTERNALLY_AUTHENTICATED\", \"source_manifest\": \"registry/datasets/etth1.json\", \"source_sha256\": \"f18de3ad269cef59bb07b5438d79bb3042d3be49bdeecf01c1cd6d29695ee066\"}",
+    "retrieved_at": "UNSPECIFIED",
+    "uri": "local:datasets/ETTh1.csv"
+  },
+  "split": {
+    "learned_eligible": false,
+    "policy": "TEST",
+    "reason": "Frozen whole-object CPU comparison; no learned split or source generalization claimed."
+  }
+}

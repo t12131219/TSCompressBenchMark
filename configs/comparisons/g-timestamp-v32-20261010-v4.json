@@ -1,0 +1,1452 @@
+{
+  "analysis_policy": {
+    "bootstrap_samples": 4000,
+    "confidence_level": "0.95",
+    "corpus_weighting": "FIXED_WORKLOAD",
+    "estimand": "FIXED_CORPUS_PAIRED_PROCESS_TIME_RATIO",
+    "minimum_paired_blocks": 4,
+    "minimum_practical_effect": "0.02",
+    "missing_policy": "KEEP_FIXED_DENOMINATOR_NO_CORE_AGGREGATE",
+    "multiplicity_policy": "BONFERRONI_FAMILYWISE_INTERVALS",
+    "primary_comparisons": [],
+    "resampling_unit": "SCHEDULE_BLOCK",
+    "schema_version": "tscb.analysis-policy.v1",
+    "seed": 20261010,
+    "target_relative_ci_half_width": "0.10",
+    "time_estimator": "MEAN_PROCESS_TIME_PER_OBJECT"
+  },
+  "config_map": {
+    "contract_id": "v3:comparison-contract:sha256:3e6bd3050cd637b6d9ff9685913e0c9d52a281df3e43b10eb57ae8f8ec06fe8b",
+    "members": [
+      {
+        "configs": [
+          {
+            "config_key": "registered-default",
+            "framework_parameters": {
+              "benchmark_seed": 20261010
+            },
+            "guarantee": {
+              "kind": "LOSSLESS",
+              "metric": null,
+              "original_domain_total": true,
+              "threshold": null,
+              "unit": "BITWISE"
+            },
+            "loss_mode": "LOSSLESS",
+            "parameters": {
+              "block_checksum": false,
+              "block_mode": "INDEPENDENT",
+              "block_size": 65536,
+              "block_size_id": 4,
+              "compression_level": 0,
+              "content_checksum": true,
+              "isa": "SCALAR",
+              "native_timing": true,
+              "stream_decode_chunk_bytes": 16384
+            }
+          }
+        ],
+        "member_id": "lz4-frame"
+      },
+      {
+        "configs": [
+          {
+            "config_key": "registered-default",
+            "framework_parameters": {
+              "benchmark_seed": 20261010
+            },
+            "guarantee": {
+              "kind": "LOSSLESS",
+              "metric": null,
+              "original_domain_total": true,
+              "threshold": null,
+              "unit": "BITWISE"
+            },
+            "loss_mode": "LOSSLESS",
+            "parameters": {
+              "block_size": 131072,
+              "compression_level": 3,
+              "content_checksum": true,
+              "isa": "SCALAR",
+              "native_timing": true,
+              "stream_decode_chunk_bytes": 16384
+            }
+          }
+        ],
+        "member_id": "zstd-frame"
+      },
+      {
+        "configs": [
+          {
+            "config_key": "registered-default",
+            "framework_parameters": {
+              "benchmark_seed": 20261010
+            },
+            "guarantee": {
+              "kind": "LOSSLESS",
+              "metric": null,
+              "original_domain_total": true,
+              "threshold": null,
+              "unit": "BITWISE"
+            },
+            "loss_mode": "LOSSLESS",
+            "parameters": {
+              "block_size": 65536,
+              "compression_level": 1,
+              "content_checksum": false,
+              "isa": "SCALAR",
+              "native_timing": true
+            }
+          }
+        ],
+        "member_id": "snappy-raw"
+      },
+      {
+        "configs": [
+          {
+            "config_key": "registered-default",
+            "framework_parameters": {
+              "benchmark_seed": 20261010
+            },
+            "guarantee": {
+              "kind": "LOSSLESS",
+              "metric": null,
+              "original_domain_total": true,
+              "threshold": null,
+              "unit": "BITWISE"
+            },
+            "loss_mode": "LOSSLESS",
+            "parameters": {
+              "block_size": 65536,
+              "compression_level": 6,
+              "isa": "SCALAR",
+              "native_timing": true,
+              "stream_decode_chunk_bytes": 16384,
+              "window_bits": 15
+            }
+          }
+        ],
+        "member_id": "deflate-zlib"
+      },
+      {
+        "configs": [
+          {
+            "config_key": "registered-default",
+            "framework_parameters": {
+              "benchmark_seed": 20261010
+            },
+            "guarantee": {
+              "kind": "LOSSLESS",
+              "metric": null,
+              "original_domain_total": true,
+              "threshold": null,
+              "unit": "BITWISE"
+            },
+            "loss_mode": "LOSSLESS",
+            "parameters": {
+              "block_size": 65536,
+              "compression_level": 5,
+              "isa": "SCALAR",
+              "native_timing": true,
+              "stream_decode_chunk_bytes": 16384,
+              "window_bits": 22
+            }
+          }
+        ],
+        "member_id": "brotli-stream"
+      },
+      {
+        "configs": [
+          {
+            "config_key": "registered-default",
+            "framework_parameters": {
+              "benchmark_seed": 20261010
+            },
+            "guarantee": {
+              "kind": "LOSSLESS",
+              "metric": null,
+              "original_domain_total": true,
+              "threshold": null,
+              "unit": "BITWISE"
+            },
+            "loss_mode": "LOSSLESS",
+            "parameters": {
+              "block_size": 65536,
+              "compression_level": 6,
+              "isa": "SCALAR",
+              "native_timing": true,
+              "stream_decode_chunk_bytes": 16384
+            }
+          }
+        ],
+        "member_id": "xz-stream"
+      },
+      {
+        "configs": [
+          {
+            "config_key": "registered-default",
+            "framework_parameters": {
+              "benchmark_seed": 20261010
+            },
+            "guarantee": {
+              "kind": "LOSSLESS",
+              "metric": null,
+              "original_domain_total": true,
+              "threshold": null,
+              "unit": "BITWISE"
+            },
+            "loss_mode": "LOSSLESS",
+            "parameters": {
+              "block_size": 65536,
+              "ei": 10,
+              "ej": 4,
+              "initial_byte": 32,
+              "isa": "SCALAR",
+              "native_timing": true
+            }
+          }
+        ],
+        "member_id": "lzss-raw"
+      },
+      {
+        "configs": [
+          {
+            "config_key": "registered-default",
+            "framework_parameters": {
+              "benchmark_seed": 20261010
+            },
+            "guarantee": {
+              "kind": "LOSSLESS",
+              "metric": null,
+              "original_domain_total": true,
+              "threshold": null,
+              "unit": "BITWISE"
+            },
+            "loss_mode": "LOSSLESS",
+            "parameters": {
+              "block_size": 65536,
+              "initial_byte": 32,
+              "isa": "SCALAR",
+              "length_bits": 4,
+              "match_finder": "BINARY_TREE",
+              "native_timing": true,
+              "offset_bits": 12
+            }
+          }
+        ],
+        "member_id": "lzss-dipperstein-c"
+      }
+    ],
+    "schema_version": "tscb.method-config-map.v1",
+    "selection_policy": {
+      "kind": "FROZEN_DEFAULT",
+      "max_configs_per_method": 1,
+      "objective": null,
+      "selection_cost_policy": "PREDECLARED_NO_TEST_SELECTION",
+      "selection_dataset_ids": [],
+      "tie_break": "LEXICAL_CONFIG_KEY"
+    }
+  },
+  "contract": {
+    "analysis_policy_id": "v2:analysis-policy:sha256:c8639929f1bbf03ce2f44202333bb18bb1403fce778be14e4344c1ebf05d78d1",
+    "cost_boundary": "SCHEMA_BOUND_OBJECT",
+    "estimand": {
+      "aggregation": "RAW_BITS_WEIGHTED_AND_PAIRED_DATASET",
+      "outcome": "FINAL_BITS_AND_PIPELINE_WALL_NS",
+      "population": "FIXED_CORPUS",
+      "weight_unit": "RAW_BITS"
+    },
+    "fidelity": {
+      "error_metric": null,
+      "kind": "LOSSLESS",
+      "quality_metrics": [],
+      "threshold": null,
+      "unit": "BITWISE"
+    },
+    "measurement_protocol_id": "v2:measurement-protocol-v32:sha256:4b777040e750c1fa968ff03394c761c1bb299ec7178725ce2395d63f6d36f921",
+    "mode": "COMPLETE_OBJECT",
+    "name": "G-TIMESTAMP",
+    "recovery": {
+      "coordinate_policy": "PRESERVE_ORIGINAL_GRID",
+      "mode": "EXACT_GRID",
+      "null_semantics": "BITWISE"
+    },
+    "research_question": "Original source-column int64 timestamps, preserved sequence/unit/epoch: complete schema-bound storage and PIPELINE time on this fixed corpus; byte backends only, no claim of specialized delta timestamp methods.",
+    "resources": {
+      "allowed_isa": [],
+      "device": "CPU",
+      "isa_policy": "ANY_AVAILABLE",
+      "machine_policy_id": "v3:machine-budget:sha256:bb4c6daab7f682126fd14d2f345be008a5adcbfba811a10b878ffbfe34101c12",
+      "memory_limit_bytes": 2147483648,
+      "processes": 1,
+      "threads": 1
+    },
+    "revision": "20261011-v4",
+    "schema_version": "tscb.comparison-contract.v1",
+    "selection_policy": {
+      "kind": "FROZEN_DEFAULT",
+      "max_configs_per_method": 1,
+      "objective": null,
+      "selection_cost_policy": "PREDECLARED_NO_TEST_SELECTION",
+      "selection_dataset_ids": [],
+      "tie_break": "LEXICAL_CONFIG_KEY"
+    },
+    "state": "INDEPENDENT_OBJECT",
+    "timing_boundary": "PIPELINE",
+    "track": "TIMESTAMP",
+    "workload": "WHOLE_OBJECT"
+  },
+  "corpus": {
+    "content_identity_policy": "tscb.dataset-content.v2",
+    "datasets": [
+      {
+        "artifact_sha256": "0146f93a4d6b6824b83e21da378fa425e27ffe6f2c728558fdfd5112459d00be",
+        "dataset_id": "v2:dataset:sha256:432a40dec2a6f2853aea95c2c2ad2c5b1b03cd67ddf1c3b404e48a19007e7415",
+        "derivation": "WINDOW",
+        "domain_evidence": [
+          "MANIFEST:registry/comparison_datasets/v32_20261010/v32_etth1_original_t_i64_0_v2.json",
+          "ORIGINAL_T_ORDER_UNIT_EPOCH_PRESERVED"
+        ],
+        "logical_content_id": "79ed6f6a98c53a18a09ac500a1482ced1bf987a8baa9323c91b01ed98437e26f",
+        "parents": [
+          {
+            "dataset_id": "v2:dataset:sha256:206d91b396c6f28b9bce55f3e53fa8f89a746ed178d38c8da273a31ddfad62f2",
+            "entity": "ETTh1_TRANSFORMER",
+            "family": "ETT_TRANSFORMER",
+            "independence_unit": "etth1",
+            "source_kind": "REAL"
+          }
+        ],
+        "role": "CORE",
+        "source": {
+          "entity": "ETTh1_TRANSFORMER",
+          "evidence": [
+            "GENERATION_SPEC:registry/comparison_datasets/v32_20261010/v32_etth1_original_t_i64_0_v2.json",
+            "COLUMNS_AND_WINDOWS_OF_ONE_SOURCE_ARE_ONE_INDEPENDENCE_UNIT",
+            "LOCAL_SOURCE_MANIFEST:registry/datasets/etth1.json",
+            "RAW_SHA256:f18de3ad269cef59bb07b5438d79bb3042d3be49bdeecf01c1cd6d29695ee066"
+          ],
+          "family": "ETT_TRANSFORMER",
+          "independence_unit": "etth1"
+        },
+        "source_kind": "REAL",
+        "split": "TEST",
+        "weight": "1"
+      },
+      {
+        "artifact_sha256": "f773d10c2afa30162b5e90721e06e1c1626259f02cfd649fbf4cab2964ae56dc",
+        "dataset_id": "v2:dataset:sha256:77f369a4108167561fff310a7ecab2f7b01fd89c6d9786aa5c276f2b10e2bf24",
+        "derivation": "WINDOW",
+        "domain_evidence": [
+          "MANIFEST:registry/comparison_datasets/v32_20261010/v32_etth1_original_t_i64_4096_v2.json",
+          "ORIGINAL_T_ORDER_UNIT_EPOCH_PRESERVED"
+        ],
+        "logical_content_id": "8cb5afa87b3b82dafa5bf21b5b3d9004f762969ec1e0bea75caf10bb4cb48071",
+        "parents": [
+          {
+            "dataset_id": "v2:dataset:sha256:206d91b396c6f28b9bce55f3e53fa8f89a746ed178d38c8da273a31ddfad62f2",
+            "entity": "ETTh1_TRANSFORMER",
+            "family": "ETT_TRANSFORMER",
+            "independence_unit": "etth1",
+            "source_kind": "REAL"
+          }
+        ],
+        "role": "CORE",
+        "source": {
+          "entity": "ETTh1_TRANSFORMER",
+          "evidence": [
+            "GENERATION_SPEC:registry/comparison_datasets/v32_20261010/v32_etth1_original_t_i64_4096_v2.json",
+            "COLUMNS_AND_WINDOWS_OF_ONE_SOURCE_ARE_ONE_INDEPENDENCE_UNIT",
+            "LOCAL_SOURCE_MANIFEST:registry/datasets/etth1.json",
+            "RAW_SHA256:f18de3ad269cef59bb07b5438d79bb3042d3be49bdeecf01c1cd6d29695ee066"
+          ],
+          "family": "ETT_TRANSFORMER",
+          "independence_unit": "etth1"
+        },
+        "source_kind": "REAL",
+        "split": "TEST",
+        "weight": "1"
+      },
+      {
+        "artifact_sha256": "319aff3e4bfbc6f291b5da641bec4f54c43bef739342757198c7652597acacbe",
+        "dataset_id": "v2:dataset:sha256:311a1bc7e83e8f4dd180a882c80a714c32187cc666b6009245a2f58f8cf41aa3",
+        "derivation": "WINDOW",
+        "domain_evidence": [
+          "MANIFEST:registry/comparison_datasets/v32_20261010/v32_weather_original_t_i64_0_v2.json",
+          "ORIGINAL_T_ORDER_UNIT_EPOCH_PRESERVED"
+        ],
+        "logical_content_id": "32a08a54230d0068f8106d00bd91c2a44a21549aad7f95c8e2a8b934059fa672",
+        "parents": [
+          {
+            "dataset_id": "v2:dataset:sha256:d2005d6eaf1ce1dd29bd9417237558fda0c9b8bdbdf415c948a74d2d444aac5c",
+            "entity": "JENA_WEATHER_STATION",
+            "family": "JENA_WEATHER",
+            "independence_unit": "weather",
+            "source_kind": "REAL"
+          }
+        ],
+        "role": "CORE",
+        "source": {
+          "entity": "JENA_WEATHER_STATION",
+          "evidence": [
+            "GENERATION_SPEC:registry/comparison_datasets/v32_20261010/v32_weather_original_t_i64_0_v2.json",
+            "COLUMNS_AND_WINDOWS_OF_ONE_SOURCE_ARE_ONE_INDEPENDENCE_UNIT",
+            "LOCAL_SOURCE_MANIFEST:registry/datasets/weather.json",
+            "RAW_SHA256:34ee981d07313e51da2a50bb600072c8ae4a69cb4b0651f4cb93a069d7a2ba63"
+          ],
+          "family": "JENA_WEATHER",
+          "independence_unit": "weather"
+        },
+        "source_kind": "REAL",
+        "split": "TEST",
+        "weight": "1"
+      },
+      {
+        "artifact_sha256": "4a7d304e164db84475140f446b52d654997b59313e4e35ac3e7e20f6428c371e",
+        "dataset_id": "v2:dataset:sha256:a78718e02b1c74efe4aad25d4df0f3028cd611a41d7d1bf30134c80185b5a85b",
+        "derivation": "WINDOW",
+        "domain_evidence": [
+          "MANIFEST:registry/comparison_datasets/v32_20261010/v32_weather_original_t_i64_4096_v2.json",
+          "ORIGINAL_T_ORDER_UNIT_EPOCH_PRESERVED"
+        ],
+        "logical_content_id": "b8385924849e31bcca015b754d6389794086d4cb855f3b1db66dc13febabf477",
+        "parents": [
+          {
+            "dataset_id": "v2:dataset:sha256:d2005d6eaf1ce1dd29bd9417237558fda0c9b8bdbdf415c948a74d2d444aac5c",
+            "entity": "JENA_WEATHER_STATION",
+            "family": "JENA_WEATHER",
+            "independence_unit": "weather",
+            "source_kind": "REAL"
+          }
+        ],
+        "role": "CORE",
+        "source": {
+          "entity": "JENA_WEATHER_STATION",
+          "evidence": [
+            "GENERATION_SPEC:registry/comparison_datasets/v32_20261010/v32_weather_original_t_i64_4096_v2.json",
+            "COLUMNS_AND_WINDOWS_OF_ONE_SOURCE_ARE_ONE_INDEPENDENCE_UNIT",
+            "LOCAL_SOURCE_MANIFEST:registry/datasets/weather.json",
+            "RAW_SHA256:34ee981d07313e51da2a50bb600072c8ae4a69cb4b0651f4cb93a069d7a2ba63"
+          ],
+          "family": "JENA_WEATHER",
+          "independence_unit": "weather"
+        },
+        "source_kind": "REAL",
+        "split": "TEST",
+        "weight": "1"
+      },
+      {
+        "artifact_sha256": "690baf1559ce0091a9eea75301ec2ce07f40c475fd99c4a8cf3cb1ee70c0d2c0",
+        "dataset_id": "v2:dataset:sha256:39148e447caa3978e14fa49dae8b55d355e8d566dacf755390218767b267fb10",
+        "derivation": "SYNTHETIC",
+        "domain_evidence": [
+          "MANIFEST:registry/comparison_datasets/v32_20261010/v32_t_missing_required_timestamp_test_v2.json",
+          "ORIGINAL_T_ORDER_UNIT_EPOCH_PRESERVED"
+        ],
+        "logical_content_id": "98a919456a8fbaf45b8b5348d12614262d8034d46bbfc5e0161f038a512d5133",
+        "parents": [],
+        "role": "EXTENSION",
+        "source": {
+          "entity": "MISSING_TIMESTAMP",
+          "evidence": [
+            "GENERATION_SPEC:registry/comparison_datasets/v32_20261010/v32_t_missing_required_timestamp_test_v2.json",
+            "COLUMNS_AND_WINDOWS_OF_ONE_SOURCE_ARE_ONE_INDEPENDENCE_UNIT"
+          ],
+          "family": "SYNTHETIC",
+          "independence_unit": "missing_timestamp_fixture"
+        },
+        "source_kind": "SYNTHETIC",
+        "split": "TEST",
+        "weight": "1"
+      }
+    ],
+    "exclusion_rule": "No post-result exclusions; all promised members/configs remain in the fixed matrix.",
+    "name": "G-TIMESTAMP-real-core",
+    "revision": "20261010-v3",
+    "sampling_design": "Fixed two local source families; related windows/columns share independence unit. Synthetic validation is disjoint; no generalization claim.",
+    "schema_version": "tscb.corpus-spec.v1",
+    "selection_rule": "Predeclared source windows and columns; no result-dependent selection."
+  },
+  "cpu_affinity": [
+    0
+  ],
+  "dataset_bindings": {
+    "v2:dataset:sha256:311a1bc7e83e8f4dd180a882c80a714c32187cc666b6009245a2f58f8cf41aa3": "v32_weather_original_t_i64_0_v2",
+    "v2:dataset:sha256:39148e447caa3978e14fa49dae8b55d355e8d566dacf755390218767b267fb10": "v32_t_missing_required_timestamp_test_v2",
+    "v2:dataset:sha256:432a40dec2a6f2853aea95c2c2ad2c5b1b03cd67ddf1c3b404e48a19007e7415": "v32_etth1_original_t_i64_0_v2",
+    "v2:dataset:sha256:77f369a4108167561fff310a7ecab2f7b01fd89c6d9786aa5c276f2b10e2bf24": "v32_etth1_original_t_i64_4096_v2",
+    "v2:dataset:sha256:a78718e02b1c74efe4aad25d4df0f3028cd611a41d7d1bf30134c80185b5a85b": "v32_weather_original_t_i64_4096_v2"
+  },
+  "development_dataset": "v32_dev_original_t_jitter_v2",
+  "expected_matrix": {
+    "config_map_id": "v3:method-config-map:sha256:6a1388a5a85a18d944bb926f3feb8b93db8dea397d13e62fd174c5b0573541b3",
+    "contract_id": "v3:comparison-contract:sha256:3e6bd3050cd637b6d9ff9685913e0c9d52a281df3e43b10eb57ae8f8ec06fe8b",
+    "corpus_id": "v3:corpus-spec:sha256:21c0f8de14131530a636d02f8312b4c085a15c2136d78592b95229bc5f3670bf",
+    "entries": [
+      {
+        "config_key": "registered-default",
+        "dataset_id": "v2:dataset:sha256:432a40dec2a6f2853aea95c2c2ad2c5b1b03cd67ddf1c3b404e48a19007e7415",
+        "expected": {
+          "evidence": [
+            "MANIFEST:registry/codecs/lz4-frame.json",
+            "DOMAIN_PROOF:registry/comparison_datasets/v32_20261010/v32_etth1_original_t_i64_0_v2.json"
+          ],
+          "origin": "TASK",
+          "outcome": "PASS",
+          "reason": "STRUCTURALLY_LEGAL_REQUIRES_REAL_QUALIFICATION",
+          "stage": "COMPLETE_RECOVERY"
+        },
+        "member_id": "lz4-frame"
+      },
+      {
+        "config_key": "registered-default",
+        "dataset_id": "v2:dataset:sha256:432a40dec2a6f2853aea95c2c2ad2c5b1b03cd67ddf1c3b404e48a19007e7415",
+        "expected": {
+          "evidence": [
+            "MANIFEST:registry/codecs/zstd-frame.json",
+            "DOMAIN_PROOF:registry/comparison_datasets/v32_20261010/v32_etth1_original_t_i64_0_v2.json"
+          ],
+          "origin": "TASK",
+          "outcome": "PASS",
+          "reason": "STRUCTURALLY_LEGAL_REQUIRES_REAL_QUALIFICATION",
+          "stage": "COMPLETE_RECOVERY"
+        },
+        "member_id": "zstd-frame"
+      },
+      {
+        "config_key": "registered-default",
+        "dataset_id": "v2:dataset:sha256:432a40dec2a6f2853aea95c2c2ad2c5b1b03cd67ddf1c3b404e48a19007e7415",
+        "expected": {
+          "evidence": [
+            "MANIFEST:registry/codecs/snappy-raw.json",
+            "DOMAIN_PROOF:registry/comparison_datasets/v32_20261010/v32_etth1_original_t_i64_0_v2.json"
+          ],
+          "origin": "TASK",
+          "outcome": "PASS",
+          "reason": "STRUCTURALLY_LEGAL_REQUIRES_REAL_QUALIFICATION",
+          "stage": "COMPLETE_RECOVERY"
+        },
+        "member_id": "snappy-raw"
+      },
+      {
+        "config_key": "registered-default",
+        "dataset_id": "v2:dataset:sha256:432a40dec2a6f2853aea95c2c2ad2c5b1b03cd67ddf1c3b404e48a19007e7415",
+        "expected": {
+          "evidence": [
+            "MANIFEST:registry/codecs/deflate-zlib.json",
+            "DOMAIN_PROOF:registry/comparison_datasets/v32_20261010/v32_etth1_original_t_i64_0_v2.json"
+          ],
+          "origin": "TASK",
+          "outcome": "PASS",
+          "reason": "STRUCTURALLY_LEGAL_REQUIRES_REAL_QUALIFICATION",
+          "stage": "COMPLETE_RECOVERY"
+        },
+        "member_id": "deflate-zlib"
+      },
+      {
+        "config_key": "registered-default",
+        "dataset_id": "v2:dataset:sha256:432a40dec2a6f2853aea95c2c2ad2c5b1b03cd67ddf1c3b404e48a19007e7415",
+        "expected": {
+          "evidence": [
+            "MANIFEST:registry/codecs/brotli-stream.json",
+            "DOMAIN_PROOF:registry/comparison_datasets/v32_20261010/v32_etth1_original_t_i64_0_v2.json"
+          ],
+          "origin": "TASK",
+          "outcome": "PASS",
+          "reason": "STRUCTURALLY_LEGAL_REQUIRES_REAL_QUALIFICATION",
+          "stage": "COMPLETE_RECOVERY"
+        },
+        "member_id": "brotli-stream"
+      },
+      {
+        "config_key": "registered-default",
+        "dataset_id": "v2:dataset:sha256:432a40dec2a6f2853aea95c2c2ad2c5b1b03cd67ddf1c3b404e48a19007e7415",
+        "expected": {
+          "evidence": [
+            "MANIFEST:registry/codecs/xz-stream.json",
+            "DOMAIN_PROOF:registry/comparison_datasets/v32_20261010/v32_etth1_original_t_i64_0_v2.json"
+          ],
+          "origin": "TASK",
+          "outcome": "PASS",
+          "reason": "STRUCTURALLY_LEGAL_REQUIRES_REAL_QUALIFICATION",
+          "stage": "COMPLETE_RECOVERY"
+        },
+        "member_id": "xz-stream"
+      },
+      {
+        "config_key": "registered-default",
+        "dataset_id": "v2:dataset:sha256:432a40dec2a6f2853aea95c2c2ad2c5b1b03cd67ddf1c3b404e48a19007e7415",
+        "expected": {
+          "evidence": [
+            "MANIFEST:registry/codecs/lzss-raw.json",
+            "DOMAIN_PROOF:registry/comparison_datasets/v32_20261010/v32_etth1_original_t_i64_0_v2.json"
+          ],
+          "origin": "TASK",
+          "outcome": "PASS",
+          "reason": "STRUCTURALLY_LEGAL_REQUIRES_REAL_QUALIFICATION",
+          "stage": "COMPLETE_RECOVERY"
+        },
+        "member_id": "lzss-raw"
+      },
+      {
+        "config_key": "registered-default",
+        "dataset_id": "v2:dataset:sha256:432a40dec2a6f2853aea95c2c2ad2c5b1b03cd67ddf1c3b404e48a19007e7415",
+        "expected": {
+          "evidence": [
+            "MANIFEST:registry/codecs/lzss-dipperstein-c.json",
+            "DOMAIN_PROOF:registry/comparison_datasets/v32_20261010/v32_etth1_original_t_i64_0_v2.json"
+          ],
+          "origin": "TASK",
+          "outcome": "PASS",
+          "reason": "STRUCTURALLY_LEGAL_REQUIRES_REAL_QUALIFICATION",
+          "stage": "COMPLETE_RECOVERY"
+        },
+        "member_id": "lzss-dipperstein-c"
+      },
+      {
+        "config_key": "registered-default",
+        "dataset_id": "v2:dataset:sha256:77f369a4108167561fff310a7ecab2f7b01fd89c6d9786aa5c276f2b10e2bf24",
+        "expected": {
+          "evidence": [
+            "MANIFEST:registry/codecs/lz4-frame.json",
+            "DOMAIN_PROOF:registry/comparison_datasets/v32_20261010/v32_etth1_original_t_i64_4096_v2.json"
+          ],
+          "origin": "TASK",
+          "outcome": "PASS",
+          "reason": "STRUCTURALLY_LEGAL_REQUIRES_REAL_QUALIFICATION",
+          "stage": "COMPLETE_RECOVERY"
+        },
+        "member_id": "lz4-frame"
+      },
+      {
+        "config_key": "registered-default",
+        "dataset_id": "v2:dataset:sha256:77f369a4108167561fff310a7ecab2f7b01fd89c6d9786aa5c276f2b10e2bf24",
+        "expected": {
+          "evidence": [
+            "MANIFEST:registry/codecs/zstd-frame.json",
+            "DOMAIN_PROOF:registry/comparison_datasets/v32_20261010/v32_etth1_original_t_i64_4096_v2.json"
+          ],
+          "origin": "TASK",
+          "outcome": "PASS",
+          "reason": "STRUCTURALLY_LEGAL_REQUIRES_REAL_QUALIFICATION",
+          "stage": "COMPLETE_RECOVERY"
+        },
+        "member_id": "zstd-frame"
+      },
+      {
+        "config_key": "registered-default",
+        "dataset_id": "v2:dataset:sha256:77f369a4108167561fff310a7ecab2f7b01fd89c6d9786aa5c276f2b10e2bf24",
+        "expected": {
+          "evidence": [
+            "MANIFEST:registry/codecs/snappy-raw.json",
+            "DOMAIN_PROOF:registry/comparison_datasets/v32_20261010/v32_etth1_original_t_i64_4096_v2.json"
+          ],
+          "origin": "TASK",
+          "outcome": "PASS",
+          "reason": "STRUCTURALLY_LEGAL_REQUIRES_REAL_QUALIFICATION",
+          "stage": "COMPLETE_RECOVERY"
+        },
+        "member_id": "snappy-raw"
+      },
+      {
+        "config_key": "registered-default",
+        "dataset_id": "v2:dataset:sha256:77f369a4108167561fff310a7ecab2f7b01fd89c6d9786aa5c276f2b10e2bf24",
+        "expected": {
+          "evidence": [
+            "MANIFEST:registry/codecs/deflate-zlib.json",
+            "DOMAIN_PROOF:registry/comparison_datasets/v32_20261010/v32_etth1_original_t_i64_4096_v2.json"
+          ],
+          "origin": "TASK",
+          "outcome": "PASS",
+          "reason": "STRUCTURALLY_LEGAL_REQUIRES_REAL_QUALIFICATION",
+          "stage": "COMPLETE_RECOVERY"
+        },
+        "member_id": "deflate-zlib"
+      },
+      {
+        "config_key": "registered-default",
+        "dataset_id": "v2:dataset:sha256:77f369a4108167561fff310a7ecab2f7b01fd89c6d9786aa5c276f2b10e2bf24",
+        "expected": {
+          "evidence": [
+            "MANIFEST:registry/codecs/brotli-stream.json",
+            "DOMAIN_PROOF:registry/comparison_datasets/v32_20261010/v32_etth1_original_t_i64_4096_v2.json"
+          ],
+          "origin": "TASK",
+          "outcome": "PASS",
+          "reason": "STRUCTURALLY_LEGAL_REQUIRES_REAL_QUALIFICATION",
+          "stage": "COMPLETE_RECOVERY"
+        },
+        "member_id": "brotli-stream"
+      },
+      {
+        "config_key": "registered-default",
+        "dataset_id": "v2:dataset:sha256:77f369a4108167561fff310a7ecab2f7b01fd89c6d9786aa5c276f2b10e2bf24",
+        "expected": {
+          "evidence": [
+            "MANIFEST:registry/codecs/xz-stream.json",
+            "DOMAIN_PROOF:registry/comparison_datasets/v32_20261010/v32_etth1_original_t_i64_4096_v2.json"
+          ],
+          "origin": "TASK",
+          "outcome": "PASS",
+          "reason": "STRUCTURALLY_LEGAL_REQUIRES_REAL_QUALIFICATION",
+          "stage": "COMPLETE_RECOVERY"
+        },
+        "member_id": "xz-stream"
+      },
+      {
+        "config_key": "registered-default",
+        "dataset_id": "v2:dataset:sha256:77f369a4108167561fff310a7ecab2f7b01fd89c6d9786aa5c276f2b10e2bf24",
+        "expected": {
+          "evidence": [
+            "MANIFEST:registry/codecs/lzss-raw.json",
+            "DOMAIN_PROOF:registry/comparison_datasets/v32_20261010/v32_etth1_original_t_i64_4096_v2.json"
+          ],
+          "origin": "TASK",
+          "outcome": "PASS",
+          "reason": "STRUCTURALLY_LEGAL_REQUIRES_REAL_QUALIFICATION",
+          "stage": "COMPLETE_RECOVERY"
+        },
+        "member_id": "lzss-raw"
+      },
+      {
+        "config_key": "registered-default",
+        "dataset_id": "v2:dataset:sha256:77f369a4108167561fff310a7ecab2f7b01fd89c6d9786aa5c276f2b10e2bf24",
+        "expected": {
+          "evidence": [
+            "MANIFEST:registry/codecs/lzss-dipperstein-c.json",
+            "DOMAIN_PROOF:registry/comparison_datasets/v32_20261010/v32_etth1_original_t_i64_4096_v2.json"
+          ],
+          "origin": "TASK",
+          "outcome": "PASS",
+          "reason": "STRUCTURALLY_LEGAL_REQUIRES_REAL_QUALIFICATION",
+          "stage": "COMPLETE_RECOVERY"
+        },
+        "member_id": "lzss-dipperstein-c"
+      },
+      {
+        "config_key": "registered-default",
+        "dataset_id": "v2:dataset:sha256:311a1bc7e83e8f4dd180a882c80a714c32187cc666b6009245a2f58f8cf41aa3",
+        "expected": {
+          "evidence": [
+            "MANIFEST:registry/codecs/lz4-frame.json",
+            "DOMAIN_PROOF:registry/comparison_datasets/v32_20261010/v32_weather_original_t_i64_0_v2.json"
+          ],
+          "origin": "TASK",
+          "outcome": "PASS",
+          "reason": "STRUCTURALLY_LEGAL_REQUIRES_REAL_QUALIFICATION",
+          "stage": "COMPLETE_RECOVERY"
+        },
+        "member_id": "lz4-frame"
+      },
+      {
+        "config_key": "registered-default",
+        "dataset_id": "v2:dataset:sha256:311a1bc7e83e8f4dd180a882c80a714c32187cc666b6009245a2f58f8cf41aa3",
+        "expected": {
+          "evidence": [
+            "MANIFEST:registry/codecs/zstd-frame.json",
+            "DOMAIN_PROOF:registry/comparison_datasets/v32_20261010/v32_weather_original_t_i64_0_v2.json"
+          ],
+          "origin": "TASK",
+          "outcome": "PASS",
+          "reason": "STRUCTURALLY_LEGAL_REQUIRES_REAL_QUALIFICATION",
+          "stage": "COMPLETE_RECOVERY"
+        },
+        "member_id": "zstd-frame"
+      },
+      {
+        "config_key": "registered-default",
+        "dataset_id": "v2:dataset:sha256:311a1bc7e83e8f4dd180a882c80a714c32187cc666b6009245a2f58f8cf41aa3",
+        "expected": {
+          "evidence": [
+            "MANIFEST:registry/codecs/snappy-raw.json",
+            "DOMAIN_PROOF:registry/comparison_datasets/v32_20261010/v32_weather_original_t_i64_0_v2.json"
+          ],
+          "origin": "TASK",
+          "outcome": "PASS",
+          "reason": "STRUCTURALLY_LEGAL_REQUIRES_REAL_QUALIFICATION",
+          "stage": "COMPLETE_RECOVERY"
+        },
+        "member_id": "snappy-raw"
+      },
+      {
+        "config_key": "registered-default",
+        "dataset_id": "v2:dataset:sha256:311a1bc7e83e8f4dd180a882c80a714c32187cc666b6009245a2f58f8cf41aa3",
+        "expected": {
+          "evidence": [
+            "MANIFEST:registry/codecs/deflate-zlib.json",
+            "DOMAIN_PROOF:registry/comparison_datasets/v32_20261010/v32_weather_original_t_i64_0_v2.json"
+          ],
+          "origin": "TASK",
+          "outcome": "PASS",
+          "reason": "STRUCTURALLY_LEGAL_REQUIRES_REAL_QUALIFICATION",
+          "stage": "COMPLETE_RECOVERY"
+        },
+        "member_id": "deflate-zlib"
+      },
+      {
+        "config_key": "registered-default",
+        "dataset_id": "v2:dataset:sha256:311a1bc7e83e8f4dd180a882c80a714c32187cc666b6009245a2f58f8cf41aa3",
+        "expected": {
+          "evidence": [
+            "MANIFEST:registry/codecs/brotli-stream.json",
+            "DOMAIN_PROOF:registry/comparison_datasets/v32_20261010/v32_weather_original_t_i64_0_v2.json"
+          ],
+          "origin": "TASK",
+          "outcome": "PASS",
+          "reason": "STRUCTURALLY_LEGAL_REQUIRES_REAL_QUALIFICATION",
+          "stage": "COMPLETE_RECOVERY"
+        },
+        "member_id": "brotli-stream"
+      },
+      {
+        "config_key": "registered-default",
+        "dataset_id": "v2:dataset:sha256:311a1bc7e83e8f4dd180a882c80a714c32187cc666b6009245a2f58f8cf41aa3",
+        "expected": {
+          "evidence": [
+            "MANIFEST:registry/codecs/xz-stream.json",
+            "DOMAIN_PROOF:registry/comparison_datasets/v32_20261010/v32_weather_original_t_i64_0_v2.json"
+          ],
+          "origin": "TASK",
+          "outcome": "PASS",
+          "reason": "STRUCTURALLY_LEGAL_REQUIRES_REAL_QUALIFICATION",
+          "stage": "COMPLETE_RECOVERY"
+        },
+        "member_id": "xz-stream"
+      },
+      {
+        "config_key": "registered-default",
+        "dataset_id": "v2:dataset:sha256:311a1bc7e83e8f4dd180a882c80a714c32187cc666b6009245a2f58f8cf41aa3",
+        "expected": {
+          "evidence": [
+            "MANIFEST:registry/codecs/lzss-raw.json",
+            "DOMAIN_PROOF:registry/comparison_datasets/v32_20261010/v32_weather_original_t_i64_0_v2.json"
+          ],
+          "origin": "TASK",
+          "outcome": "PASS",
+          "reason": "STRUCTURALLY_LEGAL_REQUIRES_REAL_QUALIFICATION",
+          "stage": "COMPLETE_RECOVERY"
+        },
+        "member_id": "lzss-raw"
+      },
+      {
+        "config_key": "registered-default",
+        "dataset_id": "v2:dataset:sha256:311a1bc7e83e8f4dd180a882c80a714c32187cc666b6009245a2f58f8cf41aa3",
+        "expected": {
+          "evidence": [
+            "MANIFEST:registry/codecs/lzss-dipperstein-c.json",
+            "DOMAIN_PROOF:registry/comparison_datasets/v32_20261010/v32_weather_original_t_i64_0_v2.json"
+          ],
+          "origin": "TASK",
+          "outcome": "PASS",
+          "reason": "STRUCTURALLY_LEGAL_REQUIRES_REAL_QUALIFICATION",
+          "stage": "COMPLETE_RECOVERY"
+        },
+        "member_id": "lzss-dipperstein-c"
+      },
+      {
+        "config_key": "registered-default",
+        "dataset_id": "v2:dataset:sha256:a78718e02b1c74efe4aad25d4df0f3028cd611a41d7d1bf30134c80185b5a85b",
+        "expected": {
+          "evidence": [
+            "MANIFEST:registry/codecs/lz4-frame.json",
+            "DOMAIN_PROOF:registry/comparison_datasets/v32_20261010/v32_weather_original_t_i64_4096_v2.json"
+          ],
+          "origin": "TASK",
+          "outcome": "PASS",
+          "reason": "STRUCTURALLY_LEGAL_REQUIRES_REAL_QUALIFICATION",
+          "stage": "COMPLETE_RECOVERY"
+        },
+        "member_id": "lz4-frame"
+      },
+      {
+        "config_key": "registered-default",
+        "dataset_id": "v2:dataset:sha256:a78718e02b1c74efe4aad25d4df0f3028cd611a41d7d1bf30134c80185b5a85b",
+        "expected": {
+          "evidence": [
+            "MANIFEST:registry/codecs/zstd-frame.json",
+            "DOMAIN_PROOF:registry/comparison_datasets/v32_20261010/v32_weather_original_t_i64_4096_v2.json"
+          ],
+          "origin": "TASK",
+          "outcome": "PASS",
+          "reason": "STRUCTURALLY_LEGAL_REQUIRES_REAL_QUALIFICATION",
+          "stage": "COMPLETE_RECOVERY"
+        },
+        "member_id": "zstd-frame"
+      },
+      {
+        "config_key": "registered-default",
+        "dataset_id": "v2:dataset:sha256:a78718e02b1c74efe4aad25d4df0f3028cd611a41d7d1bf30134c80185b5a85b",
+        "expected": {
+          "evidence": [
+            "MANIFEST:registry/codecs/snappy-raw.json",
+            "DOMAIN_PROOF:registry/comparison_datasets/v32_20261010/v32_weather_original_t_i64_4096_v2.json"
+          ],
+          "origin": "TASK",
+          "outcome": "PASS",
+          "reason": "STRUCTURALLY_LEGAL_REQUIRES_REAL_QUALIFICATION",
+          "stage": "COMPLETE_RECOVERY"
+        },
+        "member_id": "snappy-raw"
+      },
+      {
+        "config_key": "registered-default",
+        "dataset_id": "v2:dataset:sha256:a78718e02b1c74efe4aad25d4df0f3028cd611a41d7d1bf30134c80185b5a85b",
+        "expected": {
+          "evidence": [
+            "MANIFEST:registry/codecs/deflate-zlib.json",
+            "DOMAIN_PROOF:registry/comparison_datasets/v32_20261010/v32_weather_original_t_i64_4096_v2.json"
+          ],
+          "origin": "TASK",
+          "outcome": "PASS",
+          "reason": "STRUCTURALLY_LEGAL_REQUIRES_REAL_QUALIFICATION",
+          "stage": "COMPLETE_RECOVERY"
+        },
+        "member_id": "deflate-zlib"
+      },
+      {
+        "config_key": "registered-default",
+        "dataset_id": "v2:dataset:sha256:a78718e02b1c74efe4aad25d4df0f3028cd611a41d7d1bf30134c80185b5a85b",
+        "expected": {
+          "evidence": [
+            "MANIFEST:registry/codecs/brotli-stream.json",
+            "DOMAIN_PROOF:registry/comparison_datasets/v32_20261010/v32_weather_original_t_i64_4096_v2.json"
+          ],
+          "origin": "TASK",
+          "outcome": "PASS",
+          "reason": "STRUCTURALLY_LEGAL_REQUIRES_REAL_QUALIFICATION",
+          "stage": "COMPLETE_RECOVERY"
+        },
+        "member_id": "brotli-stream"
+      },
+      {
+        "config_key": "registered-default",
+        "dataset_id": "v2:dataset:sha256:a78718e02b1c74efe4aad25d4df0f3028cd611a41d7d1bf30134c80185b5a85b",
+        "expected": {
+          "evidence": [
+            "MANIFEST:registry/codecs/xz-stream.json",
+            "DOMAIN_PROOF:registry/comparison_datasets/v32_20261010/v32_weather_original_t_i64_4096_v2.json"
+          ],
+          "origin": "TASK",
+          "outcome": "PASS",
+          "reason": "STRUCTURALLY_LEGAL_REQUIRES_REAL_QUALIFICATION",
+          "stage": "COMPLETE_RECOVERY"
+        },
+        "member_id": "xz-stream"
+      },
+      {
+        "config_key": "registered-default",
+        "dataset_id": "v2:dataset:sha256:a78718e02b1c74efe4aad25d4df0f3028cd611a41d7d1bf30134c80185b5a85b",
+        "expected": {
+          "evidence": [
+            "MANIFEST:registry/codecs/lzss-raw.json",
+            "DOMAIN_PROOF:registry/comparison_datasets/v32_20261010/v32_weather_original_t_i64_4096_v2.json"
+          ],
+          "origin": "TASK",
+          "outcome": "PASS",
+          "reason": "STRUCTURALLY_LEGAL_REQUIRES_REAL_QUALIFICATION",
+          "stage": "COMPLETE_RECOVERY"
+        },
+        "member_id": "lzss-raw"
+      },
+      {
+        "config_key": "registered-default",
+        "dataset_id": "v2:dataset:sha256:a78718e02b1c74efe4aad25d4df0f3028cd611a41d7d1bf30134c80185b5a85b",
+        "expected": {
+          "evidence": [
+            "MANIFEST:registry/codecs/lzss-dipperstein-c.json",
+            "DOMAIN_PROOF:registry/comparison_datasets/v32_20261010/v32_weather_original_t_i64_4096_v2.json"
+          ],
+          "origin": "TASK",
+          "outcome": "PASS",
+          "reason": "STRUCTURALLY_LEGAL_REQUIRES_REAL_QUALIFICATION",
+          "stage": "COMPLETE_RECOVERY"
+        },
+        "member_id": "lzss-dipperstein-c"
+      },
+      {
+        "config_key": "registered-default",
+        "dataset_id": "v2:dataset:sha256:39148e447caa3978e14fa49dae8b55d355e8d566dacf755390218767b267fb10",
+        "expected": {
+          "evidence": [
+            "MANIFEST:registry/codecs/lz4-frame.json",
+            "DOMAIN_PROOF:registry/comparison_datasets/v32_20261010/v32_t_missing_required_timestamp_test_v2.json"
+          ],
+          "origin": "TASK",
+          "outcome": "REJECT",
+          "reason": "CAPABILITY_MISMATCH",
+          "stage": "INPUT_NEGOTIATION"
+        },
+        "member_id": "lz4-frame"
+      },
+      {
+        "config_key": "registered-default",
+        "dataset_id": "v2:dataset:sha256:39148e447caa3978e14fa49dae8b55d355e8d566dacf755390218767b267fb10",
+        "expected": {
+          "evidence": [
+            "MANIFEST:registry/codecs/zstd-frame.json",
+            "DOMAIN_PROOF:registry/comparison_datasets/v32_20261010/v32_t_missing_required_timestamp_test_v2.json"
+          ],
+          "origin": "TASK",
+          "outcome": "REJECT",
+          "reason": "CAPABILITY_MISMATCH",
+          "stage": "INPUT_NEGOTIATION"
+        },
+        "member_id": "zstd-frame"
+      },
+      {
+        "config_key": "registered-default",
+        "dataset_id": "v2:dataset:sha256:39148e447caa3978e14fa49dae8b55d355e8d566dacf755390218767b267fb10",
+        "expected": {
+          "evidence": [
+            "MANIFEST:registry/codecs/snappy-raw.json",
+            "DOMAIN_PROOF:registry/comparison_datasets/v32_20261010/v32_t_missing_required_timestamp_test_v2.json"
+          ],
+          "origin": "TASK",
+          "outcome": "REJECT",
+          "reason": "CAPABILITY_MISMATCH",
+          "stage": "INPUT_NEGOTIATION"
+        },
+        "member_id": "snappy-raw"
+      },
+      {
+        "config_key": "registered-default",
+        "dataset_id": "v2:dataset:sha256:39148e447caa3978e14fa49dae8b55d355e8d566dacf755390218767b267fb10",
+        "expected": {
+          "evidence": [
+            "MANIFEST:registry/codecs/deflate-zlib.json",
+            "DOMAIN_PROOF:registry/comparison_datasets/v32_20261010/v32_t_missing_required_timestamp_test_v2.json"
+          ],
+          "origin": "TASK",
+          "outcome": "REJECT",
+          "reason": "CAPABILITY_MISMATCH",
+          "stage": "INPUT_NEGOTIATION"
+        },
+        "member_id": "deflate-zlib"
+      },
+      {
+        "config_key": "registered-default",
+        "dataset_id": "v2:dataset:sha256:39148e447caa3978e14fa49dae8b55d355e8d566dacf755390218767b267fb10",
+        "expected": {
+          "evidence": [
+            "MANIFEST:registry/codecs/brotli-stream.json",
+            "DOMAIN_PROOF:registry/comparison_datasets/v32_20261010/v32_t_missing_required_timestamp_test_v2.json"
+          ],
+          "origin": "TASK",
+          "outcome": "REJECT",
+          "reason": "CAPABILITY_MISMATCH",
+          "stage": "INPUT_NEGOTIATION"
+        },
+        "member_id": "brotli-stream"
+      },
+      {
+        "config_key": "registered-default",
+        "dataset_id": "v2:dataset:sha256:39148e447caa3978e14fa49dae8b55d355e8d566dacf755390218767b267fb10",
+        "expected": {
+          "evidence": [
+            "MANIFEST:registry/codecs/xz-stream.json",
+            "DOMAIN_PROOF:registry/comparison_datasets/v32_20261010/v32_t_missing_required_timestamp_test_v2.json"
+          ],
+          "origin": "TASK",
+          "outcome": "REJECT",
+          "reason": "CAPABILITY_MISMATCH",
+          "stage": "INPUT_NEGOTIATION"
+        },
+        "member_id": "xz-stream"
+      },
+      {
+        "config_key": "registered-default",
+        "dataset_id": "v2:dataset:sha256:39148e447caa3978e14fa49dae8b55d355e8d566dacf755390218767b267fb10",
+        "expected": {
+          "evidence": [
+            "MANIFEST:registry/codecs/lzss-raw.json",
+            "DOMAIN_PROOF:registry/comparison_datasets/v32_20261010/v32_t_missing_required_timestamp_test_v2.json"
+          ],
+          "origin": "TASK",
+          "outcome": "REJECT",
+          "reason": "CAPABILITY_MISMATCH",
+          "stage": "INPUT_NEGOTIATION"
+        },
+        "member_id": "lzss-raw"
+      },
+      {
+        "config_key": "registered-default",
+        "dataset_id": "v2:dataset:sha256:39148e447caa3978e14fa49dae8b55d355e8d566dacf755390218767b267fb10",
+        "expected": {
+          "evidence": [
+            "MANIFEST:registry/codecs/lzss-dipperstein-c.json",
+            "DOMAIN_PROOF:registry/comparison_datasets/v32_20261010/v32_t_missing_required_timestamp_test_v2.json"
+          ],
+          "origin": "TASK",
+          "outcome": "REJECT",
+          "reason": "CAPABILITY_MISMATCH",
+          "stage": "INPUT_NEGOTIATION"
+        },
+        "member_id": "lzss-dipperstein-c"
+      }
+    ],
+    "schema_version": "tscb.expected-outcome-matrix.v1"
+  },
+  "group": {
+    "completion_policy": "ALL_CORE_LEGAL_CONFIGS_AND_EXPECTED_TERMINALS",
+    "config_map_id": "v3:method-config-map:sha256:6a1388a5a85a18d944bb926f3feb8b93db8dea397d13e62fd174c5b0573541b3",
+    "contract_id": "v3:comparison-contract:sha256:3e6bd3050cd637b6d9ff9685913e0c9d52a281df3e43b10eb57ae8f8ec06fe8b",
+    "corpus_id": "v3:corpus-spec:sha256:21c0f8de14131530a636d02f8312b4c085a15c2136d78592b95229bc5f3670bf",
+    "expected_matrix_id": "v3:expected-outcome-matrix:sha256:c405b678cf2b4d4823f10ebbc948db24de31d88123c8baad81ba799e84949523",
+    "members": [
+      {
+        "allowed_paths": [
+          "DIRECT",
+          "EXACT_WIDEN",
+          "BYTE_SERIALIZATION",
+          "COLUMN_INDEPENDENT",
+          "JOINT"
+        ],
+        "codec_key": "lz4-frame",
+        "implementation": {
+          "implementation_variant": "REGISTERED_SOURCE_CPU",
+          "method_id": "v3:method:sha256:c2d81b1c79bad2a8757f45d4d359109f3487149f94414a7431ee15bcbbd38233",
+          "source_artifact_id": "v2:source-artifact:sha256:68693355ce70e7eb3c672bb55303b7d380d420e3ec0626a4cef0588556f62679",
+          "source_closure_sha256": "9309d7d873783fe3450b055151c7d0937e5f04fa32e0d255c131bdd6b661379d"
+        },
+        "member_id": "lz4-frame",
+        "method": {
+          "definition_sha256": "a72846bfcec95cdae2d7a27c07022fa70e5c924d29d99017556e1e5f492cb560",
+          "mechanism": "LZ4",
+          "name": "LZ4 Frame 1.10.0 (lzbench source)",
+          "semantic_version": "1",
+          "variant": "lz4-frame"
+        },
+        "role": "CORE",
+        "shared_code_tags": [
+          "SOURCE_ARTIFACT:v2:source-artifact:sha256:68693355ce70e7eb3c672bb55303b7d380d420e3ec0626a4cef0588556f62679"
+        ]
+      },
+      {
+        "allowed_paths": [
+          "DIRECT",
+          "EXACT_WIDEN",
+          "BYTE_SERIALIZATION",
+          "COLUMN_INDEPENDENT",
+          "JOINT"
+        ],
+        "codec_key": "zstd-frame",
+        "implementation": {
+          "implementation_variant": "REGISTERED_SOURCE_CPU",
+          "method_id": "v3:method:sha256:1ea2195e567f734978f0b83f3c0f14e82d88088ca2ab8133fba7db9c9dbc22ec",
+          "source_artifact_id": "v2:source-artifact:sha256:893e7c7c0ef2d09d06a92e4ee6191f7f4b090718da5e88e82f23b12a8f82f237",
+          "source_closure_sha256": "70ce1616c3aee76722bb3a5379a6efe425b183af0197f4d5afe9b7c2e8ae8ed3"
+        },
+        "member_id": "zstd-frame",
+        "method": {
+          "definition_sha256": "ad9961c48777de1ac7f6180c9fe57f92a3970fdea6f27e6eaae168f781c8f603",
+          "mechanism": "ZSTD",
+          "name": "Zstd Frame 1.5.7 (lzbench source)",
+          "semantic_version": "1",
+          "variant": "zstd-frame"
+        },
+        "role": "CORE",
+        "shared_code_tags": [
+          "SOURCE_ARTIFACT:v2:source-artifact:sha256:893e7c7c0ef2d09d06a92e4ee6191f7f4b090718da5e88e82f23b12a8f82f237"
+        ]
+      },
+      {
+        "allowed_paths": [
+          "DIRECT",
+          "EXACT_WIDEN",
+          "BYTE_SERIALIZATION",
+          "COLUMN_INDEPENDENT",
+          "JOINT"
+        ],
+        "codec_key": "snappy-raw",
+        "implementation": {
+          "implementation_variant": "REGISTERED_SOURCE_CPU",
+          "method_id": "v3:method:sha256:307fe423c6d026211cd8656379e08e6a3867374a99ce77d2beaab248bdcb832c",
+          "source_artifact_id": "v2:source-artifact:sha256:e63a21a66a2ebd8fec7b8caa2b477a157b01033ea458fa3be9eab481bb26771d",
+          "source_closure_sha256": "54e6576476ea5c5f654e8257ccbd247c7c7f4212d58fbae1cd44cc3d744f1128"
+        },
+        "member_id": "snappy-raw",
+        "method": {
+          "definition_sha256": "696da5d50db9c1a504c334623c84b31a5f889a3fd769062a7d87dfee4b39fa13",
+          "mechanism": "SNAPPY",
+          "name": "Snappy Raw 1.2.2 (lzbench source)",
+          "semantic_version": "1",
+          "variant": "snappy-raw"
+        },
+        "role": "CORE",
+        "shared_code_tags": [
+          "SOURCE_ARTIFACT:v2:source-artifact:sha256:e63a21a66a2ebd8fec7b8caa2b477a157b01033ea458fa3be9eab481bb26771d"
+        ]
+      },
+      {
+        "allowed_paths": [
+          "DIRECT",
+          "EXACT_WIDEN",
+          "BYTE_SERIALIZATION",
+          "COLUMN_INDEPENDENT",
+          "JOINT"
+        ],
+        "codec_key": "deflate-zlib",
+        "implementation": {
+          "implementation_variant": "REGISTERED_SOURCE_CPU",
+          "method_id": "v3:method:sha256:719083f3852ea8badb5df5e1f833d7cd3c7d980f210dddc1859345932d501b53",
+          "source_artifact_id": "v2:source-artifact:sha256:488e8ce467a7dba0196f8ba1ece20ba03be7167eefa3ab09c79bb914219c5518",
+          "source_closure_sha256": "90abdcdbb1d1670afd5b5ca06827f2bb7aedd2e10469b6ceaae90e08d455f7c0"
+        },
+        "member_id": "deflate-zlib",
+        "method": {
+          "definition_sha256": "59d29098574d97c1fb554399443fb405d2cfad6f1a13e916f877e1d88b98bd74",
+          "mechanism": "DEFLATE",
+          "name": "zlib DEFLATE 1.3.2 (lzbench source)",
+          "semantic_version": "1",
+          "variant": "deflate-zlib"
+        },
+        "role": "CORE",
+        "shared_code_tags": [
+          "SOURCE_ARTIFACT:v2:source-artifact:sha256:488e8ce467a7dba0196f8ba1ece20ba03be7167eefa3ab09c79bb914219c5518"
+        ]
+      },
+      {
+        "allowed_paths": [
+          "DIRECT",
+          "EXACT_WIDEN",
+          "BYTE_SERIALIZATION",
+          "COLUMN_INDEPENDENT",
+          "JOINT"
+        ],
+        "codec_key": "brotli-stream",
+        "implementation": {
+          "implementation_variant": "REGISTERED_SOURCE_CPU",
+          "method_id": "v3:method:sha256:13f0cd5f2dbe8cfcbc5fb73abc3343989820e07a313591e3ec8d05894eec30e5",
+          "source_artifact_id": "v2:source-artifact:sha256:fe9a7e9ee3c50bc85ed92108da5fee194a2440e81f64d60af4d6b2beedae4a66",
+          "source_closure_sha256": "99c9b5c8815308fa57543c3188ca1bb37b42a411785d10f9ed0ecbe214e4d06a"
+        },
+        "member_id": "brotli-stream",
+        "method": {
+          "definition_sha256": "b5be31cc83ef048237550f624cdc08289c10199733151219ae4444a6eae328f9",
+          "mechanism": "BROTLI",
+          "name": "Brotli Stream 1.2.0 (lzbench source)",
+          "semantic_version": "1",
+          "variant": "brotli-stream"
+        },
+        "role": "CORE",
+        "shared_code_tags": [
+          "SOURCE_ARTIFACT:v2:source-artifact:sha256:fe9a7e9ee3c50bc85ed92108da5fee194a2440e81f64d60af4d6b2beedae4a66"
+        ]
+      },
+      {
+        "allowed_paths": [
+          "DIRECT",
+          "EXACT_WIDEN",
+          "BYTE_SERIALIZATION",
+          "COLUMN_INDEPENDENT",
+          "JOINT"
+        ],
+        "codec_key": "xz-stream",
+        "implementation": {
+          "implementation_variant": "REGISTERED_SOURCE_CPU",
+          "method_id": "v3:method:sha256:0761d09967a42a7ff09905498dc5fd63dfef7bbc04e9be850262505d7f08b216",
+          "source_artifact_id": "v2:source-artifact:sha256:e51531a640977f677d6fe69f3350582773ef4c090a5e2c194c083b10b6255988",
+          "source_closure_sha256": "ef43c1771d2d12fdb35b9d53a15394f81da23770f97891d78f1e97e3504d3574"
+        },
+        "member_id": "xz-stream",
+        "method": {
+          "definition_sha256": "9d1638be8a86f3d3433adb780a4dfee50fd28a797939bbe92d58e76971a475b9",
+          "mechanism": "LZMA_XZ",
+          "name": "XZ LZMA2 5.8.3 (lzbench source, single-call)",
+          "semantic_version": "1",
+          "variant": "xz-stream"
+        },
+        "role": "CORE",
+        "shared_code_tags": [
+          "SOURCE_ARTIFACT:v2:source-artifact:sha256:e51531a640977f677d6fe69f3350582773ef4c090a5e2c194c083b10b6255988"
+        ]
+      },
+      {
+        "allowed_paths": [
+          "DIRECT",
+          "EXACT_WIDEN",
+          "BYTE_SERIALIZATION",
+          "COLUMN_INDEPENDENT",
+          "JOINT"
+        ],
+        "codec_key": "lzss-raw",
+        "implementation": {
+          "implementation_variant": "REGISTERED_SOURCE_CPU",
+          "method_id": "v3:method:sha256:264da118ad59a2564be9abc326e1cbc4e28cb1e59c4e8692cfecf586ba5b3ad7",
+          "source_artifact_id": "v2:source-artifact:sha256:2f06ee31d72141e1d9103cb98194a9dc181b08fbf5912f78b2bc4faf2cd54946",
+          "source_closure_sha256": "82cb61ecc9d31fd48a31624fd2b45f310fcf641d5fcd8e2dcca11d361feced2c"
+        },
+        "member_id": "lzss-raw",
+        "method": {
+          "definition_sha256": "79206f52a6e2784ebbc848b10634263546b3de36abc5f7e4e614824aa3c246b4",
+          "mechanism": "LZSS",
+          "name": "LZSS 0.9.1 (alexkazik Rust source, EI10/EJ4, safe)",
+          "semantic_version": "1",
+          "variant": "lzss-raw"
+        },
+        "role": "CORE",
+        "shared_code_tags": [
+          "SOURCE_ARTIFACT:v2:source-artifact:sha256:2f06ee31d72141e1d9103cb98194a9dc181b08fbf5912f78b2bc4faf2cd54946"
+        ]
+      },
+      {
+        "allowed_paths": [
+          "DIRECT",
+          "EXACT_WIDEN",
+          "BYTE_SERIALIZATION",
+          "COLUMN_INDEPENDENT",
+          "JOINT"
+        ],
+        "codec_key": "lzss-dipperstein-c",
+        "implementation": {
+          "implementation_variant": "REGISTERED_SOURCE_CPU",
+          "method_id": "v3:method:sha256:94049ac8437ee08fcf241104300524b88ab7875143635ecc03db22b18c39ebde",
+          "source_artifact_id": "v2:source-artifact:sha256:4c20671bce63b0af5096ff01677e538f12c25d15d74075b8790e8c758ac256a9",
+          "source_closure_sha256": "ce81296d3b2269d8ee2adf2d6964f156b31d013a6742e2c7c21486785d91fb9a"
+        },
+        "member_id": "lzss-dipperstein-c",
+        "method": {
+          "definition_sha256": "79fc09c9244f18da04cb79ab55013385da3bba4f889154017839c53cbba3884c",
+          "mechanism": "LZSS",
+          "name": "Michael Dipperstein LZSS C (offset12/length4, binary tree)",
+          "semantic_version": "1",
+          "variant": "lzss-dipperstein-c"
+        },
+        "role": "CORE",
+        "shared_code_tags": [
+          "SOURCE_ARTIFACT:v2:source-artifact:sha256:4c20671bce63b0af5096ff01677e538f12c25d15d74075b8790e8c758ac256a9"
+        ]
+      }
+    ],
+    "method_equivalence": [
+      {
+        "basis": "Frozen mechanism/variant class; aliases/parameters/builds add no methods.",
+        "class_id": "lz4-frame",
+        "evidence": [
+          "MANIFEST:registry/codecs/lz4-frame.json"
+        ],
+        "members": [
+          "lz4-frame"
+        ]
+      },
+      {
+        "basis": "Frozen mechanism/variant class; aliases/parameters/builds add no methods.",
+        "class_id": "zstd-frame",
+        "evidence": [
+          "MANIFEST:registry/codecs/zstd-frame.json"
+        ],
+        "members": [
+          "zstd-frame"
+        ]
+      },
+      {
+        "basis": "Frozen mechanism/variant class; aliases/parameters/builds add no methods.",
+        "class_id": "snappy-raw",
+        "evidence": [
+          "MANIFEST:registry/codecs/snappy-raw.json"
+        ],
+        "members": [
+          "snappy-raw"
+        ]
+      },
+      {
+        "basis": "Frozen mechanism/variant class; aliases/parameters/builds add no methods.",
+        "class_id": "deflate-zlib",
+        "evidence": [
+          "MANIFEST:registry/codecs/deflate-zlib.json"
+        ],
+        "members": [
+          "deflate-zlib"
+        ]
+      },
+      {
+        "basis": "Frozen mechanism/variant class; aliases/parameters/builds add no methods.",
+        "class_id": "brotli-stream",
+        "evidence": [
+          "MANIFEST:registry/codecs/brotli-stream.json"
+        ],
+        "members": [
+          "brotli-stream"
+        ]
+      },
+      {
+        "basis": "Frozen mechanism/variant class; aliases/parameters/builds add no methods.",
+        "class_id": "xz-stream",
+        "evidence": [
+          "MANIFEST:registry/codecs/xz-stream.json"
+        ],
+        "members": [
+          "xz-stream"
+        ]
+      },
+      {
+        "basis": "Conservative LZSS family equivalence for this byte task; implementation paths stay separate.",
+        "class_id": "lzss-family",
+        "evidence": [
+          "MANIFEST:registry/codecs/lzss-raw.json",
+          "MANIFEST:registry/codecs/lzss-dipperstein-c.json"
+        ],
+        "members": [
+          "lzss-raw",
+          "lzss-dipperstein-c"
+        ]
+      }
+    ],
+    "minimum_distinct_methods": 2,
+    "minimum_independent_real_sources": 2,
+    "name": "G-TIMESTAMP",
+    "revision": "20261011-v4",
+    "schema_version": "tscb.group-spec.v1",
+    "scope": "CORE_COMPARISON"
+  },
+  "protocol": {
+    "cache_policy": "WARM_INPUT_OS_CACHE_UNCONTROLLED",
+    "clock": "PERF_COUNTER_NS",
+    "cold_start_boundary": null,
+    "collector_mode": "ENABLED",
+    "confidence_level": "0.95",
+    "context_policy": "FRESH_ENCODE_AND_DECODE_CONTEXT_PER_OBJECT",
+    "decode_min_ns": 50000000,
+    "encode_min_ns": 50000000,
+    "estimand": "DIRECTION_NS_PER_INDEPENDENT_OBJECT",
+    "exclusion_policy": "PREDECLARED_CORRECTNESS_RESOURCE_AND_ENVIRONMENT_GATES",
+    "max_collector_fraction": "0.15",
+    "max_harness_fraction": "0.05",
+    "max_inner_iterations": 1000000,
+    "max_load_1m": null,
+    "max_noise_cv": null,
+    "max_retries": 0,
+    "max_temperature_c": null,
+    "max_throttle_ratio": null,
+    "max_total_wall_ns": 3600000000000,
+    "max_trial_wall_ns": 240000000000,
+    "min_clock_signal_ratio": 100,
+    "min_outer_repetitions": 1,
+    "outer_repetitions": 8,
+    "pilot_repetitions": 7,
+    "pilot_seed": 20261010,
+    "precision_checkpoints": [],
+    "precision_relative_halfwidth": null,
+    "profile": "STEADY_PROCESS",
+    "protocol_id": "v2:measurement-protocol-v32:sha256:4b777040e750c1fa968ff03394c761c1bb299ec7178725ce2395d63f6d36f921",
+    "require_environment_observations": false,
+    "retry_policy": "FAILED_ATTEMPTS_ONLY_RETAIN_ALL",
+    "schema_version": "tscb.measurement-protocol.v3.2",
+    "sequential_method": null,
+    "start_method": "spawn",
+    "stop_mode": "FIXED_REPETITIONS",
+    "thread_monitor_interval_ns": 5000000,
+    "timing_scope": "PIPELINE",
+    "warmup_min_count": 1,
+    "warmup_min_ns": 0,
+    "worker_initial_state": "FRESH_INTERPRETER"
+  },
+  "qualification_datasets": [
+    "v32_qual_original_t_regular_v2",
+    "v32_qual_original_t_jitter_v2",
+    "v32_qual_original_t_duplicate_v2",
+    "v32_qual_original_t_out_of_order_v2"
+  ],
+  "schema_version": "tscb.comparison-bundle.v1",
+  "seed": 20261010
+}

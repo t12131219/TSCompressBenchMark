@@ -13,21 +13,57 @@
   "classification": {
     "object_level": "P1_STANDALONE_CODEC",
     "implementation_class": "CONVENTIONAL",
-    "tracks": ["TIMESTAMP", "VALUE"],
-    "subtracks": ["T1", "V0"]
+    "tracks": [
+      "TIMESTAMP",
+      "VALUE"
+    ],
+    "subtracks": [
+      "T1",
+      "V0"
+    ]
   },
   "input": {
-    "topologies": ["UTS", "SYNCHRONOUS_MTS", "NATIVE_ND_ARRAY"],
-    "dtypes": ["<i8", "<i4", "<i2", "|i1", "<u8", "<u4", "<u2", "|u1", "<f8", "<f4"],
-    "ranks": [1, 2, 3, 4],
-    "layouts": ["ROW_MAJOR_CONTIG", "COLUMN_MAJOR_CONTIG", "SOA_COLUMNS", "STRIDED_VIEW", "NOT_APPLICABLE"],
-    "endianness": ["little"],
+    "topologies": [
+      "UTS",
+      "SYNCHRONOUS_MTS",
+      "NATIVE_ND_ARRAY"
+    ],
+    "dtypes": [
+      "<i8",
+      "<i4",
+      "<i2",
+      "|i1",
+      "<u8",
+      "<u4",
+      "<u2",
+      "|u1",
+      "<f8",
+      "<f4"
+    ],
+    "ranks": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "layouts": [
+      "ROW_MAJOR_CONTIG",
+      "COLUMN_MAJOR_CONTIG",
+      "SOA_COLUMNS",
+      "STRIDED_VIEW",
+      "NOT_APPLICABLE"
+    ],
+    "endianness": [
+      "little"
+    ],
     "alignment_bytes": 1,
     "min_n": 0,
     "max_n": 4294967295,
     "min_m": 1,
     "max_m": 1048576,
-    "validity_shapes": ["NONE"],
+    "validity_shapes": [
+      "NONE"
+    ],
     "value_coupling_mode": "FULL_MATRIX",
     "timestamp_semantics": {
       "preserve_order": true,
@@ -39,9 +75,13 @@
     }
   },
   "semantics": {
-    "loss_modes": ["LOSSLESS"],
+    "loss_modes": [
+      "LOSSLESS"
+    ],
     "error_bound_types": [],
-    "reconstruction_modes": ["EXACT_GRID"],
+    "reconstruction_modes": [
+      "EXACT_GRID"
+    ],
     "rebuild_protocol": "TSCB_BUFFER_DESCRIPTOR_CONTAINER_V1",
     "preprocess_class": "NONE",
     "preprocess_stages": [],
@@ -60,9 +100,15 @@
     "index": "NONE"
   },
   "execution": {
-    "backends": ["C_ABI_V1"],
-    "isa": ["SCALAR"],
-    "devices": ["CPU"],
+    "backends": [
+      "C_ABI_V1"
+    ],
+    "isa": [
+      "SCALAR"
+    ],
+    "devices": [
+      "CPU"
+    ],
     "threading": "SINGLE_THREAD",
     "fallback_policy": "DISALLOWED",
     "runtime_dispatch": false
@@ -76,26 +122,62 @@
     "type": "object",
     "additionalProperties": false,
     "properties": {
-      "native_timing": {"type": "boolean", "default": true},
-      "block_size": {"type": "integer", "minimum": 1, "maximum": 1048576, "default": 65536},
-      "stream_decode_chunk_bytes": {"type": "integer", "minimum": 1, "maximum": 1048576, "default": 16384},
-      "compression_level": {"type": "integer", "minimum": 1, "maximum": 9, "default": 9},
-      "isa": {"type": "string", "enum": ["SCALAR"], "default": "SCALAR"}
+      "native_timing": {
+        "type": "boolean",
+        "default": true
+      },
+      "block_size": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 1048576,
+        "default": 65536
+      },
+      "stream_decode_chunk_bytes": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 1048576,
+        "default": 16384
+      },
+      "compression_level": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 9,
+        "default": 9
+      },
+      "isa": {
+        "type": "string",
+        "enum": [
+          "SCALAR"
+        ],
+        "default": "SCALAR"
+      }
     },
     "constraints": []
   },
   "adapter": {
     "backend": "C_ABI_V1",
-    "version": "bzip2-stream-ctypes-v2-streaming",
+    "version": "bzip2-stream-ctypes-v2-streaming-port-standard-v30-20261011",
     "factory": "BZIP2_STREAM_CTYPES_V1",
-    "artifact_path": "build/adapters/bzip2_stream/release/libtscb_bzip2_stream.so",
+    "artifact_path": "build/port-standard-v30-20261011/native-builds-v3/bzip2_stream/release/libtscb_bzip2_stream.so",
     "timing_boundary": "PYTHON_FFI_CONTAINER_INCLUDED",
     "native_timing_capability": {
       "optional": true,
       "boundary": "CODEC_API_ONLY_V1",
       "clock": "CLOCK_MONOTONIC",
-      "excludes": ["CONTEXT_LIFECYCLE", "EXPLICIT_PREVALIDATION", "PYTHON_FFI_CONTAINER"]
+      "excludes": [
+        "CONTEXT_LIFECYCLE",
+        "EXPLICIT_PREVALIDATION",
+        "PYTHON_FFI_CONTAINER"
+      ]
     },
-    "accounting_hooks": ["FINAL_STREAM_LENGTH", "COMPLETE_BZIP2_STREAM", "OUTPUT_CAPACITY"]
+    "accounting_hooks": [
+      "FINAL_STREAM_LENGTH",
+      "COMPLETE_BZIP2_STREAM",
+      "OUTPUT_CAPACITY"
+    ],
+    "runtime_profile": {
+      "path": "docs/audits/20261011_port_standard_v30/runtime_profiles_v2/profiles/bzip2-stream.json",
+      "sha256": "9b032bb32912f19db4defbf603aa63774770a9071e0589201a61aaef34b52227"
+    }
   }
 }

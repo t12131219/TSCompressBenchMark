@@ -108,12 +108,14 @@ def test_source_closure_patch_set_and_registry_identity_are_reproducible():
         closure.update(path.read_bytes())
     assert len(files) == source["identity"]["source_closure_file_count"] == 172
     assert closure.hexdigest() == source["identity"]["source_closure_sha256"]
-    patch_lines = bytearray()
+    assert source["identity"]["patch_set_hash_protocol"] == "RELATIVE_PATH_NUL_FILE_BYTES_V1"
+    patch_root = ROOT / "adapters/neats/patches"
+    patch_digest = hashlib.sha256()
     for relative in source["build"]["patches"]:
         path = ROOT / relative
-        patch_lines.extend(hashlib.sha256(path.read_bytes()).hexdigest().encode())
-        patch_lines.extend(b"  " + relative.encode() + b"\n")
-    assert hashlib.sha256(patch_lines).hexdigest() == source["identity"]["patch_set_sha256"]
+        patch_digest.update(path.relative_to(patch_root).as_posix().encode() + b"\0")
+        patch_digest.update(path.read_bytes())
+    assert patch_digest.hexdigest() == source["identity"]["patch_set_sha256"]
     sources = SourceRegistry(ROOT / "registry/sources")
     codecs = CodecRegistry(ROOT / "registry/codecs", sources)
     assert (

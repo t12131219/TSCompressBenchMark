@@ -1,0 +1,840 @@
+{
+  "analysis_policy": {
+    "bootstrap_samples": 4000,
+    "confidence_level": "0.95",
+    "corpus_weighting": "FIXED_WORKLOAD",
+    "estimand": "FIXED_CORPUS_PAIRED_PROCESS_TIME_RATIO",
+    "minimum_paired_blocks": 4,
+    "minimum_practical_effect": "0.02",
+    "missing_policy": "KEEP_FIXED_DENOMINATOR_NO_CORE_AGGREGATE",
+    "multiplicity_policy": "BONFERRONI_FAMILYWISE_INTERVALS",
+    "primary_comparisons": [],
+    "resampling_unit": "SCHEDULE_BLOCK",
+    "schema_version": "tscb.analysis-policy.v1",
+    "seed": 20261010,
+    "target_relative_ci_half_width": "0.10",
+    "time_estimator": "MEAN_PROCESS_TIME_PER_OBJECT"
+  },
+  "config_map": {
+    "contract_id": "v3:comparison-contract:sha256:d7dd866947e004c4e622d3f04f14cf1133482f3f8d8d71b80f426ae6719e9f5f",
+    "members": [
+      {
+        "configs": [
+          {
+            "config_key": "registered-default",
+            "framework_parameters": {
+              "benchmark_seed": 20261010
+            },
+            "guarantee": {
+              "kind": "LOSSLESS",
+              "metric": null,
+              "original_domain_total": true,
+              "threshold": null,
+              "unit": "BITWISE"
+            },
+            "loss_mode": "LOSSLESS",
+            "parameters": {
+              "block_size": 128,
+              "isa": "SCALAR",
+              "native_timing": true
+            }
+          }
+        ],
+        "member_id": "fse"
+      },
+      {
+        "configs": [
+          {
+            "config_key": "registered-default",
+            "framework_parameters": {
+              "benchmark_seed": 20261010
+            },
+            "guarantee": {
+              "kind": "LOSSLESS",
+              "metric": null,
+              "original_domain_total": true,
+              "threshold": null,
+              "unit": "BITWISE"
+            },
+            "loss_mode": "LOSSLESS",
+            "parameters": {
+              "block_size": 128,
+              "isa": "SCALAR",
+              "native_timing": true
+            }
+          }
+        ],
+        "member_id": "huff0"
+      },
+      {
+        "configs": [
+          {
+            "config_key": "registered-default",
+            "framework_parameters": {
+              "benchmark_seed": 20261010
+            },
+            "guarantee": {
+              "kind": "LOSSLESS",
+              "metric": null,
+              "original_domain_total": true,
+              "threshold": null,
+              "unit": "BITWISE"
+            },
+            "loss_mode": "LOSSLESS",
+            "parameters": {
+              "block_checksum": false,
+              "block_mode": "INDEPENDENT",
+              "block_size": 65536,
+              "block_size_id": 4,
+              "compression_level": 0,
+              "content_checksum": true,
+              "isa": "SCALAR",
+              "native_timing": true,
+              "stream_decode_chunk_bytes": 16384
+            }
+          }
+        ],
+        "member_id": "lz4-frame"
+      },
+      {
+        "configs": [
+          {
+            "config_key": "registered-default",
+            "framework_parameters": {
+              "benchmark_seed": 20261010
+            },
+            "guarantee": {
+              "kind": "LOSSLESS",
+              "metric": null,
+              "original_domain_total": true,
+              "threshold": null,
+              "unit": "BITWISE"
+            },
+            "loss_mode": "LOSSLESS",
+            "parameters": {
+              "block_size": 131072,
+              "compression_level": 3,
+              "content_checksum": true,
+              "isa": "SCALAR",
+              "native_timing": true,
+              "stream_decode_chunk_bytes": 16384
+            }
+          }
+        ],
+        "member_id": "zstd-frame"
+      }
+    ],
+    "schema_version": "tscb.method-config-map.v1",
+    "selection_policy": {
+      "kind": "FROZEN_DEFAULT",
+      "max_configs_per_method": 1,
+      "objective": null,
+      "selection_cost_policy": "PREDECLARED_NO_TEST_SELECTION",
+      "selection_dataset_ids": [],
+      "tie_break": "LEXICAL_CONFIG_KEY"
+    }
+  },
+  "contract": {
+    "analysis_policy_id": "v2:analysis-policy:sha256:c8639929f1bbf03ce2f44202333bb18bb1403fce778be14e4344c1ebf05d78d1",
+    "cost_boundary": "SCHEMA_BOUND_OBJECT",
+    "estimand": {
+      "aggregation": "RAW_BITS_WEIGHTED_AND_PAIRED_DATASET",
+      "outcome": "FINAL_BITS_AND_PIPELINE_WALL_NS",
+      "population": "FIXED_CORPUS",
+      "weight_unit": "RAW_BITS"
+    },
+    "fidelity": {
+      "error_metric": null,
+      "kind": "LOSSLESS",
+      "quality_metrics": [],
+      "threshold": null,
+      "unit": "BITWISE"
+    },
+    "measurement_protocol_id": "v2:measurement-protocol-v32:sha256:89a600aa2114050f1344ada1ee44bc71398df07a23c3ed4dd5944176c5b4f3f7",
+    "mode": "COMPLETE_OBJECT",
+    "name": "G-BYTE-ENTROPY-LL",
+    "recovery": {
+      "coordinate_policy": "PRESERVE_ORIGINAL_GRID",
+      "mode": "EXACT_GRID",
+      "null_semantics": "BITWISE"
+    },
+    "research_question": "Complete original VALUE objects: finalized storage and independent-object PIPELINE time under equal CPU budgets on this fixed corpus.",
+    "resources": {
+      "allowed_isa": [],
+      "device": "CPU",
+      "isa_policy": "ANY_AVAILABLE",
+      "machine_policy_id": "v3:machine-budget:sha256:bb4c6daab7f682126fd14d2f345be008a5adcbfba811a10b878ffbfe34101c12",
+      "memory_limit_bytes": 2147483648,
+      "processes": 1,
+      "threads": 1
+    },
+    "revision": "20261010-v3",
+    "schema_version": "tscb.comparison-contract.v1",
+    "selection_policy": {
+      "kind": "FROZEN_DEFAULT",
+      "max_configs_per_method": 1,
+      "objective": null,
+      "selection_cost_policy": "PREDECLARED_NO_TEST_SELECTION",
+      "selection_dataset_ids": [],
+      "tie_break": "LEXICAL_CONFIG_KEY"
+    },
+    "state": "INDEPENDENT_OBJECT",
+    "timing_boundary": "PIPELINE",
+    "track": "VALUE",
+    "workload": "WHOLE_OBJECT"
+  },
+  "corpus": {
+    "content_identity_policy": "tscb.dataset-content.v2",
+    "datasets": [
+      {
+        "artifact_sha256": "a43d948908eefa2e688b8ef4d5ae1004decde735c8597e617a1a389f4ca378a2",
+        "dataset_id": "v2:dataset:sha256:5d205918f27b57f182cae276ea735ee2d91d7ebdd9a49ac2d5d01af89a01b559",
+        "derivation": "WINDOW",
+        "domain_evidence": [
+          "GENERATION_SPEC:registry/comparison_datasets/v32_20261010/v32_etth1_f64_uts_n4096.json",
+          "ORIGINAL_FINITE_F64_VALUES_UNCHANGED"
+        ],
+        "logical_content_id": "dcf6f61f5ee71a45be868a032a202b8b93262fbd4669e1853c4bf73b9325313c",
+        "parents": [
+          {
+            "dataset_id": "v2:dataset:sha256:206d91b396c6f28b9bce55f3e53fa8f89a746ed178d38c8da273a31ddfad62f2",
+            "entity": "ETTh1_TRANSFORMER",
+            "family": "ETT_TRANSFORMER",
+            "independence_unit": "etth1",
+            "source_kind": "REAL"
+          }
+        ],
+        "role": "CORE",
+        "source": {
+          "entity": "ETTh1_TRANSFORMER",
+          "evidence": [
+            "LOCAL_SOURCE_MANIFEST:registry/datasets/etth1.json",
+            "RAW_SHA256:f18de3ad269cef59bb07b5438d79bb3042d3be49bdeecf01c1cd6d29695ee066",
+            "COLUMNS_AND_WINDOWS_OF_ONE_SOURCE_ARE_ONE_INDEPENDENCE_UNIT",
+            "PROJECT_REFERENCE_DOES_NOT_AUTHENTICATE_LOCAL_FILE_LINEAGE"
+          ],
+          "family": "ETT_TRANSFORMER",
+          "independence_unit": "etth1"
+        },
+        "source_kind": "REAL",
+        "split": "TEST",
+        "weight": "1"
+      },
+      {
+        "artifact_sha256": "c11c1945f1645cb8208c78fc7560c89c1266b765f06b585e5b203bc35e89e5c5",
+        "dataset_id": "v2:dataset:sha256:7ae12c74ba9e4af538ac7894f0b73f930f5dd6b98efb96ef1068e03fcd176eed",
+        "derivation": "WINDOW",
+        "domain_evidence": [
+          "GENERATION_SPEC:registry/comparison_datasets/v32_20261010/v32_etth1_f64_mts_n4096.json",
+          "ORIGINAL_FINITE_F64_VALUES_UNCHANGED"
+        ],
+        "logical_content_id": "963433e8cc4cda99f98f62df841d729655fb8b1dff731371b8bbc34f7893480b",
+        "parents": [
+          {
+            "dataset_id": "v2:dataset:sha256:206d91b396c6f28b9bce55f3e53fa8f89a746ed178d38c8da273a31ddfad62f2",
+            "entity": "ETTh1_TRANSFORMER",
+            "family": "ETT_TRANSFORMER",
+            "independence_unit": "etth1",
+            "source_kind": "REAL"
+          }
+        ],
+        "role": "CORE",
+        "source": {
+          "entity": "ETTh1_TRANSFORMER",
+          "evidence": [
+            "LOCAL_SOURCE_MANIFEST:registry/datasets/etth1.json",
+            "RAW_SHA256:f18de3ad269cef59bb07b5438d79bb3042d3be49bdeecf01c1cd6d29695ee066",
+            "COLUMNS_AND_WINDOWS_OF_ONE_SOURCE_ARE_ONE_INDEPENDENCE_UNIT",
+            "PROJECT_REFERENCE_DOES_NOT_AUTHENTICATE_LOCAL_FILE_LINEAGE"
+          ],
+          "family": "ETT_TRANSFORMER",
+          "independence_unit": "etth1"
+        },
+        "source_kind": "REAL",
+        "split": "TEST",
+        "weight": "1"
+      },
+      {
+        "artifact_sha256": "c6b9a9cd47a0477d7716c05939428c38471660cba4f76b99e1b636f522ca0515",
+        "dataset_id": "v2:dataset:sha256:a0711e67ad9433aa3d8caac65d134b0cec756a3b2581394577a5accb779c7176",
+        "derivation": "WINDOW",
+        "domain_evidence": [
+          "GENERATION_SPEC:registry/comparison_datasets/v32_20261010/v32_weather_f64_uts_n4096.json",
+          "ORIGINAL_FINITE_F64_VALUES_UNCHANGED"
+        ],
+        "logical_content_id": "6fdb4108f99f4332b1805ebc171f8b80688251e5010b8d0bf7400aed82f0b201",
+        "parents": [
+          {
+            "dataset_id": "v2:dataset:sha256:d2005d6eaf1ce1dd29bd9417237558fda0c9b8bdbdf415c948a74d2d444aac5c",
+            "entity": "JENA_WEATHER_STATION",
+            "family": "JENA_WEATHER",
+            "independence_unit": "weather",
+            "source_kind": "REAL"
+          }
+        ],
+        "role": "CORE",
+        "source": {
+          "entity": "JENA_WEATHER_STATION",
+          "evidence": [
+            "LOCAL_SOURCE_MANIFEST:registry/datasets/weather.json",
+            "RAW_SHA256:34ee981d07313e51da2a50bb600072c8ae4a69cb4b0651f4cb93a069d7a2ba63",
+            "COLUMNS_AND_WINDOWS_OF_ONE_SOURCE_ARE_ONE_INDEPENDENCE_UNIT",
+            "PROJECT_REFERENCE_DOES_NOT_AUTHENTICATE_LOCAL_FILE_LINEAGE"
+          ],
+          "family": "JENA_WEATHER",
+          "independence_unit": "weather"
+        },
+        "source_kind": "REAL",
+        "split": "TEST",
+        "weight": "1"
+      },
+      {
+        "artifact_sha256": "ea15e151c8fc4428ecd5c6d702510f8d7a1a56a7d8a376157d48f87a7f82a84d",
+        "dataset_id": "v2:dataset:sha256:51af44bba5c96ab6e00c7eb37c78650b07801cab605d22816fbbfcfb0da75741",
+        "derivation": "WINDOW",
+        "domain_evidence": [
+          "GENERATION_SPEC:registry/comparison_datasets/v32_20261010/v32_weather_f64_mts_n4096.json",
+          "ORIGINAL_FINITE_F64_VALUES_UNCHANGED"
+        ],
+        "logical_content_id": "f320404f00d912a56f117bdf2992970dca1a0d1cb6c8a7b8cedfefc531eb0891",
+        "parents": [
+          {
+            "dataset_id": "v2:dataset:sha256:d2005d6eaf1ce1dd29bd9417237558fda0c9b8bdbdf415c948a74d2d444aac5c",
+            "entity": "JENA_WEATHER_STATION",
+            "family": "JENA_WEATHER",
+            "independence_unit": "weather",
+            "source_kind": "REAL"
+          }
+        ],
+        "role": "CORE",
+        "source": {
+          "entity": "JENA_WEATHER_STATION",
+          "evidence": [
+            "LOCAL_SOURCE_MANIFEST:registry/datasets/weather.json",
+            "RAW_SHA256:34ee981d07313e51da2a50bb600072c8ae4a69cb4b0651f4cb93a069d7a2ba63",
+            "COLUMNS_AND_WINDOWS_OF_ONE_SOURCE_ARE_ONE_INDEPENDENCE_UNIT",
+            "PROJECT_REFERENCE_DOES_NOT_AUTHENTICATE_LOCAL_FILE_LINEAGE"
+          ],
+          "family": "JENA_WEATHER",
+          "independence_unit": "weather"
+        },
+        "source_kind": "REAL",
+        "split": "TEST",
+        "weight": "1"
+      }
+    ],
+    "exclusion_rule": "The prior 8192-row four-column object exceeds the registered 131072-byte domain and is excluded before measurement; the fixed 4096-row windows are used for every member. No post-result exclusions; all promised members/configs remain in the fixed matrix.",
+    "name": "G-BYTE-ENTROPY-LL-real-core",
+    "revision": "20261010-v3",
+    "sampling_design": "Fixed local source corpus, two source families; related UTS/MTS windows remain the same independence unit. Exact integer representation defines the original typed i16 task, never a lossy cast route.",
+    "schema_version": "tscb.corpus-spec.v1",
+    "selection_rule": "Predeclared first 4096 source rows, first 1 and 4 source columns. The 4-column f64 window is 131072 bytes, within the registered FSE/Huff0 and Sprintz uint8 complete-object bounds. Original f64 objects for entropy; column-order original little-endian f64 bytes as one-dimensional uint8 objects for u8; no result-dependent selection."
+  },
+  "cpu_affinity": [
+    0
+  ],
+  "dataset_bindings": {
+    "v2:dataset:sha256:51af44bba5c96ab6e00c7eb37c78650b07801cab605d22816fbbfcfb0da75741": "v32_weather_f64_mts_n4096",
+    "v2:dataset:sha256:5d205918f27b57f182cae276ea735ee2d91d7ebdd9a49ac2d5d01af89a01b559": "v32_etth1_f64_uts_n4096",
+    "v2:dataset:sha256:7ae12c74ba9e4af538ac7894f0b73f930f5dd6b98efb96ef1068e03fcd176eed": "v32_etth1_f64_mts_n4096",
+    "v2:dataset:sha256:a0711e67ad9433aa3d8caac65d134b0cec756a3b2581394577a5accb779c7176": "v32_weather_f64_uts_n4096"
+  },
+  "development_dataset": "v32_dev_f64_random_m3",
+  "expected_matrix": {
+    "config_map_id": "v3:method-config-map:sha256:eb064e1cc7892cfcdd9f5b260aa705f90ed561ff8b9d626ab31ee063b7f8c50a",
+    "contract_id": "v3:comparison-contract:sha256:d7dd866947e004c4e622d3f04f14cf1133482f3f8d8d71b80f426ae6719e9f5f",
+    "corpus_id": "v3:corpus-spec:sha256:8e6f2cbdcdb708d9fc41b348dddef0a4811cbb0fd618e017c51688a684ae046d",
+    "entries": [
+      {
+        "config_key": "registered-default",
+        "dataset_id": "v2:dataset:sha256:5d205918f27b57f182cae276ea735ee2d91d7ebdd9a49ac2d5d01af89a01b559",
+        "expected": {
+          "evidence": [
+            "MANIFEST:registry/codecs/fse.json",
+            "SOURCE_DOMAIN_PROOF:registry/comparison_datasets/v32_20261010/v32_etth1_f64_uts_n4096.json",
+            "STRUCTURAL_NEGOTIATION_IS_NOT_OBSERVED_CORRECTNESS"
+          ],
+          "origin": "TASK",
+          "outcome": "PASS",
+          "reason": "SOURCE_DOMAIN_STRUCTURALLY_LEGAL_REQUIRES_REAL_QUALIFICATION",
+          "stage": "COMPLETE_RECOVERY"
+        },
+        "member_id": "fse"
+      },
+      {
+        "config_key": "registered-default",
+        "dataset_id": "v2:dataset:sha256:5d205918f27b57f182cae276ea735ee2d91d7ebdd9a49ac2d5d01af89a01b559",
+        "expected": {
+          "evidence": [
+            "MANIFEST:registry/codecs/huff0.json",
+            "SOURCE_DOMAIN_PROOF:registry/comparison_datasets/v32_20261010/v32_etth1_f64_uts_n4096.json",
+            "STRUCTURAL_NEGOTIATION_IS_NOT_OBSERVED_CORRECTNESS"
+          ],
+          "origin": "TASK",
+          "outcome": "PASS",
+          "reason": "SOURCE_DOMAIN_STRUCTURALLY_LEGAL_REQUIRES_REAL_QUALIFICATION",
+          "stage": "COMPLETE_RECOVERY"
+        },
+        "member_id": "huff0"
+      },
+      {
+        "config_key": "registered-default",
+        "dataset_id": "v2:dataset:sha256:5d205918f27b57f182cae276ea735ee2d91d7ebdd9a49ac2d5d01af89a01b559",
+        "expected": {
+          "evidence": [
+            "MANIFEST:registry/codecs/lz4-frame.json",
+            "SOURCE_DOMAIN_PROOF:registry/comparison_datasets/v32_20261010/v32_etth1_f64_uts_n4096.json",
+            "STRUCTURAL_NEGOTIATION_IS_NOT_OBSERVED_CORRECTNESS"
+          ],
+          "origin": "TASK",
+          "outcome": "PASS",
+          "reason": "SOURCE_DOMAIN_STRUCTURALLY_LEGAL_REQUIRES_REAL_QUALIFICATION",
+          "stage": "COMPLETE_RECOVERY"
+        },
+        "member_id": "lz4-frame"
+      },
+      {
+        "config_key": "registered-default",
+        "dataset_id": "v2:dataset:sha256:5d205918f27b57f182cae276ea735ee2d91d7ebdd9a49ac2d5d01af89a01b559",
+        "expected": {
+          "evidence": [
+            "MANIFEST:registry/codecs/zstd-frame.json",
+            "SOURCE_DOMAIN_PROOF:registry/comparison_datasets/v32_20261010/v32_etth1_f64_uts_n4096.json",
+            "STRUCTURAL_NEGOTIATION_IS_NOT_OBSERVED_CORRECTNESS"
+          ],
+          "origin": "TASK",
+          "outcome": "PASS",
+          "reason": "SOURCE_DOMAIN_STRUCTURALLY_LEGAL_REQUIRES_REAL_QUALIFICATION",
+          "stage": "COMPLETE_RECOVERY"
+        },
+        "member_id": "zstd-frame"
+      },
+      {
+        "config_key": "registered-default",
+        "dataset_id": "v2:dataset:sha256:7ae12c74ba9e4af538ac7894f0b73f930f5dd6b98efb96ef1068e03fcd176eed",
+        "expected": {
+          "evidence": [
+            "MANIFEST:registry/codecs/fse.json",
+            "SOURCE_DOMAIN_PROOF:registry/comparison_datasets/v32_20261010/v32_etth1_f64_mts_n4096.json",
+            "STRUCTURAL_NEGOTIATION_IS_NOT_OBSERVED_CORRECTNESS"
+          ],
+          "origin": "TASK",
+          "outcome": "PASS",
+          "reason": "SOURCE_DOMAIN_STRUCTURALLY_LEGAL_REQUIRES_REAL_QUALIFICATION",
+          "stage": "COMPLETE_RECOVERY"
+        },
+        "member_id": "fse"
+      },
+      {
+        "config_key": "registered-default",
+        "dataset_id": "v2:dataset:sha256:7ae12c74ba9e4af538ac7894f0b73f930f5dd6b98efb96ef1068e03fcd176eed",
+        "expected": {
+          "evidence": [
+            "MANIFEST:registry/codecs/huff0.json",
+            "SOURCE_DOMAIN_PROOF:registry/comparison_datasets/v32_20261010/v32_etth1_f64_mts_n4096.json",
+            "STRUCTURAL_NEGOTIATION_IS_NOT_OBSERVED_CORRECTNESS"
+          ],
+          "origin": "TASK",
+          "outcome": "PASS",
+          "reason": "SOURCE_DOMAIN_STRUCTURALLY_LEGAL_REQUIRES_REAL_QUALIFICATION",
+          "stage": "COMPLETE_RECOVERY"
+        },
+        "member_id": "huff0"
+      },
+      {
+        "config_key": "registered-default",
+        "dataset_id": "v2:dataset:sha256:7ae12c74ba9e4af538ac7894f0b73f930f5dd6b98efb96ef1068e03fcd176eed",
+        "expected": {
+          "evidence": [
+            "MANIFEST:registry/codecs/lz4-frame.json",
+            "SOURCE_DOMAIN_PROOF:registry/comparison_datasets/v32_20261010/v32_etth1_f64_mts_n4096.json",
+            "STRUCTURAL_NEGOTIATION_IS_NOT_OBSERVED_CORRECTNESS"
+          ],
+          "origin": "TASK",
+          "outcome": "PASS",
+          "reason": "SOURCE_DOMAIN_STRUCTURALLY_LEGAL_REQUIRES_REAL_QUALIFICATION",
+          "stage": "COMPLETE_RECOVERY"
+        },
+        "member_id": "lz4-frame"
+      },
+      {
+        "config_key": "registered-default",
+        "dataset_id": "v2:dataset:sha256:7ae12c74ba9e4af538ac7894f0b73f930f5dd6b98efb96ef1068e03fcd176eed",
+        "expected": {
+          "evidence": [
+            "MANIFEST:registry/codecs/zstd-frame.json",
+            "SOURCE_DOMAIN_PROOF:registry/comparison_datasets/v32_20261010/v32_etth1_f64_mts_n4096.json",
+            "STRUCTURAL_NEGOTIATION_IS_NOT_OBSERVED_CORRECTNESS"
+          ],
+          "origin": "TASK",
+          "outcome": "PASS",
+          "reason": "SOURCE_DOMAIN_STRUCTURALLY_LEGAL_REQUIRES_REAL_QUALIFICATION",
+          "stage": "COMPLETE_RECOVERY"
+        },
+        "member_id": "zstd-frame"
+      },
+      {
+        "config_key": "registered-default",
+        "dataset_id": "v2:dataset:sha256:a0711e67ad9433aa3d8caac65d134b0cec756a3b2581394577a5accb779c7176",
+        "expected": {
+          "evidence": [
+            "MANIFEST:registry/codecs/fse.json",
+            "SOURCE_DOMAIN_PROOF:registry/comparison_datasets/v32_20261010/v32_weather_f64_uts_n4096.json",
+            "STRUCTURAL_NEGOTIATION_IS_NOT_OBSERVED_CORRECTNESS"
+          ],
+          "origin": "TASK",
+          "outcome": "PASS",
+          "reason": "SOURCE_DOMAIN_STRUCTURALLY_LEGAL_REQUIRES_REAL_QUALIFICATION",
+          "stage": "COMPLETE_RECOVERY"
+        },
+        "member_id": "fse"
+      },
+      {
+        "config_key": "registered-default",
+        "dataset_id": "v2:dataset:sha256:a0711e67ad9433aa3d8caac65d134b0cec756a3b2581394577a5accb779c7176",
+        "expected": {
+          "evidence": [
+            "MANIFEST:registry/codecs/huff0.json",
+            "SOURCE_DOMAIN_PROOF:registry/comparison_datasets/v32_20261010/v32_weather_f64_uts_n4096.json",
+            "STRUCTURAL_NEGOTIATION_IS_NOT_OBSERVED_CORRECTNESS"
+          ],
+          "origin": "TASK",
+          "outcome": "PASS",
+          "reason": "SOURCE_DOMAIN_STRUCTURALLY_LEGAL_REQUIRES_REAL_QUALIFICATION",
+          "stage": "COMPLETE_RECOVERY"
+        },
+        "member_id": "huff0"
+      },
+      {
+        "config_key": "registered-default",
+        "dataset_id": "v2:dataset:sha256:a0711e67ad9433aa3d8caac65d134b0cec756a3b2581394577a5accb779c7176",
+        "expected": {
+          "evidence": [
+            "MANIFEST:registry/codecs/lz4-frame.json",
+            "SOURCE_DOMAIN_PROOF:registry/comparison_datasets/v32_20261010/v32_weather_f64_uts_n4096.json",
+            "STRUCTURAL_NEGOTIATION_IS_NOT_OBSERVED_CORRECTNESS"
+          ],
+          "origin": "TASK",
+          "outcome": "PASS",
+          "reason": "SOURCE_DOMAIN_STRUCTURALLY_LEGAL_REQUIRES_REAL_QUALIFICATION",
+          "stage": "COMPLETE_RECOVERY"
+        },
+        "member_id": "lz4-frame"
+      },
+      {
+        "config_key": "registered-default",
+        "dataset_id": "v2:dataset:sha256:a0711e67ad9433aa3d8caac65d134b0cec756a3b2581394577a5accb779c7176",
+        "expected": {
+          "evidence": [
+            "MANIFEST:registry/codecs/zstd-frame.json",
+            "SOURCE_DOMAIN_PROOF:registry/comparison_datasets/v32_20261010/v32_weather_f64_uts_n4096.json",
+            "STRUCTURAL_NEGOTIATION_IS_NOT_OBSERVED_CORRECTNESS"
+          ],
+          "origin": "TASK",
+          "outcome": "PASS",
+          "reason": "SOURCE_DOMAIN_STRUCTURALLY_LEGAL_REQUIRES_REAL_QUALIFICATION",
+          "stage": "COMPLETE_RECOVERY"
+        },
+        "member_id": "zstd-frame"
+      },
+      {
+        "config_key": "registered-default",
+        "dataset_id": "v2:dataset:sha256:51af44bba5c96ab6e00c7eb37c78650b07801cab605d22816fbbfcfb0da75741",
+        "expected": {
+          "evidence": [
+            "MANIFEST:registry/codecs/fse.json",
+            "SOURCE_DOMAIN_PROOF:registry/comparison_datasets/v32_20261010/v32_weather_f64_mts_n4096.json",
+            "STRUCTURAL_NEGOTIATION_IS_NOT_OBSERVED_CORRECTNESS"
+          ],
+          "origin": "TASK",
+          "outcome": "PASS",
+          "reason": "SOURCE_DOMAIN_STRUCTURALLY_LEGAL_REQUIRES_REAL_QUALIFICATION",
+          "stage": "COMPLETE_RECOVERY"
+        },
+        "member_id": "fse"
+      },
+      {
+        "config_key": "registered-default",
+        "dataset_id": "v2:dataset:sha256:51af44bba5c96ab6e00c7eb37c78650b07801cab605d22816fbbfcfb0da75741",
+        "expected": {
+          "evidence": [
+            "MANIFEST:registry/codecs/huff0.json",
+            "SOURCE_DOMAIN_PROOF:registry/comparison_datasets/v32_20261010/v32_weather_f64_mts_n4096.json",
+            "STRUCTURAL_NEGOTIATION_IS_NOT_OBSERVED_CORRECTNESS"
+          ],
+          "origin": "TASK",
+          "outcome": "PASS",
+          "reason": "SOURCE_DOMAIN_STRUCTURALLY_LEGAL_REQUIRES_REAL_QUALIFICATION",
+          "stage": "COMPLETE_RECOVERY"
+        },
+        "member_id": "huff0"
+      },
+      {
+        "config_key": "registered-default",
+        "dataset_id": "v2:dataset:sha256:51af44bba5c96ab6e00c7eb37c78650b07801cab605d22816fbbfcfb0da75741",
+        "expected": {
+          "evidence": [
+            "MANIFEST:registry/codecs/lz4-frame.json",
+            "SOURCE_DOMAIN_PROOF:registry/comparison_datasets/v32_20261010/v32_weather_f64_mts_n4096.json",
+            "STRUCTURAL_NEGOTIATION_IS_NOT_OBSERVED_CORRECTNESS"
+          ],
+          "origin": "TASK",
+          "outcome": "PASS",
+          "reason": "SOURCE_DOMAIN_STRUCTURALLY_LEGAL_REQUIRES_REAL_QUALIFICATION",
+          "stage": "COMPLETE_RECOVERY"
+        },
+        "member_id": "lz4-frame"
+      },
+      {
+        "config_key": "registered-default",
+        "dataset_id": "v2:dataset:sha256:51af44bba5c96ab6e00c7eb37c78650b07801cab605d22816fbbfcfb0da75741",
+        "expected": {
+          "evidence": [
+            "MANIFEST:registry/codecs/zstd-frame.json",
+            "SOURCE_DOMAIN_PROOF:registry/comparison_datasets/v32_20261010/v32_weather_f64_mts_n4096.json",
+            "STRUCTURAL_NEGOTIATION_IS_NOT_OBSERVED_CORRECTNESS"
+          ],
+          "origin": "TASK",
+          "outcome": "PASS",
+          "reason": "SOURCE_DOMAIN_STRUCTURALLY_LEGAL_REQUIRES_REAL_QUALIFICATION",
+          "stage": "COMPLETE_RECOVERY"
+        },
+        "member_id": "zstd-frame"
+      }
+    ],
+    "schema_version": "tscb.expected-outcome-matrix.v1"
+  },
+  "group": {
+    "completion_policy": "ALL_CORE_LEGAL_CONFIGS_AND_EXPECTED_TERMINALS",
+    "config_map_id": "v3:method-config-map:sha256:eb064e1cc7892cfcdd9f5b260aa705f90ed561ff8b9d626ab31ee063b7f8c50a",
+    "contract_id": "v3:comparison-contract:sha256:d7dd866947e004c4e622d3f04f14cf1133482f3f8d8d71b80f426ae6719e9f5f",
+    "corpus_id": "v3:corpus-spec:sha256:8e6f2cbdcdb708d9fc41b348dddef0a4811cbb0fd618e017c51688a684ae046d",
+    "expected_matrix_id": "v3:expected-outcome-matrix:sha256:055b721e5c218d2c264149a1f1c7855a76796a9618522353f9ff1174f7a32cc4",
+    "members": [
+      {
+        "allowed_paths": [
+          "DIRECT",
+          "EXACT_WIDEN",
+          "BYTE_SERIALIZATION",
+          "COLUMN_INDEPENDENT",
+          "JOINT"
+        ],
+        "codec_key": "fse",
+        "implementation": {
+          "implementation_variant": "REGISTERED_SOURCE_CPU",
+          "method_id": "v3:method:sha256:cd94f8a8ff055a1e672d66f70914eeec6d9f1e491caa426d247fa272ec526deb",
+          "source_artifact_id": "v2:source-artifact:sha256:1b62e728c33885fb38e25d490d0c13841018f265b4cbd4b2c8a3fadfa04b6773",
+          "source_closure_sha256": "af5899be99f7f09551bed864832f9b80be2069a4bb8798b30486296e4d17aa8a"
+        },
+        "member_id": "fse",
+        "method": {
+          "definition_sha256": "5e69e4a112db20eec3367d03cdc7174277fbfde6b8cb74650bcd992a31b60519",
+          "mechanism": "FSE",
+          "name": "FSE (FiniteStateEntropy benchmark)",
+          "semantic_version": "1",
+          "variant": "fse"
+        },
+        "role": "CORE",
+        "shared_code_tags": [
+          "SOURCE_ARTIFACT:v2:source-artifact:sha256:1b62e728c33885fb38e25d490d0c13841018f265b4cbd4b2c8a3fadfa04b6773"
+        ]
+      },
+      {
+        "allowed_paths": [
+          "DIRECT",
+          "EXACT_WIDEN",
+          "BYTE_SERIALIZATION",
+          "COLUMN_INDEPENDENT",
+          "JOINT"
+        ],
+        "codec_key": "huff0",
+        "implementation": {
+          "implementation_variant": "REGISTERED_SOURCE_CPU",
+          "method_id": "v3:method:sha256:42dc443bf8111869b04df7c20b9cefef9fda7fab8f71895c2db40caf1c2c0f6b",
+          "source_artifact_id": "v2:source-artifact:sha256:1b62e728c33885fb38e25d490d0c13841018f265b4cbd4b2c8a3fadfa04b6773",
+          "source_closure_sha256": "af5899be99f7f09551bed864832f9b80be2069a4bb8798b30486296e4d17aa8a"
+        },
+        "member_id": "huff0",
+        "method": {
+          "definition_sha256": "cf8735b15c54bd63e530f4d4e39881717ab8592cbdad3c84daf21d0f0c6e6440",
+          "mechanism": "HUFFMAN",
+          "name": "Huff0 (FiniteStateEntropy benchmark)",
+          "semantic_version": "1",
+          "variant": "huff0"
+        },
+        "role": "CORE",
+        "shared_code_tags": [
+          "SOURCE_ARTIFACT:v2:source-artifact:sha256:1b62e728c33885fb38e25d490d0c13841018f265b4cbd4b2c8a3fadfa04b6773"
+        ]
+      },
+      {
+        "allowed_paths": [
+          "DIRECT",
+          "EXACT_WIDEN",
+          "BYTE_SERIALIZATION",
+          "COLUMN_INDEPENDENT",
+          "JOINT"
+        ],
+        "codec_key": "lz4-frame",
+        "implementation": {
+          "implementation_variant": "REGISTERED_SOURCE_CPU",
+          "method_id": "v3:method:sha256:c2d81b1c79bad2a8757f45d4d359109f3487149f94414a7431ee15bcbbd38233",
+          "source_artifact_id": "v2:source-artifact:sha256:68693355ce70e7eb3c672bb55303b7d380d420e3ec0626a4cef0588556f62679",
+          "source_closure_sha256": "9309d7d873783fe3450b055151c7d0937e5f04fa32e0d255c131bdd6b661379d"
+        },
+        "member_id": "lz4-frame",
+        "method": {
+          "definition_sha256": "a72846bfcec95cdae2d7a27c07022fa70e5c924d29d99017556e1e5f492cb560",
+          "mechanism": "LZ4",
+          "name": "LZ4 Frame 1.10.0 (lzbench source)",
+          "semantic_version": "1",
+          "variant": "lz4-frame"
+        },
+        "role": "CORE",
+        "shared_code_tags": [
+          "SOURCE_ARTIFACT:v2:source-artifact:sha256:68693355ce70e7eb3c672bb55303b7d380d420e3ec0626a4cef0588556f62679"
+        ]
+      },
+      {
+        "allowed_paths": [
+          "DIRECT",
+          "EXACT_WIDEN",
+          "BYTE_SERIALIZATION",
+          "COLUMN_INDEPENDENT",
+          "JOINT"
+        ],
+        "codec_key": "zstd-frame",
+        "implementation": {
+          "implementation_variant": "REGISTERED_SOURCE_CPU",
+          "method_id": "v3:method:sha256:1ea2195e567f734978f0b83f3c0f14e82d88088ca2ab8133fba7db9c9dbc22ec",
+          "source_artifact_id": "v2:source-artifact:sha256:893e7c7c0ef2d09d06a92e4ee6191f7f4b090718da5e88e82f23b12a8f82f237",
+          "source_closure_sha256": "70ce1616c3aee76722bb3a5379a6efe425b183af0197f4d5afe9b7c2e8ae8ed3"
+        },
+        "member_id": "zstd-frame",
+        "method": {
+          "definition_sha256": "ad9961c48777de1ac7f6180c9fe57f92a3970fdea6f27e6eaae168f781c8f603",
+          "mechanism": "ZSTD",
+          "name": "Zstd Frame 1.5.7 (lzbench source)",
+          "semantic_version": "1",
+          "variant": "zstd-frame"
+        },
+        "role": "CORE",
+        "shared_code_tags": [
+          "SOURCE_ARTIFACT:v2:source-artifact:sha256:893e7c7c0ef2d09d06a92e4ee6191f7f4b090718da5e88e82f23b12a8f82f237"
+        ]
+      }
+    ],
+    "method_equivalence": [
+      {
+        "basis": "Distinct frozen mechanism/variant; forced ALP/ALP-RD and predictor/entropy variants disclosed as variants, never aliases or best-of selection.",
+        "class_id": "fse",
+        "evidence": [
+          "benchmark:Cyan4973/FiniteStateEntropy@9f30e091:programs/fullbench.c:FSE_compress",
+          "SOURCE_ARTIFACT:v2:source-artifact:sha256:1b62e728c33885fb38e25d490d0c13841018f265b4cbd4b2c8a3fadfa04b6773",
+          "MANIFEST:registry/codecs/fse.json"
+        ],
+        "members": [
+          "fse"
+        ]
+      },
+      {
+        "basis": "Distinct frozen mechanism/variant; forced ALP/ALP-RD and predictor/entropy variants disclosed as variants, never aliases or best-of selection.",
+        "class_id": "huff0",
+        "evidence": [
+          "benchmark:Cyan4973/FiniteStateEntropy@9f30e091:programs/fullbench.c:HUF_compress",
+          "SOURCE_ARTIFACT:v2:source-artifact:sha256:1b62e728c33885fb38e25d490d0c13841018f265b4cbd4b2c8a3fadfa04b6773",
+          "MANIFEST:registry/codecs/huff0.json"
+        ],
+        "members": [
+          "huff0"
+        ]
+      },
+      {
+        "basis": "Distinct frozen mechanism/variant; forced ALP/ALP-RD and predictor/entropy variants disclosed as variants, never aliases or best-of selection.",
+        "class_id": "lz4-frame",
+        "evidence": [
+          "benchmark:inikep/lzbench@fa871e66b354:lz/lz4",
+          "upstream:lz4/lz4:frame-format",
+          "SOURCE_ARTIFACT:v2:source-artifact:sha256:68693355ce70e7eb3c672bb55303b7d380d420e3ec0626a4cef0588556f62679",
+          "MANIFEST:registry/codecs/lz4-frame.json"
+        ],
+        "members": [
+          "lz4-frame"
+        ]
+      },
+      {
+        "basis": "Distinct frozen mechanism/variant; forced ALP/ALP-RD and predictor/entropy variants disclosed as variants, never aliases or best-of selection.",
+        "class_id": "zstd-frame",
+        "evidence": [
+          "benchmark:inikep/lzbench@fa871e66b354:lz/zstd",
+          "upstream:facebook/zstd:frame-format",
+          "SOURCE_ARTIFACT:v2:source-artifact:sha256:893e7c7c0ef2d09d06a92e4ee6191f7f4b090718da5e88e82f23b12a8f82f237",
+          "MANIFEST:registry/codecs/zstd-frame.json"
+        ],
+        "members": [
+          "zstd-frame"
+        ]
+      }
+    ],
+    "minimum_distinct_methods": 2,
+    "minimum_independent_real_sources": 2,
+    "name": "G-BYTE-ENTROPY-LL",
+    "revision": "20261010-v3",
+    "schema_version": "tscb.group-spec.v1",
+    "scope": "CORE_COMPARISON"
+  },
+  "protocol": {
+    "cache_policy": "WARM_INPUT_OS_CACHE_UNCONTROLLED",
+    "clock": "PERF_COUNTER_NS",
+    "cold_start_boundary": null,
+    "collector_mode": "ENABLED",
+    "confidence_level": "0.95",
+    "context_policy": "FRESH_ENCODE_AND_DECODE_CONTEXT_PER_OBJECT",
+    "decode_min_ns": 50000000,
+    "encode_min_ns": 50000000,
+    "estimand": "DIRECTION_NS_PER_INDEPENDENT_OBJECT",
+    "exclusion_policy": "PREDECLARED_CORRECTNESS_RESOURCE_AND_ENVIRONMENT_GATES",
+    "max_collector_fraction": "0.15",
+    "max_harness_fraction": "0.05",
+    "max_inner_iterations": 1000000,
+    "max_load_1m": null,
+    "max_noise_cv": null,
+    "max_retries": 0,
+    "max_temperature_c": null,
+    "max_throttle_ratio": null,
+    "max_total_wall_ns": 3600000000000,
+    "max_trial_wall_ns": 30000000000,
+    "min_clock_signal_ratio": 100,
+    "min_outer_repetitions": 1,
+    "outer_repetitions": 8,
+    "pilot_repetitions": 7,
+    "pilot_seed": 20261010,
+    "precision_checkpoints": [],
+    "precision_relative_halfwidth": null,
+    "profile": "STEADY_PROCESS",
+    "protocol_id": "v2:measurement-protocol-v32:sha256:89a600aa2114050f1344ada1ee44bc71398df07a23c3ed4dd5944176c5b4f3f7",
+    "require_environment_observations": false,
+    "retry_policy": "FAILED_ATTEMPTS_ONLY_RETAIN_ALL",
+    "schema_version": "tscb.measurement-protocol.v3.2",
+    "sequential_method": null,
+    "start_method": "spawn",
+    "stop_mode": "FIXED_REPETITIONS",
+    "thread_monitor_interval_ns": 5000000,
+    "timing_scope": "PIPELINE",
+    "warmup_min_count": 1,
+    "warmup_min_ns": 0,
+    "worker_initial_state": "FRESH_INTERPRETER"
+  },
+  "qualification_datasets": [
+    "v32_qual_f64_constant_m1",
+    "v32_qual_f64_constant_m4",
+    "v32_qual_f64_linear_m1",
+    "v32_qual_f64_linear_m4",
+    "v32_qual_f64_periodic_m1",
+    "v32_qual_f64_periodic_m4",
+    "v32_qual_f64_random_m1",
+    "v32_qual_f64_random_m4"
+  ],
+  "schema_version": "tscb.comparison-bundle.v1",
+  "seed": 20261010
+}

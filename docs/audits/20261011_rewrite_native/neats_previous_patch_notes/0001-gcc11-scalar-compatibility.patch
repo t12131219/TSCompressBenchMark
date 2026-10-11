@@ -1,0 +1,12 @@
+Upstream: and-gue/NeaTS@2d804ff492e45222e841dc1a50904476fa64f4a0
+
+The benchmark build uses the reviewed scalar CPU path under GCC 11.4:
+
+* remove the unused C++23 <stdfloat> dependency;
+* replace std::to_underlying with an explicit size_t conversion;
+* use the existing scalar residual writer instead of the forced native-SIMD writer;
+* replace diagnostic-only std::float64_t casts with double.
+
+This patch does not alter partition selection, model evaluation, residual coding,
+serialization, scalar decompression, or random-access semantics. The AVX2/AVX-512
+paths remain outside this AlgorithmID and require separate admission.

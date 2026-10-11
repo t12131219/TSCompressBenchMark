@@ -19,7 +19,9 @@ ADAPTER = ROOT / "adapters/simdcomp"
 SDK_SUFFIX = os.environ.get("TSCB_SDK_EXECUTION_SUFFIX")
 if SDK_SUFFIX and (Path(SDK_SUFFIX).name != SDK_SUFFIX or ".." in SDK_SUFFIX):
     raise ValueError("unsafe SDK execution suffix")
-OUT = ROOT / "build/source-audits" / ("simdcomp-sdk-" + SDK_SUFFIX if SDK_SUFFIX else "simdcomp-sdk")
+OUT = (
+    ROOT / "build/source-audits" / ("simdcomp-sdk-" + SDK_SUFFIX if SDK_SUFFIX else "simdcomp-sdk")
+)
 REPORT = OUT / "report.json" if SDK_SUFFIX else ROOT / "build/source-audits/simdcomp_sdk_tests.json"
 
 
@@ -46,6 +48,10 @@ def worker() -> None:
         path = getattr(module, "__file__", None)
         if path and Path(path).resolve().is_relative_to(ROOT) and str(path).endswith(".py"):
             paths.add(Path(path).resolve())
+    require(
+        (ROOT / "src/tscompbench/execution/recovery.py").resolve() in paths,
+        "SDK tests did not import the declared recovery implementation",
+    )
     for path in paths:
         require(before.get(path) == sha(path), "Python dependency changed during SDK tests")
     closure = [{"path": str(path.relative_to(ROOT)), "sha256": sha(path)} for path in sorted(paths)]
@@ -67,7 +73,11 @@ def worker() -> None:
 
 def main() -> None:
     OUT.mkdir(parents=True, exist_ok=not bool(SDK_SUFFIX))
-    evidence: dict = {"status": "RUNNING", "commands": [], "output_directory": str(OUT.relative_to(ROOT))}
+    evidence: dict = {
+        "status": "RUNNING",
+        "commands": [],
+        "output_directory": str(OUT.relative_to(ROOT)),
+    }
 
     def save() -> None:
         REPORT.write_text(json.dumps(evidence, indent=2) + "\n")
@@ -122,7 +132,7 @@ def main() -> None:
             for field in ("tests", "failures", "errors", "skipped")
         }
         require(
-            totals == {"tests": 888, "failures": 0, "errors": 0, "skipped": 0},
+            totals == {"tests": 504, "failures": 0, "errors": 0, "skipped": 0},
             "SDK qualification incomplete/failed/skipped",
         )
         closure_path = OUT / "python-closure.json"
@@ -133,7 +143,7 @@ def main() -> None:
         require(audit() == native, "native evidence changed during SDK tests")
         evidence.update(
             status="PASS",
-            qualification_scope="DIRECT_PYTHON_UINT32_PLAIN_MODULAR_D1_AND_FIXED_FOR_SDK",
+            qualification_scope="DIRECT_PYTHON_UINT32_PLAIN_SSE4_1_AND_AVX2_SDK",
             driver_sha256=sha(Path(__file__)),
             native_auditor_sha256=sha(ROOT / "tools/audit_simdcomp_native.py"),
             junit_sha256=sha(junit),

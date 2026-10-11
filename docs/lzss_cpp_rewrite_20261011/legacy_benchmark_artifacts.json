@@ -1,0 +1,1014 @@
+{
+  "schema_version": "tscb.lzss-cpp-legacy-artifact-replay.v1",
+  "status": "PASS",
+  "scope": "LEGACY_BENCHMARK_CONTAINER_DECODE_AND_RAW_FRAME_REENCODE_COMPATIBILITY",
+  "case_count": 10,
+  "unique_container_sha256_count": 1,
+  "unique_logical_input_sha256_count": 1,
+  "frozen_run_set": "runs/runset-20260918T074940Z-f8855e7299f1",
+  "frozen_records": {
+    "path": "runs/runset-20260918T074940Z-f8855e7299f1/run_components.jsonl",
+    "sha256": "e8a4bb9ce3e77253d2fb06515343b4fd7a73f2577f81cdd8f343bef31d21fb68"
+  },
+  "frozen_codec_snapshot": {
+    "path": "runs/runset-20260918T074940Z-f8855e7299f1/codec_registry_snapshot.json",
+    "sha256": "45f40829831c56c6a66b0688b44728720eff62fd8be304b99f73b8f92082b8ee"
+  },
+  "frozen_source_snapshot": {
+    "path": "runs/runset-20260918T074940Z-f8855e7299f1/source_registry_snapshot.json",
+    "sha256": "09b17c796fd5b78e1be0d78a4c44aea34e2bf1744ef3235167c65c5e7e151d6b"
+  },
+  "frozen_tree_sha256": "4e7da7f20f3ee7f7b3e84c32df8c4ec5dd5b33f4b0e388e96fb2e88cf9d7306a",
+  "frozen_tree_file_count": 45,
+  "frozen_run_set_unchanged": true,
+  "legacy_algorithm_id": "v2:algorithm:sha256:01bc44ae1653638c411816ff1a5aeb63f9e3136d8ca074a1256b080a79af639c",
+  "legacy_source_artifact_id": "v2:source-artifact:sha256:2f06ee31d72141e1d9103cb98194a9dc181b08fbf5912f78b2bc4faf2cd54946",
+  "current_algorithm_id": "v2:algorithm:sha256:1bdb0ce868a939b4ca16dfdac9204c32da9950cd050e1b639ab5685ea2dd1913",
+  "current_source_artifact_id": "v2:source-artifact:sha256:9579e054e8623059d897c666c92d1703fc092e51b91a33d7de988fb6c2695b92",
+  "current_registry": {
+    "source": {
+      "path": "registry/sources/lzss-alexkazik.artifact.json",
+      "sha256": "18fa19f22562bd9b316541edc02f4cb39fb8da80768eef45af130509f4203456"
+    },
+    "codec": {
+      "path": "registry/codecs/lzss-raw.json",
+      "sha256": "81999b6cd1465a938bdf07ba38cd37cf4f300692ac861e629769755b30c7b08d"
+    }
+  },
+  "current_library": {
+    "path": "build/adapters/lzss_raw/release/libtscb_lzss_raw.so",
+    "sha256": "9b6034d6a5f6eb1589e23d35812476cbbba5e628a403eebfee75e97a757c0329"
+  },
+  "current_build_record": {
+    "path": "build/adapters/lzss_raw/release/build-record.json",
+    "sha256": "ed150b53bf4fcee1db479c314d4d90d76ef38ea72d0b2f2906ec70f7df725ff6"
+  },
+  "current_native_manifest": {
+    "abi_version": 1,
+    "algorithm": "lzss-raw",
+    "checksum": "NONE",
+    "framing": "NONE",
+    "dictionary": "NONE",
+    "library": "tscb-alexkazik-lzss-0.9.1-cpp",
+    "stream": "LZSS_EI10_EJ4_C32",
+    "threading": "SINGLE_THREAD"
+  },
+  "driver": {
+    "path": "tools/verify_lzss_cpp_artifacts.py",
+    "sha256": "e2e13c137507dbcc2267809249b97a463c703faf0caaa17b02b78d8def7dbe13"
+  },
+  "original_runtime_required": false,
+  "formal_identity_policy": "Compatibility evidence only; frozen identities, performance and eligibility are unchanged",
+  "cases": [
+    {
+      "status": "PASS",
+      "run_id": "v2:run:sha256:a745928968cc3c643c450a139d04631fdb4103a411935daf5ec473bbe6a948e5",
+      "run_set_id": "runset-20260918T074940Z-f8855e7299f1",
+      "record_kind": "FORMAL_REPETITION",
+      "record_line": 1,
+      "record_serialized_sha256": "4d34cf82c49239149fa0b586f6b3c5da83776cb1d5f2379d959361a2b2b48414",
+      "legacy_algorithm_id": "v2:algorithm:sha256:01bc44ae1653638c411816ff1a5aeb63f9e3136d8ca074a1256b080a79af639c",
+      "repetition_index": 0,
+      "stream": {
+        "path": "runs/runset-20260918T074940Z-f8855e7299f1/artifacts/a745928968cc3c643c450a139d04631fdb4103a411935daf5ec473bbe6a948e5.bin",
+        "sha256": "4887b9098b763413a108ef55308a7802cb6eca3cafed50146ba6de6ea2b3b646"
+      },
+      "container_schema_version": "tscb.lzss-raw-container.v1",
+      "container_track": "VALUE",
+      "decoded_buffers": [
+        {
+          "name": "value/000000",
+          "dtype": "<f8",
+          "shape": [
+            966
+          ],
+          "logical_bits": 61824,
+          "payload_bytes": 7728
+        },
+        {
+          "name": "value/000001",
+          "dtype": "<f8",
+          "shape": [
+            966
+          ],
+          "logical_bits": 61824,
+          "payload_bytes": 7728
+        },
+        {
+          "name": "value/000002",
+          "dtype": "<i8",
+          "shape": [
+            966
+          ],
+          "logical_bits": 61824,
+          "payload_bytes": 7728
+        },
+        {
+          "name": "value/000003",
+          "dtype": "<i8",
+          "shape": [
+            966
+          ],
+          "logical_bits": 61824,
+          "payload_bytes": 7728
+        },
+        {
+          "name": "value/000004",
+          "dtype": "<i8",
+          "shape": [
+            966
+          ],
+          "logical_bits": 61824,
+          "payload_bytes": 7728
+        },
+        {
+          "name": "value/000005",
+          "dtype": "<i8",
+          "shape": [
+            966
+          ],
+          "logical_bits": 61824,
+          "payload_bytes": 7728
+        },
+        {
+          "name": "value/000006",
+          "dtype": "<i8",
+          "shape": [
+            966
+          ],
+          "logical_bits": 61824,
+          "payload_bytes": 7728
+        }
+      ],
+      "recorded_input_sha256": "de50bf82618ce9e5cb1f02f497bcdcf5ce7bdfb8d17333bbfa809d498caf984b",
+      "decoded_input_sha256": "de50bf82618ce9e5cb1f02f497bcdcf5ce7bdfb8d17333bbfa809d498caf984b",
+      "decoded_payload_bytes": 54096,
+      "raw_frame_sha256": "070edfc76fc544f870f05efbf8da28ce776e009a0f0390f88c380bb554d71f37",
+      "cpp_reencoded_frame_sha256": "070edfc76fc544f870f05efbf8da28ce776e009a0f0390f88c380bb554d71f37",
+      "raw_frame_bytes": 31503,
+      "checks": [
+        "FROZEN_STREAM_SHA",
+        "CPP_FULL_CONTAINER_DECODE",
+        "LOGICAL_INPUT_SHA",
+        "CPP_RAW_FRAME_BYTE_PARITY",
+        "INPUT_IMMUTABILITY",
+        "ENCODE_CANARY"
+      ]
+    },
+    {
+      "status": "PASS",
+      "run_id": "v2:run:sha256:3ac8ffd25eee262c38b511b9f2379ccb39fd391863eef3e6c682a70ee7e34f9e",
+      "run_set_id": "runset-20260918T074940Z-f8855e7299f1",
+      "record_kind": "FORMAL_REPETITION",
+      "record_line": 2,
+      "record_serialized_sha256": "90bf715601bb332c9aedaa4ecf344326998014a5a89a32dd4e342b4470daa357",
+      "legacy_algorithm_id": "v2:algorithm:sha256:01bc44ae1653638c411816ff1a5aeb63f9e3136d8ca074a1256b080a79af639c",
+      "repetition_index": 1,
+      "stream": {
+        "path": "runs/runset-20260918T074940Z-f8855e7299f1/artifacts/3ac8ffd25eee262c38b511b9f2379ccb39fd391863eef3e6c682a70ee7e34f9e.bin",
+        "sha256": "4887b9098b763413a108ef55308a7802cb6eca3cafed50146ba6de6ea2b3b646"
+      },
+      "container_schema_version": "tscb.lzss-raw-container.v1",
+      "container_track": "VALUE",
+      "decoded_buffers": [
+        {
+          "name": "value/000000",
+          "dtype": "<f8",
+          "shape": [
+            966
+          ],
+          "logical_bits": 61824,
+          "payload_bytes": 7728
+        },
+        {
+          "name": "value/000001",
+          "dtype": "<f8",
+          "shape": [
+            966
+          ],
+          "logical_bits": 61824,
+          "payload_bytes": 7728
+        },
+        {
+          "name": "value/000002",
+          "dtype": "<i8",
+          "shape": [
+            966
+          ],
+          "logical_bits": 61824,
+          "payload_bytes": 7728
+        },
+        {
+          "name": "value/000003",
+          "dtype": "<i8",
+          "shape": [
+            966
+          ],
+          "logical_bits": 61824,
+          "payload_bytes": 7728
+        },
+        {
+          "name": "value/000004",
+          "dtype": "<i8",
+          "shape": [
+            966
+          ],
+          "logical_bits": 61824,
+          "payload_bytes": 7728
+        },
+        {
+          "name": "value/000005",
+          "dtype": "<i8",
+          "shape": [
+            966
+          ],
+          "logical_bits": 61824,
+          "payload_bytes": 7728
+        },
+        {
+          "name": "value/000006",
+          "dtype": "<i8",
+          "shape": [
+            966
+          ],
+          "logical_bits": 61824,
+          "payload_bytes": 7728
+        }
+      ],
+      "recorded_input_sha256": "de50bf82618ce9e5cb1f02f497bcdcf5ce7bdfb8d17333bbfa809d498caf984b",
+      "decoded_input_sha256": "de50bf82618ce9e5cb1f02f497bcdcf5ce7bdfb8d17333bbfa809d498caf984b",
+      "decoded_payload_bytes": 54096,
+      "raw_frame_sha256": "070edfc76fc544f870f05efbf8da28ce776e009a0f0390f88c380bb554d71f37",
+      "cpp_reencoded_frame_sha256": "070edfc76fc544f870f05efbf8da28ce776e009a0f0390f88c380bb554d71f37",
+      "raw_frame_bytes": 31503,
+      "checks": [
+        "FROZEN_STREAM_SHA",
+        "CPP_FULL_CONTAINER_DECODE",
+        "LOGICAL_INPUT_SHA",
+        "CPP_RAW_FRAME_BYTE_PARITY",
+        "INPUT_IMMUTABILITY",
+        "ENCODE_CANARY"
+      ]
+    },
+    {
+      "status": "PASS",
+      "run_id": "v2:run:sha256:197d77be77546b47661710f9342dd911d5e0b155ebd3e144baa78b8fe8113f2d",
+      "run_set_id": "runset-20260918T074940Z-f8855e7299f1",
+      "record_kind": "FORMAL_REPETITION",
+      "record_line": 3,
+      "record_serialized_sha256": "b6189b5adc03911bcd5e0055fe1440550c5fc51f529c260a1f2fbcbb56de83a5",
+      "legacy_algorithm_id": "v2:algorithm:sha256:01bc44ae1653638c411816ff1a5aeb63f9e3136d8ca074a1256b080a79af639c",
+      "repetition_index": 2,
+      "stream": {
+        "path": "runs/runset-20260918T074940Z-f8855e7299f1/artifacts/197d77be77546b47661710f9342dd911d5e0b155ebd3e144baa78b8fe8113f2d.bin",
+        "sha256": "4887b9098b763413a108ef55308a7802cb6eca3cafed50146ba6de6ea2b3b646"
+      },
+      "container_schema_version": "tscb.lzss-raw-container.v1",
+      "container_track": "VALUE",
+      "decoded_buffers": [
+        {
+          "name": "value/000000",
+          "dtype": "<f8",
+          "shape": [
+            966
+          ],
+          "logical_bits": 61824,
+          "payload_bytes": 7728
+        },
+        {
+          "name": "value/000001",
+          "dtype": "<f8",
+          "shape": [
+            966
+          ],
+          "logical_bits": 61824,
+          "payload_bytes": 7728
+        },
+        {
+          "name": "value/000002",
+          "dtype": "<i8",
+          "shape": [
+            966
+          ],
+          "logical_bits": 61824,
+          "payload_bytes": 7728
+        },
+        {
+          "name": "value/000003",
+          "dtype": "<i8",
+          "shape": [
+            966
+          ],
+          "logical_bits": 61824,
+          "payload_bytes": 7728
+        },
+        {
+          "name": "value/000004",
+          "dtype": "<i8",
+          "shape": [
+            966
+          ],
+          "logical_bits": 61824,
+          "payload_bytes": 7728
+        },
+        {
+          "name": "value/000005",
+          "dtype": "<i8",
+          "shape": [
+            966
+          ],
+          "logical_bits": 61824,
+          "payload_bytes": 7728
+        },
+        {
+          "name": "value/000006",
+          "dtype": "<i8",
+          "shape": [
+            966
+          ],
+          "logical_bits": 61824,
+          "payload_bytes": 7728
+        }
+      ],
+      "recorded_input_sha256": "de50bf82618ce9e5cb1f02f497bcdcf5ce7bdfb8d17333bbfa809d498caf984b",
+      "decoded_input_sha256": "de50bf82618ce9e5cb1f02f497bcdcf5ce7bdfb8d17333bbfa809d498caf984b",
+      "decoded_payload_bytes": 54096,
+      "raw_frame_sha256": "070edfc76fc544f870f05efbf8da28ce776e009a0f0390f88c380bb554d71f37",
+      "cpp_reencoded_frame_sha256": "070edfc76fc544f870f05efbf8da28ce776e009a0f0390f88c380bb554d71f37",
+      "raw_frame_bytes": 31503,
+      "checks": [
+        "FROZEN_STREAM_SHA",
+        "CPP_FULL_CONTAINER_DECODE",
+        "LOGICAL_INPUT_SHA",
+        "CPP_RAW_FRAME_BYTE_PARITY",
+        "INPUT_IMMUTABILITY",
+        "ENCODE_CANARY"
+      ]
+    },
+    {
+      "status": "PASS",
+      "run_id": "v2:run:sha256:8a9317e556762b6695f170c493b112767cc81b6a8b8721a4efed3d6bce2589e2",
+      "run_set_id": "runset-20260918T074940Z-f8855e7299f1",
+      "record_kind": "FORMAL_REPETITION",
+      "record_line": 4,
+      "record_serialized_sha256": "e99b3fc55814b971583078a8e1724120195f9054cbf65d700adb64507ccdb9bf",
+      "legacy_algorithm_id": "v2:algorithm:sha256:01bc44ae1653638c411816ff1a5aeb63f9e3136d8ca074a1256b080a79af639c",
+      "repetition_index": 3,
+      "stream": {
+        "path": "runs/runset-20260918T074940Z-f8855e7299f1/artifacts/8a9317e556762b6695f170c493b112767cc81b6a8b8721a4efed3d6bce2589e2.bin",
+        "sha256": "4887b9098b763413a108ef55308a7802cb6eca3cafed50146ba6de6ea2b3b646"
+      },
+      "container_schema_version": "tscb.lzss-raw-container.v1",
+      "container_track": "VALUE",
+      "decoded_buffers": [
+        {
+          "name": "value/000000",
+          "dtype": "<f8",
+          "shape": [
+            966
+          ],
+          "logical_bits": 61824,
+          "payload_bytes": 7728
+        },
+        {
+          "name": "value/000001",
+          "dtype": "<f8",
+          "shape": [
+            966
+          ],
+          "logical_bits": 61824,
+          "payload_bytes": 7728
+        },
+        {
+          "name": "value/000002",
+          "dtype": "<i8",
+          "shape": [
+            966
+          ],
+          "logical_bits": 61824,
+          "payload_bytes": 7728
+        },
+        {
+          "name": "value/000003",
+          "dtype": "<i8",
+          "shape": [
+            966
+          ],
+          "logical_bits": 61824,
+          "payload_bytes": 7728
+        },
+        {
+          "name": "value/000004",
+          "dtype": "<i8",
+          "shape": [
+            966
+          ],
+          "logical_bits": 61824,
+          "payload_bytes": 7728
+        },
+        {
+          "name": "value/000005",
+          "dtype": "<i8",
+          "shape": [
+            966
+          ],
+          "logical_bits": 61824,
+          "payload_bytes": 7728
+        },
+        {
+          "name": "value/000006",
+          "dtype": "<i8",
+          "shape": [
+            966
+          ],
+          "logical_bits": 61824,
+          "payload_bytes": 7728
+        }
+      ],
+      "recorded_input_sha256": "de50bf82618ce9e5cb1f02f497bcdcf5ce7bdfb8d17333bbfa809d498caf984b",
+      "decoded_input_sha256": "de50bf82618ce9e5cb1f02f497bcdcf5ce7bdfb8d17333bbfa809d498caf984b",
+      "decoded_payload_bytes": 54096,
+      "raw_frame_sha256": "070edfc76fc544f870f05efbf8da28ce776e009a0f0390f88c380bb554d71f37",
+      "cpp_reencoded_frame_sha256": "070edfc76fc544f870f05efbf8da28ce776e009a0f0390f88c380bb554d71f37",
+      "raw_frame_bytes": 31503,
+      "checks": [
+        "FROZEN_STREAM_SHA",
+        "CPP_FULL_CONTAINER_DECODE",
+        "LOGICAL_INPUT_SHA",
+        "CPP_RAW_FRAME_BYTE_PARITY",
+        "INPUT_IMMUTABILITY",
+        "ENCODE_CANARY"
+      ]
+    },
+    {
+      "status": "PASS",
+      "run_id": "v2:run:sha256:239126352632741d27e26d63cad6b7c700da089014f586be31f68a2cc063450e",
+      "run_set_id": "runset-20260918T074940Z-f8855e7299f1",
+      "record_kind": "FORMAL_REPETITION",
+      "record_line": 5,
+      "record_serialized_sha256": "343cdf68c10321ac6235636ff3cdc39d0583d108e25df77bfec2078cc1ec2f22",
+      "legacy_algorithm_id": "v2:algorithm:sha256:01bc44ae1653638c411816ff1a5aeb63f9e3136d8ca074a1256b080a79af639c",
+      "repetition_index": 4,
+      "stream": {
+        "path": "runs/runset-20260918T074940Z-f8855e7299f1/artifacts/239126352632741d27e26d63cad6b7c700da089014f586be31f68a2cc063450e.bin",
+        "sha256": "4887b9098b763413a108ef55308a7802cb6eca3cafed50146ba6de6ea2b3b646"
+      },
+      "container_schema_version": "tscb.lzss-raw-container.v1",
+      "container_track": "VALUE",
+      "decoded_buffers": [
+        {
+          "name": "value/000000",
+          "dtype": "<f8",
+          "shape": [
+            966
+          ],
+          "logical_bits": 61824,
+          "payload_bytes": 7728
+        },
+        {
+          "name": "value/000001",
+          "dtype": "<f8",
+          "shape": [
+            966
+          ],
+          "logical_bits": 61824,
+          "payload_bytes": 7728
+        },
+        {
+          "name": "value/000002",
+          "dtype": "<i8",
+          "shape": [
+            966
+          ],
+          "logical_bits": 61824,
+          "payload_bytes": 7728
+        },
+        {
+          "name": "value/000003",
+          "dtype": "<i8",
+          "shape": [
+            966
+          ],
+          "logical_bits": 61824,
+          "payload_bytes": 7728
+        },
+        {
+          "name": "value/000004",
+          "dtype": "<i8",
+          "shape": [
+            966
+          ],
+          "logical_bits": 61824,
+          "payload_bytes": 7728
+        },
+        {
+          "name": "value/000005",
+          "dtype": "<i8",
+          "shape": [
+            966
+          ],
+          "logical_bits": 61824,
+          "payload_bytes": 7728
+        },
+        {
+          "name": "value/000006",
+          "dtype": "<i8",
+          "shape": [
+            966
+          ],
+          "logical_bits": 61824,
+          "payload_bytes": 7728
+        }
+      ],
+      "recorded_input_sha256": "de50bf82618ce9e5cb1f02f497bcdcf5ce7bdfb8d17333bbfa809d498caf984b",
+      "decoded_input_sha256": "de50bf82618ce9e5cb1f02f497bcdcf5ce7bdfb8d17333bbfa809d498caf984b",
+      "decoded_payload_bytes": 54096,
+      "raw_frame_sha256": "070edfc76fc544f870f05efbf8da28ce776e009a0f0390f88c380bb554d71f37",
+      "cpp_reencoded_frame_sha256": "070edfc76fc544f870f05efbf8da28ce776e009a0f0390f88c380bb554d71f37",
+      "raw_frame_bytes": 31503,
+      "checks": [
+        "FROZEN_STREAM_SHA",
+        "CPP_FULL_CONTAINER_DECODE",
+        "LOGICAL_INPUT_SHA",
+        "CPP_RAW_FRAME_BYTE_PARITY",
+        "INPUT_IMMUTABILITY",
+        "ENCODE_CANARY"
+      ]
+    },
+    {
+      "status": "PASS",
+      "run_id": "v2:run:sha256:9fea4c047acf20ad60657b1f363cfa3d80b52652c84b57b9961b9c782f41d1b6",
+      "run_set_id": "runset-20260918T074940Z-f8855e7299f1",
+      "record_kind": "FORMAL_REPETITION",
+      "record_line": 6,
+      "record_serialized_sha256": "233bf8894580a286fc56f665c0f0feb03179a2908f0ee5588294a6bcedc25f8c",
+      "legacy_algorithm_id": "v2:algorithm:sha256:01bc44ae1653638c411816ff1a5aeb63f9e3136d8ca074a1256b080a79af639c",
+      "repetition_index": 5,
+      "stream": {
+        "path": "runs/runset-20260918T074940Z-f8855e7299f1/artifacts/9fea4c047acf20ad60657b1f363cfa3d80b52652c84b57b9961b9c782f41d1b6.bin",
+        "sha256": "4887b9098b763413a108ef55308a7802cb6eca3cafed50146ba6de6ea2b3b646"
+      },
+      "container_schema_version": "tscb.lzss-raw-container.v1",
+      "container_track": "VALUE",
+      "decoded_buffers": [
+        {
+          "name": "value/000000",
+          "dtype": "<f8",
+          "shape": [
+            966
+          ],
+          "logical_bits": 61824,
+          "payload_bytes": 7728
+        },
+        {
+          "name": "value/000001",
+          "dtype": "<f8",
+          "shape": [
+            966
+          ],
+          "logical_bits": 61824,
+          "payload_bytes": 7728
+        },
+        {
+          "name": "value/000002",
+          "dtype": "<i8",
+          "shape": [
+            966
+          ],
+          "logical_bits": 61824,
+          "payload_bytes": 7728
+        },
+        {
+          "name": "value/000003",
+          "dtype": "<i8",
+          "shape": [
+            966
+          ],
+          "logical_bits": 61824,
+          "payload_bytes": 7728
+        },
+        {
+          "name": "value/000004",
+          "dtype": "<i8",
+          "shape": [
+            966
+          ],
+          "logical_bits": 61824,
+          "payload_bytes": 7728
+        },
+        {
+          "name": "value/000005",
+          "dtype": "<i8",
+          "shape": [
+            966
+          ],
+          "logical_bits": 61824,
+          "payload_bytes": 7728
+        },
+        {
+          "name": "value/000006",
+          "dtype": "<i8",
+          "shape": [
+            966
+          ],
+          "logical_bits": 61824,
+          "payload_bytes": 7728
+        }
+      ],
+      "recorded_input_sha256": "de50bf82618ce9e5cb1f02f497bcdcf5ce7bdfb8d17333bbfa809d498caf984b",
+      "decoded_input_sha256": "de50bf82618ce9e5cb1f02f497bcdcf5ce7bdfb8d17333bbfa809d498caf984b",
+      "decoded_payload_bytes": 54096,
+      "raw_frame_sha256": "070edfc76fc544f870f05efbf8da28ce776e009a0f0390f88c380bb554d71f37",
+      "cpp_reencoded_frame_sha256": "070edfc76fc544f870f05efbf8da28ce776e009a0f0390f88c380bb554d71f37",
+      "raw_frame_bytes": 31503,
+      "checks": [
+        "FROZEN_STREAM_SHA",
+        "CPP_FULL_CONTAINER_DECODE",
+        "LOGICAL_INPUT_SHA",
+        "CPP_RAW_FRAME_BYTE_PARITY",
+        "INPUT_IMMUTABILITY",
+        "ENCODE_CANARY"
+      ]
+    },
+    {
+      "status": "PASS",
+      "run_id": "v2:run:sha256:40ad3a79ac4c2b53cdef408367d368e3ac05702f513e90d6975f540dfc577786",
+      "run_set_id": "runset-20260918T074940Z-f8855e7299f1",
+      "record_kind": "FORMAL_REPETITION",
+      "record_line": 7,
+      "record_serialized_sha256": "89dedc9f10ebec503452c88514b61034d06318e6f83311357e149a0f78874407",
+      "legacy_algorithm_id": "v2:algorithm:sha256:01bc44ae1653638c411816ff1a5aeb63f9e3136d8ca074a1256b080a79af639c",
+      "repetition_index": 6,
+      "stream": {
+        "path": "runs/runset-20260918T074940Z-f8855e7299f1/artifacts/40ad3a79ac4c2b53cdef408367d368e3ac05702f513e90d6975f540dfc577786.bin",
+        "sha256": "4887b9098b763413a108ef55308a7802cb6eca3cafed50146ba6de6ea2b3b646"
+      },
+      "container_schema_version": "tscb.lzss-raw-container.v1",
+      "container_track": "VALUE",
+      "decoded_buffers": [
+        {
+          "name": "value/000000",
+          "dtype": "<f8",
+          "shape": [
+            966
+          ],
+          "logical_bits": 61824,
+          "payload_bytes": 7728
+        },
+        {
+          "name": "value/000001",
+          "dtype": "<f8",
+          "shape": [
+            966
+          ],
+          "logical_bits": 61824,
+          "payload_bytes": 7728
+        },
+        {
+          "name": "value/000002",
+          "dtype": "<i8",
+          "shape": [
+            966
+          ],
+          "logical_bits": 61824,
+          "payload_bytes": 7728
+        },
+        {
+          "name": "value/000003",
+          "dtype": "<i8",
+          "shape": [
+            966
+          ],
+          "logical_bits": 61824,
+          "payload_bytes": 7728
+        },
+        {
+          "name": "value/000004",
+          "dtype": "<i8",
+          "shape": [
+            966
+          ],
+          "logical_bits": 61824,
+          "payload_bytes": 7728
+        },
+        {
+          "name": "value/000005",
+          "dtype": "<i8",
+          "shape": [
+            966
+          ],
+          "logical_bits": 61824,
+          "payload_bytes": 7728
+        },
+        {
+          "name": "value/000006",
+          "dtype": "<i8",
+          "shape": [
+            966
+          ],
+          "logical_bits": 61824,
+          "payload_bytes": 7728
+        }
+      ],
+      "recorded_input_sha256": "de50bf82618ce9e5cb1f02f497bcdcf5ce7bdfb8d17333bbfa809d498caf984b",
+      "decoded_input_sha256": "de50bf82618ce9e5cb1f02f497bcdcf5ce7bdfb8d17333bbfa809d498caf984b",
+      "decoded_payload_bytes": 54096,
+      "raw_frame_sha256": "070edfc76fc544f870f05efbf8da28ce776e009a0f0390f88c380bb554d71f37",
+      "cpp_reencoded_frame_sha256": "070edfc76fc544f870f05efbf8da28ce776e009a0f0390f88c380bb554d71f37",
+      "raw_frame_bytes": 31503,
+      "checks": [
+        "FROZEN_STREAM_SHA",
+        "CPP_FULL_CONTAINER_DECODE",
+        "LOGICAL_INPUT_SHA",
+        "CPP_RAW_FRAME_BYTE_PARITY",
+        "INPUT_IMMUTABILITY",
+        "ENCODE_CANARY"
+      ]
+    },
+    {
+      "status": "PASS",
+      "run_id": "v2:run:sha256:9752efea40f110fb720c69d28dcbce5ed7807a399e1a3c050f1f6e09e3340208",
+      "run_set_id": "runset-20260918T074940Z-f8855e7299f1",
+      "record_kind": "FORMAL_REPETITION",
+      "record_line": 8,
+      "record_serialized_sha256": "b78e6cd3eb02b1ac97973444d516b2b1c3963b2d89388eafad644e805e830abd",
+      "legacy_algorithm_id": "v2:algorithm:sha256:01bc44ae1653638c411816ff1a5aeb63f9e3136d8ca074a1256b080a79af639c",
+      "repetition_index": 7,
+      "stream": {
+        "path": "runs/runset-20260918T074940Z-f8855e7299f1/artifacts/9752efea40f110fb720c69d28dcbce5ed7807a399e1a3c050f1f6e09e3340208.bin",
+        "sha256": "4887b9098b763413a108ef55308a7802cb6eca3cafed50146ba6de6ea2b3b646"
+      },
+      "container_schema_version": "tscb.lzss-raw-container.v1",
+      "container_track": "VALUE",
+      "decoded_buffers": [
+        {
+          "name": "value/000000",
+          "dtype": "<f8",
+          "shape": [
+            966
+          ],
+          "logical_bits": 61824,
+          "payload_bytes": 7728
+        },
+        {
+          "name": "value/000001",
+          "dtype": "<f8",
+          "shape": [
+            966
+          ],
+          "logical_bits": 61824,
+          "payload_bytes": 7728
+        },
+        {
+          "name": "value/000002",
+          "dtype": "<i8",
+          "shape": [
+            966
+          ],
+          "logical_bits": 61824,
+          "payload_bytes": 7728
+        },
+        {
+          "name": "value/000003",
+          "dtype": "<i8",
+          "shape": [
+            966
+          ],
+          "logical_bits": 61824,
+          "payload_bytes": 7728
+        },
+        {
+          "name": "value/000004",
+          "dtype": "<i8",
+          "shape": [
+            966
+          ],
+          "logical_bits": 61824,
+          "payload_bytes": 7728
+        },
+        {
+          "name": "value/000005",
+          "dtype": "<i8",
+          "shape": [
+            966
+          ],
+          "logical_bits": 61824,
+          "payload_bytes": 7728
+        },
+        {
+          "name": "value/000006",
+          "dtype": "<i8",
+          "shape": [
+            966
+          ],
+          "logical_bits": 61824,
+          "payload_bytes": 7728
+        }
+      ],
+      "recorded_input_sha256": "de50bf82618ce9e5cb1f02f497bcdcf5ce7bdfb8d17333bbfa809d498caf984b",
+      "decoded_input_sha256": "de50bf82618ce9e5cb1f02f497bcdcf5ce7bdfb8d17333bbfa809d498caf984b",
+      "decoded_payload_bytes": 54096,
+      "raw_frame_sha256": "070edfc76fc544f870f05efbf8da28ce776e009a0f0390f88c380bb554d71f37",
+      "cpp_reencoded_frame_sha256": "070edfc76fc544f870f05efbf8da28ce776e009a0f0390f88c380bb554d71f37",
+      "raw_frame_bytes": 31503,
+      "checks": [
+        "FROZEN_STREAM_SHA",
+        "CPP_FULL_CONTAINER_DECODE",
+        "LOGICAL_INPUT_SHA",
+        "CPP_RAW_FRAME_BYTE_PARITY",
+        "INPUT_IMMUTABILITY",
+        "ENCODE_CANARY"
+      ]
+    },
+    {
+      "status": "PASS",
+      "run_id": "v2:run:sha256:c7d7d155e66500df0ec5b726a1ae1069373313ded8fbb231a58c263c5ca520b2",
+      "run_set_id": "runset-20260918T074940Z-f8855e7299f1",
+      "record_kind": "FORMAL_REPETITION",
+      "record_line": 9,
+      "record_serialized_sha256": "c29f83073b1ed56fde96cae99c722d4f00d80e1275993bc8263454f5f5c6b825",
+      "legacy_algorithm_id": "v2:algorithm:sha256:01bc44ae1653638c411816ff1a5aeb63f9e3136d8ca074a1256b080a79af639c",
+      "repetition_index": 8,
+      "stream": {
+        "path": "runs/runset-20260918T074940Z-f8855e7299f1/artifacts/c7d7d155e66500df0ec5b726a1ae1069373313ded8fbb231a58c263c5ca520b2.bin",
+        "sha256": "4887b9098b763413a108ef55308a7802cb6eca3cafed50146ba6de6ea2b3b646"
+      },
+      "container_schema_version": "tscb.lzss-raw-container.v1",
+      "container_track": "VALUE",
+      "decoded_buffers": [
+        {
+          "name": "value/000000",
+          "dtype": "<f8",
+          "shape": [
+            966
+          ],
+          "logical_bits": 61824,
+          "payload_bytes": 7728
+        },
+        {
+          "name": "value/000001",
+          "dtype": "<f8",
+          "shape": [
+            966
+          ],
+          "logical_bits": 61824,
+          "payload_bytes": 7728
+        },
+        {
+          "name": "value/000002",
+          "dtype": "<i8",
+          "shape": [
+            966
+          ],
+          "logical_bits": 61824,
+          "payload_bytes": 7728
+        },
+        {
+          "name": "value/000003",
+          "dtype": "<i8",
+          "shape": [
+            966
+          ],
+          "logical_bits": 61824,
+          "payload_bytes": 7728
+        },
+        {
+          "name": "value/000004",
+          "dtype": "<i8",
+          "shape": [
+            966
+          ],
+          "logical_bits": 61824,
+          "payload_bytes": 7728
+        },
+        {
+          "name": "value/000005",
+          "dtype": "<i8",
+          "shape": [
+            966
+          ],
+          "logical_bits": 61824,
+          "payload_bytes": 7728
+        },
+        {
+          "name": "value/000006",
+          "dtype": "<i8",
+          "shape": [
+            966
+          ],
+          "logical_bits": 61824,
+          "payload_bytes": 7728
+        }
+      ],
+      "recorded_input_sha256": "de50bf82618ce9e5cb1f02f497bcdcf5ce7bdfb8d17333bbfa809d498caf984b",
+      "decoded_input_sha256": "de50bf82618ce9e5cb1f02f497bcdcf5ce7bdfb8d17333bbfa809d498caf984b",
+      "decoded_payload_bytes": 54096,
+      "raw_frame_sha256": "070edfc76fc544f870f05efbf8da28ce776e009a0f0390f88c380bb554d71f37",
+      "cpp_reencoded_frame_sha256": "070edfc76fc544f870f05efbf8da28ce776e009a0f0390f88c380bb554d71f37",
+      "raw_frame_bytes": 31503,
+      "checks": [
+        "FROZEN_STREAM_SHA",
+        "CPP_FULL_CONTAINER_DECODE",
+        "LOGICAL_INPUT_SHA",
+        "CPP_RAW_FRAME_BYTE_PARITY",
+        "INPUT_IMMUTABILITY",
+        "ENCODE_CANARY"
+      ]
+    },
+    {
+      "status": "PASS",
+      "run_id": "v2:run:sha256:2297b3a913f373e041514d951b0267bf75382faf06e48eeaaba1a7b90ba705a4",
+      "run_set_id": "runset-20260918T074940Z-f8855e7299f1",
+      "record_kind": "FORMAL_REPETITION",
+      "record_line": 10,
+      "record_serialized_sha256": "ca5de335e39b076a2eb3161e346e6d275b3980d6f8e2e051d676a05e63e9f6aa",
+      "legacy_algorithm_id": "v2:algorithm:sha256:01bc44ae1653638c411816ff1a5aeb63f9e3136d8ca074a1256b080a79af639c",
+      "repetition_index": 9,
+      "stream": {
+        "path": "runs/runset-20260918T074940Z-f8855e7299f1/artifacts/2297b3a913f373e041514d951b0267bf75382faf06e48eeaaba1a7b90ba705a4.bin",
+        "sha256": "4887b9098b763413a108ef55308a7802cb6eca3cafed50146ba6de6ea2b3b646"
+      },
+      "container_schema_version": "tscb.lzss-raw-container.v1",
+      "container_track": "VALUE",
+      "decoded_buffers": [
+        {
+          "name": "value/000000",
+          "dtype": "<f8",
+          "shape": [
+            966
+          ],
+          "logical_bits": 61824,
+          "payload_bytes": 7728
+        },
+        {
+          "name": "value/000001",
+          "dtype": "<f8",
+          "shape": [
+            966
+          ],
+          "logical_bits": 61824,
+          "payload_bytes": 7728
+        },
+        {
+          "name": "value/000002",
+          "dtype": "<i8",
+          "shape": [
+            966
+          ],
+          "logical_bits": 61824,
+          "payload_bytes": 7728
+        },
+        {
+          "name": "value/000003",
+          "dtype": "<i8",
+          "shape": [
+            966
+          ],
+          "logical_bits": 61824,
+          "payload_bytes": 7728
+        },
+        {
+          "name": "value/000004",
+          "dtype": "<i8",
+          "shape": [
+            966
+          ],
+          "logical_bits": 61824,
+          "payload_bytes": 7728
+        },
+        {
+          "name": "value/000005",
+          "dtype": "<i8",
+          "shape": [
+            966
+          ],
+          "logical_bits": 61824,
+          "payload_bytes": 7728
+        },
+        {
+          "name": "value/000006",
+          "dtype": "<i8",
+          "shape": [
+            966
+          ],
+          "logical_bits": 61824,
+          "payload_bytes": 7728
+        }
+      ],
+      "recorded_input_sha256": "de50bf82618ce9e5cb1f02f497bcdcf5ce7bdfb8d17333bbfa809d498caf984b",
+      "decoded_input_sha256": "de50bf82618ce9e5cb1f02f497bcdcf5ce7bdfb8d17333bbfa809d498caf984b",
+      "decoded_payload_bytes": 54096,
+      "raw_frame_sha256": "070edfc76fc544f870f05efbf8da28ce776e009a0f0390f88c380bb554d71f37",
+      "cpp_reencoded_frame_sha256": "070edfc76fc544f870f05efbf8da28ce776e009a0f0390f88c380bb554d71f37",
+      "raw_frame_bytes": 31503,
+      "checks": [
+        "FROZEN_STREAM_SHA",
+        "CPP_FULL_CONTAINER_DECODE",
+        "LOGICAL_INPUT_SHA",
+        "CPP_RAW_FRAME_BYTE_PARITY",
+        "INPUT_IMMUTABILITY",
+        "ENCODE_CANARY"
+      ]
+    }
+  ]
+}

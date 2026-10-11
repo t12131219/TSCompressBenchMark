@@ -109,9 +109,7 @@ def execute_query_workload(
             )
             if len(result.buffers) != len(expected):
                 raise ValueError("query returned the wrong projection width")
-            for (wanted_name, wanted_array), observed in zip(
-                expected, result.buffers, strict=True
-            ):
+            for (wanted_name, wanted_array), observed in zip(expected, result.buffers, strict=True):
                 expected_array = wanted_array[request.start : request.start + request.length]
                 observed_array = np.asarray(observed.array)
                 if (
@@ -187,6 +185,7 @@ def execute_streaming_workload(
     from tscompbench.contracts import RunStatus
     from tscompbench.execution.preparation import prepare_execution_input
     from tscompbench.execution.protocol import LogicalBuffer, RoutedInput
+    from tscompbench.execution.recovery import DecodeContext
     from tscompbench.execution.routing import hash_logical_buffers, hash_reference_array
     from tscompbench.validation import validate_common_correctness
 
@@ -272,6 +271,7 @@ def execute_streaming_workload(
             deterministic_match=None,
             input_immutable=True,
             canary_intact=True,
+            decode_context=DecodeContext.from_routed(routed, compatibility),
         )
         if correctness.status is not RunStatus.PASS:
             raise ValueError(

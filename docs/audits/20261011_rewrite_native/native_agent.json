@@ -1,0 +1,510 @@
+{
+  "schema_version": "tscb.independent-native-review.v1",
+  "date": "2026-10-11",
+  "codec_count": 26,
+  "active_main_scope_count": 23,
+  "legacy_count": 3,
+  "definitions": {
+    "native_core": "local compiled C/C++/Rust codec core; Python framing, layout and control are allowed and disclosed",
+    "rewrite_success": "N/A for directly vendored original native implementations",
+    "strict_original_purity": "unchanged original source/API/input/wire; no global PASS claimed"
+  },
+  "groups": {
+    "alp": {
+      "codecs": [
+        "alp",
+        "alp-rd"
+      ],
+      "native_core": "PASS_SCOPED_CURRENT_CORE",
+      "integration": "PASS_CURRENT_REGISTERED_RELEASE_TESTS",
+      "rewrite_success": "NOT_APPLICABLE_DIRECT_NATIVE_ORIGINAL",
+      "original_vendor_files": 15,
+      "independently_byte_identical_files": 15,
+      "upstream": "/home/fzg/PycharmProjects/Compression_Source_Code/Source_Code/_repos/cwida_ALP",
+      "commit": "31ca0ed11c93c99d3f5b5c30e01a3e1c3832d3ce",
+      "unmatched": []
+    },
+    "brotli_stream": {
+      "codecs": [
+        "brotli-stream"
+      ],
+      "native_core": "PASS_SCOPED_CURRENT_CORE",
+      "integration": "PASS_CURRENT_REGISTERED_RELEASE_TESTS",
+      "rewrite_success": "NOT_APPLICABLE_DIRECT_NATIVE_ORIGINAL",
+      "original_vendor_files": 110,
+      "independently_byte_identical_files": 110,
+      "upstream": "/home/fzg/PycharmProjects/Compression_Source_Code/Source_Code/_repos/inikep_lzbench",
+      "commit": "fa871e66b3543a70fd4d060f7c12719343ff4ac3",
+      "unmatched": []
+    },
+    "bzip2_stream": {
+      "codecs": [
+        "bzip2-stream"
+      ],
+      "native_core": "PASS_SCOPED_CURRENT_CORE",
+      "integration": "PASS_CURRENT_REGISTERED_RELEASE_TESTS",
+      "rewrite_success": "NOT_APPLICABLE_DIRECT_NATIVE_ORIGINAL",
+      "original_vendor_files": 12,
+      "independently_byte_identical_files": 12,
+      "upstream": "/home/fzg/PycharmProjects/Compression_Source_Code/Source_Code/_repos/inikep_lzbench",
+      "commit": "fa871e66b3543a70fd4d060f7c12719343ff4ac3",
+      "unmatched": []
+    },
+    "deflate_zlib": {
+      "codecs": [
+        "deflate-zlib"
+      ],
+      "native_core": "PASS_SCOPED_CURRENT_CORE",
+      "integration": "PASS_CURRENT_REGISTERED_RELEASE_TESTS",
+      "rewrite_success": "NOT_APPLICABLE_DIRECT_NATIVE_ORIGINAL",
+      "original_vendor_files": 48,
+      "independently_byte_identical_files": 48,
+      "upstream": "/home/fzg/PycharmProjects/Compression_Source_Code/Source_Code/_repos/inikep_lzbench",
+      "commit": "fa871e66b3543a70fd4d060f7c12719343ff4ac3",
+      "unmatched": []
+    },
+    "entropy_fse": {
+      "codecs": [
+        "fse",
+        "huff0"
+      ],
+      "native_core": "PASS_SCOPED_CURRENT_CORE",
+      "integration": "PASS_CURRENT_REGISTERED_RELEASE_TESTS",
+      "rewrite_success": "NOT_APPLICABLE_DIRECT_NATIVE_ORIGINAL",
+      "original_vendor_files": 16,
+      "independently_byte_identical_files": 16,
+      "upstream": "/home/fzg/PycharmProjects/Compression_Source_Code/Source_Code/_repos/Cyan4973_FiniteStateEntropy",
+      "commit": "9f30e0918f87bd835fa040d922a208d7b219e50b",
+      "unmatched": []
+    },
+    "lz4_frame": {
+      "codecs": [
+        "lz4-frame"
+      ],
+      "native_core": "PASS_SCOPED_CURRENT_CORE",
+      "integration": "PASS_CURRENT_REGISTERED_RELEASE_TESTS",
+      "rewrite_success": "NOT_APPLICABLE_DIRECT_NATIVE_ORIGINAL",
+      "original_vendor_files": 11,
+      "independently_byte_identical_files": 11,
+      "upstream": "/home/fzg/PycharmProjects/Compression_Source_Code/Source_Code/_repos/inikep_lzbench",
+      "commit": "fa871e66b3543a70fd4d060f7c12719343ff4ac3",
+      "unmatched": []
+    },
+    "lzss_raw": {
+      "codecs": [
+        "lzss-raw"
+      ],
+      "native_core": "PASS_SCOPED_CURRENT_CORE",
+      "integration": "PASS_CURRENT_REGISTERED_RELEASE_TESTS",
+      "rewrite_success": "NOT_APPLICABLE_DIRECT_NATIVE_ORIGINAL",
+      "original_vendor_files": 34,
+      "independently_byte_identical_files": 31,
+      "upstream": "/home/fzg/PycharmProjects/Compression_Source_Code/Source_Code/_repos/alexkazik_lzss",
+      "commit": "512b9163d8a936003c925e24f7f682eeaeda8307",
+      "unmatched": [
+        {
+          "path": "adapters/lzss_raw/vendor/void/Cargo.toml",
+          "upstream": "/home/fzg/PycharmProjects/Compression_Source_Code/Source_Code/_repos/alexkazik_lzss/lzss/void/Cargo.toml",
+          "sha256": "ea686f87a150a8e43c4b7db57c56d3eda2a4963420d5570d91d99d7d610dd3fb",
+          "upstream_sha256": null,
+          "status": "MISSING_AUTHORITY"
+        },
+        {
+          "path": "adapters/lzss_raw/vendor/void/README.md",
+          "upstream": "/home/fzg/PycharmProjects/Compression_Source_Code/Source_Code/_repos/alexkazik_lzss/lzss/void/README.md",
+          "sha256": "f85783a6fcf9ecc19edabd710775a88430d9e886f46728bfd7d65cef55ff3e73",
+          "upstream_sha256": null,
+          "status": "MISSING_AUTHORITY"
+        },
+        {
+          "path": "adapters/lzss_raw/vendor/void/src/lib.rs",
+          "upstream": "/home/fzg/PycharmProjects/Compression_Source_Code/Source_Code/_repos/alexkazik_lzss/lzss/void/src/lib.rs",
+          "sha256": "7ab8269f30715c0729b0e04e5a09be4c413664dc4b530746ea3240ac80a64c66",
+          "upstream_sha256": null,
+          "status": "MISSING_AUTHORITY"
+        }
+      ],
+      "source_closure_completeness": "PARTIAL_LOCAL_AUTHORITY"
+    },
+    "lzss_dipperstein": {
+      "codecs": [
+        "lzss-dipperstein-c"
+      ],
+      "native_core": "PASS_SCOPED_CURRENT_CORE",
+      "integration": "PASS_CURRENT_REGISTERED_RELEASE_TESTS",
+      "rewrite_success": "NOT_APPLICABLE_DIRECT_NATIVE_ORIGINAL",
+      "original_vendor_files": 12,
+      "independently_byte_identical_files": 0,
+      "upstream": null,
+      "commit": null,
+      "unmatched": "Neither MichaelDipperstein/lzss nor bitfile is present in the requested Source_Code corpus; compare against retained acquisition provenance separately.",
+      "source_closure_completeness": "PARTIAL_LOCAL_AUTHORITY"
+    },
+    "lzsse2_raw": {
+      "codecs": [
+        "lzsse2-raw"
+      ],
+      "native_core": "PASS_SCOPED_CURRENT_CORE",
+      "integration": "PASS_CURRENT_REGISTERED_RELEASE_TESTS",
+      "rewrite_success": "NOT_APPLICABLE_DIRECT_NATIVE_ORIGINAL",
+      "original_vendor_files": 5,
+      "independently_byte_identical_files": 5,
+      "upstream": "/home/fzg/PycharmProjects/Compression_Source_Code/Source_Code/_repos/inikep_lzbench",
+      "commit": "fa871e66b3543a70fd4d060f7c12719343ff4ac3",
+      "unmatched": []
+    },
+    "lzsse8_raw": {
+      "codecs": [
+        "lzsse8-raw"
+      ],
+      "native_core": "PASS_SCOPED_CURRENT_CORE",
+      "integration": "PASS_CURRENT_REGISTERED_RELEASE_TESTS",
+      "rewrite_success": "NOT_APPLICABLE_DIRECT_NATIVE_ORIGINAL",
+      "original_vendor_files": 5,
+      "independently_byte_identical_files": 5,
+      "upstream": "/home/fzg/PycharmProjects/Compression_Source_Code/Source_Code/_repos/inikep_lzbench",
+      "commit": "fa871e66b3543a70fd4d060f7c12719343ff4ac3",
+      "unmatched": []
+    },
+    "neats": {
+      "codecs": [
+        "neats-lossless-i64",
+        "leats-lossless-i64"
+      ],
+      "native_core": "PASS_SCOPED_CURRENT_CORE",
+      "integration": "PASS_CURRENT_REGISTERED_RELEASE_TESTS",
+      "rewrite_success": "NOT_APPLICABLE_DIRECT_NATIVE_ORIGINAL",
+      "original_vendor_files": 172,
+      "independently_byte_identical_files": 170,
+      "upstream": "/home/fzg/PycharmProjects/Compression_Source_Code/Source_Code/_repos/and-gue_NeaTS",
+      "commit": "2d804ff492e45222e841dc1a50904476fa64f4a0",
+      "unmatched": [
+        {
+          "path": "adapters/neats/vendor/neats/include/LeaTS.hpp",
+          "upstream": "/home/fzg/PycharmProjects/Compression_Source_Code/Source_Code/_repos/and-gue_NeaTS/include/LeaTS.hpp",
+          "sha256": "7945a9daf1abc36604bbd97f9e802bd3e150bd40d8d1417046c1a972e9a7e56e",
+          "upstream_sha256": "9fe6bc00453c64f6b7bd935f2137dd7af69c40ede37db314ecd831a369f0ae45",
+          "status": "DIFFERENT"
+        },
+        {
+          "path": "adapters/neats/vendor/neats/include/NeaTS.hpp",
+          "upstream": "/home/fzg/PycharmProjects/Compression_Source_Code/Source_Code/_repos/and-gue_NeaTS/include/NeaTS.hpp",
+          "sha256": "0719a62e3b0126718f177c5d868a5c42241c1aafe1cff6c0cad834931b2b35ad",
+          "upstream_sha256": "ac298426389b6e4ebd9c390d1709d87ad84924badf392d21667c5919a4489556",
+          "status": "DIFFERENT"
+        }
+      ],
+      "strict_source_purity": "FAIL_PATCHED_VENDOR_WITHOUT_REPLAYABLE_PATCH"
+    },
+    "serf": {
+      "codecs": [
+        "serf-qt",
+        "serf-xor"
+      ],
+      "native_core": "PASS_SCOPED_CURRENT_CORE",
+      "integration": "PASS_CURRENT_REGISTERED_RELEASE_TESTS",
+      "rewrite_success": "NOT_APPLICABLE_DIRECT_NATIVE_ORIGINAL",
+      "original_vendor_files": 36,
+      "independently_byte_identical_files": 36,
+      "upstream": "/home/fzg/PycharmProjects/Compression_Source_Code/Source_Code/_repos/Spatio-Temporal-Lab_Serf",
+      "commit": "b38450b56825eabc96be8e25d6880127dc688c95",
+      "unmatched": []
+    },
+    "simdcomp": {
+      "codecs": [
+        "simdcomp-u32"
+      ],
+      "native_core": "PASS_SCOPED_CURRENT_CORE",
+      "integration": "PASS_CURRENT_REGISTERED_RELEASE_TESTS",
+      "rewrite_success": "NOT_APPLICABLE_DIRECT_NATIVE_ORIGINAL",
+      "original_vendor_files": 27,
+      "independently_byte_identical_files": 27,
+      "upstream": "/home/fzg/PycharmProjects/Compression_Source_Code/Source_Code/_repos/lemire_simdcomp",
+      "commit": "d5301778fe5045ca8099252de5a6ed8016a287df",
+      "unmatched": []
+    },
+    "snappy_raw": {
+      "codecs": [
+        "snappy-raw"
+      ],
+      "native_core": "PASS_SCOPED_CURRENT_CORE",
+      "integration": "PASS_CURRENT_REGISTERED_RELEASE_TESTS",
+      "rewrite_success": "NOT_APPLICABLE_DIRECT_NATIVE_ORIGINAL",
+      "original_vendor_files": 10,
+      "independently_byte_identical_files": 10,
+      "upstream": "/home/fzg/PycharmProjects/Compression_Source_Code/Source_Code/_repos/inikep_lzbench",
+      "commit": "fa871e66b3543a70fd4d060f7c12719343ff4ac3",
+      "unmatched": []
+    },
+    "sprintz": {
+      "codecs": [
+        "sprintz-delta",
+        "sprintz-fire",
+        "sprintz-delta-u8",
+        "sprintz-fire-u8",
+        "sprintz-fire-huff0"
+      ],
+      "native_core": "PASS_SCOPED_CURRENT_CORE",
+      "integration": "PASS_CURRENT_REGISTERED_RELEASE_TESTS",
+      "rewrite_success": "NOT_APPLICABLE_DIRECT_NATIVE_ORIGINAL",
+      "original_vendor_files": 18,
+      "independently_byte_identical_files": 18,
+      "upstream": "/home/fzg/PycharmProjects/Compression_Source_Code/Source_Code/_repos/sprintz-lzbench",
+      "commit": "580c4f085381f31b1ad669525ed04e63cbc385f3",
+      "unmatched": []
+    },
+    "xz_stream": {
+      "codecs": [
+        "xz-stream"
+      ],
+      "native_core": "PASS_SCOPED_CURRENT_CORE",
+      "integration": "PASS_CURRENT_REGISTERED_RELEASE_TESTS",
+      "rewrite_success": "NOT_APPLICABLE_DIRECT_NATIVE_ORIGINAL",
+      "original_vendor_files": 341,
+      "independently_byte_identical_files": 341,
+      "upstream": "/home/fzg/PycharmProjects/Compression_Source_Code/Source_Code/_repos/inikep_lzbench",
+      "commit": "fa871e66b3543a70fd4d060f7c12719343ff4ac3",
+      "unmatched": []
+    },
+    "zfp": {
+      "codecs": [
+        "zfp-accuracy-1d"
+      ],
+      "native_core": "PASS_SCOPED_CURRENT_CORE",
+      "integration": "PASS_CURRENT_REGISTERED_RELEASE_TESTS",
+      "rewrite_success": "NOT_APPLICABLE_DIRECT_NATIVE_ORIGINAL",
+      "original_vendor_files": 94,
+      "independently_byte_identical_files": 94,
+      "upstream": "/home/fzg/PycharmProjects/Compression_Source_Code/Source_Code/_repos/LLNL_zfp",
+      "commit": "c0c2c40b30d99f1787664b51c593fb6e0d729253",
+      "unmatched": []
+    },
+    "zstd_frame": {
+      "codecs": [
+        "zstd-frame"
+      ],
+      "native_core": "PASS_SCOPED_CURRENT_CORE",
+      "integration": "PASS_CURRENT_REGISTERED_RELEASE_TESTS",
+      "rewrite_success": "NOT_APPLICABLE_DIRECT_NATIVE_ORIGINAL",
+      "original_vendor_files": 64,
+      "independently_byte_identical_files": 64,
+      "upstream": "/home/fzg/PycharmProjects/Compression_Source_Code/Source_Code/_repos/inikep_lzbench",
+      "commit": "fa871e66b3543a70fd4d060f7c12719343ff4ac3",
+      "unmatched": []
+    }
+  },
+  "tests": {
+    "junit": "docs/audits/20261011_rewrite_native/native_adapter_tests.xml",
+    "passed": 1369,
+    "failed": 0,
+    "skipped": 0,
+    "duration_seconds": 24.47,
+    "profile": "CURRENT_RELEASE_ADAPTER_REGRESSION"
+  },
+  "simdcomp_audits": {
+    "source": {
+      "status": "PASS",
+      "qualification_scope": "PATCHED_SSE4_1_PUBLIC_SOURCE_APIS_ONLY",
+      "source_lock_sha256": "5eb54ea28e31da9a66fd463cc8ddbbfc0cf06c7e49704194d5322840dd7cf821",
+      "original_failures_retained": 13,
+      "guard_cases_per_profile": {
+        "plain": 11088,
+        "d1": 396,
+        "for": 11088,
+        "query-d1": 594,
+        "query-for": 594,
+        "set-plain": 4224,
+        "set-d1": 4224,
+        "set-for": 4224
+      },
+      "query_calls_per_profile": 484638,
+      "actual_compiled_dependency_counts": {
+        "original/release": 182,
+        "original/debug": 175,
+        "original/sanitizer": 182,
+        "patched/release": 182,
+        "patched/debug": 175,
+        "patched/sanitizer": 182
+      },
+      "patches": [
+        {
+          "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/simdcomp/patches/0001-fastset-width32-defined-mask.patch",
+          "sha256": "3ee59c3b5b646e9f102adf8ae85f91de6d3507142b18341f3917b37a27538c94",
+          "bytes": 404
+        },
+        {
+          "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/simdcomp/patches/0002-empty-and-missing-search-bounds.patch",
+          "sha256": "851a521bd796c2f5806c4375d66b1a749cd1f25ace50ba36ee38cc335a8c74b2",
+          "bytes": 773
+        },
+        {
+          "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/simdcomp/patches/0003-width32-absolute-mutation-semantics.patch",
+          "sha256": "d1a380d6fda4fbb750b6b5d9e0ab3a9014c094ae94dc388e3a398c7a29ede0e0",
+          "bytes": 1430
+        }
+      ],
+      "reports": {
+        "simdcomp-source-patched-guards.json": "4cc71f61e178240e9273cda974e8a1e80887263706b485cfabf91cad1f89d2ab",
+        "simdcomp-source-original-guards.json": "52b0814edfcc373fc7ed75bba717145dc35731b5d4287014e5061c6e5582912a",
+        "simdcomp-upstream-original-tests.json": "3adc672f739aabc1f8e3dfc6d1641cc1e2a135dc629058761b4d8a52f6e99a0d",
+        "simdcomp-upstream-patched-tests.json": "7afe789404f5ed370d625ce8d1ac4c138276ebd1e03f8792f24bf37e39f4efa7"
+      },
+      "bounded_abi": "PENDING",
+      "python_sdk": "PENDING",
+      "benchmark_registration": "PENDING",
+      "benchmark_five_layers": "PENDING",
+      "full_logical_entry_qualified": false,
+      "logical_entry_index": 137,
+      "platform": "LINUX_X86_64_SSE4_1_SSSE3",
+      "leak_detection": "DISABLED",
+      "remaining_isa_profiles": [
+        "AVX2",
+        "AVX512_HARDWARE_UNAVAILABLE",
+        "ARM_UNTESTED"
+      ],
+      "auditor_sha256": "5d6ebaaf372cb4ef360b1d3e294c2aab66a34c2db1ee6c7c2531507b47d74c7b"
+    },
+    "avx2": {
+      "status": "PASS",
+      "qualification_scope": "PATCHED_AVX2_AND_SSE_PUBLIC_SOURCE_APIS_ONLY",
+      "source_lock_sha256": "5eb54ea28e31da9a66fd463cc8ddbbfc0cf06c7e49704194d5322840dd7cf821",
+      "source_report_sha256": "b8b8d322bdf9cb788a87717923213697265836767ff0d78ea67bfe372f0b4139",
+      "initial_report_sha256": "22d119f0bc60ce6bb960a2b51942601d0d67522b99571bdec2e1fd0ea7538419",
+      "patches": [
+        {
+          "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/simdcomp/patches/0001-fastset-width32-defined-mask.patch",
+          "sha256": "3ee59c3b5b646e9f102adf8ae85f91de6d3507142b18341f3917b37a27538c94",
+          "bytes": 404
+        },
+        {
+          "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/simdcomp/patches/0002-empty-and-missing-search-bounds.patch",
+          "sha256": "851a521bd796c2f5806c4375d66b1a749cd1f25ace50ba36ee38cc335a8c74b2",
+          "bytes": 773
+        },
+        {
+          "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/simdcomp/patches/0003-width32-absolute-mutation-semantics.patch",
+          "sha256": "d1a380d6fda4fbb750b6b5d9e0ab3a9014c094ae94dc388e3a398c7a29ede0e0",
+          "bytes": 1430
+        },
+        {
+          "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/simdcomp/patches/avx2/0001-zero-width-unpack-byte-count.patch",
+          "sha256": "1a9fd0334cfa279977cb615dd6f2069536dd253554491f3746432a5e9e2206f6"
+        }
+      ],
+      "actual_compiled_dependency_counts": {
+        "original/release": 199,
+        "original/debug": 191,
+        "original/sanitizer": 199,
+        "patched/release": 199,
+        "patched/debug": 191,
+        "patched/sanitizer": 199
+      },
+      "original_failures_retained": 16,
+      "avx2_cases_per_profile": 1584,
+      "bounded_abi": "PENDING",
+      "python_sdk": "PENDING",
+      "benchmark_five_layers": "PENDING",
+      "full_logical_entry_qualified": false,
+      "auditor_sha256": "d7bb5beb8c4fec5e5147edee90e0fe0177b2a4f4b3429b7e9fb7c740734b85aa"
+    },
+    "native": {
+      "status": "PASS",
+      "qualification_scope": "BOUNDED_UINT32_SSE4_1_AND_AVX2_ABI_ONLY",
+      "source_report_sha256": "b8b8d322bdf9cb788a87717923213697265836767ff0d78ea67bfe372f0b4139",
+      "native_report_sha256": "cdac8fd93d642dd58bdf0a2867c81750889e44a8845b3c623c5961f12792411c",
+      "initial_abi_failure_report_sha256": "ce1cdde914dcaeb14e09ed74aecfeb55b69dbb1a086152d9dcc3463ed629aaff",
+      "cases_per_profile_and_linkage": 31878,
+      "build_dependency_counts": {
+        "release": 163,
+        "debug": 158,
+        "sanitizer": 163
+      },
+      "original_abi_fault_paths_retained": 6,
+      "platform": "LINUX_X86_64_SSE4_1_AVX2",
+      "leak_detection": "DISABLED",
+      "python_sdk": "PENDING",
+      "benchmark_five_layers": "PENDING",
+      "checked_int64_timestamp": "PENDING",
+      "full_logical_entry_qualified": false,
+      "auditor_sha256": "df8d34b89d2f678746c5789496e6010ab454f9606cfb711f530bf67e13be1a7a"
+    },
+    "sdk": {
+      "status": "PASS",
+      "qualification_scope": "DIRECT_PYTHON_UINT32_PLAIN_SSE4_1_AND_AVX2_SDK",
+      "sdk_report_sha256": "1219f8fb1ae94c1409fac4cca498e86de5bbbf4a55f9df3dc69d17ca72761c29",
+      "native_report_sha256": "cdac8fd93d642dd58bdf0a2867c81750889e44a8845b3c623c5961f12792411c",
+      "test_count": 504,
+      "actual_imported_project_file_count": 74,
+      "source_snapshot_sha256": "41373e08a17964b31356f47cbd78aab8bf1a5b74a3dee8b51377b49c07394873",
+      "keys": [
+        "simdcomp-u32"
+      ],
+      "python_sdk": "QUALIFIED_SCOPED_UINT32_ONLY",
+      "benchmark_registration": "PENDING",
+      "benchmark_five_layers": "PENDING",
+      "full_logical_entries_qualified": false,
+      "auditor_sha256": "8c2e1e5112f14cfbd8dd424fd510f7868557afd2496e38ea357212694e39ed11"
+    }
+  },
+  "material_findings": [
+    {
+      "key": "NEATS_VENDOR_ALREADY_PATCHED",
+      "verdict": "NATIVE_CORE_PASS_STRICT_ORIGINAL_SOURCE_FAIL",
+      "detail": "2/172 vendor files are already modified; 3 .patch files are explanatory prose; build compiles patched vendor directly; source digest matches patched vendor but build-only replay claim is false",
+      "files": [
+        "adapters/neats/vendor/neats/include/NeaTS.hpp:428",
+        "adapters/neats/vendor/neats/include/LeaTS.hpp:94",
+        "adapters/neats/vendor/neats/include/LeaTS.hpp:486",
+        "adapters/neats/vendor/neats/include/LeaTS.hpp:614",
+        "tools/build_codec.py:992",
+        "docs/neats_leats_admission_review.md:24"
+      ]
+    },
+    {
+      "key": "NATIVE_LZSS_IS_ORIGINAL_RUST",
+      "detail": "lzss-raw core is original Rust static library, not C++ rewrite; pinned void authority not in requested corpus"
+    },
+    {
+      "key": "DIPPERSTEIN_AUTHORITY_NOT_IN_CORPUS",
+      "detail": "12 vendor files have no independent Source_Code authority; current integration/native core valid but source equivalence not independently closed here"
+    },
+    {
+      "key": "RAW_AND_COMPOSITE_PATHS",
+      "detail": "fse/huff0, serf, zfp and optional ALP composite contain explicit RAW/RLE paths; successful roundtrip does not prove entire payload executed codec kernel"
+    },
+    {
+      "key": "CORE_NATIVE_TIMING_BOUNDARIES",
+      "detail": "CORE includes harness/Python API work; native timers differ by codec and can include frames/models/staging; non-null native time is not pure upstream kernel proof"
+    }
+  ],
+  "evidence": [
+    {
+      "path": "docs/audits/20261011_rewrite_native/native_source_comparison.json",
+      "sha256": "0b58fbc1dd13ce95f582a215058f7354a691bc44dbdd398b54853ec4a9bec9c4"
+    },
+    {
+      "path": "docs/audits/20261011_rewrite_native/native_adapter_tests.xml",
+      "sha256": "6f92888383154c5f4b4edb9ee0f17c90eeab6bb5fc23db9a1d892cafb122cc4f"
+    },
+    {
+      "path": "docs/audits/20261011_rewrite_native/native_simdcomp_audits.json",
+      "sha256": "8f454912b318380797de947cfee548af64688eb2ea723d73a41269bdd8220261"
+    },
+    {
+      "path": "docs/audits/20261011_rewrite_native/check_native_sources.py",
+      "sha256": "ecec3004567b96c87a7c81588924f6f9f0b347d7107c5ef68c0f44afecbf8c36"
+    },
+    {
+      "path": "docs/audits/20261011_rewrite_native/native_NeaTS_vendor.diff",
+      "sha256": "e2e135780ad173e938f05d64b87db8ea2e929d57cf1f8f228f5b3cdc300d0369"
+    },
+    {
+      "path": "docs/audits/20261011_rewrite_native/native_LeaTS_vendor.diff",
+      "sha256": "c464d3a997f03635d1fc89407cb7063d963aa9e2a3e15acdf90e316664c40917"
+    },
+    {
+      "path": "docs/audits/20261011_rewrite_native/native_agent.md",
+      "sha256": "506a59f8755a77a787c5048014360d3ffad65ba67c2708da9aec80ca28f6963e"
+    }
+  ]
+}

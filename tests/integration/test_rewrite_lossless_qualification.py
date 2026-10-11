@@ -12,10 +12,14 @@ from tscompbench.runner import execute_run_set, initialize_run_set, report_run_s
 ROOT = Path(__file__).resolve().parents[2]
 
 
-@pytest.mark.parametrize("track,expected", [("value", 6), ("system", 1)])
+@pytest.mark.parametrize("track,expected", [("value", 6)])
 @pytest.mark.parametrize("timing_scope", ["CORE", "PIPELINE", "E2E"])
 def test_requested_rewrites_through_five_layers(
-    tmp_path: Path, track: str, expected: int, timing_scope: str
+    tmp_path: Path,
+    track: str,
+    expected: int,
+    timing_scope: str,
+    assert_current_artifact_evidence,
 ):
     template = ROOT / "configs/experiments" / f"requested-lossless-{track}-qualification.toml"
     config = tmp_path / f"{track}.toml"
@@ -43,8 +47,7 @@ def test_requested_rewrites_through_five_layers(
         assert record["correctness"]["status"] == "PASS"
         assert record["eligibility"] is False  # QUALIFICATION never enters formal rankings.
         accounting = record["accounting"]
-        assert accounting["final_bits"] == accounting["final_physical_bytes"] * 8
-        assert accounting["external_side_information_bits"] == 0
+        assert_current_artifact_evidence(run.path, record)
         assert accounting["metadata_bits"] > 0
         if track == "system":
             assert accounting["unallocated_shared_bits"] > 0

@@ -19,10 +19,12 @@
     "spdx": "MIT",
     "status": "RUN_ALLOWED",
     "redistribution": "ALLOWED_WITH_LICENSE_NOTICE",
-    "files": ["adapters/brotli_stream/vendor/brotli/LICENSE"]
+    "files": [
+      "adapters/brotli_stream/vendor/brotli/LICENSE"
+    ]
   },
   "build": {
-    "recipe": "PYTHONPATH=src conda run -n CompressBench14 python tools/build_codec.py brotli-stream --profile all",
+    "recipe": "PYTHONPATH=src conda run -n CompressBench14 python tools/build_codec.py brotli-stream --profile all --output-root build/port-standard-v30-20261011/native-builds-v3",
     "patches": [],
     "submodules": [],
     "translation_units": [
@@ -31,7 +33,62 @@
       "adapters/brotli_stream/vendor/brotli/dec/*.c",
       "adapters/brotli_stream/vendor/brotli/enc/*.c"
     ],
-    "release_artifact": "build/adapters/brotli_stream/release/libtscb_brotli_stream.so",
-    "sanitizer_artifact": "build/adapters/brotli_stream/sanitizer/libtscb_brotli_stream.so"
+    "release_artifact": "build/port-standard-v30-20261011/native-builds-v3/brotli_stream/release/libtscb_brotli_stream.so",
+    "sanitizer_artifact": "build/port-standard-v30-20261011/native-builds-v3/brotli_stream/sanitizer/libtscb_brotli_stream.so",
+    "current_build_records": [
+      {
+        "algorithm": "brotli-stream",
+        "profile": "release",
+        "record": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/brotli_stream/release/build-record.json",
+          "sha256": "36bec20ce2aaceced2e10a407db8e9b08b71ad67ae572437e5afc34bad9f5628"
+        },
+        "artifact": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/brotli_stream/release/libtscb_brotli_stream.so",
+          "sha256": "4a335ef64ff710e966fce7dc019e26324a4cbf07d31a420bb6afa1324828e99c"
+        },
+        "compile_commands_sha256": "44090973599dc89d0397d923bd76ef70fc55d7a5feee2ec08b6d09f721087014",
+        "dependency_capture": "ACTUAL_PER_TU_MD_COMPILATION_AND_LINK"
+      },
+      {
+        "algorithm": "brotli-stream",
+        "profile": "sanitizer",
+        "record": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/brotli_stream/sanitizer/build-record.json",
+          "sha256": "8a165bf62d420d1b9c8ee6b926d8fc835c68506f2c5ee5ea898e1d328967afed"
+        },
+        "artifact": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/brotli_stream/sanitizer/libtscb_brotli_stream.so",
+          "sha256": "21893bbe974bd9cfad978a79b7f9eadc12c1c2095201be52ce39dc670aeb3733"
+        },
+        "compile_commands_sha256": "bcdfb2f03d680d1ed62183c9c1663e14f8dd8ad46ee0870c2d13c026a970b4d8",
+        "dependency_capture": "ACTUAL_PER_TU_MD_COMPILATION_AND_LINK"
+      }
+    ],
+    "current_native_qualification": [
+      {
+        "algorithm": "brotli-stream",
+        "profile": "release",
+        "build_dependency_status": "PASS",
+        "native_suite_status": "PASS",
+        "evidence": {
+          "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/qualification.json",
+          "sha256": "b86173f34c30d175552de327cc446dd8480aa02dd7a9ae56f12f60c0d93db174"
+        },
+        "source_full_parity": "NOT_ASSERTED"
+      },
+      {
+        "algorithm": "brotli-stream",
+        "profile": "sanitizer",
+        "build_dependency_status": "PASS",
+        "native_suite_status": "PASS",
+        "evidence": {
+          "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/qualification.json",
+          "sha256": "b86173f34c30d175552de327cc446dd8480aa02dd7a9ae56f12f60c0d93db174"
+        },
+        "source_full_parity": "NOT_ASSERTED"
+      }
+    ],
+    "current_build_dependency_scope": "ACTUAL_PER_TU_MD_HEADERS_OBJECTS_SELECTED_TOOLCHAIN_AND_DYNAMIC_RUNTIME_PARTIAL_STATIC_LINK_CLOSURE"
   }
 }

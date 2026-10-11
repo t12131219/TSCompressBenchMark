@@ -1,11 +1,105 @@
 Upstream: and-gue/NeaTS@2d804ff492e45222e841dc1a50904476fa64f4a0
+After: 0001-gcc11-scalar-compatibility.patch
 
-LeaTS declares a complete in-memory codec but its serialize/load block is commented
-and was copied from NeaTS with fields that LeaTS does not own. This patch enables the
-block after removing those invalid NeaTS-only fields. It serializes every LeaTS field
-needed by scalar full decode and operator[]: max_bpc, logical length, residual bit
-count, both Elias-Fano structures, packed residuals, bits-per-correction, and the two
-linear coefficients arrays.
+Enable the previously commented LeaTS serialize/load without nonexistent NeaTS fields.
+Select the original scalar tail writer; this adds a LeaTS persisted format.
 
-The patch also selects the scalar tail loop in residual construction. This avoids an
-unsupported GCC 11 experimental-simd conversion without changing the stored values.
+--- a/include/LeaTS.hpp
++++ b/include/LeaTS.hpp
+@@ -90,18 +90,6 @@
+                 auto t2v = floatv_simd_t{t2};
+
+                 auto j{0};
+-                for (; j + simd_width <= num_residuals; j += simd_width) {
+-                    y.copy_from(&(*(in_data + j)), stdx::element_aligned);
+-                    _y = stdx::static_simd_cast<intv_simd_t>(stdx::ceil(t1v * (startv + j) + t2v));
+-                    error = (y - _y) + epsv;
+-
+-                    for (auto i{0}; i < simd_width; ++i) {
+-                        auto err = static_cast<uint64_t>(error[i]);
+-                        sdsl::bits::write_int(residuals.data() + (offset_res >> 6u), err, offset_res & 0x3F,
+-                                              bpc);
+-                        offset_res += bpc;
+-                    }
+-                }
+
+                 for (; j < num_residuals; ++j) {
+                     auto _y_st = std::ceil((j + 1) * std::get<2>(t) + std::get<3>(t));
+@@ -493,7 +481,6 @@
+             return max_bpc;
+         }
+
+-        /*
+         inline size_t serialize(std::ostream &os, sdsl::structure_tree_node *v = nullptr,
+                                 const std::string &name = "") const {
+             if (_n == 0) {
+@@ -511,16 +498,6 @@
+             written_bytes += sdsl::serialize(residuals, os, child, "residuals");
+             written_bytes += offset_residuals_ef.serialize(os, child, "offset_residuals_ef");
+             written_bytes += sdsl::serialize(bits_per_correction, os, child, "bits_per_correction");
+-            written_bytes += sdsl::serialize(model_types_0, os, child, "model_types_0");
+-            written_bytes += sdsl::serialize(model_types_1, os, child, "model_types_1");
+-            written_bytes += sdsl::serialize(qbv, os, child, "qbv");
+-
+-            written_bytes += sdsl::write_member(coefficients_t0.size(), os, child, "coefficients_t0.size()");
+-            written_bytes += sdsl::serialize_vector(coefficients_t0, os, child, "coefficients_t0");
+-
+-            written_bytes += sdsl::write_member(coefficients_s.size(), os, child, "coefficients_s.size()");
+-            written_bytes += sdsl::serialize_vector(coefficients_s, os, child, "coefficients_s");
+-
+             written_bytes += sdsl::write_member(coefficients_t1.size(), os, child, "coefficients_t1.size()");
+             written_bytes += sdsl::serialize_vector(coefficients_t1, os, child, "coefficients_t1");
+             written_bytes += sdsl::serialize_vector(coefficients_t2, os, child, "coefficients_t2");
+@@ -528,7 +505,6 @@
+             sdsl::structure_tree::add_size(child, written_bytes);
+             return written_bytes;
+         }
+-        */
+
+         /*
+         void to_csv(std::string filename) const {
+@@ -633,7 +609,6 @@
+         }
+         */
+
+-        /*
+         static auto load(std::istream &is) {
+             decltype(max_bpc) _max_bpc = 0;
+             sdsl::read_member(_max_bpc, is);
+@@ -646,20 +621,6 @@
+             sdsl::load(lc.residuals, is);
+             lc.offset_residuals_ef.load(is);
+             sdsl::load(lc.bits_per_correction, is);
+-            sdsl::load(lc.model_types_0, is);
+-            sdsl::load(lc.model_types_1, is);
+-            sdsl::load(lc.qbv, is);
+-
+-            size_t coefficients_t0_size;
+-            sdsl::read_member(coefficients_t0_size, is);
+-            lc.coefficients_t0 = decltype(coefficients_t0)(coefficients_t0_size);
+-            sdsl::load_vector<T1>(lc.coefficients_t0, is);
+-
+-            size_t coefficients_s_size;
+-            sdsl::read_member(coefficients_s_size, is);
+-            lc.coefficients_s = decltype(lc.coefficients_s)(coefficients_s_size);
+-            sdsl::load_vector<x_t>(lc.coefficients_s, is);
+-
+             size_t coefficients_t1_size;
+             sdsl::read_member(coefficients_t1_size, is);
+             lc.coefficients_t1 = decltype(coefficients_t1)(coefficients_t1_size);
+@@ -667,13 +628,9 @@
+             lc.coefficients_t2 = decltype(coefficients_t2)(coefficients_t1_size);
+             sdsl::load_vector<T2>(lc.coefficients_t2, is);
+
+-            sdsl::util::init_support(lc.fun_1_rank, &lc.model_types_1);
+-            sdsl::util::init_support(lc.quad_fun_rank, &lc.qbv);
+-
+             return lc;
+         }
+-        */
+
+
+     };
+-}
+\ No newline at end of file
++}

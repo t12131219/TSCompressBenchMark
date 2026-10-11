@@ -313,11 +313,12 @@ def _load_profile(raw: Any) -> BenchmarkProfile:
         minimum = Decimal(values["min_repetition_seconds"])
         if minimum < Decimal("1") or minimum > Decimal("3"):
             raise ConfigurationError("FORMAL profile requires min_repetition_seconds in [1, 3]")
-        if Decimal(values["timeout_seconds"]) <= max(
-            minimum, Decimal(values["warmup_min_seconds"])
+        if Decimal(values["timeout_seconds"]) <= (
+            2 * minimum + Decimal(values["warmup_min_seconds"])
         ):
             raise ConfigurationError(
-                "FORMAL profile timeout_seconds must exceed warmup and repetition minima"
+                "FORMAL profile timeout_seconds must exceed the combined worker warmup "
+                "and encode/decode repetition minima"
             )
     affinity = values["cpu_affinity"]
     if affinity is not None:

@@ -1,0 +1,145 @@
+{
+  "source": {
+    "status": "PASS",
+    "qualification_scope": "PATCHED_SSE4_1_PUBLIC_SOURCE_APIS_ONLY",
+    "source_lock_sha256": "5eb54ea28e31da9a66fd463cc8ddbbfc0cf06c7e49704194d5322840dd7cf821",
+    "original_failures_retained": 13,
+    "guard_cases_per_profile": {
+      "plain": 11088,
+      "d1": 396,
+      "for": 11088,
+      "query-d1": 594,
+      "query-for": 594,
+      "set-plain": 4224,
+      "set-d1": 4224,
+      "set-for": 4224
+    },
+    "query_calls_per_profile": 484638,
+    "actual_compiled_dependency_counts": {
+      "original/release": 182,
+      "original/debug": 175,
+      "original/sanitizer": 182,
+      "patched/release": 182,
+      "patched/debug": 175,
+      "patched/sanitizer": 182
+    },
+    "patches": [
+      {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/simdcomp/patches/0001-fastset-width32-defined-mask.patch",
+        "sha256": "3ee59c3b5b646e9f102adf8ae85f91de6d3507142b18341f3917b37a27538c94",
+        "bytes": 404
+      },
+      {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/simdcomp/patches/0002-empty-and-missing-search-bounds.patch",
+        "sha256": "851a521bd796c2f5806c4375d66b1a749cd1f25ace50ba36ee38cc335a8c74b2",
+        "bytes": 773
+      },
+      {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/simdcomp/patches/0003-width32-absolute-mutation-semantics.patch",
+        "sha256": "d1a380d6fda4fbb750b6b5d9e0ab3a9014c094ae94dc388e3a398c7a29ede0e0",
+        "bytes": 1430
+      }
+    ],
+    "reports": {
+      "simdcomp-source-patched-guards.json": "4cc71f61e178240e9273cda974e8a1e80887263706b485cfabf91cad1f89d2ab",
+      "simdcomp-source-original-guards.json": "52b0814edfcc373fc7ed75bba717145dc35731b5d4287014e5061c6e5582912a",
+      "simdcomp-upstream-original-tests.json": "3adc672f739aabc1f8e3dfc6d1641cc1e2a135dc629058761b4d8a52f6e99a0d",
+      "simdcomp-upstream-patched-tests.json": "7afe789404f5ed370d625ce8d1ac4c138276ebd1e03f8792f24bf37e39f4efa7"
+    },
+    "bounded_abi": "PENDING",
+    "python_sdk": "PENDING",
+    "benchmark_registration": "PENDING",
+    "benchmark_five_layers": "PENDING",
+    "full_logical_entry_qualified": false,
+    "logical_entry_index": 137,
+    "platform": "LINUX_X86_64_SSE4_1_SSSE3",
+    "leak_detection": "DISABLED",
+    "remaining_isa_profiles": [
+      "AVX2",
+      "AVX512_HARDWARE_UNAVAILABLE",
+      "ARM_UNTESTED"
+    ],
+    "auditor_sha256": "5d6ebaaf372cb4ef360b1d3e294c2aab66a34c2db1ee6c7c2531507b47d74c7b"
+  },
+  "avx2": {
+    "status": "PASS",
+    "qualification_scope": "PATCHED_AVX2_AND_SSE_PUBLIC_SOURCE_APIS_ONLY",
+    "source_lock_sha256": "5eb54ea28e31da9a66fd463cc8ddbbfc0cf06c7e49704194d5322840dd7cf821",
+    "source_report_sha256": "b8b8d322bdf9cb788a87717923213697265836767ff0d78ea67bfe372f0b4139",
+    "initial_report_sha256": "22d119f0bc60ce6bb960a2b51942601d0d67522b99571bdec2e1fd0ea7538419",
+    "patches": [
+      {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/simdcomp/patches/0001-fastset-width32-defined-mask.patch",
+        "sha256": "3ee59c3b5b646e9f102adf8ae85f91de6d3507142b18341f3917b37a27538c94",
+        "bytes": 404
+      },
+      {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/simdcomp/patches/0002-empty-and-missing-search-bounds.patch",
+        "sha256": "851a521bd796c2f5806c4375d66b1a749cd1f25ace50ba36ee38cc335a8c74b2",
+        "bytes": 773
+      },
+      {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/simdcomp/patches/0003-width32-absolute-mutation-semantics.patch",
+        "sha256": "d1a380d6fda4fbb750b6b5d9e0ab3a9014c094ae94dc388e3a398c7a29ede0e0",
+        "bytes": 1430
+      },
+      {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/simdcomp/patches/avx2/0001-zero-width-unpack-byte-count.patch",
+        "sha256": "1a9fd0334cfa279977cb615dd6f2069536dd253554491f3746432a5e9e2206f6"
+      }
+    ],
+    "actual_compiled_dependency_counts": {
+      "original/release": 199,
+      "original/debug": 191,
+      "original/sanitizer": 199,
+      "patched/release": 199,
+      "patched/debug": 191,
+      "patched/sanitizer": 199
+    },
+    "original_failures_retained": 16,
+    "avx2_cases_per_profile": 1584,
+    "bounded_abi": "PENDING",
+    "python_sdk": "PENDING",
+    "benchmark_five_layers": "PENDING",
+    "full_logical_entry_qualified": false,
+    "auditor_sha256": "d7bb5beb8c4fec5e5147edee90e0fe0177b2a4f4b3429b7e9fb7c740734b85aa"
+  },
+  "native": {
+    "status": "PASS",
+    "qualification_scope": "BOUNDED_UINT32_SSE4_1_AND_AVX2_ABI_ONLY",
+    "source_report_sha256": "b8b8d322bdf9cb788a87717923213697265836767ff0d78ea67bfe372f0b4139",
+    "native_report_sha256": "cdac8fd93d642dd58bdf0a2867c81750889e44a8845b3c623c5961f12792411c",
+    "initial_abi_failure_report_sha256": "ce1cdde914dcaeb14e09ed74aecfeb55b69dbb1a086152d9dcc3463ed629aaff",
+    "cases_per_profile_and_linkage": 31878,
+    "build_dependency_counts": {
+      "release": 163,
+      "debug": 158,
+      "sanitizer": 163
+    },
+    "original_abi_fault_paths_retained": 6,
+    "platform": "LINUX_X86_64_SSE4_1_AVX2",
+    "leak_detection": "DISABLED",
+    "python_sdk": "PENDING",
+    "benchmark_five_layers": "PENDING",
+    "checked_int64_timestamp": "PENDING",
+    "full_logical_entry_qualified": false,
+    "auditor_sha256": "df8d34b89d2f678746c5789496e6010ab454f9606cfb711f530bf67e13be1a7a"
+  },
+  "sdk": {
+    "status": "PASS",
+    "qualification_scope": "DIRECT_PYTHON_UINT32_PLAIN_SSE4_1_AND_AVX2_SDK",
+    "sdk_report_sha256": "1219f8fb1ae94c1409fac4cca498e86de5bbbf4a55f9df3dc69d17ca72761c29",
+    "native_report_sha256": "cdac8fd93d642dd58bdf0a2867c81750889e44a8845b3c623c5961f12792411c",
+    "test_count": 504,
+    "actual_imported_project_file_count": 74,
+    "source_snapshot_sha256": "41373e08a17964b31356f47cbd78aab8bf1a5b74a3dee8b51377b49c07394873",
+    "keys": [
+      "simdcomp-u32"
+    ],
+    "python_sdk": "QUALIFIED_SCOPED_UINT32_ONLY",
+    "benchmark_registration": "PENDING",
+    "benchmark_five_layers": "PENDING",
+    "full_logical_entries_qualified": false,
+    "auditor_sha256": "8c2e1e5112f14cfbd8dd424fd510f7868557afd2496e38ea357212694e39ed11"
+  }
+}

@@ -22,15 +22,7 @@ from tscompbench.execution.protocol import (
 )
 from tscompbench.ids import canonical_json_bytes, stable_id
 
-_KINDS = {
-    "chimp": 1,
-    "chimp128": 2,
-    "elf-plus": 3,
-    "self-star": 4,
-    "prometheus-xor-chunk": 5,
-    "elf": 6,
-    "elf-star": 7,
-}
+_KINDS = {"chimp": 1, "chimp128": 2, "elf-plus": 3, "self-star": 4, "elf": 6, "elf-star": 7}
 _SOURCE_DOMAIN_REASONS = {
     "chimp": {"canonical NaN is END"},
     "chimp128": {"canonical NaN is END"},
@@ -65,7 +57,7 @@ _SOURCE_DOMAIN_REASONS = {
 _PREFIX = struct.Struct("<8sI32s")
 _INPUT = struct.Struct("<4sBBHIQ")
 _FRAME = struct.Struct("<4sBBHIQQ")
-_MAGIC = b"TSCBRW1\0"
+_MAGIC = b"TSCBRW1\x00"
 _MAX_ELEMENTS = 16777216
 
 
@@ -85,14 +77,14 @@ class _Buffer(ctypes.Structure):
 
 
 def _buffer(address: int, capacity: int, used: int = 0) -> _Buffer:
-    shape, strides = (ctypes.c_uint64 * 8)(), (ctypes.c_int64 * 8)()
-    shape[0], strides[0] = used, 1
+    shape, strides = ((ctypes.c_uint64 * 8)(), (ctypes.c_int64 * 8)())
+    shape[0], strides[0] = (used, 1)
     return _Buffer(address, capacity, used, 11, 1, shape, strides, 1, 0, 0)
 
 
 def _storage(data: bytes) -> tuple[bytearray, Any]:
     value = bytearray(data) or bytearray(1)
-    return value, (ctypes.c_ubyte * len(value)).from_buffer(value)
+    return (value, (ctypes.c_ubyte * len(value)).from_buffer(value))
 
 
 class _Library:
@@ -134,8 +126,8 @@ class _Library:
         }
         for name, (args, result) in signatures.items():
             fn = getattr(lib, name)
-            fn.argtypes, fn.restype = args, result
-        p, n = ctypes.c_char_p(), ctypes.c_uint64()
+            fn.argtypes, fn.restype = (args, result)
+        p, n = (ctypes.c_char_p(), ctypes.c_uint64())
         if lib.tscb_get_abi_version() != 1 or lib.tscb_get_manifest_json(
             ctypes.byref(p), ctypes.byref(n)
         ):
@@ -175,15 +167,17 @@ class RewriteLosslessSession:
             algorithm not in _KINDS
             or set(parameters) - {"block_size", "isa"}
             or parameters.get("isa", "SCALAR") != "SCALAR"
-            or type(self.block_size) is not int
-            or not 1
-            <= self.block_size
-            <= (
-                16384
-                if algorithm in {"self-star", "elf"}
-                else 1000
-                if algorithm == "elf-star"
-                else 65535
+            or (type(self.block_size) is not int)
+            or (
+                not 1
+                <= self.block_size
+                <= (
+                    16384
+                    if algorithm in {"self-star", "elf"}
+                    else 1000
+                    if algorithm == "elf-star"
+                    else 65535
+                )
             )
         ):
             raise ExecutionContractError("unregistered rewrite parameters")
@@ -200,16 +194,18 @@ class RewriteLosslessSession:
         if status == 3:
             raise OutputCapacityError(f"{self.algorithm} {operation}: output capacity")
         if status:
-            pointer, size = ctypes.c_char_p(), ctypes.c_uint64()
+            pointer, size = (ctypes.c_char_p(), ctypes.c_uint64())
             detail = ""
-            if self._handle.value and not self._native.lib.tscb_get_last_error(
-                self._handle, ctypes.byref(pointer), ctypes.byref(size)
+            if self._handle.value and (
+                not self._native.lib.tscb_get_last_error(
+                    self._handle, ctypes.byref(pointer), ctypes.byref(size)
+                )
             ):
                 detail = ctypes.string_at(pointer, size.value).decode(errors="replace")
             if (
                 status == 4
                 and operation == "compress"
-                and detail in _SOURCE_DOMAIN_REASONS.get(self.algorithm, set())
+                and (detail in _SOURCE_DOMAIN_REASONS.get(self.algorithm, set()))
             ):
                 raise SourceDomainError(detail)
             raise ExecutionContractError(
@@ -219,34 +215,19 @@ class RewriteLosslessSession:
     def _validate(
         self, routed: RoutedInput
     ) -> tuple[np.dtype[Any], tuple[LogicalBuffer, ...], bool]:
-        system = self.algorithm == "prometheus-xor-chunk"
         if (
-            routed.track is not (BenchmarkTrack.SYSTEM if system else BenchmarkTrack.VALUE)
+            routed.track is not BenchmarkTrack.VALUE
             or not 1 <= routed.m <= 65535
             or routed.n * routed.m > _MAX_ELEMENTS
-            or routed.validity_reference is not None
+            or (routed.validity_reference is not None)
         ):
             raise ExecutionContractError("unsupported rewrite track/dimensions/validity")
         buffers = routed.buffers
-        if system:
-            if (
-                not buffers
-                or buffers[0].name != "timestamp"
-                or buffers[0].array.dtype.str != "<i8"
-                or buffers[0].array.shape != (routed.n,)
-                or buffers[0].logical_bits != routed.n * 64
-            ):
-                raise ExecutionContractError("Prometheus requires paired signed int64 timestamps")
-            if routed.timestamp_reference is not None and not np.array_equal(
-                routed.timestamp_reference, buffers[0].array
-            ):
-                raise ExecutionContractError("timestamp pairing reference mismatch")
-            buffers = buffers[1:]
         matrix = len(buffers) == 1 and buffers[0].array.ndim == 2
         if not buffers or len(buffers) != (1 if matrix else routed.m):
             raise ExecutionContractError("rewrite requires all value columns")
         dtype = buffers[0].array.dtype
-        if dtype.str not in ({"<f8"} if system else {"<f4", "<f8"}):
+        if dtype.str not in {"<f4", "<f8"}:
             raise ExecutionContractError("unsupported rewrite dtype")
         for item in buffers:
             if (
@@ -266,7 +247,7 @@ class RewriteLosslessSession:
             or routed.canonical_raw_bits % 8
         ):
             raise ExecutionContractError("rewrite raw bit accounting mismatch")
-        return dtype, buffers, matrix
+        return (dtype, buffers, matrix)
 
     def _input(self, routed: RoutedInput) -> bytes:
         dtype, buffers, matrix = self._validate(routed)
@@ -275,11 +256,7 @@ class RewriteLosslessSession:
             if matrix
             else [np.ascontiguousarray(b.array).tobytes() for b in buffers]
         )
-        timestamp = (
-            np.ascontiguousarray(routed.buffers[0].array).tobytes()
-            if self.algorithm == "prometheus-xor-chunk"
-            else b""
-        )
+        timestamp = b""
         return (
             _INPUT.pack(
                 b"RWI1", dtype.itemsize, _KINDS[self.algorithm], routed.m, self.block_size, routed.n
@@ -348,7 +325,7 @@ class RewriteLosslessSession:
             "compress",
         )
         destination[: len(preamble)] = preamble
-        self._header, self._updated = header, True
+        self._header, self._updated = (header, True)
         return len(preamble) + target.used_bytes
 
     def finalize(self, destination: memoryview) -> int:
@@ -372,43 +349,43 @@ class RewriteLosslessSession:
             info = json.loads(header)
         except (ValueError, UnicodeError) as error:
             raise ExecutionContractError("rewrite descriptor invalid") from error
-        system = self.algorithm == "prometheus-xor-chunk"
         if (
             not isinstance(info, dict)
             or info.get("schema_version") != "tscb.rewrite-container.v1"
             or info.get("algorithm") != self.algorithm
-            or info.get("track") != ("SYSTEM" if system else "VALUE")
-            or info.get("dtype") not in ({"<f8"} if system else {"<f4", "<f8"})
-            or info.get("block_size") != self.block_size
-            or type(info.get("matrix")) is not bool
-            or (system and not isinstance(info.get("segment_plan_id"), str))
+            or (info.get("track") != "VALUE")
+            or (info.get("dtype") not in {"<f4", "<f8"})
+            or (info.get("block_size") != self.block_size)
+            or (type(info.get("matrix")) is not bool)
         ):
             raise ExecutionContractError("rewrite descriptor identity mismatch")
-        n, m, descriptors = info.get("rows"), info.get("columns"), info.get("buffers")
+        n, m, descriptors = (info.get("rows"), info.get("columns"), info.get("buffers"))
         if (
             type(n) is not int
             or type(m) is not int
             or n < 0
-            or not 1 <= m <= 65535
-            or n * m > _MAX_ELEMENTS
-            or not isinstance(descriptors, list)
-            or len(descriptors) != (1 if info["matrix"] else m) + int(system)
+            or (not 1 <= m <= 65535)
+            or (n * m > _MAX_ELEMENTS)
+            or (not isinstance(descriptors, list))
+            or (len(descriptors) != (1 if info["matrix"] else m) + int(False))
         ):
             raise ExecutionContractError("rewrite descriptor dimensions invalid")
         names: set[str] = set()
-        for i, b in enumerate(descriptors):
-            timestamp = system and i == 0
-            shape = [n, m] if info["matrix"] and not timestamp else [n]
+        for b in descriptors:
+            timestamp = False
+            shape = [n, m] if info["matrix"] and (not timestamp) else [n]
             dtype = "<i8" if timestamp else info["dtype"]
-            bits = n * (m if info["matrix"] and not timestamp else 1) * np.dtype(dtype).itemsize * 8
+            bits = (
+                n * (m if info["matrix"] and (not timestamp) else 1) * np.dtype(dtype).itemsize * 8
+            )
             if (
                 not isinstance(b, dict)
                 or b.get("dtype") != dtype
                 or b.get("shape") != shape
-                or b.get("logical_bits") != bits
-                or not isinstance(b.get("name"), str)
-                or not b["name"]
-                or b["name"] in names
+                or (b.get("logical_bits") != bits)
+                or (not isinstance(b.get("name"), str))
+                or (not b["name"])
+                or (b["name"] in names)
                 or (timestamp and b["name"] != "timestamp")
                 or (not timestamp and b["name"] in {"timestamp", "validity"})
             ):
@@ -435,7 +412,7 @@ class RewriteLosslessSession:
             expected_records,
         ):
             raise ExecutionContractError("rewrite native/descriptor geometry mismatch")
-        pos, payload = _FRAME.size, 0
+        pos, payload = (_FRAME.size, 0)
         for _ in range(records):
             if pos > len(frame) - 8 - 12:
                 raise ExecutionContractError("truncated rewrite block record")
@@ -447,7 +424,7 @@ class RewriteLosslessSession:
             pos += size
         if pos != len(frame) - 8:
             raise ExecutionContractError("rewrite frame trailing bytes")
-        return header, info, frame, payload
+        return (header, info, frame, payload)
 
     def accounting(self, stream: bytes, routed: RoutedInput) -> AccountingLedger:
         if not self._finalized:
@@ -455,9 +432,7 @@ class RewriteLosslessSession:
         header, _, frame, payload = self._parse(stream)
         if header != self._header:
             raise ExecutionContractError("rewrite descriptor changed after encode")
-        component = (
-            "unallocated_shared_bits" if self.algorithm == "prometheus-xor-chunk" else "value_bits"
-        )
+        component = "value_bits"
         return AccountingLedger.create(
             track=routed.track,
             canonical_raw_bits=routed.canonical_raw_bits,
@@ -471,10 +446,9 @@ class RewriteLosslessSession:
 
     def decompress(self, stream: bytes) -> DecodedOutput:
         _, info, frame, _ = self._parse(stream)
-        system = self.algorithm == "prometheus-xor-chunk"
-        n, m = info["rows"], info["columns"]
+        n, m = (info["rows"], info["columns"])
         dtype = np.dtype(info["dtype"])
-        expected = n * (m + int(system)) * dtype.itemsize
+        expected = n * (m + int(False)) * dtype.itemsize
         storage, arr = _storage(frame)
         source = _buffer(ctypes.addressof(arr), len(frame), len(frame))
         output = bytearray(max(1, expected))
@@ -489,15 +463,13 @@ class RewriteLosslessSession:
         if target.used_bytes != expected:
             raise ExecutionContractError("rewrite decoded length mismatch")
         buffers = []
-        pos = n * 8 if system else 0
+        pos = 0
         matrix = np.frombuffer(output, dtype=dtype, count=n * m, offset=pos).reshape(m, n).T
         for i, descriptor in enumerate(info["buffers"]):
-            if system and i == 0:
-                array = np.frombuffer(output, dtype="<i8", count=n).copy()
-            elif info["matrix"]:
+            if info["matrix"]:
                 array = np.ascontiguousarray(matrix)
             else:
-                array = np.ascontiguousarray(matrix[:, i - int(system)])
+                array = np.ascontiguousarray(matrix[:, i - int(False)])
             array.flags.writeable = False
             buffers.append(LogicalBuffer(descriptor["name"], array, descriptor["logical_bits"]))
         return DecodedOutput(tuple(buffers))

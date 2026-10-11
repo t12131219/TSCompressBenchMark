@@ -10,7 +10,7 @@ from .lzss_common import _PREFIX as _PREFIX
 from .lzss_common import _buffer as _buffer
 from .lzss_common import _LzssSession, _LzssVariant
 
-_RUST_VARIANT = _LzssVariant(
+_CPP_VARIANT = _LzssVariant(
     algorithm="lzss-raw",
     stream="LZSS_EI10_EJ4_C32",
     dictionary="NONE",
@@ -42,4 +42,4 @@ class LzssRawAdapter:
 
 
 class LzssRawSession(_LzssSession):
-    _VARIANT = _RUST_VARIANT
+    _VARIANT = _CPP_VARIANT

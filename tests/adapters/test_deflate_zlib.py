@@ -1,16 +1,14 @@
 from __future__ import annotations
 
 import hashlib
-import subprocess
-import sys
 import zlib
 from pathlib import Path
 
 import numpy as np
 import pytest
 
-from tscompbench.adapters import DeflateZlibAdapter
 from tscompbench.adapters.deflate_zlib import _PREFIX, DeflateZlibSession
+from tscompbench.adapters.factory import create_adapter
 from tscompbench.codecs import CodecRegistry, SourceRegistry
 from tscompbench.contracts import BenchmarkTrack
 from tscompbench.execution.protocol import ExecutionContractError, LogicalBuffer, RoutedInput
@@ -19,25 +17,31 @@ from tscompbench.execution.routing import hash_logical_buffers
 from tscompbench.validation import run_boundary_suite
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
-LIBRARY = PROJECT_ROOT / "build/adapters/deflate_zlib/release/libtscb_deflate_zlib.so"
 
 
 def _adapter_and_manifest():
-    if not LIBRARY.is_file():
-        subprocess.run(
-            [sys.executable, "tools/build_codec.py", "deflate-zlib", "--profile", "release"],
-            cwd=PROJECT_ROOT, check=True,
-        )
     sources = SourceRegistry(PROJECT_ROOT / "registry/sources")
     manifest = CodecRegistry(PROJECT_ROOT / "registry/codecs", sources).get("deflate-zlib")
-    return DeflateZlibAdapter(LIBRARY, manifest.document["adapter"]), manifest
+    return create_adapter(PROJECT_ROOT, manifest), manifest
 
 
 def _route(n=4):
-    bits = np.resize(np.asarray([
-        0, 0x8000000000000000, 0x7FF0000000000000, 0xFFF0000000000000,
-        0x7FF8000000000001, 0x7FF8000000000123, 1, 0x3FF0000000000001,
-    ], dtype="<u8"), n)
+    bits = np.resize(
+        np.asarray(
+            [
+                0,
+                0x8000000000000000,
+                0x7FF0000000000000,
+                0xFFF0000000000000,
+                0x7FF8000000000001,
+                0x7FF8000000000123,
+                1,
+                0x3FF0000000000001,
+            ],
+            dtype="<u8",
+        ),
+        n,
+    )
     arrays = (bits.view("<f8"), bits[::-1].copy().view("<f8"))
     for array in arrays:
         array.flags.writeable = False
@@ -46,8 +50,13 @@ def _route(n=4):
         for index, array in enumerate(arrays)
     )
     return RoutedInput(
-        dataset_id="dataset:deflate-adapter", track=BenchmarkTrack.VALUE, buffers=buffers,
-        timestamp_reference=None, validity_reference=None, n=n, m=2,
+        dataset_id="dataset:deflate-adapter",
+        track=BenchmarkTrack.VALUE,
+        buffers=buffers,
+        timestamp_reference=None,
+        validity_reference=None,
+        n=n,
+        m=2,
         canonical_raw_bits=sum(item.logical_bits for item in buffers),
         input_sha256=hash_logical_buffers(buffers),
     )
@@ -73,6 +82,8 @@ def _chunk(routed, start, stop):
         canonical_raw_bits=sum(item.logical_bits for item in buffers),
         input_sha256=hash_logical_buffers(buffers),
     )
+
+
 def test_multiple_buffers_ieee_bits_envelope_and_external_decoder():
     adapter, _ = _adapter_and_manifest()
     routed = _route(8)
@@ -110,7 +121,9 @@ def test_bound_tails_and_parameter_extremes(level, window, n):
 def test_framework_boundary_suite():
     adapter, manifest = _adapter_and_manifest()
     report = run_boundary_suite(
-        adapter, manifest, BenchmarkTrack.VALUE,
+        adapter,
+        manifest,
+        BenchmarkTrack.VALUE,
         {"block_size": 8, "compression_level": 6, "window_bits": 15, "isa": "SCALAR"},
     )
     assert report.passed, [item for item in report.observations if item.status != "PASS"]
@@ -147,9 +160,7 @@ def test_native_streaming_session_preserves_state_across_blocks(n, block_size):
             routed, header
         )
         decoded = session.stream_decompress(stream)
-        observed = tuple(
-            decoded.by_name()[item.name].array.tobytes() for item in routed.buffers
-        )
+        observed = tuple(decoded.by_name()[item.name].array.tobytes() for item in routed.buffers)
         assert observed == before
         ledger = session.stream_accounting(stream, routed)
         assert ledger.final_bits == len(stream) * 8
@@ -168,9 +179,7 @@ def test_native_streaming_session_preserves_state_across_blocks(n, block_size):
 def test_streaming_decoder_rejects_nonexact_stream(mutation):
     adapter, _ = _adapter_and_manifest()
     routed = _route(9)
-    session = adapter.create_stream_session(
-        {"stream_decode_chunk_bytes": 2, "block_size": 4}
-    )
+    session = adapter.create_stream_session({"stream_decode_chunk_bytes": 2, "block_size": 4})
     try:
         session.stream_start(routed)
         first = session.stream_push(_chunk(routed, 0, 4)).emitted
@@ -253,9 +262,10 @@ def test_independent_decoder_rejects_nonexact_or_corrupt_streams(mutation):
     result = perform_roundtrip(adapter, _route(), {})
     container = result.encoded.stream
     _, stream = DeflateZlibSession._parse_container(container)
-    prefix = container[:-len(stream)]
+    prefix = container[: -len(stream)]
     altered = {
-        "truncated": stream[:-1], "trailing": stream + b"x",
+        "truncated": stream[:-1],
+        "trailing": stream + b"x",
         "concatenated": stream + stream,
         "checksum": stream[:-1] + bytes([stream[-1] ^ 1]),
         "header": bytes([stream[0] ^ 1]) + stream[1:],
@@ -269,10 +279,15 @@ def test_independent_decoder_rejects_nonexact_or_corrupt_streams(mutation):
         session.close()
 
 
-@pytest.mark.parametrize("parameters", [
-    {"compression_level": -1}, {"compression_level": 10},
-    {"window_bits": 8}, {"window_bits": 16},
-])
+@pytest.mark.parametrize(
+    "parameters",
+    [
+        {"compression_level": -1},
+        {"compression_level": 10},
+        {"window_bits": 8},
+        {"window_bits": 16},
+    ],
+)
 def test_invalid_parameters_rejected(parameters):
     adapter, _ = _adapter_and_manifest()
     with pytest.raises(ExecutionContractError):

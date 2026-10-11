@@ -1,12 +1,17 @@
 from __future__ import annotations
 
+import hashlib
+import os
+import time
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Any
 
 from tscompbench.adapters.compatibility import CompatibilityDomainError
 from tscompbench.codecs import CodecManifest
 from tscompbench.contracts import RunStatus
 from tscompbench.datasets.canonical import CanonicalArtifact
+from tscompbench.ids import canonical_json_bytes
 from tscompbench.planning import BenchmarkTask
 from tscompbench.preprocess.runtime import reviewed_pipeline_executor, validate_pipeline_stages
 from tscompbench.validation import (
@@ -21,6 +26,7 @@ from tscompbench.validation import (
 from .isolation import run_isolated
 from .preparation import PreparedExecutionInput, prepare_execution_input
 from .protocol import CodecAdapter
+from .recovery import DecodeContext, bind_decode_context, decode_in_fresh_worker
 from .repetition import RoundTripObservation, perform_roundtrip
 from .routing import hash_logical_buffers, route_canonical_artifact
 
@@ -100,7 +106,17 @@ def preflight_task(
     parameters: dict[str, Any],
     *,
     cpu_affinity: tuple[int, ...] | None = None,
+    deadline_ns: int | None = None,
+    capture_directory: Path | None = None,
 ) -> tuple[PreflightResult, PreparedExecutionInput | None]:
+    if deadline_ns is not None and (type(deadline_ns) is not int or deadline_ns <= 0):
+        raise ValueError("preflight deadline must be a positive PERF_COUNTER_NS integer")
+    if deadline_ns is not None and time.perf_counter_ns() >= deadline_ns:
+        return _failure(
+            RunStatus.TIMEOUT,
+            "TRIAL_DEADLINE_EXHAUSTED_BEFORE_PREFLIGHT",
+            diagnostics={"absolute_deadline_ns": deadline_ns, "worker_launched": False},
+        ), None
     if task.status not in {RunStatus.PLANNED, RunStatus.ADAPTER_LOSSY_ROUTED}:
         return _failure(task.status, task.reason_code), None
     source_failure = _source_gate(source)
@@ -157,6 +173,7 @@ def preflight_task(
             timeout_seconds=timeout,
             memory_limit_bytes=memory_limit,
             cpu_affinity=cpu_affinity,
+            deadline_ns=deadline_ns,
         )
         if stage_call.status is not RunStatus.PASS:
             stage_status = {
@@ -175,6 +192,7 @@ def preflight_task(
                     "message": stage_call.message,
                     "exit_code": stage_call.exit_code,
                     "limit_method": stage_call.limit_method,
+                    "worker_lifecycle": stage_call.lifecycle_document(),
                 },
             ), prepared
         stage_evidence = stage_call.value
@@ -187,6 +205,7 @@ def preflight_task(
         timeout_seconds=timeout,
         memory_limit_bytes=memory_limit,
         cpu_affinity=cpu_affinity,
+        deadline_ns=deadline_ns,
     )
     if boundary_call.status is not RunStatus.PASS:
         return _failure(
@@ -198,6 +217,7 @@ def preflight_task(
                 "message": boundary_call.message,
                 "exit_code": boundary_call.exit_code,
                 "limit_method": boundary_call.limit_method,
+                "worker_lifecycle": boundary_call.lifecycle_document(),
             },
         ), prepared
     boundary = boundary_call.value
@@ -234,6 +254,7 @@ def preflight_task(
         timeout_seconds=timeout,
         memory_limit_bytes=memory_limit,
         cpu_affinity=cpu_affinity,
+        deadline_ns=deadline_ns,
     )
     if call.status is not RunStatus.PASS:
         exception_status = {
@@ -253,6 +274,7 @@ def preflight_task(
                 "message": call.message,
                 "exit_code": call.exit_code,
                 "limit_method": call.limit_method,
+                "worker_lifecycle": call.lifecycle_document(),
             },
         ), prepared
     observation = call.value
@@ -275,6 +297,12 @@ def preflight_task(
             and hash_logical_buffers(prepared.original.buffers) == prepared.original.input_sha256
         ),
         canary_intact=observation.canary_intact,
+        decode_context=DecodeContext.from_routed(
+            prepared.original,
+            task.compatibility,
+            adapter_id=adapter.adapter_id,
+            parameters=parameters,
+        ),
     )
     if correctness.status is not RunStatus.PASS:
         return PreflightResult(
@@ -288,6 +316,119 @@ def preflight_task(
             observation.encoded.stream_sha256,
             {},
         ), prepared
+    context = DecodeContext.from_routed(
+        prepared.original,
+        task.compatibility,
+        adapter_id=adapter.adapter_id,
+        parameters=parameters,
+    )
+    encoded = bind_decode_context(observation.encoded, context)
+    captured = {}
+    if capture_directory is not None:
+        capture_directory.mkdir(parents=True, exist_ok=True)
+        references = {}
+        for name, payload in (("stream.bin", encoded.stream), ("context.json", context.serialized)):
+            target = capture_directory / name
+            # An earlier attempt is evidence, even if its decoder later failed.
+            # Never replace its bytes with a new qualification observation.
+            with target.open("xb") as handle:
+                handle.write(payload)
+                handle.flush()
+                os.fsync(handle.fileno())
+            references["stream" if name == "stream.bin" else "context"] = {
+                "path": str(target.resolve()),
+                "sha256": hashlib.sha256(payload).hexdigest(),
+                "bytes": len(payload),
+            }
+        captured = {
+            **references,
+            "binding": {
+                "task_id": task.task_id,
+                "dataset_id": task.dataset_id,
+                "algorithm_id": task.algorithm_id,
+                "config_id": task.config_id,
+                "execution_path_hash": task.execution.execution_path_hash,
+                "track": task.track.value,
+                "input_sha256": prepared.original.input_sha256,
+                "canonical_raw_bits": prepared.original.canonical_raw_bits,
+                "adapter_id": adapter.adapter_id,
+                "parameters": parameters,
+            },
+        }
+        with (capture_directory / "binding.json").open("xb") as handle:
+            handle.write(canonical_json_bytes(captured) + b"\n")
+            handle.flush()
+            os.fsync(handle.fileno())
+    cold_call = run_isolated(
+        decode_in_fresh_worker,
+        Path(__file__).resolve().parents[3],
+        manifest.document,
+        manifest.key,
+        context.serialized,
+        encoded.stream,
+        encoded.stream_sha256,
+        type(adapter).__name__ == "SourceRejectCompositeAdapter",
+        timeout_seconds=timeout,
+        memory_limit_bytes=memory_limit,
+        cpu_affinity=cpu_affinity,
+        start_method="spawn",
+        deadline_ns=deadline_ns,
+    )
+    if cold_call.status is not RunStatus.PASS:
+        return _failure(
+            cold_call.status,
+            "INDEPENDENT_RECOVERY_WORKER_FAILED",
+            input_validation=input_validation,
+            boundary=boundary,
+            correctness=correctness,
+            diagnostics={
+                "exception_type": cold_call.exception_type,
+                "message": cold_call.message,
+                "worker_lifecycle": cold_call.lifecycle_document(),
+                "qualification_artifacts": captured,
+                "independent_recovery_worker_lifecycle": cold_call.lifecycle_document(),
+            },
+        ), prepared
+    cold_decoded, recovery_evidence = cold_call.value
+    cold_correctness = validate_common_correctness(
+        prepared.original,
+        cold_decoded,
+        task.compatibility,
+        loss_mode=task.compatibility.effective_loss_mode,
+        parameters=parameters,
+        deterministic_match=None,
+        input_immutable=True,
+        canary_intact=True,
+        decoded_is_restored=True,
+    )
+    if cold_correctness.status is not RunStatus.PASS:
+        return _failure(
+            cold_correctness.status,
+            "INDEPENDENT_RECOVERY_VALIDATION_FAILED",
+            input_validation=input_validation,
+            boundary=boundary,
+            correctness=cold_correctness,
+            diagnostics={
+                "independent_recovery": recovery_evidence,
+                "qualification_artifacts": captured,
+                "independent_recovery_worker_lifecycle": cold_call.lifecycle_document(),
+            },
+        ), prepared
+    if deadline_ns is not None and time.perf_counter_ns() >= deadline_ns:
+        return _failure(
+            RunStatus.TIMEOUT,
+            "TRIAL_DEADLINE_EXHAUSTED_DURING_PREFLIGHT_VALIDATION",
+            input_validation=input_validation,
+            boundary=boundary,
+            correctness=cold_correctness,
+            diagnostics={
+                "absolute_deadline_ns": deadline_ns,
+                "independent_recovery": recovery_evidence,
+                "qualification_artifacts": captured,
+                "independent_recovery_worker_lifecycle": cold_call.lifecycle_document(),
+                "deadline_scope": "SHARED_PREFLIGHT_AND_REPETITION_WALL_BOUNDARY",
+            },
+        ), prepared
     return (
         PreflightResult(
             RunStatus.PASS,
@@ -296,11 +437,14 @@ def preflight_task(
             input_validation,
             boundary,
             correctness,
-            observation.encoded.ledger.to_document(),
+            encoded.ledger.to_document(),
             observation.encoded.stream_sha256,
             {
                 "worker_limit_method": call.limit_method,
                 "preprocess_stage_validation": stage_evidence,
+                "independent_recovery": recovery_evidence,
+                "qualification_artifacts": captured,
+                "independent_recovery_worker_lifecycle": cold_call.lifecycle_document(),
             },
         ),
         prepared,

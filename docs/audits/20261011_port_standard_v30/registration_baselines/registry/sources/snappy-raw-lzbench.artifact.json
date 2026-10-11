@@ -1,0 +1,37 @@
+{
+  "schema_version": "tscb.source-artifact.v2",
+  "key": "snappy-raw-lzbench-1.2.2",
+  "kind": "VENDORED_BENCHMARK_SOURCE_CLOSURE",
+  "identity": {
+    "kind": "VENDORED_BENCHMARK_SOURCE_CLOSURE",
+    "key": "snappy-raw-lzbench-1.2.2",
+    "benchmark_repository": "https://github.com/inikep/lzbench.git",
+    "benchmark_commit": "fa871e66b3543a70fd4d060f7c12719343ff4ac3",
+    "benchmark_path": "lz/snappy",
+    "benchmark_version": "1.2.2",
+    "upstream_reference_repository": "https://github.com/google/snappy.git",
+    "upstream_reference_commit": "26aa88cbb235a35d4604d2dd5f5284566862de77",
+    "source_closure_sha256": "54e6576476ea5c5f654e8257ccbd247c7c7f4212d58fbae1cd44cc3d744f1128",
+    "copy_policy": "UNMODIFIED_LZBENCH_TRANSLATION_UNIT_CLOSURE",
+    "execution_variant": "RAW_SCALAR_SINGLE_THREAD_NO_DICTIONARY_NO_CHECKSUM"
+  },
+  "license": {
+    "spdx": "BSD-3-Clause",
+    "status": "RUN_ALLOWED",
+    "redistribution": "ALLOWED_WITH_LICENSE_NOTICE",
+    "files": ["adapters/snappy_raw/vendor/snappy/COPYING"]
+  },
+  "build": {
+    "recipe": "PYTHONPATH=src conda run -n CompressBench14 python tools/build_codec.py snappy-raw --profile all",
+    "patches": [],
+    "submodules": [],
+    "translation_units": [
+      "adapters/snappy_raw/native/tscb_snappy_raw.cc",
+      "adapters/snappy_raw/vendor/snappy/snappy-sinksource.cc",
+      "adapters/snappy_raw/vendor/snappy/snappy-stubs-internal.cc",
+      "adapters/snappy_raw/vendor/snappy/snappy.cc"
+    ],
+    "release_artifact": "build/adapters/snappy_raw/release/libtscb_snappy_raw.so",
+    "sanitizer_artifact": "build/adapters/snappy_raw/sanitizer/libtscb_snappy_raw.so"
+  }
+}

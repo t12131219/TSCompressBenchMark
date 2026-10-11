@@ -1,0 +1,236 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "tscb.task-spec.v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "dataset_id",
+    "logical_content_id",
+    "logical_schema",
+    "recovery",
+    "fidelity",
+    "cost_boundary",
+    "workload",
+    "state"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "tscb.task-spec.v1"
+    },
+    "dataset_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "logical_content_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "logical_schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "track",
+        "topology",
+        "dtypes",
+        "shape",
+        "axes",
+        "channel_ids",
+        "units",
+        "timestamp_unit",
+        "timestamp_epoch",
+        "validity",
+        "order",
+        "pairing"
+      ],
+      "properties": {
+        "track": {
+          "type": "string",
+          "enum": [
+            "VALUE",
+            "TIMESTAMP",
+            "SYSTEM"
+          ]
+        },
+        "topology": {
+          "type": "string",
+          "enum": [
+            "UTS",
+            "SYNCHRONOUS_MTS",
+            "ASYNCHRONOUS_MTS",
+            "NATIVE_ND_ARRAY"
+          ]
+        },
+        "dtypes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1,
+          "uniqueItems": false
+        },
+        "shape": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "minItems": 1,
+          "uniqueItems": false
+        },
+        "axes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1,
+          "uniqueItems": false
+        },
+        "channel_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "units": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1,
+          "uniqueItems": false
+        },
+        "timestamp_unit": {
+          "type": "string",
+          "minLength": 1
+        },
+        "timestamp_epoch": {
+          "type": "string",
+          "minLength": 1
+        },
+        "validity": {
+          "type": "string",
+          "enum": [
+            "NONE",
+            "ROW",
+            "CELL",
+            "PER_CHANNEL_RAGGED"
+          ]
+        },
+        "order": {
+          "const": "PRESERVE_ORIGINAL"
+        },
+        "pairing": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "recovery": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mode",
+        "null_semantics",
+        "coordinate_policy"
+      ],
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": [
+            "EXACT_GRID",
+            "APPROX_GRID"
+          ]
+        },
+        "null_semantics": {
+          "type": "string",
+          "enum": [
+            "BITWISE",
+            "SEMANTIC"
+          ]
+        },
+        "coordinate_policy": {
+          "type": "string",
+          "enum": [
+            "PRESERVE_ORIGINAL_GRID",
+            "NOT_APPLICABLE"
+          ]
+        }
+      }
+    },
+    "fidelity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "error_metric",
+        "threshold",
+        "unit",
+        "quality_metrics"
+      ],
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "LOSSLESS",
+            "FIXED_ERROR",
+            "QUALITY_CURVE"
+          ]
+        },
+        "error_metric": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "threshold": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "unit": {
+          "type": "string",
+          "minLength": 1
+        },
+        "quality_metrics": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        }
+      }
+    },
+    "cost_boundary": {
+      "type": "string",
+      "enum": [
+        "SCHEMA_BOUND_OBJECT",
+        "SELF_CONTAINED_OBJECT",
+        "NATIVE_COMPONENT"
+      ]
+    },
+    "workload": {
+      "type": "string",
+      "enum": [
+        "WHOLE_OBJECT",
+        "API_COMPONENT"
+      ]
+    },
+    "state": {
+      "type": "string",
+      "enum": [
+        "INDEPENDENT_OBJECT",
+        "CONTINUOUS_STREAM"
+      ]
+    }
+  }
+}

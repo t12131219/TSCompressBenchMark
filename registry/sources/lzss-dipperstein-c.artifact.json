@@ -30,7 +30,7 @@
     ]
   },
   "build": {
-    "recipe": "conda run -n CompressBench14 python tools/build_codec.py lzss-dipperstein-c --profile all",
+    "recipe": "conda run -n CompressBench14 python tools/build_codec.py lzss-dipperstein-c --profile all --output-root build/port-standard-v30-20261011/native-builds-v3",
     "patches": [
       "adapters/lzss_dipperstein/patches/0001-binary-tree-sentinel-bounds.patch"
     ],
@@ -46,7 +46,62 @@
       "adapters/lzss_dipperstein/vendor/lzss/tree.c",
       "adapters/lzss_dipperstein/vendor/lzss/bitfile/bitfile.c"
     ],
-    "release_artifact": "build/adapters/lzss_dipperstein_c/release/libtscb_lzss_dipperstein_c.so",
-    "sanitizer_artifact": "build/adapters/lzss_dipperstein_c/sanitizer/libtscb_lzss_dipperstein_c.so"
+    "release_artifact": "build/port-standard-v30-20261011/native-builds-v3/lzss_dipperstein_c/release/libtscb_lzss_dipperstein_c.so",
+    "sanitizer_artifact": "build/port-standard-v30-20261011/native-builds-v3/lzss_dipperstein_c/sanitizer/libtscb_lzss_dipperstein_c.so",
+    "current_build_records": [
+      {
+        "algorithm": "lzss-dipperstein-c",
+        "profile": "release",
+        "record": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/lzss_dipperstein_c/release/build-record.json",
+          "sha256": "2aa36aceeb66eb9f0a6617798d671e7fae3e20c2d3009d5670c00ed6d1195f4a"
+        },
+        "artifact": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/lzss_dipperstein_c/release/libtscb_lzss_dipperstein_c.so",
+          "sha256": "64639cd65686096f31d46137ae2b70f8ab028e3f673152866e4e53e92f24d8e5"
+        },
+        "compile_commands_sha256": "69d72eea875e54026bfe620ade803408368f9e176e19299f4f9ffc551fae5302",
+        "dependency_capture": "ACTUAL_PER_TU_MD_COMPILATION_AND_LINK"
+      },
+      {
+        "algorithm": "lzss-dipperstein-c",
+        "profile": "sanitizer",
+        "record": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/lzss_dipperstein_c/sanitizer/build-record.json",
+          "sha256": "f8cffa821b87840c7e8332f333e56d987246a620812054bbafa6f816ece9bd3c"
+        },
+        "artifact": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/lzss_dipperstein_c/sanitizer/libtscb_lzss_dipperstein_c.so",
+          "sha256": "3e0c64a60b9bda6b4d1a7e6ae8b89342fd1d6410577705c87df46650b189c380"
+        },
+        "compile_commands_sha256": "54416fec3c9de945e9de396ea3c1189e3295ae44fb220ddbc7c52f3b84dfb404",
+        "dependency_capture": "ACTUAL_PER_TU_MD_COMPILATION_AND_LINK"
+      }
+    ],
+    "current_native_qualification": [
+      {
+        "algorithm": "lzss-dipperstein-c",
+        "profile": "release",
+        "build_dependency_status": "PASS",
+        "native_suite_status": "NOT_RUN_IN_THIS_DRIVER",
+        "evidence": {
+          "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/qualification.json",
+          "sha256": "b86173f34c30d175552de327cc446dd8480aa02dd7a9ae56f12f60c0d93db174"
+        },
+        "source_full_parity": "NOT_ASSERTED"
+      },
+      {
+        "algorithm": "lzss-dipperstein-c",
+        "profile": "sanitizer",
+        "build_dependency_status": "PASS",
+        "native_suite_status": "NOT_RUN_IN_THIS_DRIVER",
+        "evidence": {
+          "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/qualification.json",
+          "sha256": "b86173f34c30d175552de327cc446dd8480aa02dd7a9ae56f12f60c0d93db174"
+        },
+        "source_full_parity": "NOT_ASSERTED"
+      }
+    ],
+    "current_build_dependency_scope": "ACTUAL_PER_TU_MD_HEADERS_OBJECTS_SELECTED_TOOLCHAIN_AND_DYNAMIC_RUNTIME_PARTIAL_STATIC_LINK_CLOSURE"
   }
 }

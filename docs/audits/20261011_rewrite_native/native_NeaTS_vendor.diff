@@ -1,0 +1,49 @@
+--- /home/fzg/PycharmProjects/Compression_Source_Code/Source_Code/_repos/and-gue_NeaTS/include/NeaTS.hpp	2026-09-09 21:14:12.115627621 +0800
++++ adapters/neats/vendor/neats/include/NeaTS.hpp	2026-10-10 14:30:47.569981000 +0800
+@@ -12,7 +12,6 @@
+ #include <execution>
+ #include <immintrin.h>
+ #include <functional>
+-#include <stdfloat>
+ 
+ namespace pfa::neats {
+     namespace stdx = std::experimental;
+@@ -333,7 +332,7 @@
+ 
+             _n = n;
+             std::vector<int64_t> distance(n + 1, std::numeric_limits<int64_t>::max());
+-            auto nrows = std::to_underlying(poa_t::approx_fun_t::COUNT); // cols
++            auto nrows = static_cast<size_t>(poa_t::approx_fun_t::COUNT); // cols
+             auto ncols = max_bpc <= 1 ? size_t{1} : size_t{max_bpc}; // rows
+             auto nmodels = ncols * nrows;
+             std::vector<std::pair<std::make_signed_t<x_t>, std::make_signed_t<x_t>>> frontier(nmodels, {0, 0});
+@@ -426,7 +425,7 @@
+ 
+             std::reverse(mem_out.begin(), mem_out.end());
+             //make_residuals(begin, end);
+-            simd_make_residuals(begin);
++            make_residuals(begin, end);
+         }
+ 
+         template<typename It>
+@@ -1497,11 +1496,11 @@
+                     ostream << (uint64_t) (s.value()) << ",";
+                 } else if ((typename poa_t::approx_fun_t) (mt) == poa_t::approx_fun_t::Quadratic) {
+                     t0 = coefficients_t0[offset_coefficients_t0++];
+-                    ostream << "," << (std::float64_t) (t0.value());
++                    ostream << "," << static_cast<double>(t0.value());
+                 } else {
+                     ostream << ",";
+                 }
+-                ostream << "," << (std::float64_t) (t1) << "," << (std::float64_t) (t2) << ",";
++                ostream << "," << static_cast<double>(t1) << "," << static_cast<double>(t2) << ",";
+                 ostream << (end - start) << ",";
+                 auto model = poa_t::piecewise_non_linear_approximation::make_fun((typename poa_t::approx_fun_t) (mt),
+                                                                                  start, s, t0, t1, t2);
+@@ -1561,4 +1560,4 @@
+ 
+ 
+     };
+-}
+\ 文件末尾没有换行符
++}

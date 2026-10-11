@@ -8,7 +8,6 @@ from .compatibility import (
     validate_prepared_input,
 )
 from .deflate_zlib import DeflateZlibAdapter
-from .delta_varint import DeltaVarintAdapter
 from .entropy_fse import EntropyAdapter
 from .factory import AdapterFactoryError, adapter_artifacts, create_adapter
 from .lz4_frame import Lz4FrameAdapter
@@ -33,7 +32,6 @@ __all__ = [
     "BrotliStreamAdapter",
     "Bzip2StreamAdapter",
     "DeflateZlibAdapter",
-    "DeltaVarintAdapter",
     "EntropyAdapter",
     "XzStreamAdapter",
     "Lz4FrameAdapter",

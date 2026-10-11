@@ -1,6 +1,6 @@
 {
   "schema_version": "tscb.source-onboarding.v2",
-  "source_artifact_id": "v2:source-artifact:sha256:3901f0276c7c6c841174b4a0267e92ea8e1887e68b70bb8d0e71fa9e66784d10",
+  "source_artifact_id": "v2:source-artifact:sha256:42743b152ad55dde6d0af6e4f6bf558bb709f22fe9bc37371af15b0144f650bb",
   "repository": "https://github.com/and-gue/NeaTS.git",
   "commit": "2d804ff492e45222e841dc1a50904476fa64f4a0",
   "dirty": false,
@@ -30,7 +30,8 @@
     "adapters/neats/tests/run_native_tests.py",
     "tests/adapters/test_neats.py",
     "configs/experiments/neats-leats-qualification.toml",
-    "configs/experiments/neats-leats-formal.toml"
+    "configs/experiments/neats-leats-formal.toml",
+    "tools/verify_neats_patch_replay.py"
   ],
   "license_files": [
     "adapters/neats/vendor/neats/README.upstream.md",
@@ -43,11 +44,21 @@
     "vendored SDSL-lite headers (GPL-3.0-or-later and BSD-3-Clause notices retained)",
     "vendored sux headers (GPL-3.0 with runtime exception notices retained)"
   ],
-  "object_level_candidates": ["P1_STANDALONE_CODEC"],
+  "object_level_candidates": [
+    "P1_STANDALONE_CODEC"
+  ],
   "input_contract": {
     "kind": "HOMOGENEOUS_SIGNED_INTEGER_VALUE_COLUMNS",
-    "dtypes": ["int8", "little-endian int16", "little-endian int32", "little-endian int64"],
-    "topologies": ["UTS", "SYNCHRONOUS_MTS"],
+    "dtypes": [
+      "int8",
+      "little-endian int16",
+      "little-endian int32",
+      "little-endian int64"
+    ],
+    "topologies": [
+      "UTS",
+      "SYNCHRONOUS_MTS"
+    ],
     "maximum_rows": 65536,
     "maximum_columns": 64,
     "maximum_elements": 262144,
@@ -82,14 +93,76 @@
     {
       "profile": "release",
       "suite": "both variants across int8/int16/int32/int64 boundaries, full decode, native random access, corruption, canary and undersized output",
-      "status": "PASS",
-      "evidence": "conda run -n CompressBench14 python adapters/neats/tests/run_native_tests.py"
+      "status": "UNKNOWN_NEW_ID_REVALIDATION_REQUIRED",
+      "evidence": "conda run -n CompressBench14 python adapters/neats/tests/run_native_tests.py",
+      "evidence_kind": "HISTORICAL_NATIVE_ABI_QUALIFICATION"
     },
     {
       "profile": "sanitizer",
       "suite": "same native ABI suite under ASan/UBSan; LSan disabled because managed ptrace is incompatible",
+      "status": "UNKNOWN_NEW_ID_REVALIDATION_REQUIRED",
+      "evidence": "ASAN_OPTIONS=detect_leaks=0; UBSAN_OPTIONS=halt_on_error=1",
+      "evidence_kind": "HISTORICAL_NATIVE_ABI_QUALIFICATION"
+    },
+    {
+      "profile": "provenance",
+      "suite": "frozen source plus executable patches equals all 172 vendor files; does not execute source codec",
       "status": "PASS",
-      "evidence": "ASAN_OPTIONS=detect_leaks=0; UBSAN_OPTIONS=halt_on_error=1"
+      "evidence": "docs/audits/20261011_rewrite_native/neats_patch_replay.json",
+      "evidence_kind": "CURRENT_PATCH_REPLAY_AND_CONTENT_VERIFICATION",
+      "log_sha256": "17045ed564580e7f43349251ae56ea3e58437bec48df1da5be2234a8a1fcaf48"
+    },
+    {
+      "algorithm": "leats-lossless-i64",
+      "profile": "release",
+      "name": "current build dependency and finite native API verification",
+      "status": "PASS",
+      "evidence": {
+        "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/qualification.json",
+        "sha256": "b86173f34c30d175552de327cc446dd8480aa02dd7a9ae56f12f60c0d93db174"
+      },
+      "evidence_kind": "CURRENT_REAL_BUILD_DEPENDENCIES_WITH_SELECTED_NATIVE_TESTS",
+      "native_suite_status": "PASS",
+      "source_full_parity": "NOT_ASSERTED"
+    },
+    {
+      "algorithm": "leats-lossless-i64",
+      "profile": "sanitizer",
+      "name": "current build dependency and finite native API verification",
+      "status": "PASS",
+      "evidence": {
+        "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/qualification.json",
+        "sha256": "b86173f34c30d175552de327cc446dd8480aa02dd7a9ae56f12f60c0d93db174"
+      },
+      "evidence_kind": "CURRENT_REAL_BUILD_DEPENDENCIES_WITH_SELECTED_NATIVE_TESTS",
+      "native_suite_status": "PASS",
+      "source_full_parity": "NOT_ASSERTED"
+    },
+    {
+      "algorithm": "neats-lossless-i64",
+      "profile": "release",
+      "name": "current build dependency and finite native API verification",
+      "status": "PASS",
+      "evidence": {
+        "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/qualification.json",
+        "sha256": "b86173f34c30d175552de327cc446dd8480aa02dd7a9ae56f12f60c0d93db174"
+      },
+      "evidence_kind": "CURRENT_REAL_BUILD_DEPENDENCIES_WITH_SELECTED_NATIVE_TESTS",
+      "native_suite_status": "PASS",
+      "source_full_parity": "NOT_ASSERTED"
+    },
+    {
+      "algorithm": "neats-lossless-i64",
+      "profile": "sanitizer",
+      "name": "current build dependency and finite native API verification",
+      "status": "PASS",
+      "evidence": {
+        "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/qualification.json",
+        "sha256": "b86173f34c30d175552de327cc446dd8480aa02dd7a9ae56f12f60c0d93db174"
+      },
+      "evidence_kind": "CURRENT_REAL_BUILD_DEPENDENCIES_WITH_SELECTED_NATIVE_TESTS",
+      "native_suite_status": "PASS",
+      "source_full_parity": "NOT_ASSERTED"
     }
   ],
   "builds": [
@@ -98,28 +171,108 @@
       "algorithm": "neats-lossless-i64",
       "artifact_sha256": "1a9a5fd26a454cb5161159fe2914aba785619ee6b6d51139a004fb1fdaffcf35",
       "compile_commands_sha256": "fa49d1d8ab7cc6fa4786a318101aaf5d4faab5ec6f846da61a9cc4f181c4896b",
-      "compiler": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0"
+      "compiler": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0",
+      "status": "HISTORICAL_NOT_CURRENT_QUALIFICATION",
+      "source_artifact_id": "v2:source-artifact:sha256:3901f0276c7c6c841174b4a0267e92ea8e1887e68b70bb8d0e71fa9e66784d10",
+      "evidence_kind": "HISTORICAL_BUILD_RECORD"
     },
     {
       "kind": "sanitizer",
       "algorithm": "neats-lossless-i64",
       "artifact_sha256": "68712bc55693444e979419bbfff4d4c99737b9a5619177ab0c8c497729027ad6",
       "compile_commands_sha256": "c2b6cbf7fc97c19595e5a3e7689ec7a7d33df8d2cbfd684535fa6b2bcbfa8856",
-      "compiler": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0"
+      "compiler": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0",
+      "status": "HISTORICAL_NOT_CURRENT_QUALIFICATION",
+      "source_artifact_id": "v2:source-artifact:sha256:3901f0276c7c6c841174b4a0267e92ea8e1887e68b70bb8d0e71fa9e66784d10",
+      "evidence_kind": "HISTORICAL_BUILD_RECORD"
     },
     {
       "kind": "release",
       "algorithm": "leats-lossless-i64",
       "artifact_sha256": "7ca6b00bea90644c31d538a5435de32a6884243db236bc2de93c764635a6e239",
       "compile_commands_sha256": "95bd92d4eceb7ade7c10219910f4b5db8c027a35561a114fe8034b02a4790777",
-      "compiler": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0"
+      "compiler": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0",
+      "status": "HISTORICAL_NOT_CURRENT_QUALIFICATION",
+      "source_artifact_id": "v2:source-artifact:sha256:3901f0276c7c6c841174b4a0267e92ea8e1887e68b70bb8d0e71fa9e66784d10",
+      "evidence_kind": "HISTORICAL_BUILD_RECORD"
     },
     {
       "kind": "sanitizer",
       "algorithm": "leats-lossless-i64",
       "artifact_sha256": "c2320a70ed369444e2e73087703f58946d3325d4a23ffd6d41fe347f935778a8",
       "compile_commands_sha256": "fae3e5fb8c9f3a59856c933d1b0bda60de2cde354636631df32fb72160b1de83",
-      "compiler": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0"
+      "compiler": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0",
+      "status": "HISTORICAL_NOT_CURRENT_QUALIFICATION",
+      "source_artifact_id": "v2:source-artifact:sha256:3901f0276c7c6c841174b4a0267e92ea8e1887e68b70bb8d0e71fa9e66784d10",
+      "evidence_kind": "HISTORICAL_BUILD_RECORD"
+    },
+    {
+      "algorithm": "leats-lossless-i64",
+      "profile": "RELEASE",
+      "artifact_sha256": "7ca6b00bea90644c31d538a5435de32a6884243db236bc2de93c764635a6e239",
+      "compile_commands_sha256": "57424c3b8c9305e3ea09ec7d39ff55238645a926c4b0b40e11c12194b0cc1a4a",
+      "compiler": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0",
+      "evidence_kind": "CURRENT_REAL_BUILD_DEPENDENCIES_VERIFIED",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/leats_lossless_i64/release/build-record.json",
+        "sha256": "5260814b034a49dc3883e91d5690e1e741aa1cafeebb09aa54055be649f9a0a5"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/leats_lossless_i64/release/libtscb_leats_lossless_i64.so",
+        "sha256": "7ca6b00bea90644c31d538a5435de32a6884243db236bc2de93c764635a6e239"
+      },
+      "qualification_scope": "BUILD_CLOSURE_AND_SELECTED_FINITE_NATIVE_SUITE_NOT_SOURCE_FULL_PARITY"
+    },
+    {
+      "algorithm": "leats-lossless-i64",
+      "profile": "SANITIZER",
+      "artifact_sha256": "c2320a70ed369444e2e73087703f58946d3325d4a23ffd6d41fe347f935778a8",
+      "compile_commands_sha256": "c5896f3c3b83a7b77e9eac9f94183c9af139c0838561121c8dd4a6e6fb484e14",
+      "compiler": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0",
+      "evidence_kind": "CURRENT_REAL_BUILD_DEPENDENCIES_VERIFIED",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/leats_lossless_i64/sanitizer/build-record.json",
+        "sha256": "5c936c96f6d9be538235701f9a445ca0def7bba096e4a65fbb37fffb681a7133"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/leats_lossless_i64/sanitizer/libtscb_leats_lossless_i64.so",
+        "sha256": "c2320a70ed369444e2e73087703f58946d3325d4a23ffd6d41fe347f935778a8"
+      },
+      "qualification_scope": "BUILD_CLOSURE_AND_SELECTED_FINITE_NATIVE_SUITE_NOT_SOURCE_FULL_PARITY"
+    },
+    {
+      "algorithm": "neats-lossless-i64",
+      "profile": "RELEASE",
+      "artifact_sha256": "1a9a5fd26a454cb5161159fe2914aba785619ee6b6d51139a004fb1fdaffcf35",
+      "compile_commands_sha256": "c9df963c7b51da307b451baa133276bf8e963b9b0c82bdf1ebe1a82d992bee90",
+      "compiler": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0",
+      "evidence_kind": "CURRENT_REAL_BUILD_DEPENDENCIES_VERIFIED",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/neats_lossless_i64/release/build-record.json",
+        "sha256": "7ed5419645ce80dd6c88d2288a5a03cfdf0285d68e470f5e7485e1555d3f5640"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/neats_lossless_i64/release/libtscb_neats_lossless_i64.so",
+        "sha256": "1a9a5fd26a454cb5161159fe2914aba785619ee6b6d51139a004fb1fdaffcf35"
+      },
+      "qualification_scope": "BUILD_CLOSURE_AND_SELECTED_FINITE_NATIVE_SUITE_NOT_SOURCE_FULL_PARITY"
+    },
+    {
+      "algorithm": "neats-lossless-i64",
+      "profile": "SANITIZER",
+      "artifact_sha256": "68712bc55693444e979419bbfff4d4c99737b9a5619177ab0c8c497729027ad6",
+      "compile_commands_sha256": "d317a492565cb7faeb9646b2896be9f0adccfc67e2779fde076dc039b3920d9f",
+      "compiler": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0",
+      "evidence_kind": "CURRENT_REAL_BUILD_DEPENDENCIES_VERIFIED",
+      "build_record": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/neats_lossless_i64/sanitizer/build-record.json",
+        "sha256": "71e574aec2a99ef3746555addd673ae7977cf61cf3fdac456552b1cb1c30b6a1"
+      },
+      "artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/neats_lossless_i64/sanitizer/libtscb_neats_lossless_i64.so",
+        "sha256": "68712bc55693444e979419bbfff4d4c99737b9a5619177ab0c8c497729027ad6"
+      },
+      "qualification_scope": "BUILD_CLOSURE_AND_SELECTED_FINITE_NATIVE_SUITE_NOT_SOURCE_FULL_PARITY"
     }
   ],
   "license_decision": {
@@ -135,7 +288,9 @@
     "Object-local model fitting is included in every compression timing and all serialized model/index bytes are charged; there is no external training split, checkpoint or amortized training cost.",
     "Random access loads the selected serialized column object; bytes_touched reports the complete native frame because checksum validation scans it.",
     "Unsigned integers, floats, nulls, asynchronous MTS, streaming and lossy modes are not admitted.",
-    "LeakSanitizer could not run under the managed ptrace environment; ASan and UBSan completed with leak detection disabled."
+    "LeakSanitizer could not run under the managed ptrace environment; ASan and UBSan completed with leak detection disabled.",
+    "2026-10-11: current native scalar vendor is already patched. Three executable unified patches replay in an isolated tree; source codec parity and new identity native/Benchmark qualification must be independently verified. Historical runsets and prior build records do not grant current qualification.",
+    "2026-10-11: new isolated builds pin actual per-TU compiler dependencies, objects, selected toolchain executables and linked dynamic runtime files. These records do not pin every implicit static startup/runtime archive and do not grant source FULL_PARITY or change active algorithm scope. Historical runs retain their original artifact identities."
   ],
   "unsupported_reason_codes": [
     "EXECUTION_ARTIFACT_MISSING",
@@ -148,5 +303,6 @@
     "SIMD_ISA_NOT_REGISTERED",
     "MULTI_THREAD_UNSUPPORTED",
     "DEVICE_UNSUPPORTED"
-  ]
+  ],
+  "source_onboarding_id": "v2:source-onboarding:sha256:c26c9d065dd9f3daeb50e102d34405b52d83eefffdbba9d78ac5b5a1f749591e"
 }

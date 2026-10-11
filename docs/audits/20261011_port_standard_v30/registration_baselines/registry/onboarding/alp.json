@@ -1,0 +1,158 @@
+{
+  "schema_version": "tscb.source-onboarding.v2",
+  "source_artifact_id": "v2:source-artifact:sha256:278dbf62ed78758b1efa488719f953e3900dbe99e9f7ad30789f025de5f2c074",
+  "repository": "https://github.com/cwida/ALP.git",
+  "commit": "31ca0ed11c93c99d3f5b5c30e01a3e1c3832d3ce",
+  "dirty": false,
+  "submodules": [],
+  "implementation_files": [
+    "adapters/alp/vendor/alp/include/alp/encoder.hpp",
+    "adapters/alp/vendor/alp/include/alp/decoder.hpp",
+    "adapters/alp/vendor/alp/include/alp/rd.hpp",
+    "adapters/alp/vendor/alp/src/fastlanes_ffor.cpp",
+    "adapters/alp/vendor/alp/src/fastlanes_unffor.cpp",
+    "adapters/alp/vendor/alp/src/fastlanes_generated_ffor.cpp",
+    "adapters/alp/vendor/alp/src/fastlanes_generated_unffor.cpp",
+    "adapters/alp/native/tscb_alp.cc"
+  ],
+  "public_api_files": [
+    "adapters/alp/vendor/alp/include/alp/encoder.hpp",
+    "adapters/alp/vendor/alp/include/alp/rd.hpp",
+    "native/include/tscb_adapter_v1.h"
+  ],
+  "benchmark_files": [
+    "benchmarks/benchmark.cpp",
+    "publication/source_code/bench_speed/bench_alp_encode.cpp",
+    "publication/source_code/bench_speed/bench_alp_without_sampling.cpp"
+  ],
+  "test_files": [
+    "adapters/alp/tests/abi_smoke.cc",
+    "tests/adapters/test_alp.py",
+    "configs/experiments/alp-qualification.toml",
+    "configs/experiments/alp-formal.toml"
+  ],
+  "license_files": [
+    "adapters/alp/vendor/LICENSE"
+  ],
+  "third_party_dependencies": [],
+  "object_level_candidates": [
+    "P1_STANDALONE_CODEC"
+  ],
+  "input_contract": {
+    "kind": "HOMOGENEOUS_FLOAT_VALUE_COLUMNS",
+    "dtypes": [
+      "little-endian float32",
+      "little-endian float64"
+    ],
+    "topologies": [
+      "UTS",
+      "SYNCHRONOUS_MTS"
+    ],
+    "vector_size": 1024,
+    "rowgroup_size": 102400,
+    "maximum_elements": 16777216,
+    "ownership": "BORROWED_DURING_CALL",
+    "mutation": "FORBIDDEN"
+  },
+  "output_contract": {
+    "kind": "TSCB_DESCRIPTOR_PLUS_SELF_CONTAINED_ALP_FRAME",
+    "self_contained": true,
+    "actual_written_length": true,
+    "capacity_is_not_size": true,
+    "framing": "PER_COLUMN_ROWGROUP_VECTOR_RECORDS",
+    "bit_exact_ieee_reconstruction": true
+  },
+  "lifecycle_contract": {
+    "output_bound": "checked worst-case fixed-vector payload plus exception metadata; includes padded tail vectors",
+    "return_length": "exact finalized native frame length",
+    "error_codes": "stable tscb_status_v1; forced ALP returns UNSUPPORTED instead of changing scheme",
+    "finalize": "REQUIRED_ZERO_BYTE_FINALIZE; repeated finalize rejected",
+    "reset": "ABI reset clears object state and preserves native timing enablement"
+  },
+  "stream_components": {
+    "outer_container": "12-byte versioned prefix plus canonical JSON buffer descriptors",
+    "native_header": "scheme, dtype width, row/column counts and vector size",
+    "alp": "rowgroup sampling plus per-vector exponent, factor, FOR base/width, FastLanes payload and raw IEEE exceptions",
+    "alp_rd": "rowgroup left-part dictionary and widths plus per-vector FastLanes right/left payload and left exceptions",
+    "accounting": "every physical byte charged exactly once; capacity and logical compression estimates are never charged"
+  },
+  "upstream_tests": [
+    {
+      "name": "project native release qualification",
+      "command": "adapters/alp/tests/abi_smoke.cc linked to release artifacts",
+      "status": "PASS",
+      "evidence": "ALP and ALP-RD; float32/float64; 0/1/2, 1023/1024/1025 and 102399/102400/102401; canaries, truncation, reset and repeated finalize"
+    },
+    {
+      "name": "project native ASan/UBSan qualification",
+      "command": "abi-smoke linked to sanitizer artifacts",
+      "status": "PASS",
+      "evidence": "same boundary matrix; discovered and fixed three upstream float undefined-behavior paths through replayed patches"
+    },
+    {
+      "name": "Python adapter and IEEE payload qualification",
+      "command": "PYTHONPATH=src conda run -n CompressBench14 pytest -q tests/adapters/test_alp.py",
+      "status": "PASS",
+      "evidence": "42 tests including signed zero, infinities, subnormals, two NaN payloads, matrix routing, hostile frames and forced-scheme separation"
+    },
+    {
+      "name": "five-layer formal exchange-rate run",
+      "command": "tscompbench run validate/report configs/experiments/alp-formal.toml",
+      "status": "PASS",
+      "evidence": "runs/runset-20260920T042909Z-b99a85c9c901; 20 eligible PASS repetitions, two summaries and two coverage tasks"
+    }
+  ],
+  "builds": [
+    {
+      "profile": "ALP_RELEASE_SCALAR",
+      "artifact_sha256": "7709f581b3673c3d64b5960d8df2bc1f8979086a17e4be49641d8f1bc05000d4",
+      "compile_commands_sha256": "73136d42ad6ef161ee32f77ab33d7a7d47ed135b502a165f7820a887a1f2a536",
+      "compiler": "Ubuntu clang 14.0.0"
+    },
+    {
+      "profile": "ALP_ASAN_UBSAN_SCALAR",
+      "artifact_sha256": "2318ddeda634b18f1512d2dd1f749e789eaaaa2a7991955360409cb81267e082",
+      "compile_commands_sha256": "8df6f0c17021393d52a4e8825b62898560548836c52ff44c498a50a773615a89",
+      "compiler": "Ubuntu clang 14.0.0"
+    },
+    {
+      "profile": "ALP_RD_RELEASE_SCALAR",
+      "artifact_sha256": "41a38abd6a822107546b7246bedb86ac4fd037a4dc2285c9f8843a8fa42c376e",
+      "compile_commands_sha256": "6424ed2e18441707fdb9ed6a4380a8013eb018e000095569e8bebeafd7fb19ea",
+      "compiler": "Ubuntu clang 14.0.0"
+    },
+    {
+      "profile": "ALP_RD_ASAN_UBSAN_SCALAR",
+      "artifact_sha256": "209fd9e8a736fbc83ee767ea3d707a3b343b62ae28036ade3f09e922788a91af",
+      "compile_commands_sha256": "4818175839c4dc0d008274255803f6805ab5ffa756254409288dfbe1314bdc95",
+      "compiler": "Ubuntu clang 14.0.0"
+    }
+  ],
+  "license_decision": {
+    "spdx": "MIT",
+    "status": "RUN_ALLOWED",
+    "redistribution": "ALLOWED_WITH_LICENSE_NOTICE"
+  },
+  "known_limitations": [
+    "ALP and ALP-RD are separate AlgorithmIDs. ALP is forced decimal ALP and returns UNSUPPORTED when upstream sampling selects ALP_RD; it never silently changes identity.",
+    "Only homogeneous little-endian float32/float64 VALUE UTS and synchronous MTS without validity are registered.",
+    "The adapter uses upstream scalar FastLanes fallback kernels. SIMD-generated kernels, streaming, query and random access are not registered.",
+    "Three replayed safety patches bound float factor indexing, move decoder multiplication into the floating domain and enforce destination-integer range before conversion.",
+    "NaN payloads, signed zero, infinities and subnormals are bit-preserved; the upstream benchmark's weaker NaN-category assertion is not used as project correctness evidence.",
+    "Tail vectors are zero-padded to 1024 internally and all emitted payload/metadata bytes are charged; logical tail length controls reconstruction.",
+    "Formal evidence covers the real exchange_rate float64 dataset only and is not a universal performance claim.",
+    "LeakSanitizer was disabled under the host execution policy; ASan and UBSan passed."
+  ],
+  "unsupported_reason_codes": [
+    "EXECUTION_ARTIFACT_MISSING",
+    "DTYPE_UNSUPPORTED",
+    "HETEROGENEOUS_ITEMSIZE_UNSUPPORTED",
+    "VALIDITY_SHAPE_UNSUPPORTED",
+    "TOPOLOGY_UNSUPPORTED",
+    "INPUT_EXCEEDS_REGISTERED_LIMIT",
+    "ALP_DECIMAL_SCHEME_NOT_SELECTED",
+    "STREAMING_UNSUPPORTED",
+    "QUERY_UNSUPPORTED"
+  ]
+}
+

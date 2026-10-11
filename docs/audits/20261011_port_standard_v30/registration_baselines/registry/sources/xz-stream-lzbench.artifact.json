@@ -1,0 +1,33 @@
+{
+  "schema_version": "tscb.source-artifact.v2",
+  "key": "xz-stream-lzbench-5.8.3",
+  "kind": "VENDORED_BENCHMARK_SOURCE_CLOSURE",
+  "identity": {
+    "kind": "VENDORED_BENCHMARK_SOURCE_CLOSURE",
+    "key": "xz-stream-lzbench-5.8.3",
+    "benchmark_repository": "https://github.com/inikep/lzbench.git",
+    "benchmark_commit": "fa871e66b3543a70fd4d060f7c12719343ff4ac3",
+    "benchmark_path": "lz/xz",
+    "benchmark_version": "5.8.3",
+    "upstream_reference_repository": "https://github.com/tukaani-project/xz.git",
+    "upstream_reference_commit": "9fc6f5cd8774ebef8d4e030f7081fb6984c0dc3f",
+    "source_closure_sha256": "ef43c1771d2d12fdb35b9d53a15394f81da23770f97891d78f1e97e3504d3574",
+    "copy_policy": "UNMODIFIED_LIBLZMA_COMMON_CMAKE_TESTS_LICENSE_FORMAT_CLOSURE",
+    "execution_variant": "XZ_LZMA2_PRESET6_SINGLE_CALL_SINGLE_THREAD_NO_DATA_CHECK_STRUCTURAL_CRC32"
+  },
+  "license": {
+    "spdx": "0BSD",
+    "status": "RUN_ALLOWED",
+    "redistribution": "ALLOWED",
+    "files": ["adapters/xz_stream/vendor/xz/COPYING", "adapters/xz_stream/vendor/xz/COPYING.0BSD"]
+  },
+  "build": {
+    "recipe": "PYTHONPATH=src conda run -n CompressBench14 python tools/build_codec.py xz-stream --profile all",
+    "patches": [],
+    "submodules": [],
+    "build_system": "VENDORED_CMAKE_STATIC_PIC_LIBLZMA_LINKED_INTO_PROJECT_C_ABI",
+    "compile_command_evidence": "build/adapters/xz_stream/<profile>/compile-command.json includes dependency configuration, all translation units and archive hash",
+    "release_artifact": "build/adapters/xz_stream/release/libtscb_xz_stream.so",
+    "sanitizer_artifact": "build/adapters/xz_stream/sanitizer/libtscb_xz_stream.so"
+  }
+}

@@ -11,37 +11,39 @@ from collections import Counter
 from pathlib import Path
 
 import numpy as np
-from audit_maskedvbyte_run import (
+from audit_simdcomp_sdk import audit, require, sha
+from native_run_audit_common import (
     COMPONENTS,
     audit_independent_statistics,
     audit_raw_projection_and_coverage,
     audit_stage_plan,
+    audit_summary,
     report_source_path,
     rows,
 )
-from audit_simdcomp_sdk import audit, require, sha
-from streamvbyte_audit_common import audit_summary
 
 from tscompbench.adapters.factory import adapter_artifacts, create_adapter
-from tscompbench.codecs import CodecRegistry, SourceRegistry, validate_onboarding_card
+from tscompbench.codecs import (
+    CodecManifest,
+    CodecRegistry,
+    SourceRegistry,
+    validate_onboarding_card,
+)
 from tscompbench.datasets.canonical import read_canonical
 from tscompbench.ids import canonical_json_bytes, stable_id
-from tscompbench.preprocess.simdcomp import EXECUTOR_IDS
 
 ROOT = Path(__file__).resolve().parents[1]
-KEYS = ("simdcomp-u32", "delta-simdcomp-u32", "for-simdcomp-u32")
+KEYS = ("simdcomp-u32",)
 PREFIX = struct.Struct("<8sI32s")
 
 
 def expected_matrix(key: str, formal: bool = False) -> set[tuple]:
-    apis = (
-        ("LENGTH", "MASKED", "WITHOUTMASK")
-        if key == KEYS[0]
-        else (("MASKED", "WITHOUTMASK") if key == KEYS[1] else ("LENGTH", "FULL"))
+    require(key == "simdcomp-u32", "unregistered SIMDComp coding mode")
+    return set(
+        itertools.product(
+            ("LENGTH", "MASKED", "WITHOUTMASK"), ("SSE4_1", "AVX2"), (0,), (False, True)
+        )
     )
-    isas = ("SSE4_1", "AVX2") if key == KEYS[0] else ("SSE4_1",)
-    seeds = (0,) if formal or key == KEYS[0] else (0, 1, 2**31, 2**32 - 1)
-    return set(itertools.product(apis, isas, seeds, (False, True)))
 
 
 def configuration_matrix(run: Path, manifest, formal: bool) -> dict:
@@ -90,9 +92,11 @@ def source_and_runtime(registry: CodecRegistry, key: str) -> tuple:
     require(
         source["identity"]["repository"] == lock["repository"]
         and source["identity"]["commit"] == lock["commit"]
-        and source["build"]["source_closure"] == lock["files"]
-        and source["identity"]["source_closure_sha256"]
-        == hashlib.sha256(canonical_json_bytes(lock["files"])).hexdigest(),
+        and (source["build"]["source_closure"] == lock["files"])
+        and (
+            source["identity"]["source_closure_sha256"]
+            == hashlib.sha256(canonical_json_bytes(lock["files"])).hexdigest()
+        ),
         "registered source identity differs",
     )
     require(
@@ -103,7 +107,7 @@ def source_and_runtime(registry: CodecRegistry, key: str) -> tuple:
     require(
         source["identity"]["patch_series"] == source["build"]["patches"]
         and len(source["build"]["patches"]) == 4
-        and source["build"]["submodules"] == [],
+        and (source["build"]["submodules"] == []),
         "registered patch/submodule identity differs",
     )
     for item in [*lock["files"], *source["build"]["patches"]]:
@@ -144,12 +148,56 @@ def source_and_runtime(registry: CodecRegistry, key: str) -> tuple:
             ]
         )
     ).hexdigest()
-    return manifest, source, runtime, sdk
+    return (manifest, source, runtime, sdk)
+
+
+def archived_run_identity(run: Path, key: str, prior_audit: dict, kind: str) -> tuple:
+    """Read frozen identities for historical checks, without admitting a current execution.
+
+    The saved audit anchors the original raw bytes and runtime digest. This
+    function neither loads today's adapter nor writes replacement evidence.
+    """
+    require(kind in {"formal", "qualification", "unsupported"}, "unknown archived run kind")
+    require(
+        prior_audit["status"] == "PASS"
+        and prior_audit["codec_key"] == key
+        and prior_audit[f"{kind}_run"] == run.name,
+        "archived audit/run identity differs",
+    )
+    require(
+        sha(run / "run_components.jsonl") == prior_audit[f"{kind}_records_sha256"],
+        "archived raw records differ from prior audit",
+    )
+    snapshot = json.loads((run / "codec_registry_snapshot.json").read_text())
+    matched = [item for item in snapshot["codecs"] if item["key"] == key]
+    require(len(matched) == 1, "archived codec snapshot missing or duplicated")
+    entry = matched[0]
+    require(
+        entry["manifest"]["key"] == key
+        and stable_id("algorithm", entry["manifest"]) == entry["algorithm_id"]
+        and entry["algorithm_id"] == prior_audit["algorithm_id"],
+        "archived codec identity differs",
+    )
+    manifest = CodecManifest(key, entry["manifest"], entry["algorithm_id"])
+    sources = json.loads((run / "source_registry_snapshot.json").read_text())["sources"]
+    matched_sources = [
+        source for source in sources
+        if source["source_artifact_id"] == manifest.source_artifact_id
+    ]
+    require(len(matched_sources) == 1, "archived source snapshot missing or duplicated")
+    source = matched_sources[0]
+    require(
+        stable_id("source-artifact", source["identity"]) == manifest.source_artifact_id
+        and manifest.source_artifact_id == prior_audit["source_artifact_id"],
+        "archived source identity differs",
+    )
+    return manifest, source, prior_audit["runtime_digest"]
 
 
 def independent_frame(stream: bytes, params: dict, original: np.ndarray, key: str) -> dict:
     """Scalar decode of lane words; never call source kernels or the stage validator."""
-    coding = "PLAIN" if key == KEYS[0] else "DELTA" if key == KEYS[1] else "FOR"
+    require(key == "simdcomp-u32", "unregistered SIMDComp coding mode")
+    coding = "PLAIN"
     require(len(stream) >= PREFIX.size + 48, "truncated complete stream")
     magic, length, digest = PREFIX.unpack_from(stream)
     require(magic == b"TSCBSCP1" and length <= 4096, "wrong stream prefix")
@@ -176,26 +224,13 @@ def independent_frame(stream: bytes, params: dict, original: np.ndarray, key: st
         "timestamp_unit": "NOT_APPLICABLE",
         "timestamp_epoch": "NOT_APPLICABLE",
         "value_units": ["count"],
-        "codec_stages": (
-            ["ORIGINAL_SIMDCOMP_D1_MODULAR32"]
-            if coding == "DELTA"
-            else ["ORIGINAL_SIMDCOMP_FIXED_FOR_MODULAR32"]
-            if coding == "FOR"
-            else []
-        )
-        + ["ORIGINAL_SIMDCOMP_UINT32_BITPACK"],
+        "codec_stages": ["ORIGINAL_SIMDCOMP_UINT32_BITPACK"],
     }
     require(
         info == expected and header == canonical_json_bytes(expected), "descriptor semantics differ"
     )
-    mode = (
-        1
-        if coding == "DELTA"
-        else (3 if params["api"] == "FULL" else 2)
-        if coding == "FOR"
-        else (4 if params["isa"] == "AVX2" else 0)
-    )
-    block, seed = (256 if mode == 4 else 128), params["starting_point"]
+    mode = 4 if params["isa"] == "AVX2" else 0
+    block, seed = (256 if mode == 4 else 128, params["starting_point"])
     blocks = (len(original) + block - 1) // block
     frame = stream[PREFIX.size + length :]
     require(
@@ -205,18 +240,19 @@ def independent_frame(stream: bytes, params: dict, original: np.ndarray, key: st
     )
     fnv = 14695981039346656037
     for byte in frame[:-8]:
-        fnv = ((fnv ^ byte) * 1099511628211) % 2**64
+        fnv = (fnv ^ byte) * 1099511628211 % 2**64
     require(struct.unpack_from("<Q", frame, len(frame) - 8)[0] == fnv, "SBP1 checksum differs")
-    at, previous, value_bits, payload_bytes, recovered, all_residuals = 40, seed, 0, 0, [], []
+    at, value_bits, payload_bytes, recovered, all_residuals = (40, 0, 0, [], [])
     for start in range(0, len(original), block):
         require(at + 8 <= len(frame) - 8, "truncated record")
         n, width, layout, size = struct.unpack_from("<HBBI", frame, at)
         expected_n = min(block, len(original) - start)
-        expected_layout = 1 if mode in (1, 3) else 2 if mode == 4 and n == 256 else 0
+        expected_layout = 2 if mode == 4 and n == 256 else 0
         require(
-            n == expected_n and width <= 32 and layout == expected_layout, "record geometry differs"
+            n == expected_n and width <= 32 and (layout == expected_layout),
+            "record geometry differs",
         )
-        physical, lanes = (128 if layout == 1 else n), (8 if layout == 2 else 4)
+        physical, lanes = (n, 8 if layout == 2 else 4)
         lane_words = ((physical + lanes - 1) // lanes * width + 31) // 32
         require(
             size == (physical * 4 if width == 32 else lane_words * lanes * 4)
@@ -232,48 +268,25 @@ def independent_frame(stream: bytes, params: dict, original: np.ndarray, key: st
                     int.from_bytes(
                         packed[(w * lanes + lane) * 4 : (w * lanes + lane + 1) * 4], "little"
                     )
-                    << (w * 32)
+                    << w * 32
                     for w in range(lane_words)
                 )
                 for lane in range(lanes)
             ]
             for lane, value in enumerate(lane_values):
                 slots = len(range(lane, physical, lanes))
-                require(value >> (slots * width) == 0, "nonzero unused lane bits")
+                require(value >> slots * width == 0, "nonzero unused lane bits")
             codes = [
-                (lane_values[i % lanes] >> (i // lanes * width)) & ((1 << width) - 1)
+                lane_values[i % lanes] >> i // lanes * width & (1 << width) - 1
                 for i in range(physical)
             ]
-            values, prev = [], previous
-            for code in codes:
-                prev = (
-                    (prev + code) % 2**32
-                    if mode == 1
-                    else (seed + code) % 2**32
-                    if mode in (2, 3)
-                    else code
-                )
-                values.append(prev)
-        codes, prev = [], previous
-        for value in values:
-            codes.append(
-                (value - prev) % 2**32
-                if mode == 1
-                else (value - seed) % 2**32
-                if mode in (2, 3)
-                else value
-            )
-            prev = value
+            values = codes
+        codes = values
         require(max(codes, default=0).bit_length() == width, "nonminimal scalar width")
         require(values[:n] == original[start : start + n].tolist(), "scalar inverse differs")
-        if layout == 1:
-            require(
-                values[n:] == [values[n - 1] if mode == 1 else seed] * (physical - n),
-                "scalar padded reconstruction differs",
-            )
         recovered.extend(values[:n])
         all_residuals.extend(codes[:n])
-        previous, at = values[n - 1], at + 8 + size
+        at += 8 + size
         value_bits += n * width
         payload_bytes += size
     require(
@@ -301,7 +314,7 @@ def audit_common(run: Path, manifest, source: dict, runtime: str) -> tuple[list,
     require(
         len(matched) == 1
         and matched[0]["algorithm_id"] == manifest.algorithm_id
-        and matched[0]["manifest"] == manifest.document,
+        and (matched[0]["manifest"] == manifest.document),
         "codec snapshot differs",
     )
     sources = json.loads((run / "source_registry_snapshot.json").read_text())["sources"]
@@ -309,7 +322,7 @@ def audit_common(run: Path, manifest, source: dict, runtime: str) -> tuple[list,
         [s for s in sources if s["identity"] == source["identity"]] == [source],
         "source snapshot differs",
     )
-    tasks, records = rows(run / "task_plan.jsonl"), rows(run / "run_components.jsonl")
+    tasks, records = (rows(run / "task_plan.jsonl"), rows(run / "run_components.jsonl"))
     for layer in range(2, 6):
         require(bool(list(run.glob(f"layer{layer}-*.json"))), "layer artifact absent")
     for task in tasks:
@@ -317,7 +330,7 @@ def audit_common(run: Path, manifest, source: dict, runtime: str) -> tuple[list,
         require(
             task["algorithm_id"] == manifest.algorithm_id
             and task["execution"]["artifact_sha256"] == runtime
-            and task["execution"]["source_artifact_id"] == manifest.source_artifact_id,
+            and (task["execution"]["source_artifact_id"] == manifest.source_artifact_id),
             "task runtime identity differs",
         )
     require(len({r["run_id"] for r in records}) == len(records), "duplicate attempts")
@@ -332,7 +345,7 @@ def audit_common(run: Path, manifest, source: dict, runtime: str) -> tuple[list,
         "report counts differ",
     )
     audit_raw_projection_and_coverage(run, tasks, records)
-    return tasks, records, report
+    return (tasks, records, report)
 
 
 def audit_diagnostic(record: dict, task: dict, config_invalid: bool) -> None:
@@ -346,8 +359,8 @@ def audit_diagnostic(record: dict, task: dict, config_invalid: bool) -> None:
     require(
         record["status"] == task["status"] == status
         and record["reason_code"] == task["reason_code"] == reason
-        and record["record_kind"] == "DIAGNOSTIC"
-        and record["eligibility"] is False,
+        and (record["record_kind"] == "DIAGNOSTIC")
+        and (record["eligibility"] is False),
         "rejection diagnostic differs",
     )
     require(
@@ -371,21 +384,22 @@ def audit_diagnostic(record: dict, task: dict, config_invalid: bool) -> None:
     require(
         preflight["status"] == status
         and preflight["reason_code"] == reason
-        and preflight["eligible_for_formal_repetitions"] is False
-        and preflight["boundary"] is preflight["correctness"] is preflight["accounting"] is None,
+        and (preflight["eligible_for_formal_repetitions"] is False)
+        and (preflight["boundary"] is preflight["correctness"] is preflight["accounting"] is None),
         "rejection preflight fabricated execution",
     )
     if not config_invalid:
         require(
             task["execution"]["actual_isa"] == "NOT_EXECUTED"
             and task["compatibility"]["operations"] == []
-            and task["compatibility"]["output_descriptor"] is None,
+            and (task["compatibility"]["output_descriptor"] is None),
             "unsupported task claims execution/cast",
         )
 
 
 def audit_supported(
-    run: Path, manifest, source: dict, runtime: str, formal: bool, original: np.ndarray
+    run: Path, manifest, source: dict, runtime: str, formal: bool, original: np.ndarray,
+    *, archived_only: bool = False,
 ) -> tuple[list, dict]:
     tasks, records, report = audit_common(run, manifest, source, runtime)
     params_by_id = configuration_matrix(run, manifest, formal)
@@ -394,27 +408,27 @@ def audit_supported(
         "task universe incomplete",
     )
     frozen = json.loads((run / "frozen_config.json").read_text())
-    profile, repeats = frozen["profile"], (20 if formal else 1)
+    profile, repeats = (frozen["profile"], 20 if formal else 1)
     require(
         profile["measurement_mode"] == ("FORMAL" if formal else "QUALIFICATION")
         and profile["repetitions"] == repeats
-        and profile["timing_scope"] == "PIPELINE"
-        and profile["threads"] == profile["processes"] == 1,
+        and (profile["timing_scope"] == "PIPELINE")
+        and (profile["threads"] == profile["processes"] == 1),
         "measurement policy differs",
     )
     if formal:
         require(
             profile["cpu_affinity"] == [0]
             and profile["warmup_min_count"] >= 3
-            and float(profile["warmup_min_seconds"]) >= 0.5
-            and float(profile["min_repetition_seconds"]) >= 1,
+            and (float(profile["warmup_min_seconds"]) >= 0.5)
+            and (float(profile["min_repetition_seconds"]) >= 1),
             "formal affinity/duration policy differs",
         )
-    streams, valid_tasks = {}, []
+    streams, valid_tasks = ({}, [])
     by_task = {t["task_id"]: t for t in tasks}
     require(all(r["task_id"] in by_task for r in records), "unclaimed attempts")
     for task in tasks:
-        params, execution = params_by_id[task["config_id"]], task["execution"]
+        params, execution = (params_by_id[task["config_id"]], task["execution"])
         observed = [r for r in records if r["task_id"] == task["task_id"]]
         invalid = params["api"] == "LENGTH" and params["isa"] == "AVX2"
         if invalid:
@@ -430,8 +444,8 @@ def audit_supported(
         require(
             task["status"] == execution["status"] == "PLANNED"
             and execution["actual_isa"] == params["isa"]
-            and execution["requested_isa"] == params["isa"]
-            and execution["fallback_used"] is False,
+            and (execution["requested_isa"] == params["isa"])
+            and (execution["fallback_used"] is False),
             "actual ISA/path differs",
         )
         if formal:
@@ -463,54 +477,40 @@ def audit_supported(
         )
         streams[identity] = observed[0]["bitstream_sha256"]
         stage = preflight["diagnostics"].get("preprocess_stage_validation")
-        if manifest.key in EXECUTOR_IDS:
-            require(
-                stage
-                and stage["status"] == "PASS"
-                and stage["executor_id"] == EXECUTOR_IDS[manifest.key]
-                and stage["checked_stages"] == ["A", "B", "D"]
-                and stage["inverse_validation"] == "BIT_EXACT"
-                and stage["stage_A_wall_ns"] is stage["stage_B_wall_ns"] is None
-                and stage["stage_A_emitted_residuals_sha256"] == physical["residual_sha256"]
-                and stage["stage_B_payload_bytes"] == physical["payload_bytes"]
-                and stage["stage_B_logical_value_bits"] == physical["value_bits"]
-                and stage["stage_B_physical_padding_bits"] == physical["padding_bits"],
-                "stage evidence differs",
-            )
-        else:
-            require(
-                task["preprocess"]["stages"] == [] and stage is None,
-                "plain primitive has hidden stages",
-            )
+        require(
+            task["preprocess"]["stages"] == [] and stage is None,
+            "plain primitive has hidden stages",
+        )
         alternate = dict(
             params,
             native_timing=False,
-            starting_point=(2**32 - 1) ^ params["starting_point"] if manifest.key != KEYS[0] else 0,
+            starting_point=0,
         )
         if params["api"] in ("MASKED", "WITHOUTMASK"):
             alternate["api"] = "MASKED" if params["api"] == "WITHOUTMASK" else "WITHOUTMASK"
-        session = create_adapter(ROOT, manifest).create_session(alternate)
-        try:
-            require(
-                session.decompress(stream).buffers[0].array.tobytes() == original.tobytes(),
-                "fresh independently configured decoder differs",
-            )
-        finally:
-            session.close()
+        if not archived_only:
+            session = create_adapter(ROOT, manifest).create_session(alternate)
+            try:
+                require(
+                    session.decompress(stream).buffers[0].array.tobytes() == original.tobytes(),
+                    "fresh independently configured decoder differs",
+                )
+            finally:
+                session.close()
         for record in observed:
             require(
                 record["execution_path_hash"] == execution["execution_path_hash"]
                 and record["config_id"] == task["config_id"]
-                and record["correctness"]["status"] == "PASS"
+                and (record["correctness"]["status"] == "PASS")
                 and record["diagnostics"]["same_repetition_correctness_and_measurement"]
-                and record["finalize_bytes"] == 0,
+                and (record["finalize_bytes"] == 0),
                 "same-repetition correctness/runtime differs",
             )
             if record["status"] == "RESOURCE_PRESSURE":
                 require(
                     formal
-                    and not record["eligibility"]
-                    and record["reason_code"] == "SWAP_OBSERVED_DURING_FORMAL_REPETITION"
+                    and (not record["eligibility"])
+                    and (record["reason_code"] == "SWAP_OBSERVED_DURING_FORMAL_REPETITION")
                     and record["resources"]["swap_observed"],
                     "unexplained resource pressure",
                 )
@@ -519,15 +519,15 @@ def audit_supported(
                     record["status"] == "PASS" and record["eligibility"] is formal,
                     "failed attempt admitted",
                 )
-            ledger, timing = record["accounting"], record["timing"]
+            ledger, timing = (record["accounting"], record["timing"])
             require(
                 sum(ledger[k] for k in COMPONENTS)
                 == ledger["serialized_bits"]
                 == ledger["final_bits"]
                 == len(stream) * 8
                 and ledger["final_physical_bytes"] == len(stream)
-                and ledger["canonical_raw_bits"] == original.nbytes * 8
-                and ledger["external_side_information_bits"] == ledger["timestamp_bits"] == 0,
+                and (ledger["canonical_raw_bits"] == original.nbytes * 8)
+                and (ledger["external_side_information_bits"] == ledger["timestamp_bits"] == 0),
                 "physical accounting does not close",
             )
             for component in (
@@ -566,7 +566,7 @@ def audit_supported(
                         < timing[f"native_{direction}_wall_ns"]
                         <= timing[f"core_{direction}_wall_ns"]
                         and timing["native_timing_boundary"] == "CODEC_API_ONLY_V1"
-                        and timing["native_timing_clock"] == "CLOCK_MONOTONIC",
+                        and (timing["native_timing_clock"] == "CLOCK_MONOTONIC"),
                         "native timing invalid",
                     )
                 else:
@@ -590,7 +590,7 @@ def audit_supported(
             all(
                 w["threshold_satisfied"]
                 and w["completed_iterations"] >= 3
-                and w["elapsed_wall_ns"] >= 500_000_000
+                and (w["elapsed_wall_ns"] >= 500000000)
                 for w in warmups
             ),
             "formal warmup insufficient",
@@ -627,20 +627,30 @@ def audit_supported(
             audit_independent_statistics(summary, accepted, report["policy"])
     else:
         require(report["summary_count"] == 0, "qualification entered ranking")
-    return records, streams
+    return (records, streams)
+
+
+def audit_archived_supported(run: Path, key: str, prior_audit: dict, original: np.ndarray) -> tuple:
+    """Check saved qualification bytes and scalar wire semantics without executing a decoder.
+
+    Current qualification entry points continue to require the current factory,
+    native/SDK evidence and fresh adapter decode. No evidence is written here.
+    """
+    manifest, source, runtime = archived_run_identity(run, key, prior_audit, "qualification")
+    return audit_supported(run, manifest, source, runtime, False, original, archived_only=True)
 
 
 def audit_telemetry(record: dict, params: dict, physical: dict, raw: int, key: str) -> None:
-    telemetry, timing = record["diagnostics"]["codec_telemetry"], record["timing"]
+    telemetry, timing = (record["diagnostics"]["codec_telemetry"], record["timing"])
     require(
         telemetry["scope"] == "LAST_INNER_ITERATION"
         and telemetry["observed_iteration_index"] == timing["inner_iterations"] - 1,
         "telemetry scope differs",
     )
-    block, blocks, payload = physical["block_size"], physical["blocks"], physical["payload_bytes"]
+    block, blocks, payload = (physical["block_size"], physical["blocks"], physical["payload_bytes"])
     count = raw // 4
-    padded = key == KEYS[1] or key == KEYS[2] and params["api"] == "FULL"
-    padding = (blocks * 128 - count) * 4 if padded else 0
+    require(key == "simdcomp-u32", "unregistered SIMDComp coding mode")
+    padding = 0
     for direction in ("encode", "decode"):
         data = telemetry[direction]
         encode = direction == "encode"
@@ -651,54 +661,51 @@ def audit_telemetry(record: dict, params: dict, physical: dict, raw: int, key: s
         )
         tail = "simdpack_length" if encode else "simdunpack_length"
         if params["isa"] != "AVX2":
-            if key == KEYS[1]:
-                full = (
-                    ("simdpackwithoutmaskd1" if params["api"] == "WITHOUTMASK" else "simdpackd1")
-                    if encode
-                    else "simdunpackd1"
+            full = (
+                (
+                    "simdpack_length"
+                    if params["api"] == "LENGTH"
+                    else "simdpackwithoutmask"
+                    if params["api"] == "WITHOUTMASK"
+                    else "simdpack"
                 )
-            elif key == KEYS[2]:
-                full = ("simdpackFOR" if encode else "simdunpackFOR") + (
-                    "_length" if params["api"] == "LENGTH" else ""
-                )
-            else:
-                full = (
-                    (
-                        "simdpack_length"
-                        if params["api"] == "LENGTH"
-                        else "simdpackwithoutmask"
-                        if params["api"] == "WITHOUTMASK"
-                        else "simdpack"
-                    )
-                    if encode
-                    else ("simdunpack_length" if params["api"] == "LENGTH" else "simdunpack")
-                )
+                if encode
+                else "simdunpack_length"
+                if params["api"] == "LENGTH"
+                else "simdunpack"
+            )
             tail = (
                 ("simdpack_shortlength" if encode else "simdunpack_shortlength")
-                if key == KEYS[0] and params["api"] != "LENGTH"
+                if params["api"] != "LENGTH"
                 else full
             )
         bound = 48 + blocks * (8 + block * 4)
         require(
             data["actual_full_api"] == full
             and data["actual_tail_api"] == tail
-            and data["actual_isa"]
-            == ("AVX2_WITH_SSE4_1_TAIL" if params["isa"] == "AVX2" else "SSE4_1")
-            and data["blocks"] == blocks
-            and data["full_calls"] == count // block
-            and data["tail_calls"] == int(bool(count % block))
-            and data["internal_padding_bytes"] == padding
-            and data["external_padding_bytes"] == data["python_payload_copy_bytes"] == 0
-            and data["native_payload_bytes"] == payload
-            and data["padding_stream_bits"] == physical["padding_bits"]
-            and data["native_raw_bytes"] == raw
-            and data["native_staging_allocation_count"] == 2
-            and data["native_staging_allocation_bytes"]
-            == (bound + block * 8 if encode else max(raw, 1) + block * 8)
-            and data["native_staging_input_copy_bytes"] == (raw if encode else payload)
-            and data["native_staging_output_copy_bytes"]
-            == (payload + physical["native_frame_bytes"] if encode else raw * 2)
-            and data["included_in_native_api_timing"] is False,
+            and (
+                data["actual_isa"]
+                == ("AVX2_WITH_SSE4_1_TAIL" if params["isa"] == "AVX2" else "SSE4_1")
+            )
+            and (data["blocks"] == blocks)
+            and (data["full_calls"] == count // block)
+            and (data["tail_calls"] == int(bool(count % block)))
+            and (data["internal_padding_bytes"] == padding)
+            and (data["external_padding_bytes"] == data["python_payload_copy_bytes"] == 0)
+            and (data["native_payload_bytes"] == payload)
+            and (data["padding_stream_bits"] == physical["padding_bits"])
+            and (data["native_raw_bytes"] == raw)
+            and (data["native_staging_allocation_count"] == 2)
+            and (
+                data["native_staging_allocation_bytes"]
+                == (bound + block * 8 if encode else max(raw, 1) + block * 8)
+            )
+            and (data["native_staging_input_copy_bytes"] == (raw if encode else payload))
+            and (
+                data["native_staging_output_copy_bytes"]
+                == (payload + physical["native_frame_bytes"] if encode else raw * 2)
+            )
+            and (data["included_in_native_api_timing"] is False),
             "actual source API/staging telemetry differs",
         )
 
@@ -710,7 +717,7 @@ def audit_unsupported(run: Path, manifest, source: dict, runtime: str) -> list:
     require(
         len(tasks) == len(records) == len(expected)
         and {(t["config_id"], t["track"]) for t in tasks} == expected
-        and Counter(r["task_id"] for r in records) == Counter(t["task_id"] for t in tasks),
+        and (Counter(r["task_id"] for r in records) == Counter(t["task_id"] for t in tasks)),
         "unsupported task universe incomplete",
     )
     by_task = {t["task_id"]: t for t in tasks}
@@ -724,7 +731,7 @@ def audit_unsupported(run: Path, manifest, source: dict, runtime: str) -> list:
             "unsupported input changed dtype",
         )
     require(
-        not list((run / "artifacts").glob("*.bin")) and not list((run / "warmup").glob("*.json")),
+        not list((run / "artifacts").glob("*.bin")) and (not list((run / "warmup").glob("*.json"))),
         "unsupported task produced stream/warmup",
     )
     require(report["summary_count"] == report["eligible_run_count"] == 0, "unsupported task ranked")
@@ -741,8 +748,8 @@ def audit_run_sets(key: str, names: list[str]) -> dict:
     require(
         benchmark["status"] == "RUNS_RECORDED_INDEPENDENT_AUDIT_PENDING"
         and benchmark["driver_sha256"] == sha(ROOT / "tools/qualify_simdcomp_benchmark.py")
-        and benchmark["sdk_audit"] == sdk
-        and benchmark["formal_requested"] is True,
+        and (benchmark["sdk_audit"] == sdk)
+        and (benchmark["formal_requested"] is True),
         "benchmark execution evidence stale/incomplete",
     )
     closure = benchmark["actual_imported_python_closure"]
@@ -753,7 +760,7 @@ def audit_run_sets(key: str, names: list[str]) -> dict:
             "src/tscompbench/runner.py",
             "src/tscompbench/execution/preflight.py",
             "src/tscompbench/adapters/simdcomp.py",
-            "src/tscompbench/preprocess/simdcomp.py",
+            "src/tscompbench/adapters/native_buffers.py",
             "src/tscompbench/statistics/engine.py",
             "src/tscompbench/reporting/generator.py",
         }
@@ -762,13 +769,13 @@ def audit_run_sets(key: str, names: list[str]) -> dict:
     )
     for item in closure:
         require(sha(ROOT / item["path"]) == item["sha256"], "actual benchmark source drift")
-    require(len(benchmark["runs"]) == 9, "benchmark run universe incomplete")
+    require(len(benchmark["runs"]) == 3, "benchmark run universe incomplete")
     for name in names:
         entry = [r for r in benchmark["runs"] if r["run_set_id"] == name]
         require(
             len(entry) == 1
             and entry[0]["records_sha256"] == sha(ROOT / "runs" / name / "run_components.jsonl")
-            and entry[0]["report_sha256"] == sha(ROOT / "runs" / name / "report/report.json"),
+            and (entry[0]["report_sha256"] == sha(ROOT / "runs" / name / "report/report.json")),
             "benchmark execution output differs",
         )
     fixture = ROOT / "fixtures/datasets/streamvbyte_u32_uts.npz"
@@ -777,7 +784,7 @@ def audit_run_sets(key: str, names: list[str]) -> dict:
     with np.load(fixture, allow_pickle=False) as archive:
         original = archive["values"]
     require(original.dtype.str == "<u4" and original.shape == (8193,), "fixture contract differs")
-    collected, streams = [], []
+    collected, streams = ([], [])
     for index, name in enumerate(names[:2]):
         run = ROOT / "runs" / name
         canonical_paths = list((run / "datasets").glob("*/*.canonical.tscb"))
@@ -791,7 +798,7 @@ def audit_run_sets(key: str, names: list[str]) -> dict:
         collected.append(records)
         streams.append(hashes)
     require(
-        all(streams[1].get(k) == v for k, v in streams[0].items()),
+        all((streams[1].get(k) == v for k, v in streams[0].items())),
         "formal/qualification streams differ",
     )
     rejected = audit_unsupported(ROOT / "runs" / names[2], manifest, source, runtime)
@@ -817,11 +824,7 @@ def audit_run_sets(key: str, names: list[str]) -> dict:
         "auditor_sha256": sha(Path(__file__)),
         "audit_dependencies": [
             {"path": p, "sha256": sha(ROOT / p)}
-            for p in (
-                "tools/audit_maskedvbyte_run.py",
-                "tools/streamvbyte_audit_common.py",
-                "tools/audit_simdcomp_sdk.py",
-            )
+            for p in ("tools/native_run_audit_common.py", "tools/audit_simdcomp_sdk.py")
         ],
         "formal_records_sha256": sha(ROOT / "runs" / names[0] / "run_components.jsonl"),
         "actual_imported_benchmark_python_file_count": len(benchmark_paths),
@@ -874,11 +877,7 @@ def audit_qualification_run_sets(key: str, qualification: str, unsupported: str)
         "qualification_records_sha256": sha(run / "run_components.jsonl"),
         "audit_dependencies": [
             {"path": p, "sha256": sha(ROOT / p)}
-            for p in (
-                "tools/audit_maskedvbyte_run.py",
-                "tools/streamvbyte_audit_common.py",
-                "tools/audit_simdcomp_sdk.py",
-            )
+            for p in ("tools/native_run_audit_common.py", "tools/audit_simdcomp_sdk.py")
         ],
         "unsupported_records_sha256": sha(ROOT / "runs" / unsupported / "run_components.jsonl"),
     }

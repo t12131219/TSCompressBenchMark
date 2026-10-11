@@ -1,5 +1,4 @@
 import importlib.util
-from dataclasses import replace
 from pathlib import Path
 
 import pytest
@@ -7,9 +6,10 @@ import pytest
 from tscompbench.codecs import CodecRegistry, SourceRegistry
 from tscompbench.contracts import RunStatus
 
-
 ROOT = Path(__file__).resolve().parents[2]
-spec = importlib.util.spec_from_file_location("all_grid", ROOT / "tools/qualify_all_dataset_grids.py")
+spec = importlib.util.spec_from_file_location(
+    "all_grid", ROOT / "tools/qualify_all_dataset_grids.py"
+)
 grid = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(grid)
 
@@ -61,43 +61,3 @@ def test_native_allocation_failure_is_oom_and_other_codec_failures_stay_errors(n
     session._last_error = lambda: "invalid native frame"
     with pytest.raises(ExecutionContractError):
         session._check(4, "decompress")
-
-
-@pytest.mark.parametrize("modern", [False, True])
-def test_timestamp_descriptor_does_not_import_wide_value_track_metadata(modern):
-    import json
-
-    import numpy as np
-
-    from tscompbench.adapters.streamvbyte_modern import ModernStreamVBytePipelineAdapter
-    from tscompbench.adapters.streamvbyte_pipeline import StreamVBytePipelineAdapter
-    from tscompbench.contracts import BenchmarkTrack
-    from tscompbench.execution.protocol import LogicalBuffer, RoutedInput
-    from tscompbench.execution.repetition import perform_roundtrip
-    from tscompbench.execution.routing import hash_logical_buffers, hash_reference_array
-
-    key = "delta-zigzag-streamvbyte-modern64" if modern else "delta-zigzag-streamvbyte64"
-    path = ROOT / f"build/adapters/{key.replace('-', '_')}/release/libtscb_{key.replace('-', '_')}.so"
-    if not path.is_file():
-        pytest.skip("native Stream VByte artifact is unavailable")
-    values = np.array([1000, 2000, 3000, 4000], dtype="<i8")
-    values.flags.writeable = False
-    buffers = (LogicalBuffer("timestamp", values, values.nbytes * 8),)
-    routed = RoutedInput(
-        dataset_id="test:wide-timestamp", track=BenchmarkTrack.TIMESTAMP, buffers=buffers,
-        timestamp_reference=values, validity_reference=None, n=4, m=1,
-        canonical_raw_bits=256, input_sha256=hash_logical_buffers(buffers),
-        timestamp_unit="s", timestamp_epoch="UNIX", value_units=("UNSPECIFIED",) * 862,
-        pairing_reference_sha256=hash_reference_array(values),
-    )
-    codec = (ModernStreamVBytePipelineAdapter if modern else StreamVBytePipelineAdapter)(path, {}, key)
-    observation = perform_roundtrip(codec, routed, {})
-    assert observation.decoded.buffers[0].array.tobytes() == values.tobytes()
-    assert observation.input_immutable and observation.canary_intact and observation.determinism_match
-    session = codec.create_session({})
-    try:
-        header, _ = session._payload(routed)
-        assert json.loads(header)["value_units"] == []
-        assert session._payload(replace(routed, value_units=()))[0] == header
-    finally:
-        session.close()

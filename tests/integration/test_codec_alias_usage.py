@@ -7,17 +7,12 @@ from pathlib import Path
 
 import pytest
 
-from tscompbench.codecs import CodecRegistry, SourceRegistry
+from tscompbench.codecs import CodecContractError, CodecRegistry, SourceRegistry
 from tscompbench.datasets import DatasetRegistry
-from tscompbench.runner import execute_run_set, initialize_run_set, plan_run_set, report_run_set
+from tscompbench.runner import execute_run_set, initialize_run_set, report_run_set
 
 ROOT = Path(__file__).resolve().parents[2]
-ALIASES = {
-    "lz77": "deflate-zlib",
-    "gorilla": "prometheus-xor-chunk",
-    "delta-of-delta": "prometheus-xor-chunk",
-    "second-order-difference": "prometheus-xor-chunk",
-}
+ALIASES = {"lz77": "deflate-zlib"}
 
 
 @pytest.mark.parametrize("alias,target", ALIASES.items())
@@ -44,19 +39,14 @@ def test_alias_cli_builds_both_profiles_at_the_canonical_artifact_path(
 
 @pytest.mark.parametrize("alias,target", ALIASES.items())
 def test_alias_and_canonical_name_run_one_real_task_and_preserve_requested_mapping(
-    tmp_path, alias, target
+    tmp_path,
+    alias,
+    target,
+    assert_current_artifact_evidence,
 ):
-    template = (
-        ROOT
-        / "configs/experiments"
-        / (
-            "lz77-qualification.toml"
-            if alias == "lz77"
-            else "completed-rewrites-prometheus-xor-chunk-qualification.toml"
-        )
-    )
+    template = ROOT / "configs/experiments/lz77-qualification.toml"
     text = template.read_text()
-    original = 'algorithms = ["lz77"]' if alias == "lz77" else f'algorithms = ["{target}"]'
+    original = 'algorithms = ["lz77"]'
     config = tmp_path / "aliases.toml"
     config.write_text(text.replace(original, "algorithms = " + json.dumps([alias, target])))
     run = initialize_run_set(config, tmp_path / "runs", run_set_id=alias)
@@ -72,10 +62,7 @@ def test_alias_and_canonical_name_run_one_real_task_and_preserve_requested_mappi
     assert records[0]["status"] in {"PASS", "RESOURCE_PRESSURE"}
     assert records[0]["correctness"]["status"] == "PASS"
     assert records[0]["algorithm_id"] == codecs.get(target).algorithm_id
-    assert (
-        records[0]["accounting"]["final_bits"]
-        == records[0]["accounting"]["final_physical_bytes"] * 8
-    )
+    assert_current_artifact_evidence(run.path, records[0])
     snapshot = json.loads((run.path / "codec_alias_snapshot.json").read_text())
     assert [(item["key"], item["canonical_key"]) for item in snapshot["aliases"]] == [
         (alias, target)
@@ -89,21 +76,8 @@ def test_alias_and_canonical_name_run_one_real_task_and_preserve_requested_mappi
     assert (run.path / "report/report.json").is_file()
 
 
-def test_all_prometheus_aliases_select_one_shared_algorithm(tmp_path):
-    target = "prometheus-xor-chunk"
-    names = [name for name, key in ALIASES.items() if key == target]
-    template = (
-        ROOT / "configs/experiments/completed-rewrites-prometheus-xor-chunk-qualification.toml"
-    )
-    config = tmp_path / "all_aliases.toml"
-    config.write_text(
-        template.read_text().replace(
-            f'algorithms = ["{target}"]', "algorithms = " + json.dumps(names + [target])
-        )
-    )
-    run = initialize_run_set(config, tmp_path / "runs", run_set_id="all-aliases")
+@pytest.mark.parametrize("alias", ["gorilla", "delta-of-delta", "second-order-difference"])
+def test_retired_aliases_cannot_resolve_or_plan(tmp_path, alias):
     codecs = CodecRegistry(ROOT / "registry/codecs", SourceRegistry(ROOT / "registry/sources"))
-    datasets = DatasetRegistry(ROOT / "registry/datasets", ROOT)
-    assert len(plan_run_set(run, datasets, codecs)) == 1
-    snapshot = json.loads((run.path / "codec_alias_snapshot.json").read_text())
-    assert {item["key"] for item in snapshot["aliases"]} == set(names)
+    with pytest.raises(CodecContractError, match="unknown codec key"):
+        codecs.get(alias)

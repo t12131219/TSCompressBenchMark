@@ -183,8 +183,32 @@
     "redistribution": "LOCAL_EXECUTION_ONLY; ORIGINAL_NOTICES_RETAINED; NO_UPSTREAM_LICENSE_GRANT_INVENTED"
   },
   "build": {
-    "recipe": "python tools/build_codec.py deepzip --profile all",
+    "recipe": "python tools/build_completed_rewrite.py deepzip --profile all --output-root build/port-standard-v30-20261011/adapters",
     "frozen_lock": "adapters/completed_rewrites/FROZEN_SOURCES.json",
-    "standalone_package": "deepzip"
+    "standalone_package": "deepzip",
+    "native_qualification": [
+      {
+        "status": "PASS",
+        "name": "release: current C++ standalone and framework ABI tests",
+        "evidence": "docs/audits/20261011_porting_standard/completed_native_r1-ready6/deepzip/release/qualification.json",
+        "evidence_sha256": "c82575a32ea916625f901bd8e38ac686c6ef203e1fcb2a29732a5d000433a4d7",
+        "log": "docs/audits/20261011_porting_standard/completed_native_r1-ready6/deepzip/release/qualification.log",
+        "log_sha256": "1093333eeb42a7ac58c31044ce491ccb602f58bea2faf505c8599eb36f2acf99",
+        "scope": "CURRENT_FROZEN_CPP_STANDALONE_AND_FRAMEWORK_BINDING_TESTS",
+        "sanitizer_scope": "NOT_APPLICABLE",
+        "source_language_parity": "NOT_GRANTED_BY_CPP_TESTS"
+      },
+      {
+        "status": "PASS",
+        "name": "sanitizer: current C++ standalone and framework ABI tests",
+        "evidence": "docs/audits/20261011_porting_standard/completed_native_r1-ready6/deepzip/sanitizer/qualification.json",
+        "evidence_sha256": "5879f005b5559333ad988605fea33867ed41ec219a7b22054a4f4b1ca8d541ec",
+        "log": "docs/audits/20261011_porting_standard/completed_native_r1-ready6/deepzip/sanitizer/qualification.log",
+        "log_sha256": "59b0f576379804a56b3ff7b763d11c732cd7a1e23ecabee16999492203deb754",
+        "scope": "CURRENT_FROZEN_CPP_STANDALONE_AND_FRAMEWORK_BINDING_TESTS",
+        "sanitizer_scope": "FRAMEWORK_BINDING_AND_FROZEN_CPP_SOURCES; EXTERNAL_BINARY_RUNTIMES_NOT_INSTRUMENTED; LEAK_CHECK_DISABLED",
+        "source_language_parity": "NOT_GRANTED_BY_CPP_TESTS"
+      }
+    ]
   }
 }

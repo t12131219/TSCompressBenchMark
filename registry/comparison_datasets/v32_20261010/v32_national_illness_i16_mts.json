@@ -1,0 +1,91 @@
+{
+  "display_name": "v32_national_illness_i16_mts",
+  "expected": {
+    "canonical_raw_bits": 30912,
+    "n_rows": 966,
+    "semantic_content_sha256": "527346c92c12bbafac418df091ba4e7e8454b199d54b226f24dd110066ae02b6",
+    "shape": [
+      966,
+      2
+    ]
+  },
+  "file": {
+    "bytes": 5573,
+    "format": "canonical",
+    "path": "artifacts/comparisons/v32_20261010/sources/v32_national_illness_i16_mts.tscb",
+    "sha256": "f45ff544a5e7db25ba32f7a4033ef09e5864108e96e6644a375a0d199082422b"
+  },
+  "key": "v32_national_illness_i16_mts",
+  "license": {
+    "spdx": "UNSPECIFIED",
+    "status": "REVIEW_REQUIRED"
+  },
+  "logical": {
+    "axes": [
+      "time",
+      "feature"
+    ],
+    "n_rows": 966,
+    "nan_is_null": false,
+    "schema_version": "tscb.logical-view.v2",
+    "timestamp": {
+      "epoch": "NOT_APPLICABLE",
+      "order_policy": "PRESERVE",
+      "origin": "NONE",
+      "present": false,
+      "unit": "NOT_APPLICABLE"
+    },
+    "topology": "SYNCHRONOUS_MTS",
+    "validity_shape": "NONE",
+    "value_columns": [
+      {
+        "display_name": "AGE 0-4",
+        "dtype": "<i2",
+        "entity": "national",
+        "feature": "AGE 0-4",
+        "name": "AGE 0-4",
+        "shape": [
+          966
+        ],
+        "strides": [
+          2
+        ],
+        "unit": "count"
+      },
+      {
+        "display_name": "NUM. OF PROVIDERS",
+        "dtype": "<i2",
+        "entity": "national",
+        "feature": "NUM. OF PROVIDERS",
+        "name": "NUM. OF PROVIDERS",
+        "shape": [
+          966
+        ],
+        "strides": [
+          2
+        ],
+        "unit": "count"
+      }
+    ],
+    "value_shape": [
+      966,
+      2
+    ]
+  },
+  "parser": {
+    "identity_policy": "tscb.dataset-content.v1",
+    "name": "tscb.canonical",
+    "version": "1"
+  },
+  "schema_version": "tscb.canonical-source-manifest.v1",
+  "source": {
+    "notes": "{\"domain_proof\": {\"exact_round_trip\": true, \"finite\": true, \"full_source_selected_feature_values\": 1932, \"integral\": true, \"lossy_transform\": false, \"maximum\": \"24097\", \"minimum\": \"98\", \"target_dtype\": \"<i2\"}, \"first_party_project_reference\": \"https://gis.cdc.gov/grasp/fluview/fluportaldashboard.html\", \"generation_spec\": {\"dtype_policy\": \"PROVED_EXACT_I16_NUMERIC_REPRESENTATION_NO_QUANTIZATION\", \"kind\": \"REAL_INTEGER_VALUE_WINDOW\", \"parent_dataset_id\": \"v2:dataset:sha256:518f7a4aefb46e8e67b00cffe387c9a168330e02ac709453eb4c2b0e7ed6d481\", \"parent_file_sha256\": \"93601f64d2566dc796ca4305adad8b8560c2db1a1ff04543c3bd813a7263570a\", \"row_start\": 0, \"row_stop\": 966, \"selected_columns\": [\"AGE 0-4\", \"NUM. OF PROVIDERS\"], \"source_feature\": \"NAMED_COUNT_COLUMNS\", \"source_key\": \"national_illness\", \"timestamp_policy\": \"VALUE_TRACK_SOURCE_TIMESTAMPS_OUTSIDE_OBJECT\"}, \"source_lineage_authentication\": \"LOCAL_MANIFEST_ONLY_NOT_EXTERNALLY_AUTHENTICATED\", \"source_manifest\": \"registry/datasets/national_illness.json\", \"source_sha256\": \"93601f64d2566dc796ca4305adad8b8560c2db1a1ff04543c3bd813a7263570a\"}",
+    "retrieved_at": "UNSPECIFIED",
+    "uri": "local:datasets/national_illness.csv"
+  },
+  "split": {
+    "learned_eligible": false,
+    "policy": "TEST",
+    "reason": "Frozen whole-object CPU comparison; no learned split or source generalization claimed."
+  }
+}

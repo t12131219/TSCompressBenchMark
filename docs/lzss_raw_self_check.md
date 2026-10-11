@@ -1,5 +1,7 @@
 # LZSS native-source five-layer self-check
 
+> 历史记录：本文描述 2026-09-18 的迁移前 Rust 接入与验证，保留当时的来源、工件和结论。`lzss-raw` 已于 2026-10-11 重写为 C++17；当前实现、无 Rust 依赖范围及验证见[迁移报告](lzss_cpp_rewrite_20261011/README.md)。
+
 Date: 2026-09-18  
 Environment: `CompressBench14`  
 Canonical project: `/home/fzg/PycharmProjects/TSDataCompressBenchMark`  

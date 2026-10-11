@@ -64,10 +64,65 @@
     "redistribution": "NO_EXTERNAL_PUBLICATION; user-authorized local run/rewrite; unknown upstream grant"
   },
   "build": {
-    "recipe": "python tools/build_codec.py elf-plus --profile all",
+    "recipe": "python tools/build_codec.py elf-plus --profile all --output-root build/port-standard-v30-20261011/native-builds-v3",
     "frozen_lock": "adapters/rewrite_lossless/FROZEN_APIS.json",
     "translation_units": [
       "src/codec.cpp"
-    ]
+    ],
+    "current_build_records": [
+      {
+        "algorithm": "elf-plus",
+        "profile": "release",
+        "record": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/elf_plus/release/build-record.json",
+          "sha256": "fc3dc49c3c2bf31ef8633f572ca04be17c5b5acc98e48ccf32395e1b00ef31de"
+        },
+        "artifact": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/elf_plus/release/libtscb_elf_plus.so",
+          "sha256": "497701eb38926cbe7f9ff80c858e64efa3ae90466c1bbc8cac1e15719cbf6fee"
+        },
+        "compile_commands_sha256": "8970136807e6f25c1ddc6f132d8e6f308195f7e04603e6e86496dd177b28d773",
+        "dependency_capture": "ACTUAL_PER_TU_MD_COMPILATION_AND_LINK"
+      },
+      {
+        "algorithm": "elf-plus",
+        "profile": "sanitizer",
+        "record": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/elf_plus/sanitizer/build-record.json",
+          "sha256": "7234842f1127023023b43c32d785fe053bdc25e8a2fb913dc6c258bf82d9beaf"
+        },
+        "artifact": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/elf_plus/sanitizer/libtscb_elf_plus.so",
+          "sha256": "05a0aa9d84de0dfa676f96850250a74ab99577a2dc2dee94c08d475e6a545f4d"
+        },
+        "compile_commands_sha256": "8f182ed5f8bbb0842014f2e62d6ce04de4b961dfd813a710a7412daa70ce800f",
+        "dependency_capture": "ACTUAL_PER_TU_MD_COMPILATION_AND_LINK"
+      }
+    ],
+    "current_native_qualification": [
+      {
+        "algorithm": "elf-plus",
+        "profile": "release",
+        "build_dependency_status": "PASS",
+        "native_suite_status": "PASS",
+        "evidence": {
+          "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/qualification.json",
+          "sha256": "b86173f34c30d175552de327cc446dd8480aa02dd7a9ae56f12f60c0d93db174"
+        },
+        "source_full_parity": "NOT_ASSERTED"
+      },
+      {
+        "algorithm": "elf-plus",
+        "profile": "sanitizer",
+        "build_dependency_status": "PASS",
+        "native_suite_status": "PASS",
+        "evidence": {
+          "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/qualification.json",
+          "sha256": "b86173f34c30d175552de327cc446dd8480aa02dd7a9ae56f12f60c0d93db174"
+        },
+        "source_full_parity": "NOT_ASSERTED"
+      }
+    ],
+    "current_build_dependency_scope": "ACTUAL_PER_TU_MD_HEADERS_OBJECTS_SELECTED_TOOLCHAIN_AND_DYNAMIC_RUNTIME_PARTIAL_STATIC_LINK_CLOSURE"
   }
 }

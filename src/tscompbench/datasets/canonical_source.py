@@ -14,15 +14,18 @@ from .models import CanonicalDataset, DatasetContractError, DatasetManifest, Val
 
 SCHEMA = "tscb.canonical-source-manifest.v1"
 PARSER = {"name": "tscb.canonical", "version": "1", "identity_policy": "tscb.dataset-content.v1"}
+PARSER_V2 = {"name": "tscb.canonical", "version": "2", "identity_policy": "tscb.dataset-content.v2"}
 
 
 def identity_payload(document: dict[str, Any]) -> dict[str, Any]:
-    return {
+    payload = {
         "schema_version": SCHEMA,
         "content_sha256": document["expected"]["semantic_content_sha256"],
         "parser": document["parser"],
-        "split": document["split"],
     }
+    if document["parser"] == PARSER:
+        payload["split"] = document["split"]
+    return payload
 
 
 def validate_manifest(document: dict[str, Any]) -> None:
@@ -31,7 +34,7 @@ def validate_manifest(document: dict[str, Any]) -> None:
             raise DatasetContractError(f"{label} fields mismatch")
 
     fields(document["file"], ("path", "bytes", "sha256", "format"), "file")
-    if document["file"]["format"] != "canonical" or document["parser"] != PARSER:
+    if document["file"]["format"] != "canonical" or document["parser"] not in (PARSER, PARSER_V2):
         raise DatasetContractError("unsupported canonical source policy")
     fields(document["source"], ("uri", "retrieved_at", "notes"), "source")
     fields(document["license"], ("spdx", "status"), "license")
@@ -69,7 +72,11 @@ def canonical_source_document(
     *,
     split: dict[str, Any] | None = None,
     license_info: dict[str, str] | None = None,
+    identity_policy: str = "tscb.dataset-content.v1",
 ) -> dict[str, Any]:
+    if identity_policy not in {PARSER["identity_policy"], PARSER_V2["identity_policy"]}:
+        raise DatasetContractError("unsupported canonical source identity policy")
+    parser = PARSER if identity_policy == PARSER["identity_policy"] else PARSER_V2
     if not re.fullmatch(r"[a-z0-9][a-z0-9_-]*", key):
         raise DatasetContractError("invalid dataset key")
     path, project_root = path.resolve(), project_root.resolve()
@@ -93,13 +100,15 @@ def canonical_source_document(
             "sha256": artifact.sha256,
             "format": "canonical",
         },
-        "parser": PARSER.copy(),
+        "parser": parser.copy(),
         "logical": logical,
         "expected": {
             "shape": logical["value_shape"],
             "n_rows": logical["n_rows"],
             "canonical_raw_bits": artifact.metadata["accounting"]["canonical_raw_bits"],
-            "semantic_content_sha256": semantic_content_sha256(artifact.metadata),
+            "semantic_content_sha256": semantic_content_sha256(
+                artifact.metadata, policy=identity_policy
+            ),
         },
         "split": split
         or {
@@ -124,7 +133,10 @@ def load_canonical_source(manifest: DatasetManifest) -> CanonicalDataset:
         raise DatasetContractError("canonical source logical contract mismatch")
     if metadata["accounting"]["canonical_raw_bits"] != document["expected"]["canonical_raw_bits"]:
         raise DatasetContractError("canonical source raw bits mismatch")
-    if semantic_content_sha256(metadata) != document["expected"]["semantic_content_sha256"]:
+    if (
+        semantic_content_sha256(metadata, policy=document["parser"]["identity_policy"])
+        != document["expected"]["semantic_content_sha256"]
+    ):
         raise DatasetContractError("canonical source semantic hash mismatch")
     arrays = {}
     for item in metadata["buffers"]:
@@ -161,7 +173,7 @@ def load_canonical_source(manifest: DatasetManifest) -> CanonicalDataset:
             "loader": "tscompbench.datasets.canonical_source",
             "source_sha256": artifact.sha256,
             "embedded_legacy_dataset_id": metadata["dataset_id"],
-            "identity_policy": PARSER["identity_policy"],
+            "identity_policy": document["parser"]["identity_policy"],
             "hidden_transforms": [],
         },
     )

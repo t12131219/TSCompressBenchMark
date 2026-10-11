@@ -20,14 +20,9 @@ from tscompbench.validation.lossy import profile_unbounded_loss
 
 ROOT = Path(__file__).resolve().parents[2]
 PROFILES = {
-    **{name: ("rewrite_float_mts", "VALUE") for name in ("abba", "fabba", "tristan", "corad")},
-    "influxdb-tsm-adaptive-timestamp": ("rewrite_float_mts", "TIMESTAMP"),
-    "prometheus-xor2-chunk": ("rewrite_float_mts", "SYSTEM"),
+    **{name: ("rewrite_float_mts", "VALUE") for name in ("abba", "fabba")},
     "deepzip": ("rewrite_byte_uts", "VALUE"),
     "dzip": ("rewrite_byte_uts", "VALUE"),
-    "walloc-1d": ("rewrite_audio_stereo", "VALUE"),
-    "prometheus-histogram-st": ("rewrite_histogram_int", "SYSTEM"),
-    "prometheus-float-histogram-st": ("rewrite_histogram_float", "SYSTEM"),
 }
 
 
@@ -75,14 +70,6 @@ def test_native_profile_independent_decode_and_complete_accounting(tmp_path, nam
     if original.track is BenchmarkTrack.SYSTEM:
         assert ledger.timestamp_bits == ledger.value_bits == 0
         assert ledger.unallocated_shared_bits > 0
-
-
-def test_timestamp_boundary_accounting_counts_only_timestamp_elements():
-    from tscompbench.validation.boundary import run_boundary_suite
-
-    key = "influxdb-tsm-adaptive-timestamp"
-    result = run_boundary_suite(adapter(key), manifest(key), BenchmarkTrack.TIMESTAMP, {})
-    assert result.passed, [(o.case_id, o.reason) for o in result.observations if o.status != "PASS"]
 
 
 def forged(stream, mutate_descriptor=None, mutate_payload=None):
@@ -148,8 +135,6 @@ def test_forged_capacity_and_truncated_or_corrupt_container_are_rejected(tmp_pat
     [
         ("abba", {"min_k": [9], "max_k": [2]}),
         ("fabba", {"scl": ["0"]}),
-        ("tristan", {"atoms": [2], "nonzeros": [3]}),
-        ("corad", {"correlation_threshold": ["2"]}),
         ("abba", {"compression_tolerance": ["NaN"]}),
     ],
 )

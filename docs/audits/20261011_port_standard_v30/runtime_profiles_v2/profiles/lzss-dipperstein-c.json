@@ -1,0 +1,68 @@
+{
+  "schema_version": "tscb.runtime-profile.v1",
+  "scope": "ARTIFACT_TRANSITIVE_DT_NEEDED_ACTUAL_PROCESS_ELF_MAPS",
+  "qualification": "ACTUAL_CDLL_LOAD_ONLY_NOT_FULL_N1_OR_CODEC_PARITY",
+  "artifact": {
+    "path": "build/port-standard-v30-20261011/native-builds-v3/lzss_dipperstein_c/release/libtscb_lzss_dipperstein_c.so",
+    "sha256": "64639cd65686096f31d46137ae2b70f8ab028e3f673152866e4e53e92f24d8e5"
+  },
+  "build_record": {
+    "path": "build/port-standard-v30-20261011/native-builds-v3/lzss_dipperstein_c/release/build-record.json",
+    "sha256": "2aa36aceeb66eb9f0a6617798d671e7fae3e20c2d3009d5670c00ed6d1195f4a"
+  },
+  "build_linkage_declared": [
+    {
+      "path": "/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+      "sha256": "9eb34cb2da3ae2a9398cc09b3cd2d069563ec40d9858cb711af15cd23fa80abf"
+    },
+    {
+      "path": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+      "sha256": "c53819710b163d3f1d2541778590d58d3ef31cb0ed75adcbe059faac68c1e72d"
+    }
+  ],
+  "standalone_resolution": [
+    {
+      "path": "/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+      "sha256": "9eb34cb2da3ae2a9398cc09b3cd2d069563ec40d9858cb711af15cd23fa80abf",
+      "soname": "ld-linux-x86-64.so.2"
+    },
+    {
+      "path": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+      "sha256": "c53819710b163d3f1d2541778590d58d3ef31cb0ed75adcbe059faac68c1e72d",
+      "soname": "libc.so.6"
+    }
+  ],
+  "effective_loaded_resolution": [
+    {
+      "path": "/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+      "sha256": "9eb34cb2da3ae2a9398cc09b3cd2d069563ec40d9858cb711af15cd23fa80abf",
+      "soname": "ld-linux-x86-64.so.2"
+    },
+    {
+      "path": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+      "sha256": "c53819710b163d3f1d2541778590d58d3ef31cb0ed75adcbe059faac68c1e72d",
+      "soname": "libc.so.6"
+    }
+  ],
+  "resolver_programs": [
+    {
+      "role": "ldd",
+      "path": "/usr/bin/ldd",
+      "sha256": "6752368e618c98f813bd346846df76021aa5d09caef634ee5dbe7d00c3c200fd"
+    },
+    {
+      "role": "readelf",
+      "path": "/usr/bin/x86_64-linux-gnu-readelf",
+      "sha256": "04db0000749aff89e4af21429340b00b536fc6f80e811c872c006507881a5560"
+    }
+  ],
+  "capture_driver": {
+    "path": "tools/capture_runtime_profiles.py",
+    "sha256": "5fb7fb8c6d1b1fa253793c857bf2911b79d9cbb571c7ba43843a29a903a0ac91"
+  },
+  "loader_environment": {
+    "LD_LIBRARY_PATH": ":/usr/local/cuda/lib64",
+    "LD_PRELOAD": null,
+    "LD_AUDIT": null
+  }
+}

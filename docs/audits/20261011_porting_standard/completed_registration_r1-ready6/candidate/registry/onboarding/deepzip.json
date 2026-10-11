@@ -1,0 +1,231 @@
+{
+  "schema_version": "tscb.source-onboarding.v2",
+  "source_artifact_id": "v2:source-artifact:sha256:607b2ba98f3a0d309227281b7b2cb03eedf9e51cdd7c14c62884549390f7a167",
+  "repository": "https://github.com/mohit1997/DeepZip",
+  "commit": "8c35502397a1488c89fa282ed033cc9d5fd4b4dc",
+  "dirty": false,
+  "submodules": [],
+  "implementation_files": [
+    "adapters/completed_rewrites/vendor/deepzip/src/cuda.cu",
+    "adapters/completed_rewrites/vendor/deepzip/src/cuda_stub.cpp",
+    "adapters/completed_rewrites/vendor/deepzip/src/deepzip.cpp",
+    "adapters/completed_rewrites/vendor/deepzip/src/hdf5.cpp",
+    "adapters/completed_rewrites/vendor/deepzip/src/hdf5_stub.cpp",
+    "adapters/completed_rewrites/vendor/deepzip/src/internal.hpp",
+    "adapters/completed_rewrites/vendor/deepzip/src/model.cpp"
+  ],
+  "public_api_files": [
+    "adapters/completed_rewrites/vendor/deepzip/include/deepzip/deepzip.hpp"
+  ],
+  "benchmark_files": [
+    "adapters/completed_rewrites/native/binding.cpp",
+    "src/tscompbench/adapters/completed_rewrites.py"
+  ],
+  "test_files": [
+    "adapters/completed_rewrites/tests/qualification.cpp",
+    "tools/qualify_completed_rewrites_native.py",
+    "tests/adapters/test_completed_rewrites.py",
+    "tests/integration/test_completed_rewrites_qualification.py"
+  ],
+  "license_files": [
+    "adapters/completed_rewrites/vendor/deepzip/LICENSES/DeepZip-MIT.txt",
+    "adapters/completed_rewrites/vendor/deepzip/LICENSES/HDF5-LBNL.txt",
+    "adapters/completed_rewrites/vendor/deepzip/LICENSES/HDF5.txt",
+    "adapters/completed_rewrites/vendor/deepzip/LICENSES/Project-Nayuki-MIT.txt"
+  ],
+  "third_party_dependencies": [
+    {
+      "path": "/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+      "sha256": "9eb34cb2da3ae2a9398cc09b3cd2d069563ec40d9858cb711af15cd23fa80abf"
+    },
+    {
+      "path": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+      "sha256": "c53819710b163d3f1d2541778590d58d3ef31cb0ed75adcbe059faac68c1e72d"
+    },
+    {
+      "path": "/usr/lib/x86_64-linux-gnu/libgcc_s.so.1",
+      "sha256": "fc9d43b2f6c20e53b009238f767c5b949d202389e20de9e202ea684b4ba3729a"
+    },
+    {
+      "path": "/usr/lib/x86_64-linux-gnu/libm.so.6",
+      "sha256": "00830df310aac5023e10bd7b715149ab8ddc682277fd8ae3539a7a44fcdd6c38"
+    },
+    {
+      "path": "/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30",
+      "sha256": "ff0825e113603c3866680d5d52216bc6d8eedf3a59f52a0aef67ff01994db128"
+    }
+  ],
+  "object_level_candidates": [
+    "P2_PIPELINE"
+  ],
+  "input_contract": {
+    "topologies": [
+      "UTS",
+      "SYNCHRONOUS_MTS"
+    ],
+    "dtypes": [
+      "|u1"
+    ],
+    "ranks": [
+      1,
+      2
+    ],
+    "layouts": [
+      "ROW_MAJOR_CONTIG",
+      "SOA_COLUMNS"
+    ],
+    "endianness": [
+      "little"
+    ],
+    "alignment_bytes": 1,
+    "min_n": 0,
+    "max_n": 16777216,
+    "min_m": 1,
+    "max_m": 65535,
+    "validity_shapes": [
+      "NONE"
+    ],
+    "homogeneous_itemsize": true,
+    "max_total_raw_bytes": 134217728,
+    "value_coupling_mode": "COLUMN_INDEPENDENT",
+    "timestamp_semantics": {
+      "preserve_order": true,
+      "duplicates": true,
+      "out_of_order": true,
+      "negative_delta": true,
+      "absolute_epoch": true,
+      "overflow_policy": "NOT_APPLICABLE_VALUE_ONLY"
+    },
+    "max_total_elements": 16777216,
+    "value_domain": {
+      "kind": "FROZEN_SOURCE_WITH_BOUNDED_REJECTION",
+      "unsupported_action": "REJECT_BEFORE_OUTPUT",
+      "oracle_evidence": "adapters/completed_rewrites/vendor/deepzip/contract_v1.md",
+      "rejection_reasons": [
+        "MODEL_ALPHABET_UNSUPPORTED"
+      ]
+    }
+  },
+  "output_contract": {
+    "framing": "SHA256_DESCRIPTOR_AND_COMPLETE_NATIVE_FRAMES_V1",
+    "self_contained": true,
+    "actual_written_length": true,
+    "capacity_is_not_size": true,
+    "model_and_dictionary_accounting": "OPAQUE_NATIVE_FRAME_BYTES; INCLUDED_IN_FINAL_BITS; NOT_SEPARATELY_ATTRIBUTED"
+  },
+  "lifecycle_contract": {
+    "output_bound": "FROZEN_NATIVE_BOUND_PLUS_EXACT_DESCRIPTOR_AND_RECORD_OVERHEAD",
+    "return_length": "actual_used_bytes",
+    "error_codes": [
+      "OUTPUT_CAPACITY",
+      "EXECUTION_CONTRACT",
+      "SOURCE_DOMAIN_UNSUPPORTED"
+    ],
+    "finalize": "EXACTLY_ONCE_REQUIRED_ZERO_BYTE_FINALIZE",
+    "reset": "FRESH_INDEPENDENT_SESSION_PER_INNER_OBJECT"
+  },
+  "stream_components": [
+    "descriptor_and_checksums",
+    "native_record_lengths",
+    "complete_native_frames"
+  ],
+  "upstream_tests": [
+    {
+      "status": "PASS",
+      "name": "release: current C++ standalone and framework ABI tests",
+      "evidence": "docs/audits/20261011_porting_standard/completed_native_r1-ready6/deepzip/release/qualification.json",
+      "evidence_sha256": "c82575a32ea916625f901bd8e38ac686c6ef203e1fcb2a29732a5d000433a4d7",
+      "log": "docs/audits/20261011_porting_standard/completed_native_r1-ready6/deepzip/release/qualification.log",
+      "log_sha256": "1093333eeb42a7ac58c31044ce491ccb602f58bea2faf505c8599eb36f2acf99",
+      "scope": "CURRENT_FROZEN_CPP_STANDALONE_AND_FRAMEWORK_BINDING_TESTS",
+      "sanitizer_scope": "NOT_APPLICABLE",
+      "source_language_parity": "NOT_GRANTED_BY_CPP_TESTS"
+    },
+    {
+      "status": "PASS",
+      "name": "sanitizer: current C++ standalone and framework ABI tests",
+      "evidence": "docs/audits/20261011_porting_standard/completed_native_r1-ready6/deepzip/sanitizer/qualification.json",
+      "evidence_sha256": "5879f005b5559333ad988605fea33867ed41ec219a7b22054a4f4b1ca8d541ec",
+      "log": "docs/audits/20261011_porting_standard/completed_native_r1-ready6/deepzip/sanitizer/qualification.log",
+      "log_sha256": "59b0f576379804a56b3ff7b763d11c732cd7a1e23ecabee16999492203deb754",
+      "scope": "CURRENT_FROZEN_CPP_STANDALONE_AND_FRAMEWORK_BINDING_TESTS",
+      "sanitizer_scope": "FRAMEWORK_BINDING_AND_FROZEN_CPP_SOURCES; EXTERNAL_BINARY_RUNTIMES_NOT_INSTRUMENTED; LEAK_CHECK_DISABLED",
+      "source_language_parity": "NOT_GRANTED_BY_CPP_TESTS"
+    }
+  ],
+  "builds": [
+    {
+      "kind": "release",
+      "artifact_sha256": "b8258233928175f4260cd214850a2666887b6a0de5eb972f18bdac054fec3ac5",
+      "compile_commands_sha256": "bf1c435b1149d4412034d3150bd14942fe05a1d232e50bd163280c1f3a847de5",
+      "build_record_sha256": "c65f37e75f626ff0258f67ee12a4652ffada333ad752f56d69ea3578c56bfa6c",
+      "build_record": "build/port-standard-v30-20261011/adapters/deepzip/release/build-record.json",
+      "compiler": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0\nCopyright (C) 2021 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+      "configure_command": [
+        "cmake",
+        "-S",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/adapters/deepzip/release/recipe",
+        "-B",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/adapters/deepzip/release/cmake",
+        "-DCMAKE_BUILD_TYPE=Release",
+        "-DCMAKE_CXX_FLAGS=-fno-fast-math -ffp-contract=off",
+        "-DCMAKE_C_FLAGS=-fno-fast-math -ffp-contract=off",
+        "-DCMAKE_EXE_LINKER_FLAGS=",
+        "-DDEEPZIP_WITH_HDF5=OFF",
+        "-DDEEPZIP_WITH_CUDA=OFF",
+        "-DDZIP_WITH_HDF5=OFF",
+        "-DDZIP_WITH_CUDA=OFF"
+      ]
+    },
+    {
+      "kind": "sanitizer",
+      "artifact_sha256": "252fb956a80cbbc643a8ddf973bf87facefdf9e6c9abbad216e7d1eb875b9b5e",
+      "compile_commands_sha256": "9632846eb330f1ed7e3ec4b75b27776374719f1b7f64d2e24514ff1694b4aceb",
+      "build_record_sha256": "c2d9669036ce9a4aa47dca623ce05a91565ea83afc9ddbb98276eb13edec6dba",
+      "build_record": "build/port-standard-v30-20261011/adapters/deepzip/sanitizer/build-record.json",
+      "compiler": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0\nCopyright (C) 2021 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+      "configure_command": [
+        "cmake",
+        "-S",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/adapters/deepzip/sanitizer/recipe",
+        "-B",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/adapters/deepzip/sanitizer/cmake",
+        "-DCMAKE_BUILD_TYPE=Release",
+        "-DCMAKE_CXX_FLAGS=-fno-fast-math -ffp-contract=off -O1 -g -fsanitize=address,undefined -fsanitize=float-cast-overflow -fno-omit-frame-pointer",
+        "-DCMAKE_C_FLAGS=-fno-fast-math -ffp-contract=off -O1 -g -fsanitize=address,undefined -fsanitize=float-cast-overflow -fno-omit-frame-pointer",
+        "-DCMAKE_EXE_LINKER_FLAGS=-no-pie",
+        "-DDEEPZIP_WITH_HDF5=OFF",
+        "-DDEEPZIP_WITH_CUDA=OFF",
+        "-DDZIP_WITH_HDF5=OFF",
+        "-DDZIP_WITH_CUDA=OFF"
+      ]
+    }
+  ],
+  "license_decision": {
+    "spdx": "MIT",
+    "status": "RUN_ALLOWED",
+    "files": [
+      "adapters/completed_rewrites/vendor/deepzip/LICENSES/DeepZip-MIT.txt",
+      "adapters/completed_rewrites/vendor/deepzip/LICENSES/HDF5-LBNL.txt",
+      "adapters/completed_rewrites/vendor/deepzip/LICENSES/HDF5.txt",
+      "adapters/completed_rewrites/vendor/deepzip/LICENSES/Project-Nayuki-MIT.txt"
+    ],
+    "redistribution": "LOCAL_EXECUTION_ONLY; ORIGINAL_NOTICES_RETAINED; NO_UPSTREAM_LICENSE_GRANT_INVENTED"
+  },
+  "known_limitations": [
+    "CPU numerical profile; all 17 frozen model variants verified against native vocabulary width 4. Native byte alphabet 0..3 only; no byte remapping, CUDA or HDF5 importer in this profile. External checkpoint loading/hashing included in encode; independent decode uses embedded model.",
+    "CORE/PIPELINE/E2E supported using harness session/object boundaries; API-internal staging, framing, model work and decode materialization remain in CORE. Optional native timing unavailable (null).",
+    "Independent object profile; streaming/query/random access rejected during planning.",
+    "Synthetic acceptance fixtures establish integration, not real-world performance or quality rankings.",
+    "Current C++ standalone/binding tests do not grant fresh source-language parity, complete upstream capability parity or standalone G0-G6 REWRITE_DONE."
+  ],
+  "unsupported_reason_codes": [
+    "TRACK_OR_DTYPE_UNSUPPORTED",
+    "TIMING_SCOPE_UNSUPPORTED",
+    "STREAMING_UNSUPPORTED",
+    "QUERY_UNSUPPORTED",
+    "SOURCE_DOMAIN_UNSUPPORTED",
+    "ISA_UNSUPPORTED"
+  ],
+  "source_onboarding_id": "v2:source-onboarding:sha256:dd961ba99e6914d3acc1b9237df41fd2b790042a38624021361071683caf3bc8"
+}

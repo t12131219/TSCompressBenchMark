@@ -1,0 +1,119 @@
+{
+  "display_name": "v32_weather_f64_mts",
+  "expected": {
+    "canonical_raw_bits": 2097152,
+    "n_rows": 8192,
+    "semantic_content_sha256": "b48d44cc38bf91fe2ab407183604ffce786121298f860b8deda63840e4e66c0f",
+    "shape": [
+      8192,
+      4
+    ]
+  },
+  "file": {
+    "bytes": 264832,
+    "format": "canonical",
+    "path": "artifacts/comparisons/v32_20261010/sources/v32_weather_f64_mts.tscb",
+    "sha256": "63006ab77b06ebaaf357f51d9fc59f3a80001ec3e0fc82880bf014465c6a53fd"
+  },
+  "key": "v32_weather_f64_mts",
+  "license": {
+    "spdx": "UNSPECIFIED",
+    "status": "REVIEW_REQUIRED"
+  },
+  "logical": {
+    "axes": [
+      "time",
+      "feature"
+    ],
+    "n_rows": 8192,
+    "nan_is_null": false,
+    "schema_version": "tscb.logical-view.v2",
+    "timestamp": {
+      "epoch": "NOT_APPLICABLE",
+      "order_policy": "PRESERVE",
+      "origin": "NONE",
+      "present": false,
+      "unit": "NOT_APPLICABLE"
+    },
+    "topology": "SYNCHRONOUS_MTS",
+    "validity_shape": "NONE",
+    "value_columns": [
+      {
+        "display_name": "p (mbar)",
+        "dtype": "<f8",
+        "entity": "weather_station",
+        "feature": "p (mbar)",
+        "name": "p (mbar)",
+        "shape": [
+          8192
+        ],
+        "strides": [
+          8
+        ],
+        "unit": "FROM_RAW_HEADER"
+      },
+      {
+        "display_name": "T (degC)",
+        "dtype": "<f8",
+        "entity": "weather_station",
+        "feature": "T (degC)",
+        "name": "T (degC)",
+        "shape": [
+          8192
+        ],
+        "strides": [
+          8
+        ],
+        "unit": "FROM_RAW_HEADER"
+      },
+      {
+        "display_name": "Tpot (K)",
+        "dtype": "<f8",
+        "entity": "weather_station",
+        "feature": "Tpot (K)",
+        "name": "Tpot (K)",
+        "shape": [
+          8192
+        ],
+        "strides": [
+          8
+        ],
+        "unit": "FROM_RAW_HEADER"
+      },
+      {
+        "display_name": "Tdew (degC)",
+        "dtype": "<f8",
+        "entity": "weather_station",
+        "feature": "Tdew (degC)",
+        "name": "Tdew (degC)",
+        "shape": [
+          8192
+        ],
+        "strides": [
+          8
+        ],
+        "unit": "FROM_RAW_HEADER"
+      }
+    ],
+    "value_shape": [
+      8192,
+      4
+    ]
+  },
+  "parser": {
+    "identity_policy": "tscb.dataset-content.v1",
+    "name": "tscb.canonical",
+    "version": "1"
+  },
+  "schema_version": "tscb.canonical-source-manifest.v1",
+  "source": {
+    "notes": "{\"domain_proof\": {\"checked_values\": 32768, \"finite\": true, \"lossy_transform\": false, \"maximum\": [\"1020.07\", \"17.16\", \"292.13\", \"9.15\"], \"minimum\": [\"963.3\", \"-6.44\", \"266.19\", \"-7.4\"], \"original_dtype\": \"<f8\"}, \"first_party_project_reference\": \"https://www.bgc-jena.mpg.de/wetter/\", \"generation_spec\": {\"dtype_policy\": \"PRESERVE_ORIGINAL_F64\", \"kind\": \"REAL_VALUE_WINDOW\", \"parent_dataset_id\": \"v2:dataset:sha256:d2005d6eaf1ce1dd29bd9417237558fda0c9b8bdbdf415c948a74d2d444aac5c\", \"parent_file_sha256\": \"34ee981d07313e51da2a50bb600072c8ae4a69cb4b0651f4cb93a069d7a2ba63\", \"row_start\": 0, \"row_stop\": 8192, \"selected_columns\": [\"p (mbar)\", \"T (degC)\", \"Tpot (K)\", \"Tdew (degC)\"], \"source_key\": \"weather\", \"timestamp_policy\": \"VALUE_TRACK_SOURCE_TIMESTAMPS_OUTSIDE_OBJECT\"}, \"source_lineage_authentication\": \"LOCAL_MANIFEST_ONLY_NOT_EXTERNALLY_AUTHENTICATED\", \"source_manifest\": \"registry/datasets/weather.json\", \"source_sha256\": \"34ee981d07313e51da2a50bb600072c8ae4a69cb4b0651f4cb93a069d7a2ba63\"}",
+    "retrieved_at": "UNSPECIFIED",
+    "uri": "local:datasets/weather.csv"
+  },
+  "split": {
+    "learned_eligible": false,
+    "policy": "TEST",
+    "reason": "Frozen whole-object CPU comparison; no learned split or source generalization claimed."
+  }
+}

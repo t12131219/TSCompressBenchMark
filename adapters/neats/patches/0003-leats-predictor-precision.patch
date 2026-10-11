@@ -1,9 +1,19 @@
 Upstream: and-gue/NeaTS@2d804ff492e45222e841dc1a50904476fa64f4a0
+After: 0002-leats-serialization.patch
 
-LeaTS wrote residuals with an int-times-float expression while its scalar decoder
-evaluates the same linear model after converting the local x coordinate to double.
-On long segments this can move ceil() across an integer boundary and produce a
-one-unit loss in an otherwise lossless stream.
+Match the writer evaluation domain to the decoder using explicit binary64 multiplication.
+This corrects the lossless residual rather than claiming unmodified source behavior.
 
-The adapter makes the residual writer use the decoder's double evaluation domain.
-Partitioning, coefficients, residual widths and serialized layout remain unchanged.
+--- a/include/LeaTS.hpp
++++ b/include/LeaTS.hpp
+@@ -92,7 +92,9 @@
+                 auto j{0};
+
+                 for (; j < num_residuals; ++j) {
+-                    auto _y_st = std::ceil((j + 1) * std::get<2>(t) + std::get<3>(t));
++                    auto _y_st = std::ceil(
++                            static_cast<double>(j + 1) * static_cast<double>(std::get<2>(t))
++                            + std::get<3>(t));
+                     auto y_st = *(in_data + j);
+
+                     auto err = static_cast<uint64_t>((y_st - _y_st) + eps);

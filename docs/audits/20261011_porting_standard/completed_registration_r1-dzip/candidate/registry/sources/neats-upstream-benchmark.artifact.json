@@ -1,0 +1,174 @@
+{
+  "schema_version": "tscb.source-artifact.v2",
+  "key": "neats-upstream-benchmark",
+  "kind": "VENDORED_UPSTREAM_BENCHMARK_SOURCE_CLOSURE_WITH_PATCH",
+  "identity": {
+    "kind": "VENDORED_UPSTREAM_BENCHMARK_SOURCE_CLOSURE_WITH_PATCH",
+    "key": "neats-upstream-benchmark",
+    "benchmark_repository": "https://github.com/and-gue/NeaTS.git",
+    "benchmark_commit": "2d804ff492e45222e841dc1a50904476fa64f4a0",
+    "benchmark_paths": [
+      "main_simd.cpp",
+      "LeaTS.cpp",
+      "benchmark/neats_lossless.cpp"
+    ],
+    "spreadsheet_evidence": [
+      "参考TSBench row 16: NeaTS",
+      "Value-Compress row 71: NeaTS",
+      "Value-Compress row 75: NeaTS / LeaTS family"
+    ],
+    "upstream_repository": "https://github.com/and-gue/NeaTS.git",
+    "upstream_commit": "2d804ff492e45222e841dc1a50904476fa64f4a0",
+    "source_path": "adapters/neats/vendor/neats",
+    "source_closure_sha256": "71c668cfb78ced6e95b5d8e21a274a230d699c5b052e13aa4c8f0a105bcd3644",
+    "source_closure_file_count": 172,
+    "patch_set_sha256": "43ed9bfbea3cf84bccc341427c2f242c76441bb66c3d82a85aa26e1a9041178f",
+    "patch_set_hash_protocol": "RELATIVE_PATH_NUL_FILE_BYTES_V1",
+    "vendor_patch_state": "ALREADY_PATCHED_NATIVE_SCALAR_VARIANT",
+    "execution_variant": "NEATS_OR_LEATS_LOSSLESS_SIGNED_INTEGER_COLUMNWISE_SCALAR"
+  },
+  "license": {
+    "spdx": "GPL-3.0-only",
+    "status": "RUN_ALLOWED",
+    "redistribution": "GPL_V3_TERMS_AND_SOURCE_REQUIRED",
+    "files": [
+      "adapters/neats/vendor/neats/README.upstream.md",
+      "adapters/neats/vendor/neats/lib/sdsl-lite/COPYING",
+      "adapters/neats/vendor/neats/lib/sdsl-lite/LICENSE",
+      "adapters/neats/vendor/neats/lib/sux/COPYING3",
+      "adapters/neats/vendor/neats/lib/sux/COPYING.RUNTIME"
+    ]
+  },
+  "build": {
+    "recipe": "conda run -n CompressBench14 python tools/build_codec.py <neats-lossless-i64|leats-lossless-i64> --profile all --output-root build/port-standard-v30-20261011/native-builds-v3",
+    "patches": [
+      "adapters/neats/patches/0001-gcc11-scalar-compatibility.patch",
+      "adapters/neats/patches/0002-leats-serialization.patch",
+      "adapters/neats/patches/0003-leats-predictor-precision.patch"
+    ],
+    "submodules": [],
+    "translation_units": [
+      "adapters/neats/native/tscb_neats.cc",
+      "adapters/neats/vendor/neats/include/NeaTS.hpp",
+      "adapters/neats/vendor/neats/include/LeaTS.hpp",
+      "adapters/neats/vendor/neats/include/float_pfa.hpp",
+      "adapters/neats/vendor/neats/include/float_dpfa.hpp",
+      "adapters/neats/vendor/neats/include/algorithms.hpp",
+      "adapters/neats/vendor/neats/include/coefficients_space.hpp",
+      "adapters/neats/vendor/neats/include/my_elias_fano.hpp"
+    ],
+    "release_artifacts": {
+      "neats-lossless-i64": "build/port-standard-v30-20261011/native-builds-v3/neats_lossless_i64/release/libtscb_neats_lossless_i64.so",
+      "leats-lossless-i64": "build/port-standard-v30-20261011/native-builds-v3/leats_lossless_i64/release/libtscb_leats_lossless_i64.so"
+    },
+    "sanitizer_artifacts": {
+      "neats-lossless-i64": "build/port-standard-v30-20261011/native-builds-v3/neats_lossless_i64/sanitizer/libtscb_neats_lossless_i64.so",
+      "leats-lossless-i64": "build/port-standard-v30-20261011/native-builds-v3/leats_lossless_i64/sanitizer/libtscb_leats_lossless_i64.so"
+    },
+    "current_build_records": [
+      {
+        "algorithm": "leats-lossless-i64",
+        "profile": "release",
+        "record": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/leats_lossless_i64/release/build-record.json",
+          "sha256": "5260814b034a49dc3883e91d5690e1e741aa1cafeebb09aa54055be649f9a0a5"
+        },
+        "artifact": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/leats_lossless_i64/release/libtscb_leats_lossless_i64.so",
+          "sha256": "7ca6b00bea90644c31d538a5435de32a6884243db236bc2de93c764635a6e239"
+        },
+        "compile_commands_sha256": "57424c3b8c9305e3ea09ec7d39ff55238645a926c4b0b40e11c12194b0cc1a4a",
+        "dependency_capture": "ACTUAL_PER_TU_MD_COMPILATION_AND_LINK"
+      },
+      {
+        "algorithm": "leats-lossless-i64",
+        "profile": "sanitizer",
+        "record": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/leats_lossless_i64/sanitizer/build-record.json",
+          "sha256": "5c936c96f6d9be538235701f9a445ca0def7bba096e4a65fbb37fffb681a7133"
+        },
+        "artifact": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/leats_lossless_i64/sanitizer/libtscb_leats_lossless_i64.so",
+          "sha256": "c2320a70ed369444e2e73087703f58946d3325d4a23ffd6d41fe347f935778a8"
+        },
+        "compile_commands_sha256": "c5896f3c3b83a7b77e9eac9f94183c9af139c0838561121c8dd4a6e6fb484e14",
+        "dependency_capture": "ACTUAL_PER_TU_MD_COMPILATION_AND_LINK"
+      },
+      {
+        "algorithm": "neats-lossless-i64",
+        "profile": "release",
+        "record": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/neats_lossless_i64/release/build-record.json",
+          "sha256": "7ed5419645ce80dd6c88d2288a5a03cfdf0285d68e470f5e7485e1555d3f5640"
+        },
+        "artifact": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/neats_lossless_i64/release/libtscb_neats_lossless_i64.so",
+          "sha256": "1a9a5fd26a454cb5161159fe2914aba785619ee6b6d51139a004fb1fdaffcf35"
+        },
+        "compile_commands_sha256": "c9df963c7b51da307b451baa133276bf8e963b9b0c82bdf1ebe1a82d992bee90",
+        "dependency_capture": "ACTUAL_PER_TU_MD_COMPILATION_AND_LINK"
+      },
+      {
+        "algorithm": "neats-lossless-i64",
+        "profile": "sanitizer",
+        "record": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/neats_lossless_i64/sanitizer/build-record.json",
+          "sha256": "71e574aec2a99ef3746555addd673ae7977cf61cf3fdac456552b1cb1c30b6a1"
+        },
+        "artifact": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/neats_lossless_i64/sanitizer/libtscb_neats_lossless_i64.so",
+          "sha256": "68712bc55693444e979419bbfff4d4c99737b9a5619177ab0c8c497729027ad6"
+        },
+        "compile_commands_sha256": "d317a492565cb7faeb9646b2896be9f0adccfc67e2779fde076dc039b3920d9f",
+        "dependency_capture": "ACTUAL_PER_TU_MD_COMPILATION_AND_LINK"
+      }
+    ],
+    "current_native_qualification": [
+      {
+        "algorithm": "leats-lossless-i64",
+        "profile": "release",
+        "build_dependency_status": "PASS",
+        "native_suite_status": "PASS",
+        "evidence": {
+          "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/qualification.json",
+          "sha256": "b86173f34c30d175552de327cc446dd8480aa02dd7a9ae56f12f60c0d93db174"
+        },
+        "source_full_parity": "NOT_ASSERTED"
+      },
+      {
+        "algorithm": "leats-lossless-i64",
+        "profile": "sanitizer",
+        "build_dependency_status": "PASS",
+        "native_suite_status": "PASS",
+        "evidence": {
+          "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/qualification.json",
+          "sha256": "b86173f34c30d175552de327cc446dd8480aa02dd7a9ae56f12f60c0d93db174"
+        },
+        "source_full_parity": "NOT_ASSERTED"
+      },
+      {
+        "algorithm": "neats-lossless-i64",
+        "profile": "release",
+        "build_dependency_status": "PASS",
+        "native_suite_status": "PASS",
+        "evidence": {
+          "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/qualification.json",
+          "sha256": "b86173f34c30d175552de327cc446dd8480aa02dd7a9ae56f12f60c0d93db174"
+        },
+        "source_full_parity": "NOT_ASSERTED"
+      },
+      {
+        "algorithm": "neats-lossless-i64",
+        "profile": "sanitizer",
+        "build_dependency_status": "PASS",
+        "native_suite_status": "PASS",
+        "evidence": {
+          "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/qualification.json",
+          "sha256": "b86173f34c30d175552de327cc446dd8480aa02dd7a9ae56f12f60c0d93db174"
+        },
+        "source_full_parity": "NOT_ASSERTED"
+      }
+    ],
+    "current_build_dependency_scope": "ACTUAL_PER_TU_MD_HEADERS_OBJECTS_SELECTED_TOOLCHAIN_AND_DYNAMIC_RUNTIME_PARTIAL_STATIC_LINK_CLOSURE"
+  }
+}

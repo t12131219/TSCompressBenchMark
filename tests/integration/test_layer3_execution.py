@@ -55,14 +55,31 @@ block_size = [8]
         rows = list(csv.DictReader(handle))
     assert len(rows) == 1
     assert int(rows[0]["finalize_bytes"]) > 0
-    assert int(rows[0]["final_bits"]) == int(rows[0]["serialized_bits"])
+    decode_path = next((run_set.path / "artifacts").glob("*.decode.json"))
+    assert int(rows[0]["external_side_information_bits"]) == decode_path.stat().st_size * 8
+    assert int(rows[0]["final_bits"]) == (
+        int(rows[0]["serialized_bits"]) + decode_path.stat().st_size * 8
+    )
     evidence = json.loads((run_set.path / "run_components.jsonl").read_text())
     assert evidence["diagnostics"]["same_repetition_correctness_and_measurement"] is True
+    worker = evidence["diagnostics"]["worker_lifecycle"]
+    measurement = evidence["diagnostics"]["worker_measurement"]
+    assert worker["worker_exit_confirmed"]
+    assert measurement["measurement_worker_protocol"] == "WORKER_LOCAL_WARMUP_V1"
+    assert (
+        measurement["warmup_worker_pid"]
+        == measurement["measurement_worker_pid"]
+        == worker["worker_pid"]
+    )
+    assert measurement["warmup_finished_ns"] <= measurement["measurement_started_ns"]
+    assert measurement["threshold_protocol"] == "LEGACY_V2"
     assert evidence["timing"]["schema_version"] == "tscb.timing-observation.v2"
     assert evidence["timing"]["inner_iterations"] >= 1
     assert evidence["resources"]["schema_version"] == "tscb.resource-observation.v2"
     assert evidence["workloads"]["query"]["status"] == "NOT_REQUESTED"
     preflight = json.loads(next((run_set.path / "preflight").glob("*.json")).read_text())
+    assert preflight["diagnostics"]["independent_recovery"]["start_method"] == "spawn"
+    assert preflight["diagnostics"]["independent_recovery"]["original_input_available"] is False
     assert preflight["input_validation"]["timestamp_unit"] == "s"
     assert preflight["input_validation"]["timestamp_epoch"] == "UNIX"
     assert preflight["input_validation"]["value_units"] == [
@@ -79,6 +96,7 @@ block_size = [8]
     assert len(list((run_set.path / "warmup").glob("*.json"))) == 1
     assert "LAYER_3_COMPLETED" in (run_set.path / "events.jsonl").read_text()
     assert "LAYER_4_COMPLETED" in (run_set.path / "events.jsonl").read_text()
+    assert "REPETITION_WORKER_COMPLETED" in (run_set.path / "events.jsonl").read_text()
 
     (run_set.path / "runs.csv").unlink()
     assert execute_run_set(run_set, datasets, codecs) == ()

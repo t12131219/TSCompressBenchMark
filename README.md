@@ -2,101 +2,76 @@
 
 TSDataCompressBenchMark 是一个以源码身份、输入契约和原始证据为基础的时间序列压缩基准框架。Python 控制面负责数据准备、能力协商、任务规划、隔离执行、性能测量与统计报告；具体算法通过原生适配器接入。项目比较的是明确声明的压缩对象、配置和执行路径，保留不支持、错误、超时及资源压力记录。
 
-本文对应截至 **2026-10-08 的源码状态**。Python 包版本为 `0.1.0`，数据与运行契约属于 V2；两者是不同的版本体系。本次状态说明见 [RELEASE_DESCRIPTION.md](RELEASE_DESCRIPTION.md)。
+本文保留 **V3.2 现有压缩器 CPU 范围的历史签发记录（2026-10-11）**。该批次 16 条 lane 的报告、no-op resume 和两项辅助审计均完成；原 completion 为 `CURRENT_CPU_SCOPE_COMPLETE`，逐条验收为 `CURRENT_EXISTING_CPU_SCOPE_ACCEPTED_WITH_LIMITS`。原始 2400 条计划记录完整保留，结论绑定该批冻结源码和工件。随后按 v3.0 移植规范进行的代码、补丁、构建和登记修正已改变当前执行闭包；旧签发不授予当前闭包的正式性能资格。历史范围与限制见[原范围验收记录](docs/reviews/v32_current_scope_acceptance_20261011.md)。Python 包版本 `0.1.0`、V3.2 工程计划、现有 Schema/canonical/ABI 版本是不同版本体系。
 
-后续框架修改、算法接入与评测按 [V3 工程实施总计划](TimeSeries_Compression_Benchmark_V3_工程实施总计划.md)执行。计划版本独立于现有 Schema、canonical 格式与 ABI 版本；当前实现范围及待实施迁移见该计划。
+同日完成的 [`lzss-raw` C++ 迁移](docs/lzss_cpp_rewrite_20261011/README.md) 更换了该入口的源码与工件身份。以上已签发 Benchmark 产物保留迁移前身份；当前 C++ 实现的新实验需建立新的运行身份，旧性能记录不作为新实现的测量结果。
 
-## 当前状态
+当前代码的移植／重写审查与修正见[2026-10-11 审计报告](docs/audits/20261011_porting_standard/README.md)及[33 个入口逐项结论](docs/audits/20261011_porting_standard/rewrite_routes.md)。新验证分别记录源对照、原生测试、入口恢复与全量回归；没有把历史 FORMAL 重新授予修正后的闭包。
 
-五层框架已经实现，能够完成从注册数据到可追溯报告的闭环。算法接入仍按来源、API、数据域和运行配置逐项验证。
+依据为 [V3.2 工程实施总计划](TimeSeries_Compression_Benchmark_V3_工程实施总计划.md)、[117 项独立审查](docs/reviews/independent_benchmark_review_20261010.md)和[能力支持矩阵](docs/algorithm_capability_support_matrix_20261010.md)。本轮只使用现有压缩器，不新增算法，不恢复已退出入口；长期多数候选接入另列。
 
-| 项目 | 当前状态与含义 |
+## 已签发批次的范围与完成门禁
+
+| 项目 | 当前范围与含义 |
 | --- | --- |
-| Codec 注册表 | 67 个清单：63 个非 oracle 入口、4 个框架测试 oracle；注册数量不等于完整算法验收数量 |
-| 数据集注册表 | 22 个清单，包含真实数据和合成验证 fixture |
-| 其他注册身份 | 118 个 SourceArtifact、4 个 Codec 别名；SourceArtifact 不等于可运行算法 |
-| 全量接入清单 | 保留 221 个逻辑条目，其中 115 个原生核心候选；完整逻辑条目验收计数为 0 |
-| 最近原生入口证据刷新 | 2026-10-07 的 13 个入口通过限定范围重新资格验证；1882 条正式批次记录，1775 条有效测量记录 |
-| 能力边界 | 查询、流式、ISA、数据类型与 LossMode 依清单和运行配置门控；没有统一的全算法、全数据域支持声明 |
+| 活动入口 | 33 个入口、41 个声明 Track/fixture/config 资格案例；有限资格不代表全部合法域和参数 |
+| Codec 登记 | 40 个清单：33 个活动入口、3 个范围外残留、4 个框架 oracle；alias 不增加方法数 |
+| 普通实验 | 12 个 lane：byte、f64、f32、i16、abs、quality、model、cold、api、timestamp、entropy、u8 |
+| 独立工作负载 | stream、query-warm、query-fresh；相关 query 变体保留研究范围 |
+| 完整 P2 | 1 个 lane，完整 T/V/validity、typed schema、child/block/tail 与独立恢复 |
+| async/ragged | 6 个明确对象 × LZ4/Zstd，12 个集合资格单元；独立于正式性能 lane |
+| 候选与条款 | 166 候选记录与旧 163 命名空间映射；911 行规范/审查/矩阵验收映射、28 类独立 proof |
+| 历史签发 | 原批次 16/16 lane 完成；completion 与 911 行逐条验收绑定原闭包，保留有限输入及明确结论边界 |
 
-计数来自当前注册表和保存的审计记录。`registry/native_integration_plan.json` 是接入工作清单快照，其逐条状态可能早于最新专项审计；判断某入口当前资格时，应同时核查接入卡、工件及 SDK 依赖哈希、新运行批次和独立审计。已通过限定范围的 primitive 或 pipeline 不会自动使整个逻辑条目完成。
+FSE/Huff0 和两个 Sprintz uint8 入口分别进入 entropy/u8 的现有算法共同任务组。所有现有 P1 完整 codec 需在适用任务中取得共同正式证据。SIMDcomp 是单方法 P0 primitive，保留其 primitive/SDK/入口资格，不虚构双方法完整整数方案组。
 
-最近状态依据：[原生入口证据刷新](docs/native_codec_evidence_refresh.md)、[方向最短时长修正](docs/minimum_duration_direction_self_check.md)、[全量工作清单](registry/native_integration_plan.json)。详细 `build/` 与 `runs/` 证据由构建和运行生成，通常不随 Git 分发；文档中的历史计数不代表新机器的验证结果。
+冻结的核心成员和合法配置保持完整分母；失败、拒绝、环境/资源不足与统计不足分别报告。核心组要求至少两个不同任务相关方法和两个独立真实来源；列、窗口、cast、采样变化不增加来源数。相关实现变体、参数点、ISA/build 副本不会自动增加方法数。SOURCE_PARITY 与任务 correctness、SDK 和正式比较分别验收，UNKNOWN 保留原义。
 
-## 运行结构
+## 实际执行结构
 
-| 层 | 主要模块 | 实际职责 |
+| 职责 | 主要模块 | 行为 |
 | --- | --- | --- |
-| 1 数据准备 | `datasets/`、`configuration.py`、`environment.py`、`runner.py` | 加载配置、冻结环境、核查数据源，加载 CanonicalDataset，分析特征并写入 Canonical 工件 |
-| 2 能力与任务规划 | `codecs/`、`planning/`、`preprocess/contracts.py` | 扫描参数，按 Dataset × Algorithm × Track × Config 协商能力，生成适配/预处理计划、执行路径及可比性键，冻结任务宇宙 |
-| 3 执行与验证 | `adapters/`、`execution/`、`validation/`、`accounting/` | 源与构建门控、输入校验、实际兼容适配、预处理阶段验证、边界测试、最小往返及正式重复正确性检查 |
-| 4 性能测量 | `execution/repetition.py`、`measurement/` | 预热与正式重复中的计时、最短时长循环、同步资源采集，以及按能力执行的查询和流式工作负载 |
-| 5 统计与报告 | `statistics/`、`reporting/` | 读取冻结任务和原始证据，先筛选资格，再聚合，生成分数据集及 corpus 指标、Pareto、逐指标排名、覆盖率和报告 |
-
-实际执行顺序：
+| 原对象与数据准备 | `datasets/`、`pipelines/models.py`、`pipelines/channel_collection.py` | 内容与语义身份、T/V/mask、轴/单位/顺序、固定 Corpus 与来源派生 |
+| 实验合同与编译 | `comparison/`、`planning/`、`codecs/` | 事前决策、成员/配置/期待矩阵、公共投影、ordered stages 与 child 源域 |
+| 执行与恢复 | `execution/`、`adapters/`、`pipelines/` | Preflight、实际编解码、Finalize、完整依赖、独立公共 decoder 与输出物化 |
+| 测量与资源 | `measurement/`、`execution/repetition.py`、`execution/workload_driver.py` | 独立 worker、真实时钟与方向信号、预热/缓存、资源租约与线程门禁 |
+| 分析与报告 | `comparison/analysis.py`、`comparison/report_renderer.py`、`reporting/` | 原始证据重核、真实配对、固定分母、质量/Pareto/覆盖及范围结论 |
 
 ```text
-初始化 / 恢复 Run Set
-  → 数据准备
-  → 参数展开、能力协商、执行解析与任务冻结
-  → 对每个任务执行 Preflight
-      ├─ 失败 / 不支持：保存诊断
-      └─ 通过：预热 → 正式重复
-                    → 适配、完整编解码、计时及同步资源采集
-                    → 逐次正确性与资源检查
-                    → 可选查询 / 流式工作负载
-                    → 追加原始 Run 证据
-  → 单独调用 run report：资格过滤 → 聚合 → 分组分析 → 报告
+事前决策 / Contract / Corpus / Config / ExpectedOutcome
+  → 冻结源码、工件、资源、Protocol、AnalysisPolicy 与 Schedule
+  → 原对象资格、独立恢复、完整成本
+  → 独立 development pilot 与方向时钟/粒度/扰动门禁
+  → 逐 lane 串行正式执行、append-only trials 与持久 STARTED 事件
+  → 只读报告、no-op resume、成本与未压缩对象参考审计
+  → 当前闭包 completion audit、逐条 requirement acceptance
 ```
 
-第 2 层冻结计划，实际适配与阶段验证在执行时发生。第 3、4 层共享 `execute_task`，性能测量发生在正式编解码重复中。`run validate` 会完成准备、规划和执行；`run report` 读取已有证据，不重新调用 Codec。
+普通、workload 与 P2 计划在测量前冻结 `experiment_decision.json`，包含用户决策、具体研究问题、目标总体、主要估计量、选择规则及结论边界；`decision_id` 同时绑定计划与报告。缺失或漂移的契约不能在恢复或发布时补填。未知终态的 STARTED attempt 禁止自动重测或覆写原始证据。
 
-[源码展开架构图](docs/main-runtime-framework-20261008/framework.html)可辅助阅读。它展示职责和步骤展开，包含调用容器及同步观察关系，所有箭头不能都解释为严格串行函数调用。
+## 数据、成本与比较边界
 
-## 数据、算法与比较契约
+- `TIMESTAMP` 使用原 T；`VALUE` 使用原 V 及适用 validity；完整 P2 保存全部声明 T/V/mask。同步 ND 与 async/ragged 集合分别使用明确 schema 和实际 wrapper，不从能力枚举推断所有算法原生支持。
+- DatasetID 绑定原内容与声明语义。未声明的 cast、排序、填充、补 T、flatten、量化不能改变原任务；派生 f32/uint8 对象拥有独立 ground truth 与可审计来源链。
+- 新比较使用独立 Contract/Group/Corpus/Config/Protocol/AnalysisPolicy/Schedule 与公共投影。完整对象允许验证过的可逆适配、逐列或组合，并计入完整成本；共同原生 API 组要求相同实际输入 schema 与字节。Legacy 比较键不自动晋升新组资格。
+- `FinalBits` 包含最终物理流、描述及所有必需恢复依赖；capacity/workspace、logical payload 与真实存储分开。原 `RawBits` 分母不因内部扩宽而增加。
+- 完整未压缩参考另存完整对象及同 Track 的付费 schema 参考。它是 `SIZE_BASELINE`，性能为 null＋reason、统计方法数为 0；组件 native input size 不与完整对象空间混比。
+- 固定误差检查原域总预算；无界质量网格保留全部合法点和经验 RMSE/MaxAE。Rate/summary 目前只有框架专属 validator 资格，没有活动算法或正式组。
 
-### 数据与 Track
-
-- DatasetID 绑定内容哈希和声明语义；源 CSV/NPZ 的文件大小只用于 provenance，不作为压缩比的原始数据分母。
-- 加载器按 Manifest 处理形状、dtype、时间戳、值与 Validity；拒绝未声明的转换、排序、填充、插值或 reshape。
-- 特征分析记录 exact / sampled 模式，Canonical 工件具有版本、布局和哈希。
-- `TIMESTAMP` 使用 T；`VALUE` 使用 V 和适用的 Validity；`SYSTEM` 要求共同的 T/V，生成 SegmentPlan 并由适配器实现具体对象封装。框架没有任意 T Codec 与 V Codec 自动组合的通用装配器。
-- UTS、同步 MTS 和原生多维数据的支持范围由各 Codec 清单决定。PEMS 保留原始三维结构，框架不会为其虚构时间轴。
-
-### 能力、身份与成本
-
-能力协商返回 `DIRECT_SUPPORTED`、`ADAPTER_LOSSLESS`、`ADAPTER_LOSSY` 或 `UNSUPPORTED`。非法参数点和不支持的任务保留在任务宇宙中，附带明确原因。
-
-SourceArtifactID 标识源工件，AlgorithmID 标识注册算法合同，ConfigID 标识展开配置，ExecutionPathHash 标识实际工件、适配器、环境、ISA、线程和回退等执行事实。三层比较键依次为：
-
-| 比较维度 | 必须匹配的键 |
-| --- | --- |
-| 空间与质量 | SemanticComparabilityKey |
-| 速度、查询与流式执行条件 | ExecutionComparabilityKey，包含语义键 |
-| CPU、内存等资源 | ResourceProfileKey，包含执行键 |
-
-编解码内核要求 `compress_update → finalize → accounting → 独立解码`，即使 Finalize 输出 0 字节也必须发生。FinalBits 计入完整对象及外部必要侧信息成本，输出容量不等于压缩大小。模型、字典、索引或共享 T/V 码流的成本遵循具体账本；不能凭内部拆分字段为 0 就判断其免费。
-
-无损值检查整数精确恢复或 IEEE 位一致；有界有损检查真实误差违反；无界有损记录质量而不虚构误差保证。`SUMMARY_ONLY` 和 `RATE_CONTROLLED_LOSSY` 使用各自合同，其中 rate gate 不应解释为已完成通用码率验收。框架 oracle 用于验证流程，不参与正式算法排名。
+普通完整对象的当前部署边界为 `SCHEMA_BOUND_OBJECT`；API 为 `NATIVE_COMPONENT`/CORE，二者分别报告。模型组为 uint8 base4 symbol 任务，训练/test overlap 保留 UNKNOWN。流式范围为 known-length fixed-block、Finalize 后完整消费；query bytes 为 logical estimate，样本不足的 p99 为 null。详细限制见[当前范围验收记录](docs/reviews/v32_current_scope_acceptance_20261011.md)。
 
 ## 已注册入口
 
-以下是注册覆盖，具体可用数据域和资格以 Manifest、接入卡及当前审计为准。
-
-| 类别 | 入口 |
+| 类别 | 范围内入口 |
 | --- | --- |
-| 通用字节压缩 | `lz4-frame`、`zstd-frame`、`snappy-raw`、`brotli-stream`、`deflate-zlib`、`bzip2-stream`、`xz-stream` |
-| LZSS / LZSSE | `lzss-raw`、`lzss-dipperstein-c`、`lzsse2-raw`、`lzsse8-raw`；不同来源与格式保持独立身份 |
-| 浮点与时间序列无损 | `alp`、`alp-rd`、`chimp`、`chimp128`、`elf`、`elf-plus`、`elf-star`、`self-star`、`neats-lossless-i64`、`leats-lossless-i64` |
-| 时间戳与联合对象 | `delta-varint`、`influxdb-tsm-adaptive-timestamp`、`prometheus-xor-chunk`、`prometheus-xor2-chunk`、`prometheus-histogram-st`、`prometheus-float-histogram-st` |
-| 熵编码与 Sprintz | `huff0`、`fse`、`sprintz-delta`、`sprintz-fire`、`sprintz-fire-huff0`，以及历史受限的 `sprintz-delta-u8`、`sprintz-fire-u8` |
-| 整数 primitive 与 pipeline | StreamVByte 两个 uint32 入口及两个 checked int64 pipeline；MaskedVByte 与 Delta；SIMDComp、Delta、FOR；FastDifferential；Simple9、Simple9hacked、Simple16、Simple8b_RLE；LittleIntPacker 五个入口 |
-| 有损与模型压缩 | `zfp-accuracy-1d`、`serf-qt`、`serf-xor`、`abba`、`fabba`、`tristan`、`corad`、`deepzip`、`dzip`、`walloc-1d` |
-| 框架 oracle | `oracle-direct`、`oracle-lossless-adapter`、`oracle-lossy-adapter`、`oracle-native-nd-only` |
+| 通用字节 | `lz4-frame`、`zstd-frame`、`snappy-raw`、`brotli-stream`、`deflate-zlib`、`xz-stream` |
+| LZSS | `lzss-raw` 为 EI10/EJ4/C32 的 C++ 重写；`lzss-dipperstein-c` 保持独立来源与格式，见[迁移验证](docs/lzss_cpp_rewrite_20261011/README.md) |
+| 浮点与整数无损 | `alp`、`alp-rd`、`chimp`、`chimp128`、`elf`、`elf-plus`、`elf-star`、`self-star`、`neats-lossless-i64`、`leats-lossless-i64` |
+| 熵编码与 Sprintz | `huff0`、`fse`、`sprintz-delta`、`sprintz-fire`、`sprintz-fire-huff0`、`sprintz-delta-u8`、`sprintz-fire-u8` |
+| Primitive | `simdcomp-u32`；plain SSE4.1/AVX2，差分与 FOR 组合未恢复 |
+| 有损与模型 | `zfp-accuracy-1d`、`serf-qt`、`serf-xor`、`abba`、`fabba`、`deepzip`、`dzip` |
 
-`lz77` 是 `deflate-zlib` 的来源映射别名；`gorilla`、`delta-of-delta` 和 `second-order-difference` 映射到 `prometheus-xor-chunk`。别名共享规范身份，不增加排名算法；完整 DEFLATE 或联合 Prometheus chunk 不能宣称为隔离的纯 primitive。
-
-完整可选 key 可通过 `codecs list` 查询。重点资料：[StreamVByte](docs/streamvbyte_modern_self_check.md)、[SIMDComp](docs/simdcomp_self_check.md)、[MaskedVByte](docs/maskedvbyte_self_check.md)、[FastDifferential](docs/fast_differential_self_check.md)、[Simple8b_RLE](docs/fastpfor_simple8b_rle_source_review.md)、[重写包接入](adapters/completed_rewrites/README.md)。专项自检文档中的早期批次可能已被后续重新资格验证替代，应优先核对最新证据刷新记录。
+`bzip2-stream`、`lzsse2-raw`、`lzsse8-raw` 为范围外残留登记；4 个 oracle 用于框架测试，不参与算法排名。`lz77` 是 `deflate-zlib` 的来源别名。范围以 `registry/algorithm_scope.json` 为准，历史退出列表见[算法退出记录](docs/algorithm_retirement_20261010.md)。
 
 ## 环境配置与快速开始
 
@@ -128,9 +103,6 @@ sudo apt-get install -y \
 # ALP / ALP-RD 的默认配方使用 clang++；包含 Clang sanitizer runtime。
 sudo apt-get install -y clang libclang-rt-dev
 
-# lzss-raw 的冻结 Rust 实现使用 rustc，源码配方包含 edition 2021。
-sudo apt-get install -y rustc cargo
-
 # 仅在独立 DeepZip / DZip 构建中启用 HDF5 checkpoint importer 时安装。
 sudo apt-get install -y libhdf5-dev
 ```
@@ -146,7 +118,7 @@ cmake --version
 lscpu
 ```
 
-CPU 标志必须满足所选入口清单：例如部分 StreamVByte 配方要求 AVX2，SIMDComp 使用 SSE4.1 和独立 AVX2 对象，Sprintz 还要求 BMI2/LZCNT，DZip 要求 AVX。虚拟机或容器隐藏 ISA 时，不能仅凭宿主机型号判断可用性。缺失 ISA 不通过静默替换算法解决。
+CPU 标志必须满足所选入口清单：例如 SIMDComp 使用 SSE4.1 和独立 AVX2 对象，Sprintz 还要求 BMI2/LZCNT，DZip 要求 AVX。虚拟机或容器隐藏 ISA 时，不能仅凭宿主机型号判断可用性。缺失 ISA 不通过静默替换算法解决。
 
 ### 2. 获取仓库并创建 Conda 环境
 
@@ -200,73 +172,11 @@ export PYTHONPATH="$PWD/src"
 
 随后使用同样的 `python -m tscompbench` 命令。运行工具脚本时也应使用选定环境中的 `python`。
 
-### 3. CUDA、LibTorch 与 MKL 的选择
+### 3. 当前保留的模型压缩依赖
 
-| 使用范围 | 所需环境 |
-| --- | --- |
-| 控制面、oracle 和大多数常规 CPU Codec | 上述 Python + C/C++ 环境；不需要 NVIDIA GPU、CUDA 或 PyTorch |
-| 当前 DeepZip / DZip Benchmark binding | 冻结 C++ 源码与模型；构建驱动关闭 CUDA 和 HDF5 importer，不要求 Python PyTorch/TensorFlow |
-| TRISTAN / CORAD | 冻结 Intel MKL **2023.1.0，build `h213fc3f_46343`** 及依赖闭包；通用 OpenBLAS 不能代替已锁定 MKL 身份 |
-| WaLLoC 当前 binding | LibTorch **2.6.0+cu118、C++ ABI=0**，配套 CUDA runtime/cuDNN、CUDA **11.8 Toolkit / nvcc** 与冻结模型；当前 Benchmark 仍只声明 CPU profile |
-| 独立实现的 GPU/训练扩展 | 依各自能力矩阵、GPU 架构与 source/native/SDK/run 审计另行接入；安装 CUDA 不会增加注册能力 |
+DeepZip / DZip 的 Benchmark 构建关闭 CUDA 和 HDF5 importer，按各自冻结依赖与模型合同运行 CPU profile。控制面环境不要求安装 Python PyTorch/TensorFlow。依赖定位使用 `TSCB_TORCH_ROOT`，仍须逐文件匹配冻结依赖哈希；不能把位置覆盖当作版本或数值行为资格。
 
-**WaLLoC 依赖准备。** PyTorch 2.6.0+cu118 的 Python wheel 可作为 C++ 头文件和 LibTorch 库的分发方式；它不安装到 Python 3.14 控制面中。另建 Python 3.11 环境：
-
-```bash
-conda create -n tscompbench-torch --override-channels -c conda-forge \
-  python=3.11 pip -y
-conda run -n tscompbench-torch python -m pip install \
-  torch==2.6.0 --index-url https://download.pytorch.org/whl/cu118
-conda run -n tscompbench-torch python -c \
-  'import torch; print(torch.__version__, torch.version.cuda); print("CXX11 ABI", torch._C._GLIBCXX_USE_CXX11_ABI)'
-
-# 将 LibTorch 的位置传给构建驱动；随后仍使用 tscompbench 控制面环境。
-export WALLOC_TORCH_ROOT="$(conda run -n tscompbench-torch python -c \
-  'from pathlib import Path; import torch; print(Path(torch.__file__).parent)' | tail -n 1)"
-conda activate tscompbench
-```
-
-预期版本为 `2.6.0+cu118`、CUDA `11.8`、ABI 为 `False`（0）。当前配方直接链接 CUDA 版 LibTorch，CPU-only wheel 或 cu12x/cu13x wheel 都不能直接替换。wheel 提供的 CUDA runtime **不包含完整 nvcc 编译工具链**，还需安装 Toolkit。
-
-复现当前 CUDA 11.8 配方建议使用 Ubuntu 22.04 x86_64 和 GCC 11。下面的 NVIDIA APT 仓库地址只适用于该发行版；其他发行版应在 [CUDA 11.8 下载页](https://developer.nvidia.com/cuda-11-8-0-download-archive)选择对应安装方式，不能把 `ubuntu2204` 仓库用于 Ubuntu 24.04。
-
-```bash
-sudo apt-get install -y wget gcc-11 g++-11
-wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-keyring_1.1-1_all.deb
-sudo dpkg -i cuda-keyring_1.1-1_all.deb
-sudo apt-get update
-sudo apt-get install -y cuda-toolkit-11-8
-
-export PATH="/usr/local/cuda-11.8/bin:$PATH"
-nvcc --version
-```
-
-使用 `cuda-toolkit-11-8` 保持 Toolkit 版本固定；不要以滚动的 `cuda` 元包替代。当前框架驱动已写死 `/usr/local/cuda-11.8`，仅设置 PATH 或安装 Conda `cudatoolkit` 不会改写该路径。构建时可用 `CC=gcc-11 CXX=g++-11 CUDAHOSTCXX=g++-11` 指定 CUDA 11.8 兼容的 host 编译器；Ubuntu 24.04 默认 GCC 13 不是该配方的直接替代。
-
-仅准备当前 CPU profile 的构建依赖，不要求有可运行的 GPU；若要执行独立 GPU 验证，还需 NVIDIA GPU 和兼容驱动。CUDA 11.8 GA 对应的 Linux 驱动基线为 520.61.05，具体兼容规则见 [NVIDIA CUDA 兼容性文档](https://docs.nvidia.com/deploy/cuda-compatibility/)。在 Ubuntu 实体机上，可查看并安装系统推荐的兼容驱动；已具备兼容驱动时无需重装：
-
-```bash
-sudo apt-get install -y ubuntu-drivers-common
-ubuntu-drivers devices
-sudo ubuntu-drivers autoinstall
-# 安装完成后重启系统，再检查驱动。
-nvidia-smi
-```
-
-WSL2 使用 Windows 宿主机的 NVIDIA 驱动，容器使用宿主机驱动与 NVIDIA Container Toolkit，不在其中执行上述实体机驱动安装。`nvidia-smi` 显示的 CUDA 字段是驱动支持上限，已安装 Toolkit 版本以 `nvcc --version` 为准。WaLLoC 独立 CUDA 目标固定为 `sm75`，其他 GPU 架构需要单独核查，当前注册不包含 GPU 验收。
-
-**MKL 依赖准备。** 可在独立环境中准备锁定的 runtime，不改变控制面的 NumPy 依赖：
-
-```bash
-conda create -n tscompbench-mkl --override-channels -c defaults \
-  python=3.11 'mkl=2023.1.0=h213fc3f_46343' -y
-conda run -n tscompbench-mkl python -c \
-  'import sys; from pathlib import Path; print(Path(sys.prefix) / "lib" / "libmkl_rt.so.2")'
-```
-
-**当前迁移限制必须处理：** `tools/build_completed_rewrite.py` 仍固定了原验证机器的 MKL 前缀，TRISTAN/CORAD 的 `DEPENDENCY_LOCK.json` 也含绝对路径；当前没有可直接覆盖它们的 `TSCB_MKL_ROOT` 环境变量。上述命令只准备 runtime，不能让这两个 Benchmark 入口自动完成跨机器构建。迁移时需将构建配置和依赖定位机制适配到实际前缀，再核验锁定文件，重新构建并执行 source/native/SDK/run 审计，刷新注册证据。WaLLoC 的 `WALLOC_TORCH_ROOT` 已支持位置覆盖，但仍逐文件核对依赖 SHA-256；版本号一致也不代表所有依赖文件匹配。不要创建原作者目录、删掉哈希门禁或把历史 PASS 复制为本机验收。
-
-更多 runtime、模型及能力细节见[重写包接入](adapters/completed_rewrites/README.md)和对应 `DEPENDENCY_LOCK.json`。这些接入资料中的旧环境名、绝对路径和报告属于历史来源记录，不是用户必须采用的安装位置。
+TRISTAN、CORAD、WaLLoC 已退出活动范围，相应 MKL、WaLLoC CUDA / LibTorch 安装步骤不再是当前 Bench 的配置要求。独立源码/重写工程自己的依赖说明作为历史资料保留。未来 GPU、训练或其他模型方法按 V3 重新接入与验收。
 
 ### 4. 确认控制面与准备数据
 
@@ -318,9 +228,9 @@ python -m tscompbench --project-root . run report \
 
 `QUALIFICATION` 用于边界和接入检查，不参加正式性能排名；空 `summary.csv` 可以是预期结果。检查 raw、诊断、eligibility 和 coverage。命令退出成功也不代表每个任务都 PASS，应读取任务级状态。
 
-### 6. 正式实验、线程与恢复
+### 6. Legacy TOML 实验、线程与恢复
 
-以下配置在同一数据上比较 LZ4 / Zstd；应先完成资格检查，并构建两个入口：
+以下 TOML 保留原运行与统计合同，用于 legacy 路径；其结果不能自动升级为 V3.2 新共同比较。V3.2 执行入口见下一节。运行此配置前应完成 LZ4/Zstd 资格和构建：
 
 ```bash
 python tools/build_codec.py zstd-frame --profile all
@@ -358,68 +268,127 @@ python -c 'import os; print(sorted(os.sched_getaffinity(0)))'
 | registry 为空或找不到配置 | 确认当前目录为仓库根目录，显式传 `--project-root .`；仅安装 wheel 不提供完整仓库资产 |
 | Python / NumPy 依赖无法解析 | 核查 Python >=3.14 和 NumPy >=2.5,<3 的可用包；不要混用旧模型环境 |
 | 缺少数据或 SHA-256 不匹配 | 按 Manifest 准备正确内容，或为新数据建立新身份；全表校验要求全部已注册文件 |
-| `clang++` / `rustc` / `nvcc` 找不到 | 按所选算法安装工具链；WaLLoC 还检查固定的 CUDA 11.8 路径 |
+| `g++` / `clang++` 找不到 | 安装 `build-essential`；ALP / ALP-RD 默认配方另需 Clang。`lzss-raw` 使用 C++17，无 Rust 工具链依赖 |
 | 缺失 `.so`、`ldd` 显示 `not found` | 构建本机工件、安装对应 runtime，核查配方的 RPATH 和依赖前缀；不要全局加入另一个 Conda 环境的 `lib/` 目录 |
 | dependency / SDK evidence drift | 按该入口接入流程重新生成并审计证据；历史报告不替代本机结果 |
 | 任务不支持、资源压力或空汇总 | 检查 Preflight、Run 原始状态、eligibility 与 coverage；QUALIFICATION 和不足资格的配置不产生正式排名 |
 
-## 测量与结果阅读
+## V3.2 执行入口
 
-`FORMAL` 要求至少 3 次且累计 >=0.5 秒预热，至少 10 次预定重复，配置的重复最短时长为 1–3 秒。当前循环分别检查**所选范围的编码和解码方向**；E2E 还检查完整对象时长。共享计时规则在 2026-10-07 修正过，旧的总时长达标记录不能自动当作当前方向门禁合格。
+已完成范围为 12 个 comparison、3 个 workload、1 个 pipeline lane。byte/f64/i16/abs/f32 在 `formal-r2/`，quality 在 `formal-r2/continuation-r2/`，model/cold/api/entropy/u8 在 `formal-r2/continuation-r3/`，stream/query-warm/query-fresh/pipeline/timestamp 在 `formal-r2/continuation-r4/`。最终发布通过 `declaration-release-r4.json` 引用这四批独立证据。旧计划、失败和部分运行均保留。该 `build/` 工件通常不随 Git 分发；新机器须准备数据/工件并冻结自己的完整计划和资源，身份改变后使用新 RunSet。
 
-CORE、PIPELINE 和 E2E 同时保留；全部已注册入口的三模式接入验证见[逐项审查](docs/all_algorithm_timing_scopes.md)。E2E 输入是内存中的 Canonical 路由视图，不包含文件读取。每个内循环对象独立创建、Finalize、解码和关闭。可选 NATIVE 与阶段计时是辅助观察，缺失值保留 null，不替代主范围时长门控，也不自动等同于上游 benchmark 的 kernel 时间。详见[计时边界](docs/native_codec_timing.md)。
+首轮 byte 的 development pilot 因 Snappy decode collector 扰动 `0.152526 > 0.15` 未通过，没有产生 FORMAL。新版本把基础 comparison protocol 的线程采样间隔从 1ms 调为 5ms，保留 `0.15` 门限、算法参数、语料和外层重复；P2 保持独立协议。改版记录为 `formal-r2/protocol_adaptation.json`，只依据 development 观测。当时独立 WorkloadProtocol 的实际 monitor 仍为 1ms，后来由 r4 单独修订。线程采样是实际高水位的下界，短暂线程可能漏采；改采样间隔本身不授予资格。
 
-资源采集目前主要支持 PROCESS CPU、RSS/PSS/USS、faults、I/O 等；进程树、设备、perf counter 和 Energy 在没有有效采集器时明确记为未采集或不支持。系统换页或线程超预算产生 `RESOURCE_PRESSURE` / `OVERSUBSCRIBED`，保留观测并按资格规则排除。
+时间戳组旧资格另因 LZSS 累计原生计算超过 30s 单任务时限而 TIMEOUT；timestamp v4 统一把单任务时限增为 240s 后资格和 pilot 通过。源码核对显示每个正式槽位仍重跑全部 49 项 preflight，development 粗略估计 143s × 32 个 native LZSS 槽位已超过 3600s 总预算。旧批次保留 17 条记录（9 条正式有效、8 条预期缺 T 拒绝）与一个 STARTED 未知终态，已受控停止、释放 host lease 并禁止 resume。timestamp v5 只将总预算增为 10800s；单任务 240s、全部边界、block/算法参数、语料、8 个重复和 collector 门限 `0.15` 保留。适配依据 development 诊断和源码槽位推算，未用选取的 encode/decode 观测优化性能。记录见 `formal-r2/continuation-r2/timestamp_total_budget_adaptation.json`。v5 已在 r4 新身份下实际完成资格、pilot、256 个合法核心 FORMAL 槽位及报告/resume/两审计；64 个预期缺 T 槽位保留 8 次实际 UNSUPPORTED 与 56 条 STOPPED，不缩分母。
 
-Query / Random Access 目前由 NeaTS、LeaTS 清单声明支持；persistent streaming 由 LZ4、Zstd、Brotli、DEFLATE、bzip2、XZ 清单声明支持。两类工作负载都要求配置请求开启及适配器协议支持；注册能力声明仍不等于每个新配置已取得当前正式资格。
+模型 v7 的 development pilot 因快参考 LZ4/Zstd 无法在 8 次 inner iterations 内累计每方向 50ms 而停止；DeepZip/DZip pilot 通过，旧批没有 FORMAL。模型 v8 只把同组共享 ceiling 提高至 1,000,000，3 次 pilot、4 次 outer repetitions、50ms 方向最低时长、0.15 门限、参数/语料与线程预算保持。记录为 `formal-r2/continuation-r3/model_inner_budget_adaptation.json`；新身份已完成实际资格、pilot、FORMAL、resume 与两项辅助审计。
 
-典型输出：
+旧 r3 stream pilot 的 XZ decode collector 扰动 `0.27376386156568376 > 0.20`，raw 恢复与时钟/资源门禁通过但没有 FORMAL。只读 development 诊断发现 1ms `/proc` 采样与部分 decode timer 重叠，提供相关性依据，未证明因果。r4 将 stream/query-warm/query-fresh 的实际 WorkloadProtocol monitor 统一从 1ms 调为 5ms；0.20 门限、5 对 pilot、8 个独立会话、1000 个 query 请求、成员/参数/语料保持，并冻结新 workload/decision/schedule/run 身份。记录为 `formal-r2/continuation-r4/workload_collector_monitor_adaptation.json`；三个 workload lane 及该队列的 P2 已实际完成。以上适配没有使用正式测试性能选择协议，没有修改源码、测试、工具或 registry。
 
-```text
-runs/<run-set-id>/
-  frozen_config.json / environment.json / run-set.json
-  datasets/<key>/*canonical.tscb / *manifest.json / *characterization.json
-  task_plan.jsonl / resolved_configs.json / *_registry_snapshot.json
-  events.jsonl                 # 生命周期与失败事件
-  run_components.jsonl        # 权威的完整原始 Run 证据
-  runs.csv                    # 可恢复的平面投影
-  eligibility.csv / summary.csv / corpus_summary.csv
-  comparability.csv / coverage.csv / pareto.csv / ranking.csv
-  report/report.json / report.md / report.html
-  report/coverage.svg / space-encode.svg / space-decode.svg
+角色台账生成器另修正了 LZSS 的旧全局说明，改为遵循各任务 GroupSpec 的方法等价政策；只有文案/policy 与 ledger ID 改变，14 个组的身份、成员和方法分母未变。记录为 `documentation_generator_revision.json`，当前台账为 `stage_mapping-release-r4.json` / `.md`。Benchmark 源码、测试、registry 和三个正式驱动继续冻结；SDK 与 2362 项全量回归的当前引用重新核验通过，此次没有重跑性能或 pytest。`release_r4_preparation_validation.json` 是结构准备记录，不替代最终 completion。
+
+普通组的分步命令如下，`BUNDLE` 指已经冻结的本机 ComparisonBundle，`RUNSET` 是尚未使用的名字：
+
+```bash
+export OMP_NUM_THREADS=1
+export MKL_NUM_THREADS=1
+export OPENBLAS_NUM_THREADS=1
+
+python tools/run_v32_comparison.py plan "$BUNDLE" \
+  --output-root build/v32-local --run-set-id "$RUNSET"
+python tools/run_v32_comparison.py qualify "$BUNDLE" \
+  --output-root build/v32-local --run-set-id "$RUNSET" --resume
+python tools/run_v32_comparison.py pilot "$BUNDLE" \
+  --output-root build/v32-local --run-set-id "$RUNSET" --resume
+python tools/run_v32_comparison.py formal "$BUNDLE" \
+  --output-root build/v32-local --run-set-id "$RUNSET" --resume
+python tools/run_v32_comparison.py report "$BUNDLE" \
+  --output-root build/v32-local --run-set-id "$RUNSET"
 ```
 
-统计层先过滤资格，再按 DatasetID、AlgorithmID、ConfigID、ExecutionPathHash、ProfileID 和记录 schema 分组。预定重复必须完整且不重复，合格组至少有 10 次有效正式重复；压力记录不删除、不用补轮替换。报告保留 median、P25/P75、mean、SD/CV、确定性 Bootstrap 区间和 contributing RunIDs。排名只在相应比较键内进行，Coverage 独立发布，不形成跨 Track、LossMode、对象层级或设备的加权总分。
+`tools/run_v32_existing_comparison.py` 一次执行上述链及 no-op resume 核对。工作负载用 `tools/run_v32_existing_workload.py BUNDLE --protocol PROTOCOL --output-root PATH --run-set-id NAME`；P2 用 `tools/run_v32_pipeline_comparison.py all --output PATH --cpu CPU --verify-resume`。已保存资格或 pilot 在 `--resume` 时只核验并复用，不重新测量修复失败。未知终态会阻断，修复代码后使用新身份保留旧证据。
+
+已完成的 r4 计划按串行 queue 执行 stream/query-warm/query-fresh/pipeline/timestamp；先前三批的 11 条有效 lane 独立保留，各自资格、pilot、方向信号、资源与停止门禁分别生效。新机器运行队列的示例为：
+
+```bash
+python tools/run_v32_release_queue.py \
+  build/v32-evidence-20261010/current-r2/formal-r2/continuation-r4/release_plan.json \
+  --output-root build/v32-evidence-local/continuation-r4
+```
+
+独立 async/ragged 集合资格与辅助未压缩成本参考不会加入性能试验或算法方法数：
+
+```bash
+python tools/qualify_v32_channel_collection.py \
+  --output build/v32-evidence-local/channel-collection
+python tools/audit_v32_uncompressed_reference.py \
+  build/v32-local/"$RUNSET" --lane comparison
+```
+
+`--lane` 是接口种类 `comparison`、`workload` 或 `pipeline`，不是算法组名称。入口全量资格入口为 `tools/qualify_v32_active_entries.py`；正式源码冻结后的回归入口为 `tools/verify_v32_regression.py --output-dir PATH`。
+
+## 测量、结果与最终验收
+
+V3.2 的预热、外层独立单位、inner iterations、方向粒度、时钟、缓存、线程/内存、预算、停止与重跑规则来自已冻结 Protocol；不使用一个全局重复数或时长代替所有 profile。worker 预热后真实时钟、空 clock/dispatch 观测及 collector 对照用于门禁，正式时间不减去估算开销。Encode、Decode 和实际 E2E 分列；完整恢复物化属于用户边界，独立 correctness 审计在计时外。
+
+固定 Corpus/host 的真实配对区间与统计不足结论并存。完成测量不意味着已证明某成员更快；小样本有限校准不提供普遍覆盖保证。资源使用主要为 PROCESS 范围；实际 affinity/thread 与 host lease 必须通过，未采集高级 counter/energy/device 指标保留 null＋reason。
+
+```text
+build/<evidence-root>/<comparison>/
+  bundle.json / environment.json / control_plane.json
+  experiment_decision.json / comparison_plan.json / execution_plan.json
+  schedule.json / jobs/ / codecs/ / datasets/
+  qualification.json / pilot.json
+  events.jsonl / comparison_trials.jsonl / artifacts/
+  analysis.json / analysis_extensions.json / report.html
+  resume_verification.json
+  uncompressed_reference.json / uncompressed_reference.md / reference_artifacts/
+```
+
+workload 另保存 `workload_plan.json`、`workload_pilot.json`、`workload_trials.jsonl` 和 `workload_analysis.json`；P2 使用 `plan.json`、`pipeline_events.jsonl`、`trials.jsonl` 与 `report.json`。报告从冻结计划与 raw 重建，不重测性能；各独立 decoder/成本审计的运行范围单独记录。
+
+历史批次最终回归保留全部测试定义/fixture 和 pytest 配置 hash、未过滤的真实日志与 skip 原意。基线全量回归实际为 2362 passed、650 warnings、523.65s，SDK 为 504 项 PASS / 74 个实际导入项目文件；发布器重新核验这些冻结引用，没有冒称重新运行全量测试。SDK/source 资格另审计，UNKNOWN 保持。以下是该批次实际使用的签发命令；输出已生成且不可覆盖，重签须选择新输出名：
+
+```bash
+EVIDENCE_ROOT=build/v32-evidence-20261010/current-r2
+DECLARATION="$EVIDENCE_ROOT/declaration-release-r4.json"
+python tools/audit_v32_completion.py "$EVIDENCE_ROOT" \
+  --declaration "$DECLARATION" --output "$EVIDENCE_ROOT/completion-final.json"
+python tools/publish_v32_requirement_acceptance.py publish \
+  "$EVIDENCE_ROOT/completion-final.json" \
+  --output "$EVIDENCE_ROOT/requirement_acceptance-final.json"
+```
+
+最终声明 `declaration-release-r4.json` 引用四批独立工件：`formal-r2/` 的 byte/f64/i16/abs/f32，`formal-r2/continuation-r2/quality`，`formal-r2/continuation-r3/` 的 model/cold/api/entropy/u8，以及 `formal-r2/continuation-r4/` 的 stream/query-warm/query-fresh/pipeline/timestamp。回归为 `regression-final/validation.json`，活动角色映射为 `stage_mapping-release-r4.json` / `.md`，ledger 为 `v2:active-stage-role-ledger-v32:sha256:240eb9d39eaecb7ef483fa9c76946466f418068c78a7a469f4bcbeabe95b9834`；SDK、active33 和集合资格独立引用。旧失败、受控中止与未知 STARTED 记录独立保留。
+
+该批次 audit 核实原始工件与当时 source/build/registry/config 绑定一致，发布器内部重新 audit 与已保存 completion 完全相等。12 条普通报告均为 `CORE_COMPLETE`、3 条 workload 为 `PROFILE_COMPLETE`、P2 为 `COMPLETE`，16 条均通过 no-op resume 与两项辅助审计。2400 条计划记录包括 timestamp 的 64 个预期缺 T 拒绝/停止槽位；成本审计覆盖 312 个 profile / 2336 个实际试验工件，另有 65 个完整未压缩对象参考。
+
+最终工件为 [completion-final.json](build/v32-evidence-20261010/current-r2/completion-final.json)（`CURRENT_CPU_SCOPE_COMPLETE`）和 [requirement_acceptance-final.json](build/v32-evidence-20261010/current-r2/requirement_acceptance-final.json)（`CURRENT_EXISTING_CPU_SCOPE_ACCEPTED_WITH_LIMITS`），28 类 proof 保存于同目录 `requirement_acceptance-final_proofs/`。逐条验收覆盖 684 计划行＋117 审查项＋110 矩阵行：768 行 `ACCEPTED_CURRENT_SCOPE`，26 行现有子集验收且新增成员暂缓，2 行分别为固定 pool/资格的受限验收，40 行 context、58 行历史、2 行 source parity 原状、5 行用户暂缓、10 行可选未声明。完整验收 ID 与每组身份见[当前范围验收记录](docs/reviews/v32_current_scope_acceptance_20261011.md)。原报告的统计 `INCONCLUSIVE`、source parity `UNKNOWN` 与 null 原因保留；实施完成不自动证明算法优胜或全域性质。
 
 ## 开发、证据与限制
 
 ```bash
 python -m pytest
-python -m pytest \
-  tests/unit/test_measurement.py tests/unit/test_statistics.py \
-  tests/integration/test_layer5_reporting.py
+python -m ruff check src tests tools
 ```
 
-以上命令使用已激活的控制面环境。完整测试集还会消费算法专属工件、数据与审计记录；新 checkout 仅配置基础环境时不保证全量测试通过。算法专属 source / native / SDK / run auditor 位于 `tools/`；必须按对应接入文档运行。共享执行源码或二进制变化可能使旧证据失效，工厂会拒绝漂移；编译成功、注册成功、会话创建成功和历史 PASS 都不能单独代替当前五层资格。最近刷新流程见[原生入口证据刷新](docs/native_codec_evidence_refresh.md)。
+使用已激活控制面环境；完整 suite 会消费真实算法工件、数据、模型与专项资格。正式测试、SDK 与性能批次串行安排；源码或依赖改变使相关冻结证据失效。当前 finite-domain 资格、SOURCE_PARITY、数学保证、经验质量、wire 兼容和统计结论各自保留，不从自回环或历史结果互相推导。
 
-当前尚未完成全量 221 条目验收，也没有所有算法在统一真实语料上的最终排名。合成 uint32 / uint28 UTS 资格不覆盖真实 int64 timestamp 或 float 数据；checked int64 StreamVByte pipeline 的现有范围只覆盖其登记数据和配置。DCT、DWT、PCA 当前继续跳过；TerraCodec 两个阻塞重写包未进入已完成接入声明。
-
-部分重写入口依赖冻结模型、MKL 或 LibTorch，CPU-only profile 不意味着 GPU/训练/查询/增量流式全部支持。sanitizer 证据有明确范围，未重新插桩的外部二进制和未执行的 LeakSanitizer 不包含在通过声明中。详见[重写接入范围](adapters/completed_rewrites/README.md)。
-
-本项目代码的许可证见 [LICENSE](LICENSE)；各 vendored 源码、模型和 runtime 的许可证遵循各自源锁及接入卡，不能用项目许可证覆盖上游条款。
+本轮暂缓新增算法和长期多数候选实施。SYSTEM/P3/device、unknown-length bounded-memory stream、高级 collector 等未签发范围详见[当前验收限制](docs/reviews/v32_current_scope_acceptance_20261011.md)。项目许可证见 [LICENSE](LICENSE)，vendored 源码、模型和 runtime 遵循各自 source lock 与许可证。
 
 ## 目录导航
 
 | 路径 | 内容 |
 | --- | --- |
-| `src/tscompbench/` | 五层控制面与 Python adapter |
+| `src/tscompbench/` | 数据、实验合同、执行/测量、完整管线与报告 |
 | `native/include/` | Canonical、C ABI 与计时接口 |
 | `adapters/` | 冻结源码、binding、补丁、合同及算法测试 |
 | `registry/` | Dataset、Codec、SourceArtifact、别名与 onboarding 清单 |
 | `schemas/v2/` | 配置、任务、运行、账本、统计与报告契约 |
-| `configs/experiments/` | QUALIFICATION / FORMAL 实验配置 |
+| `configs/comparisons/` | V3.2 共同比较 bundle 与 workload protocol |
+| `configs/experiments/` | Legacy QUALIFICATION / FORMAL TOML |
 | `fixtures/`、`tests/` | 受控数据、golden vectors 与回归测试 |
 | `tools/` | 构建、冻结、资格验证、接入和独立审计 |
 | `docs/` | 专项自检、接入范围与架构资料 |
 
-阅读顺序：[发布状态说明](RELEASE_DESCRIPTION.md) → [最近证据刷新](docs/native_codec_evidence_refresh.md) → 对应算法接入卡与实验配置。历史变化见 [CHANGELOG.md](CHANGELOG.md)，文件保留规则见 [Git tracking policy](docs/git_tracking_policy.md)。
+阅读顺序：[当前范围验收](docs/reviews/v32_current_scope_acceptance_20261011.md) → [V3.2 总计划](TimeSeries_Compression_Benchmark_V3_工程实施总计划.md) → 对应算法接入卡与冻结配置。历史变化见 [CHANGELOG.md](CHANGELOG.md)，文件保留规则见 [Git tracking policy](docs/git_tracking_policy.md)。

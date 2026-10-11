@@ -64,7 +64,7 @@ def main():
             assert manifest["source"]["source_modified"] is False
             assert (
                 sha((package / manifest["source"]["closure_manifest"]).resolve())
-                == (manifest["source"]["closure_manifest_sha256"])
+                == manifest["source"]["closure_manifest_sha256"]
             )
             assert (
                 sha(checkout / "USER_DECISIONS.md")
@@ -79,22 +79,9 @@ def main():
             qualification = json.loads((package / "validation/current/report.json").read_text())
             for relative, digest in qualification["source_files"].items():
                 assert sha(package / relative) == digest, (name, relative)
-            lock = json.loads(
-                (
-                    source
-                    / (
-                        "ORIGINAL_API_CLOSURE.json"
-                        if name == "prometheus-xor-chunk"
-                        else "SOURCE_FILES.json"
-                    )
-                ).read_text()
-            )
+            lock = json.loads((source / "SOURCE_FILES.json").read_text())
             for entry in lock.get("files", lock.get("source_files", [])):
-                path = (
-                    source / entry["path"]
-                    if name == "prometheus-xor-chunk"
-                    else (source / "upstream" / entry["path"])
-                )
+                path = source / "upstream" / entry["path"]
                 assert sha(path) == entry["sha256"], (name, path)
             commands = []
             for artifact, digest in delivery["binary_artifacts"].items():

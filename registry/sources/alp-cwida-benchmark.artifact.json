@@ -23,10 +23,12 @@
     "spdx": "MIT",
     "status": "RUN_ALLOWED",
     "redistribution": "ALLOWED_WITH_LICENSE_NOTICE",
-    "files": ["adapters/alp/vendor/LICENSE"]
+    "files": [
+      "adapters/alp/vendor/LICENSE"
+    ]
   },
   "build": {
-    "recipe": "conda run -n CompressBench14 python tools/build_codec.py <alp|alp-rd> --profile all",
+    "recipe": "conda run -n CompressBench14 python tools/build_codec.py <alp|alp-rd> --profile all --output-root build/port-standard-v30-20261011/native-builds-v3",
     "patches": [
       "adapters/alp/patches/0001-float-factor-array-bound.patch",
       "adapters/alp/patches/0002-decoder-multiply-domain.patch",
@@ -41,12 +43,117 @@
       "adapters/alp/vendor/alp/src/fastlanes_generated_unffor.cpp"
     ],
     "release_artifacts": {
-      "alp": "build/adapters/alp/release/libtscb_alp.so",
-      "alp-rd": "build/adapters/alp_rd/release/libtscb_alp_rd.so"
+      "alp": "build/port-standard-v30-20261011/native-builds-v3/alp/release/libtscb_alp.so",
+      "alp-rd": "build/port-standard-v30-20261011/native-builds-v3/alp_rd/release/libtscb_alp_rd.so"
     },
     "sanitizer_artifacts": {
-      "alp": "build/adapters/alp/sanitizer/libtscb_alp.so",
-      "alp-rd": "build/adapters/alp_rd/sanitizer/libtscb_alp_rd.so"
-    }
+      "alp": "build/port-standard-v30-20261011/native-builds-v3/alp/sanitizer/libtscb_alp.so",
+      "alp-rd": "build/port-standard-v30-20261011/native-builds-v3/alp_rd/sanitizer/libtscb_alp_rd.so"
+    },
+    "current_build_records": [
+      {
+        "algorithm": "alp",
+        "profile": "release",
+        "record": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/alp/release/build-record.json",
+          "sha256": "d1c619b4ba92861a854c042e2001026341a532da422f317390fbd02dcdb22a3a"
+        },
+        "artifact": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/alp/release/libtscb_alp.so",
+          "sha256": "7709f581b3673c3d64b5960d8df2bc1f8979086a17e4be49641d8f1bc05000d4"
+        },
+        "compile_commands_sha256": "bb9dd44d0e0f9dd07ab492ce3ffacf86ef20533d3de9da8f887492dc8c67efe4",
+        "dependency_capture": "ACTUAL_PER_TU_MD_COMPILATION_AND_LINK"
+      },
+      {
+        "algorithm": "alp",
+        "profile": "sanitizer",
+        "record": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/alp/sanitizer/build-record.json",
+          "sha256": "551e29c5349a4033bc946da2a680385d7b276fd2a026bc8af77ab6018225fee2"
+        },
+        "artifact": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/alp/sanitizer/libtscb_alp.so",
+          "sha256": "aff92c9875704d6a5f1648fdb7269c2a2378ab5c526b174debde7954d52c6b3a"
+        },
+        "compile_commands_sha256": "9f4ae22f0fe838165541766128675cb5fa990e25044b639f38fcf202c917f841",
+        "dependency_capture": "ACTUAL_PER_TU_MD_COMPILATION_AND_LINK"
+      },
+      {
+        "algorithm": "alp-rd",
+        "profile": "release",
+        "record": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/alp_rd/release/build-record.json",
+          "sha256": "c61774e1199f01925829e8a3daf43f922daea3cb8d2e1f07250960e6f8cc4c95"
+        },
+        "artifact": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/alp_rd/release/libtscb_alp_rd.so",
+          "sha256": "41a38abd6a822107546b7246bedb86ac4fd037a4dc2285c9f8843a8fa42c376e"
+        },
+        "compile_commands_sha256": "0039ac25f0d06c0b1736e7fd25331eafbb17d68b7cdfbaecea456098569b7246",
+        "dependency_capture": "ACTUAL_PER_TU_MD_COMPILATION_AND_LINK"
+      },
+      {
+        "algorithm": "alp-rd",
+        "profile": "sanitizer",
+        "record": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/alp_rd/sanitizer/build-record.json",
+          "sha256": "0536019ddafa117afb8f856310eb758d32038d19306c49d0e5cc1f622f900fce"
+        },
+        "artifact": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/alp_rd/sanitizer/libtscb_alp_rd.so",
+          "sha256": "3bae4d4a69b7bd2ff39dd1d2bb2e06108523479e55fa634db6006566f90a9bbc"
+        },
+        "compile_commands_sha256": "7882e2c7206ebef3c4641e88f13a12d4a6d625fcbc40806b3a73677c1775df0d",
+        "dependency_capture": "ACTUAL_PER_TU_MD_COMPILATION_AND_LINK"
+      }
+    ],
+    "current_native_qualification": [
+      {
+        "algorithm": "alp",
+        "profile": "release",
+        "build_dependency_status": "PASS",
+        "native_suite_status": "PASS",
+        "evidence": {
+          "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/qualification.json",
+          "sha256": "b86173f34c30d175552de327cc446dd8480aa02dd7a9ae56f12f60c0d93db174"
+        },
+        "source_full_parity": "NOT_ASSERTED"
+      },
+      {
+        "algorithm": "alp",
+        "profile": "sanitizer",
+        "build_dependency_status": "PASS",
+        "native_suite_status": "PASS",
+        "evidence": {
+          "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/qualification.json",
+          "sha256": "b86173f34c30d175552de327cc446dd8480aa02dd7a9ae56f12f60c0d93db174"
+        },
+        "source_full_parity": "NOT_ASSERTED"
+      },
+      {
+        "algorithm": "alp-rd",
+        "profile": "release",
+        "build_dependency_status": "PASS",
+        "native_suite_status": "PASS",
+        "evidence": {
+          "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/qualification.json",
+          "sha256": "b86173f34c30d175552de327cc446dd8480aa02dd7a9ae56f12f60c0d93db174"
+        },
+        "source_full_parity": "NOT_ASSERTED"
+      },
+      {
+        "algorithm": "alp-rd",
+        "profile": "sanitizer",
+        "build_dependency_status": "PASS",
+        "native_suite_status": "PASS",
+        "evidence": {
+          "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/qualification.json",
+          "sha256": "b86173f34c30d175552de327cc446dd8480aa02dd7a9ae56f12f60c0d93db174"
+        },
+        "source_full_parity": "NOT_ASSERTED"
+      }
+    ],
+    "current_build_dependency_scope": "ACTUAL_PER_TU_MD_HEADERS_OBJECTS_SELECTED_TOOLCHAIN_AND_DYNAMIC_RUNTIME_PARTIAL_STATIC_LINK_CLOSURE"
   }
 }

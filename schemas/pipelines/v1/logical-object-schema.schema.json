@@ -1,0 +1,182 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "values",
+    "timestamp",
+    "null_recovery_contract"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "tscb.logical-object-schema.v1"
+    },
+    "values": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "name",
+          "dtype",
+          "shape",
+          "axes",
+          "time_axis",
+          "unit",
+          "entity",
+          "feature"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "dtype": {
+            "enum": [
+              "<i2",
+              "<i4",
+              "<i8",
+              "<u2",
+              "<u4",
+              "<u8",
+              "<f2",
+              "<f4",
+              "<f8",
+              ">i2",
+              ">i4",
+              ">i8",
+              ">u2",
+              ">u4",
+              ">u8",
+              ">f2",
+              ">f4",
+              ">f8",
+              "|i1",
+              "|u1"
+            ]
+          },
+          "shape": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 32,
+            "items": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "axes": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 32,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "time_axis": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 31
+          },
+          "unit": {
+            "type": "string",
+            "minLength": 1
+          },
+          "entity": {
+            "type": "string",
+            "minLength": 1
+          },
+          "feature": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "timestamp": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "present",
+        "dtype",
+        "unit",
+        "epoch",
+        "pairing"
+      ],
+      "properties": {
+        "present": {
+          "type": "boolean"
+        },
+        "dtype": {
+          "type": "string",
+          "minLength": 1
+        },
+        "unit": {
+          "type": "string",
+          "minLength": 1
+        },
+        "epoch": {
+          "type": "string",
+          "minLength": 1
+        },
+        "pairing": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "present": {
+                "const": true
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "dtype": {
+                "enum": [
+                  "<i8",
+                  ">i8",
+                  "<u8",
+                  ">u8"
+                ]
+              },
+              "pairing": {
+                "const": "SHARED_TIME_AXIS"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "dtype": {
+                "const": "NOT_APPLICABLE"
+              },
+              "unit": {
+                "const": "NOT_APPLICABLE"
+              },
+              "epoch": {
+                "const": "NOT_APPLICABLE"
+              },
+              "pairing": {
+                "const": "NOT_APPLICABLE"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "null_recovery_contract": {
+      "enum": [
+        "BITWISE",
+        "SEMANTIC"
+      ]
+    }
+  },
+  "title": "Standalone ordered logical object including ND axes and T/V semantic schema",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "tscb.logical-object-schema.v1"
+}

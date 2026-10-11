@@ -19,10 +19,12 @@
     "spdx": "BSD-3-Clause",
     "status": "RUN_ALLOWED",
     "redistribution": "ALLOWED_WITH_LICENSE_NOTICE",
-    "files": ["adapters/snappy_raw/vendor/snappy/COPYING"]
+    "files": [
+      "adapters/snappy_raw/vendor/snappy/COPYING"
+    ]
   },
   "build": {
-    "recipe": "PYTHONPATH=src conda run -n CompressBench14 python tools/build_codec.py snappy-raw --profile all",
+    "recipe": "PYTHONPATH=src conda run -n CompressBench14 python tools/build_codec.py snappy-raw --profile all --output-root build/port-standard-v30-20261011/native-builds-v3",
     "patches": [],
     "submodules": [],
     "translation_units": [
@@ -31,7 +33,62 @@
       "adapters/snappy_raw/vendor/snappy/snappy-stubs-internal.cc",
       "adapters/snappy_raw/vendor/snappy/snappy.cc"
     ],
-    "release_artifact": "build/adapters/snappy_raw/release/libtscb_snappy_raw.so",
-    "sanitizer_artifact": "build/adapters/snappy_raw/sanitizer/libtscb_snappy_raw.so"
+    "release_artifact": "build/port-standard-v30-20261011/native-builds-v3/snappy_raw/release/libtscb_snappy_raw.so",
+    "sanitizer_artifact": "build/port-standard-v30-20261011/native-builds-v3/snappy_raw/sanitizer/libtscb_snappy_raw.so",
+    "current_build_records": [
+      {
+        "algorithm": "snappy-raw",
+        "profile": "release",
+        "record": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/snappy_raw/release/build-record.json",
+          "sha256": "e83dc0c3187b8b02589d79e6b68cd4c19836fbf00a1dc5eeca32cede6c8fd948"
+        },
+        "artifact": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/snappy_raw/release/libtscb_snappy_raw.so",
+          "sha256": "fa7e16cdb385bb73383aa4ed58ef2868e1c568c6de3b0e62989d96526235d493"
+        },
+        "compile_commands_sha256": "9677eebf04b383dff3f2863e9cfa8cca3b9e7b78cbfa2e6a5d2294e3fc9e1af1",
+        "dependency_capture": "ACTUAL_PER_TU_MD_COMPILATION_AND_LINK"
+      },
+      {
+        "algorithm": "snappy-raw",
+        "profile": "sanitizer",
+        "record": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/snappy_raw/sanitizer/build-record.json",
+          "sha256": "0731a083782aebd474b61afd7f7d482bad2db9baae23ddc0050768d2e3dc8004"
+        },
+        "artifact": {
+          "path": "build/port-standard-v30-20261011/native-builds-v3/snappy_raw/sanitizer/libtscb_snappy_raw.so",
+          "sha256": "641dfac78a563ccb58e8fadf647377ae4a35e0655f14aaf5fb6b99b30f0fd145"
+        },
+        "compile_commands_sha256": "b309db47e5d60fe5840f7d94d234893edb356dfc3e5c99f8f2d85f6d4dbd21f5",
+        "dependency_capture": "ACTUAL_PER_TU_MD_COMPILATION_AND_LINK"
+      }
+    ],
+    "current_native_qualification": [
+      {
+        "algorithm": "snappy-raw",
+        "profile": "release",
+        "build_dependency_status": "PASS",
+        "native_suite_status": "PASS",
+        "evidence": {
+          "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/qualification.json",
+          "sha256": "b86173f34c30d175552de327cc446dd8480aa02dd7a9ae56f12f60c0d93db174"
+        },
+        "source_full_parity": "NOT_ASSERTED"
+      },
+      {
+        "algorithm": "snappy-raw",
+        "profile": "sanitizer",
+        "build_dependency_status": "PASS",
+        "native_suite_status": "PASS",
+        "evidence": {
+          "path": "docs/audits/20261011_port_standard_v30/general_native_qualification_v2/qualification.json",
+          "sha256": "b86173f34c30d175552de327cc446dd8480aa02dd7a9ae56f12f60c0d93db174"
+        },
+        "source_full_parity": "NOT_ASSERTED"
+      }
+    ],
+    "current_build_dependency_scope": "ACTUAL_PER_TU_MD_HEADERS_OBJECTS_SELECTED_TOOLCHAIN_AND_DYNAMIC_RUNTIME_PARTIAL_STATIC_LINK_CLOSURE"
   }
 }

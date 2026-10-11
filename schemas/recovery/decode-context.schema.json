@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "tscb.decode-context.v1",
+  "title": "Persistent independent recovery context for the existing routed object contract",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "adapter_id", "parameters", "loss_mode", "track", "n", "m", "canonical_raw_bits", "timestamp_unit", "timestamp_epoch", "value_units", "buffers"],
+  "properties": {
+    "schema_version": {"const": "tscb.decode-context.v1"},
+    "adapter_id": {"type": "string", "minLength": 1},
+    "parameters": {"type": "object"},
+    "loss_mode": {"enum": ["LOSSLESS", "ERROR_BOUNDED_LOSSY", "UNBOUNDED_LOSSY", "RATE_CONTROLLED_LOSSY", "SUMMARY_ONLY"]},
+    "track": {"enum": ["VALUE", "TIMESTAMP", "SYSTEM"]},
+    "n": {"type": "integer", "minimum": 0},
+    "m": {"type": "integer", "minimum": 0},
+    "canonical_raw_bits": {"type": "integer", "minimum": 0},
+    "timestamp_unit": {"type": "string"},
+    "timestamp_epoch": {"type": "string"},
+    "value_units": {"type": "array", "items": {"type": "string"}},
+    "buffers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "dtype", "shape", "logical_bits", "inverse"],
+        "properties": {
+          "name": {"type": "string", "minLength": 1},
+          "dtype": {"type": "string"},
+          "shape": {"type": "array", "items": {"type": "integer", "minimum": 0}},
+          "logical_bits": {"type": "integer", "minimum": 0},
+          "inverse": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["kind", "dtype"],
+              "properties": {
+                "kind": {"enum": ["CONTIGUOUS_COPY", "GATHER_SCATTER", "ALIGNMENT_COPY", "SAFE_OVERREAD_PADDING", "TRANSPOSE_COPY", "ENDIANNESS_CONVERSION", "EXACT_WIDEN", "LOSSY_CAST"]},
+                "dtype": {"type": "string"}
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,148 @@
+{
+  "schema_version": "tscb.algorithm-retirement-audit.v1",
+  "date": "2026-10-10",
+  "status": "PASS_WITH_PRE_EXISTING_OUT_OF_SCOPE_FAILURES",
+  "removed_keys": [
+    "corad",
+    "delta-maskedvbyte-u32",
+    "delta-simdcomp-u32",
+    "delta-varint",
+    "delta-zigzag-streamvbyte-modern64",
+    "delta-zigzag-streamvbyte64",
+    "fast-differential-u32",
+    "fastpfor-simple8b-rle-u32",
+    "for-simdcomp-u32",
+    "influxdb-tsm-adaptive-timestamp",
+    "littleintpacker-bmi2-u32",
+    "littleintpacker-horizontal-u32",
+    "littleintpacker-pack32-u32",
+    "littleintpacker-sc-u32",
+    "littleintpacker-turbo-u32",
+    "maskedvbyte-u32",
+    "prometheus-float-histogram-st",
+    "prometheus-histogram-st",
+    "prometheus-xor-chunk",
+    "prometheus-xor2-chunk",
+    "simple16-u28",
+    "simple9-u28",
+    "simple9hacked-u28",
+    "streamvbyte-modern-u32",
+    "streamvbyte-u32",
+    "tristan",
+    "walloc-1d"
+  ],
+  "removed_aliases": [
+    "delta-of-delta",
+    "gorilla",
+    "second-order-difference"
+  ],
+  "active_scope_codec_count": 33,
+  "oracle_count": 4,
+  "retained_out_of_scope_registrations": [
+    "bzip2-stream",
+    "lzsse2-raw",
+    "lzsse8-raw"
+  ],
+  "registered_root_count": 40,
+  "active_alias_count": 1,
+  "source_artifact_count": 102,
+  "logical_worklist_entry_count": 176,
+  "csv_sha256": "536dda0cdb068da2014b1a0638d6cca7e7f1cb92a750d4528ead272d5e1b665c",
+  "original_and_independent_rewrite_sources_preserved": true,
+  "git_commits_reverted": false,
+  "archive_path": "/tmp/tsbench-requested-algorithm-removal-20261010/",
+  "checks": {
+    "expanded_regression": {
+      "passed": 795,
+      "failed": 3,
+      "failure_keys": [
+        "bzip2-stream",
+        "lzsse2-raw",
+        "lzsse8-raw"
+      ],
+      "failure_reason": "PRE_EXISTING_NATIVE_ARTIFACT_MISSING",
+      "all_requested_scope_cases_passed": true
+    },
+    "simdcomp_sdk": {
+      "status": "PASS",
+      "tests": 504,
+      "report": "build/source-audits/simdcomp-sdk-retirement-20261010-r4/report.json"
+    },
+    "simdcomp_current_qualification": {
+      "status": "PASS",
+      "supported_matrix_observations": 12,
+      "unsupported_matrix_diagnostics": 24,
+      "report": "build/source-audits/simdcomp_u32_qualification_current_audit.json"
+    },
+    "retained_artifact_closure": {
+      "status": "PASS",
+      "codec_count": 33
+    },
+    "lossless_native_abi": {
+      "status": "PASS",
+      "codec_count": 6,
+      "report": "docs/requested_lossless_native_abi_qualification.json"
+    },
+    "completed_native": {
+      "status": "PASS",
+      "passed_algorithms": [
+        "abba",
+        "fabba",
+        "deepzip",
+        "dzip"
+      ],
+      "profiles": [
+        "release",
+        "sanitizer"
+      ],
+      "profile_count": 8
+    },
+    "registry_verify": "PASS",
+    "git_diff_check": "PASS",
+    "runtime_and_scope_ruff": "PASS",
+    "dataset_verify_git_ignored": true
+  },
+  "logs": [
+    {
+      "path": "build/algorithm-retirement-20261010/final-regression.log",
+      "sha256": "c0e570fca83857a332a65772a4730b4516eb01560a0c0aee9fc7cd07ceb06d57"
+    },
+    {
+      "path": "build/algorithm-retirement-20261010/simdcomp-sdk.log",
+      "sha256": "e7be0a0d26d4a507dd70a564881d8aaefe1ce37812ffcf18c0e550a58dd3c013"
+    },
+    {
+      "path": "build/algorithm-retirement-20261010/simdcomp-benchmark.log",
+      "sha256": "b3dbe3033ca3141e3f1338e298c9057e403b9ac2028752f4d37663ef109e852d"
+    },
+    {
+      "path": "build/algorithm-retirement-20261010/simdcomp-run-audit.log",
+      "sha256": "e099b3c42096b54fe9099d8efec80e7431dc11d05f3018c10f4fe0a266b429a0"
+    },
+    {
+      "path": "build/algorithm-retirement-20261010/lossless-native.log",
+      "sha256": "1d4c14384a2dc73521483a7789bbf7ea62828d17f1cf681016da48e862fce94c"
+    },
+    {
+      "path": "build/algorithm-retirement-20261010/completed-native-first.log",
+      "sha256": "c89f176b29b1730c5243a38d40048fc3fa4f6a6de5e03ad4b33ab7cfc72a2b8a"
+    },
+    {
+      "path": "build/algorithm-retirement-20261010/artifact-closure-check.json",
+      "sha256": "b81061cbe4957135e5dabaa89c2e56862e335d55b61dbdae710aa751e5381764"
+    },
+    {
+      "path": "build/algorithm-retirement-20261010/dzip-native.log",
+      "sha256": "40b07a39e7dd789dcb3c4b3ee2f7f6999c29e4f2827502801fc1a43733106a59"
+    },
+    {
+      "path": "build/algorithm-retirement-20261010/completed-build.log",
+      "sha256": "183890afdeb7c22ef63fdc98b5fc881b94923232a4ddc6e47c37781bb8a4ffd9"
+    }
+  ],
+  "qualification_limitations": [
+    "Historical FORMAL evidence not re-signed",
+    "No new full-source parity or performance qualification claim",
+    "Three pre-existing out-of-scope manifests have no local build artifact"
+  ]
+}

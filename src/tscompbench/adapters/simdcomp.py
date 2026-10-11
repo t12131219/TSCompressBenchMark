@@ -1,4 +1,4 @@
-"""Direct SDK for frozen SIMDComp uint32 plain, modular D1 and fixed FOR APIs."""
+"""Direct SDK for the frozen SIMDComp plain uint32 APIs."""
 
 from __future__ import annotations
 
@@ -22,18 +22,12 @@ from tscompbench.execution.protocol import (
     RoutedInput,
 )
 from tscompbench.ids import canonical_json_bytes, stable_id
-from tscompbench.preprocess.simdcomp import EXECUTOR_IDS
 
-from .deflate_zlib import _Buffer
-from .maskedvbyte import _buffer
+from .native_buffers import _Buffer
 from .native_timing import NativeTimingProbe
 
-KEYS = {"simdcomp-u32": "PLAIN", "delta-simdcomp-u32": "DELTA", "for-simdcomp-u32": "FOR"}
-STAGES = {
-    "PLAIN": ["ORIGINAL_SIMDCOMP_UINT32_BITPACK"],
-    "DELTA": ["ORIGINAL_SIMDCOMP_D1_MODULAR32", "ORIGINAL_SIMDCOMP_UINT32_BITPACK"],
-    "FOR": ["ORIGINAL_SIMDCOMP_FIXED_FOR_MODULAR32", "ORIGINAL_SIMDCOMP_UINT32_BITPACK"],
-}
+KEYS = {"simdcomp-u32": "PLAIN"}
+STAGES = {"PLAIN": ["ORIGINAL_SIMDCOMP_UINT32_BITPACK"]}
 PREFIX = struct.Struct("<8sI32s")
 FRAME = struct.Struct("<8s6IQ")
 RECORD = struct.Struct("<HBBI")
@@ -41,62 +35,53 @@ MAGIC = b"TSCBSCP1"
 LIMIT = 16777216
 
 
+def _buffer(address: int, capacity: int, used: int, dtype: int, *, source: bool) -> _Buffer:
+    width = 4 if dtype == 6 else 1
+    return _Buffer(
+        ctypes.c_void_p(address),
+        capacity,
+        used,
+        dtype,
+        1,
+        (ctypes.c_uint64 * 8)((used if source and dtype == 6 else capacity) // width),
+        (ctypes.c_int64 * 8)(width),
+        1,
+        1,
+        0,
+    )
+
+
 def parameters(coding: str, values: dict) -> dict:
+    if coding != "PLAIN":
+        raise ExecutionContractError("unregistered SIMDComp coding mode")
     if type(values) is not dict or set(values) - {"api", "isa", "starting_point", "native_timing"}:
         raise ExecutionContractError("unknown SIMDComp parameters")
     result = {
-        "api": values.get("api", "MASKED" if coding == "DELTA" else "LENGTH"),
-        "coding": coding,
+        "api": values.get("api", "LENGTH"),
+        "coding": "PLAIN",
         "isa": values.get("isa", "SSE4_1"),
         "starting_point": values.get("starting_point", 0),
     }
-    api, isa, seed = result["api"], result["isa"], result["starting_point"]
-    if (
-        type(api) is not str
-        or type(isa) is not str
-        or type(seed) is not int
-        or not 0 <= seed < 2**32
-        or type(values.get("native_timing", True)) is not bool
-    ):
-        raise ExecutionContractError("invalid SIMDComp API/ISA/seed/timer")
+    api, isa, seed = (result["api"], result["isa"], result["starting_point"])
     legal = (
-        coding == "PLAIN"
-        and isa == "SSE4_1"
+        isa == "SSE4_1"
         and api in ("LENGTH", "MASKED", "WITHOUTMASK")
-        or coding == "PLAIN"
-        and isa == "AVX2"
-        and api in ("MASKED", "WITHOUTMASK")
-        or coding == "DELTA"
-        and isa == "SSE4_1"
-        and api in ("MASKED", "WITHOUTMASK")
-        or coding == "FOR"
-        and isa == "SSE4_1"
-        and api in ("LENGTH", "FULL")
+        or (isa == "AVX2" and api in ("MASKED", "WITHOUTMASK"))
     )
     if (
         type(api) is not str
         or type(isa) is not str
-        or not legal
-        or type(seed) is not int
-        or not 0 <= seed < 2**32
-        or coding == "PLAIN"
-        and seed != 0
-        or type(values.get("native_timing", True)) is not bool
+        or (not legal)
+        or (type(seed) is not int)
+        or (seed != 0)
+        or (type(values.get("native_timing", True)) is not bool)
     ):
         raise ExecutionContractError("invalid SIMDComp API/ISA/seed/timer")
     return result
 
 
 def wire_mode(params: dict) -> int:
-    return (
-        1
-        if params["coding"] == "DELTA"
-        else (3 if params["api"] == "FULL" else 2)
-        if params["coding"] == "FOR"
-        else 4
-        if params["isa"] == "AVX2"
-        else 0
-    )
+    return 4 if params["isa"] == "AVX2" else 0
 
 
 class _Library:
@@ -154,7 +139,7 @@ class _Library:
                 getattr(lib, name).restype = ctypes.c_uint32
         except (OSError, AttributeError) as error:
             raise ExecutionContractError("SIMDComp native ABI unavailable") from error
-        pointer, length = ctypes.c_char_p(), ctypes.c_uint64()
+        pointer, length = (ctypes.c_char_p(), ctypes.c_uint64())
         if lib.tscb_get_abi_version() != 1 or lib.tscb_get_manifest_json(
             ctypes.byref(pointer), ctypes.byref(length)
         ):
@@ -191,45 +176,12 @@ class SIMDCompAdapter:
     def create_session(self, values: dict[str, Any]) -> SIMDCompSession:
         return SIMDCompSession(self.library_path, self.algorithm, values)
 
-    @property
-    def pipeline_executor_id(self) -> str | None:
-        return EXECUTOR_IDS.get(self.algorithm)
-
-    def inspect_preprocess(self, routed: RoutedInput, values: dict[str, Any]) -> dict:
-        if self.algorithm not in EXECUTOR_IDS:
-            raise ExecutionContractError("plain SIMDComp has no semantic preprocess")
-        session = self.create_session({**values, "native_timing": False})
-        try:
-            destination = bytearray(session.output_bound(routed))
-            used = session.compress_update(routed, memoryview(destination))
-            session.finalize(memoryview(bytearray()))
-            stream = bytes(destination[:used])
-            original = routed.buffers[0]
-            return {
-                "algorithm": self.algorithm,
-                "original": np.ascontiguousarray(original.array),
-                "decoded": session.decompress(stream).buffers[0].array,
-                "stream": stream,
-                "wire_parameters": session.parameters,
-                "buffer": {
-                    "name": original.name,
-                    "dtype": "<u4",
-                    "shape": [routed.n],
-                    "logical_bits": original.logical_bits,
-                },
-                "value_units": list(routed.value_units),
-                "timestamp_unit": routed.timestamp_unit,
-                "timestamp_epoch": routed.timestamp_epoch,
-            }
-        finally:
-            session.close()
-
 
 class SIMDCompSession:
     def __init__(self, path: Path, algorithm: str, values: dict[str, Any]):
         if type(algorithm) is not str or algorithm not in KEYS:
             raise ExecutionContractError("unknown SIMDComp identity")
-        self.algorithm, self.coding = algorithm, KEYS[algorithm]
+        self.algorithm, self.coding = (algorithm, KEYS[algorithm])
         self.parameters = parameters(self.coding, values)
         self._native = _Library(path)
         self._handle = ctypes.c_void_p()
@@ -259,7 +211,7 @@ class SIMDCompSession:
             return
         if status == 3:
             raise OutputCapacityError("SIMDComp destination too small")
-        pointer, size = ctypes.c_char_p(), ctypes.c_uint64()
+        pointer, size = (ctypes.c_char_p(), ctypes.c_uint64())
         if self._handle.value:
             self._native.library.tscb_get_last_error(
                 self._handle, ctypes.byref(pointer), ctypes.byref(size)
@@ -268,7 +220,7 @@ class SIMDCompSession:
         raise ExecutionContractError(f"SIMDComp {operation} failed ({status}): {detail}")
 
     def _json(self, name: str) -> dict:
-        pointer, size = ctypes.c_char_p(), ctypes.c_uint64()
+        pointer, size = (ctypes.c_char_p(), ctypes.c_uint64())
         self._check(
             getattr(self._native.library, name)(
                 self._handle, ctypes.byref(pointer), ctypes.byref(size)
@@ -298,22 +250,22 @@ class SIMDCompSession:
             not isinstance(array, np.ndarray)
             or array.dtype.str != "<u4"
             or array.ndim != 1
-            or array.size > LIMIT
-            or type(routed.n) is not int
-            or routed.n != array.size
-            or type(routed.m) is not int
-            or routed.m != 1
-            or not isinstance(item.name, str)
-            or not item.name.startswith("value/")
-            or type(item.logical_bits) is not int
-            or item.logical_bits != array.nbytes * 8
-            or type(routed.canonical_raw_bits) is not int
-            or routed.canonical_raw_bits < routed.n * routed.m * 8
-            or routed.canonical_raw_bits % 8
-            or routed.validity_reference is not None
-            or not isinstance(routed.timestamp_unit, str)
-            or not isinstance(routed.timestamp_epoch, str)
-            or len(routed.value_units) > 1
+            or (array.size > LIMIT)
+            or (type(routed.n) is not int)
+            or (routed.n != array.size)
+            or (type(routed.m) is not int)
+            or (routed.m != 1)
+            or (not isinstance(item.name, str))
+            or (not item.name.startswith("value/"))
+            or (type(item.logical_bits) is not int)
+            or (item.logical_bits != array.nbytes * 8)
+            or (type(routed.canonical_raw_bits) is not int)
+            or (routed.canonical_raw_bits < routed.n * routed.m * 8)
+            or (routed.canonical_raw_bits % 8)
+            or (routed.validity_reference is not None)
+            or (not isinstance(routed.timestamp_unit, str))
+            or (not isinstance(routed.timestamp_epoch, str))
+            or (len(routed.value_units) > 1)
             or any(not isinstance(unit, str) for unit in routed.value_units)
         ):
             raise ExecutionContractError("SIMDComp dtype/shape/logical size mismatch")
@@ -338,11 +290,10 @@ class SIMDCompSession:
         )
         if len(header) > 4096:
             raise ExecutionContractError("SIMDComp descriptor exceeds 4096 bytes")
-        return header, array
+        return (header, array)
 
     def output_bound(self, routed: RoutedInput) -> int:
         header, array = self._payload(routed)
-        # Bound only inspects the descriptor; it must not read a strided array.
         source = _buffer(array.ctypes.data, array.nbytes, array.nbytes, 6, source=True)
         bound = ctypes.c_uint64()
         self._check(
@@ -372,7 +323,7 @@ class SIMDCompSession:
             destination.readonly
             or not destination.c_contiguous
             or destination.format != "B"
-            or destination.ndim != 1
+            or (destination.ndim != 1)
         ):
             raise ExecutionContractError("SIMDComp requires contiguous writable byte output")
         offset = PREFIX.size + len(header)
@@ -394,7 +345,7 @@ class SIMDCompSession:
         destination[:offset] = (
             PREFIX.pack(MAGIC, len(header), hashlib.sha256(header).digest()) + header
         )
-        self._header, self._updated = header, True
+        self._header, self._updated = (header, True)
         total = offset + int(output.used_bytes)
         self._stream_sha256 = hashlib.sha256(destination[:total]).digest()
         self._read_telemetry(
@@ -446,33 +397,33 @@ class SIMDCompSession:
             not isinstance(info, dict)
             or set(info) != fields
             or canonical != header
-            or info["schema_version"] != "tscb.simdcomp-container.v1"
-            or info["algorithm"] != self.algorithm
-            or info["track"] != "VALUE"
-            or info["codec_stages"] != STAGES[self.coding]
+            or (info["schema_version"] != "tscb.simdcomp-container.v1")
+            or (info["algorithm"] != self.algorithm)
+            or (info["track"] != "VALUE")
+            or (info["codec_stages"] != STAGES[self.coding])
         ):
             raise ExecutionContractError("SIMDComp descriptor identity")
-        count, b, params = info["count"], info["buffer"], info["parameters"]
+        count, b, params = (info["count"], info["buffer"], info["parameters"])
         if (
             type(count) is not int
             or not 0 <= count <= LIMIT
-            or not isinstance(b, dict)
-            or set(b) != {"name", "dtype", "shape", "logical_bits"}
-            or not isinstance(b["name"], str)
-            or not b["name"].startswith("value/")
-            or b["dtype"] != "<u4"
-            or not isinstance(b["shape"], list)
-            or b["shape"] != [count]
-            or type(b["shape"][0]) is not int
-            or type(b["logical_bits"]) is not int
-            or b["logical_bits"] != count * 32
-            or not isinstance(params, dict)
-            or set(params) != {"api", "coding", "isa", "starting_point"}
-            or params["coding"] != self.coding
-            or not isinstance(info["timestamp_unit"], str)
-            or not isinstance(info["timestamp_epoch"], str)
-            or not isinstance(info["value_units"], list)
-            or len(info["value_units"]) > 1
+            or (not isinstance(b, dict))
+            or (set(b) != {"name", "dtype", "shape", "logical_bits"})
+            or (not isinstance(b["name"], str))
+            or (not b["name"].startswith("value/"))
+            or (b["dtype"] != "<u4")
+            or (not isinstance(b["shape"], list))
+            or (b["shape"] != [count])
+            or (type(b["shape"][0]) is not int)
+            or (type(b["logical_bits"]) is not int)
+            or (b["logical_bits"] != count * 32)
+            or (not isinstance(params, dict))
+            or (set(params) != {"api", "coding", "isa", "starting_point"})
+            or (params["coding"] != self.coding)
+            or (not isinstance(info["timestamp_unit"], str))
+            or (not isinstance(info["timestamp_epoch"], str))
+            or (not isinstance(info["value_units"], list))
+            or (len(info["value_units"]) > 1)
             or any(not isinstance(unit, str) for unit in info["value_units"])
         ):
             raise ExecutionContractError("SIMDComp descriptor geometry/parameters")
@@ -487,14 +438,14 @@ class SIMDCompSession:
             magic != b"TSCBSBP1"
             or native_count != count
             or seed != params["starting_point"]
-            or mode != wire_mode(params)
-            or block != (256 if mode == 4 else 128)
-            or blocks != (count + block - 1) // block
+            or (mode != wire_mode(params))
+            or (block != (256 if mode == 4 else 128))
+            or (blocks != (count + block - 1) // block)
             or reserved
-            or body != len(frame) - 48
+            or (body != len(frame) - 48)
         ):
             raise ExecutionContractError("SIMDComp descriptor/native frame mismatch")
-        at, payload, value_bits = 40, 0, 0
+        at, payload, value_bits = (40, 0, 0)
         for index in range(blocks):
             if at > len(frame) - 16:
                 raise ExecutionContractError("SIMDComp truncated record")
@@ -506,14 +457,14 @@ class SIMDCompSession:
             expected_size = (
                 physical * 4
                 if width == 32
-                else (((physical + lanes - 1) // lanes * width + 31) // 32) * lanes * 4
+                else ((physical + lanes - 1) // lanes * width + 31) // 32 * lanes * 4
             )
             if (
                 n != expected_n
                 or width > 32
                 or layout != expected_layout
-                or size != expected_size
-                or size > len(frame) - at - 16
+                or (size != expected_size)
+                or (size > len(frame) - at - 16)
             ):
                 raise ExecutionContractError("SIMDComp record geometry")
             at += 8 + size
@@ -531,7 +482,7 @@ class SIMDCompSession:
             "count": count,
             "blocks": blocks,
         }
-        return header, info, frame, native
+        return (header, info, frame, native)
 
     def accounting(self, stream: bytes, routed: RoutedInput) -> AccountingLedger:
         self._open()
@@ -589,7 +540,7 @@ class SIMDCompSession:
         self._open()
         self._check(self._native.library.tscb_reset(self._handle, 0), "reset")
         self._updated = self._finalized = False
-        self._header, self._stream_sha256, self._telemetry = b"", None, {}
+        self._header, self._stream_sha256, self._telemetry = (b"", None, {})
 
     def close(self) -> None:
         if self._handle.value:
