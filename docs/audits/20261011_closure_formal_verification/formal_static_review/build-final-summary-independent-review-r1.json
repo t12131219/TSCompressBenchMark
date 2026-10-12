@@ -1,0 +1,170 @@
+{
+  "schema_version": "tscb.build-final-summary-independent-review.v1",
+  "status": "PASS",
+  "scope": "SMALL_FROZEN_FINAL_SUMMARY_ROW_AND_WORDING_REVIEW_ONLY",
+  "checks": [
+    {
+      "check": "fresh_67_unique_configurations",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "fresh_profile_denominator",
+      "status": "PASS",
+      "detail": {
+        "release": 33,
+        "sanitizer": 33,
+        "debug": 1
+      }
+    },
+    {
+      "check": "release_sanitizer_exact_registered_scope",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "fresh_67_limited_scope_pass",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "shared_artifact_50_equal_17_different",
+      "status": "PASS",
+      "detail": {
+        "debug": {
+          "same": 0,
+          "different": 1
+        },
+        "release": {
+          "same": 33,
+          "different": 0
+        },
+        "sanitizer": {
+          "same": 17,
+          "different": 16
+        }
+      }
+    },
+    {
+      "check": "debug_single_simdcomp_u32",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "strict_33_unique_release_registered_scope",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "strict_33_declared_scope_pass",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "strict_release_all_shared_artifacts_equal",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "no_historical_or_full_N1_or_full_qualification_grant",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "177_unique_receipts_not_configuration_denominator",
+      "status": "PASS",
+      "detail": {
+        "PASS": 171,
+        "FAIL": 6
+      }
+    },
+    {
+      "check": "four_strict_gaps_are_included_not_added",
+      "status": "PASS",
+      "detail": {
+        "PASS": 3,
+        "FAIL": 1
+      }
+    },
+    {
+      "check": "selected_67_and_33_refs_present_in_index",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "source_closure_difference_scope_only_dzip_release_sanitizer",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "dzip_shared_identity_does_not_hide_source_object_test_differences",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "three_summary_hashes_match_frozen_markdown",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "frozen_markdown_correct_denominators_and_limits",
+      "status": "PASS",
+      "detail": null
+    }
+  ],
+  "checked_small_inputs": [
+    {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_closure_formal_verification/build_link/fresh_profile_summary_r1.json",
+      "sha256": "4217a67e7de30a7adf73297953db5d4bbe5d2ac414138fd83dea42c289d9db6e",
+      "size_bytes": 132451
+    },
+    {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_closure_formal_verification/build_link/strict_release_summary_r1.json",
+      "sha256": "07e6464dd106ba0b476ac39dbca464769c96fdede161fd015560abafb774efc2",
+      "size_bytes": 155854
+    },
+    {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_closure_formal_verification/build_link/all_trial_index_r1.json",
+      "sha256": "7c18622e47759f228f4c52589a0247e2e6018e27a02a3548fcceaf6dfee277c8",
+      "size_bytes": 177915
+    },
+    {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_closure_formal_verification/build_link/build_link_review_r3.md",
+      "sha256": "85b0882120bceae546da42aa1c61ef614ddb18cf5f0449fbcefb4a4472c872fb",
+      "size_bytes": 4010
+    }
+  ],
+  "dzip_detail_small_input": {
+    "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_closure_formal_verification/build_link/dzip-release-generated-header-difference-r1.json",
+    "sha256": "5a0d3c43be844910f39143f84d98ea3c0441ab878ff9ace860328889bf2bf689"
+  },
+  "counts": {
+    "active_codecs": 33,
+    "unique_configurations": 67,
+    "profiles": {
+      "release": 33,
+      "sanitizer": 33,
+      "debug": 1
+    },
+    "strict_unique_release_configurations": 33,
+    "shared_artifact_equal": 50,
+    "shared_artifact_different": 17,
+    "trial_receipts": 177,
+    "base_status_counts": {
+      "PASS": 171,
+      "FAIL": 6
+    },
+    "strict_gaps_included_in_trials": 4,
+    "strict_gap_base_status_counts": {
+      "PASS": 3,
+      "FAIL": 1
+    }
+  },
+  "limitations": [
+    "No individual trace receipts or source/build trees were traversed or rehashed.",
+    "No build, test, model, codec, or performance task was executed.",
+    "Limited build observation does not grant full N1, historical reconstruction, source parity, N/G/CAP, or FORMAL.",
+    "Shared adapter equality does not grant source/object/test identity; byte-different artifacts cannot transfer fresh closure to old artifacts."
+  ],
+  "quiet": true
+}

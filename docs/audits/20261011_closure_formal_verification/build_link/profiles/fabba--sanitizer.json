@@ -1,0 +1,766 @@
+{
+  "codec": "fabba",
+  "profile": "sanitizer",
+  "factory": "COMPLETED_REWRITE_CTYPES_V1",
+  "record": {
+    "path": "build/port-standard-v30-20261011/adapters/fabba/sanitizer/build-record.json",
+    "sha256": "5a4428f26d5629094b29279053a54ec149c3638bf000e6f8497efb4d3aa64689",
+    "size_bytes": 56149
+  },
+  "artifact": {
+    "path": "build/port-standard-v30-20261011/adapters/fabba/sanitizer/libtscb_fabba.so",
+    "sha256": "7298275cefd56129d8356e2764eb35760b90090544a900f5e73299cc66f19e98",
+    "size_bytes": 5527624
+  },
+  "artifact_matches_saved_record": true,
+  "declared_hash_verification": {
+    "status": "PASS",
+    "verified_entry_count": 316,
+    "missing": [],
+    "drift": [],
+    "scope": "DECLARED_BYTES_ONLY_NOT_ACTUAL_EXEC_OR_LINK_INPUT_PROVENANCE"
+  },
+  "translation_unit_count": 10,
+  "translation_unit_commands": [
+    {
+      "directory": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/adapters/fabba/sanitizer/cmake",
+      "file": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/native/binding.cpp",
+      "arguments": [
+        "/usr/bin/c++",
+        "-DRW_KEY=\"fabba\"",
+        "-DRW_KIND=2",
+        "-Dtscb_binding_EXPORTS",
+        "-I/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/vendor/fabba/include",
+        "-fno-fast-math",
+        "-ffp-contract=off",
+        "-O1",
+        "-g",
+        "-fsanitize=address,undefined",
+        "-fsanitize=float-cast-overflow",
+        "-fno-omit-frame-pointer",
+        "-O3",
+        "-DNDEBUG",
+        "-fPIC",
+        "-o",
+        "CMakeFiles/tscb_binding.dir/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/native/binding.cpp.o",
+        "-c",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/native/binding.cpp"
+      ]
+    },
+    {
+      "directory": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/adapters/fabba/sanitizer/cmake",
+      "file": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/tests/qualification.cpp",
+      "arguments": [
+        "/usr/bin/c++",
+        "-DRW_KIND=2",
+        "-I/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/native",
+        "-fno-fast-math",
+        "-ffp-contract=off",
+        "-O1",
+        "-g",
+        "-fsanitize=address,undefined",
+        "-fsanitize=float-cast-overflow",
+        "-fno-omit-frame-pointer",
+        "-O3",
+        "-DNDEBUG",
+        "-fPIE",
+        "-o",
+        "CMakeFiles/binding_qualification.dir/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/tests/qualification.cpp.o",
+        "-c",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/tests/qualification.cpp"
+      ]
+    },
+    {
+      "directory": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/adapters/fabba/sanitizer/cmake",
+      "file": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/tests/reconstruction_limits.cpp",
+      "arguments": [
+        "/usr/bin/c++",
+        "-DTSCB_RECONSTRUCTION_FABBA",
+        "-I/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/vendor/fabba/include",
+        "-fno-fast-math",
+        "-ffp-contract=off",
+        "-O1",
+        "-g",
+        "-fsanitize=address,undefined",
+        "-fsanitize=float-cast-overflow",
+        "-fno-omit-frame-pointer",
+        "-O3",
+        "-DNDEBUG",
+        "-fPIE",
+        "-o",
+        "CMakeFiles/reconstruction_limits.dir/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/tests/reconstruction_limits.cpp.o",
+        "-c",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/tests/reconstruction_limits.cpp"
+      ]
+    },
+    {
+      "directory": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/adapters/fabba/sanitizer/cmake/standalone",
+      "file": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/vendor/fabba/src/canonical/fabba.cpp",
+      "arguments": [
+        "/usr/bin/c++",
+        "-I/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/vendor/fabba/include",
+        "-fno-fast-math",
+        "-ffp-contract=off",
+        "-O1",
+        "-g",
+        "-fsanitize=address,undefined",
+        "-fsanitize=float-cast-overflow",
+        "-fno-omit-frame-pointer",
+        "-O3",
+        "-DNDEBUG",
+        "-fPIC",
+        "-fvisibility=hidden",
+        "-fvisibility-inlines-hidden",
+        "-Wall",
+        "-Wextra",
+        "-Wpedantic",
+        "-Wconversion",
+        "-Wsign-conversion",
+        "-Wshadow",
+        "-Werror",
+        "-o",
+        "CMakeFiles/fabba.dir/src/canonical/fabba.cpp.o",
+        "-c",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/vendor/fabba/src/canonical/fabba.cpp"
+      ]
+    },
+    {
+      "directory": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/adapters/fabba/sanitizer/cmake/standalone",
+      "file": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/vendor/fabba/tests/unit/test_fabba.cpp",
+      "arguments": [
+        "/usr/bin/c++",
+        "-I/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/vendor/fabba/include",
+        "-fno-fast-math",
+        "-ffp-contract=off",
+        "-O1",
+        "-g",
+        "-fsanitize=address,undefined",
+        "-fsanitize=float-cast-overflow",
+        "-fno-omit-frame-pointer",
+        "-O3",
+        "-DNDEBUG",
+        "-fPIE",
+        "-Wall",
+        "-Wextra",
+        "-Wpedantic",
+        "-Wconversion",
+        "-Wsign-conversion",
+        "-Wshadow",
+        "-Werror",
+        "-o",
+        "CMakeFiles/fabba_tests.dir/tests/unit/test_fabba.cpp.o",
+        "-c",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/vendor/fabba/tests/unit/test_fabba.cpp"
+      ]
+    },
+    {
+      "directory": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/adapters/fabba/sanitizer/cmake/standalone",
+      "file": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/vendor/fabba/tests/cross_decode/fabba_cli.cpp",
+      "arguments": [
+        "/usr/bin/c++",
+        "-I/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/vendor/fabba/include",
+        "-fno-fast-math",
+        "-ffp-contract=off",
+        "-O1",
+        "-g",
+        "-fsanitize=address,undefined",
+        "-fsanitize=float-cast-overflow",
+        "-fno-omit-frame-pointer",
+        "-O3",
+        "-DNDEBUG",
+        "-fPIE",
+        "-Wall",
+        "-Wextra",
+        "-Wpedantic",
+        "-Wconversion",
+        "-Wsign-conversion",
+        "-Wshadow",
+        "-Werror",
+        "-o",
+        "CMakeFiles/fabba_cli.dir/tests/cross_decode/fabba_cli.cpp.o",
+        "-c",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/vendor/fabba/tests/cross_decode/fabba_cli.cpp"
+      ]
+    },
+    {
+      "directory": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/adapters/fabba/sanitizer/cmake/standalone",
+      "file": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/vendor/fabba/src/standalone/fabba_c.cpp",
+      "arguments": [
+        "/usr/bin/c++",
+        "-DFABBA_C_BUILD",
+        "-Dfabba_c_EXPORTS",
+        "-I/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/vendor/fabba/include",
+        "-fno-fast-math",
+        "-ffp-contract=off",
+        "-O1",
+        "-g",
+        "-fsanitize=address,undefined",
+        "-fsanitize=float-cast-overflow",
+        "-fno-omit-frame-pointer",
+        "-O3",
+        "-DNDEBUG",
+        "-fPIC",
+        "-fvisibility=hidden",
+        "-fvisibility-inlines-hidden",
+        "-Wall",
+        "-Wextra",
+        "-Wpedantic",
+        "-Wconversion",
+        "-Wsign-conversion",
+        "-Wshadow",
+        "-Werror",
+        "-o",
+        "CMakeFiles/fabba_c.dir/src/standalone/fabba_c.cpp.o",
+        "-c",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/vendor/fabba/src/standalone/fabba_c.cpp"
+      ]
+    },
+    {
+      "directory": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/adapters/fabba/sanitizer/cmake/standalone",
+      "file": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/vendor/fabba/tests/qualification/standalone_preflight.cpp",
+      "arguments": [
+        "/usr/bin/c++",
+        "-I/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/vendor/fabba/include",
+        "-fno-fast-math",
+        "-ffp-contract=off",
+        "-O1",
+        "-g",
+        "-fsanitize=address,undefined",
+        "-fsanitize=float-cast-overflow",
+        "-fno-omit-frame-pointer",
+        "-O3",
+        "-DNDEBUG",
+        "-fPIE",
+        "-Wall",
+        "-Wextra",
+        "-Wpedantic",
+        "-Wconversion",
+        "-Wsign-conversion",
+        "-Wshadow",
+        "-Werror",
+        "-o",
+        "CMakeFiles/fabba_standalone_preflight.dir/tests/qualification/standalone_preflight.cpp.o",
+        "-c",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/vendor/fabba/tests/qualification/standalone_preflight.cpp"
+      ]
+    },
+    {
+      "directory": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/adapters/fabba/sanitizer/cmake/standalone",
+      "file": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/vendor/fabba/tests/qualification/c_header_smoke.c",
+      "arguments": [
+        "/usr/bin/cc",
+        "-I/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/vendor/fabba/include",
+        "-fno-fast-math",
+        "-ffp-contract=off",
+        "-O1",
+        "-g",
+        "-fsanitize=address,undefined",
+        "-fsanitize=float-cast-overflow",
+        "-fno-omit-frame-pointer",
+        "-O3",
+        "-DNDEBUG",
+        "-fPIE",
+        "-Wall",
+        "-Wextra",
+        "-Wpedantic",
+        "-Werror",
+        "-o",
+        "CMakeFiles/fabba_c_header_smoke.dir/tests/qualification/c_header_smoke.c.o",
+        "-c",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/vendor/fabba/tests/qualification/c_header_smoke.c"
+      ]
+    },
+    {
+      "directory": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/adapters/fabba/sanitizer/cmake/standalone",
+      "file": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/vendor/fabba/tests/performance/benchmark.cpp",
+      "arguments": [
+        "/usr/bin/c++",
+        "-I/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/vendor/fabba/include",
+        "-fno-fast-math",
+        "-ffp-contract=off",
+        "-O1",
+        "-g",
+        "-fsanitize=address,undefined",
+        "-fsanitize=float-cast-overflow",
+        "-fno-omit-frame-pointer",
+        "-O3",
+        "-DNDEBUG",
+        "-fPIE",
+        "-Wall",
+        "-Wextra",
+        "-Wpedantic",
+        "-Wconversion",
+        "-Wsign-conversion",
+        "-Wshadow",
+        "-Werror",
+        "-o",
+        "CMakeFiles/fabba_performance.dir/tests/performance/benchmark.cpp.o",
+        "-c",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/vendor/fabba/tests/performance/benchmark.cpp"
+      ]
+    }
+  ],
+  "dependency_file_count": 10,
+  "dependency_files": [
+    {
+      "path": "build/port-standard-v30-20261011/adapters/fabba/sanitizer/cmake/CMakeFiles/binding_qualification.dir/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/tests/qualification.cpp.o.d",
+      "sha256": "3c37c64595cec7c541e44d1586353d0debd1b31389c274828850cbdbe93d7a2f",
+      "size_bytes": 11103
+    },
+    {
+      "path": "build/port-standard-v30-20261011/adapters/fabba/sanitizer/cmake/CMakeFiles/reconstruction_limits.dir/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/tests/reconstruction_limits.cpp.o.d",
+      "sha256": "4362b69f992515d941b810e47636b2789cae48bdbb7563ee51c5293a35b82685",
+      "size_bytes": 9950
+    },
+    {
+      "path": "build/port-standard-v30-20261011/adapters/fabba/sanitizer/cmake/CMakeFiles/tscb_binding.dir/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/native/binding.cpp.o.d",
+      "sha256": "39f1fa85189982458f790c92d478c7ad5cfbba6b2313eb1a8379ba5efb5319c6",
+      "size_bytes": 10469
+    },
+    {
+      "path": "build/port-standard-v30-20261011/adapters/fabba/sanitizer/cmake/standalone/CMakeFiles/fabba.dir/src/canonical/fabba.cpp.o.d",
+      "sha256": "982aa0c7d7591bdb665955f1e6d368dc0bdef6ea44a14cd924b888372a296e6f",
+      "size_bytes": 11155
+    },
+    {
+      "path": "build/port-standard-v30-20261011/adapters/fabba/sanitizer/cmake/standalone/CMakeFiles/fabba_c.dir/src/standalone/fabba_c.cpp.o.d",
+      "sha256": "fbf809cd58f7260e8f078215cddf837afea47305eb4060d0f90d3d3eef362927",
+      "size_bytes": 8916
+    },
+    {
+      "path": "build/port-standard-v30-20261011/adapters/fabba/sanitizer/cmake/standalone/CMakeFiles/fabba_c_header_smoke.dir/tests/qualification/c_header_smoke.c.o.d",
+      "sha256": "91199340e089ffe037321b11484c6dad88730919ae2e1cdf9bbbb0d335e65eb4",
+      "size_bytes": 1186
+    },
+    {
+      "path": "build/port-standard-v30-20261011/adapters/fabba/sanitizer/cmake/standalone/CMakeFiles/fabba_cli.dir/tests/cross_decode/fabba_cli.cpp.o.d",
+      "sha256": "93038306b59cd069a632da8038c4b4a10cc180f0376c3b64c55acd96b6f0b13e",
+      "size_bytes": 9530
+    },
+    {
+      "path": "build/port-standard-v30-20261011/adapters/fabba/sanitizer/cmake/standalone/CMakeFiles/fabba_performance.dir/tests/performance/benchmark.cpp.o.d",
+      "sha256": "bd634367764bc1db261f90e3b4cf7720b73167d486624c7b6a9c6f29688a8b08",
+      "size_bytes": 11685
+    },
+    {
+      "path": "build/port-standard-v30-20261011/adapters/fabba/sanitizer/cmake/standalone/CMakeFiles/fabba_standalone_preflight.dir/tests/qualification/standalone_preflight.cpp.o.d",
+      "sha256": "0e7a5a4e7d695f3e7bb250b20b22bef99f51d52ec40aeb22c2c0f7174978f0c5",
+      "size_bytes": 11075
+    },
+    {
+      "path": "build/port-standard-v30-20261011/adapters/fabba/sanitizer/cmake/standalone/CMakeFiles/fabba_tests.dir/tests/unit/test_fabba.cpp.o.d",
+      "sha256": "ed69b42fcf1b5ae0c5854e26c31ea408bb43dfb854d0be925eeea901b04c32c8",
+      "size_bytes": 10487
+    }
+  ],
+  "depfile_union_count": 306,
+  "declared_source_closure_count": 306,
+  "depfile_union_outside_saved_source_closure": [],
+  "saved_source_closure_outside_depfile_union": [],
+  "tool_selection_evidence": {
+    "scope": "CMAKE_CACHE_CURRENT_FILES_NOT_OBSERVED_CHILD_EXECUTIONS",
+    "selected_files": {
+      "CMAKE_AR": {
+        "path": "/usr/bin/x86_64-linux-gnu-ar",
+        "sha256": "5b394f8752fde1776992d405d76034d5017b24b9b922bedaeeaff8cc344ef044",
+        "size_bytes": 55792
+      },
+      "CMAKE_CXX_COMPILER": {
+        "path": "/usr/bin/x86_64-linux-gnu-g++-11",
+        "sha256": "2360901d864cf10bfd6296e261cb2c14053552a80377761ab07146ec9ec9a2c0",
+        "size_bytes": 932680
+      },
+      "CMAKE_C_COMPILER": {
+        "path": "/usr/bin/x86_64-linux-gnu-gcc-11",
+        "sha256": "821af3c74506283c179ca413bb33e6b528805a4dd8a5c09df125e5ad560a9e89",
+        "size_bytes": 928584
+      },
+      "CMAKE_LINKER": {
+        "path": "/usr/bin/x86_64-linux-gnu-ld.bfd",
+        "sha256": "58937fc20c21e147883b4fdaa0fc7438a8e8f2bb886cfcaa4896100ca91139e7",
+        "size_bytes": 1736184
+      },
+      "CMAKE_RANLIB": {
+        "path": "/usr/bin/x86_64-linux-gnu-ranlib",
+        "sha256": "95e470c76f1fb0383ef5c10cfdf10127aefab07dad924fe94933ec8be8a5a9fb",
+        "size_bytes": 55792
+      }
+    }
+  },
+  "link_recipes": [
+    {
+      "record_kind": "CMAKE_GENERATED_LINK_RECIPE_NOT_ACTUAL_EXEC_TRACE",
+      "directory": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/adapters/fabba/sanitizer/cmake",
+      "recipe_file": {
+        "path": "build/port-standard-v30-20261011/adapters/fabba/sanitizer/cmake/CMakeFiles/binding_qualification.dir/link.txt",
+        "sha256": "1f8984e3b1ac85a238b6b949029aba2c096048dadae458023784cb583657f038",
+        "size_bytes": 577
+      },
+      "arguments": [
+        "/usr/bin/c++",
+        "-fno-fast-math",
+        "-ffp-contract=off",
+        "-O1",
+        "-g",
+        "-fsanitize=address,undefined",
+        "-fsanitize=float-cast-overflow",
+        "-fno-omit-frame-pointer",
+        "-O3",
+        "-DNDEBUG",
+        "-no-pie",
+        "-no-pie",
+        "CMakeFiles/binding_qualification.dir/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/tests/qualification.cpp.o",
+        "-o",
+        "binding_qualification",
+        "-Wl,-rpath,/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/adapters/fabba/sanitizer",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/adapters/fabba/sanitizer/libtscb_fabba.so"
+      ]
+    },
+    {
+      "record_kind": "CMAKE_GENERATED_LINK_RECIPE_NOT_ACTUAL_EXEC_TRACE",
+      "directory": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/adapters/fabba/sanitizer/cmake",
+      "recipe_file": {
+        "path": "build/port-standard-v30-20261011/adapters/fabba/sanitizer/cmake/CMakeFiles/reconstruction_limits.dir/link.txt",
+        "sha256": "b9166237239200aa4d285aa1d748168d5ebc3e32d73b45ad9b613f4e558faa6c",
+        "size_bytes": 363
+      },
+      "arguments": [
+        "/usr/bin/c++",
+        "-fno-fast-math",
+        "-ffp-contract=off",
+        "-O1",
+        "-g",
+        "-fsanitize=address,undefined",
+        "-fsanitize=float-cast-overflow",
+        "-fno-omit-frame-pointer",
+        "-O3",
+        "-DNDEBUG",
+        "-no-pie",
+        "-no-pie",
+        "CMakeFiles/reconstruction_limits.dir/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/tests/reconstruction_limits.cpp.o",
+        "-o",
+        "reconstruction_limits",
+        "standalone/libfabba.a"
+      ]
+    },
+    {
+      "record_kind": "CMAKE_GENERATED_LINK_RECIPE_NOT_ACTUAL_EXEC_TRACE",
+      "directory": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/adapters/fabba/sanitizer/cmake",
+      "recipe_file": {
+        "path": "build/port-standard-v30-20261011/adapters/fabba/sanitizer/cmake/CMakeFiles/tscb_binding.dir/link.txt",
+        "sha256": "c7b8fd2dbc4059ca1a97a2fa07311b1e7cc262fc1f87b07647d5d1c52bd92640",
+        "size_bytes": 471
+      },
+      "arguments": [
+        "/usr/bin/c++",
+        "-fPIC",
+        "-fno-fast-math",
+        "-ffp-contract=off",
+        "-O1",
+        "-g",
+        "-fsanitize=address,undefined",
+        "-fsanitize=float-cast-overflow",
+        "-fno-omit-frame-pointer",
+        "-O3",
+        "-DNDEBUG",
+        "-shared",
+        "-Wl,-soname,libtscb_fabba.so",
+        "-o",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/adapters/fabba/sanitizer/libtscb_fabba.so",
+        "CMakeFiles/tscb_binding.dir/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/native/binding.cpp.o",
+        "standalone/libfabba.a"
+      ]
+    },
+    {
+      "record_kind": "CMAKE_GENERATED_LINK_RECIPE_NOT_ACTUAL_EXEC_TRACE",
+      "directory": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/adapters/fabba/sanitizer/cmake",
+      "recipe_file": {
+        "path": "build/port-standard-v30-20261011/adapters/fabba/sanitizer/cmake/standalone/CMakeFiles/fabba.dir/link.txt",
+        "sha256": "44e8092f5352d6b14f5932f26f67a7693311065425d185cf13975191122e7444",
+        "size_bytes": 100
+      },
+      "arguments": [
+        "/usr/bin/ar",
+        "qc",
+        "libfabba.a",
+        "CMakeFiles/fabba.dir/src/canonical/fabba.cpp.o",
+        "/usr/bin/ranlib",
+        "libfabba.a"
+      ]
+    },
+    {
+      "record_kind": "CMAKE_GENERATED_LINK_RECIPE_NOT_ACTUAL_EXEC_TRACE",
+      "directory": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/adapters/fabba/sanitizer/cmake",
+      "recipe_file": {
+        "path": "build/port-standard-v30-20261011/adapters/fabba/sanitizer/cmake/standalone/CMakeFiles/fabba_c.dir/link.txt",
+        "sha256": "d7f8c99c031f5541d4134b0f4a6b3009ca79c6aab218ecfe47e9426ab57466d0",
+        "size_bytes": 417
+      },
+      "arguments": [
+        "/usr/bin/c++",
+        "-fPIC",
+        "-fno-fast-math",
+        "-ffp-contract=off",
+        "-O1",
+        "-g",
+        "-fsanitize=address,undefined",
+        "-fsanitize=float-cast-overflow",
+        "-fno-omit-frame-pointer",
+        "-O3",
+        "-DNDEBUG",
+        "-Wl,--version-script=/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/vendor/fabba/src/standalone/fabba.exports.map",
+        "-shared",
+        "-Wl,-soname,libfabba_c.so",
+        "-o",
+        "libfabba_c.so",
+        "CMakeFiles/fabba_c.dir/src/standalone/fabba_c.cpp.o",
+        "libfabba.a"
+      ]
+    },
+    {
+      "record_kind": "CMAKE_GENERATED_LINK_RECIPE_NOT_ACTUAL_EXEC_TRACE",
+      "directory": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/adapters/fabba/sanitizer/cmake",
+      "recipe_file": {
+        "path": "build/port-standard-v30-20261011/adapters/fabba/sanitizer/cmake/standalone/CMakeFiles/fabba_c_header_smoke.dir/link.txt",
+        "sha256": "abb85117f4960e6a089dbdbc7a43ee186c8076f9eb8dfa12fb106ea1ddaaa352",
+        "size_bytes": 408
+      },
+      "arguments": [
+        "/usr/bin/cc",
+        "-fno-fast-math",
+        "-ffp-contract=off",
+        "-O1",
+        "-g",
+        "-fsanitize=address,undefined",
+        "-fsanitize=float-cast-overflow",
+        "-fno-omit-frame-pointer",
+        "-O3",
+        "-DNDEBUG",
+        "-no-pie",
+        "CMakeFiles/fabba_c_header_smoke.dir/tests/qualification/c_header_smoke.c.o",
+        "-o",
+        "fabba_c_header_smoke",
+        "-Wl,-rpath,/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/adapters/fabba/sanitizer/cmake/standalone",
+        "libfabba_c.so"
+      ]
+    },
+    {
+      "record_kind": "CMAKE_GENERATED_LINK_RECIPE_NOT_ACTUAL_EXEC_TRACE",
+      "directory": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/adapters/fabba/sanitizer/cmake",
+      "recipe_file": {
+        "path": "build/port-standard-v30-20261011/adapters/fabba/sanitizer/cmake/standalone/CMakeFiles/fabba_cli.dir/link.txt",
+        "sha256": "35f0b6911cf5a4448f07e52fbf59a9e81cf615164354f410472d01c5f1eb2a6e",
+        "size_bytes": 244
+      },
+      "arguments": [
+        "/usr/bin/c++",
+        "-fno-fast-math",
+        "-ffp-contract=off",
+        "-O1",
+        "-g",
+        "-fsanitize=address,undefined",
+        "-fsanitize=float-cast-overflow",
+        "-fno-omit-frame-pointer",
+        "-O3",
+        "-DNDEBUG",
+        "-no-pie",
+        "CMakeFiles/fabba_cli.dir/tests/cross_decode/fabba_cli.cpp.o",
+        "-o",
+        "fabba_cli",
+        "libfabba.a"
+      ]
+    },
+    {
+      "record_kind": "CMAKE_GENERATED_LINK_RECIPE_NOT_ACTUAL_EXEC_TRACE",
+      "directory": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/adapters/fabba/sanitizer/cmake",
+      "recipe_file": {
+        "path": "build/port-standard-v30-20261011/adapters/fabba/sanitizer/cmake/standalone/CMakeFiles/fabba_performance.dir/link.txt",
+        "sha256": "c0a3f7e9bc6efa43bd5b300d85441ae916629a05d5d26f630c217c049fecdd4d",
+        "size_bytes": 259
+      },
+      "arguments": [
+        "/usr/bin/c++",
+        "-fno-fast-math",
+        "-ffp-contract=off",
+        "-O1",
+        "-g",
+        "-fsanitize=address,undefined",
+        "-fsanitize=float-cast-overflow",
+        "-fno-omit-frame-pointer",
+        "-O3",
+        "-DNDEBUG",
+        "-no-pie",
+        "CMakeFiles/fabba_performance.dir/tests/performance/benchmark.cpp.o",
+        "-o",
+        "fabba_performance",
+        "libfabba.a"
+      ]
+    },
+    {
+      "record_kind": "CMAKE_GENERATED_LINK_RECIPE_NOT_ACTUAL_EXEC_TRACE",
+      "directory": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/adapters/fabba/sanitizer/cmake",
+      "recipe_file": {
+        "path": "build/port-standard-v30-20261011/adapters/fabba/sanitizer/cmake/standalone/CMakeFiles/fabba_standalone_preflight.dir/link.txt",
+        "sha256": "933ecde8a5a1266b29d2a30174f4da1bb150469d629ad629f5d9d01fd0b688dd",
+        "size_bytes": 429
+      },
+      "arguments": [
+        "/usr/bin/c++",
+        "-fno-fast-math",
+        "-ffp-contract=off",
+        "-O1",
+        "-g",
+        "-fsanitize=address,undefined",
+        "-fsanitize=float-cast-overflow",
+        "-fno-omit-frame-pointer",
+        "-O3",
+        "-DNDEBUG",
+        "-no-pie",
+        "CMakeFiles/fabba_standalone_preflight.dir/tests/qualification/standalone_preflight.cpp.o",
+        "-o",
+        "fabba_standalone_preflight",
+        "-Wl,-rpath,/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/adapters/fabba/sanitizer/cmake/standalone",
+        "libfabba_c.so"
+      ]
+    },
+    {
+      "record_kind": "CMAKE_GENERATED_LINK_RECIPE_NOT_ACTUAL_EXEC_TRACE",
+      "directory": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/adapters/fabba/sanitizer/cmake",
+      "recipe_file": {
+        "path": "build/port-standard-v30-20261011/adapters/fabba/sanitizer/cmake/standalone/CMakeFiles/fabba_tests.dir/link.txt",
+        "sha256": "a1238c4925ab1ee3228ee06d9520857193288536d3c4a650fe1b91a5b841e0d5",
+        "size_bytes": 241
+      },
+      "arguments": [
+        "/usr/bin/c++",
+        "-fno-fast-math",
+        "-ffp-contract=off",
+        "-O1",
+        "-g",
+        "-fsanitize=address,undefined",
+        "-fsanitize=float-cast-overflow",
+        "-fno-omit-frame-pointer",
+        "-O3",
+        "-DNDEBUG",
+        "-no-pie",
+        "CMakeFiles/fabba_tests.dir/tests/unit/test_fabba.cpp.o",
+        "-o",
+        "fabba_tests",
+        "libfabba.a"
+      ]
+    }
+  ],
+  "explicit_link_inputs_current_static_inventory": [
+    {
+      "path": "build/port-standard-v30-20261011/adapters/fabba/sanitizer/cmake/CMakeFiles/binding_qualification.dir/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/tests/qualification.cpp.o",
+      "sha256": "33c3d5a0a2215f3834a2e2b9e8cd46f81c2856c1cdf36d681c46e5c0c18d3c28",
+      "size_bytes": 665752,
+      "pinned_in_saved_record": false
+    },
+    {
+      "path": "build/port-standard-v30-20261011/adapters/fabba/sanitizer/cmake/CMakeFiles/reconstruction_limits.dir/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/tests/reconstruction_limits.cpp.o",
+      "sha256": "f2f537c93d6adfb0f3efcf7f389c4fb1c728688e91982cd762ac4ea6937e81fb",
+      "size_bytes": 339168,
+      "pinned_in_saved_record": false
+    },
+    {
+      "path": "build/port-standard-v30-20261011/adapters/fabba/sanitizer/cmake/CMakeFiles/tscb_binding.dir/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/native/binding.cpp.o",
+      "sha256": "62be0c320372698a658af414c7c0c5c54619de82a1012e44e81a23529bc6c22e",
+      "size_bytes": 246168,
+      "pinned_in_saved_record": false
+    },
+    {
+      "path": "build/port-standard-v30-20261011/adapters/fabba/sanitizer/cmake/standalone/libfabba.a",
+      "sha256": "56fb151ff375d2f2eee5a2ef006bdfdc3df7362264c0997744338231f09b6700",
+      "size_bytes": 7824938,
+      "pinned_in_saved_record": false
+    },
+    {
+      "path": "build/port-standard-v30-20261011/adapters/fabba/sanitizer/libtscb_fabba.so",
+      "sha256": "7298275cefd56129d8356e2764eb35760b90090544a900f5e73299cc66f19e98",
+      "size_bytes": 5527624,
+      "pinned_in_saved_record": false
+    }
+  ],
+  "current_object_count": 10,
+  "current_object_bytes": 16038816,
+  "metadata_files": [
+    {
+      "path": "build/port-standard-v30-20261011/adapters/fabba/sanitizer/cmake/compile_commands.json",
+      "sha256": "880f4d7421c7b788a8ab73414a0b0a880be418f7c23c44dc19d2fcb7cc506766",
+      "size_bytes": 8248
+    },
+    {
+      "path": "build/port-standard-v30-20261011/adapters/fabba/sanitizer/cmake/CMakeFiles/binding_qualification.dir/link.txt",
+      "sha256": "1f8984e3b1ac85a238b6b949029aba2c096048dadae458023784cb583657f038",
+      "size_bytes": 577
+    },
+    {
+      "path": "build/port-standard-v30-20261011/adapters/fabba/sanitizer/cmake/CMakeFiles/reconstruction_limits.dir/link.txt",
+      "sha256": "b9166237239200aa4d285aa1d748168d5ebc3e32d73b45ad9b613f4e558faa6c",
+      "size_bytes": 363
+    },
+    {
+      "path": "build/port-standard-v30-20261011/adapters/fabba/sanitizer/cmake/CMakeFiles/tscb_binding.dir/link.txt",
+      "sha256": "c7b8fd2dbc4059ca1a97a2fa07311b1e7cc262fc1f87b07647d5d1c52bd92640",
+      "size_bytes": 471
+    },
+    {
+      "path": "build/port-standard-v30-20261011/adapters/fabba/sanitizer/cmake/standalone/CMakeFiles/fabba.dir/link.txt",
+      "sha256": "44e8092f5352d6b14f5932f26f67a7693311065425d185cf13975191122e7444",
+      "size_bytes": 100
+    },
+    {
+      "path": "build/port-standard-v30-20261011/adapters/fabba/sanitizer/cmake/standalone/CMakeFiles/fabba_c.dir/link.txt",
+      "sha256": "d7f8c99c031f5541d4134b0f4a6b3009ca79c6aab218ecfe47e9426ab57466d0",
+      "size_bytes": 417
+    },
+    {
+      "path": "build/port-standard-v30-20261011/adapters/fabba/sanitizer/cmake/standalone/CMakeFiles/fabba_c_header_smoke.dir/link.txt",
+      "sha256": "abb85117f4960e6a089dbdbc7a43ee186c8076f9eb8dfa12fb106ea1ddaaa352",
+      "size_bytes": 408
+    },
+    {
+      "path": "build/port-standard-v30-20261011/adapters/fabba/sanitizer/cmake/standalone/CMakeFiles/fabba_cli.dir/link.txt",
+      "sha256": "35f0b6911cf5a4448f07e52fbf59a9e81cf615164354f410472d01c5f1eb2a6e",
+      "size_bytes": 244
+    },
+    {
+      "path": "build/port-standard-v30-20261011/adapters/fabba/sanitizer/cmake/standalone/CMakeFiles/fabba_performance.dir/link.txt",
+      "sha256": "c0a3f7e9bc6efa43bd5b300d85441ae916629a05d5d26f630c217c049fecdd4d",
+      "size_bytes": 259
+    },
+    {
+      "path": "build/port-standard-v30-20261011/adapters/fabba/sanitizer/cmake/standalone/CMakeFiles/fabba_standalone_preflight.dir/link.txt",
+      "sha256": "933ecde8a5a1266b29d2a30174f4da1bb150469d629ad629f5d9d01fd0b688dd",
+      "size_bytes": 429
+    },
+    {
+      "path": "build/port-standard-v30-20261011/adapters/fabba/sanitizer/cmake/standalone/CMakeFiles/fabba_tests.dir/link.txt",
+      "sha256": "a1238c4925ab1ee3228ee06d9520857193288536d3c4a650fe1b91a5b841e0d5",
+      "size_bytes": 241
+    },
+    {
+      "path": "build/port-standard-v30-20261011/adapters/fabba/sanitizer/cmake/CMakeCache.txt",
+      "sha256": "2eae8e471ddcbd131b5fb3425a30fec290dc1aa9ccbd416a734240dedc34f449",
+      "size_bytes": 16303
+    }
+  ],
+  "crt_static_runtime_linker_script_observation": "NO_ACTUAL_LINKTRACE_IN_OLD_RECORD_NOT_RETROACTIVELY_RECOVERABLE",
+  "actual_exec_trace_in_old_record": false,
+  "full_N1_granted": false,
+  "fresh_rebuild_needed_for": [
+    "SUCCESSFUL_CHILD_EXECVE_AND_EXECUTABLE_HASH",
+    "ALL_SUCCESSFUL_BUILD_INPUT_OPENS",
+    "LINKER_SCRIPT_CRT_ARCHIVE_MEMBER_INPUTS",
+    "PRE_POST_TOOL_AND_INPUT_IMMUTABILITY",
+    "NATIVE_TEST_EXECUTABLE_BUILD_CLOSURE_IF_QUALIFIED"
+  ],
+  "can_verify_current_without_rebuild": [
+    "DECLARED_FILE_SHA256",
+    "SAVED_DRIVER_RECIPE",
+    "COMPILER_DEPFILE_TU_HEADER_LIST",
+    "EXPLICIT_OBJECT_AND_ARCHIVE_CURRENT_BYTES",
+    "ELF_METADATA_BY_READ_ONLY_INSPECTION"
+  ]
+}

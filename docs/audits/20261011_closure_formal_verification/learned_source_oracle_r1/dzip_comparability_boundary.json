@@ -1,0 +1,51 @@
+{
+  "schema_version": "tscb.dzip-current-seeded-profile-comparability-boundary.v1",
+  "status": "SOURCE_INITIALIZER_PRNN_PIPELINE_EQUIVALENCE_NOT_ESTABLISHED",
+  "references": {
+    "registry": {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/registry/codecs/dzip.json",
+      "sha256": "3366b45c03029ad94567a2020e63dd2e9af2196085a819cf19d010d2da224ec6",
+      "bytes": 7210
+    },
+    "native_initializer": {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/vendor/dzip/src/nn.cpp",
+      "sha256": "53d8cfabb16245c4e68144c94beac109091b051b93808606abe6f861ecbf37f0",
+      "bytes": 43281
+    },
+    "c_binding": {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/native/binding.cpp",
+      "sha256": "6803a9bc0b7875e81adbf48b1cac2ce1df9c596d13ad2ad680235225e06e4d71",
+      "bytes": 6444
+    },
+    "python_adapter": {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/src/tscompbench/adapters/completed_rewrites.py",
+      "sha256": "0e904ed93b6b46477418b73bb34091192860265223945d04979df331f7ace21c",
+      "bytes": 26345
+    },
+    "source_models": {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_closure_formal_verification/source_closure/recovered-authority-r2/dzip/encode-decode/models.py",
+      "sha256": "3916bd119e3be15f5f8f17845636e02e5148e2d3bcbc4620dd5c2903f546c03c",
+      "bytes": 12078
+    },
+    "source_compressor": {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_closure_formal_verification/source_closure/recovered-authority-r2/dzip/encode-decode/compressor.py",
+      "sha256": "e8b7d16d7f75db42f0225794d82dd29b257a1466595d06cc260c2e8dd086c8dc",
+      "bytes": 5616
+    },
+    "source_bootstrap_pipeline": {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_closure_formal_verification/source_closure/recovered-authority-r2/dzip/encode-decode/compress.sh",
+      "sha256": "2cab75f0a06e04e751cdd9adafa1f37e79377f19548ee56ac508d2233ccb65cb",
+      "bytes": 1044
+    }
+  },
+  "current_public_profile": "NATIVE_SEEDED_UNTRAINED_INPUT_ALPHABET; model_seed default0; BOOTSTRAP or COMBINED",
+  "native_initializer": "Network::create: std::mt19937, custom uniform, deterministic Gram-Schmidt row orthogonal initialization explicitly distinct from TF. All weights stored in native frame.",
+  "source_initialization": "Python random0, NumPy random0, TensorFlow random0; models.biGRU_big creates ARNN and PRNN with Keras default initializers; CPU GRU(reset_after=True) default hard_sigmoid.",
+  "source_PRNN_path": "compress.sh: BASE is input basename without extension; PRNN=biGRU_jump; train_bootstrap.py --file_name BASE --model biGRU_jump --epochs10 produces BASE_biGRU_jump. compressor.py -model BASE_biGRU_jump -model_name biGRU_big; predict_lstm then PRNN.load_weights(args.model_weights_file). This trained-bootstrap path was not executed here.",
+  "registered_API_boundary": "registry has only mode, initial_model, model_seed, isa, no model_key/model path. CompletedRewriteAdapter initializes _model=b-empty unless model_key supplied; DZip therefore forwards empty model string and binding chooses Network::create.",
+  "diagnostic_API": "RwConfig.model nonempty selects Network::load(DZIPNN01) at both bound/encode. Full original ARNN exported tensors can be compared diagnostically through that path, but it is a different explicit loaded-weight input and does not prove current native-seeded profile matches source initializers/PRNN checkpoint.",
+  "future_valid_comparison": "Freeze and export identical full original model weights (and, for transition parity, Adam slots/state); assign identical tensors to source and current native diagnostic graph; compare all probabilities/CDF separately. Never use equal seed to pretend equal source weights. Training not authorized for this bounded diagnostic.",
+  "source_oracle_executed": false,
+  "training_executed": false,
+  "CAP_or_full_G_gates_granted": false
+}

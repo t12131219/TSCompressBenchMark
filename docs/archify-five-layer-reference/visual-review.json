@@ -1,141 +1,129 @@
 {
-  "reviewer": "Codex image-capable visual inspection",
-  "time": "2026-10-08T05:24:46.154634+00:00",
+  "reviewer": "Codex image-capable inspection",
+  "captured_at": "2026-10-12T05:40:37.256154+00:00",
   "correction_rounds": 2,
-  "reviewed_images": [
-    {
-      "file": "review-overview.light.png",
-      "sha256": "81dd16786c487d38a0dfdd354aee5b742c291e2c4ca8dc5753e08231338abb86",
-      "bytes": 726783
-    },
-    {
-      "file": "review-overview.dark.png",
-      "sha256": "d39d0d7359e6cd86e2864a8da7f20e063fe11cc708da92e344b57c37825c2214",
-      "bytes": 755290
-    },
-    {
-      "file": "review-data.light.png",
-      "sha256": "899e9c902940a1aaf9cf7baaf905ea2c5bfcec609d6d661aabcb57e4f9c07d75",
-      "bytes": 141542
-    },
-    {
-      "file": "review-plan.light.png",
-      "sha256": "5602b7edf73deb1abd67d4faa564598fb761da6f0a0812f972becc4afde245e7",
-      "bytes": 186680
-    },
-    {
-      "file": "review-exec.light.png",
-      "sha256": "70e7f9776aff22a353fea9bb9a362f12a6c9125a10e2ad9df9dd40e0d33349ae",
-      "bytes": 376889
-    },
-    {
-      "file": "review-measure.light.png",
-      "sha256": "c06efd2cc3bcea44481c07a27383d4326e571b201d40355008855de3e024315e",
-      "bytes": 226108
-    },
-    {
-      "file": "review-stats.light.png",
-      "sha256": "97683f8462f87c9e44c1e37a48236257ca62daddf30046853b26aa062669a3c0",
-      "bytes": 214021
-    },
-    {
-      "file": "native-final.visual-check.1440x900.light.png",
-      "sha256": "c778e08ae51820712f1940e6332912d7f9a3dc5f2eba26e54d381f705510685e",
-      "bytes": 72914
-    },
-    {
-      "file": "native-final.visual-check.2048x1320.dark.png",
-      "sha256": "f08e2de30aeb60c2e69e6b46a34e984e3c9e6189a3a7cf451bac88b3ecddd5e1",
-      "bytes": 97493
-    },
-    {
-      "file": "native-review-overview.light.png",
-      "sha256": "6c4bda8b3ce39531ac4f54507be300984e6d90e8fe11adeab823219cd3ce6b3c",
-      "bytes": 187269
-    },
-    {
-      "file": "reference.browser.2048x1320.light.png",
-      "sha256": "2ae2038ac06da925ab4bcb78fe8648d3324bf66a972e9565efd21ae29f22a1f4",
-      "bytes": 1202117
-    },
-    {
-      "file": "reference.browser.1440x900.dark.png",
-      "sha256": "4495167776d4a89d9445cbf2f430ae49245f13c1cd13ee48c376bc4840daead0",
-      "bytes": 802486
-    },
-    {
-      "file": "reference.browser.phase.measure.light.png",
-      "sha256": "8ea4f5281949fc7dcb76c6750f59def48d1457ab2a73948f05abd7c8d2dcdfbd",
-      "bytes": 212618
-    },
-    {
-      "file": "reference.browser.phase.measure.dark.png",
-      "sha256": "8a03db51041f2ace98b9a667387dbe24d32e36a9936d1aa229716bd84a15f224",
-      "bytes": 212767
-    },
-    {
-      "file": "reference.browser.phase.plan.dark.png",
-      "sha256": "2eccc7abb1554eb07c4b9dc2e1a43529acacdbb3a86cc628f88fa1df0dbbb7dd",
-      "bytes": 179224
-    },
-    {
-      "file": "reference.browser.phase.stats.dark.png",
-      "sha256": "688ffff796c915e8a40e1532c73973d85296ad4573f7d8c1d2ded01fe061ebf3",
-      "bytes": 202505
-    }
-  ],
-  "native": {
-    "artifact": {
-      "file": "native-final.html",
-      "sha256": "33d56f9325897cbe94d8a17790ca82669a458e834d366fb10d91436113d1e2ca",
-      "bytes": 874178
-    },
-    "visual_review": "failed",
-    "browser_evidence": "failed",
-    "reason": "详细纵向图不能首屏容纳，右侧/下方存在明显空白；未缩小字体、隐藏溢出或改变已交付 HTML。"
-  },
   "reference": {
     "artifact": {
       "file": "framework.html",
-      "sha256": "80f79ade2b79dca6cdfbfcde201b468559ad7cebf6966e7d659457214bd9061a",
-      "bytes": 141185
+      "sha256": "83f829d7d06151264483bc4e765e38a8c7fb1a1872eb7954f03d8d14eef74280",
+      "bytes": 215646
     },
-    "visual_review": "failed",
-    "browser_evidence": "passed",
-    "browser_scope": "8 viewport/theme measurements, full captures, search/dialog/theme/export/scroll-end; allows vertical page scroll",
-    "rendered_structure": "failed",
-    "unresolved": [
+    "visual_review": "passed",
+    "review_scope": "Five phase comparisons, both themes, from exact artifact-bound Chromium screenshots; long-form document scrolling",
+    "reviewed_images": [
       {
-        "kind": "label-masks-unrelated-route",
-        "label": "workloads--query",
-        "edge": "workloads--raw"
+        "file": "reference.browser.phase.data.light.png",
+        "sha256": "475794bf74da36a80facb5c67902626e5134661c0ba7c55960bd53fa44653b02",
+        "bytes": 209667
       },
       {
-        "kind": "label-masks-unrelated-route",
-        "label": "query--raw",
-        "edge": "workloads--raw"
+        "file": "reference.browser.phase.data.dark.png",
+        "sha256": "7011ed45d0b055d5102a1d57274eb726aca8cf9124700e7684bf7a584fd0f3e4",
+        "bytes": 210066
       },
       {
-        "kind": "edge-label-overlap",
-        "labels": [
-          "workloads--raw",
-          "streaming--raw"
-        ]
+        "file": "reference.browser.phase.plan.light.png",
+        "sha256": "fb3eb31fbc9c3ec43c68e746674d32e5cd5b20f1badcabecdd3f18381b6ee861",
+        "bytes": 272812
+      },
+      {
+        "file": "reference.browser.phase.plan.dark.png",
+        "sha256": "f1e79dadf5fe20b8c3e0ab323c8f2ffb9ec4c4bcbe9c1c58cf70528d72026d73",
+        "bytes": 272488
+      },
+      {
+        "file": "reference.browser.phase.exec.light.png",
+        "sha256": "7ca90d2c00488437a6ea34d0163eb2a2d9d09aa0a7d2604f17a33ca7e97bad5d",
+        "bytes": 494190
+      },
+      {
+        "file": "reference.browser.phase.exec.dark.png",
+        "sha256": "8ef66e9d2ae04a63eb857444249573dc866584c239a5320f883f652ac794e51c",
+        "bytes": 494299
+      },
+      {
+        "file": "reference.browser.phase.measure.light.png",
+        "sha256": "4d18c165c2b9427d01721309b01c86b55bfad788e17611a05f261daead74f367",
+        "bytes": 312419
+      },
+      {
+        "file": "reference.browser.phase.measure.dark.png",
+        "sha256": "d17b20b47255c431fa0f7e50404efd68d67ff976d7f03d0230d39082012e9666",
+        "bytes": 312366
+      },
+      {
+        "file": "reference.browser.phase.stats.light.png",
+        "sha256": "596e025ef5b9d99aedc16c1545003833c259ad50fdb83758c4b0c144e4d3b7bf",
+        "bytes": 313804
+      },
+      {
+        "file": "reference.browser.phase.stats.dark.png",
+        "sha256": "5523ccfe41cb40978c42453f0e463d305692893e3383af0c40f6d46d759a68bc",
+        "bytes": 313262
+      }
+    ],
+    "reviewed_comparisons": [
+      {
+        "file": "review-current-compare-data.png",
+        "sha256": "c3415d53494f6ce0d0258f5271faf0abeb904ec5be076096c2e6f9a4f69b11b7",
+        "bytes": 282083
+      },
+      {
+        "file": "review-current-compare-plan.png",
+        "sha256": "9996f1ca06dadae6c92f86638295f01000468ce97a2d8c77e45364624896a892",
+        "bytes": 372293
+      },
+      {
+        "file": "review-current-compare-exec.png",
+        "sha256": "d81e229e93cfdcb8ed6a76856ebf80d1d285156cbb5e5f095904707d245e42b9",
+        "bytes": 687065
+      },
+      {
+        "file": "review-current-compare-measure.png",
+        "sha256": "f7db940ed67a08c9bb54add045e119cccdd381cbd2120d6854b698c14776126c",
+        "bytes": 456652
+      },
+      {
+        "file": "review-current-compare-stats.png",
+        "sha256": "43fde4bc33e94c6be5b536488c33efbdfa89e6bc3ab4b0df2dde0e69ab45715a",
+        "bytes": 405464
       }
     ],
     "positive_observations": [
-      "明暗主题与中文字体正常，无缺字方框",
-      "阶段标题层次清晰，右侧说明框对齐且无裁切",
-      "46 节点 / 51 边稳定 ID 与原生模型一致，说明框不参与拓扑",
-      "节点不重叠；正交路径端点方向正常，未穿不相关节点",
-      "条件 Query/Streaming 有虚线/斜纹和请求且支持标记",
-      "五阶段完整导出，2180×3435 PNG 与 SVG viewBox 相符",
-      "局部编解码展开标明父节点 formal，未暗示二次 benchmark"
+      "五层色带、左标题和右侧说明框保留，V3.2 补充区明确可见。",
+      "中文字体与明暗对比正常，节点文字和说明均完整。",
+      "Layer 4 旧有三处边标签遮线已修复，新增说明与标签不重叠。",
+      "交叉线使用圆弧桥明确表示不相连，无共用模糊走廊。",
+      "Legacy 与 V3.2 的合同、测量与统计口径分别标注。",
+      "P2 对象展开与同次测量职责明确，未画成第二轮 benchmark。"
     ],
     "limitations": [
-      "Layer 4 三处边说明底框遮线/相交，明暗主题重复发现；两轮修正上限后保留并报告",
-      "图内三种可比性键用 Semantic / Execution / Resource 缩写，完整准确键名见 source-evidence.md",
-      "最小 16 px SVG 明细在 1440 px 窗口投影约 10.57 px；完整 PNG 保留 2180 px 宽，可放大阅读"
-    ]
+      "完整长幅参考图需纵向滚动；不声称首屏容纳五层。",
+      "在 1440px 宽窗口中最小节点明细约 10.57px；完整 SVG/PNG 可放大阅读。",
+      "图表示源码架构与依赖；当前 P2 pilot 不合格、其他 lane 缺口仍保留。"
+    ],
+    "unresolved": []
+  },
+  "native": {
+    "artifact": {
+      "file": "native-updated.html",
+      "sha256": "77f7285ccfd4b9757723c10fb8e386962f96668141dd38685dc56ade6ff71cf2",
+      "bytes": 903086
+    },
+    "visual_review": "failed",
+    "reviewed_images": [
+      {
+        "file": "native-updated.visual-check.2048x1320.light.png",
+        "sha256": "fafbb838f4af6f2e696da56e4f2b958ee10ca11c5dad43def5996471a4a5e8fd",
+        "bytes": 131400
+      },
+      {
+        "file": "native-updated.visual-check.1440x900.dark.png",
+        "sha256": "eba7b57b29161c821475249fe28ee1c88539ead70ac83987758624d0f2d2132f",
+        "bytes": 99387
+      }
+    ],
+    "reason": "原生通用查看器的默认明细字小，首屏不能容纳长图；仅作为可缩放拓扑附件。",
+    "browser_evidence": "failed"
   }
 }

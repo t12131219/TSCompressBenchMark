@@ -1,0 +1,138 @@
+"""Audit-only diagnostic wrapper: new isolated output, no source/registry edits."""
+from __future__ import annotations
+
+import argparse
+import hashlib
+import json
+import os
+from pathlib import Path
+import runpy
+import subprocess
+import sys
+import time
+
+ROOT = Path(__file__).resolve().parents[4]
+SELF = Path(__file__).resolve()
+
+
+def digest(path: Path) -> str:
+    with path.open('rb') as stream:
+        return hashlib.file_digest(stream, 'sha256').hexdigest()
+
+
+def entry(path: Path) -> dict:
+    resolved = path.resolve()
+    return {'path': str(resolved), 'sha256': digest(resolved), 'size_bytes': resolved.stat().st_size}
+
+
+def snapshot(paths: list[Path]) -> list[dict]:
+    return [entry(path) for path in sorted(set(paths)) if path.is_file()]
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('codec')
+    parser.add_argument('--profile', choices=['release', 'sanitizer', 'debug'], required=True)
+    parser.add_argument('--output-root', type=Path, required=True)
+    parser.add_argument('--discovered-inputs', type=Path)
+    args = parser.parse_args()
+    output_root = args.output_root.resolve()
+    if not output_root.is_relative_to(ROOT / 'build/closure-formal-verification-20261011'):
+        raise SystemExit('refusing output outside new closure-formal build root')
+    if (output_root / args.codec.replace('-', '_') / args.profile).exists():
+        raise SystemExit('refusing existing build profile')
+    manifest = json.loads((ROOT / 'registry/codecs' / (args.codec + '.json')).read_text())
+    prior_artifact = ROOT / manifest['adapter']['artifact_path']
+    prior_folder = prior_artifact.parent.parent / args.profile
+    prior_record = json.loads((prior_folder / 'build-record.json').read_text())
+    candidates = [SELF, ROOT / 'tools/build_codec.py', ROOT / 'tools/build_completed_rewrite.py',
+                  ROOT / 'adapters/simdcomp/build_native.py', ROOT / 'registry/algorithm_scope.json',
+                  ROOT / 'registry/codecs' / (args.codec + '.json'), prior_folder / 'build-record.json',
+                  ROOT / prior_record['artifact']]
+    for field in ('source_files', 'binding_sources', 'compiled_source_closure', 'toolchain_files',
+                  'toolchain_programs', 'runtime_dependencies', 'pinned_native_dependencies',
+                  'patches', 'build_driver_files'):
+        for value in prior_record.get(field, []):
+            path = Path(value['path'])
+            candidates.append(path if path.is_absolute() else ROOT / path)
+    inventory = json.loads((SELF.parent / 'inventory_v1.json').read_text())
+    candidates += [Path(item['resolved_file']['path']) if Path(item['resolved_file']['path']).is_absolute() else ROOT / item['resolved_file']['path'] for item in inventory['tool_availability'] if item['available']]
+    candidates += [Path(item['path']) if Path(item['path']).is_absolute() else ROOT / item['path'] for item in inventory['current_readable_CRT_static_archive_script_candidates']]
+    discovery = None
+    if args.discovered_inputs:
+        discovery = json.loads(args.discovered_inputs.read_text())
+        candidates += [Path(item['path']) for item in discovery['successful_read_file_inputs'] if not item['generated_in_audit_output']]
+    audit_dir = output_root / 'audit' / args.codec / args.profile
+    audit_dir.mkdir(parents=True, exist_ok=False)
+    baseline_before = snapshot(candidates)
+    started = time.monotonic()
+    invocations = []
+    sys.path.insert(0, str(ROOT / 'tools'))
+    recipe = runpy.run_path(str(ROOT / 'tools/build_codec.py'))
+    globals_ = recipe['_build'].__globals__
+    original = globals_['_run']
+
+    def observed(command: list[str]) -> str:
+        actual = list(command)
+        kind = 'RECIPE_QUERY_OR_FILE_PREPARATION'
+        before = []
+        if '-c' in command:
+            kind = 'COMPILATION'
+            before = snapshot([Path(item) for item in command if Path(item).suffix in {'.c', '.cc', '.cpp'}])
+        elif '-shared' in command:
+            kind = 'LINK_WITH_DIAGNOSTIC_TRACE_AND_MAP'
+            target = Path(command[command.index('-o') + 1])
+            actual += ['-Wl,-t,-t,-Map,' + str(target.parent / 'linker-observation.map')]
+            before = snapshot([Path(item) for item in command if Path(item).suffix in {'.o', '.a', '.so'}])
+        if discovery and kind == 'COMPILATION':
+            previous_root = Path(discovery['output_root'])
+            generated = []
+            for item in discovery['successful_read_file_inputs']:
+                path = Path(item['path'])
+                if path.is_relative_to(previous_root):
+                    generated.append(output_root / path.relative_to(previous_root))
+            before += snapshot(generated)
+        begin = time.monotonic()
+        try:
+            result = original(actual)
+            invocations.append({'kind': kind, 'planned_recipe_argv': command, 'actual_argv': actual,
+                                'returncode': 0, 'elapsed_seconds': time.monotonic() - begin,
+                                'pre_invocation_inputs': before, 'output': result})
+            return result
+        except Exception as error:
+            invocations.append({'kind': kind, 'planned_recipe_argv': command, 'actual_argv': actual,
+                                'error': str(error), 'elapsed_seconds': time.monotonic() - begin,
+                                'pre_invocation_inputs': before})
+            raise
+
+    globals_['_run'] = observed
+    status, error, record = 'PASS', None, None
+    try:
+        if manifest['adapter']['factory'] in {'COMPLETED_REWRITE_CTYPES_V1', 'SIMDCOMP_CTYPES_V1'}:
+            raise RuntimeError('special recipe requires a separately reviewed isolated wrapper')
+        record = recipe['_build'](args.codec, args.profile, output_root=output_root)
+    except Exception as caught:
+        status, error = 'FAIL', str(caught)
+    after = snapshot(candidates)
+    changed = [item['path'] for item in baseline_before if next((x['sha256'] for x in after if x['path'] == item['path']), None) != item['sha256']]
+    report = {'status': status, 'error': error, 'codec': args.codec, 'profile': args.profile,
+              'scope': 'FRESH_AUDIT_ONLY_REBUILD_NOT_CURRENT_REGISTRATION',
+              'elapsed_seconds': time.monotonic() - started, 'output_root': str(output_root),
+              'diagnostic_wrapper': entry(SELF), 'baseline_inputs_before': baseline_before,
+              'baseline_inputs_after': after, 'baseline_input_drift': changed,
+              'invocations': invocations, 'new_recipe_record': record,
+              'saved_recipe_argv_vs_actual': 'ACTUAL_LINK_ADDS_ONLY_t_t_MAP_DIAGNOSTICS_SEE_INVOCATIONS',
+              'old_artifact': entry(ROOT / prior_record['artifact']),
+              'new_artifact': entry(ROOT / record['artifact']) if record else None,
+              'old_new_artifact_bytes_equal': digest(ROOT / prior_record['artifact']) == digest(ROOT / record['artifact']) if record else None,
+              'full_N1_granted': False,
+              'environment': {key: os.environ.get(key) for key in ('PATH', 'CC', 'CXX', 'LD_LIBRARY_PATH', 'LD_PRELOAD', 'LD_AUDIT')}}
+    with (audit_dir / 'driver-report.json').open('x') as stream:
+        stream.write(json.dumps(report, ensure_ascii=False, indent=2) + '\n')
+    print(json.dumps({key: report[key] for key in ('status', 'codec', 'profile', 'elapsed_seconds', 'old_new_artifact_bytes_equal', 'baseline_input_drift', 'error')}), flush=True)
+    if status != 'PASS' or changed:
+        raise SystemExit(1)
+
+
+if __name__ == '__main__':
+    main()

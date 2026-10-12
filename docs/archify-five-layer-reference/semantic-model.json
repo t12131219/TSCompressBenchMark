@@ -6,23 +6,22 @@
       "title": "数据准备",
       "en": "Data Preparation",
       "duties": [
-        "统一数据输入",
-        "保留原始语义",
+        "统一原对象与输入",
+        "保留语义与派生链",
         "冻结可复用数据基础"
       ],
       "outputs": [
-        "DatasetID / Manifest 快照",
-        "*.canonical.tscb",
-        "*.characterization.json",
-        "preparation-record.json",
-        "冻结配置 / environment.json"
+        "DatasetID / Manifest / Canonical",
+        "LogicalObjectSchema / P2 输入",
+        "完整 T / V / mask 与 typed schema",
+        "特征 / 准备记录 / 原始 RawBits"
       ],
       "constraints": [
-        "校验源文件 SHA-256",
-        "不隐式排序或重采样",
-        "保留 shape / dtype / validity",
-        "保留 timestamp 来源与 topology",
-        "复用工件须验证一致性"
+        "校验源字节与内容身份",
+        "不隐式排序 / cast / 填充",
+        "显式派生、轴、单位和来源链",
+        "async/ragged 不扩大 codec 原生域",
+        "P2 不强制沿用 legacy wire"
       ]
     },
     {
@@ -30,23 +29,23 @@
       "title": "能力与配置",
       "en": "Capability & Configuration",
       "duties": [
-        "注册算法与来源",
-        "展开完整参数空间",
-        "生成任务与可比性键"
+        "Legacy 能力与任务",
+        "V3.2 事前合同编译",
+        "冻结全矩阵与真实调度"
       ],
       "outputs": [
-        "AlgorithmID / SourceArtifactID",
-        "ConfigID / resolved_configs.json",
-        "显式适配与预处理计划",
-        "ExecutionPathHash / 三级键",
-        "task_plan.jsonl / 注册快照"
+        "Legacy task_plan / 配置 / 三级键",
+        "experiment_decision / bundle",
+        "Expected Matrix / 公共投影",
+        "ExecutionJob / Recipe / Schedule",
+        "Closure / Build / Environment"
       ],
       "constraints": [
-        "按数据与参数匹配能力",
-        "此阶段制定计划，不执行适配",
-        "实际 ISA / fallback 可追溯",
-        "冻结完整任务全集",
-        "不静默丢弃不支持组合"
+        "完整合法配置与期待分母",
+        "别名/参数/ISA 不增加方法数",
+        "CORE 两方法、两真实来源",
+        "API 实际 schema / bytes 相同",
+        "旧比较键不授新组资格"
       ]
     },
     {
@@ -54,23 +53,23 @@
       "title": "执行验证",
       "en": "Execution & Validation",
       "duties": [
-        "Track 安全路由",
-        "预检与隔离执行",
-        "逐次验证完整编解码"
+        "输入安全与正确性",
+        "独立恢复与开发 pilot",
+        "分 lane 正式对象执行"
       ],
       "outputs": [
-        "Preflight / Warmup 记录",
-        "逐次 Correctness 与原因",
-        "FinalBits / 完整成本",
-        "bitstream / input 与输出哈希",
-        "PASS 与各类失败诊断"
+        "Preflight / 资格与恢复证据",
+        "独立 development pilot",
+        "P1/P2 完整产物与 FinalBits",
+        "comparison / workload / P2",
+        "失败原因与原域 correctness"
       ],
       "constraints": [
-        "输入 / canary / 边界检查",
-        "超时与内存限制、进程隔离",
-        "Finalize 必须计入完整对象",
-        "每次正式 repetition 仍验证",
-        "不同 LossMode 按契约检查"
+        "资格与 pilot 是测量门禁",
+        "Finalize 与恢复依赖计入成本",
+        "最后内循环对象供公共验证",
+        "Rate/Summary 无活动正式组",
+        "流程存在不等于当前运行通过"
       ]
     },
     {
@@ -78,23 +77,23 @@
       "title": "性能测评",
       "en": "Performance Evaluation",
       "duties": [
-        "与正式实验共享执行",
-        "分口径计时与资源采集",
-        "条件查询与流式工作负载"
+        "同次计时与资源",
+        "独立 profile 与工作负载",
+        "持久证据与中断审计"
       ],
       "outputs": [
-        "Encode / Decode / E2E 计时",
-        "CORE / PIPELINE 分离",
-        "同次 CPU / Memory / I/O",
-        "条件 Query / Streaming 结果",
-        "RunID / 原始记录 / CSV 投影"
+        "CORE / PIPELINE / cold 边界",
+        "ResourceLease / 线程观测",
+        "Legacy raw / CSV 投影",
+        "comparison / workload / P2 trials",
+        "STARTED / Events / 恢复产物"
       ],
       "constraints": [
-        "编码、解码分别满足最短时长",
-        "E2E 模式还须 E2E 达标",
-        "Query / Streaming 请求且支持",
-        "Energy / counters 未激活时",
-        "记录 NOT_COLLECTED / UNSUPPORTED"
+        "同次采集，非第二轮测量",
+        "Query / stream 各自冻结协议",
+        "未知 STARTED 不自动重测",
+        "P2 持久预留预算与事件链",
+        "collector/counters 如实 availability"
       ]
     },
     {
@@ -102,23 +101,23 @@
       "title": "统计分析与报告",
       "en": "Statistics & Reporting",
       "duties": [
-        "证据资格过滤",
-        "分层比较与完整覆盖率",
-        "统计、排名与最终报告"
+        "按合同核验资格",
+        "真实配对与固定分母",
+        "报告、辅助审计与验收"
       ],
       "outputs": [
-        "eligibility.csv / summary.csv",
-        "corpus_summary.csv",
-        "comparability.csv / pareto.csv",
-        "ranking.csv / coverage.csv",
-        "机器报告 / Markdown / HTML"
+        "Legacy CSV / median / 三级键",
+        "V3.2 block 配对 / 固定矩阵",
+        "质量 / Pareto / Coverage / 缺口",
+        "分析 JSON / HTML / P2 报告",
+        "参考成本 / completion / 条款验收"
       ],
       "constraints": [
-        "只读冻结证据，不再调用 codec",
-        "资格过滤先于统计聚合",
-        "性能计划完整且至少 10 次",
-        "仅在相应可比性组内比较",
-        "Coverage 不是综合评分"
+        "Legacy 重复要求按其合同",
+        "V3.2 精度与配对块按冻结政策",
+        "缺口 / INCONCLUSIVE 保留",
+        "仅冻结 corpus / 本机范围",
+        "辅助审计不替代 FORMAL/parity"
       ]
     }
   ],
@@ -126,11 +125,11 @@
     {
       "id": "entry",
       "phase": "data",
-      "label": "命令入口与配置",
+      "label": "Legacy 命令入口与配置",
       "detail": "CLI / ExperimentConfig",
       "lines": [
         "CLI / Benchmark Runner",
-        "加载 ExperimentConfig"
+        "Legacy ExperimentConfig / TOML"
       ],
       "source": [
         "cli.py:main",
@@ -141,7 +140,7 @@
     {
       "id": "freeze",
       "phase": "data",
-      "label": "Run Set 初始化与恢复",
+      "label": "Legacy 初始化与恢复",
       "detail": "配置 / Environment 冻结",
       "lines": [
         "冻结配置与 Environment",
@@ -299,7 +298,7 @@
     {
       "id": "keys",
       "phase": "plan",
-      "label": "层级可比性键",
+      "label": "Legacy 层级可比性键",
       "detail": "Semantic → Execution → Resource",
       "lines": [
         "ExecutionPathHash",
@@ -313,7 +312,7 @@
     {
       "id": "tasks",
       "phase": "plan",
-      "label": "冻结任务与注册快照",
+      "label": "Legacy 任务与注册快照",
       "detail": "BenchmarkTask / task_plan.jsonl",
       "lines": [
         "BenchmarkTask / task_plan.jsonl",
@@ -416,11 +415,12 @@
       "label": "最小完整 Roundtrip",
       "detail": "独立编解码 / Common Correctness",
       "lines": [
-        "最小完整 Roundtrip",
-        "Common Correctness"
+        "Common Correctness",
+        "独立 clean worker 恢复"
       ],
       "source": [
-        "execution/preflight.py:preflight_task"
+        "execution/preflight.py:preflight_task",
+        "execution/recovery.py:decode_in_fresh_worker"
       ],
       "role": "process"
     },
@@ -441,14 +441,15 @@
     {
       "id": "warmup",
       "phase": "exec",
-      "label": "预热 Warmup",
+      "label": "每个测量 worker 内预热",
       "detail": "次数与预热时长门槛",
       "lines": [
-        "Warmup",
-        "预热次数与时长门槛"
+        "Warmup 排除于计时边界",
+        "固定次数与时长，不证明稳态"
       ],
       "source": [
-        "execution/repetition.py:perform_warmup"
+        "execution/repetition.py:perform_worker_measurement",
+        "execution/orchestrator.py:execute_task"
       ],
       "role": "process"
     },
@@ -458,8 +459,8 @@
       "label": "正式重复实验",
       "detail": "Formal Repetitions / 独立对象",
       "lines": [
-        "Formal Repetitions",
-        "独立对象 / 逐次验证 / 时长内循环"
+        "Legacy Formal Repetitions",
+        "外层逐次验证 / 独立对象内循环"
       ],
       "source": [
         "execution/orchestrator.py:execute_task",
@@ -518,10 +519,11 @@
       "detail": "Accounting Ledger / FinalBits",
       "lines": [
         "Accounting Ledger / FinalBits",
-        "metadata / index / padding / side info"
+        "完整流 + 公共恢复信息 / side info"
       ],
       "source": [
-        "accounting/ledger.py:AccountingLedger"
+        "accounting/ledger.py:AccountingLedger",
+        "execution/recovery.py:bind_decode_context"
       ],
       "role": "process"
     },
@@ -532,10 +534,11 @@
       "detail": "Decompress",
       "lines": [
         "独立解码 Context",
-        "Decompress / 重建结果"
+        "物化输出 / 恢复原域 dtype 与 shape"
       ],
       "source": [
-        "execution/repetition.py:perform_roundtrip"
+        "execution/repetition.py:perform_roundtrip",
+        "execution/recovery.py:restore_decoded_output"
       ],
       "role": "process"
     },
@@ -576,8 +579,8 @@
       "lines": [
         "Error-bounded：误差界 + 质量",
         "Unbounded：质量，无误差保证",
-        "Rate：实际 FinalBits / 目标记录",
-        "Summary：无重建，安全检查"
+        "Rate / Summary：框架 validator",
+        "当前无活动算法或正式比较组"
       ],
       "source": [
         "validation/correctness.py:validate_common_correctness"
@@ -587,7 +590,7 @@
     {
       "id": "policy",
       "phase": "measure",
-      "label": "同次正式实验测量策略",
+      "label": "Legacy 同次测量策略",
       "detail": "冻结 MeasurementPolicy",
       "lines": [
         "冻结 MeasurementPolicy",
@@ -604,9 +607,9 @@
       "label": "分范围计时与时长控制",
       "detail": "CORE / PIPELINE / E2E",
       "lines": [
-        "CORE / PIPELINE / E2E 分离",
+        "Legacy：CORE / PIPELINE / E2E",
         "Encode、Decode 各自达标",
-        "native / stage timing 有条件补充"
+        "V3.2 scope 由独立合同固定"
       ],
       "source": [
         "execution/repetition.py:perform_measured_roundtrip",
@@ -632,11 +635,11 @@
     {
       "id": "workloads",
       "phase": "measure",
-      "label": "条件工作负载调度",
+      "label": "Legacy 条件工作负载",
       "detail": "Profile 请求且 codec 支持",
       "lines": [
-        "Profile 请求且 codec 支持",
-        "Query / Streaming 隔离执行"
+        "Legacy Profile 请求且支持",
+        "V3.2 使用独立 workload runner"
       ],
       "source": [
         "execution/orchestrator.py:execute_task"
@@ -646,7 +649,7 @@
     {
       "id": "raw",
       "phase": "measure",
-      "label": "原始证据与可恢复投影",
+      "label": "Legacy 原始证据与投影",
       "detail": "run_components.jsonl / runs.csv",
       "lines": [
         "追加 run_components.jsonl",
@@ -679,8 +682,8 @@
       "label": "Streaming Benchmark",
       "detail": "请求且支持时执行",
       "lines": [
-        "Streaming Benchmark",
-        "请求且支持：块延迟 / 状态 / checkpoint"
+        "请求且支持：块延迟 / 状态",
+        "checkpoint 仅按实际能力留证"
       ],
       "source": [
         "measurement/workloads.py:execute_streaming_workload"
@@ -690,7 +693,7 @@
     {
       "id": "evidence",
       "phase": "stats",
-      "label": "读取冻结任务与原始证据",
+      "label": "Legacy 冻结证据读取",
       "detail": "只读 task / raw / provenance",
       "lines": [
         "冻结任务 / raw / provenance",
@@ -718,7 +721,7 @@
     {
       "id": "summary",
       "phase": "stats",
-      "label": "合格重复的逐数据集统计",
+      "label": "Legacy 逐数据集统计",
       "detail": "median / quantiles / bootstrap CI",
       "lines": [
         "Dataset + Algorithm + Config",
@@ -764,7 +767,7 @@
     {
       "id": "report",
       "phase": "stats",
-      "label": "最终结果与报告生成",
+      "label": "Legacy 结果与报告生成",
       "detail": "CSV / 机器报告 / Markdown / HTML",
       "lines": [
         "Result / Report Generator",
@@ -789,6 +792,332 @@
         "statistics/engine.py:_coverage"
       ],
       "role": "process"
+    },
+    {
+      "id": "source_identity",
+      "phase": "data",
+      "label": "来源、内容身份与显式派生",
+      "detail": "原内容 SHA / DatasetID / 完整父级 lineage / f32 / uint8 / ND / 缺失模式：分别冻结派生对象",
+      "lines": [
+        "原内容 SHA / DatasetID / 完整父级 lineage",
+        "f32 / uint8 / ND / 缺失模式：分别冻结派生对象"
+      ],
+      "source": [
+        "datasets/canonical_source.py:register_canonical_source",
+        "comparison/models.py:CorpusSpec",
+        "comparison/pipeline_runner.py:build_real_pipeline_inputs"
+      ],
+      "role": "process",
+      "updated": true
+    },
+    {
+      "id": "logical_object",
+      "phase": "data",
+      "label": "Canonical / P2 逻辑原对象",
+      "detail": "T / V / validity · dtype / shape / time_axis / units / P2 LogicalObjectSchema / channel collection wrapper / async / ragged：独立 schema 与有限对象资格",
+      "lines": [
+        "T / V / validity · dtype / shape / time_axis / units",
+        "P2 LogicalObjectSchema / channel collection wrapper",
+        "async / ragged：独立 schema 与有限对象资格"
+      ],
+      "source": [
+        "pipelines/models.py:LogicalObjectSchema",
+        "pipelines/channel_collection.py:ChannelCollectionSchema",
+        "datasets/prepare.py:prepare_dataset"
+      ],
+      "role": "artifact",
+      "updated": true
+    },
+    {
+      "id": "experiment_contract",
+      "phase": "plan",
+      "label": "事前决策与比较合同",
+      "detail": "experiment_decision / Task / Contract / Group / Corpus / ConfigMap / Expected / Protocol / AnalysisPolicy：测量前冻结",
+      "lines": [
+        "experiment_decision / Task / Contract",
+        "Group / Corpus / ConfigMap / Expected",
+        "Protocol / AnalysisPolicy：测量前冻结"
+      ],
+      "source": [
+        "comparison/decision.py:freeze_experiment_decision",
+        "comparison/models.py:ComparisonContract",
+        "comparison/runner.py:prepare_comparison"
+      ],
+      "role": "artifact",
+      "updated": true
+    },
+    {
+      "id": "expected_matrix",
+      "phase": "plan",
+      "label": "完整期待矩阵与成员准入",
+      "detail": "MethodID / ImplementationID 去重 / CORE：两方法 / 两独立真实来源 / PASS / REJECT / BLOCKED 保留分母",
+      "lines": [
+        "MethodID / ImplementationID 去重",
+        "CORE：两方法 / 两独立真实来源",
+        "PASS / REJECT / BLOCKED 保留分母"
+      ],
+      "source": [
+        "comparison/planning.py:compile_group_plan",
+        "comparison/models.py:ExpectedOutcomeMatrix"
+      ],
+      "role": "process",
+      "updated": true
+    },
+    {
+      "id": "public_projection",
+      "phase": "plan",
+      "label": "公共投影与实际输入",
+      "detail": "原对象与 COMMON_NATIVE_API 分组 / 实际输入 schema / bytes / 路径披露 / P2 有序 recipe / child / block / tail",
+      "lines": [
+        "原对象与 COMMON_NATIVE_API 分组",
+        "实际输入 schema / bytes / 路径披露",
+        "P2 有序 recipe / child / block / tail"
+      ],
+      "source": [
+        "comparison/projection.py:public_projection",
+        "comparison/planning.py:validate_job_for_cell",
+        "comparison/pipeline_runner.py:prepare_pipeline_comparison"
+      ],
+      "role": "process",
+      "updated": true
+    },
+    {
+      "id": "frozen_schedule",
+      "phase": "plan",
+      "label": "冻结作业、源码与调度",
+      "detail": "ExecutionJob / Recipe / Closure / Build / Environment / CPU / Threads / Schedule block / pair / 固定重复",
+      "lines": [
+        "ExecutionJob / Recipe / Closure",
+        "Build / Environment / CPU / Threads",
+        "Schedule block / pair / 固定重复"
+      ],
+      "source": [
+        "comparison/runner.py:prepare_comparison",
+        "execution/schedule.py:build_schedule",
+        "comparison/pipeline_runner.py:prepare_pipeline_comparison"
+      ],
+      "role": "artifact",
+      "updated": true
+    },
+    {
+      "id": "object_qualification",
+      "phase": "exec",
+      "label": "原对象资格与独立恢复",
+      "detail": "Preflight / 安全 / 原域 correctness / 公共恢复信息 + 保存字节 / clean worker / 未通过留证，阻断正式测量 / SOURCE_PARITY / N/G/CAP 分别验收",
+      "lines": [
+        "Preflight / 安全 / 原域 correctness",
+        "公共恢复信息 + 保存字节 / clean worker",
+        "未通过留证，阻断正式测量",
+        "SOURCE_PARITY / N/G/CAP 分别验收"
+      ],
+      "source": [
+        "comparison/runner.py:qualify_comparison",
+        "execution/preflight.py:preflight_task",
+        "comparison/pipeline_runner.py:qualify_pipeline_comparison"
+      ],
+      "role": "validation",
+      "updated": true
+    },
+    {
+      "id": "development_pilot",
+      "phase": "exec",
+      "label": "独立开发 pilot 门禁",
+      "detail": "与评价对象分离的 development 输入 / 方向时钟 / 粒度 / 采集器开关扰动 / 资格与 pilot 通过后才可 FORMAL",
+      "lines": [
+        "与评价对象分离的 development 输入",
+        "方向时钟 / 粒度 / 采集器开关扰动",
+        "资格与 pilot 通过后才可 FORMAL"
+      ],
+      "source": [
+        "comparison/runner.py:pilot_comparison",
+        "measurement/v32_protocol.py:run_pilot",
+        "comparison/pipeline_runner.py:pilot_pipeline_comparison"
+      ],
+      "role": "validation",
+      "updated": true
+    },
+    {
+      "id": "formal_lanes",
+      "phase": "exec",
+      "label": "分 lane 隔离正式执行",
+      "detail": "comparison：完整对象 / API / cold / workload：query / stream 独立协议 / pipeline：完整 P2 对象与公开配方 / 逐 lane 串行 / frozen Schedule / spawn",
+      "lines": [
+        "comparison：完整对象 / API / cold",
+        "workload：query / stream 独立协议",
+        "pipeline：完整 P2 对象与公开配方",
+        "逐 lane 串行 / frozen Schedule / spawn"
+      ],
+      "source": [
+        "comparison/runner.py:execute_comparison",
+        "comparison/workload_runner.py:execute_workload_comparison",
+        "comparison/pipeline_runner.py:execute_pipeline_comparison"
+      ],
+      "role": "process",
+      "updated": true
+    },
+    {
+      "id": "p2_object",
+      "phase": "exec",
+      "label": "P2 完整对象与公共恢复",
+      "detail": "全部 T / V / mask · mixed / ND / time_axis / 列 / 块子流 / RAW_TAIL / LZ4-Zstd / paid schema / child 依赖 / 原始 RawBits / 独立 decoder 物化恢复 / 产物保存",
+      "lines": [
+        "全部 T / V / mask · mixed / ND / time_axis",
+        "列 / 块子流 / RAW_TAIL / LZ4-Zstd",
+        "paid schema / child 依赖 / 原始 RawBits",
+        "独立 decoder 物化恢复 / 产物保存"
+      ],
+      "source": [
+        "pipelines/runtime.py:encode_object",
+        "pipelines/runtime.py:decode_in_fresh_process",
+        "comparison/pipeline_runner.py:_recovery"
+      ],
+      "role": "optional",
+      "updated": true
+    },
+    {
+      "id": "measurement_boundary",
+      "phase": "measure",
+      "label": "V3.2 计时与生命周期边界",
+      "detail": "完整对象：steady / cold PIPELINE / 共同 native API：STEADY_PROCESS CORE / encode / decode 真时钟与方向门槛",
+      "lines": [
+        "完整对象：steady / cold PIPELINE",
+        "共同 native API：STEADY_PROCESS CORE",
+        "encode / decode 真时钟与方向门槛"
+      ],
+      "source": [
+        "comparison/runner.py:prepare_comparison",
+        "execution/repetition.py:perform_declared_worker_measurement",
+        "execution/cold_driver.py:measure_cold_object"
+      ],
+      "role": "process",
+      "updated": true
+    },
+    {
+      "id": "resource_lease",
+      "phase": "measure",
+      "label": "资源租约与同步观测",
+      "detail": "ResourceLease / CPU / Threads / RSS gate / 父进程线程观测 / 环境 / 总 wall 预算 / 同一试次采集，不扣除 collector 开销",
+      "lines": [
+        "ResourceLease / CPU / Threads / RSS gate",
+        "父进程线程观测 / 环境 / 总 wall 预算",
+        "同一试次采集，不扣除 collector 开销"
+      ],
+      "source": [
+        "measurement/resource_lease.py:ResourceLease",
+        "measurement/thread_monitor.py:ParentThreadMonitor",
+        "comparison/runner.py:execute_comparison"
+      ],
+      "role": "process",
+      "updated": true
+    },
+    {
+      "id": "trial_store",
+      "phase": "measure",
+      "label": "持久试次、事件与恢复产物",
+      "detail": "comparison_trials / workload_trials / P2 trials / pipeline_events / artifacts / append-only / STARTED / 固定分母",
+      "lines": [
+        "comparison_trials / workload_trials",
+        "P2 trials / pipeline_events / artifacts",
+        "append-only / STARTED / 固定分母"
+      ],
+      "source": [
+        "comparison/runner.py:_append_trial",
+        "comparison/workload_runner.py:execute_workload_comparison",
+        "comparison/pipeline_runner.py:_commit_attempt"
+      ],
+      "role": "artifact",
+      "updated": true
+    },
+    {
+      "id": "resume_audit",
+      "phase": "measure",
+      "label": "中断、预算与 no-op resume",
+      "detail": "未知 STARTED 禁止自动重测 / P2 预留预算 / 事件链 / COMMITTED / 失败终态保留 / 完成后 no-op resume / 源码或工件漂移需建立新运行身份",
+      "lines": [
+        "未知 STARTED 禁止自动重测",
+        "P2 预留预算 / 事件链 / COMMITTED",
+        "失败终态保留 / 完成后 no-op resume",
+        "源码或工件漂移需建立新运行身份"
+      ],
+      "source": [
+        "comparison/runner.py:execute_comparison",
+        "comparison/pipeline_runner.py:_attempt_state",
+        "comparison/pipeline_runner.py:_block_interrupted_attempts"
+      ],
+      "role": "process",
+      "updated": true
+    },
+    {
+      "id": "paired_analysis",
+      "phase": "stats",
+      "label": "V3.2 只读重核与真实配对",
+      "detail": "冻结 plan / 原始 raw / artifacts 重核 / 均值时间比 / Schedule block bootstrap / 多重区间 / 效应与精度 / 固定分母",
+      "lines": [
+        "冻结 plan / 原始 raw / artifacts 重核",
+        "均值时间比 / Schedule block bootstrap",
+        "多重区间 / 效应与精度 / 固定分母"
+      ],
+      "source": [
+        "comparison/analysis.py:analyze_comparison",
+        "comparison/analysis.py:_effect",
+        "comparison/pipeline_runner.py:report_pipeline_comparison"
+      ],
+      "role": "process",
+      "updated": true
+    },
+    {
+      "id": "quality_coverage",
+      "phase": "stats",
+      "label": "原域质量、Pareto 与 Coverage",
+      "detail": "原域误差 / 实际 FinalBits / 公共投影 / 固定 corpus 与真实来源 / 全矩阵缺口 / 不合格或精度不足保留 INCONCLUSIVE",
+      "lines": [
+        "原域误差 / 实际 FinalBits / 公共投影",
+        "固定 corpus 与真实来源 / 全矩阵缺口",
+        "不合格或精度不足保留 INCONCLUSIVE"
+      ],
+      "source": [
+        "comparison/analysis_extensions.py:augment_analysis",
+        "comparison/analysis.py:analyze_comparison"
+      ],
+      "role": "process",
+      "updated": true
+    },
+    {
+      "id": "v32_reports",
+      "phase": "stats",
+      "label": "V3.2 报告与结论边界",
+      "detail": "analysis JSON / HTML / P2 report.md / 引用 decision / 资格 / pilot / raw / 结论仅限冻结 corpus 与本机范围",
+      "lines": [
+        "analysis JSON / HTML / P2 report.md",
+        "引用 decision / 资格 / pilot / raw",
+        "结论仅限冻结 corpus 与本机范围"
+      ],
+      "source": [
+        "comparison/runner.py:report_comparison",
+        "comparison/workload_runner.py:report_workload_comparison",
+        "comparison/pipeline_runner.py:report_pipeline_comparison"
+      ],
+      "role": "artifact",
+      "updated": true
+    },
+    {
+      "id": "scope_acceptance",
+      "phase": "stats",
+      "label": "辅助审计与逐条范围验收",
+      "detail": "未压缩 SIZE_BASELINE / buffer cost / no-op resume / completion / 条款验收 / 不转授 SOURCE_PARITY 或正式资格 / 当前 P2 pilot 不合格仍保留",
+      "lines": [
+        "未压缩 SIZE_BASELINE / buffer cost",
+        "no-op resume / completion / 条款验收",
+        "不转授 SOURCE_PARITY 或正式资格",
+        "当前 P2 pilot 不合格仍保留"
+      ],
+      "source": [
+        "tools/audit_v32_uncompressed_reference.py",
+        "tools/audit_v32_buffer_costs.py:build_buffer_cost_audit",
+        "tools/audit_v32_completion.py:audit"
+      ],
+      "role": "process",
+      "updated": true
     }
   ],
   "edges": [
@@ -1148,6 +1477,150 @@
       "target": "raw",
       "label": "流式结果",
       "kind": "evidence"
+    },
+    {
+      "id": "dataset--source_identity",
+      "source": "dataset",
+      "target": "source_identity",
+      "label": "来源与派生",
+      "kind": "evidence",
+      "updated": true
+    },
+    {
+      "id": "source_identity--logical_object",
+      "source": "source_identity",
+      "target": "logical_object",
+      "label": "",
+      "kind": "flow",
+      "updated": true
+    },
+    {
+      "id": "logical_object--experiment_contract",
+      "source": "logical_object",
+      "target": "experiment_contract",
+      "label": "原对象依赖",
+      "kind": "evidence",
+      "updated": true
+    },
+    {
+      "id": "experiment_contract--expected_matrix",
+      "source": "experiment_contract",
+      "target": "expected_matrix",
+      "label": "",
+      "kind": "flow",
+      "updated": true
+    },
+    {
+      "id": "expected_matrix--public_projection",
+      "source": "expected_matrix",
+      "target": "public_projection",
+      "label": "",
+      "kind": "flow",
+      "updated": true
+    },
+    {
+      "id": "public_projection--frozen_schedule",
+      "source": "public_projection",
+      "target": "frozen_schedule",
+      "label": "",
+      "kind": "flow",
+      "updated": true
+    },
+    {
+      "id": "frozen_schedule--object_qualification",
+      "source": "frozen_schedule",
+      "target": "object_qualification",
+      "label": "冻结作业",
+      "kind": "evidence",
+      "updated": true
+    },
+    {
+      "id": "object_qualification--development_pilot",
+      "source": "object_qualification",
+      "target": "development_pilot",
+      "label": "资格通过",
+      "kind": "flow",
+      "updated": true
+    },
+    {
+      "id": "development_pilot--formal_lanes",
+      "source": "development_pilot",
+      "target": "formal_lanes",
+      "label": "pilot 通过",
+      "kind": "flow",
+      "updated": true
+    },
+    {
+      "id": "formal_lanes--p2_object",
+      "source": "formal_lanes",
+      "target": "p2_object",
+      "label": "P2 对象展开",
+      "kind": "expansion",
+      "updated": true
+    },
+    {
+      "id": "formal_lanes--measurement_boundary",
+      "source": "formal_lanes",
+      "target": "measurement_boundary",
+      "label": "同次执行职责",
+      "kind": "scope",
+      "updated": true
+    },
+    {
+      "id": "measurement_boundary--resource_lease",
+      "source": "measurement_boundary",
+      "target": "resource_lease",
+      "label": "同一试次",
+      "kind": "scope",
+      "updated": true
+    },
+    {
+      "id": "resource_lease--trial_store",
+      "source": "resource_lease",
+      "target": "trial_store",
+      "label": "观测与状态",
+      "kind": "evidence",
+      "updated": true
+    },
+    {
+      "id": "trial_store--resume_audit",
+      "source": "trial_store",
+      "target": "resume_audit",
+      "label": "恢复重核",
+      "kind": "evidence",
+      "updated": true
+    },
+    {
+      "id": "trial_store--paired_analysis",
+      "source": "trial_store",
+      "target": "paired_analysis",
+      "label": "只读证据",
+      "kind": "evidence",
+      "updated": true
+    },
+    {
+      "id": "paired_analysis--quality_coverage",
+      "source": "paired_analysis",
+      "target": "quality_coverage",
+      "label": "",
+      "kind": "flow",
+      "updated": true
+    },
+    {
+      "id": "quality_coverage--v32_reports",
+      "source": "quality_coverage",
+      "target": "v32_reports",
+      "label": "",
+      "kind": "flow",
+      "updated": true
+    },
+    {
+      "id": "v32_reports--scope_acceptance",
+      "source": "v32_reports",
+      "target": "scope_acceptance",
+      "label": "独立验收",
+      "kind": "evidence",
+      "updated": true
     }
   ],
   "expansion": {
@@ -1161,5 +1634,8 @@
       "lossless",
       "lossy"
     ]
-  }
+  },
+  "updated_at": "2026-10-12 Asia/Shanghai",
+  "update_basis": "current working tree; five-layer in-place supplement",
+  "presentation": "long-form five-layer reference; legacy path plus V3.2 supplementary lanes"
 }

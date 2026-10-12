@@ -1,0 +1,54 @@
+schema_version: 1
+executable: /tmp/tscb-dzip-oracle-cpu/bin/python
+python: 3.6.13
+tensorflow: 1.14.0 CPU
+keras: 2.2.2
+numpy: 1.16.4
+base_environment_lock: ../../Source/deepzip/ORACLE_ENVIRONMENT_LOCK.json
+base_environment_lock_sha256: 388967012b649fc195746a484658b25b75dc903bb8bb06d4973579dda2f8bf12
+reference_only: true
+native_runtime_linked: false
+overlay_archives:
+- path: /tmp/tscb-dzip-wheels/Keras_Applications-1.0.4-py2.py3-none-any.whl
+  filename: Keras_Applications-1.0.4-py2.py3-none-any.whl
+  sha256: 0ee155e0e07b8a614c92a72bba081264b69ecd91d74c742488054dc89e24b05e
+  bytes: 43845
+- path: /tmp/tscb-dzip-wheels/Keras_Preprocessing-1.0.2-py2.py3-none-any.whl
+  filename: Keras_Preprocessing-1.0.2-py2.py3-none-any.whl
+  sha256: f44ab7bac195ae77ace2ce082413de2d6794e89d09a71a822a6bafd2aa32276b
+  bytes: 26881
+- path: /tmp/tscb-dzip-wheels/gast-0.2.2.tar.gz
+  filename: gast-0.2.2.tar.gz
+  sha256: fe939df4583692f0512161ec1c880e0a10e71e6a232da045ab8edd3756fbadf0
+  bytes: 10294
+- path: /tmp/tscb-dzip-wheels/google_pasta-0.2.0-py3-none-any.whl
+  filename: google_pasta-0.2.0-py3-none-any.whl
+  sha256: b32482794a366b5366a32c92a9a9201b107821889935a02b3e51f6b432ea84ed
+  bytes: 57471
+- path: /tmp/tscb-dzip-wheels/setuptools-59.6.0-py3-none-any.whl
+  filename: setuptools-59.6.0-py3-none-any.whl
+  sha256: 4ce92f1e1f8f01233ee9952c04f6b81d1e02939d6e1b488428154974a4d0783e
+  bytes: 952597
+- path: /tmp/tscb-dzip-wheels/tensorboard-1.14.0-py3-none-any.whl
+  filename: tensorboard-1.14.0-py3-none-any.whl
+  sha256: 50e0b1bdcd488dbe39fd9416976e089b2ff4df18d9f1fab47abf4c498209c3fc
+  bytes: 3149160
+- path: /tmp/tscb-dzip-wheels/tensorflow-1.14.0-cp36-cp36m-manylinux1_x86_64.whl
+  filename: tensorflow-1.14.0-cp36-cp36m-manylinux1_x86_64.whl
+  sha256: 4008a56940d23345e52ac4885fb4782604eb02574c2d95f3946f5b6baf0e1276
+  bytes: 109199992
+- path: /tmp/tscb-dzip-wheels/tensorflow_estimator-1.14.0-py2.py3-none-any.whl
+  filename: tensorflow_estimator-1.14.0-py2.py3-none-any.whl
+  sha256: ca073f66063407a091d610ec1b22e39ea30248710198cc6f13769320bdbe3992
+  bytes: 488541
+- path: /tmp/tscb-dzip-wheels/wrapt-1.16.0-cp36-cp36m-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl
+  filename: wrapt-1.16.0-cp36-cp36m-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl
+  sha256: 3ebf019be5c09d400cf7b024aa52b1f3aeebeff51550d007e92c3c1c4afc2a40
+  bytes: 77220
+environment:
+  LD_LIBRARY_PATH: /tmp/tscb-deepzip-oracle-rebuilt/lib
+  CUDA_VISIBLE_DEVICES: ''
+  PYTHONHASHSEED: '0'
+rebuilding: Rebuild locked deepzip environment; create --system-site-packages venv;
+  install the listed overlay versions with --no-deps; preserve Keras apps 1.0.4/preprocessing
+  1.0.2.

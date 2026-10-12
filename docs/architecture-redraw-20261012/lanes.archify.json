@@ -1,0 +1,315 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "四条执行路径 · 各自冻结与验收",
+    "locale": "zh-CN",
+    "quality_profile": "showcase",
+    "viewBox": [
+      1320,
+      750
+    ]
+  },
+  "components": [
+    {
+      "id": "legacy_plan",
+      "type": "database",
+      "label": "Legacy TOML",
+      "sublabel": "TOML / BenchmarkTask",
+      "pos": [
+        35,
+        100
+      ],
+      "size": [
+        280,
+        90
+      ]
+    },
+    {
+      "id": "legacy_execute",
+      "type": "backend",
+      "label": "execute_task",
+      "sublabel": "warmup + measured roundtrip",
+      "pos": [
+        35,
+        320
+      ],
+      "size": [
+        280,
+        90
+      ]
+    },
+    {
+      "id": "legacy_report",
+      "type": "frontend",
+      "label": "generate_report",
+      "sublabel": "median / 三级键 / Coverage",
+      "pos": [
+        35,
+        540
+      ],
+      "size": [
+        280,
+        90
+      ]
+    },
+    {
+      "id": "comparison_plan",
+      "type": "database",
+      "label": "V3.2 对象与 API",
+      "sublabel": "Bundle / ComparisonRun",
+      "pos": [
+        355,
+        100
+      ],
+      "size": [
+        280,
+        90
+      ]
+    },
+    {
+      "id": "comparison_execute",
+      "type": "backend",
+      "label": "execute_comparison",
+      "sublabel": "PIPELINE / CORE / cold",
+      "pos": [
+        355,
+        320
+      ],
+      "size": [
+        280,
+        90
+      ]
+    },
+    {
+      "id": "comparison_report",
+      "type": "frontend",
+      "label": "report_comparison",
+      "sublabel": "paired block CI / 效应判定",
+      "pos": [
+        355,
+        540
+      ],
+      "size": [
+        280,
+        90
+      ]
+    },
+    {
+      "id": "workload_plan",
+      "type": "database",
+      "label": "V3.2 工作负载",
+      "sublabel": "stream / query 合同",
+      "pos": [
+        675,
+        100
+      ],
+      "size": [
+        280,
+        90
+      ]
+    },
+    {
+      "id": "workload_execute",
+      "type": "backend",
+      "label": "execute_workload_comparison",
+      "sublabel": "冻结序列 / 缓存 / 查询会话",
+      "pos": [
+        675,
+        320
+      ],
+      "size": [
+        280,
+        90
+      ]
+    },
+    {
+      "id": "workload_report",
+      "type": "frontend",
+      "label": "report_workload_comparison",
+      "sublabel": "profile 口径 / 正确性审计",
+      "pos": [
+        675,
+        540
+      ],
+      "size": [
+        280,
+        90
+      ]
+    },
+    {
+      "id": "p2_plan",
+      "type": "database",
+      "label": "P2 组合流水线",
+      "sublabel": "LogicalObject / PipelineRecipe",
+      "pos": [
+        995,
+        100
+      ],
+      "size": [
+        280,
+        90
+      ]
+    },
+    {
+      "id": "p2_execute",
+      "type": "backend",
+      "label": "execute_pipeline_comparison",
+      "sublabel": "encode_object / 独立恢复",
+      "pos": [
+        995,
+        320
+      ],
+      "size": [
+        280,
+        90
+      ]
+    },
+    {
+      "id": "p2_report",
+      "type": "frontend",
+      "label": "report_pipeline_comparison",
+      "sublabel": "完整对象成本 / P2 trial 审计",
+      "pos": [
+        995,
+        540
+      ],
+      "size": [
+        280,
+        90
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "legacy_plan_exec",
+      "from": "legacy_plan",
+      "to": "legacy_execute",
+      "label": "冻结计划与门禁",
+      "variant": "emphasis",
+      "labelAt": [
+        175,
+        204
+      ]
+    },
+    {
+      "id": "legacy_exec_report",
+      "from": "legacy_execute",
+      "to": "legacy_report",
+      "label": "持久试次与审计",
+      "variant": "emphasis",
+      "labelAt": [
+        175,
+        424
+      ]
+    },
+    {
+      "id": "comparison_plan_exec",
+      "from": "comparison_plan",
+      "to": "comparison_execute",
+      "label": "冻结计划与门禁",
+      "variant": "emphasis",
+      "labelAt": [
+        495,
+        204
+      ]
+    },
+    {
+      "id": "comparison_exec_report",
+      "from": "comparison_execute",
+      "to": "comparison_report",
+      "label": "持久试次与审计",
+      "variant": "emphasis",
+      "labelAt": [
+        495,
+        424
+      ]
+    },
+    {
+      "id": "workload_plan_exec",
+      "from": "workload_plan",
+      "to": "workload_execute",
+      "label": "冻结计划与门禁",
+      "variant": "emphasis",
+      "labelAt": [
+        815,
+        204
+      ]
+    },
+    {
+      "id": "workload_exec_report",
+      "from": "workload_execute",
+      "to": "workload_report",
+      "label": "持久试次与审计",
+      "variant": "emphasis",
+      "labelAt": [
+        815,
+        424
+      ]
+    },
+    {
+      "id": "p2_plan_exec",
+      "from": "p2_plan",
+      "to": "p2_execute",
+      "label": "冻结计划与门禁",
+      "variant": "emphasis",
+      "labelAt": [
+        1135,
+        204
+      ]
+    },
+    {
+      "id": "p2_exec_report",
+      "from": "p2_execute",
+      "to": "p2_report",
+      "label": "持久试次与审计",
+      "variant": "emphasis",
+      "labelAt": [
+        1135,
+        424
+      ]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "Legacy TOML",
+      "wraps": [
+        "legacy_plan",
+        "legacy_execute",
+        "legacy_report"
+      ],
+      "pad": 15
+    },
+    {
+      "kind": "region",
+      "label": "V3.2 对象与 API",
+      "wraps": [
+        "comparison_plan",
+        "comparison_execute",
+        "comparison_report"
+      ],
+      "pad": 15
+    },
+    {
+      "kind": "region",
+      "label": "V3.2 工作负载",
+      "wraps": [
+        "workload_plan",
+        "workload_execute",
+        "workload_report"
+      ],
+      "pad": 15
+    },
+    {
+      "kind": "region",
+      "label": "P2 组合流水线",
+      "wraps": [
+        "p2_plan",
+        "p2_execute",
+        "p2_report"
+      ],
+      "pad": 15
+    }
+  ]
+}

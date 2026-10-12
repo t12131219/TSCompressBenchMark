@@ -1,0 +1,481 @@
+{
+  "codec": "simdcomp-u32",
+  "profile": "debug",
+  "factory": "SIMDCOMP_CTYPES_V1",
+  "record": {
+    "path": "build/adapters/simdcomp_u32/debug/build-record.json",
+    "sha256": "0e7e30c3f44ca1d1cb66fba333293803fe6bab35e6bddb053101e2bbe86a483a",
+    "size_bytes": 63803
+  },
+  "artifact": {
+    "path": "build/adapters/simdcomp_u32/debug/libtscb_simdcomp_u32.so",
+    "sha256": "ffcf777cb3edc29cb2ae9193c82294a8eae5bdc8f02434f6e7dd9bf9f8a815d1",
+    "size_bytes": 11912528
+  },
+  "artifact_matches_saved_record": true,
+  "declared_hash_verification": {
+    "status": "PASS",
+    "verified_entry_count": 234,
+    "missing": [],
+    "drift": [],
+    "scope": "DECLARED_BYTES_ONLY_NOT_ACTUAL_EXEC_OR_LINK_INPUT_PROVENANCE"
+  },
+  "translation_unit_count": 9,
+  "translation_unit_commands": [
+    {
+      "directory": "/home/fzg/PycharmProjects/TSDataCompressBenchMark",
+      "file": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/simdcomp/native/tscb_simdcomp.c",
+      "arguments": [
+        "/usr/bin/cc",
+        "-std=c11",
+        "-fPIC",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-O0",
+        "-g",
+        "-DSIMDCOMP_DEBUG",
+        "-march=x86-64",
+        "-mno-ssse3",
+        "-mno-sse4.1",
+        "-mno-avx",
+        "-mno-avx2",
+        "-mno-avx512f",
+        "-fno-tree-vectorize",
+        "-fno-tree-slp-vectorize",
+        "-I",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/native/include",
+        "-I",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/adapters/simdcomp_u32/debug/patched-source/include",
+        "-MD",
+        "-MF",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/adapters/simdcomp_u32/debug/shim.d",
+        "-c",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/simdcomp/native/tscb_simdcomp.c",
+        "-o",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/adapters/simdcomp_u32/debug/shim.o"
+      ]
+    },
+    {
+      "directory": "/home/fzg/PycharmProjects/TSDataCompressBenchMark",
+      "file": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/adapters/simdcomp_u32/debug/patched-source/src/simdbitpacking.c",
+      "arguments": [
+        "/usr/bin/cc",
+        "-std=c11",
+        "-fPIC",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-O0",
+        "-g",
+        "-DSIMDCOMP_DEBUG",
+        "-march=x86-64",
+        "-msse4.1",
+        "-mno-avx",
+        "-mno-avx2",
+        "-mno-avx512f",
+        "-I",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/native/include",
+        "-I",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/adapters/simdcomp_u32/debug/patched-source/include",
+        "-MD",
+        "-MF",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/adapters/simdcomp_u32/debug/simdbitpacking.d",
+        "-c",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/adapters/simdcomp_u32/debug/patched-source/src/simdbitpacking.c",
+        "-o",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/adapters/simdcomp_u32/debug/simdbitpacking.o"
+      ]
+    },
+    {
+      "directory": "/home/fzg/PycharmProjects/TSDataCompressBenchMark",
+      "file": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/adapters/simdcomp_u32/debug/patched-source/src/simdintegratedbitpacking.c",
+      "arguments": [
+        "/usr/bin/cc",
+        "-std=c11",
+        "-fPIC",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-O0",
+        "-g",
+        "-DSIMDCOMP_DEBUG",
+        "-march=x86-64",
+        "-msse4.1",
+        "-mno-avx",
+        "-mno-avx2",
+        "-mno-avx512f",
+        "-I",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/native/include",
+        "-I",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/adapters/simdcomp_u32/debug/patched-source/include",
+        "-MD",
+        "-MF",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/adapters/simdcomp_u32/debug/simdintegratedbitpacking.d",
+        "-c",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/adapters/simdcomp_u32/debug/patched-source/src/simdintegratedbitpacking.c",
+        "-o",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/adapters/simdcomp_u32/debug/simdintegratedbitpacking.o"
+      ]
+    },
+    {
+      "directory": "/home/fzg/PycharmProjects/TSDataCompressBenchMark",
+      "file": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/adapters/simdcomp_u32/debug/patched-source/src/simdfor.c",
+      "arguments": [
+        "/usr/bin/cc",
+        "-std=c11",
+        "-fPIC",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-O0",
+        "-g",
+        "-DSIMDCOMP_DEBUG",
+        "-march=x86-64",
+        "-msse4.1",
+        "-mno-avx",
+        "-mno-avx2",
+        "-mno-avx512f",
+        "-I",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/native/include",
+        "-I",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/adapters/simdcomp_u32/debug/patched-source/include",
+        "-MD",
+        "-MF",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/adapters/simdcomp_u32/debug/simdfor.d",
+        "-c",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/adapters/simdcomp_u32/debug/patched-source/src/simdfor.c",
+        "-o",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/adapters/simdcomp_u32/debug/simdfor.o"
+      ]
+    },
+    {
+      "directory": "/home/fzg/PycharmProjects/TSDataCompressBenchMark",
+      "file": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/adapters/simdcomp_u32/debug/patched-source/src/simdcomputil.c",
+      "arguments": [
+        "/usr/bin/cc",
+        "-std=c11",
+        "-fPIC",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-O0",
+        "-g",
+        "-DSIMDCOMP_DEBUG",
+        "-march=x86-64",
+        "-msse4.1",
+        "-mno-avx",
+        "-mno-avx2",
+        "-mno-avx512f",
+        "-I",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/native/include",
+        "-I",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/adapters/simdcomp_u32/debug/patched-source/include",
+        "-MD",
+        "-MF",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/adapters/simdcomp_u32/debug/simdcomputil.d",
+        "-c",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/adapters/simdcomp_u32/debug/patched-source/src/simdcomputil.c",
+        "-o",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/adapters/simdcomp_u32/debug/simdcomputil.o"
+      ]
+    },
+    {
+      "directory": "/home/fzg/PycharmProjects/TSDataCompressBenchMark",
+      "file": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/adapters/simdcomp_u32/debug/patched-source/src/simdpackedselect.c",
+      "arguments": [
+        "/usr/bin/cc",
+        "-std=c11",
+        "-fPIC",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-O0",
+        "-g",
+        "-DSIMDCOMP_DEBUG",
+        "-march=x86-64",
+        "-msse4.1",
+        "-mno-avx",
+        "-mno-avx2",
+        "-mno-avx512f",
+        "-I",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/native/include",
+        "-I",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/adapters/simdcomp_u32/debug/patched-source/include",
+        "-MD",
+        "-MF",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/adapters/simdcomp_u32/debug/simdpackedselect.d",
+        "-c",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/adapters/simdcomp_u32/debug/patched-source/src/simdpackedselect.c",
+        "-o",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/adapters/simdcomp_u32/debug/simdpackedselect.o"
+      ]
+    },
+    {
+      "directory": "/home/fzg/PycharmProjects/TSDataCompressBenchMark",
+      "file": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/adapters/simdcomp_u32/debug/patched-source/src/simdpackedsearch.c",
+      "arguments": [
+        "/usr/bin/cc",
+        "-std=c11",
+        "-fPIC",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-O0",
+        "-g",
+        "-DSIMDCOMP_DEBUG",
+        "-march=x86-64",
+        "-msse4.1",
+        "-mno-avx",
+        "-mno-avx2",
+        "-mno-avx512f",
+        "-I",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/native/include",
+        "-I",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/adapters/simdcomp_u32/debug/patched-source/include",
+        "-MD",
+        "-MF",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/adapters/simdcomp_u32/debug/simdpackedsearch.d",
+        "-c",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/adapters/simdcomp_u32/debug/patched-source/src/simdpackedsearch.c",
+        "-o",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/adapters/simdcomp_u32/debug/simdpackedsearch.o"
+      ]
+    },
+    {
+      "directory": "/home/fzg/PycharmProjects/TSDataCompressBenchMark",
+      "file": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/adapters/simdcomp_u32/debug/patched-source/src/avxbitpacking.c",
+      "arguments": [
+        "/usr/bin/cc",
+        "-std=c11",
+        "-fPIC",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-O0",
+        "-g",
+        "-DSIMDCOMP_DEBUG",
+        "-march=x86-64",
+        "-mavx2",
+        "-mno-avx512f",
+        "-I",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/native/include",
+        "-I",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/adapters/simdcomp_u32/debug/patched-source/include",
+        "-MD",
+        "-MF",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/adapters/simdcomp_u32/debug/avxbitpacking.d",
+        "-c",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/adapters/simdcomp_u32/debug/patched-source/src/avxbitpacking.c",
+        "-o",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/adapters/simdcomp_u32/debug/avxbitpacking.o"
+      ]
+    },
+    {
+      "directory": "/home/fzg/PycharmProjects/TSDataCompressBenchMark",
+      "file": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/simdcomp/native/avx2_bridge.c",
+      "arguments": [
+        "/usr/bin/cc",
+        "-std=c11",
+        "-fPIC",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-O0",
+        "-g",
+        "-DSIMDCOMP_DEBUG",
+        "-march=x86-64",
+        "-mavx2",
+        "-mno-avx512f",
+        "-I",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/native/include",
+        "-I",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/adapters/simdcomp_u32/debug/patched-source/include",
+        "-MD",
+        "-MF",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/adapters/simdcomp_u32/debug/avx2_bridge.d",
+        "-c",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/simdcomp/native/avx2_bridge.c",
+        "-o",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/adapters/simdcomp_u32/debug/avx2_bridge.o"
+      ]
+    }
+  ],
+  "dependency_file_count": 9,
+  "dependency_files": [
+    {
+      "path": "build/adapters/simdcomp_u32/debug/avx2_bridge.d",
+      "sha256": "03235d0b20f599b8936932863e04e9c00f180e70e1b875416928a19a19f2ba07",
+      "size_bytes": 8575
+    },
+    {
+      "path": "build/adapters/simdcomp_u32/debug/avxbitpacking.d",
+      "sha256": "dc59046fc291e4817b765ab84956044e6cac714cea126288ac5602b8c3612875",
+      "size_bytes": 7023
+    },
+    {
+      "path": "build/adapters/simdcomp_u32/debug/shim.d",
+      "sha256": "5157f6d182aad754d362361a3adf420b4a225e853f00ce0c631c3e37a96b1746",
+      "size_bytes": 9026
+    },
+    {
+      "path": "build/adapters/simdcomp_u32/debug/simdbitpacking.d",
+      "sha256": "7ea404a8a26ebc7956e5ad9029a5acf3692425589fa6df8b73368819a60b6b7d",
+      "size_bytes": 7026
+    },
+    {
+      "path": "build/adapters/simdcomp_u32/debug/simdcomputil.d",
+      "sha256": "16ce4ebf2e99d6c767f22d5e185ddc942c9d471a07e9a139638f12d36aa965fe",
+      "size_bytes": 6920
+    },
+    {
+      "path": "build/adapters/simdcomp_u32/debug/simdfor.d",
+      "sha256": "43e5aed2a67885fc217a843932e454a9aad94dd4367ce534caba489e3cc0b513",
+      "size_bytes": 7132
+    },
+    {
+      "path": "build/adapters/simdcomp_u32/debug/simdintegratedbitpacking.d",
+      "sha256": "1b36f8e6dc4a9a7b327d2f00add369f5a5b036869a194ae59d073ddb11dee4c7",
+      "size_bytes": 7183
+    },
+    {
+      "path": "build/adapters/simdcomp_u32/debug/simdpackedsearch.d",
+      "sha256": "a0ef3312abcccb697974a7587b07444ba5b19d482a78017baae0b932f4a94031",
+      "size_bytes": 7167
+    },
+    {
+      "path": "build/adapters/simdcomp_u32/debug/simdpackedselect.d",
+      "sha256": "0b39c05c63dcc4f4d146b3942076e741615fd58859553f49ebb1540cac5b0c12",
+      "size_bytes": 7167
+    }
+  ],
+  "depfile_union_count": 158,
+  "declared_source_closure_count": 158,
+  "depfile_union_outside_saved_source_closure": [],
+  "saved_source_closure_outside_depfile_union": [],
+  "tool_selection_evidence": {
+    "scope": "COMPILER_VERSION_AND_DRIVER_NAME_ONLY_NOT_TOOL_EXECUTABLE_HASH_CLOSURE",
+    "selected_files": [
+      {
+        "path": "/usr/bin/x86_64-linux-gnu-gcc-11",
+        "sha256": "821af3c74506283c179ca413bb33e6b528805a4dd8a5c09df125e5ad560a9e89",
+        "size_bytes": 928584
+      }
+    ],
+    "recorded_compiler_version": "cc (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0"
+  },
+  "link_recipes": [
+    {
+      "record_kind": "SAVED_DRIVER_COMMAND_WITH_OBSERVED_RETURN_CODE_NOT_CHILD_EXEC_TRACE",
+      "directory": "/home/fzg/PycharmProjects/TSDataCompressBenchMark",
+      "arguments": [
+        "/usr/bin/cc",
+        "-O0",
+        "-g",
+        "-DSIMDCOMP_DEBUG",
+        "-shared",
+        "-Wl,-z,defs",
+        "-Wl,-Bsymbolic-functions",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/adapters/simdcomp_u32/debug/shim.o",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/adapters/simdcomp_u32/debug/simdbitpacking.o",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/adapters/simdcomp_u32/debug/simdintegratedbitpacking.o",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/adapters/simdcomp_u32/debug/simdfor.o",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/adapters/simdcomp_u32/debug/simdcomputil.o",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/adapters/simdcomp_u32/debug/simdpackedselect.o",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/adapters/simdcomp_u32/debug/simdpackedsearch.o",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/adapters/simdcomp_u32/debug/avxbitpacking.o",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/adapters/simdcomp_u32/debug/avx2_bridge.o",
+        "-o",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/adapters/simdcomp_u32/debug/libtscb_simdcomp_u32.so"
+      ]
+    }
+  ],
+  "explicit_link_inputs_current_static_inventory": [
+    {
+      "path": "build/adapters/simdcomp_u32/debug/avx2_bridge.o",
+      "sha256": "b3b9088ee3afbfba5db1687f1db3b0653f058ff733c122b19c01bf76ca1ffb28",
+      "size_bytes": 9400,
+      "pinned_in_saved_record": true
+    },
+    {
+      "path": "build/adapters/simdcomp_u32/debug/avxbitpacking.o",
+      "sha256": "5af71f373d867de8659b7824506465dd6bfb7bfe7eb68c21f25353cf7dfd2e4a",
+      "size_bytes": 1772640,
+      "pinned_in_saved_record": true
+    },
+    {
+      "path": "build/adapters/simdcomp_u32/debug/libtscb_simdcomp_u32.so",
+      "sha256": "ffcf777cb3edc29cb2ae9193c82294a8eae5bdc8f02434f6e7dd9bf9f8a815d1",
+      "size_bytes": 11912528,
+      "pinned_in_saved_record": false
+    },
+    {
+      "path": "build/adapters/simdcomp_u32/debug/shim.o",
+      "sha256": "0662905f962771c7c6d9b8426a6bc454486807c08de204a83e0a913b02c6702c",
+      "size_bytes": 56480,
+      "pinned_in_saved_record": true
+    },
+    {
+      "path": "build/adapters/simdcomp_u32/debug/simdbitpacking.o",
+      "sha256": "19c7e75e7edd0a4ad52a3bd03b97fd1c50d94c29c8685ac0c9a6a935fb5882f4",
+      "size_bytes": 1720880,
+      "pinned_in_saved_record": true
+    },
+    {
+      "path": "build/adapters/simdcomp_u32/debug/simdcomputil.o",
+      "sha256": "67a39d85b825275fb909226a081ebe49cbfbad9a66cfa82738209890e6090747",
+      "size_bytes": 22488,
+      "pinned_in_saved_record": true
+    },
+    {
+      "path": "build/adapters/simdcomp_u32/debug/simdfor.o",
+      "sha256": "7a56a0c8b33e8c336b65c88d5e1c73c24fb2787b7bcbdaf37159ddbdb51dc39d",
+      "size_bytes": 1473352,
+      "pinned_in_saved_record": true
+    },
+    {
+      "path": "build/adapters/simdcomp_u32/debug/simdintegratedbitpacking.o",
+      "sha256": "cf4360a2ed6fde3d8b537e1a6218eca9e515bc320fd156aef55a63a1abde0b91",
+      "size_bytes": 2830920,
+      "pinned_in_saved_record": true
+    },
+    {
+      "path": "build/adapters/simdcomp_u32/debug/simdpackedsearch.o",
+      "sha256": "e5fb692d03f680178c452fb2dd1a0f719fa581e7ab19cf7bf79578660b19d2ea",
+      "size_bytes": 4708160,
+      "pinned_in_saved_record": true
+    },
+    {
+      "path": "build/adapters/simdcomp_u32/debug/simdpackedselect.o",
+      "sha256": "e8d154818a29dfe290bcfe2ef8585aab5f66cf67c661f2bffafa6f5be2c6d82a",
+      "size_bytes": 2298528,
+      "pinned_in_saved_record": true
+    }
+  ],
+  "current_object_count": 9,
+  "current_object_bytes": 14892848,
+  "metadata_files": [
+    {
+      "path": "build/adapters/simdcomp_u32/debug/compile-command.json",
+      "sha256": "5dc61181d96ffe0acd7c7ac5d348312f8f80cf34d83cdfb086b4ea9b05c3f456",
+      "size_bytes": 8509
+    }
+  ],
+  "crt_static_runtime_linker_script_observation": "NO_ACTUAL_LINKTRACE_IN_OLD_RECORD_NOT_RETROACTIVELY_RECOVERABLE",
+  "actual_exec_trace_in_old_record": false,
+  "full_N1_granted": false,
+  "fresh_rebuild_needed_for": [
+    "SUCCESSFUL_CHILD_EXECVE_AND_EXECUTABLE_HASH",
+    "ALL_SUCCESSFUL_BUILD_INPUT_OPENS",
+    "LINKER_SCRIPT_CRT_ARCHIVE_MEMBER_INPUTS",
+    "PRE_POST_TOOL_AND_INPUT_IMMUTABILITY",
+    "NATIVE_TEST_EXECUTABLE_BUILD_CLOSURE_IF_QUALIFIED"
+  ],
+  "can_verify_current_without_rebuild": [
+    "DECLARED_FILE_SHA256",
+    "SAVED_DRIVER_RECIPE",
+    "COMPILER_DEPFILE_TU_HEADER_LIST",
+    "EXPLICIT_OBJECT_AND_ARCHIVE_CURRENT_BYTES",
+    "ELF_METADATA_BY_READ_ONLY_INSPECTION"
+  ]
+}

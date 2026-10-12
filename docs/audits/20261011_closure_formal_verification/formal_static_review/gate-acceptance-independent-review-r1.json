@@ -1,0 +1,1092 @@
+{
+  "check_counts": {
+    "PASS": 20
+  },
+  "checks": [
+    {
+      "check": "complete_standard_authority_identity",
+      "details": {
+        "authority": {
+          "bytes": 215102,
+          "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/Compression_Algorithm_CPP_Porting_Standard_v3.0.md",
+          "sha256": "5d14f905261c5f6c4935a0015c0b93768f24615e2e87b7df187358b7767e95a2"
+        },
+        "interpretation": "Complete current v3.0 document is the authority. This review checks gate acceptance logic, not core numerical compliance or new codec execution.",
+        "lines": 6100
+      },
+      "status": "PASS"
+    },
+    {
+      "check": "active_scope_independent_denominator",
+      "details": {
+        "active_keys": [
+          "abba",
+          "alp",
+          "alp-rd",
+          "brotli-stream",
+          "chimp",
+          "chimp128",
+          "deepzip",
+          "deflate-zlib",
+          "dzip",
+          "elf",
+          "elf-plus",
+          "elf-star",
+          "fabba",
+          "fse",
+          "huff0",
+          "leats-lossless-i64",
+          "lz4-frame",
+          "lzss-dipperstein-c",
+          "lzss-raw",
+          "neats-lossless-i64",
+          "self-star",
+          "serf-qt",
+          "serf-xor",
+          "simdcomp-u32",
+          "snappy-raw",
+          "sprintz-delta",
+          "sprintz-delta-u8",
+          "sprintz-fire",
+          "sprintz-fire-huff0",
+          "sprintz-fire-u8",
+          "xz-stream",
+          "zfp-accuracy-1d",
+          "zstd-frame"
+        ],
+        "excluded_keys": [
+          "bzip2-stream",
+          "lzsse2-raw",
+          "lzsse8-raw",
+          "oracle-direct",
+          "oracle-lossless-adapter",
+          "oracle-lossy-adapter",
+          "oracle-native-nd-only"
+        ],
+        "plan": {
+          "bytes": 5320059,
+          "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/active33-r2/plan.json",
+          "sha256": "61dfc908a1d31f98880bca72d46bb3d573a42c6212b35ce1516948330cc606ae"
+        },
+        "scope": {
+          "bytes": 104837,
+          "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/registry/algorithm_scope.json",
+          "sha256": "c40bb555277662c5489564b67c8993f26624565e41aabedee19ea1f1b8b76f97"
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "check": "unique_complete_gate_denominator",
+      "details": {
+        "arithmetic": "11*8 + 22*6 = 220",
+        "duplicate_rows": 0,
+        "extra": [],
+        "missing": [],
+        "native_entries": 22,
+        "rewrite_entries": 11
+      },
+      "status": "PASS"
+    },
+    {
+      "check": "per_entry_gate_ownership_route_and_nonempty_evidence",
+      "details": "Every original applicable row has an owner, route, criterion, findings and bound input references.",
+      "status": "PASS"
+    },
+    {
+      "check": "status_counts_and_only_three_G0_grants",
+      "details": {
+        "exact_pass_rows": [
+          [
+            "abba",
+            "G0"
+          ],
+          [
+            "deepzip",
+            "G0"
+          ],
+          [
+            "fabba",
+            "G0"
+          ]
+        ],
+        "status_counts": {
+          "FAIL": 32,
+          "PASS": 3,
+          "UNKNOWN": 185
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "check": "G0_real_identity_mapping_abba",
+      "details": {
+        "actual": {
+          "algorithm_id": "abba",
+          "implementation_id": "abba-canonical-cpp",
+          "object_level": "P2_PIPELINE"
+        },
+        "codec_key": "abba",
+        "current_G0_evidence": "ABBA is a lossy multi-stage pipeline: adaptive piecewise-linear compression, digitization, length quantization and inverse reconstruction. The existing CKmeans C++ kernel is a dependency of the pipeline, not the complete codec. The default profile fixes scl=0, norm=2 and the CKmeans linear method; finite-scl KMeans, scl-infinity CKmeans and incremental clustering are exposed as source-compatible C++ alternate paths.",
+        "expected": {
+          "algorithm_id": "abba",
+          "implementation_id": "abba-canonical-cpp",
+          "object_level": "P2_PIPELINE"
+        },
+        "manifest": {
+          "bytes": 9877,
+          "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/vendor/abba/PORT_MANIFEST.yaml",
+          "sha256": "2dfb6f3e9b081ef2a27afb515492c54b772d84edca96b91afed235edcbd8ed89"
+        },
+        "source": {
+          "commit": "614d56841cd2f1c2925cea4d2c2648a7b2ac791d",
+          "repository": "https://github.com/nla-group/ABBA"
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "check": "G0_real_identity_mapping_fabba",
+      "details": {
+        "actual": {
+          "algorithm_id": "fabba",
+          "implementation_id": "fabba-canonical-cpp",
+          "object_level": "P2_PIPELINE"
+        },
+        "codec_key": "fabba",
+        "current_G0_evidence": "fABBA is the complete compression/digitization/inverse pipeline. ABBA_fABBA_compression_stage is a P0 duplicate/stage reference and does not receive a second AlgorithmID.",
+        "expected": {
+          "algorithm_id": "fabba",
+          "implementation_id": "fabba-canonical-cpp",
+          "object_level": "P2_PIPELINE"
+        },
+        "manifest": {
+          "bytes": 7581,
+          "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/vendor/fabba/PORT_MANIFEST.yaml",
+          "sha256": "f6275085adde558dd6cc11c85021d38d0973bc4005b65a74921ba5d23ce2040e"
+        },
+        "source": {
+          "commit": "4066a5fc778f50f4bee1c41d8f3ab3ee4a3ff6ad",
+          "repository": "https://github.com/nla-group/fABBA"
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "check": "G0_real_identity_mapping_deepzip",
+      "details": {
+        "actual": {
+          "algorithm_id": "deepzip",
+          "implementation_id": "deepzip-cpp",
+          "object_level": "P2_PIPELINE"
+        },
+        "codec_key": "deepzip",
+        "current_G0_evidence": "Recommendation rank 5 is deepzip. DeepZip_RNN_Predictor is a P0 stage duplicate assigned to the deepzip canonical P2 pipeline.",
+        "expected": {
+          "algorithm_id": "deepzip",
+          "implementation_id": "deepzip-cpp",
+          "object_level": "P2_PIPELINE"
+        },
+        "manifest": {
+          "bytes": 4750,
+          "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/vendor/deepzip/PORT_MANIFEST.yaml",
+          "sha256": "c0a765611e7a525976b62595fb10141d210ca089d3a365b99b084bcbd8581686"
+        },
+        "source": {
+          "commit": "8c35502397a1488c89fa282ed033cc9d5fd4b4dc",
+          "repository": "https://github.com/mohit1997/DeepZip"
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "check": "G0_actual_reused_core_and_duplicate_stage_decisions",
+      "details": "ABBA explicitly retains original CKmeans dependency; fABBA compression stage and DeepZip_RNN_Predictor are duplicate P0 stages, not additional codecs. Current G0 rereview does not inherit historical G1-G6/FULL_PARITY.",
+      "status": "PASS"
+    },
+    {
+      "check": "32_FAIL_acceptance_conditions_not_invented_codec_execution",
+      "details": {
+        "fail_rows": [
+          {
+            "codec_key": "abba",
+            "failure_kind": "ACCEPTANCE_REQUIRED_FUNCTIONAL_SUBITEMS_NOT_TESTED",
+            "gate": "G3"
+          },
+          {
+            "codec_key": "abba",
+            "failure_kind": "ACCEPTANCE_REQUIRED_CAPABILITY_NOT_TESTED_OR_CLOSURE_MISSING",
+            "gate": "G6"
+          },
+          {
+            "codec_key": "abba",
+            "failure_kind": "ACCEPTANCE_REQUIRED_CAPABILITY_NOT_TESTED_OR_CLOSURE_MISSING",
+            "gate": "CAP-GATE"
+          },
+          {
+            "codec_key": "chimp",
+            "failure_kind": "ACCEPTANCE_REQUIRED_CAPABILITY_NOT_TESTED_OR_CLOSURE_MISSING",
+            "gate": "G6"
+          },
+          {
+            "codec_key": "chimp",
+            "failure_kind": "ACCEPTANCE_REQUIRED_CAPABILITY_NOT_TESTED_OR_CLOSURE_MISSING",
+            "gate": "CAP-GATE"
+          },
+          {
+            "codec_key": "chimp128",
+            "failure_kind": "ACCEPTANCE_REQUIRED_CAPABILITY_NOT_TESTED_OR_CLOSURE_MISSING",
+            "gate": "G6"
+          },
+          {
+            "codec_key": "chimp128",
+            "failure_kind": "ACCEPTANCE_REQUIRED_CAPABILITY_NOT_TESTED_OR_CLOSURE_MISSING",
+            "gate": "CAP-GATE"
+          },
+          {
+            "codec_key": "deepzip",
+            "failure_kind": "ACCEPTANCE_REQUIRED_FUNCTIONAL_SUBITEMS_NOT_TESTED",
+            "gate": "G3"
+          },
+          {
+            "codec_key": "deepzip",
+            "failure_kind": "ACCEPTANCE_REQUIRED_API_SUBITEMS_NOT_TESTED",
+            "gate": "G4"
+          },
+          {
+            "codec_key": "deepzip",
+            "failure_kind": "ACCEPTANCE_REQUIRED_OPTIMIZED_SUBITEMS_NOT_TESTED",
+            "gate": "G5"
+          },
+          {
+            "codec_key": "deepzip",
+            "failure_kind": "ACCEPTANCE_REQUIRED_CAPABILITY_NOT_TESTED_OR_CLOSURE_MISSING",
+            "gate": "G6"
+          },
+          {
+            "codec_key": "deepzip",
+            "failure_kind": "ACCEPTANCE_REQUIRED_CAPABILITY_NOT_TESTED_OR_CLOSURE_MISSING",
+            "gate": "CAP-GATE"
+          },
+          {
+            "codec_key": "dzip",
+            "failure_kind": "ACCEPTANCE_CLASSIFICATION_CONTRACT_UNMET",
+            "gate": "G2"
+          },
+          {
+            "codec_key": "dzip",
+            "failure_kind": "ACCEPTANCE_REQUIRED_FUNCTIONAL_SUBITEMS_NOT_TESTED",
+            "gate": "G3"
+          },
+          {
+            "codec_key": "dzip",
+            "failure_kind": "ACCEPTANCE_REQUIRED_API_SUBITEMS_NOT_TESTED",
+            "gate": "G4"
+          },
+          {
+            "codec_key": "dzip",
+            "failure_kind": "ACCEPTANCE_REQUIRED_OPTIMIZED_SUBITEMS_NOT_TESTED",
+            "gate": "G5"
+          },
+          {
+            "codec_key": "dzip",
+            "failure_kind": "ACCEPTANCE_REQUIRED_CAPABILITY_NOT_TESTED_OR_CLOSURE_MISSING",
+            "gate": "G6"
+          },
+          {
+            "codec_key": "dzip",
+            "failure_kind": "ACCEPTANCE_REQUIRED_CAPABILITY_NOT_TESTED_OR_CLOSURE_MISSING",
+            "gate": "CAP-GATE"
+          },
+          {
+            "codec_key": "elf",
+            "failure_kind": "ACCEPTANCE_REQUIRED_CAPABILITY_NOT_TESTED_OR_CLOSURE_MISSING",
+            "gate": "G6"
+          },
+          {
+            "codec_key": "elf",
+            "failure_kind": "ACCEPTANCE_REQUIRED_CAPABILITY_NOT_TESTED_OR_CLOSURE_MISSING",
+            "gate": "CAP-GATE"
+          },
+          {
+            "codec_key": "elf-plus",
+            "failure_kind": "ACCEPTANCE_REQUIRED_CAPABILITY_NOT_TESTED_OR_CLOSURE_MISSING",
+            "gate": "G6"
+          },
+          {
+            "codec_key": "elf-plus",
+            "failure_kind": "ACCEPTANCE_REQUIRED_CAPABILITY_NOT_TESTED_OR_CLOSURE_MISSING",
+            "gate": "CAP-GATE"
+          },
+          {
+            "codec_key": "elf-star",
+            "failure_kind": "ACCEPTANCE_REQUIRED_CAPABILITY_NOT_TESTED_OR_CLOSURE_MISSING",
+            "gate": "G6"
+          },
+          {
+            "codec_key": "elf-star",
+            "failure_kind": "ACCEPTANCE_REQUIRED_CAPABILITY_NOT_TESTED_OR_CLOSURE_MISSING",
+            "gate": "CAP-GATE"
+          },
+          {
+            "codec_key": "fabba",
+            "failure_kind": "ACCEPTANCE_REQUIRED_FUNCTIONAL_SUBITEMS_NOT_TESTED",
+            "gate": "G3"
+          },
+          {
+            "codec_key": "fabba",
+            "failure_kind": "ACCEPTANCE_REQUIRED_OPTIMIZED_SUBITEMS_NOT_TESTED",
+            "gate": "G5"
+          },
+          {
+            "codec_key": "fabba",
+            "failure_kind": "ACCEPTANCE_REQUIRED_CAPABILITY_NOT_TESTED_OR_CLOSURE_MISSING",
+            "gate": "G6"
+          },
+          {
+            "codec_key": "fabba",
+            "failure_kind": "ACCEPTANCE_REQUIRED_CAPABILITY_NOT_TESTED_OR_CLOSURE_MISSING",
+            "gate": "CAP-GATE"
+          },
+          {
+            "codec_key": "lzss-raw",
+            "failure_kind": "ACCEPTANCE_REQUIRED_CAPABILITY_NOT_TESTED_OR_CLOSURE_MISSING",
+            "gate": "G6"
+          },
+          {
+            "codec_key": "lzss-raw",
+            "failure_kind": "ACCEPTANCE_REQUIRED_CAPABILITY_NOT_TESTED_OR_CLOSURE_MISSING",
+            "gate": "CAP-GATE"
+          },
+          {
+            "codec_key": "self-star",
+            "failure_kind": "ACCEPTANCE_REQUIRED_CAPABILITY_NOT_TESTED_OR_CLOSURE_MISSING",
+            "gate": "G6"
+          },
+          {
+            "codec_key": "self-star",
+            "failure_kind": "ACCEPTANCE_REQUIRED_CAPABILITY_NOT_TESTED_OR_CLOSURE_MISSING",
+            "gate": "CAP-GATE"
+          }
+        ],
+        "semantics": "FAIL is denial of full gate acceptance. Only DeepZip has a measured scoped source-comparison difference, referred to by G3/G6/CAP from one original diagnostic."
+      },
+      "status": "PASS"
+    },
+    {
+      "check": "original_matrix_full_ID_classification_and_history_abba",
+      "details": {
+        "capabilities": [
+          {
+            "capability_id": "codec.one_shot_profile_scl0_norm2",
+            "classification": "REQUIRED_PARITY",
+            "historical_validation": "PASS"
+          },
+          {
+            "capability_id": "codec.alternate_scl_norm_and_incremental",
+            "classification": "REQUIRED_PARITY",
+            "historical_validation": "PASS"
+          },
+          {
+            "capability_id": "streaming.continuous",
+            "classification": "NOT_APPLICABLE",
+            "historical_validation": "PASS"
+          },
+          {
+            "capability_id": "optimized.simd_or_internal_threads",
+            "classification": "NOT_APPLICABLE",
+            "historical_validation": "PASS"
+          }
+        ],
+        "capability_count": 4,
+        "class_counts": {
+          "NOT_APPLICABLE": 2,
+          "REQUIRED_PARITY": 2
+        },
+        "codec_key": "abba",
+        "matrix": {
+          "bytes": 4008,
+          "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/vendor/abba/NATIVE_CAPABILITY_MATRIX.yaml",
+          "sha256": "e7a9c67eafdc2cbec7d857ed0da59478e188dd41acc7d04e1d6a9a0fc0715e57"
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "check": "original_matrix_full_ID_classification_and_history_fabba",
+      "details": {
+        "capabilities": [
+          {
+            "capability_id": "codec.one_shot_profile_norm2_scl1",
+            "classification": "REQUIRED_PARITY",
+            "historical_validation": "PASS"
+          },
+          {
+            "capability_id": "threading.partitioned_parallel_compress",
+            "classification": "REQUIRED_PARITY",
+            "historical_validation": "PASS"
+          },
+          {
+            "capability_id": "codec.image_helper",
+            "classification": "NOT_APPLICABLE",
+            "historical_validation": "PASS"
+          },
+          {
+            "capability_id": "optimized.simd",
+            "classification": "NOT_APPLICABLE",
+            "historical_validation": "PASS"
+          }
+        ],
+        "capability_count": 4,
+        "class_counts": {
+          "NOT_APPLICABLE": 2,
+          "REQUIRED_PARITY": 2
+        },
+        "codec_key": "fabba",
+        "matrix": {
+          "bytes": 4002,
+          "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/vendor/fabba/NATIVE_CAPABILITY_MATRIX.yaml",
+          "sha256": "12932417483582c70834945112fb23c4495bd8daf5ddfbfb40f4c6d5b69869c4"
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "check": "original_matrix_full_ID_classification_and_history_deepzip",
+      "details": {
+        "capabilities": [
+          {
+            "capability_id": "pipeline.lossless_encode_decode",
+            "classification": "REQUIRED_PARITY",
+            "historical_validation": "PASS"
+          },
+          {
+            "capability_id": "input.explicit_byte_dictionary",
+            "classification": "REQUIRED_PARITY",
+            "historical_validation": "PASS"
+          },
+          {
+            "capability_id": "model.load_checkpoint_weights",
+            "classification": "REQUIRED_PARITY",
+            "historical_validation": "PASS"
+          },
+          {
+            "capability_id": "entropy.arithmetic_32bit",
+            "classification": "REQUIRED_PARITY",
+            "historical_validation": "PASS"
+          },
+          {
+            "capability_id": "entropy.numpy_float64_cumsum_cast",
+            "classification": "REQUIRED_PARITY",
+            "historical_validation": "PASS"
+          },
+          {
+            "capability_id": "partition.independent_lanes_and_tail",
+            "classification": "REQUIRED_PARITY",
+            "historical_validation": "PASS"
+          },
+          {
+            "capability_id": "execution.gpu_prediction",
+            "classification": "REQUIRED_PARITY",
+            "historical_validation": "PASS"
+          },
+          {
+            "capability_id": "predictor.biGRU",
+            "classification": "REQUIRED_PARITY",
+            "historical_validation": "PASS"
+          },
+          {
+            "capability_id": "predictor.biGRU_big",
+            "classification": "REQUIRED_PARITY",
+            "historical_validation": "PASS"
+          },
+          {
+            "capability_id": "predictor.biGRU_16bit",
+            "classification": "REQUIRED_PARITY",
+            "historical_validation": "PASS"
+          },
+          {
+            "capability_id": "predictor.biLSTM",
+            "classification": "REQUIRED_PARITY",
+            "historical_validation": "PASS"
+          },
+          {
+            "capability_id": "predictor.biLSTM_16bit",
+            "classification": "REQUIRED_PARITY",
+            "historical_validation": "PASS"
+          },
+          {
+            "capability_id": "predictor.LSTM_multi",
+            "classification": "REQUIRED_PARITY",
+            "historical_validation": "PASS"
+          },
+          {
+            "capability_id": "predictor.LSTM_multi_big",
+            "classification": "REQUIRED_PARITY",
+            "historical_validation": "PASS"
+          },
+          {
+            "capability_id": "predictor.LSTM_multi_bn",
+            "classification": "REQUIRED_PARITY",
+            "historical_validation": "PASS"
+          },
+          {
+            "capability_id": "predictor.LSTM_multi_16bit",
+            "classification": "REQUIRED_PARITY",
+            "historical_validation": "PASS"
+          },
+          {
+            "capability_id": "predictor.LSTM_multi_selu",
+            "classification": "NOT_APPLICABLE",
+            "historical_validation": "PASS"
+          },
+          {
+            "capability_id": "predictor.LSTM_multi_selu_16bit",
+            "classification": "REQUIRED_PARITY",
+            "historical_validation": "PASS"
+          },
+          {
+            "capability_id": "predictor.GRU_multi",
+            "classification": "REQUIRED_PARITY",
+            "historical_validation": "PASS"
+          },
+          {
+            "capability_id": "predictor.GRU_multi_big",
+            "classification": "REQUIRED_PARITY",
+            "historical_validation": "PASS"
+          },
+          {
+            "capability_id": "predictor.GRU_multi_16bit",
+            "classification": "REQUIRED_PARITY",
+            "historical_validation": "PASS"
+          },
+          {
+            "capability_id": "predictor.FC_4layer_16bit",
+            "classification": "REQUIRED_PARITY",
+            "historical_validation": "PASS"
+          },
+          {
+            "capability_id": "predictor.FC_4layer",
+            "classification": "REQUIRED_PARITY",
+            "historical_validation": "PASS"
+          },
+          {
+            "capability_id": "predictor.FC_4layer_big",
+            "classification": "REQUIRED_PARITY",
+            "historical_validation": "PASS"
+          },
+          {
+            "capability_id": "predictor.FC_16bit",
+            "classification": "NOT_APPLICABLE",
+            "historical_validation": "PASS"
+          },
+          {
+            "capability_id": "predictor.FC",
+            "classification": "REQUIRED_PARITY",
+            "historical_validation": "PASS"
+          },
+          {
+            "capability_id": "training.checkpoint_authoring",
+            "classification": "NOT_APPLICABLE",
+            "historical_validation": "PASS"
+          }
+        ],
+        "capability_count": 27,
+        "class_counts": {
+          "NOT_APPLICABLE": 3,
+          "REQUIRED_PARITY": 24
+        },
+        "codec_key": "deepzip",
+        "matrix": {
+          "bytes": 34564,
+          "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/vendor/deepzip/NATIVE_CAPABILITY_MATRIX.yaml",
+          "sha256": "4c3585fe212c20c0c7604b5fd1a254de3750de9a5b07fe7ec245ece7fbdaaf32"
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "check": "original_matrix_full_ID_classification_and_history_dzip",
+      "details": {
+        "capabilities": [
+          {
+            "capability_id": "input.preprocessing",
+            "classification": "REQUIRED_PARITY",
+            "historical_validation": "PASS"
+          },
+          {
+            "capability_id": "codec.bootstrap_only",
+            "classification": "REQUIRED_PARITY",
+            "historical_validation": "PASS"
+          },
+          {
+            "capability_id": "codec.combined",
+            "classification": "REQUIRED_PARITY",
+            "historical_validation": "PASS"
+          },
+          {
+            "capability_id": "model.architecture_regimes",
+            "classification": "REQUIRED_PARITY",
+            "historical_validation": "PASS"
+          },
+          {
+            "capability_id": "model.source_weight_import",
+            "classification": "REQUIRED_PARITY",
+            "historical_validation": "PASS"
+          },
+          {
+            "capability_id": "state.online_adam",
+            "classification": "REQUIRED_PARITY",
+            "historical_validation": "PASS"
+          },
+          {
+            "capability_id": "state.full_batches_and_tail",
+            "classification": "REQUIRED_PARITY",
+            "historical_validation": "PASS"
+          },
+          {
+            "capability_id": "entropy.quantized_cumulative",
+            "classification": "REQUIRED_PARITY",
+            "historical_validation": "PASS"
+          },
+          {
+            "capability_id": "entropy.raw_arithmetic",
+            "classification": "REQUIRED_PARITY",
+            "historical_validation": "PASS"
+          },
+          {
+            "capability_id": "model.bootstrap_training",
+            "classification": "REQUIRED_PARITY",
+            "historical_validation": "PASS"
+          },
+          {
+            "capability_id": "storage.bsc_model",
+            "classification": "REQUIRED_PARITY",
+            "historical_validation": "PASS"
+          },
+          {
+            "capability_id": "storage.full_state_accounting",
+            "classification": "REQUIRED_PARITY",
+            "historical_validation": "PASS"
+          },
+          {
+            "capability_id": "api.lifecycle_capacity_limits",
+            "classification": "REQUIRED_PARITY",
+            "historical_validation": "PASS"
+          },
+          {
+            "capability_id": "reference.gpu_bpc_estimator",
+            "classification": "REFERENCE_ONLY",
+            "historical_validation": null
+          },
+          {
+            "capability_id": "model.alphabet9",
+            "classification": "NOT_APPLICABLE",
+            "historical_validation": null
+          },
+          {
+            "capability_id": "accelerator.bootstrap_cuda",
+            "classification": "REQUIRED_PARITY",
+            "historical_validation": "PASS"
+          }
+        ],
+        "capability_count": 16,
+        "class_counts": {
+          "NOT_APPLICABLE": 1,
+          "REFERENCE_ONLY": 1,
+          "REQUIRED_PARITY": 14
+        },
+        "codec_key": "dzip",
+        "matrix": {
+          "bytes": 21232,
+          "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/vendor/dzip/NATIVE_CAPABILITY_MATRIX.yaml",
+          "sha256": "8c9f289951ce3601ee9221de70424b50348d337db8f5f94c633ed9ae1ffa078f"
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "check": "all42_required_obligations_and_51_original_capabilities_retained",
+      "details": {
+        "capability_total": 51,
+        "invalid_class_policy": "REFERENCE_ONLY is retained as historical evidence, not accepted as a legal four-state classification; DZip G2 remains FAIL.",
+        "invalid_historical_class": "REFERENCE_ONLY",
+        "required_total": 42
+      },
+      "status": "PASS"
+    },
+    {
+      "check": "four_layer_Bench_matrices_retained_without_full_scope_transfer",
+      "details": {
+        "interpretation": "Matrix names/finite Bench cases are not full upstream capability or N/G/CAP evidence; original 42 REQUIRED rows above remain independent.",
+        "matrix_counts": {
+          "BenchProfileMatrix": 41,
+          "PipelineCoverageMatrix": 41,
+          "SourceCapabilityMatrix": 33,
+          "StandalonePortMatrix": 33
+        },
+        "performance_claim": false
+      },
+      "status": "PASS"
+    },
+    {
+      "check": "DeepZip_real_full_probability_CDF_evidence_and_scope",
+      "details": {
+        "CDF_integers": 15,
+        "actual_CudnnRNN_GPU_nodes": [
+          {
+            "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+            "name": "bidirectional_1/CudnnRNN",
+            "op": "CudnnRNN"
+          },
+          {
+            "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+            "name": "bidirectional_1/CudnnRNN_1",
+            "op": "CudnnRNN"
+          },
+          {
+            "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+            "name": "bidirectional_2/CudnnRNN",
+            "op": "CudnnRNN"
+          },
+          {
+            "device": "/job:localhost/replica:0/task:0/device:GPU:0",
+            "name": "bidirectional_2/CudnnRNN_1",
+            "op": "CudnnRNN"
+          }
+        ],
+        "independent_prediction_CDF_mismatches": [
+          [
+            2,
+            4,
+            -1
+          ]
+        ],
+        "max_probability_abs_error": 1.4901161193847656e-08,
+        "native_total": 10000003,
+        "original_r1_failure_retained": true,
+        "original_result": {
+          "bytes": 19029,
+          "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/legacy-oracle-recovery-20261011/oracle-recovery-r1/fresh-deepzip-fixed-weight-r2/report.json",
+          "sha256": "e8965331154e75a16f798f4514178d989765c2c86e3808f97c0c52f2a7f9ac06"
+        },
+        "probabilities": 12,
+        "r2_difference_is_semantic_not_process_crash": true,
+        "source_total": 10000004,
+        "summary": {
+          "bytes": 3127,
+          "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_closure_formal_verification/learned_source_oracle_r1/summary-r2.json",
+          "sha256": "3a954283f289497a20adeff66fdca401736ba3f18d0b16d6c3d0bef3a76b39bc"
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "check": "pending_build_FORMAL_and_native_delivery_no_automatic_grants",
+      "details": "The pending build may later satisfy affected closure subitems only. N5 independent consumer delivery has no FORMAL prerequisite. No existing/future measurement signs source semantics, full CAP, or independent delivery.",
+      "status": "PASS"
+    },
+    {
+      "check": "all24_document_JSON_inputs_current_SHA_size_match",
+      "details": [
+        {
+          "actual": {
+            "bytes": 215102,
+            "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/Compression_Algorithm_CPP_Porting_Standard_v3.0.md",
+            "sha256": "5d14f905261c5f6c4935a0015c0b93768f24615e2e87b7df187358b7767e95a2"
+          },
+          "key": "standard",
+          "status": "MATCH"
+        },
+        {
+          "actual": {
+            "bytes": 205483,
+            "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_closure_formal_verification/gate_ledger/current_complete_gate_ledger.json",
+            "sha256": "3e4a31c9911429a8836c131be27e5a19dff72cd781af88c298918d7ab012e456"
+          },
+          "key": "ledger",
+          "status": "MATCH"
+        },
+        {
+          "actual": {
+            "bytes": 82778,
+            "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_porting_standard/rewrite_routes.json",
+            "sha256": "762d8c07b4d4f5d5a74b6b4d61d8188f29f206b48668312d2e5e579637c88d30"
+          },
+          "key": "routes",
+          "status": "MATCH"
+        },
+        {
+          "actual": {
+            "bytes": 93400,
+            "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_closure_formal_verification/gate_audit/capability_inventory.json",
+            "sha256": "e0241ad8e5e946125ee85bc0d3ba56411fbfefec0c4a7da38e1a3473b4ce33f1"
+          },
+          "key": "cap_inventory",
+          "status": "MATCH"
+        },
+        {
+          "actual": {
+            "bytes": 1274192,
+            "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_closure_formal_verification/source_closure/r4/report.json",
+            "sha256": "b335887ac69bfa64193cf43598dd5bb0a80d1ded0cef60567024f1af52a9856a"
+          },
+          "key": "sources_r4",
+          "status": "MATCH"
+        },
+        {
+          "actual": {
+            "bytes": 140470,
+            "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_closure_formal_verification/source_closure/supplement-r2.json",
+            "sha256": "ab4df6a8454c6c5e048c9f54076d9cd1938626fd9fcff227dee1fa01895013a2"
+          },
+          "key": "source_supplement_r2",
+          "status": "MATCH"
+        },
+        {
+          "actual": {
+            "bytes": 12358,
+            "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_closure_formal_verification/upstream_authority_r3/verification.json",
+            "sha256": "c223601fe7c5979ee33249a118f2a41aa7d81c6cd9d063e886e4a0f0dc1a77ad"
+          },
+          "key": "upstream_authority_r3",
+          "status": "MATCH"
+        },
+        {
+          "actual": {
+            "bytes": 5699,
+            "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_closure_formal_verification/oracle_recovery_network_r1/completion_supplement.json",
+            "sha256": "914e654360db7718f6a4b13f68737bec91cfce71151e8091bc642505d4768830"
+          },
+          "key": "environment_recovery",
+          "status": "MATCH"
+        },
+        {
+          "actual": {
+            "bytes": 16368,
+            "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_porting_standard/fresh_source_summary.json",
+            "sha256": "702324018d1faf6bd0a6ba8692685bf992d23e67d31cbf9377d05a0411e8f411"
+          },
+          "key": "fresh_scoped_source",
+          "status": "MATCH"
+        },
+        {
+          "actual": {
+            "bytes": 5310,
+            "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_porting_standard/completed_native_r1-summary/report.json",
+            "sha256": "5f700526b8ded2f6ded625cefcc345f831e930e740e2f536b37bfaa9542f7433"
+          },
+          "key": "current_completed_api",
+          "status": "MATCH"
+        },
+        {
+          "actual": {
+            "bytes": 814,
+            "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/active33-r2/summary.json",
+            "sha256": "7de8cc24131360a1bed51423b4b82d1b104f96f11645eb9a0d7fbbb1386186f2"
+          },
+          "key": "current_bench_qualification",
+          "status": "MATCH"
+        },
+        {
+          "actual": {
+            "bytes": 3556032,
+            "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/active33-r2/four_matrices.json",
+            "sha256": "b0482e4cc5297c2363376cc44d94adaddcc8f4d82436e9110400a441ba347408"
+          },
+          "key": "current_four_matrices",
+          "status": "MATCH"
+        },
+        {
+          "actual": {
+            "bytes": 81041,
+            "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_closure_formal_verification/build_link/inventory_v1.json",
+            "sha256": "f5ba41ad9b299dac16c4cfeeb7ce562b6c133d4037ebf9f5e3406648681cb553"
+          },
+          "key": "old_build_gap_inventory",
+          "status": "MATCH"
+        },
+        {
+          "actual": {
+            "bytes": 25920,
+            "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_closure_formal_verification/formal_static_review/build-link-independent-review-r1.json",
+            "sha256": "09abbec6ebc4d283caa0992fcedc25fcc42f1196cbce9aa8882fd276f8d0209d"
+          },
+          "key": "build_independent_review_r1",
+          "status": "MATCH"
+        },
+        {
+          "actual": {
+            "bytes": 3127,
+            "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_closure_formal_verification/learned_source_oracle_r1/summary-r2.json",
+            "sha256": "3a954283f289497a20adeff66fdca401736ba3f18d0b16d6c3d0bef3a76b39bc"
+          },
+          "key": "fresh_fixed_weight_source_r2",
+          "status": "MATCH"
+        },
+        {
+          "actual": {
+            "bytes": 4069,
+            "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_closure_formal_verification/learned_source_oracle_r1/dzip_comparability_boundary.json",
+            "sha256": "4ced68c639be533b3b2daace6975b4cf6bb1302b3c31de4ef368dff3865779d4"
+          },
+          "key": "dzip_source_comparability",
+          "status": "MATCH"
+        },
+        {
+          "actual": {
+            "bytes": 9877,
+            "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/vendor/abba/PORT_MANIFEST.yaml",
+            "sha256": "2dfb6f3e9b081ef2a27afb515492c54b772d84edca96b91afed235edcbd8ed89"
+          },
+          "key": "abba_manifest",
+          "status": "MATCH"
+        },
+        {
+          "actual": {
+            "bytes": 4008,
+            "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/vendor/abba/NATIVE_CAPABILITY_MATRIX.yaml",
+            "sha256": "e7a9c67eafdc2cbec7d857ed0da59478e188dd41acc7d04e1d6a9a0fc0715e57"
+          },
+          "key": "abba_matrix",
+          "status": "MATCH"
+        },
+        {
+          "actual": {
+            "bytes": 7581,
+            "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/vendor/fabba/PORT_MANIFEST.yaml",
+            "sha256": "f6275085adde558dd6cc11c85021d38d0973bc4005b65a74921ba5d23ce2040e"
+          },
+          "key": "fabba_manifest",
+          "status": "MATCH"
+        },
+        {
+          "actual": {
+            "bytes": 4002,
+            "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/vendor/fabba/NATIVE_CAPABILITY_MATRIX.yaml",
+            "sha256": "12932417483582c70834945112fb23c4495bd8daf5ddfbfb40f4c6d5b69869c4"
+          },
+          "key": "fabba_matrix",
+          "status": "MATCH"
+        },
+        {
+          "actual": {
+            "bytes": 4750,
+            "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/vendor/deepzip/PORT_MANIFEST.yaml",
+            "sha256": "c0a765611e7a525976b62595fb10141d210ca089d3a365b99b084bcbd8581686"
+          },
+          "key": "deepzip_manifest",
+          "status": "MATCH"
+        },
+        {
+          "actual": {
+            "bytes": 34564,
+            "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/vendor/deepzip/NATIVE_CAPABILITY_MATRIX.yaml",
+            "sha256": "4c3585fe212c20c0c7604b5fd1a254de3750de9a5b07fe7ec245ece7fbdaaf32"
+          },
+          "key": "deepzip_matrix",
+          "status": "MATCH"
+        },
+        {
+          "actual": {
+            "bytes": 5126,
+            "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/vendor/dzip/PORT_MANIFEST.yaml",
+            "sha256": "affbffbe1d50a735b000f699435def5b8e8006d944e518e25fedda5b8332ef31"
+          },
+          "key": "dzip_manifest",
+          "status": "MATCH"
+        },
+        {
+          "actual": {
+            "bytes": 21232,
+            "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/vendor/dzip/NATIVE_CAPABILITY_MATRIX.yaml",
+            "sha256": "8c9f289951ce3601ee9221de70424b50348d337db8f5f94c633ed9ae1ffa078f"
+          },
+          "key": "dzip_matrix",
+          "status": "MATCH"
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "frozen_subject_not_modified",
+      "details": {
+        "bytes": 694614,
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_closure_formal_verification/gate_acceptance_review/acceptance_review_r1.json",
+        "sha256": "ad144a41fdd88a38101b6eee16f8057d00b25b9bde7bafc23f828810205699cc"
+      },
+      "status": "PASS"
+    }
+  ],
+  "clarifications": [
+    {
+      "finding": "The complete required source/native GPU and codec/dataset set remains unclosed. The generic phrase not executed can incorrectly imply that no source GPU predictor ran, although the same frozen report correctly records actual biGRU source GPU execution in G3 and its external diagnostic.",
+      "gate_verdict_affected": false,
+      "id": "DEEPZIP_G5_NOT_EXECUTED_WORDING_SCOPE",
+      "original_finding": "Required source/native GPU predictors or CUDA bootstrap training, exact model/state/CDF same-real-data differential and resource/tail/platform validation are not executed in the restored environment at this freeze.",
+      "required_supplement": "Clarify full required set not completed; source biGRU/alphabet4/three-context 4-CudnnRNN GPU execution and limited probability/CDF-conversion PASS are retained; native GPU, remaining model/checkpoint/pipeline/API paths stay unqualified. Keep G5 FAIL and preserve frozen original report.",
+      "severity": "CLARIFICATION_NONBLOCKING_GATE_VERDICT_UNCHANGED",
+      "source_finite_GPU_PASS_retracted": false,
+      "subject_path": "entries[deepzip].gates[G5].subitems[complete_required_GPU_prediction_or_bootstrap_execution].finding"
+    }
+  ],
+  "codec_model_training_build_performance_executed": false,
+  "driver": {
+    "bytes": 20093,
+    "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_closure_formal_verification/formal_static_review/check_gate_acceptance_independent.py",
+    "sha256": "97206cbe3dda9dfe26258316b13e3bec75af86f5d094d767d70b49d472aace93"
+  },
+  "errors": [],
+  "full_N_G_CAP_PARITY_REWRITE_DONE_FORMAL_granted": false,
+  "governing_clauses": [
+    "0.6",
+    "2.4",
+    "2.5",
+    "2.7",
+    "2.8",
+    "3 G0-G6/CAP-GATE",
+    "38.2.3-38.2.5",
+    "72.1",
+    "82 NATIVE/EVID/XFER/GEN rules",
+    "109",
+    "114.1-114.7",
+    "115.1-115.3",
+    "116.1-116.4",
+    "117.2",
+    "118-122",
+    "Appendix A"
+  ],
+  "heavy_model_binary_archive_hashing_performed": false,
+  "original_review_production_matrices_modified": false,
+  "prior_checker_diagnostic": {
+    "correction": "Initial checker searched literal -6, while the unchanged original receipt spells SOURCE_PROCESS_ABORT_MINUS6. The corrected predicate accepts the actual label; all original measurements/receipts and initial checker report are preserved. No codec/source/subject report failure was established by the initial checker-label mismatch.",
+    "driver": {
+      "bytes": 19492,
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_closure_formal_verification/formal_static_review/check_gate_acceptance_independent-initial.py",
+      "sha256": "4e9b9106c01e87bbbc6b8840db70e4463fe32ab84917c422e66b4ee59a288c21"
+    },
+    "report": {
+      "bytes": 42576,
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_closure_formal_verification/formal_static_review/gate-acceptance-independent-review-r1-initial-checker.json",
+      "sha256": "0f0d1f20d35fb97d6a54e54598278fdce83c5862af9ff2e477a1cf89c451e4c5"
+    }
+  },
+  "review_scope": "Current acceptance report validity against the entire current v3.0 authority and its applicable gate/identity/evidence rules; original source/model/binary/runtime contents are not rehashed or reexecuted.",
+  "reviewed_gate_status_counts": {
+    "FAIL": 32,
+    "PASS": 3,
+    "UNKNOWN": 185
+  },
+  "schema_version": "tscb.gate-acceptance-independent-review.v1",
+  "standard": {
+    "bytes": 215102,
+    "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/Compression_Algorithm_CPP_Porting_Standard_v3.0.md",
+    "sha256": "5d14f905261c5f6c4935a0015c0b93768f24615e2e87b7df187358b7767e95a2"
+  },
+  "status": "INDEPENDENT_STATIC_CHECKS_PASS_WITH_NONBLOCKING_WORDING_CLARIFICATION",
+  "subject": {
+    "bytes": 694614,
+    "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_closure_formal_verification/gate_acceptance_review/acceptance_review_r1.json",
+    "sha256": "ad144a41fdd88a38101b6eee16f8057d00b25b9bde7bafc23f828810205699cc"
+  }
+}

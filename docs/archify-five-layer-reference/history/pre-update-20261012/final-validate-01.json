@@ -1,0 +1,460 @@
+{
+  "schemaVersion": 1,
+  "ok": false,
+  "command": "validate",
+  "stage": "render",
+  "type": "architecture",
+  "input": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/archify-five-layer-reference/framework-final.archify.json",
+  "error": "Architecture layout validation failed:\n- [composition/proper-crossing] showcase architecture connections[32] id \"workloads--query\" \"workloads\" -> \"query\" crosses connections[48] id \"resources--raw\" \"resources\" -> \"raw\" at [410, 5060] (segments 0 and 1) — adjust route/via or fromSide/toSide so the connections use separate corridors.\n- [composition/proper-crossing] showcase architecture connections[33] id \"workloads--streaming\" \"workloads\" -> \"streaming\" crosses connections[48] id \"resources--raw\" \"resources\" -> \"raw\" at [410, 4990] (segments 2 and 1) — adjust route/via or fromSide/toSide so the connections use separate corridors.\n- [composition/proper-crossing] showcase architecture connections[39] id \"summary--corpus\" \"summary\" -> \"corpus\" crosses connections[42] id \"coverage--report\" \"coverage\" -> \"report\" at [410, 5743] (segments 0 and 1) — adjust route/via or fromSide/toSide so the connections use separate corridors.\n- [composition/label-route-clearance] showcase architecture label \"请求且支持\" on connections[32] id \"workloads--query\" \"workloads\" -> \"query\" label \"请求且支持\" is 0px from connections[48] id \"resources--raw\" \"resources\" -> \"raw\" label \"资源证据\" segment 1 [410, 4787] -> [410, 5186] (label rect [381, 5084, 58, 14]; minimum 4px) — adjust labelAt, labelDx, labelDy, or labelSegment; otherwise adjust the other relationship route/via/channel.\n- [composition/label-route-clearance] showcase architecture label \"请求且支持\" on connections[32] id \"workloads--query\" \"workloads\" -> \"query\" label \"请求且支持\" is 0px from connections[49] id \"query--raw\" \"query\" -> \"raw\" label \"查询结果\" segment 1 [410, 5060] -> [410, 5200] (label rect [381, 5084, 58, 14]; minimum 4px) — adjust labelAt, labelDx, labelDy, or labelSegment; otherwise adjust the other relationship route/via/channel.\n- [composition/label-route-clearance] showcase architecture label \"请求且支持\" on connections[33] id \"workloads--streaming\" \"workloads\" -> \"streaming\" label \"请求且支持\" is 0px from connections[48] id \"resources--raw\" \"resources\" -> \"raw\" label \"资源证据\" segment 1 [410, 4787] -> [410, 5186] (label rect [371, 5005, 58, 14]; minimum 4px) — adjust labelAt, labelDx, labelDy, or labelSegment; otherwise adjust the other relationship route/via/channel.\n- [composition/label-route-clearance] showcase architecture label \"覆盖率\" on connections[42] id \"coverage--report\" \"coverage\" -> \"report\" label \"覆盖率\" is 0px from connections[47] id \"corpus--report\" \"corpus\" -> \"report\" label \"汇总结果\" segment 1 [410, 5757] -> [410, 6177] (label rect [391, 5870, 39, 14]; minimum 4px) — adjust labelAt, labelDx, labelDy, or labelSegment; otherwise adjust the other relationship route/via/channel.\n- [composition/label-route-clearance] showcase architecture label \"汇总结果\" on connections[47] id \"corpus--report\" \"corpus\" -> \"report\" label \"汇总结果\" is 0px from connections[42] id \"coverage--report\" \"coverage\" -> \"report\" label \"覆盖率\" segment 1 [410, 5617] -> [410, 6163] (label rect [386, 5947, 48, 14]; minimum 4px) — adjust labelAt, labelDx, labelDy, or labelSegment; otherwise adjust the other relationship route/via/channel.\n- [composition/label-route-clearance] showcase architecture label \"查询结果\" on connections[49] id \"query--raw\" \"query\" -> \"raw\" label \"查询结果\" is 0px from connections[48] id \"resources--raw\" \"resources\" -> \"raw\" label \"资源证据\" segment 1 [410, 4787] -> [410, 5186] (label rect [386, 5110, 48, 14]; minimum 4px) — adjust labelAt, labelDx, labelDy, or labelSegment; otherwise adjust the other relationship route/via/channel.",
+  "diagnostics": [
+    {
+      "code": "composition/proper-crossing",
+      "severity": "error",
+      "message": "[composition/proper-crossing] showcase architecture connections[32] id \"workloads--query\" \"workloads\" -> \"query\" crosses connections[48] id \"resources--raw\" \"resources\" -> \"raw\" at [410, 5060] (segments 0 and 1) — adjust route/via or fromSide/toSide so the connections use separate corridors.",
+      "subject": {
+        "diagramType": "architecture",
+        "collection": "connections",
+        "index": 32,
+        "id": "workloads--query",
+        "from": "workloads",
+        "to": "query"
+      },
+      "evidence": {
+        "otherRelationship": {
+          "diagramType": "architecture",
+          "collection": "connections",
+          "index": 48,
+          "id": "resources--raw",
+          "from": "resources",
+          "to": "raw"
+        },
+        "point": [
+          410,
+          5060
+        ],
+        "segmentIndex": 0,
+        "otherSegmentIndex": 1
+      },
+      "supportedFixes": [
+        "adjust route/via or fromSide/toSide so the connections use separate corridors"
+      ]
+    },
+    {
+      "code": "composition/proper-crossing",
+      "severity": "error",
+      "message": "[composition/proper-crossing] showcase architecture connections[33] id \"workloads--streaming\" \"workloads\" -> \"streaming\" crosses connections[48] id \"resources--raw\" \"resources\" -> \"raw\" at [410, 4990] (segments 2 and 1) — adjust route/via or fromSide/toSide so the connections use separate corridors.",
+      "subject": {
+        "diagramType": "architecture",
+        "collection": "connections",
+        "index": 33,
+        "id": "workloads--streaming",
+        "from": "workloads",
+        "to": "streaming"
+      },
+      "evidence": {
+        "otherRelationship": {
+          "diagramType": "architecture",
+          "collection": "connections",
+          "index": 48,
+          "id": "resources--raw",
+          "from": "resources",
+          "to": "raw"
+        },
+        "point": [
+          410,
+          4990
+        ],
+        "segmentIndex": 2,
+        "otherSegmentIndex": 1
+      },
+      "supportedFixes": [
+        "adjust route/via or fromSide/toSide so the connections use separate corridors"
+      ]
+    },
+    {
+      "code": "composition/proper-crossing",
+      "severity": "error",
+      "message": "[composition/proper-crossing] showcase architecture connections[39] id \"summary--corpus\" \"summary\" -> \"corpus\" crosses connections[42] id \"coverage--report\" \"coverage\" -> \"report\" at [410, 5743] (segments 0 and 1) — adjust route/via or fromSide/toSide so the connections use separate corridors.",
+      "subject": {
+        "diagramType": "architecture",
+        "collection": "connections",
+        "index": 39,
+        "id": "summary--corpus",
+        "from": "summary",
+        "to": "corpus"
+      },
+      "evidence": {
+        "otherRelationship": {
+          "diagramType": "architecture",
+          "collection": "connections",
+          "index": 42,
+          "id": "coverage--report",
+          "from": "coverage",
+          "to": "report"
+        },
+        "point": [
+          410,
+          5743
+        ],
+        "segmentIndex": 0,
+        "otherSegmentIndex": 1
+      },
+      "supportedFixes": [
+        "adjust route/via or fromSide/toSide so the connections use separate corridors"
+      ]
+    },
+    {
+      "code": "composition/label-route-clearance",
+      "severity": "error",
+      "message": "[composition/label-route-clearance] showcase architecture label \"请求且支持\" on connections[32] id \"workloads--query\" \"workloads\" -> \"query\" label \"请求且支持\" is 0px from connections[48] id \"resources--raw\" \"resources\" -> \"raw\" label \"资源证据\" segment 1 [410, 4787] -> [410, 5186] (label rect [381, 5084, 58, 14]; minimum 4px) — adjust labelAt, labelDx, labelDy, or labelSegment; otherwise adjust the other relationship route/via/channel.",
+      "subject": {
+        "diagramType": "architecture",
+        "collection": "connections",
+        "index": 32,
+        "id": "workloads--query",
+        "from": "workloads",
+        "to": "query"
+      },
+      "evidence": {
+        "label": "请求且支持",
+        "otherRelationship": {
+          "diagramType": "architecture",
+          "collection": "connections",
+          "index": 48,
+          "id": "resources--raw",
+          "from": "resources",
+          "to": "raw"
+        },
+        "segmentIndex": 1,
+        "clearancePx": 0,
+        "minimumPx": 4,
+        "labelRect": {
+          "relation": {
+            "id": "workloads--query",
+            "from": "workloads",
+            "to": "query",
+            "label": "请求且支持",
+            "variant": "dashed",
+            "labelAt": [
+              410,
+              5094
+            ]
+          },
+          "relationIndex": 32,
+          "label": "请求且支持",
+          "x": 381,
+          "y": 5084,
+          "width": 58,
+          "height": 14,
+          "lx": 410,
+          "ly": 5094
+        },
+        "from": [
+          410,
+          4787
+        ],
+        "to": [
+          410,
+          5186
+        ]
+      },
+      "supportedFixes": [
+        "adjust labelAt, labelDx, labelDy, or labelSegment; otherwise adjust the other relationship route/via/channel"
+      ]
+    },
+    {
+      "code": "composition/label-route-clearance",
+      "severity": "error",
+      "message": "[composition/label-route-clearance] showcase architecture label \"请求且支持\" on connections[32] id \"workloads--query\" \"workloads\" -> \"query\" label \"请求且支持\" is 0px from connections[49] id \"query--raw\" \"query\" -> \"raw\" label \"查询结果\" segment 1 [410, 5060] -> [410, 5200] (label rect [381, 5084, 58, 14]; minimum 4px) — adjust labelAt, labelDx, labelDy, or labelSegment; otherwise adjust the other relationship route/via/channel.",
+      "subject": {
+        "diagramType": "architecture",
+        "collection": "connections",
+        "index": 32,
+        "id": "workloads--query",
+        "from": "workloads",
+        "to": "query"
+      },
+      "evidence": {
+        "label": "请求且支持",
+        "otherRelationship": {
+          "diagramType": "architecture",
+          "collection": "connections",
+          "index": 49,
+          "id": "query--raw",
+          "from": "query",
+          "to": "raw"
+        },
+        "segmentIndex": 1,
+        "clearancePx": 0,
+        "minimumPx": 4,
+        "labelRect": {
+          "relation": {
+            "id": "workloads--query",
+            "from": "workloads",
+            "to": "query",
+            "label": "请求且支持",
+            "variant": "dashed",
+            "labelAt": [
+              410,
+              5094
+            ]
+          },
+          "relationIndex": 32,
+          "label": "请求且支持",
+          "x": 381,
+          "y": 5084,
+          "width": 58,
+          "height": 14,
+          "lx": 410,
+          "ly": 5094
+        },
+        "from": [
+          410,
+          5060
+        ],
+        "to": [
+          410,
+          5200
+        ]
+      },
+      "supportedFixes": [
+        "adjust labelAt, labelDx, labelDy, or labelSegment; otherwise adjust the other relationship route/via/channel"
+      ]
+    },
+    {
+      "code": "composition/label-route-clearance",
+      "severity": "error",
+      "message": "[composition/label-route-clearance] showcase architecture label \"请求且支持\" on connections[33] id \"workloads--streaming\" \"workloads\" -> \"streaming\" label \"请求且支持\" is 0px from connections[48] id \"resources--raw\" \"resources\" -> \"raw\" label \"资源证据\" segment 1 [410, 4787] -> [410, 5186] (label rect [371, 5005, 58, 14]; minimum 4px) — adjust labelAt, labelDx, labelDy, or labelSegment; otherwise adjust the other relationship route/via/channel.",
+      "subject": {
+        "diagramType": "architecture",
+        "collection": "connections",
+        "index": 33,
+        "id": "workloads--streaming",
+        "from": "workloads",
+        "to": "streaming"
+      },
+      "evidence": {
+        "label": "请求且支持",
+        "otherRelationship": {
+          "diagramType": "architecture",
+          "collection": "connections",
+          "index": 48,
+          "id": "resources--raw",
+          "from": "resources",
+          "to": "raw"
+        },
+        "segmentIndex": 1,
+        "clearancePx": 0,
+        "minimumPx": 4,
+        "labelRect": {
+          "relation": {
+            "id": "workloads--streaming",
+            "from": "workloads",
+            "to": "streaming",
+            "label": "请求且支持",
+            "variant": "dashed",
+            "fromSide": "right",
+            "toSide": "top",
+            "via": [
+              [
+                400,
+                5060
+              ],
+              [
+                400,
+                4990
+              ],
+              [
+                1010,
+                4990
+              ]
+            ]
+          },
+          "relationIndex": 33,
+          "label": "请求且支持",
+          "x": 371,
+          "y": 5005,
+          "width": 58,
+          "height": 14,
+          "lx": 400,
+          "ly": 5015
+        },
+        "from": [
+          410,
+          4787
+        ],
+        "to": [
+          410,
+          5186
+        ]
+      },
+      "supportedFixes": [
+        "adjust labelAt, labelDx, labelDy, or labelSegment; otherwise adjust the other relationship route/via/channel"
+      ]
+    },
+    {
+      "code": "composition/label-route-clearance",
+      "severity": "error",
+      "message": "[composition/label-route-clearance] showcase architecture label \"覆盖率\" on connections[42] id \"coverage--report\" \"coverage\" -> \"report\" label \"覆盖率\" is 0px from connections[47] id \"corpus--report\" \"corpus\" -> \"report\" label \"汇总结果\" segment 1 [410, 5757] -> [410, 6177] (label rect [391, 5870, 39, 14]; minimum 4px) — adjust labelAt, labelDx, labelDy, or labelSegment; otherwise adjust the other relationship route/via/channel.",
+      "subject": {
+        "diagramType": "architecture",
+        "collection": "connections",
+        "index": 42,
+        "id": "coverage--report",
+        "from": "coverage",
+        "to": "report"
+      },
+      "evidence": {
+        "label": "覆盖率",
+        "otherRelationship": {
+          "diagramType": "architecture",
+          "collection": "connections",
+          "index": 47,
+          "id": "corpus--report",
+          "from": "corpus",
+          "to": "report"
+        },
+        "segmentIndex": 1,
+        "clearancePx": 0,
+        "minimumPx": 4,
+        "labelRect": {
+          "relation": {
+            "id": "coverage--report",
+            "from": "coverage",
+            "to": "report",
+            "label": "覆盖率"
+          },
+          "relationIndex": 42,
+          "label": "覆盖率",
+          "x": 390.6,
+          "y": 5870,
+          "width": 38.8,
+          "height": 14,
+          "lx": 410,
+          "ly": 5880
+        },
+        "from": [
+          410,
+          5757
+        ],
+        "to": [
+          410,
+          6177
+        ]
+      },
+      "supportedFixes": [
+        "adjust labelAt, labelDx, labelDy, or labelSegment; otherwise adjust the other relationship route/via/channel"
+      ]
+    },
+    {
+      "code": "composition/label-route-clearance",
+      "severity": "error",
+      "message": "[composition/label-route-clearance] showcase architecture label \"汇总结果\" on connections[47] id \"corpus--report\" \"corpus\" -> \"report\" label \"汇总结果\" is 0px from connections[42] id \"coverage--report\" \"coverage\" -> \"report\" label \"覆盖率\" segment 1 [410, 5617] -> [410, 6163] (label rect [386, 5947, 48, 14]; minimum 4px) — adjust labelAt, labelDx, labelDy, or labelSegment; otherwise adjust the other relationship route/via/channel.",
+      "subject": {
+        "diagramType": "architecture",
+        "collection": "connections",
+        "index": 47,
+        "id": "corpus--report",
+        "from": "corpus",
+        "to": "report"
+      },
+      "evidence": {
+        "label": "汇总结果",
+        "otherRelationship": {
+          "diagramType": "architecture",
+          "collection": "connections",
+          "index": 42,
+          "id": "coverage--report",
+          "from": "coverage",
+          "to": "report"
+        },
+        "segmentIndex": 1,
+        "clearancePx": 0,
+        "minimumPx": 4,
+        "labelRect": {
+          "relation": {
+            "id": "corpus--report",
+            "from": "corpus",
+            "to": "report",
+            "label": "汇总结果",
+            "variant": "dashed"
+          },
+          "relationIndex": 47,
+          "label": "汇总结果",
+          "x": 385.8,
+          "y": 5947,
+          "width": 48.4,
+          "height": 14,
+          "lx": 410,
+          "ly": 5957
+        },
+        "from": [
+          410,
+          5617
+        ],
+        "to": [
+          410,
+          6163
+        ]
+      },
+      "supportedFixes": [
+        "adjust labelAt, labelDx, labelDy, or labelSegment; otherwise adjust the other relationship route/via/channel"
+      ]
+    },
+    {
+      "code": "composition/label-route-clearance",
+      "severity": "error",
+      "message": "[composition/label-route-clearance] showcase architecture label \"查询结果\" on connections[49] id \"query--raw\" \"query\" -> \"raw\" label \"查询结果\" is 0px from connections[48] id \"resources--raw\" \"resources\" -> \"raw\" label \"资源证据\" segment 1 [410, 4787] -> [410, 5186] (label rect [386, 5110, 48, 14]; minimum 4px) — adjust labelAt, labelDx, labelDy, or labelSegment; otherwise adjust the other relationship route/via/channel.",
+      "subject": {
+        "diagramType": "architecture",
+        "collection": "connections",
+        "index": 49,
+        "id": "query--raw",
+        "from": "query",
+        "to": "raw"
+      },
+      "evidence": {
+        "label": "查询结果",
+        "otherRelationship": {
+          "diagramType": "architecture",
+          "collection": "connections",
+          "index": 48,
+          "id": "resources--raw",
+          "from": "resources",
+          "to": "raw"
+        },
+        "segmentIndex": 1,
+        "clearancePx": 0,
+        "minimumPx": 4,
+        "labelRect": {
+          "relation": {
+            "id": "query--raw",
+            "from": "query",
+            "to": "raw",
+            "label": "查询结果",
+            "variant": "dashed"
+          },
+          "relationIndex": 49,
+          "label": "查询结果",
+          "x": 385.8,
+          "y": 5110,
+          "width": 48.4,
+          "height": 14,
+          "lx": 410,
+          "ly": 5120
+        },
+        "from": [
+          410,
+          4787
+        ],
+        "to": [
+          410,
+          5186
+        ]
+      },
+      "supportedFixes": [
+        "adjust labelAt, labelDx, labelDy, or labelSegment; otherwise adjust the other relationship route/via/channel"
+      ]
+    }
+  ]
+}

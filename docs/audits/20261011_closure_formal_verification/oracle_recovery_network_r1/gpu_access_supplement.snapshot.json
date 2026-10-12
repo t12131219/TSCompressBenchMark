@@ -1,0 +1,23 @@
+{
+  "schema_version": "tscb.device-access-supplement.v1",
+  "created_at": "2026-10-11T12:23:30.536513+00:00",
+  "command": [
+    "nvidia-smi",
+    "--query-gpu=name,driver_version",
+    "--format=csv,noheader"
+  ],
+  "execution_context": "SANDBOX_EXTERNAL_READ_ONLY_TOOL_CALL",
+  "tool_result_chunk_id": "b1b4b7",
+  "exit_code": 0,
+  "stdout": "NVIDIA GeForce RTX 2070, 535.288.01\n",
+  "executable": {
+    "path": "/usr/bin/nvidia-smi",
+    "sha256": "9dacc01ba53c8456155106ac1ef42eee8bb88e19fe72d0662ff76226396313dd"
+  },
+  "ordinary_sandbox_previous_result": "EXIT_9_RETAINED_IN_GATE_AUDIT_ENVIRONMENT_INVENTORY",
+  "device_driver_access_verified": true,
+  "locked_cuda_tf_environment_loaded": false,
+  "gpu_oracle_or_codec_executed": false,
+  "full_G5_or_CAP_granted": false,
+  "claim_boundary": "Driver access available outside sandbox; exact legacy environment and required GPU paths remain unexecuted."
+}

@@ -1,0 +1,16 @@
+{
+  "codec_loaded": false,
+  "exact_executed_code": "def require(condition, message):\n    if not condition:\n        raise ValueError(message)\nrequire(False, \"optimized false evidence must reject\")\n",
+  "exact_require_function_ast_used": true,
+  "exit_code": 1,
+  "interpreter": "/home/fzg/anaconda3/envs/CompressBench14/bin/python3.14",
+  "optimized_python": true,
+  "production_imports": false,
+  "schema_version": "tscb.optimized-require-negative.v1",
+  "status": "PASS",
+  "stderr": "Traceback (most recent call last):\n  File \"<string>\", line 4, in <module>\n    require(False, \"optimized false evidence must reject\")\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<string>\", line 3, in require\n    raise ValueError(message)\nValueError: optimized false evidence must reject\n",
+  "subject": {
+    "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_closure_formal_verification/formal/audit_current_formal.py",
+    "sha256": "53dedde868d9eced31556e9e53ec7b3e0732a8340a0de75b0984be3a471b3452"
+  }
+}

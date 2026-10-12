@@ -1,0 +1,2932 @@
+{
+  "schema_version": "tscb.fresh-observed-toolchain-link-closure.v1",
+  "status": "PASS",
+  "active_codecs": 33,
+  "current_profiles": 67,
+  "fresh_observed_profiles_PASS": 67,
+  "current_registered_artifacts_records_and_registration_frozen": true,
+  "frozen_sha_drift": [],
+  "byte_equal_current_old_artifacts": 50,
+  "byte_different_current_old_artifacts": 17,
+  "normalized_source_closure_byte_equal_count": 65,
+  "normalized_source_closure_byte_differences": [
+    {
+      "codec": "dzip",
+      "profile": "release"
+    },
+    {
+      "codec": "dzip",
+      "profile": "sanitizer"
+    }
+  ],
+  "scope": "ACTUAL_FRESH_SELF_CHILD_TRACED_BUILD_ONLY_FULL_HISTORICAL_EXECUTION_NOT_RECONSTRUCTED",
+  "original_67_profile_scope_limit": "PASS_DENOTES_RECORDED_EXECVE_READ_OPENS_MAP_AND_EXTERNAL_CHECKPOINT_INSTRUMENT_SCOPE_ONLY; EXEC_INTERPRETER_PRE_SHA_AND_PID_VERSION_BINDING_GAPS_NOT_REPAIRED_RETROACTIVELY; FULL_N1_FALSE",
+  "instrumentation": "B frontend/as/ld wrappers plus audit-only read preservation LD_PRELOAD for CMake; saved production source and artifacts unchanged; new ldd clean env",
+  "association_rule": "BYTE_EQUAL_FRESH_ARTIFACT_ASSOCIATES_CURRENT_OLD_CONTENTS_ONLY; BYTE_DIFFERENT_ARTIFACT_CANNOT_TRANSFER_FRESH_CLOSURE_TO_OLD_ARTIFACT",
+  "rows": [
+    {
+      "codec": "abba",
+      "profile": "release",
+      "fresh_build_closure_status": "PASS",
+      "traced_report": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_closure_formal_verification/build_link/abba-release-pinned-r4b-trace.json",
+        "sha256": "5ee10a5cedb501cea5892efa7e1d8bea1579aa1bf2e800047409441ad63a538b",
+        "size_bytes": 1434592
+      },
+      "new_artifact": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r4b/special-pilot/abba-release/abba/release/libtscb_abba.so",
+        "sha256": "309b24040d86e8928673648cf7fc50a7be854771de9ac25091b028bb2668eb43",
+        "size_bytes": 153664
+      },
+      "old_artifact": {
+        "path": "build/port-standard-v30-20261011/adapters/abba/release/libtscb_abba.so",
+        "sha256": "309b24040d86e8928673648cf7fc50a7be854771de9ac25091b028bb2668eb43",
+        "size_bytes": 153664
+      },
+      "actual_successful_execve_count": 405,
+      "executed_unique_file_count": 25,
+      "read_input_record_count": 1609,
+      "link_map_count": 14,
+      "archive_member_contribution_count": 7,
+      "pre_existing_external_input_pre_post_sha_complete": true,
+      "unavailable_observed_file_count": 0,
+      "old_new_artifact_bytes_equal": true,
+      "old_new_objects": {
+        "old_count": 16,
+        "new_count": 16,
+        "equal": true,
+        "scope": "CURRENT_STATIC_OLD_NEW_CMAKE_OBJECT_SCAN_NOT_HISTORICAL_OBJECT_HASHES"
+      },
+      "old_new_normalized_declared_source_byte_closures_equal": true,
+      "old_new_native_test_executable_comparison": {
+        "old_count": 5,
+        "new_count": 5,
+        "byte_equal": false,
+        "current_hash_drift": []
+      },
+      "old_artifact_content_association_allowed": true,
+      "historical_actual_execution_claimed": false,
+      "old_N1_retroactive_grant": false
+    },
+    {
+      "codec": "abba",
+      "profile": "sanitizer",
+      "fresh_build_closure_status": "PASS",
+      "traced_report": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r5/special-sanitizer/pinned-replay/abba--sanitizer/trace-report.json",
+        "sha256": "afd3e40c9a203e6d287758de32ca11abfba8b639ab900ad58071e5ef3fb8e562",
+        "size_bytes": 1526410
+      },
+      "new_artifact": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r5/special-sanitizer/pinned-replay/abba--sanitizer/abba/sanitizer/libtscb_abba.so",
+        "sha256": "62e25383fed897d8c50e7be229e15598118d293e9c52d765b54ebeaa2855846b",
+        "size_bytes": 8181760
+      },
+      "old_artifact": {
+        "path": "build/port-standard-v30-20261011/adapters/abba/sanitizer/libtscb_abba.so",
+        "sha256": "b648aa2cc6921ddc22461d5f3c0624e4028da9987df0d447c255cbdd0d2429b3",
+        "size_bytes": 8181624
+      },
+      "actual_successful_execve_count": 405,
+      "executed_unique_file_count": 25,
+      "read_input_record_count": 1617,
+      "link_map_count": 14,
+      "archive_member_contribution_count": 7,
+      "pre_existing_external_input_pre_post_sha_complete": true,
+      "unavailable_observed_file_count": 0,
+      "old_new_artifact_bytes_equal": false,
+      "old_new_objects": {
+        "old_count": 16,
+        "new_count": 16,
+        "equal": false,
+        "scope": "CURRENT_STATIC_OLD_NEW_CMAKE_OBJECT_SCAN_NOT_HISTORICAL_OBJECT_HASHES"
+      },
+      "old_new_normalized_declared_source_byte_closures_equal": true,
+      "old_new_native_test_executable_comparison": {
+        "old_count": 5,
+        "new_count": 5,
+        "byte_equal": false,
+        "current_hash_drift": []
+      },
+      "old_artifact_content_association_allowed": false,
+      "historical_actual_execution_claimed": false,
+      "old_N1_retroactive_grant": false
+    },
+    {
+      "codec": "alp",
+      "profile": "release",
+      "fresh_build_closure_status": "PASS",
+      "traced_report": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-release/pinned-replay/alp--release/trace-report.json",
+        "sha256": "b429457baae423c151bbed66895b540e19edae23f9da067e90d9053c39b63c1e",
+        "size_bytes": 181579
+      },
+      "new_artifact": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-release/pinned-replay/alp--release/alp/release/libtscb_alp.so",
+        "sha256": "7709f581b3673c3d64b5960d8df2bc1f8979086a17e4be49641d8f1bc05000d4",
+        "size_bytes": 576896
+      },
+      "old_artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/alp/release/libtscb_alp.so",
+        "sha256": "7709f581b3673c3d64b5960d8df2bc1f8979086a17e4be49641d8f1bc05000d4",
+        "size_bytes": 576896
+      },
+      "actual_successful_execve_count": 27,
+      "executed_unique_file_count": 7,
+      "read_input_record_count": 501,
+      "link_map_count": 1,
+      "archive_member_contribution_count": 0,
+      "pre_existing_external_input_pre_post_sha_complete": true,
+      "unavailable_observed_file_count": 0,
+      "old_new_artifact_bytes_equal": true,
+      "old_new_objects": {
+        "old_count": 5,
+        "new_count": 5,
+        "equal": true
+      },
+      "old_new_normalized_declared_source_byte_closures_equal": true,
+      "old_new_native_test_executable_comparison": {
+        "old_count": 0,
+        "new_count": 0,
+        "byte_equal": true,
+        "current_hash_drift": []
+      },
+      "old_artifact_content_association_allowed": true,
+      "historical_actual_execution_claimed": false,
+      "old_N1_retroactive_grant": false
+    },
+    {
+      "codec": "alp",
+      "profile": "sanitizer",
+      "fresh_build_closure_status": "PASS",
+      "traced_report": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-sanitizer/pinned-replay/alp--sanitizer/trace-report.json",
+        "sha256": "fd33c17ed06fd463660bbf4d278cf56a2d685f84b3d5b0557558e84717f5fc30",
+        "size_bytes": 182880
+      },
+      "new_artifact": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-sanitizer/pinned-replay/alp--sanitizer/alp/sanitizer/libtscb_alp.so",
+        "sha256": "f85bda10bc9924c1421e0142f7b2087d971906548177b04f7b2373ee8a52e722",
+        "size_bytes": 16100080
+      },
+      "old_artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/alp/sanitizer/libtscb_alp.so",
+        "sha256": "aff92c9875704d6a5f1648fdb7269c2a2378ab5c526b174debde7954d52c6b3a",
+        "size_bytes": 16098280
+      },
+      "actual_successful_execve_count": 27,
+      "executed_unique_file_count": 7,
+      "read_input_record_count": 502,
+      "link_map_count": 1,
+      "archive_member_contribution_count": 2,
+      "pre_existing_external_input_pre_post_sha_complete": true,
+      "unavailable_observed_file_count": 0,
+      "old_new_artifact_bytes_equal": false,
+      "old_new_objects": {
+        "old_count": 5,
+        "new_count": 5,
+        "equal": false
+      },
+      "old_new_normalized_declared_source_byte_closures_equal": true,
+      "old_new_native_test_executable_comparison": {
+        "old_count": 0,
+        "new_count": 0,
+        "byte_equal": true,
+        "current_hash_drift": []
+      },
+      "old_artifact_content_association_allowed": false,
+      "historical_actual_execution_claimed": false,
+      "old_N1_retroactive_grant": false
+    },
+    {
+      "codec": "alp-rd",
+      "profile": "release",
+      "fresh_build_closure_status": "PASS",
+      "traced_report": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-release/pinned-replay/alp-rd--release/trace-report.json",
+        "sha256": "ceaa115689d5e4929bee344e8274a74be964be0e6e2be281683a131049373fa2",
+        "size_bytes": 182023
+      },
+      "new_artifact": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-release/pinned-replay/alp-rd--release/alp_rd/release/libtscb_alp_rd.so",
+        "sha256": "41a38abd6a822107546b7246bedb86ac4fd037a4dc2285c9f8843a8fa42c376e",
+        "size_bytes": 577528
+      },
+      "old_artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/alp_rd/release/libtscb_alp_rd.so",
+        "sha256": "41a38abd6a822107546b7246bedb86ac4fd037a4dc2285c9f8843a8fa42c376e",
+        "size_bytes": 577528
+      },
+      "actual_successful_execve_count": 27,
+      "executed_unique_file_count": 7,
+      "read_input_record_count": 501,
+      "link_map_count": 1,
+      "archive_member_contribution_count": 0,
+      "pre_existing_external_input_pre_post_sha_complete": true,
+      "unavailable_observed_file_count": 0,
+      "old_new_artifact_bytes_equal": true,
+      "old_new_objects": {
+        "old_count": 5,
+        "new_count": 5,
+        "equal": true
+      },
+      "old_new_normalized_declared_source_byte_closures_equal": true,
+      "old_new_native_test_executable_comparison": {
+        "old_count": 0,
+        "new_count": 0,
+        "byte_equal": true,
+        "current_hash_drift": []
+      },
+      "old_artifact_content_association_allowed": true,
+      "historical_actual_execution_claimed": false,
+      "old_N1_retroactive_grant": false
+    },
+    {
+      "codec": "alp-rd",
+      "profile": "sanitizer",
+      "fresh_build_closure_status": "PASS",
+      "traced_report": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-sanitizer/pinned-replay/alp-rd--sanitizer/trace-report.json",
+        "sha256": "03090130c8436653b2c9a5a0f6b95ea6df4f0fb5886c047edbe4ba8db709f388",
+        "size_bytes": 183324
+      },
+      "new_artifact": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-sanitizer/pinned-replay/alp-rd--sanitizer/alp_rd/sanitizer/libtscb_alp_rd.so",
+        "sha256": "ef1fcb4d99eafb23b064d861192f70247c3fa40e15c9e7ec7b8c6ff101ef338e",
+        "size_bytes": 16100264
+      },
+      "old_artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/alp_rd/sanitizer/libtscb_alp_rd.so",
+        "sha256": "3bae4d4a69b7bd2ff39dd1d2bb2e06108523479e55fa634db6006566f90a9bbc",
+        "size_bytes": 16098368
+      },
+      "actual_successful_execve_count": 27,
+      "executed_unique_file_count": 7,
+      "read_input_record_count": 502,
+      "link_map_count": 1,
+      "archive_member_contribution_count": 2,
+      "pre_existing_external_input_pre_post_sha_complete": true,
+      "unavailable_observed_file_count": 0,
+      "old_new_artifact_bytes_equal": false,
+      "old_new_objects": {
+        "old_count": 5,
+        "new_count": 5,
+        "equal": false
+      },
+      "old_new_normalized_declared_source_byte_closures_equal": true,
+      "old_new_native_test_executable_comparison": {
+        "old_count": 0,
+        "new_count": 0,
+        "byte_equal": true,
+        "current_hash_drift": []
+      },
+      "old_artifact_content_association_allowed": false,
+      "historical_actual_execution_claimed": false,
+      "old_N1_retroactive_grant": false
+    },
+    {
+      "codec": "brotli-stream",
+      "profile": "release",
+      "fresh_build_closure_status": "PASS",
+      "traced_report": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-release/pinned-replay/brotli-stream--release/trace-report.json",
+        "sha256": "060dd87e2369233d808689de9fccad098f15ddf163659ccce5e2e103185676b6",
+        "size_bytes": 379419
+      },
+      "new_artifact": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-release/pinned-replay/brotli-stream--release/brotli_stream/release/libtscb_brotli_stream.so",
+        "sha256": "4a335ef64ff710e966fce7dc019e26324a4cbf07d31a420bb6afa1324828e99c",
+        "size_bytes": 942576
+      },
+      "old_artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/brotli_stream/release/libtscb_brotli_stream.so",
+        "sha256": "4a335ef64ff710e966fce7dc019e26324a4cbf07d31a420bb6afa1324828e99c",
+        "size_bytes": 942576
+      },
+      "actual_successful_execve_count": 166,
+      "executed_unique_file_count": 10,
+      "read_input_record_count": 599,
+      "link_map_count": 1,
+      "archive_member_contribution_count": 0,
+      "pre_existing_external_input_pre_post_sha_complete": true,
+      "unavailable_observed_file_count": 0,
+      "old_new_artifact_bytes_equal": true,
+      "old_new_objects": {
+        "old_count": 36,
+        "new_count": 36,
+        "equal": true
+      },
+      "old_new_normalized_declared_source_byte_closures_equal": true,
+      "old_new_native_test_executable_comparison": {
+        "old_count": 0,
+        "new_count": 0,
+        "byte_equal": true,
+        "current_hash_drift": []
+      },
+      "old_artifact_content_association_allowed": true,
+      "historical_actual_execution_claimed": false,
+      "old_N1_retroactive_grant": false
+    },
+    {
+      "codec": "brotli-stream",
+      "profile": "sanitizer",
+      "fresh_build_closure_status": "PASS",
+      "traced_report": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-sanitizer/pinned-replay/brotli-stream--sanitizer/trace-report.json",
+        "sha256": "a2a6b3aeab38e54f50165bb7ba12a558cbe08dc2ee6e8b2fc55d46121eb317bd",
+        "size_bytes": 383106
+      },
+      "new_artifact": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-sanitizer/pinned-replay/brotli-stream--sanitizer/brotli_stream/sanitizer/libtscb_brotli_stream.so",
+        "sha256": "21893bbe974bd9cfad978a79b7f9eadc12c1c2095201be52ce39dc670aeb3733",
+        "size_bytes": 14505632
+      },
+      "old_artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/brotli_stream/sanitizer/libtscb_brotli_stream.so",
+        "sha256": "21893bbe974bd9cfad978a79b7f9eadc12c1c2095201be52ce39dc670aeb3733",
+        "size_bytes": 14505632
+      },
+      "actual_successful_execve_count": 166,
+      "executed_unique_file_count": 10,
+      "read_input_record_count": 601,
+      "link_map_count": 1,
+      "archive_member_contribution_count": 0,
+      "pre_existing_external_input_pre_post_sha_complete": true,
+      "unavailable_observed_file_count": 0,
+      "old_new_artifact_bytes_equal": true,
+      "old_new_objects": {
+        "old_count": 36,
+        "new_count": 36,
+        "equal": true
+      },
+      "old_new_normalized_declared_source_byte_closures_equal": true,
+      "old_new_native_test_executable_comparison": {
+        "old_count": 0,
+        "new_count": 0,
+        "byte_equal": true,
+        "current_hash_drift": []
+      },
+      "old_artifact_content_association_allowed": true,
+      "historical_actual_execution_claimed": false,
+      "old_N1_retroactive_grant": false
+    },
+    {
+      "codec": "chimp",
+      "profile": "release",
+      "fresh_build_closure_status": "PASS",
+      "traced_report": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-release/pinned-replay/chimp--release/trace-report.json",
+        "sha256": "7f4be061b52e68725cd6c3ea5051395644c58406e3c592039f87f64a31c04128",
+        "size_bytes": 170960
+      },
+      "new_artifact": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-release/pinned-replay/chimp--release/chimp/release/libtscb_chimp.so",
+        "sha256": "16175d1443399e47011295fa175e09cc3f3b7aa883fcb0a350709f399b87c3ac",
+        "size_bytes": 68144
+      },
+      "old_artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/chimp/release/libtscb_chimp.so",
+        "sha256": "16175d1443399e47011295fa175e09cc3f3b7aa883fcb0a350709f399b87c3ac",
+        "size_bytes": 68144
+      },
+      "actual_successful_execve_count": 30,
+      "executed_unique_file_count": 10,
+      "read_input_record_count": 471,
+      "link_map_count": 1,
+      "archive_member_contribution_count": 0,
+      "pre_existing_external_input_pre_post_sha_complete": true,
+      "unavailable_observed_file_count": 0,
+      "old_new_artifact_bytes_equal": true,
+      "old_new_objects": {
+        "old_count": 2,
+        "new_count": 2,
+        "equal": true
+      },
+      "old_new_normalized_declared_source_byte_closures_equal": true,
+      "old_new_native_test_executable_comparison": {
+        "old_count": 0,
+        "new_count": 0,
+        "byte_equal": true,
+        "current_hash_drift": []
+      },
+      "old_artifact_content_association_allowed": true,
+      "historical_actual_execution_claimed": false,
+      "old_N1_retroactive_grant": false
+    },
+    {
+      "codec": "chimp",
+      "profile": "sanitizer",
+      "fresh_build_closure_status": "PASS",
+      "traced_report": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-sanitizer/pinned-replay/chimp--sanitizer/trace-report.json",
+        "sha256": "f03b8c992d00e86aefb0e214cdb0d412c87b7979c0f1a3359f54f29df735cb44",
+        "size_bytes": 172260
+      },
+      "new_artifact": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-sanitizer/pinned-replay/chimp--sanitizer/chimp/sanitizer/libtscb_chimp.so",
+        "sha256": "97af0517b4f92ec35c9625c0bd86466df8247d98160c613f9e5b65463810e87c",
+        "size_bytes": 2129928
+      },
+      "old_artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/chimp/sanitizer/libtscb_chimp.so",
+        "sha256": "97af0517b4f92ec35c9625c0bd86466df8247d98160c613f9e5b65463810e87c",
+        "size_bytes": 2129928
+      },
+      "actual_successful_execve_count": 30,
+      "executed_unique_file_count": 10,
+      "read_input_record_count": 473,
+      "link_map_count": 1,
+      "archive_member_contribution_count": 0,
+      "pre_existing_external_input_pre_post_sha_complete": true,
+      "unavailable_observed_file_count": 0,
+      "old_new_artifact_bytes_equal": true,
+      "old_new_objects": {
+        "old_count": 2,
+        "new_count": 2,
+        "equal": true
+      },
+      "old_new_normalized_declared_source_byte_closures_equal": true,
+      "old_new_native_test_executable_comparison": {
+        "old_count": 0,
+        "new_count": 0,
+        "byte_equal": true,
+        "current_hash_drift": []
+      },
+      "old_artifact_content_association_allowed": true,
+      "historical_actual_execution_claimed": false,
+      "old_N1_retroactive_grant": false
+    },
+    {
+      "codec": "chimp128",
+      "profile": "release",
+      "fresh_build_closure_status": "PASS",
+      "traced_report": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-release/pinned-replay/chimp128--release/trace-report.json",
+        "sha256": "d74eeae29926a87ff18dc972ba2682d7c2ba635d00134a157140799d294fde62",
+        "size_bytes": 171278
+      },
+      "new_artifact": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-release/pinned-replay/chimp128--release/chimp128/release/libtscb_chimp128.so",
+        "sha256": "3a823d5e6c8c9b25715aeea2023463ec2e8e892de04781304e69b4e5ab9c9476",
+        "size_bytes": 68144
+      },
+      "old_artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/chimp128/release/libtscb_chimp128.so",
+        "sha256": "3a823d5e6c8c9b25715aeea2023463ec2e8e892de04781304e69b4e5ab9c9476",
+        "size_bytes": 68144
+      },
+      "actual_successful_execve_count": 30,
+      "executed_unique_file_count": 10,
+      "read_input_record_count": 471,
+      "link_map_count": 1,
+      "archive_member_contribution_count": 0,
+      "pre_existing_external_input_pre_post_sha_complete": true,
+      "unavailable_observed_file_count": 0,
+      "old_new_artifact_bytes_equal": true,
+      "old_new_objects": {
+        "old_count": 2,
+        "new_count": 2,
+        "equal": true
+      },
+      "old_new_normalized_declared_source_byte_closures_equal": true,
+      "old_new_native_test_executable_comparison": {
+        "old_count": 0,
+        "new_count": 0,
+        "byte_equal": true,
+        "current_hash_drift": []
+      },
+      "old_artifact_content_association_allowed": true,
+      "historical_actual_execution_claimed": false,
+      "old_N1_retroactive_grant": false
+    },
+    {
+      "codec": "chimp128",
+      "profile": "sanitizer",
+      "fresh_build_closure_status": "PASS",
+      "traced_report": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-sanitizer/pinned-replay/chimp128--sanitizer/trace-report.json",
+        "sha256": "27ebbabd7bd3869794cb028c18c91637dd656c455accc9b8bd83873798dd0cfc",
+        "size_bytes": 172578
+      },
+      "new_artifact": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-sanitizer/pinned-replay/chimp128--sanitizer/chimp128/sanitizer/libtscb_chimp128.so",
+        "sha256": "66a9b5e3021abd1f9171d74f4bb5554db527cd7209f481504befc2036e1a9c7e",
+        "size_bytes": 2129928
+      },
+      "old_artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/chimp128/sanitizer/libtscb_chimp128.so",
+        "sha256": "66a9b5e3021abd1f9171d74f4bb5554db527cd7209f481504befc2036e1a9c7e",
+        "size_bytes": 2129928
+      },
+      "actual_successful_execve_count": 30,
+      "executed_unique_file_count": 10,
+      "read_input_record_count": 473,
+      "link_map_count": 1,
+      "archive_member_contribution_count": 0,
+      "pre_existing_external_input_pre_post_sha_complete": true,
+      "unavailable_observed_file_count": 0,
+      "old_new_artifact_bytes_equal": true,
+      "old_new_objects": {
+        "old_count": 2,
+        "new_count": 2,
+        "equal": true
+      },
+      "old_new_normalized_declared_source_byte_closures_equal": true,
+      "old_new_native_test_executable_comparison": {
+        "old_count": 0,
+        "new_count": 0,
+        "byte_equal": true,
+        "current_hash_drift": []
+      },
+      "old_artifact_content_association_allowed": true,
+      "historical_actual_execution_claimed": false,
+      "old_N1_retroactive_grant": false
+    },
+    {
+      "codec": "deepzip",
+      "profile": "release",
+      "fresh_build_closure_status": "PASS",
+      "traced_report": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r5/special-release/pinned-replay/deepzip--release/trace-report.json",
+        "sha256": "9a152b346fbe9138ef04085a3294a81a660e0501949c724000a01c2af17139d0",
+        "size_bytes": 1112419
+      },
+      "new_artifact": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r5/special-release/pinned-replay/deepzip--release/deepzip/release/libtscb_deepzip.so",
+        "sha256": "b8258233928175f4260cd214850a2666887b6a0de5eb972f18bdac054fec3ac5",
+        "size_bytes": 142184
+      },
+      "old_artifact": {
+        "path": "build/port-standard-v30-20261011/adapters/deepzip/release/libtscb_deepzip.so",
+        "sha256": "b8258233928175f4260cd214850a2666887b6a0de5eb972f18bdac054fec3ac5",
+        "size_bytes": 142184
+      },
+      "actual_successful_execve_count": 249,
+      "executed_unique_file_count": 23,
+      "read_input_record_count": 1467,
+      "link_map_count": 10,
+      "archive_member_contribution_count": 4,
+      "pre_existing_external_input_pre_post_sha_complete": true,
+      "unavailable_observed_file_count": 0,
+      "old_new_artifact_bytes_equal": true,
+      "old_new_objects": {
+        "old_count": 9,
+        "new_count": 9,
+        "equal": true,
+        "scope": "CURRENT_STATIC_OLD_NEW_CMAKE_OBJECT_SCAN_NOT_HISTORICAL_OBJECT_HASHES"
+      },
+      "old_new_normalized_declared_source_byte_closures_equal": true,
+      "old_new_native_test_executable_comparison": {
+        "old_count": 2,
+        "new_count": 2,
+        "byte_equal": false,
+        "current_hash_drift": []
+      },
+      "old_artifact_content_association_allowed": true,
+      "historical_actual_execution_claimed": false,
+      "old_N1_retroactive_grant": false
+    },
+    {
+      "codec": "deepzip",
+      "profile": "sanitizer",
+      "fresh_build_closure_status": "PASS",
+      "traced_report": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r5/special-sanitizer/pinned-replay/deepzip--sanitizer/trace-report.json",
+        "sha256": "4fadd50c0ee65c3690adcf09e445262cf7867bb63a12de53a4f868a884f38bc4",
+        "size_bytes": 1128248
+      },
+      "new_artifact": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r5/special-sanitizer/pinned-replay/deepzip--sanitizer/deepzip/sanitizer/libtscb_deepzip.so",
+        "sha256": "99328f5b45c98d3c03d69661df58049d035d2c2b18cd7f1ecc6902af45b7df90",
+        "size_bytes": 7474648
+      },
+      "old_artifact": {
+        "path": "build/port-standard-v30-20261011/adapters/deepzip/sanitizer/libtscb_deepzip.so",
+        "sha256": "252fb956a80cbbc643a8ddf973bf87facefdf9e6c9abbad216e7d1eb875b9b5e",
+        "size_bytes": 7474512
+      },
+      "actual_successful_execve_count": 249,
+      "executed_unique_file_count": 23,
+      "read_input_record_count": 1470,
+      "link_map_count": 10,
+      "archive_member_contribution_count": 4,
+      "pre_existing_external_input_pre_post_sha_complete": true,
+      "unavailable_observed_file_count": 0,
+      "old_new_artifact_bytes_equal": false,
+      "old_new_objects": {
+        "old_count": 9,
+        "new_count": 9,
+        "equal": false,
+        "scope": "CURRENT_STATIC_OLD_NEW_CMAKE_OBJECT_SCAN_NOT_HISTORICAL_OBJECT_HASHES"
+      },
+      "old_new_normalized_declared_source_byte_closures_equal": true,
+      "old_new_native_test_executable_comparison": {
+        "old_count": 2,
+        "new_count": 2,
+        "byte_equal": false,
+        "current_hash_drift": []
+      },
+      "old_artifact_content_association_allowed": false,
+      "historical_actual_execution_claimed": false,
+      "old_N1_retroactive_grant": false
+    },
+    {
+      "codec": "deflate-zlib",
+      "profile": "release",
+      "fresh_build_closure_status": "PASS",
+      "traced_report": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-release/pinned-replay/deflate-zlib--release/trace-report.json",
+        "sha256": "b383dd3054aff2da18d10f50c6bf2f7933afa33ebcb11e0629f43decdc2ca931",
+        "size_bytes": 216595
+      },
+      "new_artifact": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-release/pinned-replay/deflate-zlib--release/deflate_zlib/release/libtscb_deflate_zlib.so",
+        "sha256": "e96a6e98996d30482f12e7a19e6ddc5721d787dacbae32ee69f45a792efc9430",
+        "size_bytes": 134536
+      },
+      "old_artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/deflate_zlib/release/libtscb_deflate_zlib.so",
+        "sha256": "e96a6e98996d30482f12e7a19e6ddc5721d787dacbae32ee69f45a792efc9430",
+        "size_bytes": 134536
+      },
+      "actual_successful_execve_count": 86,
+      "executed_unique_file_count": 10,
+      "read_input_record_count": 384,
+      "link_map_count": 1,
+      "archive_member_contribution_count": 0,
+      "pre_existing_external_input_pre_post_sha_complete": true,
+      "unavailable_observed_file_count": 0,
+      "old_new_artifact_bytes_equal": true,
+      "old_new_objects": {
+        "old_count": 16,
+        "new_count": 16,
+        "equal": true
+      },
+      "old_new_normalized_declared_source_byte_closures_equal": true,
+      "old_new_native_test_executable_comparison": {
+        "old_count": 0,
+        "new_count": 0,
+        "byte_equal": true,
+        "current_hash_drift": []
+      },
+      "old_artifact_content_association_allowed": true,
+      "historical_actual_execution_claimed": false,
+      "old_N1_retroactive_grant": false
+    },
+    {
+      "codec": "deflate-zlib",
+      "profile": "sanitizer",
+      "fresh_build_closure_status": "PASS",
+      "traced_report": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-sanitizer/pinned-replay/deflate-zlib--sanitizer/trace-report.json",
+        "sha256": "023d6f790b1ce28a7c48e55c15ca1fd589fa2597e1ab1d8a4e18f93af0c0baf3",
+        "size_bytes": 218859
+      },
+      "new_artifact": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-sanitizer/pinned-replay/deflate-zlib--sanitizer/deflate_zlib/sanitizer/libtscb_deflate_zlib.so",
+        "sha256": "3df1caabf12c7717d8f2dc71234046df3dd1620dfce89004e5ae64c7dfea0382",
+        "size_bytes": 2841368
+      },
+      "old_artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/deflate_zlib/sanitizer/libtscb_deflate_zlib.so",
+        "sha256": "3df1caabf12c7717d8f2dc71234046df3dd1620dfce89004e5ae64c7dfea0382",
+        "size_bytes": 2841368
+      },
+      "actual_successful_execve_count": 86,
+      "executed_unique_file_count": 10,
+      "read_input_record_count": 386,
+      "link_map_count": 1,
+      "archive_member_contribution_count": 0,
+      "pre_existing_external_input_pre_post_sha_complete": true,
+      "unavailable_observed_file_count": 0,
+      "old_new_artifact_bytes_equal": true,
+      "old_new_objects": {
+        "old_count": 16,
+        "new_count": 16,
+        "equal": true
+      },
+      "old_new_normalized_declared_source_byte_closures_equal": true,
+      "old_new_native_test_executable_comparison": {
+        "old_count": 0,
+        "new_count": 0,
+        "byte_equal": true,
+        "current_hash_drift": []
+      },
+      "old_artifact_content_association_allowed": true,
+      "historical_actual_execution_claimed": false,
+      "old_N1_retroactive_grant": false
+    },
+    {
+      "codec": "dzip",
+      "profile": "release",
+      "fresh_build_closure_status": "PASS",
+      "traced_report": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r5/special-release/pinned-replay/dzip--release/trace-report.json",
+        "sha256": "8fc4d404354de349ed2f935b7d36cb543e61592795439392c7fdb39494051031",
+        "size_bytes": 4972546
+      },
+      "new_artifact": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r5/special-release/pinned-replay/dzip--release/dzip/release/libtscb_dzip.so",
+        "sha256": "ef8f077e287d2ceefca5bd65a3fc1919bd8501ddab117a6325f392b80ea1bdab",
+        "size_bytes": 2437000
+      },
+      "old_artifact": {
+        "path": "build/port-standard-v30-20261011/adapters/dzip/release/libtscb_dzip.so",
+        "sha256": "ef8f077e287d2ceefca5bd65a3fc1919bd8501ddab117a6325f392b80ea1bdab",
+        "size_bytes": 2437000
+      },
+      "actual_successful_execve_count": 1539,
+      "executed_unique_file_count": 24,
+      "read_input_record_count": 4443,
+      "link_map_count": 20,
+      "archive_member_contribution_count": 37,
+      "pre_existing_external_input_pre_post_sha_complete": true,
+      "unavailable_observed_file_count": 0,
+      "old_new_artifact_bytes_equal": true,
+      "old_new_objects": {
+        "old_count": 143,
+        "new_count": 143,
+        "equal": false,
+        "scope": "CURRENT_STATIC_OLD_NEW_CMAKE_OBJECT_SCAN_NOT_HISTORICAL_OBJECT_HASHES"
+      },
+      "old_new_normalized_declared_source_byte_closures_equal": false,
+      "old_new_native_test_executable_comparison": {
+        "old_count": 4,
+        "new_count": 4,
+        "byte_equal": false,
+        "current_hash_drift": []
+      },
+      "old_artifact_content_association_allowed": true,
+      "historical_actual_execution_claimed": false,
+      "old_N1_retroactive_grant": false
+    },
+    {
+      "codec": "dzip",
+      "profile": "sanitizer",
+      "fresh_build_closure_status": "PASS",
+      "traced_report": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r5/special-sanitizer/pinned-replay/dzip--sanitizer/trace-report.json",
+        "sha256": "b6510d655948357266e20780c47a2c3835c34b1980e2136d08e0a6466f0872c8",
+        "size_bytes": 5038517
+      },
+      "new_artifact": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r5/special-sanitizer/pinned-replay/dzip--sanitizer/dzip/sanitizer/libtscb_dzip.so",
+        "sha256": "a234678fe16f7f9259996398c5975dc5c4a835f584352dfc8767eed4fdbd5993",
+        "size_bytes": 188999720
+      },
+      "old_artifact": {
+        "path": "build/port-standard-v30-20261011/adapters/dzip/sanitizer/libtscb_dzip.so",
+        "sha256": "214b12808c598380dabc3b8c7c0ae8a2bf2cf33afa37898aef47b6a46b60b6de",
+        "size_bytes": 188999520
+      },
+      "actual_successful_execve_count": 1539,
+      "executed_unique_file_count": 24,
+      "read_input_record_count": 4446,
+      "link_map_count": 20,
+      "archive_member_contribution_count": 37,
+      "pre_existing_external_input_pre_post_sha_complete": true,
+      "unavailable_observed_file_count": 0,
+      "old_new_artifact_bytes_equal": false,
+      "old_new_objects": {
+        "old_count": 143,
+        "new_count": 143,
+        "equal": false,
+        "scope": "CURRENT_STATIC_OLD_NEW_CMAKE_OBJECT_SCAN_NOT_HISTORICAL_OBJECT_HASHES"
+      },
+      "old_new_normalized_declared_source_byte_closures_equal": false,
+      "old_new_native_test_executable_comparison": {
+        "old_count": 4,
+        "new_count": 4,
+        "byte_equal": false,
+        "current_hash_drift": []
+      },
+      "old_artifact_content_association_allowed": false,
+      "historical_actual_execution_claimed": false,
+      "old_N1_retroactive_grant": false
+    },
+    {
+      "codec": "elf",
+      "profile": "release",
+      "fresh_build_closure_status": "PASS",
+      "traced_report": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-release/pinned-replay/elf--release/trace-report.json",
+        "sha256": "cf3a1c5ea39d07fc98499b6f4bc3c05c55ebb54211a1ce06a930285e0b8bdd18",
+        "size_bytes": 178829
+      },
+      "new_artifact": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-release/pinned-replay/elf--release/elf/release/libtscb_elf.so",
+        "sha256": "861ab8d325ce9905836adc5a669f20b15b752043225df8030835e402f72b04d5",
+        "size_bytes": 114632
+      },
+      "old_artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/elf/release/libtscb_elf.so",
+        "sha256": "861ab8d325ce9905836adc5a669f20b15b752043225df8030835e402f72b04d5",
+        "size_bytes": 114632
+      },
+      "actual_successful_execve_count": 30,
+      "executed_unique_file_count": 10,
+      "read_input_record_count": 501,
+      "link_map_count": 1,
+      "archive_member_contribution_count": 0,
+      "pre_existing_external_input_pre_post_sha_complete": true,
+      "unavailable_observed_file_count": 0,
+      "old_new_artifact_bytes_equal": true,
+      "old_new_objects": {
+        "old_count": 2,
+        "new_count": 2,
+        "equal": true
+      },
+      "old_new_normalized_declared_source_byte_closures_equal": true,
+      "old_new_native_test_executable_comparison": {
+        "old_count": 0,
+        "new_count": 0,
+        "byte_equal": true,
+        "current_hash_drift": []
+      },
+      "old_artifact_content_association_allowed": true,
+      "historical_actual_execution_claimed": false,
+      "old_N1_retroactive_grant": false
+    },
+    {
+      "codec": "elf",
+      "profile": "sanitizer",
+      "fresh_build_closure_status": "PASS",
+      "traced_report": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-sanitizer/pinned-replay/elf--sanitizer/trace-report.json",
+        "sha256": "12496fe0682058fbbd583efcdeb0c161de358d9920ff0611f52f4ceba82cc022",
+        "size_bytes": 180125
+      },
+      "new_artifact": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-sanitizer/pinned-replay/elf--sanitizer/elf/sanitizer/libtscb_elf.so",
+        "sha256": "a3dc9ebb088c28fcbbc770e18b0c56cc8ae4c5445c91043c0aaa200e7daae757",
+        "size_bytes": 2564368
+      },
+      "old_artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/elf/sanitizer/libtscb_elf.so",
+        "sha256": "a3dc9ebb088c28fcbbc770e18b0c56cc8ae4c5445c91043c0aaa200e7daae757",
+        "size_bytes": 2564368
+      },
+      "actual_successful_execve_count": 30,
+      "executed_unique_file_count": 10,
+      "read_input_record_count": 503,
+      "link_map_count": 1,
+      "archive_member_contribution_count": 0,
+      "pre_existing_external_input_pre_post_sha_complete": true,
+      "unavailable_observed_file_count": 0,
+      "old_new_artifact_bytes_equal": true,
+      "old_new_objects": {
+        "old_count": 2,
+        "new_count": 2,
+        "equal": true
+      },
+      "old_new_normalized_declared_source_byte_closures_equal": true,
+      "old_new_native_test_executable_comparison": {
+        "old_count": 0,
+        "new_count": 0,
+        "byte_equal": true,
+        "current_hash_drift": []
+      },
+      "old_artifact_content_association_allowed": true,
+      "historical_actual_execution_claimed": false,
+      "old_N1_retroactive_grant": false
+    },
+    {
+      "codec": "elf-plus",
+      "profile": "release",
+      "fresh_build_closure_status": "PASS",
+      "traced_report": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-release/pinned-replay/elf-plus--release/trace-report.json",
+        "sha256": "52c937d1429987a0d459add578e366d60e272114480267e39ecd94a4330ff42d",
+        "size_bytes": 180430
+      },
+      "new_artifact": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-release/pinned-replay/elf-plus--release/elf_plus/release/libtscb_elf_plus.so",
+        "sha256": "497701eb38926cbe7f9ff80c858e64efa3ae90466c1bbc8cac1e15719cbf6fee",
+        "size_bytes": 126992
+      },
+      "old_artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/elf_plus/release/libtscb_elf_plus.so",
+        "sha256": "497701eb38926cbe7f9ff80c858e64efa3ae90466c1bbc8cac1e15719cbf6fee",
+        "size_bytes": 126992
+      },
+      "actual_successful_execve_count": 30,
+      "executed_unique_file_count": 10,
+      "read_input_record_count": 504,
+      "link_map_count": 1,
+      "archive_member_contribution_count": 0,
+      "pre_existing_external_input_pre_post_sha_complete": true,
+      "unavailable_observed_file_count": 0,
+      "old_new_artifact_bytes_equal": true,
+      "old_new_objects": {
+        "old_count": 2,
+        "new_count": 2,
+        "equal": true
+      },
+      "old_new_normalized_declared_source_byte_closures_equal": true,
+      "old_new_native_test_executable_comparison": {
+        "old_count": 0,
+        "new_count": 0,
+        "byte_equal": true,
+        "current_hash_drift": []
+      },
+      "old_artifact_content_association_allowed": true,
+      "historical_actual_execution_claimed": false,
+      "old_N1_retroactive_grant": false
+    },
+    {
+      "codec": "elf-plus",
+      "profile": "sanitizer",
+      "fresh_build_closure_status": "PASS",
+      "traced_report": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-sanitizer/pinned-replay/elf-plus--sanitizer/trace-report.json",
+        "sha256": "761b4ff30a7683202238e22af10bd6cf2b6c50d508b2780831a768dd56b7724c",
+        "size_bytes": 181726
+      },
+      "new_artifact": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-sanitizer/pinned-replay/elf-plus--sanitizer/elf_plus/sanitizer/libtscb_elf_plus.so",
+        "sha256": "05a0aa9d84de0dfa676f96850250a74ab99577a2dc2dee94c08d475e6a545f4d",
+        "size_bytes": 2601976
+      },
+      "old_artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/elf_plus/sanitizer/libtscb_elf_plus.so",
+        "sha256": "05a0aa9d84de0dfa676f96850250a74ab99577a2dc2dee94c08d475e6a545f4d",
+        "size_bytes": 2601976
+      },
+      "actual_successful_execve_count": 30,
+      "executed_unique_file_count": 10,
+      "read_input_record_count": 506,
+      "link_map_count": 1,
+      "archive_member_contribution_count": 0,
+      "pre_existing_external_input_pre_post_sha_complete": true,
+      "unavailable_observed_file_count": 0,
+      "old_new_artifact_bytes_equal": true,
+      "old_new_objects": {
+        "old_count": 2,
+        "new_count": 2,
+        "equal": true
+      },
+      "old_new_normalized_declared_source_byte_closures_equal": true,
+      "old_new_native_test_executable_comparison": {
+        "old_count": 0,
+        "new_count": 0,
+        "byte_equal": true,
+        "current_hash_drift": []
+      },
+      "old_artifact_content_association_allowed": true,
+      "historical_actual_execution_claimed": false,
+      "old_N1_retroactive_grant": false
+    },
+    {
+      "codec": "elf-star",
+      "profile": "release",
+      "fresh_build_closure_status": "PASS",
+      "traced_report": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-release/pinned-replay/elf-star--release/trace-report.json",
+        "sha256": "4fee07d1037ea78e97226643f1e4a7425ea348da9e0ced3a8d467989ba475a64",
+        "size_bytes": 179649
+      },
+      "new_artifact": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-release/pinned-replay/elf-star--release/elf_star/release/libtscb_elf_star.so",
+        "sha256": "fadc683592149e938d3b371604558282fc9c965397a220841fb03391950bafcd",
+        "size_bytes": 152272
+      },
+      "old_artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/elf_star/release/libtscb_elf_star.so",
+        "sha256": "fadc683592149e938d3b371604558282fc9c965397a220841fb03391950bafcd",
+        "size_bytes": 152272
+      },
+      "actual_successful_execve_count": 30,
+      "executed_unique_file_count": 10,
+      "read_input_record_count": 502,
+      "link_map_count": 1,
+      "archive_member_contribution_count": 0,
+      "pre_existing_external_input_pre_post_sha_complete": true,
+      "unavailable_observed_file_count": 0,
+      "old_new_artifact_bytes_equal": true,
+      "old_new_objects": {
+        "old_count": 2,
+        "new_count": 2,
+        "equal": true
+      },
+      "old_new_normalized_declared_source_byte_closures_equal": true,
+      "old_new_native_test_executable_comparison": {
+        "old_count": 0,
+        "new_count": 0,
+        "byte_equal": true,
+        "current_hash_drift": []
+      },
+      "old_artifact_content_association_allowed": true,
+      "historical_actual_execution_claimed": false,
+      "old_N1_retroactive_grant": false
+    },
+    {
+      "codec": "elf-star",
+      "profile": "sanitizer",
+      "fresh_build_closure_status": "PASS",
+      "traced_report": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-sanitizer/pinned-replay/elf-star--sanitizer/trace-report.json",
+        "sha256": "141b8c102dda339f7d6bc8f1615f2d3086e60f56a0e449515dd9c3cd358e7425",
+        "size_bytes": 180947
+      },
+      "new_artifact": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-sanitizer/pinned-replay/elf-star--sanitizer/elf_star/sanitizer/libtscb_elf_star.so",
+        "sha256": "58e791723e639d5d12f7cf4de780972b0c1ca77db91dc5e46ee75e7c567e8eed",
+        "size_bytes": 6427016
+      },
+      "old_artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/elf_star/sanitizer/libtscb_elf_star.so",
+        "sha256": "58e791723e639d5d12f7cf4de780972b0c1ca77db91dc5e46ee75e7c567e8eed",
+        "size_bytes": 6427016
+      },
+      "actual_successful_execve_count": 30,
+      "executed_unique_file_count": 10,
+      "read_input_record_count": 504,
+      "link_map_count": 1,
+      "archive_member_contribution_count": 0,
+      "pre_existing_external_input_pre_post_sha_complete": true,
+      "unavailable_observed_file_count": 0,
+      "old_new_artifact_bytes_equal": true,
+      "old_new_objects": {
+        "old_count": 2,
+        "new_count": 2,
+        "equal": true
+      },
+      "old_new_normalized_declared_source_byte_closures_equal": true,
+      "old_new_native_test_executable_comparison": {
+        "old_count": 0,
+        "new_count": 0,
+        "byte_equal": true,
+        "current_hash_drift": []
+      },
+      "old_artifact_content_association_allowed": true,
+      "historical_actual_execution_claimed": false,
+      "old_N1_retroactive_grant": false
+    },
+    {
+      "codec": "fabba",
+      "profile": "release",
+      "fresh_build_closure_status": "PASS",
+      "traced_report": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r5/special-release/pinned-replay/fabba--release/trace-report.json",
+        "sha256": "2c90717b43060063607bccb6045e8f10b502b14e7956a09ad77278c137f4c8a0",
+        "size_bytes": 1481319
+      },
+      "new_artifact": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r5/special-release/pinned-replay/fabba--release/fabba/release/libtscb_fabba.so",
+        "sha256": "04a78711e3e2ed1f92d003accfdd4ad5af88961bc5efaf080ac91d9ddd60ccba",
+        "size_bytes": 102616
+      },
+      "old_artifact": {
+        "path": "build/port-standard-v30-20261011/adapters/fabba/release/libtscb_fabba.so",
+        "sha256": "04a78711e3e2ed1f92d003accfdd4ad5af88961bc5efaf080ac91d9ddd60ccba",
+        "size_bytes": 102616
+      },
+      "actual_successful_execve_count": 373,
+      "executed_unique_file_count": 25,
+      "read_input_record_count": 1644,
+      "link_map_count": 16,
+      "archive_member_contribution_count": 2,
+      "pre_existing_external_input_pre_post_sha_complete": true,
+      "unavailable_observed_file_count": 0,
+      "old_new_artifact_bytes_equal": true,
+      "old_new_objects": {
+        "old_count": 10,
+        "new_count": 10,
+        "equal": true,
+        "scope": "CURRENT_STATIC_OLD_NEW_CMAKE_OBJECT_SCAN_NOT_HISTORICAL_OBJECT_HASHES"
+      },
+      "old_new_normalized_declared_source_byte_closures_equal": true,
+      "old_new_native_test_executable_comparison": {
+        "old_count": 5,
+        "new_count": 5,
+        "byte_equal": false,
+        "current_hash_drift": []
+      },
+      "old_artifact_content_association_allowed": true,
+      "historical_actual_execution_claimed": false,
+      "old_N1_retroactive_grant": false
+    },
+    {
+      "codec": "fabba",
+      "profile": "sanitizer",
+      "fresh_build_closure_status": "PASS",
+      "traced_report": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r5/special-sanitizer/pinned-replay/fabba--sanitizer/trace-report.json",
+        "sha256": "3a54f1cc41566a890a65dabd04e4ca4a10f5774db841ca4446bb2ae558df5fef",
+        "size_bytes": 1504713
+      },
+      "new_artifact": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r5/special-sanitizer/pinned-replay/fabba--sanitizer/fabba/sanitizer/libtscb_fabba.so",
+        "sha256": "d95ba8928107c4c3692fbeadf909785b2604864084b4542c1c95586a96a54f71",
+        "size_bytes": 5527760
+      },
+      "old_artifact": {
+        "path": "build/port-standard-v30-20261011/adapters/fabba/sanitizer/libtscb_fabba.so",
+        "sha256": "7298275cefd56129d8356e2764eb35760b90090544a900f5e73299cc66f19e98",
+        "size_bytes": 5527624
+      },
+      "actual_successful_execve_count": 373,
+      "executed_unique_file_count": 25,
+      "read_input_record_count": 1647,
+      "link_map_count": 16,
+      "archive_member_contribution_count": 2,
+      "pre_existing_external_input_pre_post_sha_complete": true,
+      "unavailable_observed_file_count": 0,
+      "old_new_artifact_bytes_equal": false,
+      "old_new_objects": {
+        "old_count": 10,
+        "new_count": 10,
+        "equal": false,
+        "scope": "CURRENT_STATIC_OLD_NEW_CMAKE_OBJECT_SCAN_NOT_HISTORICAL_OBJECT_HASHES"
+      },
+      "old_new_normalized_declared_source_byte_closures_equal": true,
+      "old_new_native_test_executable_comparison": {
+        "old_count": 5,
+        "new_count": 5,
+        "byte_equal": false,
+        "current_hash_drift": []
+      },
+      "old_artifact_content_association_allowed": false,
+      "historical_actual_execution_claimed": false,
+      "old_N1_retroactive_grant": false
+    },
+    {
+      "codec": "fse",
+      "profile": "release",
+      "fresh_build_closure_status": "PASS",
+      "traced_report": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-release/pinned-replay/fse--release/trace-report.json",
+        "sha256": "ebe2a3924a497531773f3866d7f8e33c00c12fd42e645fd84bbafdb64a727688",
+        "size_bytes": 155466
+      },
+      "new_artifact": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-release/pinned-replay/fse--release/fse/release/libtscb_fse.so",
+        "sha256": "d0dcb0cc3ed5257755bdcb60b1d334d2df7e637d0fa228a5719f5d96eecd4e55",
+        "size_bytes": 100256
+      },
+      "old_artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/fse/release/libtscb_fse.so",
+        "sha256": "d0dcb0cc3ed5257755bdcb60b1d334d2df7e637d0fa228a5719f5d96eecd4e55",
+        "size_bytes": 100256
+      },
+      "actual_successful_execve_count": 50,
+      "executed_unique_file_count": 10,
+      "read_input_record_count": 327,
+      "link_map_count": 1,
+      "archive_member_contribution_count": 0,
+      "pre_existing_external_input_pre_post_sha_complete": true,
+      "unavailable_observed_file_count": 0,
+      "old_new_artifact_bytes_equal": true,
+      "old_new_objects": {
+        "old_count": 7,
+        "new_count": 7,
+        "equal": true
+      },
+      "old_new_normalized_declared_source_byte_closures_equal": true,
+      "old_new_native_test_executable_comparison": {
+        "old_count": 0,
+        "new_count": 0,
+        "byte_equal": true,
+        "current_hash_drift": []
+      },
+      "old_artifact_content_association_allowed": true,
+      "historical_actual_execution_claimed": false,
+      "old_N1_retroactive_grant": false
+    },
+    {
+      "codec": "fse",
+      "profile": "sanitizer",
+      "fresh_build_closure_status": "PASS",
+      "traced_report": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-sanitizer/pinned-replay/fse--sanitizer/trace-report.json",
+        "sha256": "99293c4166a977e39658844a7388dfe10f30fe5d02ddda8d9a844603f91a5c05",
+        "size_bytes": 157112
+      },
+      "new_artifact": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-sanitizer/pinned-replay/fse--sanitizer/fse/sanitizer/libtscb_fse.so",
+        "sha256": "2c3520a3feeffaa3d6d1b3af5ccd67a1eec07ee4b2a70a6737ef1e953153c411",
+        "size_bytes": 1885240
+      },
+      "old_artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/fse/sanitizer/libtscb_fse.so",
+        "sha256": "2c3520a3feeffaa3d6d1b3af5ccd67a1eec07ee4b2a70a6737ef1e953153c411",
+        "size_bytes": 1885240
+      },
+      "actual_successful_execve_count": 50,
+      "executed_unique_file_count": 10,
+      "read_input_record_count": 329,
+      "link_map_count": 1,
+      "archive_member_contribution_count": 0,
+      "pre_existing_external_input_pre_post_sha_complete": true,
+      "unavailable_observed_file_count": 0,
+      "old_new_artifact_bytes_equal": true,
+      "old_new_objects": {
+        "old_count": 7,
+        "new_count": 7,
+        "equal": true
+      },
+      "old_new_normalized_declared_source_byte_closures_equal": true,
+      "old_new_native_test_executable_comparison": {
+        "old_count": 0,
+        "new_count": 0,
+        "byte_equal": true,
+        "current_hash_drift": []
+      },
+      "old_artifact_content_association_allowed": true,
+      "historical_actual_execution_claimed": false,
+      "old_N1_retroactive_grant": false
+    },
+    {
+      "codec": "huff0",
+      "profile": "release",
+      "fresh_build_closure_status": "PASS",
+      "traced_report": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-release/pinned-replay/huff0--release/trace-report.json",
+        "sha256": "abebb4cdb7d4d215ee60918221c23c3abacae9f2d9f649bd140560c24f40a284",
+        "size_bytes": 155868
+      },
+      "new_artifact": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-release/pinned-replay/huff0--release/huff0/release/libtscb_huff0.so",
+        "sha256": "45a858aaab387a28253102647887f161aacca8ecb690e3836b4e3a2e654c4bdb",
+        "size_bytes": 100264
+      },
+      "old_artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/huff0/release/libtscb_huff0.so",
+        "sha256": "45a858aaab387a28253102647887f161aacca8ecb690e3836b4e3a2e654c4bdb",
+        "size_bytes": 100264
+      },
+      "actual_successful_execve_count": 50,
+      "executed_unique_file_count": 10,
+      "read_input_record_count": 327,
+      "link_map_count": 1,
+      "archive_member_contribution_count": 0,
+      "pre_existing_external_input_pre_post_sha_complete": true,
+      "unavailable_observed_file_count": 0,
+      "old_new_artifact_bytes_equal": true,
+      "old_new_objects": {
+        "old_count": 7,
+        "new_count": 7,
+        "equal": true
+      },
+      "old_new_normalized_declared_source_byte_closures_equal": true,
+      "old_new_native_test_executable_comparison": {
+        "old_count": 0,
+        "new_count": 0,
+        "byte_equal": true,
+        "current_hash_drift": []
+      },
+      "old_artifact_content_association_allowed": true,
+      "historical_actual_execution_claimed": false,
+      "old_N1_retroactive_grant": false
+    },
+    {
+      "codec": "huff0",
+      "profile": "sanitizer",
+      "fresh_build_closure_status": "PASS",
+      "traced_report": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-sanitizer/pinned-replay/huff0--sanitizer/trace-report.json",
+        "sha256": "b17b60a2d00695c512e9795ec4845f4b6fad429977960140682d10dcb08b3df3",
+        "size_bytes": 157514
+      },
+      "new_artifact": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-sanitizer/pinned-replay/huff0--sanitizer/huff0/sanitizer/libtscb_huff0.so",
+        "sha256": "d9e04f23ff32df7864be120ab9c48388fb51c4d28a66f27093afb56a4b9385f9",
+        "size_bytes": 1878496
+      },
+      "old_artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/huff0/sanitizer/libtscb_huff0.so",
+        "sha256": "d9e04f23ff32df7864be120ab9c48388fb51c4d28a66f27093afb56a4b9385f9",
+        "size_bytes": 1878496
+      },
+      "actual_successful_execve_count": 50,
+      "executed_unique_file_count": 10,
+      "read_input_record_count": 329,
+      "link_map_count": 1,
+      "archive_member_contribution_count": 0,
+      "pre_existing_external_input_pre_post_sha_complete": true,
+      "unavailable_observed_file_count": 0,
+      "old_new_artifact_bytes_equal": true,
+      "old_new_objects": {
+        "old_count": 7,
+        "new_count": 7,
+        "equal": true
+      },
+      "old_new_normalized_declared_source_byte_closures_equal": true,
+      "old_new_native_test_executable_comparison": {
+        "old_count": 0,
+        "new_count": 0,
+        "byte_equal": true,
+        "current_hash_drift": []
+      },
+      "old_artifact_content_association_allowed": true,
+      "historical_actual_execution_claimed": false,
+      "old_N1_retroactive_grant": false
+    },
+    {
+      "codec": "leats-lossless-i64",
+      "profile": "release",
+      "fresh_build_closure_status": "PASS",
+      "traced_report": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-release/pinned-replay/leats-lossless-i64--release/trace-report.json",
+        "sha256": "bee31b176b5c92c340dde463627e975e70209984e976731ec070c01b1a9ac09b",
+        "size_bytes": 254865
+      },
+      "new_artifact": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-release/pinned-replay/leats-lossless-i64--release/leats_lossless_i64/release/libtscb_leats_lossless_i64.so",
+        "sha256": "7ca6b00bea90644c31d538a5435de32a6884243db236bc2de93c764635a6e239",
+        "size_bytes": 177296
+      },
+      "old_artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/leats_lossless_i64/release/libtscb_leats_lossless_i64.so",
+        "sha256": "7ca6b00bea90644c31d538a5435de32a6884243db236bc2de93c764635a6e239",
+        "size_bytes": 177296
+      },
+      "actual_successful_execve_count": 26,
+      "executed_unique_file_count": 10,
+      "read_input_record_count": 783,
+      "link_map_count": 1,
+      "archive_member_contribution_count": 0,
+      "pre_existing_external_input_pre_post_sha_complete": true,
+      "unavailable_observed_file_count": 0,
+      "old_new_artifact_bytes_equal": true,
+      "old_new_objects": {
+        "old_count": 1,
+        "new_count": 1,
+        "equal": true
+      },
+      "old_new_normalized_declared_source_byte_closures_equal": true,
+      "old_new_native_test_executable_comparison": {
+        "old_count": 0,
+        "new_count": 0,
+        "byte_equal": true,
+        "current_hash_drift": []
+      },
+      "old_artifact_content_association_allowed": true,
+      "historical_actual_execution_claimed": false,
+      "old_N1_retroactive_grant": false
+    },
+    {
+      "codec": "leats-lossless-i64",
+      "profile": "sanitizer",
+      "fresh_build_closure_status": "PASS",
+      "traced_report": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-sanitizer/pinned-replay/leats-lossless-i64--sanitizer/trace-report.json",
+        "sha256": "e1cbaff128af7141ae0b5dcb31d6033ec375ac226ed8c9fddf745fd6d03f03a6",
+        "size_bytes": 256095
+      },
+      "new_artifact": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-sanitizer/pinned-replay/leats-lossless-i64--sanitizer/leats_lossless_i64/sanitizer/libtscb_leats_lossless_i64.so",
+        "sha256": "c2320a70ed369444e2e73087703f58946d3325d4a23ffd6d41fe347f935778a8",
+        "size_bytes": 8090928
+      },
+      "old_artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/leats_lossless_i64/sanitizer/libtscb_leats_lossless_i64.so",
+        "sha256": "c2320a70ed369444e2e73087703f58946d3325d4a23ffd6d41fe347f935778a8",
+        "size_bytes": 8090928
+      },
+      "actual_successful_execve_count": 26,
+      "executed_unique_file_count": 10,
+      "read_input_record_count": 785,
+      "link_map_count": 1,
+      "archive_member_contribution_count": 0,
+      "pre_existing_external_input_pre_post_sha_complete": true,
+      "unavailable_observed_file_count": 0,
+      "old_new_artifact_bytes_equal": true,
+      "old_new_objects": {
+        "old_count": 1,
+        "new_count": 1,
+        "equal": true
+      },
+      "old_new_normalized_declared_source_byte_closures_equal": true,
+      "old_new_native_test_executable_comparison": {
+        "old_count": 0,
+        "new_count": 0,
+        "byte_equal": true,
+        "current_hash_drift": []
+      },
+      "old_artifact_content_association_allowed": true,
+      "historical_actual_execution_claimed": false,
+      "old_N1_retroactive_grant": false
+    },
+    {
+      "codec": "lz4-frame",
+      "profile": "release",
+      "fresh_build_closure_status": "PASS",
+      "traced_report": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-release/pinned-replay/lz4-frame--release/trace-report.json",
+        "sha256": "3747a707ba296f942230c80eece936522da6dd876a00d22bc97f35f9d7660559",
+        "size_bytes": 139285
+      },
+      "new_artifact": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-release/pinned-replay/lz4-frame--release/lz4_frame/release/libtscb_lz4_frame.so",
+        "sha256": "015b379d88be9f2ac07fcea2902839f9195bc21576d0fb59df95f20e658c039e",
+        "size_bytes": 246832
+      },
+      "old_artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/lz4_frame/release/libtscb_lz4_frame.so",
+        "sha256": "015b379d88be9f2ac07fcea2902839f9195bc21576d0fb59df95f20e658c039e",
+        "size_bytes": 246832
+      },
+      "actual_successful_execve_count": 42,
+      "executed_unique_file_count": 10,
+      "read_input_record_count": 302,
+      "link_map_count": 1,
+      "archive_member_contribution_count": 0,
+      "pre_existing_external_input_pre_post_sha_complete": true,
+      "unavailable_observed_file_count": 0,
+      "old_new_artifact_bytes_equal": true,
+      "old_new_objects": {
+        "old_count": 5,
+        "new_count": 5,
+        "equal": true
+      },
+      "old_new_normalized_declared_source_byte_closures_equal": true,
+      "old_new_native_test_executable_comparison": {
+        "old_count": 0,
+        "new_count": 0,
+        "byte_equal": true,
+        "current_hash_drift": []
+      },
+      "old_artifact_content_association_allowed": true,
+      "historical_actual_execution_claimed": false,
+      "old_N1_retroactive_grant": false
+    },
+    {
+      "codec": "lz4-frame",
+      "profile": "sanitizer",
+      "fresh_build_closure_status": "PASS",
+      "traced_report": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-sanitizer/pinned-replay/lz4-frame--sanitizer/trace-report.json",
+        "sha256": "57870bb24867563097415cd32c2ff7b60503ad9e2bd8ab398b16aff8c4573a44",
+        "size_bytes": 141518
+      },
+      "new_artifact": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-sanitizer/pinned-replay/lz4-frame--sanitizer/lz4_frame/sanitizer/libtscb_lz4_frame.so",
+        "sha256": "7a8fea0a6b2438241e942ab99317362f82b4cd5db5026f5b69a6bfe2f7cf672d",
+        "size_bytes": 4600768
+      },
+      "old_artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/lz4_frame/sanitizer/libtscb_lz4_frame.so",
+        "sha256": "7a8fea0a6b2438241e942ab99317362f82b4cd5db5026f5b69a6bfe2f7cf672d",
+        "size_bytes": 4600768
+      },
+      "actual_successful_execve_count": 42,
+      "executed_unique_file_count": 10,
+      "read_input_record_count": 306,
+      "link_map_count": 1,
+      "archive_member_contribution_count": 0,
+      "pre_existing_external_input_pre_post_sha_complete": true,
+      "unavailable_observed_file_count": 0,
+      "old_new_artifact_bytes_equal": true,
+      "old_new_objects": {
+        "old_count": 5,
+        "new_count": 5,
+        "equal": true
+      },
+      "old_new_normalized_declared_source_byte_closures_equal": true,
+      "old_new_native_test_executable_comparison": {
+        "old_count": 0,
+        "new_count": 0,
+        "byte_equal": true,
+        "current_hash_drift": []
+      },
+      "old_artifact_content_association_allowed": true,
+      "historical_actual_execution_claimed": false,
+      "old_N1_retroactive_grant": false
+    },
+    {
+      "codec": "lzss-dipperstein-c",
+      "profile": "release",
+      "fresh_build_closure_status": "PASS",
+      "traced_report": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-release/pinned-replay/lzss-dipperstein-c--release/trace-report.json",
+        "sha256": "5187368eab55e7b3732d50d832a9dd59511312c1cc11505e0b387ad42f99b413",
+        "size_bytes": 147698
+      },
+      "new_artifact": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-release/pinned-replay/lzss-dipperstein-c--release/lzss_dipperstein_c/release/libtscb_lzss_dipperstein_c.so",
+        "sha256": "64639cd65686096f31d46137ae2b70f8ab028e3f673152866e4e53e92f24d8e5",
+        "size_bytes": 30728
+      },
+      "old_artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/lzss_dipperstein_c/release/libtscb_lzss_dipperstein_c.so",
+        "sha256": "64639cd65686096f31d46137ae2b70f8ab028e3f673152866e4e53e92f24d8e5",
+        "size_bytes": 30728
+      },
+      "actual_successful_execve_count": 39,
+      "executed_unique_file_count": 11,
+      "read_input_record_count": 338,
+      "link_map_count": 1,
+      "archive_member_contribution_count": 0,
+      "pre_existing_external_input_pre_post_sha_complete": true,
+      "unavailable_observed_file_count": 0,
+      "old_new_artifact_bytes_equal": true,
+      "old_new_objects": {
+        "old_count": 4,
+        "new_count": 4,
+        "equal": true
+      },
+      "old_new_normalized_declared_source_byte_closures_equal": true,
+      "old_new_native_test_executable_comparison": {
+        "old_count": 0,
+        "new_count": 0,
+        "byte_equal": true,
+        "current_hash_drift": []
+      },
+      "old_artifact_content_association_allowed": true,
+      "historical_actual_execution_claimed": false,
+      "old_N1_retroactive_grant": false
+    },
+    {
+      "codec": "lzss-dipperstein-c",
+      "profile": "sanitizer",
+      "fresh_build_closure_status": "PASS",
+      "traced_report": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-sanitizer/pinned-replay/lzss-dipperstein-c--sanitizer/trace-report.json",
+        "sha256": "cfccb62bec0bd0cdfe58c76e208e14b16b1757006b5fc5624ee11c66cc5585ba",
+        "size_bytes": 149163
+      },
+      "new_artifact": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-sanitizer/pinned-replay/lzss-dipperstein-c--sanitizer/lzss_dipperstein_c/sanitizer/libtscb_lzss_dipperstein_c.so",
+        "sha256": "a82dddcc0b654cbf8bcc4ee73bf877a47b03e63bd88aec2093020e33f3214552",
+        "size_bytes": 345304
+      },
+      "old_artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/lzss_dipperstein_c/sanitizer/libtscb_lzss_dipperstein_c.so",
+        "sha256": "3e0c64a60b9bda6b4d1a7e6ae8b89342fd1d6410577705c87df46650b189c380",
+        "size_bytes": 345160
+      },
+      "actual_successful_execve_count": 39,
+      "executed_unique_file_count": 11,
+      "read_input_record_count": 340,
+      "link_map_count": 1,
+      "archive_member_contribution_count": 0,
+      "pre_existing_external_input_pre_post_sha_complete": true,
+      "unavailable_observed_file_count": 0,
+      "old_new_artifact_bytes_equal": false,
+      "old_new_objects": {
+        "old_count": 4,
+        "new_count": 4,
+        "equal": false
+      },
+      "old_new_normalized_declared_source_byte_closures_equal": true,
+      "old_new_native_test_executable_comparison": {
+        "old_count": 0,
+        "new_count": 0,
+        "byte_equal": true,
+        "current_hash_drift": []
+      },
+      "old_artifact_content_association_allowed": false,
+      "historical_actual_execution_claimed": false,
+      "old_N1_retroactive_grant": false
+    },
+    {
+      "codec": "lzss-raw",
+      "profile": "release",
+      "fresh_build_closure_status": "PASS",
+      "traced_report": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-release/pinned-replay/lzss-raw--release/trace-report.json",
+        "sha256": "3a47e27b93f1888cc7c9082559cad9ea659f71ce81e3a20a2a3274bdddceda73",
+        "size_bytes": 151487
+      },
+      "new_artifact": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-release/pinned-replay/lzss-raw--release/lzss_raw/release/libtscb_lzss_raw.so",
+        "sha256": "9b6034d6a5f6eb1589e23d35812476cbbba5e628a403eebfee75e97a757c0329",
+        "size_bytes": 21440
+      },
+      "old_artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/lzss_raw/release/libtscb_lzss_raw.so",
+        "sha256": "9b6034d6a5f6eb1589e23d35812476cbbba5e628a403eebfee75e97a757c0329",
+        "size_bytes": 21440
+      },
+      "actual_successful_execve_count": 30,
+      "executed_unique_file_count": 10,
+      "read_input_record_count": 398,
+      "link_map_count": 1,
+      "archive_member_contribution_count": 0,
+      "pre_existing_external_input_pre_post_sha_complete": true,
+      "unavailable_observed_file_count": 0,
+      "old_new_artifact_bytes_equal": true,
+      "old_new_objects": {
+        "old_count": 2,
+        "new_count": 2,
+        "equal": true
+      },
+      "old_new_normalized_declared_source_byte_closures_equal": true,
+      "old_new_native_test_executable_comparison": {
+        "old_count": 0,
+        "new_count": 0,
+        "byte_equal": true,
+        "current_hash_drift": []
+      },
+      "old_artifact_content_association_allowed": true,
+      "historical_actual_execution_claimed": false,
+      "old_N1_retroactive_grant": false
+    },
+    {
+      "codec": "lzss-raw",
+      "profile": "sanitizer",
+      "fresh_build_closure_status": "PASS",
+      "traced_report": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-sanitizer/pinned-replay/lzss-raw--sanitizer/trace-report.json",
+        "sha256": "de1dbf6a1f5baf83798c82e033efba1bcc708ed51288efc99db69320e8d76bcf",
+        "size_bytes": 152785
+      },
+      "new_artifact": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-sanitizer/pinned-replay/lzss-raw--sanitizer/lzss_raw/sanitizer/libtscb_lzss_raw.so",
+        "sha256": "134e60e40f738ba4f52dec374551e77ad1980374db9a1e88392f20f1aceed924",
+        "size_bytes": 174656
+      },
+      "old_artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/lzss_raw/sanitizer/libtscb_lzss_raw.so",
+        "sha256": "134e60e40f738ba4f52dec374551e77ad1980374db9a1e88392f20f1aceed924",
+        "size_bytes": 174656
+      },
+      "actual_successful_execve_count": 30,
+      "executed_unique_file_count": 10,
+      "read_input_record_count": 400,
+      "link_map_count": 1,
+      "archive_member_contribution_count": 0,
+      "pre_existing_external_input_pre_post_sha_complete": true,
+      "unavailable_observed_file_count": 0,
+      "old_new_artifact_bytes_equal": true,
+      "old_new_objects": {
+        "old_count": 2,
+        "new_count": 2,
+        "equal": true
+      },
+      "old_new_normalized_declared_source_byte_closures_equal": true,
+      "old_new_native_test_executable_comparison": {
+        "old_count": 0,
+        "new_count": 0,
+        "byte_equal": true,
+        "current_hash_drift": []
+      },
+      "old_artifact_content_association_allowed": true,
+      "historical_actual_execution_claimed": false,
+      "old_N1_retroactive_grant": false
+    },
+    {
+      "codec": "neats-lossless-i64",
+      "profile": "release",
+      "fresh_build_closure_status": "PASS",
+      "traced_report": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-release/pinned-replay/neats-lossless-i64--release/trace-report.json",
+        "sha256": "c040229b0ad309869eb6e96ad9113ef2ac8eaad2e7c9793be03b0d2e234f8ac0",
+        "size_bytes": 254867
+      },
+      "new_artifact": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-release/pinned-replay/neats-lossless-i64--release/neats_lossless_i64/release/libtscb_neats_lossless_i64.so",
+        "sha256": "1a9a5fd26a454cb5161159fe2914aba785619ee6b6d51139a004fb1fdaffcf35",
+        "size_bytes": 287344
+      },
+      "old_artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/neats_lossless_i64/release/libtscb_neats_lossless_i64.so",
+        "sha256": "1a9a5fd26a454cb5161159fe2914aba785619ee6b6d51139a004fb1fdaffcf35",
+        "size_bytes": 287344
+      },
+      "actual_successful_execve_count": 26,
+      "executed_unique_file_count": 10,
+      "read_input_record_count": 783,
+      "link_map_count": 1,
+      "archive_member_contribution_count": 0,
+      "pre_existing_external_input_pre_post_sha_complete": true,
+      "unavailable_observed_file_count": 0,
+      "old_new_artifact_bytes_equal": true,
+      "old_new_objects": {
+        "old_count": 1,
+        "new_count": 1,
+        "equal": true
+      },
+      "old_new_normalized_declared_source_byte_closures_equal": true,
+      "old_new_native_test_executable_comparison": {
+        "old_count": 0,
+        "new_count": 0,
+        "byte_equal": true,
+        "current_hash_drift": []
+      },
+      "old_artifact_content_association_allowed": true,
+      "historical_actual_execution_claimed": false,
+      "old_N1_retroactive_grant": false
+    },
+    {
+      "codec": "neats-lossless-i64",
+      "profile": "sanitizer",
+      "fresh_build_closure_status": "PASS",
+      "traced_report": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-sanitizer/pinned-replay/neats-lossless-i64--sanitizer/trace-report.json",
+        "sha256": "99c62256f21b42cf6d9563707d76920f8acee50fa8f2ea49dc9050b15a4017b0",
+        "size_bytes": 256097
+      },
+      "new_artifact": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-sanitizer/pinned-replay/neats-lossless-i64--sanitizer/neats_lossless_i64/sanitizer/libtscb_neats_lossless_i64.so",
+        "sha256": "68712bc55693444e979419bbfff4d4c99737b9a5619177ab0c8c497729027ad6",
+        "size_bytes": 11868576
+      },
+      "old_artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/neats_lossless_i64/sanitizer/libtscb_neats_lossless_i64.so",
+        "sha256": "68712bc55693444e979419bbfff4d4c99737b9a5619177ab0c8c497729027ad6",
+        "size_bytes": 11868576
+      },
+      "actual_successful_execve_count": 26,
+      "executed_unique_file_count": 10,
+      "read_input_record_count": 785,
+      "link_map_count": 1,
+      "archive_member_contribution_count": 0,
+      "pre_existing_external_input_pre_post_sha_complete": true,
+      "unavailable_observed_file_count": 0,
+      "old_new_artifact_bytes_equal": true,
+      "old_new_objects": {
+        "old_count": 1,
+        "new_count": 1,
+        "equal": true
+      },
+      "old_new_normalized_declared_source_byte_closures_equal": true,
+      "old_new_native_test_executable_comparison": {
+        "old_count": 0,
+        "new_count": 0,
+        "byte_equal": true,
+        "current_hash_drift": []
+      },
+      "old_artifact_content_association_allowed": true,
+      "historical_actual_execution_claimed": false,
+      "old_N1_retroactive_grant": false
+    },
+    {
+      "codec": "self-star",
+      "profile": "release",
+      "fresh_build_closure_status": "PASS",
+      "traced_report": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-release/pinned-replay/self-star--release/trace-report.json",
+        "sha256": "6cb4b2b7f1b4088a4c567eebca7bb1db5d7766e55c8b3d1be914f310b65ca682",
+        "size_bytes": 180801
+      },
+      "new_artifact": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-release/pinned-replay/self-star--release/self_star/release/libtscb_self_star.so",
+        "sha256": "f81a8481f021488620df94f4e0de6bce451cb4090def1ff04ed9759fc987bad3",
+        "size_bytes": 154912
+      },
+      "old_artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/self_star/release/libtscb_self_star.so",
+        "sha256": "f81a8481f021488620df94f4e0de6bce451cb4090def1ff04ed9759fc987bad3",
+        "size_bytes": 154912
+      },
+      "actual_successful_execve_count": 30,
+      "executed_unique_file_count": 10,
+      "read_input_record_count": 505,
+      "link_map_count": 1,
+      "archive_member_contribution_count": 0,
+      "pre_existing_external_input_pre_post_sha_complete": true,
+      "unavailable_observed_file_count": 0,
+      "old_new_artifact_bytes_equal": true,
+      "old_new_objects": {
+        "old_count": 2,
+        "new_count": 2,
+        "equal": true
+      },
+      "old_new_normalized_declared_source_byte_closures_equal": true,
+      "old_new_native_test_executable_comparison": {
+        "old_count": 0,
+        "new_count": 0,
+        "byte_equal": true,
+        "current_hash_drift": []
+      },
+      "old_artifact_content_association_allowed": true,
+      "historical_actual_execution_claimed": false,
+      "old_N1_retroactive_grant": false
+    },
+    {
+      "codec": "self-star",
+      "profile": "sanitizer",
+      "fresh_build_closure_status": "PASS",
+      "traced_report": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-sanitizer/pinned-replay/self-star--sanitizer/trace-report.json",
+        "sha256": "47b434a96abdf91f8b48260d2b99f31523c201623162e2d17b73aeca6db45fba",
+        "size_bytes": 182099
+      },
+      "new_artifact": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-sanitizer/pinned-replay/self-star--sanitizer/self_star/sanitizer/libtscb_self_star.so",
+        "sha256": "febf493d45946e43ddc0e237b010a51dee9aa847ed9e18590c1318982cf896b2",
+        "size_bytes": 6772384
+      },
+      "old_artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/self_star/sanitizer/libtscb_self_star.so",
+        "sha256": "febf493d45946e43ddc0e237b010a51dee9aa847ed9e18590c1318982cf896b2",
+        "size_bytes": 6772384
+      },
+      "actual_successful_execve_count": 30,
+      "executed_unique_file_count": 10,
+      "read_input_record_count": 507,
+      "link_map_count": 1,
+      "archive_member_contribution_count": 0,
+      "pre_existing_external_input_pre_post_sha_complete": true,
+      "unavailable_observed_file_count": 0,
+      "old_new_artifact_bytes_equal": true,
+      "old_new_objects": {
+        "old_count": 2,
+        "new_count": 2,
+        "equal": true
+      },
+      "old_new_normalized_declared_source_byte_closures_equal": true,
+      "old_new_native_test_executable_comparison": {
+        "old_count": 0,
+        "new_count": 0,
+        "byte_equal": true,
+        "current_hash_drift": []
+      },
+      "old_artifact_content_association_allowed": true,
+      "historical_actual_execution_claimed": false,
+      "old_N1_retroactive_grant": false
+    },
+    {
+      "codec": "serf-qt",
+      "profile": "release",
+      "fresh_build_closure_status": "PASS",
+      "traced_report": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-release/pinned-replay/serf-qt--release/trace-report.json",
+        "sha256": "f1ac9626d276b5ab2448359bc42d1a6ed22cb2c0d47d75306f4dc33bbce6d23b",
+        "size_bytes": 293886
+      },
+      "new_artifact": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-release/pinned-replay/serf-qt--release/serf_qt/release/libtscb_serf_qt.so",
+        "sha256": "e5ca2b2312bcb23c6bd212f9b130c8496df7e41fb5e2620b34189b48bee7bd17",
+        "size_bytes": 102096
+      },
+      "old_artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/serf_qt/release/libtscb_serf_qt.so",
+        "sha256": "e5ca2b2312bcb23c6bd212f9b130c8496df7e41fb5e2620b34189b48bee7bd17",
+        "size_bytes": 102096
+      },
+      "actual_successful_execve_count": 92,
+      "executed_unique_file_count": 11,
+      "read_input_record_count": 611,
+      "link_map_count": 1,
+      "archive_member_contribution_count": 0,
+      "pre_existing_external_input_pre_post_sha_complete": true,
+      "unavailable_observed_file_count": 0,
+      "old_new_artifact_bytes_equal": true,
+      "old_new_objects": {
+        "old_count": 16,
+        "new_count": 16,
+        "equal": true
+      },
+      "old_new_normalized_declared_source_byte_closures_equal": true,
+      "old_new_native_test_executable_comparison": {
+        "old_count": 0,
+        "new_count": 0,
+        "byte_equal": true,
+        "current_hash_drift": []
+      },
+      "old_artifact_content_association_allowed": true,
+      "historical_actual_execution_claimed": false,
+      "old_N1_retroactive_grant": false
+    },
+    {
+      "codec": "serf-qt",
+      "profile": "sanitizer",
+      "fresh_build_closure_status": "PASS",
+      "traced_report": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-sanitizer/pinned-replay/serf-qt--sanitizer/trace-report.json",
+        "sha256": "805e01cbbc22d56d29c61e3e3a67f6d06fc0f79dbc2c46208c5e0ba6aae1823e",
+        "size_bytes": 296499
+      },
+      "new_artifact": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-sanitizer/pinned-replay/serf-qt--sanitizer/serf_qt/sanitizer/libtscb_serf_qt.so",
+        "sha256": "639737a77ff12ec1a56b84d2e6a003b59820fc289564087de5737a3796802d1a",
+        "size_bytes": 4686896
+      },
+      "old_artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/serf_qt/sanitizer/libtscb_serf_qt.so",
+        "sha256": "4c9ac36597e6fa42be5c0334482a5e2fd1093e2045ef977c2892f721e062b12a",
+        "size_bytes": 4681560
+      },
+      "actual_successful_execve_count": 92,
+      "executed_unique_file_count": 11,
+      "read_input_record_count": 613,
+      "link_map_count": 1,
+      "archive_member_contribution_count": 0,
+      "pre_existing_external_input_pre_post_sha_complete": true,
+      "unavailable_observed_file_count": 0,
+      "old_new_artifact_bytes_equal": false,
+      "old_new_objects": {
+        "old_count": 16,
+        "new_count": 16,
+        "equal": false
+      },
+      "old_new_normalized_declared_source_byte_closures_equal": true,
+      "old_new_native_test_executable_comparison": {
+        "old_count": 0,
+        "new_count": 0,
+        "byte_equal": true,
+        "current_hash_drift": []
+      },
+      "old_artifact_content_association_allowed": false,
+      "historical_actual_execution_claimed": false,
+      "old_N1_retroactive_grant": false
+    },
+    {
+      "codec": "serf-xor",
+      "profile": "release",
+      "fresh_build_closure_status": "PASS",
+      "traced_report": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-release/pinned-replay/serf-xor--release/trace-report.json",
+        "sha256": "98d8dcb13504f577146ebf860264fec86c25eeb6a24603f3dc557b874d70f872",
+        "size_bytes": 294376
+      },
+      "new_artifact": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-release/pinned-replay/serf-xor--release/serf_xor/release/libtscb_serf_xor.so",
+        "sha256": "87aa5105cc09c290357915215b7abd836369e265d3e3d6e27a1923918ebfb937",
+        "size_bytes": 106936
+      },
+      "old_artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/serf_xor/release/libtscb_serf_xor.so",
+        "sha256": "87aa5105cc09c290357915215b7abd836369e265d3e3d6e27a1923918ebfb937",
+        "size_bytes": 106936
+      },
+      "actual_successful_execve_count": 92,
+      "executed_unique_file_count": 11,
+      "read_input_record_count": 611,
+      "link_map_count": 1,
+      "archive_member_contribution_count": 0,
+      "pre_existing_external_input_pre_post_sha_complete": true,
+      "unavailable_observed_file_count": 0,
+      "old_new_artifact_bytes_equal": true,
+      "old_new_objects": {
+        "old_count": 16,
+        "new_count": 16,
+        "equal": true
+      },
+      "old_new_normalized_declared_source_byte_closures_equal": true,
+      "old_new_native_test_executable_comparison": {
+        "old_count": 0,
+        "new_count": 0,
+        "byte_equal": true,
+        "current_hash_drift": []
+      },
+      "old_artifact_content_association_allowed": true,
+      "historical_actual_execution_claimed": false,
+      "old_N1_retroactive_grant": false
+    },
+    {
+      "codec": "serf-xor",
+      "profile": "sanitizer",
+      "fresh_build_closure_status": "PASS",
+      "traced_report": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-sanitizer/pinned-replay/serf-xor--sanitizer/trace-report.json",
+        "sha256": "4e2e7919ee2e1fd35b727b0316b1811252993f3607e6ce655df2e5ea2fc18546",
+        "size_bytes": 296990
+      },
+      "new_artifact": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-sanitizer/pinned-replay/serf-xor--sanitizer/serf_xor/sanitizer/libtscb_serf_xor.so",
+        "sha256": "39e2a61d29c561b338c9e0eb9de39f7a47333fe0cde38581228dfbb6f99d0d3b",
+        "size_bytes": 7075336
+      },
+      "old_artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/serf_xor/sanitizer/libtscb_serf_xor.so",
+        "sha256": "413d94499865c3f43c694b73bafd9851d1f04bf854fd4b0c77caf7d21b21baa1",
+        "size_bytes": 7069976
+      },
+      "actual_successful_execve_count": 92,
+      "executed_unique_file_count": 11,
+      "read_input_record_count": 613,
+      "link_map_count": 1,
+      "archive_member_contribution_count": 0,
+      "pre_existing_external_input_pre_post_sha_complete": true,
+      "unavailable_observed_file_count": 0,
+      "old_new_artifact_bytes_equal": false,
+      "old_new_objects": {
+        "old_count": 16,
+        "new_count": 16,
+        "equal": false
+      },
+      "old_new_normalized_declared_source_byte_closures_equal": true,
+      "old_new_native_test_executable_comparison": {
+        "old_count": 0,
+        "new_count": 0,
+        "byte_equal": true,
+        "current_hash_drift": []
+      },
+      "old_artifact_content_association_allowed": false,
+      "historical_actual_execution_claimed": false,
+      "old_N1_retroactive_grant": false
+    },
+    {
+      "codec": "simdcomp-u32",
+      "profile": "release",
+      "fresh_build_closure_status": "PASS",
+      "traced_report": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r5/special-release/pinned-replay/simdcomp-u32--release/trace-report.json",
+        "sha256": "709ec9dba7dd2c2e3d27638d863674ad4143c3237458bd73ad4a67ef2e872911",
+        "size_bytes": 581408
+      },
+      "new_artifact": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r5/special-release/pinned-replay/simdcomp-u32--release/simdcomp_u32/release/libtscb_simdcomp_u32.so",
+        "sha256": "7b904c3d3b6c0bf5976ad75eddb4cc6bc28b86d7ea634804740a547ca3c1409c",
+        "size_bytes": 849184
+      },
+      "old_artifact": {
+        "path": "build/adapters/simdcomp_u32/release/libtscb_simdcomp_u32.so",
+        "sha256": "7b904c3d3b6c0bf5976ad75eddb4cc6bc28b86d7ea634804740a547ca3c1409c",
+        "size_bytes": 849184
+      },
+      "actual_successful_execve_count": 68,
+      "executed_unique_file_count": 13,
+      "read_input_record_count": 1294,
+      "link_map_count": 2,
+      "archive_member_contribution_count": 1,
+      "pre_existing_external_input_pre_post_sha_complete": true,
+      "unavailable_observed_file_count": 0,
+      "old_new_artifact_bytes_equal": true,
+      "old_new_objects": {
+        "old_count": 9,
+        "new_count": 9,
+        "equal": true,
+        "scope": "SAVED_BUILD_RECORD_OBJECTS"
+      },
+      "old_new_normalized_declared_source_byte_closures_equal": true,
+      "old_new_native_test_executable_comparison": {
+        "old_count": 0,
+        "new_count": 0,
+        "byte_equal": true,
+        "current_hash_drift": []
+      },
+      "old_artifact_content_association_allowed": true,
+      "historical_actual_execution_claimed": false,
+      "old_N1_retroactive_grant": false
+    },
+    {
+      "codec": "simdcomp-u32",
+      "profile": "sanitizer",
+      "fresh_build_closure_status": "PASS",
+      "traced_report": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r5/special-sanitizer/pinned-replay/simdcomp-u32--sanitizer/trace-report.json",
+        "sha256": "8b4497e76158d16830d0698bdb57e7d871e7fd3484252b57139134b555123d85",
+        "size_bytes": 585602
+      },
+      "new_artifact": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r5/special-sanitizer/pinned-replay/simdcomp-u32--sanitizer/simdcomp_u32/sanitizer/libtscb_simdcomp_u32.so",
+        "sha256": "1d8ecf47d98d8bed3e5d236b0494d7235077b01a79a88619b56f380116759431",
+        "size_bytes": 42832784
+      },
+      "old_artifact": {
+        "path": "build/adapters/simdcomp_u32/sanitizer/libtscb_simdcomp_u32.so",
+        "sha256": "5149f17bb90dd4b815b04c69f0cfd09f9a0c324590c3dd80183fe0a8785434bb",
+        "size_bytes": 42827776
+      },
+      "actual_successful_execve_count": 68,
+      "executed_unique_file_count": 13,
+      "read_input_record_count": 1296,
+      "link_map_count": 2,
+      "archive_member_contribution_count": 1,
+      "pre_existing_external_input_pre_post_sha_complete": true,
+      "unavailable_observed_file_count": 0,
+      "old_new_artifact_bytes_equal": false,
+      "old_new_objects": {
+        "old_count": 9,
+        "new_count": 9,
+        "equal": false,
+        "scope": "SAVED_BUILD_RECORD_OBJECTS"
+      },
+      "old_new_normalized_declared_source_byte_closures_equal": true,
+      "old_new_native_test_executable_comparison": {
+        "old_count": 0,
+        "new_count": 0,
+        "byte_equal": true,
+        "current_hash_drift": []
+      },
+      "old_artifact_content_association_allowed": false,
+      "historical_actual_execution_claimed": false,
+      "old_N1_retroactive_grant": false
+    },
+    {
+      "codec": "simdcomp-u32",
+      "profile": "debug",
+      "fresh_build_closure_status": "PASS",
+      "traced_report": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r5/simd-debug/pinned-replay/simdcomp-u32--debug/trace-report.json",
+        "sha256": "c599395d2cff693a33e2f1122a8b836b9c13fc277601ad27eb5a94015d29eaeb",
+        "size_bytes": 576569
+      },
+      "new_artifact": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r5/simd-debug/pinned-replay/simdcomp-u32--debug/simdcomp_u32/debug/libtscb_simdcomp_u32.so",
+        "sha256": "0f65bc4b8541e9fd6e7bc3680de9a87391a360f32beb404208fdc21757ee8ee3",
+        "size_bytes": 11913336
+      },
+      "old_artifact": {
+        "path": "build/adapters/simdcomp_u32/debug/libtscb_simdcomp_u32.so",
+        "sha256": "ffcf777cb3edc29cb2ae9193c82294a8eae5bdc8f02434f6e7dd9bf9f8a815d1",
+        "size_bytes": 11912528
+      },
+      "actual_successful_execve_count": 68,
+      "executed_unique_file_count": 13,
+      "read_input_record_count": 1294,
+      "link_map_count": 2,
+      "archive_member_contribution_count": 1,
+      "pre_existing_external_input_pre_post_sha_complete": true,
+      "unavailable_observed_file_count": 0,
+      "old_new_artifact_bytes_equal": false,
+      "old_new_objects": {
+        "old_count": 9,
+        "new_count": 9,
+        "equal": false,
+        "scope": "SAVED_BUILD_RECORD_OBJECTS"
+      },
+      "old_new_normalized_declared_source_byte_closures_equal": true,
+      "old_new_native_test_executable_comparison": {
+        "old_count": 0,
+        "new_count": 0,
+        "byte_equal": true,
+        "current_hash_drift": []
+      },
+      "old_artifact_content_association_allowed": false,
+      "historical_actual_execution_claimed": false,
+      "old_N1_retroactive_grant": false
+    },
+    {
+      "codec": "snappy-raw",
+      "profile": "release",
+      "fresh_build_closure_status": "PASS",
+      "traced_report": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-release/pinned-replay/snappy-raw--release/trace-report.json",
+        "sha256": "17eb6b40ad131a17cd301901d0aa7f4035f70cea0e3e7ff42649ae3dbd56855b",
+        "size_bytes": 180007
+      },
+      "new_artifact": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-release/pinned-replay/snappy-raw--release/snappy_raw/release/libtscb_snappy_raw.so",
+        "sha256": "fa7e16cdb385bb73383aa4ed58ef2868e1c568c6de3b0e62989d96526235d493",
+        "size_bytes": 80400
+      },
+      "old_artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/snappy_raw/release/libtscb_snappy_raw.so",
+        "sha256": "fa7e16cdb385bb73383aa4ed58ef2868e1c568c6de3b0e62989d96526235d493",
+        "size_bytes": 80400
+      },
+      "actual_successful_execve_count": 38,
+      "executed_unique_file_count": 10,
+      "read_input_record_count": 467,
+      "link_map_count": 1,
+      "archive_member_contribution_count": 0,
+      "pre_existing_external_input_pre_post_sha_complete": true,
+      "unavailable_observed_file_count": 0,
+      "old_new_artifact_bytes_equal": true,
+      "old_new_objects": {
+        "old_count": 4,
+        "new_count": 4,
+        "equal": true
+      },
+      "old_new_normalized_declared_source_byte_closures_equal": true,
+      "old_new_native_test_executable_comparison": {
+        "old_count": 0,
+        "new_count": 0,
+        "byte_equal": true,
+        "current_hash_drift": []
+      },
+      "old_artifact_content_association_allowed": true,
+      "historical_actual_execution_claimed": false,
+      "old_N1_retroactive_grant": false
+    },
+    {
+      "codec": "snappy-raw",
+      "profile": "sanitizer",
+      "fresh_build_closure_status": "PASS",
+      "traced_report": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-sanitizer/pinned-replay/snappy-raw--sanitizer/trace-report.json",
+        "sha256": "9a7f6930f7021af768104ae3d388752046aa5c5a93586060d31a9196b99c3c0f",
+        "size_bytes": 181445
+      },
+      "new_artifact": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-sanitizer/pinned-replay/snappy-raw--sanitizer/snappy_raw/sanitizer/libtscb_snappy_raw.so",
+        "sha256": "641dfac78a563ccb58e8fadf647377ae4a35e0655f14aaf5fb6b99b30f0fd145",
+        "size_bytes": 1399112
+      },
+      "old_artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/snappy_raw/sanitizer/libtscb_snappy_raw.so",
+        "sha256": "641dfac78a563ccb58e8fadf647377ae4a35e0655f14aaf5fb6b99b30f0fd145",
+        "size_bytes": 1399112
+      },
+      "actual_successful_execve_count": 38,
+      "executed_unique_file_count": 10,
+      "read_input_record_count": 469,
+      "link_map_count": 1,
+      "archive_member_contribution_count": 0,
+      "pre_existing_external_input_pre_post_sha_complete": true,
+      "unavailable_observed_file_count": 0,
+      "old_new_artifact_bytes_equal": true,
+      "old_new_objects": {
+        "old_count": 4,
+        "new_count": 4,
+        "equal": true
+      },
+      "old_new_normalized_declared_source_byte_closures_equal": true,
+      "old_new_native_test_executable_comparison": {
+        "old_count": 0,
+        "new_count": 0,
+        "byte_equal": true,
+        "current_hash_drift": []
+      },
+      "old_artifact_content_association_allowed": true,
+      "historical_actual_execution_claimed": false,
+      "old_N1_retroactive_grant": false
+    },
+    {
+      "codec": "sprintz-delta",
+      "profile": "release",
+      "fresh_build_closure_status": "PASS",
+      "traced_report": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-release/pinned-replay/sprintz-delta--release/trace-report.json",
+        "sha256": "a7761c9f4a22053c2e9cd1c313674a25b941fd07428e17b492ab17ebbbe441f5",
+        "size_bytes": 248772
+      },
+      "new_artifact": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-release/pinned-replay/sprintz-delta--release/sprintz_delta/release/libtscb_sprintz_delta.so",
+        "sha256": "16e01a672b71ce273451b7e56cf07cb2150255bad8909045989888c0daf1680a",
+        "size_bytes": 126320
+      },
+      "old_artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/sprintz_delta/release/libtscb_sprintz_delta.so",
+        "sha256": "16e01a672b71ce273451b7e56cf07cb2150255bad8909045989888c0daf1680a",
+        "size_bytes": 126320
+      },
+      "actual_successful_execve_count": 58,
+      "executed_unique_file_count": 11,
+      "read_input_record_count": 619,
+      "link_map_count": 1,
+      "archive_member_contribution_count": 1,
+      "pre_existing_external_input_pre_post_sha_complete": true,
+      "unavailable_observed_file_count": 0,
+      "old_new_artifact_bytes_equal": true,
+      "old_new_objects": {
+        "old_count": 8,
+        "new_count": 8,
+        "equal": true
+      },
+      "old_new_normalized_declared_source_byte_closures_equal": true,
+      "old_new_native_test_executable_comparison": {
+        "old_count": 0,
+        "new_count": 0,
+        "byte_equal": true,
+        "current_hash_drift": []
+      },
+      "old_artifact_content_association_allowed": true,
+      "historical_actual_execution_claimed": false,
+      "old_N1_retroactive_grant": false
+    },
+    {
+      "codec": "sprintz-delta",
+      "profile": "sanitizer",
+      "fresh_build_closure_status": "PASS",
+      "traced_report": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-sanitizer/pinned-replay/sprintz-delta--sanitizer/trace-report.json",
+        "sha256": "402da5fb4bd19c3f15e42041202e77fcc50f58a4a6d49d0f5c041057e2f08caa",
+        "size_bytes": 250579
+      },
+      "new_artifact": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-sanitizer/pinned-replay/sprintz-delta--sanitizer/sprintz_delta/sanitizer/libtscb_sprintz_delta.so",
+        "sha256": "a8127ee7abaf7729624d3b3649fab56f3f41e536c9ef28e1313bf42b9ae583c6",
+        "size_bytes": 1647968
+      },
+      "old_artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/sprintz_delta/sanitizer/libtscb_sprintz_delta.so",
+        "sha256": "9e227645b626b9e237bbc12e2869beae2aebe40de3cce3e9c8c310291074c0cb",
+        "size_bytes": 1647496
+      },
+      "actual_successful_execve_count": 58,
+      "executed_unique_file_count": 11,
+      "read_input_record_count": 621,
+      "link_map_count": 1,
+      "archive_member_contribution_count": 1,
+      "pre_existing_external_input_pre_post_sha_complete": true,
+      "unavailable_observed_file_count": 0,
+      "old_new_artifact_bytes_equal": false,
+      "old_new_objects": {
+        "old_count": 8,
+        "new_count": 8,
+        "equal": false
+      },
+      "old_new_normalized_declared_source_byte_closures_equal": true,
+      "old_new_native_test_executable_comparison": {
+        "old_count": 0,
+        "new_count": 0,
+        "byte_equal": true,
+        "current_hash_drift": []
+      },
+      "old_artifact_content_association_allowed": false,
+      "historical_actual_execution_claimed": false,
+      "old_N1_retroactive_grant": false
+    },
+    {
+      "codec": "sprintz-delta-u8",
+      "profile": "release",
+      "fresh_build_closure_status": "PASS",
+      "traced_report": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-release/pinned-replay/sprintz-delta-u8--release/trace-report.json",
+        "sha256": "20b43421302a82f09f227b539181c5b06cb15701d6078cc5157c8c81ee5a0a62",
+        "size_bytes": 219067
+      },
+      "new_artifact": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-release/pinned-replay/sprintz-delta-u8--release/sprintz_delta_u8/release/libtscb_sprintz_delta_u8.so",
+        "sha256": "0cb242aa0169d40c3623440211c086b238355e8c94f8a57f371ad9c1fd96793f",
+        "size_bytes": 64008
+      },
+      "old_artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/sprintz_delta_u8/release/libtscb_sprintz_delta_u8.so",
+        "sha256": "0cb242aa0169d40c3623440211c086b238355e8c94f8a57f371ad9c1fd96793f",
+        "size_bytes": 64008
+      },
+      "actual_successful_execve_count": 40,
+      "executed_unique_file_count": 11,
+      "read_input_record_count": 592,
+      "link_map_count": 1,
+      "archive_member_contribution_count": 1,
+      "pre_existing_external_input_pre_post_sha_complete": true,
+      "unavailable_observed_file_count": 0,
+      "old_new_artifact_bytes_equal": true,
+      "old_new_objects": {
+        "old_count": 4,
+        "new_count": 4,
+        "equal": true
+      },
+      "old_new_normalized_declared_source_byte_closures_equal": true,
+      "old_new_native_test_executable_comparison": {
+        "old_count": 0,
+        "new_count": 0,
+        "byte_equal": true,
+        "current_hash_drift": []
+      },
+      "old_artifact_content_association_allowed": true,
+      "historical_actual_execution_claimed": false,
+      "old_N1_retroactive_grant": false
+    },
+    {
+      "codec": "sprintz-delta-u8",
+      "profile": "sanitizer",
+      "fresh_build_closure_status": "PASS",
+      "traced_report": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-sanitizer/pinned-replay/sprintz-delta-u8--sanitizer/trace-report.json",
+        "sha256": "1c3c5e1a982b9f687e4ae1b5989e52693f49918734ec438cea6d23d95eb11eeb",
+        "size_bytes": 220547
+      },
+      "new_artifact": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-sanitizer/pinned-replay/sprintz-delta-u8--sanitizer/sprintz_delta_u8/sanitizer/libtscb_sprintz_delta_u8.so",
+        "sha256": "362aaca986403c829b77f08310b83e9f4263a6d024047bc763b67a6587ac8da8",
+        "size_bytes": 885048
+      },
+      "old_artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/sprintz_delta_u8/sanitizer/libtscb_sprintz_delta_u8.so",
+        "sha256": "c25182f66c83b0b452029c68296851d8b1d8e68f36f18eb602f14c36289fcf16",
+        "size_bytes": 884832
+      },
+      "actual_successful_execve_count": 40,
+      "executed_unique_file_count": 11,
+      "read_input_record_count": 594,
+      "link_map_count": 1,
+      "archive_member_contribution_count": 1,
+      "pre_existing_external_input_pre_post_sha_complete": true,
+      "unavailable_observed_file_count": 0,
+      "old_new_artifact_bytes_equal": false,
+      "old_new_objects": {
+        "old_count": 4,
+        "new_count": 4,
+        "equal": false
+      },
+      "old_new_normalized_declared_source_byte_closures_equal": true,
+      "old_new_native_test_executable_comparison": {
+        "old_count": 0,
+        "new_count": 0,
+        "byte_equal": true,
+        "current_hash_drift": []
+      },
+      "old_artifact_content_association_allowed": false,
+      "historical_actual_execution_claimed": false,
+      "old_N1_retroactive_grant": false
+    },
+    {
+      "codec": "sprintz-fire",
+      "profile": "release",
+      "fresh_build_closure_status": "PASS",
+      "traced_report": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-release/pinned-replay/sprintz-fire--release/trace-report.json",
+        "sha256": "dbecb804878f93952e0bb12ef1d816ff9c33519803b5c0ac70cb94f962125cf1",
+        "size_bytes": 248523
+      },
+      "new_artifact": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-release/pinned-replay/sprintz-fire--release/sprintz_fire/release/libtscb_sprintz_fire.so",
+        "sha256": "c7acccdb359dbccce1fa990f0f61679741506f533c5df31abf57f9cd9a8b2282",
+        "size_bytes": 126320
+      },
+      "old_artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/sprintz_fire/release/libtscb_sprintz_fire.so",
+        "sha256": "c7acccdb359dbccce1fa990f0f61679741506f533c5df31abf57f9cd9a8b2282",
+        "size_bytes": 126320
+      },
+      "actual_successful_execve_count": 58,
+      "executed_unique_file_count": 11,
+      "read_input_record_count": 619,
+      "link_map_count": 1,
+      "archive_member_contribution_count": 1,
+      "pre_existing_external_input_pre_post_sha_complete": true,
+      "unavailable_observed_file_count": 0,
+      "old_new_artifact_bytes_equal": true,
+      "old_new_objects": {
+        "old_count": 8,
+        "new_count": 8,
+        "equal": true
+      },
+      "old_new_normalized_declared_source_byte_closures_equal": true,
+      "old_new_native_test_executable_comparison": {
+        "old_count": 0,
+        "new_count": 0,
+        "byte_equal": true,
+        "current_hash_drift": []
+      },
+      "old_artifact_content_association_allowed": true,
+      "historical_actual_execution_claimed": false,
+      "old_N1_retroactive_grant": false
+    },
+    {
+      "codec": "sprintz-fire",
+      "profile": "sanitizer",
+      "fresh_build_closure_status": "PASS",
+      "traced_report": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-sanitizer/pinned-replay/sprintz-fire--sanitizer/trace-report.json",
+        "sha256": "2e47eedd03904271c21b43f2773d0c064f63802c71d738f5499d78a9d2ec34ce",
+        "size_bytes": 250330
+      },
+      "new_artifact": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-sanitizer/pinned-replay/sprintz-fire--sanitizer/sprintz_fire/sanitizer/libtscb_sprintz_fire.so",
+        "sha256": "eefc4909748f8f78dbd63684aa1b9b7b83a60459c5813ce70cf9a9ed11c707a5",
+        "size_bytes": 1647992
+      },
+      "old_artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/sprintz_fire/sanitizer/libtscb_sprintz_fire.so",
+        "sha256": "1101a9eff5823672c2bdea9cc6c7c917bae3b419463d6ea27948fbcee2d90713",
+        "size_bytes": 1647528
+      },
+      "actual_successful_execve_count": 58,
+      "executed_unique_file_count": 11,
+      "read_input_record_count": 621,
+      "link_map_count": 1,
+      "archive_member_contribution_count": 1,
+      "pre_existing_external_input_pre_post_sha_complete": true,
+      "unavailable_observed_file_count": 0,
+      "old_new_artifact_bytes_equal": false,
+      "old_new_objects": {
+        "old_count": 8,
+        "new_count": 8,
+        "equal": false
+      },
+      "old_new_normalized_declared_source_byte_closures_equal": true,
+      "old_new_native_test_executable_comparison": {
+        "old_count": 0,
+        "new_count": 0,
+        "byte_equal": true,
+        "current_hash_drift": []
+      },
+      "old_artifact_content_association_allowed": false,
+      "historical_actual_execution_claimed": false,
+      "old_N1_retroactive_grant": false
+    },
+    {
+      "codec": "sprintz-fire-huff0",
+      "profile": "release",
+      "fresh_build_closure_status": "PASS",
+      "traced_report": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-release/pinned-replay/sprintz-fire-huff0--release/trace-report.json",
+        "sha256": "bfc6c44da9937aea506be968fb9982476c13183d784369f63e1749dba6563c32",
+        "size_bytes": 291876
+      },
+      "new_artifact": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-release/pinned-replay/sprintz-fire-huff0--release/sprintz_fire_huff0/release/libtscb_sprintz_fire_huff0.so",
+        "sha256": "aadba7e509b067932aa915e09b6ba7ce550923a9aeada522d9740b765dc49315",
+        "size_bytes": 193592
+      },
+      "old_artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/sprintz_fire_huff0/release/libtscb_sprintz_fire_huff0.so",
+        "sha256": "aadba7e509b067932aa915e09b6ba7ce550923a9aeada522d9740b765dc49315",
+        "size_bytes": 193592
+      },
+      "actual_successful_execve_count": 84,
+      "executed_unique_file_count": 11,
+      "read_input_record_count": 653,
+      "link_map_count": 1,
+      "archive_member_contribution_count": 1,
+      "pre_existing_external_input_pre_post_sha_complete": true,
+      "unavailable_observed_file_count": 0,
+      "old_new_artifact_bytes_equal": true,
+      "old_new_objects": {
+        "old_count": 14,
+        "new_count": 14,
+        "equal": true
+      },
+      "old_new_normalized_declared_source_byte_closures_equal": true,
+      "old_new_native_test_executable_comparison": {
+        "old_count": 0,
+        "new_count": 0,
+        "byte_equal": true,
+        "current_hash_drift": []
+      },
+      "old_artifact_content_association_allowed": true,
+      "historical_actual_execution_claimed": false,
+      "old_N1_retroactive_grant": false
+    },
+    {
+      "codec": "sprintz-fire-huff0",
+      "profile": "sanitizer",
+      "fresh_build_closure_status": "PASS",
+      "traced_report": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-sanitizer/pinned-replay/sprintz-fire-huff0--sanitizer/trace-report.json",
+        "sha256": "35fe5a2a904e922f9e807a42e897036dbd6f6dbb090f8d909a95b56fe13f05ce",
+        "size_bytes": 294108
+      },
+      "new_artifact": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-sanitizer/pinned-replay/sprintz-fire-huff0--sanitizer/sprintz_fire_huff0/sanitizer/libtscb_sprintz_fire_huff0.so",
+        "sha256": "8d353c34264313b627a7a0d79d408df21ccf88c54c060ff1df40d1b0996476cd",
+        "size_bytes": 2972536
+      },
+      "old_artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/sprintz_fire_huff0/sanitizer/libtscb_sprintz_fire_huff0.so",
+        "sha256": "b2ebae1a2885fbcc5c99719784ca60ac7a008bf20ce9a53879c2329e1bccc40c",
+        "size_bytes": 2972024
+      },
+      "actual_successful_execve_count": 84,
+      "executed_unique_file_count": 11,
+      "read_input_record_count": 655,
+      "link_map_count": 1,
+      "archive_member_contribution_count": 1,
+      "pre_existing_external_input_pre_post_sha_complete": true,
+      "unavailable_observed_file_count": 0,
+      "old_new_artifact_bytes_equal": false,
+      "old_new_objects": {
+        "old_count": 14,
+        "new_count": 14,
+        "equal": false
+      },
+      "old_new_normalized_declared_source_byte_closures_equal": true,
+      "old_new_native_test_executable_comparison": {
+        "old_count": 0,
+        "new_count": 0,
+        "byte_equal": true,
+        "current_hash_drift": []
+      },
+      "old_artifact_content_association_allowed": false,
+      "historical_actual_execution_claimed": false,
+      "old_N1_retroactive_grant": false
+    },
+    {
+      "codec": "sprintz-fire-u8",
+      "profile": "release",
+      "fresh_build_closure_status": "PASS",
+      "traced_report": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-release/pinned-replay/sprintz-fire-u8--release/trace-report.json",
+        "sha256": "ab0990f8a315d2126a9f0cd44315f0f549846176e3d0d85a1d904f3ff3205f09",
+        "size_bytes": 218910
+      },
+      "new_artifact": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-release/pinned-replay/sprintz-fire-u8--release/sprintz_fire_u8/release/libtscb_sprintz_fire_u8.so",
+        "sha256": "39e813ed1e0cd1a7c50503daa423aa0f5e464ed04340d5c872632fe55c1747a3",
+        "size_bytes": 64056
+      },
+      "old_artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/sprintz_fire_u8/release/libtscb_sprintz_fire_u8.so",
+        "sha256": "39e813ed1e0cd1a7c50503daa423aa0f5e464ed04340d5c872632fe55c1747a3",
+        "size_bytes": 64056
+      },
+      "actual_successful_execve_count": 40,
+      "executed_unique_file_count": 11,
+      "read_input_record_count": 592,
+      "link_map_count": 1,
+      "archive_member_contribution_count": 1,
+      "pre_existing_external_input_pre_post_sha_complete": true,
+      "unavailable_observed_file_count": 0,
+      "old_new_artifact_bytes_equal": true,
+      "old_new_objects": {
+        "old_count": 4,
+        "new_count": 4,
+        "equal": true
+      },
+      "old_new_normalized_declared_source_byte_closures_equal": true,
+      "old_new_native_test_executable_comparison": {
+        "old_count": 0,
+        "new_count": 0,
+        "byte_equal": true,
+        "current_hash_drift": []
+      },
+      "old_artifact_content_association_allowed": true,
+      "historical_actual_execution_claimed": false,
+      "old_N1_retroactive_grant": false
+    },
+    {
+      "codec": "sprintz-fire-u8",
+      "profile": "sanitizer",
+      "fresh_build_closure_status": "PASS",
+      "traced_report": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-sanitizer/pinned-replay/sprintz-fire-u8--sanitizer/trace-report.json",
+        "sha256": "5ac862c2b65fa0c42786cfc6709bdc8e2e6f280f7e61fa1cafed041216bde628",
+        "size_bytes": 220390
+      },
+      "new_artifact": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-sanitizer/pinned-replay/sprintz-fire-u8--sanitizer/sprintz_fire_u8/sanitizer/libtscb_sprintz_fire_u8.so",
+        "sha256": "5d6e66f6d2440c2ce783d5602532af0203b0a1a6a2523dce15329f44c8287d4b",
+        "size_bytes": 889152
+      },
+      "old_artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/sprintz_fire_u8/sanitizer/libtscb_sprintz_fire_u8.so",
+        "sha256": "6c760456ca0f38a8485b7aca2e87e1cfa5c4869dedce108b4e0844731cb54c2d",
+        "size_bytes": 888944
+      },
+      "actual_successful_execve_count": 40,
+      "executed_unique_file_count": 11,
+      "read_input_record_count": 594,
+      "link_map_count": 1,
+      "archive_member_contribution_count": 1,
+      "pre_existing_external_input_pre_post_sha_complete": true,
+      "unavailable_observed_file_count": 0,
+      "old_new_artifact_bytes_equal": false,
+      "old_new_objects": {
+        "old_count": 4,
+        "new_count": 4,
+        "equal": false
+      },
+      "old_new_normalized_declared_source_byte_closures_equal": true,
+      "old_new_native_test_executable_comparison": {
+        "old_count": 0,
+        "new_count": 0,
+        "byte_equal": true,
+        "current_hash_drift": []
+      },
+      "old_artifact_content_association_allowed": false,
+      "historical_actual_execution_claimed": false,
+      "old_N1_retroactive_grant": false
+    },
+    {
+      "codec": "xz-stream",
+      "profile": "release",
+      "fresh_build_closure_status": "PASS",
+      "traced_report": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r5/special-release/pinned-replay/xz-stream--release/trace-report.json",
+        "sha256": "a8f6b361c445b92a044f98935943bd849cbcfc9b566d421682afb08b9ca6cb85",
+        "size_bytes": 5816119
+      },
+      "new_artifact": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r5/special-release/pinned-replay/xz-stream--release/xz_stream/release/libtscb_xz_stream.so",
+        "sha256": "edaefa8d7630d607405baecee40acfe53cb8df628baf37750d6d1bb4ec7214bb",
+        "size_bytes": 139072
+      },
+      "old_artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/xz_stream/release/libtscb_xz_stream.so",
+        "sha256": "edaefa8d7630d607405baecee40acfe53cb8df628baf37750d6d1bb4ec7214bb",
+        "size_bytes": 139072
+      },
+      "actual_successful_execve_count": 1564,
+      "executed_unique_file_count": 18,
+      "read_input_record_count": 4052,
+      "link_map_count": 57,
+      "archive_member_contribution_count": 48,
+      "pre_existing_external_input_pre_post_sha_complete": true,
+      "unavailable_observed_file_count": 0,
+      "old_new_artifact_bytes_equal": true,
+      "old_new_objects": {
+        "old_count": 1,
+        "new_count": 1,
+        "equal": true,
+        "scope": "SAVED_BUILD_RECORD_OBJECTS"
+      },
+      "old_new_normalized_declared_source_byte_closures_equal": true,
+      "old_new_native_test_executable_comparison": {
+        "old_count": 0,
+        "new_count": 0,
+        "byte_equal": true,
+        "current_hash_drift": []
+      },
+      "old_artifact_content_association_allowed": true,
+      "historical_actual_execution_claimed": false,
+      "old_N1_retroactive_grant": false
+    },
+    {
+      "codec": "xz-stream",
+      "profile": "sanitizer",
+      "fresh_build_closure_status": "PASS",
+      "traced_report": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r5/special-sanitizer/pinned-replay/xz-stream--sanitizer/trace-report.json",
+        "sha256": "c7399871a55911cea6476a93b91198b3ddad0fd7b78caa540566041e52ee5c6a",
+        "size_bytes": 5910616
+      },
+      "new_artifact": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r5/special-sanitizer/pinned-replay/xz-stream--sanitizer/xz_stream/sanitizer/libtscb_xz_stream.so",
+        "sha256": "7bc8a1660054b3995b130612d9b2082725749abc43ed5569759eb7d3f03310d1",
+        "size_bytes": 3094296
+      },
+      "old_artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/xz_stream/sanitizer/libtscb_xz_stream.so",
+        "sha256": "531da0b6db69ab6c4243bf356831472967c856cc3ccfbe7eb0f829284173ea56",
+        "size_bytes": 3094232
+      },
+      "actual_successful_execve_count": 1564,
+      "executed_unique_file_count": 18,
+      "read_input_record_count": 4055,
+      "link_map_count": 57,
+      "archive_member_contribution_count": 48,
+      "pre_existing_external_input_pre_post_sha_complete": true,
+      "unavailable_observed_file_count": 0,
+      "old_new_artifact_bytes_equal": false,
+      "old_new_objects": {
+        "old_count": 1,
+        "new_count": 1,
+        "equal": true,
+        "scope": "SAVED_BUILD_RECORD_OBJECTS"
+      },
+      "old_new_normalized_declared_source_byte_closures_equal": true,
+      "old_new_native_test_executable_comparison": {
+        "old_count": 0,
+        "new_count": 0,
+        "byte_equal": true,
+        "current_hash_drift": []
+      },
+      "old_artifact_content_association_allowed": false,
+      "historical_actual_execution_claimed": false,
+      "old_N1_retroactive_grant": false
+    },
+    {
+      "codec": "zfp-accuracy-1d",
+      "profile": "release",
+      "fresh_build_closure_status": "PASS",
+      "traced_report": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-release/pinned-replay/zfp-accuracy-1d--release/trace-report.json",
+        "sha256": "1f50d85ec2c33e5239fc6e514d01ce0e6b825c772a23974c99409a3d802df299",
+        "size_bytes": 345433
+      },
+      "new_artifact": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-release/pinned-replay/zfp-accuracy-1d--release/zfp_accuracy_1d/release/libtscb_zfp_accuracy_1d.so",
+        "sha256": "7b1897b84e9b5f6ad261134a7dd5dccba5e398893ddbd5320b216ddcef898a61",
+        "size_bytes": 403312
+      },
+      "old_artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/zfp_accuracy_1d/release/libtscb_zfp_accuracy_1d.so",
+        "sha256": "7b1897b84e9b5f6ad261134a7dd5dccba5e398893ddbd5320b216ddcef898a61",
+        "size_bytes": 403312
+      },
+      "actual_successful_execve_count": 162,
+      "executed_unique_file_count": 10,
+      "read_input_record_count": 499,
+      "link_map_count": 1,
+      "archive_member_contribution_count": 0,
+      "pre_existing_external_input_pre_post_sha_complete": true,
+      "unavailable_observed_file_count": 0,
+      "old_new_artifact_bytes_equal": true,
+      "old_new_objects": {
+        "old_count": 35,
+        "new_count": 35,
+        "equal": true
+      },
+      "old_new_normalized_declared_source_byte_closures_equal": true,
+      "old_new_native_test_executable_comparison": {
+        "old_count": 0,
+        "new_count": 0,
+        "byte_equal": true,
+        "current_hash_drift": []
+      },
+      "old_artifact_content_association_allowed": true,
+      "historical_actual_execution_claimed": false,
+      "old_N1_retroactive_grant": false
+    },
+    {
+      "codec": "zfp-accuracy-1d",
+      "profile": "sanitizer",
+      "fresh_build_closure_status": "PASS",
+      "traced_report": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-sanitizer/pinned-replay/zfp-accuracy-1d--sanitizer/trace-report.json",
+        "sha256": "7edfb016240e77d5157a69fe32775f355d6be7a736cc09ce7ac9af35bbd8ed78",
+        "size_bytes": 349070
+      },
+      "new_artifact": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-sanitizer/pinned-replay/zfp-accuracy-1d--sanitizer/zfp_accuracy_1d/sanitizer/libtscb_zfp_accuracy_1d.so",
+        "sha256": "9755081926d7702855ccab550981c3e78f8a35c62d9c60d40c4cf323b45038c2",
+        "size_bytes": 4972872
+      },
+      "old_artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/zfp_accuracy_1d/sanitizer/libtscb_zfp_accuracy_1d.so",
+        "sha256": "9755081926d7702855ccab550981c3e78f8a35c62d9c60d40c4cf323b45038c2",
+        "size_bytes": 4972872
+      },
+      "actual_successful_execve_count": 162,
+      "executed_unique_file_count": 10,
+      "read_input_record_count": 501,
+      "link_map_count": 1,
+      "archive_member_contribution_count": 0,
+      "pre_existing_external_input_pre_post_sha_complete": true,
+      "unavailable_observed_file_count": 0,
+      "old_new_artifact_bytes_equal": true,
+      "old_new_objects": {
+        "old_count": 35,
+        "new_count": 35,
+        "equal": true
+      },
+      "old_new_normalized_declared_source_byte_closures_equal": true,
+      "old_new_native_test_executable_comparison": {
+        "old_count": 0,
+        "new_count": 0,
+        "byte_equal": true,
+        "current_hash_drift": []
+      },
+      "old_artifact_content_association_allowed": true,
+      "historical_actual_execution_claimed": false,
+      "old_N1_retroactive_grant": false
+    },
+    {
+      "codec": "zstd-frame",
+      "profile": "release",
+      "fresh_build_closure_status": "PASS",
+      "traced_report": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-release/pinned-replay/zstd-frame--release/trace-report.json",
+        "sha256": "3c0a4cd00053ad4994d83551b39dcac7681284faf826a6b472176e6e7f1560e4",
+        "size_bytes": 286636
+      },
+      "new_artifact": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-release/pinned-replay/zstd-frame--release/zstd_frame/release/libtscb_zstd_frame.so",
+        "sha256": "9d707065f32b6e495f203146d62ce86ed3a26de512dee7eb4e56ba0a5cec4767",
+        "size_bytes": 749104
+      },
+      "old_artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/zstd_frame/release/libtscb_zstd_frame.so",
+        "sha256": "9d707065f32b6e495f203146d62ce86ed3a26de512dee7eb4e56ba0a5cec4767",
+        "size_bytes": 749104
+      },
+      "actual_successful_execve_count": 126,
+      "executed_unique_file_count": 10,
+      "read_input_record_count": 457,
+      "link_map_count": 1,
+      "archive_member_contribution_count": 0,
+      "pre_existing_external_input_pre_post_sha_complete": true,
+      "unavailable_observed_file_count": 0,
+      "old_new_artifact_bytes_equal": true,
+      "old_new_objects": {
+        "old_count": 26,
+        "new_count": 26,
+        "equal": true
+      },
+      "old_new_normalized_declared_source_byte_closures_equal": true,
+      "old_new_native_test_executable_comparison": {
+        "old_count": 0,
+        "new_count": 0,
+        "byte_equal": true,
+        "current_hash_drift": []
+      },
+      "old_artifact_content_association_allowed": true,
+      "historical_actual_execution_claimed": false,
+      "old_N1_retroactive_grant": false
+    },
+    {
+      "codec": "zstd-frame",
+      "profile": "sanitizer",
+      "fresh_build_closure_status": "PASS",
+      "traced_report": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-sanitizer/pinned-replay/zstd-frame--sanitizer/trace-report.json",
+        "sha256": "53c8dbce6c9d383ebd11791fb6e3fecf99eeec5bf7ae1547bf4f11132c0ea9d1",
+        "size_bytes": 289593
+      },
+      "new_artifact": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-sanitizer/pinned-replay/zstd-frame--sanitizer/zstd_frame/sanitizer/libtscb_zstd_frame.so",
+        "sha256": "07115817011966371a77757afc3ad5a85aff01fc144244103cc1e1072de67f69",
+        "size_bytes": 16420952
+      },
+      "old_artifact": {
+        "path": "build/port-standard-v30-20261011/native-builds-v3/zstd_frame/sanitizer/libtscb_zstd_frame.so",
+        "sha256": "07115817011966371a77757afc3ad5a85aff01fc144244103cc1e1072de67f69",
+        "size_bytes": 16420952
+      },
+      "actual_successful_execve_count": 126,
+      "executed_unique_file_count": 10,
+      "read_input_record_count": 459,
+      "link_map_count": 1,
+      "archive_member_contribution_count": 0,
+      "pre_existing_external_input_pre_post_sha_complete": true,
+      "unavailable_observed_file_count": 0,
+      "old_new_artifact_bytes_equal": true,
+      "old_new_objects": {
+        "old_count": 26,
+        "new_count": 26,
+        "equal": true
+      },
+      "old_new_normalized_declared_source_byte_closures_equal": true,
+      "old_new_native_test_executable_comparison": {
+        "old_count": 0,
+        "new_count": 0,
+        "byte_equal": true,
+        "current_hash_drift": []
+      },
+      "old_artifact_content_association_allowed": true,
+      "historical_actual_execution_claimed": false,
+      "old_N1_retroactive_grant": false
+    }
+  ],
+  "driver": {
+    "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_closure_formal_verification/build_link/summarize_traces_v2.py",
+    "sha256": "8f69e3282b1575801cd81f98d042ad0fd4b37597d13ca3b4cfcc1d976ff97972",
+    "size_bytes": 6236
+  },
+  "static_before_inventory": {
+    "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_closure_formal_verification/build_link/inventory_v1.json",
+    "sha256": "f5ba41ad9b299dac16c4cfeeb7ce562b6c133d4037ebf9f5e3406648681cb553",
+    "size_bytes": 81041
+  }
+}

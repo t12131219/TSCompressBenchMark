@@ -1,0 +1,2165 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "TSDataCompressBenchMark · 五层运行框架与数据流 · 2026-10-12",
+    "locale": "zh-CN",
+    "quality_profile": "standard",
+    "viewBox": [
+      2180,
+      4815
+    ]
+  },
+  "components": [
+    {
+      "id": "entry",
+      "type": "backend",
+      "label": "Legacy 命令入口与配置",
+      "sublabel": "CLI / Benchmark Runner",
+      "pos": [
+        350,
+        145
+      ],
+      "size": [
+        300,
+        100
+      ]
+    },
+    {
+      "id": "freeze",
+      "type": "backend",
+      "label": "Legacy 初始化与恢复",
+      "sublabel": "冻结配置与 Environment",
+      "pos": [
+        710,
+        145
+      ],
+      "size": [
+        300,
+        100
+      ]
+    },
+    {
+      "id": "dataset",
+      "type": "backend",
+      "label": "数据集注册与校验",
+      "sublabel": "DatasetRegistry / Manifest",
+      "pos": [
+        1070,
+        145
+      ],
+      "size": [
+        300,
+        100
+      ]
+    },
+    {
+      "id": "loader",
+      "type": "backend",
+      "label": "规范化数据加载",
+      "sublabel": "load_dataset",
+      "pos": [
+        350,
+        345
+      ],
+      "size": [
+        300,
+        100
+      ]
+    },
+    {
+      "id": "characterize",
+      "type": "backend",
+      "label": "数据特征分析",
+      "sublabel": "characterize",
+      "pos": [
+        710,
+        345
+      ],
+      "size": [
+        300,
+        100
+      ]
+    },
+    {
+      "id": "canonical",
+      "type": "database",
+      "label": "Canonical 工件生成",
+      "sublabel": "写 Canonical Binary Data",
+      "pos": [
+        1070,
+        345
+      ],
+      "size": [
+        300,
+        100
+      ]
+    },
+    {
+      "id": "registry",
+      "type": "backend",
+      "label": "Codec / Source 注册",
+      "sublabel": "Codec / Source Registry",
+      "pos": [
+        350,
+        835
+      ],
+      "size": [
+        300,
+        100
+      ]
+    },
+    {
+      "id": "sweep",
+      "type": "backend",
+      "label": "参数扫描与配置生成",
+      "sublabel": "Parameter Sweep",
+      "pos": [
+        710,
+        835
+      ],
+      "size": [
+        300,
+        100
+      ]
+    },
+    {
+      "id": "universe",
+      "type": "backend",
+      "label": "展开完整候选组合",
+      "sublabel": "遍历 Dataset × Algorithm",
+      "pos": [
+        1070,
+        835
+      ],
+      "size": [
+        300,
+        100
+      ]
+    },
+    {
+      "id": "negotiate",
+      "type": "backend",
+      "label": "能力协商与四态结果",
+      "sublabel": "DIRECT_SUPPORTED",
+      "pos": [
+        1430,
+        835
+      ],
+      "size": [
+        300,
+        170
+      ]
+    },
+    {
+      "id": "plans",
+      "type": "backend",
+      "label": "显式适配与预处理计划",
+      "sublabel": "Compatibility / Preprocess Plan",
+      "pos": [
+        350,
+        1070
+      ],
+      "size": [
+        300,
+        110
+      ]
+    },
+    {
+      "id": "resolution",
+      "type": "backend",
+      "label": "执行路径解析",
+      "sublabel": "Execution Resolution",
+      "pos": [
+        710,
+        1070
+      ],
+      "size": [
+        300,
+        110
+      ]
+    },
+    {
+      "id": "keys",
+      "type": "backend",
+      "label": "Legacy 层级可比性键",
+      "sublabel": "ExecutionPathHash",
+      "pos": [
+        1070,
+        1070
+      ],
+      "size": [
+        300,
+        120
+      ]
+    },
+    {
+      "id": "tasks",
+      "type": "database",
+      "label": "Legacy 任务与注册快照",
+      "sublabel": "BenchmarkTask / task_plan.jsonl",
+      "pos": [
+        1430,
+        1070
+      ],
+      "size": [
+        300,
+        110
+      ]
+    },
+    {
+      "id": "track",
+      "type": "backend",
+      "label": "按 Benchmark Track 路由",
+      "sublabel": "TIMESTAMP：时间戳",
+      "pos": [
+        710,
+        1655
+      ],
+      "size": [
+        660,
+        120
+      ]
+    },
+    {
+      "id": "gates",
+      "type": "backend",
+      "label": "任务、源码与工件门控",
+      "sublabel": "任务状态 / 源码 / 构建工件",
+      "pos": [
+        350,
+        1655
+      ],
+      "size": [
+        300,
+        110
+      ]
+    },
+    {
+      "id": "input",
+      "type": "backend",
+      "label": "输入校验",
+      "sublabel": "Input Validation",
+      "pos": [
+        350,
+        1825
+      ],
+      "size": [
+        300,
+        100
+      ]
+    },
+    {
+      "id": "adapter",
+      "type": "backend",
+      "label": "实际适配与适配后验证",
+      "sublabel": "Compatibility Adapter",
+      "pos": [
+        710,
+        1825
+      ],
+      "size": [
+        300,
+        100
+      ]
+    },
+    {
+      "id": "preprocess",
+      "type": "backend",
+      "label": "可选预处理阶段验证",
+      "sublabel": "可选 Preprocess Stage Validation",
+      "pos": [
+        1070,
+        1825
+      ],
+      "size": [
+        300,
+        100
+      ]
+    },
+    {
+      "id": "boundary",
+      "type": "backend",
+      "label": "边界与安全 Dry-run",
+      "sublabel": "Boundary / Safety Dry-run",
+      "pos": [
+        350,
+        1985
+      ],
+      "size": [
+        300,
+        100
+      ]
+    },
+    {
+      "id": "minimal",
+      "type": "backend",
+      "label": "最小完整 Roundtrip",
+      "sublabel": "Common Correctness",
+      "pos": [
+        710,
+        1985
+      ],
+      "size": [
+        300,
+        100
+      ]
+    },
+    {
+      "id": "preflight",
+      "type": "security",
+      "label": "Preflight 是否通过",
+      "sublabel": "Preflight",
+      "pos": [
+        1070,
+        1985
+      ],
+      "size": [
+        300,
+        110
+      ]
+    },
+    {
+      "id": "warmup",
+      "type": "backend",
+      "label": "每个测量 worker 内预热",
+      "sublabel": "Warmup 排除于计时边界",
+      "pos": [
+        1070,
+        2185
+      ],
+      "size": [
+        300,
+        100
+      ]
+    },
+    {
+      "id": "formal",
+      "type": "backend",
+      "label": "正式重复实验",
+      "sublabel": "Legacy Formal Repetitions",
+      "pos": [
+        1070,
+        2345
+      ],
+      "size": [
+        300,
+        110
+      ]
+    },
+    {
+      "id": "diagnostic",
+      "type": "security",
+      "label": "失败诊断与状态证据",
+      "sublabel": "UNSUPPORTED / BUILD_UNAVAILABLE",
+      "pos": [
+        710,
+        2165
+      ],
+      "size": [
+        300,
+        215
+      ]
+    },
+    {
+      "id": "compress",
+      "type": "backend",
+      "label": "独立 Context 与编码",
+      "sublabel": "独立 Context",
+      "pos": [
+        1430,
+        1865
+      ],
+      "size": [
+        300,
+        92
+      ]
+    },
+    {
+      "id": "finalize",
+      "type": "backend",
+      "label": "强制 Finalize / Flush",
+      "sublabel": "Finalize / Flush",
+      "pos": [
+        1430,
+        1985
+      ],
+      "size": [
+        300,
+        92
+      ]
+    },
+    {
+      "id": "accounting",
+      "type": "backend",
+      "label": "完整对象成本计量",
+      "sublabel": "Accounting Ledger / FinalBits",
+      "pos": [
+        1430,
+        2105
+      ],
+      "size": [
+        300,
+        112
+      ]
+    },
+    {
+      "id": "decompress",
+      "type": "backend",
+      "label": "独立 Context 解码",
+      "sublabel": "独立解码 Context",
+      "pos": [
+        1430,
+        2245
+      ],
+      "size": [
+        300,
+        92
+      ]
+    },
+    {
+      "id": "correctness",
+      "type": "backend",
+      "label": "公共正确性与 LossMode",
+      "sublabel": "Common Correctness",
+      "pos": [
+        1430,
+        2365
+      ],
+      "size": [
+        300,
+        140
+      ]
+    },
+    {
+      "id": "lossless",
+      "type": "security",
+      "label": "Lossless 按位还原",
+      "sublabel": "Lossless",
+      "pos": [
+        1070,
+        2545
+      ],
+      "size": [
+        300,
+        100
+      ]
+    },
+    {
+      "id": "lossy",
+      "type": "security",
+      "label": "Lossy 按模式验证",
+      "sublabel": "Error-bounded：误差界 + 质量",
+      "pos": [
+        1430,
+        2545
+      ],
+      "size": [
+        300,
+        145
+      ]
+    },
+    {
+      "id": "policy",
+      "type": "backend",
+      "label": "Legacy 同次测量策略",
+      "sublabel": "冻结 MeasurementPolicy",
+      "pos": [
+        350,
+        3055
+      ],
+      "size": [
+        300,
+        100
+      ]
+    },
+    {
+      "id": "timing",
+      "type": "backend",
+      "label": "分范围计时与时长控制",
+      "sublabel": "Legacy：CORE / PIPELINE / E2E",
+      "pos": [
+        710,
+        3055
+      ],
+      "size": [
+        300,
+        120
+      ]
+    },
+    {
+      "id": "resources",
+      "type": "backend",
+      "label": "同步进程资源观测",
+      "sublabel": "同一次 repetition 采集资源",
+      "pos": [
+        1070,
+        3055
+      ],
+      "size": [
+        300,
+        140
+      ]
+    },
+    {
+      "id": "workloads",
+      "type": "backend",
+      "label": "Legacy 条件工作负载",
+      "sublabel": "Legacy Profile 请求且支持",
+      "pos": [
+        1430,
+        3055
+      ],
+      "size": [
+        300,
+        100
+      ]
+    },
+    {
+      "id": "raw",
+      "type": "database",
+      "label": "Legacy 原始证据与投影",
+      "sublabel": "追加 run_components.jsonl",
+      "pos": [
+        710,
+        3465
+      ],
+      "size": [
+        660,
+        120
+      ]
+    },
+    {
+      "id": "query",
+      "type": "backend",
+      "label": "Query / Random Access",
+      "sublabel": "Query / Random Access",
+      "pos": [
+        1070,
+        3225
+      ],
+      "size": [
+        300,
+        105
+      ]
+    },
+    {
+      "id": "streaming",
+      "type": "backend",
+      "label": "Streaming Benchmark",
+      "sublabel": "请求且支持：块延迟 / 状态",
+      "pos": [
+        1430,
+        3225
+      ],
+      "size": [
+        300,
+        120
+      ]
+    },
+    {
+      "id": "evidence",
+      "type": "backend",
+      "label": "Legacy 冻结证据读取",
+      "sublabel": "冻结任务 / raw / provenance",
+      "pos": [
+        350,
+        3925
+      ],
+      "size": [
+        300,
+        100
+      ]
+    },
+    {
+      "id": "eligibility",
+      "type": "backend",
+      "label": "资格过滤与排除原因",
+      "sublabel": "正式模式 / 来源 / 正确性 / 计量",
+      "pos": [
+        710,
+        3925
+      ],
+      "size": [
+        300,
+        100
+      ]
+    },
+    {
+      "id": "summary",
+      "type": "backend",
+      "label": "Legacy 逐数据集统计",
+      "sublabel": "Dataset + Algorithm + Config",
+      "pos": [
+        1070,
+        3925
+      ],
+      "size": [
+        660,
+        130
+      ]
+    },
+    {
+      "id": "corpus",
+      "type": "backend",
+      "label": "Corpus 汇总与分层比较",
+      "sublabel": "先逐数据集，后 corpus 汇总",
+      "pos": [
+        350,
+        4125
+      ],
+      "size": [
+        660,
+        130
+      ]
+    },
+    {
+      "id": "pareto",
+      "type": "backend",
+      "label": "Pareto 与单指标排名",
+      "sublabel": "Pareto / 单指标排名",
+      "pos": [
+        1070,
+        4125
+      ],
+      "size": [
+        300,
+        100
+      ]
+    },
+    {
+      "id": "report",
+      "type": "database",
+      "label": "Legacy 结果与报告生成",
+      "sublabel": "Result / Report Generator",
+      "pos": [
+        710,
+        4335
+      ],
+      "size": [
+        660,
+        100
+      ]
+    },
+    {
+      "id": "coverage",
+      "type": "backend",
+      "label": "冻结任务全集 Coverage",
+      "sublabel": "Coverage：冻结任务全集",
+      "pos": [
+        1430,
+        4125
+      ],
+      "size": [
+        300,
+        130
+      ]
+    },
+    {
+      "id": "source_identity",
+      "type": "backend",
+      "label": "来源、内容身份与显式派生",
+      "sublabel": "原内容 SHA / DatasetID / 完整父级 lineage",
+      "pos": [
+        350,
+        585
+      ],
+      "size": [
+        660,
+        140
+      ]
+    },
+    {
+      "id": "logical_object",
+      "type": "database",
+      "label": "Canonical / P2 逻辑原对象",
+      "sublabel": "T / V / validity · dtype / shape / time_axis / units",
+      "pos": [
+        1070,
+        585
+      ],
+      "size": [
+        660,
+        140
+      ]
+    },
+    {
+      "id": "experiment_contract",
+      "type": "database",
+      "label": "事前决策与比较合同",
+      "sublabel": "experiment_decision / Task / Contract",
+      "pos": [
+        1430,
+        1305
+      ],
+      "size": [
+        300,
+        190
+      ]
+    },
+    {
+      "id": "expected_matrix",
+      "type": "backend",
+      "label": "完整期待矩阵与成员准入",
+      "sublabel": "MethodID / ImplementationID 去重",
+      "pos": [
+        1070,
+        1305
+      ],
+      "size": [
+        300,
+        190
+      ]
+    },
+    {
+      "id": "public_projection",
+      "type": "backend",
+      "label": "公共投影与实际输入",
+      "sublabel": "原对象与 COMMON_NATIVE_API 分组",
+      "pos": [
+        710,
+        1305
+      ],
+      "size": [
+        300,
+        190
+      ]
+    },
+    {
+      "id": "frozen_schedule",
+      "type": "database",
+      "label": "冻结作业、源码与调度",
+      "sublabel": "ExecutionJob / Recipe / Closure",
+      "pos": [
+        350,
+        1305
+      ],
+      "size": [
+        300,
+        190
+      ]
+    },
+    {
+      "id": "object_qualification",
+      "type": "security",
+      "label": "原对象资格与独立恢复",
+      "sublabel": "Preflight / 安全 / 原域 correctness",
+      "pos": [
+        350,
+        2735
+      ],
+      "size": [
+        300,
+        210
+      ]
+    },
+    {
+      "id": "development_pilot",
+      "type": "security",
+      "label": "独立开发 pilot 门禁",
+      "sublabel": "与评价对象分离的 development 输入",
+      "pos": [
+        710,
+        2735
+      ],
+      "size": [
+        300,
+        210
+      ]
+    },
+    {
+      "id": "formal_lanes",
+      "type": "backend",
+      "label": "分 lane 隔离正式执行",
+      "sublabel": "comparison：完整对象 / API / cold",
+      "pos": [
+        1070,
+        2735
+      ],
+      "size": [
+        300,
+        210
+      ]
+    },
+    {
+      "id": "p2_object",
+      "type": "backend",
+      "label": "P2 完整对象与公共恢复",
+      "sublabel": "全部 T / V / mask · mixed / ND / time_axis",
+      "pos": [
+        1430,
+        2735
+      ],
+      "size": [
+        300,
+        210
+      ]
+    },
+    {
+      "id": "measurement_boundary",
+      "type": "backend",
+      "label": "V3.2 计时与生命周期边界",
+      "sublabel": "完整对象：steady / cold PIPELINE",
+      "pos": [
+        350,
+        3645
+      ],
+      "size": [
+        300,
+        190
+      ]
+    },
+    {
+      "id": "resource_lease",
+      "type": "backend",
+      "label": "资源租约与同步观测",
+      "sublabel": "ResourceLease / CPU / Threads / RSS gate",
+      "pos": [
+        710,
+        3645
+      ],
+      "size": [
+        300,
+        190
+      ]
+    },
+    {
+      "id": "trial_store",
+      "type": "database",
+      "label": "持久试次、事件与恢复产物",
+      "sublabel": "comparison_trials / workload_trials",
+      "pos": [
+        1070,
+        3645
+      ],
+      "size": [
+        300,
+        190
+      ]
+    },
+    {
+      "id": "resume_audit",
+      "type": "backend",
+      "label": "中断、预算与 no-op resume",
+      "sublabel": "未知 STARTED 禁止自动重测",
+      "pos": [
+        1430,
+        3645
+      ],
+      "size": [
+        300,
+        190
+      ]
+    },
+    {
+      "id": "paired_analysis",
+      "type": "backend",
+      "label": "V3.2 只读重核与真实配对",
+      "sublabel": "冻结 plan / 原始 raw / artifacts 重核",
+      "pos": [
+        350,
+        4495
+      ],
+      "size": [
+        300,
+        210
+      ]
+    },
+    {
+      "id": "quality_coverage",
+      "type": "backend",
+      "label": "原域质量、Pareto 与 Coverage",
+      "sublabel": "原域误差 / 实际 FinalBits / 公共投影",
+      "pos": [
+        710,
+        4495
+      ],
+      "size": [
+        300,
+        210
+      ]
+    },
+    {
+      "id": "v32_reports",
+      "type": "database",
+      "label": "V3.2 报告与结论边界",
+      "sublabel": "analysis JSON / HTML / P2 report.md",
+      "pos": [
+        1070,
+        4495
+      ],
+      "size": [
+        300,
+        210
+      ]
+    },
+    {
+      "id": "scope_acceptance",
+      "type": "backend",
+      "label": "辅助审计与逐条范围验收",
+      "sublabel": "未压缩 SIZE_BASELINE / buffer cost",
+      "pos": [
+        1430,
+        4495
+      ],
+      "size": [
+        300,
+        210
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "entry--freeze",
+      "from": "entry",
+      "to": "freeze",
+      "label": "",
+      "variant": "default",
+      "fromSide": "right",
+      "toSide": "left",
+      "via": []
+    },
+    {
+      "id": "freeze--dataset",
+      "from": "freeze",
+      "to": "dataset",
+      "label": "",
+      "variant": "default",
+      "fromSide": "right",
+      "toSide": "left",
+      "via": []
+    },
+    {
+      "id": "dataset--loader",
+      "from": "dataset",
+      "to": "loader",
+      "label": "",
+      "variant": "default",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "via": [
+        [
+          1220,
+          260
+        ],
+        [
+          500,
+          260
+        ]
+      ]
+    },
+    {
+      "id": "loader--characterize",
+      "from": "loader",
+      "to": "characterize",
+      "label": "",
+      "variant": "default",
+      "fromSide": "right",
+      "toSide": "left",
+      "via": []
+    },
+    {
+      "id": "characterize--canonical",
+      "from": "characterize",
+      "to": "canonical",
+      "label": "",
+      "variant": "default",
+      "fromSide": "right",
+      "toSide": "left",
+      "via": []
+    },
+    {
+      "id": "canonical--registry",
+      "from": "canonical",
+      "to": "registry",
+      "label": "",
+      "variant": "default",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "via": [
+        [
+          1220,
+          480
+        ],
+        [
+          325,
+          480
+        ],
+        [
+          325,
+          805
+        ],
+        [
+          500,
+          805
+        ]
+      ]
+    },
+    {
+      "id": "registry--sweep",
+      "from": "registry",
+      "to": "sweep",
+      "label": "",
+      "variant": "default",
+      "fromSide": "right",
+      "toSide": "left",
+      "via": []
+    },
+    {
+      "id": "sweep--universe",
+      "from": "sweep",
+      "to": "universe",
+      "label": "",
+      "variant": "default",
+      "fromSide": "right",
+      "toSide": "left",
+      "via": []
+    },
+    {
+      "id": "universe--negotiate",
+      "from": "universe",
+      "to": "negotiate",
+      "label": "",
+      "variant": "default",
+      "fromSide": "right",
+      "toSide": "left",
+      "via": [
+        [
+          1400.0,
+          885.0
+        ],
+        [
+          1400.0,
+          920.0
+        ]
+      ]
+    },
+    {
+      "id": "negotiate--plans",
+      "from": "negotiate",
+      "to": "plans",
+      "label": "",
+      "variant": "default",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "via": [
+        [
+          1580,
+          1035
+        ],
+        [
+          500,
+          1035
+        ]
+      ]
+    },
+    {
+      "id": "plans--resolution",
+      "from": "plans",
+      "to": "resolution",
+      "label": "",
+      "variant": "default",
+      "fromSide": "right",
+      "toSide": "left",
+      "via": []
+    },
+    {
+      "id": "resolution--keys",
+      "from": "resolution",
+      "to": "keys",
+      "label": "",
+      "variant": "default",
+      "fromSide": "right",
+      "toSide": "left",
+      "via": [
+        [
+          1040.0,
+          1125.0
+        ],
+        [
+          1040.0,
+          1130.0
+        ]
+      ]
+    },
+    {
+      "id": "keys--tasks",
+      "from": "keys",
+      "to": "tasks",
+      "label": "",
+      "variant": "default",
+      "fromSide": "right",
+      "toSide": "left",
+      "via": [
+        [
+          1400.0,
+          1130.0
+        ],
+        [
+          1400.0,
+          1125.0
+        ]
+      ]
+    },
+    {
+      "id": "input--adapter",
+      "from": "input",
+      "to": "adapter",
+      "label": "",
+      "variant": "default",
+      "fromSide": "right",
+      "toSide": "left",
+      "via": []
+    },
+    {
+      "id": "adapter--preprocess",
+      "from": "adapter",
+      "to": "preprocess",
+      "label": "",
+      "variant": "default",
+      "fromSide": "right",
+      "toSide": "left",
+      "via": []
+    },
+    {
+      "id": "preprocess--boundary",
+      "from": "preprocess",
+      "to": "boundary",
+      "label": "",
+      "variant": "default",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "via": [
+        [
+          1220,
+          1955
+        ],
+        [
+          500,
+          1955
+        ]
+      ]
+    },
+    {
+      "id": "boundary--minimal",
+      "from": "boundary",
+      "to": "minimal",
+      "label": "",
+      "variant": "default",
+      "fromSide": "right",
+      "toSide": "left",
+      "via": []
+    },
+    {
+      "id": "minimal--preflight",
+      "from": "minimal",
+      "to": "preflight",
+      "label": "",
+      "variant": "default",
+      "fromSide": "right",
+      "toSide": "left",
+      "via": [
+        [
+          1040.0,
+          2035.0
+        ],
+        [
+          1040.0,
+          2040.0
+        ]
+      ]
+    },
+    {
+      "id": "preflight--warmup",
+      "from": "preflight",
+      "to": "warmup",
+      "label": "通过",
+      "variant": "default",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "via": [],
+      "labelAt": [
+        1270,
+        2140
+      ]
+    },
+    {
+      "id": "warmup--formal",
+      "from": "warmup",
+      "to": "formal",
+      "label": "",
+      "variant": "default",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "via": []
+    },
+    {
+      "id": "preflight--diagnostic",
+      "from": "preflight",
+      "to": "diagnostic",
+      "label": "失败留证",
+      "variant": "default",
+      "fromSide": "top",
+      "toSide": "right",
+      "via": [
+        [
+          1220,
+          1960
+        ],
+        [
+          1025,
+          1960
+        ],
+        [
+          1025,
+          2272.5
+        ]
+      ],
+      "labelAt": [
+        985,
+        2120
+      ]
+    },
+    {
+      "id": "formal--compress",
+      "from": "formal",
+      "to": "compress",
+      "label": "对象展开",
+      "variant": "dashed",
+      "fromSide": "right",
+      "toSide": "left",
+      "via": [
+        [
+          1400,
+          2400.0
+        ],
+        [
+          1400,
+          1915.0
+        ],
+        [
+          1400,
+          1911.0
+        ]
+      ],
+      "labelAt": [
+        1360,
+        2492
+      ]
+    },
+    {
+      "id": "compress--finalize",
+      "from": "compress",
+      "to": "finalize",
+      "label": "",
+      "variant": "default",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "via": []
+    },
+    {
+      "id": "finalize--accounting",
+      "from": "finalize",
+      "to": "accounting",
+      "label": "",
+      "variant": "default",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "via": []
+    },
+    {
+      "id": "accounting--decompress",
+      "from": "accounting",
+      "to": "decompress",
+      "label": "",
+      "variant": "default",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "via": []
+    },
+    {
+      "id": "decompress--correctness",
+      "from": "decompress",
+      "to": "correctness",
+      "label": "",
+      "variant": "default",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "via": []
+    },
+    {
+      "id": "correctness--lossless",
+      "from": "correctness",
+      "to": "lossless",
+      "label": "无损",
+      "variant": "default",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "via": [
+        [
+          1580,
+          2525
+        ],
+        [
+          1220,
+          2525
+        ]
+      ],
+      "labelAt": [
+        1280,
+        2511
+      ]
+    },
+    {
+      "id": "correctness--lossy",
+      "from": "correctness",
+      "to": "lossy",
+      "label": "有损或摘要",
+      "variant": "default",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "via": [
+        [
+          1580.0,
+          2525.0
+        ],
+        [
+          1660.0,
+          2525.0
+        ],
+        [
+          1580.0,
+          2525.0
+        ]
+      ],
+      "labelAt": [
+        1730,
+        2529
+      ]
+    },
+    {
+      "id": "formal--policy",
+      "from": "formal",
+      "to": "policy",
+      "label": "同次采集",
+      "variant": "dashed",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "via": [
+        [
+          1220,
+          2493
+        ],
+        [
+          1025,
+          2493
+        ],
+        [
+          1025,
+          2715
+        ],
+        [
+          680,
+          2715
+        ],
+        [
+          680,
+          3015
+        ],
+        [
+          500,
+          3015
+        ]
+      ],
+      "labelAt": [
+        970,
+        2630
+      ]
+    },
+    {
+      "id": "policy--timing",
+      "from": "policy",
+      "to": "timing",
+      "label": "",
+      "variant": "default",
+      "fromSide": "right",
+      "toSide": "left",
+      "via": [
+        [
+          680.0,
+          3105.0
+        ],
+        [
+          680.0,
+          3115.0
+        ]
+      ]
+    },
+    {
+      "id": "policy--resources",
+      "from": "policy",
+      "to": "resources",
+      "label": "同步资源",
+      "variant": "dashed",
+      "fromSide": "bottom",
+      "toSide": "bottom",
+      "via": [
+        [
+          500,
+          3215
+        ],
+        [
+          1220,
+          3215
+        ]
+      ],
+      "labelAt": [
+        850,
+        3237
+      ]
+    },
+    {
+      "id": "timing--workloads",
+      "from": "timing",
+      "to": "workloads",
+      "label": "",
+      "variant": "default",
+      "fromSide": "top",
+      "toSide": "top",
+      "via": [
+        [
+          860,
+          3030
+        ],
+        [
+          1580,
+          3030
+        ]
+      ]
+    },
+    {
+      "id": "workloads--query",
+      "from": "workloads",
+      "to": "query",
+      "label": "请求且支持",
+      "variant": "dashed",
+      "fromSide": "left",
+      "toSide": "right",
+      "via": [
+        [
+          1400,
+          3105.0
+        ],
+        [
+          1400,
+          3277.5
+        ]
+      ],
+      "labelAt": [
+        1460,
+        3214
+      ]
+    },
+    {
+      "id": "workloads--streaming",
+      "from": "workloads",
+      "to": "streaming",
+      "label": "请求且支持",
+      "variant": "dashed",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "via": [],
+      "labelAt": [
+        1640,
+        3195
+      ]
+    },
+    {
+      "id": "workloads--raw",
+      "from": "workloads",
+      "to": "raw",
+      "label": "同次运行记录",
+      "variant": "default",
+      "fromSide": "left",
+      "toSide": "top",
+      "via": [
+        [
+          1385,
+          3105.0
+        ],
+        [
+          1385,
+          3120.0
+        ],
+        [
+          1385,
+          3405
+        ],
+        [
+          1040,
+          3405
+        ]
+      ],
+      "labelAt": [
+        1500,
+        3415
+      ]
+    },
+    {
+      "id": "diagnostic--raw",
+      "from": "diagnostic",
+      "to": "raw",
+      "label": "诊断记录",
+      "variant": "dashed",
+      "fromSide": "left",
+      "toSide": "left",
+      "via": [
+        [
+          325,
+          2272.5
+        ],
+        [
+          325,
+          3525.0
+        ]
+      ],
+      "labelAt": [
+        460,
+        3505.0
+      ]
+    },
+    {
+      "id": "raw--evidence",
+      "from": "raw",
+      "to": "evidence",
+      "label": "",
+      "variant": "default",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "via": [
+        [
+          1040.0,
+          3600
+        ],
+        [
+          1120,
+          3600
+        ],
+        [
+          325,
+          3600
+        ],
+        [
+          325,
+          3895
+        ],
+        [
+          500,
+          3895
+        ]
+      ]
+    },
+    {
+      "id": "evidence--eligibility",
+      "from": "evidence",
+      "to": "eligibility",
+      "label": "",
+      "variant": "default",
+      "fromSide": "right",
+      "toSide": "left",
+      "via": []
+    },
+    {
+      "id": "eligibility--summary",
+      "from": "eligibility",
+      "to": "summary",
+      "label": "",
+      "variant": "default",
+      "fromSide": "right",
+      "toSide": "left",
+      "via": [
+        [
+          1040.0,
+          3975.0
+        ],
+        [
+          1040.0,
+          3990.0
+        ]
+      ]
+    },
+    {
+      "id": "summary--corpus",
+      "from": "summary",
+      "to": "corpus",
+      "label": "",
+      "variant": "default",
+      "fromSide": "left",
+      "toSide": "top",
+      "via": [
+        [
+          1040,
+          3990.0
+        ],
+        [
+          1040,
+          4008.0
+        ],
+        [
+          1040,
+          4095
+        ],
+        [
+          680,
+          4095
+        ]
+      ]
+    },
+    {
+      "id": "pareto--report",
+      "from": "pareto",
+      "to": "report",
+      "label": "",
+      "variant": "default",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "via": [
+        [
+          1220,
+          4275
+        ],
+        [
+          1040,
+          4275
+        ]
+      ]
+    },
+    {
+      "id": "evidence--coverage",
+      "from": "evidence",
+      "to": "coverage",
+      "label": "任务全集",
+      "variant": "dashed",
+      "fromSide": "top",
+      "toSide": "right",
+      "via": [
+        [
+          500.0,
+          3910
+        ],
+        [
+          570,
+          3910
+        ],
+        [
+          1795,
+          3910
+        ],
+        [
+          1795,
+          4190.0
+        ]
+      ],
+      "labelAt": [
+        1580,
+        3903
+      ]
+    },
+    {
+      "id": "coverage--report",
+      "from": "coverage",
+      "to": "report",
+      "label": "覆盖率",
+      "variant": "default",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "via": [
+        [
+          1580,
+          4305
+        ],
+        [
+          1200,
+          4305
+        ],
+        [
+          1040.0,
+          4305
+        ]
+      ],
+      "labelAt": [
+        1470,
+        4285
+      ]
+    },
+    {
+      "id": "tasks--gates",
+      "from": "tasks",
+      "to": "gates",
+      "label": "",
+      "variant": "default",
+      "fromSide": "right",
+      "toSide": "top",
+      "via": [
+        [
+          1795,
+          1125.0
+        ],
+        [
+          1795,
+          1625
+        ],
+        [
+          500,
+          1625
+        ]
+      ]
+    },
+    {
+      "id": "gates--track",
+      "from": "gates",
+      "to": "track",
+      "label": "",
+      "variant": "default",
+      "fromSide": "right",
+      "toSide": "left",
+      "via": [
+        [
+          680.0,
+          1710.0
+        ],
+        [
+          680.0,
+          1715.0
+        ]
+      ]
+    },
+    {
+      "id": "track--input",
+      "from": "track",
+      "to": "input",
+      "label": "",
+      "variant": "default",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "via": [
+        [
+          1040,
+          1800
+        ],
+        [
+          500,
+          1800
+        ]
+      ]
+    },
+    {
+      "id": "summary--pareto",
+      "from": "summary",
+      "to": "pareto",
+      "label": "",
+      "variant": "default",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "via": [
+        [
+          1400.0,
+          4090.0
+        ],
+        [
+          1220.0,
+          4090.0
+        ]
+      ]
+    },
+    {
+      "id": "corpus--report",
+      "from": "corpus",
+      "to": "report",
+      "label": "汇总结果",
+      "variant": "dashed",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "via": [
+        [
+          680,
+          4295
+        ],
+        [
+          880,
+          4295
+        ],
+        [
+          1040.0,
+          4295
+        ]
+      ],
+      "labelAt": [
+        785,
+        4275
+      ]
+    },
+    {
+      "id": "resources--raw",
+      "from": "resources",
+      "to": "raw",
+      "label": "资源证据",
+      "variant": "dashed",
+      "fromSide": "left",
+      "toSide": "top",
+      "via": [
+        [
+          1045,
+          3125.0
+        ],
+        [
+          1045,
+          3435
+        ],
+        [
+          1040.0,
+          3435
+        ]
+      ],
+      "labelAt": [
+        970,
+        3330
+      ]
+    },
+    {
+      "id": "query--raw",
+      "from": "query",
+      "to": "raw",
+      "label": "查询结果",
+      "variant": "dashed",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "via": [
+        [
+          1220.0,
+          3397.5
+        ],
+        [
+          1040.0,
+          3397.5
+        ]
+      ],
+      "labelAt": [
+        1280,
+        3350
+      ]
+    },
+    {
+      "id": "streaming--raw",
+      "from": "streaming",
+      "to": "raw",
+      "label": "流式结果",
+      "variant": "dashed",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "via": [
+        [
+          1580,
+          3448
+        ],
+        [
+          1160,
+          3448
+        ],
+        [
+          1040.0,
+          3448
+        ]
+      ],
+      "labelAt": [
+        1510,
+        3366
+      ]
+    },
+    {
+      "id": "dataset--source_identity",
+      "from": "dataset",
+      "to": "source_identity",
+      "label": "来源与派生",
+      "variant": "dashed",
+      "fromSide": "right",
+      "toSide": "top",
+      "via": [
+        [
+          1780,
+          195.0
+        ],
+        [
+          1780,
+          550
+        ],
+        [
+          680,
+          550
+        ]
+      ],
+      "labelAt": [
+        1510,
+        537
+      ]
+    },
+    {
+      "id": "source_identity--logical_object",
+      "from": "source_identity",
+      "to": "logical_object",
+      "label": "",
+      "variant": "default",
+      "fromSide": "right",
+      "toSide": "left",
+      "via": []
+    },
+    {
+      "id": "logical_object--experiment_contract",
+      "from": "logical_object",
+      "to": "experiment_contract",
+      "label": "原对象依赖",
+      "variant": "dashed",
+      "fromSide": "right",
+      "toSide": "right",
+      "via": [
+        [
+          1760,
+          655.0
+        ],
+        [
+          1760,
+          1400.0
+        ]
+      ],
+      "labelAt": [
+        1630,
+        785
+      ]
+    },
+    {
+      "id": "experiment_contract--expected_matrix",
+      "from": "experiment_contract",
+      "to": "expected_matrix",
+      "label": "",
+      "variant": "default",
+      "fromSide": "left",
+      "toSide": "right",
+      "via": []
+    },
+    {
+      "id": "expected_matrix--public_projection",
+      "from": "expected_matrix",
+      "to": "public_projection",
+      "label": "",
+      "variant": "default",
+      "fromSide": "left",
+      "toSide": "right",
+      "via": []
+    },
+    {
+      "id": "public_projection--frozen_schedule",
+      "from": "public_projection",
+      "to": "frozen_schedule",
+      "label": "",
+      "variant": "default",
+      "fromSide": "left",
+      "toSide": "right",
+      "via": []
+    },
+    {
+      "id": "frozen_schedule--object_qualification",
+      "from": "frozen_schedule",
+      "to": "object_qualification",
+      "label": "冻结作业",
+      "variant": "dashed",
+      "fromSide": "left",
+      "toSide": "left",
+      "via": [
+        [
+          334,
+          1400.0
+        ],
+        [
+          334,
+          2840.0
+        ]
+      ],
+      "labelAt": [
+        575,
+        1585
+      ]
+    },
+    {
+      "id": "object_qualification--development_pilot",
+      "from": "object_qualification",
+      "to": "development_pilot",
+      "label": "资格通过",
+      "variant": "default",
+      "fromSide": "right",
+      "toSide": "left",
+      "via": [],
+      "labelAt": [
+        680.0,
+        2702
+      ]
+    },
+    {
+      "id": "development_pilot--formal_lanes",
+      "from": "development_pilot",
+      "to": "formal_lanes",
+      "label": "pilot 通过",
+      "variant": "default",
+      "fromSide": "right",
+      "toSide": "left",
+      "via": [],
+      "labelAt": [
+        1070.0,
+        2726
+      ]
+    },
+    {
+      "id": "formal_lanes--p2_object",
+      "from": "formal_lanes",
+      "to": "p2_object",
+      "label": "P2 对象展开",
+      "variant": "dashed",
+      "fromSide": "right",
+      "toSide": "left",
+      "via": [],
+      "labelAt": [
+        1400.0,
+        2726
+      ]
+    },
+    {
+      "id": "formal_lanes--measurement_boundary",
+      "from": "formal_lanes",
+      "to": "measurement_boundary",
+      "label": "同次执行职责",
+      "variant": "dashed",
+      "fromSide": "bottom",
+      "toSide": "left",
+      "via": [
+        [
+          1220.0,
+          2963
+        ],
+        [
+          334,
+          2963
+        ],
+        [
+          334,
+          3740.0
+        ]
+      ],
+      "labelAt": [
+        920,
+        2993
+      ]
+    },
+    {
+      "id": "measurement_boundary--resource_lease",
+      "from": "measurement_boundary",
+      "to": "resource_lease",
+      "label": "同一试次",
+      "variant": "dashed",
+      "fromSide": "right",
+      "toSide": "left",
+      "via": [],
+      "labelAt": [
+        680.0,
+        3638
+      ]
+    },
+    {
+      "id": "resource_lease--trial_store",
+      "from": "resource_lease",
+      "to": "trial_store",
+      "label": "观测与状态",
+      "variant": "dashed",
+      "fromSide": "right",
+      "toSide": "left",
+      "via": [],
+      "labelAt": [
+        1040.0,
+        3638
+      ]
+    },
+    {
+      "id": "trial_store--resume_audit",
+      "from": "trial_store",
+      "to": "resume_audit",
+      "label": "恢复重核",
+      "variant": "dashed",
+      "fromSide": "right",
+      "toSide": "left",
+      "via": [],
+      "labelAt": [
+        1400.0,
+        3638
+      ]
+    },
+    {
+      "id": "trial_store--paired_analysis",
+      "from": "trial_store",
+      "to": "paired_analysis",
+      "label": "只读证据",
+      "variant": "dashed",
+      "fromSide": "bottom",
+      "toSide": "left",
+      "via": [
+        [
+          1220.0,
+          3860
+        ],
+        [
+          334,
+          3860
+        ],
+        [
+          334,
+          4600.0
+        ]
+      ],
+      "labelAt": [
+        970,
+        3890
+      ]
+    },
+    {
+      "id": "paired_analysis--quality_coverage",
+      "from": "paired_analysis",
+      "to": "quality_coverage",
+      "label": "",
+      "variant": "default",
+      "fromSide": "right",
+      "toSide": "left",
+      "via": []
+    },
+    {
+      "id": "quality_coverage--v32_reports",
+      "from": "quality_coverage",
+      "to": "v32_reports",
+      "label": "",
+      "variant": "default",
+      "fromSide": "right",
+      "toSide": "left",
+      "via": []
+    },
+    {
+      "id": "v32_reports--scope_acceptance",
+      "from": "v32_reports",
+      "to": "scope_acceptance",
+      "label": "独立验收",
+      "variant": "dashed",
+      "fromSide": "right",
+      "toSide": "left",
+      "via": [],
+      "labelAt": [
+        1400.0,
+        4486
+      ]
+    }
+  ]
+}

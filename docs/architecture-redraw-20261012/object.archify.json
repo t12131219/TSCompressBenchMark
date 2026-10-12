@@ -1,0 +1,228 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "完整对象闭环 · 编码、恢复与计量",
+    "locale": "zh-CN",
+    "quality_profile": "showcase",
+    "viewBox": [
+      1320,
+      750
+    ]
+  },
+  "components": [
+    {
+      "id": "original_domain",
+      "type": "database",
+      "label": "冻结原域输入",
+      "sublabel": "T / V / mask / dtype / shape",
+      "pos": [
+        35,
+        100
+      ],
+      "size": [
+        240,
+        86
+      ]
+    },
+    {
+      "id": "explicit_transform",
+      "type": "backend",
+      "label": "显式路由与预处理",
+      "sublabel": "CompatibilityPlan / PreprocessPlan",
+      "pos": [
+        365,
+        100
+      ],
+      "size": [
+        250,
+        86
+      ]
+    },
+    {
+      "id": "encoding_session",
+      "type": "backend",
+      "label": "独立编码对象",
+      "sublabel": "create → update → finalize",
+      "pos": [
+        705,
+        100
+      ],
+      "size": [
+        250,
+        86
+      ]
+    },
+    {
+      "id": "finalized_artifact",
+      "type": "database",
+      "label": "完整编码产物",
+      "sublabel": "stream / Ledger / DecodeContext",
+      "pos": [
+        1035,
+        100
+      ],
+      "size": [
+        250,
+        86
+      ]
+    },
+    {
+      "id": "recovery_worker",
+      "type": "security",
+      "label": "独立解码与恢复",
+      "sublabel": "新 worker / 已保存字节与依赖",
+      "pos": [
+        1035,
+        335
+      ],
+      "size": [
+        250,
+        86
+      ]
+    },
+    {
+      "id": "correctness_contract",
+      "type": "security",
+      "label": "原域正确性验证",
+      "sublabel": "逐位 / 误差界 / 原时间网格",
+      "pos": [
+        705,
+        335
+      ],
+      "size": [
+        250,
+        86
+      ]
+    },
+    {
+      "id": "paid_accounting",
+      "type": "database",
+      "label": "完整对象比特成本",
+      "sublabel": "FinalBits = Serialized + SideInfo",
+      "pos": [
+        365,
+        335
+      ],
+      "size": [
+        250,
+        86
+      ]
+    },
+    {
+      "id": "trial_observation",
+      "type": "backend",
+      "label": "同一试次观测",
+      "sublabel": "wall / CPU / RSS / 线程 / 计数器",
+      "pos": [
+        35,
+        335
+      ],
+      "size": [
+        250,
+        86
+      ]
+    },
+    {
+      "id": "stored_evidence",
+      "type": "database",
+      "label": "保存试次与恢复证据",
+      "sublabel": "TrialID / 工件 SHA / 失败原因",
+      "pos": [
+        35,
+        570
+      ],
+      "size": [
+        250,
+        86
+      ]
+    },
+    {
+      "id": "eligible_analysis",
+      "type": "frontend",
+      "label": "资格筛选后的分析",
+      "sublabel": "冻结分母 / 效应 / 质量 / Pareto",
+      "pos": [
+        365,
+        570
+      ],
+      "size": [
+        250,
+        86
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "original_to_transform",
+      "from": "original_domain",
+      "to": "explicit_transform",
+      "label": "输入验证",
+      "variant": "emphasis"
+    },
+    {
+      "id": "transform_to_encode",
+      "from": "explicit_transform",
+      "to": "encoding_session",
+      "label": "实际缓冲区",
+      "variant": "emphasis"
+    },
+    {
+      "id": "encode_to_artifact",
+      "from": "encoding_session",
+      "to": "finalized_artifact",
+      "label": "完整 Finalize",
+      "variant": "emphasis"
+    },
+    {
+      "id": "artifact_to_recovery",
+      "from": "finalized_artifact",
+      "to": "recovery_worker",
+      "label": "保存字节",
+      "variant": "emphasis",
+      "labelAt": [
+        1160,
+        200
+      ]
+    },
+    {
+      "id": "recovery_to_validation",
+      "from": "recovery_worker",
+      "to": "correctness_contract",
+      "label": "还原原对象",
+      "variant": "emphasis"
+    },
+    {
+      "id": "validation_to_accounting",
+      "from": "correctness_contract",
+      "to": "paid_accounting",
+      "label": "原域验证结果",
+      "variant": "emphasis"
+    },
+    {
+      "id": "accounting_to_trial",
+      "from": "paid_accounting",
+      "to": "trial_observation",
+      "label": "成本与正确性",
+      "variant": "emphasis"
+    },
+    {
+      "id": "trial_to_storage",
+      "from": "trial_observation",
+      "to": "stored_evidence",
+      "label": "持久提交",
+      "variant": "emphasis",
+      "labelAt": [
+        160,
+        435
+      ]
+    },
+    {
+      "id": "storage_to_analysis",
+      "from": "stored_evidence",
+      "to": "eligible_analysis",
+      "label": "证据重核",
+      "variant": "emphasis"
+    }
+  ]
+}

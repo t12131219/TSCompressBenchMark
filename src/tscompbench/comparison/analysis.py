@@ -107,7 +107,7 @@ def _cold_trial_issues(
     from tscompbench.measurement.thread_monitor import thread_budget_evidence
 
     issues = []
-    record = trial["record"]
+    record = trial.get("record") or {}
     diagnostics = record.get("diagnostics") or {}
     timing = record.get("timing") or {}
     resources = record.get("resources") or {}

@@ -1,0 +1,264 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "当前项目数据流程 · 2026-10-12",
+    "locale": "zh-CN",
+    "quality_profile": "showcase",
+    "viewBox": [
+      1080,
+      625
+    ],
+    "legend": {
+      "mode": "auto",
+      "entries": {
+        "emphasis": {
+          "label": "主流程"
+        },
+        "security": {
+          "label": "资格门禁"
+        },
+        "default": {
+          "label": "数据 / 证据依赖"
+        },
+        "database": {
+          "label": "工件存储"
+        }
+      }
+    }
+  },
+  "stages": [
+    {
+      "label": "原对象与数据"
+    },
+    {
+      "label": "合同与冻结计划"
+    },
+    {
+      "label": "资格与测量门禁"
+    },
+    {
+      "label": "隔离执行与证据"
+    },
+    {
+      "label": "分析与范围验收"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "source_objects",
+      "type": "external",
+      "label": "来源数据与声明",
+      "sublabel": "原内容 / Manifest / 派生链",
+      "stage": 0,
+      "row": 0,
+      "width": 152,
+      "height": 64
+    },
+    {
+      "id": "canonical_objects",
+      "type": "database",
+      "label": "规范化逻辑原对象",
+      "sublabel": "时间 / 值 / 掩码 / 类型 / 形状",
+      "tag": "Canonical / LogicalObject",
+      "stage": 0,
+      "row": 1,
+      "width": 152,
+      "height": 64
+    },
+    {
+      "id": "legacy_lane",
+      "type": "backend",
+      "label": "Legacy TOML",
+      "sublabel": "task_plan / runs / statistics",
+      "tag": "独立运行与统计合同",
+      "stage": 0,
+      "row": 3,
+      "width": 152,
+      "height": 64
+    },
+    {
+      "id": "experiment_contract",
+      "type": "frontend",
+      "label": "事前决策与合同",
+      "sublabel": "成员 / 语料 / 配置 / 预期",
+      "tag": "Protocol / AnalysisPolicy",
+      "stage": 1,
+      "row": 0,
+      "width": 152,
+      "height": 64
+    },
+    {
+      "id": "frozen_comparison",
+      "type": "database",
+      "label": "冻结完整矩阵",
+      "sublabel": "协商 / 路径 / 投影 / 配方",
+      "tag": "源码 / 环境 / Schedule",
+      "stage": 1,
+      "row": 1,
+      "width": 152,
+      "height": 64
+    },
+    {
+      "id": "object_qualification",
+      "type": "security",
+      "label": "原对象资格",
+      "sublabel": "Preflight / 正确性 / 独立恢复",
+      "tag": "完整成本与依赖",
+      "stage": 2,
+      "row": 1,
+      "width": 152,
+      "height": 64
+    },
+    {
+      "id": "development_pilot",
+      "type": "security",
+      "label": "独立开发 pilot",
+      "sublabel": "方向时钟 / 粒度 / 采集扰动",
+      "tag": "通过后方可正式测量",
+      "stage": 2,
+      "row": 2,
+      "width": 152,
+      "height": 64
+    },
+    {
+      "id": "isolated_workers",
+      "type": "backend",
+      "label": "分 lane 隔离实测",
+      "sublabel": "对象 / API / P2 / query / stream",
+      "tag": "Finalize / 恢复 / 资源观测",
+      "stage": 3,
+      "row": 2,
+      "width": 152,
+      "height": 64
+    },
+    {
+      "id": "durable_evidence",
+      "type": "database",
+      "label": "持久原始证据",
+      "sublabel": "Trials / Events / 压缩产物",
+      "tag": "失败 / 中断 / 固定分母",
+      "stage": 3,
+      "row": 3,
+      "width": 152,
+      "height": 64
+    },
+    {
+      "id": "readonly_analysis",
+      "type": "backend",
+      "label": "复核与配对分析",
+      "sublabel": "资格重核 / block CI / 质量",
+      "tag": "公开比较键 / Coverage",
+      "stage": 4,
+      "row": 3,
+      "width": 152,
+      "height": 64
+    },
+    {
+      "id": "bounded_reports",
+      "type": "frontend",
+      "label": "报告与结论边界",
+      "sublabel": "JSON / HTML / Markdown",
+      "tag": "缺口 / INCONCLUSIVE",
+      "stage": 4,
+      "row": 2,
+      "width": 152,
+      "height": 64
+    },
+    {
+      "id": "scope_audits",
+      "type": "security",
+      "label": "辅助审计与验收",
+      "sublabel": "未压缩参考 / 成本 / completion",
+      "tag": "独立审计范围",
+      "stage": 4,
+      "row": 0,
+      "width": 152,
+      "height": 64
+    }
+  ],
+  "flows": [
+    {
+      "id": "source_to_canonical",
+      "from": "source_objects",
+      "to": "canonical_objects",
+      "label": "校验与准备",
+      "variant": "emphasis",
+      "labelDy": 24
+    },
+    {
+      "id": "canonical_to_plan",
+      "from": "canonical_objects",
+      "to": "frozen_comparison",
+      "label": "内容身份",
+      "variant": "emphasis"
+    },
+    {
+      "id": "contract_to_plan",
+      "from": "experiment_contract",
+      "to": "frozen_comparison",
+      "label": "冻结决策",
+      "variant": "emphasis",
+      "labelDy": 24
+    },
+    {
+      "id": "plan_to_qualification",
+      "from": "frozen_comparison",
+      "to": "object_qualification",
+      "label": "全部单元",
+      "variant": "emphasis"
+    },
+    {
+      "id": "qualification_to_pilot",
+      "from": "object_qualification",
+      "to": "development_pilot",
+      "label": "资格通过",
+      "variant": "security",
+      "labelDy": 24
+    },
+    {
+      "id": "pilot_to_workers",
+      "from": "development_pilot",
+      "to": "isolated_workers",
+      "label": "测量合格",
+      "variant": "emphasis"
+    },
+    {
+      "id": "workers_to_evidence",
+      "from": "isolated_workers",
+      "to": "durable_evidence",
+      "label": "逐次留证",
+      "variant": "emphasis",
+      "labelDy": 24
+    },
+    {
+      "id": "evidence_to_analysis",
+      "from": "durable_evidence",
+      "to": "readonly_analysis",
+      "label": "只读重核",
+      "variant": "emphasis"
+    },
+    {
+      "id": "analysis_to_report",
+      "from": "readonly_analysis",
+      "to": "bounded_reports",
+      "label": "固定分母",
+      "variant": "emphasis"
+    },
+    {
+      "id": "report_to_audits",
+      "from": "bounded_reports",
+      "to": "scope_audits",
+      "label": "范围审阅",
+      "variant": "default"
+    },
+    {
+      "id": "canonical_to_legacy",
+      "from": "canonical_objects",
+      "to": "legacy_lane",
+      "label": "独立旧合同",
+      "variant": "default",
+      "labelDy": 24
+    }
+  ]
+}

@@ -1,0 +1,257 @@
+{
+  "authorities": [
+    {
+      "blobs": 152,
+      "bytes": 15286522,
+      "commit": "386d69348e6c30475761d3519ee0bfe10ed473d3",
+      "evidence": {
+        "path": "docs/audits/20261011_closure_formal_verification/upstream_authority_r2/elf.json",
+        "sha256": "1fc5d51edaf7bb96da980af6c350a6cefa280255c41bc2571d99ec72088b4af0"
+      },
+      "gitlinks": [],
+      "name": "elf",
+      "symlinks": []
+    },
+    {
+      "blobs": 15,
+      "bytes": 138082,
+      "commit": "65b6882ff1cc225f9c6fcd947def7b1adb21d578",
+      "evidence": {
+        "path": "docs/audits/20261011_closure_formal_verification/upstream_authority_r2/dipperstein-lzss.json",
+        "sha256": "3a5f95d8508f2352a628b7c14737a6b7c303f6bda87c732b688ae1633b83f13e"
+      },
+      "gitlinks": [
+        {
+          "git_object_id": "2e6132f75cbe16842a9ab81af7756ed9ac1cdbe0",
+          "kind": "commit",
+          "mode": "160000",
+          "path": "bitfile"
+        },
+        {
+          "git_object_id": "c921d0f8f7b2fc3d454ba897a3bf04beecb6899a",
+          "kind": "commit",
+          "mode": "160000",
+          "path": "optlist"
+        }
+      ],
+      "name": "dipperstein-lzss",
+      "symlinks": []
+    },
+    {
+      "blobs": 187,
+      "bytes": 882687,
+      "commit": "2e6132f75cbe16842a9ab81af7756ed9ac1cdbe0",
+      "evidence": {
+        "path": "docs/audits/20261011_closure_formal_verification/upstream_authority_r2/dipperstein-bitfile.json",
+        "sha256": "72cdfc79a8590def435632c0c6e4fbbf251ab50900a87dd9343115ed794df0da"
+      },
+      "gitlinks": [],
+      "name": "dipperstein-bitfile",
+      "symlinks": []
+    }
+  ],
+  "bitfile_gitlink_exact_commit_verified": false,
+  "claim_boundary": "Exact source trees and selected vendor bytes; no semantic/full dependency parity.",
+  "codec_executed": false,
+  "dipperstein_selected_vendor": {
+    "cache_files_excluded": [],
+    "exact_set_required": true,
+    "expectation_source": "EXISTING_LOCK_OR_INDEPENDENT_PINNED_GIT_OBJECTS",
+    "expected_count": 12,
+    "extra": [],
+    "files": [
+      {
+        "actual_sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903",
+        "expected_sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903",
+        "path": "COPYING"
+      },
+      {
+        "actual_sha256": "a853c2ffec17057872340eee242ae4d96cbf2b520ae27d903e1b2fef1a5f9d1c",
+        "expected_sha256": "a853c2ffec17057872340eee242ae4d96cbf2b520ae27d903e1b2fef1a5f9d1c",
+        "path": "COPYING.LESSER"
+      },
+      {
+        "actual_sha256": "5813c7f6193ebef106f92ccadf24aa60e74409ab8c06ef72dd1a0d89ff0b7d54",
+        "expected_sha256": "5813c7f6193ebef106f92ccadf24aa60e74409ab8c06ef72dd1a0d89ff0b7d54",
+        "path": "README"
+      },
+      {
+        "actual_sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903",
+        "expected_sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903",
+        "path": "bitfile/COPYING"
+      },
+      {
+        "actual_sha256": "a853c2ffec17057872340eee242ae4d96cbf2b520ae27d903e1b2fef1a5f9d1c",
+        "expected_sha256": "a853c2ffec17057872340eee242ae4d96cbf2b520ae27d903e1b2fef1a5f9d1c",
+        "path": "bitfile/COPYING.LESSER"
+      },
+      {
+        "actual_sha256": "b06337f2755c2f40a5cf10780fcdc7f054e382e8790d3a900fdf636b6bdf5c3e",
+        "expected_sha256": "b06337f2755c2f40a5cf10780fcdc7f054e382e8790d3a900fdf636b6bdf5c3e",
+        "path": "bitfile/README"
+      },
+      {
+        "actual_sha256": "840330e570aabd5bda2c2088384c00ef648bb05ea265b9a41fa8363aea3cccaf",
+        "expected_sha256": "840330e570aabd5bda2c2088384c00ef648bb05ea265b9a41fa8363aea3cccaf",
+        "path": "bitfile/bitfile.c"
+      },
+      {
+        "actual_sha256": "ebad98f30326746cebc790e22ebf9c3bec753d3360c347fd75006130338597d7",
+        "expected_sha256": "ebad98f30326746cebc790e22ebf9c3bec753d3360c347fd75006130338597d7",
+        "path": "bitfile/bitfile.h"
+      },
+      {
+        "actual_sha256": "0119a78fb11c2741e7caffe9f773817af62d9a7623cc253614fccc5285b8d82b",
+        "expected_sha256": "0119a78fb11c2741e7caffe9f773817af62d9a7623cc253614fccc5285b8d82b",
+        "path": "lzlocal.h"
+      },
+      {
+        "actual_sha256": "2811a16e9c4a851473ee41d9d3d8f383c3a59c1b6ab10f71379c9f03b2f6a8e8",
+        "expected_sha256": "2811a16e9c4a851473ee41d9d3d8f383c3a59c1b6ab10f71379c9f03b2f6a8e8",
+        "path": "lzss.c"
+      },
+      {
+        "actual_sha256": "1b3ce3d2704156d7d1b3d1ea2dd4d323028c0b9d485567524a8e153c45b1252d",
+        "expected_sha256": "1b3ce3d2704156d7d1b3d1ea2dd4d323028c0b9d485567524a8e153c45b1252d",
+        "path": "lzss.h"
+      },
+      {
+        "actual_sha256": "30617fc5b92f29869cabad61cddb4633b7ac0a12f2a0556f435859d313778c72",
+        "expected_sha256": "30617fc5b92f29869cabad61cddb4633b7ac0a12f2a0556f435859d313778c72",
+        "path": "tree.c"
+      }
+    ],
+    "hash_mismatch": [],
+    "missing": [],
+    "observed_count": 12,
+    "status": "PASS",
+    "symlinks_rejected": []
+  },
+  "driver": {
+    "path": "docs/audits/20261011_closure_formal_verification/verify_acquired_authorities.py",
+    "sha256": "d17a5dc063a7e5fda29bf20edf2d473e490b7037278fc48654bed67265c170cd"
+  },
+  "elf_complete_pinned_tree_verified": true,
+  "elf_old_lock_rows": [
+    {
+      "authority_sha256": "abd559992b948080b04af957703e3a93b43a343ab46a08b0e481d2a3f7dc9200",
+      "expected_sha256": "abd559992b948080b04af957703e3a93b43a343ab46a08b0e481d2a3f7dc9200",
+      "path": "README.md"
+    },
+    {
+      "authority_sha256": "a045b0a45414cdd3922938e7c030b9dae98b2da0d46b614b2ac4e14977e34ccd",
+      "expected_sha256": "a045b0a45414cdd3922938e7c030b9dae98b2da0d46b614b2ac4e14977e34ccd",
+      "path": "pom.xml"
+    },
+    {
+      "authority_sha256": "2a9e65807e2e135860883130353a9313a73b22b1a70facc267b23cf25f3e6a89",
+      "expected_sha256": "2a9e65807e2e135860883130353a9313a73b22b1a70facc267b23cf25f3e6a89",
+      "path": "src/main/java/gr/aueb/delorean/chimp/InputBitStream.java"
+    },
+    {
+      "authority_sha256": "ebcb7bceff8e372972068d910cc3489a08855299ae85211cdae23688bd107c63",
+      "expected_sha256": "ebcb7bceff8e372972068d910cc3489a08855299ae85211cdae23688bd107c63",
+      "path": "src/main/java/gr/aueb/delorean/chimp/OutputBitStream.java"
+    },
+    {
+      "authority_sha256": "e5f31b6be2c582fbef0b24e331066465176d7b31042e760ae45aa0152d75d136",
+      "expected_sha256": "e5f31b6be2c582fbef0b24e331066465176d7b31042e760ae45aa0152d75d136",
+      "path": "src/main/java/org/urbcomp/startdb/compress/elf/compressor/AbstractElfCompressor.java"
+    },
+    {
+      "authority_sha256": "4f3929cfbc2b4a7cadb71a6590f788abbded31eb6ae3642f62d9eadca5eafcae",
+      "expected_sha256": "4f3929cfbc2b4a7cadb71a6590f788abbded31eb6ae3642f62d9eadca5eafcae",
+      "path": "src/main/java/org/urbcomp/startdb/compress/elf/compressor/ElfCompressor.java"
+    },
+    {
+      "authority_sha256": "46f59079070806d8e1a46a8cfb2f714d1cad0703bb001ac1e23fb2a7b3a33387",
+      "expected_sha256": "46f59079070806d8e1a46a8cfb2f714d1cad0703bb001ac1e23fb2a7b3a33387",
+      "path": "src/main/java/org/urbcomp/startdb/compress/elf/compressor/ICompressor.java"
+    },
+    {
+      "authority_sha256": "4a209b236a34ed435c973e7211bc5403ec66a2efe11324e593a252ae61e3d06d",
+      "expected_sha256": "4a209b236a34ed435c973e7211bc5403ec66a2efe11324e593a252ae61e3d06d",
+      "path": "src/main/java/org/urbcomp/startdb/compress/elf/compressor32/AbstractElfCompressor32.java"
+    },
+    {
+      "authority_sha256": "2ae472f1b079fa7647e90dc71086c849df58b23700024b1775eae76704414eea",
+      "expected_sha256": "2ae472f1b079fa7647e90dc71086c849df58b23700024b1775eae76704414eea",
+      "path": "src/main/java/org/urbcomp/startdb/compress/elf/compressor32/ElfCompressor32.java"
+    },
+    {
+      "authority_sha256": "a9895ae2a6bba8b925c17aa4b1f009aa642a3f518dd76f2f507ff12db208e558",
+      "expected_sha256": "a9895ae2a6bba8b925c17aa4b1f009aa642a3f518dd76f2f507ff12db208e558",
+      "path": "src/main/java/org/urbcomp/startdb/compress/elf/compressor32/ICompressor32.java"
+    },
+    {
+      "authority_sha256": "6a3d09b902a2228843df5e5564718eb932a31faf58acfa2694aa8aa21d7e8e27",
+      "expected_sha256": "6a3d09b902a2228843df5e5564718eb932a31faf58acfa2694aa8aa21d7e8e27",
+      "path": "src/main/java/org/urbcomp/startdb/compress/elf/decompressor/AbstractElfDecompressor.java"
+    },
+    {
+      "authority_sha256": "a9404577308def095b8cf8643393a7281a0456efeb34ef8aa2c87e035b1528b2",
+      "expected_sha256": "a9404577308def095b8cf8643393a7281a0456efeb34ef8aa2c87e035b1528b2",
+      "path": "src/main/java/org/urbcomp/startdb/compress/elf/decompressor/ElfDecompressor.java"
+    },
+    {
+      "authority_sha256": "2bfcf658d029865a19be31b35f5af6a4be28bd8173c81c630dc80f380c561ae3",
+      "expected_sha256": "2bfcf658d029865a19be31b35f5af6a4be28bd8173c81c630dc80f380c561ae3",
+      "path": "src/main/java/org/urbcomp/startdb/compress/elf/decompressor/IDecompressor.java"
+    },
+    {
+      "authority_sha256": "da276b326102f218b7dab9ada703cc5ffed968c1edab82b718b7fee6dfd5169d",
+      "expected_sha256": "da276b326102f218b7dab9ada703cc5ffed968c1edab82b718b7fee6dfd5169d",
+      "path": "src/main/java/org/urbcomp/startdb/compress/elf/decompressor32/AbstractElfDecompressor32.java"
+    },
+    {
+      "authority_sha256": "a3a901d051eb965c50f8faec0ff5a0bad23dba532261c085ddc5b13ba3008b73",
+      "expected_sha256": "a3a901d051eb965c50f8faec0ff5a0bad23dba532261c085ddc5b13ba3008b73",
+      "path": "src/main/java/org/urbcomp/startdb/compress/elf/decompressor32/ElfDecompressor32.java"
+    },
+    {
+      "authority_sha256": "7615b768021a3cfa7dc2604c867db00736af3b18e15914a623ff0b588b8e0c2e",
+      "expected_sha256": "7615b768021a3cfa7dc2604c867db00736af3b18e15914a623ff0b588b8e0c2e",
+      "path": "src/main/java/org/urbcomp/startdb/compress/elf/decompressor32/IDecompressor32.java"
+    },
+    {
+      "authority_sha256": "1f55bcbdee326e9909020401b56a0791d10d2c8aab7457ad373bbe3c5fcd34a9",
+      "expected_sha256": "1f55bcbdee326e9909020401b56a0791d10d2c8aab7457ad373bbe3c5fcd34a9",
+      "path": "src/main/java/org/urbcomp/startdb/compress/elf/xorcompressor/ElfXORCompressor.java"
+    },
+    {
+      "authority_sha256": "2aecfac494644c40676254a288b881639c9d249b2a0bd3e1a03713dd4a81d6f1",
+      "expected_sha256": "2aecfac494644c40676254a288b881639c9d249b2a0bd3e1a03713dd4a81d6f1",
+      "path": "src/main/java/org/urbcomp/startdb/compress/elf/xorcompressor/ElfXORCompressor32.java"
+    },
+    {
+      "authority_sha256": "095fa723ae7632dac764cb1cef75b5cc9fa1b1019fe443473220563929e3cb02",
+      "expected_sha256": "095fa723ae7632dac764cb1cef75b5cc9fa1b1019fe443473220563929e3cb02",
+      "path": "src/main/java/org/urbcomp/startdb/compress/elf/xordecompressor/ElfXORDecompressor.java"
+    },
+    {
+      "authority_sha256": "263b0f273d7eb1d5d347884aa2919df82b045401054c2abcdd5ad3c9f280dd04",
+      "expected_sha256": "263b0f273d7eb1d5d347884aa2919df82b045401054c2abcdd5ad3c9f280dd04",
+      "path": "src/main/java/org/urbcomp/startdb/compress/elf/xordecompressor/ElfXORDecompressor32.java"
+    }
+  ],
+  "full_N_G_CAP_granted": false,
+  "input_references": [
+    {
+      "path": "docs/audits/20261011_closure_formal_verification/source_closure/audit_sources.py",
+      "sha256": "00453f8a43b6aa13a8c7eea9f067cc7ec98c62be62b4702b76854daf41d11695"
+    },
+    {
+      "path": "adapters/rewrite_lossless/vendor/elf/UPSTREAM_PROVENANCE.json",
+      "sha256": "03d00b0a1a452af68d3ea892be66b33de2f54baf5a042046c63fad367816a6f5"
+    },
+    {
+      "path": "registry/sources/lzss-dipperstein-c.artifact.json",
+      "sha256": "ca5a636da4fc69b29f539637fd1c65c87537c512f75458bdfda1344323609fd2"
+    }
+  ],
+  "input_references_unchanged": true,
+  "source_lock_or_old_snapshot_modified": false,
+  "status": "SOURCE_AUTHORITY_HAS_GAPS",
+  "transitive_external_dependencies_granted": false,
+  "vendor_paths_missing_in_authority": []
+}

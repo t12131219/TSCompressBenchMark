@@ -1,0 +1,106 @@
+{
+  "schema_version": "tscb.independent-build-link-observed-scope-review.v2",
+  "created_at": "2026-10-11T12:56:15.462650+00:00",
+  "status": "PASS_LIMITED_OBSERVED_EXEC_AND_OPEN_INITIAL_VERSION_SCOPE",
+  "reviewer": "root-independent-read-review",
+  "references": [
+    {
+      "path": "docs/audits/20261011_closure_formal_verification/build_link/analyze_trace_v5e.py",
+      "sha256": "035567b114522f5b45bd86cf1bfffbddaba809ed0e2f80368d8baa568ae1c2f8",
+      "bytes": 24185
+    },
+    {
+      "path": "docs/audits/20261011_closure_formal_verification/build_link/traced_rebuild_driver_v5b.py",
+      "sha256": "d4539fcb88b5fa9c51de775178ddcac7dbc51be16551787ce12b10bbb9efcaa0",
+      "bytes": 20309
+    },
+    {
+      "path": "docs/audits/20261011_closure_formal_verification/build_link/preserve_build_reads_v3.c",
+      "sha256": "57337ab62f68c13dcced420cb7238bea26f6ae8cfcc060eca2df3254e5e06755",
+      "bytes": 3877
+    },
+    {
+      "path": "build/closure-formal-verification-20261011/traced-builds-r8/strict-pilots/lz4-frame--release/strict-trace-report.json",
+      "sha256": "09bff94e77e4d0c9645e2bc37179e0e13bcea919e3aa067b6ad97895ef14af1c",
+      "bytes": 4982724
+    },
+    {
+      "path": "build/closure-formal-verification-20261011/traced-builds-r8/strict-pilots/abba--release/strict-trace-report.json",
+      "sha256": "9624d0334b215d46551898567f5eff8806f322513f31f998e151daf2bbe74443",
+      "bytes": 31659979
+    }
+  ],
+  "samples": [
+    {
+      "codec": "lz4-frame",
+      "profile": "release",
+      "checks": {
+        "reported_observed_scope_PASS": true,
+        "nonempty_denominators": true,
+        "exec_kernel_pre_post_consistent": true,
+        "read_open_bindings_nonempty_no_gaps": true,
+        "no_capture_drift_missing_unparsed": true,
+        "current_registered_artifact_content_equal": true,
+        "complete_N1_not_granted": true
+      },
+      "checks_pass": true,
+      "open_version_scope_counts": {
+        "PRE_READ_SHA_AND_RETAINED_POST_SHA_MATCH": 2886,
+        "AUDIT_BOOTSTRAP_OUTPUT_SHA_MEASUREMENT_NOT_CODEC_BUILD_INPUT": 33,
+        "PID_PATH_READ_OPEN_WINDOW_LINKED_VERSION_CAPTURE": 158,
+        "KERNEL_SUCCESSFUL_CREATE_OR_TRUNC_INITIAL_EMPTY_VERSION": 23
+      },
+      "object_comparison": {
+        "old_count": 5,
+        "new_count": 5,
+        "equal": true,
+        "scope": "SAVED_BUILD_RECORD_OBJECTS"
+      },
+      "actual_nonempty_exec_count": 56,
+      "actual_nonempty_map_count": 2,
+      "strict_scope": "PRE_EXEC_SHA_AND_READ_CAPABLE_OPEN_INITIAL_VERSION_BINDING_ONLY_NOT_HISTORICAL_EXECUTION_OR_LATER_READ_AFTER_WRITE_ON_SAME_FD; PREWRAPPER_CAPTURE_INVALIDATED_BY_OBSERVED_WRITE_OPEN_RENAME_UNLINK; IN_PLACE_WRITES_ON_EXISTING_FD_NOT_TRACED"
+    },
+    {
+      "codec": "abba",
+      "profile": "release",
+      "checks": {
+        "reported_observed_scope_PASS": true,
+        "nonempty_denominators": true,
+        "exec_kernel_pre_post_consistent": true,
+        "read_open_bindings_nonempty_no_gaps": true,
+        "no_capture_drift_missing_unparsed": true,
+        "current_registered_artifact_content_equal": true,
+        "complete_N1_not_granted": true
+      },
+      "checks_pass": true,
+      "open_version_scope_counts": {
+        "PRE_READ_SHA_AND_RETAINED_POST_SHA_MATCH": 18963,
+        "AUDIT_BOOTSTRAP_OUTPUT_SHA_MEASUREMENT_NOT_CODEC_BUILD_INPUT": 6,
+        "PID_PATH_READ_OPEN_WINDOW_LINKED_VERSION_CAPTURE": 705,
+        "KERNEL_SUCCESSFUL_CREATE_OR_TRUNC_INITIAL_EMPTY_VERSION": 107
+      },
+      "object_comparison": {
+        "old_count": 16,
+        "new_count": 16,
+        "equal": true,
+        "scope": "CURRENT_STATIC_OLD_NEW_CMAKE_OBJECT_SCAN_NOT_HISTORICAL_OBJECT_HASHES"
+      },
+      "actual_nonempty_exec_count": 406,
+      "actual_nonempty_map_count": 14,
+      "strict_scope": "PRE_EXEC_SHA_AND_READ_CAPABLE_OPEN_INITIAL_VERSION_BINDING_ONLY_NOT_HISTORICAL_EXECUTION_OR_LATER_READ_AFTER_WRITE_ON_SAME_FD; PREWRAPPER_CAPTURE_INVALIDATED_BY_OBSERVED_WRITE_OPEN_RENAME_UNLINK; IN_PLACE_WRITES_ON_EXISTING_FD_NOT_TRACED"
+    }
+  ],
+  "reviewed_actual_strict_predicate": "driver.status PASS; no checkpoint drift/capture error; nonempty trace/exec/link/object/source; exec/kernel pre/post; read initial versions; no missing/unparsed/truncated/baseline drift",
+  "static_helper_review": "PID+TID+timestamp+atomic sequence avoids prior thread-local identity collision; copy/open/log failure emits error and analyzer rejects retained error logs; no codec source changed",
+  "limitations": [
+    "Open initial-version evidence does not prove every later read after writes on the same descriptor.",
+    "Audit bootstrap output SHA measurement is explicitly exempted as instrumentation rather than codec build input.",
+    "Time-window PID/path linking is not descriptor-level proof under arbitrary concurrent mutations; current immutable source context and declared scope retained.",
+    "Kernel empty-at-create/truncate evidence does not bind later file writes/reads.",
+    "Analyzer status alone differs from strict scope; callers must require strict_observed_build_closure_status PASS.",
+    "No raw trace or artifact binary was rehashed by this independent read review; reports and source bytes were bound."
+  ],
+  "old_findings_preserved": "formal_static_review/build-link-independent-review-r1.json",
+  "full_N1_or_full_transitive_dependency_closure_granted": false,
+  "codec_build_pytest_or_performance_executed": false
+}

@@ -1,0 +1,111 @@
+{
+  "schemaVersion": 1,
+  "ok": false,
+  "command": "validate",
+  "stage": "render",
+  "type": "architecture",
+  "input": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/archify-five-layer-reference/framework.archify.json",
+  "error": "Architecture layout validation failed:\n- [clean-flow/edge-through-node] architecture connections[36] id \"workloads--streaming\" \"workloads\" -> \"streaming\" crosses component \"query\" (unrelated to this relationship) on segment 0 [360, 5067] -> [610, 5067] (2px clearance) — adjust fromSide/toSide, set route/via, or move the component.\n- [composition/micro-segment] showcase architecture connections[36] id \"workloads--streaming\" \"workloads\" -> \"streaming\" has a 7px interior segment 1 [610, 5067] -> [610, 5060] that is below the 8px micro-segment floor — move route/via points into a wider corridor or move the component so every turn has room to read.\n- Label \"通过\" overlaps component \"preflight\" — adjust labelDx/labelDy/labelSegment or set labelAt.\n  label rect: [195, 3350, 30, 14]\n  component \"preflight\" rect: [60, 3290, 300, 80]\n  Suggested fix: labelAt [210, 3384] or labelDy +24 (below); or labelAt [210, 3286] or labelDy -74 (above)\n- Label \"同次采集\" overlaps component \"formal\" — adjust labelDx/labelDy/labelSegment or set labelAt.\n  label rect: [186, 3630, 48, 14]\n  component \"formal\" rect: [60, 3570, 300, 80]\n  Suggested fix: labelAt [210, 3664] or labelDy +24 (below); or labelAt [210, 3566] or labelDy -74 (above)\n- Label \"请求且支持\" overlaps component \"query\" — adjust labelDx/labelDy/labelSegment or set labelAt.\n  label rect: [581, 5044, 58, 14]\n  component \"query\" rect: [460, 5020, 300, 80]\n  Suggested fix: labelAt [610, 5114] or labelDy +60 (below); or labelAt [610, 5016] or labelDy -38 (above)\n- Label \"同次运行记录\" overlaps component \"workloads\" — adjust labelDx/labelDy/labelSegment or set labelAt.\n  label rect: [176, 5080, 68, 14]\n  component \"workloads\" rect: [60, 5020, 300, 80]\n  Suggested fix: labelAt [210, 5114] or labelDy +24 (below); or labelAt [210, 5016] or labelDy -74 (above)",
+  "diagnostics": [
+    {
+      "code": "clean-flow/edge-through-node",
+      "severity": "error",
+      "message": "[clean-flow/edge-through-node] architecture connections[36] id \"workloads--streaming\" \"workloads\" -> \"streaming\" crosses component \"query\" (unrelated to this relationship) on segment 0 [360, 5067] -> [610, 5067] (2px clearance) — adjust fromSide/toSide, set route/via, or move the component.",
+      "subject": {
+        "diagramType": "architecture",
+        "collection": "connections",
+        "index": 36,
+        "id": "workloads--streaming",
+        "from": "workloads",
+        "to": "streaming"
+      },
+      "evidence": {
+        "obstacleKind": "component",
+        "obstacleId": "query",
+        "segmentIndex": 0,
+        "from": [
+          360,
+          5067
+        ],
+        "to": [
+          610,
+          5067
+        ],
+        "clearancePx": 2
+      },
+      "supportedFixes": [
+        "adjust fromSide/toSide, set route/via, or move the component"
+      ]
+    },
+    {
+      "code": "composition/micro-segment",
+      "severity": "error",
+      "message": "[composition/micro-segment] showcase architecture connections[36] id \"workloads--streaming\" \"workloads\" -> \"streaming\" has a 7px interior segment 1 [610, 5067] -> [610, 5060] that is below the 8px micro-segment floor — move route/via points into a wider corridor or move the component so every turn has room to read.",
+      "subject": {
+        "diagramType": "architecture",
+        "collection": "connections",
+        "index": 36,
+        "id": "workloads--streaming",
+        "from": "workloads",
+        "to": "streaming"
+      },
+      "evidence": {
+        "segmentIndex": 1,
+        "position": "interior",
+        "lengthPx": 7,
+        "minimumPx": 8,
+        "from": [
+          610,
+          5067
+        ],
+        "to": [
+          610,
+          5060
+        ]
+      },
+      "supportedFixes": [
+        "move route/via points into a wider corridor or move the component so every turn has room to read"
+      ]
+    },
+    {
+      "code": "layout/constraint",
+      "severity": "error",
+      "message": "Label \"通过\" overlaps component \"preflight\" — adjust labelDx/labelDy/labelSegment or set labelAt.\n  label rect: [195, 3350, 30, 14]\n  component \"preflight\" rect: [60, 3290, 300, 80]\n  Suggested fix: labelAt [210, 3384] or labelDy +24 (below); or labelAt [210, 3286] or labelDy -74 (above)",
+      "subject": {
+        "diagramType": "architecture"
+      },
+      "evidence": {},
+      "supportedFixes": []
+    },
+    {
+      "code": "layout/constraint",
+      "severity": "error",
+      "message": "Label \"同次采集\" overlaps component \"formal\" — adjust labelDx/labelDy/labelSegment or set labelAt.\n  label rect: [186, 3630, 48, 14]\n  component \"formal\" rect: [60, 3570, 300, 80]\n  Suggested fix: labelAt [210, 3664] or labelDy +24 (below); or labelAt [210, 3566] or labelDy -74 (above)",
+      "subject": {
+        "diagramType": "architecture"
+      },
+      "evidence": {},
+      "supportedFixes": []
+    },
+    {
+      "code": "layout/constraint",
+      "severity": "error",
+      "message": "Label \"请求且支持\" overlaps component \"query\" — adjust labelDx/labelDy/labelSegment or set labelAt.\n  label rect: [581, 5044, 58, 14]\n  component \"query\" rect: [460, 5020, 300, 80]\n  Suggested fix: labelAt [610, 5114] or labelDy +60 (below); or labelAt [610, 5016] or labelDy -38 (above)",
+      "subject": {
+        "diagramType": "architecture"
+      },
+      "evidence": {},
+      "supportedFixes": []
+    },
+    {
+      "code": "layout/constraint",
+      "severity": "error",
+      "message": "Label \"同次运行记录\" overlaps component \"workloads\" — adjust labelDx/labelDy/labelSegment or set labelAt.\n  label rect: [176, 5080, 68, 14]\n  component \"workloads\" rect: [60, 5020, 300, 80]\n  Suggested fix: labelAt [210, 5114] or labelDy +24 (below); or labelAt [210, 5016] or labelDy -74 (above)",
+      "subject": {
+        "diagramType": "architecture"
+      },
+      "evidence": {},
+      "supportedFixes": []
+    }
+  ]
+}

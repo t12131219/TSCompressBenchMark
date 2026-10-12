@@ -1,0 +1,54 @@
+{
+  "schema_version": "tscb.gpu-access-context-reconciliation.v1",
+  "ordinary_sandbox_probe_preserved": {
+    "command": [
+      "nvidia-smi",
+      "--query-gpu=name,driver_version",
+      "--format=csv,noheader"
+    ],
+    "exit_code": 9,
+    "stdout": "NVIDIA-SMI has failed because it couldn't communicate with the NVIDIA driver. Make sure that the latest NVIDIA driver is installed and running.\n\n",
+    "stderr": "",
+    "device_nodes": [
+      "/dev/nvidia-caps"
+    ],
+    "nvcc_path": "/usr/local/cuda/bin/nvcc",
+    "interpretation": "Current process cannot communicate with NVIDIA driver. This alone does not establish absence of host hardware or authorize waiving REQUIRED_PARITY."
+  },
+  "ordinary_sandbox_inventory_reference": {
+    "path": "docs/audits/20261011_closure_formal_verification/gate_audit/environment_inventory.json",
+    "sha256": "d0213c2cb359a0ed1fdc2ea9a40473484e7fc4d91e1750af13f1ad5200bf95ae"
+  },
+  "sandbox_external_probe_reference": {
+    "path": "docs/audits/20261011_closure_formal_verification/gpu_access_supplement.json",
+    "sha256": "7c773928f56f0c3a123c347a801a64a792ad8498d7c15e0e6a99a74ee3d17e8e"
+  },
+  "sandbox_external_probe": {
+    "schema_version": "tscb.device-access-supplement.v1",
+    "created_at": "2026-10-11T12:23:30.536513+00:00",
+    "command": [
+      "nvidia-smi",
+      "--query-gpu=name,driver_version",
+      "--format=csv,noheader"
+    ],
+    "execution_context": "SANDBOX_EXTERNAL_READ_ONLY_TOOL_CALL",
+    "tool_result_chunk_id": "b1b4b7",
+    "exit_code": 0,
+    "stdout": "NVIDIA GeForce RTX 2070, 535.288.01\n",
+    "executable": {
+      "path": "/usr/bin/nvidia-smi",
+      "sha256": "9dacc01ba53c8456155106ac1ef42eee8bb88e19fe72d0662ff76226396313dd"
+    },
+    "ordinary_sandbox_previous_result": "EXIT_9_RETAINED_IN_GATE_AUDIT_ENVIRONMENT_INVENTORY",
+    "device_driver_access_verified": true,
+    "locked_cuda_tf_environment_loaded": false,
+    "gpu_oracle_or_codec_executed": false,
+    "full_G5_or_CAP_granted": false,
+    "claim_boundary": "Driver access available outside sandbox; exact legacy environment and required GPU paths remain unexecuted."
+  },
+  "host_gpu_absent_claim": false,
+  "device_driver_access_verified": true,
+  "locked_TF_CUDA_cudnn_environment_loaded": false,
+  "fresh_GPU_oracle_or_complete_G5_CAP_verified": false,
+  "interpretation": "The two actual probes concern different execution contexts. Available RTX2070 driver access resolves the absent-hardware speculation; exact runtime restoration and all required GPU paths still require separate execution."
+}

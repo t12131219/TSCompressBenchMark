@@ -2,6 +2,8 @@
 
 TSDataCompressBenchMark 是一个以源码身份、输入契约和原始证据为基础的时间序列压缩基准框架。Python 控制面负责数据准备、能力协商、任务规划、隔离执行、性能测量与统计报告；具体算法通过原生适配器接入。项目比较的是明确声明的压缩对象、配置和执行路径，保留不支持、错误、超时及资源压力记录。
 
+**当前修正闭包（2026-10-12）：** 33/33 当前安装源码限定闭包、67 配置和 33 严格 release 构建均在声明观察范围通过；N/G/CAP 仍为 3 PASS、32 验收条件 FAIL、185 UNKNOWN。新 FORMAL 冻结队列的 16 个 lane 均已尝试：entropy 完成 16/16 核心单元，stream/query-warm/query-fresh 完成各自 profile，pipeline pilot 不具资格，其余 lane 的资源压力、停止、预期不支持和 cold 汇总缺口均保留。该结果不授予完整上游移植／重写资格；详见[当前闭包与 FORMAL 审计](docs/audits/20261011_closure_formal_verification/README.md)和[当前能力矩阵](current_algorithm_data_function_matrix_20261011.md)。
+
 本文保留 **V3.2 现有压缩器 CPU 范围的历史签发记录（2026-10-11）**。该批次 16 条 lane 的报告、no-op resume 和两项辅助审计均完成；原 completion 为 `CURRENT_CPU_SCOPE_COMPLETE`，逐条验收为 `CURRENT_EXISTING_CPU_SCOPE_ACCEPTED_WITH_LIMITS`。原始 2400 条计划记录完整保留，结论绑定该批冻结源码和工件。随后按 v3.0 移植规范进行的代码、补丁、构建和登记修正已改变当前执行闭包；旧签发不授予当前闭包的正式性能资格。历史范围与限制见[原范围验收记录](docs/reviews/v32_current_scope_acceptance_20261011.md)。Python 包版本 `0.1.0`、V3.2 工程计划、现有 Schema/canonical/ABI 版本是不同版本体系。
 
 同日完成的 [`lzss-raw` C++ 迁移](docs/lzss_cpp_rewrite_20261011/README.md) 更换了该入口的源码与工件身份。以上已签发 Benchmark 产物保留迁移前身份；当前 C++ 实现的新实验需建立新的运行身份，旧性能记录不作为新实现的测量结果。

@@ -1,0 +1,188 @@
+{
+  "schema_version": "tscb.gate-acceptance-scope-and-build-supplement.v1",
+  "created_at": "2026-10-11T17:25:21.638924+00:00",
+  "status": "CLARIFICATION_AND_BOUNDED_BUILD_EVIDENCE_APPENDED_NO_GATE_STATUS_CHANGE",
+  "driver": {
+    "path": "docs/audits/20261011_closure_formal_verification/gate_acceptance_review/build_scope_supplement_r1.py",
+    "sha256": "7c7bda31b3edb790617c32e000f4160df8968908b7c9de2d87c950063819464a",
+    "bytes": 13627
+  },
+  "inputs": {
+    "frozen_acceptance_review": {
+      "path": "docs/audits/20261011_closure_formal_verification/gate_acceptance_review/acceptance_review_r1.json",
+      "sha256": "ad144a41fdd88a38101b6eee16f8057d00b25b9bde7bafc23f828810205699cc",
+      "bytes": 694614
+    },
+    "independent_acceptance_review": {
+      "path": "docs/audits/20261011_closure_formal_verification/formal_static_review/gate-acceptance-independent-review-r1.json",
+      "sha256": "c9d19448dc202d74e6cd50efd047bc9f9558dd1e2d4130a2e445a5717f7a47a2",
+      "bytes": 41685
+    },
+    "fresh_deepzip_source_summary": {
+      "path": "docs/audits/20261011_closure_formal_verification/learned_source_oracle_r1/summary-r2.json",
+      "sha256": "3a954283f289497a20adeff66fdca401736ba3f18d0b16d6c3d0bef3a76b39bc",
+      "bytes": 3127
+    },
+    "fresh_67_build_summary": {
+      "path": "docs/audits/20261011_closure_formal_verification/build_link/fresh_profile_summary_r1.json",
+      "sha256": "4217a67e7de30a7adf73297953db5d4bbe5d2ac414138fd83dea42c289d9db6e",
+      "bytes": 132451
+    },
+    "strict_33_release_summary": {
+      "path": "docs/audits/20261011_closure_formal_verification/build_link/strict_release_summary_r1.json",
+      "sha256": "07e6464dd106ba0b476ac39dbca464769c96fdede161fd015560abafb774efc2",
+      "bytes": 155854
+    },
+    "all_build_trials": {
+      "path": "docs/audits/20261011_closure_formal_verification/build_link/all_trial_index_r1.json",
+      "sha256": "7c18622e47759f228f4c52589a0247e2e6018e27a02a3548fcceaf6dfee277c8",
+      "bytes": 177915
+    },
+    "build_final_independent_review": {
+      "path": "docs/audits/20261011_closure_formal_verification/formal_static_review/build-final-summary-independent-review-r1.json",
+      "sha256": "8b2637845b24b1642e2e0f2f138b3eb7254773f9fe924489ee2f85a63b40a600",
+      "bytes": 4971
+    },
+    "dzip_generated_header_difference": {
+      "path": "docs/audits/20261011_closure_formal_verification/build_link/dzip-release-generated-header-difference-r1.json",
+      "sha256": "5a0d3c43be844910f39143f84d98ea3c0441ab878ff9ace860328889bf2bf689",
+      "bytes": 11048
+    }
+  },
+  "original_review_preserved": true,
+  "unchanged_entry_count": 33,
+  "unchanged_gate_count": 220,
+  "unchanged_gate_status_counts": {
+    "PASS": 3,
+    "UNKNOWN": 185,
+    "FAIL": 32
+  },
+  "DeepZip_G5_clarification": {
+    "original_gate_status": "FAIL",
+    "status_after_supplement": "FAIL",
+    "meaning_of_complete_required_not_executed": "The complete required source/native optimized capability set is not completed. This never means that every source GPU execution is absent.",
+    "actually_completed_source_scope": {
+      "model": "biGRU",
+      "alphabet": 4,
+      "contexts": 3,
+      "probabilities": 12,
+      "CDF_integers": 15
+    },
+    "actual_source_GPU_and_scoped_comparison_results": {
+      "source_weight_reexport": "PASS_EXACT_CURRENT_BYTES",
+      "source_gpu_actual_execution": "PASS_4_CUDNNRNN_STEP_STATS_GPU_NODES",
+      "probability_full12": "PASS_FROZEN_ABSOLUTE_TOLERANCE_3E-5",
+      "probability_max_abs_error": 1.4901161193847656e-08,
+      "CDF_conversion_same_source_probabilities_full15": "PASS_EXACT",
+      "CDF_independently_predicted_full15": "FAIL_1_OF15_DIFFERENT",
+      "CDF_difference": {
+        "context": "arange(64)%4",
+        "column": 4,
+        "source": 10000004,
+        "native": 10000003,
+        "native_minus_source": -1
+      }
+    },
+    "completed_scope_description": "Unmodified pinned source biGRU with exactly assigned current fixed weights, alphabet4 and three contexts executes four actual GPU CudnnRNN nodes. All12 probabilities pass frozen3e-5; identical-source-probability conversion matches15CDF integers exactly.",
+    "observed_independent_CDF_difference": "Independently predicted full15CDF has1 differing integer: third arange(64)%4 context final total source10000004/native10000003. This actual semantic difference is retained, not hidden by probability tolerance.",
+    "not_completed": [
+      "All required original trained checkpoints and predictor regimes",
+      "Current native GPU required paths and complete source/native same-data differential",
+      "Complete codec/dataset pipeline and full required CAP closure"
+    ],
+    "r2_command_execution": "NONE; three commands exited0; independent-CDF mismatch is semantic difference, not crash",
+    "r1_profiler_execution_failure_preserved": "SOURCE_PROCESS_ABORT_MINUS6_AT_FULL_TRACE_DUE_TO_MISSING_LIBCUPTI_SO9; probabilities/CDF had already been produced but no completed diagnostic report, retained and not qualified",
+    "source_bitstream_FULL_PARITY_or_G5_qualified": false
+  },
+  "build_evidence_after_original_pending_snapshot": {
+    "fresh_unique_profiles": 67,
+    "fresh_limited_observation_PASS": 67,
+    "profile_counts": {
+      "release": 33,
+      "sanitizer": 33,
+      "debug": 1
+    },
+    "fresh_scope": "ACTUAL_FRESH_SELF_CHILD_TRACED_BUILD_ONLY_FULL_HISTORICAL_EXECUTION_NOT_RECONSTRUCTED",
+    "fresh_scope_limit": "PASS_DENOTES_RECORDED_EXECVE_READ_OPENS_MAP_AND_EXTERNAL_CHECKPOINT_INSTRUMENT_SCOPE_ONLY; EXEC_INTERPRETER_PRE_SHA_AND_PID_VERSION_BINDING_GAPS_NOT_REPAIRED_RETROACTIVELY; FULL_N1_FALSE",
+    "strict_unique_release_builds": 33,
+    "strict_declared_observation_PASS": 33,
+    "strict_scope": "ACTUAL_FRESH_EXEC_PRE_POST_SHA_AND_READ_CAPABLE_OPEN_INITIAL_VERSION_OBSERVATION_ONLY",
+    "strict_limitations": [
+      "SAME_DESCRIPTOR_READ_AFTER_IN_PLACE_WRITE_NOT_TRACED",
+      "PREWRAPPER_CAPTURE_INVALIDATED_ONLY_BY_OBSERVED_WRITE_OPEN_RENAME_UNLINK",
+      "AUDIT_BOOTSTRAP_OUTPUT_HASH_MEASUREMENTS_AND_EVIDENCE_COPY_READS_ARE_INSTRUMENTATION_EXCEPTIONS",
+      "HISTORICAL_BUILD_PROCESS_NOT_TRACED_AND_NO_OLD_ID_RESIGNING",
+      "SHARED_ARTIFACT_BYTE_EQUAL_DOES_NOT_IMPLY_OBJECTS_SOURCE_TREE_OR_TEST_EXECUTABLE_BYTE_EQUAL",
+      "FULL_N1_AND_SOURCE_PARITY_AND_OTHER_N_G_CAP_GATES_NOT_GRANTED"
+    ],
+    "shared_artifact_comparison": {
+      "equal": 50,
+      "different": 17,
+      "all_33_release_equal": true,
+      "association_rule": "BYTE_EQUAL_FRESH_ARTIFACT_ASSOCIATES_CURRENT_OLD_CONTENTS_ONLY; BYTE_DIFFERENT_ARTIFACT_CANNOT_TRANSFER_FRESH_CLOSURE_TO_OLD_ARTIFACT",
+      "source_objects_or_tests_same_not_implied": true
+    },
+    "dzip_source_object_and_test_difference": {
+      "source_closure_counts": {
+        "old": 939,
+        "new": 939,
+        "same_path_set": true,
+        "one_sha_difference": "cmake/standalone/third_party/mkldnn/include/mkldnn_version.h"
+      },
+      "generated_header_diff": "--- \n+++ \n@@ -27,6 +27,6 @@\n #define MKLDNN_VERSION_PATCH 0\n \n /* Git Commit Hash of MKL-DNN */\n-#define MKLDNN_VERSION_HASH  \"355468119cd20d8ede370f5063839549806c3bb8\"\n+#define MKLDNN_VERSION_HASH  \"6300188e70faf7d93f3a97f87f0d9cebfb7cdf4c\"\n \n #endif\n",
+      "depfile_consumer_count": 98,
+      "changed_object_count": 1,
+      "shared_adapter_SHA_equal": true,
+      "qualified_test_artifacts_byte_equal": false
+    },
+    "all_trial_receipts": {
+      "count": 177,
+      "base_PASS": 171,
+      "base_FAIL": 6,
+      "strict_GAPS_REMAIN_included_not_added": 4,
+      "trial_count_not_unique_profile_or_codec_denominator": true
+    },
+    "independent_final_summary_review": "PASS_SMALL_RECEIPT_ROW_AND_WORDING_SCOPE_ONLY",
+    "actual_full_N1_or_G1_granted": false,
+    "historical_execution_reconstructed_or_ID_resigned": false,
+    "tests_codec_or_performance_executed_by_build_summary": false,
+    "current_gate_impact": "Named new-build exec/open/link observation subitems now have finite PASS evidence. Complete N1/G1, source semantics, API safety, CAP, independent delivery and FORMAL are not transferred or granted."
+  },
+  "pending_after_supplement": [
+    {
+      "item": "FULL_N1_G1",
+      "status": "PENDING",
+      "reason": "Complete actual closure contract, all consumption versions and historical association are not proven by exec/read-capable OPEN initial-version scope."
+    },
+    {
+      "item": "FULL_REQUIRED_CAP_G3_G4_G5_G6",
+      "status": "PENDING_OR_RECORDED_ACCEPTANCE_FAIL_AS_IN_FROZEN_REVIEW",
+      "reason": "Required source/function/API/optimized/release contracts remain unclosed; DeepZip limited CDF difference remains recorded."
+    },
+    {
+      "item": "N5_INDEPENDENT_DELIVERY",
+      "status": "PENDING",
+      "reason": "Isolated independent source/API/driver/build/test/recovery/SBOM/report acceptance remains mandatory and has no FORMAL prerequisite."
+    },
+    {
+      "item": "FORMAL_FINAL_MEASUREMENTS_AUX_REFERENCE_AND_INDEX",
+      "status": "PENDING_AT_SUPPLEMENT_FREEZE",
+      "reason": "Parent reports FORMAL execution in progress. This supplement does not inspect or accept unfinished measurement outputs."
+    }
+  ],
+  "lightweight_review_boundaries": {
+    "only_named_small_JSON_inputs_hashed": true,
+    "individual_trace_files_or_full_trees_or_binaries_hashed": false,
+    "production_modules_imported": false,
+    "codec_model_training_build_test_or_performance_executed": false,
+    "frozen_src_tools_tests_configs_registry_or_FORMAL_drivers_modified": false,
+    "original_220_report_or_main_matrix_modified": false,
+    "gate_status_changes": 0
+  },
+  "quiet": true,
+  "initial_harness_status_label_error_preserved": {
+    "path": "docs/audits/20261011_closure_formal_verification/gate_acceptance_review/scope_supplement_harness_initial_diagnostic.json",
+    "sha256": "bec793ebb70c8abecd02b49e4e0b91a35c819ed0379b2446506b776bef56fa9e",
+    "bytes": 771
+  }
+}

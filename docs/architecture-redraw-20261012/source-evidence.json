@@ -1,0 +1,972 @@
+{
+  "as_of": "2026-10-12 Asia/Shanghai",
+  "basis": "current working tree, including pre-existing uncommitted edits; no benchmark execution",
+  "commit": "6300188e70faf7d93f3a97f87f0d9cebfb7cdf4c",
+  "nodes": [
+    {
+      "view": "overview",
+      "id": "dataset_identity",
+      "label": "数据来源与身份",
+      "description": "数据集注册验证内容、许可证声明与身份。显式派生记录父级来源；不隐式改变原始时间顺序、数值类型或缺失语义。",
+      "sources": [
+        {
+          "path": "src/tscompbench/datasets/registry.py",
+          "symbol": "DatasetRegistry",
+          "line": 69
+        },
+        {
+          "path": "src/tscompbench/datasets/canonical_source.py",
+          "symbol": "register_canonical_source",
+          "line": 185
+        }
+      ]
+    },
+    {
+      "view": "overview",
+      "id": "logical_inputs",
+      "label": "规范化原对象",
+      "description": "Legacy 准备 Canonical 工件与特征报告；P2 使用 LogicalObject/LogicalObjectSchema 表达完整时间、值、validity、类型、shape、轴和单位。P2 输入不强制通过 legacy canonical 二进制 wire。",
+      "sources": [
+        {
+          "path": "src/tscompbench/datasets/prepare.py",
+          "symbol": "prepare_dataset",
+          "line": 108
+        },
+        {
+          "path": "src/tscompbench/datasets/canonical.py",
+          "symbol": "write_canonical",
+          "line": 239
+        },
+        {
+          "path": "src/tscompbench/pipelines/models.py",
+          "symbol": "LogicalObjectSchema",
+          "line": 32
+        }
+      ]
+    },
+    {
+      "view": "overview",
+      "id": "codec_sources",
+      "label": "算法能力与来源",
+      "description": "CodecManifest 描述输入域、参数域、损失模式与资源能力；SourceArtifact 绑定来源/构建工件。factory 选择注册 adapter；ISA 变体、参数与别名不自动成为新的算法方法。",
+      "sources": [
+        {
+          "path": "src/tscompbench/codecs/registry.py",
+          "symbol": "CodecRegistry",
+          "line": 98
+        },
+        {
+          "path": "src/tscompbench/codecs/registry.py",
+          "symbol": "SourceRegistry",
+          "line": 40
+        },
+        {
+          "path": "src/tscompbench/adapters/factory.py",
+          "symbol": "create_adapter",
+          "line": 346
+        }
+      ]
+    },
+    {
+      "view": "overview",
+      "id": "contract_bundle",
+      "label": "事前实验合同",
+      "description": "V3.2 在测量前冻结 Task、Contract、Group、Corpus、ConfigMap、ExpectedOutcomeMatrix、MeasurementProtocol 和 AnalysisPolicy。CORE 有共同原生 API/实际输入的额外限制。",
+      "sources": [
+        {
+          "path": "src/tscompbench/comparison/decision.py",
+          "symbol": "freeze_experiment_decision",
+          "line": 276
+        },
+        {
+          "path": "src/tscompbench/comparison/models.py",
+          "symbol": "ComparisonContract",
+          "line": 143
+        },
+        {
+          "path": "src/tscompbench/comparison/models.py",
+          "symbol": "ExpectedOutcomeMatrix",
+          "line": 347
+        }
+      ]
+    },
+    {
+      "view": "overview",
+      "id": "compiled_matrix",
+      "label": "冻结全矩阵与调度",
+      "description": "完整候选矩阵保留预期不支持的单元与公共输入投影，再绑定 ExecutionJob、源码/构建闭包、环境和真实 Schedule。Coverage 分母来自冻结全集。",
+      "sources": [
+        {
+          "path": "src/tscompbench/comparison/planning.py",
+          "symbol": "compile_group_plan",
+          "line": 126
+        },
+        {
+          "path": "src/tscompbench/comparison/projection.py",
+          "symbol": "public_projection",
+          "line": 30
+        },
+        {
+          "path": "src/tscompbench/execution/schedule.py",
+          "symbol": "build_schedule",
+          "line": 112
+        },
+        {
+          "path": "src/tscompbench/comparison/runner.py",
+          "symbol": "prepare_comparison",
+          "line": 271
+        }
+      ]
+    },
+    {
+      "view": "overview",
+      "id": "qualification_gate",
+      "label": "完整原对象资格",
+      "description": "preflight 检查真实输入、边界、原域正确性和保存产物的独立恢复。按 ExpectedOutcomeMatrix 核对支持或拒绝。图中连线展示满足合同的通过路线；不代表当前所有 lane 都合格。",
+      "sources": [
+        {
+          "path": "src/tscompbench/comparison/runner.py",
+          "symbol": "qualify_comparison",
+          "line": 940
+        },
+        {
+          "path": "src/tscompbench/execution/preflight.py",
+          "symbol": "preflight_task",
+          "line": 100
+        },
+        {
+          "path": "src/tscompbench/execution/recovery.py",
+          "symbol": "decode_in_fresh_worker",
+          "line": 206
+        }
+      ]
+    },
+    {
+      "view": "overview",
+      "id": "pilot_gate",
+      "label": "独立 development pilot",
+      "description": "使用独立 development 数据/对象评估时钟阈值、内循环长度和采集扰动，保留原始 pilot 证据。pilot 校验通过才开放正式试次。",
+      "sources": [
+        {
+          "path": "src/tscompbench/comparison/runner.py",
+          "symbol": "pilot_comparison",
+          "line": 1177
+        },
+        {
+          "path": "src/tscompbench/measurement/v32_protocol.py",
+          "symbol": "run_pilot",
+          "line": 558
+        },
+        {
+          "path": "src/tscompbench/comparison/pipeline_runner.py",
+          "symbol": "pilot_pipeline_comparison",
+          "line": 702
+        }
+      ]
+    },
+    {
+      "view": "overview",
+      "id": "formal_workers",
+      "label": "分 lane 隔离执行",
+      "description": "四条路径保留各自 runner：Legacy、V3.2 comparison、workload、P2。隔离进程执行，独立对象按内循环逐个 Finalize；同次采集计时和资源。",
+      "sources": [
+        {
+          "path": "src/tscompbench/comparison/runner.py",
+          "symbol": "execute_comparison",
+          "line": 1377
+        },
+        {
+          "path": "src/tscompbench/comparison/workload_runner.py",
+          "symbol": "execute_workload_comparison",
+          "line": 867
+        },
+        {
+          "path": "src/tscompbench/comparison/pipeline_runner.py",
+          "symbol": "execute_pipeline_comparison",
+          "line": 1163
+        },
+        {
+          "path": "src/tscompbench/execution/isolation.py",
+          "symbol": "run_isolated",
+          "line": 151
+        }
+      ]
+    },
+    {
+      "view": "overview",
+      "id": "persistent_trials",
+      "label": "持久原始证据",
+      "description": "保存 trials、工件、事件、失败和预算。未知 STARTED 或中断不能被静默当作未运行；正式路径按自己的事件链与预算合同恢复。",
+      "sources": [
+        {
+          "path": "src/tscompbench/comparison/runner.py",
+          "symbol": "_append_trial",
+          "line": 683
+        },
+        {
+          "path": "src/tscompbench/comparison/pipeline_runner.py",
+          "symbol": "_commit_attempt",
+          "line": 1080
+        },
+        {
+          "path": "src/tscompbench/comparison/pipeline_runner.py",
+          "symbol": "_attempt_state",
+          "line": 875
+        },
+        {
+          "path": "src/tscompbench/storage/events.py",
+          "symbol": "append_event",
+          "line": 15
+        }
+      ]
+    },
+    {
+      "view": "overview",
+      "id": "readonly_statistics",
+      "label": "只读重核与统计",
+      "description": "只读复核冻结身份与原始产物，先筛选合格试次。V3.2 以真实 Schedule block 配对 bootstrap，估计均值时间比，校正多重区间并检验精度；质量、Pareto 与 Coverage 是描述性扩展。",
+      "sources": [
+        {
+          "path": "src/tscompbench/comparison/analysis.py",
+          "symbol": "analyze_comparison",
+          "line": 539
+        },
+        {
+          "path": "src/tscompbench/comparison/analysis.py",
+          "symbol": "_effect",
+          "line": 482
+        },
+        {
+          "path": "src/tscompbench/comparison/analysis_extensions.py",
+          "symbol": "augment_analysis",
+          "line": 484
+        }
+      ]
+    },
+    {
+      "view": "overview",
+      "id": "scoped_reports",
+      "label": "报告与结论范围",
+      "description": "输出 JSON/HTML/Markdown，并保留 INCONCLUSIVE、NOT_RUN、PARTIAL、失败与缺测。推断限于冻结语料和主机；SOURCE_PARITY、CORE、PROFILE、FORMAL 等范围由独立审计确认。",
+      "sources": [
+        {
+          "path": "src/tscompbench/comparison/runner.py",
+          "symbol": "report_comparison",
+          "line": 1871
+        },
+        {
+          "path": "src/tscompbench/comparison/report_renderer.py",
+          "symbol": "render_comparison_report",
+          "line": 325
+        },
+        {
+          "path": "tools/audit_v32_completion.py",
+          "symbol": "audit",
+          "line": 311
+        }
+      ]
+    },
+    {
+      "view": "overview",
+      "id": "legacy_contract",
+      "label": "Legacy TOML 路径",
+      "description": "Legacy TOML 通过 runner.py 的 init → prepare → plan → validate → report 使用自己的任务、run record 与统计合同。它的三级可比性键不转授 V3.2 新比较组资格。",
+      "sources": [
+        {
+          "path": "src/tscompbench/runner.py",
+          "symbol": "initialize_run_set",
+          "line": 188
+        },
+        {
+          "path": "src/tscompbench/runner.py",
+          "symbol": "plan_run_set",
+          "line": 344
+        },
+        {
+          "path": "src/tscompbench/runner.py",
+          "symbol": "execute_run_set",
+          "line": 573
+        },
+        {
+          "path": "src/tscompbench/runner.py",
+          "symbol": "report_run_set",
+          "line": 800
+        }
+      ]
+    },
+    {
+      "view": "lanes",
+      "id": "legacy_plan",
+      "label": "Legacy TOML",
+      "description": "读取 ExperimentConfig，展开参数 sweep 与完整任务组合，能力协商后绑定适配/预处理/资源解析、三级可比性键及 task_plan。",
+      "sources": [
+        {
+          "path": "src/tscompbench/configuration.py",
+          "symbol": "ExperimentConfig",
+          "line": 80
+        },
+        {
+          "path": "src/tscompbench/planning/tasks.py",
+          "symbol": "create_task",
+          "line": 16
+        },
+        {
+          "path": "src/tscompbench/runner.py",
+          "symbol": "plan_run_set",
+          "line": 344
+        }
+      ]
+    },
+    {
+      "view": "lanes",
+      "id": "legacy_execute",
+      "label": "execute_task",
+      "description": "execute_task 先 preflight，再在隔离 worker 内执行本进程 warmup 与测量。warmup 达到固定门槛不等于证明统计稳态。查询与流式辅助 profile 保留独立记录。",
+      "sources": [
+        {
+          "path": "src/tscompbench/execution/orchestrator.py",
+          "symbol": "execute_task",
+          "line": 115
+        },
+        {
+          "path": "src/tscompbench/execution/repetition.py",
+          "symbol": "perform_worker_measurement",
+          "line": 425
+        }
+      ]
+    },
+    {
+      "view": "lanes",
+      "id": "legacy_report",
+      "label": "generate_report",
+      "description": "统计引擎按资格与可比性键分组，保留 median 口径、bootstrap 区间、Coverage 和 Pareto；generate_report 写只读 JSON/CSV/HTML/Markdown 产物。",
+      "sources": [
+        {
+          "path": "src/tscompbench/reporting/generator.py",
+          "symbol": "generate_report",
+          "line": 685
+        },
+        {
+          "path": "src/tscompbench/statistics/engine.py",
+          "symbol": "analyze_run_set",
+          "line": 1116
+        }
+      ]
+    },
+    {
+      "view": "lanes",
+      "id": "comparison_plan",
+      "label": "V3.2 对象与 API",
+      "description": "prepare_comparison 编译 common-task bundle，冻结实际输入、全矩阵、Protocol、AnalysisPolicy、构建与源码闭包以及 Schedule。qualify 与独立 pilot 是正式测量门禁。",
+      "sources": [
+        {
+          "path": "src/tscompbench/comparison/runner.py",
+          "symbol": "prepare_comparison",
+          "line": 271
+        },
+        {
+          "path": "src/tscompbench/comparison/models.py",
+          "symbol": "ComparisonContract",
+          "line": 143
+        }
+      ]
+    },
+    {
+      "view": "lanes",
+      "id": "comparison_execute",
+      "label": "execute_comparison",
+      "description": "STEADY_PROCESS 或冷启动完整对象走注册边界；COMMON_NATIVE_API 的 CORE 是原生组件边界。PIPELINE 与 CORE 的成本/计时分母分开，不能混合排序。",
+      "sources": [
+        {
+          "path": "src/tscompbench/comparison/runner.py",
+          "symbol": "execute_comparison",
+          "line": 1377
+        },
+        {
+          "path": "src/tscompbench/execution/cold_driver.py",
+          "symbol": "measure_cold_object",
+          "line": 394
+        }
+      ]
+    },
+    {
+      "view": "lanes",
+      "id": "comparison_report",
+      "label": "report_comparison",
+      "description": "report_comparison 重核冻结 plan 和 trial 工件，再运行 paired block 分析。效应是 FIRST/SECOND 均值时间比；精度或实用差异不满足时输出 INCONCLUSIVE。",
+      "sources": [
+        {
+          "path": "src/tscompbench/comparison/runner.py",
+          "symbol": "report_comparison",
+          "line": 1871
+        },
+        {
+          "path": "src/tscompbench/comparison/analysis.py",
+          "symbol": "analyze_comparison",
+          "line": 539
+        }
+      ]
+    },
+    {
+      "view": "lanes",
+      "id": "workload_plan",
+      "label": "V3.2 工作负载",
+      "description": "workload_runner 在 comparison 公共输入合同之上冻结 stream/query 专用 Protocol、requests/序列、缓存/会话模式、调度与独立 pilot。不是普通 roundtrip 的统计别名。",
+      "sources": [
+        {
+          "path": "src/tscompbench/comparison/workload_runner.py",
+          "symbol": "prepare_workload_comparison",
+          "line": 135
+        },
+        {
+          "path": "src/tscompbench/measurement/workloads.py",
+          "symbol": null,
+          "line": 1
+        }
+      ]
+    },
+    {
+      "view": "lanes",
+      "id": "workload_execute",
+      "label": "execute_workload_comparison",
+      "description": "执行流式 chunk/state/finalize 或查询工作负载，保留查询请求、warm/fresh 会话、stream 工件与资源证据。使用冻结 wall 预算和 STARTED 事件处理失败与中断。",
+      "sources": [
+        {
+          "path": "src/tscompbench/comparison/workload_runner.py",
+          "symbol": "execute_workload_comparison",
+          "line": 867
+        },
+        {
+          "path": "src/tscompbench/execution/workload_driver.py",
+          "symbol": null,
+          "line": 1
+        }
+      ]
+    },
+    {
+      "view": "lanes",
+      "id": "workload_report",
+      "label": "report_workload_comparison",
+      "description": "重核 workload_trials 及对应 artifact/请求身份，按各 profile 的计时边界与正确性输出报告。PROFILE_COMPLETE 由相应范围审计确认。",
+      "sources": [
+        {
+          "path": "src/tscompbench/comparison/workload_runner.py",
+          "symbol": "report_workload_comparison",
+          "line": 1205
+        }
+      ]
+    },
+    {
+      "view": "lanes",
+      "id": "p2_plan",
+      "label": "P2 组合流水线",
+      "description": "P2 有独立 preparation API：冻结 LogicalObject、PipelineRecipe、输入快照、codec 子闭包、完整比较矩阵和协议。支持 mixed / ND / 非默认 time_axis 等显式对象结构。",
+      "sources": [
+        {
+          "path": "src/tscompbench/comparison/pipeline_runner.py",
+          "symbol": "prepare_pipeline_comparison",
+          "line": 191
+        },
+        {
+          "path": "src/tscompbench/pipelines/models.py",
+          "symbol": "PipelineRecipe",
+          "line": 271
+        },
+        {
+          "path": "src/tscompbench/pipelines/models.py",
+          "symbol": "LogicalObject",
+          "line": 140
+        }
+      ]
+    },
+    {
+      "view": "lanes",
+      "id": "p2_execute",
+      "label": "execute_pipeline_comparison",
+      "description": "Pipeline runtime 按配方编码完整 T/V/mask 与子流/块，计入容器、RAW_TAIL 和恢复依赖；独立解码验证完整原对象。执行器持久预留预算并提交 Attempt/Trial 事件。",
+      "sources": [
+        {
+          "path": "src/tscompbench/comparison/pipeline_runner.py",
+          "symbol": "execute_pipeline_comparison",
+          "line": 1163
+        },
+        {
+          "path": "src/tscompbench/pipelines/runtime.py",
+          "symbol": "encode_object",
+          "line": 231
+        }
+      ]
+    },
+    {
+      "view": "lanes",
+      "id": "p2_report",
+      "label": "report_pipeline_comparison",
+      "description": "重核 pipeline trials、保存字节、ledger、原域正确性及 attempt 事件链。P2 使用自己的报告协议，不能用“流程已实现”声称当前 pilot 或 FORMAL 已通过。",
+      "sources": [
+        {
+          "path": "src/tscompbench/comparison/pipeline_runner.py",
+          "symbol": "report_pipeline_comparison",
+          "line": 1427
+        },
+        {
+          "path": "src/tscompbench/comparison/pipeline_runner.py",
+          "symbol": "_audit_trials",
+          "line": 1282
+        }
+      ]
+    },
+    {
+      "view": "object",
+      "id": "original_domain",
+      "label": "冻结原域输入",
+      "description": "路由后的 Legacy 原对象持有只读逻辑 buffers 和原域参考；P2 使用完整 LogicalObject。验证 DatasetID、dtype、shape、单位、时间/值/mask 与内容哈希。",
+      "sources": [
+        {
+          "path": "src/tscompbench/execution/routing.py",
+          "symbol": "route_canonical_artifact",
+          "line": 52
+        },
+        {
+          "path": "src/tscompbench/validation/input.py",
+          "symbol": "validate_routed_input",
+          "line": 44
+        },
+        {
+          "path": "src/tscompbench/pipelines/models.py",
+          "symbol": "LogicalObject",
+          "line": 140
+        }
+      ]
+    },
+    {
+      "view": "object",
+      "id": "explicit_transform",
+      "label": "显式路由与预处理",
+      "description": "CompatibilityPlan 与 PreprocessPlan 把输入域变换写成显式合同，执行时验证实际缓冲区。恢复所需信息随 DecodeContext 或完整容器保存，成本记入 ledger。",
+      "sources": [
+        {
+          "path": "src/tscompbench/execution/preparation.py",
+          "symbol": "prepare_execution_input",
+          "line": 23
+        },
+        {
+          "path": "src/tscompbench/adapters/compatibility.py",
+          "symbol": "apply_compatibility_plan",
+          "line": 67
+        },
+        {
+          "path": "src/tscompbench/preprocess/runtime.py",
+          "symbol": null,
+          "line": 1
+        }
+      ]
+    },
+    {
+      "view": "object",
+      "id": "encoding_session",
+      "label": "独立编码对象",
+      "description": "一个对象的 adapter session 生命周期包括 create_session、output_bound、compress_update、finalize、accounting、close。检查输入不可变与 output canary；每个内循环对象独立 Finalize。",
+      "sources": [
+        {
+          "path": "src/tscompbench/execution/repetition.py",
+          "symbol": "_encode",
+          "line": 180
+        },
+        {
+          "path": "src/tscompbench/execution/protocol.py",
+          "symbol": "CodecSession",
+          "line": 114
+        }
+      ]
+    },
+    {
+      "view": "object",
+      "id": "finalized_artifact",
+      "label": "完整编码产物",
+      "description": "EncodedArtifact 保存最终 stream、stream SHA、Update/Finalize 长度、AccountingLedger 与恢复上下文。恢复必须从已保存字节和已付费依赖开始。",
+      "sources": [
+        {
+          "path": "src/tscompbench/execution/protocol.py",
+          "symbol": "EncodedArtifact",
+          "line": 92
+        },
+        {
+          "path": "src/tscompbench/execution/recovery.py",
+          "symbol": "bind_decode_context",
+          "line": 193
+        }
+      ]
+    },
+    {
+      "view": "object",
+      "id": "recovery_worker",
+      "label": "独立解码与恢复",
+      "description": "资格/审计用新的 worker 解码已保存产物，再恢复原 dtype/shape/语义。正式 steady roundtrip 的解码在同一测量 worker 中执行；本图表示对象与证据闭环，非单一函数调用时序。",
+      "sources": [
+        {
+          "path": "src/tscompbench/execution/recovery.py",
+          "symbol": "decode_in_fresh_worker",
+          "line": 206
+        },
+        {
+          "path": "src/tscompbench/execution/recovery.py",
+          "symbol": "restore_decoded_output",
+          "line": 165
+        },
+        {
+          "path": "src/tscompbench/comparison/pipeline_runner.py",
+          "symbol": "_independent_decode",
+          "line": 420
+        }
+      ]
+    },
+    {
+      "view": "object",
+      "id": "correctness_contract",
+      "label": "原域正确性验证",
+      "description": "在原域验证时间配对、通道顺序、validity 与逐位无损/误差界；有损质量基于原对象。专用 Rate/Summary task validator 不自动建立算法或正式组资格。",
+      "sources": [
+        {
+          "path": "src/tscompbench/validation/correctness.py",
+          "symbol": "validate_common_correctness",
+          "line": 72
+        },
+        {
+          "path": "src/tscompbench/validation/lossy.py",
+          "symbol": "validate_error_bound",
+          "line": 424
+        },
+        {
+          "path": "src/tscompbench/pipelines/runtime.py",
+          "symbol": "validate_restored_object",
+          "line": 1076
+        }
+      ]
+    },
+    {
+      "view": "object",
+      "id": "paid_accounting",
+      "label": "完整对象比特成本",
+      "description": "AccountingLedger 的互斥分量闭合 SerializedBits；FinalBits = SerializedBits + ExternalSideInformationBits，物理字节仅在完整边界取整。CORE 对比采用其注册组件成本，不等同于完整对象 FinalBits。",
+      "sources": [
+        {
+          "path": "src/tscompbench/accounting/ledger.py",
+          "symbol": "AccountingLedger",
+          "line": 14
+        },
+        {
+          "path": "src/tscompbench/execution/recovery.py",
+          "symbol": "bind_decode_context",
+          "line": 193
+        }
+      ]
+    },
+    {
+      "view": "object",
+      "id": "trial_observation",
+      "label": "同一试次观测",
+      "description": "编码、解码和资源来自同一试次。资源包含 wall/CPU/RSS、父进程线程观测及 collector 可用性；没有的 counters 如实标记 unavailable。图中计量节点是同次观测的职责投影。",
+      "sources": [
+        {
+          "path": "src/tscompbench/execution/repetition.py",
+          "symbol": "perform_measured_roundtrip",
+          "line": 498
+        },
+        {
+          "path": "src/tscompbench/measurement/resources.py",
+          "symbol": "ResourceSampler",
+          "line": 195
+        },
+        {
+          "path": "src/tscompbench/measurement/resource_lease.py",
+          "symbol": "ResourceLease",
+          "line": 232
+        }
+      ]
+    },
+    {
+      "view": "object",
+      "id": "stored_evidence",
+      "label": "保存试次与恢复证据",
+      "description": "保存原始 trial 与可恢复产物、工件身份和失败原因；最后内循环对象提供公开正确性/成本证据。不同 runner 使用自己的提交与中断协议。",
+      "sources": [
+        {
+          "path": "src/tscompbench/storage/runs.py",
+          "symbol": "append_run_record",
+          "line": 434
+        },
+        {
+          "path": "src/tscompbench/comparison/runner.py",
+          "symbol": "_append_trial",
+          "line": 683
+        },
+        {
+          "path": "src/tscompbench/comparison/pipeline_runner.py",
+          "symbol": "_commit_attempt",
+          "line": 1080
+        }
+      ]
+    },
+    {
+      "view": "object",
+      "id": "eligible_analysis",
+      "label": "资格筛选后的分析",
+      "description": "先 trial_issues 资格过滤，再在完整冻结矩阵上统计；不支持、失败、未运行和缺测保留在 Coverage。质量/压缩因子/Pareto 是对同一冻结证据的只读扩展。",
+      "sources": [
+        {
+          "path": "src/tscompbench/comparison/analysis.py",
+          "symbol": "trial_issues",
+          "line": 224
+        },
+        {
+          "path": "src/tscompbench/comparison/analysis.py",
+          "symbol": "analyze_comparison",
+          "line": 539
+        },
+        {
+          "path": "src/tscompbench/comparison/analysis_extensions.py",
+          "symbol": "augment_analysis",
+          "line": 484
+        }
+      ]
+    }
+  ],
+  "files": [
+    {
+      "path": "src/tscompbench/datasets/registry.py",
+      "bytes": 11880,
+      "sha256": "0799310d457c823f1214e6bdab088e7515471f808ba89fb6f68b8c0a2e120216"
+    },
+    {
+      "path": "src/tscompbench/datasets/canonical_source.py",
+      "bytes": 8056,
+      "sha256": "13a7b5c5753ac0d27725c215d3d14fc6cb71e9da6b162cf21000cf85446c9fc0"
+    },
+    {
+      "path": "src/tscompbench/datasets/prepare.py",
+      "bytes": 7086,
+      "sha256": "a9cd61a9c74356149d36d1bc44fa102bad7441e2d89663c170a741af2e7ec2d5"
+    },
+    {
+      "path": "src/tscompbench/datasets/canonical.py",
+      "bytes": 16495,
+      "sha256": "8bd850f036cc7ddfdaad763847ef315751ee68a6bb4a65a8ee16dd6473039c0a"
+    },
+    {
+      "path": "src/tscompbench/pipelines/models.py",
+      "bytes": 17025,
+      "sha256": "7ac1d8d692abb5060b2624a4720e3296445759b0741455e5959782b37ffe2fa2"
+    },
+    {
+      "path": "src/tscompbench/codecs/registry.py",
+      "bytes": 17231,
+      "sha256": "09b82dcbf77e010096d14184c6968a94d8177597cd441cf9f9d0d4e79d6437aa"
+    },
+    {
+      "path": "src/tscompbench/adapters/factory.py",
+      "bytes": 18542,
+      "sha256": "d7885ba61cca12cc39eebc31bdaf48074ecaf78a22a9d286c63daad462ed7634"
+    },
+    {
+      "path": "src/tscompbench/comparison/decision.py",
+      "bytes": 14320,
+      "sha256": "3a17f6d9b98d1cf906e4c64bb968ea8c9f20526e6dd427f12fae53df936ed824"
+    },
+    {
+      "path": "src/tscompbench/comparison/models.py",
+      "bytes": 17178,
+      "sha256": "8435038d3f64caa78de389053116a372b5d5111b7b750433bc5a30a6c92ce637"
+    },
+    {
+      "path": "src/tscompbench/comparison/planning.py",
+      "bytes": 15989,
+      "sha256": "c0d7ca3e3725dbb177652efb68ccfd6ec905e769ed4290b5fc095db49b2c6b93"
+    },
+    {
+      "path": "src/tscompbench/comparison/projection.py",
+      "bytes": 4143,
+      "sha256": "79a9bb0f27d27420ca5683b1d21f4aecd39df4ead9d57f3c9f22da5057c1348b"
+    },
+    {
+      "path": "src/tscompbench/execution/schedule.py",
+      "bytes": 14943,
+      "sha256": "8402e6f04de14c0d5ad0a87362cd5a9f473b915d347c301423bb9b7632a8da23"
+    },
+    {
+      "path": "src/tscompbench/comparison/runner.py",
+      "bytes": 89288,
+      "sha256": "986d5c2ddb1ab68364395461ecf72160a0f4bd6d53cd56c53ef7792c1d645185"
+    },
+    {
+      "path": "src/tscompbench/execution/preflight.py",
+      "bytes": 17867,
+      "sha256": "0174dfe9f8ccd05a7b12aa4f65681464cbac8e9f6e878a907ba0705ceb17770e"
+    },
+    {
+      "path": "src/tscompbench/execution/recovery.py",
+      "bytes": 10227,
+      "sha256": "8beb95c7a6ffea7c6300f80444539d7197b102a256ab4ab2f7d6f072e8cd1baa"
+    },
+    {
+      "path": "src/tscompbench/measurement/v32_protocol.py",
+      "bytes": 42653,
+      "sha256": "471898d99ffd25465049c3b02b909f4e857c19df2bffb563e21db6d612e38a1e"
+    },
+    {
+      "path": "src/tscompbench/comparison/pipeline_runner.py",
+      "bytes": 74779,
+      "sha256": "e283e0aadd7b854299da743bbe551c80a9cef0df8c94c88eaafd9074002360c9"
+    },
+    {
+      "path": "src/tscompbench/comparison/workload_runner.py",
+      "bytes": 60621,
+      "sha256": "9aa4b81b837020daa998d8afacd3df53209dfc392249b2017a601604c7675d2b"
+    },
+    {
+      "path": "src/tscompbench/execution/isolation.py",
+      "bytes": 12316,
+      "sha256": "2ba6078ae2293ecaa60e07f8d52feaacda82d5763bb655427d7b94612c17f6f1"
+    },
+    {
+      "path": "src/tscompbench/storage/events.py",
+      "bytes": 2177,
+      "sha256": "361e0681c05ff5ab8f1153e0d5a6818c7b1fd7ef3a557bdd8b40b4fa6269defd"
+    },
+    {
+      "path": "src/tscompbench/comparison/analysis.py",
+      "bytes": 37471,
+      "sha256": "112a7274e03c60312717b25bf6d01b31c2738a773d6670b78c4b5ee3a11b0f4c"
+    },
+    {
+      "path": "src/tscompbench/comparison/analysis_extensions.py",
+      "bytes": 25767,
+      "sha256": "750b3e28e340fb317f49493adf3c66d369794785d07d454f10a4e86f5bec5f19"
+    },
+    {
+      "path": "src/tscompbench/comparison/report_renderer.py",
+      "bytes": 25090,
+      "sha256": "ad623a2171b07fe0601970871624662c744760cc2a2a6dcd2816a04f3e49aca9"
+    },
+    {
+      "path": "tools/audit_v32_completion.py",
+      "bytes": 25846,
+      "sha256": "79553b1b5cd0699b9fa975e55c0e04fef38983e201a17c98feef55683e7aa17d"
+    },
+    {
+      "path": "src/tscompbench/runner.py",
+      "bytes": 34525,
+      "sha256": "1e8708226775809aec428e241c332f01736441c4ba679f7b628335284fc23f34"
+    },
+    {
+      "path": "src/tscompbench/configuration.py",
+      "bytes": 18103,
+      "sha256": "0c2692a8643c877473bac6cef8ee1dc784422df6f9effc04199f832d31d7c5b0"
+    },
+    {
+      "path": "src/tscompbench/planning/tasks.py",
+      "bytes": 3453,
+      "sha256": "f2754922e6a1db88f7747a02438db289011b1f9643f34bce9a3b8237075f2b31"
+    },
+    {
+      "path": "src/tscompbench/execution/orchestrator.py",
+      "bytes": 22389,
+      "sha256": "c1ddb77baa56830a8d2d763baf7cb505c275516f4dd3c546e00b59a9cdbc89e3"
+    },
+    {
+      "path": "src/tscompbench/execution/repetition.py",
+      "bytes": 31122,
+      "sha256": "c0ad5d49b0dc8e30d50b7b1d86ed2f853827e68c10474fe48ea3a3e869385aa6"
+    },
+    {
+      "path": "src/tscompbench/reporting/generator.py",
+      "bytes": 35508,
+      "sha256": "1b870ac53ad857b9da0247a0862367b6f2f2d432d677418f62d6e41636347656"
+    },
+    {
+      "path": "src/tscompbench/statistics/engine.py",
+      "bytes": 50217,
+      "sha256": "dddf61282f0f3c17c579b4afca0773d9b0a228f75c9014c59ce3016cec8b80b7"
+    },
+    {
+      "path": "src/tscompbench/execution/cold_driver.py",
+      "bytes": 40373,
+      "sha256": "04e964fbfdae49931a02fd824aa0b41dcc7a35c9b529023aa7becdf268c1b4a1"
+    },
+    {
+      "path": "src/tscompbench/measurement/workloads.py",
+      "bytes": 15183,
+      "sha256": "d01dd0dd6feb4f256db98d04c0a003cff63985bf6e6632497c2b09bca0caab0a"
+    },
+    {
+      "path": "src/tscompbench/execution/workload_driver.py",
+      "bytes": 21824,
+      "sha256": "c2d4fb9e049c3a9f17c3d30142e8c7298882e9a7b0e7e1f5d0e66c2c7cfc411d"
+    },
+    {
+      "path": "src/tscompbench/pipelines/runtime.py",
+      "bytes": 48726,
+      "sha256": "2b163d1ad898778d4f91bdcad16d2fddb41dc4c8cd69d5d78fc3a7e759185475"
+    },
+    {
+      "path": "src/tscompbench/execution/routing.py",
+      "bytes": 5375,
+      "sha256": "73d3d1c179e7e2c2551f2d465afb47b0fcc75eab97cf8b68999a1b85694c5f06"
+    },
+    {
+      "path": "src/tscompbench/validation/input.py",
+      "bytes": 4316,
+      "sha256": "f8530e73613868e801160d06ea09f1131a682ea7a3ad32f55de5cd88bd5b7444"
+    },
+    {
+      "path": "src/tscompbench/execution/preparation.py",
+      "bytes": 2764,
+      "sha256": "0c95cfe73f9980255b71bd5ad2fb6ae78202c24d4d3a61f6cca7f470047c7147"
+    },
+    {
+      "path": "src/tscompbench/adapters/compatibility.py",
+      "bytes": 10609,
+      "sha256": "f0ffb69d7d1ac71bbe0dcebbc813674326a9b613b23fa2484224623573ee4abd"
+    },
+    {
+      "path": "src/tscompbench/preprocess/runtime.py",
+      "bytes": 713,
+      "sha256": "a6badca65ca69a968ed84ea76a4a0249ebd5dfd0f90cb404eef37cbc2356a5b4"
+    },
+    {
+      "path": "src/tscompbench/execution/protocol.py",
+      "bytes": 4800,
+      "sha256": "d67508365ea857b466bca8d57e733bef67cc971aed87a9d9f84f7ff8dda367d4"
+    },
+    {
+      "path": "src/tscompbench/validation/correctness.py",
+      "bytes": 15523,
+      "sha256": "b019e4d68ff6daf9f159b067f5f5fb899a7c97ea4c1f1b69b98142563d743dfb"
+    },
+    {
+      "path": "src/tscompbench/validation/lossy.py",
+      "bytes": 22700,
+      "sha256": "4967eeb69cf2504b04266bfe1a0542ab7ce9783b10dc4d7d1359f9272a2a60d0"
+    },
+    {
+      "path": "src/tscompbench/accounting/ledger.py",
+      "bytes": 5277,
+      "sha256": "2ba12396c5c79130e643ae5a7d8b3e9d8683c26fdd352ab6786455cc05a9f153"
+    },
+    {
+      "path": "src/tscompbench/measurement/resources.py",
+      "bytes": 14218,
+      "sha256": "b82b7dbc32ecd34a8aa8d0a7512ed69138c466d7bf6ee17ab00e2bf481f9e36d"
+    },
+    {
+      "path": "src/tscompbench/measurement/resource_lease.py",
+      "bytes": 17402,
+      "sha256": "abdd999fdbee074c4eb67f02f2f06208e2a954a78f7a4cd417a2300ee5911c57"
+    },
+    {
+      "path": "src/tscompbench/storage/runs.py",
+      "bytes": 21359,
+      "sha256": "9061c6416d603264dbfca08df57af83a850ffb2d3162afed29b8dd5c8429ff6b"
+    }
+  ],
+  "edge_semantics": "data/control/evidence dependencies; not a direct-call graph or a claim of current run completion"
+}

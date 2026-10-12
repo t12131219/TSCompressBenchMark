@@ -1,0 +1,281 @@
+{
+  "scope": "ACTUAL_COMPLETED_DZIP_SANITIZER_BUILD_STAGE_TIMESTAMPS_NOT_ESTIMATES",
+  "batch_receipt": {
+    "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r5/special-sanitizer/summary.json",
+    "sha256": "75e1619381901393275bebf0206114a708990b3e7b0ed33b417301b9dc5aa90b",
+    "size_bytes": 34046
+  },
+  "rows": [
+    {
+      "phase": "discovery",
+      "batch_elapsed_seconds": 2235.8686741160054,
+      "driver_elapsed_seconds": 2143.435238361999,
+      "batch_minus_driver_seconds": 92.4334357540065,
+      "driver_receipt": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r5/special-sanitizer/discovery/dzip--sanitizer/audit/dzip/sanitizer/driver-report.json",
+        "sha256": "498603908c2416102a05be78fdb8373e1c155b2754912a32e0359282a6805191",
+        "size_bytes": 983886
+      },
+      "analysis_receipt": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r5/special-sanitizer/discovery/dzip--sanitizer/trace-report.json",
+        "sha256": "1822facf7cf660f37e5727c5abfd877bba17a53a0e728390a81bbc3bb91592d3",
+        "size_bytes": 5090826
+      },
+      "stages": [
+        {
+          "kind": "CMAKE_CONFIGURE_WITH_AUDIT_ONLY_LAUNCHERS",
+          "actual_argv": [
+            "cmake",
+            "-S",
+            "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r5/special-sanitizer/discovery/dzip--sanitizer/dzip/sanitizer/recipe",
+            "-B",
+            "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r5/special-sanitizer/discovery/dzip--sanitizer/dzip/sanitizer/cmake",
+            "-DCMAKE_BUILD_TYPE=Release",
+            "-DCMAKE_CXX_FLAGS=-fno-fast-math -ffp-contract=off -O1 -g -fsanitize=address,undefined -fsanitize=float-cast-overflow -fno-omit-frame-pointer -B/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r5/special-sanitizer/discovery/dzip--sanitizer/audit/dzip/sanitizer/wrapper-bin/",
+            "-DCMAKE_C_FLAGS=-fno-fast-math -ffp-contract=off -O1 -g -fsanitize=address,undefined -fsanitize=float-cast-overflow -fno-omit-frame-pointer -B/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r5/special-sanitizer/discovery/dzip--sanitizer/audit/dzip/sanitizer/wrapper-bin/",
+            "-DCMAKE_EXE_LINKER_FLAGS=-no-pie",
+            "-DDEEPZIP_WITH_HDF5=OFF",
+            "-DDEEPZIP_WITH_CUDA=OFF",
+            "-DDZIP_WITH_HDF5=OFF",
+            "-DDZIP_WITH_CUDA=OFF"
+          ],
+          "returncode": 0,
+          "epoch_begin": 1791721477.6065662,
+          "epoch_end": 1791721480.9332788,
+          "elapsed_seconds": 3.3267126083374023
+        },
+        {
+          "kind": "SPECIAL_RECIPE_SUBPROCESS",
+          "actual_argv": [
+            "cmake",
+            "--build",
+            "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r5/special-sanitizer/discovery/dzip--sanitizer/dzip/sanitizer/cmake",
+            "-j2"
+          ],
+          "returncode": 0,
+          "epoch_begin": 1791721480.9334354,
+          "epoch_end": 1791723611.3334816,
+          "elapsed_seconds": 2130.400046110153
+        },
+        {
+          "kind": "SPECIAL_RECIPE_SUBPROCESS",
+          "actual_argv": [
+            "ctest",
+            "--test-dir",
+            "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r5/special-sanitizer/discovery/dzip--sanitizer/dzip/sanitizer/cmake",
+            "--show-only=json-v1"
+          ],
+          "returncode": 0,
+          "epoch_begin": 1791723611.343202,
+          "epoch_end": 1791723611.3868191,
+          "elapsed_seconds": 0.04361701011657715
+        },
+        {
+          "kind": "SPECIAL_RECIPE_SUBPROCESS",
+          "actual_argv": [
+            "ldd",
+            "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r5/special-sanitizer/discovery/dzip--sanitizer/dzip/sanitizer/libtscb_dzip.so"
+          ],
+          "returncode": 0,
+          "epoch_begin": 1791723611.6612322,
+          "epoch_end": 1791723611.6838713,
+          "elapsed_seconds": 0.022639036178588867
+        },
+        {
+          "kind": "SPECIAL_RECIPE_SUBPROCESS",
+          "actual_argv": [
+            "ldd",
+            "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r5/special-sanitizer/discovery/dzip--sanitizer/dzip/sanitizer/cmake/binding_qualification"
+          ],
+          "returncode": 0,
+          "epoch_begin": 1791723611.6855648,
+          "epoch_end": 1791723611.7078092,
+          "elapsed_seconds": 0.02224445343017578
+        },
+        {
+          "kind": "SPECIAL_RECIPE_SUBPROCESS",
+          "actual_argv": [
+            "ldd",
+            "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r5/special-sanitizer/discovery/dzip--sanitizer/dzip/sanitizer/cmake/standalone/dzip_cuda_preflight"
+          ],
+          "returncode": 0,
+          "epoch_begin": 1791723611.7094226,
+          "epoch_end": 1791723611.7276704,
+          "elapsed_seconds": 0.01824784278869629
+        },
+        {
+          "kind": "SPECIAL_RECIPE_SUBPROCESS",
+          "actual_argv": [
+            "ldd",
+            "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r5/special-sanitizer/discovery/dzip--sanitizer/dzip/sanitizer/cmake/standalone/dzip_preflight"
+          ],
+          "returncode": 0,
+          "epoch_begin": 1791723611.728654,
+          "epoch_end": 1791723611.7488213,
+          "elapsed_seconds": 0.02016735076904297
+        },
+        {
+          "kind": "SPECIAL_RECIPE_SUBPROCESS",
+          "actual_argv": [
+            "ldd",
+            "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r5/special-sanitizer/discovery/dzip--sanitizer/dzip/sanitizer/cmake/standalone/dzip_training_preflight"
+          ],
+          "returncode": 0,
+          "epoch_begin": 1791723611.749814,
+          "epoch_end": 1791723611.768055,
+          "elapsed_seconds": 0.018240928649902344
+        },
+        {
+          "kind": "SPECIAL_RECIPE_SUBPROCESS",
+          "actual_argv": [
+            "c++",
+            "--version"
+          ],
+          "returncode": 0,
+          "epoch_begin": 1791723619.6467142,
+          "epoch_end": 1791723619.6531491,
+          "elapsed_seconds": 0.006434917449951172
+        }
+      ]
+    },
+    {
+      "phase": "pinned-replay",
+      "batch_elapsed_seconds": 2176.94237740901,
+      "driver_elapsed_seconds": 2137.2492163749994,
+      "batch_minus_driver_seconds": 39.6931610340107,
+      "driver_receipt": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r5/special-sanitizer/pinned-replay/dzip--sanitizer/audit/dzip/sanitizer/driver-report.json",
+        "sha256": "64c0e7f4967bbadf12d39347870a55c25e20d86c83ff52643b3bf17a8b4f28b4",
+        "size_bytes": 1338866
+      },
+      "analysis_receipt": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r5/special-sanitizer/pinned-replay/dzip--sanitizer/trace-report.json",
+        "sha256": "b6510d655948357266e20780c47a2c3835c34b1980e2136d08e0a6466f0872c8",
+        "size_bytes": 5038517
+      },
+      "stages": [
+        {
+          "kind": "CMAKE_CONFIGURE_WITH_AUDIT_ONLY_LAUNCHERS",
+          "actual_argv": [
+            "cmake",
+            "-S",
+            "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r5/special-sanitizer/pinned-replay/dzip--sanitizer/dzip/sanitizer/recipe",
+            "-B",
+            "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r5/special-sanitizer/pinned-replay/dzip--sanitizer/dzip/sanitizer/cmake",
+            "-DCMAKE_BUILD_TYPE=Release",
+            "-DCMAKE_CXX_FLAGS=-fno-fast-math -ffp-contract=off -O1 -g -fsanitize=address,undefined -fsanitize=float-cast-overflow -fno-omit-frame-pointer -B/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r5/special-sanitizer/pinned-replay/dzip--sanitizer/audit/dzip/sanitizer/wrapper-bin/",
+            "-DCMAKE_C_FLAGS=-fno-fast-math -ffp-contract=off -O1 -g -fsanitize=address,undefined -fsanitize=float-cast-overflow -fno-omit-frame-pointer -B/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r5/special-sanitizer/pinned-replay/dzip--sanitizer/audit/dzip/sanitizer/wrapper-bin/",
+            "-DCMAKE_EXE_LINKER_FLAGS=-no-pie",
+            "-DDEEPZIP_WITH_HDF5=OFF",
+            "-DDEEPZIP_WITH_CUDA=OFF",
+            "-DDZIP_WITH_HDF5=OFF",
+            "-DDZIP_WITH_CUDA=OFF"
+          ],
+          "returncode": 0,
+          "epoch_begin": 1791723713.7016299,
+          "epoch_end": 1791723716.832358,
+          "elapsed_seconds": 3.130728006362915
+        },
+        {
+          "kind": "SPECIAL_RECIPE_SUBPROCESS",
+          "actual_argv": [
+            "cmake",
+            "--build",
+            "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r5/special-sanitizer/pinned-replay/dzip--sanitizer/dzip/sanitizer/cmake",
+            "-j2"
+          ],
+          "returncode": 0,
+          "epoch_begin": 1791723716.8325117,
+          "epoch_end": 1791725841.5550787,
+          "elapsed_seconds": 2124.7225670814514
+        },
+        {
+          "kind": "SPECIAL_RECIPE_SUBPROCESS",
+          "actual_argv": [
+            "ctest",
+            "--test-dir",
+            "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r5/special-sanitizer/pinned-replay/dzip--sanitizer/dzip/sanitizer/cmake",
+            "--show-only=json-v1"
+          ],
+          "returncode": 0,
+          "epoch_begin": 1791725841.5565963,
+          "epoch_end": 1791725841.585114,
+          "elapsed_seconds": 0.028517723083496094
+        },
+        {
+          "kind": "SPECIAL_RECIPE_SUBPROCESS",
+          "actual_argv": [
+            "ldd",
+            "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r5/special-sanitizer/pinned-replay/dzip--sanitizer/dzip/sanitizer/libtscb_dzip.so"
+          ],
+          "returncode": 0,
+          "epoch_begin": 1791725841.850201,
+          "epoch_end": 1791725841.8683057,
+          "elapsed_seconds": 0.01810479164123535
+        },
+        {
+          "kind": "SPECIAL_RECIPE_SUBPROCESS",
+          "actual_argv": [
+            "ldd",
+            "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r5/special-sanitizer/pinned-replay/dzip--sanitizer/dzip/sanitizer/cmake/binding_qualification"
+          ],
+          "returncode": 0,
+          "epoch_begin": 1791725841.8695774,
+          "epoch_end": 1791725841.886418,
+          "elapsed_seconds": 0.016840696334838867
+        },
+        {
+          "kind": "SPECIAL_RECIPE_SUBPROCESS",
+          "actual_argv": [
+            "ldd",
+            "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r5/special-sanitizer/pinned-replay/dzip--sanitizer/dzip/sanitizer/cmake/standalone/dzip_cuda_preflight"
+          ],
+          "returncode": 0,
+          "epoch_begin": 1791725841.8874454,
+          "epoch_end": 1791725841.9044847,
+          "elapsed_seconds": 0.01703929901123047
+        },
+        {
+          "kind": "SPECIAL_RECIPE_SUBPROCESS",
+          "actual_argv": [
+            "ldd",
+            "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r5/special-sanitizer/pinned-replay/dzip--sanitizer/dzip/sanitizer/cmake/standalone/dzip_preflight"
+          ],
+          "returncode": 0,
+          "epoch_begin": 1791725841.9051497,
+          "epoch_end": 1791725841.922632,
+          "elapsed_seconds": 0.017482280731201172
+        },
+        {
+          "kind": "SPECIAL_RECIPE_SUBPROCESS",
+          "actual_argv": [
+            "ldd",
+            "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r5/special-sanitizer/pinned-replay/dzip--sanitizer/dzip/sanitizer/cmake/standalone/dzip_training_preflight"
+          ],
+          "returncode": 0,
+          "epoch_begin": 1791725841.9233105,
+          "epoch_end": 1791725841.9405727,
+          "elapsed_seconds": 0.01726222038269043
+        },
+        {
+          "kind": "SPECIAL_RECIPE_SUBPROCESS",
+          "actual_argv": [
+            "c++",
+            "--version"
+          ],
+          "returncode": 0,
+          "epoch_begin": 1791725849.23098,
+          "epoch_end": 1791725849.2376232,
+          "elapsed_seconds": 0.0066432952880859375
+        }
+      ]
+    }
+  ],
+  "qualification_tests_executed_by_this_timing_receipt": false,
+  "ctest_scope": "SHOW_ONLY_JSON_INVENTORY",
+  "driver": {
+    "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_closure_formal_verification/build_link/write_build_link_review_v1.py",
+    "sha256": "c2a620fd36a19c6a31deb7e5e76c39a9f4a8ca082f1996e8ba917b6038cbef1c",
+    "size_bytes": 8006
+  }
+}

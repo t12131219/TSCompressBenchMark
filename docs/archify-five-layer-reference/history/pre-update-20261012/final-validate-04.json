@@ -1,0 +1,111 @@
+{
+  "schemaVersion": 1,
+  "ok": false,
+  "command": "validate",
+  "stage": "render",
+  "type": "architecture",
+  "input": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/archify-five-layer-reference/framework-final.archify.json",
+  "error": "Architecture layout validation failed:\n- [clean-flow/endpoint-side-direction] architecture connections[48] id \"resources--raw\" \"resources\" -> \"raw\" first segment 0 [760, 4780] -> [1200, 4820] does not honor fromSide \"right\" — it must run horizontal rightward; keep automatic routing so the renderer can use a side-aware bridge, or set truthful fromSide/toSide with perpendicular via segments.\n- [composition/label-route-clearance] showcase architecture label \"资源证据\" on connections[48] id \"resources--raw\" \"resources\" -> \"raw\" label \"资源证据\" is 0px from connections[35] id \"diagnostic--raw\" \"diagnostic\" -> \"raw\" label \"诊断记录\" segment 1 [1210, 3330] -> [1210, 5290] (label rect [1176, 4990, 48, 14]; minimum 4px) — adjust labelAt, labelDx, labelDy, or labelSegment; otherwise adjust the other relationship route/via/channel.",
+  "diagnostics": [
+    {
+      "code": "clean-flow/endpoint-side-direction",
+      "severity": "error",
+      "message": "[clean-flow/endpoint-side-direction] architecture connections[48] id \"resources--raw\" \"resources\" -> \"raw\" first segment 0 [760, 4780] -> [1200, 4820] does not honor fromSide \"right\" — it must run horizontal rightward; keep automatic routing so the renderer can use a side-aware bridge, or set truthful fromSide/toSide with perpendicular via segments.",
+      "subject": {
+        "diagramType": "architecture",
+        "collection": "connections",
+        "index": 48,
+        "id": "resources--raw",
+        "from": "resources",
+        "to": "raw"
+      },
+      "evidence": {
+        "endpoint": "source",
+        "authoredField": "fromSide",
+        "sideOrigin": "authored",
+        "side": "right",
+        "segmentIndex": 0,
+        "from": [
+          760,
+          4780
+        ],
+        "to": [
+          1200,
+          4820
+        ],
+        "expectedAxis": "horizontal",
+        "expectedDirection": "rightward"
+      },
+      "supportedFixes": [
+        "keep automatic routing so the renderer can use a side-aware bridge, or set truthful fromSide/toSide with perpendicular via segments"
+      ]
+    },
+    {
+      "code": "composition/label-route-clearance",
+      "severity": "error",
+      "message": "[composition/label-route-clearance] showcase architecture label \"资源证据\" on connections[48] id \"resources--raw\" \"resources\" -> \"raw\" label \"资源证据\" is 0px from connections[35] id \"diagnostic--raw\" \"diagnostic\" -> \"raw\" label \"诊断记录\" segment 1 [1210, 3330] -> [1210, 5290] (label rect [1176, 4990, 48, 14]; minimum 4px) — adjust labelAt, labelDx, labelDy, or labelSegment; otherwise adjust the other relationship route/via/channel.",
+      "subject": {
+        "diagramType": "architecture",
+        "collection": "connections",
+        "index": 48,
+        "id": "resources--raw",
+        "from": "resources",
+        "to": "raw"
+      },
+      "evidence": {
+        "label": "资源证据",
+        "otherRelationship": {
+          "diagramType": "architecture",
+          "collection": "connections",
+          "index": 35,
+          "id": "diagnostic--raw",
+          "from": "diagnostic",
+          "to": "raw"
+        },
+        "segmentIndex": 1,
+        "clearancePx": 0,
+        "minimumPx": 4,
+        "labelRect": {
+          "relation": {
+            "id": "resources--raw",
+            "from": "resources",
+            "to": "raw",
+            "label": "资源证据",
+            "variant": "dashed",
+            "fromSide": "right",
+            "toSide": "right",
+            "via": [
+              [
+                1200,
+                4820
+              ],
+              [
+                1200,
+                5200
+              ]
+            ]
+          },
+          "relationIndex": 48,
+          "label": "资源证据",
+          "x": 1175.8,
+          "y": 4990,
+          "width": 48.4,
+          "height": 14,
+          "lx": 1200,
+          "ly": 5000
+        },
+        "from": [
+          1210,
+          3330
+        ],
+        "to": [
+          1210,
+          5290
+        ]
+      },
+      "supportedFixes": [
+        "adjust labelAt, labelDx, labelDy, or labelSegment; otherwise adjust the other relationship route/via/channel"
+      ]
+    }
+  ]
+}

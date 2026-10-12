@@ -1,8 +1,165 @@
 {
   "status": "pass",
-  "nodeCount": 46,
-  "edgeCount": 51,
+  "nodeCount": 64,
+  "edgeCount": 69,
   "sameSemanticNodes": true,
   "sameDirectedEdges": true,
-  "issues": []
+  "issues": [],
+  "crossingBridges": [
+    {
+      "edges": [
+        "tasks--gates",
+        "logical_object--experiment_contract"
+      ],
+      "point": [
+        1760,
+        1125.0
+      ],
+      "horizontal": "tasks--gates"
+    },
+    {
+      "edges": [
+        "minimal--preflight",
+        "preflight--diagnostic"
+      ],
+      "point": [
+        1025,
+        2035.0
+      ],
+      "horizontal": "minimal--preflight"
+    },
+    {
+      "edges": [
+        "formal--policy",
+        "object_qualification--development_pilot"
+      ],
+      "point": [
+        680,
+        2840.0
+      ],
+      "horizontal": "object_qualification--development_pilot"
+    },
+    {
+      "edges": [
+        "formal--policy",
+        "formal_lanes--measurement_boundary"
+      ],
+      "point": [
+        680,
+        2963
+      ],
+      "horizontal": "formal_lanes--measurement_boundary"
+    },
+    {
+      "edges": [
+        "policy--resources",
+        "resources--raw"
+      ],
+      "point": [
+        1045,
+        3215
+      ],
+      "horizontal": "policy--resources"
+    },
+    {
+      "edges": [
+        "workloads--query",
+        "workloads--raw"
+      ],
+      "point": [
+        1400,
+        3120.0
+      ],
+      "horizontal": "workloads--raw"
+    },
+    {
+      "edges": [
+        "workloads--query",
+        "workloads--raw"
+      ],
+      "point": [
+        1385,
+        3277.5
+      ],
+      "horizontal": "workloads--query"
+    },
+    {
+      "edges": [
+        "workloads--raw",
+        "resources--raw"
+      ],
+      "point": [
+        1045,
+        3405
+      ],
+      "horizontal": "workloads--raw"
+    },
+    {
+      "edges": [
+        "workloads--raw",
+        "query--raw"
+      ],
+      "point": [
+        1220.0,
+        3405
+      ],
+      "horizontal": "workloads--raw"
+    },
+    {
+      "edges": [
+        "query--raw",
+        "streaming--raw"
+      ],
+      "point": [
+        1220.0,
+        3448
+      ],
+      "horizontal": "streaming--raw"
+    },
+    {
+      "edges": [
+        "diagnostic--raw",
+        "frozen_schedule--object_qualification"
+      ],
+      "point": [
+        334,
+        2272.5
+      ],
+      "horizontal": "diagnostic--raw"
+    },
+    {
+      "edges": [
+        "diagnostic--raw",
+        "formal_lanes--measurement_boundary"
+      ],
+      "point": [
+        334,
+        3525.0
+      ],
+      "horizontal": "diagnostic--raw"
+    },
+    {
+      "edges": [
+        "raw--evidence",
+        "formal_lanes--measurement_boundary"
+      ],
+      "point": [
+        334,
+        3600
+      ],
+      "horizontal": "raw--evidence"
+    },
+    {
+      "edges": [
+        "raw--evidence",
+        "trial_store--paired_analysis"
+      ],
+      "point": [
+        334,
+        3895
+      ],
+      "horizontal": "raw--evidence"
+    }
+  ],
+  "scope": "derived five-layer long-form reference, separate from native Archify acceptance"
 }

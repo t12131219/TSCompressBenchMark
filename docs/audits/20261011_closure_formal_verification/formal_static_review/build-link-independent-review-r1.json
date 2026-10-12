@@ -1,0 +1,440 @@
+{
+  "FORMAL_or_semantic_qualification_granted": false,
+  "claim_boundary": "Evidence confirms nonempty successful observed fresh builds and conservative byte-content association; complete actual tool/interpreter and per-consumption-version closure is not proven.",
+  "codec_build_pytest_performance_executed": false,
+  "findings": [
+    {
+      "evidence": "'PASS' if driver['status'] == 'PASS' and (not driver['baseline_input_drift']) and (not missing) and (not undecoded) and (not truncations) and (not verified_checkpoint_drift) else 'FAIL'",
+      "evidence_scope": "ACTUAL_STATIC_AST",
+      "id": "BL-R1-01",
+      "implication": "Empty trace directories and empty object/source inventories are not rejected by these predicates; this review does not execute a synthetic analyzer run.",
+      "line": 196,
+      "priority": 1,
+      "recommendation": "Require expected profile-specific compilation/object/source/link/exec counts and validate them against the recipe and observed actual build, then treat empty equality as NOT_PROVEN.",
+      "sample_boundary": "Both selected success samples have nonzero trace, link, object and source denominators; no observed sample is claimed to be an empty pass.",
+      "source": "build_link/analyze_trace_v4.py",
+      "title": "PASS predicate does not require a nonempty execution/link/object/source denominator"
+    },
+    {
+      "evidence": "unmatched iterates read_files only; executed identities and interpreter identities are obtained during analysis",
+      "evidence_scope": "ACTUAL_STATIC_CODE_AND_SUCCESS_JSON",
+      "id": "BL-R1-02",
+      "implication": "pre_read_scope_complete=true does not prove executable/interpreter inputs were pinned before actual execution; the selected success samples contain concrete uncovered paths.",
+      "line": 147,
+      "priority": 1,
+      "recommendation": "Include resolved execve/execveat executable identities and shebang/PT_INTERP interpreter chain in the before/after pin coverage; keep post-observation-only entries explicit.",
+      "source": "build_link/analyze_trace_v4.py",
+      "title": "Executed tools and kernel interpreters are outside pre-read checkpoint completeness"
+    },
+    {
+      "evidence": "checkpoint dict/update uses only path; versioned captures carry pid/epoch but no trace-open event matching exists; absent paths select captures[path][0]",
+      "evidence_scope": "ACTUAL_STATIC_CODE_AND_SUCCESS_JSON",
+      "id": "BL-R1-03",
+      "implication": "Retained multiple versions are useful observations but do not independently establish the version consumed at each read; ABBA contains 28 paths with multiple SHA values.",
+      "line": 139,
+      "priority": 1,
+      "recommendation": "Associate each actual read/open/mmap consumption with an immutable capture by pid/thread/descriptor/event/epoch and reject missing/ambiguous versions, including generated pipeline inputs.",
+      "source": "build_link/analyze_trace_v4.py",
+      "title": "Path-keyed checkpoints overwrite earlier versions and captures are not joined to each read event"
+    },
+    {
+      "evidence": "O_CREAT/O_TRUNC opens are put in written and excluded from opened; collector open wrappers retain only O_RDONLY while fopen only uses mode[0]==r",
+      "evidence_scope": "ACTUAL_STATIC_CODE",
+      "id": "BL-R1-04",
+      "implication": "O_RDWR|O_CREAT/O_TRUNC, w+/a+ and direct/internal syscall paths can consume input bytes without preserved read versions. The samples do not demonstrate exploitation of this coverage gap.",
+      "line": 87,
+      "priority": 1,
+      "recommendation": "Model descriptor read/write modes and actual read/pread/mmap consumption, and require coverage for write-then-read generated versions rather than assuming pathname final bytes.",
+      "source": "build_link/analyze_trace_v4.py",
+      "title": "Writable opens that can also read are omitted from consumption capture"
+    },
+    {
+      "evidence": "static __thread sequence; filename preopen-pid-sequence; out<0 goto done and missing log silently skips evidence",
+      "evidence_scope": "ACTUAL_STATIC_CODE",
+      "id": "BL-R1-05",
+      "implication": "Concurrent threads can collide on O_EXCL capture paths and absence is not rejected by the analyzer. No such failure is claimed to have occurred in these samples.",
+      "line": 15,
+      "priority": 2,
+      "recommendation": "Use process-wide atomic IDs or pid+tid+sequence and fail closed on missing capture/log records; reconcile capture counts to expected read events.",
+      "source": "build_link/preserve_build_reads_v1.c",
+      "title": "Capture filenames use a thread-local sequence without thread identity and capture creation failures are silent"
+    },
+    {
+      "evidence": "status excludes unmatched; pre_read_scope_complete stores not unmatched; summarize_traces_v1 separately rejects false",
+      "evidence_scope": "ACTUAL_STATIC_AST_AND_SUMMARIZER_CODE",
+      "id": "BL-R1-06",
+      "implication": "Analyzer PASS alone is a limited parsing/build-observation result. Final summarizer does separately guard this field, so it is not an asserted final-summary bypass.",
+      "line": 196,
+      "priority": 2,
+      "recommendation": "Use explicit DISCOVERY/QUALIFICATION statuses or require unmatched=false in the qualification predicate, so callers cannot mistake discovery PASS for full closure.",
+      "source": "build_link/analyze_trace_v4.py",
+      "title": "Analyzer PASS does not itself require external pre-read checkpoint completeness"
+    }
+  ],
+  "full_N1_or_complete_link_closure_granted": false,
+  "original_driver_files_modified": false,
+  "positive_controls": {
+    "ABBA_archive_members_recorded": true,
+    "ABBA_object_comparison_scope_explicitly_current_static_not_historical": true,
+    "CRT_archives_linker_script_LOAD_inputs_recorded": true,
+    "LZ4_objects_5_5_and_ABBA_objects_16_16_nonempty": true,
+    "new_old_artifact_association_rule_is_content_only_and_byte_different_does_not_transfer": true,
+    "selected_samples_and_drivers_full_N1_false": true,
+    "v4b_LDD_runs_without_audit_LD_PRELOAD": true,
+    "v4b_refuses_inherited_preload_audit": true
+  },
+  "production_modules_imported": false,
+  "raw_trace_logs_and_artifact_binaries_rehashed_by_review": false,
+  "sample_references": [
+    {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-release/pinned-replay/lz4-frame--release/trace-report.json",
+      "sha256": "3747a707ba296f942230c80eece936522da6dd876a00d22bc97f35f9d7660559"
+    },
+    {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-release/pinned-replay/lz4-frame--release/audit/lz4-frame/release/driver-report.json",
+      "sha256": "758db287961d3c439bdf9fbc904ca7db769fb1a185f460af8fec62cedb16c675"
+    },
+    {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_closure_formal_verification/build_link/abba-release-pinned-r4b-trace.json",
+      "sha256": "5ee10a5cedb501cea5892efa7e1d8bea1579aa1bf2e800047409441ad63a538b"
+    },
+    {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r4b/special-pilot/abba-release/audit/abba/release/driver-report.json",
+      "sha256": "fc4298c65d9d28f97baba6e895678bcde6cb8749d31128d87399a8fa6df721fb"
+    }
+  ],
+  "sample_references_unchanged_during_review": true,
+  "samples": [
+    {
+      "analyzer_SHA_matches_current": true,
+      "artifact_binaries_independently_rehashed_by_this_review": false,
+      "audit_instrumentation_environment": null,
+      "baseline_before_after_metadata_equal": true,
+      "captured_multiple_SHA_path_count": 0,
+      "captured_multiple_SHA_paths": {},
+      "captured_path_count": 5,
+      "codec": "lz4-frame",
+      "external_LOAD_CRT_archive_script_paths": [
+        "/usr/lib/gcc/x86_64-linux-gnu/11/crtbeginS.o",
+        "/usr/lib/gcc/x86_64-linux-gnu/11/crtendS.o",
+        "/usr/lib/gcc/x86_64-linux-gnu/11/libgcc.a",
+        "/usr/lib/gcc/x86_64-linux-gnu/11/libgcc_s.so",
+        "/usr/lib/x86_64-linux-gnu/crti.o",
+        "/usr/lib/x86_64-linux-gnu/crtn.o",
+        "/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+        "/usr/lib/x86_64-linux-gnu/libc.so",
+        "/usr/lib/x86_64-linux-gnu/libc.so.6",
+        "/usr/lib/x86_64-linux-gnu/libc_nonshared.a",
+        "/usr/lib/x86_64-linux-gnu/libgcc_s.so.1"
+      ],
+      "full_N1_granted_by_sample": false,
+      "inherited_LD_AUDIT": null,
+      "inherited_LD_PRELOAD": null,
+      "new_artifact_metadata": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r2/ordinary-release/pinned-replay/lz4-frame--release/lz4_frame/release/libtscb_lz4_frame.so",
+        "sha256": "015b379d88be9f2ac07fcea2902839f9195bc21576d0fb59df95f20e658c039e",
+        "size_bytes": 246832
+      },
+      "object_comparison": {
+        "equal": true,
+        "new_count": 5,
+        "old_count": 5
+      },
+      "old_artifact_metadata": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/native-builds-v3/lz4_frame/release/libtscb_lz4_frame.so",
+        "sha256": "015b379d88be9f2ac07fcea2902839f9195bc21576d0fb59df95f20e658c039e",
+        "size_bytes": 246832
+      },
+      "profile": "release",
+      "read_and_write_external_paths": [],
+      "read_and_write_generated_path_count": 18,
+      "receipt_driver_sha_matches": true,
+      "record_counts": {
+        "actual_link_launcher_checkpoints": 0,
+        "executed_kernel_interpreters": 8,
+        "link_maps": 1,
+        "observed_archive_member_contributions": 0,
+        "observed_link_LOAD_inputs": 16,
+        "successful_execve_observations": 42,
+        "successful_read_file_inputs": 302,
+        "trace_files": 41
+      },
+      "recorded_artifact_SHA_equality_consistent": true,
+      "recorded_old_new_artifact_equal": true,
+      "reported_pre_read_scope_complete": true,
+      "reported_status": "PASS",
+      "runtime_listing_scope": null,
+      "source_comparison_counts": {
+        "new": 81,
+        "old": 81
+      },
+      "uncheckpointed_external_executed_or_interpreter_paths": {
+        "executed_kernel_interpreters": [
+          "/home/fzg/anaconda3/envs/CompressBench14/bin/python3.14",
+          "/usr/bin/bash"
+        ],
+        "successful_execve_observations": [
+          "/home/fzg/anaconda3/envs/CompressBench14/bin/python3.14",
+          "/usr/lib/i386-linux-gnu/ld-linux.so.2"
+        ]
+      }
+    },
+    {
+      "analyzer_SHA_matches_current": true,
+      "artifact_binaries_independently_rehashed_by_this_review": false,
+      "audit_instrumentation_environment": {
+        "LD_PRELOAD": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r4b/special-pilot/abba-release/audit/abba/release/preserve_build_reads.so",
+        "TSBENCH_AUDIT_CAPTURE_DIR": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r4b/special-pilot/abba-release/audit/abba/release/read-capture",
+        "TSBENCH_AUDIT_INPUT_ROOT": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r4b/special-pilot/abba-release/"
+      },
+      "baseline_before_after_metadata_equal": true,
+      "captured_multiple_SHA_path_count": 28,
+      "captured_multiple_SHA_paths": {
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r4b/special-pilot/abba-release/abba/release/cmake/CMakeFiles/3.22.1/CMakeCCompiler.cmake": [
+          "cbae98e7af8f587d5717614a435cb3388d0bdfee5de1458d17ff3d72415ac4cc",
+          "e0fba17452748642ad813276bcba49ebf7c0d7948ca939ed31d36cdc7aa88572"
+        ],
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r4b/special-pilot/abba-release/abba/release/cmake/CMakeFiles/3.22.1/CMakeCCompiler.cmake.tmp": [
+          "cbae98e7af8f587d5717614a435cb3388d0bdfee5de1458d17ff3d72415ac4cc",
+          "e0fba17452748642ad813276bcba49ebf7c0d7948ca939ed31d36cdc7aa88572"
+        ],
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r4b/special-pilot/abba-release/abba/release/cmake/CMakeFiles/3.22.1/CMakeCXXCompiler.cmake": [
+          "32e09092d2b47aeadb16c3035cc6b2a077d637538cb12cb1ef783b25eb0957fd",
+          "9c8c537bb395e72b054710c4a339c624477b4d1ac8563c37e221c7276d747179"
+        ],
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r4b/special-pilot/abba-release/abba/release/cmake/CMakeFiles/3.22.1/CMakeCXXCompiler.cmake.tmp": [
+          "32e09092d2b47aeadb16c3035cc6b2a077d637538cb12cb1ef783b25eb0957fd",
+          "9c8c537bb395e72b054710c4a339c624477b4d1ac8563c37e221c7276d747179"
+        ],
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r4b/special-pilot/abba-release/abba/release/cmake/CMakeFiles/CMakeTmp/CMakeCache.txt": [
+          "30438a9cc11def12b01aee207229d81db631ca710251cb781f60deeda0c597f8",
+          "4add2ab9ca9ba629f6698920a7d6e23063e373a7c81c25cd507a2b6b0d6025ac"
+        ],
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r4b/special-pilot/abba-release/abba/release/cmake/CMakeFiles/CMakeTmp/CMakeLists.txt": [
+          "09ee245cd419be405afc290e2ccc12b212862ec0af9320e1730ea8e20d40fb28",
+          "a0abc7c07eb98111356df5991528341b1609370121f2541dbb3c4bbd96128c3f"
+        ],
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r4b/special-pilot/abba-release/abba/release/cmake/CMakeFiles/CMakeTmp/Makefile": [
+          "622b0aeb61c8c95f201688a1eff20d5114ab1568e1ba7087ce56e6bd57d0aecc",
+          "9fa408a8c6f7b353a050521741487f4ac249e5199a8751a01aeb8bb25592f041"
+        ],
+        "/tmp/cc1VzEpw.s": [
+          "61e4ae688efae273dedbb61740b9c272297389fa6767205a86df955302bc4fff",
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        ],
+        "/tmp/cc1aJhRC.s": [
+          "1fb888b6ae6dd9db39966c57b1911a69e39a0a737fcc76c8c02f48e7bced3eea",
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        ],
+        "/tmp/cc3cfJVE.s": [
+          "df9c3af87b9b025b0566fff7492a15e66ac800deee8e0894216cdca9b1d8a46c",
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        ],
+        "/tmp/cc8GJGnM.s": [
+          "bdfa800a79b20d19ddc1152aa57094214b035b20f1e1437bb228fc4eb7052a4f",
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        ],
+        "/tmp/ccAl4IFU.s": [
+          "d93b4e99fb8c5007075e4a5f50c7033b48642c50f13ec452edb6aef4fabc21ab",
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        ],
+        "/tmp/ccLgyBNC.s": [
+          "b50ee9347535e7b91f536d63d6229716a768d122c6f65687e1556d53f42e2a3f",
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        ],
+        "/tmp/ccP6vCcx.s": [
+          "d8876f606d83f0452da93dc29a66a1c0c71fcbbd84d217d79ee758f6376c4187",
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        ],
+        "/tmp/ccQztyRA.s": [
+          "ac4933402fe78a8f083a94d1a2ea15176879d833e2630b6179c3d77f62f68781",
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        ],
+        "/tmp/ccbga2mL.s": [
+          "00ee6b2bd38b64eddd74be227d52764dc91429edc2c9f031247f78e51af064e7",
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        ],
+        "/tmp/cccHNEJi.s": [
+          "cd1400ae29dae1d94cd43f908b164db25461b6fa4f150695b9981df2476059c0",
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        ],
+        "/tmp/ccgMEUYc.s": [
+          "132465c21210ad7f90b8a98ed87041de7ad261e5ad20908a89a1c3fea32bfe70",
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        ],
+        "/tmp/ccgop9yF.s": [
+          "4314773d9a0be73d39340f7f9a6e8e602ebd7fd8b37585310704bfc4e7ab33a9",
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        ],
+        "/tmp/ccjsxBt4.s": [
+          "c37f0687c5fdae1aac2d705f5dd26103a02228f0e112d82fce7d1eda2bb31656",
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        ],
+        "/tmp/cckAMUwX.s": [
+          "7c95b665b2a7e849da70e4d925e020cdc9efb82f818c13c235cf4e3e5c035862",
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        ],
+        "/tmp/cckccRTE.s": [
+          "2428bfaa6e9a0d76253c8cb59cb333aa0eb2c5b2ffe0d69dd99aaebfd9b636a3",
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        ],
+        "/tmp/cclUWqgn.s": [
+          "a251e29695243b582e6894abe244b70adef13ffd49da18fd82f2dc10b6fd5f7e",
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        ],
+        "/tmp/cclbm4eN.s": [
+          "df33b745e304210961926ba2354fcf3aae7b67d15bf8f0055d5d8082ebe077da",
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        ],
+        "/tmp/ccncJuEV.s": [
+          "d5ab68cb8f0836917a8aa53f8e014c33dfadc503c07ed90771d6b7659e25f451",
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        ],
+        "/tmp/ccohF2PN.s": [
+          "868177e158ad892c46d031aa5eed47c67d3d99aa74a0f642ea04553d2b4cba67",
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        ],
+        "/tmp/ccv9E9Ge.s": [
+          "a747bf31f1f266ac6b62aa99a91799d97b4c49665b309d0bc147f9ff8cc1653d",
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        ],
+        "/tmp/ccwQYAae.s": [
+          "4ad44608014535969ac66ec8603d948a9be3b4bec499269a0a9c1b885a3fa1d5",
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        ]
+      },
+      "captured_path_count": 170,
+      "codec": "abba",
+      "external_LOAD_CRT_archive_script_paths": [
+        "/tmp/ccWF3yO8.o",
+        "/tmp/cceHUmqA.o",
+        "/tmp/ccgL860F.o",
+        "/usr/lib/gcc/x86_64-linux-gnu/11/crtbegin.o",
+        "/usr/lib/gcc/x86_64-linux-gnu/11/crtbeginS.o",
+        "/usr/lib/gcc/x86_64-linux-gnu/11/crtend.o",
+        "/usr/lib/gcc/x86_64-linux-gnu/11/crtendS.o",
+        "/usr/lib/gcc/x86_64-linux-gnu/11/libgcc.a",
+        "/usr/lib/gcc/x86_64-linux-gnu/11/libgcc_s.so",
+        "/usr/lib/x86_64-linux-gnu/Scrt1.o",
+        "/usr/lib/x86_64-linux-gnu/crt1.o",
+        "/usr/lib/x86_64-linux-gnu/crti.o",
+        "/usr/lib/x86_64-linux-gnu/crtn.o",
+        "/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+        "/usr/lib/x86_64-linux-gnu/libc.so",
+        "/usr/lib/x86_64-linux-gnu/libc.so.6",
+        "/usr/lib/x86_64-linux-gnu/libc_nonshared.a",
+        "/usr/lib/x86_64-linux-gnu/libdl.a",
+        "/usr/lib/x86_64-linux-gnu/libgcc_s.so.1",
+        "/usr/lib/x86_64-linux-gnu/libm.so",
+        "/usr/lib/x86_64-linux-gnu/libm.so.6",
+        "/usr/lib/x86_64-linux-gnu/libmvec.so.1",
+        "/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30"
+      ],
+      "full_N1_granted_by_sample": false,
+      "inherited_LD_AUDIT": null,
+      "inherited_LD_PRELOAD": null,
+      "new_artifact_metadata": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/closure-formal-verification-20261011/traced-builds-r4b/special-pilot/abba-release/abba/release/libtscb_abba.so",
+        "sha256": "309b24040d86e8928673648cf7fc50a7be854771de9ac25091b028bb2668eb43",
+        "size_bytes": 153664
+      },
+      "object_comparison": {
+        "equal": true,
+        "new_count": 16,
+        "old_count": 16,
+        "scope": "CURRENT_STATIC_OLD_NEW_CMAKE_OBJECT_SCAN_NOT_HISTORICAL_OBJECT_HASHES"
+      },
+      "old_artifact_metadata": {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/port-standard-v30-20261011/adapters/abba/release/libtscb_abba.so",
+        "sha256": "309b24040d86e8928673648cf7fc50a7be854771de9ac25091b028bb2668eb43",
+        "size_bytes": 153664
+      },
+      "profile": "release",
+      "read_and_write_external_paths": [],
+      "read_and_write_generated_path_count": 95,
+      "receipt_driver_sha_matches": true,
+      "record_counts": {
+        "actual_link_launcher_checkpoints": 27,
+        "executed_kernel_interpreters": 23,
+        "link_maps": 14,
+        "observed_archive_member_contributions": 7,
+        "observed_link_LOAD_inputs": 38,
+        "successful_execve_observations": 405,
+        "successful_read_file_inputs": 1609,
+        "trace_files": 360
+      },
+      "recorded_artifact_SHA_equality_consistent": true,
+      "recorded_old_new_artifact_equal": true,
+      "reported_pre_read_scope_complete": true,
+      "reported_status": "PASS",
+      "runtime_listing_scope": "LDD_EXECUTED_WITHOUT_AUDIT_LD_PRELOAD",
+      "source_comparison_counts": {
+        "new": 304,
+        "old": 304
+      },
+      "uncheckpointed_external_executed_or_interpreter_paths": {
+        "executed_kernel_interpreters": [
+          "/home/fzg/anaconda3/envs/CompressBench14/bin/python3.14",
+          "/usr/bin/bash",
+          "/usr/bin/python3.10"
+        ],
+        "successful_execve_observations": [
+          "/home/fzg/anaconda3/bin/python3.11",
+          "/home/fzg/anaconda3/envs/CompressBench14/bin/python3.14",
+          "/usr/bin/ctest",
+          "/usr/bin/dash",
+          "/usr/bin/uname",
+          "/usr/lib/gcc/x86_64-linux-gnu/11/cc1plus",
+          "/usr/lib/i386-linux-gnu/ld-linux.so.2"
+        ]
+      }
+    }
+  ],
+  "schema_version": "tscb.independent-build-link-static-review.v1",
+  "scope": "STATIC_CODE_AND_TWO_SUCCESS_JSON_RECEIPTS_ONLY_NO_ANALYZER_HELPER_OR_CODEC_EXECUTION",
+  "source_files_unchanged_during_review": true,
+  "source_snapshots_preserved": true,
+  "status": "GAPS_FOUND_FOR_COMPLETE_TOOLCHAIN_CONSUMPTION_CLOSURE",
+  "subjects": [
+    {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_closure_formal_verification/build_link/traced_rebuild_driver_v4b.py",
+      "reviewed_source_snapshot": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_closure_formal_verification/formal_static_review/build-link-r1-source-snapshots/traced_rebuild_driver_v4b.py",
+      "sha256": "cf37046eaddf0180af08c2262f3fb942c7205153327ab9d717d35f600ff14c37"
+    },
+    {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_closure_formal_verification/build_link/analyze_trace_v4.py",
+      "reviewed_source_snapshot": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_closure_formal_verification/formal_static_review/build-link-r1-source-snapshots/analyze_trace_v4.py",
+      "sha256": "8c156b18c45473752a1b59a9f7b2b79ac35c87fa3c1f28f9174bc9a74ba8e3ce"
+    },
+    {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_closure_formal_verification/build_link/preserve_build_reads_v1.c",
+      "reviewed_source_snapshot": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_closure_formal_verification/formal_static_review/build-link-r1-source-snapshots/preserve_build_reads_v1.c",
+      "sha256": "055c042d30ab892bc5496d226f5eb8c9ac44100f252ecb67bcedb4fadb212992"
+    },
+    {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_closure_formal_verification/build_link/run_special_traces.py",
+      "reviewed_source_snapshot": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_closure_formal_verification/formal_static_review/build-link-r1-source-snapshots/run_special_traces.py",
+      "sha256": "6c266bc9cacd15bc3816fcf428c6c669e9195984caa9a522f6a8c106aa483c46"
+    },
+    {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_closure_formal_verification/build_link/summarize_traces_v1.py",
+      "reviewed_source_snapshot": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_closure_formal_verification/formal_static_review/build-link-r1-source-snapshots/summarize_traces_v1.py",
+      "sha256": "6f5fefab395075f47d5e9f955b5b393aea7404c90f153f02cce87430656ab620"
+    },
+    {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_closure_formal_verification/build_link/traced_rebuild_driver_v2.py",
+      "reviewed_source_snapshot": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_closure_formal_verification/formal_static_review/build-link-r1-source-snapshots/traced_rebuild_driver_v2.py",
+      "sha256": "26ffbc96f629415816f09482005ffd1f51604a652f222ea6de44de12480fbcf7"
+    },
+    {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_closure_formal_verification/build_link/analyze_trace_v2.py",
+      "reviewed_source_snapshot": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_closure_formal_verification/formal_static_review/build-link-r1-source-snapshots/analyze_trace_v2.py",
+      "sha256": "2a5f326398faa50f24c9311c8d35f0588399daf8fc0e75624c6b59b72a9d3303"
+    },
+    {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_closure_formal_verification/build_link/run_ordinary_traces.py",
+      "reviewed_source_snapshot": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/audits/20261011_closure_formal_verification/formal_static_review/build-link-r1-source-snapshots/run_ordinary_traces.py",
+      "sha256": "03ea5846045d71c24d0aea47d4c6b045c7ab81b73be23bdcf045e3ac0292f9f4"
+    }
+  ]
+}

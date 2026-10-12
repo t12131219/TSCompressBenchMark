@@ -1,0 +1,2053 @@
+{
+  "report_id": "independent-comparison-lanes-review-r1-20261012",
+  "schema_version": "tscb.independent-comparison-review.v1",
+  "created_date": "2026-10-12",
+  "review_scope": "READ_ONLY_PARTIAL_COMPARISON_LANES",
+  "conclusion": "PARTIAL_READ_ONLY_REVIEW_NO_OVERALL_FORMAL_GRANTED",
+  "overall_qualification_granted": false,
+  "overall_formal_granted": false,
+  "round": {
+    "release_plan": "build/closure-formal-verification-20261011/formal-r3/preparation/release_plan.json",
+    "formal_granted_by_preparation": false,
+    "historical_observations_transferred": false,
+    "new_algorithms_added": false,
+    "finished_comparison_lanes": [
+      "abs",
+      "api",
+      "byte",
+      "cold",
+      "entropy",
+      "f32",
+      "f64",
+      "i16",
+      "model",
+      "quality",
+      "timestamp",
+      "u8"
+    ],
+    "pending_or_out_of_scope": [
+      "stream",
+      "query-warm",
+      "query-fresh",
+      "pipeline"
+    ],
+    "old_v32_evidence_transferred": false
+  },
+  "method": {
+    "read_only": true,
+    "no_codec_or_measurement_run": true,
+    "no_build_or_test_run": true,
+    "no_auditor_run": true,
+    "record_status_rule": "actual execution is nested record.status; top-level status=STOPPED with record=null is retained schedule slot and is not counted as codec execution",
+    "stopped_trace_rule": "follow failed_trial_id through same-cell rows to first non-STOPPED predecessor",
+    "expected_rule": "compare each actual record.status to execution_plan cell expected.outcome; RESOURCE_PRESSURE is actual terminal status with expected PASS but is excluded from formal eligibility",
+    "core_rule": "role=CORE and expected outcome PASS; all planned repetitions must be PASS and formal_eligible=true"
+  },
+  "aggregate": {
+    "planned_cells": 268,
+    "planned_slots": 2080,
+    "raw_rows": 2080,
+    "actual_record_rows": 1845,
+    "top_level_stopped_rows": 235,
+    "formal_eligible_actual_records": 1788,
+    "actual_status:PASS": 1788,
+    "actual_status:RESOURCE_PRESSURE": 49,
+    "stopped_terminal_status:RESOURCE_PRESSURE": 179,
+    "actual_status:UNSUPPORTED": 8,
+    "stopped_terminal_status:UNSUPPORTED": 56,
+    "expected_matrix_mismatch_lanes": [],
+    "expected_status_mismatch_lanes": [],
+    "total_expected_cells": 268,
+    "total_core_expected_pass_cells": 228,
+    "expected_outcome_cells": {
+      "PASS": 260,
+      "REJECT": 8
+    },
+    "actual_vs_expected_pairs": {
+      "PASS|PASS": 1788,
+      "RESOURCE_PRESSURE|PASS": 49,
+      "UNSUPPORTED|REJECT": 8
+    }
+  },
+  "lanes": [
+    {
+      "lane": "abs",
+      "kind": "comparison",
+      "planned_cells": 12,
+      "expected_outcome_cells": {
+        "PASS": 12
+      },
+      "core_expected_pass_cells": 12,
+      "planned_repetitions_per_cell": 8,
+      "planned_slots": 96,
+      "raw_rows": 96,
+      "actual_record_rows": 82,
+      "actual_record_status": {
+        "PASS": 79,
+        "RESOURCE_PRESSURE": 3
+      },
+      "actual_reason_codes": {
+        "FORMAL_REPETITION_PASS": 79,
+        "SWAP_OBSERVED_DURING_FORMAL_REPETITION": 3
+      },
+      "formal_eligible_actual_records": 79,
+      "top_level_stopped_rows": 14,
+      "top_level_stopped_reasons": {
+        "PATH_STOPPED_AFTER_FAILED_ATTEMPT": 14
+      },
+      "stopped_terminal_predecessor_status": {
+        "RESOURCE_PRESSURE": 14
+      },
+      "stopped_terminal_predecessor_reasons": {
+        "SWAP_OBSERVED_DURING_FORMAL_REPETITION": 14
+      },
+      "stopped_chain_errors": [],
+      "actual_vs_expected_pairs": {
+        "PASS|PASS": 79,
+        "RESOURCE_PRESSURE|PASS": 3
+      },
+      "expected_mismatch_count": 0,
+      "expected_mismatches": [],
+      "unsupported_records": [],
+      "fail_records": [],
+      "resource_pressure_records": [
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:822ce5a698dbf18bdbceae28335cf08cd4c199af982973ca4849cbc4c19de75d",
+          "method": "v2:algorithm:sha256:23de1a189d5a8799290f5a90e7896d485c3d84b85b897e4750b8cbe2a8de45fc",
+          "dataset_id": "v2:dataset:sha256:3faefa9b921dc5f525459427066f55d50b908eff842aabd36f6e17c334e52f52",
+          "expected_outcome": "PASS",
+          "reason_code": "SWAP_OBSERVED_DURING_FORMAL_REPETITION",
+          "repetition_index": 1,
+          "formal_eligible": false
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:7953eb25cce4ddd30e76336c055f904ca19208a1e17067b9c91a77d5f34a2cd5",
+          "method": "v2:algorithm:sha256:23de1a189d5a8799290f5a90e7896d485c3d84b85b897e4750b8cbe2a8de45fc",
+          "dataset_id": "v2:dataset:sha256:2a4f21c488acb8fb302a443aea54d3b149285a5e35f89ca35fba571c0eebaa49",
+          "expected_outcome": "PASS",
+          "reason_code": "SWAP_OBSERVED_DURING_FORMAL_REPETITION",
+          "repetition_index": 3,
+          "formal_eligible": false
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:3f99a416b116f88e611e0876667c501483582251f6253df425158bd2c54a0ac0",
+          "method": "v2:algorithm:sha256:59fb07902b2c25295bbca47ea3428b6d163d2dfa92fbf9b3a676b6824b539b6e",
+          "dataset_id": "v2:dataset:sha256:3faefa9b921dc5f525459427066f55d50b908eff842aabd36f6e17c334e52f52",
+          "expected_outcome": "PASS",
+          "reason_code": "SWAP_OBSERVED_DURING_FORMAL_REPETITION",
+          "repetition_index": 3,
+          "formal_eligible": false
+        }
+      ],
+      "core_formal_complete_cells_independent": 9,
+      "analysis_status": "CORE_INCOMPLETE",
+      "analysis_core_formal_complete_cells": 9,
+      "analysis_file_present": true,
+      "matrix_expected_unmatched": 0,
+      "matrix_expected_mismatch": 0,
+      "cell_repetition_coverage_errors": 0,
+      "queue_attempt_exit_code": 1,
+      "evidence": {
+        "execution_plan": "build/closure-formal-verification-20261011/formal-r3/runs/abs/execution_plan.json",
+        "comparison_plan": "build/closure-formal-verification-20261011/formal-r3/runs/abs/comparison_plan.json",
+        "bundle": "build/closure-formal-verification-20261011/formal-r3/runs/abs/bundle.json",
+        "schedule": "build/closure-formal-verification-20261011/formal-r3/runs/abs/schedule.json",
+        "raw_trials": "build/closure-formal-verification-20261011/formal-r3/runs/abs/comparison_trials.jsonl",
+        "analysis": "build/closure-formal-verification-20261011/formal-r3/runs/abs/analysis.json",
+        "queue_attempts": "build/closure-formal-verification-20261011/formal-r3/runs/queue_attempts.jsonl",
+        "queue_log": "build/closure-formal-verification-20261011/formal-r3/runs/queue_logs/abs.attempt-1.log"
+      },
+      "stopped_examples": [
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:822ce5a698dbf18bdbceae28335cf08cd4c199af982973ca4849cbc4c19de75d",
+          "method": "serf-qt",
+          "dataset_id": "v2:dataset:sha256:3faefa9b921dc5f525459427066f55d50b908eff842aabd36f6e17c334e52f52",
+          "repetition_index": 2,
+          "reason": "PATH_STOPPED_AFTER_FAILED_ATTEMPT",
+          "terminal_predecessor_status": "RESOURCE_PRESSURE",
+          "terminal_predecessor_reason": "SWAP_OBSERVED_DURING_FORMAL_REPETITION"
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:822ce5a698dbf18bdbceae28335cf08cd4c199af982973ca4849cbc4c19de75d",
+          "method": "serf-qt",
+          "dataset_id": "v2:dataset:sha256:3faefa9b921dc5f525459427066f55d50b908eff842aabd36f6e17c334e52f52",
+          "repetition_index": 3,
+          "reason": "PATH_STOPPED_AFTER_FAILED_ATTEMPT",
+          "terminal_predecessor_status": "RESOURCE_PRESSURE",
+          "terminal_predecessor_reason": "SWAP_OBSERVED_DURING_FORMAL_REPETITION"
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:7953eb25cce4ddd30e76336c055f904ca19208a1e17067b9c91a77d5f34a2cd5",
+          "method": "serf-qt",
+          "dataset_id": "v2:dataset:sha256:2a4f21c488acb8fb302a443aea54d3b149285a5e35f89ca35fba571c0eebaa49",
+          "repetition_index": 4,
+          "reason": "PATH_STOPPED_AFTER_FAILED_ATTEMPT",
+          "terminal_predecessor_status": "RESOURCE_PRESSURE",
+          "terminal_predecessor_reason": "SWAP_OBSERVED_DURING_FORMAL_REPETITION"
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:3f99a416b116f88e611e0876667c501483582251f6253df425158bd2c54a0ac0",
+          "method": "serf-xor",
+          "dataset_id": "v2:dataset:sha256:3faefa9b921dc5f525459427066f55d50b908eff842aabd36f6e17c334e52f52",
+          "repetition_index": 4,
+          "reason": "PATH_STOPPED_AFTER_FAILED_ATTEMPT",
+          "terminal_predecessor_status": "RESOURCE_PRESSURE",
+          "terminal_predecessor_reason": "SWAP_OBSERVED_DURING_FORMAL_REPETITION"
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:822ce5a698dbf18bdbceae28335cf08cd4c199af982973ca4849cbc4c19de75d",
+          "method": "serf-qt",
+          "dataset_id": "v2:dataset:sha256:3faefa9b921dc5f525459427066f55d50b908eff842aabd36f6e17c334e52f52",
+          "repetition_index": 4,
+          "reason": "PATH_STOPPED_AFTER_FAILED_ATTEMPT",
+          "terminal_predecessor_status": "RESOURCE_PRESSURE",
+          "terminal_predecessor_reason": "SWAP_OBSERVED_DURING_FORMAL_REPETITION"
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:7953eb25cce4ddd30e76336c055f904ca19208a1e17067b9c91a77d5f34a2cd5",
+          "method": "serf-qt",
+          "dataset_id": "v2:dataset:sha256:2a4f21c488acb8fb302a443aea54d3b149285a5e35f89ca35fba571c0eebaa49",
+          "repetition_index": 5,
+          "reason": "PATH_STOPPED_AFTER_FAILED_ATTEMPT",
+          "terminal_predecessor_status": "RESOURCE_PRESSURE",
+          "terminal_predecessor_reason": "SWAP_OBSERVED_DURING_FORMAL_REPETITION"
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:822ce5a698dbf18bdbceae28335cf08cd4c199af982973ca4849cbc4c19de75d",
+          "method": "serf-qt",
+          "dataset_id": "v2:dataset:sha256:3faefa9b921dc5f525459427066f55d50b908eff842aabd36f6e17c334e52f52",
+          "repetition_index": 5,
+          "reason": "PATH_STOPPED_AFTER_FAILED_ATTEMPT",
+          "terminal_predecessor_status": "RESOURCE_PRESSURE",
+          "terminal_predecessor_reason": "SWAP_OBSERVED_DURING_FORMAL_REPETITION"
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:3f99a416b116f88e611e0876667c501483582251f6253df425158bd2c54a0ac0",
+          "method": "serf-xor",
+          "dataset_id": "v2:dataset:sha256:3faefa9b921dc5f525459427066f55d50b908eff842aabd36f6e17c334e52f52",
+          "repetition_index": 5,
+          "reason": "PATH_STOPPED_AFTER_FAILED_ATTEMPT",
+          "terminal_predecessor_status": "RESOURCE_PRESSURE",
+          "terminal_predecessor_reason": "SWAP_OBSERVED_DURING_FORMAL_REPETITION"
+        }
+      ]
+    },
+    {
+      "lane": "api",
+      "kind": "comparison",
+      "planned_cells": 12,
+      "expected_outcome_cells": {
+        "PASS": 12
+      },
+      "core_expected_pass_cells": 12,
+      "planned_repetitions_per_cell": 8,
+      "planned_slots": 96,
+      "raw_rows": 96,
+      "actual_record_rows": 94,
+      "actual_record_status": {
+        "PASS": 93,
+        "RESOURCE_PRESSURE": 1
+      },
+      "actual_reason_codes": {
+        "FORMAL_REPETITION_PASS": 93,
+        "SWAP_OBSERVED_DURING_FORMAL_REPETITION": 1
+      },
+      "formal_eligible_actual_records": 93,
+      "top_level_stopped_rows": 2,
+      "top_level_stopped_reasons": {
+        "PATH_STOPPED_AFTER_FAILED_ATTEMPT": 2
+      },
+      "stopped_terminal_predecessor_status": {
+        "RESOURCE_PRESSURE": 2
+      },
+      "stopped_terminal_predecessor_reasons": {
+        "SWAP_OBSERVED_DURING_FORMAL_REPETITION": 2
+      },
+      "stopped_chain_errors": [],
+      "actual_vs_expected_pairs": {
+        "PASS|PASS": 93,
+        "RESOURCE_PRESSURE|PASS": 1
+      },
+      "expected_mismatch_count": 0,
+      "expected_mismatches": [],
+      "unsupported_records": [],
+      "fail_records": [],
+      "resource_pressure_records": [
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:59fb48b9da515c505f6700017d1e3c1e2e815f638d386bad050c08f6c431602a",
+          "method": "v2:algorithm:sha256:18844debc6a932b8e0850f0cc3a57585d62191f96c5a2660cf3bd77adbdab33b",
+          "dataset_id": "v2:dataset:sha256:3faefa9b921dc5f525459427066f55d50b908eff842aabd36f6e17c334e52f52",
+          "expected_outcome": "PASS",
+          "reason_code": "SWAP_OBSERVED_DURING_FORMAL_REPETITION",
+          "repetition_index": 5,
+          "formal_eligible": false
+        }
+      ],
+      "core_formal_complete_cells_independent": 11,
+      "analysis_status": "CORE_INCOMPLETE",
+      "analysis_core_formal_complete_cells": 11,
+      "analysis_file_present": true,
+      "matrix_expected_unmatched": 0,
+      "matrix_expected_mismatch": 0,
+      "cell_repetition_coverage_errors": 0,
+      "queue_attempt_exit_code": 1,
+      "evidence": {
+        "execution_plan": "build/closure-formal-verification-20261011/formal-r3/runs/api/execution_plan.json",
+        "comparison_plan": "build/closure-formal-verification-20261011/formal-r3/runs/api/comparison_plan.json",
+        "bundle": "build/closure-formal-verification-20261011/formal-r3/runs/api/bundle.json",
+        "schedule": "build/closure-formal-verification-20261011/formal-r3/runs/api/schedule.json",
+        "raw_trials": "build/closure-formal-verification-20261011/formal-r3/runs/api/comparison_trials.jsonl",
+        "analysis": "build/closure-formal-verification-20261011/formal-r3/runs/api/analysis.json",
+        "queue_attempts": "build/closure-formal-verification-20261011/formal-r3/runs/queue_attempts.jsonl",
+        "queue_log": "build/closure-formal-verification-20261011/formal-r3/runs/queue_logs/api.attempt-1.log"
+      },
+      "stopped_examples": [
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:59fb48b9da515c505f6700017d1e3c1e2e815f638d386bad050c08f6c431602a",
+          "method": "zstd-frame",
+          "dataset_id": "v2:dataset:sha256:3faefa9b921dc5f525459427066f55d50b908eff842aabd36f6e17c334e52f52",
+          "repetition_index": 6,
+          "reason": "PATH_STOPPED_AFTER_FAILED_ATTEMPT",
+          "terminal_predecessor_status": "RESOURCE_PRESSURE",
+          "terminal_predecessor_reason": "SWAP_OBSERVED_DURING_FORMAL_REPETITION"
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:59fb48b9da515c505f6700017d1e3c1e2e815f638d386bad050c08f6c431602a",
+          "method": "zstd-frame",
+          "dataset_id": "v2:dataset:sha256:3faefa9b921dc5f525459427066f55d50b908eff842aabd36f6e17c334e52f52",
+          "repetition_index": 7,
+          "reason": "PATH_STOPPED_AFTER_FAILED_ATTEMPT",
+          "terminal_predecessor_status": "RESOURCE_PRESSURE",
+          "terminal_predecessor_reason": "SWAP_OBSERVED_DURING_FORMAL_REPETITION"
+        }
+      ]
+    },
+    {
+      "lane": "byte",
+      "kind": "comparison",
+      "planned_cells": 12,
+      "expected_outcome_cells": {
+        "PASS": 12
+      },
+      "core_expected_pass_cells": 12,
+      "planned_repetitions_per_cell": 8,
+      "planned_slots": 96,
+      "raw_rows": 96,
+      "actual_record_rows": 89,
+      "actual_record_status": {
+        "PASS": 87,
+        "RESOURCE_PRESSURE": 2
+      },
+      "actual_reason_codes": {
+        "FORMAL_REPETITION_PASS": 87,
+        "SWAP_OBSERVED_DURING_FORMAL_REPETITION": 2
+      },
+      "formal_eligible_actual_records": 87,
+      "top_level_stopped_rows": 7,
+      "top_level_stopped_reasons": {
+        "PATH_STOPPED_AFTER_FAILED_ATTEMPT": 7
+      },
+      "stopped_terminal_predecessor_status": {
+        "RESOURCE_PRESSURE": 7
+      },
+      "stopped_terminal_predecessor_reasons": {
+        "SWAP_OBSERVED_DURING_FORMAL_REPETITION": 7
+      },
+      "stopped_chain_errors": [],
+      "actual_vs_expected_pairs": {
+        "PASS|PASS": 87,
+        "RESOURCE_PRESSURE|PASS": 2
+      },
+      "expected_mismatch_count": 0,
+      "expected_mismatches": [],
+      "unsupported_records": [],
+      "fail_records": [],
+      "resource_pressure_records": [
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:3e1136a435ae73e66b919d1e6b3afcd37c6467ecac62898518b47321f2d06741",
+          "method": "v2:algorithm:sha256:5809c03a4a60a8eedfefa47a88f0d7dd6b32c4730df68af0347182d986bd6bef",
+          "dataset_id": "v2:dataset:sha256:e63a9a1f4446f605cf64b83a45739fb008e5c477826aa827352a16ae39fa9298",
+          "expected_outcome": "PASS",
+          "reason_code": "SWAP_OBSERVED_DURING_FORMAL_REPETITION",
+          "repetition_index": 2,
+          "formal_eligible": false
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:2f81abf861602c8773faa2e5347d1672614495d614686b1b7086389f534e602d",
+          "method": "v2:algorithm:sha256:d2881b5d591adf566e4aa06cb4150d021e8119ea6e7ab1a259de4c079e784ee4",
+          "dataset_id": "v2:dataset:sha256:3faefa9b921dc5f525459427066f55d50b908eff842aabd36f6e17c334e52f52",
+          "expected_outcome": "PASS",
+          "reason_code": "SWAP_OBSERVED_DURING_FORMAL_REPETITION",
+          "repetition_index": 5,
+          "formal_eligible": false
+        }
+      ],
+      "core_formal_complete_cells_independent": 10,
+      "analysis_status": "CORE_INCOMPLETE",
+      "analysis_core_formal_complete_cells": 10,
+      "analysis_file_present": true,
+      "matrix_expected_unmatched": 0,
+      "matrix_expected_mismatch": 0,
+      "cell_repetition_coverage_errors": 0,
+      "queue_attempt_exit_code": 1,
+      "evidence": {
+        "execution_plan": "build/closure-formal-verification-20261011/formal-r3/runs/byte/execution_plan.json",
+        "comparison_plan": "build/closure-formal-verification-20261011/formal-r3/runs/byte/comparison_plan.json",
+        "bundle": "build/closure-formal-verification-20261011/formal-r3/runs/byte/bundle.json",
+        "schedule": "build/closure-formal-verification-20261011/formal-r3/runs/byte/schedule.json",
+        "raw_trials": "build/closure-formal-verification-20261011/formal-r3/runs/byte/comparison_trials.jsonl",
+        "analysis": "build/closure-formal-verification-20261011/formal-r3/runs/byte/analysis.json",
+        "queue_attempts": "build/closure-formal-verification-20261011/formal-r3/runs/queue_attempts.jsonl",
+        "queue_log": "build/closure-formal-verification-20261011/formal-r3/runs/queue_logs/byte.attempt-1.log"
+      },
+      "stopped_examples": [
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:3e1136a435ae73e66b919d1e6b3afcd37c6467ecac62898518b47321f2d06741",
+          "method": "snappy-raw",
+          "dataset_id": "v2:dataset:sha256:e63a9a1f4446f605cf64b83a45739fb008e5c477826aa827352a16ae39fa9298",
+          "repetition_index": 3,
+          "reason": "PATH_STOPPED_AFTER_FAILED_ATTEMPT",
+          "terminal_predecessor_status": "RESOURCE_PRESSURE",
+          "terminal_predecessor_reason": "SWAP_OBSERVED_DURING_FORMAL_REPETITION"
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:3e1136a435ae73e66b919d1e6b3afcd37c6467ecac62898518b47321f2d06741",
+          "method": "snappy-raw",
+          "dataset_id": "v2:dataset:sha256:e63a9a1f4446f605cf64b83a45739fb008e5c477826aa827352a16ae39fa9298",
+          "repetition_index": 4,
+          "reason": "PATH_STOPPED_AFTER_FAILED_ATTEMPT",
+          "terminal_predecessor_status": "RESOURCE_PRESSURE",
+          "terminal_predecessor_reason": "SWAP_OBSERVED_DURING_FORMAL_REPETITION"
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:3e1136a435ae73e66b919d1e6b3afcd37c6467ecac62898518b47321f2d06741",
+          "method": "snappy-raw",
+          "dataset_id": "v2:dataset:sha256:e63a9a1f4446f605cf64b83a45739fb008e5c477826aa827352a16ae39fa9298",
+          "repetition_index": 5,
+          "reason": "PATH_STOPPED_AFTER_FAILED_ATTEMPT",
+          "terminal_predecessor_status": "RESOURCE_PRESSURE",
+          "terminal_predecessor_reason": "SWAP_OBSERVED_DURING_FORMAL_REPETITION"
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:2f81abf861602c8773faa2e5347d1672614495d614686b1b7086389f534e602d",
+          "method": "lz4-frame",
+          "dataset_id": "v2:dataset:sha256:3faefa9b921dc5f525459427066f55d50b908eff842aabd36f6e17c334e52f52",
+          "repetition_index": 6,
+          "reason": "PATH_STOPPED_AFTER_FAILED_ATTEMPT",
+          "terminal_predecessor_status": "RESOURCE_PRESSURE",
+          "terminal_predecessor_reason": "SWAP_OBSERVED_DURING_FORMAL_REPETITION"
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:3e1136a435ae73e66b919d1e6b3afcd37c6467ecac62898518b47321f2d06741",
+          "method": "snappy-raw",
+          "dataset_id": "v2:dataset:sha256:e63a9a1f4446f605cf64b83a45739fb008e5c477826aa827352a16ae39fa9298",
+          "repetition_index": 6,
+          "reason": "PATH_STOPPED_AFTER_FAILED_ATTEMPT",
+          "terminal_predecessor_status": "RESOURCE_PRESSURE",
+          "terminal_predecessor_reason": "SWAP_OBSERVED_DURING_FORMAL_REPETITION"
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:2f81abf861602c8773faa2e5347d1672614495d614686b1b7086389f534e602d",
+          "method": "lz4-frame",
+          "dataset_id": "v2:dataset:sha256:3faefa9b921dc5f525459427066f55d50b908eff842aabd36f6e17c334e52f52",
+          "repetition_index": 7,
+          "reason": "PATH_STOPPED_AFTER_FAILED_ATTEMPT",
+          "terminal_predecessor_status": "RESOURCE_PRESSURE",
+          "terminal_predecessor_reason": "SWAP_OBSERVED_DURING_FORMAL_REPETITION"
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:3e1136a435ae73e66b919d1e6b3afcd37c6467ecac62898518b47321f2d06741",
+          "method": "snappy-raw",
+          "dataset_id": "v2:dataset:sha256:e63a9a1f4446f605cf64b83a45739fb008e5c477826aa827352a16ae39fa9298",
+          "repetition_index": 7,
+          "reason": "PATH_STOPPED_AFTER_FAILED_ATTEMPT",
+          "terminal_predecessor_status": "RESOURCE_PRESSURE",
+          "terminal_predecessor_reason": "SWAP_OBSERVED_DURING_FORMAL_REPETITION"
+        }
+      ]
+    },
+    {
+      "lane": "cold",
+      "kind": "comparison",
+      "planned_cells": 12,
+      "expected_outcome_cells": {
+        "PASS": 12
+      },
+      "core_expected_pass_cells": 12,
+      "planned_repetitions_per_cell": 8,
+      "planned_slots": 96,
+      "raw_rows": 96,
+      "actual_record_rows": 86,
+      "actual_record_status": {
+        "PASS": 83,
+        "RESOURCE_PRESSURE": 3
+      },
+      "actual_reason_codes": {
+        "COLD_OBJECT_PASS": 83,
+        "SYSTEM_SWAP_OBSERVED_DURING_COLD_OBJECT": 3
+      },
+      "formal_eligible_actual_records": 83,
+      "top_level_stopped_rows": 10,
+      "top_level_stopped_reasons": {
+        "PATH_STOPPED_AFTER_FAILED_ATTEMPT": 10
+      },
+      "stopped_terminal_predecessor_status": {
+        "RESOURCE_PRESSURE": 10
+      },
+      "stopped_terminal_predecessor_reasons": {
+        "SYSTEM_SWAP_OBSERVED_DURING_COLD_OBJECT": 10
+      },
+      "stopped_chain_errors": [],
+      "actual_vs_expected_pairs": {
+        "PASS|PASS": 83,
+        "RESOURCE_PRESSURE|PASS": 3
+      },
+      "expected_mismatch_count": 0,
+      "expected_mismatches": [],
+      "unsupported_records": [],
+      "fail_records": [],
+      "resource_pressure_records": [
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:5458dbb3ee027ad622b155252c9f2688df98f317809fa4bdeca8f70468c2f813",
+          "method": "v2:algorithm:sha256:18844debc6a932b8e0850f0cc3a57585d62191f96c5a2660cf3bd77adbdab33b",
+          "dataset_id": "v2:dataset:sha256:2a4f21c488acb8fb302a443aea54d3b149285a5e35f89ca35fba571c0eebaa49",
+          "expected_outcome": "PASS",
+          "reason_code": "SYSTEM_SWAP_OBSERVED_DURING_COLD_OBJECT",
+          "repetition_index": 0,
+          "formal_eligible": false
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:19a3847550085d9e813e03023ec9cbe96130c4c0df146b396dbe718ab36b1210",
+          "method": "v2:algorithm:sha256:5809c03a4a60a8eedfefa47a88f0d7dd6b32c4730df68af0347182d986bd6bef",
+          "dataset_id": "v2:dataset:sha256:8a090c477c0b60524331a68ef6163bef9cedc250086e0726285fe39e49859bd6",
+          "expected_outcome": "PASS",
+          "reason_code": "SYSTEM_SWAP_OBSERVED_DURING_COLD_OBJECT",
+          "repetition_index": 4,
+          "formal_eligible": false
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:3cc3497c983c90d9f3e41dffe3fbff464f58d860a38c1df147f30075ba7b4691",
+          "method": "v2:algorithm:sha256:18844debc6a932b8e0850f0cc3a57585d62191f96c5a2660cf3bd77adbdab33b",
+          "dataset_id": "v2:dataset:sha256:e63a9a1f4446f605cf64b83a45739fb008e5c477826aa827352a16ae39fa9298",
+          "expected_outcome": "PASS",
+          "reason_code": "SYSTEM_SWAP_OBSERVED_DURING_COLD_OBJECT",
+          "repetition_index": 7,
+          "formal_eligible": false
+        }
+      ],
+      "core_formal_complete_cells_independent": 9,
+      "analysis_status": null,
+      "analysis_core_formal_complete_cells": null,
+      "analysis_file_present": false,
+      "matrix_expected_unmatched": 0,
+      "matrix_expected_mismatch": 0,
+      "cell_repetition_coverage_errors": 0,
+      "queue_attempt_exit_code": 1,
+      "evidence": {
+        "execution_plan": "build/closure-formal-verification-20261011/formal-r3/runs/cold/execution_plan.json",
+        "comparison_plan": "build/closure-formal-verification-20261011/formal-r3/runs/cold/comparison_plan.json",
+        "bundle": "build/closure-formal-verification-20261011/formal-r3/runs/cold/bundle.json",
+        "schedule": "build/closure-formal-verification-20261011/formal-r3/runs/cold/schedule.json",
+        "raw_trials": "build/closure-formal-verification-20261011/formal-r3/runs/cold/comparison_trials.jsonl",
+        "analysis": null,
+        "queue_attempts": "build/closure-formal-verification-20261011/formal-r3/runs/queue_attempts.jsonl",
+        "queue_log": "build/closure-formal-verification-20261011/formal-r3/runs/queue_logs/cold.attempt-1.log"
+      },
+      "stopped_examples": [
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:5458dbb3ee027ad622b155252c9f2688df98f317809fa4bdeca8f70468c2f813",
+          "method": "zstd-frame",
+          "dataset_id": "v2:dataset:sha256:2a4f21c488acb8fb302a443aea54d3b149285a5e35f89ca35fba571c0eebaa49",
+          "repetition_index": 1,
+          "reason": "PATH_STOPPED_AFTER_FAILED_ATTEMPT",
+          "terminal_predecessor_status": "RESOURCE_PRESSURE",
+          "terminal_predecessor_reason": "SYSTEM_SWAP_OBSERVED_DURING_COLD_OBJECT"
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:5458dbb3ee027ad622b155252c9f2688df98f317809fa4bdeca8f70468c2f813",
+          "method": "zstd-frame",
+          "dataset_id": "v2:dataset:sha256:2a4f21c488acb8fb302a443aea54d3b149285a5e35f89ca35fba571c0eebaa49",
+          "repetition_index": 2,
+          "reason": "PATH_STOPPED_AFTER_FAILED_ATTEMPT",
+          "terminal_predecessor_status": "RESOURCE_PRESSURE",
+          "terminal_predecessor_reason": "SYSTEM_SWAP_OBSERVED_DURING_COLD_OBJECT"
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:5458dbb3ee027ad622b155252c9f2688df98f317809fa4bdeca8f70468c2f813",
+          "method": "zstd-frame",
+          "dataset_id": "v2:dataset:sha256:2a4f21c488acb8fb302a443aea54d3b149285a5e35f89ca35fba571c0eebaa49",
+          "repetition_index": 3,
+          "reason": "PATH_STOPPED_AFTER_FAILED_ATTEMPT",
+          "terminal_predecessor_status": "RESOURCE_PRESSURE",
+          "terminal_predecessor_reason": "SYSTEM_SWAP_OBSERVED_DURING_COLD_OBJECT"
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:5458dbb3ee027ad622b155252c9f2688df98f317809fa4bdeca8f70468c2f813",
+          "method": "zstd-frame",
+          "dataset_id": "v2:dataset:sha256:2a4f21c488acb8fb302a443aea54d3b149285a5e35f89ca35fba571c0eebaa49",
+          "repetition_index": 4,
+          "reason": "PATH_STOPPED_AFTER_FAILED_ATTEMPT",
+          "terminal_predecessor_status": "RESOURCE_PRESSURE",
+          "terminal_predecessor_reason": "SYSTEM_SWAP_OBSERVED_DURING_COLD_OBJECT"
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:5458dbb3ee027ad622b155252c9f2688df98f317809fa4bdeca8f70468c2f813",
+          "method": "zstd-frame",
+          "dataset_id": "v2:dataset:sha256:2a4f21c488acb8fb302a443aea54d3b149285a5e35f89ca35fba571c0eebaa49",
+          "repetition_index": 5,
+          "reason": "PATH_STOPPED_AFTER_FAILED_ATTEMPT",
+          "terminal_predecessor_status": "RESOURCE_PRESSURE",
+          "terminal_predecessor_reason": "SYSTEM_SWAP_OBSERVED_DURING_COLD_OBJECT"
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:19a3847550085d9e813e03023ec9cbe96130c4c0df146b396dbe718ab36b1210",
+          "method": "snappy-raw",
+          "dataset_id": "v2:dataset:sha256:8a090c477c0b60524331a68ef6163bef9cedc250086e0726285fe39e49859bd6",
+          "repetition_index": 5,
+          "reason": "PATH_STOPPED_AFTER_FAILED_ATTEMPT",
+          "terminal_predecessor_status": "RESOURCE_PRESSURE",
+          "terminal_predecessor_reason": "SYSTEM_SWAP_OBSERVED_DURING_COLD_OBJECT"
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:5458dbb3ee027ad622b155252c9f2688df98f317809fa4bdeca8f70468c2f813",
+          "method": "zstd-frame",
+          "dataset_id": "v2:dataset:sha256:2a4f21c488acb8fb302a443aea54d3b149285a5e35f89ca35fba571c0eebaa49",
+          "repetition_index": 6,
+          "reason": "PATH_STOPPED_AFTER_FAILED_ATTEMPT",
+          "terminal_predecessor_status": "RESOURCE_PRESSURE",
+          "terminal_predecessor_reason": "SYSTEM_SWAP_OBSERVED_DURING_COLD_OBJECT"
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:19a3847550085d9e813e03023ec9cbe96130c4c0df146b396dbe718ab36b1210",
+          "method": "snappy-raw",
+          "dataset_id": "v2:dataset:sha256:8a090c477c0b60524331a68ef6163bef9cedc250086e0726285fe39e49859bd6",
+          "repetition_index": 6,
+          "reason": "PATH_STOPPED_AFTER_FAILED_ATTEMPT",
+          "terminal_predecessor_status": "RESOURCE_PRESSURE",
+          "terminal_predecessor_reason": "SYSTEM_SWAP_OBSERVED_DURING_COLD_OBJECT"
+        }
+      ],
+      "analysis_missing_reason": "queue log records qualification PASS and pilot PASS, then report_comparison crashes in src/tscompbench/comparison/analysis.py:_cold_trial_issues at record.get(...) because STOPPED record is null; no analysis.json was produced"
+    },
+    {
+      "lane": "entropy",
+      "kind": "comparison",
+      "planned_cells": 16,
+      "expected_outcome_cells": {
+        "PASS": 16
+      },
+      "core_expected_pass_cells": 16,
+      "planned_repetitions_per_cell": 8,
+      "planned_slots": 128,
+      "raw_rows": 128,
+      "actual_record_rows": 128,
+      "actual_record_status": {
+        "PASS": 128
+      },
+      "actual_reason_codes": {
+        "FORMAL_REPETITION_PASS": 128
+      },
+      "formal_eligible_actual_records": 128,
+      "top_level_stopped_rows": 0,
+      "top_level_stopped_reasons": {},
+      "stopped_terminal_predecessor_status": {},
+      "stopped_terminal_predecessor_reasons": {},
+      "stopped_chain_errors": [],
+      "actual_vs_expected_pairs": {
+        "PASS|PASS": 128
+      },
+      "expected_mismatch_count": 0,
+      "expected_mismatches": [],
+      "unsupported_records": [],
+      "fail_records": [],
+      "resource_pressure_records": [],
+      "core_formal_complete_cells_independent": 16,
+      "analysis_status": "CORE_COMPLETE",
+      "analysis_core_formal_complete_cells": 16,
+      "analysis_file_present": true,
+      "matrix_expected_unmatched": 0,
+      "matrix_expected_mismatch": 0,
+      "cell_repetition_coverage_errors": 0,
+      "queue_attempt_exit_code": 0,
+      "evidence": {
+        "execution_plan": "build/closure-formal-verification-20261011/formal-r3/runs/entropy/execution_plan.json",
+        "comparison_plan": "build/closure-formal-verification-20261011/formal-r3/runs/entropy/comparison_plan.json",
+        "bundle": "build/closure-formal-verification-20261011/formal-r3/runs/entropy/bundle.json",
+        "schedule": "build/closure-formal-verification-20261011/formal-r3/runs/entropy/schedule.json",
+        "raw_trials": "build/closure-formal-verification-20261011/formal-r3/runs/entropy/comparison_trials.jsonl",
+        "analysis": "build/closure-formal-verification-20261011/formal-r3/runs/entropy/analysis.json",
+        "queue_attempts": "build/closure-formal-verification-20261011/formal-r3/runs/queue_attempts.jsonl",
+        "queue_log": "build/closure-formal-verification-20261011/formal-r3/runs/queue_logs/entropy.attempt-1.log"
+      },
+      "stopped_examples": []
+    },
+    {
+      "lane": "f32",
+      "kind": "comparison",
+      "planned_cells": 40,
+      "expected_outcome_cells": {
+        "PASS": 40
+      },
+      "core_expected_pass_cells": 32,
+      "planned_repetitions_per_cell": 8,
+      "planned_slots": 320,
+      "raw_rows": 320,
+      "actual_record_rows": 305,
+      "actual_record_status": {
+        "PASS": 298,
+        "RESOURCE_PRESSURE": 7
+      },
+      "actual_reason_codes": {
+        "FORMAL_REPETITION_PASS": 298,
+        "SWAP_OBSERVED_DURING_FORMAL_REPETITION": 7
+      },
+      "formal_eligible_actual_records": 298,
+      "top_level_stopped_rows": 15,
+      "top_level_stopped_reasons": {
+        "PATH_STOPPED_AFTER_FAILED_ATTEMPT": 15
+      },
+      "stopped_terminal_predecessor_status": {
+        "RESOURCE_PRESSURE": 15
+      },
+      "stopped_terminal_predecessor_reasons": {
+        "SWAP_OBSERVED_DURING_FORMAL_REPETITION": 15
+      },
+      "stopped_chain_errors": [],
+      "actual_vs_expected_pairs": {
+        "PASS|PASS": 298,
+        "RESOURCE_PRESSURE|PASS": 7
+      },
+      "expected_mismatch_count": 0,
+      "expected_mismatches": [],
+      "unsupported_records": [],
+      "fail_records": [],
+      "resource_pressure_records": [
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:36c7e4f4694f4f28d211d495540eeb9cf3d996ef81c076f05505fce7016f6e1e",
+          "method": "v2:algorithm:sha256:d62cd0775e9e2d5abf8d538f83707500462b8186b288ff70f47169c0d7da7c31",
+          "dataset_id": "v2:dataset:sha256:b28cc8801d50a4b0b8fc9d8a99960d6032c89022d789ea882ce23f498d4b766f",
+          "expected_outcome": "PASS",
+          "reason_code": "SWAP_OBSERVED_DURING_FORMAL_REPETITION",
+          "repetition_index": 2,
+          "formal_eligible": false
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:4021db1966fbfcfa1feb42fe509f831539c38314b61e75c63cd5c06194722d5a",
+          "method": "v2:algorithm:sha256:d2881b5d591adf566e4aa06cb4150d021e8119ea6e7ab1a259de4c079e784ee4",
+          "dataset_id": "v2:dataset:sha256:62f25afb81e0a1a5824eb0f977387ef8313665395546cb2b5b3b6071a7aac23c",
+          "expected_outcome": "PASS",
+          "reason_code": "SWAP_OBSERVED_DURING_FORMAL_REPETITION",
+          "repetition_index": 3,
+          "formal_eligible": false
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:ef3b1f0aa55a983d804bd1e1df156cd082d82bccdc435ce5156b208c00da93d0",
+          "method": "v2:algorithm:sha256:a7f403bb2ad8b8eddc6bae7b910499b65d247677fcefe0773b68db544f32935d",
+          "dataset_id": "v2:dataset:sha256:62f25afb81e0a1a5824eb0f977387ef8313665395546cb2b5b3b6071a7aac23c",
+          "expected_outcome": "PASS",
+          "reason_code": "SWAP_OBSERVED_DURING_FORMAL_REPETITION",
+          "repetition_index": 5,
+          "formal_eligible": false
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:ca20e2cae81978a0507228122bbe2ff757d354848246dc4abf100e633a6ec0b5",
+          "method": "v2:algorithm:sha256:ed8275e238cda387b10e7e868eeaf8b8d2f802eba86eb91ee82dad3abd90c51a",
+          "dataset_id": "v2:dataset:sha256:f154e362aafe75f4d45b6dccd5359ef58b4b95970b07ed5ab47f0b3753a64117",
+          "expected_outcome": "PASS",
+          "reason_code": "SWAP_OBSERVED_DURING_FORMAL_REPETITION",
+          "repetition_index": 5,
+          "formal_eligible": false
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:82fa0e80e0a77a8889e104bc1ed66b976a0562b7629801164061aa9baf1d6f33",
+          "method": "v2:algorithm:sha256:332d8d9cf8a999c8a0842f5f34bd8001170f48efebea7c216862dafd278de488",
+          "dataset_id": "v2:dataset:sha256:b6ce519fdd7054c93b3fbe582b92b9b2a5f95f9cc8991f5c3c42a170409cc0d2",
+          "expected_outcome": "PASS",
+          "reason_code": "SWAP_OBSERVED_DURING_FORMAL_REPETITION",
+          "repetition_index": 6,
+          "formal_eligible": false
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:63191d7c6525b2b286b7090d363d1bc3fcf89d1dcfc1f665720d18747070c25c",
+          "method": "v2:algorithm:sha256:d2881b5d591adf566e4aa06cb4150d021e8119ea6e7ab1a259de4c079e784ee4",
+          "dataset_id": "v2:dataset:sha256:b6ce519fdd7054c93b3fbe582b92b9b2a5f95f9cc8991f5c3c42a170409cc0d2",
+          "expected_outcome": "PASS",
+          "reason_code": "SWAP_OBSERVED_DURING_FORMAL_REPETITION",
+          "repetition_index": 6,
+          "formal_eligible": false
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:0ef79bf90f646f5c8efdc6ed16934bacee48cbce30542c18b39d83d80fc28954",
+          "method": "v2:algorithm:sha256:332d8d9cf8a999c8a0842f5f34bd8001170f48efebea7c216862dafd278de488",
+          "dataset_id": "v2:dataset:sha256:62f25afb81e0a1a5824eb0f977387ef8313665395546cb2b5b3b6071a7aac23c",
+          "expected_outcome": "PASS",
+          "reason_code": "SWAP_OBSERVED_DURING_FORMAL_REPETITION",
+          "repetition_index": 7,
+          "formal_eligible": false
+        }
+      ],
+      "core_formal_complete_cells_independent": 27,
+      "analysis_status": "CORE_INCOMPLETE",
+      "analysis_core_formal_complete_cells": 27,
+      "analysis_file_present": true,
+      "matrix_expected_unmatched": 0,
+      "matrix_expected_mismatch": 0,
+      "cell_repetition_coverage_errors": 0,
+      "queue_attempt_exit_code": 1,
+      "evidence": {
+        "execution_plan": "build/closure-formal-verification-20261011/formal-r3/runs/f32/execution_plan.json",
+        "comparison_plan": "build/closure-formal-verification-20261011/formal-r3/runs/f32/comparison_plan.json",
+        "bundle": "build/closure-formal-verification-20261011/formal-r3/runs/f32/bundle.json",
+        "schedule": "build/closure-formal-verification-20261011/formal-r3/runs/f32/schedule.json",
+        "raw_trials": "build/closure-formal-verification-20261011/formal-r3/runs/f32/comparison_trials.jsonl",
+        "analysis": "build/closure-formal-verification-20261011/formal-r3/runs/f32/analysis.json",
+        "queue_attempts": "build/closure-formal-verification-20261011/formal-r3/runs/queue_attempts.jsonl",
+        "queue_log": "build/closure-formal-verification-20261011/formal-r3/runs/queue_logs/f32.attempt-1.log"
+      },
+      "stopped_examples": [
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:36c7e4f4694f4f28d211d495540eeb9cf3d996ef81c076f05505fce7016f6e1e",
+          "method": "elf-star",
+          "dataset_id": "v2:dataset:sha256:b28cc8801d50a4b0b8fc9d8a99960d6032c89022d789ea882ce23f498d4b766f",
+          "repetition_index": 3,
+          "reason": "PATH_STOPPED_AFTER_FAILED_ATTEMPT",
+          "terminal_predecessor_status": "RESOURCE_PRESSURE",
+          "terminal_predecessor_reason": "SWAP_OBSERVED_DURING_FORMAL_REPETITION"
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:4021db1966fbfcfa1feb42fe509f831539c38314b61e75c63cd5c06194722d5a",
+          "method": "lz4-frame",
+          "dataset_id": "v2:dataset:sha256:62f25afb81e0a1a5824eb0f977387ef8313665395546cb2b5b3b6071a7aac23c",
+          "repetition_index": 4,
+          "reason": "PATH_STOPPED_AFTER_FAILED_ATTEMPT",
+          "terminal_predecessor_status": "RESOURCE_PRESSURE",
+          "terminal_predecessor_reason": "SWAP_OBSERVED_DURING_FORMAL_REPETITION"
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:36c7e4f4694f4f28d211d495540eeb9cf3d996ef81c076f05505fce7016f6e1e",
+          "method": "elf-star",
+          "dataset_id": "v2:dataset:sha256:b28cc8801d50a4b0b8fc9d8a99960d6032c89022d789ea882ce23f498d4b766f",
+          "repetition_index": 4,
+          "reason": "PATH_STOPPED_AFTER_FAILED_ATTEMPT",
+          "terminal_predecessor_status": "RESOURCE_PRESSURE",
+          "terminal_predecessor_reason": "SWAP_OBSERVED_DURING_FORMAL_REPETITION"
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:4021db1966fbfcfa1feb42fe509f831539c38314b61e75c63cd5c06194722d5a",
+          "method": "lz4-frame",
+          "dataset_id": "v2:dataset:sha256:62f25afb81e0a1a5824eb0f977387ef8313665395546cb2b5b3b6071a7aac23c",
+          "repetition_index": 5,
+          "reason": "PATH_STOPPED_AFTER_FAILED_ATTEMPT",
+          "terminal_predecessor_status": "RESOURCE_PRESSURE",
+          "terminal_predecessor_reason": "SWAP_OBSERVED_DURING_FORMAL_REPETITION"
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:36c7e4f4694f4f28d211d495540eeb9cf3d996ef81c076f05505fce7016f6e1e",
+          "method": "elf-star",
+          "dataset_id": "v2:dataset:sha256:b28cc8801d50a4b0b8fc9d8a99960d6032c89022d789ea882ce23f498d4b766f",
+          "repetition_index": 5,
+          "reason": "PATH_STOPPED_AFTER_FAILED_ATTEMPT",
+          "terminal_predecessor_status": "RESOURCE_PRESSURE",
+          "terminal_predecessor_reason": "SWAP_OBSERVED_DURING_FORMAL_REPETITION"
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:4021db1966fbfcfa1feb42fe509f831539c38314b61e75c63cd5c06194722d5a",
+          "method": "lz4-frame",
+          "dataset_id": "v2:dataset:sha256:62f25afb81e0a1a5824eb0f977387ef8313665395546cb2b5b3b6071a7aac23c",
+          "repetition_index": 6,
+          "reason": "PATH_STOPPED_AFTER_FAILED_ATTEMPT",
+          "terminal_predecessor_status": "RESOURCE_PRESSURE",
+          "terminal_predecessor_reason": "SWAP_OBSERVED_DURING_FORMAL_REPETITION"
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:ef3b1f0aa55a983d804bd1e1df156cd082d82bccdc435ce5156b208c00da93d0",
+          "method": "self-star",
+          "dataset_id": "v2:dataset:sha256:62f25afb81e0a1a5824eb0f977387ef8313665395546cb2b5b3b6071a7aac23c",
+          "repetition_index": 6,
+          "reason": "PATH_STOPPED_AFTER_FAILED_ATTEMPT",
+          "terminal_predecessor_status": "RESOURCE_PRESSURE",
+          "terminal_predecessor_reason": "SWAP_OBSERVED_DURING_FORMAL_REPETITION"
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:36c7e4f4694f4f28d211d495540eeb9cf3d996ef81c076f05505fce7016f6e1e",
+          "method": "elf-star",
+          "dataset_id": "v2:dataset:sha256:b28cc8801d50a4b0b8fc9d8a99960d6032c89022d789ea882ce23f498d4b766f",
+          "repetition_index": 6,
+          "reason": "PATH_STOPPED_AFTER_FAILED_ATTEMPT",
+          "terminal_predecessor_status": "RESOURCE_PRESSURE",
+          "terminal_predecessor_reason": "SWAP_OBSERVED_DURING_FORMAL_REPETITION"
+        }
+      ]
+    },
+    {
+      "lane": "f64",
+      "kind": "comparison",
+      "planned_cells": 40,
+      "expected_outcome_cells": {
+        "PASS": 40
+      },
+      "core_expected_pass_cells": 32,
+      "planned_repetitions_per_cell": 8,
+      "planned_slots": 320,
+      "raw_rows": 320,
+      "actual_record_rows": 300,
+      "actual_record_status": {
+        "PASS": 294,
+        "RESOURCE_PRESSURE": 6
+      },
+      "actual_reason_codes": {
+        "FORMAL_REPETITION_PASS": 294,
+        "SWAP_OBSERVED_DURING_FORMAL_REPETITION": 6
+      },
+      "formal_eligible_actual_records": 294,
+      "top_level_stopped_rows": 20,
+      "top_level_stopped_reasons": {
+        "PATH_STOPPED_AFTER_FAILED_ATTEMPT": 20
+      },
+      "stopped_terminal_predecessor_status": {
+        "RESOURCE_PRESSURE": 20
+      },
+      "stopped_terminal_predecessor_reasons": {
+        "SWAP_OBSERVED_DURING_FORMAL_REPETITION": 20
+      },
+      "stopped_chain_errors": [],
+      "actual_vs_expected_pairs": {
+        "PASS|PASS": 294,
+        "RESOURCE_PRESSURE|PASS": 6
+      },
+      "expected_mismatch_count": 0,
+      "expected_mismatches": [],
+      "unsupported_records": [],
+      "fail_records": [],
+      "resource_pressure_records": [
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:4a314bb230c64818ce409158d64cdbc180aef787481f0ff0f32fec7bc229dfa3",
+          "method": "v2:algorithm:sha256:d2881b5d591adf566e4aa06cb4150d021e8119ea6e7ab1a259de4c079e784ee4",
+          "dataset_id": "v2:dataset:sha256:e63a9a1f4446f605cf64b83a45739fb008e5c477826aa827352a16ae39fa9298",
+          "expected_outcome": "PASS",
+          "reason_code": "SWAP_OBSERVED_DURING_FORMAL_REPETITION",
+          "repetition_index": 1,
+          "formal_eligible": false
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:2a31935455568a9dd10a4278aaac1e71213eda0a41a7887a752d5459d7aba807",
+          "method": "v2:algorithm:sha256:d07b0f2edc58e39ab7026175006a445654e76974a105f4a1587b7ef41cac3911",
+          "dataset_id": "v2:dataset:sha256:e63a9a1f4446f605cf64b83a45739fb008e5c477826aa827352a16ae39fa9298",
+          "expected_outcome": "PASS",
+          "reason_code": "SWAP_OBSERVED_DURING_FORMAL_REPETITION",
+          "repetition_index": 1,
+          "formal_eligible": false
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:5b6b9eac2c3cec9692aee96d1a4faf0f873f01e57bc19b6f96ba8134408e2701",
+          "method": "v2:algorithm:sha256:332d8d9cf8a999c8a0842f5f34bd8001170f48efebea7c216862dafd278de488",
+          "dataset_id": "v2:dataset:sha256:8a090c477c0b60524331a68ef6163bef9cedc250086e0726285fe39e49859bd6",
+          "expected_outcome": "PASS",
+          "reason_code": "SWAP_OBSERVED_DURING_FORMAL_REPETITION",
+          "repetition_index": 2,
+          "formal_eligible": false
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:ace8ab45369c070d71b35b4f2c5b5347ea94d9e0c4aa9543002a71963aa3d618",
+          "method": "v2:algorithm:sha256:18844debc6a932b8e0850f0cc3a57585d62191f96c5a2660cf3bd77adbdab33b",
+          "dataset_id": "v2:dataset:sha256:8a090c477c0b60524331a68ef6163bef9cedc250086e0726285fe39e49859bd6",
+          "expected_outcome": "PASS",
+          "reason_code": "SWAP_OBSERVED_DURING_FORMAL_REPETITION",
+          "repetition_index": 5,
+          "formal_eligible": false
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:926cfd8610f9c57af45051a7b8962400b41382927dae4192e97965303ee684f6",
+          "method": "v2:algorithm:sha256:cc924a93377f79367174cfb8ff8e77ec19ee935238dbe13eeafb0769a3dce274",
+          "dataset_id": "v2:dataset:sha256:3faefa9b921dc5f525459427066f55d50b908eff842aabd36f6e17c334e52f52",
+          "expected_outcome": "PASS",
+          "reason_code": "SWAP_OBSERVED_DURING_FORMAL_REPETITION",
+          "repetition_index": 6,
+          "formal_eligible": false
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:0e77c4f16bc0a1fd4e75779fe100ab52308b81f063ac49cef40626f0036c06d6",
+          "method": "v2:algorithm:sha256:18844debc6a932b8e0850f0cc3a57585d62191f96c5a2660cf3bd77adbdab33b",
+          "dataset_id": "v2:dataset:sha256:3faefa9b921dc5f525459427066f55d50b908eff842aabd36f6e17c334e52f52",
+          "expected_outcome": "PASS",
+          "reason_code": "SWAP_OBSERVED_DURING_FORMAL_REPETITION",
+          "repetition_index": 7,
+          "formal_eligible": false
+        }
+      ],
+      "core_formal_complete_cells_independent": 29,
+      "analysis_status": "CORE_INCOMPLETE",
+      "analysis_core_formal_complete_cells": 29,
+      "analysis_file_present": true,
+      "matrix_expected_unmatched": 0,
+      "matrix_expected_mismatch": 0,
+      "cell_repetition_coverage_errors": 0,
+      "queue_attempt_exit_code": 1,
+      "evidence": {
+        "execution_plan": "build/closure-formal-verification-20261011/formal-r3/runs/f64/execution_plan.json",
+        "comparison_plan": "build/closure-formal-verification-20261011/formal-r3/runs/f64/comparison_plan.json",
+        "bundle": "build/closure-formal-verification-20261011/formal-r3/runs/f64/bundle.json",
+        "schedule": "build/closure-formal-verification-20261011/formal-r3/runs/f64/schedule.json",
+        "raw_trials": "build/closure-formal-verification-20261011/formal-r3/runs/f64/comparison_trials.jsonl",
+        "analysis": "build/closure-formal-verification-20261011/formal-r3/runs/f64/analysis.json",
+        "queue_attempts": "build/closure-formal-verification-20261011/formal-r3/runs/queue_attempts.jsonl",
+        "queue_log": "build/closure-formal-verification-20261011/formal-r3/runs/queue_logs/f64.attempt-1.log"
+      },
+      "stopped_examples": [
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:2a31935455568a9dd10a4278aaac1e71213eda0a41a7887a752d5459d7aba807",
+          "method": "chimp",
+          "dataset_id": "v2:dataset:sha256:e63a9a1f4446f605cf64b83a45739fb008e5c477826aa827352a16ae39fa9298",
+          "repetition_index": 2,
+          "reason": "PATH_STOPPED_AFTER_FAILED_ATTEMPT",
+          "terminal_predecessor_status": "RESOURCE_PRESSURE",
+          "terminal_predecessor_reason": "SWAP_OBSERVED_DURING_FORMAL_REPETITION"
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:4a314bb230c64818ce409158d64cdbc180aef787481f0ff0f32fec7bc229dfa3",
+          "method": "lz4-frame",
+          "dataset_id": "v2:dataset:sha256:e63a9a1f4446f605cf64b83a45739fb008e5c477826aa827352a16ae39fa9298",
+          "repetition_index": 2,
+          "reason": "PATH_STOPPED_AFTER_FAILED_ATTEMPT",
+          "terminal_predecessor_status": "RESOURCE_PRESSURE",
+          "terminal_predecessor_reason": "SWAP_OBSERVED_DURING_FORMAL_REPETITION"
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:5b6b9eac2c3cec9692aee96d1a4faf0f873f01e57bc19b6f96ba8134408e2701",
+          "method": "alp",
+          "dataset_id": "v2:dataset:sha256:8a090c477c0b60524331a68ef6163bef9cedc250086e0726285fe39e49859bd6",
+          "repetition_index": 3,
+          "reason": "PATH_STOPPED_AFTER_FAILED_ATTEMPT",
+          "terminal_predecessor_status": "RESOURCE_PRESSURE",
+          "terminal_predecessor_reason": "SWAP_OBSERVED_DURING_FORMAL_REPETITION"
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:4a314bb230c64818ce409158d64cdbc180aef787481f0ff0f32fec7bc229dfa3",
+          "method": "lz4-frame",
+          "dataset_id": "v2:dataset:sha256:e63a9a1f4446f605cf64b83a45739fb008e5c477826aa827352a16ae39fa9298",
+          "repetition_index": 3,
+          "reason": "PATH_STOPPED_AFTER_FAILED_ATTEMPT",
+          "terminal_predecessor_status": "RESOURCE_PRESSURE",
+          "terminal_predecessor_reason": "SWAP_OBSERVED_DURING_FORMAL_REPETITION"
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:2a31935455568a9dd10a4278aaac1e71213eda0a41a7887a752d5459d7aba807",
+          "method": "chimp",
+          "dataset_id": "v2:dataset:sha256:e63a9a1f4446f605cf64b83a45739fb008e5c477826aa827352a16ae39fa9298",
+          "repetition_index": 3,
+          "reason": "PATH_STOPPED_AFTER_FAILED_ATTEMPT",
+          "terminal_predecessor_status": "RESOURCE_PRESSURE",
+          "terminal_predecessor_reason": "SWAP_OBSERVED_DURING_FORMAL_REPETITION"
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:5b6b9eac2c3cec9692aee96d1a4faf0f873f01e57bc19b6f96ba8134408e2701",
+          "method": "alp",
+          "dataset_id": "v2:dataset:sha256:8a090c477c0b60524331a68ef6163bef9cedc250086e0726285fe39e49859bd6",
+          "repetition_index": 4,
+          "reason": "PATH_STOPPED_AFTER_FAILED_ATTEMPT",
+          "terminal_predecessor_status": "RESOURCE_PRESSURE",
+          "terminal_predecessor_reason": "SWAP_OBSERVED_DURING_FORMAL_REPETITION"
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:2a31935455568a9dd10a4278aaac1e71213eda0a41a7887a752d5459d7aba807",
+          "method": "chimp",
+          "dataset_id": "v2:dataset:sha256:e63a9a1f4446f605cf64b83a45739fb008e5c477826aa827352a16ae39fa9298",
+          "repetition_index": 4,
+          "reason": "PATH_STOPPED_AFTER_FAILED_ATTEMPT",
+          "terminal_predecessor_status": "RESOURCE_PRESSURE",
+          "terminal_predecessor_reason": "SWAP_OBSERVED_DURING_FORMAL_REPETITION"
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:4a314bb230c64818ce409158d64cdbc180aef787481f0ff0f32fec7bc229dfa3",
+          "method": "lz4-frame",
+          "dataset_id": "v2:dataset:sha256:e63a9a1f4446f605cf64b83a45739fb008e5c477826aa827352a16ae39fa9298",
+          "repetition_index": 4,
+          "reason": "PATH_STOPPED_AFTER_FAILED_ATTEMPT",
+          "terminal_predecessor_status": "RESOURCE_PRESSURE",
+          "terminal_predecessor_reason": "SWAP_OBSERVED_DURING_FORMAL_REPETITION"
+        }
+      ]
+    },
+    {
+      "lane": "i16",
+      "kind": "comparison",
+      "planned_cells": 28,
+      "expected_outcome_cells": {
+        "PASS": 28
+      },
+      "core_expected_pass_cells": 20,
+      "planned_repetitions_per_cell": 8,
+      "planned_slots": 224,
+      "raw_rows": 224,
+      "actual_record_rows": 185,
+      "actual_record_status": {
+        "PASS": 175,
+        "RESOURCE_PRESSURE": 10
+      },
+      "actual_reason_codes": {
+        "FORMAL_REPETITION_PASS": 175,
+        "SWAP_OBSERVED_DURING_FORMAL_REPETITION": 10
+      },
+      "formal_eligible_actual_records": 175,
+      "top_level_stopped_rows": 39,
+      "top_level_stopped_reasons": {
+        "PATH_STOPPED_AFTER_FAILED_ATTEMPT": 39
+      },
+      "stopped_terminal_predecessor_status": {
+        "RESOURCE_PRESSURE": 39
+      },
+      "stopped_terminal_predecessor_reasons": {
+        "SWAP_OBSERVED_DURING_FORMAL_REPETITION": 39
+      },
+      "stopped_chain_errors": [],
+      "actual_vs_expected_pairs": {
+        "PASS|PASS": 175,
+        "RESOURCE_PRESSURE|PASS": 10
+      },
+      "expected_mismatch_count": 0,
+      "expected_mismatches": [],
+      "unsupported_records": [],
+      "fail_records": [],
+      "resource_pressure_records": [
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:595ad60ff3c00befbcd718b159b9b93f53e555d19cfd665043706370ea820e3c",
+          "method": "v2:algorithm:sha256:2318f8fa867394cb86b6076db2c284631cd9d09ed233f5fa40e74433ef9229bd",
+          "dataset_id": "v2:dataset:sha256:e697579d81dbe30f698916fc61f83f083dce98c55005eaf2078b7bff4eacde35",
+          "expected_outcome": "PASS",
+          "reason_code": "SWAP_OBSERVED_DURING_FORMAL_REPETITION",
+          "repetition_index": 0,
+          "formal_eligible": false
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:b39afce5a056d94038e182079b256995dd6f3b0d6c9f1d19cc89c2374c424230",
+          "method": "v2:algorithm:sha256:ee36a8cad7084aac3e990642397065844e08822a0661af5ffb768e56ba79e970",
+          "dataset_id": "v2:dataset:sha256:ead7a0bf2acfbeaf505c8619c8a981baccc4abc5bc450584e3b7307016b66a24",
+          "expected_outcome": "PASS",
+          "reason_code": "SWAP_OBSERVED_DURING_FORMAL_REPETITION",
+          "repetition_index": 1,
+          "formal_eligible": false
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:bb26dc0abf5313080b632f807f09d405eafa57eac1fc1c71c89d3c3a00ce74f6",
+          "method": "v2:algorithm:sha256:ee36a8cad7084aac3e990642397065844e08822a0661af5ffb768e56ba79e970",
+          "dataset_id": "v2:dataset:sha256:e697579d81dbe30f698916fc61f83f083dce98c55005eaf2078b7bff4eacde35",
+          "expected_outcome": "PASS",
+          "reason_code": "SWAP_OBSERVED_DURING_FORMAL_REPETITION",
+          "repetition_index": 2,
+          "formal_eligible": false
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:a9e754e716041409807c1c31a6c48c4661cca5da1f1eb4d0fa57692122a732ba",
+          "method": "v2:algorithm:sha256:c2435baa61aad9b0dc02828fd213fdd2d7570244a8d019115cd0a6220e83c261",
+          "dataset_id": "v2:dataset:sha256:ead7a0bf2acfbeaf505c8619c8a981baccc4abc5bc450584e3b7307016b66a24",
+          "expected_outcome": "PASS",
+          "reason_code": "SWAP_OBSERVED_DURING_FORMAL_REPETITION",
+          "repetition_index": 2,
+          "formal_eligible": false
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:7837d3db4be095f6856796384d4c0892b76bb7e21245de3c8b03ebdda764ba47",
+          "method": "v2:algorithm:sha256:d2881b5d591adf566e4aa06cb4150d021e8119ea6e7ab1a259de4c079e784ee4",
+          "dataset_id": "v2:dataset:sha256:efcf360d141cf5d28fd1acd98ce46abc291e3278ae2e421e999b80ed7668cd44",
+          "expected_outcome": "PASS",
+          "reason_code": "SWAP_OBSERVED_DURING_FORMAL_REPETITION",
+          "repetition_index": 2,
+          "formal_eligible": false
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:7cf6da2104888f4c3152c06aa5cb200a4f07927048b1b638733f42729c1be849",
+          "method": "v2:algorithm:sha256:c2435baa61aad9b0dc02828fd213fdd2d7570244a8d019115cd0a6220e83c261",
+          "dataset_id": "v2:dataset:sha256:e697579d81dbe30f698916fc61f83f083dce98c55005eaf2078b7bff4eacde35",
+          "expected_outcome": "PASS",
+          "reason_code": "SWAP_OBSERVED_DURING_FORMAL_REPETITION",
+          "repetition_index": 3,
+          "formal_eligible": false
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:184a21b968dcee1340ae100da241471c2a863a5a62f11a686c82e99b14425ef6",
+          "method": "v2:algorithm:sha256:0db3d51de3a4fdf17ad84f26c4c51f5edbfa7937db904ce75e98db457f77cade",
+          "dataset_id": "v2:dataset:sha256:ead7a0bf2acfbeaf505c8619c8a981baccc4abc5bc450584e3b7307016b66a24",
+          "expected_outcome": "PASS",
+          "reason_code": "SWAP_OBSERVED_DURING_FORMAL_REPETITION",
+          "repetition_index": 4,
+          "formal_eligible": false
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:dc637debbf3ab0dc76bab0d529b50d15b1bad7fc49ed75de7455062a4e67ad11",
+          "method": "v2:algorithm:sha256:ee36a8cad7084aac3e990642397065844e08822a0661af5ffb768e56ba79e970",
+          "dataset_id": "v2:dataset:sha256:9ffa988c0c72fc87803ae193566dcef47a95eea00466ed6d667aed9d09bc67f8",
+          "expected_outcome": "PASS",
+          "reason_code": "SWAP_OBSERVED_DURING_FORMAL_REPETITION",
+          "repetition_index": 5,
+          "formal_eligible": false
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:71ea477a4c3c7ab2737faf27ada66b20002d13c3f2ca36c2bf5c42e7f09047a6",
+          "method": "v2:algorithm:sha256:18844debc6a932b8e0850f0cc3a57585d62191f96c5a2660cf3bd77adbdab33b",
+          "dataset_id": "v2:dataset:sha256:e697579d81dbe30f698916fc61f83f083dce98c55005eaf2078b7bff4eacde35",
+          "expected_outcome": "PASS",
+          "reason_code": "SWAP_OBSERVED_DURING_FORMAL_REPETITION",
+          "repetition_index": 5,
+          "formal_eligible": false
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:c70587b2f7e269923713d8a7a42b68edf9d07657051c497bf76da36234a89b44",
+          "method": "v2:algorithm:sha256:ee36a8cad7084aac3e990642397065844e08822a0661af5ffb768e56ba79e970",
+          "dataset_id": "v2:dataset:sha256:efcf360d141cf5d28fd1acd98ce46abc291e3278ae2e421e999b80ed7668cd44",
+          "expected_outcome": "PASS",
+          "reason_code": "SWAP_OBSERVED_DURING_FORMAL_REPETITION",
+          "repetition_index": 7,
+          "formal_eligible": false
+        }
+      ],
+      "core_formal_complete_cells_independent": 12,
+      "analysis_status": "CORE_INCOMPLETE",
+      "analysis_core_formal_complete_cells": 12,
+      "analysis_file_present": true,
+      "matrix_expected_unmatched": 0,
+      "matrix_expected_mismatch": 0,
+      "cell_repetition_coverage_errors": 0,
+      "queue_attempt_exit_code": 1,
+      "evidence": {
+        "execution_plan": "build/closure-formal-verification-20261011/formal-r3/runs/i16/execution_plan.json",
+        "comparison_plan": "build/closure-formal-verification-20261011/formal-r3/runs/i16/comparison_plan.json",
+        "bundle": "build/closure-formal-verification-20261011/formal-r3/runs/i16/bundle.json",
+        "schedule": "build/closure-formal-verification-20261011/formal-r3/runs/i16/schedule.json",
+        "raw_trials": "build/closure-formal-verification-20261011/formal-r3/runs/i16/comparison_trials.jsonl",
+        "analysis": "build/closure-formal-verification-20261011/formal-r3/runs/i16/analysis.json",
+        "queue_attempts": "build/closure-formal-verification-20261011/formal-r3/runs/queue_attempts.jsonl",
+        "queue_log": "build/closure-formal-verification-20261011/formal-r3/runs/queue_logs/i16.attempt-1.log"
+      },
+      "stopped_examples": [
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:595ad60ff3c00befbcd718b159b9b93f53e555d19cfd665043706370ea820e3c",
+          "method": "sprintz-fire-huff0",
+          "dataset_id": "v2:dataset:sha256:e697579d81dbe30f698916fc61f83f083dce98c55005eaf2078b7bff4eacde35",
+          "repetition_index": 1,
+          "reason": "PATH_STOPPED_AFTER_FAILED_ATTEMPT",
+          "terminal_predecessor_status": "RESOURCE_PRESSURE",
+          "terminal_predecessor_reason": "SWAP_OBSERVED_DURING_FORMAL_REPETITION"
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:595ad60ff3c00befbcd718b159b9b93f53e555d19cfd665043706370ea820e3c",
+          "method": "sprintz-fire-huff0",
+          "dataset_id": "v2:dataset:sha256:e697579d81dbe30f698916fc61f83f083dce98c55005eaf2078b7bff4eacde35",
+          "repetition_index": 2,
+          "reason": "PATH_STOPPED_AFTER_FAILED_ATTEMPT",
+          "terminal_predecessor_status": "RESOURCE_PRESSURE",
+          "terminal_predecessor_reason": "SWAP_OBSERVED_DURING_FORMAL_REPETITION"
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:b39afce5a056d94038e182079b256995dd6f3b0d6c9f1d19cc89c2374c424230",
+          "method": "neats-lossless-i64",
+          "dataset_id": "v2:dataset:sha256:ead7a0bf2acfbeaf505c8619c8a981baccc4abc5bc450584e3b7307016b66a24",
+          "repetition_index": 2,
+          "reason": "PATH_STOPPED_AFTER_FAILED_ATTEMPT",
+          "terminal_predecessor_status": "RESOURCE_PRESSURE",
+          "terminal_predecessor_reason": "SWAP_OBSERVED_DURING_FORMAL_REPETITION"
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:595ad60ff3c00befbcd718b159b9b93f53e555d19cfd665043706370ea820e3c",
+          "method": "sprintz-fire-huff0",
+          "dataset_id": "v2:dataset:sha256:e697579d81dbe30f698916fc61f83f083dce98c55005eaf2078b7bff4eacde35",
+          "repetition_index": 3,
+          "reason": "PATH_STOPPED_AFTER_FAILED_ATTEMPT",
+          "terminal_predecessor_status": "RESOURCE_PRESSURE",
+          "terminal_predecessor_reason": "SWAP_OBSERVED_DURING_FORMAL_REPETITION"
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:bb26dc0abf5313080b632f807f09d405eafa57eac1fc1c71c89d3c3a00ce74f6",
+          "method": "neats-lossless-i64",
+          "dataset_id": "v2:dataset:sha256:e697579d81dbe30f698916fc61f83f083dce98c55005eaf2078b7bff4eacde35",
+          "repetition_index": 3,
+          "reason": "PATH_STOPPED_AFTER_FAILED_ATTEMPT",
+          "terminal_predecessor_status": "RESOURCE_PRESSURE",
+          "terminal_predecessor_reason": "SWAP_OBSERVED_DURING_FORMAL_REPETITION"
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:b39afce5a056d94038e182079b256995dd6f3b0d6c9f1d19cc89c2374c424230",
+          "method": "neats-lossless-i64",
+          "dataset_id": "v2:dataset:sha256:ead7a0bf2acfbeaf505c8619c8a981baccc4abc5bc450584e3b7307016b66a24",
+          "repetition_index": 3,
+          "reason": "PATH_STOPPED_AFTER_FAILED_ATTEMPT",
+          "terminal_predecessor_status": "RESOURCE_PRESSURE",
+          "terminal_predecessor_reason": "SWAP_OBSERVED_DURING_FORMAL_REPETITION"
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:a9e754e716041409807c1c31a6c48c4661cca5da1f1eb4d0fa57692122a732ba",
+          "method": "leats-lossless-i64",
+          "dataset_id": "v2:dataset:sha256:ead7a0bf2acfbeaf505c8619c8a981baccc4abc5bc450584e3b7307016b66a24",
+          "repetition_index": 3,
+          "reason": "PATH_STOPPED_AFTER_FAILED_ATTEMPT",
+          "terminal_predecessor_status": "RESOURCE_PRESSURE",
+          "terminal_predecessor_reason": "SWAP_OBSERVED_DURING_FORMAL_REPETITION"
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:7837d3db4be095f6856796384d4c0892b76bb7e21245de3c8b03ebdda764ba47",
+          "method": "lz4-frame",
+          "dataset_id": "v2:dataset:sha256:efcf360d141cf5d28fd1acd98ce46abc291e3278ae2e421e999b80ed7668cd44",
+          "repetition_index": 3,
+          "reason": "PATH_STOPPED_AFTER_FAILED_ATTEMPT",
+          "terminal_predecessor_status": "RESOURCE_PRESSURE",
+          "terminal_predecessor_reason": "SWAP_OBSERVED_DURING_FORMAL_REPETITION"
+        }
+      ]
+    },
+    {
+      "lane": "model",
+      "kind": "comparison",
+      "planned_cells": 16,
+      "expected_outcome_cells": {
+        "PASS": 16
+      },
+      "core_expected_pass_cells": 8,
+      "planned_repetitions_per_cell": 4,
+      "planned_slots": 64,
+      "raw_rows": 64,
+      "actual_record_rows": 58,
+      "actual_record_status": {
+        "PASS": 56,
+        "RESOURCE_PRESSURE": 2
+      },
+      "actual_reason_codes": {
+        "FORMAL_REPETITION_PASS": 56,
+        "SWAP_OBSERVED_DURING_FORMAL_REPETITION": 2
+      },
+      "formal_eligible_actual_records": 56,
+      "top_level_stopped_rows": 6,
+      "top_level_stopped_reasons": {
+        "PATH_STOPPED_AFTER_FAILED_ATTEMPT": 6
+      },
+      "stopped_terminal_predecessor_status": {
+        "RESOURCE_PRESSURE": 6
+      },
+      "stopped_terminal_predecessor_reasons": {
+        "SWAP_OBSERVED_DURING_FORMAL_REPETITION": 6
+      },
+      "stopped_chain_errors": [],
+      "actual_vs_expected_pairs": {
+        "PASS|PASS": 56,
+        "RESOURCE_PRESSURE|PASS": 2
+      },
+      "expected_mismatch_count": 0,
+      "expected_mismatches": [],
+      "unsupported_records": [],
+      "fail_records": [],
+      "resource_pressure_records": [
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:881fbdda655f4cda3345e791b67e155eac9290f94429bd3a54c67e7039288a54",
+          "method": "v2:algorithm:sha256:0bcf2a6ae297b6c12550d1c90521f919399aeef65fe1b0521a4c12e150aa6840",
+          "dataset_id": "v2:dataset:sha256:d8428e36367d5b7ac1beaa7727aa11421a328d4d0f2fa52a8296da863b97ef60",
+          "expected_outcome": "PASS",
+          "reason_code": "SWAP_OBSERVED_DURING_FORMAL_REPETITION",
+          "repetition_index": 0,
+          "formal_eligible": false
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:d6db57ffe5d9a42c01d8593e7d0026a10841c95c207673f678c4f68d7ca19d9e",
+          "method": "v2:algorithm:sha256:0bcf2a6ae297b6c12550d1c90521f919399aeef65fe1b0521a4c12e150aa6840",
+          "dataset_id": "v2:dataset:sha256:db45722c612f0f1977d4819350639ff90fddeca4b8e05730f8d3baf372f72867",
+          "expected_outcome": "PASS",
+          "reason_code": "SWAP_OBSERVED_DURING_FORMAL_REPETITION",
+          "repetition_index": 0,
+          "formal_eligible": false
+        }
+      ],
+      "core_formal_complete_cells_independent": 6,
+      "analysis_status": "CORE_INCOMPLETE",
+      "analysis_core_formal_complete_cells": 6,
+      "analysis_file_present": true,
+      "matrix_expected_unmatched": 0,
+      "matrix_expected_mismatch": 0,
+      "cell_repetition_coverage_errors": 0,
+      "queue_attempt_exit_code": 1,
+      "evidence": {
+        "execution_plan": "build/closure-formal-verification-20261011/formal-r3/runs/model/execution_plan.json",
+        "comparison_plan": "build/closure-formal-verification-20261011/formal-r3/runs/model/comparison_plan.json",
+        "bundle": "build/closure-formal-verification-20261011/formal-r3/runs/model/bundle.json",
+        "schedule": "build/closure-formal-verification-20261011/formal-r3/runs/model/schedule.json",
+        "raw_trials": "build/closure-formal-verification-20261011/formal-r3/runs/model/comparison_trials.jsonl",
+        "analysis": "build/closure-formal-verification-20261011/formal-r3/runs/model/analysis.json",
+        "queue_attempts": "build/closure-formal-verification-20261011/formal-r3/runs/queue_attempts.jsonl",
+        "queue_log": "build/closure-formal-verification-20261011/formal-r3/runs/queue_logs/model.attempt-1.log"
+      },
+      "stopped_examples": [
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:881fbdda655f4cda3345e791b67e155eac9290f94429bd3a54c67e7039288a54",
+          "method": "deepzip",
+          "dataset_id": "v2:dataset:sha256:d8428e36367d5b7ac1beaa7727aa11421a328d4d0f2fa52a8296da863b97ef60",
+          "repetition_index": 1,
+          "reason": "PATH_STOPPED_AFTER_FAILED_ATTEMPT",
+          "terminal_predecessor_status": "RESOURCE_PRESSURE",
+          "terminal_predecessor_reason": "SWAP_OBSERVED_DURING_FORMAL_REPETITION"
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:d6db57ffe5d9a42c01d8593e7d0026a10841c95c207673f678c4f68d7ca19d9e",
+          "method": "deepzip",
+          "dataset_id": "v2:dataset:sha256:db45722c612f0f1977d4819350639ff90fddeca4b8e05730f8d3baf372f72867",
+          "repetition_index": 1,
+          "reason": "PATH_STOPPED_AFTER_FAILED_ATTEMPT",
+          "terminal_predecessor_status": "RESOURCE_PRESSURE",
+          "terminal_predecessor_reason": "SWAP_OBSERVED_DURING_FORMAL_REPETITION"
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:881fbdda655f4cda3345e791b67e155eac9290f94429bd3a54c67e7039288a54",
+          "method": "deepzip",
+          "dataset_id": "v2:dataset:sha256:d8428e36367d5b7ac1beaa7727aa11421a328d4d0f2fa52a8296da863b97ef60",
+          "repetition_index": 2,
+          "reason": "PATH_STOPPED_AFTER_FAILED_ATTEMPT",
+          "terminal_predecessor_status": "RESOURCE_PRESSURE",
+          "terminal_predecessor_reason": "SWAP_OBSERVED_DURING_FORMAL_REPETITION"
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:d6db57ffe5d9a42c01d8593e7d0026a10841c95c207673f678c4f68d7ca19d9e",
+          "method": "deepzip",
+          "dataset_id": "v2:dataset:sha256:db45722c612f0f1977d4819350639ff90fddeca4b8e05730f8d3baf372f72867",
+          "repetition_index": 2,
+          "reason": "PATH_STOPPED_AFTER_FAILED_ATTEMPT",
+          "terminal_predecessor_status": "RESOURCE_PRESSURE",
+          "terminal_predecessor_reason": "SWAP_OBSERVED_DURING_FORMAL_REPETITION"
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:881fbdda655f4cda3345e791b67e155eac9290f94429bd3a54c67e7039288a54",
+          "method": "deepzip",
+          "dataset_id": "v2:dataset:sha256:d8428e36367d5b7ac1beaa7727aa11421a328d4d0f2fa52a8296da863b97ef60",
+          "repetition_index": 3,
+          "reason": "PATH_STOPPED_AFTER_FAILED_ATTEMPT",
+          "terminal_predecessor_status": "RESOURCE_PRESSURE",
+          "terminal_predecessor_reason": "SWAP_OBSERVED_DURING_FORMAL_REPETITION"
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:d6db57ffe5d9a42c01d8593e7d0026a10841c95c207673f678c4f68d7ca19d9e",
+          "method": "deepzip",
+          "dataset_id": "v2:dataset:sha256:db45722c612f0f1977d4819350639ff90fddeca4b8e05730f8d3baf372f72867",
+          "repetition_index": 3,
+          "reason": "PATH_STOPPED_AFTER_FAILED_ATTEMPT",
+          "terminal_predecessor_status": "RESOURCE_PRESSURE",
+          "terminal_predecessor_reason": "SWAP_OBSERVED_DURING_FORMAL_REPETITION"
+        }
+      ]
+    },
+    {
+      "lane": "quality",
+      "kind": "comparison",
+      "planned_cells": 24,
+      "expected_outcome_cells": {
+        "PASS": 24
+      },
+      "core_expected_pass_cells": 24,
+      "planned_repetitions_per_cell": 8,
+      "planned_slots": 192,
+      "raw_rows": 192,
+      "actual_record_rows": 155,
+      "actual_record_status": {
+        "PASS": 145,
+        "RESOURCE_PRESSURE": 10
+      },
+      "actual_reason_codes": {
+        "FORMAL_REPETITION_PASS": 145,
+        "SWAP_OBSERVED_DURING_FORMAL_REPETITION": 10
+      },
+      "formal_eligible_actual_records": 145,
+      "top_level_stopped_rows": 37,
+      "top_level_stopped_reasons": {
+        "PATH_STOPPED_AFTER_FAILED_ATTEMPT": 37
+      },
+      "stopped_terminal_predecessor_status": {
+        "RESOURCE_PRESSURE": 37
+      },
+      "stopped_terminal_predecessor_reasons": {
+        "SWAP_OBSERVED_DURING_FORMAL_REPETITION": 37
+      },
+      "stopped_chain_errors": [],
+      "actual_vs_expected_pairs": {
+        "PASS|PASS": 145,
+        "RESOURCE_PRESSURE|PASS": 10
+      },
+      "expected_mismatch_count": 0,
+      "expected_mismatches": [],
+      "unsupported_records": [],
+      "fail_records": [],
+      "resource_pressure_records": [
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:6e84055bf8f051de242d0cb2dc9cc06d54965a43b53905adc424423afbe9cfa6",
+          "method": "v2:algorithm:sha256:ef2b0f75dd32786e77b854cfa6e8d1e02bbe70cb202cd7d761b13640e4126cbf",
+          "dataset_id": "v2:dataset:sha256:2a4f21c488acb8fb302a443aea54d3b149285a5e35f89ca35fba571c0eebaa49",
+          "expected_outcome": "PASS",
+          "reason_code": "SWAP_OBSERVED_DURING_FORMAL_REPETITION",
+          "repetition_index": 1,
+          "formal_eligible": false
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:04d52d91aa34da7d6a89bed0977618eca3f3936bb6c149785e82a03c02f65aa6",
+          "method": "v2:algorithm:sha256:ef2b0f75dd32786e77b854cfa6e8d1e02bbe70cb202cd7d761b13640e4126cbf",
+          "dataset_id": "v2:dataset:sha256:8a090c477c0b60524331a68ef6163bef9cedc250086e0726285fe39e49859bd6",
+          "expected_outcome": "PASS",
+          "reason_code": "SWAP_OBSERVED_DURING_FORMAL_REPETITION",
+          "repetition_index": 1,
+          "formal_eligible": false
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:af957b9744f7911d4313ac84cd1397f603cab3cd685c64d068ea1d354183bd3d",
+          "method": "v2:algorithm:sha256:ef2b0f75dd32786e77b854cfa6e8d1e02bbe70cb202cd7d761b13640e4126cbf",
+          "dataset_id": "v2:dataset:sha256:e63a9a1f4446f605cf64b83a45739fb008e5c477826aa827352a16ae39fa9298",
+          "expected_outcome": "PASS",
+          "reason_code": "SWAP_OBSERVED_DURING_FORMAL_REPETITION",
+          "repetition_index": 1,
+          "formal_eligible": false
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:bcfacef094919c50a2219178717d81015fa825144e19bd370113929be2e5e6de",
+          "method": "v2:algorithm:sha256:ef2b0f75dd32786e77b854cfa6e8d1e02bbe70cb202cd7d761b13640e4126cbf",
+          "dataset_id": "v2:dataset:sha256:3faefa9b921dc5f525459427066f55d50b908eff842aabd36f6e17c334e52f52",
+          "expected_outcome": "PASS",
+          "reason_code": "SWAP_OBSERVED_DURING_FORMAL_REPETITION",
+          "repetition_index": 2,
+          "formal_eligible": false
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:d18e28538dd7c9ad4a783a255d4ac157dfdb59bc158c7b77d4bd71c717b415dc",
+          "method": "v2:algorithm:sha256:ef2b0f75dd32786e77b854cfa6e8d1e02bbe70cb202cd7d761b13640e4126cbf",
+          "dataset_id": "v2:dataset:sha256:8a090c477c0b60524331a68ef6163bef9cedc250086e0726285fe39e49859bd6",
+          "expected_outcome": "PASS",
+          "reason_code": "SWAP_OBSERVED_DURING_FORMAL_REPETITION",
+          "repetition_index": 2,
+          "formal_eligible": false
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:e710fdee1d41eb2e07b513000c60b2e7f067fcb6b8d04ee5fca8149851a5a906",
+          "method": "v2:algorithm:sha256:ef2b0f75dd32786e77b854cfa6e8d1e02bbe70cb202cd7d761b13640e4126cbf",
+          "dataset_id": "v2:dataset:sha256:3faefa9b921dc5f525459427066f55d50b908eff842aabd36f6e17c334e52f52",
+          "expected_outcome": "PASS",
+          "reason_code": "SWAP_OBSERVED_DURING_FORMAL_REPETITION",
+          "repetition_index": 3,
+          "formal_eligible": false
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:10e645c46088703b611dff1169f62f15c2d6fb6f4a642e0c9b6164da5c055468",
+          "method": "v2:algorithm:sha256:ef2b0f75dd32786e77b854cfa6e8d1e02bbe70cb202cd7d761b13640e4126cbf",
+          "dataset_id": "v2:dataset:sha256:e63a9a1f4446f605cf64b83a45739fb008e5c477826aa827352a16ae39fa9298",
+          "expected_outcome": "PASS",
+          "reason_code": "SWAP_OBSERVED_DURING_FORMAL_REPETITION",
+          "repetition_index": 4,
+          "formal_eligible": false
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:f53c10171982f4671d53d14988a0fa6665e345b0bf325a14dbfa49eebb8508bc",
+          "method": "v2:algorithm:sha256:1eb2a5cc32bd4a6c3aa9d7224e454c4446fca5a1c5a07ce87e84803224e70430",
+          "dataset_id": "v2:dataset:sha256:8a090c477c0b60524331a68ef6163bef9cedc250086e0726285fe39e49859bd6",
+          "expected_outcome": "PASS",
+          "reason_code": "SWAP_OBSERVED_DURING_FORMAL_REPETITION",
+          "repetition_index": 5,
+          "formal_eligible": false
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:1eb1d12b6255003298d2fb3f7e7b707209498f41dfb6408c85f830d4450e8632",
+          "method": "v2:algorithm:sha256:1eb2a5cc32bd4a6c3aa9d7224e454c4446fca5a1c5a07ce87e84803224e70430",
+          "dataset_id": "v2:dataset:sha256:2a4f21c488acb8fb302a443aea54d3b149285a5e35f89ca35fba571c0eebaa49",
+          "expected_outcome": "PASS",
+          "reason_code": "SWAP_OBSERVED_DURING_FORMAL_REPETITION",
+          "repetition_index": 7,
+          "formal_eligible": false
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:161c71d721fff0aa02d9d3dc89f53c624e18d5aa80938ab96be4a577dbce6449",
+          "method": "v2:algorithm:sha256:ef2b0f75dd32786e77b854cfa6e8d1e02bbe70cb202cd7d761b13640e4126cbf",
+          "dataset_id": "v2:dataset:sha256:8a090c477c0b60524331a68ef6163bef9cedc250086e0726285fe39e49859bd6",
+          "expected_outcome": "PASS",
+          "reason_code": "SWAP_OBSERVED_DURING_FORMAL_REPETITION",
+          "repetition_index": 7,
+          "formal_eligible": false
+        }
+      ],
+      "core_formal_complete_cells_independent": 14,
+      "analysis_status": "CORE_INCOMPLETE",
+      "analysis_core_formal_complete_cells": 14,
+      "analysis_file_present": true,
+      "matrix_expected_unmatched": 0,
+      "matrix_expected_mismatch": 0,
+      "cell_repetition_coverage_errors": 0,
+      "queue_attempt_exit_code": 1,
+      "evidence": {
+        "execution_plan": "build/closure-formal-verification-20261011/formal-r3/runs/quality/execution_plan.json",
+        "comparison_plan": "build/closure-formal-verification-20261011/formal-r3/runs/quality/comparison_plan.json",
+        "bundle": "build/closure-formal-verification-20261011/formal-r3/runs/quality/bundle.json",
+        "schedule": "build/closure-formal-verification-20261011/formal-r3/runs/quality/schedule.json",
+        "raw_trials": "build/closure-formal-verification-20261011/formal-r3/runs/quality/comparison_trials.jsonl",
+        "analysis": "build/closure-formal-verification-20261011/formal-r3/runs/quality/analysis.json",
+        "queue_attempts": "build/closure-formal-verification-20261011/formal-r3/runs/queue_attempts.jsonl",
+        "queue_log": "build/closure-formal-verification-20261011/formal-r3/runs/queue_logs/quality.attempt-1.log"
+      },
+      "stopped_examples": [
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:6e84055bf8f051de242d0cb2dc9cc06d54965a43b53905adc424423afbe9cfa6",
+          "method": "abba",
+          "dataset_id": "v2:dataset:sha256:2a4f21c488acb8fb302a443aea54d3b149285a5e35f89ca35fba571c0eebaa49",
+          "repetition_index": 2,
+          "reason": "PATH_STOPPED_AFTER_FAILED_ATTEMPT",
+          "terminal_predecessor_status": "RESOURCE_PRESSURE",
+          "terminal_predecessor_reason": "SWAP_OBSERVED_DURING_FORMAL_REPETITION"
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:04d52d91aa34da7d6a89bed0977618eca3f3936bb6c149785e82a03c02f65aa6",
+          "method": "abba",
+          "dataset_id": "v2:dataset:sha256:8a090c477c0b60524331a68ef6163bef9cedc250086e0726285fe39e49859bd6",
+          "repetition_index": 2,
+          "reason": "PATH_STOPPED_AFTER_FAILED_ATTEMPT",
+          "terminal_predecessor_status": "RESOURCE_PRESSURE",
+          "terminal_predecessor_reason": "SWAP_OBSERVED_DURING_FORMAL_REPETITION"
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:af957b9744f7911d4313ac84cd1397f603cab3cd685c64d068ea1d354183bd3d",
+          "method": "abba",
+          "dataset_id": "v2:dataset:sha256:e63a9a1f4446f605cf64b83a45739fb008e5c477826aa827352a16ae39fa9298",
+          "repetition_index": 2,
+          "reason": "PATH_STOPPED_AFTER_FAILED_ATTEMPT",
+          "terminal_predecessor_status": "RESOURCE_PRESSURE",
+          "terminal_predecessor_reason": "SWAP_OBSERVED_DURING_FORMAL_REPETITION"
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:6e84055bf8f051de242d0cb2dc9cc06d54965a43b53905adc424423afbe9cfa6",
+          "method": "abba",
+          "dataset_id": "v2:dataset:sha256:2a4f21c488acb8fb302a443aea54d3b149285a5e35f89ca35fba571c0eebaa49",
+          "repetition_index": 3,
+          "reason": "PATH_STOPPED_AFTER_FAILED_ATTEMPT",
+          "terminal_predecessor_status": "RESOURCE_PRESSURE",
+          "terminal_predecessor_reason": "SWAP_OBSERVED_DURING_FORMAL_REPETITION"
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:bcfacef094919c50a2219178717d81015fa825144e19bd370113929be2e5e6de",
+          "method": "abba",
+          "dataset_id": "v2:dataset:sha256:3faefa9b921dc5f525459427066f55d50b908eff842aabd36f6e17c334e52f52",
+          "repetition_index": 3,
+          "reason": "PATH_STOPPED_AFTER_FAILED_ATTEMPT",
+          "terminal_predecessor_status": "RESOURCE_PRESSURE",
+          "terminal_predecessor_reason": "SWAP_OBSERVED_DURING_FORMAL_REPETITION"
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:d18e28538dd7c9ad4a783a255d4ac157dfdb59bc158c7b77d4bd71c717b415dc",
+          "method": "abba",
+          "dataset_id": "v2:dataset:sha256:8a090c477c0b60524331a68ef6163bef9cedc250086e0726285fe39e49859bd6",
+          "repetition_index": 3,
+          "reason": "PATH_STOPPED_AFTER_FAILED_ATTEMPT",
+          "terminal_predecessor_status": "RESOURCE_PRESSURE",
+          "terminal_predecessor_reason": "SWAP_OBSERVED_DURING_FORMAL_REPETITION"
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:04d52d91aa34da7d6a89bed0977618eca3f3936bb6c149785e82a03c02f65aa6",
+          "method": "abba",
+          "dataset_id": "v2:dataset:sha256:8a090c477c0b60524331a68ef6163bef9cedc250086e0726285fe39e49859bd6",
+          "repetition_index": 3,
+          "reason": "PATH_STOPPED_AFTER_FAILED_ATTEMPT",
+          "terminal_predecessor_status": "RESOURCE_PRESSURE",
+          "terminal_predecessor_reason": "SWAP_OBSERVED_DURING_FORMAL_REPETITION"
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:af957b9744f7911d4313ac84cd1397f603cab3cd685c64d068ea1d354183bd3d",
+          "method": "abba",
+          "dataset_id": "v2:dataset:sha256:e63a9a1f4446f605cf64b83a45739fb008e5c477826aa827352a16ae39fa9298",
+          "repetition_index": 3,
+          "reason": "PATH_STOPPED_AFTER_FAILED_ATTEMPT",
+          "terminal_predecessor_status": "RESOURCE_PRESSURE",
+          "terminal_predecessor_reason": "SWAP_OBSERVED_DURING_FORMAL_REPETITION"
+        }
+      ]
+    },
+    {
+      "lane": "timestamp",
+      "kind": "comparison",
+      "planned_cells": 40,
+      "expected_outcome_cells": {
+        "PASS": 32,
+        "REJECT": 8
+      },
+      "core_expected_pass_cells": 32,
+      "planned_repetitions_per_cell": 8,
+      "planned_slots": 320,
+      "raw_rows": 320,
+      "actual_record_rows": 242,
+      "actual_record_status": {
+        "PASS": 230,
+        "UNSUPPORTED": 8,
+        "RESOURCE_PRESSURE": 4
+      },
+      "actual_reason_codes": {
+        "FORMAL_REPETITION_PASS": 230,
+        "CAPABILITY_MISMATCH": 8,
+        "SWAP_OBSERVED_DURING_FORMAL_REPETITION": 4
+      },
+      "formal_eligible_actual_records": 230,
+      "top_level_stopped_rows": 78,
+      "top_level_stopped_reasons": {
+        "PATH_STOPPED_AFTER_FAILED_ATTEMPT": 78
+      },
+      "stopped_terminal_predecessor_status": {
+        "UNSUPPORTED": 56,
+        "RESOURCE_PRESSURE": 22
+      },
+      "stopped_terminal_predecessor_reasons": {
+        "CAPABILITY_MISMATCH": 56,
+        "SWAP_OBSERVED_DURING_FORMAL_REPETITION": 22
+      },
+      "stopped_chain_errors": [],
+      "actual_vs_expected_pairs": {
+        "PASS|PASS": 230,
+        "UNSUPPORTED|REJECT": 8,
+        "RESOURCE_PRESSURE|PASS": 4
+      },
+      "expected_mismatch_count": 0,
+      "expected_mismatches": [],
+      "unsupported_records": [
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:52335fdc22aac7b4a3a1b071ce6841e6f90ab7f70419b837bff2103141386e59",
+          "method": "v2:algorithm:sha256:18844debc6a932b8e0850f0cc3a57585d62191f96c5a2660cf3bd77adbdab33b",
+          "dataset_id": "v2:dataset:sha256:39148e447caa3978e14fa49dae8b55d355e8d566dacf755390218767b267fb10",
+          "expected_outcome": "REJECT",
+          "reason_code": "CAPABILITY_MISMATCH",
+          "repetition_index": 0,
+          "formal_eligible": false
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:dbd0702e4656985705bf72f009dc0a3351d3013b4aa62da3205cdee76d646280",
+          "method": "v2:algorithm:sha256:d2881b5d591adf566e4aa06cb4150d021e8119ea6e7ab1a259de4c079e784ee4",
+          "dataset_id": "v2:dataset:sha256:39148e447caa3978e14fa49dae8b55d355e8d566dacf755390218767b267fb10",
+          "expected_outcome": "REJECT",
+          "reason_code": "CAPABILITY_MISMATCH",
+          "repetition_index": 0,
+          "formal_eligible": false
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:84c9d79af3ac4f55c8568999b55ec32c9f15f5a3210909f4158b1a0f70fc9410",
+          "method": "v2:algorithm:sha256:d4cb81635d831815f3fdedee4972641343b5a7e032c135eadacb86cca75951df",
+          "dataset_id": "v2:dataset:sha256:39148e447caa3978e14fa49dae8b55d355e8d566dacf755390218767b267fb10",
+          "expected_outcome": "REJECT",
+          "reason_code": "CAPABILITY_MISMATCH",
+          "repetition_index": 0,
+          "formal_eligible": false
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:521e64bf1d3fe7df602bc0c0d03be2f369ad8f86aca2d6fa459a8f5511bdd567",
+          "method": "v2:algorithm:sha256:ee066bd7748ef6477c4e85d57cbbdbe7d379a2901eee0d7301b94318f00d25c7",
+          "dataset_id": "v2:dataset:sha256:39148e447caa3978e14fa49dae8b55d355e8d566dacf755390218767b267fb10",
+          "expected_outcome": "REJECT",
+          "reason_code": "CAPABILITY_MISMATCH",
+          "repetition_index": 0,
+          "formal_eligible": false
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:c458d6ad2a2d0d9a67f20558546c09998c9f5616a0d965d4e4917fe163a4e137",
+          "method": "v2:algorithm:sha256:c5b8c93ea5b8914d54be3923979f3dfe306f6288e2261e1e93018f915f8c4eb5",
+          "dataset_id": "v2:dataset:sha256:39148e447caa3978e14fa49dae8b55d355e8d566dacf755390218767b267fb10",
+          "expected_outcome": "REJECT",
+          "reason_code": "CAPABILITY_MISMATCH",
+          "repetition_index": 0,
+          "formal_eligible": false
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:7e2543f02ca29c55ef36e721d9af4b4e2a14b955825d9cb2be141f3cd2f52869",
+          "method": "v2:algorithm:sha256:756f6aa3e0e48ec4c3c20d14143ffc572856acbab93d8fd0b3b8652839a2fce6",
+          "dataset_id": "v2:dataset:sha256:39148e447caa3978e14fa49dae8b55d355e8d566dacf755390218767b267fb10",
+          "expected_outcome": "REJECT",
+          "reason_code": "CAPABILITY_MISMATCH",
+          "repetition_index": 0,
+          "formal_eligible": false
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:3ed5e4336d245bb9716936ded02cfec22311370b2c9f81dfbd51cc1102df03a1",
+          "method": "v2:algorithm:sha256:5809c03a4a60a8eedfefa47a88f0d7dd6b32c4730df68af0347182d986bd6bef",
+          "dataset_id": "v2:dataset:sha256:39148e447caa3978e14fa49dae8b55d355e8d566dacf755390218767b267fb10",
+          "expected_outcome": "REJECT",
+          "reason_code": "CAPABILITY_MISMATCH",
+          "repetition_index": 0,
+          "formal_eligible": false
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:5f23856257ecb219df6cfd9628607f36338f75e9a39c2184937e31836fd4a5f1",
+          "method": "v2:algorithm:sha256:5bbbceefe892122e2ea0484f93e9bcdf5e37c5a4bc5d49e1195f8f8a051c1692",
+          "dataset_id": "v2:dataset:sha256:39148e447caa3978e14fa49dae8b55d355e8d566dacf755390218767b267fb10",
+          "expected_outcome": "REJECT",
+          "reason_code": "CAPABILITY_MISMATCH",
+          "repetition_index": 0,
+          "formal_eligible": false
+        }
+      ],
+      "fail_records": [],
+      "resource_pressure_records": [
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:7115489d8758a6e476ffb8a599da11e2e6cfe0b060d8b540672d1915adcef60d",
+          "method": "v2:algorithm:sha256:5809c03a4a60a8eedfefa47a88f0d7dd6b32c4730df68af0347182d986bd6bef",
+          "dataset_id": "v2:dataset:sha256:a78718e02b1c74efe4aad25d4df0f3028cd611a41d7d1bf30134c80185b5a85b",
+          "expected_outcome": "PASS",
+          "reason_code": "SWAP_OBSERVED_DURING_FORMAL_REPETITION",
+          "repetition_index": 0,
+          "formal_eligible": false
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:319b4736aa6967385b7d8a69c6c696e7b52cab1cddc44a1f7ada2b030ad7d497",
+          "method": "v2:algorithm:sha256:d4cb81635d831815f3fdedee4972641343b5a7e032c135eadacb86cca75951df",
+          "dataset_id": "v2:dataset:sha256:311a1bc7e83e8f4dd180a882c80a714c32187cc666b6009245a2f58f8cf41aa3",
+          "expected_outcome": "PASS",
+          "reason_code": "SWAP_OBSERVED_DURING_FORMAL_REPETITION",
+          "repetition_index": 1,
+          "formal_eligible": false
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:9d388233f7595cff92581bf9d5e2bfa57522f8083ad968cca1dab5ab00039aec",
+          "method": "v2:algorithm:sha256:c5b8c93ea5b8914d54be3923979f3dfe306f6288e2261e1e93018f915f8c4eb5",
+          "dataset_id": "v2:dataset:sha256:a78718e02b1c74efe4aad25d4df0f3028cd611a41d7d1bf30134c80185b5a85b",
+          "expected_outcome": "PASS",
+          "reason_code": "SWAP_OBSERVED_DURING_FORMAL_REPETITION",
+          "repetition_index": 2,
+          "formal_eligible": false
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:72a024530ec1ed2135f0311630325671b22da4bad11dc05e45cc7aa82670f671",
+          "method": "v2:algorithm:sha256:d2881b5d591adf566e4aa06cb4150d021e8119ea6e7ab1a259de4c079e784ee4",
+          "dataset_id": "v2:dataset:sha256:77f369a4108167561fff310a7ecab2f7b01fd89c6d9786aa5c276f2b10e2bf24",
+          "expected_outcome": "PASS",
+          "reason_code": "SWAP_OBSERVED_DURING_FORMAL_REPETITION",
+          "repetition_index": 3,
+          "formal_eligible": false
+        }
+      ],
+      "core_formal_complete_cells_independent": 28,
+      "analysis_status": "CORE_INCOMPLETE",
+      "analysis_core_formal_complete_cells": 28,
+      "analysis_file_present": true,
+      "matrix_expected_unmatched": 0,
+      "matrix_expected_mismatch": 0,
+      "cell_repetition_coverage_errors": 0,
+      "queue_attempt_exit_code": 1,
+      "evidence": {
+        "execution_plan": "build/closure-formal-verification-20261011/formal-r3/runs/timestamp/execution_plan.json",
+        "comparison_plan": "build/closure-formal-verification-20261011/formal-r3/runs/timestamp/comparison_plan.json",
+        "bundle": "build/closure-formal-verification-20261011/formal-r3/runs/timestamp/bundle.json",
+        "schedule": "build/closure-formal-verification-20261011/formal-r3/runs/timestamp/schedule.json",
+        "raw_trials": "build/closure-formal-verification-20261011/formal-r3/runs/timestamp/comparison_trials.jsonl",
+        "analysis": "build/closure-formal-verification-20261011/formal-r3/runs/timestamp/analysis.json",
+        "queue_attempts": "build/closure-formal-verification-20261011/formal-r3/runs/queue_attempts.jsonl",
+        "queue_log": "build/closure-formal-verification-20261011/formal-r3/runs/queue_logs/timestamp.attempt-1.log"
+      },
+      "stopped_examples": [
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:c458d6ad2a2d0d9a67f20558546c09998c9f5616a0d965d4e4917fe163a4e137",
+          "method": "xz-stream",
+          "dataset_id": "v2:dataset:sha256:39148e447caa3978e14fa49dae8b55d355e8d566dacf755390218767b267fb10",
+          "repetition_index": 1,
+          "reason": "PATH_STOPPED_AFTER_FAILED_ATTEMPT",
+          "terminal_predecessor_status": "UNSUPPORTED",
+          "terminal_predecessor_reason": "CAPABILITY_MISMATCH"
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:dbd0702e4656985705bf72f009dc0a3351d3013b4aa62da3205cdee76d646280",
+          "method": "lz4-frame",
+          "dataset_id": "v2:dataset:sha256:39148e447caa3978e14fa49dae8b55d355e8d566dacf755390218767b267fb10",
+          "repetition_index": 1,
+          "reason": "PATH_STOPPED_AFTER_FAILED_ATTEMPT",
+          "terminal_predecessor_status": "UNSUPPORTED",
+          "terminal_predecessor_reason": "CAPABILITY_MISMATCH"
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:84c9d79af3ac4f55c8568999b55ec32c9f15f5a3210909f4158b1a0f70fc9410",
+          "method": "lzss-dipperstein-c",
+          "dataset_id": "v2:dataset:sha256:39148e447caa3978e14fa49dae8b55d355e8d566dacf755390218767b267fb10",
+          "repetition_index": 1,
+          "reason": "PATH_STOPPED_AFTER_FAILED_ATTEMPT",
+          "terminal_predecessor_status": "UNSUPPORTED",
+          "terminal_predecessor_reason": "CAPABILITY_MISMATCH"
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:52335fdc22aac7b4a3a1b071ce6841e6f90ab7f70419b837bff2103141386e59",
+          "method": "zstd-frame",
+          "dataset_id": "v2:dataset:sha256:39148e447caa3978e14fa49dae8b55d355e8d566dacf755390218767b267fb10",
+          "repetition_index": 1,
+          "reason": "PATH_STOPPED_AFTER_FAILED_ATTEMPT",
+          "terminal_predecessor_status": "UNSUPPORTED",
+          "terminal_predecessor_reason": "CAPABILITY_MISMATCH"
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:3ed5e4336d245bb9716936ded02cfec22311370b2c9f81dfbd51cc1102df03a1",
+          "method": "snappy-raw",
+          "dataset_id": "v2:dataset:sha256:39148e447caa3978e14fa49dae8b55d355e8d566dacf755390218767b267fb10",
+          "repetition_index": 1,
+          "reason": "PATH_STOPPED_AFTER_FAILED_ATTEMPT",
+          "terminal_predecessor_status": "UNSUPPORTED",
+          "terminal_predecessor_reason": "CAPABILITY_MISMATCH"
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:5f23856257ecb219df6cfd9628607f36338f75e9a39c2184937e31836fd4a5f1",
+          "method": "brotli-stream",
+          "dataset_id": "v2:dataset:sha256:39148e447caa3978e14fa49dae8b55d355e8d566dacf755390218767b267fb10",
+          "repetition_index": 1,
+          "reason": "PATH_STOPPED_AFTER_FAILED_ATTEMPT",
+          "terminal_predecessor_status": "UNSUPPORTED",
+          "terminal_predecessor_reason": "CAPABILITY_MISMATCH"
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:521e64bf1d3fe7df602bc0c0d03be2f369ad8f86aca2d6fa459a8f5511bdd567",
+          "method": "deflate-zlib",
+          "dataset_id": "v2:dataset:sha256:39148e447caa3978e14fa49dae8b55d355e8d566dacf755390218767b267fb10",
+          "repetition_index": 1,
+          "reason": "PATH_STOPPED_AFTER_FAILED_ATTEMPT",
+          "terminal_predecessor_status": "UNSUPPORTED",
+          "terminal_predecessor_reason": "CAPABILITY_MISMATCH"
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:7e2543f02ca29c55ef36e721d9af4b4e2a14b955825d9cb2be141f3cd2f52869",
+          "method": "lzss-raw",
+          "dataset_id": "v2:dataset:sha256:39148e447caa3978e14fa49dae8b55d355e8d566dacf755390218767b267fb10",
+          "repetition_index": 1,
+          "reason": "PATH_STOPPED_AFTER_FAILED_ATTEMPT",
+          "terminal_predecessor_status": "UNSUPPORTED",
+          "terminal_predecessor_reason": "CAPABILITY_MISMATCH"
+        }
+      ],
+      "stopped_terminal_predecessor_note": "8 expected REJECT cells yield UNSUPPORTED roots with CAPABILITY_MISMATCH; each root propagates seven STOPPED rows"
+    },
+    {
+      "lane": "u8",
+      "kind": "comparison",
+      "planned_cells": 16,
+      "expected_outcome_cells": {
+        "PASS": 16
+      },
+      "core_expected_pass_cells": 16,
+      "planned_repetitions_per_cell": 8,
+      "planned_slots": 128,
+      "raw_rows": 128,
+      "actual_record_rows": 121,
+      "actual_record_status": {
+        "PASS": 120,
+        "RESOURCE_PRESSURE": 1
+      },
+      "actual_reason_codes": {
+        "FORMAL_REPETITION_PASS": 120,
+        "SWAP_OBSERVED_DURING_FORMAL_REPETITION": 1
+      },
+      "formal_eligible_actual_records": 120,
+      "top_level_stopped_rows": 7,
+      "top_level_stopped_reasons": {
+        "PATH_STOPPED_AFTER_FAILED_ATTEMPT": 7
+      },
+      "stopped_terminal_predecessor_status": {
+        "RESOURCE_PRESSURE": 7
+      },
+      "stopped_terminal_predecessor_reasons": {
+        "SWAP_OBSERVED_DURING_FORMAL_REPETITION": 7
+      },
+      "stopped_chain_errors": [],
+      "actual_vs_expected_pairs": {
+        "PASS|PASS": 120,
+        "RESOURCE_PRESSURE|PASS": 1
+      },
+      "expected_mismatch_count": 0,
+      "expected_mismatches": [],
+      "unsupported_records": [],
+      "fail_records": [],
+      "resource_pressure_records": [
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:d306e7f810631e24438757e1ab7f3fc5def8b82e77f0f40e35695353002bc2f6",
+          "method": "v2:algorithm:sha256:9d7894fa4af43e17f9d6228180db9cb08092d22c609a88e1a77bbc2b0183a64d",
+          "dataset_id": "v2:dataset:sha256:1a98a46b717623190155bfa1e4c92e0446156a09cda3fee1de7db00f0bcfa4b9",
+          "expected_outcome": "PASS",
+          "reason_code": "SWAP_OBSERVED_DURING_FORMAL_REPETITION",
+          "repetition_index": 0,
+          "formal_eligible": false
+        }
+      ],
+      "core_formal_complete_cells_independent": 15,
+      "analysis_status": "CORE_INCOMPLETE",
+      "analysis_core_formal_complete_cells": 15,
+      "analysis_file_present": true,
+      "matrix_expected_unmatched": 0,
+      "matrix_expected_mismatch": 0,
+      "cell_repetition_coverage_errors": 0,
+      "queue_attempt_exit_code": 1,
+      "evidence": {
+        "execution_plan": "build/closure-formal-verification-20261011/formal-r3/runs/u8/execution_plan.json",
+        "comparison_plan": "build/closure-formal-verification-20261011/formal-r3/runs/u8/comparison_plan.json",
+        "bundle": "build/closure-formal-verification-20261011/formal-r3/runs/u8/bundle.json",
+        "schedule": "build/closure-formal-verification-20261011/formal-r3/runs/u8/schedule.json",
+        "raw_trials": "build/closure-formal-verification-20261011/formal-r3/runs/u8/comparison_trials.jsonl",
+        "analysis": "build/closure-formal-verification-20261011/formal-r3/runs/u8/analysis.json",
+        "queue_attempts": "build/closure-formal-verification-20261011/formal-r3/runs/queue_attempts.jsonl",
+        "queue_log": "build/closure-formal-verification-20261011/formal-r3/runs/queue_logs/u8.attempt-1.log"
+      },
+      "stopped_examples": [
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:d306e7f810631e24438757e1ab7f3fc5def8b82e77f0f40e35695353002bc2f6",
+          "method": "sprintz-fire-u8",
+          "dataset_id": "v2:dataset:sha256:1a98a46b717623190155bfa1e4c92e0446156a09cda3fee1de7db00f0bcfa4b9",
+          "repetition_index": 1,
+          "reason": "PATH_STOPPED_AFTER_FAILED_ATTEMPT",
+          "terminal_predecessor_status": "RESOURCE_PRESSURE",
+          "terminal_predecessor_reason": "SWAP_OBSERVED_DURING_FORMAL_REPETITION"
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:d306e7f810631e24438757e1ab7f3fc5def8b82e77f0f40e35695353002bc2f6",
+          "method": "sprintz-fire-u8",
+          "dataset_id": "v2:dataset:sha256:1a98a46b717623190155bfa1e4c92e0446156a09cda3fee1de7db00f0bcfa4b9",
+          "repetition_index": 2,
+          "reason": "PATH_STOPPED_AFTER_FAILED_ATTEMPT",
+          "terminal_predecessor_status": "RESOURCE_PRESSURE",
+          "terminal_predecessor_reason": "SWAP_OBSERVED_DURING_FORMAL_REPETITION"
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:d306e7f810631e24438757e1ab7f3fc5def8b82e77f0f40e35695353002bc2f6",
+          "method": "sprintz-fire-u8",
+          "dataset_id": "v2:dataset:sha256:1a98a46b717623190155bfa1e4c92e0446156a09cda3fee1de7db00f0bcfa4b9",
+          "repetition_index": 3,
+          "reason": "PATH_STOPPED_AFTER_FAILED_ATTEMPT",
+          "terminal_predecessor_status": "RESOURCE_PRESSURE",
+          "terminal_predecessor_reason": "SWAP_OBSERVED_DURING_FORMAL_REPETITION"
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:d306e7f810631e24438757e1ab7f3fc5def8b82e77f0f40e35695353002bc2f6",
+          "method": "sprintz-fire-u8",
+          "dataset_id": "v2:dataset:sha256:1a98a46b717623190155bfa1e4c92e0446156a09cda3fee1de7db00f0bcfa4b9",
+          "repetition_index": 4,
+          "reason": "PATH_STOPPED_AFTER_FAILED_ATTEMPT",
+          "terminal_predecessor_status": "RESOURCE_PRESSURE",
+          "terminal_predecessor_reason": "SWAP_OBSERVED_DURING_FORMAL_REPETITION"
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:d306e7f810631e24438757e1ab7f3fc5def8b82e77f0f40e35695353002bc2f6",
+          "method": "sprintz-fire-u8",
+          "dataset_id": "v2:dataset:sha256:1a98a46b717623190155bfa1e4c92e0446156a09cda3fee1de7db00f0bcfa4b9",
+          "repetition_index": 5,
+          "reason": "PATH_STOPPED_AFTER_FAILED_ATTEMPT",
+          "terminal_predecessor_status": "RESOURCE_PRESSURE",
+          "terminal_predecessor_reason": "SWAP_OBSERVED_DURING_FORMAL_REPETITION"
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:d306e7f810631e24438757e1ab7f3fc5def8b82e77f0f40e35695353002bc2f6",
+          "method": "sprintz-fire-u8",
+          "dataset_id": "v2:dataset:sha256:1a98a46b717623190155bfa1e4c92e0446156a09cda3fee1de7db00f0bcfa4b9",
+          "repetition_index": 6,
+          "reason": "PATH_STOPPED_AFTER_FAILED_ATTEMPT",
+          "terminal_predecessor_status": "RESOURCE_PRESSURE",
+          "terminal_predecessor_reason": "SWAP_OBSERVED_DURING_FORMAL_REPETITION"
+        },
+        {
+          "cell_id": "v3:planned-comparison-cell:sha256:d306e7f810631e24438757e1ab7f3fc5def8b82e77f0f40e35695353002bc2f6",
+          "method": "sprintz-fire-u8",
+          "dataset_id": "v2:dataset:sha256:1a98a46b717623190155bfa1e4c92e0446156a09cda3fee1de7db00f0bcfa4b9",
+          "repetition_index": 7,
+          "reason": "PATH_STOPPED_AFTER_FAILED_ATTEMPT",
+          "terminal_predecessor_status": "RESOURCE_PRESSURE",
+          "terminal_predecessor_reason": "SWAP_OBSERVED_DURING_FORMAL_REPETITION"
+        }
+      ]
+    }
+  ],
+  "observations": [
+    "All 12 finished comparison lanes have raw row count equal to schedule slot count; this is log-slot coverage and does not mean every slot executed a codec.",
+    "All top-level STOPPED rows have record=null and reason PATH_STOPPED_AFTER_FAILED_ATTEMPT. They trace to same-cell RESOURCE_PRESSURE roots, except timestamp expected-REJECT roots with UNSUPPORTED/CAPABILITY_MISMATCH.",
+    "No actual FAIL record was found. RESOURCE_PRESSURE records have correctness PASS and swap-observation reasons; they are excluded from formal eligibility.",
+    "Timestamp has eight actual UNSUPPORTED records, all frozen expected REJECT and CAPABILITY_MISMATCH; no expected-status mismatch was found.",
+    "Entropy is the only finished comparison with CORE_COMPLETE analysis. Other finished comparison lanes are CORE_INCOMPLETE, and cold has no analysis.json because its reporter dereferenced record=null; its raw evidence remains retained.",
+    "Cold queue log path records qualification PASS and pilot PASS before the analysis reporter AttributeError; this is an evidence/reporting failure and does not erase cold raw records.",
+    "Independent core completion counts match analysis coverage where analysis.json exists; cold has no analysis to compare.",
+    "This report is a new independent partial read-only artifact and does not alter or overwrite frozen plans, matrices, production code, or previous evidence."
+  ]
+}

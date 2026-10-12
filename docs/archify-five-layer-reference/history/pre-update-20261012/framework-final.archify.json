@@ -1,0 +1,1112 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "TSDataCompressBenchMark · 五层运行框架与数据流",
+    "locale": "zh-CN",
+    "quality_profile": "showcase",
+    "viewBox": [
+      1240,
+      6400
+    ]
+  },
+  "components": [
+    {
+      "id": "entry",
+      "type": "backend",
+      "label": "命令入口与配置",
+      "sublabel": "CLI / ExperimentConfig",
+      "pos": [
+        60,
+        90
+      ],
+      "size": [
+        300,
+        80
+      ]
+    },
+    {
+      "id": "freeze",
+      "type": "backend",
+      "label": "Run Set 初始化与恢复",
+      "sublabel": "配置 / Environment 冻结",
+      "pos": [
+        60,
+        230
+      ],
+      "size": [
+        300,
+        80
+      ]
+    },
+    {
+      "id": "dataset",
+      "type": "backend",
+      "label": "数据集注册与校验",
+      "sublabel": "DatasetRegistry / Manifest",
+      "pos": [
+        60,
+        370
+      ],
+      "size": [
+        300,
+        80
+      ]
+    },
+    {
+      "id": "loader",
+      "type": "backend",
+      "label": "规范化数据加载",
+      "sublabel": "load_dataset / 内存表示",
+      "pos": [
+        60,
+        510
+      ],
+      "size": [
+        300,
+        80
+      ]
+    },
+    {
+      "id": "characterize",
+      "type": "backend",
+      "label": "数据特征分析",
+      "sublabel": "Timestamp / Value / Topology",
+      "pos": [
+        60,
+        650
+      ],
+      "size": [
+        300,
+        80
+      ]
+    },
+    {
+      "id": "canonical",
+      "type": "database",
+      "label": "Canonical 工件生成",
+      "sublabel": "二进制 / 分析 / 准备记录",
+      "pos": [
+        60,
+        790
+      ],
+      "size": [
+        300,
+        80
+      ]
+    },
+    {
+      "id": "registry",
+      "type": "backend",
+      "label": "Codec / Source 注册",
+      "sublabel": "AlgorithmID / 来源与工件",
+      "pos": [
+        60,
+        1060
+      ],
+      "size": [
+        300,
+        80
+      ]
+    },
+    {
+      "id": "sweep",
+      "type": "backend",
+      "label": "参数扫描与配置生成",
+      "sublabel": "ConfigID / 完整参数空间",
+      "pos": [
+        60,
+        1200
+      ],
+      "size": [
+        300,
+        80
+      ]
+    },
+    {
+      "id": "universe",
+      "type": "backend",
+      "label": "展开完整候选组合",
+      "sublabel": "Dataset × Algorithm × Track × Config",
+      "pos": [
+        60,
+        1340
+      ],
+      "size": [
+        300,
+        80
+      ]
+    },
+    {
+      "id": "negotiate",
+      "type": "backend",
+      "label": "能力协商与四态结果",
+      "sublabel": "直接 / 无损适配 / 有损适配 / 不支持",
+      "pos": [
+        60,
+        1480
+      ],
+      "size": [
+        300,
+        80
+      ]
+    },
+    {
+      "id": "plans",
+      "type": "backend",
+      "label": "显式适配与预处理计划",
+      "sublabel": "计划制定 · 执行时验证",
+      "pos": [
+        60,
+        1620
+      ],
+      "size": [
+        300,
+        80
+      ]
+    },
+    {
+      "id": "resolution",
+      "type": "backend",
+      "label": "执行路径解析",
+      "sublabel": "ISA / Device / Threads / Fallback",
+      "pos": [
+        60,
+        1760
+      ],
+      "size": [
+        300,
+        80
+      ]
+    },
+    {
+      "id": "keys",
+      "type": "backend",
+      "label": "层级可比性键",
+      "sublabel": "Semantic → Execution → Resource",
+      "pos": [
+        60,
+        1900
+      ],
+      "size": [
+        300,
+        80
+      ]
+    },
+    {
+      "id": "tasks",
+      "type": "database",
+      "label": "冻结任务与注册快照",
+      "sublabel": "BenchmarkTask / task_plan.jsonl",
+      "pos": [
+        60,
+        2040
+      ],
+      "size": [
+        300,
+        80
+      ]
+    },
+    {
+      "id": "track",
+      "type": "backend",
+      "label": "按 Benchmark Track 路由",
+      "sublabel": "TIMESTAMP / VALUE / SYSTEM",
+      "pos": [
+        60,
+        2450
+      ],
+      "size": [
+        300,
+        80
+      ]
+    },
+    {
+      "id": "gates",
+      "type": "backend",
+      "label": "任务、源码与工件门控",
+      "sublabel": "Source / Build / Executor",
+      "pos": [
+        60,
+        2310
+      ],
+      "size": [
+        300,
+        80
+      ]
+    },
+    {
+      "id": "input",
+      "type": "security",
+      "label": "输入校验",
+      "sublabel": "Input Validation",
+      "pos": [
+        60,
+        2590
+      ],
+      "size": [
+        300,
+        80
+      ]
+    },
+    {
+      "id": "adapter",
+      "type": "backend",
+      "label": "实际适配与适配后验证",
+      "sublabel": "Compatibility Adapter",
+      "pos": [
+        60,
+        2730
+      ],
+      "size": [
+        300,
+        80
+      ]
+    },
+    {
+      "id": "preprocess",
+      "type": "backend",
+      "label": "可选预处理阶段验证",
+      "sublabel": "Preprocess Stage Validation",
+      "pos": [
+        60,
+        2870
+      ],
+      "size": [
+        300,
+        80
+      ]
+    },
+    {
+      "id": "boundary",
+      "type": "security",
+      "label": "边界与安全 Dry-run",
+      "sublabel": "Boundary / Safety Suite",
+      "pos": [
+        60,
+        3010
+      ],
+      "size": [
+        300,
+        80
+      ]
+    },
+    {
+      "id": "minimal",
+      "type": "backend",
+      "label": "最小完整 Roundtrip",
+      "sublabel": "独立编解码 / Common Correctness",
+      "pos": [
+        60,
+        3150
+      ],
+      "size": [
+        300,
+        80
+      ]
+    },
+    {
+      "id": "preflight",
+      "type": "security",
+      "label": "Preflight 是否通过",
+      "sublabel": "正确性与安全门控",
+      "pos": [
+        60,
+        3290
+      ],
+      "size": [
+        300,
+        80
+      ]
+    },
+    {
+      "id": "warmup",
+      "type": "backend",
+      "label": "预热 Warmup",
+      "sublabel": "次数与预热时长门槛",
+      "pos": [
+        60,
+        3430
+      ],
+      "size": [
+        300,
+        80
+      ]
+    },
+    {
+      "id": "formal",
+      "type": "backend",
+      "label": "正式重复实验",
+      "sublabel": "Formal Repetitions / 独立对象",
+      "pos": [
+        60,
+        3570
+      ],
+      "size": [
+        300,
+        80
+      ]
+    },
+    {
+      "id": "diagnostic",
+      "type": "backend",
+      "label": "失败诊断与状态证据",
+      "sublabel": "失败原因 / DIAGNOSTIC",
+      "pos": [
+        460,
+        3290
+      ],
+      "size": [
+        300,
+        80
+      ]
+    },
+    {
+      "id": "compress",
+      "type": "backend",
+      "label": "独立 Context 与编码",
+      "sublabel": "Compress Update",
+      "pos": [
+        460,
+        3570
+      ],
+      "size": [
+        300,
+        80
+      ]
+    },
+    {
+      "id": "finalize",
+      "type": "backend",
+      "label": "强制 Finalize / Flush",
+      "sublabel": "结束写入 / 完整对象",
+      "pos": [
+        460,
+        3710
+      ],
+      "size": [
+        300,
+        80
+      ]
+    },
+    {
+      "id": "accounting",
+      "type": "backend",
+      "label": "完整对象成本计量",
+      "sublabel": "Accounting Ledger / FinalBits",
+      "pos": [
+        460,
+        3850
+      ],
+      "size": [
+        300,
+        80
+      ]
+    },
+    {
+      "id": "decompress",
+      "type": "backend",
+      "label": "独立 Context 解码",
+      "sublabel": "Decompress",
+      "pos": [
+        460,
+        3990
+      ],
+      "size": [
+        300,
+        80
+      ]
+    },
+    {
+      "id": "correctness",
+      "type": "security",
+      "label": "公共正确性与 LossMode",
+      "sublabel": "T / V / Validity / Pairing",
+      "pos": [
+        460,
+        4130
+      ],
+      "size": [
+        300,
+        80
+      ]
+    },
+    {
+      "id": "lossless",
+      "type": "backend",
+      "label": "Lossless 按位还原",
+      "sublabel": "值数据 dtype / IEEE bits",
+      "pos": [
+        860,
+        3990
+      ],
+      "size": [
+        300,
+        80
+      ]
+    },
+    {
+      "id": "lossy",
+      "type": "backend",
+      "label": "Lossy 按模式验证",
+      "sublabel": "误差界或质量 · 区分模式",
+      "pos": [
+        860,
+        4270
+      ],
+      "size": [
+        300,
+        80
+      ]
+    },
+    {
+      "id": "policy",
+      "type": "backend",
+      "label": "同次正式实验测量策略",
+      "sublabel": "冻结 MeasurementPolicy",
+      "pos": [
+        60,
+        4600
+      ],
+      "size": [
+        300,
+        80
+      ]
+    },
+    {
+      "id": "timing",
+      "type": "backend",
+      "label": "分范围计时与时长控制",
+      "sublabel": "CORE / PIPELINE / E2E",
+      "pos": [
+        60,
+        4740
+      ],
+      "size": [
+        300,
+        80
+      ]
+    },
+    {
+      "id": "resources",
+      "type": "backend",
+      "label": "同步进程资源观测",
+      "sublabel": "CPU / Memory / I/O",
+      "pos": [
+        460,
+        4740
+      ],
+      "size": [
+        300,
+        80
+      ]
+    },
+    {
+      "id": "workloads",
+      "type": "backend",
+      "label": "条件工作负载调度",
+      "sublabel": "Profile 请求且 codec 支持",
+      "pos": [
+        60,
+        5020
+      ],
+      "size": [
+        300,
+        80
+      ]
+    },
+    {
+      "id": "raw",
+      "type": "database",
+      "label": "原始证据与可恢复投影",
+      "sublabel": "run_components.jsonl / runs.csv",
+      "pos": [
+        60,
+        5160
+      ],
+      "size": [
+        300,
+        80
+      ]
+    },
+    {
+      "id": "query",
+      "type": "backend",
+      "label": "Query / Random Access",
+      "sublabel": "请求且支持时执行",
+      "pos": [
+        460,
+        5020
+      ],
+      "size": [
+        300,
+        80
+      ]
+    },
+    {
+      "id": "streaming",
+      "type": "backend",
+      "label": "Streaming Benchmark",
+      "sublabel": "请求且支持时执行",
+      "pos": [
+        860,
+        5020
+      ],
+      "size": [
+        300,
+        80
+      ]
+    },
+    {
+      "id": "evidence",
+      "type": "backend",
+      "label": "读取冻结任务与原始证据",
+      "sublabel": "只读 task / raw / provenance",
+      "pos": [
+        60,
+        5430
+      ],
+      "size": [
+        300,
+        80
+      ]
+    },
+    {
+      "id": "eligibility",
+      "type": "security",
+      "label": "资格过滤与排除原因",
+      "sublabel": "Eligibility Filtering",
+      "pos": [
+        60,
+        5570
+      ],
+      "size": [
+        300,
+        80
+      ]
+    },
+    {
+      "id": "summary",
+      "type": "backend",
+      "label": "合格重复的逐数据集统计",
+      "sublabel": "median / quantiles / bootstrap CI",
+      "pos": [
+        60,
+        5710
+      ],
+      "size": [
+        300,
+        80
+      ]
+    },
+    {
+      "id": "corpus",
+      "type": "backend",
+      "label": "Corpus 汇总与分层比较",
+      "sublabel": "Semantic → Execution → Resource",
+      "pos": [
+        460,
+        5710
+      ],
+      "size": [
+        300,
+        80
+      ]
+    },
+    {
+      "id": "pareto",
+      "type": "backend",
+      "label": "Pareto 与单指标排名",
+      "sublabel": "同数据集 / 同键 / 同 Profile",
+      "pos": [
+        60,
+        5990
+      ],
+      "size": [
+        300,
+        80
+      ]
+    },
+    {
+      "id": "report",
+      "type": "database",
+      "label": "最终结果与报告生成",
+      "sublabel": "CSV / 机器报告 / Markdown / HTML",
+      "pos": [
+        60,
+        6130
+      ],
+      "size": [
+        300,
+        80
+      ]
+    },
+    {
+      "id": "coverage",
+      "type": "backend",
+      "label": "冻结任务全集 Coverage",
+      "sublabel": "保留无 PASS 的任务",
+      "pos": [
+        460,
+        5570
+      ],
+      "size": [
+        300,
+        80
+      ]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "数据准备 / Data Preparation",
+      "wraps": [
+        "entry",
+        "freeze",
+        "dataset",
+        "loader",
+        "characterize",
+        "canonical"
+      ],
+      "pad": 24
+    },
+    {
+      "kind": "region",
+      "label": "能力与配置 / Capability & Configuration",
+      "wraps": [
+        "registry",
+        "sweep",
+        "universe",
+        "negotiate",
+        "plans",
+        "resolution",
+        "keys",
+        "tasks"
+      ],
+      "pad": 24
+    },
+    {
+      "kind": "region",
+      "label": "执行验证 / Execution & Validation",
+      "wraps": [
+        "track",
+        "gates",
+        "input",
+        "adapter",
+        "preprocess",
+        "boundary",
+        "minimal",
+        "preflight",
+        "warmup",
+        "formal",
+        "diagnostic",
+        "compress",
+        "finalize",
+        "accounting",
+        "decompress",
+        "correctness",
+        "lossless",
+        "lossy"
+      ],
+      "pad": 24
+    },
+    {
+      "kind": "region",
+      "label": "性能测评 / Performance Evaluation",
+      "wraps": [
+        "policy",
+        "timing",
+        "resources",
+        "workloads",
+        "raw",
+        "query",
+        "streaming"
+      ],
+      "pad": 24
+    },
+    {
+      "kind": "region",
+      "label": "统计分析与报告 / Statistics & Reporting",
+      "wraps": [
+        "evidence",
+        "eligibility",
+        "summary",
+        "corpus",
+        "pareto",
+        "report",
+        "coverage"
+      ],
+      "pad": 24
+    }
+  ],
+  "connections": [
+    {
+      "id": "entry--freeze",
+      "from": "entry",
+      "to": "freeze"
+    },
+    {
+      "id": "freeze--dataset",
+      "from": "freeze",
+      "to": "dataset"
+    },
+    {
+      "id": "dataset--loader",
+      "from": "dataset",
+      "to": "loader"
+    },
+    {
+      "id": "loader--characterize",
+      "from": "loader",
+      "to": "characterize"
+    },
+    {
+      "id": "characterize--canonical",
+      "from": "characterize",
+      "to": "canonical"
+    },
+    {
+      "id": "canonical--registry",
+      "from": "canonical",
+      "to": "registry"
+    },
+    {
+      "id": "registry--sweep",
+      "from": "registry",
+      "to": "sweep"
+    },
+    {
+      "id": "sweep--universe",
+      "from": "sweep",
+      "to": "universe"
+    },
+    {
+      "id": "universe--negotiate",
+      "from": "universe",
+      "to": "negotiate"
+    },
+    {
+      "id": "negotiate--plans",
+      "from": "negotiate",
+      "to": "plans"
+    },
+    {
+      "id": "plans--resolution",
+      "from": "plans",
+      "to": "resolution"
+    },
+    {
+      "id": "resolution--keys",
+      "from": "resolution",
+      "to": "keys"
+    },
+    {
+      "id": "keys--tasks",
+      "from": "keys",
+      "to": "tasks"
+    },
+    {
+      "id": "input--adapter",
+      "from": "input",
+      "to": "adapter"
+    },
+    {
+      "id": "adapter--preprocess",
+      "from": "adapter",
+      "to": "preprocess"
+    },
+    {
+      "id": "preprocess--boundary",
+      "from": "preprocess",
+      "to": "boundary"
+    },
+    {
+      "id": "boundary--minimal",
+      "from": "boundary",
+      "to": "minimal"
+    },
+    {
+      "id": "minimal--preflight",
+      "from": "minimal",
+      "to": "preflight"
+    },
+    {
+      "id": "preflight--warmup",
+      "from": "preflight",
+      "to": "warmup",
+      "label": "通过",
+      "labelAt": [
+        210,
+        3384
+      ]
+    },
+    {
+      "id": "warmup--formal",
+      "from": "warmup",
+      "to": "formal"
+    },
+    {
+      "id": "preflight--diagnostic",
+      "from": "preflight",
+      "to": "diagnostic",
+      "label": "失败留证",
+      "variant": "security"
+    },
+    {
+      "id": "formal--compress",
+      "from": "formal",
+      "to": "compress",
+      "label": "对象展开",
+      "variant": "dashed"
+    },
+    {
+      "id": "compress--finalize",
+      "from": "compress",
+      "to": "finalize"
+    },
+    {
+      "id": "finalize--accounting",
+      "from": "finalize",
+      "to": "accounting"
+    },
+    {
+      "id": "accounting--decompress",
+      "from": "accounting",
+      "to": "decompress"
+    },
+    {
+      "id": "decompress--correctness",
+      "from": "decompress",
+      "to": "correctness"
+    },
+    {
+      "id": "correctness--lossless",
+      "from": "correctness",
+      "to": "lossless",
+      "label": "无损"
+    },
+    {
+      "id": "correctness--lossy",
+      "from": "correctness",
+      "to": "lossy",
+      "label": "有损或摘要"
+    },
+    {
+      "id": "formal--policy",
+      "from": "formal",
+      "to": "policy",
+      "label": "同次采集",
+      "variant": "dashed",
+      "labelAt": [
+        210,
+        3664
+      ]
+    },
+    {
+      "id": "policy--timing",
+      "from": "policy",
+      "to": "timing"
+    },
+    {
+      "id": "policy--resources",
+      "from": "policy",
+      "to": "resources",
+      "label": "同步资源",
+      "variant": "dashed"
+    },
+    {
+      "id": "timing--workloads",
+      "from": "timing",
+      "to": "workloads"
+    },
+    {
+      "id": "workloads--query",
+      "from": "workloads",
+      "to": "query",
+      "label": "请求且支持",
+      "variant": "dashed",
+      "labelAt": [
+        410,
+        5094
+      ]
+    },
+    {
+      "id": "workloads--streaming",
+      "from": "workloads",
+      "to": "streaming",
+      "label": "请求且支持",
+      "variant": "dashed",
+      "fromSide": "right",
+      "toSide": "top",
+      "via": [
+        [
+          400,
+          5060
+        ],
+        [
+          400,
+          4990
+        ],
+        [
+          1010,
+          4990
+        ]
+      ]
+    },
+    {
+      "id": "workloads--raw",
+      "from": "workloads",
+      "to": "raw",
+      "label": "同次运行记录",
+      "labelAt": [
+        210,
+        5114
+      ]
+    },
+    {
+      "id": "diagnostic--raw",
+      "from": "diagnostic",
+      "to": "raw",
+      "label": "诊断记录",
+      "variant": "dashed",
+      "fromSide": "right",
+      "toSide": "bottom",
+      "via": [
+        [
+          1210,
+          3330
+        ],
+        [
+          1210,
+          5290
+        ],
+        [
+          210,
+          5290
+        ]
+      ]
+    },
+    {
+      "id": "raw--evidence",
+      "from": "raw",
+      "to": "evidence"
+    },
+    {
+      "id": "evidence--eligibility",
+      "from": "evidence",
+      "to": "eligibility"
+    },
+    {
+      "id": "eligibility--summary",
+      "from": "eligibility",
+      "to": "summary"
+    },
+    {
+      "id": "summary--corpus",
+      "from": "summary",
+      "to": "corpus"
+    },
+    {
+      "id": "pareto--report",
+      "from": "pareto",
+      "to": "report"
+    },
+    {
+      "id": "evidence--coverage",
+      "from": "evidence",
+      "to": "coverage",
+      "label": "任务全集",
+      "variant": "dashed"
+    },
+    {
+      "id": "coverage--report",
+      "from": "coverage",
+      "to": "report",
+      "label": "覆盖率",
+      "fromSide": "right",
+      "toSide": "right",
+      "via": [
+        [
+          1200,
+          5610
+        ],
+        [
+          1200,
+          6170
+        ]
+      ]
+    },
+    {
+      "id": "tasks--gates",
+      "from": "tasks",
+      "to": "gates"
+    },
+    {
+      "id": "gates--track",
+      "from": "gates",
+      "to": "track"
+    },
+    {
+      "id": "track--input",
+      "from": "track",
+      "to": "input"
+    },
+    {
+      "id": "summary--pareto",
+      "from": "summary",
+      "to": "pareto"
+    },
+    {
+      "id": "corpus--report",
+      "from": "corpus",
+      "to": "report",
+      "label": "汇总结果",
+      "variant": "dashed"
+    },
+    {
+      "id": "resources--raw",
+      "from": "resources",
+      "to": "raw",
+      "label": "资源证据",
+      "variant": "dashed",
+      "fromSide": "right",
+      "toSide": "right",
+      "via": [
+        [
+          1200,
+          4780
+        ],
+        [
+          1200,
+          5200
+        ]
+      ],
+      "labelAt": [
+        1120,
+        5180
+      ]
+    },
+    {
+      "id": "query--raw",
+      "from": "query",
+      "to": "raw",
+      "label": "查询结果",
+      "variant": "dashed",
+      "fromSide": "bottom",
+      "toSide": "right",
+      "via": [
+        [
+          610,
+          5200
+        ]
+      ]
+    },
+    {
+      "id": "streaming--raw",
+      "from": "streaming",
+      "to": "raw",
+      "label": "流式结果",
+      "variant": "dashed"
+    }
+  ]
+}

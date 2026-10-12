@@ -1,5 +1,5 @@
 from pathlib import Path
-import json,re,hashlib,subprocess,datetime
+import ast,json,re,hashlib,subprocess,datetime
 OUT=Path(__file__).resolve().parent
 ROOT=OUT.parents[1]
 MODEL=json.loads((OUT/'semantic-model.json').read_text())
@@ -12,15 +12,14 @@ def file_record(rel):
   files[rel]={'path':rel,'sha256':sha(p),'bytes':p.stat().st_size,'working_tree_status':state or 'clean'}
  return files[rel]
 def symbol(ref):
- f,s=ref.rsplit(':',1);rel='src/tscompbench/'+f;p=ROOT/rel;ls=p.read_text().splitlines()
- hits=[i for i,l in enumerate(ls) if re.match(r'\s*(?:async )?(?:def|class)\s+'+re.escape(s)+r'\b',l)]
- assert len(hits)==1,(ref,hits)
- start=hits[0];indent=len(ls[start])-len(ls[start].lstrip());end=len(ls)
- for j in range(start+1,len(ls)):
-  if re.match(r'\s*(?:async )?(?:def |class |@)',ls[j]) and len(ls[j])-len(ls[j].lstrip())<=indent:
-   end=j;break
- f=file_record(rel)
- return {'path':rel,'symbol':s,'line':start+1,'end_line':end,'sha256':f['sha256']}
+ f,_,name=ref.partition(':');rel=f if f.startswith('tools/') else 'src/tscompbench/'+f
+ p=ROOT/rel;rec=file_record(rel)
+ if not name:return {'path':rel,'symbol':'module','line':1,'end_line':len(p.read_text().splitlines()),'sha256':rec['sha256']}
+ tree=ast.parse(p.read_bytes());matches=[n for n in ast.walk(tree) if isinstance(n,(ast.ClassDef,ast.FunctionDef,ast.AsyncFunctionDef)) and n.name==name]
+ assert len(matches)==1,(ref,[(n.lineno,n.name) for n in matches])
+ n=matches[0]
+ return {'path':rel,'symbol':name,'line':n.lineno,'end_line':n.end_lineno,'sha256':rec['sha256']}
+
 def anchor(ref,token):
  s=symbol(ref);ls=(ROOT/s['path']).read_text().splitlines()
  hits=[i+1 for i,l in enumerate(ls) if s['line']<=i+1<=s['end_line'] and token in l]
@@ -63,17 +62,17 @@ edge_details={
  'preprocess--boundary':('可选 stage validation 成功后，隔离 Boundary/Safety suite。',[('execution/preflight.py:preflight_task','boundary_call = run_isolated(')]),
  'boundary--minimal':('Boundary 成功后执行最小完整 roundtrip。',[('execution/preflight.py:preflight_task','perform_roundtrip,')]),
  'minimal--preflight':('最小 roundtrip 与 Common Correctness 共同产生 PreflightResult。',[('execution/preflight.py:preflight_task','validate_common_correctness(')]),
- 'preflight--warmup':('仅 eligible_for_formal_repetitions 通过才能进入预热。',[('execution/orchestrator.py:execute_task','if not preflight.eligible_for_formal_repetitions'),('execution/orchestrator.py:execute_task','perform_warmup,')]),
+ 'preflight--warmup':('预检通过后，每个隔离测量 worker 内先预热；预热排除于计时边界，固定门槛不证明统计稳态。',[('execution/orchestrator.py:execute_task','if not preflight.eligible_for_formal_repetitions'),('execution/repetition.py:perform_worker_measurement','warmup = perform_warmup(')]),
  'preflight--diagnostic':('失败原因写结构化 DIAGNOSTIC，通过 callback 保留，不静默删除。',[('execution/orchestrator.py:execute_task','record_kind="DIAGNOSTIC"'),('execution/orchestrator.py:execute_task','record_callback(record, None)')]),
- 'warmup--formal':('Warmup 是独立预热门槛，后续正式 repetition 含自身最短时长内循环。',[('execution/orchestrator.py:execute_task','perform_measured_roundtrip,')]),
+ 'warmup--formal':('每个 worker 的 local warmup 完成后进入自身正式计时内循环；不是只在外层预热一次。',[('execution/repetition.py:perform_worker_measurement','observation = perform_measured_roundtrip(')]),
  'formal--compress':('局部展开父节点 formal：每个内循环迭代是独立完整对象，不代表再执行一次 benchmark。',[('execution/repetition.py:perform_measured_roundtrip','while True:'),('execution/repetition.py:perform_measured_roundtrip','artifact, enc_wall')]),
  'compress--finalize':('独立 session.compress_update 后强制 finalize。',[('execution/repetition.py:_encode','updated = session.compress_update'),('execution/repetition.py:_encode','finalized = session.finalize')]),
  'finalize--accounting':('完整 stream 包括 update+finalize 字节，session.accounting 计算完整解码所需成本。',[('execution/repetition.py:_encode','stream = bytes(storage[: updated + finalized])'),('execution/repetition.py:_encode','ledger = session.accounting')]),
  'accounting--decompress':('完成编码 ledger 后，独立解码 Context 重建完整 stream。',[('execution/repetition.py:perform_measured_roundtrip','session = adapter.create_session'),('execution/repetition.py:perform_measured_roundtrip','decoded = session.decompress')]),
  'decompress--correctness':('每次正式 repetition 的结果由 orchestrator 进行 Common Correctness。最终内循环对象提供结果证据；输入/canary/确定性跨内循环累计。',[('execution/orchestrator.py:execute_task','validate_common_correctness(')]),
  'correctness--lossless':('LOSSLESS 值数据 dtype 一致并按 C-order 字节还原。',[('validation/correctness.py:validate_common_correctness','if loss_mode is LossMode.LOSSLESS:')]),
- 'correctness--lossy':('Error-bounded 检查界与质量；Unbounded 只有质量；Rate 记录目标，actual FinalBits 的 rate gate 留待 rate profile；Summary 无重建但仍安全校验。',[('validation/correctness.py:validate_common_correctness','if loss_mode is LossMode.ERROR_BOUNDED_LOSSY:'),('validation/correctness.py:validate_common_correctness','DEFERRED_TO_RATE_PROFILE_WITH_ACTUAL_FINAL_BITS')]),
- 'formal--policy':('同一次执行的职责投影：runner 将冻结 policy 传给执行器，非验证后重新运行 benchmark。',[('runner.py:execute_run_set','measurement_policy = MeasurementPolicy.from_profile'),('execution/orchestrator.py:execute_task','perform_measured_roundtrip,')]),
+ 'correctness--lossy':('Error-bounded 检查界与质量；Unbounded 只有质量。Rate / Summary 需专用 task validator，否则 UNSUPPORTED；当前无活动算法或正式比较组，框架 validator 资格不等于算法资格。',[('validation/correctness.py:validate_common_correctness','if loss_mode is LossMode.ERROR_BOUNDED_LOSSY:'),('validation/correctness.py:validate_common_correctness','RATE_VALIDATOR_UNAVAILABLE')]),
+ 'formal--policy':('同一次执行的职责投影：runner 将冻结 policy 传给执行器，隔离 worker 包含本地预热与测量。',[('runner.py:execute_run_set','measurement_policy = MeasurementPolicy.from_profile'),('execution/orchestrator.py:execute_task','worker_function = perform_declared_worker_measurement')]),
  'policy--timing':('正式 repetition 使用冻结 policy 控制范围与最短时长。',[('execution/repetition.py:perform_measured_roundtrip','if policy.duration_satisfied(')]),
  'policy--resources':('ResourceSampler 与正式 repetition 共用起止边界。',[('execution/repetition.py:perform_measured_roundtrip','sampler = ResourceSampler'),('execution/repetition.py:perform_measured_roundtrip','sampler.start(start_wall)')]),
  'timing--workloads':('正式编解码结果之后，条件工作负载分别在隔离 worker 执行；连线不是并发声明。',[('execution/orchestrator.py:execute_task','workloads = unavailable_workloads')]),
@@ -95,8 +94,14 @@ for eid in ['pareto--report','corpus--report','coverage--report']:
  edge_details[eid]=('AnalysisBundle 的对应输出交给报告生成器，只读分析，不重新调用 codec。',[('reporting/generator.py:generate_report','analyze_run_set(')])
 edges=[]
 for e in MODEL['edges']:
- note,anchors=edge_details[e['id']]
- edges.append({**e,'meaning':note,'evidence':[anchor(ref,t) for ref,t in anchors]})
+ if e['id'] in edge_details:
+  note,anchors=edge_details[e['id']]
+  evidence=[anchor(ref,t) for ref,t in anchors]
+ else:
+  a=next(n for n in MODEL['nodes'] if n['id']==e['source']);b=next(n for n in MODEL['nodes'] if n['id']==e['target'])
+  note=e.get('label') or f"{a['label']} → {b['label']}：数据/控制/证据依赖，非逐函数调用序列。"
+  evidence=[symbol(ref) for ref in dict.fromkeys(a['source']+b['source'])]
+ edges.append({**e,'meaning':note,'evidence':evidence})
 # Required supplementary modules, actual contracts and focused tests.
 supplement=[
  ('environment.py:capture_environment','冻结 Environment 指纹与能力/工具信息'),
@@ -122,22 +127,28 @@ supplement=[
 supplement_records=[{'purpose':purpose,**symbol(ref)} for ref,purpose in supplement]
 contract_paths=[
  'configs/experiments/data-preparation-smoke.toml','configs/experiments/capability-configuration-smoke.toml','configs/experiments/performance-evaluation-smoke.toml',
- 'registry/datasets/national_illness.json','registry/codecs/lz4-frame.json','registry/codecs/delta-maskedvbyte-u32.json','registry/sources/lz4-frame-lzbench.artifact.json',
+ 'registry/datasets/national_illness.json','registry/codecs/lz4-frame.json','registry/codecs/sprintz-delta.json','registry/sources/lz4-frame-lzbench.artifact.json',
  *['schemas/v2/'+n+'.schema.json' for n in ['experiment-config','dataset-manifest','canonical-artifact-metadata','dataset-characterization','codec-manifest','compatibility-plan','preprocess-plan','execution-resolution','comparability-keys','benchmark-task','measurement-policy','run-record','eligibility-record','summary-record','corpus-summary-record','report']],
  *['tests/'+n for n in ['unit/test_canonical.py','unit/test_negotiation.py','unit/test_preprocess.py','unit/test_execution_validation.py','unit/test_measurement.py','unit/test_statistics.py','integration/test_layer2_plan.py','integration/test_layer3_execution.py','integration/test_layer5_reporting.py','unit/test_formal_direction_duration_audit.py']],
+ *[str(p.relative_to(ROOT)) for d in ['schemas/comparison/v1','schemas/pipelines/v1','schemas/measurement/v3.2'] for p in sorted((ROOT/d).glob('*.json'))],
+ 'docs/audits/20261011_closure_formal_verification/README.md',
 ]
 contracts=[]
 for rel in contract_paths:
  rec=file_record(rel);ls=(ROOT/rel).read_text().splitlines()
  defs=[{'symbol':q[1],'line':i+1} for i,l in enumerate(ls) if (q:=re.match(r'\s*(?:def|class)\s+(\w+)',l))]
  contracts.append({**rec,'inspection':'契约参照；未在本图任务中执行 benchmark/test','symbols':defs,'line':1})
-receipt={'basis':'current-working-tree-file-bytes','captured_at':datetime.datetime.now(datetime.timezone.utc).isoformat(),'repository':str(ROOT),'pinned_commit_validation':False,'source_edits_by_this_task':False,'nodes':nodes,'edges':edges,'supplementary_modules':supplement_records,'contracts':contracts,'files':list(files.values()),'counts':{'nodes':len(nodes),'edges':len(edges),'files':len(files)}}
+old=json.loads((OUT/'history/pre-update-20261012/source-evidence.json').read_text());drift=[]
+for f in old['files']:
+ p=ROOT/f['path'];actual=sha(p) if p.exists() else None
+ if actual!=f['sha256']:drift.append({'path':f['path'],'old_sha256':f['sha256'],'current_sha256':actual})
+receipt={'basis':'current-working-tree-file-bytes','captured_at':datetime.datetime.now(datetime.timezone.utc).isoformat(),'repository':str(ROOT),'repository_commit':subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),'pinned_commit_validation':False,'source_edits_by_this_task':False,'nodes':nodes,'edges':edges,'supplementary_modules':supplement_records,'contracts':contracts,'files':list(files.values()),'counts':{'nodes':len(nodes),'edges':len(edges),'files':len(files)},'old_evidence':{'files':len(old['files']),'changed_files':len(drift),'missing_files':sum(d['current_sha256'] is None for d in drift),'drift':drift}}
 (OUT/'source-evidence.json').write_text(json.dumps(receipt,ensure_ascii=False,indent=2)+'\n')
 def link(e):return f"[{e['path']}:{e['line']}]({ROOT/e['path']}:{e['line']}) — `{e['symbol']}`"
-md=['# 五层框架源码证据','',f"核对基准：当前工作区（含未提交内容），采集时间 `{receipt['captured_at']}`。图由 46 个语义节点、51 条有向关系组成。所有 SHA-256 对应实际文件字节，不使用 HEAD blob 冒充当前实现；未使用 Archify `--repo-root` 提交校验。",'',
+md=['# 五层框架源码证据','',f"核对基准：当前工作区（含未提交内容），采集时间 `{receipt['captured_at']}`。图由 {len(nodes)} 个语义节点、{len(edges)} 条有向关系组成。所有 SHA-256 对应实际文件字节，不使用 HEAD blob 冒充当前实现；未使用 Archify `--repo-root` 提交校验。",'',
 '图的实线表达处理/数据依赖；并非每条箭头都表示直接函数调用。scope 为同次测量职责投影，expansion 为 formal 的局部对象生命周期，conditional 为条件调度，evidence 为证据依赖。未标注的顺序边两端已说明依赖，标签省略不改变方向。右侧说明框与左侧标题栏仅为展示注释，不进入运行拓扑。','',
 '准确键名为 `ExecutionPathHash`、`SemanticComparabilityKey`、`ExecutionComparabilityKey`、`ResourceProfileKey`；图内 Semantic / Execution / Resource 为这三个可比性键的缩写。执行路径并非第四种独立比较世界；Execution 文档包含 Semantic key，Resource 文档包含 Execution key。','',
-'重要细节：正式 repetition 的每个内循环对象独立 Finalize；最后一个对象提供正确性/计量结果，输入不可变、canary、确定性证据跨内循环累计。正式 repetition 仍逐次验证。Rate-controlled 当前记录目标，actual FinalBits 的 rate gate 延后至相应 profile；不是误差界验证。','',
+'重要细节：每个隔离 worker 先执行本地预热，再进入计时，固定门槛不证明统计稳态。正式 repetition 的每个内循环对象独立 Finalize；最后一个对象提供正确性/计量结果，输入不可变、canary、确定性证据跨内循环累计。Rate / Summary 需要专用 task validator；当前只有框架资格验证，没有活动算法或正式比较组。','',
 '## 阶段与节点','']
 for phase in MODEL['phases']:
  md += [f"### {phase['title']} / {phase['en']}",'','| 稳定 ID / 节点 | 实查路径、函数与行号 |','| --- | --- |']
@@ -145,10 +156,10 @@ for phase in MODEL['phases']:
   if n['phase']==phase['id']:md.append(f"| `{n['id']}` · {n['label']} | "+'<br>'.join(link(e) for e in n['evidence'])+' |')
  md.append('')
 md += ['## 有向关系与实查语义','','| 稳定边 ID | 关系解释 | 实查调用 / 分支 / 数据依赖 |','| --- | --- | --- |']
-for e in edges:md.append(f"| `{e['id']}` ({e['kind']}) | {e['meaning']} | "+'<br>'.join(link(a)+f"：`{a['snippet'].replace('|','&#124;')}`" for a in e['evidence'])+' |')
+for e in edges:md.append(f"| `{e['id']}` ({e['kind']}) | {e['meaning']} | "+'<br>'.join(link(a)+(f"：`{a['snippet'].replace('|','&#124;')}`" if 'snippet' in a else '：AST 实查符号；逻辑依赖') for a in e['evidence'])+' |')
 md += ['','## 补充实现与契约','','| 实现职责 | 路径 / 函数 / 行号 |','| --- | --- |']
 for s in supplement_records:md.append(f"| {s['purpose']} | {link(s)} |")
-md += ['','测试仅用于源码契约核对；本次只新增图及文档，未执行 benchmark 或声称相关测试通过。配置与 manifest 是例证，不表示所有 codec 都支持其能力。','']
+md += ['','测试仅用于源码契约核对；本次只更新图及文档，未执行 benchmark 或声称相关测试通过。配置与 manifest 是例证，不表示所有 codec 都支持其能力。','']
 for c in contracts:md.append(f"- [{c['path']}]({ROOT/c['path']}:1)"+('：'+', '.join(f"`{s['symbol']}` L{s['line']}" for s in c['symbols']) if c['symbols'] else '：已核对冻结字段/声明结构。'))
 md += ['','## 当前工作区文件指纹','','| 相对路径 | SHA-256（当前文件） | 字节 | Git 状态 |','| --- | --- | ---: | --- |']
 for f in files.values():md.append(f"| `{f['path']}` | `{f['sha256']}` | {f['bytes']} | `{f['working_tree_status']}` |")
