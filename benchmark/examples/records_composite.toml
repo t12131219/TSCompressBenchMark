@@ -1,0 +1,46 @@
+schema = "tsbench.experiment/1"
+name = "records-composite-20261013"
+output = "../../runs/records-composite-20261013"
+
+[[datasets]]
+id = "records"
+format = "npz"
+path = "data/records.npz"
+components = { V = "V", T = "T", mask = "mask" }
+time_unit = "ns"
+
+[[methods]]
+id = "raw"
+codec = "raw-store"
+
+[[methods]]
+id = "zstd-all"
+codec = "zstd-frame"
+
+[[methods]]
+id = "zstd-time-chimp128-values-raw-mask"
+codec = "chimp128"
+components = { T = {codec = "zstd-frame"}, mask = {codec = "raw-store"} }
+
+[[methods]]
+id = "independent-chunks-64"
+codec = "zstd-frame"
+chunk_rows = 64
+
+[[methods]]
+id = "channelwise-chunks-64"
+codec = "zstd-frame"
+chunk_rows = 64
+channelwise = true
+
+[task]
+kind = "records"
+fidelity = "bitwise"
+
+[execution]
+sessions = 1
+rounds = 7
+warmup_objects = 2
+seed = 20261013
+timeout_s = 120
+qualification_cache = true

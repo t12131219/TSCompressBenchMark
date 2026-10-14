@@ -1,0 +1,116 @@
+# Independent post-observation margin sensitivity; prior failures remain unchanged.
+schema = "tsbench.gpu-experiment/1"
+name = "gpu-real-single-f64-margin90-abs-0p01"
+asset_root = "/home/fzg/PycharmProjects/TSDataCompressBenchMark"
+boundaries = ["host_to_host", "device_resident"]
+
+[task]
+kind = "values"
+fidelity = "bounded_abs"
+error_bound = "0.01"
+lifecycle = "independent_object"
+cache_policy = "natural"
+special_values = "bitwise"
+invalid_values = "preserve"
+
+[profile]
+id = "cuda-device0-host-single"
+device = "cuda"
+device_index = 0
+native_threads = 1
+object_workers = 1
+host_memory_limit_mb = 16384
+affinity = [0]
+
+[execution]
+sessions = 3
+rounds = 7
+warmup_objects = 2
+seed = 20261013
+timeout_s = 120
+save_artifacts = true
+
+[[methods]]
+id = "cuszp-fixed-margin90"
+codec = "cuszp-fixed-1d"
+error_bound = "0.009"
+
+[[datasets]]
+id = "etth1-single-f64-n128"
+format = "csv"
+path = "/home/fzg/PycharmProjects/材料/TSBench_Corpus/ETTh1.csv"
+dtype = "<f8"
+encoding = "utf-8"
+delimiter = ","
+columns = ["OT"]
+timestamp_column = "date"
+timestamp_parser = "datetime64"
+time_unit = "ns"
+missing = "reject"
+start = 2048
+stop = 2176
+step = 1
+source = "etth1:column=OT:source_rows=2048:2176"
+order = "C"
+schema = { "roles" = { "V" = "V" }, "topology" = "UTS", "columns" = ["OT"], "gpu_source_projection" = { "source_id" = "etth1", "source_csv_path" = "/home/fzg/PycharmProjects/材料/TSBench_Corpus/ETTh1.csv", "source_csv_sha256" = "sha256:f18de3ad269cef59bb07b5438d79bb3042d3be49bdeecf01c1cd6d29695ee066", "column" = "OT", "source_row_window" = [2048, 2176], "step" = 1, "source_dtype_conversion" = "CSV decimal via explicit Python float to little-endian f64", "rank_projection" = "existing loader represents exactly one selected CSV column as V[N]; no flattening of multiple channels", "normalization" = "none", "resampling" = "none", "missing" = "reject", "unit" = "source_units_unverified", "unit_evidence" = "oil temperature; exact physical unit unverified in the frozen source evidence", "license_status" = "dataset_repository_declared", "license_spdx" = "CC-BY-ND-4.0", "license_scope" = "Root LICENSE of the author-maintained dataset repository; README describes its own collected/donated data. This is not an inference from a third-party code repository.", "data_distribution_policy" = "unchanged external local CSV only; no source data or derived windows bundled or redistributed" } }
+license = "unchanged external local source; CC-BY-ND-4.0; see schema provenance"
+
+[[datasets]]
+id = "etth1-single-f64-n512"
+format = "csv"
+path = "/home/fzg/PycharmProjects/材料/TSBench_Corpus/ETTh1.csv"
+dtype = "<f8"
+encoding = "utf-8"
+delimiter = ","
+columns = ["OT"]
+timestamp_column = "date"
+timestamp_parser = "datetime64"
+time_unit = "ns"
+missing = "reject"
+start = 2048
+stop = 2560
+step = 1
+source = "etth1:column=OT:source_rows=2048:2560"
+order = "C"
+schema = { "roles" = { "V" = "V" }, "topology" = "UTS", "columns" = ["OT"], "gpu_source_projection" = { "source_id" = "etth1", "source_csv_path" = "/home/fzg/PycharmProjects/材料/TSBench_Corpus/ETTh1.csv", "source_csv_sha256" = "sha256:f18de3ad269cef59bb07b5438d79bb3042d3be49bdeecf01c1cd6d29695ee066", "column" = "OT", "source_row_window" = [2048, 2560], "step" = 1, "source_dtype_conversion" = "CSV decimal via explicit Python float to little-endian f64", "rank_projection" = "existing loader represents exactly one selected CSV column as V[N]; no flattening of multiple channels", "normalization" = "none", "resampling" = "none", "missing" = "reject", "unit" = "source_units_unverified", "unit_evidence" = "oil temperature; exact physical unit unverified in the frozen source evidence", "license_status" = "dataset_repository_declared", "license_spdx" = "CC-BY-ND-4.0", "license_scope" = "Root LICENSE of the author-maintained dataset repository; README describes its own collected/donated data. This is not an inference from a third-party code repository.", "data_distribution_policy" = "unchanged external local CSV only; no source data or derived windows bundled or redistributed" } }
+license = "unchanged external local source; CC-BY-ND-4.0; see schema provenance"
+
+[[datasets]]
+id = "weather-single-f64-n128"
+format = "csv"
+path = "/home/fzg/PycharmProjects/材料/TSBench_Corpus/weather.csv"
+dtype = "<f8"
+encoding = "utf-8"
+delimiter = ","
+columns = ["T (degC)"]
+timestamp_column = "date"
+timestamp_parser = "datetime64"
+time_unit = "ns"
+missing = "reject"
+start = 2048
+stop = 2176
+step = 1
+source = "weather:column=T (degC):source_rows=2048:2176"
+order = "C"
+schema = { "roles" = { "V" = "V" }, "topology" = "UTS", "columns" = ["T (degC)"], "gpu_source_projection" = { "source_id" = "weather", "source_csv_path" = "/home/fzg/PycharmProjects/材料/TSBench_Corpus/weather.csv", "source_csv_sha256" = "sha256:34ee981d07313e51da2a50bb600072c8ae4a69cb4b0651f4cb93a069d7a2ba63", "column" = "T (degC)", "source_row_window" = [2048, 2176], "step" = 1, "source_dtype_conversion" = "CSV decimal via explicit Python float to little-endian f64", "rank_projection" = "existing loader represents exactly one selected CSV column as V[N]; no flattening of multiple channels", "normalization" = "none", "resampling" = "none", "missing" = "reject", "unit" = "degree_Celsius", "unit_evidence" = "column header explicitly labels degC", "license_status" = "primary_data_verified_preprocessed_packaging_terms_unknown", "license_spdx" = "CC-BY-4.0", "license_scope" = "MPI official data download page declares CC-BY-4.0. All 21 parsed numeric columns and timestamps match the two official 2020 roof archives. An additional license for the researcher-preprocessed CSV packaging was not found.", "data_distribution_policy" = "unchanged external local CSV only; no source data or derived windows bundled or redistributed" } }
+license = "unchanged external local source; CC-BY-4.0; see schema provenance"
+
+[[datasets]]
+id = "weather-single-f64-n512"
+format = "csv"
+path = "/home/fzg/PycharmProjects/材料/TSBench_Corpus/weather.csv"
+dtype = "<f8"
+encoding = "utf-8"
+delimiter = ","
+columns = ["T (degC)"]
+timestamp_column = "date"
+timestamp_parser = "datetime64"
+time_unit = "ns"
+missing = "reject"
+start = 2048
+stop = 2560
+step = 1
+source = "weather:column=T (degC):source_rows=2048:2560"
+order = "C"
+schema = { "roles" = { "V" = "V" }, "topology" = "UTS", "columns" = ["T (degC)"], "gpu_source_projection" = { "source_id" = "weather", "source_csv_path" = "/home/fzg/PycharmProjects/材料/TSBench_Corpus/weather.csv", "source_csv_sha256" = "sha256:34ee981d07313e51da2a50bb600072c8ae4a69cb4b0651f4cb93a069d7a2ba63", "column" = "T (degC)", "source_row_window" = [2048, 2560], "step" = 1, "source_dtype_conversion" = "CSV decimal via explicit Python float to little-endian f64", "rank_projection" = "existing loader represents exactly one selected CSV column as V[N]; no flattening of multiple channels", "normalization" = "none", "resampling" = "none", "missing" = "reject", "unit" = "degree_Celsius", "unit_evidence" = "column header explicitly labels degC", "license_status" = "primary_data_verified_preprocessed_packaging_terms_unknown", "license_spdx" = "CC-BY-4.0", "license_scope" = "MPI official data download page declares CC-BY-4.0. All 21 parsed numeric columns and timestamps match the two official 2020 roof archives. An additional license for the researcher-preprocessed CSV packaging was not found.", "data_distribution_policy" = "unchanged external local CSV only; no source data or derived windows bundled or redistributed" } }
+license = "unchanged external local source; CC-BY-4.0; see schema provenance"

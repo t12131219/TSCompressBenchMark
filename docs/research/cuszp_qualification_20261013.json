@@ -1,0 +1,100 @@
+{
+  "schema": "tsbench.cuszp-qualification-audit/1",
+  "qualification": {
+    "path": "runs/cuszp-qualification-20261013-v2/qualification.json",
+    "sha256": "36332d353cbf3643515878fd6f24cdd80a48ce05596346d36aa9e7111c68b387",
+    "nbytes": 1595185
+  },
+  "summary": {
+    "success_cases": 48,
+    "expected_source_rejections": 10,
+    "failure_subprocess_cases": 30,
+    "fresh_decoder_processes": 48,
+    "unexpected_errors": 0,
+    "all_checked_releases_completed": true
+  },
+  "build_identity": "a61617a03e2e244a9ac87ecf83178d2feb3580ea4b43d3d088cdfc94e0da6498",
+  "binary": {
+    "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/tsbench-gpu/a61617a03e2e244a9ac87ecf83178d2feb3580ea4b43d3d088cdfc94e0da6498/cuszp/libtsbench_cuszp_gpu.so",
+    "sha256": "22cd81dae3542b57fbb89c936197f750849e112a1be085fe45e090ef78ee756f",
+    "nbytes": 1485056
+  },
+  "capability_card": {
+    "path": "registry/gpu/cuszp-fixed-1d.json",
+    "sha256": "c68d38b379e0deeda4e2aaeca845ad053518697c3cc63cce716d540facbfa3a9",
+    "nbytes": 4875
+  },
+  "source_lock": {
+    "path": "adapters/cuszp/SOURCE_LOCK.json",
+    "sha256": "ce15de53fe5ee744aa859a89048555927c7dd8781ef5aa7003fca8d94049a049",
+    "nbytes": 2129
+  },
+  "script": {
+    "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/tools/qualify_cuszp.py",
+    "sha256": "2e5af6a580e353b8aa49a393d4d5024daf22b8825cfdd29725b20a3e4f33a2b6",
+    "nbytes": 18263
+  },
+  "frozen_qualification_script": {
+    "path": "runs/cuszp-qualification-20261013-v2/qualification_source.py",
+    "sha256": "2e5af6a580e353b8aa49a393d4d5024daf22b8825cfdd29725b20a3e4f33a2b6",
+    "nbytes": 18263
+  },
+  "device": {
+    "device": 0,
+    "name": "NVIDIA GeForce RTX 2070",
+    "compute_major": 7,
+    "compute_minor": 5,
+    "total_memory_bytes": 8353153024,
+    "multiprocessors": 36,
+    "runtime_version": 11080,
+    "driver_api_version": 12020,
+    "stream_flags": "cudaStreamNonBlocking",
+    "backend": "CUDA"
+  },
+  "all_78_child_native_library_hashes_equal": true,
+  "child_processes": 78,
+  "all_checked_child_resources_balanced": true,
+  "final_parent_diagnostics": {
+    "scope": "calling_thread_checked_adapter_objects",
+    "encode_launches": 96,
+    "decode_launches": 48,
+    "allocations": 720,
+    "releases": 720,
+    "live_bytes": 0,
+    "streams_created": 144,
+    "streams_released": 144,
+    "events_created": 288,
+    "events_released": 288
+  },
+  "max_abs_error": 0.0009251832962036133,
+  "actual_bound": 0.0009765625,
+  "vm_after_device_init": {
+    "source": "/proc/self/status",
+    "VmPeak_bytes": 5253844992,
+    "VmSize_bytes": 5063950336,
+    "VmHWM_bytes": 64929792,
+    "VmRSS_bytes": 64929792
+  },
+  "max_observed_VmSize_bytes": 5508485120,
+  "max_observed_VmPeak_bytes": 5602312192,
+  "max_observed_VmRSS_bytes": 174600192,
+  "historical_single_tile_failure": {
+    "partial_report": {
+      "path": "runs/cuszp-qualification-20261013/qualification.partial.json",
+      "sha256": "6b9d0faadcc00e9acbaf9578916f2641c8dc6ddd588e914adeb124eb6422af75",
+      "nbytes": 22107
+    },
+    "independent_reproduction": {
+      "path": "runs/cuszp-qualification-20261013/single-tile-failure.json",
+      "sha256": "b30cff6e1b0dc293090cb6a546e20206b4c9e6250b3f5e750a3d1a865b307861",
+      "nbytes": 1548
+    },
+    "limitation": "initial process did not emit full failure report before helper was strengthened; partial success records and a separate real fresh-process failure reproduction are retained, not reconstructed in-memory data"
+  },
+  "limits": [
+    "finite qualification corpus, not a universal proof over accepted source domain",
+    "runtime OOM, kernel execution faults and failed-context recovery are not injected or qualified",
+    "calling-thread checked adapter resource balance excludes CUDA context/library allocations"
+  ],
+  "performance_measurement": false
+}

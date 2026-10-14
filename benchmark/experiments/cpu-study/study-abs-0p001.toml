@@ -1,0 +1,92 @@
+# Fixed study grid; source hashes and selection are in study_design.json.
+schema = "tsbench.experiment/1"
+name = "study-abs-0p001"
+output = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/runs/study-abs-0p001-20261013"
+
+[[datasets]]
+id = "etth1-n128"
+format = "csv"
+path = "/home/fzg/PycharmProjects/材料/TSBench_Corpus/ETTh1.csv"
+dtype = "<f8"
+columns = ["OT"]
+start = 1024
+stop = 1152
+source = "etth1"
+
+[[datasets]]
+id = "etth1-n512"
+format = "csv"
+path = "/home/fzg/PycharmProjects/材料/TSBench_Corpus/ETTh1.csv"
+dtype = "<f8"
+columns = ["OT"]
+start = 1024
+stop = 1536
+source = "etth1"
+
+[[datasets]]
+id = "weather-n128"
+format = "csv"
+path = "/home/fzg/PycharmProjects/材料/TSBench_Corpus/weather.csv"
+dtype = "<f8"
+columns = ["T (degC)"]
+start = 1024
+stop = 1152
+source = "weather"
+
+[[datasets]]
+id = "weather-n512"
+format = "csv"
+path = "/home/fzg/PycharmProjects/材料/TSBench_Corpus/weather.csv"
+dtype = "<f8"
+columns = ["T (degC)"]
+start = 1024
+stop = 1536
+source = "weather"
+
+[[datasets]]
+id = "national_illness-n128"
+format = "csv"
+path = "/home/fzg/PycharmProjects/材料/TSBench_Corpus/national_illness.csv"
+dtype = "<f8"
+columns = ["ILITOTAL"]
+start = 256
+stop = 384
+source = "national_illness"
+
+[[datasets]]
+id = "national_illness-n512"
+format = "csv"
+path = "/home/fzg/PycharmProjects/材料/TSBench_Corpus/national_illness.csv"
+dtype = "<f8"
+columns = ["ILITOTAL"]
+start = 256
+stop = 768
+source = "national_illness"
+
+[[methods]]
+id = "serf-qt"
+codec = "serf-qt"
+params = { error_bound = "0.001" }
+
+[[methods]]
+id = "serf-xor"
+codec = "serf-xor"
+params = { error_bound = "0.001" }
+
+[[methods]]
+id = "zfp-accuracy-1d"
+codec = "zfp-accuracy-1d"
+params = { error_bound = "0.001" }
+
+[task]
+kind = "values"
+fidelity = "bounded_abs"
+error_bound = "0.001"
+
+[execution]
+sessions = 3
+rounds = 7
+warmup_objects = 2
+seed = 20261013
+timeout_s = 120
+qualification_cache = true

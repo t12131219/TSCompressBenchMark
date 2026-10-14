@@ -1,0 +1,1836 @@
+{
+  "schema": "tsbench.dataset-catalog/1",
+  "frozen_at_utc": "2026-10-13T07:23:06.247263+00:00",
+  "freeze_scope": "Exact CSV bytes and typed parse/window identities for the fixed three-source CPU study; not a representative population sample",
+  "raw_data_redistributed": false,
+  "study_design_path": "benchmark/experiments/cpu-study/study_design.json",
+  "datasets": [
+    {
+      "id": "etth1",
+      "file": {
+        "name": "ETTh1.csv",
+        "format": "csv",
+        "bytes": 2589657,
+        "sha256": "f18de3ad269cef59bb07b5438d79bb3042d3be49bdeecf01c1cd6d29695ee066",
+        "rows": 17420,
+        "columns": [
+          "date",
+          "HUFL",
+          "HULL",
+          "MUFL",
+          "MULL",
+          "LUFL",
+          "LULL",
+          "OT"
+        ],
+        "first_timestamp": "2016-07-01 00:00:00",
+        "last_timestamp": "2018-06-26 19:00:00"
+      },
+      "local_snapshot": {
+        "path": "/home/fzg/PycharmProjects/材料/TSBench_Corpus/ETTh1.csv",
+        "legacy_catalog_path": "/home/fzg/PycharmProjects/材料/TSBench_Corpus/catalog_legacy/etth1.json",
+        "legacy_catalog_sha256": "a2ab3dec729f60dc13072fb41e489b3986da5ec81b97f28eec50475d1e02a8f1",
+        "legacy_file_sha256_matches": true,
+        "original_local_acquisition_time": "unknown"
+      },
+      "parser": {
+        "encoding": "utf-8",
+        "encoding_errors": "strict",
+        "delimiter": ",",
+        "quotechar": "\"",
+        "strict_column_count": true,
+        "value_columns": [
+          "OT"
+        ],
+        "value_dtype": "<f8",
+        "value_conversion": "Python float token conversion to IEEE-754 binary64; whitespace accepted; nonfinite selected values rejected",
+        "timestamp_column": "date",
+        "timestamp_format": "%Y-%m-%d %H:%M:%S",
+        "timestamp_dtype": "<i8",
+        "time_unit": "ns",
+        "timestamp_interpretation": "Naive wall-clock strings mapped arithmetically against 1970-01-01 without timezone conversion; this is a benchmark representation, not a claim about source timezone",
+        "order_policy": "preserve; reject decreasing times; record adjacent duplicates",
+        "missing_policy": "No missing token imputation or normalization"
+      },
+      "study_split": {
+        "development": [
+          0,
+          1024
+        ],
+        "evaluation": [
+          1024,
+          1536
+        ],
+        "nested_lengths": [
+          128,
+          512
+        ],
+        "window_rule": "[evaluation_start, evaluation_start+length), stop-exclusive, row-based",
+        "dependence": "128 is the prefix of 512; windows/columns/rounds are not independent sources",
+        "selection": "fixed declared grid; development reserved, not used for method/parameter selection",
+        "pilot_warning": "Historical pilot [0:512) is within the reserved development interval and does not overlap this evaluation."
+      },
+      "acquisition": {
+        "manual_instructions": "Obtain the exact named CSV from the linked upstream distribution, place it in --directory, then run verify; a different hash is a different input version.",
+        "download_url": "https://raw.githubusercontent.com/zhouhaoyi/ETDataset/1d16c8f4f943005d613b5bc962e9eeb06058cf07/ETT-small/ETTh1.csv"
+      },
+      "license": {
+        "redistributed_in_this_repository": false,
+        "status": "dataset_repository_declared",
+        "spdx": "CC-BY-ND-4.0",
+        "evidence_url": "https://raw.githubusercontent.com/zhouhaoyi/ETDataset/1d16c8f4f943005d613b5bc962e9eeb06058cf07/LICENSE",
+        "evidence_sha256": "83cbb5c31415b1d0ee1d20d35dae3fda3a045b85fae9364cc57facc9cd6e0946",
+        "scope": "Root LICENSE of the author-maintained dataset repository; README describes its own collected/donated data. This is not an inference from a third-party code repository.",
+        "publication_policy": "Do not bundle raw data in this benchmark; link to original CSV and preserve attribution. Do not publish transformed datasets under an assumed derivative permission."
+      },
+      "upstream": {
+        "primary_repository": "https://github.com/zhouhaoyi/ETDataset",
+        "commit": "1d16c8f4f943005d613b5bc962e9eeb06058cf07",
+        "path": "ETT-small/ETTh1.csv",
+        "version_policy": "Pinned commit plus exact CSV SHA-256",
+        "readme_url": "https://raw.githubusercontent.com/zhouhaoyi/ETDataset/1d16c8f4f943005d613b5bc962e9eeb06058cf07/README.md",
+        "byte_identity_to_remote": "verified exact bytes and SHA-256",
+        "description_evidence": "README states the authors and Beijing Guowang Fuda collected and donated the transformer data; OT is oil temperature",
+        "citation": "Zhou et al., Informer, AAAI 2021, 35(12):11106-11115, https://arxiv.org/abs/2012.07436"
+      },
+      "frozen_parse": {
+        "rows": 17420,
+        "columns": [
+          "date",
+          "HUFL",
+          "HULL",
+          "MUFL",
+          "MULL",
+          "LUFL",
+          "LULL",
+          "OT"
+        ],
+        "selected_columns": [
+          "OT"
+        ],
+        "duplicate_adjacent_timestamps": 0,
+        "full_source": {
+          "start": 0,
+          "stop": 17420,
+          "rows": 17420,
+          "value_shape": [
+            17420
+          ],
+          "value_bytes": 139360,
+          "timestamp_bytes": 139360,
+          "value_logical_bytes_sha256": "3f2bdc80b5c66450c165599d6da09cbe0f336c58eef0888655c1d96b6e066488",
+          "timestamp_logical_bytes_sha256": "bef7f086128fb91580ae101c77b1cedaae12286e890b1e4574324f9ca5a530f8"
+        },
+        "development": {
+          "start": 0,
+          "stop": 1024,
+          "rows": 1024,
+          "value_shape": [
+            1024
+          ],
+          "value_bytes": 8192,
+          "timestamp_bytes": 8192,
+          "value_logical_bytes_sha256": "f02f705648fa388ff2d5c4e777e022a4bd71c91e67583dc8a6d302269439c579",
+          "timestamp_logical_bytes_sha256": "ae94b2a570a6093b402aba671edd9ee36a64dbd015746fec6639db0dc383e4b3"
+        },
+        "evaluation": {
+          "start": 1024,
+          "stop": 1536,
+          "rows": 512,
+          "value_shape": [
+            512
+          ],
+          "value_bytes": 4096,
+          "timestamp_bytes": 4096,
+          "value_logical_bytes_sha256": "1d927832dfe9b41b2ef6b05fa3285d967a07d6e01405cd05e8c0e26a47964b3e",
+          "timestamp_logical_bytes_sha256": "0984930bb0c5a6543709a490b92090f80efad4579fc9f6b5990d3946821e2504"
+        },
+        "nested_evaluation_windows": [
+          {
+            "start": 1024,
+            "stop": 1152,
+            "rows": 128,
+            "value_shape": [
+              128
+            ],
+            "value_bytes": 1024,
+            "timestamp_bytes": 1024,
+            "value_logical_bytes_sha256": "93f086d430979b3c1aa3259512048869dc708daa59fa6c83abd275243790483d",
+            "timestamp_logical_bytes_sha256": "154e84ca80441865c5f805863c81dfa78a1e712dc9b9ec8b7cab1cea483b8d6f"
+          },
+          {
+            "start": 1024,
+            "stop": 1536,
+            "rows": 512,
+            "value_shape": [
+              512
+            ],
+            "value_bytes": 4096,
+            "timestamp_bytes": 4096,
+            "value_logical_bytes_sha256": "1d927832dfe9b41b2ef6b05fa3285d967a07d6e01405cd05e8c0e26a47964b3e",
+            "timestamp_logical_bytes_sha256": "0984930bb0c5a6543709a490b92090f80efad4579fc9f6b5990d3946821e2504"
+          }
+        ],
+        "hash_scope": "Little-endian C-order component bytes; these are not tsbench raw_object_id hashes"
+      }
+    },
+    {
+      "id": "weather",
+      "file": {
+        "name": "weather.csv",
+        "format": "csv",
+        "bytes": 7235425,
+        "sha256": "34ee981d07313e51da2a50bb600072c8ae4a69cb4b0651f4cb93a069d7a2ba63",
+        "rows": 52696,
+        "columns": [
+          "date",
+          "p (mbar)",
+          "T (degC)",
+          "Tpot (K)",
+          "Tdew (degC)",
+          "rh (%)",
+          "VPmax (mbar)",
+          "VPact (mbar)",
+          "VPdef (mbar)",
+          "sh (g/kg)",
+          "H2OC (mmol/mol)",
+          "rho (g/m**3)",
+          "wv (m/s)",
+          "max. wv (m/s)",
+          "wd (deg)",
+          "rain (mm)",
+          "raining (s)",
+          "SWDR (W/m�)",
+          "PAR (�mol/m�/s)",
+          "max. PAR (�mol/m�/s)",
+          "Tlog (degC)",
+          "OT"
+        ],
+        "first_timestamp": "2020-01-01 00:10:00",
+        "last_timestamp": "2021-01-01 00:00:00"
+      },
+      "local_snapshot": {
+        "path": "/home/fzg/PycharmProjects/材料/TSBench_Corpus/weather.csv",
+        "legacy_catalog_path": "/home/fzg/PycharmProjects/材料/TSBench_Corpus/catalog_legacy/weather.json",
+        "legacy_catalog_sha256": "5e5b0a1ca5e19ebc5e12fad6624cdd20db62c8543ea2b433984c8c64167ea417",
+        "legacy_file_sha256_matches": true,
+        "original_local_acquisition_time": "unknown"
+      },
+      "parser": {
+        "encoding": "utf-8",
+        "encoding_errors": "strict",
+        "delimiter": ",",
+        "quotechar": "\"",
+        "strict_column_count": true,
+        "value_columns": [
+          "T (degC)"
+        ],
+        "value_dtype": "<f8",
+        "value_conversion": "Python float token conversion to IEEE-754 binary64; whitespace accepted; nonfinite selected values rejected",
+        "timestamp_column": "date",
+        "timestamp_format": "%Y-%m-%d %H:%M:%S",
+        "timestamp_dtype": "<i8",
+        "time_unit": "ns",
+        "timestamp_interpretation": "Naive wall-clock strings mapped arithmetically against 1970-01-01 without timezone conversion; this is a benchmark representation, not a claim about source timezone",
+        "order_policy": "preserve; reject decreasing times; record adjacent duplicates",
+        "missing_policy": "No missing token imputation or normalization"
+      },
+      "study_split": {
+        "development": [
+          0,
+          1024
+        ],
+        "evaluation": [
+          1024,
+          1536
+        ],
+        "nested_lengths": [
+          128,
+          512
+        ],
+        "window_rule": "[evaluation_start, evaluation_start+length), stop-exclusive, row-based",
+        "dependence": "128 is the prefix of 512; windows/columns/rounds are not independent sources",
+        "selection": "fixed declared grid; development reserved, not used for method/parameter selection",
+        "pilot_warning": "Historical pilot [0:512) is within the reserved development interval and does not overlap this evaluation."
+      },
+      "acquisition": {
+        "manual_instructions": "If the direct download is blocked/quota-limited, open https://drive.google.com/drive/folders/1Xz84ci5YKWL6O2I-58ZsVe42lYIfqui1, download weather.csv, place the unchanged CSV in --directory, and run verify. Never accept a browser HTML/quota page as CSV.",
+        "download_url": "https://drive.usercontent.google.com/download?id=1Tc7GeVN7DLEl-RAs-JVwG9yFMf--S8dy&export=download&authuser=0&confirm=t"
+      },
+      "license": {
+        "redistributed_in_this_repository": false,
+        "status": "primary_data_verified_preprocessed_packaging_terms_unknown",
+        "spdx": "CC-BY-4.0",
+        "evidence_url": "https://www.bgc-jena.mpg.de/wetter/weather_data.html",
+        "evidence_sha256": "66e62b59692aa48b3e94a9701c5fb916e621738c4ed8cb862543327f58846a9f",
+        "scope": "MPI official data download page declares CC-BY-4.0. All 21 parsed numeric columns and timestamps match the two official 2020 roof archives. An additional license for the researcher-preprocessed CSV packaging was not found.",
+        "publication_policy": "Do not bundle the preprocessed CSV; provide exact upstream/Drive acquisition routes, hashes, and MPI attribution. Code repository licenses are not used as data licenses."
+      },
+      "upstream": {
+        "distribution_repository": "https://github.com/thuml/Autoformer",
+        "distribution_readme_commit": "51c7d416ae120b805fd5beef2f4ccf7de496a6ff",
+        "distribution_readme_url": "https://raw.githubusercontent.com/thuml/Autoformer/51c7d416ae120b805fd5beef2f4ccf7de496a6ff/README.md",
+        "distribution_readme_sha256": "885424e599e692e4ac13c5b8b94913925dc770f09e2387832bcd4865b473c217",
+        "distribution_folder_url": "https://drive.google.com/drive/folders/1ZOYpTUa82_jCcxIdTmyr0LXQfvaM9vIy",
+        "dataset_folder_url": "https://drive.google.com/drive/folders/1Xz84ci5YKWL6O2I-58ZsVe42lYIfqui1",
+        "drive_file_id": "1Tc7GeVN7DLEl-RAs-JVwG9yFMf--S8dy",
+        "version_policy": "Drive file id is mutable; exact CSV SHA-256 defines the frozen data version, not the code commit",
+        "byte_identity_to_remote": "verified exact bytes and SHA-256 from the file linked by the author README",
+        "citation": "Wu et al., Autoformer, NeurIPS 2021, https://arxiv.org/abs/2106.13008",
+        "primary_source_url": "https://www.bgc-jena.mpg.de/wetter/weather_data.html",
+        "primary_source_archives": [
+          {
+            "requested_url": "https://www.bgc-jena.mpg.de/wetter/data/mpi_roof_2020a.zip",
+            "checked_at_utc": "2026-10-13T07:15:40.273629+00:00",
+            "status": "ok",
+            "http_status": 200,
+            "final_url": "https://www.bgc-jena.mpg.de/wetter/data/mpi_roof_2020a.zip",
+            "bytes": 1292650,
+            "sha256": "6a0be0552a2a26a04c3b41a5281d4a55ae251d4c65ce630971a8662f43b31f9f"
+          },
+          {
+            "requested_url": "https://www.bgc-jena.mpg.de/wetter/data/mpi_roof_2020b.zip",
+            "checked_at_utc": "2026-10-13T07:15:40.273938+00:00",
+            "status": "ok",
+            "http_status": 200,
+            "final_url": "https://www.bgc-jena.mpg.de/wetter/data/mpi_roof_2020b.zip",
+            "bytes": 1298224,
+            "sha256": "c37eca910ee2803b17b8c587f3194bc7625abf994576c50f32538dd7cb65ac77"
+          }
+        ],
+        "primary_source_comparison": {
+          "official_rows": 52696,
+          "local_rows": 52696,
+          "all_21_value_columns_bitwise_mismatch_rows": 0,
+          "timestamp_mismatch_rows": 0,
+          "first_mismatches": [],
+          "official_header": [
+            "Date Time",
+            "p (mbar)",
+            "T (degC)",
+            "Tpot (K)",
+            "Tdew (degC)",
+            "rh (%)",
+            "VPmax (mbar)",
+            "VPact (mbar)",
+            "VPdef (mbar)",
+            "sh (g/kg)",
+            "H2OC (mmol/mol)",
+            "rho (g/m**3)",
+            "wv (m/s)",
+            "max. wv (m/s)",
+            "wd (deg)",
+            "rain (mm)",
+            "raining (s)",
+            "SWDR (W/m²)",
+            "PAR (µmol/m²/s)",
+            "max. PAR (µmol/m²/s)",
+            "Tlog (degC)",
+            "CO2 (ppm)"
+          ],
+          "local_header": [
+            "date",
+            "p (mbar)",
+            "T (degC)",
+            "Tpot (K)",
+            "Tdew (degC)",
+            "rh (%)",
+            "VPmax (mbar)",
+            "VPact (mbar)",
+            "VPdef (mbar)",
+            "sh (g/kg)",
+            "H2OC (mmol/mol)",
+            "rho (g/m**3)",
+            "wv (m/s)",
+            "max. wv (m/s)",
+            "wd (deg)",
+            "rain (mm)",
+            "raining (s)",
+            "SWDR (W/m�)",
+            "PAR (�mol/m�/s)",
+            "max. PAR (�mol/m�/s)",
+            "Tlog (degC)",
+            "OT"
+          ],
+          "comparison": "Concatenate mpi_roof_2020a.csv then mpi_roof_2020b.csv; parse Latin-1 source CSV; dates dd.mm.yyyy to yyyy-mm-dd; float() then little-endian f64 for all 21 values; compare same row order"
+        }
+      },
+      "frozen_parse": {
+        "rows": 52696,
+        "columns": [
+          "date",
+          "p (mbar)",
+          "T (degC)",
+          "Tpot (K)",
+          "Tdew (degC)",
+          "rh (%)",
+          "VPmax (mbar)",
+          "VPact (mbar)",
+          "VPdef (mbar)",
+          "sh (g/kg)",
+          "H2OC (mmol/mol)",
+          "rho (g/m**3)",
+          "wv (m/s)",
+          "max. wv (m/s)",
+          "wd (deg)",
+          "rain (mm)",
+          "raining (s)",
+          "SWDR (W/m�)",
+          "PAR (�mol/m�/s)",
+          "max. PAR (�mol/m�/s)",
+          "Tlog (degC)",
+          "OT"
+        ],
+        "selected_columns": [
+          "T (degC)"
+        ],
+        "duplicate_adjacent_timestamps": 1,
+        "full_source": {
+          "start": 0,
+          "stop": 52696,
+          "rows": 52696,
+          "value_shape": [
+            52696
+          ],
+          "value_bytes": 421568,
+          "timestamp_bytes": 421568,
+          "value_logical_bytes_sha256": "1855d8333e99281e2e74280a5bca57457f6a982570ea748a2c25b92e141a2f56",
+          "timestamp_logical_bytes_sha256": "603a7589d6200c2a21669cafb52a3f44022bd32e6d554802d5b223eaf9182adc"
+        },
+        "development": {
+          "start": 0,
+          "stop": 1024,
+          "rows": 1024,
+          "value_shape": [
+            1024
+          ],
+          "value_bytes": 8192,
+          "timestamp_bytes": 8192,
+          "value_logical_bytes_sha256": "ae17afeba7079f5bb2e13e861fc530f63890cdcb9e705ef84b3cb5251ea31a14",
+          "timestamp_logical_bytes_sha256": "bb06b9bd2b96ff4f040fde448e2c956013ffea85bb08911ddb02f6027e63e6f7"
+        },
+        "evaluation": {
+          "start": 1024,
+          "stop": 1536,
+          "rows": 512,
+          "value_shape": [
+            512
+          ],
+          "value_bytes": 4096,
+          "timestamp_bytes": 4096,
+          "value_logical_bytes_sha256": "7fac51096222bdb6472bb35a51fd94b9957225b470b1b2c573fbff54bd6f9706",
+          "timestamp_logical_bytes_sha256": "619d091f346a9c89b93443a126bd2e30a3d305b77a883571e507ba2e4b586fc1"
+        },
+        "nested_evaluation_windows": [
+          {
+            "start": 1024,
+            "stop": 1152,
+            "rows": 128,
+            "value_shape": [
+              128
+            ],
+            "value_bytes": 1024,
+            "timestamp_bytes": 1024,
+            "value_logical_bytes_sha256": "3bbd43c516963bb1331b0a588605bcadff378878d0c2d5e315a1a9914e6841dd",
+            "timestamp_logical_bytes_sha256": "6fe6add4305ed85703356345cc7cfec6421a16cc475a262ec7455efc79e2fd3e"
+          },
+          {
+            "start": 1024,
+            "stop": 1536,
+            "rows": 512,
+            "value_shape": [
+              512
+            ],
+            "value_bytes": 4096,
+            "timestamp_bytes": 4096,
+            "value_logical_bytes_sha256": "7fac51096222bdb6472bb35a51fd94b9957225b470b1b2c573fbff54bd6f9706",
+            "timestamp_logical_bytes_sha256": "619d091f346a9c89b93443a126bd2e30a3d305b77a883571e507ba2e4b586fc1"
+          }
+        ],
+        "hash_scope": "Little-endian C-order component bytes; these are not tsbench raw_object_id hashes"
+      }
+    },
+    {
+      "id": "national_illness",
+      "file": {
+        "name": "national_illness.csv",
+        "format": "csv",
+        "bytes": 67620,
+        "sha256": "93601f64d2566dc796ca4305adad8b8560c2db1a1ff04543c3bd813a7263570a",
+        "rows": 966,
+        "columns": [
+          "date",
+          "% WEIGHTED ILI",
+          "%UNWEIGHTED ILI",
+          "AGE 0-4",
+          "AGE 5-24",
+          "ILITOTAL",
+          "NUM. OF PROVIDERS",
+          "OT"
+        ],
+        "first_timestamp": "2002-01-01 00:00:00",
+        "last_timestamp": "2020-06-30 00:00:00"
+      },
+      "local_snapshot": {
+        "path": "/home/fzg/PycharmProjects/材料/TSBench_Corpus/national_illness.csv",
+        "legacy_catalog_path": "/home/fzg/PycharmProjects/材料/TSBench_Corpus/catalog_legacy/national_illness.json",
+        "legacy_catalog_sha256": "890795849e4eeb6b7c015b5c08720625ef2723dd4848b7b7d07a7fa6e334b07e",
+        "legacy_file_sha256_matches": true,
+        "original_local_acquisition_time": "unknown"
+      },
+      "parser": {
+        "encoding": "utf-8",
+        "encoding_errors": "strict",
+        "delimiter": ",",
+        "quotechar": "\"",
+        "strict_column_count": true,
+        "value_columns": [
+          "ILITOTAL"
+        ],
+        "value_dtype": "<f8",
+        "value_conversion": "Python float token conversion to IEEE-754 binary64; whitespace accepted; nonfinite selected values rejected",
+        "timestamp_column": "date",
+        "timestamp_format": "%Y-%m-%d %H:%M:%S",
+        "timestamp_dtype": "<i8",
+        "time_unit": "ns",
+        "timestamp_interpretation": "Naive wall-clock strings mapped arithmetically against 1970-01-01 without timezone conversion; this is a benchmark representation, not a claim about source timezone",
+        "order_policy": "preserve; reject decreasing times; record adjacent duplicates",
+        "missing_policy": "No missing token imputation or normalization"
+      },
+      "study_split": {
+        "development": [
+          0,
+          256
+        ],
+        "evaluation": [
+          256,
+          768
+        ],
+        "nested_lengths": [
+          128,
+          512
+        ],
+        "window_rule": "[evaluation_start, evaluation_start+length), stop-exclusive, row-based",
+        "dependence": "128 is the prefix of 512; windows/columns/rounds are not independent sources",
+        "selection": "fixed declared grid; development reserved, not used for method/parameter selection",
+        "pilot_warning": "Historical pilot used [0:512), overlapping the current evaluation at [256:512). Development/evaluation are disjoint within the new design, but this evaluation is not a wholly unobserved holdout. No selector/test-object tuning is claimed."
+      },
+      "acquisition": {
+        "manual_instructions": "If the direct download is blocked/quota-limited, open https://drive.google.com/drive/folders/1DasX30lzEwcVXYaNeyMlQ0PSmCQSow5h, download national_illness.csv, place the unchanged CSV in --directory, and run verify. Never accept a browser HTML/quota page as CSV.",
+        "download_url": "https://drive.usercontent.google.com/download?id=1n4kDxT38rQEGmczIaYaaUWqRPWs-rtcH&export=download&authuser=0&confirm=t"
+      },
+      "license": {
+        "redistributed_in_this_repository": false,
+        "status": "unknown",
+        "spdx": null,
+        "evidence_url": null,
+        "scope": "No data-specific license was established for this exact researcher-preprocessed CSV. The Autoformer code license and a generic U.S. government public-domain assumption do not establish this file license.",
+        "publication_policy": "No raw CSV redistribution. Local research evidence retains hash; users obtain the file from the author-linked distribution and check its own applicable terms."
+      },
+      "upstream": {
+        "distribution_repository": "https://github.com/thuml/Autoformer",
+        "distribution_readme_commit": "51c7d416ae120b805fd5beef2f4ccf7de496a6ff",
+        "distribution_readme_url": "https://raw.githubusercontent.com/thuml/Autoformer/51c7d416ae120b805fd5beef2f4ccf7de496a6ff/README.md",
+        "distribution_readme_sha256": "885424e599e692e4ac13c5b8b94913925dc770f09e2387832bcd4865b473c217",
+        "distribution_folder_url": "https://drive.google.com/drive/folders/1ZOYpTUa82_jCcxIdTmyr0LXQfvaM9vIy",
+        "dataset_folder_url": "https://drive.google.com/drive/folders/1DasX30lzEwcVXYaNeyMlQ0PSmCQSow5h",
+        "drive_file_id": "1n4kDxT38rQEGmczIaYaaUWqRPWs-rtcH",
+        "version_policy": "Drive file id is mutable; exact CSV SHA-256 defines the frozen data version, not the code commit",
+        "byte_identity_to_remote": "verified exact bytes and SHA-256 from the file linked by the author README",
+        "citation": "Wu et al., Autoformer, NeurIPS 2021, https://arxiv.org/abs/2106.13008",
+        "primary_source_claim": "CDC ILINet national illness; exact primary extraction/revision and preprocessing script remain unverified",
+        "primary_source_url": "https://www.cdc.gov/fluview/overview/ilinet.html",
+        "primary_source_access_status": "HTTP 403 Forbidden on 2026-10-13"
+      },
+      "frozen_parse": {
+        "rows": 966,
+        "columns": [
+          "date",
+          "% WEIGHTED ILI",
+          "%UNWEIGHTED ILI",
+          "AGE 0-4",
+          "AGE 5-24",
+          "ILITOTAL",
+          "NUM. OF PROVIDERS",
+          "OT"
+        ],
+        "selected_columns": [
+          "ILITOTAL"
+        ],
+        "duplicate_adjacent_timestamps": 0,
+        "full_source": {
+          "start": 0,
+          "stop": 966,
+          "rows": 966,
+          "value_shape": [
+            966
+          ],
+          "value_bytes": 7728,
+          "timestamp_bytes": 7728,
+          "value_logical_bytes_sha256": "ab633ad2538114d0a8bd84085e2e9f80b112519eb839714092d098e3f94d6946",
+          "timestamp_logical_bytes_sha256": "bb1bb3ee9ac3943af7f0a4752c3d5f715f899de1c5f4d4e93f077b7ea72ccb86"
+        },
+        "development": {
+          "start": 0,
+          "stop": 256,
+          "rows": 256,
+          "value_shape": [
+            256
+          ],
+          "value_bytes": 2048,
+          "timestamp_bytes": 2048,
+          "value_logical_bytes_sha256": "d5a6be0ece0e3c35b5962a9794409f0400bf21432901e34b2f9db1a31e5689cc",
+          "timestamp_logical_bytes_sha256": "6c579cec4abfab3f63d4cae5d38b8831e260735ac696414fc3f6b3114975e843"
+        },
+        "evaluation": {
+          "start": 256,
+          "stop": 768,
+          "rows": 512,
+          "value_shape": [
+            512
+          ],
+          "value_bytes": 4096,
+          "timestamp_bytes": 4096,
+          "value_logical_bytes_sha256": "2e2854c644edbe097229d40921b71092dd13b6485ddb1df78e85f6dd4aef3d26",
+          "timestamp_logical_bytes_sha256": "6edb5835ef1bce3c4dc63045c89362a7678dbc4df34f93e7b722e40c0970744f"
+        },
+        "nested_evaluation_windows": [
+          {
+            "start": 256,
+            "stop": 384,
+            "rows": 128,
+            "value_shape": [
+              128
+            ],
+            "value_bytes": 1024,
+            "timestamp_bytes": 1024,
+            "value_logical_bytes_sha256": "1376fc6c04eb5d1a21f9903e57c32421771febab95fdc7304a708c957b26dd8c",
+            "timestamp_logical_bytes_sha256": "d90b562a10222c50c35bb263a3a407a3770337c454eb10c6ca4f271c5ae22d5b"
+          },
+          {
+            "start": 256,
+            "stop": 768,
+            "rows": 512,
+            "value_shape": [
+              512
+            ],
+            "value_bytes": 4096,
+            "timestamp_bytes": 4096,
+            "value_logical_bytes_sha256": "2e2854c644edbe097229d40921b71092dd13b6485ddb1df78e85f6dd4aef3d26",
+            "timestamp_logical_bytes_sha256": "6edb5835ef1bce3c4dc63045c89362a7678dbc4df34f93e7b722e40c0970744f"
+          }
+        ],
+        "hash_scope": "Little-endian C-order component bytes; these are not tsbench raw_object_id hashes"
+      }
+    }
+  ],
+  "evidence": {
+    "public_access_probes": [
+      {
+        "requested_url": "https://api.github.com/repos/zhouhaoyi/ETDataset",
+        "checked_at_utc": "2026-10-13T07:10:46.085379+00:00",
+        "status": "error",
+        "error_type": "HTTPError",
+        "reason": "HTTP Error 403: rate limit exceeded"
+      },
+      {
+        "requested_url": "https://api.github.com/repos/zhouhaoyi/ETDataset/commits/main",
+        "checked_at_utc": "2026-10-13T07:10:46.086124+00:00",
+        "status": "error",
+        "error_type": "HTTPError",
+        "reason": "HTTP Error 403: rate limit exceeded"
+      },
+      {
+        "requested_url": "https://api.github.com/repos/thuml/Autoformer/commits/main",
+        "checked_at_utc": "2026-10-13T07:10:46.086518+00:00",
+        "status": "error",
+        "error_type": "HTTPError",
+        "reason": "HTTP Error 403: rate limit exceeded"
+      },
+      {
+        "requested_url": "https://raw.githubusercontent.com/zhouhaoyi/ETDataset/main/README.md",
+        "checked_at_utc": "2026-10-13T07:10:46.086929+00:00",
+        "status": "ok",
+        "http_status": 200,
+        "final_url": "https://raw.githubusercontent.com/zhouhaoyi/ETDataset/main/README.md",
+        "bytes": 5398,
+        "sha256": "c1dfee894da23fec609fb6770d4fdfd8497970e1b88fcf72b3922f93a7cd706c"
+      },
+      {
+        "requested_url": "https://raw.githubusercontent.com/zhouhaoyi/ETDataset/main/LICENSE",
+        "checked_at_utc": "2026-10-13T07:10:46.087364+00:00",
+        "status": "ok",
+        "http_status": 200,
+        "final_url": "https://raw.githubusercontent.com/zhouhaoyi/ETDataset/main/LICENSE",
+        "bytes": 17818,
+        "sha256": "83cbb5c31415b1d0ee1d20d35dae3fda3a045b85fae9364cc57facc9cd6e0946",
+        "excerpt": "Creative Commons Attribution-NoDerivatives 4.0 International"
+      },
+      {
+        "requested_url": "https://raw.githubusercontent.com/thuml/Autoformer/main/README.md",
+        "checked_at_utc": "2026-10-13T07:10:47.435993+00:00",
+        "status": "ok",
+        "http_status": 200,
+        "final_url": "https://raw.githubusercontent.com/thuml/Autoformer/main/README.md",
+        "bytes": 5686,
+        "sha256": "885424e599e692e4ac13c5b8b94913925dc770f09e2387832bcd4865b473c217"
+      },
+      {
+        "requested_url": "https://www.bgc-jena.mpg.de/wetter/",
+        "checked_at_utc": "2026-10-13T07:10:47.648762+00:00",
+        "status": "ok",
+        "http_status": 200,
+        "final_url": "https://www.bgc-jena.mpg.de/wetter/",
+        "bytes": 10283,
+        "sha256": "ffa468092628ca066f9bfa54472bee772458b9ab42c0a9907d884a897eb28a81"
+      },
+      {
+        "requested_url": "https://www.cdc.gov/fluview/overview/ilinet.html",
+        "checked_at_utc": "2026-10-13T07:10:47.657838+00:00",
+        "status": "error",
+        "error_type": "HTTPError",
+        "reason": "HTTP Error 403: Forbidden"
+      },
+      {
+        "requested_url": "https://api.github.com/repos/cure-lab/LTSF-Linear/commits/main",
+        "checked_at_utc": "2026-10-13T07:10:47.676573+00:00",
+        "status": "error",
+        "error_type": "HTTPError",
+        "reason": "HTTP Error 403: rate limit exceeded"
+      },
+      {
+        "requested_url": "https://raw.githubusercontent.com/cure-lab/LTSF-Linear/main/README.md",
+        "checked_at_utc": "2026-10-13T07:10:47.682366+00:00",
+        "status": "ok",
+        "http_status": 200,
+        "final_url": "https://raw.githubusercontent.com/cure-lab/LTSF-Linear/main/README.md",
+        "bytes": 8698,
+        "sha256": "c5fb6414ea674df1a42339e562651706a1da5052e55d9d698bf66e33e0eaf5e6"
+      },
+      {
+        "requested_url": "https://www.bgc-jena.mpg.de/wetter/weather_data.html",
+        "checked_at_utc": "2026-10-13T07:14:02.404196+00:00",
+        "status": "ok",
+        "http_status": 200,
+        "final_url": "https://www.bgc-jena.mpg.de/wetter/weather_data.html",
+        "bytes": 12858,
+        "sha256": "66e62b59692aa48b3e94a9701c5fb916e621738c4ed8cb862543327f58846a9f",
+        "excerpt": "Terms of Use (as per Creative Commons CC-BY-4.0)"
+      },
+      {
+        "requested_url": "https://drive.google.com/drive/folders/1ZOYpTUa82_jCcxIdTmyr0LXQfvaM9vIy",
+        "checked_at_utc": "2026-10-13T07:14:02.405083+00:00",
+        "status": "ok",
+        "http_status": 200,
+        "final_url": "https://drive.google.com/drive/folders/1ZOYpTUa82_jCcxIdTmyr0LXQfvaM9vIy",
+        "bytes": 361870,
+        "sha256": "343f2dadceec9ffbd0b06d76b56d849dd360dc2fe0709a7352e9aa74cb8252ca"
+      },
+      {
+        "requested_url": "https://raw.githubusercontent.com/zhouhaoyi/ETDataset/1d16c8f4f943005d613b5bc962e9eeb06058cf07/README.md",
+        "checked_at_utc": "2026-10-13T07:14:02.405413+00:00",
+        "status": "ok",
+        "http_status": 200,
+        "final_url": "https://raw.githubusercontent.com/zhouhaoyi/ETDataset/1d16c8f4f943005d613b5bc962e9eeb06058cf07/README.md",
+        "bytes": 5398,
+        "sha256": "c1dfee894da23fec609fb6770d4fdfd8497970e1b88fcf72b3922f93a7cd706c"
+      },
+      {
+        "requested_url": "https://raw.githubusercontent.com/thuml/Autoformer/51c7d416ae120b805fd5beef2f4ccf7de496a6ff/README.md",
+        "checked_at_utc": "2026-10-13T07:14:02.405664+00:00",
+        "status": "ok",
+        "http_status": 200,
+        "final_url": "https://raw.githubusercontent.com/thuml/Autoformer/51c7d416ae120b805fd5beef2f4ccf7de496a6ff/README.md",
+        "bytes": 5686,
+        "sha256": "885424e599e692e4ac13c5b8b94913925dc770f09e2387832bcd4865b473c217"
+      },
+      {
+        "requested_url": "https://raw.githubusercontent.com/cure-lab/LTSF-Linear/0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6/README.md",
+        "checked_at_utc": "2026-10-13T07:14:02.406055+00:00",
+        "status": "ok",
+        "http_status": 200,
+        "final_url": "https://raw.githubusercontent.com/cure-lab/LTSF-Linear/0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6/README.md",
+        "bytes": 8698,
+        "sha256": "c5fb6414ea674df1a42339e562651706a1da5052e55d9d698bf66e33e0eaf5e6"
+      },
+      {
+        "requested_url": "https://raw.githubusercontent.com/zhouhaoyi/ETDataset/1d16c8f4f943005d613b5bc962e9eeb06058cf07/LICENSE",
+        "checked_at_utc": "2026-10-13T07:14:03.862406+00:00",
+        "status": "ok",
+        "http_status": 200,
+        "final_url": "https://raw.githubusercontent.com/zhouhaoyi/ETDataset/1d16c8f4f943005d613b5bc962e9eeb06058cf07/LICENSE",
+        "bytes": 17818,
+        "sha256": "83cbb5c31415b1d0ee1d20d35dae3fda3a045b85fae9364cc57facc9cd6e0946",
+        "excerpt": "Creative Commons Attribution-NoDerivatives 4.0 International"
+      },
+      {
+        "requested_url": "https://raw.githubusercontent.com/zhouhaoyi/ETDataset/1d16c8f4f943005d613b5bc962e9eeb06058cf07/ETT-small/ETTh1.csv",
+        "checked_at_utc": "2026-10-13T07:14:03.877516+00:00",
+        "status": "ok",
+        "http_status": 200,
+        "final_url": "https://raw.githubusercontent.com/zhouhaoyi/ETDataset/1d16c8f4f943005d613b5bc962e9eeb06058cf07/ETT-small/ETTh1.csv",
+        "bytes": 2589657,
+        "sha256": "f18de3ad269cef59bb07b5438d79bb3042d3be49bdeecf01c1cd6d29695ee066"
+      },
+      {
+        "requested_url": "https://drive.google.com/drive/folders/1DasX30lzEwcVXYaNeyMlQ0PSmCQSow5h",
+        "checked_at_utc": "2026-10-13T07:15:40.272561+00:00",
+        "status": "ok",
+        "http_status": 200,
+        "final_url": "https://drive.google.com/drive/folders/1DasX30lzEwcVXYaNeyMlQ0PSmCQSow5h",
+        "bytes": 309867,
+        "sha256": "f373e1f15245e8434f51ee04c02de8f51b51d888d38ee987cec09583dbd3ac0f"
+      },
+      {
+        "requested_url": "https://drive.google.com/drive/folders/1Xz84ci5YKWL6O2I-58ZsVe42lYIfqui1",
+        "checked_at_utc": "2026-10-13T07:15:40.273282+00:00",
+        "status": "ok",
+        "http_status": 200,
+        "final_url": "https://drive.google.com/drive/folders/1Xz84ci5YKWL6O2I-58ZsVe42lYIfqui1",
+        "bytes": 309901,
+        "sha256": "ef58232757e1af0db4f25a11f5296b5c9e85c3dd58b9b03bb4eb8d254ce7f056"
+      },
+      {
+        "requested_url": "https://www.bgc-jena.mpg.de/wetter/data/mpi_roof_2020a.zip",
+        "checked_at_utc": "2026-10-13T07:15:40.273629+00:00",
+        "status": "ok",
+        "http_status": 200,
+        "final_url": "https://www.bgc-jena.mpg.de/wetter/data/mpi_roof_2020a.zip",
+        "bytes": 1292650,
+        "sha256": "6a0be0552a2a26a04c3b41a5281d4a55ae251d4c65ce630971a8662f43b31f9f"
+      },
+      {
+        "requested_url": "https://www.bgc-jena.mpg.de/wetter/data/mpi_roof_2020b.zip",
+        "checked_at_utc": "2026-10-13T07:15:40.273938+00:00",
+        "status": "ok",
+        "http_status": 200,
+        "final_url": "https://www.bgc-jena.mpg.de/wetter/data/mpi_roof_2020b.zip",
+        "bytes": 1298224,
+        "sha256": "c37eca910ee2803b17b8c587f3194bc7625abf994576c50f32538dd7cb65ac77"
+      },
+      {
+        "dataset_id": "weather",
+        "requested_url": "https://drive.usercontent.google.com/download?id=1Tc7GeVN7DLEl-RAs-JVwG9yFMf--S8dy&export=download&authuser=0&confirm=t",
+        "checked_at_utc": "2026-10-13T07:19:35.598386+00:00",
+        "status": "ok",
+        "http_status": 200,
+        "final_url": "https://drive.usercontent.google.com/download?id=1Tc7GeVN7DLEl-RAs-JVwG9yFMf--S8dy&export=download&authuser=0&confirm=t",
+        "bytes": 7235425,
+        "sha256": "34ee981d07313e51da2a50bb600072c8ae4a69cb4b0651f4cb93a069d7a2ba63",
+        "content_type": "application/octet-stream"
+      },
+      {
+        "dataset_id": "national_illness",
+        "requested_url": "https://drive.usercontent.google.com/download?id=1n4kDxT38rQEGmczIaYaaUWqRPWs-rtcH&export=download&authuser=0&confirm=t",
+        "checked_at_utc": "2026-10-13T07:19:35.599379+00:00",
+        "status": "ok",
+        "http_status": 200,
+        "final_url": "https://drive.usercontent.google.com/download?id=1n4kDxT38rQEGmczIaYaaUWqRPWs-rtcH&export=download&authuser=0&confirm=t",
+        "bytes": 67620,
+        "sha256": "93601f64d2566dc796ca4305adad8b8560c2db1a1ff04543c3bd813a7263570a",
+        "content_type": "application/octet-stream"
+      }
+    ],
+    "repository_ref_probes": [
+      {
+        "repository": "zhouhaoyi/ETDataset",
+        "checked_at_utc": "2026-10-13T07:12:45.526237+00:00",
+        "command": "git ls-remote https://github.com/zhouhaoyi/ETDataset.git refs/heads/main",
+        "exit_code": 0,
+        "stdout": "1d16c8f4f943005d613b5bc962e9eeb06058cf07\trefs/heads/main\n",
+        "stderr": ""
+      },
+      {
+        "repository": "thuml/Autoformer",
+        "checked_at_utc": "2026-10-13T07:12:45.875993+00:00",
+        "command": "git ls-remote https://github.com/thuml/Autoformer.git refs/heads/main",
+        "exit_code": 0,
+        "stdout": "51c7d416ae120b805fd5beef2f4ccf7de496a6ff\trefs/heads/main\n",
+        "stderr": ""
+      },
+      {
+        "repository": "cure-lab/LTSF-Linear",
+        "checked_at_utc": "2026-10-13T07:12:45.814794+00:00",
+        "command": "git ls-remote https://github.com/cure-lab/LTSF-Linear.git refs/heads/main",
+        "exit_code": 0,
+        "stdout": "0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6\trefs/heads/main\n",
+        "stderr": ""
+      }
+    ],
+    "initial_sandbox_probe": {
+      "requested_url": "https://api.github.com/repos/zhouhaoyi/ETDataset/commits/main",
+      "status": "error",
+      "error_type": "URLError",
+      "reason": "<urlopen error [Errno 1] Operation not permitted>",
+      "resolution": "Read-only public network access was retried with approved sandbox escalation"
+    },
+    "acquisition_checks": [
+      {
+        "check": "local_csv_verification",
+        "expected_manifest_status": "complete",
+        "observed_manifest_status": "complete",
+        "original_manifest_sha256": "e6a72fd479d66b4105b7570fcac0a610ebbc03afd4f6cc2b0717b89d3aad45dc",
+        "manifest": {
+          "schema": "tsbench.data-acquisition/1",
+          "started_at_utc": "2026-10-13T07:26:45.471033+00:00",
+          "status": "complete",
+          "action": "verify",
+          "directory": "/home/fzg/PycharmProjects/材料/TSBench_Corpus",
+          "catalog_path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/registry/datasets/catalog.json",
+          "script_sha256": "9e356ac5271fb4e6bc1cd2f571826dd2a2120b1b39689e84931fe6524ac8bd4b",
+          "python_version": "3.11.5 (main, Sep 11 2023, 13:54:46) [GCC 11.2.0]",
+          "selected_dataset_ids": null,
+          "timeout_s": 30,
+          "records": [
+            {
+              "dataset_id": "etth1",
+              "status": "ok",
+              "started_at_utc": "2026-10-13T07:26:45.475031+00:00",
+              "expected_bytes": 2589657,
+              "expected_sha256": "f18de3ad269cef59bb07b5438d79bb3042d3be49bdeecf01c1cd6d29695ee066",
+              "license": {
+                "redistributed_in_this_repository": false,
+                "status": "dataset_repository_declared",
+                "spdx": "CC-BY-ND-4.0",
+                "evidence_url": "https://raw.githubusercontent.com/zhouhaoyi/ETDataset/1d16c8f4f943005d613b5bc962e9eeb06058cf07/LICENSE",
+                "evidence_sha256": "83cbb5c31415b1d0ee1d20d35dae3fda3a045b85fae9364cc57facc9cd6e0946",
+                "scope": "Root LICENSE of the author-maintained dataset repository; README describes its own collected/donated data. This is not an inference from a third-party code repository.",
+                "publication_policy": "Do not bundle raw data in this benchmark; link to original CSV and preserve attribution. Do not publish transformed datasets under an assumed derivative permission."
+              },
+              "download_installed": false,
+              "stage": "complete",
+              "path": "/home/fzg/PycharmProjects/材料/TSBench_Corpus/ETTh1.csv",
+              "actual_bytes": 2589657,
+              "actual_sha256": "f18de3ad269cef59bb07b5438d79bb3042d3be49bdeecf01c1cd6d29695ee066",
+              "parse": {
+                "rows": 17420,
+                "columns": [
+                  "date",
+                  "HUFL",
+                  "HULL",
+                  "MUFL",
+                  "MULL",
+                  "LUFL",
+                  "LULL",
+                  "OT"
+                ],
+                "selected_columns": [
+                  "OT"
+                ],
+                "duplicate_adjacent_timestamps": 0,
+                "full_source": {
+                  "start": 0,
+                  "stop": 17420,
+                  "rows": 17420,
+                  "value_shape": [
+                    17420
+                  ],
+                  "value_bytes": 139360,
+                  "timestamp_bytes": 139360,
+                  "value_logical_bytes_sha256": "3f2bdc80b5c66450c165599d6da09cbe0f336c58eef0888655c1d96b6e066488",
+                  "timestamp_logical_bytes_sha256": "bef7f086128fb91580ae101c77b1cedaae12286e890b1e4574324f9ca5a530f8"
+                },
+                "development": {
+                  "start": 0,
+                  "stop": 1024,
+                  "rows": 1024,
+                  "value_shape": [
+                    1024
+                  ],
+                  "value_bytes": 8192,
+                  "timestamp_bytes": 8192,
+                  "value_logical_bytes_sha256": "f02f705648fa388ff2d5c4e777e022a4bd71c91e67583dc8a6d302269439c579",
+                  "timestamp_logical_bytes_sha256": "ae94b2a570a6093b402aba671edd9ee36a64dbd015746fec6639db0dc383e4b3"
+                },
+                "evaluation": {
+                  "start": 1024,
+                  "stop": 1536,
+                  "rows": 512,
+                  "value_shape": [
+                    512
+                  ],
+                  "value_bytes": 4096,
+                  "timestamp_bytes": 4096,
+                  "value_logical_bytes_sha256": "1d927832dfe9b41b2ef6b05fa3285d967a07d6e01405cd05e8c0e26a47964b3e",
+                  "timestamp_logical_bytes_sha256": "0984930bb0c5a6543709a490b92090f80efad4579fc9f6b5990d3946821e2504"
+                },
+                "nested_evaluation_windows": [
+                  {
+                    "start": 1024,
+                    "stop": 1152,
+                    "rows": 128,
+                    "value_shape": [
+                      128
+                    ],
+                    "value_bytes": 1024,
+                    "timestamp_bytes": 1024,
+                    "value_logical_bytes_sha256": "93f086d430979b3c1aa3259512048869dc708daa59fa6c83abd275243790483d",
+                    "timestamp_logical_bytes_sha256": "154e84ca80441865c5f805863c81dfa78a1e712dc9b9ec8b7cab1cea483b8d6f"
+                  },
+                  {
+                    "start": 1024,
+                    "stop": 1536,
+                    "rows": 512,
+                    "value_shape": [
+                      512
+                    ],
+                    "value_bytes": 4096,
+                    "timestamp_bytes": 4096,
+                    "value_logical_bytes_sha256": "1d927832dfe9b41b2ef6b05fa3285d967a07d6e01405cd05e8c0e26a47964b3e",
+                    "timestamp_logical_bytes_sha256": "0984930bb0c5a6543709a490b92090f80efad4579fc9f6b5990d3946821e2504"
+                  }
+                ],
+                "hash_scope": "Little-endian C-order component bytes; these are not tsbench raw_object_id hashes"
+              },
+              "finished_at_utc": "2026-10-13T07:26:45.579442+00:00"
+            },
+            {
+              "dataset_id": "weather",
+              "status": "ok",
+              "started_at_utc": "2026-10-13T07:26:45.581021+00:00",
+              "expected_bytes": 7235425,
+              "expected_sha256": "34ee981d07313e51da2a50bb600072c8ae4a69cb4b0651f4cb93a069d7a2ba63",
+              "license": {
+                "redistributed_in_this_repository": false,
+                "status": "primary_data_verified_preprocessed_packaging_terms_unknown",
+                "spdx": "CC-BY-4.0",
+                "evidence_url": "https://www.bgc-jena.mpg.de/wetter/weather_data.html",
+                "evidence_sha256": "66e62b59692aa48b3e94a9701c5fb916e621738c4ed8cb862543327f58846a9f",
+                "scope": "MPI official data download page declares CC-BY-4.0. All 21 parsed numeric columns and timestamps match the two official 2020 roof archives. An additional license for the researcher-preprocessed CSV packaging was not found.",
+                "publication_policy": "Do not bundle the preprocessed CSV; provide exact upstream/Drive acquisition routes, hashes, and MPI attribution. Code repository licenses are not used as data licenses."
+              },
+              "download_installed": false,
+              "stage": "complete",
+              "path": "/home/fzg/PycharmProjects/材料/TSBench_Corpus/weather.csv",
+              "actual_bytes": 7235425,
+              "actual_sha256": "34ee981d07313e51da2a50bb600072c8ae4a69cb4b0651f4cb93a069d7a2ba63",
+              "parse": {
+                "rows": 52696,
+                "columns": [
+                  "date",
+                  "p (mbar)",
+                  "T (degC)",
+                  "Tpot (K)",
+                  "Tdew (degC)",
+                  "rh (%)",
+                  "VPmax (mbar)",
+                  "VPact (mbar)",
+                  "VPdef (mbar)",
+                  "sh (g/kg)",
+                  "H2OC (mmol/mol)",
+                  "rho (g/m**3)",
+                  "wv (m/s)",
+                  "max. wv (m/s)",
+                  "wd (deg)",
+                  "rain (mm)",
+                  "raining (s)",
+                  "SWDR (W/m�)",
+                  "PAR (�mol/m�/s)",
+                  "max. PAR (�mol/m�/s)",
+                  "Tlog (degC)",
+                  "OT"
+                ],
+                "selected_columns": [
+                  "T (degC)"
+                ],
+                "duplicate_adjacent_timestamps": 1,
+                "full_source": {
+                  "start": 0,
+                  "stop": 52696,
+                  "rows": 52696,
+                  "value_shape": [
+                    52696
+                  ],
+                  "value_bytes": 421568,
+                  "timestamp_bytes": 421568,
+                  "value_logical_bytes_sha256": "1855d8333e99281e2e74280a5bca57457f6a982570ea748a2c25b92e141a2f56",
+                  "timestamp_logical_bytes_sha256": "603a7589d6200c2a21669cafb52a3f44022bd32e6d554802d5b223eaf9182adc"
+                },
+                "development": {
+                  "start": 0,
+                  "stop": 1024,
+                  "rows": 1024,
+                  "value_shape": [
+                    1024
+                  ],
+                  "value_bytes": 8192,
+                  "timestamp_bytes": 8192,
+                  "value_logical_bytes_sha256": "ae17afeba7079f5bb2e13e861fc530f63890cdcb9e705ef84b3cb5251ea31a14",
+                  "timestamp_logical_bytes_sha256": "bb06b9bd2b96ff4f040fde448e2c956013ffea85bb08911ddb02f6027e63e6f7"
+                },
+                "evaluation": {
+                  "start": 1024,
+                  "stop": 1536,
+                  "rows": 512,
+                  "value_shape": [
+                    512
+                  ],
+                  "value_bytes": 4096,
+                  "timestamp_bytes": 4096,
+                  "value_logical_bytes_sha256": "7fac51096222bdb6472bb35a51fd94b9957225b470b1b2c573fbff54bd6f9706",
+                  "timestamp_logical_bytes_sha256": "619d091f346a9c89b93443a126bd2e30a3d305b77a883571e507ba2e4b586fc1"
+                },
+                "nested_evaluation_windows": [
+                  {
+                    "start": 1024,
+                    "stop": 1152,
+                    "rows": 128,
+                    "value_shape": [
+                      128
+                    ],
+                    "value_bytes": 1024,
+                    "timestamp_bytes": 1024,
+                    "value_logical_bytes_sha256": "3bbd43c516963bb1331b0a588605bcadff378878d0c2d5e315a1a9914e6841dd",
+                    "timestamp_logical_bytes_sha256": "6fe6add4305ed85703356345cc7cfec6421a16cc475a262ec7455efc79e2fd3e"
+                  },
+                  {
+                    "start": 1024,
+                    "stop": 1536,
+                    "rows": 512,
+                    "value_shape": [
+                      512
+                    ],
+                    "value_bytes": 4096,
+                    "timestamp_bytes": 4096,
+                    "value_logical_bytes_sha256": "7fac51096222bdb6472bb35a51fd94b9957225b470b1b2c573fbff54bd6f9706",
+                    "timestamp_logical_bytes_sha256": "619d091f346a9c89b93443a126bd2e30a3d305b77a883571e507ba2e4b586fc1"
+                  }
+                ],
+                "hash_scope": "Little-endian C-order component bytes; these are not tsbench raw_object_id hashes"
+              },
+              "finished_at_utc": "2026-10-13T07:26:45.907713+00:00"
+            },
+            {
+              "dataset_id": "national_illness",
+              "status": "ok",
+              "started_at_utc": "2026-10-13T07:26:45.911474+00:00",
+              "expected_bytes": 67620,
+              "expected_sha256": "93601f64d2566dc796ca4305adad8b8560c2db1a1ff04543c3bd813a7263570a",
+              "license": {
+                "redistributed_in_this_repository": false,
+                "status": "unknown",
+                "spdx": null,
+                "evidence_url": null,
+                "scope": "No data-specific license was established for this exact researcher-preprocessed CSV. The Autoformer code license and a generic U.S. government public-domain assumption do not establish this file license.",
+                "publication_policy": "No raw CSV redistribution. Local research evidence retains hash; users obtain the file from the author-linked distribution and check its own applicable terms."
+              },
+              "download_installed": false,
+              "stage": "complete",
+              "path": "/home/fzg/PycharmProjects/材料/TSBench_Corpus/national_illness.csv",
+              "actual_bytes": 67620,
+              "actual_sha256": "93601f64d2566dc796ca4305adad8b8560c2db1a1ff04543c3bd813a7263570a",
+              "parse": {
+                "rows": 966,
+                "columns": [
+                  "date",
+                  "% WEIGHTED ILI",
+                  "%UNWEIGHTED ILI",
+                  "AGE 0-4",
+                  "AGE 5-24",
+                  "ILITOTAL",
+                  "NUM. OF PROVIDERS",
+                  "OT"
+                ],
+                "selected_columns": [
+                  "ILITOTAL"
+                ],
+                "duplicate_adjacent_timestamps": 0,
+                "full_source": {
+                  "start": 0,
+                  "stop": 966,
+                  "rows": 966,
+                  "value_shape": [
+                    966
+                  ],
+                  "value_bytes": 7728,
+                  "timestamp_bytes": 7728,
+                  "value_logical_bytes_sha256": "ab633ad2538114d0a8bd84085e2e9f80b112519eb839714092d098e3f94d6946",
+                  "timestamp_logical_bytes_sha256": "bb1bb3ee9ac3943af7f0a4752c3d5f715f899de1c5f4d4e93f077b7ea72ccb86"
+                },
+                "development": {
+                  "start": 0,
+                  "stop": 256,
+                  "rows": 256,
+                  "value_shape": [
+                    256
+                  ],
+                  "value_bytes": 2048,
+                  "timestamp_bytes": 2048,
+                  "value_logical_bytes_sha256": "d5a6be0ece0e3c35b5962a9794409f0400bf21432901e34b2f9db1a31e5689cc",
+                  "timestamp_logical_bytes_sha256": "6c579cec4abfab3f63d4cae5d38b8831e260735ac696414fc3f6b3114975e843"
+                },
+                "evaluation": {
+                  "start": 256,
+                  "stop": 768,
+                  "rows": 512,
+                  "value_shape": [
+                    512
+                  ],
+                  "value_bytes": 4096,
+                  "timestamp_bytes": 4096,
+                  "value_logical_bytes_sha256": "2e2854c644edbe097229d40921b71092dd13b6485ddb1df78e85f6dd4aef3d26",
+                  "timestamp_logical_bytes_sha256": "6edb5835ef1bce3c4dc63045c89362a7678dbc4df34f93e7b722e40c0970744f"
+                },
+                "nested_evaluation_windows": [
+                  {
+                    "start": 256,
+                    "stop": 384,
+                    "rows": 128,
+                    "value_shape": [
+                      128
+                    ],
+                    "value_bytes": 1024,
+                    "timestamp_bytes": 1024,
+                    "value_logical_bytes_sha256": "1376fc6c04eb5d1a21f9903e57c32421771febab95fdc7304a708c957b26dd8c",
+                    "timestamp_logical_bytes_sha256": "d90b562a10222c50c35bb263a3a407a3770337c454eb10c6ca4f271c5ae22d5b"
+                  },
+                  {
+                    "start": 256,
+                    "stop": 768,
+                    "rows": 512,
+                    "value_shape": [
+                      512
+                    ],
+                    "value_bytes": 4096,
+                    "timestamp_bytes": 4096,
+                    "value_logical_bytes_sha256": "2e2854c644edbe097229d40921b71092dd13b6485ddb1df78e85f6dd4aef3d26",
+                    "timestamp_logical_bytes_sha256": "6edb5835ef1bce3c4dc63045c89362a7678dbc4df34f93e7b722e40c0970744f"
+                  }
+                ],
+                "hash_scope": "Little-endian C-order component bytes; these are not tsbench raw_object_id hashes"
+              },
+              "finished_at_utc": "2026-10-13T07:26:45.917741+00:00"
+            }
+          ],
+          "catalog_sha256": "c010df0b82222d8f7763a6196c0cb182f26ca8a0d1779d36ba576064dc980095",
+          "freeze_id": "sha256:1b3250e241bd3da4c5910a568b47e5a1ac8722d36d1d73e2f81963d8e6cad9a5",
+          "finished_at_utc": "2026-10-13T07:26:45.918998+00:00"
+        }
+      },
+      {
+        "check": "actual_upstream_download_and_verification",
+        "expected_manifest_status": "complete",
+        "observed_manifest_status": "complete",
+        "original_manifest_sha256": "63d4ca3f4baee806989f77b2c723ff4276d158ea1921f0aaadb35cc310057887",
+        "manifest": {
+          "schema": "tsbench.data-acquisition/1",
+          "started_at_utc": "2026-10-13T07:24:29.073046+00:00",
+          "status": "complete",
+          "action": "fetch",
+          "directory": "/tmp/tsbench-source-fetched",
+          "catalog_path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/registry/datasets/catalog.json",
+          "script_sha256": "33dc901c40e55d5d44f0fa09351aaa27aabda93f5cfc2f39c5d456a3bc6eba90",
+          "python_version": "3.11.5 (main, Sep 11 2023, 13:54:46) [GCC 11.2.0]",
+          "selected_dataset_ids": null,
+          "timeout_s": 30,
+          "records": [
+            {
+              "dataset_id": "etth1",
+              "status": "ok",
+              "started_at_utc": "2026-10-13T07:24:29.074637+00:00",
+              "expected_bytes": 2589657,
+              "expected_sha256": "f18de3ad269cef59bb07b5438d79bb3042d3be49bdeecf01c1cd6d29695ee066",
+              "license": {
+                "redistributed_in_this_repository": false,
+                "status": "dataset_repository_declared",
+                "spdx": "CC-BY-ND-4.0",
+                "evidence_url": "https://raw.githubusercontent.com/zhouhaoyi/ETDataset/1d16c8f4f943005d613b5bc962e9eeb06058cf07/LICENSE",
+                "evidence_sha256": "83cbb5c31415b1d0ee1d20d35dae3fda3a045b85fae9364cc57facc9cd6e0946",
+                "scope": "Root LICENSE of the author-maintained dataset repository; README describes its own collected/donated data. This is not an inference from a third-party code repository.",
+                "publication_policy": "Do not bundle raw data in this benchmark; link to original CSV and preserve attribution. Do not publish transformed datasets under an assumed derivative permission."
+              },
+              "download_installed": true,
+              "stage": "complete",
+              "requested_url": "https://raw.githubusercontent.com/zhouhaoyi/ETDataset/1d16c8f4f943005d613b5bc962e9eeb06058cf07/ETT-small/ETTh1.csv",
+              "transfer_started_at_utc": "2026-10-13T07:24:29.075734+00:00",
+              "received_bytes": 2589657,
+              "http_status": 200,
+              "final_url": "https://raw.githubusercontent.com/zhouhaoyi/ETDataset/1d16c8f4f943005d613b5bc962e9eeb06058cf07/ETT-small/ETTh1.csv",
+              "content_type": "text/plain; charset=utf-8",
+              "content_length": "2589657",
+              "etag": "\"a99344d5cb9e3149052f13de166d8cf25404a50f36d2372c4b76376baf9634b0\"",
+              "last_modified": null,
+              "received_sha256": "f18de3ad269cef59bb07b5438d79bb3042d3be49bdeecf01c1cd6d29695ee066",
+              "path": "/tmp/tsbench-source-fetched/ETTh1.csv",
+              "actual_bytes": 2589657,
+              "actual_sha256": "f18de3ad269cef59bb07b5438d79bb3042d3be49bdeecf01c1cd6d29695ee066",
+              "parse": {
+                "rows": 17420,
+                "columns": [
+                  "date",
+                  "HUFL",
+                  "HULL",
+                  "MUFL",
+                  "MULL",
+                  "LUFL",
+                  "LULL",
+                  "OT"
+                ],
+                "selected_columns": [
+                  "OT"
+                ],
+                "duplicate_adjacent_timestamps": 0,
+                "full_source": {
+                  "start": 0,
+                  "stop": 17420,
+                  "rows": 17420,
+                  "value_shape": [
+                    17420
+                  ],
+                  "value_bytes": 139360,
+                  "timestamp_bytes": 139360,
+                  "value_logical_bytes_sha256": "3f2bdc80b5c66450c165599d6da09cbe0f336c58eef0888655c1d96b6e066488",
+                  "timestamp_logical_bytes_sha256": "bef7f086128fb91580ae101c77b1cedaae12286e890b1e4574324f9ca5a530f8"
+                },
+                "development": {
+                  "start": 0,
+                  "stop": 1024,
+                  "rows": 1024,
+                  "value_shape": [
+                    1024
+                  ],
+                  "value_bytes": 8192,
+                  "timestamp_bytes": 8192,
+                  "value_logical_bytes_sha256": "f02f705648fa388ff2d5c4e777e022a4bd71c91e67583dc8a6d302269439c579",
+                  "timestamp_logical_bytes_sha256": "ae94b2a570a6093b402aba671edd9ee36a64dbd015746fec6639db0dc383e4b3"
+                },
+                "evaluation": {
+                  "start": 1024,
+                  "stop": 1536,
+                  "rows": 512,
+                  "value_shape": [
+                    512
+                  ],
+                  "value_bytes": 4096,
+                  "timestamp_bytes": 4096,
+                  "value_logical_bytes_sha256": "1d927832dfe9b41b2ef6b05fa3285d967a07d6e01405cd05e8c0e26a47964b3e",
+                  "timestamp_logical_bytes_sha256": "0984930bb0c5a6543709a490b92090f80efad4579fc9f6b5990d3946821e2504"
+                },
+                "nested_evaluation_windows": [
+                  {
+                    "start": 1024,
+                    "stop": 1152,
+                    "rows": 128,
+                    "value_shape": [
+                      128
+                    ],
+                    "value_bytes": 1024,
+                    "timestamp_bytes": 1024,
+                    "value_logical_bytes_sha256": "93f086d430979b3c1aa3259512048869dc708daa59fa6c83abd275243790483d",
+                    "timestamp_logical_bytes_sha256": "154e84ca80441865c5f805863c81dfa78a1e712dc9b9ec8b7cab1cea483b8d6f"
+                  },
+                  {
+                    "start": 1024,
+                    "stop": 1536,
+                    "rows": 512,
+                    "value_shape": [
+                      512
+                    ],
+                    "value_bytes": 4096,
+                    "timestamp_bytes": 4096,
+                    "value_logical_bytes_sha256": "1d927832dfe9b41b2ef6b05fa3285d967a07d6e01405cd05e8c0e26a47964b3e",
+                    "timestamp_logical_bytes_sha256": "0984930bb0c5a6543709a490b92090f80efad4579fc9f6b5990d3946821e2504"
+                  }
+                ],
+                "hash_scope": "Little-endian C-order component bytes; these are not tsbench raw_object_id hashes"
+              },
+              "transfer_finished_at_utc": "2026-10-13T07:24:31.806145+00:00",
+              "finished_at_utc": "2026-10-13T07:24:31.806173+00:00"
+            },
+            {
+              "dataset_id": "weather",
+              "status": "ok",
+              "started_at_utc": "2026-10-13T07:24:31.808211+00:00",
+              "expected_bytes": 7235425,
+              "expected_sha256": "34ee981d07313e51da2a50bb600072c8ae4a69cb4b0651f4cb93a069d7a2ba63",
+              "license": {
+                "redistributed_in_this_repository": false,
+                "status": "primary_data_verified_preprocessed_packaging_terms_unknown",
+                "spdx": "CC-BY-4.0",
+                "evidence_url": "https://www.bgc-jena.mpg.de/wetter/weather_data.html",
+                "evidence_sha256": "66e62b59692aa48b3e94a9701c5fb916e621738c4ed8cb862543327f58846a9f",
+                "scope": "MPI official data download page declares CC-BY-4.0. All 21 parsed numeric columns and timestamps match the two official 2020 roof archives. An additional license for the researcher-preprocessed CSV packaging was not found.",
+                "publication_policy": "Do not bundle the preprocessed CSV; provide exact upstream/Drive acquisition routes, hashes, and MPI attribution. Code repository licenses are not used as data licenses."
+              },
+              "download_installed": true,
+              "stage": "complete",
+              "requested_url": "https://drive.usercontent.google.com/download?id=1Tc7GeVN7DLEl-RAs-JVwG9yFMf--S8dy&export=download&authuser=0&confirm=t",
+              "transfer_started_at_utc": "2026-10-13T07:24:31.810039+00:00",
+              "received_bytes": 7235425,
+              "http_status": 200,
+              "final_url": "https://drive.usercontent.google.com/download?id=1Tc7GeVN7DLEl-RAs-JVwG9yFMf--S8dy&export=download&authuser=0&confirm=t",
+              "content_type": "application/octet-stream",
+              "content_length": "7235425",
+              "etag": null,
+              "last_modified": "Wed, 27 Oct 2021 14:15:01 GMT",
+              "received_sha256": "34ee981d07313e51da2a50bb600072c8ae4a69cb4b0651f4cb93a069d7a2ba63",
+              "path": "/tmp/tsbench-source-fetched/weather.csv",
+              "actual_bytes": 7235425,
+              "actual_sha256": "34ee981d07313e51da2a50bb600072c8ae4a69cb4b0651f4cb93a069d7a2ba63",
+              "parse": {
+                "rows": 52696,
+                "columns": [
+                  "date",
+                  "p (mbar)",
+                  "T (degC)",
+                  "Tpot (K)",
+                  "Tdew (degC)",
+                  "rh (%)",
+                  "VPmax (mbar)",
+                  "VPact (mbar)",
+                  "VPdef (mbar)",
+                  "sh (g/kg)",
+                  "H2OC (mmol/mol)",
+                  "rho (g/m**3)",
+                  "wv (m/s)",
+                  "max. wv (m/s)",
+                  "wd (deg)",
+                  "rain (mm)",
+                  "raining (s)",
+                  "SWDR (W/m�)",
+                  "PAR (�mol/m�/s)",
+                  "max. PAR (�mol/m�/s)",
+                  "Tlog (degC)",
+                  "OT"
+                ],
+                "selected_columns": [
+                  "T (degC)"
+                ],
+                "duplicate_adjacent_timestamps": 1,
+                "full_source": {
+                  "start": 0,
+                  "stop": 52696,
+                  "rows": 52696,
+                  "value_shape": [
+                    52696
+                  ],
+                  "value_bytes": 421568,
+                  "timestamp_bytes": 421568,
+                  "value_logical_bytes_sha256": "1855d8333e99281e2e74280a5bca57457f6a982570ea748a2c25b92e141a2f56",
+                  "timestamp_logical_bytes_sha256": "603a7589d6200c2a21669cafb52a3f44022bd32e6d554802d5b223eaf9182adc"
+                },
+                "development": {
+                  "start": 0,
+                  "stop": 1024,
+                  "rows": 1024,
+                  "value_shape": [
+                    1024
+                  ],
+                  "value_bytes": 8192,
+                  "timestamp_bytes": 8192,
+                  "value_logical_bytes_sha256": "ae17afeba7079f5bb2e13e861fc530f63890cdcb9e705ef84b3cb5251ea31a14",
+                  "timestamp_logical_bytes_sha256": "bb06b9bd2b96ff4f040fde448e2c956013ffea85bb08911ddb02f6027e63e6f7"
+                },
+                "evaluation": {
+                  "start": 1024,
+                  "stop": 1536,
+                  "rows": 512,
+                  "value_shape": [
+                    512
+                  ],
+                  "value_bytes": 4096,
+                  "timestamp_bytes": 4096,
+                  "value_logical_bytes_sha256": "7fac51096222bdb6472bb35a51fd94b9957225b470b1b2c573fbff54bd6f9706",
+                  "timestamp_logical_bytes_sha256": "619d091f346a9c89b93443a126bd2e30a3d305b77a883571e507ba2e4b586fc1"
+                },
+                "nested_evaluation_windows": [
+                  {
+                    "start": 1024,
+                    "stop": 1152,
+                    "rows": 128,
+                    "value_shape": [
+                      128
+                    ],
+                    "value_bytes": 1024,
+                    "timestamp_bytes": 1024,
+                    "value_logical_bytes_sha256": "3bbd43c516963bb1331b0a588605bcadff378878d0c2d5e315a1a9914e6841dd",
+                    "timestamp_logical_bytes_sha256": "6fe6add4305ed85703356345cc7cfec6421a16cc475a262ec7455efc79e2fd3e"
+                  },
+                  {
+                    "start": 1024,
+                    "stop": 1536,
+                    "rows": 512,
+                    "value_shape": [
+                      512
+                    ],
+                    "value_bytes": 4096,
+                    "timestamp_bytes": 4096,
+                    "value_logical_bytes_sha256": "7fac51096222bdb6472bb35a51fd94b9957225b470b1b2c573fbff54bd6f9706",
+                    "timestamp_logical_bytes_sha256": "619d091f346a9c89b93443a126bd2e30a3d305b77a883571e507ba2e4b586fc1"
+                  }
+                ],
+                "hash_scope": "Little-endian C-order component bytes; these are not tsbench raw_object_id hashes"
+              },
+              "transfer_finished_at_utc": "2026-10-13T07:24:36.245568+00:00",
+              "finished_at_utc": "2026-10-13T07:24:36.245601+00:00"
+            },
+            {
+              "dataset_id": "national_illness",
+              "status": "ok",
+              "started_at_utc": "2026-10-13T07:24:36.246979+00:00",
+              "expected_bytes": 67620,
+              "expected_sha256": "93601f64d2566dc796ca4305adad8b8560c2db1a1ff04543c3bd813a7263570a",
+              "license": {
+                "redistributed_in_this_repository": false,
+                "status": "unknown",
+                "spdx": null,
+                "evidence_url": null,
+                "scope": "No data-specific license was established for this exact researcher-preprocessed CSV. The Autoformer code license and a generic U.S. government public-domain assumption do not establish this file license.",
+                "publication_policy": "No raw CSV redistribution. Local research evidence retains hash; users obtain the file from the author-linked distribution and check its own applicable terms."
+              },
+              "download_installed": true,
+              "stage": "complete",
+              "requested_url": "https://drive.usercontent.google.com/download?id=1n4kDxT38rQEGmczIaYaaUWqRPWs-rtcH&export=download&authuser=0&confirm=t",
+              "transfer_started_at_utc": "2026-10-13T07:24:36.248303+00:00",
+              "received_bytes": 67620,
+              "http_status": 200,
+              "final_url": "https://drive.usercontent.google.com/download?id=1n4kDxT38rQEGmczIaYaaUWqRPWs-rtcH&export=download&authuser=0&confirm=t",
+              "content_type": "application/octet-stream",
+              "content_length": "67620",
+              "etag": null,
+              "last_modified": "Wed, 27 Oct 2021 14:05:29 GMT",
+              "received_sha256": "93601f64d2566dc796ca4305adad8b8560c2db1a1ff04543c3bd813a7263570a",
+              "path": "/tmp/tsbench-source-fetched/national_illness.csv",
+              "actual_bytes": 67620,
+              "actual_sha256": "93601f64d2566dc796ca4305adad8b8560c2db1a1ff04543c3bd813a7263570a",
+              "parse": {
+                "rows": 966,
+                "columns": [
+                  "date",
+                  "% WEIGHTED ILI",
+                  "%UNWEIGHTED ILI",
+                  "AGE 0-4",
+                  "AGE 5-24",
+                  "ILITOTAL",
+                  "NUM. OF PROVIDERS",
+                  "OT"
+                ],
+                "selected_columns": [
+                  "ILITOTAL"
+                ],
+                "duplicate_adjacent_timestamps": 0,
+                "full_source": {
+                  "start": 0,
+                  "stop": 966,
+                  "rows": 966,
+                  "value_shape": [
+                    966
+                  ],
+                  "value_bytes": 7728,
+                  "timestamp_bytes": 7728,
+                  "value_logical_bytes_sha256": "ab633ad2538114d0a8bd84085e2e9f80b112519eb839714092d098e3f94d6946",
+                  "timestamp_logical_bytes_sha256": "bb1bb3ee9ac3943af7f0a4752c3d5f715f899de1c5f4d4e93f077b7ea72ccb86"
+                },
+                "development": {
+                  "start": 0,
+                  "stop": 256,
+                  "rows": 256,
+                  "value_shape": [
+                    256
+                  ],
+                  "value_bytes": 2048,
+                  "timestamp_bytes": 2048,
+                  "value_logical_bytes_sha256": "d5a6be0ece0e3c35b5962a9794409f0400bf21432901e34b2f9db1a31e5689cc",
+                  "timestamp_logical_bytes_sha256": "6c579cec4abfab3f63d4cae5d38b8831e260735ac696414fc3f6b3114975e843"
+                },
+                "evaluation": {
+                  "start": 256,
+                  "stop": 768,
+                  "rows": 512,
+                  "value_shape": [
+                    512
+                  ],
+                  "value_bytes": 4096,
+                  "timestamp_bytes": 4096,
+                  "value_logical_bytes_sha256": "2e2854c644edbe097229d40921b71092dd13b6485ddb1df78e85f6dd4aef3d26",
+                  "timestamp_logical_bytes_sha256": "6edb5835ef1bce3c4dc63045c89362a7678dbc4df34f93e7b722e40c0970744f"
+                },
+                "nested_evaluation_windows": [
+                  {
+                    "start": 256,
+                    "stop": 384,
+                    "rows": 128,
+                    "value_shape": [
+                      128
+                    ],
+                    "value_bytes": 1024,
+                    "timestamp_bytes": 1024,
+                    "value_logical_bytes_sha256": "1376fc6c04eb5d1a21f9903e57c32421771febab95fdc7304a708c957b26dd8c",
+                    "timestamp_logical_bytes_sha256": "d90b562a10222c50c35bb263a3a407a3770337c454eb10c6ca4f271c5ae22d5b"
+                  },
+                  {
+                    "start": 256,
+                    "stop": 768,
+                    "rows": 512,
+                    "value_shape": [
+                      512
+                    ],
+                    "value_bytes": 4096,
+                    "timestamp_bytes": 4096,
+                    "value_logical_bytes_sha256": "2e2854c644edbe097229d40921b71092dd13b6485ddb1df78e85f6dd4aef3d26",
+                    "timestamp_logical_bytes_sha256": "6edb5835ef1bce3c4dc63045c89362a7678dbc4df34f93e7b722e40c0970744f"
+                  }
+                ],
+                "hash_scope": "Little-endian C-order component bytes; these are not tsbench raw_object_id hashes"
+              },
+              "transfer_finished_at_utc": "2026-10-13T07:24:39.129434+00:00",
+              "finished_at_utc": "2026-10-13T07:24:39.129459+00:00"
+            }
+          ],
+          "catalog_sha256": "c010df0b82222d8f7763a6196c0cb182f26ca8a0d1779d36ba576064dc980095",
+          "freeze_id": "sha256:1b3250e241bd3da4c5910a568b47e5a1ac8722d36d1d73e2f81963d8e6cad9a5",
+          "finished_at_utc": "2026-10-13T07:24:39.131097+00:00"
+        }
+      },
+      {
+        "check": "deliberate_missing_file_rejection",
+        "expected_manifest_status": "failed",
+        "observed_manifest_status": "failed",
+        "original_manifest_sha256": "b08272444b5acc2232cc8dfad800653de6aa65006862922907da2909b8603e13",
+        "manifest": {
+          "schema": "tsbench.data-acquisition/1",
+          "started_at_utc": "2026-10-13T07:24:03.740358+00:00",
+          "status": "failed",
+          "action": "verify",
+          "directory": "/tmp/tsbench-source-deliberately-missing",
+          "catalog_path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/registry/datasets/catalog.json",
+          "script_sha256": "33dc901c40e55d5d44f0fa09351aaa27aabda93f5cfc2f39c5d456a3bc6eba90",
+          "python_version": "3.11.5 (main, Sep 11 2023, 13:54:46) [GCC 11.2.0]",
+          "selected_dataset_ids": [
+            "national_illness"
+          ],
+          "timeout_s": 30,
+          "records": [
+            {
+              "dataset_id": "national_illness",
+              "status": "error",
+              "started_at_utc": "2026-10-13T07:24:03.743583+00:00",
+              "expected_bytes": 67620,
+              "expected_sha256": "93601f64d2566dc796ca4305adad8b8560c2db1a1ff04543c3bd813a7263570a",
+              "license": {
+                "redistributed_in_this_repository": false,
+                "status": "unknown",
+                "spdx": null,
+                "evidence_url": null,
+                "scope": "No data-specific license was established for this exact researcher-preprocessed CSV. The Autoformer code license and a generic U.S. government public-domain assumption do not establish this file license.",
+                "publication_policy": "No raw CSV redistribution. Local research evidence retains hash; users obtain the file from the author-linked distribution and check its own applicable terms."
+              },
+              "download_installed": false,
+              "stage": "verify_existing",
+              "error_type": "FileNotFoundError",
+              "reason": "[Errno 2] No such file or directory: '/tmp/tsbench-source-deliberately-missing/national_illness.csv'",
+              "finished_at_utc": "2026-10-13T07:24:03.745005+00:00"
+            }
+          ],
+          "catalog_sha256": "c010df0b82222d8f7763a6196c0cb182f26ca8a0d1779d36ba576064dc980095",
+          "freeze_id": "sha256:1b3250e241bd3da4c5910a568b47e5a1ac8722d36d1d73e2f81963d8e6cad9a5",
+          "finished_at_utc": "2026-10-13T07:24:03.748011+00:00"
+        }
+      },
+      {
+        "check": "deliberate_same_length_one_byte_corruption_rejection",
+        "expected_manifest_status": "failed",
+        "observed_manifest_status": "failed",
+        "original_manifest_sha256": "828d8bfd26bae550af09076597a2aee03f75d867fbcb7d81f1566b3794510757",
+        "manifest": {
+          "schema": "tsbench.data-acquisition/1",
+          "started_at_utc": "2026-10-13T07:24:23.544386+00:00",
+          "status": "failed",
+          "action": "verify",
+          "directory": "/tmp/tsbench-source-corruption-check",
+          "catalog_path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/registry/datasets/catalog.json",
+          "script_sha256": "33dc901c40e55d5d44f0fa09351aaa27aabda93f5cfc2f39c5d456a3bc6eba90",
+          "python_version": "3.11.5 (main, Sep 11 2023, 13:54:46) [GCC 11.2.0]",
+          "selected_dataset_ids": [
+            "national_illness"
+          ],
+          "timeout_s": 30,
+          "records": [
+            {
+              "dataset_id": "national_illness",
+              "status": "error",
+              "started_at_utc": "2026-10-13T07:24:23.548366+00:00",
+              "expected_bytes": 67620,
+              "expected_sha256": "93601f64d2566dc796ca4305adad8b8560c2db1a1ff04543c3bd813a7263570a",
+              "license": {
+                "redistributed_in_this_repository": false,
+                "status": "unknown",
+                "spdx": null,
+                "evidence_url": null,
+                "scope": "No data-specific license was established for this exact researcher-preprocessed CSV. The Autoformer code license and a generic U.S. government public-domain assumption do not establish this file license.",
+                "publication_policy": "No raw CSV redistribution. Local research evidence retains hash; users obtain the file from the author-linked distribution and check its own applicable terms."
+              },
+              "download_installed": false,
+              "stage": "verify_existing",
+              "path": "/tmp/tsbench-source-corruption-check/national_illness.csv",
+              "actual_bytes": 67620,
+              "actual_sha256": "b974dbdf70bc044337be6b02fb7cb533047858eabe7d49dd882fdd100cb38113",
+              "error_type": "ValueError",
+              "reason": "file SHA-256 differs from frozen catalog",
+              "finished_at_utc": "2026-10-13T07:24:23.549536+00:00"
+            }
+          ],
+          "catalog_sha256": "c010df0b82222d8f7763a6196c0cb182f26ca8a0d1779d36ba576064dc980095",
+          "freeze_id": "sha256:1b3250e241bd3da4c5910a568b47e5a1ac8722d36d1d73e2f81963d8e6cad9a5",
+          "finished_at_utc": "2026-10-13T07:24:23.550591+00:00"
+        }
+      },
+      {
+        "check": "deliberate_stale_catalog_identity_rejection",
+        "expected_manifest_status": "failed",
+        "observed_manifest_status": "failed",
+        "original_manifest_sha256": "efab10a97a2a5c67d7106a73609e6b4a6744dc2bdbdd14984854afa7d20728a0",
+        "manifest": {
+          "schema": "tsbench.data-acquisition/1",
+          "started_at_utc": "2026-10-13T07:26:45.996958+00:00",
+          "status": "failed",
+          "action": "verify",
+          "directory": "/home/fzg/PycharmProjects/材料/TSBench_Corpus",
+          "catalog_path": "/tmp/tsbench-source-stale-catalog.json",
+          "script_sha256": "9e356ac5271fb4e6bc1cd2f571826dd2a2120b1b39689e84931fe6524ac8bd4b",
+          "python_version": "3.11.5 (main, Sep 11 2023, 13:54:46) [GCC 11.2.0]",
+          "selected_dataset_ids": null,
+          "timeout_s": 30,
+          "records": [],
+          "catalog_sha256": "14085765127b903935ca51d8803261110b64b924364b1c95896cfb89c20d8f23",
+          "error_type": "ValueError",
+          "reason": "dataset catalog freeze_id mismatch",
+          "finished_at_utc": "2026-10-13T07:26:45.997446+00:00"
+        }
+      },
+      {
+        "check": "deliberate_wrong_download_url_bounded_rejection",
+        "expected_manifest_status": "failed",
+        "observed_manifest_status": "failed",
+        "original_manifest_sha256": "c7b1a5f0b78175be463fa5da61cace3bf76e5b281a5c66748c5fdd4d6c98c25c",
+        "manifest": {
+          "schema": "tsbench.data-acquisition/1",
+          "started_at_utc": "2026-10-13T07:26:52.784986+00:00",
+          "status": "failed",
+          "action": "fetch",
+          "directory": "/tmp/tsbench-source-wrong-url",
+          "catalog_path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/registry/datasets/catalog.json",
+          "script_sha256": "9e356ac5271fb4e6bc1cd2f571826dd2a2120b1b39689e84931fe6524ac8bd4b",
+          "python_version": "3.11.5 (main, Sep 11 2023, 13:54:46) [GCC 11.2.0]",
+          "selected_dataset_ids": [
+            "national_illness"
+          ],
+          "timeout_s": 30,
+          "records": [
+            {
+              "dataset_id": "national_illness",
+              "status": "error",
+              "started_at_utc": "2026-10-13T07:26:52.788692+00:00",
+              "expected_bytes": 67620,
+              "expected_sha256": "93601f64d2566dc796ca4305adad8b8560c2db1a1ff04543c3bd813a7263570a",
+              "license": {
+                "redistributed_in_this_repository": false,
+                "status": "unknown",
+                "spdx": null,
+                "evidence_url": null,
+                "scope": "No data-specific license was established for this exact researcher-preprocessed CSV. The Autoformer code license and a generic U.S. government public-domain assumption do not establish this file license.",
+                "publication_policy": "No raw CSV redistribution. Local research evidence retains hash; users obtain the file from the author-linked distribution and check its own applicable terms."
+              },
+              "download_installed": false,
+              "stage": "download",
+              "requested_url": "https://raw.githubusercontent.com/zhouhaoyi/ETDataset/1d16c8f4f943005d613b5bc962e9eeb06058cf07/ETT-small/ETTh1.csv",
+              "transfer_started_at_utc": "2026-10-13T07:26:52.789819+00:00",
+              "received_bytes": 67621,
+              "http_status": 200,
+              "final_url": "https://raw.githubusercontent.com/zhouhaoyi/ETDataset/1d16c8f4f943005d613b5bc962e9eeb06058cf07/ETT-small/ETTh1.csv",
+              "content_type": "text/plain; charset=utf-8",
+              "content_length": "2589657",
+              "etag": "\"a99344d5cb9e3149052f13de166d8cf25404a50f36d2372c4b76376baf9634b0\"",
+              "last_modified": null,
+              "received_sha256": "7b782aa80f651af3e90dc70d6b21c4280afe26bb5a3050453504ed7759b01198",
+              "transfer_finished_at_utc": "2026-10-13T07:26:54.551004+00:00",
+              "error_type": "ValueError",
+              "reason": "download exceeds frozen byte length",
+              "finished_at_utc": "2026-10-13T07:26:54.551081+00:00"
+            }
+          ],
+          "catalog_sha256": "c010df0b82222d8f7763a6196c0cb182f26ca8a0d1779d36ba576064dc980095",
+          "freeze_id": "sha256:1b3250e241bd3da4c5910a568b47e5a1ac8722d36d1d73e2f81963d8e6cad9a5",
+          "finished_at_utc": "2026-10-13T07:26:54.554485+00:00"
+        }
+      }
+    ],
+    "core_loader_crosscheck": {
+      "status": "ok",
+      "core_data_py_sha256": "7c29596c64007f1d731a26cdf7ce1a5c07541b041addda7ce13f52cc7ed5597c",
+      "original_record_sha256": "fd77af4c46e74e536fc87d618b6f1607994b76fb172e300ceb9df0a4c07d1d81",
+      "records": [
+        {
+          "dataset_id": "etth1",
+          "start": 1024,
+          "stop": 1152,
+          "value_shape": [
+            128
+          ],
+          "value_sha256": "93f086d430979b3c1aa3259512048869dc708daa59fa6c83abd275243790483d",
+          "timestamp_sha256": "154e84ca80441865c5f805863c81dfa78a1e712dc9b9ec8b7cab1cea483b8d6f",
+          "status": "ok"
+        },
+        {
+          "dataset_id": "etth1",
+          "start": 1024,
+          "stop": 1536,
+          "value_shape": [
+            512
+          ],
+          "value_sha256": "1d927832dfe9b41b2ef6b05fa3285d967a07d6e01405cd05e8c0e26a47964b3e",
+          "timestamp_sha256": "0984930bb0c5a6543709a490b92090f80efad4579fc9f6b5990d3946821e2504",
+          "status": "ok"
+        },
+        {
+          "dataset_id": "weather",
+          "start": 1024,
+          "stop": 1152,
+          "value_shape": [
+            128
+          ],
+          "value_sha256": "3bbd43c516963bb1331b0a588605bcadff378878d0c2d5e315a1a9914e6841dd",
+          "timestamp_sha256": "6fe6add4305ed85703356345cc7cfec6421a16cc475a262ec7455efc79e2fd3e",
+          "status": "ok"
+        },
+        {
+          "dataset_id": "weather",
+          "start": 1024,
+          "stop": 1536,
+          "value_shape": [
+            512
+          ],
+          "value_sha256": "7fac51096222bdb6472bb35a51fd94b9957225b470b1b2c573fbff54bd6f9706",
+          "timestamp_sha256": "619d091f346a9c89b93443a126bd2e30a3d305b77a883571e507ba2e4b586fc1",
+          "status": "ok"
+        },
+        {
+          "dataset_id": "national_illness",
+          "start": 256,
+          "stop": 384,
+          "value_shape": [
+            128
+          ],
+          "value_sha256": "1376fc6c04eb5d1a21f9903e57c32421771febab95fdc7304a708c957b26dd8c",
+          "timestamp_sha256": "d90b562a10222c50c35bb263a3a407a3770337c454eb10c6ca4f271c5ae22d5b",
+          "status": "ok"
+        },
+        {
+          "dataset_id": "national_illness",
+          "start": 256,
+          "stop": 768,
+          "value_shape": [
+            512
+          ],
+          "value_sha256": "2e2854c644edbe097229d40921b71092dd13b6485ddb1df78e85f6dd4aef3d26",
+          "timestamp_sha256": "6edb5835ef1bce3c4dc63045c89362a7678dbc4df34f93e7b722e40c0970744f",
+          "status": "ok"
+        }
+      ],
+      "scope": "Read-only load_dataset; no native codec, qualifier, runner or measurement invoked"
+    },
+    "study_design_sha256": "d4566f06dfbcb151e39ff9e69415e25ab16dde2e091befe36b70317cb03a27c3",
+    "acquisition_manifest_scope": "Each embedded manifest retains the exact script/catalog/freeze identity at its own execution; later source metadata corrections do not rewrite those historical identities."
+  },
+  "freeze_id": "sha256:6160e2d59d640aa9a4004d5e37a18e04dd2e6c6f1f56a1f439e4be6fae43761f"
+}

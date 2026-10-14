@@ -1,0 +1,862 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Low-level C Quick Start Guide &#8212; nvCOMP</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/css/lightbox.min.css?v=6e7d0de0" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinxcontrib-images/LightBox2/lightbox2-customize/pointer.css?v=c97663ff" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
+
+
+
+    <script src="../_static/jquery.js?v=5d32c60e"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+    <script src="../_static/documentation_options.js?v=5c0b1849"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/js/lightbox-plus-jquery.min.js?v=f0ca4bb6"></script>
+    <script src="../_static/sphinxcontrib-images/LightBox2/lightbox2-customize/jquery-noconflict.js?v=12818e64"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'samples/lowlevel_c_quickstart';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+
+    <link rel="icon" href="../_static/favicon.png"/>
+
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="High-level C++ Quick Start Guide" href="highlevel_cpp_quickstart.html" />
+    <link rel="prev" title="Getting Started" href="../getting_started.html" />
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="5.3.0" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+
+
+  </head>
+
+  <body data-default-mode="">
+
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="nvCOMP - Home"/>
+    <img src="../_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="nvCOMP - Home"/>
+  
+  
+    <p class="title logo__title">nvCOMP</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="nvCOMP - Home"/>
+    <img src="../_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="nvCOMP - Home"/>
+  
+  
+    <p class="title logo__title">nvCOMP</p>
+  
+</a>
+
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Table of Contents">
+  <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Beginner's Guide</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../getting_started.html">Getting Started</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#"> C API samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="highlevel_cpp_quickstart.html"> C++ API samples</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="python_samples.html"> Python API samples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="nvcomp.html">Basics</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../algorithm_selection.html">Algorithm Selection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api_comparison.html">API Comparison</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../decompression_engine_faq.html">Decompression Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nvlzcat.html">nvlzcat (Gzip streaming CLI)</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Algorithms</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../lz4.html">LZ4</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cascaded.html">Cascaded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gdeflate.html">GDeflate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bitcomp.html">Bitcomp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../crc32.html">CRC32</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../c_api.html">C API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cpp_api.html">C++ API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../native_api.html">Native API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../py_api.html">Python API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../error_codes.html">Error Codes</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../release_notes.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/NVIDIA/CUDALibrarySamples">GitHub Samples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../security.html">Reporting vulnerabilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../acknowledgements.html">Acknowledgements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../getting_started.html" class="nav-link">Getting Started</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Low-level C Quick Start Guide</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="low-level-c-quick-start-guide">
+<span id="lowlevel-c-quickstart"></span><h1>Low-level C Quick Start Guide<a class="headerlink" href="#low-level-c-quick-start-guide" title="Link to this heading">#</a></h1>
+<p>Some applications require compressing or decompressing multiple small
+inputs, so we provide an additional API to do this efficiently. These
+API calls combine all compression/decompression into a single execution,
+greatly improving performance compared with running each input
+individually. This API relies on the user to split the data into chunks,
+as well as manage metadata information such as compressed and
+uncompressed chunk sizes. When splitting data, for best performance,
+chunks should be relatively equal size to achieve good load-balancing as
+well as extract sufficient parallelism. So in the case that there are
+multiple inputs to compress, it may still be best to break each one up
+into smaller chunks.</p>
+<p>The low-level batched C API provides a set of functions to do batched
+decompression and compression.</p>
+<dl class="simple">
+<dt>In the following API description, replace <code class="docutils literal notranslate"><span class="pre">&lt;compression_method&gt;</span></code> with the desired compression algorithm, which can be one of:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ans</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bitcomp</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cascaded</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">deflate</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gdeflate</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gzip</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lz4</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">snappy</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">zstd</span></code></p></li>
+</ul>
+</dd>
+</dl>
+<p>For example, for LZ4, <code class="docutils literal notranslate"><span class="pre">nvcompBatched&lt;compression_method&gt;CompressAsync</span></code>
+becomes <code class="docutils literal notranslate"><span class="pre">nvcompBatchedLZ4CompressAsync</span></code> and
+<code class="docutils literal notranslate"><span class="pre">nvcompBatched&lt;compression_method&gt;DecompressAsync</span></code> becomes
+<code class="docutils literal notranslate"><span class="pre">nvcompBatchedLZ4DecompressAsync</span></code>.</p>
+<p>Some compressors have (up to 8 bytes) alignment requirements on the
+input, output, and/or scratch buffers that the user provides. Please
+view the documentation in the appropriate header located in <code class="docutils literal notranslate"><span class="pre">include/</span></code>
+to see details on the alignment requirements on any particular API.</p>
+<section id="compression-api">
+<h2>Compression API<a class="headerlink" href="#compression-api" title="Link to this heading">#</a></h2>
+<p>To do batched compression, a temporary workspace is required to be
+allocated in device memory. The size of this space is computed using:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm"> * @brief Get the amount of temporary memory required on the GPU for compression</span>
+<span class="cm"> * asynchronously.</span>
+<span class="cm"> *</span>
+<span class="cm"> * @param[in] num_chunks The number of chunks of memory in the batch.</span>
+<span class="cm"> * @param[in] max_uncompressed_chunk_bytes The maximum size of a chunk in the</span>
+<span class="cm"> * batch.</span>
+<span class="cm"> * @param[in] compress_opts Compression options.</span>
+<span class="cm"> * @param[out] temp_bytes The amount of GPU memory that will be temporarily</span>
+<span class="cm"> * required during compression. The value is returned on the host side.</span>
+<span class="cm"> * @param[in] max_total_uncompressed_bytes Upper bound on the total uncompressed</span>
+<span class="cm"> * size of all chunks</span>
+<span class="cm"> *</span>
+<span class="cm"> * @return nvcompSuccess if successful, and an error code otherwise.</span>
+<span class="cm"> */</span>
+<span class="n">nvcompStatus_t</span><span class="w"> </span><span class="n">nvcompBatched</span><span class="o">&lt;</span><span class="n">compression_method</span><span class="o">&gt;</span><span class="n">CompressGetTempSizeAsync</span><span class="p">(</span>
+<span class="w">    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">num_chunks</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">max_uncompressed_chunk_bytes</span><span class="p">,</span>
+<span class="w">    </span><span class="n">nvcompBatched</span><span class="o">&lt;</span><span class="n">compression_method</span><span class="o">&gt;</span><span class="n">CompressOpts_t</span><span class="w"> </span><span class="n">compress_opts</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">size_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">temp_bytes</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">max_total_uncompressed_bytes</span><span class="p">);</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * @brief Get the amount of temporary memory required on the GPU for compression.</span>
+<span class="cm"> * synchronously.</span>
+<span class="cm"> *</span>
+<span class="cm"> * @param[in] device_uncompressed_chunk_ptrs Array with size \p num_chunks of pointers</span>
+<span class="cm"> * to the uncompressed data chunks. Both the pointers and the uncompressed data</span>
+<span class="cm"> * should reside in device-accessible memory.</span>
+<span class="cm"> * Each chunk must be aligned to the value in the `input` member of the</span>
+<span class="cm"> * \ref nvcompAlignmentRequirements_t object output by</span>
+<span class="cm"> * `nvcompBatched&lt;compression_method&gt;CompressGetRequiredAlignments` when called with the same</span>
+<span class="cm"> * \p compress_opts.</span>
+<span class="cm"> * @param[in] device_uncompressed_chunk_bytes Array with size \p num_chunks of</span>
+<span class="cm"> * sizes of the uncompressed chunks in bytes.</span>
+<span class="cm"> * The sizes should reside in device-accessible memory.</span>
+<span class="cm"> * @param[in] num_chunks The number of chunks of memory in the batch.</span>
+<span class="cm"> * @param[in] max_uncompressed_chunk_bytes The maximum size of a chunk in the</span>
+<span class="cm"> * batch.</span>
+<span class="cm"> * @param[in] compress_opts Compression options.</span>
+<span class="cm"> * @param[out] temp_bytes The amount of GPU memory that will be temporarily</span>
+<span class="cm">  * required during compression. The value is returned on the host side.</span>
+<span class="cm"> * @param[in] max_total_uncompressed_bytes Upper bound on the total uncompressed</span>
+<span class="cm"> * size of all chunks</span>
+<span class="cm"> * @param[in] stream The CUDA stream to operate on.</span>
+<span class="cm"> *</span>
+<span class="cm"> * @return nvcompSuccess if successful, and an error code otherwise.</span>
+<span class="cm"> */</span>
+<span class="n">nvcompStatus_t</span><span class="w"> </span><span class="n">nvcompBatched</span><span class="o">&lt;</span><span class="n">compression_method</span><span class="o">&gt;</span><span class="n">CompressGetTempSizeSync</span><span class="p">(</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="k">const</span><span class="o">*</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">device_uncompressed_chunk_ptrs</span><span class="p">,</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">size_t</span><span class="o">*</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">device_uncompressed_chunk_bytes</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">num_chunks</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">max_uncompressed_chunk_bytes</span><span class="p">,</span>
+<span class="w">    </span><span class="n">nvcompBatched</span><span class="o">&lt;</span><span class="n">compression_method</span><span class="o">&gt;</span><span class="n">CompressOpts_t</span><span class="w"> </span><span class="n">compress_opts</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">size_t</span><span class="o">*</span><span class="w"> </span><span class="n">temp_bytes</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">max_total_uncompressed_bytes</span><span class="p">,</span>
+<span class="w">    </span><span class="n">cudaStream_t</span><span class="w"> </span><span class="n">stream</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Then compression is done using:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm">* @brief Perform batched asynchronous compression.</span>
+<span class="cm">*</span>
+<span class="cm">* @note Violating any of the conditions listed in the parameter descriptions</span>
+<span class="cm">* below may result in undefined behaviour.</span>
+<span class="cm">*</span>
+<span class="cm">* @param[in] device_uncompressed_chunk_ptrs Array with size \p num_chunks of pointers</span>
+<span class="cm">* to the uncompressed data chunks. Both the pointers and the uncompressed data</span>
+<span class="cm">* should reside in device-accessible memory.</span>
+<span class="cm">* Each chunk must be aligned to the value in the `input` member of the</span>
+<span class="cm">* `nvcompAlignmentRequirements_t` object output by</span>
+<span class="cm">* `nvcompBatched&lt;compression_method&gt;CompressGetRequiredAlignments`</span>
+<span class="cm">* when called with the same \p compress_opts.</span>
+<span class="cm">* @param[in] device_uncompressed_chunk_bytes Array with size \p num_chunks of</span>
+<span class="cm">* sizes of the uncompressed chunks in bytes.</span>
+<span class="cm">* The sizes should reside in device-accessible memory.</span>
+<span class="cm">* @param[in] max_uncompressed_chunk_bytes The size of the largest uncompressed chunk.</span>
+<span class="cm">* @param[in] num_chunks Number of chunks of data to compress.</span>
+<span class="cm">* @param[in] device_temp_ptr The temporary GPU workspace, could be NULL in case</span>
+<span class="cm">* temporary memory is not needed.</span>
+<span class="cm">* Must be aligned to the value in the `temp` member of the</span>
+<span class="cm">* `nvcompAlignmentRequirements_t` object output by</span>
+<span class="cm">* `nvcompBatched&lt;compression_method&gt;CompressGetRequiredAlignments` when called with the same</span>
+<span class="cm">* \p compress_opts.</span>
+<span class="cm">* @param[in] temp_bytes The size of the temporary GPU memory pointed to by</span>
+<span class="cm">* `device_temp_ptr`.</span>
+<span class="cm">* @param[out] device_compressed_chunk_ptrs Array with size \p num_chunks of pointers</span>
+<span class="cm">* to the output compressed buffers. Both the pointers and the compressed</span>
+<span class="cm">* buffers should reside in device-accessible memory. Each compressed buffer</span>
+<span class="cm">* should be preallocated with the size given by</span>
+<span class="cm">* `nvcompBatched&lt;compression_method&gt;CompressGetMaxOutputChunkSize`.</span>
+<span class="cm">* Each compressed buffer must be aligned to the value in the `output` member of the</span>
+<span class="cm">* `nvcompAlignmentRequirements_t` object output by</span>
+<span class="cm">* `nvcompBatched&lt;compression_method&gt;CompressGetRequiredAlignments`</span>
+<span class="cm">* when called with the same \p compress_opts.</span>
+<span class="cm">* @param[out] device_compressed_chunk_bytes Array with size \p num_chunks,</span>
+<span class="cm">* to be filled with the compressed sizes of each chunk.</span>
+<span class="cm">* The buffer should be preallocated in device-accessible memory.</span>
+<span class="cm">* @param[in] compress_opts Compression options.</span>
+<span class="cm">* @param[out] device_statuses Array with size \p num_chunks of statuses in</span>
+<span class="cm">* device-accessible memory. This argument needs to be preallocated. For each</span>
+<span class="cm">* chunk, if the compression is successful, the status will be set to</span>
+<span class="cm">* `nvcompSuccess`, and an error code otherwise.</span>
+<span class="cm">* @param[in] stream The CUDA stream to operate on.</span>
+<span class="cm">*</span>
+<span class="cm">* @return nvcompSuccess if successfully launched, and an error code otherwise.</span>
+<span class="cm">*/</span>
+<span class="n">nvcompStatus_t</span><span class="w"> </span><span class="n">nvcompBatched</span><span class="o">&lt;</span><span class="n">compression_method</span><span class="o">&gt;</span><span class="n">CompressAsync</span><span class="p">(</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="k">const</span><span class="o">*</span><span class="w"> </span><span class="n">device_uncompressed_chunk_ptrs</span><span class="p">,</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">size_t</span><span class="o">*</span><span class="w"> </span><span class="n">device_uncompressed_chunk_bytes</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">max_uncompressed_chunk_bytes</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">num_chunks</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">device_temp_ptr</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">temp_bytes</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="k">const</span><span class="o">*</span><span class="w"> </span><span class="n">device_compressed_chunk_ptrs</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">size_t</span><span class="o">*</span><span class="w"> </span><span class="n">device_compressed_chunk_bytes</span><span class="p">,</span>
+<span class="w">    </span><span class="n">nvcompBatched</span><span class="o">&lt;</span><span class="n">compression_method</span><span class="o">&gt;</span><span class="n">CompressOpts_t</span><span class="w"> </span><span class="n">compress_opts</span><span class="p">,</span>
+<span class="w">    </span><span class="n">nvcompStatus_t</span><span class="o">*</span><span class="w"> </span><span class="n">device_statuses</span><span class="p">,</span>
+<span class="w">    </span><span class="n">cudaStream_t</span><span class="w"> </span><span class="n">stream</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="decompression-api">
+<h2>Decompression API<a class="headerlink" href="#decompression-api" title="Link to this heading">#</a></h2>
+<p>Decompression also requires a temporary workspace. This is computed
+using:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm"> * @brief Get the amount of temporary memory required on the GPU for decompression</span>
+<span class="cm"> * asynchronously.</span>
+<span class="cm"> *</span>
+<span class="cm"> * @param[in] num_chunks Number of chunks of data to be decompressed.</span>
+<span class="cm"> * @param[in] max_uncompressed_chunk_bytes The size of the largest chunk in bytes</span>
+<span class="cm"> * when uncompressed.</span>
+<span class="cm"> * @param[in] decompress_opts Decompression options.</span>
+<span class="cm"> * @param[out] temp_bytes The amount of GPU memory that will be temporarily required</span>
+<span class="cm"> * during decompression. The value is returned on the host side.</span>
+<span class="cm"> * @param[in] max_total_uncompressed_bytes The total decompressed size of all the chunks.</span>
+<span class="cm"> *</span>
+<span class="cm"> * @return nvcompSuccess if successful, and an error code otherwise.</span>
+<span class="cm"> */</span>
+<span class="n">nvcompStatus_t</span><span class="w"> </span><span class="n">nvcompBatched</span><span class="o">&lt;</span><span class="n">compression_method</span><span class="o">&gt;</span><span class="n">DecompressGetTempSizeAsync</span><span class="p">(</span>
+<span class="w">    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">num_chunks</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">max_uncompressed_chunk_bytes</span><span class="p">,</span>
+<span class="w">    </span><span class="n">nvcompBatched</span><span class="o">&lt;</span><span class="n">compression_method</span><span class="o">&gt;</span><span class="n">DecompressOpts_t</span><span class="w"> </span><span class="n">decompress_opts</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">size_t</span><span class="o">*</span><span class="w"> </span><span class="n">temp_bytes</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">max_total_uncompressed_bytes</span><span class="p">);</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * @brief Get the amount of temporary memory required on the GPU for decompression</span>
+<span class="cm"> * synchronously.</span>
+<span class="cm"> *</span>
+<span class="cm"> * @param[in] device_compressed_chunk_ptrs Array with size \p num_chunks of pointers</span>
+<span class="cm"> * in device-accessible memory to device-accessible compressed buffers.</span>
+<span class="cm"> * Each chunk must be aligned to the value in the `input` member of the</span>
+<span class="cm"> * \ref nvcompAlignmentRequirements_t object output by</span>
+<span class="cm"> * `nvcompBatched&lt;compression_method&gt;DecompressGetRequiredAlignments`.</span>
+<span class="cm"> * @param[in] device_compressed_chunk_bytes Array with size \p num_chunks of sizes of</span>
+<span class="cm"> * the compressed buffers in bytes. The sizes should reside in device-accessible memory.</span>
+<span class="cm"> * @param[in] num_chunks Number of chunks of data to be decompressed.</span>
+<span class="cm"> * @param[in] max_uncompressed_chunk_bytes The size of the largest chunk in bytes</span>
+<span class="cm"> * when uncompressed.</span>
+<span class="cm"> * @param[out] temp_bytes The amount of GPU memory that will be temporarily required</span>
+<span class="cm"> * during decompression. The value is returned on the host side.</span>
+<span class="cm"> * @param[in] max_total_uncompressed_bytes  The total decompressed size of all the chunks.</span>
+<span class="cm"> * @param[in] decompress_opts Decompression options.</span>
+<span class="cm"> * @param[out] device_statuses Array with size \p num_chunks of statuses in</span>
+<span class="cm"> * device-accessible memory. This argument needs to be preallocated. For each</span>
+<span class="cm"> * chunk, if the data can be parsed successfully, the status will be set to</span>
+<span class="cm"> * `nvcompSuccess`, and an error code otherwise.</span>
+<span class="cm"> * @param[in] stream The CUDA stream to operate on.</span>
+<span class="cm"> *</span>
+<span class="cm"> * @return nvcompSuccess if successful, and an error code otherwise.</span>
+<span class="cm"> */</span>
+<span class="n">nvcompStatus_t</span><span class="w"> </span><span class="n">nvcompBatched</span><span class="o">&lt;</span><span class="n">compression_method</span><span class="o">&gt;</span><span class="n">DecompressGetTempSizeSync</span><span class="p">(</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="k">const</span><span class="o">*</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">device_compressed_chunk_ptrs</span><span class="p">,</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">size_t</span><span class="o">*</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">device_compressed_chunk_bytes</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">num_chunks</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">max_uncompressed_chunk_bytes</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">size_t</span><span class="o">*</span><span class="w"> </span><span class="n">temp_bytes</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">max_total_uncompressed_bytes</span><span class="p">,</span>
+<span class="w">    </span><span class="n">nvcompBatched</span><span class="o">&lt;</span><span class="n">compression_method</span><span class="o">&gt;</span><span class="n">DecompressOpts_t</span><span class="w"> </span><span class="n">decompress_opts</span><span class="p">,</span>
+<span class="w">    </span><span class="n">nvcompStatus_t</span><span class="o">*</span><span class="w"> </span><span class="n">device_statuses</span><span class="p">,</span>
+<span class="w">    </span><span class="n">cudaStream_t</span><span class="w"> </span><span class="n">stream</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>During decompression, device memory buffers that are large enough to
+hold the decompression result must be provided. There are three possible
+workflows that are supported:</p>
+<ol class="arabic simple">
+<li><p>Uncompressed size for each buffer is known exactly (e.g. Apache
+Parquet <a class="github reference external" href="https://github.com/apache/parquet-format">apache/parquet-format</a> )</p></li>
+<li><p>Only maximum uncompressed size across all buffers is known (e.g.
+Apache ORC)</p></li>
+<li><p>No information about the uncompressed sizes is provided (e.g. Apache
+Avro)</p></li>
+</ol>
+<dl class="simple">
+<dt>For case 3), nvCOMP provides an API for pre-processing the compressed file</dt><dd><p>to determine the proper sizes for the decompressed output buffers.
+This API is as follows:</p>
+</dd>
+</dl>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm">* @brief Asynchronously compute the number of bytes of uncompressed data for</span>
+<span class="cm">* each compressed chunk.</span>
+<span class="cm">*</span>
+<span class="cm">* This is needed when we do not know the expected output size.</span>
+<span class="cm">*</span>
+<span class="cm">* @note If the stream is corrupt, the calculated sizes will be invalid.</span>
+<span class="cm">*</span>
+<span class="cm">* @note Violating any of the conditions listed in the parameter descriptions</span>
+<span class="cm">* below may result in undefined behaviour.</span>
+<span class="cm">*</span>
+<span class="cm">* @param[in] device_compressed_chunk_ptrs Array with size \p num_chunks of</span>
+<span class="cm">* pointers in device-accessible memory to compressed buffers.</span>
+<span class="cm">* Each chunk must be aligned to the value in the `input` member of the</span>
+<span class="cm">* \ref nvcompAlignmentRequirements_t object output by</span>
+<span class="cm">* `nvcompBatched&lt;compression_method&gt;DecompressGetRequiredAlignments`.</span>
+<span class="cm">* @param[in] device_compressed_chunk_bytes Array with size \p num_chunks of sizes</span>
+<span class="cm">* of the compressed buffers in bytes. The sizes should reside in device-accessible memory.</span>
+<span class="cm">* @param[out] device_uncompressed_chunk_bytes Array with size \p num_chunks</span>
+<span class="cm">* to be filled with the sizes, in bytes, of each uncompressed data chunk.</span>
+<span class="cm">* This argument needs to be preallocated in device-accessible memory.</span>
+<span class="cm">* @param[in] num_chunks Number of data chunks to compute sizes of.</span>
+<span class="cm">* @param[in] stream The CUDA stream to operate on.</span>
+<span class="cm">*</span>
+<span class="cm">* @return nvcompSuccess if successful, and an error code otherwise.</span>
+<span class="cm">*/</span>
+<span class="n">nvcompStatus_t</span><span class="w"> </span><span class="n">nvcompBatched</span><span class="o">&lt;</span><span class="n">compression_method</span><span class="o">&gt;</span><span class="n">GetDecompressSizeAsync</span><span class="p">(</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="k">const</span><span class="o">*</span><span class="w"> </span><span class="n">device_compressed_chunk_ptrs</span><span class="p">,</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">size_t</span><span class="o">*</span><span class="w"> </span><span class="n">device_compressed_chunk_bytes</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">size_t</span><span class="o">*</span><span class="w"> </span><span class="n">device_uncompressed_chunk_bytes</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">num_chunks</span><span class="p">,</span>
+<span class="w">    </span><span class="n">cudaStream_t</span><span class="w"> </span><span class="n">stream</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>With the decompressed sizes known, we can now use the decompression API:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm">* @brief Perform batched asynchronous decompression.</span>
+<span class="cm">*</span>
+<span class="cm">* @note Violating any of the conditions listed in the parameter descriptions</span>
+<span class="cm">* below may result in undefined behaviour.</span>
+<span class="cm">*</span>
+<span class="cm">* @param[in] device_compressed_chunk_ptrs Array with size \p num_chunks of pointers</span>
+<span class="cm">* in device-accessible memory to device-accessible compressed buffers.</span>
+<span class="cm">* Each chunk must be aligned to the value in the `input` member of the</span>
+<span class="cm">* \ref nvcompAlignmentRequirements_t object output by</span>
+<span class="cm">* `nvcompBatched&lt;compression_method&gt;DecompressGetRequiredAlignments`.</span>
+<span class="cm">* @param[in] device_compressed_chunk_bytes Array with size \p num_chunks of sizes of</span>
+<span class="cm">* the compressed buffers in bytes. The sizes should reside in device-accessible memory.</span>
+<span class="cm">* @param[in] device_uncompressed_buffer_bytes Array with size \p num_chunks of sizes,</span>
+<span class="cm">* in bytes, of the output buffers to be filled with uncompressed data for each chunk.</span>
+<span class="cm">* The sizes should reside in device-accessible memory. If a</span>
+<span class="cm">* size is not large enough to hold all decompressed data, the decompressor</span>
+<span class="cm">* will set the status in \p device_statuses corresponding to the</span>
+<span class="cm">* overflow chunk to `nvcompErrorCannotDecompress`.</span>
+<span class="cm">* @param[out] device_uncompressed_chunk_bytes Array with size \p num_chunks to</span>
+<span class="cm">* be filled with the actual number of bytes decompressed for every chunk.</span>
+<span class="cm">* This argument needs to be preallocated, but can be NULL if desired,</span>
+<span class="cm">* in which case the actual sizes are not reported.</span>
+<span class="cm">* @param[in] num_chunks Number of chunks of data to decompress.</span>
+<span class="cm">* @param[in] device_temp_ptr The temporary GPU space.</span>
+<span class="cm">* Must be aligned to the value in the `temp` member of the</span>
+<span class="cm">* \ref nvcompAlignmentRequirements_t object output by</span>
+<span class="cm">* `nvcompBatched&lt;compression_method&gt;DecompressGetRequiredAlignments`.</span>
+<span class="cm">* @param[in] temp_bytes The size of the temporary GPU space.</span>
+<span class="cm">* @param[out] device_uncompressed_chunk_ptrs Array with size \p num_chunks of</span>
+<span class="cm">* pointers in device-accessible memory to decompressed data. Each uncompressed</span>
+<span class="cm">* buffer needs to be preallocated in device-accessible memory, have the size</span>
+<span class="cm">* specified by the corresponding entry in \p device_uncompressed_buffer_bytes,</span>
+<span class="cm">* and be aligned to the value in the `output` member of the</span>
+<span class="cm">* \ref nvcompAlignmentRequirements_t object output by</span>
+<span class="cm">* `nvcompBatched&lt;compression_method&gt;DecompressGetRequiredAlignments`.</span>
+<span class="cm">* @param[in] decompress_opts Decompression options.</span>
+<span class="cm">* @param[out] device_statuses Array with size \p num_chunks of statuses in</span>
+<span class="cm">* device-accessible memory. This argument needs to be preallocated. For each</span>
+<span class="cm">* chunk, if the decompression is successful, the status will be set to</span>
+<span class="cm">* `nvcompSuccess`. Passing corrupt, invalid, or insufficient data leads to</span>
+<span class="cm">* undefined behavior or out-of-bound errors. Error reporting cannot be guaranteed</span>
+<span class="cm">* in this scenario as only a limited validation is performed to maintain performance.</span>
+<span class="cm">* Can be NULL if desired, in which case error status is not reported.</span>
+<span class="cm">* @param[in] stream The CUDA stream to operate on.</span>
+<span class="cm">*</span>
+<span class="cm">* @return nvcompSuccess if successfully launched, and an error code otherwise.</span>
+<span class="cm">*/</span>
+<span class="n">nvcompStatus_t</span><span class="w"> </span><span class="n">nvcompBatched</span><span class="o">&lt;</span><span class="n">compression_method</span><span class="o">&gt;</span><span class="n">DecompressAsync</span><span class="p">(</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="k">const</span><span class="o">*</span><span class="w"> </span><span class="n">device_compressed_chunk_ptrs</span><span class="p">,</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">size_t</span><span class="o">*</span><span class="w"> </span><span class="n">device_compressed_chunk_bytes</span><span class="p">,</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">size_t</span><span class="o">*</span><span class="w"> </span><span class="n">device_uncompressed_buffer_bytes</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">size_t</span><span class="o">*</span><span class="w"> </span><span class="n">device_uncompressed_chunk_bytes</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">num_chunks</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">device_temp_ptr</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">temp_bytes</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="k">const</span><span class="o">*</span><span class="w"> </span><span class="n">device_uncompressed_chunk_ptrs</span><span class="p">,</span>
+<span class="w">    </span><span class="n">nvcompBatched</span><span class="o">&lt;</span><span class="n">compression_method</span><span class="o">&gt;</span><span class="n">DecompressOpts_t</span><span class="w"> </span><span class="n">decompress_opts</span><span class="p">,</span>
+<span class="w">    </span><span class="n">nvcompStatus_t</span><span class="o">*</span><span class="w"> </span><span class="n">device_statuses</span><span class="p">,</span>
+<span class="w">    </span><span class="n">cudaStream_t</span><span class="w"> </span><span class="n">stream</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Note that <code class="docutils literal notranslate"><span class="pre">device_uncompressed_chunk_bytes</span></code> and <code class="docutils literal notranslate"><span class="pre">device_statuses</span></code>
+can both be specified as <code class="docutils literal notranslate"><span class="pre">nullptr</span></code> for LZ4, Snappy, Deflate, Gzip, and
+GDeflate. If these are <code class="docutils literal notranslate"><span class="pre">nullptr</span></code>, these methods will not compute these
+values. In particular, if device_statuses is <code class="docutils literal notranslate"><span class="pre">nullptr</span></code> then out of
+bounds (OOB) error checking is disabled. This can lead to significant
+increases in decompression throughput using the CUDA backend.</p>
+</section>
+<section id="batched-compression-decompression-example-lz4">
+<h2>Batched Compression / Decompression Example - LZ4<a class="headerlink" href="#batched-compression-decompression-example-lz4" title="Link to this heading">#</a></h2>
+<p>For an example of batched compression and decompression using LZ4,
+please see the examples/low_level_quickstart_example.cpp.</p>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../getting_started.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Getting Started</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="highlevel_cpp_quickstart.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">High-level C++ Quick Start Guide</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#compression-api">Compression API</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#decompression-api">Decompression API</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#batched-compression-decompression-example-lz4">Batched Compression / Decompression Example - LZ4</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
+
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+<a class="footer-brand logo" href="https://www.nvidia.com">
+  <img src="../_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
+  <img src="../_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
+</a></div>
+      
+        <div class="footer-item">
+
+<div class="footer-links">
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/">Privacy Policy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Your Privacy Choices</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/">Terms of Service</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/accessibility/">Accessibility</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/company-policies/">Corporate Policies</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/product-security/">Product Security</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/contact/">Contact</a>
+  
+  
+  
+</div>
+</div>
+      
+        <div class="footer-item">
+
+
+
+
+  <p class="copyright">
+    
+      Copyright © 2017 - 2025, NVIDIA Corporation &amp; Affiliates.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+  </body>
+</html>

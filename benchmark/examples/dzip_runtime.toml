@@ -1,0 +1,34 @@
+schema = "tsbench.experiment/1"
+name = "dzip-explicit-runtime"
+output = "../../runs/dzip-explicit-runtime-20261013"
+
+[[datasets]]
+id = "symbols4"
+format = "npy"
+path = "data/symbols4.npy"
+component = "V"
+
+[[methods]]
+id = "dzip"
+codec = "dzip"
+
+[[profiles]]
+id = "cpu-dzip-three-system-runtime"
+device = "cpu"
+native_threads = 3
+object_workers = 1
+memory_limit_mb = 4096
+# This environment's Conda libstdc++ lacks GLIBCXX_3.4.30. Resolve before Python starts.
+runtime_preload = ["/usr/lib/x86_64-linux-gnu/libstdc++.so.6"]
+
+[task]
+kind = "values"
+fidelity = "bitwise"
+
+[execution]
+sessions = 1
+rounds = 7
+warmup_objects = 2
+seed = 20261013
+timeout_s = 120
+qualification_cache = true

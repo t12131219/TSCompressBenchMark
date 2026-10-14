@@ -1,0 +1,38 @@
+schema = "tsbench.experiment/1"
+name = "timestamps-integer-affine"
+output = "../../runs/timestamps-integer-affine-20261013"
+
+[[datasets]]
+id = "irregular-nanosecond-axis"
+format = "npz"
+path = "data/records.npz"
+components = { V = "V", T = "T", mask = "mask" }
+time_unit = "ns"
+
+[[methods]]
+id = "raw"
+codec = "raw-store"
+[[methods]]
+id = "raw-integer-affine"
+codec = "raw-store"
+transform = "integer_affine_gcd"
+[[methods]]
+id = "neats-integer-affine"
+codec = "neats-lossless-i64"
+transform = "integer_affine_gcd"
+[[methods]]
+id = "leats-integer-affine"
+codec = "leats-lossless-i64"
+transform = "integer_affine_gcd"
+
+[task]
+kind = "timestamps"
+fidelity = "bitwise"
+
+[execution]
+sessions = 1
+rounds = 7
+warmup_objects = 2
+seed = 20261013
+timeout_s = 120
+qualification_cache = true

@@ -1,0 +1,113 @@
+{
+  "schema": "tsbench.installed-build-verification/1",
+  "test_source": "benchmark/tests/test_build.py",
+  "test_source_sha256": "sha256:f30af49ea7956504dfed619622183beab6b94ad978100990063691686ba93f18",
+  "validation_command": "PYTHONPATH=benchmark/src python -m pytest benchmark/tests/test_build.py -q --junitxml=docs/research/tests-build-installed.xml > docs/research/tests-build-installed.log",
+  "validation_result": {
+    "passed": 8,
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0,
+    "seconds": 14.3,
+    "seconds_scope": "test execution duration, not codec performance",
+    "suite_started_at_utc": "2026-10-13T11:47:51.940063Z",
+    "suite_timestamp_source": "JUnit timestamp 2026-10-13T19:47:51.940063 in observed host CST (UTC+08)",
+    "output_file_mtime_utc": "2026-10-13T11:48:06.238716Z"
+  },
+  "temporary_test_root": "/tmp/pytest-of-fzg/pytest-63/test_installed_wheel_builds_na0",
+  "wheel": "/tmp/pytest-of-fzg/pytest-63/test_installed_wheel_builds_na0/wheels/tsbench-0.1.0-py3-none-any.whl",
+  "wheel_sha256": "sha256:8cfa6dead690f8bfca30e3291b64944cf682a73fc2ddd5c291498bf95f8acecc",
+  "wheel_python_sources_match_workspace": true,
+  "installed_package_path": "/tmp/pytest-of-fzg/pytest-63/test_installed_wheel_builds_na0/installed/tsbench/__init__.py",
+  "installed_build_module_path": "/tmp/pytest-of-fzg/pytest-63/test_installed_wheel_builds_na0/installed/tsbench/build.py",
+  "cwd_outside_asset_checkout": true,
+  "installed_package_outside_asset_checkout": true,
+  "explicit_asset_root": "/tmp/pytest-of-fzg/pytest-63/test_installed_wheel_builds_na0/native-assets",
+  "explicit_build_root": "/tmp/pytest-of-fzg/pytest-63/test_installed_wheel_builds_na0/native-assets/new-build",
+  "native_build_id": "sha256:54230a5867aaae40e45a23097a9dba02d8d9543c64c69774eba352709cf1d693",
+  "native_build_record": "/tmp/pytest-of-fzg/pytest-63/test_installed_wheel_builds_na0/native-assets/new-build/54230a5867aaae40e45a23097a9dba02d8d9543c64c69774eba352709cf1d693/zstd-frame/build.json",
+  "native_build_record_sha256": "sha256:43c6e847d6e0ad75953d02948e0c6077a5f50865e1a19b4e6618e67564b408ed",
+  "native_artifact": "/tmp/pytest-of-fzg/pytest-63/test_installed_wheel_builds_na0/native-assets/new-build/54230a5867aaae40e45a23097a9dba02d8d9543c64c69774eba352709cf1d693/zstd-frame/libtscb_zstd_frame.so",
+  "native_artifact_sha256": "sha256:9d707065f32b6e495f203146d62ce86ed3a26de512dee7eb4e56ba0a5cec4767",
+  "native_package_recipe_sources": [
+    {
+      "path": "package:tsbench/build.py",
+      "source_path": "/tmp/pytest-of-fzg/pytest-63/test_installed_wheel_builds_na0/installed/tsbench/build.py",
+      "sha256": "a0df796ef9838014e6453c287d27eefdfbc3486bcc3d99358a11ff7379b11afe"
+    },
+    {
+      "path": "package:tsbench/_native_recipes.py",
+      "source_path": "/tmp/pytest-of-fzg/pytest-63/test_installed_wheel_builds_na0/installed/tsbench/_native_recipes.py",
+      "sha256": "5d117c03e4eb5cd8cb4dfb069fcbe0b9b8d1066befe3b2352eee71b588dd607b"
+    }
+  ],
+  "wire": "/tmp/pytest-of-fzg/pytest-63/test_installed_wheel_builds_na0/wire.tsb",
+  "wire_sha256": "sha256:f6926ce7f03bb955bc278868b1074237e5d38051b46f7c8acf1c49e28b85e4ef",
+  "wire_bytes": 2170,
+  "decoder_output_metadata": "/tmp/pytest-of-fzg/pytest-63/test_installed_wheel_builds_na0/decoded/object.json",
+  "decoder_output_metadata_sha256": "sha256:9915336b8c39fa10fab0ff6a0a4c789042683e08e01d12592c7a00382a2db92d",
+  "restored_component": {
+    "name": "V",
+    "dtype": "<f8",
+    "shape": [
+      257,
+      3
+    ],
+    "bytes": 6168,
+    "bitwise_original_domain_passed": true
+  },
+  "new_interpreter_wire_only_decode": true,
+  "decoder_inputs": [
+    "wire path",
+    "explicit installed asset root",
+    "explicit build root"
+  ],
+  "cpu_execution_source_id": "sha256:d7d0f84e75c49b0a5fa330f17ec0e8319e8aa43dce0c454e65c840cc4743517f",
+  "cpu_execution_source_matches_existing_current_core": true,
+  "gpu_control_plane_before_build_fix": "sha256:742ab710be4354a9bcc393cb1b02388606bf39f7c7423c4303d6cb076bca7074",
+  "gpu_control_plane_after_build_fix": "sha256:1e37ea146c0e477862fc732278ab1394162c5c9cc5dcf7eb90a6ed63f4c56cd1",
+  "gpu_changed_source_modules": [
+    "build.py"
+  ],
+  "build_module_sha256": "sha256:a0df796ef9838014e6453c287d27eefdfbc3486bcc3d99358a11ff7379b11afe",
+  "measurement_executed": false,
+  "old_builds_raw_source_snapshots_modified": false,
+  "scope": "Actual wheel install plus new native Zstd build from isolated real asset checkout and a saved wire restored by a separate installed CLI interpreter; same-host correctness/build validation, no formal timing or third-party reproduction. Temporary test paths are evidence locations, not a published reproduction bundle.",
+  "validation_log": "docs/research/tests-build-installed.log",
+  "validation_log_sha256": "sha256:51894ad6422c5caec1f981a81334bd363924b4859738038220d5d7e358aad122",
+  "validation_junit_xml": "docs/research/tests-build-installed.xml",
+  "validation_junit_xml_sha256": "sha256:a942be0f01ef7d69e12a2b6338f6469b349e43df3d3c719aa0e01d51b62b84c6",
+  "gpu_source_identity_root_argument": "/home/fzg/PycharmProjects/TSDataCompressBenchMark",
+  "gpu_source_identity_scope": "complete _source_identity(root=Path.cwd()) closure including registry/gpu/cuszp-fixed-1d.json; no native library passed",
+  "gpu_source_comparison": {
+    "previous_manifest": "runs/gpu/cuszp-margin90-0p01-20261013/manifest.json",
+    "current_preparation": "benchmark/experiments/gpu-builder-check/preparation.json",
+    "current_preparation_sha256": "sha256:5fc5e719205773a940069aeede8fdd7fe33b0421ff9054044eb5d13cb94132d9",
+    "same_module_set": true,
+    "same_paths": true,
+    "source_count": 19,
+    "changed_modules": [
+      "build.py"
+    ]
+  },
+  "preserved_evidence": [
+    {
+      "original_path": "/tmp/pytest-of-fzg/pytest-63/test_installed_wheel_builds_na0/native-assets/new-build/54230a5867aaae40e45a23097a9dba02d8d9543c64c69774eba352709cf1d693/zstd-frame/build.json",
+      "path": "docs/research/installed_build_evidence/build.json",
+      "sha256": "sha256:43c6e847d6e0ad75953d02948e0c6077a5f50865e1a19b4e6618e67564b408ed",
+      "kind": "native_build_record"
+    },
+    {
+      "original_path": "/tmp/pytest-of-fzg/pytest-63/test_installed_wheel_builds_na0/wire.tsb",
+      "path": "docs/research/installed_build_evidence/wire.tsb",
+      "sha256": "sha256:f6926ce7f03bb955bc278868b1074237e5d38051b46f7c8acf1c49e28b85e4ef",
+      "kind": "wire"
+    },
+    {
+      "original_path": "/tmp/pytest-of-fzg/pytest-63/test_installed_wheel_builds_na0/decoded/object.json",
+      "path": "docs/research/installed_build_evidence/object.json",
+      "sha256": "sha256:9915336b8c39fa10fab0ff6a0a4c789042683e08e01d12592c7a00382a2db92d",
+      "kind": "decoder_output_metadata"
+    }
+  ]
+}

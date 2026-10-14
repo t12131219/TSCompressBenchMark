@@ -1,0 +1,188 @@
+{
+  "schema": "tsbench.independent-readonly-audit/1",
+  "subject": "pems-native-rank3-values",
+  "persisted_at_utc": "2026-10-13T12:19:10.850022+00:00",
+  "scope": "Independent full stdlib-only read audit already completed before report persistence; hashes of unchanged manifest/raw rechecked here. No codec/native execution, new measurement, data parsing or download.",
+  "run": "runs/current-pems-20261013/pems-values",
+  "run_id": "e886c7c0bc354c8ca5901d01b54cd7b7",
+  "evidence": {
+    "manifest_sha256": "sha256:962858c647395a5c65e097193eeb11359e9cbdd7d9708e4ff00d2540cba1a157",
+    "observations_sha256": "sha256:4535a0011afe1849013d2c47da56b0de37194a375312bf58d773e6d1bd193374",
+    "preparation_sha256": "sha256:25382f5ef6de5e91a97e05f720b1b4c1043a38e31622e09e4ecd17d07131178b"
+  },
+  "counts": {
+    "requests": 48,
+    "ready": 36,
+    "unsupported": 12,
+    "unsupported_codec": "chimp128",
+    "unsupported_reason": "native rank3 not supported; no reshape fallback",
+    "nominal_requested_slots": 1008,
+    "terminal_measurements": 756,
+    "sessions": 3,
+    "rounds_per_session": 7,
+    "measurement_worker_pids": 108,
+    "warmup_terminal": 216,
+    "calibration_terminal": 108,
+    "qualification_terminal": 72,
+    "fresh_exact_input_qualification": 36,
+    "fresh_implementation_qualification": 12,
+    "cached_implementation_qualification": 24,
+    "unsupported_admission_terminal": 12
+  },
+  "schedule": {
+    "six_fields": [
+      "case_id",
+      "block_id",
+      "session",
+      "round",
+      "sequence",
+      "attempt"
+    ],
+    "schedule_planned_started_terminal_equal": true,
+    "duplicate_slots": 0,
+    "foreign_run_slots": 0,
+    "missing_slots": 0
+  },
+  "quality": {
+    "all_756_bitwise_passed": true,
+    "all_756_input_unchanged": true,
+    "violations": 0,
+    "transform": "identity",
+    "codec_input_bytes_equal_raw_bytes": true,
+    "case_raw_object_ids_equal_preparation": true
+  },
+  "typed_wire_checks": {
+    "exact_qualification_wires": 36,
+    "full_wire_descriptor_part_checksums_verified": true,
+    "schema_parameters_payload_intervals_verified": true,
+    "native_rank": 3,
+    "dtype": "<f8",
+    "order": "C",
+    "components": [
+      "V"
+    ],
+    "shape_semantics": [
+      "time",
+      "sensor",
+      "feature"
+    ],
+    "raw_store_bodies_equal_preparation_typed_bytes_sha256": 12,
+    "no_implicit_rank_or_dtype_conversion": true
+  },
+  "independent_recovery": {
+    "fresh_subprocess_wire_only": 36,
+    "passed": 36,
+    "decoder_returncode_zero": 36,
+    "artifact_hash_and_restored_object_identity_matched": 36,
+    "inputs": "wire path, output path and explicit asset/build roots; no original-array or schema/shape template argument",
+    "missing_fields": {
+      "decoder_pid": 36,
+      "execution_provenance": 36,
+      "native_diagnostics": 36,
+      "effective_profile": 36
+    },
+    "measurement_decode_scope": "fresh native decoder sessions within each worker trial; not 756 fresh subprocess wire-only recoveries"
+  },
+  "effective_profile": {
+    "observation_scope": "case admission only; not per-trial or independent recovery process observations",
+    "affinity": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15
+    ],
+    "native_threads": 1,
+    "object_workers": 1,
+    "host_memory_limit_soft_bytes": 4294967296,
+    "host_memory_limit_hard_bytes": 4294967296,
+    "rlimit_as_implemented": true,
+    "readback_before_numpy_native_imports": true,
+    "runtime_preload": "",
+    "distinct_profile_groups": 2,
+    "group_reason": "raw-store mapped Anaconda libgcc; native byte codecs additionally map system libc/loader"
+  },
+  "source_id": "sha256:d7d0f84e75c49b0a5fa330f17ec0e8319e8aa43dce0c454e65c840cc4743517f",
+  "execution_source_unchanged": true,
+  "full_prior_byte_audit": {
+    "source_npz_files": [
+      {
+        "id": "pems03",
+        "path": "/home/fzg/PycharmProjects/材料/TSBench_Corpus/PEMS03.npz",
+        "bytes": 15800415,
+        "sha256": "34859517425eded66a0014db63de54b95d0428c38890741a1710ed4d3b043de8",
+        "author_ref": "9c2e19b98c4cedf1f35214d8789685b6381b3aad",
+        "author_raw_url": "https://raw.githubusercontent.com/guoshnBJTU/ASTGNN/9c2e19b98c4cedf1f35214d8789685b6381b3aad/data/PEMS03/PEMS03.npz"
+      },
+      {
+        "id": "pems04",
+        "path": "/home/fzg/PycharmProjects/材料/TSBench_Corpus/pems04.npz",
+        "bytes": 32956284,
+        "sha256": "95a3c9b720fffdb85f0330d09bfab41b0b3cad0ca86c0d7d5f3accacb4ac999a",
+        "author_ref": "9c2e19b98c4cedf1f35214d8789685b6381b3aad",
+        "author_raw_url": "https://raw.githubusercontent.com/guoshnBJTU/ASTGNN/9c2e19b98c4cedf1f35214d8789685b6381b3aad/data/PEMS04/PEMS04.npz"
+      },
+      {
+        "id": "pems07",
+        "path": "/home/fzg/PycharmProjects/材料/TSBench_Corpus/PEMS07.npz",
+        "bytes": 43705518,
+        "sha256": "a07887e610aa986276209bc9384d14ed7858fdcad1ded67f53dca19eb828600b",
+        "author_ref": "9c2e19b98c4cedf1f35214d8789685b6381b3aad",
+        "author_raw_url": "https://raw.githubusercontent.com/guoshnBJTU/ASTGNN/9c2e19b98c4cedf1f35214d8789685b6381b3aad/data/PEMS07/PEMS07.npz"
+      },
+      {
+        "id": "pems08",
+        "path": "/home/fzg/PycharmProjects/材料/TSBench_Corpus/pems08.npz",
+        "bytes": 18525419,
+        "sha256": "e1d03ce74e9fb79149e6e7c37c680214822c4a285baa2f42278cacabcd25c075",
+        "author_ref": "9c2e19b98c4cedf1f35214d8789685b6381b3aad",
+        "author_raw_url": "https://raw.githubusercontent.com/guoshnBJTU/ASTGNN/9c2e19b98c4cedf1f35214d8789685b6381b3aad/data/PEMS08/PEMS08.npz"
+      }
+    ],
+    "all_4_npz_sha256_verified": true,
+    "execution_sources_and_snapshots_verified": true,
+    "native_source_runtime_binary_and_build_record_verified": true,
+    "native_bindings": [
+      {
+        "codec": "zstd-frame",
+        "build_id": "sha256:ac2f0b3e54fdc642d702ff70090678a4e79479250aa1f43ef065354013206451",
+        "binary_sha256": "sha256:9d707065f32b6e495f203146d62ce86ed3a26de512dee7eb4e56ba0a5cec4767",
+        "build_record_sha256": "sha256:b62e4d913c4036e588bcea39c919fec5d434e406d00afe06e769ede18c8cfbf9"
+      },
+      {
+        "codec": "deflate-zlib",
+        "build_id": "sha256:c974526dd0c1f07862b4519e84e5fb9e7e61d370d23113608e84b123d48c4fd7",
+        "binary_sha256": "sha256:e96a6e98996d30482f12e7a19e6ddc5721d787dacbae32ee69f45a792efc9430",
+        "build_record_sha256": "sha256:d7a1b67b509bdb7e42ea3b192de9077344b9d3955427ed7a3be572cf922f25d9"
+      }
+    ]
+  },
+  "time_window": {
+    "created_at_utc": "2026-10-13T11:52:44.479456+00:00",
+    "finished_at_utc": "2026-10-13T12:02:02.915135+00:00",
+    "installed_tests_output_mtime_utc": "2026-10-13T11:48:06.238716Z",
+    "begins_after_installed_validation": true,
+    "per_trial_absolute_utc_recorded": false,
+    "order_basis": "runner writes created manifest before admission and measurement"
+  },
+  "limitations": [
+    "Exact recovery PID/source/native cleanup/effective profile absent; no fabricated verification of these fields.",
+    "Admission effective profile is not a per-trial or decoder profile.",
+    "Four author-processed files share one collection/publication lineage; windows are nested and post-observed, not a blind or broad-population study.",
+    "Processed-file license, physical units and extraction/imputation history remain unknown.",
+    "Large input logical bytes exceed CPU0 sysfs L3 capacity, but workers use affinity0..15; not measured cache state or a cache-caused performance claim.",
+    "No per-trial absolute UTC; timing nonoverlap applies to the run envelope."
+  ],
+  "issues": []
+}

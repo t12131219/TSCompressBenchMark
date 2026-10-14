@@ -1,0 +1,74 @@
+{
+  "schema": "tsbench.study-design/1",
+  "seed": 20261013,
+  "sources": [
+    {
+      "id": "etth1",
+      "path": "/home/fzg/PycharmProjects/材料/TSBench_Corpus/ETTh1.csv",
+      "sha256": "f18de3ad269cef59bb07b5438d79bb3042d3be49bdeecf01c1cd6d29695ee066",
+      "rows": 17420,
+      "column": "OT",
+      "development": [
+        0,
+        1024
+      ],
+      "evaluation": [
+        1024,
+        1536
+      ],
+      "license_status": "see registry/datasets/catalog.json; local use only until verified"
+    },
+    {
+      "id": "weather",
+      "path": "/home/fzg/PycharmProjects/材料/TSBench_Corpus/weather.csv",
+      "sha256": "34ee981d07313e51da2a50bb600072c8ae4a69cb4b0651f4cb93a069d7a2ba63",
+      "rows": 52696,
+      "column": "T (degC)",
+      "development": [
+        0,
+        1024
+      ],
+      "evaluation": [
+        1024,
+        1536
+      ],
+      "license_status": "see registry/datasets/catalog.json; local use only until verified"
+    },
+    {
+      "id": "national_illness",
+      "path": "/home/fzg/PycharmProjects/材料/TSBench_Corpus/national_illness.csv",
+      "sha256": "93601f64d2566dc796ca4305adad8b8560c2db1a1ff04543c3bd813a7263570a",
+      "rows": 966,
+      "column": "ILITOTAL",
+      "development": [
+        0,
+        256
+      ],
+      "evaluation": [
+        256,
+        768
+      ],
+      "license_status": "see registry/datasets/catalog.json; local use only until verified"
+    }
+  ],
+  "lengths": [
+    128,
+    512
+  ],
+  "absolute_bounds": [
+    "0.001",
+    "0.01",
+    "0.1"
+  ],
+  "empirical_tolerances": [
+    "0.01",
+    "0.1",
+    "1"
+  ],
+  "sessions": 3,
+  "rounds": 7,
+  "selection": "all listed grid points; no deployment selector or test-object tuning",
+  "dependence": "nested evaluation windows share data; sources are the highest resampling unit",
+  "development_use": "reserved, not used to pick methods/parameters; fixed grid was declared before these runs",
+  "comparison": "within matching raw_object_id/task/profile/boundary; no cross-error ranking"
+}

@@ -1,0 +1,44 @@
+schema = "tsbench.experiment/1"
+name = "records-complete-cost"
+output = "../../runs/records-complete-cost"
+
+[[datasets]]
+id = "typed-records-tail"
+format = "npz"
+path = "data/records.npz"
+components = { V = "V", T = "T", mask = "mask" }
+time_unit = "ns"
+
+[[methods]]
+id = "raw-records"
+codec = "raw-store"
+
+[[methods]]
+id = "zstd-records"
+codec = "zstd-frame"
+params = { compression_level = 3 }
+
+[task]
+kind = "records"
+fidelity = "bitwise"
+boundary = "object_memory"
+lifecycle = "independent_object"
+cache_policy = "natural"
+
+[[profiles]]
+id = "cpu-single"
+device = "cpu"
+native_threads = 1
+object_workers = 1
+
+[execution]
+sessions = 1
+rounds = 7
+warmup_objects = 2
+seed = 20261013
+timeout_s = 120
+qualification_cache = true
+
+[analysis]
+summary = "median_iqr"
+inference = "none"

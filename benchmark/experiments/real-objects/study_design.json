@@ -1,0 +1,250 @@
+{
+  "schema": "tsbench.real-object-study/1",
+  "seed": 20261013,
+  "sources": [
+    {
+      "id": "etth1",
+      "path": "/home/fzg/PycharmProjects/材料/TSBench_Corpus/ETTh1.csv",
+      "sha256": "f18de3ad269cef59bb07b5438d79bb3042d3be49bdeecf01c1cd6d29695ee066",
+      "bytes": 2589657,
+      "rows": 17420,
+      "header": [
+        "date",
+        "HUFL",
+        "HULL",
+        "MUFL",
+        "MULL",
+        "LUFL",
+        "LULL",
+        "OT"
+      ],
+      "development": [
+        0,
+        2048
+      ],
+      "evaluation": [
+        2048,
+        2560
+      ],
+      "license": {
+        "redistributed_in_this_repository": false,
+        "status": "dataset_repository_declared",
+        "spdx": "CC-BY-ND-4.0",
+        "evidence_url": "https://raw.githubusercontent.com/zhouhaoyi/ETDataset/1d16c8f4f943005d613b5bc962e9eeb06058cf07/LICENSE",
+        "evidence_sha256": "83cbb5c31415b1d0ee1d20d35dae3fda3a045b85fae9364cc57facc9cd6e0946",
+        "scope": "Root LICENSE of the author-maintained dataset repository; README describes its own collected/donated data. This is not an inference from a third-party code repository.",
+        "publication_policy": "Do not bundle raw data in this benchmark; link to original CSV and preserve attribution. Do not publish transformed datasets under an assumed derivative permission."
+      },
+      "upstream": {
+        "primary_repository": "https://github.com/zhouhaoyi/ETDataset",
+        "commit": "1d16c8f4f943005d613b5bc962e9eeb06058cf07",
+        "path": "ETT-small/ETTh1.csv",
+        "version_policy": "Pinned commit plus exact CSV SHA-256",
+        "readme_url": "https://raw.githubusercontent.com/zhouhaoyi/ETDataset/1d16c8f4f943005d613b5bc962e9eeb06058cf07/README.md",
+        "byte_identity_to_remote": "verified exact bytes and SHA-256",
+        "description_evidence": "README states the authors and Beijing Guowang Fuda collected and donated the transformer data; OT is oil temperature",
+        "citation": "Zhou et al., Informer, AAAI 2021, 35(12):11106-11115, https://arxiv.org/abs/2012.07436"
+      }
+    },
+    {
+      "id": "weather",
+      "path": "/home/fzg/PycharmProjects/材料/TSBench_Corpus/weather.csv",
+      "sha256": "34ee981d07313e51da2a50bb600072c8ae4a69cb4b0651f4cb93a069d7a2ba63",
+      "bytes": 7235425,
+      "rows": 52696,
+      "header": [
+        "date",
+        "p (mbar)",
+        "T (degC)",
+        "Tpot (K)",
+        "Tdew (degC)",
+        "rh (%)",
+        "VPmax (mbar)",
+        "VPact (mbar)",
+        "VPdef (mbar)",
+        "sh (g/kg)",
+        "H2OC (mmol/mol)",
+        "rho (g/m**3)",
+        "wv (m/s)",
+        "max. wv (m/s)",
+        "wd (deg)",
+        "rain (mm)",
+        "raining (s)",
+        "SWDR (W/m�)",
+        "PAR (�mol/m�/s)",
+        "max. PAR (�mol/m�/s)",
+        "Tlog (degC)",
+        "OT"
+      ],
+      "development": [
+        0,
+        2048
+      ],
+      "evaluation": [
+        2048,
+        2560
+      ],
+      "license": {
+        "redistributed_in_this_repository": false,
+        "status": "primary_data_verified_preprocessed_packaging_terms_unknown",
+        "spdx": "CC-BY-4.0",
+        "evidence_url": "https://www.bgc-jena.mpg.de/wetter/weather_data.html",
+        "evidence_sha256": "66e62b59692aa48b3e94a9701c5fb916e621738c4ed8cb862543327f58846a9f",
+        "scope": "MPI official data download page declares CC-BY-4.0. All 21 parsed numeric columns and timestamps match the two official 2020 roof archives. An additional license for the researcher-preprocessed CSV packaging was not found.",
+        "publication_policy": "Do not bundle the preprocessed CSV; provide exact upstream/Drive acquisition routes, hashes, and MPI attribution. Code repository licenses are not used as data licenses."
+      },
+      "upstream": {
+        "distribution_repository": "https://github.com/thuml/Autoformer",
+        "distribution_readme_commit": "51c7d416ae120b805fd5beef2f4ccf7de496a6ff",
+        "distribution_readme_url": "https://raw.githubusercontent.com/thuml/Autoformer/51c7d416ae120b805fd5beef2f4ccf7de496a6ff/README.md",
+        "distribution_readme_sha256": "885424e599e692e4ac13c5b8b94913925dc770f09e2387832bcd4865b473c217",
+        "distribution_folder_url": "https://drive.google.com/drive/folders/1ZOYpTUa82_jCcxIdTmyr0LXQfvaM9vIy",
+        "dataset_folder_url": "https://drive.google.com/drive/folders/1Xz84ci5YKWL6O2I-58ZsVe42lYIfqui1",
+        "drive_file_id": "1Tc7GeVN7DLEl-RAs-JVwG9yFMf--S8dy",
+        "version_policy": "Drive file id is mutable; exact CSV SHA-256 defines the frozen data version, not the code commit",
+        "byte_identity_to_remote": "verified exact bytes and SHA-256 from the file linked by the author README",
+        "citation": "Wu et al., Autoformer, NeurIPS 2021, https://arxiv.org/abs/2106.13008",
+        "primary_source_url": "https://www.bgc-jena.mpg.de/wetter/weather_data.html",
+        "primary_source_archives": [
+          {
+            "requested_url": "https://www.bgc-jena.mpg.de/wetter/data/mpi_roof_2020a.zip",
+            "checked_at_utc": "2026-10-13T07:15:40.273629+00:00",
+            "status": "ok",
+            "http_status": 200,
+            "final_url": "https://www.bgc-jena.mpg.de/wetter/data/mpi_roof_2020a.zip",
+            "bytes": 1292650,
+            "sha256": "6a0be0552a2a26a04c3b41a5281d4a55ae251d4c65ce630971a8662f43b31f9f"
+          },
+          {
+            "requested_url": "https://www.bgc-jena.mpg.de/wetter/data/mpi_roof_2020b.zip",
+            "checked_at_utc": "2026-10-13T07:15:40.273938+00:00",
+            "status": "ok",
+            "http_status": 200,
+            "final_url": "https://www.bgc-jena.mpg.de/wetter/data/mpi_roof_2020b.zip",
+            "bytes": 1298224,
+            "sha256": "c37eca910ee2803b17b8c587f3194bc7625abf994576c50f32538dd7cb65ac77"
+          }
+        ],
+        "primary_source_comparison": {
+          "official_rows": 52696,
+          "local_rows": 52696,
+          "all_21_value_columns_bitwise_mismatch_rows": 0,
+          "timestamp_mismatch_rows": 0,
+          "first_mismatches": [],
+          "official_header": [
+            "Date Time",
+            "p (mbar)",
+            "T (degC)",
+            "Tpot (K)",
+            "Tdew (degC)",
+            "rh (%)",
+            "VPmax (mbar)",
+            "VPact (mbar)",
+            "VPdef (mbar)",
+            "sh (g/kg)",
+            "H2OC (mmol/mol)",
+            "rho (g/m**3)",
+            "wv (m/s)",
+            "max. wv (m/s)",
+            "wd (deg)",
+            "rain (mm)",
+            "raining (s)",
+            "SWDR (W/m²)",
+            "PAR (µmol/m²/s)",
+            "max. PAR (µmol/m²/s)",
+            "Tlog (degC)",
+            "CO2 (ppm)"
+          ],
+          "local_header": [
+            "date",
+            "p (mbar)",
+            "T (degC)",
+            "Tpot (K)",
+            "Tdew (degC)",
+            "rh (%)",
+            "VPmax (mbar)",
+            "VPact (mbar)",
+            "VPdef (mbar)",
+            "sh (g/kg)",
+            "H2OC (mmol/mol)",
+            "rho (g/m**3)",
+            "wv (m/s)",
+            "max. wv (m/s)",
+            "wd (deg)",
+            "rain (mm)",
+            "raining (s)",
+            "SWDR (W/m�)",
+            "PAR (�mol/m�/s)",
+            "max. PAR (�mol/m�/s)",
+            "Tlog (degC)",
+            "OT"
+          ],
+          "comparison": "Concatenate mpi_roof_2020a.csv then mpi_roof_2020b.csv; parse Latin-1 source CSV; dates dd.mm.yyyy to yyyy-mm-dd; float() then little-endian f64 for all 21 values; compare same row order"
+        }
+      }
+    }
+  ],
+  "lengths": [
+    128,
+    512
+  ],
+  "layouts": [
+    "C",
+    "F"
+  ],
+  "sessions": 3,
+  "rounds": 7,
+  "absolute_bounds": [
+    "0.01",
+    "0.1"
+  ],
+  "channel_policy": "ETT all 7 and weather all 21 channels for lossless MTS/records; ABS uses ETT OT and weather T/Tdew/Tlog in degC",
+  "timestamp_policy": "date strings to exact naive-wall-clock int64 nanoseconds; preserve original order and duplicates; no timezone assertion",
+  "records_policy": "V and real shared T; missing tokens reject; no invented mask or fabricated missingness",
+  "scheme_policy": "independent object; explicit component routes; separate chunk resets/column streams; integer_affine_gcd parameters charged in wire",
+  "selection": "fixed grid, no method/parameter tuning from these measurements; development reserved, not used for selection",
+  "prior_exposure": "pilot [0,512), older ETT/weather CPU performance study [1024,1536); new evaluation does not overlap those performance windows. Full sources were parsed and characterized before this study; this is not a blind holdout.",
+  "dependence": "n128 is prefix of n512; columns, layouts, task projections and rounds reuse source observations; two source files are the highest grouping level and do not support population inference",
+  "comparison": "rank methods only for matching raw_object_id/task/error/profile/boundary. C/F have distinct exact canonical object identities; layout ablation is a paired logical-data intervention with its own object/wire costs.",
+  "timing": "object_memory Python+scheme+FFI+container boundary; source parsing/characterization outside clock; no native-only comparison",
+  "configuration_counts": [
+    {
+      "name": "real-mts-lossless",
+      "datasets": 8,
+      "methods": 7,
+      "profiles": 1,
+      "requested_cases": 56
+    },
+    {
+      "name": "real-timestamps-lossless",
+      "datasets": 4,
+      "methods": 5,
+      "profiles": 1,
+      "requested_cases": 20
+    },
+    {
+      "name": "real-records-lossless",
+      "datasets": 8,
+      "methods": 5,
+      "profiles": 1,
+      "requested_cases": 40
+    },
+    {
+      "name": "real-temperature-abs-0p01",
+      "datasets": 6,
+      "methods": 3,
+      "profiles": 1,
+      "requested_cases": 18
+    },
+    {
+      "name": "real-temperature-abs-0p1",
+      "datasets": 6,
+      "methods": 3,
+      "profiles": 1,
+      "requested_cases": 18
+    }
+  ],
+  "requested_cases": 152,
+  "planned_trials": 3192,
+  "measurement_executed_by_generator": false
+}

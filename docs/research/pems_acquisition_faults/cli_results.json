@@ -1,0 +1,59 @@
+{
+  "schema": "tsbench.pems-acquisition-fault-validation/1",
+  "scope": "few-byte invalid local file plus absent local file; no HTTP, actual corpus bytes, NPZ parsing, codec, qualification or timing",
+  "working_directory": "/home/fzg/PycharmProjects/TSDataCompressBenchMark",
+  "actual_cli_work_directory": "/tmp/pems-acquisition-fixed-check-_w1h4v5y",
+  "command": [
+    "/home/fzg/anaconda3/bin/python",
+    "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/tools/fetch_pems.py",
+    "verify",
+    "--directory",
+    "/tmp/pems-acquisition-fixed-check-_w1h4v5y/data",
+    "--dataset",
+    "pems03",
+    "--dataset",
+    "pems04",
+    "--manifest",
+    "/tmp/pems-acquisition-fixed-check-_w1h4v5y/verify.jsonl"
+  ],
+  "first": {
+    "returncode": 1,
+    "stdout": "{\"manifest\": \"/tmp/pems-acquisition-fixed-check-_w1h4v5y/verify.jsonl\", \"status\": \"failed\", \"records\": [{\"dataset_id\": \"pems03\", \"status\": \"error\", \"reason\": \"stream is shorter than frozen byte length\"}, {\"dataset_id\": \"pems04\", \"status\": \"error\", \"reason\": \"[Errno 2] No such file or directory: '/tmp/pems-acquisition-fixed-check-_w1h4v5y/data/pems04.npz'\"}]}\n",
+    "stderr": "",
+    "ledger_artifact": "verify.jsonl"
+  },
+  "manifest_reuse": {
+    "returncode": 2,
+    "stdout": "",
+    "stderr": "usage: fetch_pems.py [-h] --directory DIRECTORY\n                     [--dataset {pems03,pems04,pems07,pems08}]\n                     [--preparation PREPARATION] --manifest MANIFEST\n                     [--timeout TIMEOUT]\n                     {fetch,verify}\nfetch_pems.py: error: --manifest already exists; choose a fresh path to preserve prior evidence\n"
+  },
+  "checks": {
+    "first_failed_with_two_source_errors": true,
+    "manifest_reuse_rejected": true,
+    "ledger_unchanged_on_reuse": true,
+    "polluted_source_unchanged": true,
+    "missing_source_still_absent": true
+  },
+  "fixture": {
+    "artifact": "polluted_fixture.bin",
+    "bytes": 12,
+    "sha256": "108a2d3072b6bab2eff52987e2ac5a7e928df37b7e0a801a4ae01a710592a39a",
+    "scope": "intentionally invalid input, not PeMS data"
+  },
+  "earlier_cli_receipt": {
+    "original_path": "/tmp/pems-acquisition-faults-_bu1g2s8/verify.jsonl",
+    "artifact": "earlier_verify.jsonl",
+    "scope": "historical receipt before read-after-verification race fix; preserved unchanged, not rebound to current code"
+  },
+  "focused_tests": {
+    "command": [
+      "python",
+      "-m",
+      "pytest",
+      "benchmark/tests/test_pems_acquisition.py",
+      "-q"
+    ],
+    "result": "17 passed in 0.11s",
+    "scope": "local few-byte streams and mocked HTTP; no remote files"
+  }
+}

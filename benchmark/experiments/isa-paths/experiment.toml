@@ -1,0 +1,76 @@
+schema = "tsbench.experiment/1"
+name = "simdcomp-masked-sse-avx2-paths"
+output = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/runs/simd-paths-final-20261013"
+
+[[datasets]]
+id = "u32-257"
+format = "npy"
+path = "fixtures/u32-257.npy"
+component = "V"
+source = "synthetic-u32-seed-20261013"
+license = "generated experiment fixture"
+
+[[datasets]]
+id = "u32-4096"
+format = "npy"
+path = "fixtures/u32-4096.npy"
+component = "V"
+source = "synthetic-u32-seed-20261013"
+license = "generated experiment fixture"
+
+[[datasets]]
+id = "u32-65536"
+format = "npy"
+path = "fixtures/u32-65536.npy"
+component = "V"
+source = "synthetic-u32-seed-20261013"
+license = "generated experiment fixture"
+
+[[datasets]]
+id = "u32-1048576"
+format = "npy"
+path = "fixtures/u32-1048576.npy"
+component = "V"
+source = "synthetic-u32-seed-20261013"
+license = "generated experiment fixture"
+
+[[methods]]
+id = "raw-store"
+codec = "raw-store"
+
+[[methods]]
+id = "simd-sse-mask"
+codec = "simdcomp-u32"
+params = { api = "MASKED", isa = "SSE4_1", starting_point = 0, native_timing = false }
+
+[[methods]]
+id = "simd-avx2-mask"
+codec = "simdcomp-u32"
+params = { api = "MASKED", isa = "AVX2", starting_point = 0, native_timing = false }
+
+[task]
+kind = "values"
+fidelity = "bitwise"
+boundary = "object_memory"
+lifecycle = "independent_object"
+cache_policy = "natural"
+
+[[profiles]]
+id = "cpu-single-path-comparison"
+device = "cpu"
+native_threads = 1
+object_workers = 1
+runtime_preload = ["/usr/lib/x86_64-linux-gnu/libstdc++.so.6", "/home/fzg/anaconda3/lib/libgcc_s.so.1"]
+
+[execution]
+sessions = 3
+rounds = 7
+warmup_objects = 2
+seed = 20261013
+timeout_s = 120
+qualification_cache = true
+save_artifacts = true
+
+[analysis]
+summary = "median_iqr"
+inference = "none"

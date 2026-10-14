@@ -1,0 +1,3409 @@
+{
+  "schema": "tsbench.pems-preparation/1",
+  "experiment": "pems-values",
+  "measurement_executed": false,
+  "qualification_executed": false,
+  "codec_execution": false,
+  "scope": "actual local hashes, native headers, production NPZ parse/projection, TOML parse, fixed params and declared capability only; installed artifact/native content qualification pending",
+  "configuration_path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/pems-values/pems-values.toml",
+  "configuration_sha256": "1cbb1456ee5776b42c49a3bcdc74924f514763d0709e22ee1dae0c32e8e7357d",
+  "source_and_parse_dependency_hashes": {
+    "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/tools/generate_pems.py": "6e01d701b87d73143252f81186c9b220abd3aa3a8917a2f80cabb3c36dde1d25",
+    "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/research/additional_data_sources.json": "be791a6fb7d3643da1122b14895dc9e3d9d4bf24e3bb278e6b1aab7f528e416c",
+    "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/src/tsbench/__init__.py": "153d2ee91a3d5d6d3519d3f44f41bf775a15a0c5efcce325a9ba6791dca3ca57",
+    "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/src/tsbench/config.py": "fa53f16dc9819cbc51217206b2f419fe6007e9444d0d41b0c9dc8dbea7ff6b1c",
+    "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/src/tsbench/data.py": "3e4ace27036d773d37fed15739cfd70c14de76f49b463ee8912427fb6b7fda09",
+    "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/src/tsbench/registry.py": "e9acc9184665970e475e344f43a2bd1e0f813a9cd276ecc28024e00862e02309",
+    "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/src/tsbench/errors.py": "58755e65c5a87f7d6c3d2f152a9f56c305fa9cc8f3d8274d6ec34b35760c86ea",
+    "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/src/tsbench/runtime.py": "099248225979177f93ce36971c8c2eabbb4ee3c30891fca89aa5fe849d2ca8db",
+    "/home/fzg/PycharmProjects/TSDataCompressBenchMark/registry/codecs/zstd-frame.json": "5fed17583818b74a1fb511b294d6eea2b8f59ada2a7c999abff036962ca5c5e7",
+    "/home/fzg/PycharmProjects/TSDataCompressBenchMark/registry/codecs/deflate-zlib.json": "f925b9c1ef060364e44845510414b406f03f7283729d029e845260c65c098011",
+    "/home/fzg/PycharmProjects/TSDataCompressBenchMark/registry/codecs/chimp128.json": "35f9e2306d5340cf7c8e9362a6d3fccfc6f638b5a0cbfb81644a356134b57de3"
+  },
+  "preparation_runtime": {
+    "python": "3.11.5",
+    "python_executable": "/home/fzg/anaconda3/bin/python",
+    "numpy": "1.24.3",
+    "platform": "Linux-6.8.0-101-generic-x86_64-with-glibc2.35"
+  },
+  "sources": [
+    {
+      "id": "pems03",
+      "path": "/home/fzg/PycharmProjects/材料/TSBench_Corpus/PEMS03.npz",
+      "bytes": 15800415,
+      "sha256": "34859517425eded66a0014db63de54b95d0428c38890741a1710ed4d3b043de8",
+      "git_blob_sha1": "b4487154fc9611a3bf9856b0aad34efa610ea8ae",
+      "native_header": {
+        "members": [
+          "data.npy"
+        ],
+        "npy_version": [
+          1,
+          0
+        ],
+        "shape": [
+          26208,
+          358,
+          1
+        ],
+        "dtype": "<f8",
+        "fortran_order": false
+      },
+      "author_repository": "guoshnBJTU/ASTGNN",
+      "author_ref": "9c2e19b98c4cedf1f35214d8789685b6381b3aad",
+      "author_tree_url": "https://api.github.com/repos/guoshnBJTU/ASTGNN/git/trees/9c2e19b98c4cedf1f35214d8789685b6381b3aad?recursive=1",
+      "author_blob_url": "https://api.github.com/repos/guoshnBJTU/ASTGNN/git/blobs/b4487154fc9611a3bf9856b0aad34efa610ea8ae",
+      "author_path": "data/PEMS03/PEMS03.npz",
+      "author_raw_url": "https://raw.githubusercontent.com/guoshnBJTU/ASTGNN/9c2e19b98c4cedf1f35214d8789685b6381b3aad/data/PEMS03/PEMS03.npz",
+      "upstream_match_scope": "local git blob SHA-1 and byte length equal fixed author tree entry; remote SHA-256 was not recomputed because no NPZ download",
+      "remote_npz_downloaded_by_preparation": false,
+      "remote_sha256_recomputed": false,
+      "original_local_acquisition_time": "unknown; legacy retrieved_at UNSPECIFIED preserved",
+      "license": "unknown; exact author-preprocessed NPZ has no established data license",
+      "license_scope": "author tree has no LICENSE and GitHub license metadata is null; Caltrans website policy does not establish this processed file's license",
+      "units": "unknown for this exact packaged file",
+      "timestamp_semantics": "absent: archive contains only data.npy; no timestamps inferred",
+      "prior_exposure": "These local sources were observed in historical work and have now been hashed and parsed. This finite extension is not a blind holdout; windows and parameters are fixed before its timings."
+    },
+    {
+      "id": "pems04",
+      "path": "/home/fzg/PycharmProjects/材料/TSBench_Corpus/pems04.npz",
+      "bytes": 32956284,
+      "sha256": "95a3c9b720fffdb85f0330d09bfab41b0b3cad0ca86c0d7d5f3accacb4ac999a",
+      "git_blob_sha1": "a1a39eac4b86963b1ac22874fd1cc693eb642cd2",
+      "native_header": {
+        "members": [
+          "data.npy"
+        ],
+        "npy_version": [
+          1,
+          0
+        ],
+        "shape": [
+          16992,
+          307,
+          3
+        ],
+        "dtype": "<f8",
+        "fortran_order": false
+      },
+      "author_repository": "guoshnBJTU/ASTGNN",
+      "author_ref": "9c2e19b98c4cedf1f35214d8789685b6381b3aad",
+      "author_tree_url": "https://api.github.com/repos/guoshnBJTU/ASTGNN/git/trees/9c2e19b98c4cedf1f35214d8789685b6381b3aad?recursive=1",
+      "author_blob_url": "https://api.github.com/repos/guoshnBJTU/ASTGNN/git/blobs/a1a39eac4b86963b1ac22874fd1cc693eb642cd2",
+      "author_path": "data/PEMS04/PEMS04.npz",
+      "author_raw_url": "https://raw.githubusercontent.com/guoshnBJTU/ASTGNN/9c2e19b98c4cedf1f35214d8789685b6381b3aad/data/PEMS04/PEMS04.npz",
+      "upstream_match_scope": "local git blob SHA-1 and byte length equal fixed author tree entry; remote SHA-256 was not recomputed because no NPZ download",
+      "remote_npz_downloaded_by_preparation": false,
+      "remote_sha256_recomputed": false,
+      "original_local_acquisition_time": "unknown; legacy retrieved_at UNSPECIFIED preserved",
+      "license": "unknown; exact author-preprocessed NPZ has no established data license",
+      "license_scope": "author tree has no LICENSE and GitHub license metadata is null; Caltrans website policy does not establish this processed file's license",
+      "units": "unknown for this exact packaged file",
+      "timestamp_semantics": "absent: archive contains only data.npy; no timestamps inferred",
+      "prior_exposure": "These local sources were observed in historical work and have now been hashed and parsed. This finite extension is not a blind holdout; windows and parameters are fixed before its timings."
+    },
+    {
+      "id": "pems07",
+      "path": "/home/fzg/PycharmProjects/材料/TSBench_Corpus/PEMS07.npz",
+      "bytes": 43705518,
+      "sha256": "a07887e610aa986276209bc9384d14ed7858fdcad1ded67f53dca19eb828600b",
+      "git_blob_sha1": "28c547f80eb8804d3e378168c80f77f82db2680a",
+      "native_header": {
+        "members": [
+          "data.npy"
+        ],
+        "npy_version": [
+          1,
+          0
+        ],
+        "shape": [
+          28224,
+          883,
+          1
+        ],
+        "dtype": "<f8",
+        "fortran_order": false
+      },
+      "author_repository": "guoshnBJTU/ASTGNN",
+      "author_ref": "9c2e19b98c4cedf1f35214d8789685b6381b3aad",
+      "author_tree_url": "https://api.github.com/repos/guoshnBJTU/ASTGNN/git/trees/9c2e19b98c4cedf1f35214d8789685b6381b3aad?recursive=1",
+      "author_blob_url": "https://api.github.com/repos/guoshnBJTU/ASTGNN/git/blobs/28c547f80eb8804d3e378168c80f77f82db2680a",
+      "author_path": "data/PEMS07/PEMS07.npz",
+      "author_raw_url": "https://raw.githubusercontent.com/guoshnBJTU/ASTGNN/9c2e19b98c4cedf1f35214d8789685b6381b3aad/data/PEMS07/PEMS07.npz",
+      "upstream_match_scope": "local git blob SHA-1 and byte length equal fixed author tree entry; remote SHA-256 was not recomputed because no NPZ download",
+      "remote_npz_downloaded_by_preparation": false,
+      "remote_sha256_recomputed": false,
+      "original_local_acquisition_time": "unknown; legacy retrieved_at UNSPECIFIED preserved",
+      "license": "unknown; exact author-preprocessed NPZ has no established data license",
+      "license_scope": "author tree has no LICENSE and GitHub license metadata is null; Caltrans website policy does not establish this processed file's license",
+      "units": "unknown for this exact packaged file",
+      "timestamp_semantics": "absent: archive contains only data.npy; no timestamps inferred",
+      "prior_exposure": "These local sources were observed in historical work and have now been hashed and parsed. This finite extension is not a blind holdout; windows and parameters are fixed before its timings."
+    },
+    {
+      "id": "pems08",
+      "path": "/home/fzg/PycharmProjects/材料/TSBench_Corpus/pems08.npz",
+      "bytes": 18525419,
+      "sha256": "e1d03ce74e9fb79149e6e7c37c680214822c4a285baa2f42278cacabcd25c075",
+      "git_blob_sha1": "f5f3e84a00417573aa8487fe1e9e8cd13c6026c8",
+      "native_header": {
+        "members": [
+          "data.npy"
+        ],
+        "npy_version": [
+          1,
+          0
+        ],
+        "shape": [
+          17856,
+          170,
+          3
+        ],
+        "dtype": "<f8",
+        "fortran_order": false
+      },
+      "author_repository": "guoshnBJTU/ASTGNN",
+      "author_ref": "9c2e19b98c4cedf1f35214d8789685b6381b3aad",
+      "author_tree_url": "https://api.github.com/repos/guoshnBJTU/ASTGNN/git/trees/9c2e19b98c4cedf1f35214d8789685b6381b3aad?recursive=1",
+      "author_blob_url": "https://api.github.com/repos/guoshnBJTU/ASTGNN/git/blobs/f5f3e84a00417573aa8487fe1e9e8cd13c6026c8",
+      "author_path": "data/PEMS08/PEMS08.npz",
+      "author_raw_url": "https://raw.githubusercontent.com/guoshnBJTU/ASTGNN/9c2e19b98c4cedf1f35214d8789685b6381b3aad/data/PEMS08/PEMS08.npz",
+      "upstream_match_scope": "local git blob SHA-1 and byte length equal fixed author tree entry; remote SHA-256 was not recomputed because no NPZ download",
+      "remote_npz_downloaded_by_preparation": false,
+      "remote_sha256_recomputed": false,
+      "original_local_acquisition_time": "unknown; legacy retrieved_at UNSPECIFIED preserved",
+      "license": "unknown; exact author-preprocessed NPZ has no established data license",
+      "license_scope": "author tree has no LICENSE and GitHub license metadata is null; Caltrans website policy does not establish this processed file's license",
+      "units": "unknown for this exact packaged file",
+      "timestamp_semantics": "absent: archive contains only data.npy; no timestamps inferred",
+      "prior_exposure": "These local sources were observed in historical work and have now been hashed and parsed. This finite extension is not a blind holdout; windows and parameters are fixed before its timings."
+    }
+  ],
+  "lengths": [
+    128,
+    512,
+    8192
+  ],
+  "start": 1024,
+  "exclusive_stop": "1024 + length",
+  "prior_exposure": "These local sources were observed in historical work and have now been hashed and parsed. This finite extension is not a blind holdout; windows and parameters are fixed before its timings.",
+  "dependence": "n128 is a prefix of n512 and n8192; windows share source observations. Four packaged source files do not establish independent population samples; no inference.",
+  "selection": "fixed grid and defaults before this extension; no content-derived tuning; no dtype/rank conversion",
+  "task": {
+    "kind": "values",
+    "fidelity": "bitwise",
+    "boundary": "object_memory",
+    "lifecycle": "independent_object",
+    "cache_policy": "natural"
+  },
+  "profiles": [
+    {
+      "id": "cpu-single",
+      "device": "cpu",
+      "native_threads": 1,
+      "object_workers": 1,
+      "memory_limit_mb": 4096
+    }
+  ],
+  "execution": {
+    "sessions": 3,
+    "rounds": 7,
+    "warmup_objects": 2,
+    "seed": 20261013,
+    "timeout_s": 120,
+    "qualification_cache": true,
+    "save_artifacts": true
+  },
+  "analysis": {
+    "summary": "median_iqr",
+    "inference": "none"
+  },
+  "objects": [
+    {
+      "dataset_id": "pems03-native-n128",
+      "source_id": "pems03",
+      "raw_object_id": "sha256:80b79de1b04ff18dc56b63d65ce0fa22d6eb9754c77d5763aa0f92dd4ede2da4",
+      "schema": {
+        "axes": [
+          "time",
+          "sensor",
+          "feature"
+        ],
+        "topology": "NATIVE_ND_ARRAY",
+        "units": "unknown for exact author-preprocessed file",
+        "time_axis_semantics": "original row axis; timestamps and sampling interval absent",
+        "roles": {
+          "V": "V"
+        },
+        "masked_value_policy": "preserve_all_bits",
+        "task": "values"
+      },
+      "lineage": {
+        "source_path": "/home/fzg/PycharmProjects/材料/TSBench_Corpus/PEMS03.npz",
+        "source_hash": "sha256:34859517425eded66a0014db63de54b95d0428c38890741a1710ed4d3b043de8",
+        "parse_rule": {
+          "format": "npz",
+          "key": "data",
+          "component": "V",
+          "start": 1024,
+          "stop": 1152,
+          "step": 1,
+          "order": "C",
+          "schema": {
+            "axes": [
+              "time",
+              "sensor",
+              "feature"
+            ],
+            "topology": "NATIVE_ND_ARRAY",
+            "units": "unknown for exact author-preprocessed file",
+            "time_axis_semantics": "original row axis; timestamps and sampling interval absent"
+          }
+        },
+        "source": "https://raw.githubusercontent.com/guoshnBJTU/ASTGNN/9c2e19b98c4cedf1f35214d8789685b6381b3aad/data/PEMS03/PEMS03.npz",
+        "license": "unknown; exact author-preprocessed NPZ has no established data license",
+        "selection": {
+          "windows": {
+            "V": {
+              "start": 1024,
+              "stop": 1152,
+              "step": 1,
+              "source_rows": 26208,
+              "selected_rows": 128
+            }
+          },
+          "columns_indices": null,
+          "index_policy": "nonnegative zero-based rows/channels; exclusive stop; no implicit clipping"
+        }
+      },
+      "component": {
+        "name": "V",
+        "dtype": "<f8",
+        "shape": [
+          128,
+          358,
+          1
+        ],
+        "order": "C",
+        "rank": 3,
+        "axes": [
+          "time",
+          "sensor",
+          "feature"
+        ],
+        "elements": 45824,
+        "logical_bytes": 366592,
+        "typed_bytes_sha256": "96c13b4eeb88ae792a56e7713f6ece742b025f56c109864df15d0f7a330b5d4a",
+        "finite_count": 45824,
+        "nan_count": 0,
+        "positive_infinity_count": 0,
+        "negative_infinity_count": 0,
+        "positive_zero_count": 112,
+        "negative_zero_count": 0,
+        "finite_min": 0.0,
+        "finite_max": 1130.0
+      },
+      "characterization_scope": "finite/special counts and extrema over all native elements only; no flattening into a time series and no lag/cross-sensor correlation"
+    },
+    {
+      "dataset_id": "pems03-native-n512",
+      "source_id": "pems03",
+      "raw_object_id": "sha256:cf6ee955952f5079922b85d779bc03de10c28c249abdb079ba68623ae1e6a6fd",
+      "schema": {
+        "axes": [
+          "time",
+          "sensor",
+          "feature"
+        ],
+        "topology": "NATIVE_ND_ARRAY",
+        "units": "unknown for exact author-preprocessed file",
+        "time_axis_semantics": "original row axis; timestamps and sampling interval absent",
+        "roles": {
+          "V": "V"
+        },
+        "masked_value_policy": "preserve_all_bits",
+        "task": "values"
+      },
+      "lineage": {
+        "source_path": "/home/fzg/PycharmProjects/材料/TSBench_Corpus/PEMS03.npz",
+        "source_hash": "sha256:34859517425eded66a0014db63de54b95d0428c38890741a1710ed4d3b043de8",
+        "parse_rule": {
+          "format": "npz",
+          "key": "data",
+          "component": "V",
+          "start": 1024,
+          "stop": 1536,
+          "step": 1,
+          "order": "C",
+          "schema": {
+            "axes": [
+              "time",
+              "sensor",
+              "feature"
+            ],
+            "topology": "NATIVE_ND_ARRAY",
+            "units": "unknown for exact author-preprocessed file",
+            "time_axis_semantics": "original row axis; timestamps and sampling interval absent"
+          }
+        },
+        "source": "https://raw.githubusercontent.com/guoshnBJTU/ASTGNN/9c2e19b98c4cedf1f35214d8789685b6381b3aad/data/PEMS03/PEMS03.npz",
+        "license": "unknown; exact author-preprocessed NPZ has no established data license",
+        "selection": {
+          "windows": {
+            "V": {
+              "start": 1024,
+              "stop": 1536,
+              "step": 1,
+              "source_rows": 26208,
+              "selected_rows": 512
+            }
+          },
+          "columns_indices": null,
+          "index_policy": "nonnegative zero-based rows/channels; exclusive stop; no implicit clipping"
+        }
+      },
+      "component": {
+        "name": "V",
+        "dtype": "<f8",
+        "shape": [
+          512,
+          358,
+          1
+        ],
+        "order": "C",
+        "rank": 3,
+        "axes": [
+          "time",
+          "sensor",
+          "feature"
+        ],
+        "elements": 183296,
+        "logical_bytes": 1466368,
+        "typed_bytes_sha256": "1f617134a6bc2f54107af1729ba682e087ad0728da9b04d81d41f5286b61100a",
+        "finite_count": 183296,
+        "nan_count": 0,
+        "positive_infinity_count": 0,
+        "negative_infinity_count": 0,
+        "positive_zero_count": 1614,
+        "negative_zero_count": 0,
+        "finite_min": 0.0,
+        "finite_max": 1164.0
+      },
+      "characterization_scope": "finite/special counts and extrema over all native elements only; no flattening into a time series and no lag/cross-sensor correlation"
+    },
+    {
+      "dataset_id": "pems03-native-n8192",
+      "source_id": "pems03",
+      "raw_object_id": "sha256:d3900ed9fbcee37b33be531fb4db178f6acf926a0f53071e6b2c2fe47d98600f",
+      "schema": {
+        "axes": [
+          "time",
+          "sensor",
+          "feature"
+        ],
+        "topology": "NATIVE_ND_ARRAY",
+        "units": "unknown for exact author-preprocessed file",
+        "time_axis_semantics": "original row axis; timestamps and sampling interval absent",
+        "roles": {
+          "V": "V"
+        },
+        "masked_value_policy": "preserve_all_bits",
+        "task": "values"
+      },
+      "lineage": {
+        "source_path": "/home/fzg/PycharmProjects/材料/TSBench_Corpus/PEMS03.npz",
+        "source_hash": "sha256:34859517425eded66a0014db63de54b95d0428c38890741a1710ed4d3b043de8",
+        "parse_rule": {
+          "format": "npz",
+          "key": "data",
+          "component": "V",
+          "start": 1024,
+          "stop": 9216,
+          "step": 1,
+          "order": "C",
+          "schema": {
+            "axes": [
+              "time",
+              "sensor",
+              "feature"
+            ],
+            "topology": "NATIVE_ND_ARRAY",
+            "units": "unknown for exact author-preprocessed file",
+            "time_axis_semantics": "original row axis; timestamps and sampling interval absent"
+          }
+        },
+        "source": "https://raw.githubusercontent.com/guoshnBJTU/ASTGNN/9c2e19b98c4cedf1f35214d8789685b6381b3aad/data/PEMS03/PEMS03.npz",
+        "license": "unknown; exact author-preprocessed NPZ has no established data license",
+        "selection": {
+          "windows": {
+            "V": {
+              "start": 1024,
+              "stop": 9216,
+              "step": 1,
+              "source_rows": 26208,
+              "selected_rows": 8192
+            }
+          },
+          "columns_indices": null,
+          "index_policy": "nonnegative zero-based rows/channels; exclusive stop; no implicit clipping"
+        }
+      },
+      "component": {
+        "name": "V",
+        "dtype": "<f8",
+        "shape": [
+          8192,
+          358,
+          1
+        ],
+        "order": "C",
+        "rank": 3,
+        "axes": [
+          "time",
+          "sensor",
+          "feature"
+        ],
+        "elements": 2932736,
+        "logical_bytes": 23461888,
+        "typed_bytes_sha256": "12fec2fb570162b452211e73c2e8b2c1fe6b9d5763ac52d666750504ba4cfa80",
+        "finite_count": 2932736,
+        "nan_count": 0,
+        "positive_infinity_count": 0,
+        "negative_infinity_count": 0,
+        "positive_zero_count": 17173,
+        "negative_zero_count": 0,
+        "finite_min": 0.0,
+        "finite_max": 1178.0
+      },
+      "characterization_scope": "finite/special counts and extrema over all native elements only; no flattening into a time series and no lag/cross-sensor correlation"
+    },
+    {
+      "dataset_id": "pems04-native-n128",
+      "source_id": "pems04",
+      "raw_object_id": "sha256:2c62b8a478a41010feb7d72995c9f9741155c2c0b2a15ca0f7a1d45fef02a4d1",
+      "schema": {
+        "axes": [
+          "time",
+          "sensor",
+          "feature"
+        ],
+        "topology": "NATIVE_ND_ARRAY",
+        "units": "unknown for exact author-preprocessed file",
+        "time_axis_semantics": "original row axis; timestamps and sampling interval absent",
+        "roles": {
+          "V": "V"
+        },
+        "masked_value_policy": "preserve_all_bits",
+        "task": "values"
+      },
+      "lineage": {
+        "source_path": "/home/fzg/PycharmProjects/材料/TSBench_Corpus/pems04.npz",
+        "source_hash": "sha256:95a3c9b720fffdb85f0330d09bfab41b0b3cad0ca86c0d7d5f3accacb4ac999a",
+        "parse_rule": {
+          "format": "npz",
+          "key": "data",
+          "component": "V",
+          "start": 1024,
+          "stop": 1152,
+          "step": 1,
+          "order": "C",
+          "schema": {
+            "axes": [
+              "time",
+              "sensor",
+              "feature"
+            ],
+            "topology": "NATIVE_ND_ARRAY",
+            "units": "unknown for exact author-preprocessed file",
+            "time_axis_semantics": "original row axis; timestamps and sampling interval absent"
+          }
+        },
+        "source": "https://raw.githubusercontent.com/guoshnBJTU/ASTGNN/9c2e19b98c4cedf1f35214d8789685b6381b3aad/data/PEMS04/PEMS04.npz",
+        "license": "unknown; exact author-preprocessed NPZ has no established data license",
+        "selection": {
+          "windows": {
+            "V": {
+              "start": 1024,
+              "stop": 1152,
+              "step": 1,
+              "source_rows": 16992,
+              "selected_rows": 128
+            }
+          },
+          "columns_indices": null,
+          "index_policy": "nonnegative zero-based rows/channels; exclusive stop; no implicit clipping"
+        }
+      },
+      "component": {
+        "name": "V",
+        "dtype": "<f8",
+        "shape": [
+          128,
+          307,
+          3
+        ],
+        "order": "C",
+        "rank": 3,
+        "axes": [
+          "time",
+          "sensor",
+          "feature"
+        ],
+        "elements": 117888,
+        "logical_bytes": 943104,
+        "typed_bytes_sha256": "af3bb10454d543152ad84609ebfc12f4996ffad63df4bb07dc971ef60a94af27",
+        "finite_count": 117888,
+        "nan_count": 0,
+        "positive_infinity_count": 0,
+        "negative_infinity_count": 0,
+        "positive_zero_count": 311,
+        "negative_zero_count": 0,
+        "finite_min": 0.0,
+        "finite_max": 877.0
+      },
+      "characterization_scope": "finite/special counts and extrema over all native elements only; no flattening into a time series and no lag/cross-sensor correlation"
+    },
+    {
+      "dataset_id": "pems04-native-n512",
+      "source_id": "pems04",
+      "raw_object_id": "sha256:f87f61f6ca03af51a2f9783775ac30d31ce00f7e537f9b0a6b36ea16b68d0236",
+      "schema": {
+        "axes": [
+          "time",
+          "sensor",
+          "feature"
+        ],
+        "topology": "NATIVE_ND_ARRAY",
+        "units": "unknown for exact author-preprocessed file",
+        "time_axis_semantics": "original row axis; timestamps and sampling interval absent",
+        "roles": {
+          "V": "V"
+        },
+        "masked_value_policy": "preserve_all_bits",
+        "task": "values"
+      },
+      "lineage": {
+        "source_path": "/home/fzg/PycharmProjects/材料/TSBench_Corpus/pems04.npz",
+        "source_hash": "sha256:95a3c9b720fffdb85f0330d09bfab41b0b3cad0ca86c0d7d5f3accacb4ac999a",
+        "parse_rule": {
+          "format": "npz",
+          "key": "data",
+          "component": "V",
+          "start": 1024,
+          "stop": 1536,
+          "step": 1,
+          "order": "C",
+          "schema": {
+            "axes": [
+              "time",
+              "sensor",
+              "feature"
+            ],
+            "topology": "NATIVE_ND_ARRAY",
+            "units": "unknown for exact author-preprocessed file",
+            "time_axis_semantics": "original row axis; timestamps and sampling interval absent"
+          }
+        },
+        "source": "https://raw.githubusercontent.com/guoshnBJTU/ASTGNN/9c2e19b98c4cedf1f35214d8789685b6381b3aad/data/PEMS04/PEMS04.npz",
+        "license": "unknown; exact author-preprocessed NPZ has no established data license",
+        "selection": {
+          "windows": {
+            "V": {
+              "start": 1024,
+              "stop": 1536,
+              "step": 1,
+              "source_rows": 16992,
+              "selected_rows": 512
+            }
+          },
+          "columns_indices": null,
+          "index_policy": "nonnegative zero-based rows/channels; exclusive stop; no implicit clipping"
+        }
+      },
+      "component": {
+        "name": "V",
+        "dtype": "<f8",
+        "shape": [
+          512,
+          307,
+          3
+        ],
+        "order": "C",
+        "rank": 3,
+        "axes": [
+          "time",
+          "sensor",
+          "feature"
+        ],
+        "elements": 471552,
+        "logical_bytes": 3772416,
+        "typed_bytes_sha256": "2681d902f9b84cc3bbbb8ba811115165bf47d71b8fd84f1b830bcdae881a5ddb",
+        "finite_count": 471552,
+        "nan_count": 0,
+        "positive_infinity_count": 0,
+        "negative_infinity_count": 0,
+        "positive_zero_count": 5490,
+        "negative_zero_count": 0,
+        "finite_min": 0.0,
+        "finite_max": 877.0
+      },
+      "characterization_scope": "finite/special counts and extrema over all native elements only; no flattening into a time series and no lag/cross-sensor correlation"
+    },
+    {
+      "dataset_id": "pems04-native-n8192",
+      "source_id": "pems04",
+      "raw_object_id": "sha256:05b63dbc1cd637187450ae77dd357e85da0dcb3201d260ac6253ea4dac3acfd7",
+      "schema": {
+        "axes": [
+          "time",
+          "sensor",
+          "feature"
+        ],
+        "topology": "NATIVE_ND_ARRAY",
+        "units": "unknown for exact author-preprocessed file",
+        "time_axis_semantics": "original row axis; timestamps and sampling interval absent",
+        "roles": {
+          "V": "V"
+        },
+        "masked_value_policy": "preserve_all_bits",
+        "task": "values"
+      },
+      "lineage": {
+        "source_path": "/home/fzg/PycharmProjects/材料/TSBench_Corpus/pems04.npz",
+        "source_hash": "sha256:95a3c9b720fffdb85f0330d09bfab41b0b3cad0ca86c0d7d5f3accacb4ac999a",
+        "parse_rule": {
+          "format": "npz",
+          "key": "data",
+          "component": "V",
+          "start": 1024,
+          "stop": 9216,
+          "step": 1,
+          "order": "C",
+          "schema": {
+            "axes": [
+              "time",
+              "sensor",
+              "feature"
+            ],
+            "topology": "NATIVE_ND_ARRAY",
+            "units": "unknown for exact author-preprocessed file",
+            "time_axis_semantics": "original row axis; timestamps and sampling interval absent"
+          }
+        },
+        "source": "https://raw.githubusercontent.com/guoshnBJTU/ASTGNN/9c2e19b98c4cedf1f35214d8789685b6381b3aad/data/PEMS04/PEMS04.npz",
+        "license": "unknown; exact author-preprocessed NPZ has no established data license",
+        "selection": {
+          "windows": {
+            "V": {
+              "start": 1024,
+              "stop": 9216,
+              "step": 1,
+              "source_rows": 16992,
+              "selected_rows": 8192
+            }
+          },
+          "columns_indices": null,
+          "index_policy": "nonnegative zero-based rows/channels; exclusive stop; no implicit clipping"
+        }
+      },
+      "component": {
+        "name": "V",
+        "dtype": "<f8",
+        "shape": [
+          8192,
+          307,
+          3
+        ],
+        "order": "C",
+        "rank": 3,
+        "axes": [
+          "time",
+          "sensor",
+          "feature"
+        ],
+        "elements": 7544832,
+        "logical_bytes": 60358656,
+        "typed_bytes_sha256": "d0022b300d5ba2cad6f607eaee6705a2f8001a25cd2cb40bfe5078104227ab4d",
+        "finite_count": 7544832,
+        "nan_count": 0,
+        "positive_infinity_count": 0,
+        "negative_infinity_count": 0,
+        "positive_zero_count": 82017,
+        "negative_zero_count": 0,
+        "finite_min": 0.0,
+        "finite_max": 919.0
+      },
+      "characterization_scope": "finite/special counts and extrema over all native elements only; no flattening into a time series and no lag/cross-sensor correlation"
+    },
+    {
+      "dataset_id": "pems07-native-n128",
+      "source_id": "pems07",
+      "raw_object_id": "sha256:1f6ddf44a3fd3220793ccfe99b38aafcdec5e5e196d480e5c078436469342879",
+      "schema": {
+        "axes": [
+          "time",
+          "sensor",
+          "feature"
+        ],
+        "topology": "NATIVE_ND_ARRAY",
+        "units": "unknown for exact author-preprocessed file",
+        "time_axis_semantics": "original row axis; timestamps and sampling interval absent",
+        "roles": {
+          "V": "V"
+        },
+        "masked_value_policy": "preserve_all_bits",
+        "task": "values"
+      },
+      "lineage": {
+        "source_path": "/home/fzg/PycharmProjects/材料/TSBench_Corpus/PEMS07.npz",
+        "source_hash": "sha256:a07887e610aa986276209bc9384d14ed7858fdcad1ded67f53dca19eb828600b",
+        "parse_rule": {
+          "format": "npz",
+          "key": "data",
+          "component": "V",
+          "start": 1024,
+          "stop": 1152,
+          "step": 1,
+          "order": "C",
+          "schema": {
+            "axes": [
+              "time",
+              "sensor",
+              "feature"
+            ],
+            "topology": "NATIVE_ND_ARRAY",
+            "units": "unknown for exact author-preprocessed file",
+            "time_axis_semantics": "original row axis; timestamps and sampling interval absent"
+          }
+        },
+        "source": "https://raw.githubusercontent.com/guoshnBJTU/ASTGNN/9c2e19b98c4cedf1f35214d8789685b6381b3aad/data/PEMS07/PEMS07.npz",
+        "license": "unknown; exact author-preprocessed NPZ has no established data license",
+        "selection": {
+          "windows": {
+            "V": {
+              "start": 1024,
+              "stop": 1152,
+              "step": 1,
+              "source_rows": 28224,
+              "selected_rows": 128
+            }
+          },
+          "columns_indices": null,
+          "index_policy": "nonnegative zero-based rows/channels; exclusive stop; no implicit clipping"
+        }
+      },
+      "component": {
+        "name": "V",
+        "dtype": "<f8",
+        "shape": [
+          128,
+          883,
+          1
+        ],
+        "order": "C",
+        "rank": 3,
+        "axes": [
+          "time",
+          "sensor",
+          "feature"
+        ],
+        "elements": 113024,
+        "logical_bytes": 904192,
+        "typed_bytes_sha256": "f89d6e75b91cf01a94439829f1e7995d0c7e4911771859251eba0f08b4dec18d",
+        "finite_count": 113024,
+        "nan_count": 0,
+        "positive_infinity_count": 0,
+        "negative_infinity_count": 0,
+        "positive_zero_count": 129,
+        "negative_zero_count": 0,
+        "finite_min": 0.0,
+        "finite_max": 1216.0
+      },
+      "characterization_scope": "finite/special counts and extrema over all native elements only; no flattening into a time series and no lag/cross-sensor correlation"
+    },
+    {
+      "dataset_id": "pems07-native-n512",
+      "source_id": "pems07",
+      "raw_object_id": "sha256:72eecbd3871b90fc33beebc2dc445f62b93688d9042104811f20702cfd16d50e",
+      "schema": {
+        "axes": [
+          "time",
+          "sensor",
+          "feature"
+        ],
+        "topology": "NATIVE_ND_ARRAY",
+        "units": "unknown for exact author-preprocessed file",
+        "time_axis_semantics": "original row axis; timestamps and sampling interval absent",
+        "roles": {
+          "V": "V"
+        },
+        "masked_value_policy": "preserve_all_bits",
+        "task": "values"
+      },
+      "lineage": {
+        "source_path": "/home/fzg/PycharmProjects/材料/TSBench_Corpus/PEMS07.npz",
+        "source_hash": "sha256:a07887e610aa986276209bc9384d14ed7858fdcad1ded67f53dca19eb828600b",
+        "parse_rule": {
+          "format": "npz",
+          "key": "data",
+          "component": "V",
+          "start": 1024,
+          "stop": 1536,
+          "step": 1,
+          "order": "C",
+          "schema": {
+            "axes": [
+              "time",
+              "sensor",
+              "feature"
+            ],
+            "topology": "NATIVE_ND_ARRAY",
+            "units": "unknown for exact author-preprocessed file",
+            "time_axis_semantics": "original row axis; timestamps and sampling interval absent"
+          }
+        },
+        "source": "https://raw.githubusercontent.com/guoshnBJTU/ASTGNN/9c2e19b98c4cedf1f35214d8789685b6381b3aad/data/PEMS07/PEMS07.npz",
+        "license": "unknown; exact author-preprocessed NPZ has no established data license",
+        "selection": {
+          "windows": {
+            "V": {
+              "start": 1024,
+              "stop": 1536,
+              "step": 1,
+              "source_rows": 28224,
+              "selected_rows": 512
+            }
+          },
+          "columns_indices": null,
+          "index_policy": "nonnegative zero-based rows/channels; exclusive stop; no implicit clipping"
+        }
+      },
+      "component": {
+        "name": "V",
+        "dtype": "<f8",
+        "shape": [
+          512,
+          883,
+          1
+        ],
+        "order": "C",
+        "rank": 3,
+        "axes": [
+          "time",
+          "sensor",
+          "feature"
+        ],
+        "elements": 452096,
+        "logical_bytes": 3616768,
+        "typed_bytes_sha256": "07d1667628ff2a584ee005854afab63e06eaf3cdd828d04c16bc3063dde68a43",
+        "finite_count": 452096,
+        "nan_count": 0,
+        "positive_infinity_count": 0,
+        "negative_infinity_count": 0,
+        "positive_zero_count": 1800,
+        "negative_zero_count": 0,
+        "finite_min": 0.0,
+        "finite_max": 1216.0
+      },
+      "characterization_scope": "finite/special counts and extrema over all native elements only; no flattening into a time series and no lag/cross-sensor correlation"
+    },
+    {
+      "dataset_id": "pems07-native-n8192",
+      "source_id": "pems07",
+      "raw_object_id": "sha256:9c55df981cd14ea90819b5aabaa2dcfee52cc983ba3d37503183e54b58fde037",
+      "schema": {
+        "axes": [
+          "time",
+          "sensor",
+          "feature"
+        ],
+        "topology": "NATIVE_ND_ARRAY",
+        "units": "unknown for exact author-preprocessed file",
+        "time_axis_semantics": "original row axis; timestamps and sampling interval absent",
+        "roles": {
+          "V": "V"
+        },
+        "masked_value_policy": "preserve_all_bits",
+        "task": "values"
+      },
+      "lineage": {
+        "source_path": "/home/fzg/PycharmProjects/材料/TSBench_Corpus/PEMS07.npz",
+        "source_hash": "sha256:a07887e610aa986276209bc9384d14ed7858fdcad1ded67f53dca19eb828600b",
+        "parse_rule": {
+          "format": "npz",
+          "key": "data",
+          "component": "V",
+          "start": 1024,
+          "stop": 9216,
+          "step": 1,
+          "order": "C",
+          "schema": {
+            "axes": [
+              "time",
+              "sensor",
+              "feature"
+            ],
+            "topology": "NATIVE_ND_ARRAY",
+            "units": "unknown for exact author-preprocessed file",
+            "time_axis_semantics": "original row axis; timestamps and sampling interval absent"
+          }
+        },
+        "source": "https://raw.githubusercontent.com/guoshnBJTU/ASTGNN/9c2e19b98c4cedf1f35214d8789685b6381b3aad/data/PEMS07/PEMS07.npz",
+        "license": "unknown; exact author-preprocessed NPZ has no established data license",
+        "selection": {
+          "windows": {
+            "V": {
+              "start": 1024,
+              "stop": 9216,
+              "step": 1,
+              "source_rows": 28224,
+              "selected_rows": 8192
+            }
+          },
+          "columns_indices": null,
+          "index_policy": "nonnegative zero-based rows/channels; exclusive stop; no implicit clipping"
+        }
+      },
+      "component": {
+        "name": "V",
+        "dtype": "<f8",
+        "shape": [
+          8192,
+          883,
+          1
+        ],
+        "order": "C",
+        "rank": 3,
+        "axes": [
+          "time",
+          "sensor",
+          "feature"
+        ],
+        "elements": 7233536,
+        "logical_bytes": 57868288,
+        "typed_bytes_sha256": "737e1b6bc7ca49af48c08817d58339af0e866a2fcd4b37769590d1c87fe078cc",
+        "finite_count": 7233536,
+        "nan_count": 0,
+        "positive_infinity_count": 0,
+        "negative_infinity_count": 0,
+        "positive_zero_count": 32963,
+        "negative_zero_count": 0,
+        "finite_min": 0.0,
+        "finite_max": 1460.0
+      },
+      "characterization_scope": "finite/special counts and extrema over all native elements only; no flattening into a time series and no lag/cross-sensor correlation"
+    },
+    {
+      "dataset_id": "pems08-native-n128",
+      "source_id": "pems08",
+      "raw_object_id": "sha256:8da8b763398a9a0c0ee78efa1d5bfb699d209c85384436f4825490e17cafb884",
+      "schema": {
+        "axes": [
+          "time",
+          "sensor",
+          "feature"
+        ],
+        "topology": "NATIVE_ND_ARRAY",
+        "units": "unknown for exact author-preprocessed file",
+        "time_axis_semantics": "original row axis; timestamps and sampling interval absent",
+        "roles": {
+          "V": "V"
+        },
+        "masked_value_policy": "preserve_all_bits",
+        "task": "values"
+      },
+      "lineage": {
+        "source_path": "/home/fzg/PycharmProjects/材料/TSBench_Corpus/pems08.npz",
+        "source_hash": "sha256:e1d03ce74e9fb79149e6e7c37c680214822c4a285baa2f42278cacabcd25c075",
+        "parse_rule": {
+          "format": "npz",
+          "key": "data",
+          "component": "V",
+          "start": 1024,
+          "stop": 1152,
+          "step": 1,
+          "order": "C",
+          "schema": {
+            "axes": [
+              "time",
+              "sensor",
+              "feature"
+            ],
+            "topology": "NATIVE_ND_ARRAY",
+            "units": "unknown for exact author-preprocessed file",
+            "time_axis_semantics": "original row axis; timestamps and sampling interval absent"
+          }
+        },
+        "source": "https://raw.githubusercontent.com/guoshnBJTU/ASTGNN/9c2e19b98c4cedf1f35214d8789685b6381b3aad/data/PEMS08/PEMS08.npz",
+        "license": "unknown; exact author-preprocessed NPZ has no established data license",
+        "selection": {
+          "windows": {
+            "V": {
+              "start": 1024,
+              "stop": 1152,
+              "step": 1,
+              "source_rows": 17856,
+              "selected_rows": 128
+            }
+          },
+          "columns_indices": null,
+          "index_policy": "nonnegative zero-based rows/channels; exclusive stop; no implicit clipping"
+        }
+      },
+      "component": {
+        "name": "V",
+        "dtype": "<f8",
+        "shape": [
+          128,
+          170,
+          3
+        ],
+        "order": "C",
+        "rank": 3,
+        "axes": [
+          "time",
+          "sensor",
+          "feature"
+        ],
+        "elements": 65280,
+        "logical_bytes": 522240,
+        "typed_bytes_sha256": "88488dd9b13e5a3d72734ebf9e6d70cf01b8a132705ef4eeb69ceff257452613",
+        "finite_count": 65280,
+        "nan_count": 0,
+        "positive_infinity_count": 0,
+        "negative_infinity_count": 0,
+        "positive_zero_count": 228,
+        "negative_zero_count": 0,
+        "finite_min": 0.0,
+        "finite_max": 719.0
+      },
+      "characterization_scope": "finite/special counts and extrema over all native elements only; no flattening into a time series and no lag/cross-sensor correlation"
+    },
+    {
+      "dataset_id": "pems08-native-n512",
+      "source_id": "pems08",
+      "raw_object_id": "sha256:f46ec5c67779a525a1ca523284b144d174bb3fbb5ba3965a71429bfe776ab442",
+      "schema": {
+        "axes": [
+          "time",
+          "sensor",
+          "feature"
+        ],
+        "topology": "NATIVE_ND_ARRAY",
+        "units": "unknown for exact author-preprocessed file",
+        "time_axis_semantics": "original row axis; timestamps and sampling interval absent",
+        "roles": {
+          "V": "V"
+        },
+        "masked_value_policy": "preserve_all_bits",
+        "task": "values"
+      },
+      "lineage": {
+        "source_path": "/home/fzg/PycharmProjects/材料/TSBench_Corpus/pems08.npz",
+        "source_hash": "sha256:e1d03ce74e9fb79149e6e7c37c680214822c4a285baa2f42278cacabcd25c075",
+        "parse_rule": {
+          "format": "npz",
+          "key": "data",
+          "component": "V",
+          "start": 1024,
+          "stop": 1536,
+          "step": 1,
+          "order": "C",
+          "schema": {
+            "axes": [
+              "time",
+              "sensor",
+              "feature"
+            ],
+            "topology": "NATIVE_ND_ARRAY",
+            "units": "unknown for exact author-preprocessed file",
+            "time_axis_semantics": "original row axis; timestamps and sampling interval absent"
+          }
+        },
+        "source": "https://raw.githubusercontent.com/guoshnBJTU/ASTGNN/9c2e19b98c4cedf1f35214d8789685b6381b3aad/data/PEMS08/PEMS08.npz",
+        "license": "unknown; exact author-preprocessed NPZ has no established data license",
+        "selection": {
+          "windows": {
+            "V": {
+              "start": 1024,
+              "stop": 1536,
+              "step": 1,
+              "source_rows": 17856,
+              "selected_rows": 512
+            }
+          },
+          "columns_indices": null,
+          "index_policy": "nonnegative zero-based rows/channels; exclusive stop; no implicit clipping"
+        }
+      },
+      "component": {
+        "name": "V",
+        "dtype": "<f8",
+        "shape": [
+          512,
+          170,
+          3
+        ],
+        "order": "C",
+        "rank": 3,
+        "axes": [
+          "time",
+          "sensor",
+          "feature"
+        ],
+        "elements": 261120,
+        "logical_bytes": 2088960,
+        "typed_bytes_sha256": "cc97b2e247d78d1857478c3758f85c915c57196f37fc38f18010594fed8c7db8",
+        "finite_count": 261120,
+        "nan_count": 0,
+        "positive_infinity_count": 0,
+        "negative_infinity_count": 0,
+        "positive_zero_count": 1324,
+        "negative_zero_count": 0,
+        "finite_min": 0.0,
+        "finite_max": 869.0
+      },
+      "characterization_scope": "finite/special counts and extrema over all native elements only; no flattening into a time series and no lag/cross-sensor correlation"
+    },
+    {
+      "dataset_id": "pems08-native-n8192",
+      "source_id": "pems08",
+      "raw_object_id": "sha256:16098a53c2738d40870217e0d00d2eaa9a7b70f150aa3c231cc328410cae438f",
+      "schema": {
+        "axes": [
+          "time",
+          "sensor",
+          "feature"
+        ],
+        "topology": "NATIVE_ND_ARRAY",
+        "units": "unknown for exact author-preprocessed file",
+        "time_axis_semantics": "original row axis; timestamps and sampling interval absent",
+        "roles": {
+          "V": "V"
+        },
+        "masked_value_policy": "preserve_all_bits",
+        "task": "values"
+      },
+      "lineage": {
+        "source_path": "/home/fzg/PycharmProjects/材料/TSBench_Corpus/pems08.npz",
+        "source_hash": "sha256:e1d03ce74e9fb79149e6e7c37c680214822c4a285baa2f42278cacabcd25c075",
+        "parse_rule": {
+          "format": "npz",
+          "key": "data",
+          "component": "V",
+          "start": 1024,
+          "stop": 9216,
+          "step": 1,
+          "order": "C",
+          "schema": {
+            "axes": [
+              "time",
+              "sensor",
+              "feature"
+            ],
+            "topology": "NATIVE_ND_ARRAY",
+            "units": "unknown for exact author-preprocessed file",
+            "time_axis_semantics": "original row axis; timestamps and sampling interval absent"
+          }
+        },
+        "source": "https://raw.githubusercontent.com/guoshnBJTU/ASTGNN/9c2e19b98c4cedf1f35214d8789685b6381b3aad/data/PEMS08/PEMS08.npz",
+        "license": "unknown; exact author-preprocessed NPZ has no established data license",
+        "selection": {
+          "windows": {
+            "V": {
+              "start": 1024,
+              "stop": 9216,
+              "step": 1,
+              "source_rows": 17856,
+              "selected_rows": 8192
+            }
+          },
+          "columns_indices": null,
+          "index_policy": "nonnegative zero-based rows/channels; exclusive stop; no implicit clipping"
+        }
+      },
+      "component": {
+        "name": "V",
+        "dtype": "<f8",
+        "shape": [
+          8192,
+          170,
+          3
+        ],
+        "order": "C",
+        "rank": 3,
+        "axes": [
+          "time",
+          "sensor",
+          "feature"
+        ],
+        "elements": 4177920,
+        "logical_bytes": 33423360,
+        "typed_bytes_sha256": "17c9f717ae09b2565e0852003260728a42ff7c434fe0eebec8d9a198086af97f",
+        "finite_count": 4177920,
+        "nan_count": 0,
+        "positive_infinity_count": 0,
+        "negative_infinity_count": 0,
+        "positive_zero_count": 9628,
+        "negative_zero_count": 0,
+        "finite_min": 0.0,
+        "finite_max": 1077.0
+      },
+      "characterization_scope": "finite/special counts and extrema over all native elements only; no flattening into a time series and no lag/cross-sensor correlation"
+    }
+  ],
+  "cases": [
+    {
+      "dataset_id": "pems03-native-n128",
+      "raw_object_id": "sha256:80b79de1b04ff18dc56b63d65ce0fa22d6eb9754c77d5763aa0f92dd4ede2da4",
+      "method_id": "raw-store",
+      "profile_id": "cpu-single",
+      "declared_ranks": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "declared_dtypes": [
+        "|b1",
+        "|i1",
+        "|u1",
+        "<i2",
+        "<u2",
+        "<i4",
+        "<u4",
+        "<i8",
+        "<u8",
+        "<f4",
+        "<f8"
+      ],
+      "declared_loss_mode": "LOSSLESS",
+      "declared_threading": "SINGLE_THREAD",
+      "resolved_method": {
+        "id": "raw-store",
+        "codec": "raw-store",
+        "params": {}
+      },
+      "installed_artifacts_checked": false,
+      "native_qualification_executed": false,
+      "declared_supported": true,
+      "status": "declared_eligible",
+      "reason": null,
+      "native_qualification": "pending; native content/installed artifact/correctness checks required"
+    },
+    {
+      "dataset_id": "pems03-native-n128",
+      "raw_object_id": "sha256:80b79de1b04ff18dc56b63d65ce0fa22d6eb9754c77d5763aa0f92dd4ede2da4",
+      "method_id": "zstd-frame",
+      "profile_id": "cpu-single",
+      "declared_ranks": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "declared_dtypes": [
+        "<i8",
+        "<i4",
+        "<i2",
+        "|i1",
+        "<u8",
+        "<u4",
+        "<u2",
+        "|u1",
+        "<f8",
+        "<f4"
+      ],
+      "declared_loss_mode": "LOSSLESS",
+      "declared_threading": "SINGLE_THREAD",
+      "resolved_method": {
+        "id": "zstd-frame",
+        "codec": "zstd-frame",
+        "params": {
+          "native_timing": false,
+          "block_size": 131072,
+          "stream_decode_chunk_bytes": 16384,
+          "compression_level": 3,
+          "content_checksum": true,
+          "isa": "SCALAR"
+        }
+      },
+      "installed_artifacts_checked": false,
+      "native_qualification_executed": false,
+      "declared_supported": true,
+      "status": "declared_eligible",
+      "reason": null,
+      "native_qualification": "pending; native content/installed artifact/correctness checks required"
+    },
+    {
+      "dataset_id": "pems03-native-n128",
+      "raw_object_id": "sha256:80b79de1b04ff18dc56b63d65ce0fa22d6eb9754c77d5763aa0f92dd4ede2da4",
+      "method_id": "deflate-zlib",
+      "profile_id": "cpu-single",
+      "declared_ranks": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "declared_dtypes": [
+        "<i8",
+        "<i4",
+        "<i2",
+        "|i1",
+        "<u8",
+        "<u4",
+        "<u2",
+        "|u1",
+        "<f8",
+        "<f4"
+      ],
+      "declared_loss_mode": "LOSSLESS",
+      "declared_threading": "SINGLE_THREAD",
+      "resolved_method": {
+        "id": "deflate-zlib",
+        "codec": "deflate-zlib",
+        "params": {
+          "native_timing": false,
+          "block_size": 65536,
+          "stream_decode_chunk_bytes": 16384,
+          "compression_level": 6,
+          "window_bits": 15,
+          "isa": "SCALAR"
+        }
+      },
+      "installed_artifacts_checked": false,
+      "native_qualification_executed": false,
+      "declared_supported": true,
+      "status": "declared_eligible",
+      "reason": null,
+      "native_qualification": "pending; native content/installed artifact/correctness checks required"
+    },
+    {
+      "dataset_id": "pems03-native-n128",
+      "raw_object_id": "sha256:80b79de1b04ff18dc56b63d65ce0fa22d6eb9754c77d5763aa0f92dd4ede2da4",
+      "method_id": "chimp128",
+      "profile_id": "cpu-single",
+      "declared_ranks": [
+        1,
+        2
+      ],
+      "declared_dtypes": [
+        "<f4",
+        "<f8"
+      ],
+      "declared_loss_mode": "LOSSLESS",
+      "declared_threading": "SINGLE_THREAD",
+      "resolved_method": {
+        "id": "chimp128",
+        "codec": "chimp128",
+        "params": {
+          "block_size": 1000,
+          "isa": "SCALAR"
+        }
+      },
+      "installed_artifacts_checked": false,
+      "native_qualification_executed": false,
+      "declared_supported": false,
+      "status": "unsupported",
+      "reason": "chimp128: rank must be one of (1, 2)",
+      "native_qualification": "not requested for input outside declared capability"
+    },
+    {
+      "dataset_id": "pems03-native-n512",
+      "raw_object_id": "sha256:cf6ee955952f5079922b85d779bc03de10c28c249abdb079ba68623ae1e6a6fd",
+      "method_id": "raw-store",
+      "profile_id": "cpu-single",
+      "declared_ranks": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "declared_dtypes": [
+        "|b1",
+        "|i1",
+        "|u1",
+        "<i2",
+        "<u2",
+        "<i4",
+        "<u4",
+        "<i8",
+        "<u8",
+        "<f4",
+        "<f8"
+      ],
+      "declared_loss_mode": "LOSSLESS",
+      "declared_threading": "SINGLE_THREAD",
+      "resolved_method": {
+        "id": "raw-store",
+        "codec": "raw-store",
+        "params": {}
+      },
+      "installed_artifacts_checked": false,
+      "native_qualification_executed": false,
+      "declared_supported": true,
+      "status": "declared_eligible",
+      "reason": null,
+      "native_qualification": "pending; native content/installed artifact/correctness checks required"
+    },
+    {
+      "dataset_id": "pems03-native-n512",
+      "raw_object_id": "sha256:cf6ee955952f5079922b85d779bc03de10c28c249abdb079ba68623ae1e6a6fd",
+      "method_id": "zstd-frame",
+      "profile_id": "cpu-single",
+      "declared_ranks": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "declared_dtypes": [
+        "<i8",
+        "<i4",
+        "<i2",
+        "|i1",
+        "<u8",
+        "<u4",
+        "<u2",
+        "|u1",
+        "<f8",
+        "<f4"
+      ],
+      "declared_loss_mode": "LOSSLESS",
+      "declared_threading": "SINGLE_THREAD",
+      "resolved_method": {
+        "id": "zstd-frame",
+        "codec": "zstd-frame",
+        "params": {
+          "native_timing": false,
+          "block_size": 131072,
+          "stream_decode_chunk_bytes": 16384,
+          "compression_level": 3,
+          "content_checksum": true,
+          "isa": "SCALAR"
+        }
+      },
+      "installed_artifacts_checked": false,
+      "native_qualification_executed": false,
+      "declared_supported": true,
+      "status": "declared_eligible",
+      "reason": null,
+      "native_qualification": "pending; native content/installed artifact/correctness checks required"
+    },
+    {
+      "dataset_id": "pems03-native-n512",
+      "raw_object_id": "sha256:cf6ee955952f5079922b85d779bc03de10c28c249abdb079ba68623ae1e6a6fd",
+      "method_id": "deflate-zlib",
+      "profile_id": "cpu-single",
+      "declared_ranks": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "declared_dtypes": [
+        "<i8",
+        "<i4",
+        "<i2",
+        "|i1",
+        "<u8",
+        "<u4",
+        "<u2",
+        "|u1",
+        "<f8",
+        "<f4"
+      ],
+      "declared_loss_mode": "LOSSLESS",
+      "declared_threading": "SINGLE_THREAD",
+      "resolved_method": {
+        "id": "deflate-zlib",
+        "codec": "deflate-zlib",
+        "params": {
+          "native_timing": false,
+          "block_size": 65536,
+          "stream_decode_chunk_bytes": 16384,
+          "compression_level": 6,
+          "window_bits": 15,
+          "isa": "SCALAR"
+        }
+      },
+      "installed_artifacts_checked": false,
+      "native_qualification_executed": false,
+      "declared_supported": true,
+      "status": "declared_eligible",
+      "reason": null,
+      "native_qualification": "pending; native content/installed artifact/correctness checks required"
+    },
+    {
+      "dataset_id": "pems03-native-n512",
+      "raw_object_id": "sha256:cf6ee955952f5079922b85d779bc03de10c28c249abdb079ba68623ae1e6a6fd",
+      "method_id": "chimp128",
+      "profile_id": "cpu-single",
+      "declared_ranks": [
+        1,
+        2
+      ],
+      "declared_dtypes": [
+        "<f4",
+        "<f8"
+      ],
+      "declared_loss_mode": "LOSSLESS",
+      "declared_threading": "SINGLE_THREAD",
+      "resolved_method": {
+        "id": "chimp128",
+        "codec": "chimp128",
+        "params": {
+          "block_size": 1000,
+          "isa": "SCALAR"
+        }
+      },
+      "installed_artifacts_checked": false,
+      "native_qualification_executed": false,
+      "declared_supported": false,
+      "status": "unsupported",
+      "reason": "chimp128: rank must be one of (1, 2)",
+      "native_qualification": "not requested for input outside declared capability"
+    },
+    {
+      "dataset_id": "pems03-native-n8192",
+      "raw_object_id": "sha256:d3900ed9fbcee37b33be531fb4db178f6acf926a0f53071e6b2c2fe47d98600f",
+      "method_id": "raw-store",
+      "profile_id": "cpu-single",
+      "declared_ranks": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "declared_dtypes": [
+        "|b1",
+        "|i1",
+        "|u1",
+        "<i2",
+        "<u2",
+        "<i4",
+        "<u4",
+        "<i8",
+        "<u8",
+        "<f4",
+        "<f8"
+      ],
+      "declared_loss_mode": "LOSSLESS",
+      "declared_threading": "SINGLE_THREAD",
+      "resolved_method": {
+        "id": "raw-store",
+        "codec": "raw-store",
+        "params": {}
+      },
+      "installed_artifacts_checked": false,
+      "native_qualification_executed": false,
+      "declared_supported": true,
+      "status": "declared_eligible",
+      "reason": null,
+      "native_qualification": "pending; native content/installed artifact/correctness checks required"
+    },
+    {
+      "dataset_id": "pems03-native-n8192",
+      "raw_object_id": "sha256:d3900ed9fbcee37b33be531fb4db178f6acf926a0f53071e6b2c2fe47d98600f",
+      "method_id": "zstd-frame",
+      "profile_id": "cpu-single",
+      "declared_ranks": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "declared_dtypes": [
+        "<i8",
+        "<i4",
+        "<i2",
+        "|i1",
+        "<u8",
+        "<u4",
+        "<u2",
+        "|u1",
+        "<f8",
+        "<f4"
+      ],
+      "declared_loss_mode": "LOSSLESS",
+      "declared_threading": "SINGLE_THREAD",
+      "resolved_method": {
+        "id": "zstd-frame",
+        "codec": "zstd-frame",
+        "params": {
+          "native_timing": false,
+          "block_size": 131072,
+          "stream_decode_chunk_bytes": 16384,
+          "compression_level": 3,
+          "content_checksum": true,
+          "isa": "SCALAR"
+        }
+      },
+      "installed_artifacts_checked": false,
+      "native_qualification_executed": false,
+      "declared_supported": true,
+      "status": "declared_eligible",
+      "reason": null,
+      "native_qualification": "pending; native content/installed artifact/correctness checks required"
+    },
+    {
+      "dataset_id": "pems03-native-n8192",
+      "raw_object_id": "sha256:d3900ed9fbcee37b33be531fb4db178f6acf926a0f53071e6b2c2fe47d98600f",
+      "method_id": "deflate-zlib",
+      "profile_id": "cpu-single",
+      "declared_ranks": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "declared_dtypes": [
+        "<i8",
+        "<i4",
+        "<i2",
+        "|i1",
+        "<u8",
+        "<u4",
+        "<u2",
+        "|u1",
+        "<f8",
+        "<f4"
+      ],
+      "declared_loss_mode": "LOSSLESS",
+      "declared_threading": "SINGLE_THREAD",
+      "resolved_method": {
+        "id": "deflate-zlib",
+        "codec": "deflate-zlib",
+        "params": {
+          "native_timing": false,
+          "block_size": 65536,
+          "stream_decode_chunk_bytes": 16384,
+          "compression_level": 6,
+          "window_bits": 15,
+          "isa": "SCALAR"
+        }
+      },
+      "installed_artifacts_checked": false,
+      "native_qualification_executed": false,
+      "declared_supported": true,
+      "status": "declared_eligible",
+      "reason": null,
+      "native_qualification": "pending; native content/installed artifact/correctness checks required"
+    },
+    {
+      "dataset_id": "pems03-native-n8192",
+      "raw_object_id": "sha256:d3900ed9fbcee37b33be531fb4db178f6acf926a0f53071e6b2c2fe47d98600f",
+      "method_id": "chimp128",
+      "profile_id": "cpu-single",
+      "declared_ranks": [
+        1,
+        2
+      ],
+      "declared_dtypes": [
+        "<f4",
+        "<f8"
+      ],
+      "declared_loss_mode": "LOSSLESS",
+      "declared_threading": "SINGLE_THREAD",
+      "resolved_method": {
+        "id": "chimp128",
+        "codec": "chimp128",
+        "params": {
+          "block_size": 1000,
+          "isa": "SCALAR"
+        }
+      },
+      "installed_artifacts_checked": false,
+      "native_qualification_executed": false,
+      "declared_supported": false,
+      "status": "unsupported",
+      "reason": "chimp128: rank must be one of (1, 2)",
+      "native_qualification": "not requested for input outside declared capability"
+    },
+    {
+      "dataset_id": "pems04-native-n128",
+      "raw_object_id": "sha256:2c62b8a478a41010feb7d72995c9f9741155c2c0b2a15ca0f7a1d45fef02a4d1",
+      "method_id": "raw-store",
+      "profile_id": "cpu-single",
+      "declared_ranks": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "declared_dtypes": [
+        "|b1",
+        "|i1",
+        "|u1",
+        "<i2",
+        "<u2",
+        "<i4",
+        "<u4",
+        "<i8",
+        "<u8",
+        "<f4",
+        "<f8"
+      ],
+      "declared_loss_mode": "LOSSLESS",
+      "declared_threading": "SINGLE_THREAD",
+      "resolved_method": {
+        "id": "raw-store",
+        "codec": "raw-store",
+        "params": {}
+      },
+      "installed_artifacts_checked": false,
+      "native_qualification_executed": false,
+      "declared_supported": true,
+      "status": "declared_eligible",
+      "reason": null,
+      "native_qualification": "pending; native content/installed artifact/correctness checks required"
+    },
+    {
+      "dataset_id": "pems04-native-n128",
+      "raw_object_id": "sha256:2c62b8a478a41010feb7d72995c9f9741155c2c0b2a15ca0f7a1d45fef02a4d1",
+      "method_id": "zstd-frame",
+      "profile_id": "cpu-single",
+      "declared_ranks": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "declared_dtypes": [
+        "<i8",
+        "<i4",
+        "<i2",
+        "|i1",
+        "<u8",
+        "<u4",
+        "<u2",
+        "|u1",
+        "<f8",
+        "<f4"
+      ],
+      "declared_loss_mode": "LOSSLESS",
+      "declared_threading": "SINGLE_THREAD",
+      "resolved_method": {
+        "id": "zstd-frame",
+        "codec": "zstd-frame",
+        "params": {
+          "native_timing": false,
+          "block_size": 131072,
+          "stream_decode_chunk_bytes": 16384,
+          "compression_level": 3,
+          "content_checksum": true,
+          "isa": "SCALAR"
+        }
+      },
+      "installed_artifacts_checked": false,
+      "native_qualification_executed": false,
+      "declared_supported": true,
+      "status": "declared_eligible",
+      "reason": null,
+      "native_qualification": "pending; native content/installed artifact/correctness checks required"
+    },
+    {
+      "dataset_id": "pems04-native-n128",
+      "raw_object_id": "sha256:2c62b8a478a41010feb7d72995c9f9741155c2c0b2a15ca0f7a1d45fef02a4d1",
+      "method_id": "deflate-zlib",
+      "profile_id": "cpu-single",
+      "declared_ranks": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "declared_dtypes": [
+        "<i8",
+        "<i4",
+        "<i2",
+        "|i1",
+        "<u8",
+        "<u4",
+        "<u2",
+        "|u1",
+        "<f8",
+        "<f4"
+      ],
+      "declared_loss_mode": "LOSSLESS",
+      "declared_threading": "SINGLE_THREAD",
+      "resolved_method": {
+        "id": "deflate-zlib",
+        "codec": "deflate-zlib",
+        "params": {
+          "native_timing": false,
+          "block_size": 65536,
+          "stream_decode_chunk_bytes": 16384,
+          "compression_level": 6,
+          "window_bits": 15,
+          "isa": "SCALAR"
+        }
+      },
+      "installed_artifacts_checked": false,
+      "native_qualification_executed": false,
+      "declared_supported": true,
+      "status": "declared_eligible",
+      "reason": null,
+      "native_qualification": "pending; native content/installed artifact/correctness checks required"
+    },
+    {
+      "dataset_id": "pems04-native-n128",
+      "raw_object_id": "sha256:2c62b8a478a41010feb7d72995c9f9741155c2c0b2a15ca0f7a1d45fef02a4d1",
+      "method_id": "chimp128",
+      "profile_id": "cpu-single",
+      "declared_ranks": [
+        1,
+        2
+      ],
+      "declared_dtypes": [
+        "<f4",
+        "<f8"
+      ],
+      "declared_loss_mode": "LOSSLESS",
+      "declared_threading": "SINGLE_THREAD",
+      "resolved_method": {
+        "id": "chimp128",
+        "codec": "chimp128",
+        "params": {
+          "block_size": 1000,
+          "isa": "SCALAR"
+        }
+      },
+      "installed_artifacts_checked": false,
+      "native_qualification_executed": false,
+      "declared_supported": false,
+      "status": "unsupported",
+      "reason": "chimp128: rank must be one of (1, 2)",
+      "native_qualification": "not requested for input outside declared capability"
+    },
+    {
+      "dataset_id": "pems04-native-n512",
+      "raw_object_id": "sha256:f87f61f6ca03af51a2f9783775ac30d31ce00f7e537f9b0a6b36ea16b68d0236",
+      "method_id": "raw-store",
+      "profile_id": "cpu-single",
+      "declared_ranks": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "declared_dtypes": [
+        "|b1",
+        "|i1",
+        "|u1",
+        "<i2",
+        "<u2",
+        "<i4",
+        "<u4",
+        "<i8",
+        "<u8",
+        "<f4",
+        "<f8"
+      ],
+      "declared_loss_mode": "LOSSLESS",
+      "declared_threading": "SINGLE_THREAD",
+      "resolved_method": {
+        "id": "raw-store",
+        "codec": "raw-store",
+        "params": {}
+      },
+      "installed_artifacts_checked": false,
+      "native_qualification_executed": false,
+      "declared_supported": true,
+      "status": "declared_eligible",
+      "reason": null,
+      "native_qualification": "pending; native content/installed artifact/correctness checks required"
+    },
+    {
+      "dataset_id": "pems04-native-n512",
+      "raw_object_id": "sha256:f87f61f6ca03af51a2f9783775ac30d31ce00f7e537f9b0a6b36ea16b68d0236",
+      "method_id": "zstd-frame",
+      "profile_id": "cpu-single",
+      "declared_ranks": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "declared_dtypes": [
+        "<i8",
+        "<i4",
+        "<i2",
+        "|i1",
+        "<u8",
+        "<u4",
+        "<u2",
+        "|u1",
+        "<f8",
+        "<f4"
+      ],
+      "declared_loss_mode": "LOSSLESS",
+      "declared_threading": "SINGLE_THREAD",
+      "resolved_method": {
+        "id": "zstd-frame",
+        "codec": "zstd-frame",
+        "params": {
+          "native_timing": false,
+          "block_size": 131072,
+          "stream_decode_chunk_bytes": 16384,
+          "compression_level": 3,
+          "content_checksum": true,
+          "isa": "SCALAR"
+        }
+      },
+      "installed_artifacts_checked": false,
+      "native_qualification_executed": false,
+      "declared_supported": true,
+      "status": "declared_eligible",
+      "reason": null,
+      "native_qualification": "pending; native content/installed artifact/correctness checks required"
+    },
+    {
+      "dataset_id": "pems04-native-n512",
+      "raw_object_id": "sha256:f87f61f6ca03af51a2f9783775ac30d31ce00f7e537f9b0a6b36ea16b68d0236",
+      "method_id": "deflate-zlib",
+      "profile_id": "cpu-single",
+      "declared_ranks": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "declared_dtypes": [
+        "<i8",
+        "<i4",
+        "<i2",
+        "|i1",
+        "<u8",
+        "<u4",
+        "<u2",
+        "|u1",
+        "<f8",
+        "<f4"
+      ],
+      "declared_loss_mode": "LOSSLESS",
+      "declared_threading": "SINGLE_THREAD",
+      "resolved_method": {
+        "id": "deflate-zlib",
+        "codec": "deflate-zlib",
+        "params": {
+          "native_timing": false,
+          "block_size": 65536,
+          "stream_decode_chunk_bytes": 16384,
+          "compression_level": 6,
+          "window_bits": 15,
+          "isa": "SCALAR"
+        }
+      },
+      "installed_artifacts_checked": false,
+      "native_qualification_executed": false,
+      "declared_supported": true,
+      "status": "declared_eligible",
+      "reason": null,
+      "native_qualification": "pending; native content/installed artifact/correctness checks required"
+    },
+    {
+      "dataset_id": "pems04-native-n512",
+      "raw_object_id": "sha256:f87f61f6ca03af51a2f9783775ac30d31ce00f7e537f9b0a6b36ea16b68d0236",
+      "method_id": "chimp128",
+      "profile_id": "cpu-single",
+      "declared_ranks": [
+        1,
+        2
+      ],
+      "declared_dtypes": [
+        "<f4",
+        "<f8"
+      ],
+      "declared_loss_mode": "LOSSLESS",
+      "declared_threading": "SINGLE_THREAD",
+      "resolved_method": {
+        "id": "chimp128",
+        "codec": "chimp128",
+        "params": {
+          "block_size": 1000,
+          "isa": "SCALAR"
+        }
+      },
+      "installed_artifacts_checked": false,
+      "native_qualification_executed": false,
+      "declared_supported": false,
+      "status": "unsupported",
+      "reason": "chimp128: rank must be one of (1, 2)",
+      "native_qualification": "not requested for input outside declared capability"
+    },
+    {
+      "dataset_id": "pems04-native-n8192",
+      "raw_object_id": "sha256:05b63dbc1cd637187450ae77dd357e85da0dcb3201d260ac6253ea4dac3acfd7",
+      "method_id": "raw-store",
+      "profile_id": "cpu-single",
+      "declared_ranks": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "declared_dtypes": [
+        "|b1",
+        "|i1",
+        "|u1",
+        "<i2",
+        "<u2",
+        "<i4",
+        "<u4",
+        "<i8",
+        "<u8",
+        "<f4",
+        "<f8"
+      ],
+      "declared_loss_mode": "LOSSLESS",
+      "declared_threading": "SINGLE_THREAD",
+      "resolved_method": {
+        "id": "raw-store",
+        "codec": "raw-store",
+        "params": {}
+      },
+      "installed_artifacts_checked": false,
+      "native_qualification_executed": false,
+      "declared_supported": true,
+      "status": "declared_eligible",
+      "reason": null,
+      "native_qualification": "pending; native content/installed artifact/correctness checks required"
+    },
+    {
+      "dataset_id": "pems04-native-n8192",
+      "raw_object_id": "sha256:05b63dbc1cd637187450ae77dd357e85da0dcb3201d260ac6253ea4dac3acfd7",
+      "method_id": "zstd-frame",
+      "profile_id": "cpu-single",
+      "declared_ranks": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "declared_dtypes": [
+        "<i8",
+        "<i4",
+        "<i2",
+        "|i1",
+        "<u8",
+        "<u4",
+        "<u2",
+        "|u1",
+        "<f8",
+        "<f4"
+      ],
+      "declared_loss_mode": "LOSSLESS",
+      "declared_threading": "SINGLE_THREAD",
+      "resolved_method": {
+        "id": "zstd-frame",
+        "codec": "zstd-frame",
+        "params": {
+          "native_timing": false,
+          "block_size": 131072,
+          "stream_decode_chunk_bytes": 16384,
+          "compression_level": 3,
+          "content_checksum": true,
+          "isa": "SCALAR"
+        }
+      },
+      "installed_artifacts_checked": false,
+      "native_qualification_executed": false,
+      "declared_supported": true,
+      "status": "declared_eligible",
+      "reason": null,
+      "native_qualification": "pending; native content/installed artifact/correctness checks required"
+    },
+    {
+      "dataset_id": "pems04-native-n8192",
+      "raw_object_id": "sha256:05b63dbc1cd637187450ae77dd357e85da0dcb3201d260ac6253ea4dac3acfd7",
+      "method_id": "deflate-zlib",
+      "profile_id": "cpu-single",
+      "declared_ranks": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "declared_dtypes": [
+        "<i8",
+        "<i4",
+        "<i2",
+        "|i1",
+        "<u8",
+        "<u4",
+        "<u2",
+        "|u1",
+        "<f8",
+        "<f4"
+      ],
+      "declared_loss_mode": "LOSSLESS",
+      "declared_threading": "SINGLE_THREAD",
+      "resolved_method": {
+        "id": "deflate-zlib",
+        "codec": "deflate-zlib",
+        "params": {
+          "native_timing": false,
+          "block_size": 65536,
+          "stream_decode_chunk_bytes": 16384,
+          "compression_level": 6,
+          "window_bits": 15,
+          "isa": "SCALAR"
+        }
+      },
+      "installed_artifacts_checked": false,
+      "native_qualification_executed": false,
+      "declared_supported": true,
+      "status": "declared_eligible",
+      "reason": null,
+      "native_qualification": "pending; native content/installed artifact/correctness checks required"
+    },
+    {
+      "dataset_id": "pems04-native-n8192",
+      "raw_object_id": "sha256:05b63dbc1cd637187450ae77dd357e85da0dcb3201d260ac6253ea4dac3acfd7",
+      "method_id": "chimp128",
+      "profile_id": "cpu-single",
+      "declared_ranks": [
+        1,
+        2
+      ],
+      "declared_dtypes": [
+        "<f4",
+        "<f8"
+      ],
+      "declared_loss_mode": "LOSSLESS",
+      "declared_threading": "SINGLE_THREAD",
+      "resolved_method": {
+        "id": "chimp128",
+        "codec": "chimp128",
+        "params": {
+          "block_size": 1000,
+          "isa": "SCALAR"
+        }
+      },
+      "installed_artifacts_checked": false,
+      "native_qualification_executed": false,
+      "declared_supported": false,
+      "status": "unsupported",
+      "reason": "chimp128: rank must be one of (1, 2)",
+      "native_qualification": "not requested for input outside declared capability"
+    },
+    {
+      "dataset_id": "pems07-native-n128",
+      "raw_object_id": "sha256:1f6ddf44a3fd3220793ccfe99b38aafcdec5e5e196d480e5c078436469342879",
+      "method_id": "raw-store",
+      "profile_id": "cpu-single",
+      "declared_ranks": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "declared_dtypes": [
+        "|b1",
+        "|i1",
+        "|u1",
+        "<i2",
+        "<u2",
+        "<i4",
+        "<u4",
+        "<i8",
+        "<u8",
+        "<f4",
+        "<f8"
+      ],
+      "declared_loss_mode": "LOSSLESS",
+      "declared_threading": "SINGLE_THREAD",
+      "resolved_method": {
+        "id": "raw-store",
+        "codec": "raw-store",
+        "params": {}
+      },
+      "installed_artifacts_checked": false,
+      "native_qualification_executed": false,
+      "declared_supported": true,
+      "status": "declared_eligible",
+      "reason": null,
+      "native_qualification": "pending; native content/installed artifact/correctness checks required"
+    },
+    {
+      "dataset_id": "pems07-native-n128",
+      "raw_object_id": "sha256:1f6ddf44a3fd3220793ccfe99b38aafcdec5e5e196d480e5c078436469342879",
+      "method_id": "zstd-frame",
+      "profile_id": "cpu-single",
+      "declared_ranks": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "declared_dtypes": [
+        "<i8",
+        "<i4",
+        "<i2",
+        "|i1",
+        "<u8",
+        "<u4",
+        "<u2",
+        "|u1",
+        "<f8",
+        "<f4"
+      ],
+      "declared_loss_mode": "LOSSLESS",
+      "declared_threading": "SINGLE_THREAD",
+      "resolved_method": {
+        "id": "zstd-frame",
+        "codec": "zstd-frame",
+        "params": {
+          "native_timing": false,
+          "block_size": 131072,
+          "stream_decode_chunk_bytes": 16384,
+          "compression_level": 3,
+          "content_checksum": true,
+          "isa": "SCALAR"
+        }
+      },
+      "installed_artifacts_checked": false,
+      "native_qualification_executed": false,
+      "declared_supported": true,
+      "status": "declared_eligible",
+      "reason": null,
+      "native_qualification": "pending; native content/installed artifact/correctness checks required"
+    },
+    {
+      "dataset_id": "pems07-native-n128",
+      "raw_object_id": "sha256:1f6ddf44a3fd3220793ccfe99b38aafcdec5e5e196d480e5c078436469342879",
+      "method_id": "deflate-zlib",
+      "profile_id": "cpu-single",
+      "declared_ranks": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "declared_dtypes": [
+        "<i8",
+        "<i4",
+        "<i2",
+        "|i1",
+        "<u8",
+        "<u4",
+        "<u2",
+        "|u1",
+        "<f8",
+        "<f4"
+      ],
+      "declared_loss_mode": "LOSSLESS",
+      "declared_threading": "SINGLE_THREAD",
+      "resolved_method": {
+        "id": "deflate-zlib",
+        "codec": "deflate-zlib",
+        "params": {
+          "native_timing": false,
+          "block_size": 65536,
+          "stream_decode_chunk_bytes": 16384,
+          "compression_level": 6,
+          "window_bits": 15,
+          "isa": "SCALAR"
+        }
+      },
+      "installed_artifacts_checked": false,
+      "native_qualification_executed": false,
+      "declared_supported": true,
+      "status": "declared_eligible",
+      "reason": null,
+      "native_qualification": "pending; native content/installed artifact/correctness checks required"
+    },
+    {
+      "dataset_id": "pems07-native-n128",
+      "raw_object_id": "sha256:1f6ddf44a3fd3220793ccfe99b38aafcdec5e5e196d480e5c078436469342879",
+      "method_id": "chimp128",
+      "profile_id": "cpu-single",
+      "declared_ranks": [
+        1,
+        2
+      ],
+      "declared_dtypes": [
+        "<f4",
+        "<f8"
+      ],
+      "declared_loss_mode": "LOSSLESS",
+      "declared_threading": "SINGLE_THREAD",
+      "resolved_method": {
+        "id": "chimp128",
+        "codec": "chimp128",
+        "params": {
+          "block_size": 1000,
+          "isa": "SCALAR"
+        }
+      },
+      "installed_artifacts_checked": false,
+      "native_qualification_executed": false,
+      "declared_supported": false,
+      "status": "unsupported",
+      "reason": "chimp128: rank must be one of (1, 2)",
+      "native_qualification": "not requested for input outside declared capability"
+    },
+    {
+      "dataset_id": "pems07-native-n512",
+      "raw_object_id": "sha256:72eecbd3871b90fc33beebc2dc445f62b93688d9042104811f20702cfd16d50e",
+      "method_id": "raw-store",
+      "profile_id": "cpu-single",
+      "declared_ranks": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "declared_dtypes": [
+        "|b1",
+        "|i1",
+        "|u1",
+        "<i2",
+        "<u2",
+        "<i4",
+        "<u4",
+        "<i8",
+        "<u8",
+        "<f4",
+        "<f8"
+      ],
+      "declared_loss_mode": "LOSSLESS",
+      "declared_threading": "SINGLE_THREAD",
+      "resolved_method": {
+        "id": "raw-store",
+        "codec": "raw-store",
+        "params": {}
+      },
+      "installed_artifacts_checked": false,
+      "native_qualification_executed": false,
+      "declared_supported": true,
+      "status": "declared_eligible",
+      "reason": null,
+      "native_qualification": "pending; native content/installed artifact/correctness checks required"
+    },
+    {
+      "dataset_id": "pems07-native-n512",
+      "raw_object_id": "sha256:72eecbd3871b90fc33beebc2dc445f62b93688d9042104811f20702cfd16d50e",
+      "method_id": "zstd-frame",
+      "profile_id": "cpu-single",
+      "declared_ranks": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "declared_dtypes": [
+        "<i8",
+        "<i4",
+        "<i2",
+        "|i1",
+        "<u8",
+        "<u4",
+        "<u2",
+        "|u1",
+        "<f8",
+        "<f4"
+      ],
+      "declared_loss_mode": "LOSSLESS",
+      "declared_threading": "SINGLE_THREAD",
+      "resolved_method": {
+        "id": "zstd-frame",
+        "codec": "zstd-frame",
+        "params": {
+          "native_timing": false,
+          "block_size": 131072,
+          "stream_decode_chunk_bytes": 16384,
+          "compression_level": 3,
+          "content_checksum": true,
+          "isa": "SCALAR"
+        }
+      },
+      "installed_artifacts_checked": false,
+      "native_qualification_executed": false,
+      "declared_supported": true,
+      "status": "declared_eligible",
+      "reason": null,
+      "native_qualification": "pending; native content/installed artifact/correctness checks required"
+    },
+    {
+      "dataset_id": "pems07-native-n512",
+      "raw_object_id": "sha256:72eecbd3871b90fc33beebc2dc445f62b93688d9042104811f20702cfd16d50e",
+      "method_id": "deflate-zlib",
+      "profile_id": "cpu-single",
+      "declared_ranks": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "declared_dtypes": [
+        "<i8",
+        "<i4",
+        "<i2",
+        "|i1",
+        "<u8",
+        "<u4",
+        "<u2",
+        "|u1",
+        "<f8",
+        "<f4"
+      ],
+      "declared_loss_mode": "LOSSLESS",
+      "declared_threading": "SINGLE_THREAD",
+      "resolved_method": {
+        "id": "deflate-zlib",
+        "codec": "deflate-zlib",
+        "params": {
+          "native_timing": false,
+          "block_size": 65536,
+          "stream_decode_chunk_bytes": 16384,
+          "compression_level": 6,
+          "window_bits": 15,
+          "isa": "SCALAR"
+        }
+      },
+      "installed_artifacts_checked": false,
+      "native_qualification_executed": false,
+      "declared_supported": true,
+      "status": "declared_eligible",
+      "reason": null,
+      "native_qualification": "pending; native content/installed artifact/correctness checks required"
+    },
+    {
+      "dataset_id": "pems07-native-n512",
+      "raw_object_id": "sha256:72eecbd3871b90fc33beebc2dc445f62b93688d9042104811f20702cfd16d50e",
+      "method_id": "chimp128",
+      "profile_id": "cpu-single",
+      "declared_ranks": [
+        1,
+        2
+      ],
+      "declared_dtypes": [
+        "<f4",
+        "<f8"
+      ],
+      "declared_loss_mode": "LOSSLESS",
+      "declared_threading": "SINGLE_THREAD",
+      "resolved_method": {
+        "id": "chimp128",
+        "codec": "chimp128",
+        "params": {
+          "block_size": 1000,
+          "isa": "SCALAR"
+        }
+      },
+      "installed_artifacts_checked": false,
+      "native_qualification_executed": false,
+      "declared_supported": false,
+      "status": "unsupported",
+      "reason": "chimp128: rank must be one of (1, 2)",
+      "native_qualification": "not requested for input outside declared capability"
+    },
+    {
+      "dataset_id": "pems07-native-n8192",
+      "raw_object_id": "sha256:9c55df981cd14ea90819b5aabaa2dcfee52cc983ba3d37503183e54b58fde037",
+      "method_id": "raw-store",
+      "profile_id": "cpu-single",
+      "declared_ranks": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "declared_dtypes": [
+        "|b1",
+        "|i1",
+        "|u1",
+        "<i2",
+        "<u2",
+        "<i4",
+        "<u4",
+        "<i8",
+        "<u8",
+        "<f4",
+        "<f8"
+      ],
+      "declared_loss_mode": "LOSSLESS",
+      "declared_threading": "SINGLE_THREAD",
+      "resolved_method": {
+        "id": "raw-store",
+        "codec": "raw-store",
+        "params": {}
+      },
+      "installed_artifacts_checked": false,
+      "native_qualification_executed": false,
+      "declared_supported": true,
+      "status": "declared_eligible",
+      "reason": null,
+      "native_qualification": "pending; native content/installed artifact/correctness checks required"
+    },
+    {
+      "dataset_id": "pems07-native-n8192",
+      "raw_object_id": "sha256:9c55df981cd14ea90819b5aabaa2dcfee52cc983ba3d37503183e54b58fde037",
+      "method_id": "zstd-frame",
+      "profile_id": "cpu-single",
+      "declared_ranks": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "declared_dtypes": [
+        "<i8",
+        "<i4",
+        "<i2",
+        "|i1",
+        "<u8",
+        "<u4",
+        "<u2",
+        "|u1",
+        "<f8",
+        "<f4"
+      ],
+      "declared_loss_mode": "LOSSLESS",
+      "declared_threading": "SINGLE_THREAD",
+      "resolved_method": {
+        "id": "zstd-frame",
+        "codec": "zstd-frame",
+        "params": {
+          "native_timing": false,
+          "block_size": 131072,
+          "stream_decode_chunk_bytes": 16384,
+          "compression_level": 3,
+          "content_checksum": true,
+          "isa": "SCALAR"
+        }
+      },
+      "installed_artifacts_checked": false,
+      "native_qualification_executed": false,
+      "declared_supported": true,
+      "status": "declared_eligible",
+      "reason": null,
+      "native_qualification": "pending; native content/installed artifact/correctness checks required"
+    },
+    {
+      "dataset_id": "pems07-native-n8192",
+      "raw_object_id": "sha256:9c55df981cd14ea90819b5aabaa2dcfee52cc983ba3d37503183e54b58fde037",
+      "method_id": "deflate-zlib",
+      "profile_id": "cpu-single",
+      "declared_ranks": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "declared_dtypes": [
+        "<i8",
+        "<i4",
+        "<i2",
+        "|i1",
+        "<u8",
+        "<u4",
+        "<u2",
+        "|u1",
+        "<f8",
+        "<f4"
+      ],
+      "declared_loss_mode": "LOSSLESS",
+      "declared_threading": "SINGLE_THREAD",
+      "resolved_method": {
+        "id": "deflate-zlib",
+        "codec": "deflate-zlib",
+        "params": {
+          "native_timing": false,
+          "block_size": 65536,
+          "stream_decode_chunk_bytes": 16384,
+          "compression_level": 6,
+          "window_bits": 15,
+          "isa": "SCALAR"
+        }
+      },
+      "installed_artifacts_checked": false,
+      "native_qualification_executed": false,
+      "declared_supported": true,
+      "status": "declared_eligible",
+      "reason": null,
+      "native_qualification": "pending; native content/installed artifact/correctness checks required"
+    },
+    {
+      "dataset_id": "pems07-native-n8192",
+      "raw_object_id": "sha256:9c55df981cd14ea90819b5aabaa2dcfee52cc983ba3d37503183e54b58fde037",
+      "method_id": "chimp128",
+      "profile_id": "cpu-single",
+      "declared_ranks": [
+        1,
+        2
+      ],
+      "declared_dtypes": [
+        "<f4",
+        "<f8"
+      ],
+      "declared_loss_mode": "LOSSLESS",
+      "declared_threading": "SINGLE_THREAD",
+      "resolved_method": {
+        "id": "chimp128",
+        "codec": "chimp128",
+        "params": {
+          "block_size": 1000,
+          "isa": "SCALAR"
+        }
+      },
+      "installed_artifacts_checked": false,
+      "native_qualification_executed": false,
+      "declared_supported": false,
+      "status": "unsupported",
+      "reason": "chimp128: rank must be one of (1, 2)",
+      "native_qualification": "not requested for input outside declared capability"
+    },
+    {
+      "dataset_id": "pems08-native-n128",
+      "raw_object_id": "sha256:8da8b763398a9a0c0ee78efa1d5bfb699d209c85384436f4825490e17cafb884",
+      "method_id": "raw-store",
+      "profile_id": "cpu-single",
+      "declared_ranks": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "declared_dtypes": [
+        "|b1",
+        "|i1",
+        "|u1",
+        "<i2",
+        "<u2",
+        "<i4",
+        "<u4",
+        "<i8",
+        "<u8",
+        "<f4",
+        "<f8"
+      ],
+      "declared_loss_mode": "LOSSLESS",
+      "declared_threading": "SINGLE_THREAD",
+      "resolved_method": {
+        "id": "raw-store",
+        "codec": "raw-store",
+        "params": {}
+      },
+      "installed_artifacts_checked": false,
+      "native_qualification_executed": false,
+      "declared_supported": true,
+      "status": "declared_eligible",
+      "reason": null,
+      "native_qualification": "pending; native content/installed artifact/correctness checks required"
+    },
+    {
+      "dataset_id": "pems08-native-n128",
+      "raw_object_id": "sha256:8da8b763398a9a0c0ee78efa1d5bfb699d209c85384436f4825490e17cafb884",
+      "method_id": "zstd-frame",
+      "profile_id": "cpu-single",
+      "declared_ranks": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "declared_dtypes": [
+        "<i8",
+        "<i4",
+        "<i2",
+        "|i1",
+        "<u8",
+        "<u4",
+        "<u2",
+        "|u1",
+        "<f8",
+        "<f4"
+      ],
+      "declared_loss_mode": "LOSSLESS",
+      "declared_threading": "SINGLE_THREAD",
+      "resolved_method": {
+        "id": "zstd-frame",
+        "codec": "zstd-frame",
+        "params": {
+          "native_timing": false,
+          "block_size": 131072,
+          "stream_decode_chunk_bytes": 16384,
+          "compression_level": 3,
+          "content_checksum": true,
+          "isa": "SCALAR"
+        }
+      },
+      "installed_artifacts_checked": false,
+      "native_qualification_executed": false,
+      "declared_supported": true,
+      "status": "declared_eligible",
+      "reason": null,
+      "native_qualification": "pending; native content/installed artifact/correctness checks required"
+    },
+    {
+      "dataset_id": "pems08-native-n128",
+      "raw_object_id": "sha256:8da8b763398a9a0c0ee78efa1d5bfb699d209c85384436f4825490e17cafb884",
+      "method_id": "deflate-zlib",
+      "profile_id": "cpu-single",
+      "declared_ranks": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "declared_dtypes": [
+        "<i8",
+        "<i4",
+        "<i2",
+        "|i1",
+        "<u8",
+        "<u4",
+        "<u2",
+        "|u1",
+        "<f8",
+        "<f4"
+      ],
+      "declared_loss_mode": "LOSSLESS",
+      "declared_threading": "SINGLE_THREAD",
+      "resolved_method": {
+        "id": "deflate-zlib",
+        "codec": "deflate-zlib",
+        "params": {
+          "native_timing": false,
+          "block_size": 65536,
+          "stream_decode_chunk_bytes": 16384,
+          "compression_level": 6,
+          "window_bits": 15,
+          "isa": "SCALAR"
+        }
+      },
+      "installed_artifacts_checked": false,
+      "native_qualification_executed": false,
+      "declared_supported": true,
+      "status": "declared_eligible",
+      "reason": null,
+      "native_qualification": "pending; native content/installed artifact/correctness checks required"
+    },
+    {
+      "dataset_id": "pems08-native-n128",
+      "raw_object_id": "sha256:8da8b763398a9a0c0ee78efa1d5bfb699d209c85384436f4825490e17cafb884",
+      "method_id": "chimp128",
+      "profile_id": "cpu-single",
+      "declared_ranks": [
+        1,
+        2
+      ],
+      "declared_dtypes": [
+        "<f4",
+        "<f8"
+      ],
+      "declared_loss_mode": "LOSSLESS",
+      "declared_threading": "SINGLE_THREAD",
+      "resolved_method": {
+        "id": "chimp128",
+        "codec": "chimp128",
+        "params": {
+          "block_size": 1000,
+          "isa": "SCALAR"
+        }
+      },
+      "installed_artifacts_checked": false,
+      "native_qualification_executed": false,
+      "declared_supported": false,
+      "status": "unsupported",
+      "reason": "chimp128: rank must be one of (1, 2)",
+      "native_qualification": "not requested for input outside declared capability"
+    },
+    {
+      "dataset_id": "pems08-native-n512",
+      "raw_object_id": "sha256:f46ec5c67779a525a1ca523284b144d174bb3fbb5ba3965a71429bfe776ab442",
+      "method_id": "raw-store",
+      "profile_id": "cpu-single",
+      "declared_ranks": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "declared_dtypes": [
+        "|b1",
+        "|i1",
+        "|u1",
+        "<i2",
+        "<u2",
+        "<i4",
+        "<u4",
+        "<i8",
+        "<u8",
+        "<f4",
+        "<f8"
+      ],
+      "declared_loss_mode": "LOSSLESS",
+      "declared_threading": "SINGLE_THREAD",
+      "resolved_method": {
+        "id": "raw-store",
+        "codec": "raw-store",
+        "params": {}
+      },
+      "installed_artifacts_checked": false,
+      "native_qualification_executed": false,
+      "declared_supported": true,
+      "status": "declared_eligible",
+      "reason": null,
+      "native_qualification": "pending; native content/installed artifact/correctness checks required"
+    },
+    {
+      "dataset_id": "pems08-native-n512",
+      "raw_object_id": "sha256:f46ec5c67779a525a1ca523284b144d174bb3fbb5ba3965a71429bfe776ab442",
+      "method_id": "zstd-frame",
+      "profile_id": "cpu-single",
+      "declared_ranks": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "declared_dtypes": [
+        "<i8",
+        "<i4",
+        "<i2",
+        "|i1",
+        "<u8",
+        "<u4",
+        "<u2",
+        "|u1",
+        "<f8",
+        "<f4"
+      ],
+      "declared_loss_mode": "LOSSLESS",
+      "declared_threading": "SINGLE_THREAD",
+      "resolved_method": {
+        "id": "zstd-frame",
+        "codec": "zstd-frame",
+        "params": {
+          "native_timing": false,
+          "block_size": 131072,
+          "stream_decode_chunk_bytes": 16384,
+          "compression_level": 3,
+          "content_checksum": true,
+          "isa": "SCALAR"
+        }
+      },
+      "installed_artifacts_checked": false,
+      "native_qualification_executed": false,
+      "declared_supported": true,
+      "status": "declared_eligible",
+      "reason": null,
+      "native_qualification": "pending; native content/installed artifact/correctness checks required"
+    },
+    {
+      "dataset_id": "pems08-native-n512",
+      "raw_object_id": "sha256:f46ec5c67779a525a1ca523284b144d174bb3fbb5ba3965a71429bfe776ab442",
+      "method_id": "deflate-zlib",
+      "profile_id": "cpu-single",
+      "declared_ranks": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "declared_dtypes": [
+        "<i8",
+        "<i4",
+        "<i2",
+        "|i1",
+        "<u8",
+        "<u4",
+        "<u2",
+        "|u1",
+        "<f8",
+        "<f4"
+      ],
+      "declared_loss_mode": "LOSSLESS",
+      "declared_threading": "SINGLE_THREAD",
+      "resolved_method": {
+        "id": "deflate-zlib",
+        "codec": "deflate-zlib",
+        "params": {
+          "native_timing": false,
+          "block_size": 65536,
+          "stream_decode_chunk_bytes": 16384,
+          "compression_level": 6,
+          "window_bits": 15,
+          "isa": "SCALAR"
+        }
+      },
+      "installed_artifacts_checked": false,
+      "native_qualification_executed": false,
+      "declared_supported": true,
+      "status": "declared_eligible",
+      "reason": null,
+      "native_qualification": "pending; native content/installed artifact/correctness checks required"
+    },
+    {
+      "dataset_id": "pems08-native-n512",
+      "raw_object_id": "sha256:f46ec5c67779a525a1ca523284b144d174bb3fbb5ba3965a71429bfe776ab442",
+      "method_id": "chimp128",
+      "profile_id": "cpu-single",
+      "declared_ranks": [
+        1,
+        2
+      ],
+      "declared_dtypes": [
+        "<f4",
+        "<f8"
+      ],
+      "declared_loss_mode": "LOSSLESS",
+      "declared_threading": "SINGLE_THREAD",
+      "resolved_method": {
+        "id": "chimp128",
+        "codec": "chimp128",
+        "params": {
+          "block_size": 1000,
+          "isa": "SCALAR"
+        }
+      },
+      "installed_artifacts_checked": false,
+      "native_qualification_executed": false,
+      "declared_supported": false,
+      "status": "unsupported",
+      "reason": "chimp128: rank must be one of (1, 2)",
+      "native_qualification": "not requested for input outside declared capability"
+    },
+    {
+      "dataset_id": "pems08-native-n8192",
+      "raw_object_id": "sha256:16098a53c2738d40870217e0d00d2eaa9a7b70f150aa3c231cc328410cae438f",
+      "method_id": "raw-store",
+      "profile_id": "cpu-single",
+      "declared_ranks": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "declared_dtypes": [
+        "|b1",
+        "|i1",
+        "|u1",
+        "<i2",
+        "<u2",
+        "<i4",
+        "<u4",
+        "<i8",
+        "<u8",
+        "<f4",
+        "<f8"
+      ],
+      "declared_loss_mode": "LOSSLESS",
+      "declared_threading": "SINGLE_THREAD",
+      "resolved_method": {
+        "id": "raw-store",
+        "codec": "raw-store",
+        "params": {}
+      },
+      "installed_artifacts_checked": false,
+      "native_qualification_executed": false,
+      "declared_supported": true,
+      "status": "declared_eligible",
+      "reason": null,
+      "native_qualification": "pending; native content/installed artifact/correctness checks required"
+    },
+    {
+      "dataset_id": "pems08-native-n8192",
+      "raw_object_id": "sha256:16098a53c2738d40870217e0d00d2eaa9a7b70f150aa3c231cc328410cae438f",
+      "method_id": "zstd-frame",
+      "profile_id": "cpu-single",
+      "declared_ranks": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "declared_dtypes": [
+        "<i8",
+        "<i4",
+        "<i2",
+        "|i1",
+        "<u8",
+        "<u4",
+        "<u2",
+        "|u1",
+        "<f8",
+        "<f4"
+      ],
+      "declared_loss_mode": "LOSSLESS",
+      "declared_threading": "SINGLE_THREAD",
+      "resolved_method": {
+        "id": "zstd-frame",
+        "codec": "zstd-frame",
+        "params": {
+          "native_timing": false,
+          "block_size": 131072,
+          "stream_decode_chunk_bytes": 16384,
+          "compression_level": 3,
+          "content_checksum": true,
+          "isa": "SCALAR"
+        }
+      },
+      "installed_artifacts_checked": false,
+      "native_qualification_executed": false,
+      "declared_supported": true,
+      "status": "declared_eligible",
+      "reason": null,
+      "native_qualification": "pending; native content/installed artifact/correctness checks required"
+    },
+    {
+      "dataset_id": "pems08-native-n8192",
+      "raw_object_id": "sha256:16098a53c2738d40870217e0d00d2eaa9a7b70f150aa3c231cc328410cae438f",
+      "method_id": "deflate-zlib",
+      "profile_id": "cpu-single",
+      "declared_ranks": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "declared_dtypes": [
+        "<i8",
+        "<i4",
+        "<i2",
+        "|i1",
+        "<u8",
+        "<u4",
+        "<u2",
+        "|u1",
+        "<f8",
+        "<f4"
+      ],
+      "declared_loss_mode": "LOSSLESS",
+      "declared_threading": "SINGLE_THREAD",
+      "resolved_method": {
+        "id": "deflate-zlib",
+        "codec": "deflate-zlib",
+        "params": {
+          "native_timing": false,
+          "block_size": 65536,
+          "stream_decode_chunk_bytes": 16384,
+          "compression_level": 6,
+          "window_bits": 15,
+          "isa": "SCALAR"
+        }
+      },
+      "installed_artifacts_checked": false,
+      "native_qualification_executed": false,
+      "declared_supported": true,
+      "status": "declared_eligible",
+      "reason": null,
+      "native_qualification": "pending; native content/installed artifact/correctness checks required"
+    },
+    {
+      "dataset_id": "pems08-native-n8192",
+      "raw_object_id": "sha256:16098a53c2738d40870217e0d00d2eaa9a7b70f150aa3c231cc328410cae438f",
+      "method_id": "chimp128",
+      "profile_id": "cpu-single",
+      "declared_ranks": [
+        1,
+        2
+      ],
+      "declared_dtypes": [
+        "<f4",
+        "<f8"
+      ],
+      "declared_loss_mode": "LOSSLESS",
+      "declared_threading": "SINGLE_THREAD",
+      "resolved_method": {
+        "id": "chimp128",
+        "codec": "chimp128",
+        "params": {
+          "block_size": 1000,
+          "isa": "SCALAR"
+        }
+      },
+      "installed_artifacts_checked": false,
+      "native_qualification_executed": false,
+      "declared_supported": false,
+      "status": "unsupported",
+      "reason": "chimp128: rank must be one of (1, 2)",
+      "native_qualification": "not requested for input outside declared capability"
+    }
+  ],
+  "requested_cases": 48,
+  "declared_eligible_cases": 36,
+  "declared_status_counts": {
+    "declared_eligible": 36,
+    "unsupported": 12
+  },
+  "nominal_requested_trial_slots": 1008,
+  "declared_eligible_trial_slots": 756,
+  "denominator_policy": "all 48 requests remain; chimp128 rank3 is unsupported, not silently reshaped, substituted or removed",
+  "cache_evidence": {
+    "cpu": 0,
+    "root": "/sys/devices/system/cpu/cpu0/cache",
+    "caches": [
+      {
+        "index_path": "/sys/devices/system/cpu/cpu0/cache/index0",
+        "level": 1,
+        "type": "Data",
+        "capacity_bytes": 49152,
+        "line_size_bytes": 64,
+        "shared_cpu_list": "0-1",
+        "attributes": {
+          "level": {
+            "path": "/sys/devices/system/cpu/cpu0/cache/index0/level",
+            "text": "1\n",
+            "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+          },
+          "type": {
+            "path": "/sys/devices/system/cpu/cpu0/cache/index0/type",
+            "text": "Data\n",
+            "sha256": "dc4dad0cef184fb5f194c67a101f83acad5e1c1bc80b03217b03152d2478aaaa"
+          },
+          "size": {
+            "path": "/sys/devices/system/cpu/cpu0/cache/index0/size",
+            "text": "48K\n",
+            "sha256": "a8a65783418b0f3e1a40010bde03c4713b57420000a6fe3116fb3b2d266c024a"
+          },
+          "coherency_line_size": {
+            "path": "/sys/devices/system/cpu/cpu0/cache/index0/coherency_line_size",
+            "text": "64\n",
+            "sha256": "913f5d1da2feaf4deeccc9e55cbb350a20f12b3f507e87be85dbb77fdd3cb9bc"
+          },
+          "shared_cpu_list": {
+            "path": "/sys/devices/system/cpu/cpu0/cache/index0/shared_cpu_list",
+            "text": "0-1\n",
+            "sha256": "06c7168eabf724fe9d8184b87c401160ff4c740c5782a6445495523f811d3cfd"
+          }
+        }
+      },
+      {
+        "index_path": "/sys/devices/system/cpu/cpu0/cache/index1",
+        "level": 1,
+        "type": "Instruction",
+        "capacity_bytes": 32768,
+        "line_size_bytes": 64,
+        "shared_cpu_list": "0-1",
+        "attributes": {
+          "level": {
+            "path": "/sys/devices/system/cpu/cpu0/cache/index1/level",
+            "text": "1\n",
+            "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+          },
+          "type": {
+            "path": "/sys/devices/system/cpu/cpu0/cache/index1/type",
+            "text": "Instruction\n",
+            "sha256": "d25bf25583662ba3bb850925a74a7123053b5d6e5592e6e1c2a9d56653792e44"
+          },
+          "size": {
+            "path": "/sys/devices/system/cpu/cpu0/cache/index1/size",
+            "text": "32K\n",
+            "sha256": "1451566a7ba657a9c136b6408f17b8aa6c516681e01fd703df5d666d9af1b1d0"
+          },
+          "coherency_line_size": {
+            "path": "/sys/devices/system/cpu/cpu0/cache/index1/coherency_line_size",
+            "text": "64\n",
+            "sha256": "913f5d1da2feaf4deeccc9e55cbb350a20f12b3f507e87be85dbb77fdd3cb9bc"
+          },
+          "shared_cpu_list": {
+            "path": "/sys/devices/system/cpu/cpu0/cache/index1/shared_cpu_list",
+            "text": "0-1\n",
+            "sha256": "06c7168eabf724fe9d8184b87c401160ff4c740c5782a6445495523f811d3cfd"
+          }
+        }
+      },
+      {
+        "index_path": "/sys/devices/system/cpu/cpu0/cache/index2",
+        "level": 2,
+        "type": "Unified",
+        "capacity_bytes": 1310720,
+        "line_size_bytes": 64,
+        "shared_cpu_list": "0-1",
+        "attributes": {
+          "level": {
+            "path": "/sys/devices/system/cpu/cpu0/cache/index2/level",
+            "text": "2\n",
+            "sha256": "53c234e5e8472b6ac51c1ae1cab3fe06fad053beb8ebfd8977b010655bfdd3c3"
+          },
+          "type": {
+            "path": "/sys/devices/system/cpu/cpu0/cache/index2/type",
+            "text": "Unified\n",
+            "sha256": "df18bb7a601a795f3e732f70f839d226f06c7b71bf0f60de814dcace9388184a"
+          },
+          "size": {
+            "path": "/sys/devices/system/cpu/cpu0/cache/index2/size",
+            "text": "1280K\n",
+            "sha256": "5e1eea28c6a050641bda4ae0cabe907552871b75e7145c02b770174ac5a570e3"
+          },
+          "coherency_line_size": {
+            "path": "/sys/devices/system/cpu/cpu0/cache/index2/coherency_line_size",
+            "text": "64\n",
+            "sha256": "913f5d1da2feaf4deeccc9e55cbb350a20f12b3f507e87be85dbb77fdd3cb9bc"
+          },
+          "shared_cpu_list": {
+            "path": "/sys/devices/system/cpu/cpu0/cache/index2/shared_cpu_list",
+            "text": "0-1\n",
+            "sha256": "06c7168eabf724fe9d8184b87c401160ff4c740c5782a6445495523f811d3cfd"
+          }
+        }
+      },
+      {
+        "index_path": "/sys/devices/system/cpu/cpu0/cache/index3",
+        "level": 3,
+        "type": "Unified",
+        "capacity_bytes": 20971520,
+        "line_size_bytes": 64,
+        "shared_cpu_list": "0-15",
+        "attributes": {
+          "level": {
+            "path": "/sys/devices/system/cpu/cpu0/cache/index3/level",
+            "text": "3\n",
+            "sha256": "1121cfccd5913f0a63fec40a6ffd44ea64f9dc135c66634ba001d10bcf4302a2"
+          },
+          "type": {
+            "path": "/sys/devices/system/cpu/cpu0/cache/index3/type",
+            "text": "Unified\n",
+            "sha256": "df18bb7a601a795f3e732f70f839d226f06c7b71bf0f60de814dcace9388184a"
+          },
+          "size": {
+            "path": "/sys/devices/system/cpu/cpu0/cache/index3/size",
+            "text": "20480K\n",
+            "sha256": "c4785bc734ed1ee84e8324e0206e1f875ac511a8b529611a3517cc25f1c9c5e5"
+          },
+          "coherency_line_size": {
+            "path": "/sys/devices/system/cpu/cpu0/cache/index3/coherency_line_size",
+            "text": "64\n",
+            "sha256": "913f5d1da2feaf4deeccc9e55cbb350a20f12b3f507e87be85dbb77fdd3cb9bc"
+          },
+          "shared_cpu_list": {
+            "path": "/sys/devices/system/cpu/cpu0/cache/index3/shared_cpu_list",
+            "text": "0-15\n",
+            "sha256": "0530fe7e0f6fdebc9271a7e78104077380f75bd92f3a5533ab673530a0555e29"
+          }
+        }
+      }
+    ],
+    "scope": "readonly cpu0 sysfs capacity evidence; profile does not pin worker affinity; logical input capacity comparison only, not an observed cache state or performance cause",
+    "logical_input_comparisons": [
+      {
+        "dataset_id": "pems03-native-n128",
+        "logical_input_bytes": 366592,
+        "observed_cpu0_shared_l3_capacity_bytes": 20971520,
+        "input_exceeds_observed_l3_capacity": false
+      },
+      {
+        "dataset_id": "pems03-native-n512",
+        "logical_input_bytes": 1466368,
+        "observed_cpu0_shared_l3_capacity_bytes": 20971520,
+        "input_exceeds_observed_l3_capacity": false
+      },
+      {
+        "dataset_id": "pems03-native-n8192",
+        "logical_input_bytes": 23461888,
+        "observed_cpu0_shared_l3_capacity_bytes": 20971520,
+        "input_exceeds_observed_l3_capacity": true
+      },
+      {
+        "dataset_id": "pems04-native-n128",
+        "logical_input_bytes": 943104,
+        "observed_cpu0_shared_l3_capacity_bytes": 20971520,
+        "input_exceeds_observed_l3_capacity": false
+      },
+      {
+        "dataset_id": "pems04-native-n512",
+        "logical_input_bytes": 3772416,
+        "observed_cpu0_shared_l3_capacity_bytes": 20971520,
+        "input_exceeds_observed_l3_capacity": false
+      },
+      {
+        "dataset_id": "pems04-native-n8192",
+        "logical_input_bytes": 60358656,
+        "observed_cpu0_shared_l3_capacity_bytes": 20971520,
+        "input_exceeds_observed_l3_capacity": true
+      },
+      {
+        "dataset_id": "pems07-native-n128",
+        "logical_input_bytes": 904192,
+        "observed_cpu0_shared_l3_capacity_bytes": 20971520,
+        "input_exceeds_observed_l3_capacity": false
+      },
+      {
+        "dataset_id": "pems07-native-n512",
+        "logical_input_bytes": 3616768,
+        "observed_cpu0_shared_l3_capacity_bytes": 20971520,
+        "input_exceeds_observed_l3_capacity": false
+      },
+      {
+        "dataset_id": "pems07-native-n8192",
+        "logical_input_bytes": 57868288,
+        "observed_cpu0_shared_l3_capacity_bytes": 20971520,
+        "input_exceeds_observed_l3_capacity": true
+      },
+      {
+        "dataset_id": "pems08-native-n128",
+        "logical_input_bytes": 522240,
+        "observed_cpu0_shared_l3_capacity_bytes": 20971520,
+        "input_exceeds_observed_l3_capacity": false
+      },
+      {
+        "dataset_id": "pems08-native-n512",
+        "logical_input_bytes": 2088960,
+        "observed_cpu0_shared_l3_capacity_bytes": 20971520,
+        "input_exceeds_observed_l3_capacity": false
+      },
+      {
+        "dataset_id": "pems08-native-n8192",
+        "logical_input_bytes": 33423360,
+        "observed_cpu0_shared_l3_capacity_bytes": 20971520,
+        "input_exceeds_observed_l3_capacity": true
+      }
+    ]
+  },
+  "timing_scope": "production object_memory boundary; source NPZ parse and these statistics outside clock; finite/special summaries do not measure bandwidth or memory/cache performance"
+}

@@ -1,0 +1,142 @@
+{
+  "schema": "tsbench.local-reproduction-verification/1",
+  "recorded_at_utc": "2026-10-13T12:22:29.613146+00:00",
+  "scope": "same-host private local export plus byte-integrity verification; no third-party or cross-machine reproduction, publishing, download or codec execution",
+  "working_directory": "/home/fzg/PycharmProjects/TSDataCompressBenchMark",
+  "commands": [
+    {
+      "argv": [
+        "python",
+        "benchmark/tools/export_reproduction.py",
+        "--output",
+        "build/reproduction-bundles/current-private-source.tar.gz"
+      ],
+      "returncode": 0,
+      "stdout": "{\n  \"schema\": \"tsbench.local-reproduction-export/1\",\n  \"scope\": \"private local source/evidence archive; not publicly redistributable by inference\",\n  \"selected_runs\": 21,\n  \"files\": 4906,\n  \"uncompressed_file_bytes\": 207295469,\n  \"group_bytes\": {\n    \"documentation\": 1264156,\n    \"source_asset\": 56038625,\n    \"benchmark_source\": 1644954,\n    \"referenced_build\": 3695783,\n    \"current_index\": 27506,\n    \"indexed_analysis\": 28352649,\n    \"indexed_document\": 466856,\n    \"indexed_run\": 110899314,\n    \"indexed_qualification\": 4905626\n  },\n  \"omitted_files\": 334,\n  \"omitted_bytes\": 315924782,\n  \"include_binaries\": false,\n  \"index_sha256\": \"sha256:e91609aaa49a0e1a00a674bc3257cd495421f1603efaeb8d0941b3308104f34c\",\n  \"archive\": \"/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/reproduction-bundles/current-private-source.tar.gz\",\n  \"archive_bytes\": 45449414,\n  \"archive_sha256\": \"sha256:1706a66335e12b4a5601ac8448801a39c6ad44462f25567c1aa4203f006939cd\"\n}\n",
+      "stdout_summary": {
+        "schema": "tsbench.local-reproduction-export/1",
+        "scope": "private local source/evidence archive; not publicly redistributable by inference",
+        "selected_runs": 21,
+        "files": 4906,
+        "uncompressed_file_bytes": 207295469,
+        "group_bytes": {
+          "documentation": 1264156,
+          "source_asset": 56038625,
+          "benchmark_source": 1644954,
+          "referenced_build": 3695783,
+          "current_index": 27506,
+          "indexed_analysis": 28352649,
+          "indexed_document": 466856,
+          "indexed_run": 110899314,
+          "indexed_qualification": 4905626
+        },
+        "omitted_files": 334,
+        "omitted_bytes": 315924782,
+        "include_binaries": false,
+        "index_sha256": "sha256:e91609aaa49a0e1a00a674bc3257cd495421f1603efaeb8d0941b3308104f34c",
+        "archive": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/reproduction-bundles/current-private-source.tar.gz",
+        "archive_bytes": 45449414,
+        "archive_sha256": "sha256:1706a66335e12b4a5601ac8448801a39c6ad44462f25567c1aa4203f006939cd"
+      }
+    },
+    {
+      "argv": [
+        "python",
+        "benchmark/tools/export_reproduction.py",
+        "--verify",
+        "build/reproduction-bundles/current-private-source.tar.gz"
+      ],
+      "returncode": 0,
+      "stdout": "{\n  \"verified\": true,\n  \"archive_sha256\": \"sha256:1706a66335e12b4a5601ac8448801a39c6ad44462f25567c1aa4203f006939cd\",\n  \"schema\": \"tsbench.local-reproduction-export/1\",\n  \"scope\": \"private local source/evidence archive; not publicly redistributable by inference\",\n  \"selected_runs\": 21,\n  \"files\": 4906,\n  \"uncompressed_file_bytes\": 207295469,\n  \"group_bytes\": {\n    \"documentation\": 1264156,\n    \"source_asset\": 56038625,\n    \"benchmark_source\": 1644954,\n    \"referenced_build\": 3695783,\n    \"current_index\": 27506,\n    \"indexed_analysis\": 28352649,\n    \"indexed_document\": 466856,\n    \"indexed_run\": 110899314,\n    \"indexed_qualification\": 4905626\n  },\n  \"omitted_files\": 334,\n  \"omitted_bytes\": 315924782,\n  \"include_binaries\": false,\n  \"index_sha256\": \"sha256:e91609aaa49a0e1a00a674bc3257cd495421f1603efaeb8d0941b3308104f34c\"\n}\n",
+      "stdout_summary": {
+        "verified": true,
+        "archive_sha256": "sha256:1706a66335e12b4a5601ac8448801a39c6ad44462f25567c1aa4203f006939cd",
+        "schema": "tsbench.local-reproduction-export/1",
+        "scope": "private local source/evidence archive; not publicly redistributable by inference",
+        "selected_runs": 21,
+        "files": 4906,
+        "uncompressed_file_bytes": 207295469,
+        "group_bytes": {
+          "documentation": 1264156,
+          "source_asset": 56038625,
+          "benchmark_source": 1644954,
+          "referenced_build": 3695783,
+          "current_index": 27506,
+          "indexed_analysis": 28352649,
+          "indexed_document": 466856,
+          "indexed_run": 110899314,
+          "indexed_qualification": 4905626
+        },
+        "omitted_files": 334,
+        "omitted_bytes": 315924782,
+        "include_binaries": false,
+        "index_sha256": "sha256:e91609aaa49a0e1a00a674bc3257cd495421f1603efaeb8d0941b3308104f34c"
+      }
+    }
+  ],
+  "archive": {
+    "path": "build/reproduction-bundles/current-private-source.tar.gz",
+    "absolute_path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/reproduction-bundles/current-private-source.tar.gz",
+    "bytes": 45449414,
+    "sha256": "sha256:1706a66335e12b4a5601ac8448801a39c6ad44462f25567c1aa4203f006939cd"
+  },
+  "frozen_index": {
+    "path": "docs/current_evidence.json",
+    "sha256": "sha256:e91609aaa49a0e1a00a674bc3257cd495421f1603efaeb8d0941b3308104f34c",
+    "embedded_bytes_equal_current_file": true,
+    "modified_for_export": false
+  },
+  "exporter": {
+    "path": "benchmark/tools/export_reproduction.py",
+    "sha256": "sha256:54ac809595e8644563e7fa765c056229b8ab7d2322bd0acc755ee3f7f319478d",
+    "embedded_exporter_sha256": "sha256:54ac809595e8644563e7fa765c056229b8ab7d2322bd0acc755ee3f7f319478d"
+  },
+  "member_and_ledger_checks": {
+    "verify_cli_passed": true,
+    "members": 4907,
+    "included_file_ledger_entries": 4906,
+    "unique_member_names": true,
+    "regular_members_only": true,
+    "actual_member_names_equal_included_ledger_plus_manifest": true,
+    "all_included_member_byte_sha256_checked_by_verify_cli": true,
+    "omission_ledger_entries": 334,
+    "raw_array_and_binary_suffixes_absent": true,
+    "embedded_current_index_hash_checked": true,
+    "real_or_unclassified_wire_omitted_by_export_policy": true,
+    "current_wheel_omitted_source_only": [
+      {
+        "bytes": 118878,
+        "path": "build/package-installed/tsbench-0.1.0-py3-none-any.whl",
+        "reason": "binary_or_wheel_not_requested; rebuild from frozen source",
+        "sha256": "sha256:ab1c274454400a2e784b518ff1f8a571bfe681272067370a7425c28a247f0bce"
+      }
+    ],
+    "superseded_wheels_omitted": [
+      {
+        "bytes": 118626,
+        "path": "build/package/tsbench-0.1.0-py3-none-any.whl",
+        "reason": "superseded_package_wheel_not_selected; original verification retained",
+        "sha256": "sha256:9b4ee20c6da8f03405dd52b392b01f72d0d2e2be3c4c816ff91263f6d9f6909d"
+      }
+    ],
+    "source_absolute_paths_and_original_evidence_preserved": true,
+    "relocation_policy": "Original evidence bytes and absolute paths are unchanged. Rebuild and start new runs; do not resume relocated evidence."
+  },
+  "publication": {
+    "policy": "Preserve original per-asset license restrictions. This export grants no new permission.",
+    "public_redistribution_claimed": false,
+    "published": false
+  },
+  "external_proof": {
+    "path": "docs/research/reproduction_export_verification.json",
+    "contained_in_archive": false,
+    "reason": "Created after archive verification; frozen index and archive remain unchanged."
+  },
+  "limitations": [
+    "This proves selected byte archive/ledger consistency on the same host; it is not a signature or independent authenticity attestation.",
+    "Raw corpus, real-source wire and independent restored outputs are omitted; exact source metadata/hash and original evidence remain, but new runs need exact external inputs.",
+    "Pure Python sources/native source assets are included, native libraries/current wheel are omitted; native libraries must be built for the selected runtime.",
+    "No publication permission is inferred from collection; original per-asset licenses and restrictions still apply.",
+    "Absolute paths in saved evidence stay unchanged; a relocated copy starts new identities and new runs rather than resuming old evidence."
+  ]
+}

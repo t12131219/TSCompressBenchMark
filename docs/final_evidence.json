@@ -1,0 +1,149 @@
+{
+  "schema": "tsbench.final-cpu-evidence/1",
+  "wire_version": 2,
+  "tests": {
+    "passed": 83,
+    "seconds": 6.62,
+    "command": "PYTHONPATH=benchmark/src python -m pytest benchmark/tests -q"
+  },
+  "real_codec_keys": [
+    "abba",
+    "alp",
+    "alp-rd",
+    "brotli-stream",
+    "bzip2-stream",
+    "chimp",
+    "chimp128",
+    "deepzip",
+    "deflate-zlib",
+    "dzip",
+    "elf",
+    "elf-plus",
+    "elf-star",
+    "fabba",
+    "fse",
+    "huff0",
+    "leats-lossless-i64",
+    "lz4-frame",
+    "lzss-dipperstein-c",
+    "lzss-raw",
+    "lzsse2-raw",
+    "lzsse8-raw",
+    "neats-lossless-i64",
+    "self-star",
+    "serf-qt",
+    "serf-xor",
+    "simdcomp-u32",
+    "snappy-raw",
+    "sprintz-delta",
+    "sprintz-delta-u8",
+    "sprintz-fire",
+    "sprintz-fire-huff0",
+    "sprintz-fire-u8",
+    "xz-stream",
+    "zfp-accuracy-1d",
+    "zstd-frame"
+  ],
+  "real_codec_count": 36,
+  "runs": [
+    {
+      "run": "all-lossless-explicit-runtime-final-20261013",
+      "run_id": "210dca22258a427aa8f0c865cd775b78",
+      "state": "complete",
+      "manifest_sha256": "044b9544403086d8ad4d18dcf8288305007529f7db150eea9917dd1d4aa43758",
+      "observations_sha256": "2e189ea73fa9b1a00eeba16ba0b01a81b3d637f8752c877be01f97fe6cf5244e",
+      "requested_cases": 384,
+      "admission_counts": {
+        "ready": 119,
+        "unsupported": 265
+      },
+      "planned_trials": 833,
+      "trial_status_counts": {
+        "ok": 833
+      }
+    },
+    {
+      "run": "timestamps-integer-affine-final-20261013",
+      "run_id": "ff4be44769354ab7aae8ce7c7005239e",
+      "state": "complete",
+      "manifest_sha256": "d31c4fa8ae44d37c4b3f569d6f94330861bf956abadb63d291d1ca68b089af28",
+      "observations_sha256": "71140e83bdaf7504b40cdad1a482696de6b8016c254be15c29766ea7b5124c77",
+      "requested_cases": 4,
+      "admission_counts": {
+        "ready": 4
+      },
+      "planned_trials": 28,
+      "trial_status_counts": {
+        "ok": 28
+      }
+    },
+    {
+      "run": "bounded-quality-final-20261013",
+      "run_id": "e74f30785d3747b1be996aca4f79df13",
+      "state": "complete",
+      "manifest_sha256": "e07c6db50090556df3743fccc9f84b6758e38da53f83341df05fdc362f5718da",
+      "observations_sha256": "64841bdb6f607208cea43f6976bc1059a5eb827193a21d68a51f1b2ba98830ec",
+      "requested_cases": 9,
+      "admission_counts": {
+        "ready": 9
+      },
+      "planned_trials": 63,
+      "trial_status_counts": {
+        "ok": 63
+      }
+    },
+    {
+      "run": "empirical-quality-final-20261013",
+      "run_id": "218e3d7c18564acaa055191b3f8fc334",
+      "state": "complete",
+      "manifest_sha256": "9940a5da1f9eccd58501f590d0af0f316e5260370323cd71ab03a26b9831a9f3",
+      "observations_sha256": "4118afedc610a78477fdb04983cd20e35577cc4f085af9bb8641e9e43ed3f35e",
+      "requested_cases": 4,
+      "admission_counts": {
+        "ready": 4
+      },
+      "planned_trials": 28,
+      "trial_status_counts": {
+        "ok": 28
+      }
+    },
+    {
+      "run": "records-composite-final-20261013",
+      "run_id": "f0578107e8884e18af208bb7fc6ca471",
+      "state": "complete",
+      "manifest_sha256": "3e0139a472f44e57cd31e9234252815635dd771305eaf88fe78030228ccfd051",
+      "observations_sha256": "31cbd503f3ed1c4a11cbdf8ef0d0058a19d3aa888eab8bc31776a6458656f7b8",
+      "requested_cases": 5,
+      "admission_counts": {
+        "ready": 5
+      },
+      "planned_trials": 35,
+      "trial_status_counts": {
+        "ok": 35
+      }
+    },
+    {
+      "run": "three-source-values-pilot-final-20261013",
+      "run_id": "6f45ec0f58a740948a4f64445c1cfcf2",
+      "state": "complete",
+      "manifest_sha256": "8a5768fb18fed6617daf098ccfb45d8ad7e86d354af16c40142c0882682494df",
+      "observations_sha256": "8563181ce918bc5b073477ee350ca01c1e290f61b44cf21458975a3141d18bb3",
+      "requested_cases": 15,
+      "admission_counts": {
+        "ready": 15
+      },
+      "planned_trials": 105,
+      "trial_status_counts": {
+        "ok": 105
+      }
+    }
+  ],
+  "total_requested_cases": 421,
+  "total_trials": 1092,
+  "limitations": [
+    "CPU object_memory independent_object natural only",
+    "one session per case; descriptive median/IQR only",
+    "pilot source/license/upstream version not yet frozen",
+    "no actual GPU/pool/stream/query/scaling/second environment evidence"
+  ]
+}

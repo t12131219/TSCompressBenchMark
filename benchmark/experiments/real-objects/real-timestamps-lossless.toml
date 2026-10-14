@@ -1,0 +1,114 @@
+# Fixed inputs and ablations: study_design.json. No test-object tuning.
+schema = "tsbench.experiment/1"
+name = "real-timestamps-lossless"
+output = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/runs/real-timestamps-lossless-20261013"
+
+[[datasets]]
+id = "etth1-time-n128"
+format = "csv"
+path = "/home/fzg/PycharmProjects/材料/TSBench_Corpus/ETTh1.csv"
+dtype = "<f8"
+encoding = "utf-8"
+timestamp_column = "date"
+timestamp_parser = "datetime64"
+time_unit = "ns"
+missing = "reject"
+columns = ["HUFL", "HULL", "MUFL", "MULL", "LUFL", "LULL", "OT"]
+start = 2048
+stop = 2176
+step = 1
+source = "etth1"
+order = "C"
+
+[[datasets]]
+id = "etth1-time-n512"
+format = "csv"
+path = "/home/fzg/PycharmProjects/材料/TSBench_Corpus/ETTh1.csv"
+dtype = "<f8"
+encoding = "utf-8"
+timestamp_column = "date"
+timestamp_parser = "datetime64"
+time_unit = "ns"
+missing = "reject"
+columns = ["HUFL", "HULL", "MUFL", "MULL", "LUFL", "LULL", "OT"]
+start = 2048
+stop = 2560
+step = 1
+source = "etth1"
+order = "C"
+
+[[datasets]]
+id = "weather-time-n128"
+format = "csv"
+path = "/home/fzg/PycharmProjects/材料/TSBench_Corpus/weather.csv"
+dtype = "<f8"
+encoding = "utf-8"
+timestamp_column = "date"
+timestamp_parser = "datetime64"
+time_unit = "ns"
+missing = "reject"
+columns = ["p (mbar)", "T (degC)", "Tpot (K)", "Tdew (degC)", "rh (%)", "VPmax (mbar)", "VPact (mbar)", "VPdef (mbar)", "sh (g/kg)", "H2OC (mmol/mol)", "rho (g/m**3)", "wv (m/s)", "max. wv (m/s)", "wd (deg)", "rain (mm)", "raining (s)", "SWDR (W/m�)", "PAR (�mol/m�/s)", "max. PAR (�mol/m�/s)", "Tlog (degC)", "OT"]
+start = 2048
+stop = 2176
+step = 1
+source = "weather"
+order = "C"
+
+[[datasets]]
+id = "weather-time-n512"
+format = "csv"
+path = "/home/fzg/PycharmProjects/材料/TSBench_Corpus/weather.csv"
+dtype = "<f8"
+encoding = "utf-8"
+timestamp_column = "date"
+timestamp_parser = "datetime64"
+time_unit = "ns"
+missing = "reject"
+columns = ["p (mbar)", "T (degC)", "Tpot (K)", "Tdew (degC)", "rh (%)", "VPmax (mbar)", "VPact (mbar)", "VPdef (mbar)", "sh (g/kg)", "H2OC (mmol/mol)", "rho (g/m**3)", "wv (m/s)", "max. wv (m/s)", "wd (deg)", "rain (mm)", "raining (s)", "SWDR (W/m�)", "PAR (�mol/m�/s)", "max. PAR (�mol/m�/s)", "Tlog (degC)", "OT"]
+start = 2048
+stop = 2560
+step = 1
+source = "weather"
+order = "C"
+
+[[methods]]
+id = "raw-store"
+codec = "raw-store"
+
+[[methods]]
+id = "zstd-frame"
+codec = "zstd-frame"
+
+[[methods]]
+id = "raw-integer-affine"
+codec = "raw-store"
+transform = "integer_affine_gcd"
+
+[[methods]]
+id = "neats-integer-affine"
+codec = "neats-lossless-i64"
+transform = "integer_affine_gcd"
+
+[[methods]]
+id = "leats-integer-affine"
+codec = "leats-lossless-i64"
+transform = "integer_affine_gcd"
+
+[[profiles]]
+id = "cpu-single"
+device = "cpu"
+native_threads = 1
+object_workers = 1
+memory_limit_mb = 4096
+
+[task]
+kind = "timestamps"
+fidelity = "bitwise"
+
+[execution]
+sessions = 3
+rounds = 7
+warmup_objects = 2
+seed = 20261013
+timeout_s = 120
+qualification_cache = true

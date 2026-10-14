@@ -1,0 +1,60 @@
+schema = "tsbench.pool/1"
+name = "process-object-pool"
+output = "../../runs/process-object-pool-final-20261013"
+workers = [1, 2, 4]
+lifecycles = ["cold_pool", "persistent_pool"]
+sessions = 3
+rounds = 7
+warmup_collections = 1
+timeout_s = 120
+seed = 20261013
+
+[experiment]
+schema = "tsbench.experiment/1"
+name = "process-object-pool-admission"
+
+[[experiment.datasets]]
+id = "float64-tail"
+path = "data/float64.npy"
+format = "npy"
+
+[[experiment.datasets]]
+id = "float32-tail"
+path = "data/float32.npy"
+format = "npy"
+
+[[experiment.datasets]]
+id = "noise64-tail"
+path = "data/noise64.npy"
+format = "npy"
+
+[[experiment.datasets]]
+id = "matrix64-tail"
+path = "data/records.npz"
+format = "npz"
+components = { V = "V" }
+
+[[experiment.methods]]
+id = "raw"
+codec = "raw-store"
+
+[[experiment.methods]]
+id = "zstd-3"
+codec = "zstd-frame"
+params = { compression_level = 3 }
+
+[experiment.task]
+kind = "values"
+fidelity = "bitwise"
+
+[[experiment.profiles]]
+id = "cpu-single-per-process"
+device = "cpu"
+native_threads = 1
+object_workers = 1
+memory_limit_mb = 4096
+
+[experiment.execution]
+timeout_s = 120
+qualification_cache = true
+save_artifacts = true

@@ -1,0 +1,141 @@
+# Fixed inputs and ablations: study_design.json. No test-object tuning.
+schema = "tsbench.experiment/1"
+name = "real-temperature-abs-0p01"
+output = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/runs/real-temperature-abs-0p01-20261013"
+
+[[datasets]]
+id = "etth1-temperature-n128-c"
+format = "csv"
+path = "/home/fzg/PycharmProjects/材料/TSBench_Corpus/ETTh1.csv"
+dtype = "<f8"
+encoding = "utf-8"
+timestamp_column = "date"
+timestamp_parser = "datetime64"
+time_unit = "ns"
+missing = "reject"
+columns = ["OT"]
+start = 2048
+stop = 2176
+step = 1
+source = "etth1"
+order = "C"
+
+[[datasets]]
+id = "etth1-temperature-n512-c"
+format = "csv"
+path = "/home/fzg/PycharmProjects/材料/TSBench_Corpus/ETTh1.csv"
+dtype = "<f8"
+encoding = "utf-8"
+timestamp_column = "date"
+timestamp_parser = "datetime64"
+time_unit = "ns"
+missing = "reject"
+columns = ["OT"]
+start = 2048
+stop = 2560
+step = 1
+source = "etth1"
+order = "C"
+
+[[datasets]]
+id = "weather-temperature-n128-c"
+format = "csv"
+path = "/home/fzg/PycharmProjects/材料/TSBench_Corpus/weather.csv"
+dtype = "<f8"
+encoding = "utf-8"
+timestamp_column = "date"
+timestamp_parser = "datetime64"
+time_unit = "ns"
+missing = "reject"
+columns = ["T (degC)", "Tdew (degC)", "Tlog (degC)"]
+start = 2048
+stop = 2176
+step = 1
+source = "weather"
+order = "C"
+
+[[datasets]]
+id = "weather-temperature-n128-f"
+format = "csv"
+path = "/home/fzg/PycharmProjects/材料/TSBench_Corpus/weather.csv"
+dtype = "<f8"
+encoding = "utf-8"
+timestamp_column = "date"
+timestamp_parser = "datetime64"
+time_unit = "ns"
+missing = "reject"
+columns = ["T (degC)", "Tdew (degC)", "Tlog (degC)"]
+start = 2048
+stop = 2176
+step = 1
+source = "weather"
+order = "F"
+
+[[datasets]]
+id = "weather-temperature-n512-c"
+format = "csv"
+path = "/home/fzg/PycharmProjects/材料/TSBench_Corpus/weather.csv"
+dtype = "<f8"
+encoding = "utf-8"
+timestamp_column = "date"
+timestamp_parser = "datetime64"
+time_unit = "ns"
+missing = "reject"
+columns = ["T (degC)", "Tdew (degC)", "Tlog (degC)"]
+start = 2048
+stop = 2560
+step = 1
+source = "weather"
+order = "C"
+
+[[datasets]]
+id = "weather-temperature-n512-f"
+format = "csv"
+path = "/home/fzg/PycharmProjects/材料/TSBench_Corpus/weather.csv"
+dtype = "<f8"
+encoding = "utf-8"
+timestamp_column = "date"
+timestamp_parser = "datetime64"
+time_unit = "ns"
+missing = "reject"
+columns = ["T (degC)", "Tdew (degC)", "Tlog (degC)"]
+start = 2048
+stop = 2560
+step = 1
+source = "weather"
+order = "F"
+
+[[methods]]
+id = "serf-qt"
+codec = "serf-qt"
+params = { "error_bound" = "0.01", "native_timing" = false }
+
+[[methods]]
+id = "serf-xor"
+codec = "serf-xor"
+params = { "error_bound" = "0.01", "native_timing" = false }
+
+[[methods]]
+id = "zfp-accuracy-1d"
+codec = "zfp-accuracy-1d"
+params = { "error_bound" = "0.01", "native_timing" = false }
+
+[[profiles]]
+id = "cpu-single"
+device = "cpu"
+native_threads = 1
+object_workers = 1
+memory_limit_mb = 4096
+
+[task]
+kind = "values"
+fidelity = "bounded_abs"
+error_bound = "0.01"
+
+[execution]
+sessions = 3
+rounds = 7
+warmup_objects = 2
+seed = 20261013
+timeout_s = 120
+qualification_cache = true

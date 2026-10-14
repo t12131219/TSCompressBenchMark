@@ -1,0 +1,839 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>High-level C++ Quick Start Guide &#8212; nvCOMP</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/css/lightbox.min.css?v=6e7d0de0" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinxcontrib-images/LightBox2/lightbox2-customize/pointer.css?v=c97663ff" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
+
+
+
+    <script src="../_static/jquery.js?v=5d32c60e"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+    <script src="../_static/documentation_options.js?v=5c0b1849"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../_static/sphinxcontrib-images/LightBox2/lightbox2/dist/js/lightbox-plus-jquery.min.js?v=f0ca4bb6"></script>
+    <script src="../_static/sphinxcontrib-images/LightBox2/lightbox2-customize/jquery-noconflict.js?v=12818e64"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'samples/highlevel_cpp_quickstart';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+
+    <link rel="icon" href="../_static/favicon.png"/>
+
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Python API samples" href="python_samples.html" />
+    <link rel="prev" title="Low-level C Quick Start Guide" href="lowlevel_c_quickstart.html" />
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="5.3.0" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+
+
+  </head>
+
+  <body data-default-mode="">
+
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="nvCOMP - Home"/>
+    <img src="../_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="nvCOMP - Home"/>
+  
+  
+    <p class="title logo__title">nvCOMP</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="nvCOMP - Home"/>
+    <img src="../_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="nvCOMP - Home"/>
+  
+  
+    <p class="title logo__title">nvCOMP</p>
+  
+</a>
+
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Table of Contents">
+  <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Beginner's Guide</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../getting_started.html">Getting Started</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="lowlevel_c_quickstart.html"> C API samples</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#"> C++ API samples</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="python_samples.html"> Python API samples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="nvcomp.html">Basics</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../algorithm_selection.html">Algorithm Selection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api_comparison.html">API Comparison</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../decompression_engine_faq.html">Decompression Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nvlzcat.html">nvlzcat (Gzip streaming CLI)</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Algorithms</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../lz4.html">LZ4</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cascaded.html">Cascaded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gdeflate.html">GDeflate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bitcomp.html">Bitcomp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../crc32.html">CRC32</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../c_api.html">C API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cpp_api.html">C++ API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../native_api.html">Native API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../py_api.html">Python API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../error_codes.html">Error Codes</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../release_notes.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/NVIDIA/CUDALibrarySamples">GitHub Samples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../security.html">Reporting vulnerabilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../acknowledgements.html">Acknowledgements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../getting_started.html" class="nav-link">Getting Started</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">High-level C++ Quick Start Guide</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="high-level-c-quick-start-guide">
+<span id="highlevel-cpp-quickstart"></span><h1>High-level C++ Quick Start Guide<a class="headerlink" href="#high-level-c-quick-start-guide" title="Link to this heading">#</a></h1>
+<p>nvCOMP provides a C++ interface, which simplifies use of the library by
+throwing exceptions and managing state and temporary memory allocation
+inside of nvcompManager objects.</p>
+<dl class="simple">
+<dt>The high-level interface provides the following features:</dt><dd><ul class="simple">
+<li><p>Compression settings are stored in the nvcompManager object</p></li>
+<li><p>Users can decompress nvCOMP-compressed buffers without knowing how
+the buffer was compressed</p></li>
+<li><p>The nvcompManager can automatically split a single, uncompressed,
+contiguous buffer into chunks to allow the algorithms to exploit
+available parallelism</p></li>
+<li><p>Users can opt to store and verify checksums for the uncompressed
+and compressed buffers</p></li>
+</ul>
+</dd>
+</dl>
+<p>To use nvCOMP’s C++ interface, you will need to include <code class="docutils literal notranslate"><span class="pre">nvcomp.hpp</span></code>
+and the headers of the specific compressors you will be using. For
+example, for the LZ4 compression scheme used in
+<code class="docutils literal notranslate"><span class="pre">high_level_quickstart_example.cpp</span></code>, we need to include</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;nvcomp/lz4.hpp&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;nvcomp.hpp&quot;</span>
+</pre></div>
+</div>
+<p>All nvCOMP APIs are declared within the <code class="docutils literal notranslate"><span class="pre">nvcomp</span></code> namespace. For ease
+of use, we suggest specifying the following in the appropriate scope:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">nvcomp</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Below we introduce the interface and summarize the declarations of
+relevant member functions of the nvcompManager class hierarchy. For
+fully worked examples of the same, please view
+<code class="docutils literal notranslate"><span class="pre">high_level_quickstart_example.cpp</span></code>.</p>
+<section id="manager-construction">
+<h2>Manager Construction<a class="headerlink" href="#manager-construction" title="Link to this heading">#</a></h2>
+<p>The user has two options for constructing an nvcompManager. In either
+case the user can specify a CUDA stream to use for all nvcompManager GPU
+operations. If a stream is not specified, the default stream will be
+used. In the following chapter default <code class="docutils literal notranslate"><span class="pre">bitstream_kind</span> <span class="pre">=</span>
+<span class="pre">BitstreamKind::NVCOMP_NATIVE</span></code> is assumed. You can read about other
+options in <code class="docutils literal notranslate"><span class="pre">BitstreamKind</span></code>.</p>
+<section id="construction-from-an-nvcomp-compressed-buffer">
+<h3>1) Construction from an nvcomp-compressed buffer<a class="headerlink" href="#construction-from-an-nvcomp-compressed-buffer" title="Link to this heading">#</a></h3>
+<p>The user can construct a manager using a compressed buffer. This is the
+recommended way of constructing a manager for decompression, as it is
+less error-prone.</p>
+<p>In order to use the <code class="docutils literal notranslate"><span class="pre">create_manager</span></code> factory, the user must include
+<code class="docutils literal notranslate"><span class="pre">nvcomp/nvcompManagerFactory.hpp</span></code></p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">cudaStream_t</span><span class="w"> </span><span class="n">stream</span><span class="p">;</span>
+<span class="n">CUDA_CHECK</span><span class="p">(</span><span class="n">cudaStreamCreate</span><span class="p">(</span><span class="o">&amp;</span><span class="n">stream</span><span class="p">));</span>
+
+<span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">nvcompManagerBase</span><span class="o">&gt;</span><span class="w"> </span><span class="n">decomp_nvcomp_manager</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">create_manager</span><span class="p">(</span><span class="n">comp_buffer</span><span class="p">,</span><span class="w"> </span><span class="n">stream</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>A complete worked example using this approach is provided in the
+<code class="docutils literal notranslate"><span class="pre">decomp_compressed_with_manager_factory_example</span></code> within
+<code class="docutils literal notranslate"><span class="pre">high_level_quickstart_example.cpp</span></code>.</p>
+</section>
+<section id="direct-construction">
+<h3>2) Direct construction<a class="headerlink" href="#direct-construction" title="Link to this heading">#</a></h3>
+<p>In direct construction, the user must specify the parameters of the
+particular compressor they wish to use for compression or decompression.
+If manually specifying the manager for decompression, care must be taken
+to ensure that the configuration of the manager matches the
+configuration used to compress the buffers.</p>
+<p>Chunk size is a common parameter that determines the size of the
+chunking internally. Some compressors may provide a higher compression
+ratio if given a larger chunk size. For example in LZ4, the larger the
+chunk size the larger the lookback window the algorithm can use to find
+matches.</p>
+<section id="checksum-support">
+<h4>Checksum support<a class="headerlink" href="#checksum-support" title="Link to this heading">#</a></h4>
+<p>Upon manager construction, the user may also specify whether to store
+and/or verify checksums for the uncompressed and compressed buffers. The
+HLIF checksums are computed on the GPU using a modified CRC32 algorithm.
+It should be noted that these checksums are intended for error-detection
+purposes, not security. Also, enabling checksums may incur a sizeable
+performance penalty depending on the compression algorithm.</p>
+<p>The fully worked examples
+<code class="docutils literal notranslate"><span class="pre">comp_decomp_with_single_manager_with_checksums</span></code> and
+<code class="docutils literal notranslate"><span class="pre">decomp_compressed_with_manager_factory_with_checksums</span></code> within
+<code class="docutils literal notranslate"><span class="pre">high_level_quickstart_example.cpp</span></code> demonstrate how to use the HLIF
+checksums.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">cudaStream_t</span><span class="w"> </span><span class="n">stream</span><span class="p">;</span>
+<span class="n">CUDA_CHECK</span><span class="p">(</span><span class="n">cudaStreamCreate</span><span class="p">(</span><span class="o">&amp;</span><span class="n">stream</span><span class="p">));</span>
+
+<span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">chunk_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">16</span><span class="p">;</span>
+<span class="n">nvcompBatchedLZ4CompressOpts_t</span><span class="w"> </span><span class="n">compress_opts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nvcompBatchedLZ4CompressDefaultOpts</span><span class="p">;</span>
+<span class="n">nvcompBatchedLZ4DecompressOpts_t</span><span class="w"> </span><span class="n">decompress_opts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nvcompBatchedLZ4DecompressDefaultOpts</span><span class="p">;</span>
+
+<span class="n">LZ4Manager</span><span class="w"> </span><span class="n">nvcomp_manager</span><span class="p">{</span><span class="n">chunk_size</span><span class="p">,</span><span class="w"> </span><span class="n">compress_opts</span><span class="p">,</span><span class="w"> </span><span class="n">decompress_opts</span><span class="p">,</span><span class="w"> </span><span class="n">stream</span><span class="p">};</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="compression">
+<h2>Compression<a class="headerlink" href="#compression" title="Link to this heading">#</a></h2>
+<p>Compression consists of two steps: <code class="docutils literal notranslate"><span class="pre">Configuration</span></code> then
+<code class="docutils literal notranslate"><span class="pre">Compression</span></code>.</p>
+<section id="step-1-configuration">
+<h3>Step 1 Configuration<a class="headerlink" href="#step-1-configuration" title="Link to this heading">#</a></h3>
+<p>The configuration stage provides the maximum size of the compressed
+buffer. It also performs internal setup for the compression.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm"> * @brief Configure the compression of a single buffer.</span>
+<span class="cm"> *</span>
+<span class="cm"> * This routine computes the size of the required result buffer. The result config also</span>
+<span class="cm"> * contains the nvcompStatus* that allows error checking.</span>
+<span class="cm"> *</span>
+<span class="cm"> * @param uncomp_buffer_size The uncompressed input data size (in bytes).</span>
+<span class="cm"> *</span>
+<span class="cm"> * \return CompressionConfig for the size provided.</span>
+<span class="cm"> */</span>
+<span class="k">virtual</span><span class="w"> </span><span class="n">CompressionConfig</span><span class="w"> </span><span class="nf">configure_compression</span><span class="p">(</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">uncomp_buffer_size</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+<section id="step-2-compression">
+<h3>Step 2 Compression<a class="headerlink" href="#step-2-compression" title="Link to this heading">#</a></h3>
+<p>Compression takes the result of configure_compression, a const input
+buffer and a result buffer. The result buffer should be allocated based
+on the result of configure_compression, which includes the maximum
+possible compressed size.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm"> * @brief Perform compression asynchronously for a single buffer.</span>
+<span class="cm"> *</span>
+<span class="cm"> * @param uncomp_buffer The uncompressed input data.</span>
+<span class="cm"> * (a pointer to device contiguous memory).</span>
+<span class="cm"> *</span>
+<span class="cm"> * @param comp_buffer The location to output the compressed data to.</span>
+<span class="cm"> * (a pointer to device contiguous memory)</span>
+<span class="cm"> * Size requirement is provided in CompressionConfig.</span>
+<span class="cm"> *</span>
+<span class="cm"> * @param comp_config Generated for the current uncomp_buffer with configure_compression.</span>
+<span class="cm"> *</span>
+<span class="cm"> * @param comp_size The location to output size in bytes after compression.</span>
+<span class="cm"> * (a pointer to a single size_t variable on device)</span>
+<span class="cm"> * Optional when bitstream kind is NVCOMP_NATIVE.</span>
+<span class="cm"> */</span>
+<span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">compress</span><span class="p">(</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">uint8_t</span><span class="o">*</span><span class="w"> </span><span class="n">uncomp_buffer</span><span class="p">,</span>
+<span class="w">  </span><span class="kt">uint8_t</span><span class="o">*</span><span class="w"> </span><span class="n">comp_buffer</span><span class="p">,</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="n">CompressionConfig</span><span class="o">&amp;</span><span class="w"> </span><span class="n">comp_config</span><span class="p">,</span>
+<span class="w">  </span><span class="kt">size_t</span><span class="o">*</span><span class="w"> </span><span class="n">comp_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">nullptr</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="decompression">
+<h2>Decompression<a class="headerlink" href="#decompression" title="Link to this heading">#</a></h2>
+<p>Decompression consists of two steps: Configuration then Decompression.</p>
+<section id="id1">
+<h3>Step 1 Configuration<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<p>To configure the decompression, the user has two options.</p>
+<section id="a-configure-using-a-compressed-buffer">
+<h4>A) configure using a compressed buffer<a class="headerlink" href="#a-configure-using-a-compressed-buffer" title="Link to this heading">#</a></h4>
+<p>If when decompressing a compressed buffer the user doesn’t have the
+CompressionConfig used to compress the buffer, the user must use the
+configure API. This API synchronizes the stream provided at construction
+of the manager, because the decompression needs information that may
+only be accessible on the GPU.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm"> * @brief Configure the decompression for a single buffer using a compressed buffer.</span>
+<span class="cm"> *</span>
+<span class="cm"> * Synchronizes the user stream.</span>
+<span class="cm"> * - If bitstream kind is NVCOMP_NATIVE, it will parse the header in comp_buffer.</span>
+<span class="cm"> * - If bitstream kind is RAW, it may be required (e.g for LZ4) to parse the whole comp_buffer,</span>
+<span class="cm"> *   which could be significantly slower than other options.</span>
+<span class="cm"> * - If bitstream kind is WITH_UNCOMPRESSED_SIZE, it will read the size from the beginning of the comp_buffer.</span>
+<span class="cm"> *</span>
+<span class="cm"> * @param comp_buffer The compressed input data.</span>
+<span class="cm"> * (a pointer to device contiguous memory)</span>
+<span class="cm"> *</span>
+<span class="cm"> * @param comp_size Size of the compressed input data. This is required only for RAW format.</span>
+<span class="cm"> * (a pointer to device variable with compressed size)</span>
+<span class="cm"> *</span>
+<span class="cm"> * \return DecompressionConfig for the comp_buffer provided.</span>
+<span class="cm"> */</span>
+<span class="k">virtual</span><span class="w"> </span><span class="n">DecompressionConfig</span><span class="w"> </span><span class="nf">configure_decompression</span><span class="p">(</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">uint8_t</span><span class="o">*</span><span class="w"> </span><span class="n">comp_buffer</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">size_t</span><span class="o">*</span><span class="w"> </span><span class="n">comp_size</span><span class="o">=</span><span class="nb">nullptr</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+<section id="b-configure-using-a-compression-config">
+<h4>B) configure using a compression config<a class="headerlink" href="#b-configure-using-a-compression-config" title="Link to this heading">#</a></h4>
+<p>Sometimes, the user will retain the CompressionConfig object that was
+used to compress the buffer. In this case, the DecompressionConfig can
+be constructed from the CompressionConfig. Since the CompressionConfig
+resides in host memory, this configuration can happen without
+synchronizing the stream.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm"> * @brief Configure the decompression for a single buffer using a CompressionConfig object.</span>
+<span class="cm"> *</span>
+<span class="cm"> * Does not synchronize the user stream.</span>
+<span class="cm"> *</span>
+<span class="cm"> * @param comp_config The config used to compress a buffer.</span>
+<span class="cm"> *</span>
+<span class="cm"> * \return DecompressionConfig based on compression config provided.</span>
+<span class="cm"> */</span>
+<span class="k">virtual</span><span class="w"> </span><span class="n">DecompressionConfig</span><span class="w"> </span><span class="nf">configure_decompression</span><span class="p">(</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="n">CompressionConfig</span><span class="o">&amp;</span><span class="w"> </span><span class="n">comp_config</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="step-2-decompression">
+<h3>Step 2 Decompression<a class="headerlink" href="#step-2-decompression" title="Link to this heading">#</a></h3>
+<p>Decompression utilizes a result <code class="docutils literal notranslate"><span class="pre">decomp_buffer</span></code> that should be
+provided by the user. The size of the decompressed buffer is provided by
+the previous configuration step.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm"> * @brief Perform decompression asynchronously of a single buffer.</span>
+<span class="cm"> *</span>
+<span class="cm"> * @param decomp_buffer The location to output the decompressed data to.</span>
+<span class="cm"> * (a pointer to device contiguous memory)</span>
+<span class="cm"> * Size requirement is provided in DecompressionConfig.</span>
+<span class="cm"> *</span>
+<span class="cm"> * @param comp_buffer The compressed input data.</span>
+<span class="cm"> * (a pointer to device contiguous memory)</span>
+<span class="cm"> *</span>
+<span class="cm"> * @param decomp_config Resulted from configure_decompression given this comp_buffer.</span>
+<span class="cm"> * Contains nvcompStatus* in host/device-accessible memory to allow error checking.</span>
+<span class="cm"> *</span>
+<span class="cm"> * @param comp_size The size of compressed input data passed.</span>
+<span class="cm"> * (a pointer to a single size_t variable on device)</span>
+<span class="cm"> * Optional when bitstream kind is NVCOMP_NATIVE.</span>
+<span class="cm"> */</span>
+<span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">decompress</span><span class="p">(</span>
+<span class="w">  </span><span class="kt">uint8_t</span><span class="o">*</span><span class="w"> </span><span class="n">decomp_buffer</span><span class="p">,</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">uint8_t</span><span class="o">*</span><span class="w"> </span><span class="n">comp_buffer</span><span class="p">,</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="n">DecompressionConfig</span><span class="o">&amp;</span><span class="w"> </span><span class="n">decomp_config</span><span class="p">,</span>
+<span class="w">  </span><span class="kt">size_t</span><span class="o">*</span><span class="w"> </span><span class="n">comp_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">nullptr</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="batched-api">
+<h2>Batched API<a class="headerlink" href="#batched-api" title="Link to this heading">#</a></h2>
+<p>Managers also support batched compression and decompression of multiple
+buffers. Depending on a function, you will need to pass a
+<code class="docutils literal notranslate"><span class="pre">std::vector</span></code> or c-style array. If the function accepts c-style arrays
+you need to also pass the batch size.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">virtual</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">CompressionConfig</span><span class="o">&gt;</span><span class="w"> </span><span class="n">configure_compression</span><span class="p">(</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">size_t</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">uncomp_buffer_sizes</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="k">virtual</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">DecompressionConfig</span><span class="o">&gt;</span><span class="w"> </span><span class="n">configure_decompression</span><span class="p">(</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">uint8_t</span><span class="o">*</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">comp_buffers</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">batch_size</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">size_t</span><span class="o">*</span><span class="w"> </span><span class="n">comp_sizes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">nullptr</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>A complete worked example of batched compression and decompression can
+be found in <code class="docutils literal notranslate"><span class="pre">multi_comp_decomp_batched</span></code> within
+<code class="docutils literal notranslate"><span class="pre">high_level_quickstart_example.cpp</span></code>.</p>
+</section>
+<section id="bitstream-kind">
+<h2>Bitstream kind<a class="headerlink" href="#bitstream-kind" title="Link to this heading">#</a></h2>
+<section id="bitstreamkind-raw">
+<h3><code class="docutils literal notranslate"><span class="pre">BitstreamKind::RAW</span></code><a class="headerlink" href="#bitstreamkind-raw" title="Link to this heading">#</a></h3>
+<p>If you want to use the low-level C like API, but you don’t want to
+manage temporary buffers, you can pass <code class="docutils literal notranslate"><span class="pre">BitstreamKind::RAW</span></code> to manager
+constructor. In such case, <code class="docutils literal notranslate"><span class="pre">chunk_size</span></code> and <code class="docutils literal notranslate"><span class="pre">checksum_policy</span></code>
+arguments will be ignored. Manager will not split the input data into
+chunks, you will need to do it yourself to maintain good performance,
+and some of the algorithms may fail if the chunk sizes are too large. No
+nvCOMP header will be added, the functionality is interoperable with the
+low-level C API. As there is no nvCOMP header, you will need to pass
+<code class="docutils literal notranslate"><span class="pre">comp_sizes</span></code> to most of the manager functions, to store and read size
+of compressed chunks.</p>
+<p>A complete worked example using this approach is provided in the
+<code class="docutils literal notranslate"><span class="pre">multi_comp_decomp_raw</span></code> within <code class="docutils literal notranslate"><span class="pre">high_level_quickstart_example.cpp</span></code>.</p>
+</section>
+<section id="bitstreamkind-with-uncompressed-size">
+<h3><code class="docutils literal notranslate"><span class="pre">BitstreamKind::WITH_UNCOMPRESSED_SIZE</span></code><a class="headerlink" href="#bitstreamkind-with-uncompressed-size" title="Link to this heading">#</a></h3>
+<p>Some algorithms, like LZ4, don’t store the size of input data inside
+their headers attached to compressed data. This value is required to
+perform decompression, so to get it, we may need to do virtual
+decompression, which will impact performance. We recommend the usage of
+default (<code class="docutils literal notranslate"><span class="pre">BitstreamKind::NVCOMP_NATIVE</span></code>) bitstream kind manager in
+such situation.</p>
+<p>However, if you want to use the low-level C like API, then you can pass
+<code class="docutils literal notranslate"><span class="pre">BitstreamKind::WITH_UNCOMPRESSED_SIZE</span></code> to manager constructor. This
+manager will be similar to the one created with <code class="docutils literal notranslate"><span class="pre">BitstreamKind::RAW</span></code>,
+but will add a small header containing just the original size of the
+uncompressed buffer, which can speed up decompression. However, because
+a non-standard header is added, this manager is no longer interoperable
+with low-level C API.</p>
+</section>
+</section>
+<section id="hlif-compression-decompression-examples-lz4">
+<h2>HLIF Compression / Decompression Examples - LZ4<a class="headerlink" href="#hlif-compression-decompression-examples-lz4" title="Link to this heading">#</a></h2>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">high_level_quickstart_example.cpp</span></code> provides worked examples of</dt><dd><ul class="simple">
+<li><p>Constructing the manager from arguments</p></li>
+<li><p>Constructing the manager from a compressed buffer</p></li>
+<li><p>Streamed compression and decompression of multiple buffers</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="lowlevel_c_quickstart.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Low-level C Quick Start Guide</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="python_samples.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Python API samples</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#manager-construction">Manager Construction</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#construction-from-an-nvcomp-compressed-buffer">1) Construction from an nvcomp-compressed buffer</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#direct-construction">2) Direct construction</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#checksum-support">Checksum support</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#compression">Compression</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-configuration">Step 1 Configuration</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-compression">Step 2 Compression</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#decompression">Decompression</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Step 1 Configuration</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#a-configure-using-a-compressed-buffer">A) configure using a compressed buffer</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#b-configure-using-a-compression-config">B) configure using a compression config</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-decompression">Step 2 Decompression</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#batched-api">Batched API</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bitstream-kind">Bitstream kind</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bitstreamkind-raw"><code class="docutils literal notranslate"><span class="pre">BitstreamKind::RAW</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bitstreamkind-with-uncompressed-size"><code class="docutils literal notranslate"><span class="pre">BitstreamKind::WITH_UNCOMPRESSED_SIZE</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hlif-compression-decompression-examples-lz4">HLIF Compression / Decompression Examples - LZ4</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
+
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+<a class="footer-brand logo" href="https://www.nvidia.com">
+  <img src="../_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
+  <img src="../_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
+</a></div>
+      
+        <div class="footer-item">
+
+<div class="footer-links">
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/">Privacy Policy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Your Privacy Choices</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/">Terms of Service</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/accessibility/">Accessibility</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/company-policies/">Corporate Policies</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/product-security/">Product Security</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/contact/">Contact</a>
+  
+  
+  
+</div>
+</div>
+      
+        <div class="footer-item">
+
+
+
+
+  <p class="copyright">
+    
+      Copyright © 2017 - 2025, NVIDIA Corporation &amp; Affiliates.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+  </body>
+</html>

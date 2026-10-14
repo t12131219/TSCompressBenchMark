@@ -1,0 +1,20 @@
+{
+  "schema": "tsbench.extension-availability/1",
+  "captured_at_utc": "2026-10-13T07:43:22.925894+00:00",
+  "gpu_members": [],
+  "gpu_member_status": "unavailable: no integrated GPU codec in retained 36-key asset set",
+  "internal_thread_scaling": "unsupported by retained fixed-thread bindings; no variable native thread knob",
+  "controlled_scalar_simd_ablation": "unavailable: no paired scalar implementation for SIMDComp/Sprintz/LZSSE bindings; SSE4.1/AVX2 path comparison is a separate experiment",
+  "gpu_driver_probe": {
+    "argv": [
+      "/usr/bin/nvidia-smi",
+      "--query-gpu=name,uuid,driver_version,memory.total",
+      "--format=csv,noheader"
+    ],
+    "returncode": 9,
+    "stdout": "NVIDIA-SMI has failed because it couldn't communicate with the NVIDIA driver. Make sure that the latest NVIDIA driver is installed and running.\n\n",
+    "stderr": "",
+    "status": "unavailable"
+  },
+  "policy": "No driver or package installation, device reset, power setting or global system change was attempted. Optional stream/query/energy tasks have no performance claim."
+}

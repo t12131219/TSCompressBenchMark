@@ -1,0 +1,229 @@
+{
+  "library": {
+    "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/tsbench/ac571a87eb1b89248c151c1ebbd293bd76534d24541c73ce9e359bb14cc44623/simdcomp-u32/libtscb_simdcomp_u32.so",
+    "sha256": "7b904c3d3b6c0bf5976ad75eddb4cc6bc28b86d7ea634804740a547ca3c1409c",
+    "nbytes": 849184
+  },
+  "build_record": {
+    "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/tsbench/ac571a87eb1b89248c151c1ebbd293bd76534d24541c73ce9e359bb14cc44623/simdcomp-u32/build.json",
+    "sha256": "fe6de9c27f7802e420f879c0d935330b51de38c0e87e34bff997f9a42b51bef2",
+    "nbytes": 53480
+  },
+  "build_id": "sha256:ac571a87eb1b89248c151c1ebbd293bd76534d24541c73ce9e359bb14cc44623",
+  "params": {
+    "simd-sse-mask": {
+      "native_timing": false,
+      "api": "MASKED",
+      "isa": "SSE4_1",
+      "starting_point": 0
+    },
+    "simd-avx2-mask": {
+      "native_timing": false,
+      "api": "MASKED",
+      "isa": "AVX2",
+      "starting_point": 0
+    }
+  },
+  "actual_compile_commands": {
+    "shim": [
+      "cc",
+      "-std=c11",
+      "-fPIC",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-O3",
+      "-DNDEBUG",
+      "-march=x86-64",
+      "-mno-ssse3",
+      "-mno-sse4.1",
+      "-mno-avx",
+      "-mno-avx2",
+      "-mno-avx512f",
+      "-fno-tree-vectorize",
+      "-fno-tree-slp-vectorize",
+      "-I",
+      "/home/fzg/PycharmProjects/TSDataCompressBenchMark/native/include",
+      "-I",
+      "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/tsbench/ac571a87eb1b89248c151c1ebbd293bd76534d24541c73ce9e359bb14cc44623/simdcomp-u32/patched-source/include",
+      "-MD",
+      "-MF",
+      "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/tsbench/ac571a87eb1b89248c151c1ebbd293bd76534d24541c73ce9e359bb14cc44623/simdcomp-u32/shim.d",
+      "-c",
+      "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/simdcomp/native/tscb_simdcomp.c",
+      "-o",
+      "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/tsbench/ac571a87eb1b89248c151c1ebbd293bd76534d24541c73ce9e359bb14cc44623/simdcomp-u32/shim.o"
+    ],
+    "sse": [
+      "cc",
+      "-std=c11",
+      "-fPIC",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-O3",
+      "-DNDEBUG",
+      "-march=x86-64",
+      "-msse4.1",
+      "-mno-avx",
+      "-mno-avx2",
+      "-mno-avx512f",
+      "-I",
+      "/home/fzg/PycharmProjects/TSDataCompressBenchMark/native/include",
+      "-I",
+      "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/tsbench/ac571a87eb1b89248c151c1ebbd293bd76534d24541c73ce9e359bb14cc44623/simdcomp-u32/patched-source/include",
+      "-MD",
+      "-MF",
+      "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/tsbench/ac571a87eb1b89248c151c1ebbd293bd76534d24541c73ce9e359bb14cc44623/simdcomp-u32/simdbitpacking.d",
+      "-c",
+      "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/tsbench/ac571a87eb1b89248c151c1ebbd293bd76534d24541c73ce9e359bb14cc44623/simdcomp-u32/patched-source/src/simdbitpacking.c",
+      "-o",
+      "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/tsbench/ac571a87eb1b89248c151c1ebbd293bd76534d24541c73ce9e359bb14cc44623/simdcomp-u32/simdbitpacking.o"
+    ],
+    "avx2": [
+      "cc",
+      "-std=c11",
+      "-fPIC",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-O3",
+      "-DNDEBUG",
+      "-march=x86-64",
+      "-mavx2",
+      "-mno-avx512f",
+      "-I",
+      "/home/fzg/PycharmProjects/TSDataCompressBenchMark/native/include",
+      "-I",
+      "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/tsbench/ac571a87eb1b89248c151c1ebbd293bd76534d24541c73ce9e359bb14cc44623/simdcomp-u32/patched-source/include",
+      "-MD",
+      "-MF",
+      "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/tsbench/ac571a87eb1b89248c151c1ebbd293bd76534d24541c73ce9e359bb14cc44623/simdcomp-u32/avxbitpacking.d",
+      "-c",
+      "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/tsbench/ac571a87eb1b89248c151c1ebbd293bd76534d24541c73ce9e359bb14cc44623/simdcomp-u32/patched-source/src/avxbitpacking.c",
+      "-o",
+      "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/tsbench/ac571a87eb1b89248c151c1ebbd293bd76534d24541c73ce9e359bb14cc44623/simdcomp-u32/avxbitpacking.o"
+    ]
+  },
+  "source_files": [
+    {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/simdcomp/native/tscb_simdcomp.c",
+      "sha256": "93721e3e0779b5a4c594d66bd8b0903fa1a2ad67629c38746db1b31c8416485a",
+      "nbytes": 24103
+    },
+    {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/simdcomp/native/avx2_bridge.c",
+      "sha256": "c096a23b83aaa4c40d82c270e6081f3afd46f9cceab5ded82cd9ed835ad3067e",
+      "nbytes": 884
+    },
+    {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/simdcomp/vendor/simdcomp/src/simdbitpacking.c",
+      "sha256": "96e3e1b2df58e1e81f5e85b261f61a8623b85f60256ab2e2a4aa9e1fea331648",
+      "nbytes": 431104
+    },
+    {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/simdcomp/vendor/simdcomp/src/avxbitpacking.c",
+      "sha256": "3243729ab45e9e9a0b1ae3f9eee2c50a7c8905e1bbd2ad43eada3bb49df59237",
+      "nbytes": 468328
+    },
+    {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/simdcomp/contract.md",
+      "sha256": "72a60f79d6838b4baa2a44b47c09ef0f0807097bebf6b36098bc2ff9a3b33cc0",
+      "nbytes": 4781
+    },
+    {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/src/tsbench/build.py",
+      "sha256": "12e18d68d32f7b3425b1f06160a050c4bf8849a08c860b2cdbdcec5c91cd97fb",
+      "nbytes": 14559
+    },
+    {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/src/tsbench/bridges/c_abi_v1.py",
+      "sha256": "5b3973a9ef42193d5217e5743d2584e52da518611a5bbff7daecf5915021d885",
+      "nbytes": 14518
+    },
+    {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/registry/codecs/simdcomp-u32.json",
+      "sha256": "13524a0192a2bb4f4a6e5e5afd9c9a3dbfdaf27f4b8cb9111988d3109bab80d4",
+      "nbytes": 16799
+    }
+  ],
+  "dispatch": {
+    "SSE4_1": {
+      "mode": 0,
+      "block_size": 128,
+      "full_encode": "simdpack",
+      "full_decode": "simdunpack",
+      "tail_encode": "simdpack_shortlength",
+      "tail_decode": "simdunpack_shortlength"
+    },
+    "AVX2": {
+      "mode": 4,
+      "block_size": 256,
+      "full_encode": "avxpack",
+      "full_decode": "avxunpack",
+      "tail_encode": "simdpack_length",
+      "tail_decode": "simdunpack_length"
+    }
+  },
+  "interpretation": "implementation path comparison with different 128/256-value native block geometry and record overhead; no scalar path and no isolated vector-width causality",
+  "schema": "tsbench.isa-path-preparation/1",
+  "seed": 20261013,
+  "lengths": [
+    257,
+    4096,
+    65536,
+    1048576
+  ],
+  "fixtures": [
+    {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/isa-paths/fixtures/u32-257.npy",
+      "sha256": "a9697c1a41ac80609c8c0089e6fe2f1e4fde47e14c040399f9c161f22493b43b",
+      "nbytes": 1156,
+      "length": 257,
+      "dtype": "<u4",
+      "raw_bytes": 1028,
+      "raw_sha256": "7cfe9c181c5bc9d3a699b71d2e4013c664dac5178a1558f8d48e05a7c7f039f5"
+    },
+    {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/isa-paths/fixtures/u32-4096.npy",
+      "sha256": "a774bea845d1db2bfa5beae4defc564ea1729e43d69d3b67d42c14c4f6322e31",
+      "nbytes": 16512,
+      "length": 4096,
+      "dtype": "<u4",
+      "raw_bytes": 16384,
+      "raw_sha256": "e592bb5576c7b24b55cc479f171594b46e3dd48f14f72adb56ab47a5cb12cafe"
+    },
+    {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/isa-paths/fixtures/u32-65536.npy",
+      "sha256": "b6ee9dd7c4b7f6a0e298fa1f3d53281d5120ad87eac77115d429a6e77aa70a7a",
+      "nbytes": 262272,
+      "length": 65536,
+      "dtype": "<u4",
+      "raw_bytes": 262144,
+      "raw_sha256": "52bc1e06489c29ca0821e5363de8c8fcb035e02e7787108837ac80faf99f26ac"
+    },
+    {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/isa-paths/fixtures/u32-1048576.npy",
+      "sha256": "ec7578c16ff01d3e8ab24846a13d31cbfd11d79d7bbeeaf7fb0ceeba934e5326",
+      "nbytes": 4194432,
+      "length": 1048576,
+      "dtype": "<u4",
+      "raw_bytes": 4194304,
+      "raw_sha256": "f18e4a8510e58ae292587402bf5fdd8de265690213e3c1d9a94c69f35352fad8"
+    }
+  ],
+  "config": {
+    "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/isa-paths/experiment.toml",
+    "sha256": "b6a13d5263c8569b8889e9fdc5c1c16a978000692b75fff344426223ce9126ee",
+    "nbytes": 1721
+  },
+  "generator": {
+    "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/examples/generate_isa_experiment.py",
+    "sha256": "e7f850db28631b6e32aa719c7e36c4d17e8eb0b0853d600e24405f72025941a4",
+    "nbytes": 13584
+  },
+  "expected_measurement_trials": 252,
+  "fixture_policy": "nested prefixes of one fixed-seed 20-bit uint32 vector; high bit set every 128 values to force 20-bit blocks; synthetic path experiment, not corpus ranking",
+  "native_timing_instrumentation": false,
+  "formal_measurement_executed_by_generator": false
+}

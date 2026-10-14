@@ -1,0 +1,109 @@
+{
+  "schema": "tsbench.gpu-codec-extension/1",
+  "key": "cuszp-fixed-1d",
+  "namespace": "GPU_EXTENSION_SEPARATE_FROM_36_RETAINED_CPU_CODECS",
+  "identity": {
+    "display_name": "cuSZp 3.0.0 1D FIXED CUDA f32/f64",
+    "family": "cuSZp",
+    "implementation_class": "GENUINE_UPSTREAM_CUDA_KERNELS_WITH_CHECKED_HOST_WRAPPER",
+    "repository": "https://github.com/szcompressor/cuSZp.git",
+    "upstream_commit": "f581dcf329c907c320f4743a9c6e7ee2fb9c5494",
+    "version": "3.0.0",
+    "source_lock": "adapters/cuszp/SOURCE_LOCK.json",
+    "contract": "adapters/cuszp/contract.md",
+    "upstream_kernel_modifications": []
+  },
+  "legal": {
+    "upstream_license": "BSD-3-Clause",
+    "license_file": "adapters/cuszp/vendor/cuszp/LICENSE",
+    "notices_retained": true,
+    "scope": "frozen official source selection and custom checked adapter; CUDA toolkit/driver retain their own licenses"
+  },
+  "adapter": {
+    "plugin": "tsbench.bridges.cuszp",
+    "backend": "CUDA_GPU_ABI_V1",
+    "opaque_owner_kinds": [
+      "input",
+      "payload",
+      "decoded"
+    ],
+    "cpu_host_buffer_abi_compatible": false,
+    "factory": "Library + independent Session",
+    "build_helper": "benchmark/tools/build_cuszp.py",
+    "no_cpu_fallback": true,
+    "automatic_device_reset": false,
+    "stream": "one cudaStreamNonBlocking per independent session"
+  },
+  "input": {
+    "dtypes": [
+      "<f4",
+      "<f8"
+    ],
+    "rank": 1,
+    "layout": "C_CONTIGUOUS",
+    "endianness": "little",
+    "min_n": 1,
+    "max_n": 16777216,
+    "source_domain": "finite normal values or positive zero",
+    "quantization_constraint": "abs(value)/(2*actual_error_bound) <= 2**28",
+    "special_values": {
+      "negative_zero": "REJECT",
+      "subnormal": "REJECT",
+      "nan": "REJECT",
+      "infinity": "REJECT"
+    },
+    "max_raw_bytes_by_dtype": {
+      "<f4": 67108864,
+      "<f8": 134217728
+    }
+  },
+  "semantics": {
+    "track": "VALUE",
+    "loss_mode": "ERROR_BOUNDED_LOSSY",
+    "mode": "FIXED",
+    "dimensionality": "1D",
+    "bound_type": "ABSOLUTE",
+    "bound_domain": "finite normal positive dtype value and finite 0.5/bound reciprocal",
+    "f32_bound_policy": "round downward to exactly representable normal f32",
+    "f64_bound_policy": "preserve binary64 bound",
+    "quality_policy": "strict full reconstruction verification against requested bound on every trial; upstream claim alone is insufficient",
+    "universal_quality_guarantee": false,
+    "finite_qualification_is_universal_proof": false,
+    "wire": "CSP1 version 1 + SHA-256 metadata and payload",
+    "independent_decode": "persisted dtype/count/actual-bound/native payload; fresh independent session"
+  },
+  "features": {
+    "streaming": false,
+    "query": false,
+    "random_access": false,
+    "multidimensional_kernel": false,
+    "relative_bound": false
+  },
+  "boundaries": {
+    "host_to_host": "independent session lifecycle, source/wire preflight, CUDA allocation and control initialization, H2D, genuine kernel, completion, D2H, hashes/packing and checked release",
+    "device_to_device": "completed prepared input to completed payload owner; independently installed payload to completed decoded owner; preparation/install/materialization/release separately charged",
+    "encode_event": "control zero + H2D on host path + genuine kernel + size/rate D2H",
+    "decode_event": "control/output zero + genuine kernel",
+    "event_is_pure_kernel_time": false
+  },
+  "resources": {
+    "tile_elements": 32768,
+    "rate_table_bytes": "ceil(N/32768)*1024",
+    "payload_capacity_bytes": "125*rate_table_bytes",
+    "block_payload_bytes": "4+4*width for each nonzero width",
+    "max_width": 30,
+    "control_scratch_bytes": "12*(ceil(N/32768)+1)",
+    "encode_owned_peak_capacity_bytes": "payload_capacity + control_scratch + raw_input_bytes on host path (device input owner excluded)",
+    "decode_owned_peak_capacity_bytes": "decoded_raw_bytes + control_scratch (existing payload owner excluded)",
+    "peak_scope": "successfully requested capacities of adapter-owned CUDA buffers; excludes CUDA context/library/driver caching and other processes",
+    "diagnostics_scope": "calling_thread_checked_adapter_objects",
+    "gpu_budget_policy": "no strict driver/device allocation cap provided; explicit unsupported cap must reject admission"
+  },
+  "qualification": {
+    "required_evidence": "actual loaded GPU binary, CUDA device/runtime identity, strict host/device and fresh-process reconstruction, staged native rejection and balanced checked resource diagnostics",
+    "build_is_qualification": false,
+    "runtime_kernel_fault_recovery": "UNVERIFIED_UNTIL_EXPLICIT_EVIDENCE",
+    "oom_recovery": "UNVERIFIED_UNTIL_EXPLICIT_EVIDENCE",
+    "eligibility": "extension is usable only after runtime availability and per-input source/quality checks; source card alone does not admit trials"
+  }
+}

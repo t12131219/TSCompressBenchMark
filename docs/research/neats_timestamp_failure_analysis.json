@@ -1,0 +1,243 @@
+{
+  "schema_version": "tsbench.native-failure-analysis.v1",
+  "scope": "retained exact-qualification frames and their recorded source/build identities; no additional native execution or universal-domain claim",
+  "analysis_mode": "read-only native assets; docs written only; no compile, native test or benchmark",
+  "run_id": "cc2555473d514a758eef750c0349e76e",
+  "raw_evidence": [
+    {
+      "path": "runs/v4/timestamps-20261013/manifest.json",
+      "sha256": "f0e7e33e346f16ffa25bd138e1d1e9ea6d66e0de53f7224dd070c395cd763bad"
+    },
+    {
+      "path": "runs/v4/timestamps-20261013/observations.jsonl",
+      "sha256": "295adb47ff6c7702bc867e0e863a0426ae1e60c958c8370d186aadc5fc37346b"
+    },
+    {
+      "path": "benchmark_v4/examples/data/records.npz",
+      "sha256": "15ea2061037fe0d95231f4c2b11916a77f8cf200e52110440d4e58939e33a692"
+    }
+  ],
+  "input": {
+    "component": "T",
+    "dtype": "<i8",
+    "shape": [
+      257
+    ],
+    "raw_sha256": "3bb54f7116784a6a26a8d0efd958ea6a55633d8299ee462178c585bb16bc64c9",
+    "minimum": 0,
+    "maximum": 15360000000000,
+    "span": 15360000000000,
+    "ordinary_step": 60000000000,
+    "duplicate_at_index": 5,
+    "epoch_offset": 0
+  },
+  "records": [
+    {
+      "codec": "neats-lossless-i64",
+      "case_id": "irregular-time-axis/neats/cpu-single",
+      "status": "error",
+      "reason": "bitwise_mismatch",
+      "implementation_id": "sha256:e7c05d815cbd239ce4aa639545e6c45485f7578d91931aa1a9aa365bcf605859",
+      "build_evidence": [
+        {
+          "artifact_sha256": "1a9a5fd26a454cb5161159fe2914aba785619ee6b6d51139a004fb1fdaffcf35",
+          "build_id": "sha256:eabf4b5a5155305f64de8840229f353ffa8c8e90a30996feb782368de6a5bd46",
+          "compiler": null,
+          "hash": "sha256:2074eb789395e7cf0e99f5d759205042f3e38691ba11fe2ec529ee35584f6b65",
+          "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/tsbench-v4/eabf4b5a5155305f64de8840229f353ffa8c8e90a30996feb782368de6a5bd46/neats-lossless-i64/build.json",
+          "profile": "release",
+          "source_identity": "eabf4b5a5155305f64de8840229f353ffa8c8e90a30996feb782368de6a5bd46"
+        }
+      ],
+      "params": {
+        "isa": "SCALAR",
+        "max_bpc": 16,
+        "native_timing": false
+      },
+      "artifact": {
+        "path": "runs/v4/timestamps-20261013/artifacts/c85615765ca27d5a09661d1f4ef7923e55aff2fcaf20cc3430cdd5f9c28af63a.tsb",
+        "sha256": "c85615765ca27d5a09661d1f4ef7923e55aff2fcaf20cc3430cdd5f9c28af63a",
+        "native_frame_sha256": "f91673a2947c822e94518e4e71df900cd09dd5f06e781a70472bbd8af18c5cc8",
+        "native_frame_bytes": 297,
+        "descriptor_payload_hash_matches": true,
+        "frame_fnv_checksum_matches": true
+      },
+      "parsed_native_frame": {
+        "magic": "NTS1",
+        "bias": 0,
+        "rows": 257,
+        "model_starts": [
+          0,
+          5,
+          7
+        ],
+        "bits_per_correction": [
+          0,
+          0,
+          0
+        ],
+        "model_types": [
+          0,
+          0,
+          0
+        ],
+        "residual_offsets": [
+          0,
+          0,
+          0
+        ],
+        "residuals_bit_size": 0,
+        "coefficients_t1_float32": [
+          60000002048.0,
+          120000004096.0,
+          60000002048.0
+        ],
+        "coefficients_t2_float64": [
+          -60000000000.0,
+          120000000000.0,
+          360000000000.0
+        ]
+      },
+      "source_formula_reconstruction": {
+        "executed_native_decoder": false,
+        "method": "pure Python standard-library parse of retained frame plus source linear ceil(a * (j + 1 - start) + b) formula; all bpc=0",
+        "mismatch_count": 257,
+        "max_absolute_error": 512000,
+        "first_expected": 0,
+        "first_reconstructed": 2048,
+        "last_expected": 15360000000000,
+        "last_reconstructed": 15360000512000
+      }
+    },
+    {
+      "codec": "leats-lossless-i64",
+      "case_id": "irregular-time-axis/leats/cpu-single",
+      "status": "error",
+      "reason": "bitwise_mismatch",
+      "implementation_id": "sha256:0636f50ce9f19f3b3d3c75a61cc4482a7632d76b28d59afc90949e171b895c64",
+      "build_evidence": [
+        {
+          "artifact_sha256": "7ca6b00bea90644c31d538a5435de32a6884243db236bc2de93c764635a6e239",
+          "build_id": "sha256:381796922cc8437ea2ec093aa1fe2635ab66cd86b6092c02d3bcf93b82f1e01f",
+          "compiler": null,
+          "hash": "sha256:7363a52199e4250bc91b3b00c9937cacb0aeb194ca813222f6f41d1d6eaae967",
+          "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/tsbench-v4/381796922cc8437ea2ec093aa1fe2635ab66cd86b6092c02d3bcf93b82f1e01f/leats-lossless-i64/build.json",
+          "profile": "release",
+          "source_identity": "381796922cc8437ea2ec093aa1fe2635ab66cd86b6092c02d3bcf93b82f1e01f"
+        }
+      ],
+      "params": {
+        "isa": "SCALAR",
+        "max_bpc": 16,
+        "native_timing": false
+      },
+      "artifact": {
+        "path": "runs/v4/timestamps-20261013/artifacts/1c55e79c0b3e3cee81a73bd146cc8b88348b1a2301c8b520d7da5ef6a6eeb7cf.tsb",
+        "sha256": "1c55e79c0b3e3cee81a73bd146cc8b88348b1a2301c8b520d7da5ef6a6eeb7cf",
+        "native_frame_sha256": "04fdc33435c020672b8255dc7bde4446ca734fb833fcf041c2d5a3a90e517036",
+        "native_frame_bytes": 233,
+        "descriptor_payload_hash_matches": true,
+        "frame_fnv_checksum_matches": true
+      },
+      "parsed_native_frame": {
+        "magic": "LTS1",
+        "bias": 0,
+        "rows": 257,
+        "model_starts": [
+          0,
+          5,
+          7
+        ],
+        "bits_per_correction": [
+          0,
+          0,
+          0
+        ],
+        "model_types": [
+          0,
+          0,
+          0
+        ],
+        "residual_offsets": [
+          0,
+          0,
+          0
+        ],
+        "residuals_bit_size": 0,
+        "coefficients_t1_float32": [
+          60000002048.0,
+          120000004096.0,
+          60000002048.0
+        ],
+        "coefficients_t2_float64": [
+          -60000000000.0,
+          120000000000.0,
+          360000000000.0
+        ]
+      },
+      "source_formula_reconstruction": {
+        "executed_native_decoder": false,
+        "method": "pure Python standard-library parse of retained frame plus source linear ceil(a * (j + 1 - start) + b) formula; all bpc=0",
+        "mismatch_count": 257,
+        "max_absolute_error": 512000,
+        "first_expected": 0,
+        "first_reconstructed": 2048,
+        "last_expected": 15360000000000,
+        "last_reconstructed": 15360000512000
+      }
+    }
+  ],
+  "root_cause": {
+    "classification": "correctness failure; not input span rejection",
+    "quantization": "poly_t=double fit casts slope to T1=float in create_fun, and no emitted-predictor residual-range revalidation occurs before selected bpc is packed",
+    "first_prediction_arithmetic": "ceil(60000002048 * 1 - 60000000000) = 2048; expected 0",
+    "max_bpc_limitation": "max_bpc=32 expands DP candidates but still allows bpc=0; increasing it alone does not guarantee correction",
+    "normalization_evidence": "bias=0 and span=15360000000000 <= INT64_MAX; native int64 normalization condition is satisfied"
+  },
+  "repair_status": "not applied; existing failure rows remain error/bitwise_mismatch",
+  "repair_options": [
+    {
+      "option": "change T1 template coefficient type from float to double",
+      "scope": "directly addresses observed coefficient quantization but changes binary/frame layout and does not prove arbitrary i64 exactness"
+    },
+    {
+      "option": "reviewed source patch revalidate exact decoder predictions after coefficient serialization",
+      "requirements": [
+        "compute errors without signed overflow",
+        "require bpc=0 only when every exact integer prediction matches",
+        "for bpc>0 ensure error plus 2^(bpc-1) is within [0,2^bpc-1]",
+        "when residual width exceeds configured max_bpc, split/refit model with validated predictions or report a real documented encoding-domain limitation before emitting any successful frame",
+        "update residuals_bit_size and model offsets from actual validated widths",
+        "check nonfinite/out-of-range model predictions before float-to-int conversion",
+        "requalify bitwise whole-array, source bounds, and standalone decoder under new build/bridge identities"
+      ]
+    }
+  ],
+  "coverage_gap": "initial native grid used low-magnitude i64 and did not cover this large integer span, epochs or full i64 extrema",
+  "source_files": [
+    {
+      "path": "adapters/neats/native/tscb_neats.cc",
+      "sha256": "53a6770742c83dcaaa9b7dcfa529ec5498a1adbc5295896449b7fa328023f7de"
+    },
+    {
+      "path": "adapters/neats/vendor/neats/include/float_pfa.hpp",
+      "sha256": "a2f547f407fa51aae46d190fd7e10e43e7615b816466a02b4ab53bec53593e70"
+    },
+    {
+      "path": "adapters/neats/vendor/neats/include/NeaTS.hpp",
+      "sha256": "0719a62e3b0126718f177c5d868a5c42241c1aafe1cff6c0cad834931b2b35ad"
+    },
+    {
+      "path": "adapters/neats/vendor/neats/include/LeaTS.hpp",
+      "sha256": "7945a9daf1abc36604bbd97f9e802bd3e150bd40d8d1417046c1a972e9a7e56e"
+    },
+    {
+      "path": "adapters/neats/vendor/neats/include/my_elias_fano.hpp",
+      "sha256": "f01b848aaa7ff984b7741bbd67989e640507b2fdbdb048ca9e881011c3d0065e"
+    },
+    {
+      "path": "adapters/neats/vendor/neats/lib/sdsl-lite/include/sdsl/int_vector.hpp",
+      "sha256": "894539608fc3942493d083ba284aca775f5530f6dce26f2837d9d538722ccb70"
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+# Builder repair validation: fixed existing fixtures, explicit margin90 policy; not a broad GPU benchmark.
+# Independent post-observation margin sensitivity; prior failures remain unchanged.
+schema = "tsbench.gpu-experiment/1"
+name = "gpu-builder-check"
+asset_root = "/home/fzg/PycharmProjects/TSDataCompressBenchMark"
+boundaries = ["host_to_host", "device_resident"]
+
+[task]
+kind = "values"
+fidelity = "bounded_abs"
+error_bound = "0.01"
+lifecycle = "independent_object"
+cache_policy = "natural"
+special_values = "bitwise"
+invalid_values = "preserve"
+
+[profile]
+id = "cuda-device0-host-single"
+device = "cuda"
+device_index = 0
+native_threads = 1
+object_workers = 1
+host_memory_limit_mb = 16384
+affinity = [0]
+
+[execution]
+sessions = 1
+rounds = 7
+warmup_objects = 2
+seed = 20261013
+timeout_s = 120
+save_artifacts = true
+
+[[methods]]
+id = "cuszp-fixed-margin90"
+codec = "cuszp-fixed-1d"
+error_bound = "0.009"
+
+[[datasets]]
+id = "f32-tail-33"
+format = "npy"
+path = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/gpu-p4/fixtures/f32-tail-33.npy"
+component = "V"
+source = "frozen synthetic trend + periodicity + deterministic noise"
+license = "project-generated benchmark fixture"
+
+[[datasets]]
+id = "f64-medium-32769"
+format = "npy"
+path = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/gpu-p4/fixtures/f64-medium-32769.npy"
+component = "V"
+source = "frozen synthetic trend + periodicity + deterministic noise"
+license = "project-generated benchmark fixture"
+

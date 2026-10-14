@@ -1,0 +1,106 @@
+# Fixed study grid; source hashes and selection are in study_design.json.
+schema = "tsbench.experiment/1"
+name = "study-empirical-grid"
+output = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/runs/study-empirical-grid-20261013"
+
+[[datasets]]
+id = "etth1-n128"
+format = "csv"
+path = "/home/fzg/PycharmProjects/材料/TSBench_Corpus/ETTh1.csv"
+dtype = "<f8"
+columns = ["OT"]
+start = 1024
+stop = 1152
+source = "etth1"
+
+[[datasets]]
+id = "etth1-n512"
+format = "csv"
+path = "/home/fzg/PycharmProjects/材料/TSBench_Corpus/ETTh1.csv"
+dtype = "<f8"
+columns = ["OT"]
+start = 1024
+stop = 1536
+source = "etth1"
+
+[[datasets]]
+id = "weather-n128"
+format = "csv"
+path = "/home/fzg/PycharmProjects/材料/TSBench_Corpus/weather.csv"
+dtype = "<f8"
+columns = ["T (degC)"]
+start = 1024
+stop = 1152
+source = "weather"
+
+[[datasets]]
+id = "weather-n512"
+format = "csv"
+path = "/home/fzg/PycharmProjects/材料/TSBench_Corpus/weather.csv"
+dtype = "<f8"
+columns = ["T (degC)"]
+start = 1024
+stop = 1536
+source = "weather"
+
+[[datasets]]
+id = "national_illness-n128"
+format = "csv"
+path = "/home/fzg/PycharmProjects/材料/TSBench_Corpus/national_illness.csv"
+dtype = "<f8"
+columns = ["ILITOTAL"]
+start = 256
+stop = 384
+source = "national_illness"
+
+[[datasets]]
+id = "national_illness-n512"
+format = "csv"
+path = "/home/fzg/PycharmProjects/材料/TSBench_Corpus/national_illness.csv"
+dtype = "<f8"
+columns = ["ILITOTAL"]
+start = 256
+stop = 768
+source = "national_illness"
+
+[[methods]]
+id = "abba-0p01"
+codec = "abba"
+params = { compression_tolerance = "0.01", digitization_tolerance = "0.01" }
+
+[[methods]]
+id = "fabba-0p01"
+codec = "fabba"
+params = { tolerance = "0.01", alpha = "0.01" }
+
+[[methods]]
+id = "abba-0p1"
+codec = "abba"
+params = { compression_tolerance = "0.1", digitization_tolerance = "0.1" }
+
+[[methods]]
+id = "fabba-0p1"
+codec = "fabba"
+params = { tolerance = "0.1", alpha = "0.1" }
+
+[[methods]]
+id = "abba-1"
+codec = "abba"
+params = { compression_tolerance = "1", digitization_tolerance = "1" }
+
+[[methods]]
+id = "fabba-1"
+codec = "fabba"
+params = { tolerance = "1", alpha = "1" }
+
+[task]
+kind = "values"
+fidelity = "empirical_quality"
+
+[execution]
+sessions = 3
+rounds = 7
+warmup_objects = 2
+seed = 20261013
+timeout_s = 120
+qualification_cache = true

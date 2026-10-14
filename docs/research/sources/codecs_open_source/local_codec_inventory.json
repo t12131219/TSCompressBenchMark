@@ -1,0 +1,6156 @@
+{
+  "date": "2026-10-12",
+  "scope": "Static source, registration, frozen-file and model hash inspection only. No rebuild, execution, dynamic dependency or recovered-output verification.",
+  "real_codec_count": 36,
+  "oracle_count": 4,
+  "backend_counts": {
+    "COMPLETED_REWRITE_ABI_V1": 4,
+    "C_ABI_V1": 32
+  },
+  "build_directory_exists": false,
+  "codecs": [
+    {
+      "key": "abba",
+      "registry_path": "registry/codecs/abba.json",
+      "registry_sha256": "82ef07e2b2e1543ec1c7e92d549a81532e3731534e66c3fd1942df17a3b8c749",
+      "is_oracle": false,
+      "identity": {
+        "display_name": "abba",
+        "family": "ABBA",
+        "citations": [
+          "adapters/completed_rewrites/vendor/abba/contract.md"
+        ],
+        "source_artifact_id": "v2:source-artifact:sha256:c6558d93ae396c292a82853ce3294493f1d97358d3a22783f36c5ff50029f240"
+      },
+      "classification": {
+        "object_level": "P2_PIPELINE",
+        "implementation_class": "LEARNED",
+        "tracks": [
+          "VALUE"
+        ],
+        "subtracks": [
+          "V0"
+        ]
+      },
+      "input": {
+        "topologies": [
+          "UTS",
+          "SYNCHRONOUS_MTS"
+        ],
+        "dtypes": [
+          "<f8"
+        ],
+        "ranks": [
+          1,
+          2
+        ],
+        "layouts": [
+          "ROW_MAJOR_CONTIG",
+          "SOA_COLUMNS"
+        ],
+        "endianness": [
+          "little"
+        ],
+        "alignment_bytes": 1,
+        "min_n": 2,
+        "max_n": 16777216,
+        "min_m": 1,
+        "max_m": 65535,
+        "validity_shapes": [
+          "NONE"
+        ],
+        "homogeneous_itemsize": true,
+        "max_total_raw_bytes": 134217728,
+        "value_coupling_mode": "COLUMN_INDEPENDENT",
+        "timestamp_semantics": {
+          "preserve_order": true,
+          "duplicates": true,
+          "out_of_order": true,
+          "negative_delta": true,
+          "absolute_epoch": true,
+          "overflow_policy": "NOT_APPLICABLE_VALUE_ONLY"
+        },
+        "max_total_elements": 16777216,
+        "value_domain": {
+          "kind": "FROZEN_SOURCE_WITH_BOUNDED_REJECTION",
+          "unsupported_action": "REJECT_BEFORE_OUTPUT",
+          "oracle_evidence": "adapters/completed_rewrites/vendor/abba/contract.md",
+          "rejection_reasons": [
+            "FINITE_INPUT_REQUIRED",
+            "SEGMENT_ENDPOINT_ARITHMETIC_UNSUPPORTED"
+          ]
+        }
+      },
+      "semantics": {
+        "loss_modes": [
+          "UNBOUNDED_LOSSY"
+        ],
+        "error_bound_types": [],
+        "reconstruction_modes": [
+          "APPROX_GRID"
+        ],
+        "rebuild_protocol": "COMPLETE_NATIVE_FRAME_WITH_ORIGINAL_GRID_V1",
+        "preprocess_class": "NONE",
+        "preprocess_stages": [],
+        "decodability_profile": "SELF_CONTAINED_DESCRIPTOR_AND_NATIVE_FRAMES",
+        "bitstream_separability": "PER_COLUMN"
+      },
+      "lifecycle": {
+        "block_semantics": "WHOLE_OBJECT",
+        "state_semantics": "INDEPENDENT_OBJECT",
+        "reset": "REQUIRED_MODE_ZERO",
+        "finalize": "REQUIRED_ZERO_BYTE_FINALIZE",
+        "safe_overread_bytes": 0,
+        "tail_policy": "EXACT_COUNT",
+        "dictionary": "EMBEDDED_AND_CHARGED",
+        "model": "EMBEDDED_AND_CHARGED",
+        "index": "NONE"
+      },
+      "execution": {
+        "backends": [
+          "COMPLETED_REWRITE_ABI_V1"
+        ],
+        "isa": [
+          "SCALAR"
+        ],
+        "devices": [
+          "CPU"
+        ],
+        "threading": "SINGLE_THREAD",
+        "fallback_policy": "DISALLOWED",
+        "runtime_dispatch": false,
+        "timing_scopes": [
+          "CORE",
+          "PIPELINE",
+          "E2E"
+        ]
+      },
+      "parameters": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "compression_tolerance": {
+            "type": "decimal-string",
+            "default": "0.1"
+          },
+          "digitization_tolerance": {
+            "type": "decimal-string",
+            "default": "0.1"
+          },
+          "min_k": {
+            "type": "integer",
+            "default": 1,
+            "minimum": 1,
+            "maximum": 65535
+          },
+          "max_k": {
+            "type": "integer",
+            "default": 100,
+            "minimum": 1,
+            "maximum": 65535
+          },
+          "max_len": {
+            "type": "integer",
+            "default": 4294967295,
+            "minimum": 1,
+            "maximum": 4294967295
+          },
+          "norm": {
+            "type": "integer",
+            "default": 2,
+            "minimum": 1,
+            "maximum": 2
+          },
+          "scl": {
+            "type": "decimal-string",
+            "default": "0"
+          },
+          "clustering": {
+            "type": "string",
+            "default": "KMEANS",
+            "enum": [
+              "KMEANS",
+              "INCREMENTAL"
+            ]
+          },
+          "isa": {
+            "type": "string",
+            "default": "SCALAR",
+            "enum": [
+              "SCALAR"
+            ]
+          }
+        },
+        "constraints": [
+          {
+            "kind": "ordered",
+            "lower": "min_k",
+            "upper": "max_k"
+          },
+          {
+            "kind": "numeric_range",
+            "parameter": "compression_tolerance",
+            "minimum": "0"
+          },
+          {
+            "kind": "numeric_range",
+            "parameter": "digitization_tolerance",
+            "minimum": "0"
+          },
+          {
+            "kind": "numeric_range",
+            "parameter": "scl",
+            "minimum": "0"
+          }
+        ]
+      },
+      "backend": "COMPLETED_REWRITE_ABI_V1",
+      "artifact_path": "build/port-standard-v30-20261011/adapters/abba/release/libtscb_abba.so",
+      "artifact_exists": false
+    },
+    {
+      "key": "alp-rd",
+      "registry_path": "registry/codecs/alp-rd.json",
+      "registry_sha256": "c3e6993ecb1f7d5c7fae1a5e7fa464fddaea344aeeea33b215349d8e615e1f0f",
+      "is_oracle": false,
+      "identity": {
+        "display_name": "ALP-RD (forced left-dictionary/right-part scheme)",
+        "family": "ALP_RD",
+        "citations": [
+          "benchmark:cwida/ALP@31ca0ed1:benchmarks/benchmark.cpp",
+          "publication:cwida/ALP@31ca0ed1:publication/source_code/bench_speed"
+        ],
+        "source_artifact_id": "v2:source-artifact:sha256:278dbf62ed78758b1efa488719f953e3900dbe99e9f7ad30789f025de5f2c074"
+      },
+      "classification": {
+        "object_level": "P1_STANDALONE_CODEC",
+        "implementation_class": "CONVENTIONAL",
+        "tracks": [
+          "VALUE"
+        ],
+        "subtracks": [
+          "V0"
+        ]
+      },
+      "input": {
+        "topologies": [
+          "UTS",
+          "SYNCHRONOUS_MTS"
+        ],
+        "dtypes": [
+          "<f8",
+          "<f4"
+        ],
+        "ranks": [
+          1,
+          2
+        ],
+        "layouts": [
+          "ROW_MAJOR_CONTIG",
+          "SOA_COLUMNS"
+        ],
+        "endianness": [
+          "little"
+        ],
+        "alignment_bytes": 1,
+        "min_n": 0,
+        "max_n": 16777216,
+        "min_m": 1,
+        "max_m": 65535,
+        "validity_shapes": [
+          "NONE"
+        ],
+        "homogeneous_itemsize": true,
+        "max_total_raw_bytes": 134217728,
+        "value_coupling_mode": "COLUMN_INDEPENDENT",
+        "timestamp_semantics": {
+          "preserve_order": true,
+          "duplicates": true,
+          "out_of_order": true,
+          "negative_delta": true,
+          "absolute_epoch": true,
+          "overflow_policy": "NOT_APPLICABLE_VALUE_ONLY"
+        }
+      },
+      "semantics": {
+        "loss_modes": [
+          "LOSSLESS"
+        ],
+        "error_bound_types": [],
+        "reconstruction_modes": [
+          "EXACT_GRID"
+        ],
+        "rebuild_protocol": "TSCB_ALP_RD_CONTAINER_V1",
+        "preprocess_class": "NONE",
+        "preprocess_stages": [],
+        "decodability_profile": "SELF_CONTAINED_DESCRIPTOR_AND_NATIVE_ALP_FRAME",
+        "bitstream_separability": "PER_COLUMN"
+      },
+      "lifecycle": {
+        "block_semantics": "ROWGROUP_102400_VECTOR_1024_PER_COLUMN",
+        "state_semantics": "INDEPENDENT_CONTEXT_PER_REPETITION",
+        "reset": "NEW_CONTEXT_REQUIRED",
+        "finalize": "REQUIRED_ZERO_BYTE_FINALIZE",
+        "safe_overread_bytes": 0,
+        "tail_policy": "ZERO_PAD_TO_VECTOR_EXCLUDED_BY_LOGICAL_COUNT",
+        "dictionary": "ROWGROUP_LOCAL_LEFT_PART_DICTIONARY",
+        "model": "ROWGROUP_SAMPLE",
+        "index": "NONE"
+      },
+      "execution": {
+        "backends": [
+          "C_ABI_V1"
+        ],
+        "isa": [
+          "SCALAR"
+        ],
+        "devices": [
+          "CPU"
+        ],
+        "threading": "SINGLE_THREAD",
+        "fallback_policy": "DISALLOWED",
+        "runtime_dispatch": false
+      },
+      "parameters": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "native_timing": {
+            "type": "boolean",
+            "default": true
+          },
+          "isa": {
+            "type": "string",
+            "enum": [
+              "SCALAR"
+            ],
+            "default": "SCALAR"
+          }
+        },
+        "constraints": []
+      },
+      "backend": "C_ABI_V1",
+      "artifact_path": "build/port-standard-v30-20261011/native-builds-v3/alp_rd/release/libtscb_alp_rd.so",
+      "artifact_exists": false
+    },
+    {
+      "key": "alp",
+      "registry_path": "registry/codecs/alp.json",
+      "registry_sha256": "68420e542a403ad82fcb75502fcdf931fc1965b8212d5ee090bb8c265a5d4970",
+      "is_oracle": false,
+      "identity": {
+        "display_name": "ALP (forced decimal scheme, no ALP-RD fallback)",
+        "family": "ALP_DECIMAL",
+        "citations": [
+          "benchmark:cwida/ALP@31ca0ed1:benchmarks/benchmark.cpp",
+          "publication:cwida/ALP@31ca0ed1:publication/source_code/bench_speed"
+        ],
+        "source_artifact_id": "v2:source-artifact:sha256:278dbf62ed78758b1efa488719f953e3900dbe99e9f7ad30789f025de5f2c074"
+      },
+      "classification": {
+        "object_level": "P1_STANDALONE_CODEC",
+        "implementation_class": "CONVENTIONAL",
+        "tracks": [
+          "VALUE"
+        ],
+        "subtracks": [
+          "V0"
+        ]
+      },
+      "input": {
+        "topologies": [
+          "UTS",
+          "SYNCHRONOUS_MTS"
+        ],
+        "dtypes": [
+          "<f8",
+          "<f4"
+        ],
+        "ranks": [
+          1,
+          2
+        ],
+        "layouts": [
+          "ROW_MAJOR_CONTIG",
+          "SOA_COLUMNS"
+        ],
+        "endianness": [
+          "little"
+        ],
+        "alignment_bytes": 1,
+        "min_n": 0,
+        "max_n": 16777216,
+        "min_m": 1,
+        "max_m": 65535,
+        "validity_shapes": [
+          "NONE"
+        ],
+        "homogeneous_itemsize": true,
+        "max_total_raw_bytes": 134217728,
+        "value_coupling_mode": "COLUMN_INDEPENDENT",
+        "timestamp_semantics": {
+          "preserve_order": true,
+          "duplicates": true,
+          "out_of_order": true,
+          "negative_delta": true,
+          "absolute_epoch": true,
+          "overflow_policy": "NOT_APPLICABLE_VALUE_ONLY"
+        }
+      },
+      "semantics": {
+        "loss_modes": [
+          "LOSSLESS"
+        ],
+        "error_bound_types": [],
+        "reconstruction_modes": [
+          "EXACT_GRID"
+        ],
+        "rebuild_protocol": "TSCB_ALP_DECIMAL_CONTAINER_V1",
+        "preprocess_class": "NONE",
+        "preprocess_stages": [],
+        "decodability_profile": "SELF_CONTAINED_DESCRIPTOR_AND_NATIVE_ALP_FRAME",
+        "bitstream_separability": "PER_COLUMN"
+      },
+      "lifecycle": {
+        "block_semantics": "ROWGROUP_102400_VECTOR_1024_PER_COLUMN",
+        "state_semantics": "INDEPENDENT_CONTEXT_PER_REPETITION",
+        "reset": "NEW_CONTEXT_REQUIRED",
+        "finalize": "REQUIRED_ZERO_BYTE_FINALIZE",
+        "safe_overread_bytes": 0,
+        "tail_policy": "ZERO_PAD_TO_VECTOR_EXCLUDED_BY_LOGICAL_COUNT",
+        "dictionary": "NONE",
+        "model": "ROWGROUP_SAMPLE",
+        "index": "NONE"
+      },
+      "execution": {
+        "backends": [
+          "C_ABI_V1"
+        ],
+        "isa": [
+          "SCALAR"
+        ],
+        "devices": [
+          "CPU"
+        ],
+        "threading": "SINGLE_THREAD",
+        "fallback_policy": "DISALLOWED",
+        "runtime_dispatch": false
+      },
+      "parameters": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "native_timing": {
+            "type": "boolean",
+            "default": true
+          },
+          "isa": {
+            "type": "string",
+            "enum": [
+              "SCALAR"
+            ],
+            "default": "SCALAR"
+          }
+        },
+        "constraints": []
+      },
+      "backend": "C_ABI_V1",
+      "artifact_path": "build/port-standard-v30-20261011/native-builds-v3/alp/release/libtscb_alp.so",
+      "artifact_exists": false
+    },
+    {
+      "key": "brotli-stream",
+      "registry_path": "registry/codecs/brotli-stream.json",
+      "registry_sha256": "ee9d55b5eaf42bdf874eddf8a9fa6c3549e2d7861bbe0996f72bfa7812978b24",
+      "is_oracle": false,
+      "identity": {
+        "display_name": "Brotli Stream 1.2.0 (lzbench source)",
+        "family": "BROTLI",
+        "citations": [
+          "benchmark:inikep/lzbench@fa871e66b354:lz/brotli",
+          "standard:RFC7932"
+        ],
+        "source_artifact_id": "v2:source-artifact:sha256:fe9a7e9ee3c50bc85ed92108da5fee194a2440e81f64d60af4d6b2beedae4a66"
+      },
+      "classification": {
+        "object_level": "P1_STANDALONE_CODEC",
+        "implementation_class": "CONVENTIONAL",
+        "tracks": [
+          "TIMESTAMP",
+          "VALUE"
+        ],
+        "subtracks": [
+          "T1",
+          "V0"
+        ]
+      },
+      "input": {
+        "topologies": [
+          "UTS",
+          "SYNCHRONOUS_MTS",
+          "NATIVE_ND_ARRAY"
+        ],
+        "dtypes": [
+          "<i8",
+          "<i4",
+          "<i2",
+          "|i1",
+          "<u8",
+          "<u4",
+          "<u2",
+          "|u1",
+          "<f8",
+          "<f4"
+        ],
+        "ranks": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "layouts": [
+          "ROW_MAJOR_CONTIG",
+          "COLUMN_MAJOR_CONTIG",
+          "SOA_COLUMNS",
+          "STRIDED_VIEW",
+          "NOT_APPLICABLE"
+        ],
+        "endianness": [
+          "little"
+        ],
+        "alignment_bytes": 1,
+        "min_n": 0,
+        "max_n": 9223372036854775807,
+        "min_m": 1,
+        "max_m": 1048576,
+        "validity_shapes": [
+          "NONE"
+        ],
+        "value_coupling_mode": "FULL_MATRIX",
+        "timestamp_semantics": {
+          "preserve_order": true,
+          "duplicates": true,
+          "out_of_order": true,
+          "negative_delta": true,
+          "absolute_epoch": true,
+          "overflow_policy": "NOT_APPLICABLE_BYTE_CODEC"
+        }
+      },
+      "semantics": {
+        "loss_modes": [
+          "LOSSLESS"
+        ],
+        "error_bound_types": [],
+        "reconstruction_modes": [
+          "EXACT_GRID"
+        ],
+        "rebuild_protocol": "TSCB_BUFFER_DESCRIPTOR_CONTAINER_V1",
+        "preprocess_class": "NONE",
+        "preprocess_stages": [],
+        "decodability_profile": "SELF_CONTAINED_TSCB_DESCRIPTOR_PLUS_BROTLI_STREAM",
+        "bitstream_separability": "INDEPENDENT"
+      },
+      "lifecycle": {
+        "block_semantics": "ONE_RFC7932_BROTLI_STREAM_PER_ROUTED_OBJECT",
+        "state_semantics": "INDEPENDENT_CONTEXT_PER_REPETITION",
+        "reset": "NEW_CONTEXT_REQUIRED",
+        "finalize": "REQUIRED_BROTLI_FINISH_UNTIL_FINISHED",
+        "safe_overread_bytes": 0,
+        "tail_policy": "CODEC_INTERNAL_EXACT_TAIL",
+        "dictionary": "BUILTIN_STATIC_ONLY",
+        "model": "NONE",
+        "index": "NONE"
+      },
+      "execution": {
+        "backends": [
+          "C_ABI_V1"
+        ],
+        "isa": [
+          "SCALAR"
+        ],
+        "devices": [
+          "CPU"
+        ],
+        "threading": "SINGLE_THREAD",
+        "fallback_policy": "DISALLOWED",
+        "runtime_dispatch": false
+      },
+      "parameters": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "native_timing": {
+            "type": "boolean",
+            "default": true
+          },
+          "block_size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1048576,
+            "default": 65536
+          },
+          "stream_decode_chunk_bytes": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1048576,
+            "default": 16384
+          },
+          "compression_level": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 11,
+            "default": 5
+          },
+          "window_bits": {
+            "type": "integer",
+            "minimum": 10,
+            "maximum": 24,
+            "default": 22
+          },
+          "isa": {
+            "type": "string",
+            "enum": [
+              "SCALAR"
+            ],
+            "default": "SCALAR"
+          }
+        },
+        "constraints": []
+      },
+      "backend": "C_ABI_V1",
+      "artifact_path": "build/port-standard-v30-20261011/native-builds-v3/brotli_stream/release/libtscb_brotli_stream.so",
+      "artifact_exists": false
+    },
+    {
+      "key": "bzip2-stream",
+      "registry_path": "registry/codecs/bzip2-stream.json",
+      "registry_sha256": "f69bc543c920edd9a6877892bf529c8a613121e029bde94aad30c9d1cd01e123",
+      "is_oracle": false,
+      "identity": {
+        "display_name": "BZ2 / bzip2 1.0.8 (lzbench source)",
+        "family": "BZIP2",
+        "citations": [
+          "benchmark:inikep/lzbench@fa871e66b354:bwt/bzip2",
+          "upstream:bzip2/libbzip2-1.0.8"
+        ],
+        "source_artifact_id": "v2:source-artifact:sha256:f041fc4fcf1048f7ee32161b6e0bbcb012828124c22cf218f520844bbcb370d3"
+      },
+      "classification": {
+        "object_level": "P1_STANDALONE_CODEC",
+        "implementation_class": "CONVENTIONAL",
+        "tracks": [
+          "TIMESTAMP",
+          "VALUE"
+        ],
+        "subtracks": [
+          "T1",
+          "V0"
+        ]
+      },
+      "input": {
+        "topologies": [
+          "UTS",
+          "SYNCHRONOUS_MTS",
+          "NATIVE_ND_ARRAY"
+        ],
+        "dtypes": [
+          "<i8",
+          "<i4",
+          "<i2",
+          "|i1",
+          "<u8",
+          "<u4",
+          "<u2",
+          "|u1",
+          "<f8",
+          "<f4"
+        ],
+        "ranks": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "layouts": [
+          "ROW_MAJOR_CONTIG",
+          "COLUMN_MAJOR_CONTIG",
+          "SOA_COLUMNS",
+          "STRIDED_VIEW",
+          "NOT_APPLICABLE"
+        ],
+        "endianness": [
+          "little"
+        ],
+        "alignment_bytes": 1,
+        "min_n": 0,
+        "max_n": 4294967295,
+        "min_m": 1,
+        "max_m": 1048576,
+        "validity_shapes": [
+          "NONE"
+        ],
+        "value_coupling_mode": "FULL_MATRIX",
+        "timestamp_semantics": {
+          "preserve_order": true,
+          "duplicates": true,
+          "out_of_order": true,
+          "negative_delta": true,
+          "absolute_epoch": true,
+          "overflow_policy": "NOT_APPLICABLE_BYTE_CODEC"
+        }
+      },
+      "semantics": {
+        "loss_modes": [
+          "LOSSLESS"
+        ],
+        "error_bound_types": [],
+        "reconstruction_modes": [
+          "EXACT_GRID"
+        ],
+        "rebuild_protocol": "TSCB_BUFFER_DESCRIPTOR_CONTAINER_V1",
+        "preprocess_class": "NONE",
+        "preprocess_stages": [],
+        "decodability_profile": "SELF_CONTAINED_TSCB_DESCRIPTOR_PLUS_BZIP2_STREAM",
+        "bitstream_separability": "INDEPENDENT"
+      },
+      "lifecycle": {
+        "block_semantics": "ONE_BZIP2_STREAM_PER_ROUTED_OBJECT",
+        "state_semantics": "INDEPENDENT_CONTEXT_PER_REPETITION",
+        "reset": "NEW_CONTEXT_REQUIRED",
+        "finalize": "REQUIRED_BZ_FINISH_UNTIL_STREAM_END",
+        "safe_overread_bytes": 0,
+        "tail_policy": "CODEC_INTERNAL_EXACT_TAIL",
+        "dictionary": "NONE",
+        "model": "NONE",
+        "index": "NONE"
+      },
+      "execution": {
+        "backends": [
+          "C_ABI_V1"
+        ],
+        "isa": [
+          "SCALAR"
+        ],
+        "devices": [
+          "CPU"
+        ],
+        "threading": "SINGLE_THREAD",
+        "fallback_policy": "DISALLOWED",
+        "runtime_dispatch": false
+      },
+      "parameters": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "native_timing": {
+            "type": "boolean",
+            "default": true
+          },
+          "block_size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1048576,
+            "default": 65536
+          },
+          "stream_decode_chunk_bytes": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1048576,
+            "default": 16384
+          },
+          "compression_level": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9,
+            "default": 9
+          },
+          "isa": {
+            "type": "string",
+            "enum": [
+              "SCALAR"
+            ],
+            "default": "SCALAR"
+          }
+        },
+        "constraints": []
+      },
+      "backend": "C_ABI_V1",
+      "artifact_path": "build/port-standard-v30-20261011/native-builds-v3/bzip2_stream/release/libtscb_bzip2_stream.so",
+      "artifact_exists": false
+    },
+    {
+      "key": "chimp",
+      "registry_path": "registry/codecs/chimp.json",
+      "registry_sha256": "9d13c6bd96e16c6f4ff223fd58bb7f65790a52eeda1997f2a1e1acd50a19f344",
+      "is_oracle": false,
+      "identity": {
+        "display_name": "Chimp",
+        "family": "CHIMP",
+        "citations": [
+          "standalone:Compression_Rewrite/ReWrite/chimp/contract.md"
+        ],
+        "source_artifact_id": "v2:source-artifact:sha256:8282bd96eaf3c2ffc3b1c721a7b60484e056c148f92569e4ba78ce8048beca3f"
+      },
+      "classification": {
+        "object_level": "P1_STANDALONE_CODEC",
+        "implementation_class": "CONVENTIONAL",
+        "tracks": [
+          "VALUE"
+        ],
+        "subtracks": [
+          "V0"
+        ]
+      },
+      "input": {
+        "topologies": [
+          "UTS",
+          "SYNCHRONOUS_MTS"
+        ],
+        "dtypes": [
+          "<f4",
+          "<f8"
+        ],
+        "ranks": [
+          1,
+          2
+        ],
+        "layouts": [
+          "ROW_MAJOR_CONTIG",
+          "SOA_COLUMNS"
+        ],
+        "endianness": [
+          "little"
+        ],
+        "alignment_bytes": 1,
+        "min_n": 0,
+        "max_n": 16777216,
+        "min_m": 1,
+        "max_m": 65535,
+        "validity_shapes": [
+          "NONE"
+        ],
+        "homogeneous_itemsize": true,
+        "max_total_raw_bytes": 134217728,
+        "value_coupling_mode": "COLUMN_INDEPENDENT",
+        "timestamp_semantics": {
+          "preserve_order": true,
+          "duplicates": true,
+          "out_of_order": true,
+          "negative_delta": true,
+          "absolute_epoch": true,
+          "overflow_policy": "NOT_APPLICABLE_VALUE_ONLY"
+        },
+        "value_domain": {
+          "kind": "FROZEN_SOURCE_WITH_BOUNDED_REJECTION",
+          "unsupported_action": "REJECT_BEFORE_OUTPUT",
+          "oracle_evidence": "Compression_Rewrite/Source/chimp/golden/source_audit.json",
+          "rejection_reasons": [
+            "canonical NaN is END"
+          ]
+        },
+        "max_total_elements": 16777216
+      },
+      "semantics": {
+        "loss_modes": [
+          "LOSSLESS"
+        ],
+        "error_bound_types": [],
+        "reconstruction_modes": [
+          "EXACT_GRID"
+        ],
+        "rebuild_protocol": "TSCB_CHIMP_FROZEN_API_RWF1_V1",
+        "preprocess_class": "NONE",
+        "preprocess_stages": [],
+        "decodability_profile": "SELF_CONTAINED_DESCRIPTOR_WITH_CHECKED_FROZEN_CODEC_FRAMES",
+        "bitstream_separability": "PER_COLUMN_BLOCK"
+      },
+      "lifecycle": {
+        "block_semantics": "CONFIGURED_SAMPLE_BLOCKS_WITH_EXACT_TAIL",
+        "state_semantics": "RESET_EACH_BLOCK_AND_COLUMN",
+        "reset": "REQUIRED_MODE_ZERO",
+        "finalize": "REQUIRED_ZERO_BYTE_FINALIZE",
+        "safe_overread_bytes": 0,
+        "tail_policy": "EXACT_COUNT",
+        "dictionary": "NONE",
+        "model": "FROZEN_UPSTREAM_STATE",
+        "index": "NONE"
+      },
+      "execution": {
+        "backends": [
+          "C_ABI_V1"
+        ],
+        "isa": [
+          "SCALAR"
+        ],
+        "devices": [
+          "CPU"
+        ],
+        "threading": "SINGLE_THREAD",
+        "fallback_policy": "DISALLOWED_SOURCE_DOMAIN_ERRORS_REJECTED",
+        "runtime_dispatch": false,
+        "timing_scopes": [
+          "CORE",
+          "PIPELINE",
+          "E2E"
+        ]
+      },
+      "parameters": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "block_size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 65535,
+            "default": 1000
+          },
+          "isa": {
+            "type": "string",
+            "enum": [
+              "SCALAR"
+            ],
+            "default": "SCALAR"
+          }
+        },
+        "constraints": []
+      },
+      "backend": "C_ABI_V1",
+      "artifact_path": "build/port-standard-v30-20261011/native-builds-v3/chimp/release/libtscb_chimp.so",
+      "artifact_exists": false
+    },
+    {
+      "key": "chimp128",
+      "registry_path": "registry/codecs/chimp128.json",
+      "registry_sha256": "35f9e2306d5340cf7c8e9362a6d3fccfc6f638b5a0cbfb81644a356134b57de3",
+      "is_oracle": false,
+      "identity": {
+        "display_name": "Chimp128",
+        "family": "CHIMP128",
+        "citations": [
+          "standalone:Compression_Rewrite/ReWrite/chimp/contract.md"
+        ],
+        "source_artifact_id": "v2:source-artifact:sha256:666cb665752983780d19234d8e49429de8c0a4bedb599533eb72fd15b48727e6"
+      },
+      "classification": {
+        "object_level": "P1_STANDALONE_CODEC",
+        "implementation_class": "CONVENTIONAL",
+        "tracks": [
+          "VALUE"
+        ],
+        "subtracks": [
+          "V0"
+        ]
+      },
+      "input": {
+        "topologies": [
+          "UTS",
+          "SYNCHRONOUS_MTS"
+        ],
+        "dtypes": [
+          "<f4",
+          "<f8"
+        ],
+        "ranks": [
+          1,
+          2
+        ],
+        "layouts": [
+          "ROW_MAJOR_CONTIG",
+          "SOA_COLUMNS"
+        ],
+        "endianness": [
+          "little"
+        ],
+        "alignment_bytes": 1,
+        "min_n": 0,
+        "max_n": 16777216,
+        "min_m": 1,
+        "max_m": 65535,
+        "validity_shapes": [
+          "NONE"
+        ],
+        "homogeneous_itemsize": true,
+        "max_total_raw_bytes": 134217728,
+        "value_coupling_mode": "COLUMN_INDEPENDENT",
+        "timestamp_semantics": {
+          "preserve_order": true,
+          "duplicates": true,
+          "out_of_order": true,
+          "negative_delta": true,
+          "absolute_epoch": true,
+          "overflow_policy": "NOT_APPLICABLE_VALUE_ONLY"
+        },
+        "value_domain": {
+          "kind": "FROZEN_SOURCE_WITH_BOUNDED_REJECTION",
+          "unsupported_action": "REJECT_BEFORE_OUTPUT",
+          "oracle_evidence": "Compression_Rewrite/Source/chimp/golden/source_audit.json",
+          "rejection_reasons": [
+            "canonical NaN is END"
+          ]
+        },
+        "max_total_elements": 16777216
+      },
+      "semantics": {
+        "loss_modes": [
+          "LOSSLESS"
+        ],
+        "error_bound_types": [],
+        "reconstruction_modes": [
+          "EXACT_GRID"
+        ],
+        "rebuild_protocol": "TSCB_CHIMP128_FROZEN_API_RWF1_V1",
+        "preprocess_class": "NONE",
+        "preprocess_stages": [],
+        "decodability_profile": "SELF_CONTAINED_DESCRIPTOR_WITH_CHECKED_FROZEN_CODEC_FRAMES",
+        "bitstream_separability": "PER_COLUMN_BLOCK"
+      },
+      "lifecycle": {
+        "block_semantics": "CONFIGURED_SAMPLE_BLOCKS_WITH_EXACT_TAIL",
+        "state_semantics": "RESET_EACH_BLOCK_AND_COLUMN",
+        "reset": "REQUIRED_MODE_ZERO",
+        "finalize": "REQUIRED_ZERO_BYTE_FINALIZE",
+        "safe_overread_bytes": 0,
+        "tail_policy": "EXACT_COUNT",
+        "dictionary": "NONE",
+        "model": "FROZEN_UPSTREAM_STATE",
+        "index": "NONE"
+      },
+      "execution": {
+        "backends": [
+          "C_ABI_V1"
+        ],
+        "isa": [
+          "SCALAR"
+        ],
+        "devices": [
+          "CPU"
+        ],
+        "threading": "SINGLE_THREAD",
+        "fallback_policy": "DISALLOWED_SOURCE_DOMAIN_ERRORS_REJECTED",
+        "runtime_dispatch": false,
+        "timing_scopes": [
+          "CORE",
+          "PIPELINE",
+          "E2E"
+        ]
+      },
+      "parameters": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "block_size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 65535,
+            "default": 1000
+          },
+          "isa": {
+            "type": "string",
+            "enum": [
+              "SCALAR"
+            ],
+            "default": "SCALAR"
+          }
+        },
+        "constraints": []
+      },
+      "backend": "C_ABI_V1",
+      "artifact_path": "build/port-standard-v30-20261011/native-builds-v3/chimp128/release/libtscb_chimp128.so",
+      "artifact_exists": false
+    },
+    {
+      "key": "deepzip",
+      "registry_path": "registry/codecs/deepzip.json",
+      "registry_sha256": "c8fa9c94264d2b1518991be836bd3abe022bbfc9d844749ede3cc7fb43427ceb",
+      "is_oracle": false,
+      "identity": {
+        "display_name": "deepzip",
+        "family": "DEEPZIP",
+        "citations": [
+          "adapters/completed_rewrites/vendor/deepzip/contract_v1.md"
+        ],
+        "source_artifact_id": "v2:source-artifact:sha256:607b2ba98f3a0d309227281b7b2cb03eedf9e51cdd7c14c62884549390f7a167"
+      },
+      "classification": {
+        "object_level": "P2_PIPELINE",
+        "implementation_class": "LEARNED",
+        "tracks": [
+          "VALUE"
+        ],
+        "subtracks": [
+          "V0"
+        ]
+      },
+      "input": {
+        "topologies": [
+          "UTS",
+          "SYNCHRONOUS_MTS"
+        ],
+        "dtypes": [
+          "|u1"
+        ],
+        "ranks": [
+          1,
+          2
+        ],
+        "layouts": [
+          "ROW_MAJOR_CONTIG",
+          "SOA_COLUMNS"
+        ],
+        "endianness": [
+          "little"
+        ],
+        "alignment_bytes": 1,
+        "min_n": 0,
+        "max_n": 16777216,
+        "min_m": 1,
+        "max_m": 65535,
+        "validity_shapes": [
+          "NONE"
+        ],
+        "homogeneous_itemsize": true,
+        "max_total_raw_bytes": 134217728,
+        "value_coupling_mode": "COLUMN_INDEPENDENT",
+        "timestamp_semantics": {
+          "preserve_order": true,
+          "duplicates": true,
+          "out_of_order": true,
+          "negative_delta": true,
+          "absolute_epoch": true,
+          "overflow_policy": "NOT_APPLICABLE_VALUE_ONLY"
+        },
+        "max_total_elements": 16777216,
+        "value_domain": {
+          "kind": "FROZEN_SOURCE_WITH_BOUNDED_REJECTION",
+          "unsupported_action": "REJECT_BEFORE_OUTPUT",
+          "oracle_evidence": "adapters/completed_rewrites/vendor/deepzip/contract_v1.md",
+          "rejection_reasons": [
+            "MODEL_ALPHABET_UNSUPPORTED"
+          ]
+        }
+      },
+      "semantics": {
+        "loss_modes": [
+          "LOSSLESS"
+        ],
+        "error_bound_types": [],
+        "reconstruction_modes": [
+          "EXACT_GRID"
+        ],
+        "rebuild_protocol": "COMPLETE_NATIVE_FRAME_WITH_ORIGINAL_GRID_V1",
+        "preprocess_class": "NONE",
+        "preprocess_stages": [],
+        "decodability_profile": "SELF_CONTAINED_DESCRIPTOR_AND_NATIVE_FRAMES",
+        "bitstream_separability": "PER_COLUMN"
+      },
+      "lifecycle": {
+        "block_semantics": "WHOLE_OBJECT",
+        "state_semantics": "INDEPENDENT_OBJECT",
+        "reset": "REQUIRED_MODE_ZERO",
+        "finalize": "REQUIRED_ZERO_BYTE_FINALIZE",
+        "safe_overread_bytes": 0,
+        "tail_policy": "EXACT_COUNT",
+        "dictionary": "EMBEDDED_AND_CHARGED",
+        "model": "EMBEDDED_AND_CHARGED",
+        "index": "NONE"
+      },
+      "execution": {
+        "backends": [
+          "COMPLETED_REWRITE_ABI_V1"
+        ],
+        "isa": [
+          "SCALAR"
+        ],
+        "devices": [
+          "CPU"
+        ],
+        "threading": "SINGLE_THREAD",
+        "fallback_policy": "DISALLOWED",
+        "runtime_dispatch": false,
+        "timing_scopes": [
+          "CORE",
+          "PIPELINE",
+          "E2E"
+        ]
+      },
+      "parameters": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "lanes": {
+            "type": "integer",
+            "default": 1,
+            "minimum": 1,
+            "maximum": 4096
+          },
+          "isa": {
+            "type": "string",
+            "default": "SCALAR",
+            "enum": [
+              "SCALAR"
+            ]
+          },
+          "model_key": {
+            "type": "string",
+            "default": "biGRU",
+            "enum": [
+              "FC",
+              "FC_4layer",
+              "FC_4layer_16bit",
+              "FC_4layer_big",
+              "GRU_multi",
+              "GRU_multi_16bit",
+              "GRU_multi_big",
+              "LSTM_multi",
+              "LSTM_multi_16bit",
+              "LSTM_multi_big",
+              "LSTM_multi_bn",
+              "LSTM_multi_selu_16bit",
+              "biGRU",
+              "biGRU_16bit",
+              "biGRU_big",
+              "biLSTM",
+              "biLSTM_16bit"
+            ]
+          }
+        },
+        "constraints": []
+      },
+      "backend": "COMPLETED_REWRITE_ABI_V1",
+      "artifact_path": "build/port-standard-v30-20261011/adapters/deepzip/release/libtscb_deepzip.so",
+      "artifact_exists": false
+    },
+    {
+      "key": "deflate-zlib",
+      "registry_path": "registry/codecs/deflate-zlib.json",
+      "registry_sha256": "f925b9c1ef060364e44845510414b406f03f7283729d029e845260c65c098011",
+      "is_oracle": false,
+      "identity": {
+        "display_name": "zlib DEFLATE 1.3.2 (lzbench source)",
+        "family": "DEFLATE",
+        "citations": [
+          "benchmark:inikep/lzbench@fa871e66b354:lz/zlib",
+          "standard:RFC1950",
+          "standard:RFC1951"
+        ],
+        "source_artifact_id": "v2:source-artifact:sha256:488e8ce467a7dba0196f8ba1ece20ba03be7167eefa3ab09c79bb914219c5518"
+      },
+      "classification": {
+        "object_level": "P1_STANDALONE_CODEC",
+        "implementation_class": "CONVENTIONAL",
+        "tracks": [
+          "TIMESTAMP",
+          "VALUE"
+        ],
+        "subtracks": [
+          "T1",
+          "V0"
+        ]
+      },
+      "input": {
+        "topologies": [
+          "UTS",
+          "SYNCHRONOUS_MTS",
+          "NATIVE_ND_ARRAY"
+        ],
+        "dtypes": [
+          "<i8",
+          "<i4",
+          "<i2",
+          "|i1",
+          "<u8",
+          "<u4",
+          "<u2",
+          "|u1",
+          "<f8",
+          "<f4"
+        ],
+        "ranks": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "layouts": [
+          "ROW_MAJOR_CONTIG",
+          "COLUMN_MAJOR_CONTIG",
+          "SOA_COLUMNS",
+          "STRIDED_VIEW",
+          "NOT_APPLICABLE"
+        ],
+        "endianness": [
+          "little"
+        ],
+        "alignment_bytes": 1,
+        "min_n": 0,
+        "max_n": 9223372036854775807,
+        "min_m": 1,
+        "max_m": 1048576,
+        "validity_shapes": [
+          "NONE"
+        ],
+        "value_coupling_mode": "FULL_MATRIX",
+        "timestamp_semantics": {
+          "preserve_order": true,
+          "duplicates": true,
+          "out_of_order": true,
+          "negative_delta": true,
+          "absolute_epoch": true,
+          "overflow_policy": "NOT_APPLICABLE_BYTE_CODEC"
+        }
+      },
+      "semantics": {
+        "loss_modes": [
+          "LOSSLESS"
+        ],
+        "error_bound_types": [],
+        "reconstruction_modes": [
+          "EXACT_GRID"
+        ],
+        "rebuild_protocol": "TSCB_BUFFER_DESCRIPTOR_CONTAINER_V1",
+        "preprocess_class": "NONE",
+        "preprocess_stages": [],
+        "decodability_profile": "SELF_CONTAINED_TSCB_DESCRIPTOR_PLUS_RFC1950_ZLIB_STREAM",
+        "bitstream_separability": "INDEPENDENT"
+      },
+      "lifecycle": {
+        "block_semantics": "ONE_RFC1950_ZLIB_STREAM_PER_ROUTED_OBJECT",
+        "state_semantics": "INDEPENDENT_CONTEXT_PER_REPETITION",
+        "reset": "NEW_CONTEXT_REQUIRED",
+        "finalize": "REQUIRED_ZLIB_FINISH_UNTIL_STREAM_END",
+        "safe_overread_bytes": 0,
+        "tail_policy": "CODEC_INTERNAL_EXACT_TAIL",
+        "dictionary": "NONE",
+        "model": "NONE",
+        "index": "NONE"
+      },
+      "execution": {
+        "backends": [
+          "C_ABI_V1"
+        ],
+        "isa": [
+          "SCALAR"
+        ],
+        "devices": [
+          "CPU"
+        ],
+        "threading": "SINGLE_THREAD",
+        "fallback_policy": "DISALLOWED",
+        "runtime_dispatch": false
+      },
+      "parameters": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "native_timing": {
+            "type": "boolean",
+            "default": true
+          },
+          "block_size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1048576,
+            "default": 65536
+          },
+          "stream_decode_chunk_bytes": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1048576,
+            "default": 16384
+          },
+          "compression_level": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9,
+            "default": 6
+          },
+          "window_bits": {
+            "type": "integer",
+            "minimum": 9,
+            "maximum": 15,
+            "default": 15
+          },
+          "isa": {
+            "type": "string",
+            "enum": [
+              "SCALAR"
+            ],
+            "default": "SCALAR"
+          }
+        },
+        "constraints": []
+      },
+      "backend": "C_ABI_V1",
+      "artifact_path": "build/port-standard-v30-20261011/native-builds-v3/deflate_zlib/release/libtscb_deflate_zlib.so",
+      "artifact_exists": false
+    },
+    {
+      "key": "dzip",
+      "registry_path": "registry/codecs/dzip.json",
+      "registry_sha256": "3366b45c03029ad94567a2020e63dd2e9af2196085a819cf19d010d2da224ec6",
+      "is_oracle": false,
+      "identity": {
+        "display_name": "dzip",
+        "family": "DZIP",
+        "citations": [
+          "adapters/completed_rewrites/vendor/dzip/contract.md"
+        ],
+        "source_artifact_id": "v2:source-artifact:sha256:f221a0ba976c44143cf64f975d41f3255271171ff3efadb3edbe8ac330affd5e"
+      },
+      "classification": {
+        "object_level": "P2_PIPELINE",
+        "implementation_class": "LEARNED",
+        "tracks": [
+          "VALUE"
+        ],
+        "subtracks": [
+          "V0"
+        ]
+      },
+      "input": {
+        "topologies": [
+          "UTS",
+          "SYNCHRONOUS_MTS"
+        ],
+        "dtypes": [
+          "|u1"
+        ],
+        "ranks": [
+          1,
+          2
+        ],
+        "layouts": [
+          "ROW_MAJOR_CONTIG",
+          "SOA_COLUMNS"
+        ],
+        "endianness": [
+          "little"
+        ],
+        "alignment_bytes": 1,
+        "min_n": 0,
+        "max_n": 16777216,
+        "min_m": 1,
+        "max_m": 65535,
+        "validity_shapes": [
+          "NONE"
+        ],
+        "homogeneous_itemsize": true,
+        "max_total_raw_bytes": 134217728,
+        "value_coupling_mode": "COLUMN_INDEPENDENT",
+        "timestamp_semantics": {
+          "preserve_order": true,
+          "duplicates": true,
+          "out_of_order": true,
+          "negative_delta": true,
+          "absolute_epoch": true,
+          "overflow_policy": "NOT_APPLICABLE_VALUE_ONLY"
+        },
+        "max_total_elements": 16777216,
+        "value_domain": {
+          "kind": "FROZEN_SOURCE_WITH_BOUNDED_REJECTION",
+          "unsupported_action": "REJECT_BEFORE_OUTPUT",
+          "oracle_evidence": "adapters/completed_rewrites/vendor/dzip/contract.md",
+          "rejection_reasons": [
+            "MODEL_ALPHABET_UNSUPPORTED"
+          ]
+        }
+      },
+      "semantics": {
+        "loss_modes": [
+          "LOSSLESS"
+        ],
+        "error_bound_types": [],
+        "reconstruction_modes": [
+          "EXACT_GRID"
+        ],
+        "rebuild_protocol": "COMPLETE_NATIVE_FRAME_WITH_ORIGINAL_GRID_V1",
+        "preprocess_class": "NONE",
+        "preprocess_stages": [],
+        "decodability_profile": "SELF_CONTAINED_DESCRIPTOR_AND_NATIVE_FRAMES",
+        "bitstream_separability": "PER_COLUMN"
+      },
+      "lifecycle": {
+        "block_semantics": "WHOLE_OBJECT",
+        "state_semantics": "INDEPENDENT_OBJECT",
+        "reset": "REQUIRED_MODE_ZERO",
+        "finalize": "REQUIRED_ZERO_BYTE_FINALIZE",
+        "safe_overread_bytes": 0,
+        "tail_policy": "EXACT_COUNT",
+        "dictionary": "EMBEDDED_AND_CHARGED",
+        "model": "EMBEDDED_AND_CHARGED",
+        "index": "NONE"
+      },
+      "execution": {
+        "backends": [
+          "COMPLETED_REWRITE_ABI_V1"
+        ],
+        "isa": [
+          "AVX"
+        ],
+        "devices": [
+          "CPU"
+        ],
+        "threading": "CALLER_PLUS_TWO_PERSISTENT_SINGLE_WORKER_EIGEN_POOLS",
+        "fallback_policy": "DISALLOWED",
+        "runtime_dispatch": true,
+        "timing_scopes": [
+          "CORE",
+          "PIPELINE",
+          "E2E"
+        ]
+      },
+      "parameters": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "mode": {
+            "type": "string",
+            "default": "BOOTSTRAP",
+            "enum": [
+              "BOOTSTRAP",
+              "COMBINED"
+            ]
+          },
+          "initial_model": {
+            "type": "string",
+            "default": "NATIVE_SEEDED_UNTRAINED_INPUT_ALPHABET",
+            "enum": [
+              "NATIVE_SEEDED_UNTRAINED_INPUT_ALPHABET"
+            ]
+          },
+          "model_seed": {
+            "type": "integer",
+            "default": 0,
+            "minimum": 0,
+            "maximum": 4294967295
+          },
+          "isa": {
+            "type": "string",
+            "default": "AVX",
+            "enum": [
+              "AVX"
+            ]
+          }
+        },
+        "constraints": []
+      },
+      "backend": "COMPLETED_REWRITE_ABI_V1",
+      "artifact_path": "build/port-standard-v30-20261011/adapters/dzip/release/libtscb_dzip.so",
+      "artifact_exists": false
+    },
+    {
+      "key": "elf-plus",
+      "registry_path": "registry/codecs/elf-plus.json",
+      "registry_sha256": "4d839b3c4fe7bbf01e81f50d632b8a2f87ffd067b110d8ca0278932ef3f65f0d",
+      "is_oracle": false,
+      "identity": {
+        "display_name": "Elf+",
+        "family": "ELF_PLUS",
+        "citations": [
+          "standalone:Compression_Rewrite/ReWrite/elf-plus/contract.md"
+        ],
+        "source_artifact_id": "v2:source-artifact:sha256:b6bce1fc1b44c663fb40c4dc5de609b9711c9d01c5f4f6d6fe08abd1b0e5a7f5"
+      },
+      "classification": {
+        "object_level": "P1_STANDALONE_CODEC",
+        "implementation_class": "CONVENTIONAL",
+        "tracks": [
+          "VALUE"
+        ],
+        "subtracks": [
+          "V0"
+        ]
+      },
+      "input": {
+        "topologies": [
+          "UTS",
+          "SYNCHRONOUS_MTS"
+        ],
+        "dtypes": [
+          "<f4",
+          "<f8"
+        ],
+        "ranks": [
+          1,
+          2
+        ],
+        "layouts": [
+          "ROW_MAJOR_CONTIG",
+          "SOA_COLUMNS"
+        ],
+        "endianness": [
+          "little"
+        ],
+        "alignment_bytes": 1,
+        "min_n": 0,
+        "max_n": 16777216,
+        "min_m": 1,
+        "max_m": 65535,
+        "validity_shapes": [
+          "NONE"
+        ],
+        "homogeneous_itemsize": true,
+        "max_total_raw_bytes": 134217728,
+        "value_coupling_mode": "COLUMN_INDEPENDENT",
+        "timestamp_semantics": {
+          "preserve_order": true,
+          "duplicates": true,
+          "out_of_order": true,
+          "negative_delta": true,
+          "absolute_epoch": true,
+          "overflow_policy": "NOT_APPLICABLE_VALUE_ONLY"
+        },
+        "value_domain": {
+          "kind": "FROZEN_SOURCE_WITH_BOUNDED_REJECTION",
+          "unsupported_action": "REJECT_BEFORE_OUTPUT",
+          "oracle_evidence": "Compression_Rewrite/Source/elf-plus/golden/source_audit.json",
+          "rejection_reasons": [
+            "NaN is the source END marker",
+            "source rejects negative decimal scale",
+            "source significance search does not terminate",
+            "invalid source erasure scale",
+            "original source recovery is not lossless"
+          ]
+        },
+        "max_total_elements": 16777216
+      },
+      "semantics": {
+        "loss_modes": [
+          "LOSSLESS"
+        ],
+        "error_bound_types": [],
+        "reconstruction_modes": [
+          "EXACT_GRID"
+        ],
+        "rebuild_protocol": "TSCB_ELF_PLUS_FROZEN_API_RWF1_V1",
+        "preprocess_class": "NONE",
+        "preprocess_stages": [],
+        "decodability_profile": "SELF_CONTAINED_DESCRIPTOR_WITH_CHECKED_FROZEN_CODEC_FRAMES",
+        "bitstream_separability": "PER_COLUMN_BLOCK"
+      },
+      "lifecycle": {
+        "block_semantics": "CONFIGURED_SAMPLE_BLOCKS_WITH_EXACT_TAIL",
+        "state_semantics": "RESET_EACH_BLOCK_AND_COLUMN",
+        "reset": "REQUIRED_MODE_ZERO",
+        "finalize": "REQUIRED_ZERO_BYTE_FINALIZE",
+        "safe_overread_bytes": 0,
+        "tail_policy": "EXACT_COUNT",
+        "dictionary": "NONE",
+        "model": "FROZEN_UPSTREAM_STATE",
+        "index": "NONE"
+      },
+      "execution": {
+        "backends": [
+          "C_ABI_V1"
+        ],
+        "isa": [
+          "SCALAR"
+        ],
+        "devices": [
+          "CPU"
+        ],
+        "threading": "SINGLE_THREAD",
+        "fallback_policy": "DISALLOWED_SOURCE_DOMAIN_ERRORS_REJECTED",
+        "runtime_dispatch": false,
+        "timing_scopes": [
+          "CORE",
+          "PIPELINE",
+          "E2E"
+        ]
+      },
+      "parameters": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "block_size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 65535,
+            "default": 1000
+          },
+          "isa": {
+            "type": "string",
+            "enum": [
+              "SCALAR"
+            ],
+            "default": "SCALAR"
+          }
+        },
+        "constraints": []
+      },
+      "backend": "C_ABI_V1",
+      "artifact_path": "build/port-standard-v30-20261011/native-builds-v3/elf_plus/release/libtscb_elf_plus.so",
+      "artifact_exists": false
+    },
+    {
+      "key": "elf-star",
+      "registry_path": "registry/codecs/elf-star.json",
+      "registry_sha256": "c3f03f26af5a3f88ef3d9e087075ee4da9933db282c568a27a952e1d612f51f5",
+      "is_oracle": false,
+      "identity": {
+        "display_name": "Elf* (block Huffman)",
+        "family": "ELF_STAR",
+        "citations": [
+          "standalone:Compression_Rewrite/ReWrite/elf-star/contract.md"
+        ],
+        "source_artifact_id": "v2:source-artifact:sha256:f880d919673dd94f4459a5a2c17d01d9911272d93eec15fbf2c1b4a58537f555"
+      },
+      "classification": {
+        "object_level": "P1_STANDALONE_CODEC",
+        "implementation_class": "CONVENTIONAL",
+        "tracks": [
+          "VALUE"
+        ],
+        "subtracks": [
+          "V0"
+        ]
+      },
+      "input": {
+        "topologies": [
+          "UTS",
+          "SYNCHRONOUS_MTS"
+        ],
+        "dtypes": [
+          "<f4",
+          "<f8"
+        ],
+        "ranks": [
+          1,
+          2
+        ],
+        "layouts": [
+          "ROW_MAJOR_CONTIG",
+          "SOA_COLUMNS"
+        ],
+        "endianness": [
+          "little"
+        ],
+        "alignment_bytes": 1,
+        "min_n": 0,
+        "max_n": 16777216,
+        "min_m": 1,
+        "max_m": 65535,
+        "validity_shapes": [
+          "NONE"
+        ],
+        "homogeneous_itemsize": true,
+        "max_total_raw_bytes": 134217728,
+        "value_coupling_mode": "COLUMN_INDEPENDENT",
+        "timestamp_semantics": {
+          "preserve_order": true,
+          "duplicates": true,
+          "out_of_order": true,
+          "negative_delta": true,
+          "absolute_epoch": true,
+          "overflow_policy": "NOT_APPLICABLE_VALUE_ONLY"
+        },
+        "value_domain": {
+          "kind": "FROZEN_SOURCE_WITH_BOUNDED_REJECTION",
+          "unsupported_action": "REJECT_BEFORE_OUTPUT",
+          "oracle_evidence": "Compression_Rewrite/ReWrite/elf-star/validation/source-domain/report.json",
+          "rejection_reasons": [
+            "NaN is END, outside lossless domain",
+            "source rejects decimal scale",
+            "source significance loop does not terminate",
+            "source beta symbol outside table",
+            "source decimal recovery is not lossless"
+          ]
+        },
+        "max_total_elements": 16777216
+      },
+      "semantics": {
+        "loss_modes": [
+          "LOSSLESS"
+        ],
+        "error_bound_types": [],
+        "reconstruction_modes": [
+          "EXACT_GRID"
+        ],
+        "rebuild_protocol": "TSCB_ELF_STAR_FROZEN_API_RWF1_V1",
+        "preprocess_class": "NONE",
+        "preprocess_stages": [],
+        "decodability_profile": "SELF_CONTAINED_DESCRIPTOR_WITH_CHECKED_FROZEN_CODEC_FRAMES",
+        "bitstream_separability": "PER_COLUMN_BLOCK"
+      },
+      "lifecycle": {
+        "block_semantics": "CONFIGURED_SAMPLE_BLOCKS_WITH_EXACT_TAIL",
+        "state_semantics": "RESET_EACH_BLOCK_AND_COLUMN",
+        "reset": "REQUIRED_MODE_ZERO",
+        "finalize": "REQUIRED_ZERO_BYTE_FINALIZE",
+        "safe_overread_bytes": 0,
+        "tail_policy": "EXACT_COUNT",
+        "dictionary": "NONE",
+        "model": "FROZEN_UPSTREAM_STATE",
+        "index": "NONE"
+      },
+      "execution": {
+        "backends": [
+          "C_ABI_V1"
+        ],
+        "isa": [
+          "SCALAR"
+        ],
+        "devices": [
+          "CPU"
+        ],
+        "threading": "SINGLE_THREAD",
+        "fallback_policy": "DISALLOWED_SOURCE_DOMAIN_ERRORS_REJECTED",
+        "runtime_dispatch": false,
+        "timing_scopes": [
+          "CORE",
+          "PIPELINE",
+          "E2E"
+        ]
+      },
+      "parameters": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "block_size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1000,
+            "default": 1000
+          },
+          "isa": {
+            "type": "string",
+            "enum": [
+              "SCALAR"
+            ],
+            "default": "SCALAR"
+          }
+        },
+        "constraints": []
+      },
+      "backend": "C_ABI_V1",
+      "artifact_path": "build/port-standard-v30-20261011/native-builds-v3/elf_star/release/libtscb_elf_star.so",
+      "artifact_exists": false
+    },
+    {
+      "key": "elf",
+      "registry_path": "registry/codecs/elf.json",
+      "registry_sha256": "45059fcae1c764a8ab461f6ff927a9b45f863b7a2f469115579f3807f7dc6757",
+      "is_oracle": false,
+      "identity": {
+        "display_name": "Elf (VLDB2023)",
+        "family": "ELF",
+        "citations": [
+          "standalone:Compression_Rewrite/ReWrite/elf/contract.md"
+        ],
+        "source_artifact_id": "v2:source-artifact:sha256:c77ffff441c01660d4f4f45385e5a94601213d65cac2def67a7d28461d49eae7"
+      },
+      "classification": {
+        "object_level": "P1_STANDALONE_CODEC",
+        "implementation_class": "CONVENTIONAL",
+        "tracks": [
+          "VALUE"
+        ],
+        "subtracks": [
+          "V0"
+        ]
+      },
+      "input": {
+        "topologies": [
+          "UTS",
+          "SYNCHRONOUS_MTS"
+        ],
+        "dtypes": [
+          "<f4",
+          "<f8"
+        ],
+        "ranks": [
+          1,
+          2
+        ],
+        "layouts": [
+          "ROW_MAJOR_CONTIG",
+          "SOA_COLUMNS"
+        ],
+        "endianness": [
+          "little"
+        ],
+        "alignment_bytes": 1,
+        "min_n": 0,
+        "max_n": 16777216,
+        "min_m": 1,
+        "max_m": 65535,
+        "validity_shapes": [
+          "NONE"
+        ],
+        "homogeneous_itemsize": true,
+        "max_total_raw_bytes": 134217728,
+        "value_coupling_mode": "COLUMN_INDEPENDENT",
+        "timestamp_semantics": {
+          "preserve_order": true,
+          "duplicates": true,
+          "out_of_order": true,
+          "negative_delta": true,
+          "absolute_epoch": true,
+          "overflow_policy": "NOT_APPLICABLE_VALUE_ONLY"
+        },
+        "value_domain": {
+          "kind": "FROZEN_SOURCE_WITH_BOUNDED_REJECTION",
+          "unsupported_action": "REJECT_BEFORE_OUTPUT",
+          "oracle_evidence": "Compression_Rewrite/ReWrite/elf/validation/source-domain/report.json",
+          "rejection_reasons": [
+            "NaN is the source END marker",
+            "source significance search does not terminate",
+            "invalid source erasure scale",
+            "original source recovery is not lossless"
+          ]
+        },
+        "max_total_elements": 16777216
+      },
+      "semantics": {
+        "loss_modes": [
+          "LOSSLESS"
+        ],
+        "error_bound_types": [],
+        "reconstruction_modes": [
+          "EXACT_GRID"
+        ],
+        "rebuild_protocol": "TSCB_ELF_FROZEN_API_RWF1_V1",
+        "preprocess_class": "NONE",
+        "preprocess_stages": [],
+        "decodability_profile": "SELF_CONTAINED_DESCRIPTOR_WITH_CHECKED_FROZEN_CODEC_FRAMES",
+        "bitstream_separability": "PER_COLUMN_BLOCK"
+      },
+      "lifecycle": {
+        "block_semantics": "CONFIGURED_SAMPLE_BLOCKS_WITH_EXACT_TAIL",
+        "state_semantics": "RESET_EACH_BLOCK_AND_COLUMN",
+        "reset": "REQUIRED_MODE_ZERO",
+        "finalize": "REQUIRED_ZERO_BYTE_FINALIZE",
+        "safe_overread_bytes": 0,
+        "tail_policy": "EXACT_COUNT",
+        "dictionary": "NONE",
+        "model": "FROZEN_UPSTREAM_STATE",
+        "index": "NONE"
+      },
+      "execution": {
+        "backends": [
+          "C_ABI_V1"
+        ],
+        "isa": [
+          "SCALAR"
+        ],
+        "devices": [
+          "CPU"
+        ],
+        "threading": "SINGLE_THREAD",
+        "fallback_policy": "DISALLOWED_SOURCE_DOMAIN_ERRORS_REJECTED",
+        "runtime_dispatch": false,
+        "timing_scopes": [
+          "CORE",
+          "PIPELINE",
+          "E2E"
+        ]
+      },
+      "parameters": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "block_size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 16384,
+            "default": 1000
+          },
+          "isa": {
+            "type": "string",
+            "enum": [
+              "SCALAR"
+            ],
+            "default": "SCALAR"
+          }
+        },
+        "constraints": []
+      },
+      "backend": "C_ABI_V1",
+      "artifact_path": "build/port-standard-v30-20261011/native-builds-v3/elf/release/libtscb_elf.so",
+      "artifact_exists": false
+    },
+    {
+      "key": "fabba",
+      "registry_path": "registry/codecs/fabba.json",
+      "registry_sha256": "1c04599d576bda1d6671c9d03d1482189e559c49c96fa971437a7c6234ccb890",
+      "is_oracle": false,
+      "identity": {
+        "display_name": "fabba",
+        "family": "FABBA",
+        "citations": [
+          "adapters/completed_rewrites/vendor/fabba/contract.md"
+        ],
+        "source_artifact_id": "v2:source-artifact:sha256:aa2cd50543999b212c51e9647aa943ff18083a205f01d930ddbe0f4229a3d440"
+      },
+      "classification": {
+        "object_level": "P2_PIPELINE",
+        "implementation_class": "LEARNED",
+        "tracks": [
+          "VALUE"
+        ],
+        "subtracks": [
+          "V0"
+        ]
+      },
+      "input": {
+        "topologies": [
+          "UTS",
+          "SYNCHRONOUS_MTS"
+        ],
+        "dtypes": [
+          "<f8"
+        ],
+        "ranks": [
+          1,
+          2
+        ],
+        "layouts": [
+          "ROW_MAJOR_CONTIG",
+          "SOA_COLUMNS"
+        ],
+        "endianness": [
+          "little"
+        ],
+        "alignment_bytes": 1,
+        "min_n": 2,
+        "max_n": 16777216,
+        "min_m": 1,
+        "max_m": 65535,
+        "validity_shapes": [
+          "NONE"
+        ],
+        "homogeneous_itemsize": true,
+        "max_total_raw_bytes": 134217728,
+        "value_coupling_mode": "COLUMN_INDEPENDENT",
+        "timestamp_semantics": {
+          "preserve_order": true,
+          "duplicates": true,
+          "out_of_order": true,
+          "negative_delta": true,
+          "absolute_epoch": true,
+          "overflow_policy": "NOT_APPLICABLE_VALUE_ONLY"
+        },
+        "max_total_elements": 16777216,
+        "value_domain": {
+          "kind": "FROZEN_SOURCE_WITH_BOUNDED_REJECTION",
+          "unsupported_action": "REJECT_BEFORE_OUTPUT",
+          "oracle_evidence": "adapters/completed_rewrites/vendor/fabba/contract.md",
+          "rejection_reasons": [
+            "FINITE_INPUT_REQUIRED",
+            "SEGMENT_ENDPOINT_ARITHMETIC_UNSUPPORTED"
+          ]
+        }
+      },
+      "semantics": {
+        "loss_modes": [
+          "UNBOUNDED_LOSSY"
+        ],
+        "error_bound_types": [],
+        "reconstruction_modes": [
+          "APPROX_GRID"
+        ],
+        "rebuild_protocol": "COMPLETE_NATIVE_FRAME_WITH_ORIGINAL_GRID_V1",
+        "preprocess_class": "NONE",
+        "preprocess_stages": [],
+        "decodability_profile": "SELF_CONTAINED_DESCRIPTOR_AND_NATIVE_FRAMES",
+        "bitstream_separability": "PER_COLUMN"
+      },
+      "lifecycle": {
+        "block_semantics": "WHOLE_OBJECT",
+        "state_semantics": "INDEPENDENT_OBJECT",
+        "reset": "REQUIRED_MODE_ZERO",
+        "finalize": "REQUIRED_ZERO_BYTE_FINALIZE",
+        "safe_overread_bytes": 0,
+        "tail_policy": "EXACT_COUNT",
+        "dictionary": "EMBEDDED_AND_CHARGED",
+        "model": "EMBEDDED_AND_CHARGED",
+        "index": "NONE"
+      },
+      "execution": {
+        "backends": [
+          "COMPLETED_REWRITE_ABI_V1"
+        ],
+        "isa": [
+          "SCALAR"
+        ],
+        "devices": [
+          "CPU"
+        ],
+        "threading": "SINGLE_THREAD",
+        "fallback_policy": "DISALLOWED",
+        "runtime_dispatch": false,
+        "timing_scopes": [
+          "CORE",
+          "PIPELINE",
+          "E2E"
+        ]
+      },
+      "parameters": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "tolerance": {
+            "type": "decimal-string",
+            "default": "0.1"
+          },
+          "alpha": {
+            "type": "decimal-string",
+            "default": "0.1"
+          },
+          "scl": {
+            "type": "decimal-string",
+            "default": "1"
+          },
+          "max_len": {
+            "type": "integer",
+            "default": 4294967295,
+            "minimum": 1,
+            "maximum": 4294967295
+          },
+          "isa": {
+            "type": "string",
+            "default": "SCALAR",
+            "enum": [
+              "SCALAR"
+            ]
+          }
+        },
+        "constraints": [
+          {
+            "kind": "numeric_range",
+            "parameter": "tolerance",
+            "minimum": "0"
+          },
+          {
+            "kind": "numeric_range",
+            "parameter": "alpha",
+            "minimum": "0"
+          },
+          {
+            "kind": "numeric_range",
+            "parameter": "scl",
+            "minimum": "0"
+          },
+          {
+            "kind": "numeric_range",
+            "parameter": "scl",
+            "minimum": "0",
+            "exclusive_minimum": true
+          }
+        ]
+      },
+      "backend": "COMPLETED_REWRITE_ABI_V1",
+      "artifact_path": "build/port-standard-v30-20261011/adapters/fabba/release/libtscb_fabba.so",
+      "artifact_exists": false
+    },
+    {
+      "key": "fse",
+      "registry_path": "registry/codecs/fse.json",
+      "registry_sha256": "8f39ca5b8c8e9d984c897e54ce0fa8344152e1c58a1a3912cbc63fd694448812",
+      "is_oracle": false,
+      "identity": {
+        "display_name": "FSE (FiniteStateEntropy benchmark)",
+        "family": "FSE",
+        "citations": [
+          "benchmark:Cyan4973/FiniteStateEntropy@9f30e091:programs/fullbench.c:FSE_compress"
+        ],
+        "source_artifact_id": "v2:source-artifact:sha256:1b62e728c33885fb38e25d490d0c13841018f265b4cbd4b2c8a3fadfa04b6773"
+      },
+      "classification": {
+        "object_level": "P1_STANDALONE_CODEC",
+        "implementation_class": "CONVENTIONAL",
+        "tracks": [
+          "VALUE"
+        ],
+        "subtracks": [
+          "V0"
+        ]
+      },
+      "input": {
+        "topologies": [
+          "UTS",
+          "SYNCHRONOUS_MTS",
+          "NATIVE_ND_ARRAY"
+        ],
+        "dtypes": [
+          "<i8",
+          "<i4",
+          "<i2",
+          "|i1",
+          "<u8",
+          "<u4",
+          "<u2",
+          "|u1",
+          "<f8",
+          "<f4"
+        ],
+        "ranks": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "layouts": [
+          "ROW_MAJOR_CONTIG",
+          "COLUMN_MAJOR_CONTIG",
+          "SOA_COLUMNS",
+          "STRIDED_VIEW",
+          "NOT_APPLICABLE"
+        ],
+        "endianness": [
+          "little"
+        ],
+        "alignment_bytes": 1,
+        "min_n": 0,
+        "max_n": 8192,
+        "min_m": 1,
+        "max_m": 64,
+        "max_total_raw_bytes": 131072,
+        "validity_shapes": [
+          "NONE"
+        ],
+        "value_coupling_mode": "FULL_MATRIX",
+        "timestamp_semantics": {
+          "preserve_order": true,
+          "duplicates": true,
+          "out_of_order": true,
+          "negative_delta": true,
+          "absolute_epoch": true,
+          "overflow_policy": "NOT_APPLICABLE_BYTE_CODEC"
+        }
+      },
+      "semantics": {
+        "loss_modes": [
+          "LOSSLESS"
+        ],
+        "error_bound_types": [],
+        "reconstruction_modes": [
+          "EXACT_GRID"
+        ],
+        "rebuild_protocol": "TSCB_BUFFER_DESCRIPTOR_CONTAINER_V1",
+        "preprocess_class": "NONE",
+        "preprocess_stages": [],
+        "decodability_profile": "SELF_CONTAINED_TSCB_DESCRIPTOR_PLUS_FSE_BLOCK_WITH_RLE_RAW_FALLBACK",
+        "bitstream_separability": "INDEPENDENT"
+      },
+      "lifecycle": {
+        "block_semantics": "ONE_FSE_BLOCK_PER_ROUTED_OBJECT_MAX_128K_BYTES",
+        "state_semantics": "INDEPENDENT_CONTEXT_PER_REPETITION",
+        "reset": "NEW_CONTEXT_REQUIRED",
+        "finalize": "REQUIRED_ZERO_BYTE_FINALIZE",
+        "safe_overread_bytes": 0,
+        "tail_policy": "EXACT_LENGTH",
+        "dictionary": "NONE",
+        "model": "NONE",
+        "index": "NONE"
+      },
+      "execution": {
+        "backends": [
+          "C_ABI_V1"
+        ],
+        "isa": [
+          "SCALAR"
+        ],
+        "devices": [
+          "CPU"
+        ],
+        "threading": "SINGLE_THREAD",
+        "fallback_policy": "DISALLOWED",
+        "runtime_dispatch": false
+      },
+      "parameters": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "native_timing": {
+            "type": "boolean",
+            "default": true
+          },
+          "block_size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1024,
+            "default": 128
+          },
+          "isa": {
+            "type": "string",
+            "enum": [
+              "SCALAR"
+            ],
+            "default": "SCALAR"
+          }
+        },
+        "constraints": []
+      },
+      "backend": "C_ABI_V1",
+      "artifact_path": "build/port-standard-v30-20261011/native-builds-v3/fse/release/libtscb_fse.so",
+      "artifact_exists": false
+    },
+    {
+      "key": "huff0",
+      "registry_path": "registry/codecs/huff0.json",
+      "registry_sha256": "12c4583a23c817ab38481b6b5107ea43214bba1e8a813813c0130ca408d26513",
+      "is_oracle": false,
+      "identity": {
+        "display_name": "Huff0 (FiniteStateEntropy benchmark)",
+        "family": "HUFFMAN",
+        "citations": [
+          "benchmark:Cyan4973/FiniteStateEntropy@9f30e091:programs/fullbench.c:HUF_compress"
+        ],
+        "source_artifact_id": "v2:source-artifact:sha256:1b62e728c33885fb38e25d490d0c13841018f265b4cbd4b2c8a3fadfa04b6773"
+      },
+      "classification": {
+        "object_level": "P1_STANDALONE_CODEC",
+        "implementation_class": "CONVENTIONAL",
+        "tracks": [
+          "VALUE"
+        ],
+        "subtracks": [
+          "V0"
+        ]
+      },
+      "input": {
+        "topologies": [
+          "UTS",
+          "SYNCHRONOUS_MTS",
+          "NATIVE_ND_ARRAY"
+        ],
+        "dtypes": [
+          "<i8",
+          "<i4",
+          "<i2",
+          "|i1",
+          "<u8",
+          "<u4",
+          "<u2",
+          "|u1",
+          "<f8",
+          "<f4"
+        ],
+        "ranks": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "layouts": [
+          "ROW_MAJOR_CONTIG",
+          "COLUMN_MAJOR_CONTIG",
+          "SOA_COLUMNS",
+          "STRIDED_VIEW",
+          "NOT_APPLICABLE"
+        ],
+        "endianness": [
+          "little"
+        ],
+        "alignment_bytes": 1,
+        "min_n": 0,
+        "max_n": 8192,
+        "min_m": 1,
+        "max_m": 64,
+        "max_total_raw_bytes": 131072,
+        "validity_shapes": [
+          "NONE"
+        ],
+        "value_coupling_mode": "FULL_MATRIX",
+        "timestamp_semantics": {
+          "preserve_order": true,
+          "duplicates": true,
+          "out_of_order": true,
+          "negative_delta": true,
+          "absolute_epoch": true,
+          "overflow_policy": "NOT_APPLICABLE_BYTE_CODEC"
+        }
+      },
+      "semantics": {
+        "loss_modes": [
+          "LOSSLESS"
+        ],
+        "error_bound_types": [],
+        "reconstruction_modes": [
+          "EXACT_GRID"
+        ],
+        "rebuild_protocol": "TSCB_BUFFER_DESCRIPTOR_CONTAINER_V1",
+        "preprocess_class": "NONE",
+        "preprocess_stages": [],
+        "decodability_profile": "SELF_CONTAINED_TSCB_DESCRIPTOR_PLUS_HUFF0_BLOCK_WITH_RAW_FALLBACK",
+        "bitstream_separability": "INDEPENDENT"
+      },
+      "lifecycle": {
+        "block_semantics": "ONE_HUFF0_BLOCK_PER_ROUTED_OBJECT_MAX_128K_BYTES",
+        "state_semantics": "INDEPENDENT_CONTEXT_PER_REPETITION",
+        "reset": "NEW_CONTEXT_REQUIRED",
+        "finalize": "REQUIRED_ZERO_BYTE_FINALIZE",
+        "safe_overread_bytes": 0,
+        "tail_policy": "EXACT_LENGTH",
+        "dictionary": "NONE",
+        "model": "NONE",
+        "index": "NONE"
+      },
+      "execution": {
+        "backends": [
+          "C_ABI_V1"
+        ],
+        "isa": [
+          "SCALAR"
+        ],
+        "devices": [
+          "CPU"
+        ],
+        "threading": "SINGLE_THREAD",
+        "fallback_policy": "DISALLOWED",
+        "runtime_dispatch": false
+      },
+      "parameters": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "native_timing": {
+            "type": "boolean",
+            "default": true
+          },
+          "block_size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1024,
+            "default": 128
+          },
+          "isa": {
+            "type": "string",
+            "enum": [
+              "SCALAR"
+            ],
+            "default": "SCALAR"
+          }
+        },
+        "constraints": []
+      },
+      "backend": "C_ABI_V1",
+      "artifact_path": "build/port-standard-v30-20261011/native-builds-v3/huff0/release/libtscb_huff0.so",
+      "artifact_exists": false
+    },
+    {
+      "key": "leats-lossless-i64",
+      "registry_path": "registry/codecs/leats-lossless-i64.json",
+      "registry_sha256": "7e0d1f27f8689a625d2a015baade894273b963927d8e46af55b398e72c3f5c49",
+      "is_oracle": false,
+      "identity": {
+        "display_name": "LeaTS lossless integer (scalar C++20)",
+        "family": "LEATS",
+        "citations": [
+          "benchmark:and-gue/NeaTS@2d804ff492e4:LeaTS.cpp",
+          "upstream:and-gue/NeaTS@2d804ff492e4:include/LeaTS.hpp",
+          "spreadsheet:Value-Compress-row-75:NeaTS-LeaTS-family"
+        ],
+        "source_artifact_id": "v2:source-artifact:sha256:42743b152ad55dde6d0af6e4f6bf558bb709f22fe9bc37371af15b0144f650bb"
+      },
+      "classification": {
+        "object_level": "P1_STANDALONE_CODEC",
+        "implementation_class": "LEARNED",
+        "tracks": [
+          "VALUE"
+        ],
+        "subtracks": [
+          "V0"
+        ]
+      },
+      "input": {
+        "topologies": [
+          "UTS",
+          "SYNCHRONOUS_MTS"
+        ],
+        "dtypes": [
+          "|i1",
+          "<i2",
+          "<i4",
+          "<i8"
+        ],
+        "ranks": [
+          1,
+          2
+        ],
+        "layouts": [
+          "ROW_MAJOR_CONTIG",
+          "SOA_COLUMNS"
+        ],
+        "endianness": [
+          "little"
+        ],
+        "alignment_bytes": 1,
+        "min_n": 1,
+        "max_n": 65536,
+        "min_m": 1,
+        "max_m": 64,
+        "validity_shapes": [
+          "NONE"
+        ],
+        "homogeneous_itemsize": true,
+        "max_total_raw_bytes": 2097152,
+        "value_coupling_mode": "COLUMN_INDEPENDENT",
+        "timestamp_semantics": {
+          "preserve_order": true,
+          "duplicates": true,
+          "out_of_order": true,
+          "negative_delta": true,
+          "absolute_epoch": true,
+          "overflow_policy": "NOT_APPLICABLE_VALUE_ONLY"
+        }
+      },
+      "semantics": {
+        "loss_modes": [
+          "LOSSLESS"
+        ],
+        "error_bound_types": [],
+        "reconstruction_modes": [
+          "EXACT_GRID"
+        ],
+        "rebuild_protocol": "TSCB_LEATS_SERIALIZED_COLUMN_CONTAINER_V1",
+        "preprocess_class": "NONE",
+        "preprocess_stages": [],
+        "decodability_profile": "SELF_CONTAINED_DESCRIPTOR_BIAS_SERIALIZED_MODEL_INDEX_AND_CHECKSUM",
+        "bitstream_separability": "INDEPENDENT_PER_COLUMN"
+      },
+      "lifecycle": {
+        "block_semantics": "ONE_COMPLETE_UPSTREAM_MODEL_PER_VALUE_COLUMN",
+        "state_semantics": "OBJECT_LOCAL_MODEL_FIT_DURING_EACH_COMPRESSION",
+        "reset": "NEW_CONTEXT_REQUIRED",
+        "finalize": "REQUIRED_ZERO_BYTE_FINALIZE",
+        "safe_overread_bytes": 0,
+        "tail_policy": "EXACT_LENGTH",
+        "dictionary": "NONE",
+        "model": "PIECEWISE_LINEAR_SERIALIZED_AND_FULLY_CHARGED",
+        "index": "ELIAS_FANO_SERIALIZED_AND_FULLY_CHARGED"
+      },
+      "execution": {
+        "backends": [
+          "C_ABI_V1"
+        ],
+        "isa": [
+          "SCALAR"
+        ],
+        "devices": [
+          "CPU"
+        ],
+        "threading": "SINGLE_THREAD",
+        "fallback_policy": "DISALLOWED",
+        "runtime_dispatch": false
+      },
+      "parameters": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "max_bpc": {
+            "type": "integer",
+            "enum": [
+              16,
+              32
+            ],
+            "default": 16
+          },
+          "native_timing": {
+            "type": "boolean",
+            "default": true
+          },
+          "isa": {
+            "type": "string",
+            "enum": [
+              "SCALAR"
+            ],
+            "default": "SCALAR"
+          }
+        },
+        "constraints": []
+      },
+      "backend": "C_ABI_V1",
+      "artifact_path": "build/port-standard-v30-20261011/native-builds-v3/leats_lossless_i64/release/libtscb_leats_lossless_i64.so",
+      "artifact_exists": false
+    },
+    {
+      "key": "lz4-frame",
+      "registry_path": "registry/codecs/lz4-frame.json",
+      "registry_sha256": "c063fe91afe203e7cf8ed6ecbc799185b6afc92ba8c8217f2ed3223c8f5719fc",
+      "is_oracle": false,
+      "identity": {
+        "display_name": "LZ4 Frame 1.10.0 (lzbench source)",
+        "family": "LZ4",
+        "citations": [
+          "benchmark:inikep/lzbench@fa871e66b354:lz/lz4",
+          "upstream:lz4/lz4:frame-format"
+        ],
+        "source_artifact_id": "v2:source-artifact:sha256:68693355ce70e7eb3c672bb55303b7d380d420e3ec0626a4cef0588556f62679"
+      },
+      "classification": {
+        "object_level": "P1_STANDALONE_CODEC",
+        "implementation_class": "CONVENTIONAL",
+        "tracks": [
+          "TIMESTAMP",
+          "VALUE"
+        ],
+        "subtracks": [
+          "T1",
+          "V0"
+        ]
+      },
+      "input": {
+        "topologies": [
+          "UTS",
+          "SYNCHRONOUS_MTS",
+          "NATIVE_ND_ARRAY"
+        ],
+        "dtypes": [
+          "<i8",
+          "<i4",
+          "<i2",
+          "|i1",
+          "<u8",
+          "<u4",
+          "<u2",
+          "|u1",
+          "<f8",
+          "<f4"
+        ],
+        "ranks": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "layouts": [
+          "ROW_MAJOR_CONTIG",
+          "COLUMN_MAJOR_CONTIG",
+          "SOA_COLUMNS",
+          "STRIDED_VIEW",
+          "NOT_APPLICABLE"
+        ],
+        "endianness": [
+          "little"
+        ],
+        "alignment_bytes": 1,
+        "min_n": 0,
+        "max_n": 9223372036854775807,
+        "min_m": 1,
+        "max_m": 1048576,
+        "validity_shapes": [
+          "NONE"
+        ],
+        "value_coupling_mode": "FULL_MATRIX",
+        "timestamp_semantics": {
+          "preserve_order": true,
+          "duplicates": true,
+          "out_of_order": true,
+          "negative_delta": true,
+          "absolute_epoch": true,
+          "overflow_policy": "NOT_APPLICABLE_BYTE_CODEC"
+        }
+      },
+      "semantics": {
+        "loss_modes": [
+          "LOSSLESS"
+        ],
+        "error_bound_types": [],
+        "reconstruction_modes": [
+          "EXACT_GRID"
+        ],
+        "rebuild_protocol": "TSCB_BUFFER_DESCRIPTOR_CONTAINER_V1",
+        "preprocess_class": "NONE",
+        "preprocess_stages": [],
+        "decodability_profile": "SELF_CONTAINED_TSCB_DESCRIPTOR_PLUS_CODEC_FRAME",
+        "bitstream_separability": "INDEPENDENT"
+      },
+      "lifecycle": {
+        "block_semantics": "ONE_SELF_CONTAINED_FRAME_PER_ROUTED_OBJECT",
+        "state_semantics": "INDEPENDENT_CONTEXT_PER_REPETITION",
+        "reset": "NEW_CONTEXT_REQUIRED",
+        "finalize": "REQUIRED_LZ4F_COMPRESS_END",
+        "safe_overread_bytes": 0,
+        "tail_policy": "CODEC_INTERNAL_EXACT_TAIL",
+        "dictionary": "NONE",
+        "model": "NONE",
+        "index": "NONE"
+      },
+      "execution": {
+        "backends": [
+          "C_ABI_V1"
+        ],
+        "isa": [
+          "SCALAR"
+        ],
+        "devices": [
+          "CPU"
+        ],
+        "threading": "SINGLE_THREAD",
+        "fallback_policy": "DISALLOWED",
+        "runtime_dispatch": false
+      },
+      "parameters": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "native_timing": {
+            "type": "boolean",
+            "default": true
+          },
+          "block_size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1048576,
+            "default": 65536
+          },
+          "stream_decode_chunk_bytes": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1048576,
+            "default": 16384
+          },
+          "compression_level": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 12,
+            "default": 0
+          },
+          "block_size_id": {
+            "type": "integer",
+            "enum": [
+              4,
+              5,
+              6,
+              7
+            ],
+            "default": 4
+          },
+          "block_mode": {
+            "type": "string",
+            "enum": [
+              "INDEPENDENT",
+              "LINKED"
+            ],
+            "default": "INDEPENDENT"
+          },
+          "content_checksum": {
+            "type": "boolean",
+            "default": true
+          },
+          "block_checksum": {
+            "type": "boolean",
+            "default": false
+          },
+          "isa": {
+            "type": "string",
+            "enum": [
+              "SCALAR"
+            ],
+            "default": "SCALAR"
+          }
+        },
+        "constraints": []
+      },
+      "backend": "C_ABI_V1",
+      "artifact_path": "build/port-standard-v30-20261011/native-builds-v3/lz4_frame/release/libtscb_lz4_frame.so",
+      "artifact_exists": false
+    },
+    {
+      "key": "lzss-dipperstein-c",
+      "registry_path": "registry/codecs/lzss-dipperstein-c.json",
+      "registry_sha256": "979b763040cd0694f759141e44fff6fdb19534257d9c0c3a3eca4e29fa1544bc",
+      "is_oracle": false,
+      "identity": {
+        "display_name": "Michael Dipperstein LZSS C (offset12/length4, binary tree)",
+        "family": "LZSS",
+        "source_artifact_id": "v2:source-artifact:sha256:4c20671bce63b0af5096ff01677e538f12c25d15d74075b8790e8c758ac256a9",
+        "citations": [
+          "user-explicit:C-LZSS-variant-request-20260919",
+          "upstream:MichaelDipperstein/lzss@65b6882ff1cc",
+          "reference-only:chromiumos/grub2@11508780425a:grub-core/loader/lzss.c"
+        ]
+      },
+      "classification": {
+        "object_level": "P1_STANDALONE_CODEC",
+        "implementation_class": "CONVENTIONAL",
+        "tracks": [
+          "TIMESTAMP",
+          "VALUE"
+        ],
+        "subtracks": [
+          "T1",
+          "V0"
+        ]
+      },
+      "input": {
+        "topologies": [
+          "UTS",
+          "SYNCHRONOUS_MTS",
+          "NATIVE_ND_ARRAY"
+        ],
+        "dtypes": [
+          "<i8",
+          "<i4",
+          "<i2",
+          "|i1",
+          "<u8",
+          "<u4",
+          "<u2",
+          "|u1",
+          "<f8",
+          "<f4"
+        ],
+        "ranks": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "layouts": [
+          "ROW_MAJOR_CONTIG",
+          "COLUMN_MAJOR_CONTIG",
+          "SOA_COLUMNS",
+          "STRIDED_VIEW",
+          "NOT_APPLICABLE"
+        ],
+        "endianness": [
+          "little"
+        ],
+        "alignment_bytes": 1,
+        "min_n": 0,
+        "max_n": 4294967295,
+        "min_m": 1,
+        "max_m": 1048576,
+        "max_total_raw_bytes": 4294967295,
+        "validity_shapes": [
+          "NONE"
+        ],
+        "value_coupling_mode": "FULL_MATRIX",
+        "timestamp_semantics": {
+          "preserve_order": true,
+          "duplicates": true,
+          "out_of_order": true,
+          "negative_delta": true,
+          "absolute_epoch": true,
+          "overflow_policy": "NOT_APPLICABLE_BYTE_CODEC"
+        }
+      },
+      "semantics": {
+        "loss_modes": [
+          "LOSSLESS"
+        ],
+        "error_bound_types": [],
+        "reconstruction_modes": [
+          "EXACT_GRID"
+        ],
+        "rebuild_protocol": "TSCB_BUFFER_DESCRIPTOR_CONTAINER_V1",
+        "preprocess_class": "NONE",
+        "preprocess_stages": [],
+        "decodability_profile": "SELF_CONTAINED_TSCB_DESCRIPTOR_PLUS_DIPPERSTEIN_LZSS_OFFSET12_LE_NUMERIC_LENGTH4",
+        "bitstream_separability": "INDEPENDENT"
+      },
+      "lifecycle": {
+        "block_semantics": "ONE_DIPPERSTEIN_LZSS_STREAM_PER_ROUTED_OBJECT",
+        "state_semantics": "INDEPENDENT_CONTEXT_PER_REPETITION",
+        "reset": "NEW_CONTEXT_REQUIRED",
+        "finalize": "REQUIRED_NOOP_ONE_SHOT_FINALIZE",
+        "safe_overread_bytes": 0,
+        "tail_policy": "MSB_FIRST_ZERO_PAD_TO_BYTE_EXACTLY_VALIDATED",
+        "dictionary": "FIXED_4096_BYTE_SPACE_FILLED_WINDOW_NO_EXTERNAL_BITS",
+        "model": "NONE",
+        "index": "NONE"
+      },
+      "execution": {
+        "backends": [
+          "C_ABI_V1"
+        ],
+        "isa": [
+          "SCALAR"
+        ],
+        "devices": [
+          "CPU"
+        ],
+        "threading": "SINGLE_THREAD",
+        "fallback_policy": "DISALLOWED",
+        "runtime_dispatch": false
+      },
+      "parameters": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "native_timing": {
+            "type": "boolean",
+            "default": true
+          },
+          "block_size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1048576,
+            "default": 65536
+          },
+          "isa": {
+            "type": "string",
+            "enum": [
+              "SCALAR"
+            ],
+            "default": "SCALAR"
+          },
+          "offset_bits": {
+            "type": "integer",
+            "enum": [
+              12
+            ],
+            "default": 12
+          },
+          "length_bits": {
+            "type": "integer",
+            "enum": [
+              4
+            ],
+            "default": 4
+          },
+          "initial_byte": {
+            "type": "integer",
+            "enum": [
+              32
+            ],
+            "default": 32
+          },
+          "match_finder": {
+            "type": "string",
+            "enum": [
+              "BINARY_TREE"
+            ],
+            "default": "BINARY_TREE"
+          }
+        },
+        "constraints": []
+      },
+      "backend": "C_ABI_V1",
+      "artifact_path": "build/port-standard-v30-20261011/native-builds-v3/lzss_dipperstein_c/release/libtscb_lzss_dipperstein_c.so",
+      "artifact_exists": false
+    },
+    {
+      "key": "lzss-raw",
+      "registry_path": "registry/codecs/lzss-raw.json",
+      "registry_sha256": "bec55846b89a138298edd090665879c63db46b320edf5965978607d6d6706912",
+      "is_oracle": false,
+      "identity": {
+        "display_name": "LZSS 0.9.1 profile (C++ rewrite, alexkazik EI10/EJ4/C32)",
+        "family": "LZSS",
+        "source_artifact_id": "v2:source-artifact:sha256:9579e054e8623059d897c666c92d1703fc092e51b91a33d7de988fb6c2695b92",
+        "citations": [
+          "spreadsheet:Value-Compress!B3:C3",
+          "upstream:alexkazik/lzss@512b9163d8a9",
+          "upstream-parameter-reference:benches/benchmark.rs:generic-EI10-EJ4",
+          "cpp-translation:adapters/lzss_raw/native/lzss_raw_codec.cc",
+          "compatibility-evidence:docs/lzss_cpp_rewrite_20261011/live_wire_parity.json"
+        ]
+      },
+      "classification": {
+        "object_level": "P1_STANDALONE_CODEC",
+        "implementation_class": "CONVENTIONAL",
+        "tracks": [
+          "TIMESTAMP",
+          "VALUE"
+        ],
+        "subtracks": [
+          "T1",
+          "V0"
+        ]
+      },
+      "input": {
+        "topologies": [
+          "UTS",
+          "SYNCHRONOUS_MTS",
+          "NATIVE_ND_ARRAY"
+        ],
+        "dtypes": [
+          "<i8",
+          "<i4",
+          "<i2",
+          "|i1",
+          "<u8",
+          "<u4",
+          "<u2",
+          "|u1",
+          "<f8",
+          "<f4"
+        ],
+        "ranks": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "layouts": [
+          "ROW_MAJOR_CONTIG",
+          "COLUMN_MAJOR_CONTIG",
+          "SOA_COLUMNS",
+          "STRIDED_VIEW",
+          "NOT_APPLICABLE"
+        ],
+        "endianness": [
+          "little"
+        ],
+        "alignment_bytes": 1,
+        "min_n": 0,
+        "max_n": 4294967295,
+        "min_m": 1,
+        "max_m": 1048576,
+        "validity_shapes": [
+          "NONE"
+        ],
+        "value_coupling_mode": "FULL_MATRIX",
+        "timestamp_semantics": {
+          "preserve_order": true,
+          "duplicates": true,
+          "out_of_order": true,
+          "negative_delta": true,
+          "absolute_epoch": true,
+          "overflow_policy": "NOT_APPLICABLE_BYTE_CODEC"
+        }
+      },
+      "semantics": {
+        "loss_modes": [
+          "LOSSLESS"
+        ],
+        "error_bound_types": [],
+        "reconstruction_modes": [
+          "EXACT_GRID"
+        ],
+        "rebuild_protocol": "TSCB_BUFFER_DESCRIPTOR_CONTAINER_V1",
+        "preprocess_class": "NONE",
+        "preprocess_stages": [],
+        "decodability_profile": "SELF_CONTAINED_TSCB_DESCRIPTOR_PLUS_LZSS_EI10_EJ4_C32",
+        "bitstream_separability": "INDEPENDENT"
+      },
+      "lifecycle": {
+        "block_semantics": "ONE_LZSS_EI10_EJ4_C32_STREAM_PER_ROUTED_OBJECT",
+        "state_semantics": "INDEPENDENT_CONTEXT_PER_REPETITION",
+        "reset": "NEW_CONTEXT_REQUIRED",
+        "finalize": "REQUIRED_NOOP_ONE_SHOT_FINALIZE",
+        "safe_overread_bytes": 0,
+        "tail_policy": "CODEC_INTERNAL_EXACT_TAIL",
+        "dictionary": "FIXED_INITIAL_WINDOW_BYTE_0X20_NO_EXTERNAL_DICTIONARY",
+        "model": "NONE",
+        "index": "NONE"
+      },
+      "execution": {
+        "backends": [
+          "C_ABI_V1"
+        ],
+        "isa": [
+          "SCALAR"
+        ],
+        "devices": [
+          "CPU"
+        ],
+        "threading": "SINGLE_THREAD",
+        "fallback_policy": "DISALLOWED",
+        "runtime_dispatch": false
+      },
+      "parameters": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "native_timing": {
+            "type": "boolean",
+            "default": true
+          },
+          "block_size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1048576,
+            "default": 65536
+          },
+          "isa": {
+            "type": "string",
+            "enum": [
+              "SCALAR"
+            ],
+            "default": "SCALAR"
+          },
+          "ei": {
+            "type": "integer",
+            "enum": [
+              10
+            ],
+            "default": 10
+          },
+          "ej": {
+            "type": "integer",
+            "enum": [
+              4
+            ],
+            "default": 4
+          },
+          "initial_byte": {
+            "type": "integer",
+            "enum": [
+              32
+            ],
+            "default": 32
+          }
+        },
+        "constraints": []
+      },
+      "backend": "C_ABI_V1",
+      "artifact_path": "build/port-standard-v30-20261011/native-builds-v3/lzss_raw/release/libtscb_lzss_raw.so",
+      "artifact_exists": false
+    },
+    {
+      "key": "lzsse2-raw",
+      "registry_path": "registry/codecs/lzsse2-raw.json",
+      "registry_sha256": "c046b2379889864aed29e3e2e9ccde0dd83e1e51da451d387d9c91de774d9c93",
+      "is_oracle": false,
+      "identity": {
+        "display_name": "LZSSE2 Optimal Parse (lzbench 2019-04-18, level 12)",
+        "family": "LZSSE",
+        "source_artifact_id": "v2:source-artifact:sha256:61ad2f0403009960c989cb555caf070a4dad8c3095eebc501a09eeddb9912dfd",
+        "citations": [
+          "user-explicit:LZSSE2-request-20260918 (not spreadsheet LZSS)",
+          "benchmark:inikep/lzbench@fa871e66b354:bench/lz_codecs.cpp:lzbench_lzsse2_compress"
+        ]
+      },
+      "classification": {
+        "object_level": "P1_STANDALONE_CODEC",
+        "implementation_class": "CONVENTIONAL",
+        "tracks": [
+          "TIMESTAMP",
+          "VALUE"
+        ],
+        "subtracks": [
+          "T1",
+          "V0"
+        ]
+      },
+      "input": {
+        "topologies": [
+          "UTS",
+          "SYNCHRONOUS_MTS",
+          "NATIVE_ND_ARRAY"
+        ],
+        "dtypes": [
+          "<i8",
+          "<i4",
+          "<i2",
+          "|i1",
+          "<u8",
+          "<u4",
+          "<u2",
+          "|u1",
+          "<f8",
+          "<f4"
+        ],
+        "ranks": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "layouts": [
+          "ROW_MAJOR_CONTIG",
+          "COLUMN_MAJOR_CONTIG",
+          "SOA_COLUMNS",
+          "STRIDED_VIEW",
+          "NOT_APPLICABLE"
+        ],
+        "endianness": [
+          "little"
+        ],
+        "alignment_bytes": 1,
+        "min_n": 0,
+        "max_n": 2147483647,
+        "min_m": 1,
+        "max_m": 1048576,
+        "validity_shapes": [
+          "NONE"
+        ],
+        "value_coupling_mode": "FULL_MATRIX",
+        "timestamp_semantics": {
+          "preserve_order": true,
+          "duplicates": true,
+          "out_of_order": true,
+          "negative_delta": true,
+          "absolute_epoch": true,
+          "overflow_policy": "NOT_APPLICABLE_BYTE_CODEC"
+        }
+      },
+      "semantics": {
+        "loss_modes": [
+          "LOSSLESS"
+        ],
+        "error_bound_types": [],
+        "reconstruction_modes": [
+          "EXACT_GRID"
+        ],
+        "rebuild_protocol": "TSCB_BUFFER_DESCRIPTOR_CONTAINER_V1",
+        "preprocess_class": "NONE",
+        "preprocess_stages": [],
+        "decodability_profile": "SELF_CONTAINED_TSCB_DESCRIPTOR_PLUS_LZSSE2",
+        "bitstream_separability": "INDEPENDENT"
+      },
+      "lifecycle": {
+        "block_semantics": "ONE_LZSSE2_OPTIMAL_STREAM_PER_ROUTED_OBJECT",
+        "state_semantics": "INDEPENDENT_CONTEXT_PER_REPETITION",
+        "reset": "NEW_CONTEXT_REQUIRED",
+        "finalize": "REQUIRED_NOOP_ONE_SHOT_FINALIZE",
+        "safe_overread_bytes": 0,
+        "tail_policy": "CODEC_INTERNAL_16_LITERAL_TAIL_WITH_EXACT_BUFFER_VALIDATION",
+        "dictionary": "NONE",
+        "model": "NONE",
+        "index": "NONE"
+      },
+      "execution": {
+        "backends": [
+          "C_ABI_V1"
+        ],
+        "isa": [
+          "SSE4_1"
+        ],
+        "devices": [
+          "CPU"
+        ],
+        "threading": "SINGLE_THREAD",
+        "fallback_policy": "DISALLOWED",
+        "runtime_dispatch": false
+      },
+      "parameters": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "native_timing": {
+            "type": "boolean",
+            "default": true
+          },
+          "compression_level": {
+            "type": "integer",
+            "enum": [
+              12
+            ],
+            "default": 12
+          },
+          "content_checksum": {
+            "type": "boolean",
+            "enum": [
+              false
+            ],
+            "default": false
+          },
+          "block_size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1048576,
+            "default": 65536
+          },
+          "isa": {
+            "type": "string",
+            "enum": [
+              "SSE4_1"
+            ],
+            "default": "SSE4_1"
+          }
+        },
+        "constraints": []
+      },
+      "backend": "C_ABI_V1",
+      "artifact_path": "build/port-standard-v30-20261011/native-builds-v3/lzsse2_raw/release/libtscb_lzsse2_raw.so",
+      "artifact_exists": false
+    },
+    {
+      "key": "lzsse8-raw",
+      "registry_path": "registry/codecs/lzsse8-raw.json",
+      "registry_sha256": "10b3f9bc23cbafbb490105d72a1e22032c9f2384245ed1834a70a6bcb09e8444",
+      "is_oracle": false,
+      "identity": {
+        "display_name": "LZSSE8 Optimal Parse (lzbench 2019-04-18, level 12)",
+        "family": "LZSSE",
+        "source_artifact_id": "v2:source-artifact:sha256:e30217f7e46c3b78d490f5d8a032d67e39c866429f5a35b65405b91f256a7181",
+        "citations": [
+          "user-explicit:LZSSE8-request-20260918 (not spreadsheet LZSS)",
+          "benchmark:inikep/lzbench@fa871e66b354:bench/lz_codecs.cpp:lzbench_lzsse8_compress"
+        ]
+      },
+      "classification": {
+        "object_level": "P1_STANDALONE_CODEC",
+        "implementation_class": "CONVENTIONAL",
+        "tracks": [
+          "TIMESTAMP",
+          "VALUE"
+        ],
+        "subtracks": [
+          "T1",
+          "V0"
+        ]
+      },
+      "input": {
+        "topologies": [
+          "UTS",
+          "SYNCHRONOUS_MTS",
+          "NATIVE_ND_ARRAY"
+        ],
+        "dtypes": [
+          "<i8",
+          "<i4",
+          "<i2",
+          "|i1",
+          "<u8",
+          "<u4",
+          "<u2",
+          "|u1",
+          "<f8",
+          "<f4"
+        ],
+        "ranks": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "layouts": [
+          "ROW_MAJOR_CONTIG",
+          "COLUMN_MAJOR_CONTIG",
+          "SOA_COLUMNS",
+          "STRIDED_VIEW",
+          "NOT_APPLICABLE"
+        ],
+        "endianness": [
+          "little"
+        ],
+        "alignment_bytes": 1,
+        "min_n": 0,
+        "max_n": 2147483647,
+        "min_m": 1,
+        "max_m": 1048576,
+        "validity_shapes": [
+          "NONE"
+        ],
+        "value_coupling_mode": "FULL_MATRIX",
+        "timestamp_semantics": {
+          "preserve_order": true,
+          "duplicates": true,
+          "out_of_order": true,
+          "negative_delta": true,
+          "absolute_epoch": true,
+          "overflow_policy": "NOT_APPLICABLE_BYTE_CODEC"
+        }
+      },
+      "semantics": {
+        "loss_modes": [
+          "LOSSLESS"
+        ],
+        "error_bound_types": [],
+        "reconstruction_modes": [
+          "EXACT_GRID"
+        ],
+        "rebuild_protocol": "TSCB_BUFFER_DESCRIPTOR_CONTAINER_V1",
+        "preprocess_class": "NONE",
+        "preprocess_stages": [],
+        "decodability_profile": "SELF_CONTAINED_TSCB_DESCRIPTOR_PLUS_LZSSE8",
+        "bitstream_separability": "INDEPENDENT"
+      },
+      "lifecycle": {
+        "block_semantics": "ONE_LZSSE8_OPTIMAL_STREAM_PER_ROUTED_OBJECT",
+        "state_semantics": "INDEPENDENT_CONTEXT_PER_REPETITION",
+        "reset": "NEW_CONTEXT_REQUIRED",
+        "finalize": "REQUIRED_NOOP_ONE_SHOT_FINALIZE",
+        "safe_overread_bytes": 0,
+        "tail_policy": "CODEC_INTERNAL_16_LITERAL_TAIL_WITH_EXACT_BUFFER_VALIDATION",
+        "dictionary": "NONE",
+        "model": "NONE",
+        "index": "NONE"
+      },
+      "execution": {
+        "backends": [
+          "C_ABI_V1"
+        ],
+        "isa": [
+          "SSE4_1"
+        ],
+        "devices": [
+          "CPU"
+        ],
+        "threading": "SINGLE_THREAD",
+        "fallback_policy": "DISALLOWED",
+        "runtime_dispatch": false
+      },
+      "parameters": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "native_timing": {
+            "type": "boolean",
+            "default": true
+          },
+          "compression_level": {
+            "type": "integer",
+            "enum": [
+              12
+            ],
+            "default": 12
+          },
+          "content_checksum": {
+            "type": "boolean",
+            "enum": [
+              false
+            ],
+            "default": false
+          },
+          "block_size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1048576,
+            "default": 65536
+          },
+          "isa": {
+            "type": "string",
+            "enum": [
+              "SSE4_1"
+            ],
+            "default": "SSE4_1"
+          }
+        },
+        "constraints": []
+      },
+      "backend": "C_ABI_V1",
+      "artifact_path": "build/port-standard-v30-20261011/native-builds-v3/lzsse8_raw/release/libtscb_lzsse8_raw.so",
+      "artifact_exists": false
+    },
+    {
+      "key": "neats-lossless-i64",
+      "registry_path": "registry/codecs/neats-lossless-i64.json",
+      "registry_sha256": "8e5f3f1660d6e3503b049cce34e1462f90a3b757b65021be941a546966989667",
+      "is_oracle": false,
+      "identity": {
+        "display_name": "NeaTS lossless integer (scalar C++20)",
+        "family": "NEATS",
+        "citations": [
+          "benchmark:and-gue/NeaTS@2d804ff492e4:main_simd.cpp",
+          "benchmark:and-gue/NeaTS@2d804ff492e4:benchmark/neats_lossless.cpp",
+          "spreadsheet:参考TSBench-row-16:NeaTS",
+          "spreadsheet:Value-Compress-row-71:NeaTS"
+        ],
+        "source_artifact_id": "v2:source-artifact:sha256:42743b152ad55dde6d0af6e4f6bf558bb709f22fe9bc37371af15b0144f650bb"
+      },
+      "classification": {
+        "object_level": "P1_STANDALONE_CODEC",
+        "implementation_class": "LEARNED",
+        "tracks": [
+          "VALUE"
+        ],
+        "subtracks": [
+          "V0"
+        ]
+      },
+      "input": {
+        "topologies": [
+          "UTS",
+          "SYNCHRONOUS_MTS"
+        ],
+        "dtypes": [
+          "|i1",
+          "<i2",
+          "<i4",
+          "<i8"
+        ],
+        "ranks": [
+          1,
+          2
+        ],
+        "layouts": [
+          "ROW_MAJOR_CONTIG",
+          "SOA_COLUMNS"
+        ],
+        "endianness": [
+          "little"
+        ],
+        "alignment_bytes": 1,
+        "min_n": 1,
+        "max_n": 65536,
+        "min_m": 1,
+        "max_m": 64,
+        "validity_shapes": [
+          "NONE"
+        ],
+        "homogeneous_itemsize": true,
+        "max_total_raw_bytes": 2097152,
+        "value_coupling_mode": "COLUMN_INDEPENDENT",
+        "timestamp_semantics": {
+          "preserve_order": true,
+          "duplicates": true,
+          "out_of_order": true,
+          "negative_delta": true,
+          "absolute_epoch": true,
+          "overflow_policy": "NOT_APPLICABLE_VALUE_ONLY"
+        }
+      },
+      "semantics": {
+        "loss_modes": [
+          "LOSSLESS"
+        ],
+        "error_bound_types": [],
+        "reconstruction_modes": [
+          "EXACT_GRID"
+        ],
+        "rebuild_protocol": "TSCB_NEATS_SERIALIZED_COLUMN_CONTAINER_V1",
+        "preprocess_class": "NONE",
+        "preprocess_stages": [],
+        "decodability_profile": "SELF_CONTAINED_DESCRIPTOR_BIAS_SERIALIZED_MODEL_INDEX_AND_CHECKSUM",
+        "bitstream_separability": "INDEPENDENT_PER_COLUMN"
+      },
+      "lifecycle": {
+        "block_semantics": "ONE_COMPLETE_UPSTREAM_MODEL_PER_VALUE_COLUMN",
+        "state_semantics": "OBJECT_LOCAL_MODEL_FIT_DURING_EACH_COMPRESSION",
+        "reset": "NEW_CONTEXT_REQUIRED",
+        "finalize": "REQUIRED_ZERO_BYTE_FINALIZE",
+        "safe_overread_bytes": 0,
+        "tail_policy": "EXACT_LENGTH",
+        "dictionary": "NONE",
+        "model": "PIECEWISE_NONLINEAR_LINEAR_QUADRATIC_SQRT_EXPONENTIAL_SERIALIZED_AND_FULLY_CHARGED",
+        "index": "ELIAS_FANO_AND_RANK_SUPPORT_SERIALIZED_AND_FULLY_CHARGED"
+      },
+      "execution": {
+        "backends": [
+          "C_ABI_V1"
+        ],
+        "isa": [
+          "SCALAR"
+        ],
+        "devices": [
+          "CPU"
+        ],
+        "threading": "SINGLE_THREAD",
+        "fallback_policy": "DISALLOWED",
+        "runtime_dispatch": false
+      },
+      "parameters": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "max_bpc": {
+            "type": "integer",
+            "enum": [
+              16,
+              32
+            ],
+            "default": 16
+          },
+          "native_timing": {
+            "type": "boolean",
+            "default": true
+          },
+          "isa": {
+            "type": "string",
+            "enum": [
+              "SCALAR"
+            ],
+            "default": "SCALAR"
+          }
+        },
+        "constraints": []
+      },
+      "backend": "C_ABI_V1",
+      "artifact_path": "build/port-standard-v30-20261011/native-builds-v3/neats_lossless_i64/release/libtscb_neats_lossless_i64.so",
+      "artifact_exists": false
+    },
+    {
+      "key": "oracle-direct",
+      "registry_path": "registry/codecs/oracle-direct.json",
+      "registry_sha256": "dd6515382118271b376ea5e17234f6979bada97e5d519879a9c6d0dcdf51e40a",
+      "is_oracle": true,
+      "identity": {
+        "display_name": "Layer 2 Direct Capability Oracle",
+        "family": "HARNESS_ORACLE",
+        "citations": [
+          "internal:batch-0"
+        ],
+        "source_artifact_id": "v2:source-artifact:sha256:8896a5f832e91a4e767b192122faf6991e095d5a954fa75dfa9b3dffea0f600c"
+      },
+      "classification": {
+        "object_level": "P1_STANDALONE_CODEC",
+        "implementation_class": "CONVENTIONAL",
+        "tracks": [
+          "VALUE"
+        ],
+        "subtracks": [
+          "V0"
+        ]
+      },
+      "input": {
+        "topologies": [
+          "UTS",
+          "SYNCHRONOUS_MTS",
+          "NATIVE_ND_ARRAY"
+        ],
+        "dtypes": [
+          "<i8",
+          "<i4",
+          "<i2",
+          "|i1",
+          "<u8",
+          "<u4",
+          "<u2",
+          "|u1",
+          "<f8",
+          "<f4"
+        ],
+        "ranks": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "layouts": [
+          "ROW_MAJOR_CONTIG",
+          "COLUMN_MAJOR_CONTIG",
+          "SOA_COLUMNS",
+          "STRIDED_VIEW"
+        ],
+        "endianness": [
+          "little"
+        ],
+        "alignment_bytes": 1,
+        "min_n": 0,
+        "max_n": 9223372036854775807,
+        "min_m": 1,
+        "max_m": 1048576,
+        "validity_shapes": [
+          "NONE",
+          "ROW",
+          "CELL"
+        ],
+        "value_coupling_mode": "COLUMN_INDEPENDENT",
+        "timestamp_semantics": {
+          "preserve_order": true,
+          "duplicates": true,
+          "out_of_order": true,
+          "negative_delta": true,
+          "absolute_epoch": true,
+          "overflow_policy": "CHECKED_REJECT"
+        }
+      },
+      "semantics": {
+        "loss_modes": [
+          "LOSSLESS"
+        ],
+        "error_bound_types": [],
+        "reconstruction_modes": [
+          "EXACT_GRID"
+        ],
+        "rebuild_protocol": "IDENTITY",
+        "preprocess_class": "NONE",
+        "preprocess_stages": [],
+        "decodability_profile": "SELF_CONTAINED_ORACLE",
+        "bitstream_separability": "INDEPENDENT"
+      },
+      "lifecycle": {
+        "block_semantics": "LOGICAL_BLOCK_SAMPLES",
+        "state_semantics": "INDEPENDENT_CONTEXT_PER_REPETITION",
+        "reset": "REQUIRED",
+        "finalize": "REQUIRED",
+        "safe_overread_bytes": 0,
+        "tail_policy": "SCALAR_EXACT",
+        "dictionary": "NONE",
+        "model": "NONE",
+        "index": "NONE"
+      },
+      "execution": {
+        "backends": [
+          "PYTHON_IN_PROCESS"
+        ],
+        "isa": [
+          "SCALAR"
+        ],
+        "devices": [
+          "CPU"
+        ],
+        "threading": "SINGLE_THREAD",
+        "fallback_policy": "DISALLOWED",
+        "runtime_dispatch": false
+      },
+      "parameters": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "block_size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1048576,
+            "default": 1024
+          },
+          "isa": {
+            "type": "string",
+            "enum": [
+              "SCALAR"
+            ],
+            "default": "SCALAR"
+          }
+        },
+        "constraints": []
+      },
+      "backend": "PYTHON_IN_PROCESS",
+      "artifact_path": null,
+      "artifact_exists": false
+    },
+    {
+      "key": "oracle-lossless-adapter",
+      "registry_path": "registry/codecs/oracle-lossless-adapter.json",
+      "registry_sha256": "c53507e09aea1bf67bacaa09c44ae777321c76c358f759912138828b850714f3",
+      "is_oracle": true,
+      "identity": {
+        "display_name": "Layer 2 Lossless Adapter Oracle",
+        "family": "HARNESS_ORACLE",
+        "citations": [
+          "internal:batch-0"
+        ],
+        "source_artifact_id": "v2:source-artifact:sha256:8896a5f832e91a4e767b192122faf6991e095d5a954fa75dfa9b3dffea0f600c"
+      },
+      "classification": {
+        "object_level": "P1_STANDALONE_CODEC",
+        "implementation_class": "CONVENTIONAL",
+        "tracks": [
+          "VALUE"
+        ],
+        "subtracks": [
+          "V0"
+        ]
+      },
+      "input": {
+        "topologies": [
+          "UTS",
+          "SYNCHRONOUS_MTS"
+        ],
+        "dtypes": [
+          "<f8"
+        ],
+        "ranks": [
+          1,
+          2
+        ],
+        "layouts": [
+          "ROW_MAJOR_CONTIG"
+        ],
+        "endianness": [
+          "little"
+        ],
+        "alignment_bytes": 32,
+        "min_n": 1,
+        "max_n": 2147483647,
+        "min_m": 1,
+        "max_m": 4096,
+        "validity_shapes": [
+          "NONE"
+        ],
+        "value_coupling_mode": "COLUMN_INDEPENDENT",
+        "timestamp_semantics": {
+          "preserve_order": true,
+          "duplicates": true,
+          "out_of_order": true,
+          "negative_delta": true,
+          "absolute_epoch": true,
+          "overflow_policy": "CHECKED_REJECT"
+        }
+      },
+      "semantics": {
+        "loss_modes": [
+          "LOSSLESS"
+        ],
+        "error_bound_types": [],
+        "reconstruction_modes": [
+          "EXACT_GRID"
+        ],
+        "rebuild_protocol": "IDENTITY",
+        "preprocess_class": "NONE",
+        "preprocess_stages": [],
+        "decodability_profile": "SELF_CONTAINED_ORACLE",
+        "bitstream_separability": "INDEPENDENT"
+      },
+      "lifecycle": {
+        "block_semantics": "LOGICAL_BLOCK_SAMPLES",
+        "state_semantics": "INDEPENDENT_CONTEXT_PER_REPETITION",
+        "reset": "REQUIRED",
+        "finalize": "REQUIRED",
+        "safe_overread_bytes": 16,
+        "tail_policy": "SAFE_OVERREAD_PADDED",
+        "dictionary": "NONE",
+        "model": "NONE",
+        "index": "NONE"
+      },
+      "execution": {
+        "backends": [
+          "PYTHON_IN_PROCESS"
+        ],
+        "isa": [
+          "SCALAR",
+          "AVX2"
+        ],
+        "devices": [
+          "CPU"
+        ],
+        "threading": "SINGLE_THREAD",
+        "fallback_policy": "SCALAR_ALLOWED",
+        "runtime_dispatch": true
+      },
+      "parameters": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "block_size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1048576,
+            "default": 1024
+          },
+          "isa": {
+            "type": "string",
+            "enum": [
+              "SCALAR",
+              "AVX2"
+            ],
+            "default": "SCALAR"
+          }
+        },
+        "constraints": []
+      },
+      "backend": "PYTHON_IN_PROCESS",
+      "artifact_path": null,
+      "artifact_exists": false
+    },
+    {
+      "key": "oracle-lossy-adapter",
+      "registry_path": "registry/codecs/oracle-lossy-adapter.json",
+      "registry_sha256": "492205f4027cb0ddeaab2bbf8b8a5702adb6e58ffd0080675db4c83c41b3188f",
+      "is_oracle": true,
+      "identity": {
+        "display_name": "Layer 2 Lossy Adapter Oracle",
+        "family": "HARNESS_ORACLE",
+        "citations": [
+          "internal:batch-0"
+        ],
+        "source_artifact_id": "v2:source-artifact:sha256:8896a5f832e91a4e767b192122faf6991e095d5a954fa75dfa9b3dffea0f600c"
+      },
+      "classification": {
+        "object_level": "P2_PIPELINE",
+        "implementation_class": "CONVENTIONAL",
+        "tracks": [
+          "VALUE"
+        ],
+        "subtracks": [
+          "V3"
+        ]
+      },
+      "input": {
+        "topologies": [
+          "UTS",
+          "SYNCHRONOUS_MTS"
+        ],
+        "dtypes": [
+          "<f4"
+        ],
+        "ranks": [
+          1,
+          2
+        ],
+        "layouts": [
+          "ROW_MAJOR_CONTIG"
+        ],
+        "endianness": [
+          "little"
+        ],
+        "alignment_bytes": 1,
+        "min_n": 1,
+        "max_n": 2147483647,
+        "min_m": 1,
+        "max_m": 4096,
+        "validity_shapes": [
+          "NONE"
+        ],
+        "value_coupling_mode": "COLUMN_INDEPENDENT",
+        "timestamp_semantics": {
+          "preserve_order": true,
+          "duplicates": true,
+          "out_of_order": true,
+          "negative_delta": true,
+          "absolute_epoch": true,
+          "overflow_policy": "CHECKED_REJECT"
+        }
+      },
+      "semantics": {
+        "loss_modes": [
+          "ERROR_BOUNDED_LOSSY"
+        ],
+        "error_bound_types": [
+          "ABSOLUTE"
+        ],
+        "reconstruction_modes": [
+          "APPROX_GRID"
+        ],
+        "rebuild_protocol": "CAST_BACK_TO_CANONICAL_DTYPE",
+        "preprocess_class": "NONE",
+        "preprocess_stages": [],
+        "decodability_profile": "SELF_CONTAINED_ORACLE",
+        "bitstream_separability": "INDEPENDENT"
+      },
+      "lifecycle": {
+        "block_semantics": "LOGICAL_BLOCK_SAMPLES",
+        "state_semantics": "INDEPENDENT_CONTEXT_PER_REPETITION",
+        "reset": "REQUIRED",
+        "finalize": "REQUIRED",
+        "safe_overread_bytes": 0,
+        "tail_policy": "SCALAR_EXACT",
+        "dictionary": "NONE",
+        "model": "NONE",
+        "index": "NONE"
+      },
+      "execution": {
+        "backends": [
+          "PYTHON_IN_PROCESS"
+        ],
+        "isa": [
+          "SCALAR"
+        ],
+        "devices": [
+          "CPU"
+        ],
+        "threading": "SINGLE_THREAD",
+        "fallback_policy": "DISALLOWED",
+        "runtime_dispatch": false
+      },
+      "parameters": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "block_size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1048576,
+            "default": 1024
+          },
+          "error_bound_type": {
+            "type": "string",
+            "enum": [
+              "ABSOLUTE"
+            ],
+            "default": "ABSOLUTE"
+          },
+          "error_bound": {
+            "type": "decimal-string",
+            "default": "0.000001"
+          },
+          "isa": {
+            "type": "string",
+            "enum": [
+              "SCALAR"
+            ],
+            "default": "SCALAR"
+          }
+        },
+        "constraints": []
+      },
+      "backend": "PYTHON_IN_PROCESS",
+      "artifact_path": null,
+      "artifact_exists": false
+    },
+    {
+      "key": "oracle-native-nd-only",
+      "registry_path": "registry/codecs/oracle-native-nd-only.json",
+      "registry_sha256": "5020493cb2303e8d725b7ceed0d5ad6d074fcf329e63957097f1e0e3b81c2532",
+      "is_oracle": true,
+      "identity": {
+        "display_name": "Layer 2 Native ND Unsupported Oracle",
+        "family": "HARNESS_ORACLE",
+        "citations": [
+          "internal:batch-0"
+        ],
+        "source_artifact_id": "v2:source-artifact:sha256:8896a5f832e91a4e767b192122faf6991e095d5a954fa75dfa9b3dffea0f600c"
+      },
+      "classification": {
+        "object_level": "P1_STANDALONE_CODEC",
+        "implementation_class": "CONVENTIONAL",
+        "tracks": [
+          "VALUE"
+        ],
+        "subtracks": [
+          "V4"
+        ]
+      },
+      "input": {
+        "topologies": [
+          "NATIVE_ND_ARRAY"
+        ],
+        "dtypes": [
+          "<f8"
+        ],
+        "ranks": [
+          3,
+          4
+        ],
+        "layouts": [
+          "ROW_MAJOR_CONTIG",
+          "STRIDED_VIEW"
+        ],
+        "endianness": [
+          "little"
+        ],
+        "alignment_bytes": 1,
+        "min_n": 1,
+        "max_n": 2147483647,
+        "min_m": 1,
+        "max_m": 1048576,
+        "validity_shapes": [
+          "NONE"
+        ],
+        "value_coupling_mode": "NATIVE_ND_ARRAY",
+        "timestamp_semantics": {
+          "preserve_order": true,
+          "duplicates": false,
+          "out_of_order": false,
+          "negative_delta": false,
+          "absolute_epoch": false,
+          "overflow_policy": "CHECKED_REJECT"
+        }
+      },
+      "semantics": {
+        "loss_modes": [
+          "LOSSLESS"
+        ],
+        "error_bound_types": [],
+        "reconstruction_modes": [
+          "EXACT_GRID"
+        ],
+        "rebuild_protocol": "IDENTITY",
+        "preprocess_class": "NONE",
+        "preprocess_stages": [],
+        "decodability_profile": "SELF_CONTAINED_ORACLE",
+        "bitstream_separability": "INDEPENDENT"
+      },
+      "lifecycle": {
+        "block_semantics": "NATIVE_ND_BLOCK",
+        "state_semantics": "INDEPENDENT_CONTEXT_PER_REPETITION",
+        "reset": "REQUIRED",
+        "finalize": "REQUIRED",
+        "safe_overread_bytes": 0,
+        "tail_policy": "PARTIAL_ND_BLOCK",
+        "dictionary": "NONE",
+        "model": "NONE",
+        "index": "NONE"
+      },
+      "execution": {
+        "backends": [
+          "PYTHON_IN_PROCESS"
+        ],
+        "isa": [
+          "SCALAR"
+        ],
+        "devices": [
+          "CPU"
+        ],
+        "threading": "SINGLE_THREAD",
+        "fallback_policy": "DISALLOWED",
+        "runtime_dispatch": false
+      },
+      "parameters": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "block_size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1048576,
+            "default": 1024
+          },
+          "isa": {
+            "type": "string",
+            "enum": [
+              "SCALAR"
+            ],
+            "default": "SCALAR"
+          }
+        },
+        "constraints": []
+      },
+      "backend": "PYTHON_IN_PROCESS",
+      "artifact_path": null,
+      "artifact_exists": false
+    },
+    {
+      "key": "self-star",
+      "registry_path": "registry/codecs/self-star.json",
+      "registry_sha256": "f4c5e44f02943c9c65febb3969b83d6432ca9106b35f4bd134946cdca2a6a169",
+      "is_oracle": false,
+      "identity": {
+        "display_name": "SElf*",
+        "family": "SELF_STAR",
+        "citations": [
+          "standalone:Compression_Rewrite/ReWrite/self-star/contract.md"
+        ],
+        "source_artifact_id": "v2:source-artifact:sha256:0bf9402d37197cde38cf24b12b04172381e9aba46b4baead62314241b3349139"
+      },
+      "classification": {
+        "object_level": "P1_STANDALONE_CODEC",
+        "implementation_class": "CONVENTIONAL",
+        "tracks": [
+          "VALUE"
+        ],
+        "subtracks": [
+          "V0"
+        ]
+      },
+      "input": {
+        "topologies": [
+          "UTS",
+          "SYNCHRONOUS_MTS"
+        ],
+        "dtypes": [
+          "<f4",
+          "<f8"
+        ],
+        "ranks": [
+          1,
+          2
+        ],
+        "layouts": [
+          "ROW_MAJOR_CONTIG",
+          "SOA_COLUMNS"
+        ],
+        "endianness": [
+          "little"
+        ],
+        "alignment_bytes": 1,
+        "min_n": 0,
+        "max_n": 1024000,
+        "min_m": 1,
+        "max_m": 65535,
+        "validity_shapes": [
+          "NONE"
+        ],
+        "homogeneous_itemsize": true,
+        "max_total_raw_bytes": 134217728,
+        "value_coupling_mode": "COLUMN_INDEPENDENT",
+        "timestamp_semantics": {
+          "preserve_order": true,
+          "duplicates": true,
+          "out_of_order": true,
+          "negative_delta": true,
+          "absolute_epoch": true,
+          "overflow_policy": "NOT_APPLICABLE_VALUE_ONLY"
+        },
+        "value_domain": {
+          "kind": "FROZEN_SOURCE_WITH_BOUNDED_REJECTION",
+          "unsupported_action": "REJECT_BEFORE_OUTPUT",
+          "oracle_evidence": "Compression_Rewrite/Source/self-star/golden/source_audit.json",
+          "rejection_reasons": [
+            "NaN outside source lossless domain",
+            "source rejects decimal scale",
+            "source significance loop does not terminate",
+            "source beta symbol outside table",
+            "source decimal recovery is not lossless for value"
+          ]
+        },
+        "max_total_elements": 16777216,
+        "max_blocks_per_column": 1024
+      },
+      "semantics": {
+        "loss_modes": [
+          "LOSSLESS"
+        ],
+        "error_bound_types": [],
+        "reconstruction_modes": [
+          "EXACT_GRID"
+        ],
+        "rebuild_protocol": "TSCB_SELF_STAR_FROZEN_API_RWF1_V1",
+        "preprocess_class": "NONE",
+        "preprocess_stages": [],
+        "decodability_profile": "SELF_CONTAINED_DESCRIPTOR_WITH_CHECKED_FROZEN_CODEC_FRAMES",
+        "bitstream_separability": "PER_COLUMN_SESSION"
+      },
+      "lifecycle": {
+        "block_semantics": "CONFIGURED_SAMPLE_BLOCKS_WITH_EXACT_TAIL",
+        "state_semantics": "ADAPTIVE_STATE_CARRIED_ACROSS_ALL_BLOCKS_OF_EACH_COLUMN",
+        "reset": "REQUIRED_MODE_ZERO",
+        "finalize": "REQUIRED_ZERO_BYTE_FINALIZE",
+        "safe_overread_bytes": 0,
+        "tail_policy": "EXACT_COUNT",
+        "dictionary": "NONE",
+        "model": "FROZEN_UPSTREAM_STATE",
+        "index": "NONE"
+      },
+      "execution": {
+        "backends": [
+          "C_ABI_V1"
+        ],
+        "isa": [
+          "SCALAR"
+        ],
+        "devices": [
+          "CPU"
+        ],
+        "threading": "SINGLE_THREAD",
+        "fallback_policy": "DISALLOWED_SOURCE_DOMAIN_ERRORS_REJECTED",
+        "runtime_dispatch": false,
+        "timing_scopes": [
+          "CORE",
+          "PIPELINE",
+          "E2E"
+        ]
+      },
+      "parameters": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "block_size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 16384,
+            "default": 1000
+          },
+          "isa": {
+            "type": "string",
+            "enum": [
+              "SCALAR"
+            ],
+            "default": "SCALAR"
+          }
+        },
+        "constraints": []
+      },
+      "backend": "C_ABI_V1",
+      "artifact_path": "build/port-standard-v30-20261011/native-builds-v3/self_star/release/libtscb_self_star.so",
+      "artifact_exists": false
+    },
+    {
+      "key": "serf-qt",
+      "registry_path": "registry/codecs/serf-qt.json",
+      "registry_sha256": "d1df502dac68b337478d2171c17f43c97a32058b277b8fb0f24b020ded45fab1",
+      "is_oracle": false,
+      "identity": {
+        "display_name": "Serf-Qt (absolute-error quantization transform)",
+        "family": "SERF_QT",
+        "citations": [
+          "benchmark:Spatio-Temporal-Lab/Serf@b38450b56825:test/Perf.cc",
+          "test:Spatio-Temporal-Lab/Serf@b38450b56825:test/unit_test/serf_test.cc"
+        ],
+        "source_artifact_id": "v2:source-artifact:sha256:6bbe8e6fe0499c421679441e6e9836e951c2ccccf19bd96b37c8f84914a8c6fb"
+      },
+      "classification": {
+        "object_level": "P1_STANDALONE_CODEC",
+        "implementation_class": "CONVENTIONAL",
+        "tracks": [
+          "VALUE"
+        ],
+        "subtracks": [
+          "V3"
+        ]
+      },
+      "input": {
+        "topologies": [
+          "UTS",
+          "SYNCHRONOUS_MTS"
+        ],
+        "dtypes": [
+          "<f8",
+          "<f4"
+        ],
+        "ranks": [
+          1,
+          2
+        ],
+        "layouts": [
+          "ROW_MAJOR_CONTIG",
+          "SOA_COLUMNS"
+        ],
+        "endianness": [
+          "little"
+        ],
+        "alignment_bytes": 1,
+        "min_n": 0,
+        "max_n": 16777216,
+        "min_m": 1,
+        "max_m": 65535,
+        "validity_shapes": [
+          "NONE"
+        ],
+        "homogeneous_itemsize": true,
+        "max_total_raw_bytes": 134217728,
+        "value_coupling_mode": "COLUMN_INDEPENDENT",
+        "timestamp_semantics": {
+          "preserve_order": true,
+          "duplicates": true,
+          "out_of_order": true,
+          "negative_delta": true,
+          "absolute_epoch": true,
+          "overflow_policy": "NOT_APPLICABLE_VALUE_ONLY"
+        }
+      },
+      "semantics": {
+        "loss_modes": [
+          "ERROR_BOUNDED_LOSSY"
+        ],
+        "error_bound_types": [
+          "ABSOLUTE"
+        ],
+        "reconstruction_modes": [
+          "APPROX_GRID"
+        ],
+        "rebuild_protocol": "TSCB_SERF_QT_CONTAINER_V1_ABSOLUTE_ERROR",
+        "preprocess_class": "NONE",
+        "preprocess_stages": [],
+        "decodability_profile": "SELF_CONTAINED_DESCRIPTOR_AND_CHECKED_SERF_BLOCKS",
+        "bitstream_separability": "PER_COLUMN_BLOCK"
+      },
+      "lifecycle": {
+        "block_semantics": "CONFIGURED_1_TO_65535_SAMPLES_PER_COLUMN",
+        "state_semantics": "QT_RESETS_EACH_BLOCK_AND_COLUMN",
+        "reset": "NEW_CONTEXT_REQUIRED",
+        "finalize": "REQUIRED_ZERO_BYTE_FINALIZE",
+        "safe_overread_bytes": 0,
+        "tail_policy": "EXACT_LOGICAL_COUNT_IN_BLOCK_RECORD",
+        "dictionary": "NONE",
+        "model": "PREVIOUS_RECONSTRUCTED_VALUE",
+        "index": "NONE"
+      },
+      "execution": {
+        "backends": [
+          "C_ABI_V1"
+        ],
+        "isa": [
+          "SCALAR"
+        ],
+        "devices": [
+          "CPU"
+        ],
+        "threading": "SINGLE_THREAD",
+        "fallback_policy": "REGISTERED_RAW_EXCEPTION_BLOCK_FOR_NONFINITE_OR_UNREPRESENTABLE_INPUT_ONLY",
+        "runtime_dispatch": true
+      },
+      "parameters": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "block_size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 65535,
+            "default": 1000
+          },
+          "error_bound_type": {
+            "type": "string",
+            "enum": [
+              "ABSOLUTE"
+            ],
+            "default": "ABSOLUTE"
+          },
+          "error_bound": {
+            "type": "decimal-string",
+            "default": "0.001"
+          },
+          "native_timing": {
+            "type": "boolean",
+            "default": true
+          },
+          "isa": {
+            "type": "string",
+            "enum": [
+              "SCALAR"
+            ],
+            "default": "SCALAR"
+          }
+        },
+        "constraints": []
+      },
+      "backend": "C_ABI_V1",
+      "artifact_path": "build/port-standard-v30-20261011/native-builds-v3/serf_qt/release/libtscb_serf_qt.so",
+      "artifact_exists": false
+    },
+    {
+      "key": "serf-xor",
+      "registry_path": "registry/codecs/serf-xor.json",
+      "registry_sha256": "f451452a2049a833d6d57cfc1362e416011afb649e120d17df6cefc09844b796",
+      "is_oracle": false,
+      "identity": {
+        "display_name": "Serf-XOR (absolute-error XOR approximation)",
+        "family": "SERF_XOR",
+        "citations": [
+          "benchmark:Spatio-Temporal-Lab/Serf@b38450b56825:test/Perf.cc",
+          "test:Spatio-Temporal-Lab/Serf@b38450b56825:test/unit_test/serf_test.cc"
+        ],
+        "source_artifact_id": "v2:source-artifact:sha256:6bbe8e6fe0499c421679441e6e9836e951c2ccccf19bd96b37c8f84914a8c6fb"
+      },
+      "classification": {
+        "object_level": "P1_STANDALONE_CODEC",
+        "implementation_class": "CONVENTIONAL",
+        "tracks": [
+          "VALUE"
+        ],
+        "subtracks": [
+          "V3"
+        ]
+      },
+      "input": {
+        "topologies": [
+          "UTS",
+          "SYNCHRONOUS_MTS"
+        ],
+        "dtypes": [
+          "<f8",
+          "<f4"
+        ],
+        "ranks": [
+          1,
+          2
+        ],
+        "layouts": [
+          "ROW_MAJOR_CONTIG",
+          "SOA_COLUMNS"
+        ],
+        "endianness": [
+          "little"
+        ],
+        "alignment_bytes": 1,
+        "min_n": 0,
+        "max_n": 16777216,
+        "min_m": 1,
+        "max_m": 65535,
+        "validity_shapes": [
+          "NONE"
+        ],
+        "homogeneous_itemsize": true,
+        "max_total_raw_bytes": 134217728,
+        "value_coupling_mode": "COLUMN_INDEPENDENT",
+        "timestamp_semantics": {
+          "preserve_order": true,
+          "duplicates": true,
+          "out_of_order": true,
+          "negative_delta": true,
+          "absolute_epoch": true,
+          "overflow_policy": "NOT_APPLICABLE_VALUE_ONLY"
+        }
+      },
+      "semantics": {
+        "loss_modes": [
+          "ERROR_BOUNDED_LOSSY"
+        ],
+        "error_bound_types": [
+          "ABSOLUTE"
+        ],
+        "reconstruction_modes": [
+          "APPROX_GRID"
+        ],
+        "rebuild_protocol": "TSCB_SERF_XOR_CONTAINER_V1_ABSOLUTE_ERROR",
+        "preprocess_class": "NONE",
+        "preprocess_stages": [],
+        "decodability_profile": "SELF_CONTAINED_DESCRIPTOR_AND_CHECKED_SERF_BLOCKS",
+        "bitstream_separability": "PER_COLUMN_BLOCK_WITH_ADAPTIVE_XOR_STATE"
+      },
+      "lifecycle": {
+        "block_semantics": "CONFIGURED_1_TO_65535_SAMPLES_PER_COLUMN",
+        "state_semantics": "XOR_STATE_CONTINUES_ACROSS_FINITE_BLOCKS_WITHIN_COLUMN",
+        "reset": "NEW_CONTEXT_REQUIRED",
+        "finalize": "REQUIRED_ZERO_BYTE_FINALIZE",
+        "safe_overread_bytes": 0,
+        "tail_policy": "EXACT_LOGICAL_COUNT_IN_BLOCK_RECORD",
+        "dictionary": "NONE",
+        "model": "PREVIOUS_APPROXIMATE_IEEE_VALUE_AND_ADAPTIVE_ZERO_POSITIONS",
+        "index": "NONE"
+      },
+      "execution": {
+        "backends": [
+          "C_ABI_V1"
+        ],
+        "isa": [
+          "SCALAR"
+        ],
+        "devices": [
+          "CPU"
+        ],
+        "threading": "SINGLE_THREAD",
+        "fallback_policy": "REGISTERED_RAW_EXCEPTION_BLOCK_FOR_NONFINITE_OR_OVERFLOW_INPUT_ONLY",
+        "runtime_dispatch": true
+      },
+      "parameters": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "block_size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 65535,
+            "default": 1000
+          },
+          "error_bound_type": {
+            "type": "string",
+            "enum": [
+              "ABSOLUTE"
+            ],
+            "default": "ABSOLUTE"
+          },
+          "error_bound": {
+            "type": "decimal-string",
+            "default": "0.001"
+          },
+          "adjust_digit": {
+            "type": "integer",
+            "minimum": -1000000000,
+            "maximum": 1000000000,
+            "default": 0
+          },
+          "native_timing": {
+            "type": "boolean",
+            "default": true
+          },
+          "isa": {
+            "type": "string",
+            "enum": [
+              "SCALAR"
+            ],
+            "default": "SCALAR"
+          }
+        },
+        "constraints": []
+      },
+      "backend": "C_ABI_V1",
+      "artifact_path": "build/port-standard-v30-20261011/native-builds-v3/serf_xor/release/libtscb_serf_xor.so",
+      "artifact_exists": false
+    },
+    {
+      "key": "simdcomp-u32",
+      "registry_path": "registry/codecs/simdcomp-u32.json",
+      "registry_sha256": "13524a0192a2bb4f4a6e5e5afd9c9a3dbfdaf27f4b8cb9111988d3109bab80d4",
+      "is_oracle": false,
+      "identity": {
+        "display_name": "SIMDComp (original uint32 primitive)",
+        "family": "SIMDCOMP_PLAIN_UINT32",
+        "citations": [
+          "https://github.com/lemire/simdcomp@d5301778fe5045ca8099252de5a6ed8016a287df",
+          "adapters/simdcomp/contract.md"
+        ],
+        "source_artifact_id": "v2:source-artifact:sha256:d8ceb9f284dcbca4eb4a7a911975f21fbab2c8616806432e96dc2e51ab326128"
+      },
+      "classification": {
+        "object_level": "P0_PRIMITIVE",
+        "implementation_class": "CONVENTIONAL",
+        "tracks": [
+          "VALUE"
+        ],
+        "subtracks": [
+          "V0"
+        ]
+      },
+      "input": {
+        "topologies": [
+          "UTS"
+        ],
+        "dtypes": [
+          "<u4"
+        ],
+        "ranks": [
+          1
+        ],
+        "layouts": [
+          "ROW_MAJOR_CONTIG"
+        ],
+        "endianness": [
+          "little"
+        ],
+        "alignment_bytes": 1,
+        "min_n": 0,
+        "max_n": 16777216,
+        "min_m": 1,
+        "max_m": 1,
+        "validity_shapes": [
+          "NONE"
+        ],
+        "value_coupling_mode": "COLUMN_INDEPENDENT",
+        "timestamp_semantics": {
+          "preserve_order": true,
+          "duplicates": true,
+          "out_of_order": true,
+          "negative_delta": true,
+          "absolute_epoch": true,
+          "overflow_policy": "NOT_APPLICABLE_PLAIN_UINT32"
+        },
+        "max_total_raw_bytes": 67108864
+      },
+      "semantics": {
+        "loss_modes": [
+          "LOSSLESS"
+        ],
+        "error_bound_types": [],
+        "reconstruction_modes": [
+          "EXACT_GRID"
+        ],
+        "rebuild_protocol": "TSCB_SBP1_UINT32_PLAIN_CHECKED_DESCRIPTOR_V1",
+        "preprocess_class": "NONE",
+        "preprocess_stages": [],
+        "decodability_profile": "SELF_CONTAINED_CHECKED_DESCRIPTOR_SBP1_PLAIN",
+        "bitstream_separability": "INDEPENDENT"
+      },
+      "lifecycle": {
+        "block_semantics": "SSE_128_AVX2_256_EXPLICIT_COUNT_SEED_LAYOUT",
+        "state_semantics": "INDEPENDENT_CONTEXT_PER_REPETITION",
+        "reset": "MODE_ZERO_PRESERVES_PARAMETERS_CLEARS_OBJECT_AND_TIMING",
+        "finalize": "REQUIRED_ZERO_BYTE_FINALIZE",
+        "safe_overread_bytes": 0,
+        "tail_policy": "EXPLICIT_SSE_LENGTH_OR_D1_LAST_VALUE_FOR_BASE_PADDING_SBP1",
+        "dictionary": "NONE",
+        "model": "NONE",
+        "index": "NONE"
+      },
+      "execution": {
+        "backends": [
+          "C_ABI_V1"
+        ],
+        "isa": [
+          "SSE4_1",
+          "AVX2"
+        ],
+        "devices": [
+          "CPU"
+        ],
+        "threading": "SINGLE_THREAD",
+        "fallback_policy": "DISALLOWED",
+        "runtime_dispatch": false
+      },
+      "parameters": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "native_timing": {
+            "type": "boolean",
+            "default": true
+          },
+          "api": {
+            "type": "string",
+            "enum": [
+              "LENGTH",
+              "MASKED",
+              "WITHOUTMASK"
+            ],
+            "default": "LENGTH"
+          },
+          "isa": {
+            "type": "string",
+            "enum": [
+              "SSE4_1",
+              "AVX2"
+            ],
+            "default": "SSE4_1"
+          },
+          "starting_point": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 0,
+            "default": 0
+          }
+        },
+        "constraints": [
+          {
+            "kind": "forbid_combination",
+            "when": {
+              "api": "LENGTH",
+              "isa": "AVX2"
+            },
+            "reason": "AVX2_SOURCE_HAS_NO_LENGTH_API"
+          }
+        ]
+      },
+      "backend": "C_ABI_V1",
+      "artifact_path": "build/adapters/simdcomp_u32/release/libtscb_simdcomp_u32.so",
+      "artifact_exists": false
+    },
+    {
+      "key": "snappy-raw",
+      "registry_path": "registry/codecs/snappy-raw.json",
+      "registry_sha256": "9e3abf0660d1c87654a0aa05972a65139033c9f6037ed946dff4a1b89ee88146",
+      "is_oracle": false,
+      "identity": {
+        "display_name": "Snappy Raw 1.2.2 (lzbench source)",
+        "family": "SNAPPY",
+        "citations": [
+          "benchmark:inikep/lzbench@fa871e66b354:lz/snappy",
+          "upstream:google/snappy:format_description"
+        ],
+        "source_artifact_id": "v2:source-artifact:sha256:e63a21a66a2ebd8fec7b8caa2b477a157b01033ea458fa3be9eab481bb26771d"
+      },
+      "classification": {
+        "object_level": "P1_STANDALONE_CODEC",
+        "implementation_class": "CONVENTIONAL",
+        "tracks": [
+          "TIMESTAMP",
+          "VALUE"
+        ],
+        "subtracks": [
+          "T1",
+          "V0"
+        ]
+      },
+      "input": {
+        "topologies": [
+          "UTS",
+          "SYNCHRONOUS_MTS",
+          "NATIVE_ND_ARRAY"
+        ],
+        "dtypes": [
+          "<i8",
+          "<i4",
+          "<i2",
+          "|i1",
+          "<u8",
+          "<u4",
+          "<u2",
+          "|u1",
+          "<f8",
+          "<f4"
+        ],
+        "ranks": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "layouts": [
+          "ROW_MAJOR_CONTIG",
+          "COLUMN_MAJOR_CONTIG",
+          "SOA_COLUMNS",
+          "STRIDED_VIEW",
+          "NOT_APPLICABLE"
+        ],
+        "endianness": [
+          "little"
+        ],
+        "alignment_bytes": 1,
+        "min_n": 0,
+        "max_n": 4294967295,
+        "min_m": 1,
+        "max_m": 1048576,
+        "validity_shapes": [
+          "NONE"
+        ],
+        "value_coupling_mode": "FULL_MATRIX",
+        "timestamp_semantics": {
+          "preserve_order": true,
+          "duplicates": true,
+          "out_of_order": true,
+          "negative_delta": true,
+          "absolute_epoch": true,
+          "overflow_policy": "NOT_APPLICABLE_BYTE_CODEC"
+        }
+      },
+      "semantics": {
+        "loss_modes": [
+          "LOSSLESS"
+        ],
+        "error_bound_types": [],
+        "reconstruction_modes": [
+          "EXACT_GRID"
+        ],
+        "rebuild_protocol": "TSCB_BUFFER_DESCRIPTOR_CONTAINER_V1",
+        "preprocess_class": "NONE",
+        "preprocess_stages": [],
+        "decodability_profile": "SELF_CONTAINED_TSCB_DESCRIPTOR_PLUS_SNAPPY_RAW_STREAM",
+        "bitstream_separability": "INDEPENDENT"
+      },
+      "lifecycle": {
+        "block_semantics": "ONE_SNAPPY_RAW_STREAM_PER_ROUTED_OBJECT",
+        "state_semantics": "INDEPENDENT_CONTEXT_PER_REPETITION",
+        "reset": "NEW_CONTEXT_REQUIRED",
+        "finalize": "REQUIRED_NOOP_ONE_SHOT_FINALIZE",
+        "safe_overread_bytes": 0,
+        "tail_policy": "CODEC_INTERNAL_EXACT_TAIL",
+        "dictionary": "NONE",
+        "model": "NONE",
+        "index": "NONE"
+      },
+      "execution": {
+        "backends": [
+          "C_ABI_V1"
+        ],
+        "isa": [
+          "SCALAR"
+        ],
+        "devices": [
+          "CPU"
+        ],
+        "threading": "SINGLE_THREAD",
+        "fallback_policy": "DISALLOWED",
+        "runtime_dispatch": false
+      },
+      "parameters": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "native_timing": {
+            "type": "boolean",
+            "default": true
+          },
+          "block_size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1048576,
+            "default": 65536
+          },
+          "compression_level": {
+            "type": "integer",
+            "enum": [
+              1
+            ],
+            "default": 1
+          },
+          "content_checksum": {
+            "type": "boolean",
+            "enum": [
+              false
+            ],
+            "default": false
+          },
+          "isa": {
+            "type": "string",
+            "enum": [
+              "SCALAR"
+            ],
+            "default": "SCALAR"
+          }
+        },
+        "constraints": []
+      },
+      "backend": "C_ABI_V1",
+      "artifact_path": "build/port-standard-v30-20261011/native-builds-v3/snappy_raw/release/libtscb_snappy_raw.so",
+      "artifact_exists": false
+    },
+    {
+      "key": "sprintz-delta-u8",
+      "registry_path": "registry/codecs/sprintz-delta-u8.json",
+      "registry_sha256": "d1bbfb12487211a551b8ec796aec484736830374cab9111e82a90885e8bef01a",
+      "is_oracle": false,
+      "identity": {
+        "display_name": "Sprintz-Delta (native unsigned 8-bit UTS)",
+        "family": "SPRINTZ_DELTA",
+        "citations": [
+          "benchmark:dblalock/lzbench@580c4f08:_lzbench/compressors.cpp:sprintzDelta"
+        ],
+        "source_artifact_id": "v2:source-artifact:sha256:af92b504c16f247d9e34136d14a489b47d26610edee41353c663297ea9a9ad5a"
+      },
+      "classification": {
+        "object_level": "P1_STANDALONE_CODEC",
+        "implementation_class": "CONVENTIONAL",
+        "tracks": [
+          "VALUE"
+        ],
+        "subtracks": [
+          "V0"
+        ]
+      },
+      "input": {
+        "topologies": [
+          "UTS"
+        ],
+        "dtypes": [
+          "|u1"
+        ],
+        "ranks": [
+          1
+        ],
+        "layouts": [
+          "ROW_MAJOR_CONTIG"
+        ],
+        "endianness": [
+          "little"
+        ],
+        "alignment_bytes": 1,
+        "min_n": 0,
+        "max_n": 131072,
+        "min_m": 1,
+        "max_m": 1,
+        "validity_shapes": [
+          "NONE"
+        ],
+        "value_coupling_mode": "COLUMN_INDEPENDENT",
+        "timestamp_semantics": {
+          "preserve_order": true,
+          "duplicates": true,
+          "out_of_order": true,
+          "negative_delta": true,
+          "absolute_epoch": true,
+          "overflow_policy": "NOT_APPLICABLE_VALUE_ONLY"
+        }
+      },
+      "semantics": {
+        "loss_modes": [
+          "LOSSLESS"
+        ],
+        "error_bound_types": [],
+        "reconstruction_modes": [
+          "EXACT_GRID"
+        ],
+        "rebuild_protocol": "TSCB_SPRINTZ_U8_DESCRIPTOR_V1",
+        "preprocess_class": "NONE",
+        "preprocess_stages": [],
+        "decodability_profile": "SELF_CONTAINED_DESCRIPTOR_AND_NATIVE_8B_RLE_HEADER",
+        "bitstream_separability": "INDEPENDENT"
+      },
+      "lifecycle": {
+        "block_semantics": "ONE_NATIVE_8BIT_RLE_STREAM_PER_UTS_OBJECT",
+        "state_semantics": "INDEPENDENT_CONTEXT_PER_REPETITION",
+        "reset": "NEW_CONTEXT_REQUIRED",
+        "finalize": "REQUIRED_ZERO_BYTE_FINALIZE",
+        "safe_overread_bytes": 0,
+        "tail_policy": "EXACT_LENGTH",
+        "dictionary": "NONE",
+        "model": "NONE",
+        "index": "NONE"
+      },
+      "execution": {
+        "backends": [
+          "C_ABI_V1"
+        ],
+        "isa": [
+          "AVX2_BMI2_LZCNT"
+        ],
+        "devices": [
+          "CPU"
+        ],
+        "threading": "SINGLE_THREAD",
+        "fallback_policy": "DISALLOWED",
+        "runtime_dispatch": false
+      },
+      "parameters": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "native_timing": {
+            "type": "boolean",
+            "default": true
+          },
+          "block_size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 131072,
+            "default": 128
+          },
+          "isa": {
+            "type": "string",
+            "enum": [
+              "AVX2_BMI2_LZCNT"
+            ],
+            "default": "AVX2_BMI2_LZCNT"
+          }
+        },
+        "constraints": []
+      },
+      "backend": "C_ABI_V1",
+      "artifact_path": "build/port-standard-v30-20261011/native-builds-v3/sprintz_delta_u8/release/libtscb_sprintz_delta_u8.so",
+      "artifact_exists": false
+    },
+    {
+      "key": "sprintz-delta",
+      "registry_path": "registry/codecs/sprintz-delta.json",
+      "registry_sha256": "6f491806196b1151b8aeaef1a5d74a9e5b200d5f66372b07bdaf3a43225b01e1",
+      "is_oracle": false,
+      "identity": {
+        "display_name": "Sprintz-Delta (native 8/16-bit integer UTS/MTS)",
+        "family": "SPRINTZ_DELTA",
+        "citations": [
+          "benchmark:dblalock/lzbench@580c4f08:_lzbench/compressors.cpp:sprintzDelta",
+          "upstream:dblalock/sprintz@a056cdb6:sprintz/sprintz.cpp"
+        ],
+        "source_artifact_id": "v2:source-artifact:sha256:a26eb4d896ea01cb2ad8e239fbe4ba922ab54a2d524a6c2b53fe03385e22718d"
+      },
+      "classification": {
+        "object_level": "P1_STANDALONE_CODEC",
+        "implementation_class": "CONVENTIONAL",
+        "tracks": [
+          "VALUE"
+        ],
+        "subtracks": [
+          "V0"
+        ]
+      },
+      "input": {
+        "topologies": [
+          "UTS",
+          "SYNCHRONOUS_MTS"
+        ],
+        "dtypes": [
+          "|i1",
+          "|u1",
+          "<i2",
+          "<u2"
+        ],
+        "ranks": [
+          1,
+          2
+        ],
+        "layouts": [
+          "ROW_MAJOR_CONTIG",
+          "SOA_COLUMNS"
+        ],
+        "endianness": [
+          "little"
+        ],
+        "alignment_bytes": 1,
+        "min_n": 0,
+        "max_n": 131072,
+        "min_m": 1,
+        "max_m": 128,
+        "validity_shapes": [
+          "NONE"
+        ],
+        "homogeneous_itemsize": true,
+        "value_coupling_mode": "FULL_MATRIX",
+        "timestamp_semantics": {
+          "preserve_order": true,
+          "duplicates": true,
+          "out_of_order": true,
+          "negative_delta": true,
+          "absolute_epoch": true,
+          "overflow_policy": "NOT_APPLICABLE_VALUE_ONLY"
+        }
+      },
+      "semantics": {
+        "loss_modes": [
+          "LOSSLESS"
+        ],
+        "error_bound_types": [],
+        "reconstruction_modes": [
+          "EXACT_GRID"
+        ],
+        "rebuild_protocol": "TSCB_SPRINTZ_DESCRIPTOR_V2",
+        "preprocess_class": "NONE",
+        "preprocess_stages": [],
+        "decodability_profile": "SELF_CONTAINED_DESCRIPTOR_NATIVE_ENVELOPE_AND_RLE_HEADER",
+        "bitstream_separability": "INDEPENDENT"
+      },
+      "lifecycle": {
+        "block_semantics": "ONE_NATIVE_ROW_MAJOR_RLE_STREAM_PER_VALUE_OBJECT",
+        "state_semantics": "INDEPENDENT_CONTEXT_PER_REPETITION",
+        "reset": "NEW_CONTEXT_REQUIRED",
+        "finalize": "REQUIRED_ZERO_BYTE_FINALIZE",
+        "safe_overread_bytes": 0,
+        "tail_policy": "EXACT_LENGTH",
+        "dictionary": "NONE",
+        "model": "NONE",
+        "index": "NONE"
+      },
+      "execution": {
+        "backends": [
+          "C_ABI_V1"
+        ],
+        "isa": [
+          "AVX2_BMI2_LZCNT"
+        ],
+        "devices": [
+          "CPU"
+        ],
+        "threading": "SINGLE_THREAD",
+        "fallback_policy": "DISALLOWED",
+        "runtime_dispatch": false
+      },
+      "parameters": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "native_timing": {
+            "type": "boolean",
+            "default": true
+          },
+          "isa": {
+            "type": "string",
+            "enum": [
+              "AVX2_BMI2_LZCNT"
+            ],
+            "default": "AVX2_BMI2_LZCNT"
+          }
+        },
+        "constraints": []
+      },
+      "backend": "C_ABI_V1",
+      "artifact_path": "build/port-standard-v30-20261011/native-builds-v3/sprintz_delta/release/libtscb_sprintz_delta.so",
+      "artifact_exists": false
+    },
+    {
+      "key": "sprintz-fire-huff0",
+      "registry_path": "registry/codecs/sprintz-fire-huff0.json",
+      "registry_sha256": "d068849ffa75bc72d17285e073160d590795911ccc39a11acac6496dcd0c7d4f",
+      "is_oracle": false,
+      "identity": {
+        "display_name": "SprintzFIRE+Huf (paper full pipeline)",
+        "family": "SPRINTZ_FIRE_HUFF0",
+        "citations": [
+          "paper:arXiv:1808.02515:Sections 4.1,4.4,5.2:SprintzFIRE+Huf",
+          "benchmark:dblalock/lzbench@580c4f08:_lzbench/compressors.cpp:sprintzXff_HUF",
+          "upstream:dblalock/sprintz@a056cdb6:sprintz/sprintz.cpp",
+          "upstream:Cyan4973/FiniteStateEntropy@9f30e091:HUF_compress"
+        ],
+        "source_artifact_id": "v2:source-artifact:sha256:c1c3ca949d70ffb8c1c37f15f350299bed1cc9b3c141a307dd5f848b0e69469d"
+      },
+      "classification": {
+        "object_level": "P2_PIPELINE",
+        "implementation_class": "CONVENTIONAL",
+        "tracks": [
+          "VALUE"
+        ],
+        "subtracks": [
+          "V0"
+        ]
+      },
+      "input": {
+        "topologies": [
+          "UTS",
+          "SYNCHRONOUS_MTS"
+        ],
+        "dtypes": [
+          "|i1",
+          "|u1",
+          "<i2",
+          "<u2"
+        ],
+        "ranks": [
+          1,
+          2
+        ],
+        "layouts": [
+          "ROW_MAJOR_CONTIG",
+          "SOA_COLUMNS"
+        ],
+        "endianness": [
+          "little"
+        ],
+        "alignment_bytes": 1,
+        "min_n": 0,
+        "max_n": 122880,
+        "min_m": 1,
+        "max_m": 128,
+        "validity_shapes": [
+          "NONE"
+        ],
+        "homogeneous_itemsize": true,
+        "max_total_raw_bytes": 122880,
+        "value_coupling_mode": "FULL_MATRIX",
+        "timestamp_semantics": {
+          "preserve_order": true,
+          "duplicates": true,
+          "out_of_order": true,
+          "negative_delta": true,
+          "absolute_epoch": true,
+          "overflow_policy": "NOT_APPLICABLE_VALUE_ONLY"
+        }
+      },
+      "semantics": {
+        "loss_modes": [
+          "LOSSLESS"
+        ],
+        "error_bound_types": [],
+        "reconstruction_modes": [
+          "EXACT_GRID"
+        ],
+        "rebuild_protocol": "TSCB_SPRINTZ_FIRE_HUFF0_DESCRIPTOR_V1",
+        "preprocess_class": "NONE",
+        "preprocess_stages": [],
+        "decodability_profile": "SELF_CONTAINED_DESCRIPTOR_SPRINTZ_XFF_RLE_THEN_HUFF0_WITH_RAW_FALLBACK",
+        "bitstream_separability": "INDEPENDENT"
+      },
+      "lifecycle": {
+        "block_semantics": "ONE_SPRINTZ_FIRE_RLE_STREAM_THEN_ONE_HUFF0_BLOCK_PER_VALUE_OBJECT",
+        "state_semantics": "INDEPENDENT_CONTEXT_PER_REPETITION",
+        "reset": "NEW_CONTEXT_REQUIRED",
+        "finalize": "REQUIRED_ZERO_BYTE_FINALIZE",
+        "safe_overread_bytes": 0,
+        "tail_policy": "EXACT_LENGTH",
+        "dictionary": "NONE",
+        "model": "FIRE_ONLINE_STATE_EMBEDDED_BY_DECODE_SEQUENCE",
+        "index": "NONE"
+      },
+      "execution": {
+        "backends": [
+          "C_ABI_V1"
+        ],
+        "isa": [
+          "AVX2_BMI2_LZCNT"
+        ],
+        "devices": [
+          "CPU"
+        ],
+        "threading": "SINGLE_THREAD",
+        "fallback_policy": "EXPLICIT_HUFF0_RAW_MODE_ONLY",
+        "runtime_dispatch": false
+      },
+      "parameters": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "native_timing": {
+            "type": "boolean",
+            "default": true
+          },
+          "isa": {
+            "type": "string",
+            "enum": [
+              "AVX2_BMI2_LZCNT"
+            ],
+            "default": "AVX2_BMI2_LZCNT"
+          }
+        },
+        "constraints": []
+      },
+      "backend": "C_ABI_V1",
+      "artifact_path": "build/port-standard-v30-20261011/native-builds-v3/sprintz_fire_huff0/release/libtscb_sprintz_fire_huff0.so",
+      "artifact_exists": false
+    },
+    {
+      "key": "sprintz-fire-u8",
+      "registry_path": "registry/codecs/sprintz-fire-u8.json",
+      "registry_sha256": "8a6e29497dc6628c9b6db0829efaa9d6edcec8df621902b9f7fbbdf21055bc89",
+      "is_oracle": false,
+      "identity": {
+        "display_name": "Sprintz-FIRE/XFF (native unsigned 8-bit UTS)",
+        "family": "SPRINTZ_FIRE",
+        "citations": [
+          "benchmark:dblalock/lzbench@580c4f08:_lzbench/compressors.cpp:sprintzXff"
+        ],
+        "source_artifact_id": "v2:source-artifact:sha256:af92b504c16f247d9e34136d14a489b47d26610edee41353c663297ea9a9ad5a"
+      },
+      "classification": {
+        "object_level": "P1_STANDALONE_CODEC",
+        "implementation_class": "CONVENTIONAL",
+        "tracks": [
+          "VALUE"
+        ],
+        "subtracks": [
+          "V0"
+        ]
+      },
+      "input": {
+        "topologies": [
+          "UTS"
+        ],
+        "dtypes": [
+          "|u1"
+        ],
+        "ranks": [
+          1
+        ],
+        "layouts": [
+          "ROW_MAJOR_CONTIG"
+        ],
+        "endianness": [
+          "little"
+        ],
+        "alignment_bytes": 1,
+        "min_n": 0,
+        "max_n": 131072,
+        "min_m": 1,
+        "max_m": 1,
+        "validity_shapes": [
+          "NONE"
+        ],
+        "value_coupling_mode": "COLUMN_INDEPENDENT",
+        "timestamp_semantics": {
+          "preserve_order": true,
+          "duplicates": true,
+          "out_of_order": true,
+          "negative_delta": true,
+          "absolute_epoch": true,
+          "overflow_policy": "NOT_APPLICABLE_VALUE_ONLY"
+        }
+      },
+      "semantics": {
+        "loss_modes": [
+          "LOSSLESS"
+        ],
+        "error_bound_types": [],
+        "reconstruction_modes": [
+          "EXACT_GRID"
+        ],
+        "rebuild_protocol": "TSCB_SPRINTZ_U8_DESCRIPTOR_V1",
+        "preprocess_class": "NONE",
+        "preprocess_stages": [],
+        "decodability_profile": "SELF_CONTAINED_DESCRIPTOR_AND_NATIVE_8B_RLE_HEADER",
+        "bitstream_separability": "INDEPENDENT"
+      },
+      "lifecycle": {
+        "block_semantics": "ONE_NATIVE_8BIT_RLE_STREAM_PER_UTS_OBJECT",
+        "state_semantics": "INDEPENDENT_CONTEXT_PER_REPETITION",
+        "reset": "NEW_CONTEXT_REQUIRED",
+        "finalize": "REQUIRED_ZERO_BYTE_FINALIZE",
+        "safe_overread_bytes": 0,
+        "tail_policy": "EXACT_LENGTH",
+        "dictionary": "NONE",
+        "model": "NONE",
+        "index": "NONE"
+      },
+      "execution": {
+        "backends": [
+          "C_ABI_V1"
+        ],
+        "isa": [
+          "AVX2_BMI2_LZCNT"
+        ],
+        "devices": [
+          "CPU"
+        ],
+        "threading": "SINGLE_THREAD",
+        "fallback_policy": "DISALLOWED",
+        "runtime_dispatch": false
+      },
+      "parameters": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "native_timing": {
+            "type": "boolean",
+            "default": true
+          },
+          "block_size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 131072,
+            "default": 128
+          },
+          "isa": {
+            "type": "string",
+            "enum": [
+              "AVX2_BMI2_LZCNT"
+            ],
+            "default": "AVX2_BMI2_LZCNT"
+          }
+        },
+        "constraints": []
+      },
+      "backend": "C_ABI_V1",
+      "artifact_path": "build/port-standard-v30-20261011/native-builds-v3/sprintz_fire_u8/release/libtscb_sprintz_fire_u8.so",
+      "artifact_exists": false
+    },
+    {
+      "key": "sprintz-fire",
+      "registry_path": "registry/codecs/sprintz-fire.json",
+      "registry_sha256": "c18aaad265d49bd729875438a9754f9827c21c4950af7825f8211f8a8aec1fa4",
+      "is_oracle": false,
+      "identity": {
+        "display_name": "Sprintz-FIRE/XFF (native 8/16-bit integer UTS/MTS)",
+        "family": "SPRINTZ_FIRE",
+        "citations": [
+          "benchmark:dblalock/lzbench@580c4f08:_lzbench/compressors.cpp:sprintzXff",
+          "upstream:dblalock/sprintz@a056cdb6:sprintz/sprintz.cpp"
+        ],
+        "source_artifact_id": "v2:source-artifact:sha256:a26eb4d896ea01cb2ad8e239fbe4ba922ab54a2d524a6c2b53fe03385e22718d"
+      },
+      "classification": {
+        "object_level": "P1_STANDALONE_CODEC",
+        "implementation_class": "CONVENTIONAL",
+        "tracks": [
+          "VALUE"
+        ],
+        "subtracks": [
+          "V0"
+        ]
+      },
+      "input": {
+        "topologies": [
+          "UTS",
+          "SYNCHRONOUS_MTS"
+        ],
+        "dtypes": [
+          "|i1",
+          "|u1",
+          "<i2",
+          "<u2"
+        ],
+        "ranks": [
+          1,
+          2
+        ],
+        "layouts": [
+          "ROW_MAJOR_CONTIG",
+          "SOA_COLUMNS"
+        ],
+        "endianness": [
+          "little"
+        ],
+        "alignment_bytes": 1,
+        "min_n": 0,
+        "max_n": 131072,
+        "min_m": 1,
+        "max_m": 128,
+        "validity_shapes": [
+          "NONE"
+        ],
+        "homogeneous_itemsize": true,
+        "value_coupling_mode": "FULL_MATRIX",
+        "timestamp_semantics": {
+          "preserve_order": true,
+          "duplicates": true,
+          "out_of_order": true,
+          "negative_delta": true,
+          "absolute_epoch": true,
+          "overflow_policy": "NOT_APPLICABLE_VALUE_ONLY"
+        }
+      },
+      "semantics": {
+        "loss_modes": [
+          "LOSSLESS"
+        ],
+        "error_bound_types": [],
+        "reconstruction_modes": [
+          "EXACT_GRID"
+        ],
+        "rebuild_protocol": "TSCB_SPRINTZ_DESCRIPTOR_V2",
+        "preprocess_class": "NONE",
+        "preprocess_stages": [],
+        "decodability_profile": "SELF_CONTAINED_DESCRIPTOR_NATIVE_ENVELOPE_AND_RLE_HEADER",
+        "bitstream_separability": "INDEPENDENT"
+      },
+      "lifecycle": {
+        "block_semantics": "ONE_NATIVE_ROW_MAJOR_RLE_STREAM_PER_VALUE_OBJECT",
+        "state_semantics": "INDEPENDENT_CONTEXT_PER_REPETITION",
+        "reset": "NEW_CONTEXT_REQUIRED",
+        "finalize": "REQUIRED_ZERO_BYTE_FINALIZE",
+        "safe_overread_bytes": 0,
+        "tail_policy": "EXACT_LENGTH",
+        "dictionary": "NONE",
+        "model": "NONE",
+        "index": "NONE"
+      },
+      "execution": {
+        "backends": [
+          "C_ABI_V1"
+        ],
+        "isa": [
+          "AVX2_BMI2_LZCNT"
+        ],
+        "devices": [
+          "CPU"
+        ],
+        "threading": "SINGLE_THREAD",
+        "fallback_policy": "DISALLOWED",
+        "runtime_dispatch": false
+      },
+      "parameters": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "native_timing": {
+            "type": "boolean",
+            "default": true
+          },
+          "isa": {
+            "type": "string",
+            "enum": [
+              "AVX2_BMI2_LZCNT"
+            ],
+            "default": "AVX2_BMI2_LZCNT"
+          }
+        },
+        "constraints": []
+      },
+      "backend": "C_ABI_V1",
+      "artifact_path": "build/port-standard-v30-20261011/native-builds-v3/sprintz_fire/release/libtscb_sprintz_fire.so",
+      "artifact_exists": false
+    },
+    {
+      "key": "xz-stream",
+      "registry_path": "registry/codecs/xz-stream.json",
+      "registry_sha256": "bcbc3aee553dada3cb7eb4788021bfcf460b087e0627f16ca7116ce65a6bf0bc",
+      "is_oracle": false,
+      "identity": {
+        "display_name": "XZ LZMA2 5.8.3 (lzbench source, single-call)",
+        "family": "LZMA_XZ",
+        "citations": [
+          "benchmark:inikep/lzbench@fa871e66b354:lz/xz",
+          "standard:xz-file-format"
+        ],
+        "source_artifact_id": "v2:source-artifact:sha256:e51531a640977f677d6fe69f3350582773ef4c090a5e2c194c083b10b6255988"
+      },
+      "classification": {
+        "object_level": "P1_STANDALONE_CODEC",
+        "implementation_class": "CONVENTIONAL",
+        "tracks": [
+          "TIMESTAMP",
+          "VALUE"
+        ],
+        "subtracks": [
+          "T1",
+          "V0"
+        ]
+      },
+      "input": {
+        "topologies": [
+          "UTS",
+          "SYNCHRONOUS_MTS",
+          "NATIVE_ND_ARRAY"
+        ],
+        "dtypes": [
+          "<i8",
+          "<i4",
+          "<i2",
+          "|i1",
+          "<u8",
+          "<u4",
+          "<u2",
+          "|u1",
+          "<f8",
+          "<f4"
+        ],
+        "ranks": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "layouts": [
+          "ROW_MAJOR_CONTIG",
+          "COLUMN_MAJOR_CONTIG",
+          "SOA_COLUMNS",
+          "STRIDED_VIEW",
+          "NOT_APPLICABLE"
+        ],
+        "endianness": [
+          "little"
+        ],
+        "alignment_bytes": 1,
+        "min_n": 0,
+        "max_n": 9223372036854775807,
+        "min_m": 1,
+        "max_m": 1048576,
+        "validity_shapes": [
+          "NONE"
+        ],
+        "value_coupling_mode": "FULL_MATRIX",
+        "timestamp_semantics": {
+          "preserve_order": true,
+          "duplicates": true,
+          "out_of_order": true,
+          "negative_delta": true,
+          "absolute_epoch": true,
+          "overflow_policy": "NOT_APPLICABLE_BYTE_CODEC"
+        }
+      },
+      "semantics": {
+        "loss_modes": [
+          "LOSSLESS"
+        ],
+        "error_bound_types": [],
+        "reconstruction_modes": [
+          "EXACT_GRID"
+        ],
+        "rebuild_protocol": "TSCB_BUFFER_DESCRIPTOR_CONTAINER_V1",
+        "preprocess_class": "NONE",
+        "preprocess_stages": [],
+        "decodability_profile": "SELF_CONTAINED_TSCB_DESCRIPTOR_PLUS_XZ_LZMA2_NO_DATA_CHECK",
+        "bitstream_separability": "INDEPENDENT"
+      },
+      "lifecycle": {
+        "block_semantics": "ONE_SINGLE_CALL_XZ_STREAM_PER_ROUTED_OBJECT",
+        "state_semantics": "INDEPENDENT_CONTEXT_PER_REPETITION",
+        "reset": "NEW_CONTEXT_REQUIRED",
+        "finalize": "MANDATORY_ACKNOWLEDGEMENT_AFTER_SINGLE_CALL_COMPLETE_STREAM_ZERO_BYTES",
+        "safe_overread_bytes": 0,
+        "tail_policy": "CODEC_INTERNAL_EXACT_TAIL",
+        "dictionary": "NO_EXTERNAL_DICTIONARY_INTERNAL_LZMA2_WINDOW",
+        "model": "NONE",
+        "index": "EMBEDDED_XZ_INDEX_FULLY_CHARGED"
+      },
+      "execution": {
+        "backends": [
+          "C_ABI_V1"
+        ],
+        "isa": [
+          "SCALAR"
+        ],
+        "devices": [
+          "CPU"
+        ],
+        "threading": "SINGLE_THREAD",
+        "fallback_policy": "DISALLOWED",
+        "runtime_dispatch": false
+      },
+      "parameters": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "native_timing": {
+            "type": "boolean",
+            "default": true
+          },
+          "block_size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1048576,
+            "default": 65536
+          },
+          "stream_decode_chunk_bytes": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1048576,
+            "default": 16384
+          },
+          "compression_level": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9,
+            "default": 6
+          },
+          "isa": {
+            "type": "string",
+            "enum": [
+              "SCALAR"
+            ],
+            "default": "SCALAR"
+          }
+        },
+        "constraints": []
+      },
+      "backend": "C_ABI_V1",
+      "artifact_path": "build/port-standard-v30-20261011/native-builds-v3/xz_stream/release/libtscb_xz_stream.so",
+      "artifact_exists": false
+    },
+    {
+      "key": "zfp-accuracy-1d",
+      "registry_path": "registry/codecs/zfp-accuracy-1d.json",
+      "registry_sha256": "d32a7087dc92b7c5821928600ddf4a17ddab32312f71a1234eca45b5b56f1ecb",
+      "is_oracle": false,
+      "identity": {
+        "display_name": "zfp fixed-accuracy 1D (serial C)",
+        "family": "ZFP",
+        "citations": [
+          "benchmark:LLNL/zfp@c0c2c40b30d9:examples/speed.c",
+          "test:LLNL/zfp@c0c2c40b30d9:tests/testzfp.cpp",
+          "spreadsheet:Value-Compress-row-65:zfp"
+        ],
+        "source_artifact_id": "v2:source-artifact:sha256:6d5881b5b75bccc7781c0037a89e78da958cdef81ac14d263e326d6de431193f"
+      },
+      "classification": {
+        "object_level": "P1_STANDALONE_CODEC",
+        "implementation_class": "CONVENTIONAL",
+        "tracks": [
+          "VALUE"
+        ],
+        "subtracks": [
+          "V3"
+        ]
+      },
+      "input": {
+        "topologies": [
+          "UTS",
+          "SYNCHRONOUS_MTS"
+        ],
+        "dtypes": [
+          "<f4",
+          "<f8"
+        ],
+        "ranks": [
+          1,
+          2
+        ],
+        "layouts": [
+          "ROW_MAJOR_CONTIG",
+          "SOA_COLUMNS"
+        ],
+        "endianness": [
+          "little"
+        ],
+        "alignment_bytes": 1,
+        "min_n": 0,
+        "max_n": 16777216,
+        "min_m": 1,
+        "max_m": 65535,
+        "validity_shapes": [
+          "NONE"
+        ],
+        "homogeneous_itemsize": true,
+        "max_total_raw_bytes": 134217728,
+        "value_coupling_mode": "COLUMN_INDEPENDENT",
+        "timestamp_semantics": {
+          "preserve_order": true,
+          "duplicates": true,
+          "out_of_order": true,
+          "negative_delta": true,
+          "absolute_epoch": true,
+          "overflow_policy": "NOT_APPLICABLE_VALUE_ONLY"
+        }
+      },
+      "semantics": {
+        "loss_modes": [
+          "ERROR_BOUNDED_LOSSY"
+        ],
+        "error_bound_types": [
+          "ABSOLUTE"
+        ],
+        "reconstruction_modes": [
+          "APPROX_GRID"
+        ],
+        "rebuild_protocol": "TSCB_ZFP_FIXED_ACCURACY_1D_CONTAINER_V1",
+        "preprocess_class": "NONE",
+        "preprocess_stages": [],
+        "decodability_profile": "SELF_CONTAINED_DESCRIPTOR_FULL_ZFP_HEADER_AND_FRAME_CHECKSUM",
+        "bitstream_separability": "PER_COLUMN_1D_FIELD"
+      },
+      "lifecycle": {
+        "block_semantics": "UPSTREAM_ZFP_1D_BLOCKS_OF_4_PER_COLUMN",
+        "state_semantics": "INDEPENDENT_ZFP_STREAM_PER_COLUMN",
+        "reset": "NEW_CONTEXT_REQUIRED",
+        "finalize": "REQUIRED_ZERO_BYTE_FINALIZE",
+        "safe_overread_bytes": 0,
+        "tail_policy": "UPSTREAM_PARTIAL_1D_BLOCK_WITH_EXACT_FIELD_LENGTH",
+        "dictionary": "NONE",
+        "model": "ZFP_ORTHOGONAL_BLOCK_TRANSFORM_FIXED_ACCURACY",
+        "index": "NONE"
+      },
+      "execution": {
+        "backends": [
+          "C_ABI_V1"
+        ],
+        "isa": [
+          "SCALAR"
+        ],
+        "devices": [
+          "CPU"
+        ],
+        "threading": "SINGLE_THREAD",
+        "fallback_policy": "REGISTERED_RAW_COLUMN_FOR_NAN_INFINITY_NEGATIVE_ZERO_OR_SUBNORMAL_ONLY",
+        "runtime_dispatch": false
+      },
+      "parameters": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "mode": {
+            "type": "string",
+            "enum": [
+              "FIXED_ACCURACY"
+            ],
+            "default": "FIXED_ACCURACY"
+          },
+          "error_bound_type": {
+            "type": "string",
+            "enum": [
+              "ABSOLUTE"
+            ],
+            "default": "ABSOLUTE"
+          },
+          "error_bound": {
+            "type": "decimal-string",
+            "default": "0.001"
+          },
+          "dimensionality": {
+            "type": "string",
+            "enum": [
+              "1D_PER_COLUMN"
+            ],
+            "default": "1D_PER_COLUMN"
+          },
+          "header": {
+            "type": "string",
+            "enum": [
+              "FULL"
+            ],
+            "default": "FULL"
+          },
+          "backend": {
+            "type": "string",
+            "enum": [
+              "SERIAL"
+            ],
+            "default": "SERIAL"
+          },
+          "native_timing": {
+            "type": "boolean",
+            "default": true
+          },
+          "isa": {
+            "type": "string",
+            "enum": [
+              "SCALAR"
+            ],
+            "default": "SCALAR"
+          }
+        },
+        "constraints": []
+      },
+      "backend": "C_ABI_V1",
+      "artifact_path": "build/port-standard-v30-20261011/native-builds-v3/zfp_accuracy_1d/release/libtscb_zfp_accuracy_1d.so",
+      "artifact_exists": false
+    },
+    {
+      "key": "zstd-frame",
+      "registry_path": "registry/codecs/zstd-frame.json",
+      "registry_sha256": "5fed17583818b74a1fb511b294d6eea2b8f59ada2a7c999abff036962ca5c5e7",
+      "is_oracle": false,
+      "identity": {
+        "display_name": "Zstd Frame 1.5.7 (lzbench source)",
+        "family": "ZSTD",
+        "citations": [
+          "benchmark:inikep/lzbench@fa871e66b354:lz/zstd",
+          "upstream:facebook/zstd:frame-format"
+        ],
+        "source_artifact_id": "v2:source-artifact:sha256:893e7c7c0ef2d09d06a92e4ee6191f7f4b090718da5e88e82f23b12a8f82f237"
+      },
+      "classification": {
+        "object_level": "P1_STANDALONE_CODEC",
+        "implementation_class": "CONVENTIONAL",
+        "tracks": [
+          "TIMESTAMP",
+          "VALUE"
+        ],
+        "subtracks": [
+          "T1",
+          "V0"
+        ]
+      },
+      "input": {
+        "topologies": [
+          "UTS",
+          "SYNCHRONOUS_MTS",
+          "NATIVE_ND_ARRAY"
+        ],
+        "dtypes": [
+          "<i8",
+          "<i4",
+          "<i2",
+          "|i1",
+          "<u8",
+          "<u4",
+          "<u2",
+          "|u1",
+          "<f8",
+          "<f4"
+        ],
+        "ranks": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "layouts": [
+          "ROW_MAJOR_CONTIG",
+          "COLUMN_MAJOR_CONTIG",
+          "SOA_COLUMNS",
+          "STRIDED_VIEW",
+          "NOT_APPLICABLE"
+        ],
+        "endianness": [
+          "little"
+        ],
+        "alignment_bytes": 1,
+        "min_n": 0,
+        "max_n": 9223372036854775807,
+        "min_m": 1,
+        "max_m": 1048576,
+        "validity_shapes": [
+          "NONE"
+        ],
+        "value_coupling_mode": "FULL_MATRIX",
+        "timestamp_semantics": {
+          "preserve_order": true,
+          "duplicates": true,
+          "out_of_order": true,
+          "negative_delta": true,
+          "absolute_epoch": true,
+          "overflow_policy": "NOT_APPLICABLE_BYTE_CODEC"
+        }
+      },
+      "semantics": {
+        "loss_modes": [
+          "LOSSLESS"
+        ],
+        "error_bound_types": [],
+        "reconstruction_modes": [
+          "EXACT_GRID"
+        ],
+        "rebuild_protocol": "TSCB_BUFFER_DESCRIPTOR_CONTAINER_V1",
+        "preprocess_class": "NONE",
+        "preprocess_stages": [],
+        "decodability_profile": "SELF_CONTAINED_TSCB_DESCRIPTOR_PLUS_CODEC_FRAME",
+        "bitstream_separability": "INDEPENDENT"
+      },
+      "lifecycle": {
+        "block_semantics": "ONE_SELF_CONTAINED_FRAME_PER_ROUTED_OBJECT",
+        "state_semantics": "INDEPENDENT_CONTEXT_PER_REPETITION",
+        "reset": "NEW_CONTEXT_REQUIRED",
+        "finalize": "REQUIRED_ZSTD_E_END_UNTIL_ZERO",
+        "safe_overread_bytes": 0,
+        "tail_policy": "CODEC_INTERNAL_EXACT_TAIL",
+        "dictionary": "NONE",
+        "model": "NONE",
+        "index": "NONE"
+      },
+      "execution": {
+        "backends": [
+          "C_ABI_V1"
+        ],
+        "isa": [
+          "SCALAR"
+        ],
+        "devices": [
+          "CPU"
+        ],
+        "threading": "SINGLE_THREAD",
+        "fallback_policy": "DISALLOWED",
+        "runtime_dispatch": false
+      },
+      "parameters": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "native_timing": {
+            "type": "boolean",
+            "default": true
+          },
+          "block_size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1048576,
+            "default": 131072
+          },
+          "stream_decode_chunk_bytes": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1048576,
+            "default": 16384
+          },
+          "compression_level": {
+            "type": "integer",
+            "minimum": -5,
+            "maximum": 22,
+            "default": 3
+          },
+          "content_checksum": {
+            "type": "boolean",
+            "default": true
+          },
+          "isa": {
+            "type": "string",
+            "enum": [
+              "SCALAR"
+            ],
+            "default": "SCALAR"
+          }
+        },
+        "constraints": []
+      },
+      "backend": "C_ABI_V1",
+      "artifact_path": "build/port-standard-v30-20261011/native-builds-v3/zstd_frame/release/libtscb_zstd_frame.so",
+      "artifact_exists": false
+    }
+  ],
+  "frozen_source_verification": [
+    {
+      "lock": "adapters/rewrite_lossless/FROZEN_APIS.json",
+      "package": "chimp",
+      "entries": 6,
+      "missing": [],
+      "sha256_mismatches": []
+    },
+    {
+      "lock": "adapters/rewrite_lossless/FROZEN_APIS.json",
+      "package": "chimp128",
+      "entries": 6,
+      "missing": [],
+      "sha256_mismatches": []
+    },
+    {
+      "lock": "adapters/rewrite_lossless/FROZEN_APIS.json",
+      "package": "elf-plus",
+      "entries": 10,
+      "missing": [],
+      "sha256_mismatches": []
+    },
+    {
+      "lock": "adapters/rewrite_lossless/FROZEN_APIS.json",
+      "package": "self-star",
+      "entries": 10,
+      "missing": [],
+      "sha256_mismatches": []
+    },
+    {
+      "lock": "adapters/rewrite_lossless/FROZEN_APIS.json",
+      "package": "elf",
+      "entries": 7,
+      "missing": [],
+      "sha256_mismatches": []
+    },
+    {
+      "lock": "adapters/rewrite_lossless/FROZEN_APIS.json",
+      "package": "elf-star",
+      "entries": 7,
+      "missing": [],
+      "sha256_mismatches": []
+    },
+    {
+      "lock": "adapters/completed_rewrites/FROZEN_SOURCES.json",
+      "package": "abba",
+      "entries": 35,
+      "missing": [],
+      "sha256_mismatches": []
+    },
+    {
+      "lock": "adapters/completed_rewrites/FROZEN_SOURCES.json",
+      "package": "fabba",
+      "entries": 27,
+      "missing": [],
+      "sha256_mismatches": []
+    },
+    {
+      "lock": "adapters/completed_rewrites/FROZEN_SOURCES.json",
+      "package": "deepzip",
+      "entries": 38,
+      "missing": [],
+      "sha256_mismatches": []
+    },
+    {
+      "lock": "adapters/completed_rewrites/FROZEN_SOURCES.json",
+      "package": "dzip",
+      "entries": 1115,
+      "missing": [],
+      "sha256_mismatches": []
+    }
+  ],
+  "model_verification": [
+    {
+      "codec": "deepzip",
+      "model_key": "FC",
+      "path": "adapters/completed_rewrites/vendor/deepzip/models/FC.dzm",
+      "exists": true,
+      "sha256_matches": true,
+      "bytes": 8656846,
+      "alphabet_size": 4
+    },
+    {
+      "codec": "deepzip",
+      "model_key": "FC_4layer",
+      "path": "adapters/completed_rewrites/vendor/deepzip/models/FC_4layer.dzm",
+      "exists": true,
+      "sha256_matches": true,
+      "bytes": 364917,
+      "alphabet_size": 4
+    },
+    {
+      "codec": "deepzip",
+      "model_key": "FC_4layer_16bit",
+      "path": "adapters/completed_rewrites/vendor/deepzip/models/FC_4layer_16bit.dzm",
+      "exists": true,
+      "sha256_matches": true,
+      "bytes": 364923,
+      "alphabet_size": 4
+    },
+    {
+      "codec": "deepzip",
+      "model_key": "FC_4layer_big",
+      "path": "adapters/completed_rewrites/vendor/deepzip/models/FC_4layer_big.dzm",
+      "exists": true,
+      "sha256_matches": true,
+      "bytes": 1250089,
+      "alphabet_size": 4
+    },
+    {
+      "codec": "deepzip",
+      "model_key": "GRU_multi",
+      "path": "adapters/completed_rewrites/vendor/deepzip/models/GRU_multi.dzm",
+      "exists": true,
+      "sha256_matches": true,
+      "bytes": 577045,
+      "alphabet_size": 4
+    },
+    {
+      "codec": "deepzip",
+      "model_key": "GRU_multi_16bit",
+      "path": "adapters/completed_rewrites/vendor/deepzip/models/GRU_multi_16bit.dzm",
+      "exists": true,
+      "sha256_matches": true,
+      "bytes": 577051,
+      "alphabet_size": 4
+    },
+    {
+      "codec": "deepzip",
+      "model_key": "GRU_multi_big",
+      "path": "adapters/completed_rewrites/vendor/deepzip/models/GRU_multi_big.dzm",
+      "exists": true,
+      "sha256_matches": true,
+      "bytes": 776945,
+      "alphabet_size": 4
+    },
+    {
+      "codec": "deepzip",
+      "model_key": "LSTM_multi",
+      "path": "adapters/completed_rewrites/vendor/deepzip/models/LSTM_multi.dzm",
+      "exists": true,
+      "sha256_matches": true,
+      "bytes": 593942,
+      "alphabet_size": 4
+    },
+    {
+      "codec": "deepzip",
+      "model_key": "LSTM_multi_16bit",
+      "path": "adapters/completed_rewrites/vendor/deepzip/models/LSTM_multi_16bit.dzm",
+      "exists": true,
+      "sha256_matches": true,
+      "bytes": 593948,
+      "alphabet_size": 4
+    },
+    {
+      "codec": "deepzip",
+      "model_key": "LSTM_multi_big",
+      "path": "adapters/completed_rewrites/vendor/deepzip/models/LSTM_multi_big.dzm",
+      "exists": true,
+      "sha256_matches": true,
+      "bytes": 333042,
+      "alphabet_size": 4
+    },
+    {
+      "codec": "deepzip",
+      "model_key": "LSTM_multi_bn",
+      "path": "adapters/completed_rewrites/vendor/deepzip/models/LSTM_multi_bn.dzm",
+      "exists": true,
+      "sha256_matches": true,
+      "bytes": 626765,
+      "alphabet_size": 4
+    },
+    {
+      "codec": "deepzip",
+      "model_key": "LSTM_multi_selu_16bit",
+      "path": "adapters/completed_rewrites/vendor/deepzip/models/LSTM_multi_selu_16bit.dzm",
+      "exists": true,
+      "sha256_matches": true,
+      "bytes": 593953,
+      "alphabet_size": 4
+    },
+    {
+      "codec": "deepzip",
+      "model_key": "biGRU_16bit",
+      "path": "adapters/completed_rewrites/vendor/deepzip/models/biGRU_16bit.dzm",
+      "exists": true,
+      "sha256_matches": true,
+      "bytes": 144451,
+      "alphabet_size": 4
+    },
+    {
+      "codec": "deepzip",
+      "model_key": "biGRU_big",
+      "path": "adapters/completed_rewrites/vendor/deepzip/models/biGRU_big.dzm",
+      "exists": true,
+      "sha256_matches": true,
+      "bytes": 1688345,
+      "alphabet_size": 4
+    },
+    {
+      "codec": "deepzip",
+      "model_key": "biLSTM",
+      "path": "adapters/completed_rewrites/vendor/deepzip/models/biLSTM.dzm",
+      "exists": true,
+      "sha256_matches": true,
+      "bytes": 186430,
+      "alphabet_size": 4
+    },
+    {
+      "codec": "deepzip",
+      "model_key": "biLSTM_16bit",
+      "path": "adapters/completed_rewrites/vendor/deepzip/models/biLSTM_16bit.dzm",
+      "exists": true,
+      "sha256_matches": true,
+      "bytes": 186436,
+      "alphabet_size": 4
+    },
+    {
+      "codec": "deepzip",
+      "model_key": "biGRU",
+      "path": "adapters/completed_rewrites/vendor/deepzip/tests/fixtures/biGRU.dzm",
+      "exists": true,
+      "sha256_matches": true,
+      "bytes": 144445,
+      "alphabet_size": 4
+    }
+  ]
+}

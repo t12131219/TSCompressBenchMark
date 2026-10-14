@@ -1,0 +1,104 @@
+# Fixed study grid; source hashes and selection are in study_design.json.
+schema = "tsbench.experiment/1"
+name = "study-lossless-length"
+output = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/runs/study-lossless-length-20261013"
+
+[[datasets]]
+id = "etth1-n128"
+format = "csv"
+path = "/home/fzg/PycharmProjects/材料/TSBench_Corpus/ETTh1.csv"
+dtype = "<f8"
+columns = ["OT"]
+start = 1024
+stop = 1152
+source = "etth1"
+
+[[datasets]]
+id = "etth1-n512"
+format = "csv"
+path = "/home/fzg/PycharmProjects/材料/TSBench_Corpus/ETTh1.csv"
+dtype = "<f8"
+columns = ["OT"]
+start = 1024
+stop = 1536
+source = "etth1"
+
+[[datasets]]
+id = "weather-n128"
+format = "csv"
+path = "/home/fzg/PycharmProjects/材料/TSBench_Corpus/weather.csv"
+dtype = "<f8"
+columns = ["T (degC)"]
+start = 1024
+stop = 1152
+source = "weather"
+
+[[datasets]]
+id = "weather-n512"
+format = "csv"
+path = "/home/fzg/PycharmProjects/材料/TSBench_Corpus/weather.csv"
+dtype = "<f8"
+columns = ["T (degC)"]
+start = 1024
+stop = 1536
+source = "weather"
+
+[[datasets]]
+id = "national_illness-n128"
+format = "csv"
+path = "/home/fzg/PycharmProjects/材料/TSBench_Corpus/national_illness.csv"
+dtype = "<f8"
+columns = ["ILITOTAL"]
+start = 256
+stop = 384
+source = "national_illness"
+
+[[datasets]]
+id = "national_illness-n512"
+format = "csv"
+path = "/home/fzg/PycharmProjects/材料/TSBench_Corpus/national_illness.csv"
+dtype = "<f8"
+columns = ["ILITOTAL"]
+start = 256
+stop = 768
+source = "national_illness"
+
+[[methods]]
+id = "raw-store"
+codec = "raw-store"
+
+[[methods]]
+id = "zstd-frame"
+codec = "zstd-frame"
+
+[[methods]]
+id = "lz4-frame"
+codec = "lz4-frame"
+
+[[methods]]
+id = "lzss-raw"
+codec = "lzss-raw"
+
+[[methods]]
+id = "chimp128"
+codec = "chimp128"
+
+[[methods]]
+id = "alp-rd"
+codec = "alp-rd"
+
+[[methods]]
+id = "elf-star"
+codec = "elf-star"
+
+[task]
+kind = "values"
+fidelity = "bitwise"
+
+[execution]
+sessions = 3
+rounds = 7
+warmup_objects = 2
+seed = 20261013
+timeout_s = 120
+qualification_cache = true

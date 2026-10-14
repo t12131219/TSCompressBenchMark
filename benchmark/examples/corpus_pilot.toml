@@ -1,0 +1,94 @@
+schema = "tsbench.experiment/1"
+name = "three-source-values-pilot"
+output = "../../runs/three-source-values-pilot"
+
+# Local corpus paths are explicit. The original source/version/license still
+# need verification before these inputs become a published research corpus.
+[[datasets]]
+id = "etth1-transformer-temperature"
+format = "csv"
+path = "/home/fzg/PycharmProjects/材料/TSBench_Corpus/ETTh1.csv"
+columns = ["OT"]
+dtype = "<f8"
+timestamp_column = "date"
+timestamp_parser = "datetime64"
+time_unit = "ns"
+start = 0
+stop = 512
+source = "ETTh1 local forecasting corpus; upstream identity pending verification"
+license = "unverified"
+
+[[datasets]]
+id = "weather-temperature"
+format = "csv"
+path = "/home/fzg/PycharmProjects/材料/TSBench_Corpus/weather.csv"
+columns = ["T (degC)"]
+dtype = "<f8"
+timestamp_column = "date"
+timestamp_parser = "datetime64"
+time_unit = "ns"
+start = 0
+stop = 512
+source = "weather local forecasting corpus; upstream identity pending verification"
+license = "unverified"
+
+[[datasets]]
+id = "national-illness-counts"
+format = "csv"
+path = "/home/fzg/PycharmProjects/材料/TSBench_Corpus/national_illness.csv"
+columns = ["ILITOTAL"]
+dtype = "<f8"
+timestamp_column = "date"
+timestamp_parser = "datetime64"
+time_unit = "ns"
+start = 0
+stop = 512
+source = "national_illness local forecasting corpus; upstream identity pending verification"
+license = "unverified"
+
+[[methods]]
+id = "raw"
+codec = "raw-store"
+
+[[methods]]
+id = "zstd-3"
+codec = "zstd-frame"
+params = { compression_level = 3 }
+
+[[methods]]
+id = "lzss"
+codec = "lzss-raw"
+
+[[methods]]
+id = "chimp128"
+codec = "chimp128"
+params = { block_size = 1000 }
+
+[[methods]]
+id = "alp-rd"
+codec = "alp-rd"
+
+[task]
+kind = "values"
+fidelity = "bitwise"
+boundary = "object_memory"
+lifecycle = "independent_object"
+cache_policy = "natural"
+
+[[profiles]]
+id = "cpu-single"
+device = "cpu"
+native_threads = 1
+object_workers = 1
+
+[execution]
+sessions = 1
+rounds = 7
+warmup_objects = 2
+seed = 20261013
+timeout_s = 120
+qualification_cache = true
+
+[analysis]
+summary = "median_iqr"
+inference = "none"

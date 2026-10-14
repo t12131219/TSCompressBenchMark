@@ -1,0 +1,38 @@
+schema = "tsbench.experiment/1"
+name = "timestamps-20261013"
+output = "../../runs/timestamps-20261013"
+
+[[datasets]]
+id = "irregular-time-axis"
+format = "npz"
+path = "data/records.npz"
+components = { V = "V", T = "T", mask = "mask" }
+time_unit = "ns"
+
+[[methods]]
+id = "raw"
+codec = "raw-store"
+[[methods]]
+id = "zstd"
+codec = "zstd-frame"
+[[methods]]
+id = "lzss"
+codec = "lzss-raw"
+[[methods]]
+id = "neats"
+codec = "neats-lossless-i64"
+[[methods]]
+id = "leats"
+codec = "leats-lossless-i64"
+
+[task]
+kind = "timestamps"
+fidelity = "bitwise"
+
+[execution]
+sessions = 1
+rounds = 7
+warmup_objects = 2
+seed = 20261013
+timeout_s = 120
+qualification_cache = true

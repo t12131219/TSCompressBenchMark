@@ -1,0 +1,192 @@
+# Fixed inputs and ablations: study_design.json. No test-object tuning.
+schema = "tsbench.experiment/1"
+name = "real-mts-lossless"
+output = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/runs/real-mts-lossless-20261013"
+
+[[datasets]]
+id = "etth1-mts-n128-c"
+format = "csv"
+path = "/home/fzg/PycharmProjects/材料/TSBench_Corpus/ETTh1.csv"
+dtype = "<f8"
+encoding = "utf-8"
+timestamp_column = "date"
+timestamp_parser = "datetime64"
+time_unit = "ns"
+missing = "reject"
+columns = ["HUFL", "HULL", "MUFL", "MULL", "LUFL", "LULL", "OT"]
+start = 2048
+stop = 2176
+step = 1
+source = "etth1"
+order = "C"
+
+[[datasets]]
+id = "etth1-mts-n128-f"
+format = "csv"
+path = "/home/fzg/PycharmProjects/材料/TSBench_Corpus/ETTh1.csv"
+dtype = "<f8"
+encoding = "utf-8"
+timestamp_column = "date"
+timestamp_parser = "datetime64"
+time_unit = "ns"
+missing = "reject"
+columns = ["HUFL", "HULL", "MUFL", "MULL", "LUFL", "LULL", "OT"]
+start = 2048
+stop = 2176
+step = 1
+source = "etth1"
+order = "F"
+
+[[datasets]]
+id = "etth1-mts-n512-c"
+format = "csv"
+path = "/home/fzg/PycharmProjects/材料/TSBench_Corpus/ETTh1.csv"
+dtype = "<f8"
+encoding = "utf-8"
+timestamp_column = "date"
+timestamp_parser = "datetime64"
+time_unit = "ns"
+missing = "reject"
+columns = ["HUFL", "HULL", "MUFL", "MULL", "LUFL", "LULL", "OT"]
+start = 2048
+stop = 2560
+step = 1
+source = "etth1"
+order = "C"
+
+[[datasets]]
+id = "etth1-mts-n512-f"
+format = "csv"
+path = "/home/fzg/PycharmProjects/材料/TSBench_Corpus/ETTh1.csv"
+dtype = "<f8"
+encoding = "utf-8"
+timestamp_column = "date"
+timestamp_parser = "datetime64"
+time_unit = "ns"
+missing = "reject"
+columns = ["HUFL", "HULL", "MUFL", "MULL", "LUFL", "LULL", "OT"]
+start = 2048
+stop = 2560
+step = 1
+source = "etth1"
+order = "F"
+
+[[datasets]]
+id = "weather-mts-n128-c"
+format = "csv"
+path = "/home/fzg/PycharmProjects/材料/TSBench_Corpus/weather.csv"
+dtype = "<f8"
+encoding = "utf-8"
+timestamp_column = "date"
+timestamp_parser = "datetime64"
+time_unit = "ns"
+missing = "reject"
+columns = ["p (mbar)", "T (degC)", "Tpot (K)", "Tdew (degC)", "rh (%)", "VPmax (mbar)", "VPact (mbar)", "VPdef (mbar)", "sh (g/kg)", "H2OC (mmol/mol)", "rho (g/m**3)", "wv (m/s)", "max. wv (m/s)", "wd (deg)", "rain (mm)", "raining (s)", "SWDR (W/m�)", "PAR (�mol/m�/s)", "max. PAR (�mol/m�/s)", "Tlog (degC)", "OT"]
+start = 2048
+stop = 2176
+step = 1
+source = "weather"
+order = "C"
+
+[[datasets]]
+id = "weather-mts-n128-f"
+format = "csv"
+path = "/home/fzg/PycharmProjects/材料/TSBench_Corpus/weather.csv"
+dtype = "<f8"
+encoding = "utf-8"
+timestamp_column = "date"
+timestamp_parser = "datetime64"
+time_unit = "ns"
+missing = "reject"
+columns = ["p (mbar)", "T (degC)", "Tpot (K)", "Tdew (degC)", "rh (%)", "VPmax (mbar)", "VPact (mbar)", "VPdef (mbar)", "sh (g/kg)", "H2OC (mmol/mol)", "rho (g/m**3)", "wv (m/s)", "max. wv (m/s)", "wd (deg)", "rain (mm)", "raining (s)", "SWDR (W/m�)", "PAR (�mol/m�/s)", "max. PAR (�mol/m�/s)", "Tlog (degC)", "OT"]
+start = 2048
+stop = 2176
+step = 1
+source = "weather"
+order = "F"
+
+[[datasets]]
+id = "weather-mts-n512-c"
+format = "csv"
+path = "/home/fzg/PycharmProjects/材料/TSBench_Corpus/weather.csv"
+dtype = "<f8"
+encoding = "utf-8"
+timestamp_column = "date"
+timestamp_parser = "datetime64"
+time_unit = "ns"
+missing = "reject"
+columns = ["p (mbar)", "T (degC)", "Tpot (K)", "Tdew (degC)", "rh (%)", "VPmax (mbar)", "VPact (mbar)", "VPdef (mbar)", "sh (g/kg)", "H2OC (mmol/mol)", "rho (g/m**3)", "wv (m/s)", "max. wv (m/s)", "wd (deg)", "rain (mm)", "raining (s)", "SWDR (W/m�)", "PAR (�mol/m�/s)", "max. PAR (�mol/m�/s)", "Tlog (degC)", "OT"]
+start = 2048
+stop = 2560
+step = 1
+source = "weather"
+order = "C"
+
+[[datasets]]
+id = "weather-mts-n512-f"
+format = "csv"
+path = "/home/fzg/PycharmProjects/材料/TSBench_Corpus/weather.csv"
+dtype = "<f8"
+encoding = "utf-8"
+timestamp_column = "date"
+timestamp_parser = "datetime64"
+time_unit = "ns"
+missing = "reject"
+columns = ["p (mbar)", "T (degC)", "Tpot (K)", "Tdew (degC)", "rh (%)", "VPmax (mbar)", "VPact (mbar)", "VPdef (mbar)", "sh (g/kg)", "H2OC (mmol/mol)", "rho (g/m**3)", "wv (m/s)", "max. wv (m/s)", "wd (deg)", "rain (mm)", "raining (s)", "SWDR (W/m�)", "PAR (�mol/m�/s)", "max. PAR (�mol/m�/s)", "Tlog (degC)", "OT"]
+start = 2048
+stop = 2560
+step = 1
+source = "weather"
+order = "F"
+
+[[methods]]
+id = "raw-store"
+codec = "raw-store"
+
+[[methods]]
+id = "zstd-frame"
+codec = "zstd-frame"
+
+[[methods]]
+id = "chimp128"
+codec = "chimp128"
+
+[[methods]]
+id = "zstd-channelwise"
+codec = "zstd-frame"
+channelwise = true
+
+[[methods]]
+id = "zstd-chunks-64"
+codec = "zstd-frame"
+chunk_rows = 64
+
+[[methods]]
+id = "zstd-chunks-256"
+codec = "zstd-frame"
+chunk_rows = 256
+
+[[methods]]
+id = "zstd-channelwise-chunks-64"
+codec = "zstd-frame"
+channelwise = true
+chunk_rows = 64
+
+[[profiles]]
+id = "cpu-single"
+device = "cpu"
+native_threads = 1
+object_workers = 1
+memory_limit_mb = 4096
+
+[task]
+kind = "values"
+fidelity = "bitwise"
+
+[execution]
+sessions = 3
+rounds = 7
+warmup_objects = 2
+seed = 20261013
+timeout_s = 120
+qualification_cache = true
