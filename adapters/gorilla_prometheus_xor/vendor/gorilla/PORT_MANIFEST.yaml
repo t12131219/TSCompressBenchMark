@@ -1,0 +1,94 @@
+{
+  "algorithm_id": "gorilla-prometheus-xor",
+  "implementation_id": "gorilla-prometheus-xor-cpp-v1",
+  "implementation_route": "SOURCE_REWRITE",
+  "port_method": "TRANSLATED",
+  "compatibility_target": "BYTE_IDENTICAL",
+  "object_level": "P1_STANDALONE_CODEC",
+  "standard": "v3.0",
+  "scope": "REWRITE_ONLY",
+  "execution": {
+    "current_gate": "G6",
+    "terminal_status": "REWRITE_DONE",
+    "blocker_evidence": []
+  },
+  "gates": {
+    "G0": {
+      "status": "PASS",
+      "evidence": "Source/SOURCE_MANIFEST.yaml: alias deduplication and full XOR chunk object",
+      "reviewer": "Codex source/contract audit"
+    },
+    "G1": {
+      "status": "PASS",
+      "evidence": "Source/SOURCE_MANIFEST.yaml and TOOLCHAIN_MANIFEST.yaml; Go oracle selftest PASS",
+      "reviewer": "Codex source/contract audit"
+    },
+    "G2": {
+      "status": "PASS",
+      "evidence": "contract.md, NATIVE_CAPABILITY_MATRIX.yaml, validation/DATASET_TEST_PLAN.yaml; fresh source golden vectors",
+      "reviewer": "Codex source/contract audit",
+      "scope_amendment": "Added explicit upstream zero-copy memory capability during completeness audit; no domain reduction."
+    },
+    "G3": {
+      "status": "PASS",
+      "evidence": "validation/qualification.json; six profile reports",
+      "reviewer": "Codex independent execution and source/contract audit"
+    },
+    "G4": {
+      "status": "PASS",
+      "evidence": "validation/release.preflight.log and asan/arm64 preflight; 1051576 assertions",
+      "reviewer": "Codex independent execution and source/contract audit"
+    },
+    "G5": {
+      "status": "PASS",
+      "evidence": "forced path counters, differential, TSan and capability matrix",
+      "reviewer": "Codex independent execution and source/contract audit"
+    },
+    "G6": {
+      "status": "PASS",
+      "evidence": "validation reports, SBOM, reproducibility and RELEASE_MANIFEST.json",
+      "reviewer": "Codex independent execution and source/contract audit"
+    }
+  },
+  "freeze": {
+    "contract.md": "4dc0bc97a6b5b4628a7585440903d09f885aa27988a38d3636315306cd74bac6",
+    "validation/DATASET_TEST_PLAN.yaml": "7045e4cc0f621dfc69098fbdb2131df33fe9e119b38c125f2a40cf0233b8354d",
+    "tests/golden/expected_output.bin": "8fedbf935ced66cd72d8eba29fa770eb48d82dea8bf638e17465865b0be28f5d"
+  },
+  "integration": {
+    "performed": false,
+    "tscb_adapter_present": false
+  },
+  "native_capability_parity": {
+    "overall_result": "FULL_PARITY",
+    "required_total": 10,
+    "required_passed": 10,
+    "unclassified_count": 0,
+    "waiver_ids": [],
+    "matrix_sha256": "10f034035bb94b198d53a7722181df074c46edea87e69e9c498bfdb39e46c40e",
+    "validation_report": "validation/native_capability_validation_report.md"
+  },
+  "platforms": [
+    "linux-amd64 native",
+    "linux-aarch64 QEMU user"
+  ],
+  "source_manifest_sha256": "07a1ed9cc09dc9578695586268d0b49515188c15f5d582d0e17ea350477deafa",
+  "contract_sha256": "4dc0bc97a6b5b4628a7585440903d09f885aa27988a38d3636315306cd74bac6",
+  "dataset_config_sha256": "d9583766e9da3285e730ca1b09e28a19617fdfbcc0545ec005d3c34c80115335",
+  "build": {
+    "cxx_standard": 17,
+    "compiler": "GCC 11.4.0",
+    "FP": "no fast-math; contraction off",
+    "reproducibility": "BIT_FOR_BIT_REPRODUCIBLE",
+    "artifact_sha256": {
+      "libgorilla.a": "2bfd78f2bc4042bcd1c29589581ea42f32aaf34822ea46e1d1238fbe3a55a087",
+      "gorilla_cli": "364150baeb6fe08ac001020f86267be029e6fcafd9204e9cde4bf55171cb667c",
+      "gorilla_tests": "c4571a4c4da7d620aedca842d9728dc8a1186276fe707eb0995394942767aaa6",
+      "gorilla_bench": "9ce664167b0085f4346d32baf7eafd8205123e30da4d135fd38d47b6c8546abe"
+    },
+    "environment_digest": "b44c9c79f0109645569ef323481a354ced3dbfd9aa38387fd483c7258b6abd3e"
+  },
+  "source_toolchain_manifest_sha256": "17d701acc24d27aca9a00c6061a32cc255afba0a6219fc92303cc4c569c25264",
+  "release_date": "2026-10-14",
+  "consumer_evidence": "validation/consumer/result.log"
+}

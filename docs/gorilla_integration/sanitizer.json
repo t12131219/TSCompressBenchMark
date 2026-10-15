@@ -1,0 +1,66 @@
+{
+  "schema": "tsbench.gorilla-sanitizer/1",
+  "passed": true,
+  "compile_command": [
+    "c++",
+    "-std=c++17",
+    "-O1",
+    "-g",
+    "-fno-omit-frame-pointer",
+    "-fsanitize=address,undefined",
+    "-Wall",
+    "-Wextra",
+    "-Wpedantic",
+    "-Werror",
+    "-fno-fast-math",
+    "-ffp-contract=off",
+    "-DGORILLA_HAS_OPTIMIZED=1",
+    "-I",
+    "native/include",
+    "-I",
+    "adapters/gorilla_prometheus_xor/vendor/gorilla/include",
+    "adapters/gorilla_prometheus_xor/tests/abi_safety.cc",
+    "adapters/gorilla_prometheus_xor/native/tscb_gorilla.cc",
+    "adapters/gorilla_prometheus_xor/vendor/gorilla/src/canonical/gorilla.cpp",
+    "adapters/gorilla_prometheus_xor/vendor/gorilla/src/optimized/bitops.cpp",
+    "-o",
+    "/tmp/gorilla-restored-abi-safety"
+  ],
+  "run_command": [
+    "env",
+    "ASAN_OPTIONS=detect_leaks=1:halt_on_error=1",
+    "UBSAN_OPTIONS=halt_on_error=1",
+    "build/gorilla-safety/abi_safety"
+  ],
+  "executable": {
+    "path": "build/gorilla-safety/abi_safety",
+    "sha256": "ff871afbcfbe08762167a23b757bbf5965824c665f94b6e4d67227decca32c78"
+  },
+  "log": {
+    "path": "docs/gorilla_integration/sanitizer.log",
+    "sha256": "527a90064e27d1083b0a53a455ad877578163014a2e62933e0e887081d80268d"
+  },
+  "core_abi_roundtrips": 16,
+  "seed": 20261015,
+  "random_hostile_chunks_rejected": 20000,
+  "hostile_sizes": "0..512 random bytes; fresh raw decode with sufficient destination capacity",
+  "scope": "current binding/core; ASan/UBSan/LSan on same physical host outside sandbox ptrace; not a repeat of standalone 100000-iteration fuzz",
+  "sources": [
+    {
+      "path": "adapters/gorilla_prometheus_xor/tests/abi_safety.cc",
+      "sha256": "04988be15af2aba1f7e29484b804b20700f201d628a0c96c93d11f0880497db9"
+    },
+    {
+      "path": "adapters/gorilla_prometheus_xor/native/tscb_gorilla.cc",
+      "sha256": "c1a0777d530d841d06be8827eaa8a56bc44d1ee54c63ddfd18526bfa9f40a5a5"
+    },
+    {
+      "path": "adapters/gorilla_prometheus_xor/vendor/gorilla/src/canonical/gorilla.cpp",
+      "sha256": "ecf4f5165908f4bdf98c1d719302a5fa7826ce755c8d7dbe89f37b10ae364172"
+    },
+    {
+      "path": "adapters/gorilla_prometheus_xor/vendor/gorilla/src/optimized/bitops.cpp",
+      "sha256": "ab1767f4f09e5207013a461966d1d82cf52a6178e3d24eedc7e8498b0b4dc0e2"
+    }
+  ]
+}

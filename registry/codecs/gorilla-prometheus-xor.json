@@ -1,0 +1,140 @@
+{
+  "schema_version": "tscb.codec-manifest.v2",
+  "key": "gorilla-prometheus-xor",
+  "identity": {
+    "display_name": "Gorilla (Prometheus EncXOR, paired T/V)",
+    "family": "GORILLA_PROMETHEUS_XOR",
+    "citations": [
+      "prometheus/prometheus@8374d30cb3fe705773bbac72d7015eba17480557:tsdb/chunkenc/xor.go"
+    ],
+    "source_artifact_id": "sha256:bc0629a38448d6a3fb33fd622204c8f137a74730a23273388cc528109442d519"
+  },
+  "classification": {
+    "object_level": "P1_STANDALONE_CODEC",
+    "implementation_class": "CONVENTIONAL",
+    "tracks": [
+      "RECORDS"
+    ],
+    "subtracks": [
+      "JOINT_TV"
+    ]
+  },
+  "input": {
+    "topologies": [
+      "UTS",
+      "SYNCHRONOUS_MTS"
+    ],
+    "dtypes": [
+      "<f8"
+    ],
+    "ranks": [
+      1,
+      2
+    ],
+    "layouts": [
+      "ROW_MAJOR_CONTIG",
+      "SOA_COLUMNS"
+    ],
+    "endianness": [
+      "little"
+    ],
+    "alignment_bytes": 1,
+    "min_n": 0,
+    "max_n": 65535,
+    "min_m": 1,
+    "max_m": 65535,
+    "validity_shapes": [
+      "NONE",
+      "RAW_MASK_V_SHAPE"
+    ],
+    "homogeneous_itemsize": true,
+    "max_total_raw_bytes": 2147483648,
+    "value_coupling_mode": "JOINT_TV_PER_COLUMN",
+    "timestamp_semantics": {
+      "preserve_order": true,
+      "duplicates": true,
+      "out_of_order": true,
+      "negative_delta": true,
+      "absolute_epoch": true,
+      "overflow_policy": "UPSTREAM_UINT64_MODULAR_ARITHMETIC"
+    },
+    "paired_records": {
+      "timestamp_dtype": "<i8",
+      "value_dtype": "<f8",
+      "timestamp_unit": "preserved; no implicit conversion",
+      "mts": "explicit channelwise; independent raw EncXOR chunks; repeated T charged"
+    }
+  },
+  "semantics": {
+    "loss_modes": [
+      "LOSSLESS"
+    ],
+    "error_bound_types": [],
+    "reconstruction_modes": [
+      "EXACT_GRID"
+    ],
+    "rebuild_protocol": "PROMETHEUS_ENCXOR_WITH_TSBENCH_JOINT_DIRECTORY_V1",
+    "preprocess_class": "NONE",
+    "preprocess_stages": [],
+    "decodability_profile": "SELF_CONTAINED_DESCRIPTOR_AND_RAW_ENCXOR",
+    "bitstream_separability": "PER_COLUMN_CHUNK"
+  },
+  "lifecycle": {
+    "block_semantics": "INDEPENDENT_CHUNK_AT_MOST_65535_PAIRS",
+    "state_semantics": "INDEPENDENT_CONTEXT_PER_REPETITION",
+    "reset": "FRESH_CONTEXT_MODE_0",
+    "finalize": "REQUIRED_ZERO_BYTE_FINALIZE",
+    "safe_overread_bytes": 0,
+    "tail_policy": "RAW_ENCXOR_PADDING_STRICTLY_VALIDATED",
+    "dictionary": "NONE",
+    "model": "NONE",
+    "index": "NONE"
+  },
+  "execution": {
+    "backends": [
+      "C_ABI_V1"
+    ],
+    "isa": [
+      "SCALAR"
+    ],
+    "devices": [
+      "CPU"
+    ],
+    "threading": "SINGLE_THREAD",
+    "fallback_policy": "DISALLOWED",
+    "runtime_dispatch": false
+  },
+  "features": {
+    "streaming": false,
+    "query": false,
+    "random_access": false
+  },
+  "parameters": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "path": {
+        "type": "string",
+        "enum": [
+          "canonical",
+          "optimized"
+        ],
+        "default": "optimized"
+      }
+    },
+    "constraints": []
+  },
+  "adapter": {
+    "backend": "C_ABI_V1",
+    "factory": "GORILLA_JOINT_CTYPES_V1",
+    "version": "gorilla-prometheus-xor-tsbench-v1",
+    "timing_boundary": "PYTHON_PAIR_PACKING_FFI_NATIVE_AND_OBJECT_CONTAINER_INCLUDED",
+    "accounting_hooks": [
+      "COMPLETE_RAW_ENCXOR",
+      "REPEATED_T_PER_CHANNEL",
+      "RAW_MASK",
+      "COMPLETE_TSBENCH_DESCRIPTOR"
+    ],
+    "capability_scope": "paired records only; standalone FULL_PARITY does not imply Bench stream/query support"
+  }
+}

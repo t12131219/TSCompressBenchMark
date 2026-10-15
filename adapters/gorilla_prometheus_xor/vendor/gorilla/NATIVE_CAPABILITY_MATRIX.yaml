@@ -1,0 +1,529 @@
+{
+  "schema_version": 1,
+  "algorithm_id": "gorilla-prometheus-xor",
+  "overall_result": "FULL_PARITY",
+  "capabilities": [
+    {
+      "capability_id": "chunk.codec",
+      "upstream": {
+        "present": true,
+        "evidence": "NewXORChunk / Append / Next",
+        "revision": "8374d30cb3fe705773bbac72d7015eba17480557"
+      },
+      "parity_class": "REQUIRED_PARITY",
+      "owner": "Codex",
+      "validation": {
+        "status": "PASS",
+        "plan": "one-shot/raw byte identity and four routes",
+        "evidence": [
+          "validation/qualification.json",
+          "validation/release.preflight.log",
+          "validation/asan.preflight.log",
+          "validation/arm64-local.preflight.log",
+          "validation/tsan.log",
+          "validation/state/results.json"
+        ],
+        "artifact_hashes": {
+          "qualification": "9bea3f837ce4bb33f6e49c95d35c0e14d1792b81ab381b15721c18cfc8206598",
+          "state": "95b115238d429c3983483f237834cf73f32ef6d6a2dae85319d1385fb45ac96f"
+        }
+      },
+      "platforms": [
+        "linux-amd64",
+        "linux-aarch64"
+      ],
+      "rewrite": {
+        "present": true,
+        "public_api": "include/gorilla/gorilla.hpp",
+        "variants": [
+          "canonical",
+          "optimized"
+        ]
+      },
+      "contract": "contract.md",
+      "predicate": "1D ordered int64/binary64 pairs, 0..65535; complete raw; explicit ownership mode, Linux LP64; additional lifetime requirement for Borrowed memory"
+    },
+    {
+      "capability_id": "stream.append",
+      "upstream": {
+        "present": true,
+        "evidence": "xorAppender.Append",
+        "revision": "8374d30cb3fe705773bbac72d7015eba17480557"
+      },
+      "parity_class": "REQUIRED_PARITY",
+      "owner": "Codex",
+      "validation": {
+        "status": "PASS",
+        "plan": "fragmented/reacquire/empty flush",
+        "evidence": [
+          "validation/qualification.json",
+          "validation/release.preflight.log",
+          "validation/asan.preflight.log",
+          "validation/arm64-local.preflight.log",
+          "validation/tsan.log",
+          "validation/state/results.json"
+        ],
+        "artifact_hashes": {
+          "qualification": "9bea3f837ce4bb33f6e49c95d35c0e14d1792b81ab381b15721c18cfc8206598",
+          "state": "95b115238d429c3983483f237834cf73f32ef6d6a2dae85319d1385fb45ac96f"
+        }
+      },
+      "platforms": [
+        "linux-amd64",
+        "linux-aarch64"
+      ],
+      "rewrite": {
+        "present": true,
+        "public_api": "include/gorilla/gorilla.hpp",
+        "variants": [
+          "canonical",
+          "optimized"
+        ]
+      },
+      "contract": "contract.md",
+      "predicate": "1D ordered int64/binary64 pairs, 0..65535; complete raw; explicit ownership mode, Linux LP64; additional lifetime requirement for Borrowed memory"
+    },
+    {
+      "capability_id": "state.reset",
+      "upstream": {
+        "present": true,
+        "evidence": "XORChunk.Reset / xorIterator.Reset",
+        "revision": "8374d30cb3fe705773bbac72d7015eba17480557"
+      },
+      "parity_class": "REQUIRED_PARITY",
+      "owner": "Codex",
+      "validation": {
+        "status": "PASS",
+        "plan": "reset/reuse/raw reset source defect",
+        "evidence": [
+          "validation/qualification.json",
+          "validation/release.preflight.log",
+          "validation/asan.preflight.log",
+          "validation/arm64-local.preflight.log",
+          "validation/tsan.log",
+          "validation/state/results.json"
+        ],
+        "artifact_hashes": {
+          "qualification": "9bea3f837ce4bb33f6e49c95d35c0e14d1792b81ab381b15721c18cfc8206598",
+          "state": "95b115238d429c3983483f237834cf73f32ef6d6a2dae85319d1385fb45ac96f"
+        }
+      },
+      "platforms": [
+        "linux-amd64",
+        "linux-aarch64"
+      ],
+      "rewrite": {
+        "present": true,
+        "public_api": "include/gorilla/gorilla.hpp",
+        "variants": [
+          "canonical",
+          "optimized"
+        ]
+      },
+      "contract": "contract.md",
+      "predicate": "1D ordered int64/binary64 pairs, 0..65535; complete raw; explicit ownership mode, Linux LP64; additional lifetime requirement for Borrowed memory"
+    },
+    {
+      "capability_id": "state.compact",
+      "upstream": {
+        "present": true,
+        "evidence": "XORChunk.Compact",
+        "revision": "8374d30cb3fe705773bbac72d7015eba17480557"
+      },
+      "parity_class": "REQUIRED_PARITY",
+      "owner": "Codex",
+      "validation": {
+        "status": "PASS",
+        "plan": "bytes unchanged, append after compact",
+        "evidence": [
+          "validation/qualification.json",
+          "validation/release.preflight.log",
+          "validation/asan.preflight.log",
+          "validation/arm64-local.preflight.log",
+          "validation/tsan.log",
+          "validation/state/results.json"
+        ],
+        "artifact_hashes": {
+          "qualification": "9bea3f837ce4bb33f6e49c95d35c0e14d1792b81ab381b15721c18cfc8206598",
+          "state": "95b115238d429c3983483f237834cf73f32ef6d6a2dae85319d1385fb45ac96f"
+        }
+      },
+      "platforms": [
+        "linux-amd64",
+        "linux-aarch64"
+      ],
+      "rewrite": {
+        "present": true,
+        "public_api": "include/gorilla/gorilla.hpp",
+        "variants": [
+          "canonical",
+          "optimized"
+        ]
+      },
+      "contract": "contract.md",
+      "predicate": "1D ordered int64/binary64 pairs, 0..65535; complete raw; explicit ownership mode, Linux LP64; additional lifetime requirement for Borrowed memory"
+    },
+    {
+      "capability_id": "query.seek",
+      "upstream": {
+        "present": true,
+        "evidence": "xorIterator.Seek / At / AtT / AtST",
+        "revision": "8374d30cb3fe705773bbac72d7015eba17480557"
+      },
+      "parity_class": "REQUIRED_PARITY",
+      "owner": "Codex",
+      "validation": {
+        "status": "PASS",
+        "plan": "sorted forward seek and no-op",
+        "evidence": [
+          "validation/qualification.json",
+          "validation/release.preflight.log",
+          "validation/asan.preflight.log",
+          "validation/arm64-local.preflight.log",
+          "validation/tsan.log",
+          "validation/state/results.json"
+        ],
+        "artifact_hashes": {
+          "qualification": "9bea3f837ce4bb33f6e49c95d35c0e14d1792b81ab381b15721c18cfc8206598",
+          "state": "95b115238d429c3983483f237834cf73f32ef6d6a2dae85319d1385fb45ac96f"
+        }
+      },
+      "platforms": [
+        "linux-amd64",
+        "linux-aarch64"
+      ],
+      "rewrite": {
+        "present": true,
+        "public_api": "include/gorilla/gorilla.hpp",
+        "variants": [
+          "canonical",
+          "optimized"
+        ]
+      },
+      "contract": "contract.md",
+      "predicate": "1D ordered int64/binary64 pairs, 0..65535; complete raw; explicit ownership mode, Linux LP64; additional lifetime requirement for Borrowed memory"
+    },
+    {
+      "capability_id": "thread.snapshot",
+      "upstream": {
+        "present": true,
+        "evidence": "XORChunk.Iterator comments / newBReader.last",
+        "revision": "8374d30cb3fe705773bbac72d7015eba17480557"
+      },
+      "parity_class": "REQUIRED_PARITY",
+      "owner": "Codex",
+      "validation": {
+        "status": "PASS",
+        "plan": "snapshot after creation concurrent with writer",
+        "evidence": [
+          "validation/qualification.json",
+          "validation/release.preflight.log",
+          "validation/asan.preflight.log",
+          "validation/arm64-local.preflight.log",
+          "validation/tsan.log",
+          "validation/state/results.json"
+        ],
+        "artifact_hashes": {
+          "qualification": "9bea3f837ce4bb33f6e49c95d35c0e14d1792b81ab381b15721c18cfc8206598",
+          "state": "95b115238d429c3983483f237834cf73f32ef6d6a2dae85319d1385fb45ac96f"
+        }
+      },
+      "platforms": [
+        "linux-amd64",
+        "linux-aarch64"
+      ],
+      "rewrite": {
+        "present": true,
+        "public_api": "include/gorilla/gorilla.hpp",
+        "variants": [
+          "canonical",
+          "optimized"
+        ]
+      },
+      "contract": "contract.md",
+      "predicate": "1D ordered int64/binary64 pairs, 0..65535; complete raw; explicit ownership mode, Linux LP64; additional lifetime requirement for Borrowed memory"
+    },
+    {
+      "capability_id": "thread.handles",
+      "upstream": {
+        "present": true,
+        "evidence": "per-chunk state, no mutable globals",
+        "revision": "8374d30cb3fe705773bbac72d7015eba17480557"
+      },
+      "parity_class": "REQUIRED_PARITY",
+      "owner": "Codex",
+      "validation": {
+        "status": "PASS",
+        "plan": "interleaved/concurrent independent handles",
+        "evidence": [
+          "validation/qualification.json",
+          "validation/release.preflight.log",
+          "validation/asan.preflight.log",
+          "validation/arm64-local.preflight.log",
+          "validation/tsan.log",
+          "validation/state/results.json"
+        ],
+        "artifact_hashes": {
+          "qualification": "9bea3f837ce4bb33f6e49c95d35c0e14d1792b81ab381b15721c18cfc8206598",
+          "state": "95b115238d429c3983483f237834cf73f32ef6d6a2dae85319d1385fb45ac96f"
+        }
+      },
+      "platforms": [
+        "linux-amd64",
+        "linux-aarch64"
+      ],
+      "rewrite": {
+        "present": true,
+        "public_api": "include/gorilla/gorilla.hpp",
+        "variants": [
+          "canonical",
+          "optimized"
+        ]
+      },
+      "contract": "contract.md",
+      "predicate": "1D ordered int64/binary64 pairs, 0..65535; complete raw; explicit ownership mode, Linux LP64; additional lifetime requirement for Borrowed memory"
+    },
+    {
+      "capability_id": "memory.bytes",
+      "upstream": {
+        "present": true,
+        "evidence": "Bytes / NumSamples",
+        "revision": "8374d30cb3fe705773bbac72d7015eba17480557"
+      },
+      "parity_class": "REQUIRED_PARITY",
+      "owner": "Codex",
+      "validation": {
+        "status": "PASS",
+        "plan": "read-only view, count and guard validation",
+        "evidence": [
+          "validation/qualification.json",
+          "validation/release.preflight.log",
+          "validation/asan.preflight.log",
+          "validation/arm64-local.preflight.log",
+          "validation/tsan.log",
+          "validation/state/results.json"
+        ],
+        "artifact_hashes": {
+          "qualification": "9bea3f837ce4bb33f6e49c95d35c0e14d1792b81ab381b15721c18cfc8206598",
+          "state": "95b115238d429c3983483f237834cf73f32ef6d6a2dae85319d1385fb45ac96f"
+        }
+      },
+      "platforms": [
+        "linux-amd64",
+        "linux-aarch64"
+      ],
+      "rewrite": {
+        "present": true,
+        "public_api": "include/gorilla/gorilla.hpp",
+        "variants": [
+          "canonical",
+          "optimized"
+        ]
+      },
+      "contract": "contract.md",
+      "predicate": "1D ordered int64/binary64 pairs, 0..65535; complete raw; explicit ownership mode, Linux LP64; additional lifetime requirement for Borrowed memory"
+    },
+    {
+      "capability_id": "scalar.fast_reader",
+      "upstream": {
+        "present": true,
+        "evidence": "Next/readValue fast paths; bstreamReader.readBitsFast/loadNextBuffer",
+        "revision": "8374d30cb3fe705773bbac72d7015eba17480557"
+      },
+      "parity_class": "REQUIRED_PARITY",
+      "owner": "Codex",
+      "validation": {
+        "status": "PASS",
+        "plan": "forced optimized, tails, full-width and byte crossings",
+        "evidence": [
+          "validation/qualification.json",
+          "validation/release.preflight.log",
+          "validation/asan.preflight.log",
+          "validation/arm64-local.preflight.log",
+          "validation/tsan.log",
+          "validation/state/results.json"
+        ],
+        "artifact_hashes": {
+          "qualification": "9bea3f837ce4bb33f6e49c95d35c0e14d1792b81ab381b15721c18cfc8206598",
+          "state": "95b115238d429c3983483f237834cf73f32ef6d6a2dae85319d1385fb45ac96f"
+        }
+      },
+      "platforms": [
+        "linux-amd64",
+        "linux-aarch64"
+      ],
+      "rewrite": {
+        "present": true,
+        "public_api": "include/gorilla/gorilla.hpp",
+        "variants": [
+          "canonical",
+          "optimized"
+        ]
+      },
+      "contract": "contract.md",
+      "predicate": "1D ordered int64/binary64 pairs, 0..65535; complete raw; explicit ownership mode, Linux LP64; additional lifetime requirement for Borrowed memory"
+    },
+    {
+      "capability_id": "stream.byte_backpressure",
+      "upstream": {
+        "present": false,
+        "evidence": "No partial input / caller output buffer API upstream"
+      },
+      "parity_class": "NOT_APPLICABLE",
+      "rationale": "No partial input / caller output buffer API upstream",
+      "validation": {
+        "status": "N/A"
+      }
+    },
+    {
+      "capability_id": "simd.isa",
+      "upstream": {
+        "present": false,
+        "evidence": "No SIMD or runtime dispatch in frozen core"
+      },
+      "parity_class": "NOT_APPLICABLE",
+      "rationale": "No SIMD or runtime dispatch in frozen core",
+      "validation": {
+        "status": "N/A"
+      }
+    },
+    {
+      "capability_id": "thread.internal_parallel",
+      "upstream": {
+        "present": false,
+        "evidence": "Core is synchronous serial; same writer disallows concurrent appenders"
+      },
+      "parity_class": "NOT_APPLICABLE",
+      "rationale": "Core is synchronous serial; same writer disallows concurrent appenders",
+      "validation": {
+        "status": "N/A"
+      }
+    },
+    {
+      "capability_id": "accelerator.gpu_hls",
+      "upstream": {
+        "present": false,
+        "evidence": "No accelerated path in closure/build"
+      },
+      "parity_class": "NOT_APPLICABLE",
+      "rationale": "No accelerated path in closure/build",
+      "validation": {
+        "status": "N/A"
+      }
+    },
+    {
+      "capability_id": "query.random_access",
+      "upstream": {
+        "present": false,
+        "evidence": "Seek scans forward without index; no random access"
+      },
+      "parity_class": "NOT_APPLICABLE",
+      "rationale": "Seek scans forward without index; no random access",
+      "validation": {
+        "status": "N/A"
+      }
+    },
+    {
+      "capability_id": "model.dictionary",
+      "upstream": {
+        "present": false,
+        "evidence": "No model/dictionary/checkpoint"
+      },
+      "parity_class": "NOT_APPLICABLE",
+      "rationale": "No model/dictionary/checkpoint",
+      "validation": {
+        "status": "N/A"
+      }
+    },
+    {
+      "capability_id": "dtype.histogram",
+      "upstream": {
+        "present": false,
+        "evidence": "XOR methods panic; separate codecs excluded"
+      },
+      "parity_class": "NOT_APPLICABLE",
+      "rationale": "XOR methods panic; separate codecs excluded",
+      "validation": {
+        "status": "N/A"
+      }
+    },
+    {
+      "capability_id": "layout.multivariate",
+      "upstream": {
+        "present": false,
+        "evidence": "Single float series only"
+      },
+      "parity_class": "NOT_APPLICABLE",
+      "rationale": "Single float series only",
+      "validation": {
+        "status": "N/A"
+      }
+    },
+    {
+      "capability_id": "memory.in_place",
+      "upstream": {
+        "present": false,
+        "evidence": "Not a supported codec mode"
+      },
+      "parity_class": "NOT_APPLICABLE",
+      "rationale": "Not a supported codec mode",
+      "validation": {
+        "status": "N/A"
+      }
+    },
+    {
+      "capability_id": "format.checksum",
+      "upstream": {
+        "present": false,
+        "evidence": "No checksum in XOR raw format"
+      },
+      "parity_class": "NOT_APPLICABLE",
+      "rationale": "No checksum in XOR raw format",
+      "validation": {
+        "status": "N/A"
+      }
+    },
+    {
+      "capability_id": "memory.zero_copy_raw",
+      "upstream": {
+        "present": true,
+        "evidence": "XORChunk.Reset/Bytes, iterator/newBReader: borrow slice and capture last byte"
+      },
+      "parity_class": "REQUIRED_PARITY",
+      "owner": "Codex",
+      "validation": {
+        "status": "PASS",
+        "plan": "Borrowed Iterator pointer identity, immutable guard-page raw input; reset_owned pointer identity; default concurrent snapshots",
+        "evidence": [
+          "validation/qualification.json",
+          "validation/release.preflight.log",
+          "validation/asan.preflight.log",
+          "validation/arm64-local.preflight.log",
+          "validation/tsan.log",
+          "validation/state/results.json"
+        ],
+        "artifact_hashes": {
+          "qualification": "9bea3f837ce4bb33f6e49c95d35c0e14d1792b81ab381b15721c18cfc8206598",
+          "state": "95b115238d429c3983483f237834cf73f32ef6d6a2dae85319d1385fb45ac96f"
+        }
+      },
+      "platforms": [
+        "linux-amd64",
+        "linux-aarch64"
+      ],
+      "rewrite": {
+        "present": true,
+        "public_api": "include/gorilla/gorilla.hpp",
+        "variants": [
+          "canonical",
+          "optimized"
+        ]
+      },
+      "contract": "contract.md",
+      "predicate": "1D ordered int64/binary64 pairs, 0..65535; complete raw; explicit ownership mode, Linux LP64; additional lifetime requirement for Borrowed memory"
+    }
+  ],
+  "BenchProfileMatrix": "N/A: no integration",
+  "PipelineCoverageMatrix": "N/A: dataset column decomposition is test harness only",
+  "qualification_scope": "Complete frozen XOR object on Linux amd64/AArch64 LP64; AArch64 via QEMU; safety instrumentation amd64."
+}

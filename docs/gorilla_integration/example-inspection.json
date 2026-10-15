@@ -1,0 +1,290 @@
+{
+  "schema": "tsbench.inspection/1",
+  "resolved_config": {
+    "schema": "tsbench.experiment/1",
+    "name": "gorilla-records-example",
+    "output": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/runs/gorilla-records-example",
+    "datasets": [
+      {
+        "id": "typed-records-tail",
+        "format": "npz",
+        "path": "data/records.npz",
+        "components": {
+          "V": "V",
+          "T": "T",
+          "mask": "mask"
+        },
+        "time_unit": "ns"
+      }
+    ],
+    "methods": [
+      {
+        "id": "gorilla-canonical",
+        "codec": "gorilla-prometheus-xor",
+        "params": {
+          "path": "canonical"
+        },
+        "channelwise": true,
+        "chunk_rows": 128
+      },
+      {
+        "id": "gorilla-optimized",
+        "codec": "gorilla-prometheus-xor",
+        "params": {
+          "path": "optimized"
+        },
+        "channelwise": true,
+        "chunk_rows": 128
+      },
+      {
+        "id": "raw-records",
+        "codec": "raw-store",
+        "params": {}
+      }
+    ],
+    "task": {
+      "kind": "records",
+      "fidelity": "bitwise",
+      "boundary": "object_memory",
+      "lifecycle": "independent_object",
+      "cache_policy": "natural"
+    },
+    "profiles": [
+      {
+        "id": "cpu-single",
+        "device": "cpu",
+        "native_threads": 1,
+        "object_workers": 1,
+        "memory_limit_mb": 4096
+      }
+    ],
+    "execution": {
+      "sessions": 1,
+      "rounds": 7,
+      "warmup_objects": 2,
+      "seed": 20261013,
+      "timeout_s": 120,
+      "qualification_cache": true,
+      "save_artifacts": true
+    },
+    "analysis": {
+      "summary": "median_iqr",
+      "inference": "none"
+    },
+    "_base_dir": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/examples",
+    "_asset_root": "/home/fzg/PycharmProjects/TSDataCompressBenchMark",
+    "_build_root": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/tsbench",
+    "_config_path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/examples/gorilla_records.toml"
+  },
+  "datasets": [
+    {
+      "id": "typed-records-tail",
+      "raw_object_id": "sha256:39da9af1f74df9fd79f7990a33585df3b7dce3c72438b4ade87d1bead0fd6ebd",
+      "raw_bytes": 8995,
+      "components": {
+        "V": {
+          "dtype": "<f8",
+          "shape": [
+            257,
+            3
+          ],
+          "order": "C"
+        },
+        "T": {
+          "dtype": "<i8",
+          "shape": [
+            257
+          ],
+          "order": "C"
+        },
+        "mask": {
+          "dtype": "|u1",
+          "shape": [
+            257,
+            3
+          ],
+          "order": "C"
+        }
+      },
+      "lineage": {
+        "source_path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/examples/data/records.npz",
+        "source_hash": "sha256:15ea2061037fe0d95231f4c2b11916a77f8cf200e52110440d4e58939e33a692",
+        "parse_rule": {
+          "format": "npz",
+          "components": {
+            "V": "V",
+            "T": "T",
+            "mask": "mask"
+          },
+          "time_unit": "ns"
+        },
+        "source": null,
+        "license": null,
+        "selection": {
+          "windows": {
+            "V": {
+              "start": 0,
+              "stop": 257,
+              "step": 1,
+              "source_rows": 257,
+              "selected_rows": 257
+            },
+            "T": {
+              "start": 0,
+              "stop": 257,
+              "step": 1,
+              "source_rows": 257,
+              "selected_rows": 257
+            },
+            "mask": {
+              "start": 0,
+              "stop": 257,
+              "step": 1,
+              "source_rows": 257,
+              "selected_rows": 257
+            }
+          },
+          "columns_indices": null,
+          "index_policy": "nonnegative zero-based rows/channels; exclusive stop; no implicit clipping"
+        }
+      }
+    }
+  ],
+  "cases": [
+    {
+      "dataset_id": "typed-records-tail",
+      "method_id": "gorilla-canonical",
+      "profile_id": "cpu-single",
+      "resolved_method": {
+        "id": "gorilla-canonical",
+        "codec": "gorilla-prometheus-xor",
+        "params": {
+          "path": "canonical"
+        },
+        "channelwise": true,
+        "chunk_rows": 128
+      },
+      "supported": true,
+      "status": "ok",
+      "reason": null,
+      "implementation_id": "sha256:bdbcd85baa59ae719ded8f3ae1f419c4284aa0e85529c50852a910c41e0fc2bf",
+      "library_path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/tsbench/ee580c1c8fa0fa1fe81309a3e983d559b947cbb496f0e5d86631859e7598d164/gorilla-prometheus-xor/libtscb_gorilla_prometheus_xor.so",
+      "library_paths": [
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/tsbench/ee580c1c8fa0fa1fe81309a3e983d559b947cbb496f0e5d86631859e7598d164/gorilla-prometheus-xor/libtscb_gorilla_prometheus_xor.so"
+      ],
+      "runtime_dependencies": [
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+          "sha256": "9eb34cb2da3ae2a9398cc09b3cd2d069563ec40d9858cb711af15cd23fa80abf"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+          "sha256": "c53819710b163d3f1d2541778590d58d3ef31cb0ed75adcbe059faac68c1e72d"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libgcc_s.so.1",
+          "sha256": "fc9d43b2f6c20e53b009238f767c5b949d202389e20de9e202ea684b4ba3729a"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libm.so.6",
+          "sha256": "00830df310aac5023e10bd7b715149ab8ddc682277fd8ae3539a7a44fcdd6c38"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30",
+          "sha256": "ff0825e113603c3866680d5d52216bc6d8eedf3a59f52a0aef67ff01994db128"
+        }
+      ],
+      "model_dependencies": [],
+      "effective_native_threads": 1,
+      "thread_evidence": "frozen single-thread API contract",
+      "executor_features": {
+        "object": true,
+        "stream": false,
+        "query": false,
+        "gpu": false
+      }
+    },
+    {
+      "dataset_id": "typed-records-tail",
+      "method_id": "gorilla-optimized",
+      "profile_id": "cpu-single",
+      "resolved_method": {
+        "id": "gorilla-optimized",
+        "codec": "gorilla-prometheus-xor",
+        "params": {
+          "path": "optimized"
+        },
+        "channelwise": true,
+        "chunk_rows": 128
+      },
+      "supported": true,
+      "status": "ok",
+      "reason": null,
+      "implementation_id": "sha256:196dce6f2e117d0518796d9283e7e67c4124dd162f3dc0b9defa3e305b8a78a8",
+      "library_path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/tsbench/ee580c1c8fa0fa1fe81309a3e983d559b947cbb496f0e5d86631859e7598d164/gorilla-prometheus-xor/libtscb_gorilla_prometheus_xor.so",
+      "library_paths": [
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/tsbench/ee580c1c8fa0fa1fe81309a3e983d559b947cbb496f0e5d86631859e7598d164/gorilla-prometheus-xor/libtscb_gorilla_prometheus_xor.so"
+      ],
+      "runtime_dependencies": [
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+          "sha256": "9eb34cb2da3ae2a9398cc09b3cd2d069563ec40d9858cb711af15cd23fa80abf"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+          "sha256": "c53819710b163d3f1d2541778590d58d3ef31cb0ed75adcbe059faac68c1e72d"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libgcc_s.so.1",
+          "sha256": "fc9d43b2f6c20e53b009238f767c5b949d202389e20de9e202ea684b4ba3729a"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libm.so.6",
+          "sha256": "00830df310aac5023e10bd7b715149ab8ddc682277fd8ae3539a7a44fcdd6c38"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30",
+          "sha256": "ff0825e113603c3866680d5d52216bc6d8eedf3a59f52a0aef67ff01994db128"
+        }
+      ],
+      "model_dependencies": [],
+      "effective_native_threads": 1,
+      "thread_evidence": "frozen single-thread API contract",
+      "executor_features": {
+        "object": true,
+        "stream": false,
+        "query": false,
+        "gpu": false
+      }
+    },
+    {
+      "dataset_id": "typed-records-tail",
+      "method_id": "raw-records",
+      "profile_id": "cpu-single",
+      "resolved_method": {
+        "id": "raw-records",
+        "codec": "raw-store",
+        "params": {}
+      },
+      "supported": true,
+      "status": "ok",
+      "reason": null,
+      "implementation_id": "sha256:d5a11ed556befd4ca451909c4ebc862accff62582ebede81047e457028fc87ec",
+      "library_path": null,
+      "library_paths": [],
+      "runtime_dependencies": [],
+      "model_dependencies": [],
+      "effective_native_threads": 1,
+      "thread_evidence": "frozen single-thread API contract",
+      "executor_features": {
+        "object": true,
+        "stream": false,
+        "query": false,
+        "gpu": false
+      }
+    }
+  ],
+  "requested_cases": 3,
+  "executable_cases": 3,
+  "measurement_executed": false
+}

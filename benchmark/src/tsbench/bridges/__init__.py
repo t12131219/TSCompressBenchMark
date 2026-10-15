@@ -45,5 +45,8 @@ def create_bridge(root, key, build_root=None):
     if spec.document['adapter']['factory'] == 'COMPLETED_REWRITE_CTYPES_V1':
         from .rw_abi_v1 import RwAbiBridge
         return RwAbiBridge(spec,path,record['artifact_sha256'])
+    if spec.key == 'gorilla-prometheus-xor':
+        from .gorilla import GorillaBridge
+        return GorillaBridge(spec,path,record['artifact_sha256'])
     from .c_abi_v1 import CAbiBridge
     return CAbiBridge(spec,path,record['artifact_sha256'])

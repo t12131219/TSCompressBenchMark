@@ -190,6 +190,21 @@ def _simd_build(root: Path, output: Path) -> None:
 
 
 def _command(key: str, output: Path) -> list[str]:
+    if key == 'gorilla-prometheus-xor':
+        adapter = recipes.PROJECT_ROOT / 'adapters/gorilla_prometheus_xor'
+        lock = json.loads((adapter / 'FROZEN_SOURCES.json').read_text())
+        for record in lock['files']:
+            path = recipes.PROJECT_ROOT / record['path']
+            if sha(path) != record['sha256']:
+                raise Unavailable(f'frozen Gorilla source changed: {path}', stage='build')
+        core = adapter / 'vendor/gorilla'
+        return [os.environ.get('CXX', 'c++'), '-std=c++17', '-O3', '-DNDEBUG',
+                '-fPIC', '-shared', '-Wall', '-Wextra', '-Wpedantic', '-Werror',
+                '-fno-fast-math', '-ffp-contract=off', '-DGORILLA_HAS_OPTIMIZED=1',
+                '-I', str(recipes.PROJECT_ROOT / 'native/include'), '-I', str(core / 'include'),
+                str(adapter / 'native/tscb_gorilla.cc'), str(core / 'src/canonical/gorilla.cpp'),
+                str(core / 'src/optimized/bitops.cpp'), '-Wl,-z,defs', '-Wl,-Bsymbolic-functions',
+                '-o', str(output)]
     mapping = {
         'lz4-frame': recipes._lz4_command, 'zstd-frame': recipes._zstd_command,
         'snappy-raw': recipes._snappy_command, 'lzsse2-raw': recipes._lzsse2_command,

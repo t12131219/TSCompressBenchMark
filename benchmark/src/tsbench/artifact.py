@@ -59,6 +59,9 @@ def checked_array(desc):
 
 
 def validate_descriptor(desc,body):
+    if desc.get('schema_version') == 'tsbench.gorilla-records/1':
+        from .bridges.gorilla import validate_joint_descriptor
+        return validate_joint_descriptor(desc, body)
     if desc.get('schema_version') != 'tsbench.object/1': raise ValueError('unknown object schema')
     if not isinstance(desc.get('schema'),dict): raise ValueError('missing object schema')
     components=desc.get('components')

@@ -1,0 +1,1818 @@
+{
+  "schema": "tsbench.inspection/1",
+  "resolved_config": {
+    "schema": "tsbench.experiment/1",
+    "name": "gorilla-real-records",
+    "output": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/runs/gorilla-real-records-20261015",
+    "datasets": [
+      {
+        "id": "etth1-mts-n128",
+        "format": "csv",
+        "path": "/home/fzg/PycharmProjects/材料/TSBench_Corpus/ETTh1.csv",
+        "dtype": "<f8",
+        "encoding": "utf-8",
+        "timestamp_column": "date",
+        "timestamp_parser": "datetime64",
+        "time_unit": "ms",
+        "missing": "reject",
+        "columns": [
+          "HUFL",
+          "HULL",
+          "MUFL",
+          "MULL",
+          "LUFL",
+          "LULL",
+          "OT"
+        ],
+        "start": 2048,
+        "stop": 2176,
+        "step": 1,
+        "source": "etth1",
+        "order": "C"
+      },
+      {
+        "id": "etth1-mts-n512",
+        "format": "csv",
+        "path": "/home/fzg/PycharmProjects/材料/TSBench_Corpus/ETTh1.csv",
+        "dtype": "<f8",
+        "encoding": "utf-8",
+        "timestamp_column": "date",
+        "timestamp_parser": "datetime64",
+        "time_unit": "ms",
+        "missing": "reject",
+        "columns": [
+          "HUFL",
+          "HULL",
+          "MUFL",
+          "MULL",
+          "LUFL",
+          "LULL",
+          "OT"
+        ],
+        "start": 2048,
+        "stop": 2560,
+        "step": 1,
+        "source": "etth1",
+        "order": "C"
+      },
+      {
+        "id": "weather-mts-n128",
+        "format": "csv",
+        "path": "/home/fzg/PycharmProjects/材料/TSBench_Corpus/weather.csv",
+        "dtype": "<f8",
+        "encoding": "utf-8",
+        "timestamp_column": "date",
+        "timestamp_parser": "datetime64",
+        "time_unit": "ms",
+        "missing": "reject",
+        "columns": [
+          "p (mbar)",
+          "T (degC)",
+          "Tpot (K)",
+          "Tdew (degC)",
+          "rh (%)",
+          "VPmax (mbar)",
+          "VPact (mbar)",
+          "VPdef (mbar)",
+          "sh (g/kg)",
+          "H2OC (mmol/mol)",
+          "rho (g/m**3)",
+          "wv (m/s)",
+          "max. wv (m/s)",
+          "wd (deg)",
+          "rain (mm)",
+          "raining (s)",
+          "SWDR (W/m�)",
+          "PAR (�mol/m�/s)",
+          "max. PAR (�mol/m�/s)",
+          "Tlog (degC)",
+          "OT"
+        ],
+        "start": 2048,
+        "stop": 2176,
+        "step": 1,
+        "source": "weather",
+        "order": "C"
+      },
+      {
+        "id": "weather-mts-n512",
+        "format": "csv",
+        "path": "/home/fzg/PycharmProjects/材料/TSBench_Corpus/weather.csv",
+        "dtype": "<f8",
+        "encoding": "utf-8",
+        "timestamp_column": "date",
+        "timestamp_parser": "datetime64",
+        "time_unit": "ms",
+        "missing": "reject",
+        "columns": [
+          "p (mbar)",
+          "T (degC)",
+          "Tpot (K)",
+          "Tdew (degC)",
+          "rh (%)",
+          "VPmax (mbar)",
+          "VPact (mbar)",
+          "VPdef (mbar)",
+          "sh (g/kg)",
+          "H2OC (mmol/mol)",
+          "rho (g/m**3)",
+          "wv (m/s)",
+          "max. wv (m/s)",
+          "wd (deg)",
+          "rain (mm)",
+          "raining (s)",
+          "SWDR (W/m�)",
+          "PAR (�mol/m�/s)",
+          "max. PAR (�mol/m�/s)",
+          "Tlog (degC)",
+          "OT"
+        ],
+        "start": 2048,
+        "stop": 2560,
+        "step": 1,
+        "source": "weather",
+        "order": "C"
+      },
+      {
+        "id": "ili-mts-n128",
+        "format": "csv",
+        "path": "/home/fzg/PycharmProjects/材料/TSBench_Corpus/national_illness.csv",
+        "dtype": "<f8",
+        "encoding": "utf-8",
+        "timestamp_column": "date",
+        "timestamp_parser": "datetime64",
+        "time_unit": "ms",
+        "missing": "reject",
+        "columns": [
+          "% WEIGHTED ILI",
+          "%UNWEIGHTED ILI",
+          "AGE 0-4",
+          "AGE 5-24",
+          "ILITOTAL",
+          "NUM. OF PROVIDERS",
+          "OT"
+        ],
+        "start": 256,
+        "stop": 384,
+        "step": 1,
+        "source": "ili",
+        "order": "C"
+      },
+      {
+        "id": "ili-mts-n512",
+        "format": "csv",
+        "path": "/home/fzg/PycharmProjects/材料/TSBench_Corpus/national_illness.csv",
+        "dtype": "<f8",
+        "encoding": "utf-8",
+        "timestamp_column": "date",
+        "timestamp_parser": "datetime64",
+        "time_unit": "ms",
+        "missing": "reject",
+        "columns": [
+          "% WEIGHTED ILI",
+          "%UNWEIGHTED ILI",
+          "AGE 0-4",
+          "AGE 5-24",
+          "ILITOTAL",
+          "NUM. OF PROVIDERS",
+          "OT"
+        ],
+        "start": 256,
+        "stop": 768,
+        "step": 1,
+        "source": "ili",
+        "order": "C"
+      }
+    ],
+    "methods": [
+      {
+        "id": "gorilla-canonical",
+        "codec": "gorilla-prometheus-xor",
+        "params": {
+          "path": "canonical"
+        },
+        "channelwise": true,
+        "chunk_rows": 128
+      },
+      {
+        "id": "gorilla-optimized",
+        "codec": "gorilla-prometheus-xor",
+        "params": {
+          "path": "optimized"
+        },
+        "channelwise": true,
+        "chunk_rows": 128
+      },
+      {
+        "id": "raw-records",
+        "codec": "raw-store",
+        "params": {}
+      },
+      {
+        "id": "zstd-records",
+        "codec": "zstd-frame",
+        "params": {
+          "compression_level": 3
+        }
+      }
+    ],
+    "task": {
+      "kind": "records",
+      "fidelity": "bitwise",
+      "boundary": "object_memory",
+      "lifecycle": "independent_object",
+      "cache_policy": "natural"
+    },
+    "profiles": [
+      {
+        "id": "cpu-single",
+        "device": "cpu",
+        "native_threads": 1,
+        "object_workers": 1,
+        "memory_limit_mb": 4096
+      }
+    ],
+    "execution": {
+      "sessions": 3,
+      "rounds": 7,
+      "warmup_objects": 2,
+      "seed": 20261015,
+      "timeout_s": 120,
+      "qualification_cache": true,
+      "save_artifacts": true
+    },
+    "analysis": {
+      "summary": "median_iqr",
+      "inference": "none"
+    },
+    "_base_dir": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/gorilla",
+    "_asset_root": "/home/fzg/PycharmProjects/TSDataCompressBenchMark",
+    "_build_root": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/tsbench",
+    "_config_path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/gorilla/records.toml"
+  },
+  "datasets": [
+    {
+      "id": "etth1-mts-n128",
+      "raw_object_id": "sha256:e8af64215a11bc22ed1eeb94e1525aeb9c5f9914176da0a86d2ea9c7360da094",
+      "raw_bytes": 8192,
+      "components": {
+        "V": {
+          "dtype": "<f8",
+          "shape": [
+            128,
+            7
+          ],
+          "order": "C"
+        },
+        "T": {
+          "dtype": "<i8",
+          "shape": [
+            128
+          ],
+          "order": "C"
+        }
+      },
+      "lineage": {
+        "source_path": "/home/fzg/PycharmProjects/材料/TSBench_Corpus/ETTh1.csv",
+        "source_hash": "sha256:f18de3ad269cef59bb07b5438d79bb3042d3be49bdeecf01c1cd6d29695ee066",
+        "parse_rule": {
+          "format": "csv",
+          "dtype": "<f8",
+          "encoding": "utf-8",
+          "timestamp_column": "date",
+          "timestamp_parser": "datetime64",
+          "time_unit": "ms",
+          "missing": "reject",
+          "columns": [
+            "HUFL",
+            "HULL",
+            "MUFL",
+            "MULL",
+            "LUFL",
+            "LULL",
+            "OT"
+          ],
+          "start": 2048,
+          "stop": 2176,
+          "step": 1,
+          "order": "C"
+        },
+        "source": "etth1",
+        "license": null,
+        "selection": {
+          "windows": {
+            "V": {
+              "start": 2048,
+              "stop": 2176,
+              "step": 1,
+              "source_rows": 17420,
+              "selected_rows": 128
+            },
+            "T": {
+              "start": 2048,
+              "stop": 2176,
+              "step": 1,
+              "source_rows": 17420,
+              "selected_rows": 128
+            }
+          },
+          "columns_indices": null,
+          "index_policy": "nonnegative zero-based rows/channels; exclusive stop; no implicit clipping"
+        }
+      }
+    },
+    {
+      "id": "etth1-mts-n512",
+      "raw_object_id": "sha256:dc841d4ee2efc64cdd4ac45362d81c90fb988c85332a3bfda3a726d8d34b0004",
+      "raw_bytes": 32768,
+      "components": {
+        "V": {
+          "dtype": "<f8",
+          "shape": [
+            512,
+            7
+          ],
+          "order": "C"
+        },
+        "T": {
+          "dtype": "<i8",
+          "shape": [
+            512
+          ],
+          "order": "C"
+        }
+      },
+      "lineage": {
+        "source_path": "/home/fzg/PycharmProjects/材料/TSBench_Corpus/ETTh1.csv",
+        "source_hash": "sha256:f18de3ad269cef59bb07b5438d79bb3042d3be49bdeecf01c1cd6d29695ee066",
+        "parse_rule": {
+          "format": "csv",
+          "dtype": "<f8",
+          "encoding": "utf-8",
+          "timestamp_column": "date",
+          "timestamp_parser": "datetime64",
+          "time_unit": "ms",
+          "missing": "reject",
+          "columns": [
+            "HUFL",
+            "HULL",
+            "MUFL",
+            "MULL",
+            "LUFL",
+            "LULL",
+            "OT"
+          ],
+          "start": 2048,
+          "stop": 2560,
+          "step": 1,
+          "order": "C"
+        },
+        "source": "etth1",
+        "license": null,
+        "selection": {
+          "windows": {
+            "V": {
+              "start": 2048,
+              "stop": 2560,
+              "step": 1,
+              "source_rows": 17420,
+              "selected_rows": 512
+            },
+            "T": {
+              "start": 2048,
+              "stop": 2560,
+              "step": 1,
+              "source_rows": 17420,
+              "selected_rows": 512
+            }
+          },
+          "columns_indices": null,
+          "index_policy": "nonnegative zero-based rows/channels; exclusive stop; no implicit clipping"
+        }
+      }
+    },
+    {
+      "id": "weather-mts-n128",
+      "raw_object_id": "sha256:9b07383203977cba240a3d4dfdd507a346bc7b0754dd33b16fd3d8237007124f",
+      "raw_bytes": 22528,
+      "components": {
+        "V": {
+          "dtype": "<f8",
+          "shape": [
+            128,
+            21
+          ],
+          "order": "C"
+        },
+        "T": {
+          "dtype": "<i8",
+          "shape": [
+            128
+          ],
+          "order": "C"
+        }
+      },
+      "lineage": {
+        "source_path": "/home/fzg/PycharmProjects/材料/TSBench_Corpus/weather.csv",
+        "source_hash": "sha256:34ee981d07313e51da2a50bb600072c8ae4a69cb4b0651f4cb93a069d7a2ba63",
+        "parse_rule": {
+          "format": "csv",
+          "dtype": "<f8",
+          "encoding": "utf-8",
+          "timestamp_column": "date",
+          "timestamp_parser": "datetime64",
+          "time_unit": "ms",
+          "missing": "reject",
+          "columns": [
+            "p (mbar)",
+            "T (degC)",
+            "Tpot (K)",
+            "Tdew (degC)",
+            "rh (%)",
+            "VPmax (mbar)",
+            "VPact (mbar)",
+            "VPdef (mbar)",
+            "sh (g/kg)",
+            "H2OC (mmol/mol)",
+            "rho (g/m**3)",
+            "wv (m/s)",
+            "max. wv (m/s)",
+            "wd (deg)",
+            "rain (mm)",
+            "raining (s)",
+            "SWDR (W/m�)",
+            "PAR (�mol/m�/s)",
+            "max. PAR (�mol/m�/s)",
+            "Tlog (degC)",
+            "OT"
+          ],
+          "start": 2048,
+          "stop": 2176,
+          "step": 1,
+          "order": "C"
+        },
+        "source": "weather",
+        "license": null,
+        "selection": {
+          "windows": {
+            "V": {
+              "start": 2048,
+              "stop": 2176,
+              "step": 1,
+              "source_rows": 52696,
+              "selected_rows": 128
+            },
+            "T": {
+              "start": 2048,
+              "stop": 2176,
+              "step": 1,
+              "source_rows": 52696,
+              "selected_rows": 128
+            }
+          },
+          "columns_indices": null,
+          "index_policy": "nonnegative zero-based rows/channels; exclusive stop; no implicit clipping"
+        }
+      }
+    },
+    {
+      "id": "weather-mts-n512",
+      "raw_object_id": "sha256:1f9b1b5b987ea5af4f071a51213d83266dc7ad8943b6462d7c24a081081cfb22",
+      "raw_bytes": 90112,
+      "components": {
+        "V": {
+          "dtype": "<f8",
+          "shape": [
+            512,
+            21
+          ],
+          "order": "C"
+        },
+        "T": {
+          "dtype": "<i8",
+          "shape": [
+            512
+          ],
+          "order": "C"
+        }
+      },
+      "lineage": {
+        "source_path": "/home/fzg/PycharmProjects/材料/TSBench_Corpus/weather.csv",
+        "source_hash": "sha256:34ee981d07313e51da2a50bb600072c8ae4a69cb4b0651f4cb93a069d7a2ba63",
+        "parse_rule": {
+          "format": "csv",
+          "dtype": "<f8",
+          "encoding": "utf-8",
+          "timestamp_column": "date",
+          "timestamp_parser": "datetime64",
+          "time_unit": "ms",
+          "missing": "reject",
+          "columns": [
+            "p (mbar)",
+            "T (degC)",
+            "Tpot (K)",
+            "Tdew (degC)",
+            "rh (%)",
+            "VPmax (mbar)",
+            "VPact (mbar)",
+            "VPdef (mbar)",
+            "sh (g/kg)",
+            "H2OC (mmol/mol)",
+            "rho (g/m**3)",
+            "wv (m/s)",
+            "max. wv (m/s)",
+            "wd (deg)",
+            "rain (mm)",
+            "raining (s)",
+            "SWDR (W/m�)",
+            "PAR (�mol/m�/s)",
+            "max. PAR (�mol/m�/s)",
+            "Tlog (degC)",
+            "OT"
+          ],
+          "start": 2048,
+          "stop": 2560,
+          "step": 1,
+          "order": "C"
+        },
+        "source": "weather",
+        "license": null,
+        "selection": {
+          "windows": {
+            "V": {
+              "start": 2048,
+              "stop": 2560,
+              "step": 1,
+              "source_rows": 52696,
+              "selected_rows": 512
+            },
+            "T": {
+              "start": 2048,
+              "stop": 2560,
+              "step": 1,
+              "source_rows": 52696,
+              "selected_rows": 512
+            }
+          },
+          "columns_indices": null,
+          "index_policy": "nonnegative zero-based rows/channels; exclusive stop; no implicit clipping"
+        }
+      }
+    },
+    {
+      "id": "ili-mts-n128",
+      "raw_object_id": "sha256:679f2f856b95db3104297ad7ea05828109b6245d1690bfbf3e51e73a02cce1c1",
+      "raw_bytes": 8192,
+      "components": {
+        "V": {
+          "dtype": "<f8",
+          "shape": [
+            128,
+            7
+          ],
+          "order": "C"
+        },
+        "T": {
+          "dtype": "<i8",
+          "shape": [
+            128
+          ],
+          "order": "C"
+        }
+      },
+      "lineage": {
+        "source_path": "/home/fzg/PycharmProjects/材料/TSBench_Corpus/national_illness.csv",
+        "source_hash": "sha256:93601f64d2566dc796ca4305adad8b8560c2db1a1ff04543c3bd813a7263570a",
+        "parse_rule": {
+          "format": "csv",
+          "dtype": "<f8",
+          "encoding": "utf-8",
+          "timestamp_column": "date",
+          "timestamp_parser": "datetime64",
+          "time_unit": "ms",
+          "missing": "reject",
+          "columns": [
+            "% WEIGHTED ILI",
+            "%UNWEIGHTED ILI",
+            "AGE 0-4",
+            "AGE 5-24",
+            "ILITOTAL",
+            "NUM. OF PROVIDERS",
+            "OT"
+          ],
+          "start": 256,
+          "stop": 384,
+          "step": 1,
+          "order": "C"
+        },
+        "source": "ili",
+        "license": null,
+        "selection": {
+          "windows": {
+            "V": {
+              "start": 256,
+              "stop": 384,
+              "step": 1,
+              "source_rows": 966,
+              "selected_rows": 128
+            },
+            "T": {
+              "start": 256,
+              "stop": 384,
+              "step": 1,
+              "source_rows": 966,
+              "selected_rows": 128
+            }
+          },
+          "columns_indices": null,
+          "index_policy": "nonnegative zero-based rows/channels; exclusive stop; no implicit clipping"
+        }
+      }
+    },
+    {
+      "id": "ili-mts-n512",
+      "raw_object_id": "sha256:a4649f18406a62530c38c22e1a111d7c68c7ed9c8cf56946c962beecc7ab681d",
+      "raw_bytes": 32768,
+      "components": {
+        "V": {
+          "dtype": "<f8",
+          "shape": [
+            512,
+            7
+          ],
+          "order": "C"
+        },
+        "T": {
+          "dtype": "<i8",
+          "shape": [
+            512
+          ],
+          "order": "C"
+        }
+      },
+      "lineage": {
+        "source_path": "/home/fzg/PycharmProjects/材料/TSBench_Corpus/national_illness.csv",
+        "source_hash": "sha256:93601f64d2566dc796ca4305adad8b8560c2db1a1ff04543c3bd813a7263570a",
+        "parse_rule": {
+          "format": "csv",
+          "dtype": "<f8",
+          "encoding": "utf-8",
+          "timestamp_column": "date",
+          "timestamp_parser": "datetime64",
+          "time_unit": "ms",
+          "missing": "reject",
+          "columns": [
+            "% WEIGHTED ILI",
+            "%UNWEIGHTED ILI",
+            "AGE 0-4",
+            "AGE 5-24",
+            "ILITOTAL",
+            "NUM. OF PROVIDERS",
+            "OT"
+          ],
+          "start": 256,
+          "stop": 768,
+          "step": 1,
+          "order": "C"
+        },
+        "source": "ili",
+        "license": null,
+        "selection": {
+          "windows": {
+            "V": {
+              "start": 256,
+              "stop": 768,
+              "step": 1,
+              "source_rows": 966,
+              "selected_rows": 512
+            },
+            "T": {
+              "start": 256,
+              "stop": 768,
+              "step": 1,
+              "source_rows": 966,
+              "selected_rows": 512
+            }
+          },
+          "columns_indices": null,
+          "index_policy": "nonnegative zero-based rows/channels; exclusive stop; no implicit clipping"
+        }
+      }
+    }
+  ],
+  "cases": [
+    {
+      "dataset_id": "etth1-mts-n128",
+      "method_id": "gorilla-canonical",
+      "profile_id": "cpu-single",
+      "resolved_method": {
+        "id": "gorilla-canonical",
+        "codec": "gorilla-prometheus-xor",
+        "params": {
+          "path": "canonical"
+        },
+        "channelwise": true,
+        "chunk_rows": 128
+      },
+      "supported": true,
+      "status": "ok",
+      "reason": null,
+      "implementation_id": "sha256:bdbcd85baa59ae719ded8f3ae1f419c4284aa0e85529c50852a910c41e0fc2bf",
+      "library_path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/tsbench/ee580c1c8fa0fa1fe81309a3e983d559b947cbb496f0e5d86631859e7598d164/gorilla-prometheus-xor/libtscb_gorilla_prometheus_xor.so",
+      "library_paths": [
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/tsbench/ee580c1c8fa0fa1fe81309a3e983d559b947cbb496f0e5d86631859e7598d164/gorilla-prometheus-xor/libtscb_gorilla_prometheus_xor.so"
+      ],
+      "runtime_dependencies": [
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+          "sha256": "9eb34cb2da3ae2a9398cc09b3cd2d069563ec40d9858cb711af15cd23fa80abf"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+          "sha256": "c53819710b163d3f1d2541778590d58d3ef31cb0ed75adcbe059faac68c1e72d"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libgcc_s.so.1",
+          "sha256": "fc9d43b2f6c20e53b009238f767c5b949d202389e20de9e202ea684b4ba3729a"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libm.so.6",
+          "sha256": "00830df310aac5023e10bd7b715149ab8ddc682277fd8ae3539a7a44fcdd6c38"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30",
+          "sha256": "ff0825e113603c3866680d5d52216bc6d8eedf3a59f52a0aef67ff01994db128"
+        }
+      ],
+      "model_dependencies": [],
+      "effective_native_threads": 1,
+      "thread_evidence": "frozen single-thread API contract",
+      "executor_features": {
+        "object": true,
+        "stream": false,
+        "query": false,
+        "gpu": false
+      }
+    },
+    {
+      "dataset_id": "etth1-mts-n128",
+      "method_id": "gorilla-optimized",
+      "profile_id": "cpu-single",
+      "resolved_method": {
+        "id": "gorilla-optimized",
+        "codec": "gorilla-prometheus-xor",
+        "params": {
+          "path": "optimized"
+        },
+        "channelwise": true,
+        "chunk_rows": 128
+      },
+      "supported": true,
+      "status": "ok",
+      "reason": null,
+      "implementation_id": "sha256:196dce6f2e117d0518796d9283e7e67c4124dd162f3dc0b9defa3e305b8a78a8",
+      "library_path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/tsbench/ee580c1c8fa0fa1fe81309a3e983d559b947cbb496f0e5d86631859e7598d164/gorilla-prometheus-xor/libtscb_gorilla_prometheus_xor.so",
+      "library_paths": [
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/tsbench/ee580c1c8fa0fa1fe81309a3e983d559b947cbb496f0e5d86631859e7598d164/gorilla-prometheus-xor/libtscb_gorilla_prometheus_xor.so"
+      ],
+      "runtime_dependencies": [
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+          "sha256": "9eb34cb2da3ae2a9398cc09b3cd2d069563ec40d9858cb711af15cd23fa80abf"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+          "sha256": "c53819710b163d3f1d2541778590d58d3ef31cb0ed75adcbe059faac68c1e72d"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libgcc_s.so.1",
+          "sha256": "fc9d43b2f6c20e53b009238f767c5b949d202389e20de9e202ea684b4ba3729a"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libm.so.6",
+          "sha256": "00830df310aac5023e10bd7b715149ab8ddc682277fd8ae3539a7a44fcdd6c38"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30",
+          "sha256": "ff0825e113603c3866680d5d52216bc6d8eedf3a59f52a0aef67ff01994db128"
+        }
+      ],
+      "model_dependencies": [],
+      "effective_native_threads": 1,
+      "thread_evidence": "frozen single-thread API contract",
+      "executor_features": {
+        "object": true,
+        "stream": false,
+        "query": false,
+        "gpu": false
+      }
+    },
+    {
+      "dataset_id": "etth1-mts-n128",
+      "method_id": "raw-records",
+      "profile_id": "cpu-single",
+      "resolved_method": {
+        "id": "raw-records",
+        "codec": "raw-store",
+        "params": {}
+      },
+      "supported": true,
+      "status": "ok",
+      "reason": null,
+      "implementation_id": "sha256:bf854ea0f797a8690a14698b1d0b32e08e69209153156dcaabc02f5cc3e0b9e8",
+      "library_path": null,
+      "library_paths": [],
+      "runtime_dependencies": [],
+      "model_dependencies": [],
+      "effective_native_threads": 1,
+      "thread_evidence": "frozen single-thread API contract",
+      "executor_features": {
+        "object": true,
+        "stream": false,
+        "query": false,
+        "gpu": false
+      }
+    },
+    {
+      "dataset_id": "etth1-mts-n128",
+      "method_id": "zstd-records",
+      "profile_id": "cpu-single",
+      "resolved_method": {
+        "id": "zstd-records",
+        "codec": "zstd-frame",
+        "params": {
+          "native_timing": false,
+          "block_size": 131072,
+          "stream_decode_chunk_bytes": 16384,
+          "compression_level": 3,
+          "content_checksum": true,
+          "isa": "SCALAR"
+        }
+      },
+      "supported": true,
+      "status": "ok",
+      "reason": null,
+      "implementation_id": "sha256:7b2302e02d59c7925e9a2224d4933566bace64cda5f1b8b17e1388d210fb056a",
+      "library_path": null,
+      "library_paths": [
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/tsbench/3fbc3db1b0adaec586a9d8ead330cfba2591ce61abab74f83c517171e402a27b/zstd-frame/libtscb_zstd_frame.so",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/tsbench/3fbc3db1b0adaec586a9d8ead330cfba2591ce61abab74f83c517171e402a27b/zstd-frame/libtscb_zstd_frame.so"
+      ],
+      "runtime_dependencies": [
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+          "sha256": "9eb34cb2da3ae2a9398cc09b3cd2d069563ec40d9858cb711af15cd23fa80abf"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+          "sha256": "c53819710b163d3f1d2541778590d58d3ef31cb0ed75adcbe059faac68c1e72d"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+          "sha256": "9eb34cb2da3ae2a9398cc09b3cd2d069563ec40d9858cb711af15cd23fa80abf"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+          "sha256": "c53819710b163d3f1d2541778590d58d3ef31cb0ed75adcbe059faac68c1e72d"
+        }
+      ],
+      "model_dependencies": [],
+      "effective_native_threads": 1,
+      "thread_evidence": "frozen single-thread API contract",
+      "executor_features": {
+        "object": true,
+        "stream": false,
+        "query": false,
+        "gpu": false
+      }
+    },
+    {
+      "dataset_id": "etth1-mts-n512",
+      "method_id": "gorilla-canonical",
+      "profile_id": "cpu-single",
+      "resolved_method": {
+        "id": "gorilla-canonical",
+        "codec": "gorilla-prometheus-xor",
+        "params": {
+          "path": "canonical"
+        },
+        "channelwise": true,
+        "chunk_rows": 128
+      },
+      "supported": true,
+      "status": "ok",
+      "reason": null,
+      "implementation_id": "sha256:bdbcd85baa59ae719ded8f3ae1f419c4284aa0e85529c50852a910c41e0fc2bf",
+      "library_path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/tsbench/ee580c1c8fa0fa1fe81309a3e983d559b947cbb496f0e5d86631859e7598d164/gorilla-prometheus-xor/libtscb_gorilla_prometheus_xor.so",
+      "library_paths": [
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/tsbench/ee580c1c8fa0fa1fe81309a3e983d559b947cbb496f0e5d86631859e7598d164/gorilla-prometheus-xor/libtscb_gorilla_prometheus_xor.so"
+      ],
+      "runtime_dependencies": [
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+          "sha256": "9eb34cb2da3ae2a9398cc09b3cd2d069563ec40d9858cb711af15cd23fa80abf"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+          "sha256": "c53819710b163d3f1d2541778590d58d3ef31cb0ed75adcbe059faac68c1e72d"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libgcc_s.so.1",
+          "sha256": "fc9d43b2f6c20e53b009238f767c5b949d202389e20de9e202ea684b4ba3729a"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libm.so.6",
+          "sha256": "00830df310aac5023e10bd7b715149ab8ddc682277fd8ae3539a7a44fcdd6c38"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30",
+          "sha256": "ff0825e113603c3866680d5d52216bc6d8eedf3a59f52a0aef67ff01994db128"
+        }
+      ],
+      "model_dependencies": [],
+      "effective_native_threads": 1,
+      "thread_evidence": "frozen single-thread API contract",
+      "executor_features": {
+        "object": true,
+        "stream": false,
+        "query": false,
+        "gpu": false
+      }
+    },
+    {
+      "dataset_id": "etth1-mts-n512",
+      "method_id": "gorilla-optimized",
+      "profile_id": "cpu-single",
+      "resolved_method": {
+        "id": "gorilla-optimized",
+        "codec": "gorilla-prometheus-xor",
+        "params": {
+          "path": "optimized"
+        },
+        "channelwise": true,
+        "chunk_rows": 128
+      },
+      "supported": true,
+      "status": "ok",
+      "reason": null,
+      "implementation_id": "sha256:196dce6f2e117d0518796d9283e7e67c4124dd162f3dc0b9defa3e305b8a78a8",
+      "library_path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/tsbench/ee580c1c8fa0fa1fe81309a3e983d559b947cbb496f0e5d86631859e7598d164/gorilla-prometheus-xor/libtscb_gorilla_prometheus_xor.so",
+      "library_paths": [
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/tsbench/ee580c1c8fa0fa1fe81309a3e983d559b947cbb496f0e5d86631859e7598d164/gorilla-prometheus-xor/libtscb_gorilla_prometheus_xor.so"
+      ],
+      "runtime_dependencies": [
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+          "sha256": "9eb34cb2da3ae2a9398cc09b3cd2d069563ec40d9858cb711af15cd23fa80abf"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+          "sha256": "c53819710b163d3f1d2541778590d58d3ef31cb0ed75adcbe059faac68c1e72d"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libgcc_s.so.1",
+          "sha256": "fc9d43b2f6c20e53b009238f767c5b949d202389e20de9e202ea684b4ba3729a"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libm.so.6",
+          "sha256": "00830df310aac5023e10bd7b715149ab8ddc682277fd8ae3539a7a44fcdd6c38"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30",
+          "sha256": "ff0825e113603c3866680d5d52216bc6d8eedf3a59f52a0aef67ff01994db128"
+        }
+      ],
+      "model_dependencies": [],
+      "effective_native_threads": 1,
+      "thread_evidence": "frozen single-thread API contract",
+      "executor_features": {
+        "object": true,
+        "stream": false,
+        "query": false,
+        "gpu": false
+      }
+    },
+    {
+      "dataset_id": "etth1-mts-n512",
+      "method_id": "raw-records",
+      "profile_id": "cpu-single",
+      "resolved_method": {
+        "id": "raw-records",
+        "codec": "raw-store",
+        "params": {}
+      },
+      "supported": true,
+      "status": "ok",
+      "reason": null,
+      "implementation_id": "sha256:bf854ea0f797a8690a14698b1d0b32e08e69209153156dcaabc02f5cc3e0b9e8",
+      "library_path": null,
+      "library_paths": [],
+      "runtime_dependencies": [],
+      "model_dependencies": [],
+      "effective_native_threads": 1,
+      "thread_evidence": "frozen single-thread API contract",
+      "executor_features": {
+        "object": true,
+        "stream": false,
+        "query": false,
+        "gpu": false
+      }
+    },
+    {
+      "dataset_id": "etth1-mts-n512",
+      "method_id": "zstd-records",
+      "profile_id": "cpu-single",
+      "resolved_method": {
+        "id": "zstd-records",
+        "codec": "zstd-frame",
+        "params": {
+          "native_timing": false,
+          "block_size": 131072,
+          "stream_decode_chunk_bytes": 16384,
+          "compression_level": 3,
+          "content_checksum": true,
+          "isa": "SCALAR"
+        }
+      },
+      "supported": true,
+      "status": "ok",
+      "reason": null,
+      "implementation_id": "sha256:7b2302e02d59c7925e9a2224d4933566bace64cda5f1b8b17e1388d210fb056a",
+      "library_path": null,
+      "library_paths": [
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/tsbench/3fbc3db1b0adaec586a9d8ead330cfba2591ce61abab74f83c517171e402a27b/zstd-frame/libtscb_zstd_frame.so",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/tsbench/3fbc3db1b0adaec586a9d8ead330cfba2591ce61abab74f83c517171e402a27b/zstd-frame/libtscb_zstd_frame.so"
+      ],
+      "runtime_dependencies": [
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+          "sha256": "9eb34cb2da3ae2a9398cc09b3cd2d069563ec40d9858cb711af15cd23fa80abf"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+          "sha256": "c53819710b163d3f1d2541778590d58d3ef31cb0ed75adcbe059faac68c1e72d"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+          "sha256": "9eb34cb2da3ae2a9398cc09b3cd2d069563ec40d9858cb711af15cd23fa80abf"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+          "sha256": "c53819710b163d3f1d2541778590d58d3ef31cb0ed75adcbe059faac68c1e72d"
+        }
+      ],
+      "model_dependencies": [],
+      "effective_native_threads": 1,
+      "thread_evidence": "frozen single-thread API contract",
+      "executor_features": {
+        "object": true,
+        "stream": false,
+        "query": false,
+        "gpu": false
+      }
+    },
+    {
+      "dataset_id": "weather-mts-n128",
+      "method_id": "gorilla-canonical",
+      "profile_id": "cpu-single",
+      "resolved_method": {
+        "id": "gorilla-canonical",
+        "codec": "gorilla-prometheus-xor",
+        "params": {
+          "path": "canonical"
+        },
+        "channelwise": true,
+        "chunk_rows": 128
+      },
+      "supported": true,
+      "status": "ok",
+      "reason": null,
+      "implementation_id": "sha256:bdbcd85baa59ae719ded8f3ae1f419c4284aa0e85529c50852a910c41e0fc2bf",
+      "library_path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/tsbench/ee580c1c8fa0fa1fe81309a3e983d559b947cbb496f0e5d86631859e7598d164/gorilla-prometheus-xor/libtscb_gorilla_prometheus_xor.so",
+      "library_paths": [
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/tsbench/ee580c1c8fa0fa1fe81309a3e983d559b947cbb496f0e5d86631859e7598d164/gorilla-prometheus-xor/libtscb_gorilla_prometheus_xor.so"
+      ],
+      "runtime_dependencies": [
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+          "sha256": "9eb34cb2da3ae2a9398cc09b3cd2d069563ec40d9858cb711af15cd23fa80abf"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+          "sha256": "c53819710b163d3f1d2541778590d58d3ef31cb0ed75adcbe059faac68c1e72d"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libgcc_s.so.1",
+          "sha256": "fc9d43b2f6c20e53b009238f767c5b949d202389e20de9e202ea684b4ba3729a"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libm.so.6",
+          "sha256": "00830df310aac5023e10bd7b715149ab8ddc682277fd8ae3539a7a44fcdd6c38"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30",
+          "sha256": "ff0825e113603c3866680d5d52216bc6d8eedf3a59f52a0aef67ff01994db128"
+        }
+      ],
+      "model_dependencies": [],
+      "effective_native_threads": 1,
+      "thread_evidence": "frozen single-thread API contract",
+      "executor_features": {
+        "object": true,
+        "stream": false,
+        "query": false,
+        "gpu": false
+      }
+    },
+    {
+      "dataset_id": "weather-mts-n128",
+      "method_id": "gorilla-optimized",
+      "profile_id": "cpu-single",
+      "resolved_method": {
+        "id": "gorilla-optimized",
+        "codec": "gorilla-prometheus-xor",
+        "params": {
+          "path": "optimized"
+        },
+        "channelwise": true,
+        "chunk_rows": 128
+      },
+      "supported": true,
+      "status": "ok",
+      "reason": null,
+      "implementation_id": "sha256:196dce6f2e117d0518796d9283e7e67c4124dd162f3dc0b9defa3e305b8a78a8",
+      "library_path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/tsbench/ee580c1c8fa0fa1fe81309a3e983d559b947cbb496f0e5d86631859e7598d164/gorilla-prometheus-xor/libtscb_gorilla_prometheus_xor.so",
+      "library_paths": [
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/tsbench/ee580c1c8fa0fa1fe81309a3e983d559b947cbb496f0e5d86631859e7598d164/gorilla-prometheus-xor/libtscb_gorilla_prometheus_xor.so"
+      ],
+      "runtime_dependencies": [
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+          "sha256": "9eb34cb2da3ae2a9398cc09b3cd2d069563ec40d9858cb711af15cd23fa80abf"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+          "sha256": "c53819710b163d3f1d2541778590d58d3ef31cb0ed75adcbe059faac68c1e72d"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libgcc_s.so.1",
+          "sha256": "fc9d43b2f6c20e53b009238f767c5b949d202389e20de9e202ea684b4ba3729a"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libm.so.6",
+          "sha256": "00830df310aac5023e10bd7b715149ab8ddc682277fd8ae3539a7a44fcdd6c38"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30",
+          "sha256": "ff0825e113603c3866680d5d52216bc6d8eedf3a59f52a0aef67ff01994db128"
+        }
+      ],
+      "model_dependencies": [],
+      "effective_native_threads": 1,
+      "thread_evidence": "frozen single-thread API contract",
+      "executor_features": {
+        "object": true,
+        "stream": false,
+        "query": false,
+        "gpu": false
+      }
+    },
+    {
+      "dataset_id": "weather-mts-n128",
+      "method_id": "raw-records",
+      "profile_id": "cpu-single",
+      "resolved_method": {
+        "id": "raw-records",
+        "codec": "raw-store",
+        "params": {}
+      },
+      "supported": true,
+      "status": "ok",
+      "reason": null,
+      "implementation_id": "sha256:bf854ea0f797a8690a14698b1d0b32e08e69209153156dcaabc02f5cc3e0b9e8",
+      "library_path": null,
+      "library_paths": [],
+      "runtime_dependencies": [],
+      "model_dependencies": [],
+      "effective_native_threads": 1,
+      "thread_evidence": "frozen single-thread API contract",
+      "executor_features": {
+        "object": true,
+        "stream": false,
+        "query": false,
+        "gpu": false
+      }
+    },
+    {
+      "dataset_id": "weather-mts-n128",
+      "method_id": "zstd-records",
+      "profile_id": "cpu-single",
+      "resolved_method": {
+        "id": "zstd-records",
+        "codec": "zstd-frame",
+        "params": {
+          "native_timing": false,
+          "block_size": 131072,
+          "stream_decode_chunk_bytes": 16384,
+          "compression_level": 3,
+          "content_checksum": true,
+          "isa": "SCALAR"
+        }
+      },
+      "supported": true,
+      "status": "ok",
+      "reason": null,
+      "implementation_id": "sha256:7b2302e02d59c7925e9a2224d4933566bace64cda5f1b8b17e1388d210fb056a",
+      "library_path": null,
+      "library_paths": [
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/tsbench/3fbc3db1b0adaec586a9d8ead330cfba2591ce61abab74f83c517171e402a27b/zstd-frame/libtscb_zstd_frame.so",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/tsbench/3fbc3db1b0adaec586a9d8ead330cfba2591ce61abab74f83c517171e402a27b/zstd-frame/libtscb_zstd_frame.so"
+      ],
+      "runtime_dependencies": [
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+          "sha256": "9eb34cb2da3ae2a9398cc09b3cd2d069563ec40d9858cb711af15cd23fa80abf"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+          "sha256": "c53819710b163d3f1d2541778590d58d3ef31cb0ed75adcbe059faac68c1e72d"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+          "sha256": "9eb34cb2da3ae2a9398cc09b3cd2d069563ec40d9858cb711af15cd23fa80abf"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+          "sha256": "c53819710b163d3f1d2541778590d58d3ef31cb0ed75adcbe059faac68c1e72d"
+        }
+      ],
+      "model_dependencies": [],
+      "effective_native_threads": 1,
+      "thread_evidence": "frozen single-thread API contract",
+      "executor_features": {
+        "object": true,
+        "stream": false,
+        "query": false,
+        "gpu": false
+      }
+    },
+    {
+      "dataset_id": "weather-mts-n512",
+      "method_id": "gorilla-canonical",
+      "profile_id": "cpu-single",
+      "resolved_method": {
+        "id": "gorilla-canonical",
+        "codec": "gorilla-prometheus-xor",
+        "params": {
+          "path": "canonical"
+        },
+        "channelwise": true,
+        "chunk_rows": 128
+      },
+      "supported": true,
+      "status": "ok",
+      "reason": null,
+      "implementation_id": "sha256:bdbcd85baa59ae719ded8f3ae1f419c4284aa0e85529c50852a910c41e0fc2bf",
+      "library_path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/tsbench/ee580c1c8fa0fa1fe81309a3e983d559b947cbb496f0e5d86631859e7598d164/gorilla-prometheus-xor/libtscb_gorilla_prometheus_xor.so",
+      "library_paths": [
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/tsbench/ee580c1c8fa0fa1fe81309a3e983d559b947cbb496f0e5d86631859e7598d164/gorilla-prometheus-xor/libtscb_gorilla_prometheus_xor.so"
+      ],
+      "runtime_dependencies": [
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+          "sha256": "9eb34cb2da3ae2a9398cc09b3cd2d069563ec40d9858cb711af15cd23fa80abf"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+          "sha256": "c53819710b163d3f1d2541778590d58d3ef31cb0ed75adcbe059faac68c1e72d"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libgcc_s.so.1",
+          "sha256": "fc9d43b2f6c20e53b009238f767c5b949d202389e20de9e202ea684b4ba3729a"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libm.so.6",
+          "sha256": "00830df310aac5023e10bd7b715149ab8ddc682277fd8ae3539a7a44fcdd6c38"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30",
+          "sha256": "ff0825e113603c3866680d5d52216bc6d8eedf3a59f52a0aef67ff01994db128"
+        }
+      ],
+      "model_dependencies": [],
+      "effective_native_threads": 1,
+      "thread_evidence": "frozen single-thread API contract",
+      "executor_features": {
+        "object": true,
+        "stream": false,
+        "query": false,
+        "gpu": false
+      }
+    },
+    {
+      "dataset_id": "weather-mts-n512",
+      "method_id": "gorilla-optimized",
+      "profile_id": "cpu-single",
+      "resolved_method": {
+        "id": "gorilla-optimized",
+        "codec": "gorilla-prometheus-xor",
+        "params": {
+          "path": "optimized"
+        },
+        "channelwise": true,
+        "chunk_rows": 128
+      },
+      "supported": true,
+      "status": "ok",
+      "reason": null,
+      "implementation_id": "sha256:196dce6f2e117d0518796d9283e7e67c4124dd162f3dc0b9defa3e305b8a78a8",
+      "library_path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/tsbench/ee580c1c8fa0fa1fe81309a3e983d559b947cbb496f0e5d86631859e7598d164/gorilla-prometheus-xor/libtscb_gorilla_prometheus_xor.so",
+      "library_paths": [
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/tsbench/ee580c1c8fa0fa1fe81309a3e983d559b947cbb496f0e5d86631859e7598d164/gorilla-prometheus-xor/libtscb_gorilla_prometheus_xor.so"
+      ],
+      "runtime_dependencies": [
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+          "sha256": "9eb34cb2da3ae2a9398cc09b3cd2d069563ec40d9858cb711af15cd23fa80abf"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+          "sha256": "c53819710b163d3f1d2541778590d58d3ef31cb0ed75adcbe059faac68c1e72d"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libgcc_s.so.1",
+          "sha256": "fc9d43b2f6c20e53b009238f767c5b949d202389e20de9e202ea684b4ba3729a"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libm.so.6",
+          "sha256": "00830df310aac5023e10bd7b715149ab8ddc682277fd8ae3539a7a44fcdd6c38"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30",
+          "sha256": "ff0825e113603c3866680d5d52216bc6d8eedf3a59f52a0aef67ff01994db128"
+        }
+      ],
+      "model_dependencies": [],
+      "effective_native_threads": 1,
+      "thread_evidence": "frozen single-thread API contract",
+      "executor_features": {
+        "object": true,
+        "stream": false,
+        "query": false,
+        "gpu": false
+      }
+    },
+    {
+      "dataset_id": "weather-mts-n512",
+      "method_id": "raw-records",
+      "profile_id": "cpu-single",
+      "resolved_method": {
+        "id": "raw-records",
+        "codec": "raw-store",
+        "params": {}
+      },
+      "supported": true,
+      "status": "ok",
+      "reason": null,
+      "implementation_id": "sha256:bf854ea0f797a8690a14698b1d0b32e08e69209153156dcaabc02f5cc3e0b9e8",
+      "library_path": null,
+      "library_paths": [],
+      "runtime_dependencies": [],
+      "model_dependencies": [],
+      "effective_native_threads": 1,
+      "thread_evidence": "frozen single-thread API contract",
+      "executor_features": {
+        "object": true,
+        "stream": false,
+        "query": false,
+        "gpu": false
+      }
+    },
+    {
+      "dataset_id": "weather-mts-n512",
+      "method_id": "zstd-records",
+      "profile_id": "cpu-single",
+      "resolved_method": {
+        "id": "zstd-records",
+        "codec": "zstd-frame",
+        "params": {
+          "native_timing": false,
+          "block_size": 131072,
+          "stream_decode_chunk_bytes": 16384,
+          "compression_level": 3,
+          "content_checksum": true,
+          "isa": "SCALAR"
+        }
+      },
+      "supported": true,
+      "status": "ok",
+      "reason": null,
+      "implementation_id": "sha256:7b2302e02d59c7925e9a2224d4933566bace64cda5f1b8b17e1388d210fb056a",
+      "library_path": null,
+      "library_paths": [
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/tsbench/3fbc3db1b0adaec586a9d8ead330cfba2591ce61abab74f83c517171e402a27b/zstd-frame/libtscb_zstd_frame.so",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/tsbench/3fbc3db1b0adaec586a9d8ead330cfba2591ce61abab74f83c517171e402a27b/zstd-frame/libtscb_zstd_frame.so"
+      ],
+      "runtime_dependencies": [
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+          "sha256": "9eb34cb2da3ae2a9398cc09b3cd2d069563ec40d9858cb711af15cd23fa80abf"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+          "sha256": "c53819710b163d3f1d2541778590d58d3ef31cb0ed75adcbe059faac68c1e72d"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+          "sha256": "9eb34cb2da3ae2a9398cc09b3cd2d069563ec40d9858cb711af15cd23fa80abf"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+          "sha256": "c53819710b163d3f1d2541778590d58d3ef31cb0ed75adcbe059faac68c1e72d"
+        }
+      ],
+      "model_dependencies": [],
+      "effective_native_threads": 1,
+      "thread_evidence": "frozen single-thread API contract",
+      "executor_features": {
+        "object": true,
+        "stream": false,
+        "query": false,
+        "gpu": false
+      }
+    },
+    {
+      "dataset_id": "ili-mts-n128",
+      "method_id": "gorilla-canonical",
+      "profile_id": "cpu-single",
+      "resolved_method": {
+        "id": "gorilla-canonical",
+        "codec": "gorilla-prometheus-xor",
+        "params": {
+          "path": "canonical"
+        },
+        "channelwise": true,
+        "chunk_rows": 128
+      },
+      "supported": true,
+      "status": "ok",
+      "reason": null,
+      "implementation_id": "sha256:bdbcd85baa59ae719ded8f3ae1f419c4284aa0e85529c50852a910c41e0fc2bf",
+      "library_path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/tsbench/ee580c1c8fa0fa1fe81309a3e983d559b947cbb496f0e5d86631859e7598d164/gorilla-prometheus-xor/libtscb_gorilla_prometheus_xor.so",
+      "library_paths": [
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/tsbench/ee580c1c8fa0fa1fe81309a3e983d559b947cbb496f0e5d86631859e7598d164/gorilla-prometheus-xor/libtscb_gorilla_prometheus_xor.so"
+      ],
+      "runtime_dependencies": [
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+          "sha256": "9eb34cb2da3ae2a9398cc09b3cd2d069563ec40d9858cb711af15cd23fa80abf"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+          "sha256": "c53819710b163d3f1d2541778590d58d3ef31cb0ed75adcbe059faac68c1e72d"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libgcc_s.so.1",
+          "sha256": "fc9d43b2f6c20e53b009238f767c5b949d202389e20de9e202ea684b4ba3729a"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libm.so.6",
+          "sha256": "00830df310aac5023e10bd7b715149ab8ddc682277fd8ae3539a7a44fcdd6c38"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30",
+          "sha256": "ff0825e113603c3866680d5d52216bc6d8eedf3a59f52a0aef67ff01994db128"
+        }
+      ],
+      "model_dependencies": [],
+      "effective_native_threads": 1,
+      "thread_evidence": "frozen single-thread API contract",
+      "executor_features": {
+        "object": true,
+        "stream": false,
+        "query": false,
+        "gpu": false
+      }
+    },
+    {
+      "dataset_id": "ili-mts-n128",
+      "method_id": "gorilla-optimized",
+      "profile_id": "cpu-single",
+      "resolved_method": {
+        "id": "gorilla-optimized",
+        "codec": "gorilla-prometheus-xor",
+        "params": {
+          "path": "optimized"
+        },
+        "channelwise": true,
+        "chunk_rows": 128
+      },
+      "supported": true,
+      "status": "ok",
+      "reason": null,
+      "implementation_id": "sha256:196dce6f2e117d0518796d9283e7e67c4124dd162f3dc0b9defa3e305b8a78a8",
+      "library_path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/tsbench/ee580c1c8fa0fa1fe81309a3e983d559b947cbb496f0e5d86631859e7598d164/gorilla-prometheus-xor/libtscb_gorilla_prometheus_xor.so",
+      "library_paths": [
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/tsbench/ee580c1c8fa0fa1fe81309a3e983d559b947cbb496f0e5d86631859e7598d164/gorilla-prometheus-xor/libtscb_gorilla_prometheus_xor.so"
+      ],
+      "runtime_dependencies": [
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+          "sha256": "9eb34cb2da3ae2a9398cc09b3cd2d069563ec40d9858cb711af15cd23fa80abf"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+          "sha256": "c53819710b163d3f1d2541778590d58d3ef31cb0ed75adcbe059faac68c1e72d"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libgcc_s.so.1",
+          "sha256": "fc9d43b2f6c20e53b009238f767c5b949d202389e20de9e202ea684b4ba3729a"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libm.so.6",
+          "sha256": "00830df310aac5023e10bd7b715149ab8ddc682277fd8ae3539a7a44fcdd6c38"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30",
+          "sha256": "ff0825e113603c3866680d5d52216bc6d8eedf3a59f52a0aef67ff01994db128"
+        }
+      ],
+      "model_dependencies": [],
+      "effective_native_threads": 1,
+      "thread_evidence": "frozen single-thread API contract",
+      "executor_features": {
+        "object": true,
+        "stream": false,
+        "query": false,
+        "gpu": false
+      }
+    },
+    {
+      "dataset_id": "ili-mts-n128",
+      "method_id": "raw-records",
+      "profile_id": "cpu-single",
+      "resolved_method": {
+        "id": "raw-records",
+        "codec": "raw-store",
+        "params": {}
+      },
+      "supported": true,
+      "status": "ok",
+      "reason": null,
+      "implementation_id": "sha256:bf854ea0f797a8690a14698b1d0b32e08e69209153156dcaabc02f5cc3e0b9e8",
+      "library_path": null,
+      "library_paths": [],
+      "runtime_dependencies": [],
+      "model_dependencies": [],
+      "effective_native_threads": 1,
+      "thread_evidence": "frozen single-thread API contract",
+      "executor_features": {
+        "object": true,
+        "stream": false,
+        "query": false,
+        "gpu": false
+      }
+    },
+    {
+      "dataset_id": "ili-mts-n128",
+      "method_id": "zstd-records",
+      "profile_id": "cpu-single",
+      "resolved_method": {
+        "id": "zstd-records",
+        "codec": "zstd-frame",
+        "params": {
+          "native_timing": false,
+          "block_size": 131072,
+          "stream_decode_chunk_bytes": 16384,
+          "compression_level": 3,
+          "content_checksum": true,
+          "isa": "SCALAR"
+        }
+      },
+      "supported": true,
+      "status": "ok",
+      "reason": null,
+      "implementation_id": "sha256:7b2302e02d59c7925e9a2224d4933566bace64cda5f1b8b17e1388d210fb056a",
+      "library_path": null,
+      "library_paths": [
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/tsbench/3fbc3db1b0adaec586a9d8ead330cfba2591ce61abab74f83c517171e402a27b/zstd-frame/libtscb_zstd_frame.so",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/tsbench/3fbc3db1b0adaec586a9d8ead330cfba2591ce61abab74f83c517171e402a27b/zstd-frame/libtscb_zstd_frame.so"
+      ],
+      "runtime_dependencies": [
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+          "sha256": "9eb34cb2da3ae2a9398cc09b3cd2d069563ec40d9858cb711af15cd23fa80abf"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+          "sha256": "c53819710b163d3f1d2541778590d58d3ef31cb0ed75adcbe059faac68c1e72d"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+          "sha256": "9eb34cb2da3ae2a9398cc09b3cd2d069563ec40d9858cb711af15cd23fa80abf"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+          "sha256": "c53819710b163d3f1d2541778590d58d3ef31cb0ed75adcbe059faac68c1e72d"
+        }
+      ],
+      "model_dependencies": [],
+      "effective_native_threads": 1,
+      "thread_evidence": "frozen single-thread API contract",
+      "executor_features": {
+        "object": true,
+        "stream": false,
+        "query": false,
+        "gpu": false
+      }
+    },
+    {
+      "dataset_id": "ili-mts-n512",
+      "method_id": "gorilla-canonical",
+      "profile_id": "cpu-single",
+      "resolved_method": {
+        "id": "gorilla-canonical",
+        "codec": "gorilla-prometheus-xor",
+        "params": {
+          "path": "canonical"
+        },
+        "channelwise": true,
+        "chunk_rows": 128
+      },
+      "supported": true,
+      "status": "ok",
+      "reason": null,
+      "implementation_id": "sha256:bdbcd85baa59ae719ded8f3ae1f419c4284aa0e85529c50852a910c41e0fc2bf",
+      "library_path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/tsbench/ee580c1c8fa0fa1fe81309a3e983d559b947cbb496f0e5d86631859e7598d164/gorilla-prometheus-xor/libtscb_gorilla_prometheus_xor.so",
+      "library_paths": [
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/tsbench/ee580c1c8fa0fa1fe81309a3e983d559b947cbb496f0e5d86631859e7598d164/gorilla-prometheus-xor/libtscb_gorilla_prometheus_xor.so"
+      ],
+      "runtime_dependencies": [
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+          "sha256": "9eb34cb2da3ae2a9398cc09b3cd2d069563ec40d9858cb711af15cd23fa80abf"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+          "sha256": "c53819710b163d3f1d2541778590d58d3ef31cb0ed75adcbe059faac68c1e72d"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libgcc_s.so.1",
+          "sha256": "fc9d43b2f6c20e53b009238f767c5b949d202389e20de9e202ea684b4ba3729a"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libm.so.6",
+          "sha256": "00830df310aac5023e10bd7b715149ab8ddc682277fd8ae3539a7a44fcdd6c38"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30",
+          "sha256": "ff0825e113603c3866680d5d52216bc6d8eedf3a59f52a0aef67ff01994db128"
+        }
+      ],
+      "model_dependencies": [],
+      "effective_native_threads": 1,
+      "thread_evidence": "frozen single-thread API contract",
+      "executor_features": {
+        "object": true,
+        "stream": false,
+        "query": false,
+        "gpu": false
+      }
+    },
+    {
+      "dataset_id": "ili-mts-n512",
+      "method_id": "gorilla-optimized",
+      "profile_id": "cpu-single",
+      "resolved_method": {
+        "id": "gorilla-optimized",
+        "codec": "gorilla-prometheus-xor",
+        "params": {
+          "path": "optimized"
+        },
+        "channelwise": true,
+        "chunk_rows": 128
+      },
+      "supported": true,
+      "status": "ok",
+      "reason": null,
+      "implementation_id": "sha256:196dce6f2e117d0518796d9283e7e67c4124dd162f3dc0b9defa3e305b8a78a8",
+      "library_path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/tsbench/ee580c1c8fa0fa1fe81309a3e983d559b947cbb496f0e5d86631859e7598d164/gorilla-prometheus-xor/libtscb_gorilla_prometheus_xor.so",
+      "library_paths": [
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/tsbench/ee580c1c8fa0fa1fe81309a3e983d559b947cbb496f0e5d86631859e7598d164/gorilla-prometheus-xor/libtscb_gorilla_prometheus_xor.so"
+      ],
+      "runtime_dependencies": [
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+          "sha256": "9eb34cb2da3ae2a9398cc09b3cd2d069563ec40d9858cb711af15cd23fa80abf"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+          "sha256": "c53819710b163d3f1d2541778590d58d3ef31cb0ed75adcbe059faac68c1e72d"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libgcc_s.so.1",
+          "sha256": "fc9d43b2f6c20e53b009238f767c5b949d202389e20de9e202ea684b4ba3729a"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libm.so.6",
+          "sha256": "00830df310aac5023e10bd7b715149ab8ddc682277fd8ae3539a7a44fcdd6c38"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30",
+          "sha256": "ff0825e113603c3866680d5d52216bc6d8eedf3a59f52a0aef67ff01994db128"
+        }
+      ],
+      "model_dependencies": [],
+      "effective_native_threads": 1,
+      "thread_evidence": "frozen single-thread API contract",
+      "executor_features": {
+        "object": true,
+        "stream": false,
+        "query": false,
+        "gpu": false
+      }
+    },
+    {
+      "dataset_id": "ili-mts-n512",
+      "method_id": "raw-records",
+      "profile_id": "cpu-single",
+      "resolved_method": {
+        "id": "raw-records",
+        "codec": "raw-store",
+        "params": {}
+      },
+      "supported": true,
+      "status": "ok",
+      "reason": null,
+      "implementation_id": "sha256:bf854ea0f797a8690a14698b1d0b32e08e69209153156dcaabc02f5cc3e0b9e8",
+      "library_path": null,
+      "library_paths": [],
+      "runtime_dependencies": [],
+      "model_dependencies": [],
+      "effective_native_threads": 1,
+      "thread_evidence": "frozen single-thread API contract",
+      "executor_features": {
+        "object": true,
+        "stream": false,
+        "query": false,
+        "gpu": false
+      }
+    },
+    {
+      "dataset_id": "ili-mts-n512",
+      "method_id": "zstd-records",
+      "profile_id": "cpu-single",
+      "resolved_method": {
+        "id": "zstd-records",
+        "codec": "zstd-frame",
+        "params": {
+          "native_timing": false,
+          "block_size": 131072,
+          "stream_decode_chunk_bytes": 16384,
+          "compression_level": 3,
+          "content_checksum": true,
+          "isa": "SCALAR"
+        }
+      },
+      "supported": true,
+      "status": "ok",
+      "reason": null,
+      "implementation_id": "sha256:7b2302e02d59c7925e9a2224d4933566bace64cda5f1b8b17e1388d210fb056a",
+      "library_path": null,
+      "library_paths": [
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/tsbench/3fbc3db1b0adaec586a9d8ead330cfba2591ce61abab74f83c517171e402a27b/zstd-frame/libtscb_zstd_frame.so",
+        "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/tsbench/3fbc3db1b0adaec586a9d8ead330cfba2591ce61abab74f83c517171e402a27b/zstd-frame/libtscb_zstd_frame.so"
+      ],
+      "runtime_dependencies": [
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+          "sha256": "9eb34cb2da3ae2a9398cc09b3cd2d069563ec40d9858cb711af15cd23fa80abf"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+          "sha256": "c53819710b163d3f1d2541778590d58d3ef31cb0ed75adcbe059faac68c1e72d"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+          "sha256": "9eb34cb2da3ae2a9398cc09b3cd2d069563ec40d9858cb711af15cd23fa80abf"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+          "sha256": "c53819710b163d3f1d2541778590d58d3ef31cb0ed75adcbe059faac68c1e72d"
+        }
+      ],
+      "model_dependencies": [],
+      "effective_native_threads": 1,
+      "thread_evidence": "frozen single-thread API contract",
+      "executor_features": {
+        "object": true,
+        "stream": false,
+        "query": false,
+        "gpu": false
+      }
+    }
+  ],
+  "requested_cases": 24,
+  "executable_cases": 24,
+  "measurement_executed": false
+}

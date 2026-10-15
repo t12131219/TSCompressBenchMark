@@ -1,0 +1,97 @@
+{
+  "schema": "tsbench.gorilla-design/1",
+  "frozen_before_measurement": true,
+  "sources": [
+    {
+      "id": "etth1",
+      "path": "/home/fzg/PycharmProjects/材料/TSBench_Corpus/ETTh1.csv",
+      "sha256": "f18de3ad269cef59bb07b5438d79bb3042d3be49bdeecf01c1cd6d29695ee066",
+      "columns": [
+        "HUFL",
+        "HULL",
+        "MUFL",
+        "MULL",
+        "LUFL",
+        "LULL",
+        "OT"
+      ],
+      "start": 2048,
+      "lengths": [
+        128,
+        512
+      ]
+    },
+    {
+      "id": "weather",
+      "path": "/home/fzg/PycharmProjects/材料/TSBench_Corpus/weather.csv",
+      "sha256": "34ee981d07313e51da2a50bb600072c8ae4a69cb4b0651f4cb93a069d7a2ba63",
+      "columns": [
+        "p (mbar)",
+        "T (degC)",
+        "Tpot (K)",
+        "Tdew (degC)",
+        "rh (%)",
+        "VPmax (mbar)",
+        "VPact (mbar)",
+        "VPdef (mbar)",
+        "sh (g/kg)",
+        "H2OC (mmol/mol)",
+        "rho (g/m**3)",
+        "wv (m/s)",
+        "max. wv (m/s)",
+        "wd (deg)",
+        "rain (mm)",
+        "raining (s)",
+        "SWDR (W/m�)",
+        "PAR (�mol/m�/s)",
+        "max. PAR (�mol/m�/s)",
+        "Tlog (degC)",
+        "OT"
+      ],
+      "start": 2048,
+      "lengths": [
+        128,
+        512
+      ]
+    },
+    {
+      "id": "ili",
+      "path": "/home/fzg/PycharmProjects/材料/TSBench_Corpus/national_illness.csv",
+      "sha256": "93601f64d2566dc796ca4305adad8b8560c2db1a1ff04543c3bd813a7263570a",
+      "columns": [
+        "% WEIGHTED ILI",
+        "%UNWEIGHTED ILI",
+        "AGE 0-4",
+        "AGE 5-24",
+        "ILITOTAL",
+        "NUM. OF PROVIDERS",
+        "OT"
+      ],
+      "start": 256,
+      "lengths": [
+        128,
+        512
+      ]
+    }
+  ],
+  "timestamp_unit": "ms explicitly parsed; native unit never changed",
+  "methods": [
+    "gorilla-canonical",
+    "gorilla-optimized",
+    "raw-records",
+    "zstd-records"
+  ],
+  "gorilla_partition": {
+    "channelwise": true,
+    "chunk_rows": 128,
+    "state": "independent chunks; repeat and charge T per channel"
+  },
+  "cases": 24,
+  "sessions": 3,
+  "rounds": 7,
+  "planned_trials": 504,
+  "seed": 20261015,
+  "warmup_objects": 2,
+  "scope": "selected nested temporal prefixes on three sources; descriptive only; no universal ranking",
+  "config_sha256": "56657c7ecc0a58b1ae4a79980c1e256b6adaab9166beb192e6486446f5581c5e"
+}

@@ -1,0 +1,54 @@
+schema = "tsbench.experiment/1"
+name = "gorilla-records-example"
+output = "../../runs/gorilla-records-example"
+
+[[datasets]]
+id = "typed-records-tail"
+format = "npz"
+path = "data/records.npz"
+components = { V = "V", T = "T", mask = "mask" }
+time_unit = "ns"
+
+[[methods]]
+id = "gorilla-canonical"
+codec = "gorilla-prometheus-xor"
+params = { path = "canonical" }
+channelwise = true
+chunk_rows = 128
+
+[[methods]]
+id = "gorilla-optimized"
+codec = "gorilla-prometheus-xor"
+params = { path = "optimized" }
+channelwise = true
+chunk_rows = 128
+
+[[methods]]
+id = "raw-records"
+codec = "raw-store"
+
+
+[task]
+kind = "records"
+fidelity = "bitwise"
+boundary = "object_memory"
+lifecycle = "independent_object"
+cache_policy = "natural"
+
+[[profiles]]
+id = "cpu-single"
+device = "cpu"
+native_threads = 1
+object_workers = 1
+
+[execution]
+sessions = 1
+rounds = 7
+warmup_objects = 2
+seed = 20261013
+timeout_s = 120
+qualification_cache = true
+
+[analysis]
+summary = "median_iqr"
+inference = "none"

@@ -1,0 +1,353 @@
+{
+  "schema": "tsbench.gorilla-integration/1",
+  "status": "INTEGRATED",
+  "restoration": "core restored from release; surviving Python snapshots used only for Gorilla changes; C ABI binding and tests reconstructed and requalified; historical results not reused as current validation",
+  "standalone_status": "REWRITE_DONE / FULL_PARITY (original standalone qualification)",
+  "standalone_evidence_reexecuted": false,
+  "release": {
+    "path": "/home/fzg/PycharmProjects/Compression_Rewrite/Release/gorilla-prometheus-xor-v1.0.0.tar.gz",
+    "sha256": "sha256:bc0629a38448d6a3fb33fd622204c8f137a74730a23273388cc528109442d519"
+  },
+  "upstream_revision": "8374d30cb3fe705773bbac72d7015eba17480557",
+  "frozen_files": 24,
+  "core_modified": false,
+  "frozen_lock": {
+    "path": "adapters/gorilla_prometheus_xor/FROZEN_SOURCES.json",
+    "sha256": "sha256:16ebb908db790811f227a0051b246a16bdb4bf6981393579851097f55b555d90"
+  },
+  "native_build_record": {
+    "path": "build/tsbench/ee580c1c8fa0fa1fe81309a3e983d559b947cbb496f0e5d86631859e7598d164/gorilla-prometheus-xor/build.json",
+    "sha256": "sha256:2e495830e1a3db580707f4a11b7a700c59672e06413e15bfad583fc8f393f8fe"
+  },
+  "native_binary": {
+    "path": "build/tsbench/ee580c1c8fa0fa1fe81309a3e983d559b947cbb496f0e5d86631859e7598d164/gorilla-prometheus-xor/libtscb_gorilla_prometheus_xor.so",
+    "sha256": "sha256:281d45e7694a3004225362b28105a2f8446eca87e1f0aa2adedb419f792ae5a5"
+  },
+  "independent_installed_binary_byte_identical": true,
+  "tests": [
+    {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "343",
+      "time": "46.307",
+      "timestamp": "2026-10-15T18:56:25.400378",
+      "hostname": "fzg-ZJUT-C508-PC-Server",
+      "log": {
+        "path": "docs/gorilla_integration/tests-full.log",
+        "sha256": "sha256:4c047bd238a8b8a669003a0833eb2d2ead67e6428cd0ed0bcbcbd9ee715e1312"
+      },
+      "junit": {
+        "path": "docs/gorilla_integration/tests-full.xml",
+        "sha256": "sha256:c1dd527a088c9b73016aaea06a0d9e20766f23b24a17cd62d8bea691d195d798"
+      }
+    },
+    {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "35",
+      "time": "2.280",
+      "timestamp": "2026-10-15T18:50:58.960455",
+      "hostname": "fzg-ZJUT-C508-PC-Server",
+      "log": {
+        "path": "docs/gorilla_integration/tests-focused.log",
+        "sha256": "sha256:823a101b0a5242c42da4901b72e3a1cfaaab9fd99ca78d8a0a1ac8c962a15953"
+      },
+      "junit": {
+        "path": "docs/gorilla_integration/tests-focused.xml",
+        "sha256": "sha256:30b80ea7b5065aa440f76d92f01be2f08bd13cf3a916317123655c4028646be4"
+      }
+    },
+    {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "35",
+      "time": "3.628",
+      "timestamp": "2026-10-15T18:53:29.843788+08:00",
+      "hostname": "fzg-ZJUT-C508-PC-Server",
+      "log": {
+        "path": "docs/gorilla_integration/tests-alternate.log",
+        "sha256": "sha256:b523da59e390eee3252059a33ab2e392e30c1da2f628633d6b14a9bfa24e9aca"
+      },
+      "junit": {
+        "path": "docs/gorilla_integration/tests-alternate.xml",
+        "sha256": "sha256:b4a80916114fc83efc33b4288090f498d5ecf661df2ccb3f29265fbac7a47abb"
+      }
+    }
+  ],
+  "native_qualified_cases": 12,
+  "sanitizer_roundtrips": 16,
+  "sanitizer_hostile_chunks_rejected": 20000,
+  "environment": {
+    "python": "3.11.5 (main, Sep 11 2023, 13:54:46) [GCC 11.2.0]",
+    "executable": "/home/fzg/anaconda3/bin/python",
+    "numpy": "1.24.3",
+    "platform": "Linux-6.8.0-101-generic-x86_64-with-glibc2.35"
+  },
+  "execution_provenance": {
+    "schema": "tsbench.execution-provenance/1",
+    "source_id": "sha256:6a7753be7867ec47b374dab85a4c3613ad5c362b827ce31649252647dbe3daf3",
+    "sources": [
+      {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/src/tsbench/__init__.py",
+        "module": "__init__.py",
+        "sha256": "sha256:153d2ee91a3d5d6d3519d3f44f41bf775a15a0c5efcce325a9ba6791dca3ca57"
+      },
+      {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/src/tsbench/__main__.py",
+        "module": "__main__.py",
+        "sha256": "sha256:f0841fdc1e37bc97b220d8de289a750c949e7857f04b79dbbe8cd117bce10905"
+      },
+      {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/src/tsbench/cli.py",
+        "module": "cli.py",
+        "sha256": "sha256:83c9b3c6e565321c8e5fe698e6f7d53023e3e9d0a91d60876b31f42d2193acbd"
+      },
+      {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/src/tsbench/config.py",
+        "module": "config.py",
+        "sha256": "sha256:fa53f16dc9819cbc51217206b2f419fe6007e9444d0d41b0c9dc8dbea7ff6b1c"
+      },
+      {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/src/tsbench/runner.py",
+        "module": "runner.py",
+        "sha256": "sha256:395c209e97a4290343ece2e72c61384bdb80b79643f42bb485c09abcc2a25333"
+      },
+      {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/src/tsbench/records.py",
+        "module": "records.py",
+        "sha256": "sha256:5ad6aeef7ce92a0d4883b54eb88a479fc8da1e841f139e8de109453d470030f4"
+      },
+      {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/src/tsbench/worker.py",
+        "module": "worker.py",
+        "sha256": "sha256:6b2958f7d41aabd83429836256ebd902d4840639c1c0954c851c22d329074cbe"
+      },
+      {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/src/tsbench/artifact.py",
+        "module": "artifact.py",
+        "sha256": "sha256:68e9a43e181a7a1bafb8faeb6996d6ac8f84bb4dce510f025b176da422f7423d"
+      },
+      {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/src/tsbench/schemes.py",
+        "module": "schemes.py",
+        "sha256": "sha256:66e2fd3f111e90470155588111790083c873677abf97dcc95b02ca18a0762e28"
+      },
+      {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/src/tsbench/validate.py",
+        "module": "validate.py",
+        "sha256": "sha256:c82c6fc85622cc2d49db391ccea7f01993e348e11b4f997244a2743ee7671a2f"
+      },
+      {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/src/tsbench/data.py",
+        "module": "data.py",
+        "sha256": "sha256:3e4ace27036d773d37fed15739cfd70c14de76f49b463ee8912427fb6b7fda09"
+      },
+      {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/src/tsbench/registry.py",
+        "module": "registry.py",
+        "sha256": "sha256:e9acc9184665970e475e344f43a2bd1e0f813a9cd276ecc28024e00862e02309"
+      },
+      {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/src/tsbench/errors.py",
+        "module": "errors.py",
+        "sha256": "sha256:58755e65c5a87f7d6c3d2f152a9f56c305fa9cc8f3d8274d6ec34b35760c86ea"
+      },
+      {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/src/tsbench/executors/cpu.py",
+        "module": "executors/cpu.py",
+        "sha256": "sha256:1eb391992b7c9765e04bce3a9a262cf1941ed857f55f2ce2381c4c03566a97b2"
+      },
+      {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/src/tsbench/runtime.py",
+        "module": "runtime.py",
+        "sha256": "sha256:099248225979177f93ce36971c8c2eabbb4ee3c30891fca89aa5fe849d2ca8db"
+      },
+      {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/src/tsbench/transforms.py",
+        "module": "transforms.py",
+        "sha256": "sha256:3de05f67d02991fad14724ee62e6ba1e37cb172ce806fbfbd6c99893cbdd01de"
+      },
+      {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/src/tsbench/provenance.py",
+        "module": "provenance.py",
+        "sha256": "sha256:9485854413c6fdff2a67e10d33277c6d9008227c3767e4d5354d2a7e37b5f9f2"
+      },
+      {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/src/tsbench/quality_metadata.py",
+        "module": "quality_metadata.py",
+        "sha256": "sha256:e1f6b9966d0def98d035453dffc2549d09a8f48c2b5e601e82781df1f90574f2"
+      },
+      {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/src/tsbench/bridges/__init__.py",
+        "module": "bridges/__init__.py",
+        "sha256": "sha256:8d9ea815442c22420fe4b051b360b253e52834bc7bbc02806716d6800dd0298d"
+      },
+      {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/src/tsbench/bridges/c_abi_v1.py",
+        "module": "bridges/c_abi_v1.py",
+        "sha256": "sha256:5b3973a9ef42193d5217e5743d2584e52da518611a5bbff7daecf5915021d885"
+      },
+      {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/src/tsbench/bridges/cuszp.py",
+        "module": "bridges/cuszp.py",
+        "sha256": "sha256:a881ef410f2e70f3c3f08d3097ad14c3504a2bd8a41f0e8f18616d30a7d23e6c"
+      },
+      {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/src/tsbench/bridges/gorilla.py",
+        "module": "bridges/gorilla.py",
+        "sha256": "sha256:dbbb1ff30784cfcd7aa60152055fb21b805e1502618aedd014c76253520cad29"
+      },
+      {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/src/tsbench/bridges/rw_abi_v1.py",
+        "module": "bridges/rw_abi_v1.py",
+        "sha256": "sha256:456fd0ae73743b07ad482454da2fdb4774c503c2faa462ada6e86a02a1e9f396"
+      }
+    ],
+    "scope": "named Python runner/measurement/codec bridge closure; native toolchain, source, binary, model and runtime identities are in each case's build_evidence/implementation_id",
+    "analysis_policy": "report/study/trial_analysis/plot code does not revoke measurement qualification; its hashes are recorded by the analyses"
+  },
+  "real_run": {
+    "family": "gorilla-records",
+    "run": "runs/gorilla-real-records-20261015",
+    "run_id": "3e6f3d9e545141f18a1b79ac90bb1127",
+    "pass_kind": "measurement",
+    "requested_cases": 24,
+    "admission_counts": {
+      "ready": 24
+    },
+    "complete_cases": 24,
+    "planned_trials": 504,
+    "status_counts": {
+      "ok": 504
+    },
+    "complete_success": true,
+    "execution_source_unchanged": true,
+    "source_id": "sha256:6a7753be7867ec47b374dab85a4c3613ad5c362b827ce31649252647dbe3daf3",
+    "manifest_sha256": "sha256:44125b1483972671c380fc20ea780e3e1eaf11345a8715372346cf4756d9e7d4",
+    "observations_sha256": "sha256:55bd155e298a83c3e188883e4418904a66810009d5b220afd3eecbb5be003339",
+    "report_sha256": "sha256:932cba97865283ea045cccb4f56c2fd9eed91f28f18cdf510fec809f68e8a12c",
+    "scope": "Gorilla integration: three fixed sources, nested prefixes; ms timestamps; explicit per-column fresh chunks; repeated T and complete wire charged"
+  },
+  "fresh_exact_decoders": 24,
+  "canonical_optimized_complete_chunk_lists": 6,
+  "prior_evidence_index_sha256": "sha256:e91609aaa49a0e1a00a674bc3257cd495421f1603efaeb8d0941b3308104f34c",
+  "scope": "same physical host; two Python software environments and isolated install; records only; no native stream/query/random access qualification",
+  "files": [
+    {
+      "path": "docs/gorilla_integration/README.md",
+      "sha256": "sha256:da508cb0c78dcb19d3ae1eccf6d9377d981288ea216cf016171be5e9972e952d"
+    },
+    {
+      "path": "docs/gorilla_integration/audit_run.py",
+      "sha256": "sha256:6b2d08f5b4a67ccd37276f0518cf03d7454ae85394e6e32ebb16a6a07729a67b"
+    },
+    {
+      "path": "docs/gorilla_integration/build-all.json",
+      "sha256": "sha256:941763d1378eb1fffde61a549f7e75a7c3f6aca9618aa31179f317087f1d4cd8"
+    },
+    {
+      "path": "docs/gorilla_integration/build-all.stderr",
+      "sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/gorilla_integration/example-inspection.json",
+      "sha256": "sha256:a93801cc1d0b691c22c066d2e419dfd10ef05ee577cd8bffab659d11fb1e9369"
+    },
+    {
+      "path": "docs/gorilla_integration/fixture-generation.log",
+      "sha256": "sha256:a45c3adf206790b4a8628c431c56ab0f164dba71a54a93572e572fedee0023c6"
+    },
+    {
+      "path": "docs/gorilla_integration/inspection.json",
+      "sha256": "sha256:0735c7dea90c344cd709bd9cee5c953dca1516e02ac544da0c4ba99a69c72e35"
+    },
+    {
+      "path": "docs/gorilla_integration/installed-verification-final.log",
+      "sha256": "sha256:91044e61ac0ce1f9ce805024dbf6f95063b8e21a7fa0e5399cadbd150de5a5e7"
+    },
+    {
+      "path": "docs/gorilla_integration/installed-verification.log",
+      "sha256": "sha256:91044e61ac0ce1f9ce805024dbf6f95063b8e21a7fa0e5399cadbd150de5a5e7"
+    },
+    {
+      "path": "docs/gorilla_integration/installed_verification.json",
+      "sha256": "sha256:1d5b33a77b04b573676c017b82da3d444b7f8f560e61ed35d04b85bef7904d14"
+    },
+    {
+      "path": "docs/gorilla_integration/native-qualification.json",
+      "sha256": "sha256:cf3794261e54ef63fc7f67e5a2a9ef7d381a5db73cde008f1abaf658d522ce7c"
+    },
+    {
+      "path": "docs/gorilla_integration/real-report.log",
+      "sha256": "sha256:6d9440bf22e6a4fadc70b040745a3b8d5aa4cb9ee3001d1457fceabd7e6835b2"
+    },
+    {
+      "path": "docs/gorilla_integration/real-run.log",
+      "sha256": "sha256:43340e1edad834050b6af095c29a2797af95c7ee6610da6b606cd8336ca6928c"
+    },
+    {
+      "path": "docs/gorilla_integration/run-audit.json",
+      "sha256": "sha256:b4cd6cbbed338ac567617140f0e4e0a0344a431ae514185324004b6b6945356c"
+    },
+    {
+      "path": "docs/gorilla_integration/run-audit.log",
+      "sha256": "sha256:5db7659ade0785cfc781e5a7d68a7c11eada2a0516b369806b5d22ff3cbc3f76"
+    },
+    {
+      "path": "docs/gorilla_integration/sanitizer.json",
+      "sha256": "sha256:b1b2d622f748f4a2f0dd6a90dd8593a9123a4c22b4448dd843d135627e13863a"
+    },
+    {
+      "path": "docs/gorilla_integration/sanitizer.log",
+      "sha256": "sha256:527a90064e27d1083b0a53a455ad877578163014a2e62933e0e887081d80268d"
+    },
+    {
+      "path": "docs/gorilla_integration/tests-alternate.log",
+      "sha256": "sha256:b523da59e390eee3252059a33ab2e392e30c1da2f628633d6b14a9bfa24e9aca"
+    },
+    {
+      "path": "docs/gorilla_integration/tests-alternate.xml",
+      "sha256": "sha256:b4a80916114fc83efc33b4288090f498d5ecf661df2ccb3f29265fbac7a47abb"
+    },
+    {
+      "path": "docs/gorilla_integration/tests-focused.log",
+      "sha256": "sha256:823a101b0a5242c42da4901b72e3a1cfaaab9fd99ca78d8a0a1ac8c962a15953"
+    },
+    {
+      "path": "docs/gorilla_integration/tests-focused.xml",
+      "sha256": "sha256:30b80ea7b5065aa440f76d92f01be2f08bd13cf3a916317123655c4028646be4"
+    },
+    {
+      "path": "docs/gorilla_integration/tests-full.log",
+      "sha256": "sha256:4c047bd238a8b8a669003a0833eb2d2ead67e6428cd0ed0bcbcbd9ee715e1312"
+    },
+    {
+      "path": "docs/gorilla_integration/tests-full.xml",
+      "sha256": "sha256:c1dd527a088c9b73016aaea06a0d9e20766f23b24a17cd62d8bea691d195d798"
+    },
+    {
+      "path": "docs/gorilla_integration/verify_installed.py",
+      "sha256": "sha256:725bc039d5a4fd3955a69377e177e5f6538a995ea9fa77f84895146fb35a2d5d"
+    }
+  ],
+  "experiment_files": [
+    {
+      "path": "benchmark/experiments/gorilla/README.md",
+      "sha256": "sha256:c092dacc5166a2010abcf0c8eabed03e4f5252424fa6d3313b488bb064dad006"
+    },
+    {
+      "path": "benchmark/experiments/gorilla/design.json",
+      "sha256": "sha256:2dea6890962f4e756f063682a49868ae279818f75d5d8a9f21203891f60ff68b"
+    },
+    {
+      "path": "benchmark/experiments/gorilla/records.toml",
+      "sha256": "sha256:56657c7ecc0a58b1ae4a79980c1e256b6adaab9166beb192e6486446f5581c5e"
+    }
+  ]
+}

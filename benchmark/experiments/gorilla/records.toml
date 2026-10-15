@@ -1,0 +1,153 @@
+schema = "tsbench.experiment/1"
+name = "gorilla-real-records"
+output = "../../../runs/gorilla-real-records-20261015"
+
+[[datasets]]
+id = "etth1-mts-n128"
+format = "csv"
+path = "/home/fzg/PycharmProjects/材料/TSBench_Corpus/ETTh1.csv"
+dtype = "<f8"
+encoding = "utf-8"
+timestamp_column = "date"
+timestamp_parser = "datetime64"
+time_unit = "ms"
+missing = "reject"
+columns = ["HUFL", "HULL", "MUFL", "MULL", "LUFL", "LULL", "OT"]
+start = 2048
+stop = 2176
+step = 1
+source = "etth1"
+order = "C"
+
+[[datasets]]
+id = "etth1-mts-n512"
+format = "csv"
+path = "/home/fzg/PycharmProjects/材料/TSBench_Corpus/ETTh1.csv"
+dtype = "<f8"
+encoding = "utf-8"
+timestamp_column = "date"
+timestamp_parser = "datetime64"
+time_unit = "ms"
+missing = "reject"
+columns = ["HUFL", "HULL", "MUFL", "MULL", "LUFL", "LULL", "OT"]
+start = 2048
+stop = 2560
+step = 1
+source = "etth1"
+order = "C"
+
+[[datasets]]
+id = "weather-mts-n128"
+format = "csv"
+path = "/home/fzg/PycharmProjects/材料/TSBench_Corpus/weather.csv"
+dtype = "<f8"
+encoding = "utf-8"
+timestamp_column = "date"
+timestamp_parser = "datetime64"
+time_unit = "ms"
+missing = "reject"
+columns = ["p (mbar)", "T (degC)", "Tpot (K)", "Tdew (degC)", "rh (%)", "VPmax (mbar)", "VPact (mbar)", "VPdef (mbar)", "sh (g/kg)", "H2OC (mmol/mol)", "rho (g/m**3)", "wv (m/s)", "max. wv (m/s)", "wd (deg)", "rain (mm)", "raining (s)", "SWDR (W/m�)", "PAR (�mol/m�/s)", "max. PAR (�mol/m�/s)", "Tlog (degC)", "OT"]
+start = 2048
+stop = 2176
+step = 1
+source = "weather"
+order = "C"
+
+[[datasets]]
+id = "weather-mts-n512"
+format = "csv"
+path = "/home/fzg/PycharmProjects/材料/TSBench_Corpus/weather.csv"
+dtype = "<f8"
+encoding = "utf-8"
+timestamp_column = "date"
+timestamp_parser = "datetime64"
+time_unit = "ms"
+missing = "reject"
+columns = ["p (mbar)", "T (degC)", "Tpot (K)", "Tdew (degC)", "rh (%)", "VPmax (mbar)", "VPact (mbar)", "VPdef (mbar)", "sh (g/kg)", "H2OC (mmol/mol)", "rho (g/m**3)", "wv (m/s)", "max. wv (m/s)", "wd (deg)", "rain (mm)", "raining (s)", "SWDR (W/m�)", "PAR (�mol/m�/s)", "max. PAR (�mol/m�/s)", "Tlog (degC)", "OT"]
+start = 2048
+stop = 2560
+step = 1
+source = "weather"
+order = "C"
+
+[[datasets]]
+id = "ili-mts-n128"
+format = "csv"
+path = "/home/fzg/PycharmProjects/材料/TSBench_Corpus/national_illness.csv"
+dtype = "<f8"
+encoding = "utf-8"
+timestamp_column = "date"
+timestamp_parser = "datetime64"
+time_unit = "ms"
+missing = "reject"
+columns = ["% WEIGHTED ILI", "%UNWEIGHTED ILI", "AGE 0-4", "AGE 5-24", "ILITOTAL", "NUM. OF PROVIDERS", "OT"]
+start = 256
+stop = 384
+step = 1
+source = "ili"
+order = "C"
+
+[[datasets]]
+id = "ili-mts-n512"
+format = "csv"
+path = "/home/fzg/PycharmProjects/材料/TSBench_Corpus/national_illness.csv"
+dtype = "<f8"
+encoding = "utf-8"
+timestamp_column = "date"
+timestamp_parser = "datetime64"
+time_unit = "ms"
+missing = "reject"
+columns = ["% WEIGHTED ILI", "%UNWEIGHTED ILI", "AGE 0-4", "AGE 5-24", "ILITOTAL", "NUM. OF PROVIDERS", "OT"]
+start = 256
+stop = 768
+step = 1
+source = "ili"
+order = "C"
+
+[[methods]]
+id = "gorilla-canonical"
+codec = "gorilla-prometheus-xor"
+params = { path = "canonical" }
+channelwise = true
+chunk_rows = 128
+
+[[methods]]
+id = "gorilla-optimized"
+codec = "gorilla-prometheus-xor"
+params = { path = "optimized" }
+channelwise = true
+chunk_rows = 128
+
+[[methods]]
+id = "raw-records"
+codec = "raw-store"
+
+[[methods]]
+id = "zstd-records"
+codec = "zstd-frame"
+params = { compression_level = 3 }
+
+[task]
+kind = "records"
+fidelity = "bitwise"
+boundary = "object_memory"
+lifecycle = "independent_object"
+cache_policy = "natural"
+
+[[profiles]]
+id = "cpu-single"
+device = "cpu"
+native_threads = 1
+object_workers = 1
+
+[execution]
+sessions = 3
+rounds = 7
+warmup_objects = 2
+seed = 20261015
+timeout_s = 120
+qualification_cache = true
+
+[analysis]
+summary = "median_iqr"
+inference = "none"

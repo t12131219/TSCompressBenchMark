@@ -52,7 +52,17 @@ def capability(method,obj,task,profile,asset_root=None,build_root=None):
     roles=obj.schema.get('roles',{})
     libraries=[];deps=[];models=[];threads=1;identities=[]
     try:
-        for name,a in obj.components.items():
+        if method['codec'] == 'gorilla-prometheus-xor':
+            from .bridges.gorilla import validate_method
+            arrays,_,_=validate_method(method,obj)
+            if task.get('kind') != 'records':
+                raise Unsupported('Gorilla joint scheme requires task.kind=records',stage='capability')
+            items=[arrays['V']]
+        else:
+            if any(entry['codec']=='gorilla-prometheus-xor' for entry in method.get('components',{}).values()):
+                raise Unsupported('Gorilla is a joint T/V method, not a component codec',stage='capability')
+            items=obj.components.items()
+        for name,a in items:
             route=_route(method,name,roles);spec=reg.get(route['codec']);params=reg.resolve_params(spec.key,route.get('params',{}))
             if spec.key=='deepzip':
                 model_record=spec.document['adapter']['models'][params['model_key']]
@@ -107,12 +117,19 @@ class ObjectScheme:
         self.registry=Registry(self.root)
     def prepare(self,obj):
         # Preload installed implementations; no transformed buffers or codec state survive.
+        if self.method['codec']=='gorilla-prometheus-xor':
+            _bridge(str(self.root),'gorilla-prometheus-xor',str(self.build_root))
+            return
         roles=obj.schema.get('roles',{})
         routes=[_route(self.method,name,roles) for name in obj.components]
         for route in routes:
             key=self.registry.get(route['codec']).key
             if key!='raw-store':_bridge(str(self.root),key,str(self.build_root))
     def encode_once(self,obj):
+        if self.method['codec']=='gorilla-prometheus-xor':
+            from .bridges.gorilla import encode_object
+            bridge=_bridge(str(self.root),'gorilla-prometheus-xor',str(self.build_root))
+            return encode_object(obj,self.method,bridge)
         body=bytearray();components=[];input_ids=[];input_bytes=0;intermediate_ids=[];intermediate_bytes=0
         roles=obj.schema.get('roles',{})
         for name,a in obj.components.items():
@@ -154,6 +171,9 @@ class ObjectScheme:
 def decode_once(encoded,asset_root=None,build_root=None):
     root,build_root=_roots(asset_root,build_root)
     desc,body=read_bundle_prefix(encoded.wire)
+    if desc.get('schema_version')=='tsbench.gorilla-records/1':
+        from .bridges.gorilla import decode_object
+        return decode_object(desc,body,_bridge(str(root),'gorilla-prometheus-xor',str(build_root)))
     components=validate_descriptor(desc,body)
     output={}
     for c in components:

@@ -1,10 +1,12 @@
 # TSBench
 
-基于现有36个真实CPU codec key与真实cuSZp GPU扩展的独立Python benchmark。已完成CPU核心1092／1092、真实对象3192／3192和PeMS三维对象756／756正式trial；各组绑定自己的源码、输入和环境身份。GPU原参数保留378个成功trial及126个质量资格拒绝后的not_run槽位；显式90% native参数的四组run共840／840成功。修复安装构建后，新的GPU控制面检查另完成28／28，不替代原矩阵。结果与测试见[实施报告](docs/implementation.md)、[GPU结果](docs/gpu_results/README.md)、[PeMS结果](docs/pems_results/README.md)和[当前证据索引](docs/current_evidence.json)。设计见 [工程实施总计划](TimeSeries_Compression_Benchmark_V4.0_工程实施总计划.md)，模块及流程见 [框架图](docs/diagrams/README.md)。运行包位于 `benchmark/`，新目录和文件不附加 `_v4` 或 `-v4` 标记。旧raw保留原身份，后续修正使用新run验证。
+基于现有37个真实CPU codec key与真实cuSZp GPU扩展的独立Python benchmark。已完成CPU核心1092／1092、真实对象3192／3192和PeMS三维对象756／756正式trial；各组绑定自己的源码、输入和环境身份。GPU原参数保留378个成功trial及126个质量资格拒绝后的not_run槽位；显式90% native参数的四组run共840／840成功。修复安装构建后，新的GPU控制面检查另完成28／28，不替代原矩阵。结果与测试见[实施报告](docs/implementation.md)、[GPU结果](docs/gpu_results/README.md)、[PeMS结果](docs/pems_results/README.md)和[当前证据索引](docs/current_evidence.json)。设计见 [工程实施总计划](TimeSeries_Compression_Benchmark_V4.0_工程实施总计划.md)，模块及流程见 [框架图](docs/diagrams/README.md)。运行包位于 `benchmark/`，新目录和文件不附加 `_v4` 或 `-v4` 标记。旧raw保留原身份，后续修正使用新run验证。
+
+新增 **Gorilla（Prometheus XOR）** 的 C++17 接入已恢复并重新验收：完整 suite **343 passed**，专项在两个 Python 环境各 **35 passed**，真实 records 实验 **24/24 case、504/504 trial** 全部通过。实现与范围见 [Gorilla 接入报告](docs/gorilla_integration/README.md)，用法见 [示例](benchmark/examples/gorilla_records.toml) 和 [真实输入实验](benchmark/experiments/gorilla/records.toml)。
 
 测试对象是声明 dtype、shape、layout 和恢复语义的 V / T / mask；当前 wire 版本2校验恢复descriptor与payload，兼容读取历史版本1。保存的 wire 包含独立恢复所需 descriptor、payload、chunk / channel 目录和必要依赖。默认 CPU 边界为 `object_memory`：每次对象创建独立 codec session，编码包含 Finish 和完整 wire，解码从 wire 创建新 session；计时外逐轮验证恢复及输入未被修改。`stored_bytes` 是实际完整 wire 长度。
 
-收尾后的完整suite在Python3.11／NumPy1.24与Python3.14／NumPy2.5两个本机软件环境均 **308 passed**；[日志与JUnit索引](docs/current_evidence.json)保留实际结果。测试与正式性能测量分开执行。
+此前36个codec范围的完整suite在Python3.11／NumPy1.24与Python3.14／NumPy2.5两个本机软件环境均 **308 passed**；[日志与JUnit索引](docs/current_evidence.json)保留实际结果。测试与正式性能测量分开执行。
 
 Python 要求为 3.11 或更高，核心依赖只有 NumPy。原生构建需要现有资产配方所指定的 C/C++ 编译器、CMake 及相关开发库。直接从仓库运行即可：
 

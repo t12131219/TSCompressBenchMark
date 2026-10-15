@@ -119,6 +119,17 @@ def codec_grid(root,key,build_root=None):
         except Exception as error:
             record.update(status=getattr(error,'status','error'),reason=str(error))
         records.append(record)
+    if key=='gorilla-prometheus-xor':
+        for path in ('canonical','optimized'):
+            for n in (0,1,2,17,257,65535):
+                t=(np.arange(n,dtype='<i8')*1000)-5000
+                bits=np.resize(np.array([0,2**63,0x7ff0000000000000,0xfff0000000000000,0x7ff0000000000001,0x7ff8123456781234,1],dtype='<u8'),n)
+                v=bits.view('<f8');before=t.tobytes()+v.tobytes()
+                payload=bridge.encode_pairs(t,v,{'path':path})
+                times,values=bridge.decode_pairs(payload,n,{'path':path})
+                assert times.tobytes()+values.tobytes()==before==t.tobytes()+v.tobytes()
+                records.append({'case':'paired-records','path':path,'n':n,'status':'ok','bitwise_equal':True,'payload_bytes':len(payload),'payload_sha256':hashlib.sha256(payload).hexdigest(),'codec_input':bridge.last_input_identity})
+        return {'codec':key,'status':'ok',**identity,'cases':records,'ok_cases':len(records),'source_rejections':0,'error_cases':0,'scope':'joint T/V only; same-host native admission'}
     for dtype in spec.dtypes:
         for n in (17,257):
             case('dtype-tail-'+str(n),values(spec,dtype,n))
