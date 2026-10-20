@@ -1,0 +1,258 @@
+# Sprintz migration 20261017: frozen native port, four current IDs; new result identity.
+# Frozen by generate_native_experiments.py; no result-dependent tuning.
+schema = "tsbench.experiment/1"
+name = "native-core-real-sprintz-native-20261017"
+output = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/runs/native-core-real-20261015-sprintz-native-20261017"
+
+[[datasets]]
+id = "etth1-values-c"
+format = "csv"
+path = "/home/fzg/PycharmProjects/材料/TSBench_Corpus/ETTh1.csv"
+dtype = "<f8"
+columns = ["HUFL", "HULL", "MUFL", "MULL", "LUFL", "LULL", "OT"]
+timestamp_column = "date"
+timestamp_parser = "datetime64"
+time_unit = "ns"
+encoding = "utf-8"
+missing = "reject"
+start = 2048
+stop = 10240
+order = "C"
+source = "etth1"
+
+[[datasets]]
+id = "etth1-values-f"
+format = "csv"
+path = "/home/fzg/PycharmProjects/材料/TSBench_Corpus/ETTh1.csv"
+dtype = "<f8"
+columns = ["HUFL", "HULL", "MUFL", "MULL", "LUFL", "LULL", "OT"]
+timestamp_column = "date"
+timestamp_parser = "datetime64"
+time_unit = "ns"
+encoding = "utf-8"
+missing = "reject"
+start = 2048
+stop = 10240
+order = "F"
+source = "etth1"
+
+[[datasets]]
+id = "weather-values-c"
+format = "csv"
+path = "/home/fzg/PycharmProjects/材料/TSBench_Corpus/weather.csv"
+dtype = "<f8"
+columns = ["T (degC)", "Tdew (degC)", "Tlog (degC)"]
+timestamp_column = "date"
+timestamp_parser = "datetime64"
+time_unit = "ns"
+encoding = "utf-8"
+missing = "reject"
+start = 2048
+stop = 34816
+order = "C"
+source = "weather"
+
+[[datasets]]
+id = "weather-values-f"
+format = "csv"
+path = "/home/fzg/PycharmProjects/材料/TSBench_Corpus/weather.csv"
+dtype = "<f8"
+columns = ["T (degC)", "Tdew (degC)", "Tlog (degC)"]
+timestamp_column = "date"
+timestamp_parser = "datetime64"
+time_unit = "ns"
+encoding = "utf-8"
+missing = "reject"
+start = 2048
+stop = 34816
+order = "F"
+source = "weather"
+
+[[datasets]]
+id = "ili-values-c"
+format = "csv"
+path = "/home/fzg/PycharmProjects/材料/TSBench_Corpus/national_illness.csv"
+dtype = "<f8"
+columns = ["OT"]
+timestamp_column = "date"
+timestamp_parser = "datetime64"
+time_unit = "ns"
+encoding = "utf-8"
+missing = "reject"
+start = 0
+stop = 512
+order = "C"
+source = "ili"
+
+[[methods]]
+id = "raw-store"
+codec = "raw-store"
+
+[[methods]]
+id = "abba"
+codec = "abba"
+
+[[methods]]
+id = "alp-rd"
+codec = "alp-rd"
+
+[[methods]]
+id = "alp"
+codec = "alp"
+
+[[methods]]
+id = "brotli-stream"
+codec = "brotli-stream"
+
+[[methods]]
+id = "bzip2-stream"
+codec = "bzip2-stream"
+
+[[methods]]
+id = "chimp"
+codec = "chimp"
+
+[[methods]]
+id = "chimp128"
+codec = "chimp128"
+
+[[methods]]
+id = "deepzip"
+codec = "deepzip"
+
+[[methods]]
+id = "deflate-zlib"
+codec = "deflate-zlib"
+
+[[methods]]
+id = "dzip"
+codec = "dzip"
+
+[[methods]]
+id = "elf-plus"
+codec = "elf-plus"
+
+[[methods]]
+id = "elf-star"
+codec = "elf-star"
+
+[[methods]]
+id = "elf"
+codec = "elf"
+
+[[methods]]
+id = "fabba"
+codec = "fabba"
+
+[[methods]]
+id = "fse"
+codec = "fse"
+
+[[methods]]
+id = "gorilla-prometheus-xor"
+codec = "gorilla-prometheus-xor"
+
+[[methods]]
+id = "huff0"
+codec = "huff0"
+
+[[methods]]
+id = "leats-lossless-i64"
+codec = "leats-lossless-i64"
+
+[[methods]]
+id = "lz4-frame"
+codec = "lz4-frame"
+
+[[methods]]
+id = "lzss-dipperstein-c"
+codec = "lzss-dipperstein-c"
+
+[[methods]]
+id = "lzss-raw"
+codec = "lzss-raw"
+
+[[methods]]
+id = "lzsse2-raw"
+codec = "lzsse2-raw"
+
+[[methods]]
+id = "lzsse8-raw"
+codec = "lzsse8-raw"
+
+[[methods]]
+id = "neats-lossless-i64"
+codec = "neats-lossless-i64"
+
+[[methods]]
+id = "self-star"
+codec = "self-star"
+
+[[methods]]
+id = "serf-qt"
+codec = "serf-qt"
+
+[[methods]]
+id = "serf-xor"
+codec = "serf-xor"
+
+[[methods]]
+id = "simdcomp-u32"
+codec = "simdcomp-u32"
+
+[[methods]]
+id = "snappy-raw"
+codec = "snappy-raw"
+
+[[methods]]
+id = "sprintz-delta"
+codec = "sprintz-delta"
+
+[[methods]]
+id = "sprintz-delta-huffman"
+codec = "sprintz-delta-huffman"
+
+[[methods]]
+id = "sprintz-fire-huffman"
+codec = "sprintz-fire-huffman"
+
+[[methods]]
+id = "sprintz-fire"
+codec = "sprintz-fire"
+
+[[methods]]
+id = "xz-stream"
+codec = "xz-stream"
+
+[[methods]]
+id = "zfp-accuracy-1d"
+codec = "zfp-accuracy-1d"
+
+[[methods]]
+id = "zstd-frame"
+codec = "zstd-frame"
+
+[[profiles]]
+id = "cpu-single"
+device = "cpu"
+native_threads = 1
+object_workers = 1
+
+[task]
+kind = "values"
+fidelity = "bitwise"
+boundary = "native_core"
+lifecycle = "prepared"
+cache_policy = "natural"
+
+[execution]
+sessions = 2
+rounds = 7
+warmup_objects = 0
+native_loops = 8
+native_warmup_loops = 2
+native_batch_memory_mb = 256
+timeout_s = 120
+qualification_cache = true
+save_artifacts = true
+seed = 20261015

@@ -1,0 +1,58 @@
+# Frozen by generate_all_core_experiments.py; no result-dependent tuning.
+schema = "tsbench.experiment/1"
+name = "native-all-empirical-prepared"
+output = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/runs/native-all-empirical-prepared-20261015"
+
+[[datasets]]
+id = "ili-values-c"
+format = "csv"
+path = "/home/fzg/PycharmProjects/材料/TSBench_Corpus/national_illness.csv"
+dtype = "<f8"
+columns = ["OT"]
+timestamp_column = "date"
+timestamp_parser = "datetime64"
+time_unit = "ns"
+encoding = "utf-8"
+missing = "reject"
+start = 0
+stop = 512
+order = "C"
+source = "ili"
+
+[[methods]]
+id = "abba"
+codec = "abba"
+
+[[methods]]
+id = "fabba"
+codec = "fabba"
+
+[[profiles]]
+id = "cpu-single"
+device = "cpu"
+native_threads = 1
+object_workers = 1
+memory_limit_mb = 4096
+
+[task]
+kind = "values"
+fidelity = "empirical_quality"
+boundary = "native_core"
+lifecycle = "prepared"
+cache_policy = "natural"
+
+[execution]
+sessions = 2
+rounds = 7
+warmup_objects = 0
+native_loops = 8
+native_warmup_loops = 2
+native_batch_memory_mb = 256
+timeout_s = 120
+qualification_cache = true
+save_artifacts = true
+seed = 20261015
+
+[analysis]
+summary = "median_iqr"
+inference = "none"

@@ -1,0 +1,82 @@
+# Frozen by generate_all_core_experiments.py; no result-dependent tuning.
+schema = "tsbench.experiment/1"
+name = "native-all-entropy-fresh"
+output = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/runs/native-all-entropy-fresh-20261015"
+
+[[datasets]]
+id = "float64-c"
+format = "npy"
+path = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/examples/data/float64.npy"
+component = "V"
+order = "C"
+source = "development-fixture:float64"
+
+[[datasets]]
+id = "float64-f"
+format = "npy"
+path = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/examples/data/float64.npy"
+component = "V"
+order = "F"
+source = "development-fixture:float64"
+
+[[datasets]]
+id = "float32-c"
+format = "npy"
+path = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/examples/data/float32.npy"
+component = "V"
+order = "C"
+source = "development-fixture:float32"
+
+[[datasets]]
+id = "float32-f"
+format = "npy"
+path = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/examples/data/float32.npy"
+component = "V"
+order = "F"
+source = "development-fixture:float32"
+
+[[datasets]]
+id = "uint8-c"
+format = "npy"
+path = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/examples/data/uint8.npy"
+component = "V"
+order = "C"
+source = "development-fixture:uint8"
+
+[[methods]]
+id = "fse"
+codec = "fse"
+
+[[methods]]
+id = "huff0"
+codec = "huff0"
+
+[[profiles]]
+id = "cpu-single"
+device = "cpu"
+native_threads = 1
+object_workers = 1
+memory_limit_mb = 4096
+
+[task]
+kind = "values"
+fidelity = "bitwise"
+boundary = "native_core"
+lifecycle = "fresh_request"
+cache_policy = "natural"
+
+[execution]
+sessions = 2
+rounds = 7
+warmup_objects = 0
+native_loops = 8
+native_warmup_loops = 2
+native_batch_memory_mb = 256
+timeout_s = 120
+qualification_cache = true
+save_artifacts = true
+seed = 20261015
+
+[analysis]
+summary = "median_iqr"
+inference = "none"

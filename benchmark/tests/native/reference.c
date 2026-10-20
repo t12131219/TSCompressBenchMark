@@ -109,7 +109,7 @@ static void write_runtime_paths(void) {
 }
 
 int main(int argc, char **argv) {
-    if (argc != 7 || (strcmp(argv[2], "zstd-frame") && strcmp(argv[2], "lzss-raw"))) {
+    if (argc != 7 || (strcmp(argv[2], "zstd-frame") && strcmp(argv[2], "snappy-raw"))) {
         fprintf(stderr, "usage: reference LIB CODEC INPUT CONFIG_JSON PAYLOAD RESTORED\n"); return 2;
     }
     void *library = dlopen(argv[1], RTLD_NOW | RTLD_LOCAL);
@@ -135,7 +135,7 @@ int main(int argc, char **argv) {
     require_status(bound(encoder, &input, &bound_length), encoder, "encode.bound");
     unsigned char *compressed_head = allocate(bound_length), *compressed_tail = allocate(bound_length);
     tscb_buffer_v1 encoded = buffer(compressed_head, bound_length, 0);
-    tscb_buffer_v1 finalized = buffer(compressed_tail, strcmp(argv[2], "lzss-raw") ? bound_length : 0, 0);
+    tscb_buffer_v1 finalized = buffer(compressed_tail, strcmp(argv[2], "snappy-raw") ? bound_length : 0, 0);
     uint64_t encode_prepare_ns = clock_ns() - prepare_begin;
     uint64_t begin = clock_ns();
     tscb_status_v1 encode_status = compress(encoder, &input, &encoded);

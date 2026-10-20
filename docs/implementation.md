@@ -1,16 +1,87 @@
-# Benchmark 实施与实际结果（2026-10-13）
+# Benchmark 实施状态与结果范围（2026-10-15）
 
-独立 `tsbench` 已完成对象编码、独立恢复、验证和描述报告闭环。六组核心正式run共 **1092/1092 measurement trials 成功**，36/36个真实CPU codec key至少完成一个7-round case；真实对象152/152 case、3192/3192 trial通过，PeMS三维对象36/36合资格case、756/756 trial通过。cuSZp原参数严格质量失败保留，显式margin90的四组run共840/840成功；安装构建修复后的GPU控制面另有4case、28/28检查。历史run保留自己的身份。覆盖限于已记录输入和约束，完整测试与当前证据见 [current_evidence.json](current_evidence.json)。
+2026-10-17增量：当前ALP／ALP-RD已切换为冻结safe-v1绑定，原生输出为ALPRW001；[接入与验证报告](alp_integration/README.md)单独记录本次身份。下述2026-10-15测试和正式性能数字属于当时的旧实现，不能作为新ALP绑定的测量证据。
+
+**默认目标为原生codec：`native_core / prepared / natural`。当前registry的37／37个真实CPU codec构建成功，加上driver提供的raw-store，共38个key均完成prepared与fresh_request下共同合法输入的direct core案例。** 28份冻结配置串行完成358请求：348 ready、10 unsupported，**4872／4872正式trial成功，额外尝试0**；统一严格审计通过。当前结果见[全量原生报告](all_core_results/README.md)、[全部请求与原因](all_core_results/coverage.md)及[证据索引](all_core_evidence.json)。`native_api`保留为适配器辅助目标，显式`object_memory / independent_object / natural`保留原目标；后文首阶段／对象／GPU结果保留各自身份和完成边界。
+
+独立 `tsbench` 已完成历史对象编码、独立恢复、验证和描述报告闭环。六组核心正式run共 **1092/1092 measurement trials 成功**，36/36个真实CPU codec key至少完成一个7-round case；真实对象152/152 case、3192/3192 trial通过，PeMS三维对象36/36合资格case、756/756 trial通过。cuSZp原参数严格质量失败保留，显式margin90的四组run共840/840成功；安装构建修复后的GPU控制面另有4case、28/28检查。历史run保留自己的身份。覆盖限于已记录输入和约束，完整测试与当前证据见 [current_evidence.json](current_evidence.json)。
 
 设计与阶段要求见 [V4 工程实施总计划](../TimeSeries_Compression_Benchmark_V4.0_工程实施总计划.md)，执行入口见 [README](../README.md)。架构和执行流程分别为 [architecture.svg](diagrams/architecture.svg)、[workflow.svg](diagrams/workflow.svg)。旧框架先删除，保留资产与删除范围见 [清理记录](cleanup_20261013.md)、[codec 资产](codec_assets.md)。后续路径整理见 [迁移映射](path_relocation.json)；历史 manifest／observations 字节及其中的原路径保持不变，新目录名本身不赋予历史 run 恢复资格。
 
-## 当前实施范围
+**全CPU direct core构建、测试、正式运行及只读审计已完成。** 最终完整suite为**715 passed、0 failures／errors／skips，70.91s**，证据为[最终构建状态](../build/verification/all-core/build-status-symbolic-final.json)、[测试日志](../build/verification/all-core/pytest-symbolic-final.log)及[JUnit](../build/verification/all-core/junit-symbolic-final.xml)。本轮追加真实`tsbench_core_*` API，绕过C1／RW envelope与不必要复制；固定模型可在prepared准备，输入相关建模与在线状态更新仍在每次encode内。Gorilla支持无mask、UTS联合T/V的16bytes交错输入。实现和修正持续记录于[开发日志](development.md)，五个模型／records入口明细见[分组记录](development/core_models_records.md)。此前六组2534个trial继续属于首批core／API／对象实现，不回填本轮身份。
+
+最终[验证证据索引](all_core_verification.json)汇总构建、完整suite、正式运行及报告审计文件的hash。完整715项suite之后的报告显示修正另有4项纯格式检查通过，不合并冒称重新执行了完整suite；该修正未改变原始测量或逐案例CSV。当前原生结果链接有效，历史正文中的39个旧run链接目标在当前checkout已缺失，清单另存该索引，不改历史测量身份。
+
+本轮使用统一执行源`sha256:9f67a210226e2432d848229b9742fbec0457b89ef905da4073f7ba3dfb830d08`。基础设计24配置／352请求，神经补充设计4配置／6请求，分别保留冻结设计身份；每个ready case为2 sessions ×7 rounds。统一输入直接使用原dtype／shape／C或F物理顺序和真实有效bytes，内部扩宽、padding与共享T重复不扩大分母；Gorilla保持16bytes T/V pairs。输入身份包括content hash、dtype、shape、layout和nbytes，独立恢复使用同一任务几何及真实stream。38-key覆盖仅证明记录中的合法案例，不推定各codec支持全部任务、源域或线程配置，不作跨输入／质量／资源的总排名。
+
+`tsbench_core_storage`以bit0／bit1声明encode／decode是否使用caller buffer，driver据此分配；owned vector或codec owner独立于context存活，逐份验证后释放。可选`validate_input`与`validate`分别把附加源域准入和完整流安全检查移至主时钟外，独立验证context不向decoder传递encoder状态；decode接受已验证不可变产物，避免额外完整prepass。原生算法自身必需采样、建模、reset、字典转换、在线更新、必要header读取与finalize仍计时。具体契约及入口组见[计划§14.19](../TimeSeries_Compression_Benchmark_V4.0_工程实施总计划.md)，源码研究和未验证限制见[开发日志](development.md)。
+
+新增direct专用测试验证caller／owner存储、context销毁后产物有效、空encoder参数／无外部模型的独立decoder、typed物理布局和尾部、损坏格式与容量拒绝；SIMDComp专用覆盖五条合法参数路径，模型／Gorilla专用覆盖完整模型账单及上游golden位型。ABBA／fABBA的build-local encode-only修正另有24项完整原生stream逐字节对照；冻结vendor与旧API行为保留。
+
+[统一审计](all_core_results/audit.md)核对48216对正式阶段压缩／恢复产物记录，其中38472对正式操作、9744对warmup；另有3444对exact资格产物记录，含warmup。loops及warmup不作为独立样本。审计复核保存的验证记录、完整压缩文件及source／build／runtime身份，未重新执行decoder；恢复文件按协议删除后保留digest和计时外验证记录。实际审计日志见[report-audit.log](../build/verification/all-core/report-audit.log)。
+
+神经路径须按设计分开解释：基础64符号短流每次编解码均0 predict／0 train；补充257符号的DeepZip biGRU与DZip BOOTSTRAP／COMBINED各有193次预测，COMBINED另含1个128-window训练batch、1次Adam更新，后续65次预测使用更新权重。次数由源码推导而非动态counter；这是完整操作吞吐，不能称单独预测／训练内核速度。DeepZip固定模型可预载但完整收费；DZip是输入alphabet相关的seeded初始模型，每次编码重新初始化，COMBINED在线训练与decoder重放均在各自完整操作内。完整结果见[神经专表](all_core_results/README.md#神经预测与在线更新路径)。
+
+## 原生目标与实现验收
+
+| 指标 | 默认主表 | 辅助结果 |
+|---|---|---|
+| 压缩倍数 | 逻辑有效输入bytes／codec完整必要输出bytes | 实际ABI输出、完整对象wire及其比例 |
+| bits/value | codec完整必要输出bits／输入V标量数 | T-only为null；records是否含T／mask明示 |
+| 编码／解码吞吐 | 有效输入／恢复逻辑bytes × loops／C++内实际batch总时间 | native_api时钟、对象处理wall、setup／close |
+| 生命周期 | prepared独立逻辑reset；fresh_request分列 | object独立session、fresh-process和GPU驻留各自具名 |
+| 正确性／质量 | 每个真实输出及恢复结果在计时外验证，失败不进入主性能 | 保留全部请求分母、stage、reason和诊断时间 |
+
+codec必要header、参数、模型／字典、索引、exceptions和finalize数据必须计费；框架实验JSON／hash／来源和纯ABI envelope不计codec大小。以真实格式区间与依赖账单确认`codec_complete_bytes`，不能把payload直接改名或估计扣除；无法核实则主空间指标null及原因。任务／dtype／shape／layout／有效数据量相同才比较，不含padding、ABI头或逐列重复共享T。默认任务保留masked位置V，分母不能自行删去这些位型。
+
+Python负责解析、资格、配置、调度和保存；C/C++ driver直接调用codec完整编码／finish或解码，内部循环并测monotonic wall。每轮返回真实totals／loops／输出数，Python只归一化实测总量；不减空循环或raw-store时间。编码必需采样、建模、在线更新仍计入，prepared只复用合法workspace，不复用上次输入历史。fresh_request包含context创建／配置、bound、caller buffer分配、操作及context关闭，另表；压缩／恢复产物为验证保留，其最终buffer释放在计时外，不能称全部释放在内的总端到端生命周期。`native_loops=8`起步，`native_batch_memory_mb`约束保留每个真实输出／恢复的验证覆盖；不能只验证最后一份。
+
+以下表格记录首阶段的实现与验收身份；本轮全CPU完成范围以上述全量报告和证据为准。
+
+| 首阶段历史阶段 | 当时实现状态／后续要求 |
+|---|---|
+| N0 计划／架构／报告先行 | 统一core默认、API／object辅助，保留历史；代码修改在该文档阶段之后 |
+| N1 direct core driver | 已实现raw-store／Zstd／LZ4-frame／Snappy真实直接入口、原生batch时钟、prepared／fresh及逐产物验证；两个生命周期各完成280／280正式trial |
+| N2 通用native_api | 已实现C1／RW完整接口辅助时钟，不称pure core；单组件、无chunk／transform，RW仅rank1；未审完整大小null |
+| N3 默认配置与报告／重跑 | 默认配置、按boundary与lifecycle分层报告及六组新run完成；legacy缺boundary仍对象，未接入core保持unsupported |
+| N4／N5 扩展与复现 | 已保存新raw、source／build／driver及只读分析身份；其余direct core与更广研究按实际实现扩展，旧复现包当前缺失，不作为新运行证据 |
+
+原生与兼容首批实现完整suite为 **372 passed**；这是此前代码正确性验证，不是本轮全CPU direct扩展或吞吐证据。可运行入口为`python -m tsbench build-driver`、[默认示例](../benchmark/examples/native.toml)和[首次请求示例](../benchmark/examples/native_fresh.toml)，详见[README命令](../README.md)。原生主计时使用driver的`CLOCK_MONOTONIC`，保存真实encode_batch_ns／decode_batch_ns及loops；所有native_products逐份验证，native_batch保存clock／分辨率与范围，native_runtime保存实际映射库身份。
+
+[原生参考笔记](research/native_reference_notes.md)保存lzbench固定commit／hash、真实循环／workspace／统计入口与37个CPU key逐类输出账单；参考范围见[计划§1](../TimeSeries_Compression_Benchmark_V4.0_工程实施总计划.md)及[专项诊断](research/lzbench_comparison_20261015.md)。本地未定位可核验TFBench来源，不声称读过其实现。旧Zstd／LZSS边界实验只证明其具名范围，不能给其余codec填造native时间。
+
+## 2026-10-15 首阶段原生运行与对象对照（历史身份）
+
+固定[设计与配置](../benchmark/experiments/native/design.json)使用2 sessions ×7 rounds；native trial在C++内部执行8次正式操作和2次warmup，各份压缩产物／恢复均计时外验证。下列六组manifest均为`complete`，`execution_source_unchanged=true`；只读总报告及逐trial溯源见[原生结果](native_results/README.md)、[证据索引](native_evidence.json)。
+
+| 新run／测量范围 | 请求 | ready | unsupported | 正式trial |
+|---|---:|---:|---:|---:|
+| [core prepared](../runs/native-core-real-20261015/report/README.md) | 190 | 20 | 170 | 280／280 ok |
+| [core fresh_request](../runs/native-core-fresh-20261015/report/README.md) | 190 | 20 | 170 | 280／280 ok |
+| [API lossless](../runs/native-api-lossless-20261015/report/README.md) | 384 | 113 | 271 | 1582／1582 ok |
+| [API bounded](../runs/native-api-bounded-20261015/report/README.md) | 6 | 6 | 0 | 84／84 ok |
+| [API empirical](../runs/native-api-empirical-20261015/report/README.md) | 2 | 2 | 0 | 28／28 ok |
+| [object对照](../runs/object-reference-real-20261015/report/README.md) | 20 | 20 | 0 | 280／280 ok |
+| 合计 | 792 | 181 | 611 | 2534／2534 ok |
+
+其中2254个native trial保留并验证 **22540对压缩／恢复产物**（18032对正式操作、4508对warmup）；operation数不是独立trial数。每个round的batch均值是统计样本，session与round保持原层次。主表只取core prepared；core fresh、native_api和object各自分组，不累计吞吐或混排。
+
+core与object对照使用3来源的5种真实V表示：ETT窗口`[2048,10240)`为8192×7 `<f8>`、C/F；weather窗口`[2048,34816)`为32768×3 `<f8>`、C/F，列为`T (degC), Tdew (degC), Tlog (degC)`；ILI窗口`[0,512)`为512个标量、rank1 `(512,)`、`<f8>`、C-order、`OT`。CSV原T可保留lineage但不计V分母；两种layout不是独立来源，ILI窗口也不能称未使用过的holdout。raw-store是参考入口，另外三个direct core是Zstd／LZ4-frame／Snappy；其余170个core请求每生命周期明确unsupported，不因API可运行而冒称direct core已实现。
+
+通用native_api在合法输入、dtype及资源profile下完成 **36／37个真实CPU codec key**：无损values为31个、bounded为3个、empirical为2个；Gorilla联合records入口尚未接入本native driver，其已有对象结果保持历史范围。无损271个unsupported分别为144个dtype、114个线程profile、12个Gorilla联合入口及1个DeepZip exact alphabet拒绝。ABBA／fABBA使用合法ILI rank1，DeepZip使用0..3符号输入；typed无损fixtures用于资格与接入覆盖，不能当真实语料跨codec排名。
+
+空间账单继续严格区分已知与未知：API lossless的45个ready case／630 trial具有已核实完整输出，68个case／952 trial仍为null；bounded六case／84 trial的完整大小全部未知，时间仅作具名API辅助；empirical两个case已核实。不得使用ABI输出或完整wire填补这些null，bounded与empirical也不混同任务／质量排名。fresh_request保留前述产物buffer最终释放在计时外的限制。
+
+首阶段保存自己的source snapshot、实际codec／driver build与runtime身份，不给历史raw回填新语义。用户指定的`build/reproduction-bundles/current-private-source.tar.gz`在当前checkout缺失，本轮未使用或验证该旧包；不改变历史导出记录。首阶段以后全CPU direct扩展的完成证据见本文件首部；更广真实来源、跨物理机器和独立第三方复现仍需对应证据。
+
+## 保留的对象模式与历史实施范围
+
 
 核心包在 [benchmark](../benchmark/pyproject.toml)，Python ≥3.11，运行时依赖 NumPy；绘图为可选 `analysis` 依赖。包不导入旧框架。真实 C1／RW1 bridge、冻结 source／model、构建记录、capability card 与内置 raw-store 分别承担编码实现、来源、资格和参考基线，`lz77` 仅为 `deflate-zlib` 别名。
 
 输入支持 NPY、具名 NPZ 和显式 dtype／时间解析／窗口的 CSV。任务分别为 values、timestamps、records 和组件投影；V／T／mask 的 dtype、shape、order、roles 及原始字节分母明确记录。独立 row chunk、channel route 和组件组合产生完整 standalone wire，恢复所需 descriptor、payload、model 以及分块目录均计入 stored bytes。当前 wire 协议2对 canonical descriptor 和 payload 均校验，descriptor 中合法数值字段被污染也不能静默改变恢复。协议1保持历史读取兼容，但它没有 descriptor checksum，不能宣称该旧格式具有协议2的完整性保证。mask、T、无效位置和特殊值按策略精确恢复；bitwise 验证保留 NaN payload 和 signed zero，有损误差在原始有效有限域计算。
 
-主执行器接受 CPU `object_memory / independent_object / natural`。每次 encode／decode 使用新 native handle／session，计时覆盖真实完成的对象 encode／decode；每个 trial 验证自己的产物并检查输入不变。exact qualification 用只给 wire 和已安装 decoder 的新进程独立恢复。implementation 小 suite 与 exact-input qualification 是两套内容身份缓存；缓存和 prior PASS 均不能代替新输入的资格。
+历史对象执行器接受 CPU `object_memory / independent_object / natural`；该显式配置继续保留。每次 encode／decode 使用新 native handle／session，计时覆盖真实完成的对象 encode／decode；每个 trial 验证自己的产物并检查输入不变。exact qualification 用只给 wire 和已安装 decoder 的新进程独立恢复。implementation 小 suite 与 exact-input qualification 是两套内容身份缓存；缓存和 prior PASS 均不能代替新输入的资格。
 
 父进程保存随机 schedule，隔离 worker 顺序执行 calibration、warmup 和 measurement，完整 JSONL 记录 planned／started／stage／terminal、budget、timeout／crash 及 retry。未知 signal 保持未知，SIGKILL 不直接记为 OOM。主摘要按每个预定 `(session, round)` 最早实际执行的终态选取 primary attempt；先前仅 `not_run` 的位置可后续执行，实际失败不会被成功 retry 替换。report 只读取 raw；缺失指标为 null 及原因，空对象不填造比例或吞吐。
 
@@ -25,9 +96,9 @@
 | P4 资源扩展 | 已冻结 ISA／线程约束；DZip 声明 3 native threads；独立 Linux RSS／CPU profile；实际W1／2／4进程池共504操作；SSE4.1／AVX2真实路径252trials；cuSZp 资格及两组 host/device formal run | 两个 formal 网格均保留严格 f32 原始域质量约束：ABS=0.01 为 168 ok／84 `not_run`，ABS=0.1 为 210 ok／42 `not_run`；这两组不标记为 complete success。可变native线程／受控scalar消融、stream／query／energy仍未覆盖 |
 | P5 复现与投稿 | build／环境／输入身份、raw／恢复产物／图trace；第二Python／NumPy环境独立重建36成员并完成924trials；三源获取校验脚本 | weather包装／ILI数据许可未知；第二机器／OS／ISA及独立第三方未复跑；完整投稿包未声称完成 |
 
-profile 为独立 pass，读取同一 resolved 配置另运行，在 run 自己的 profile 目录保存证据，不修改主 observations。当前 Linux sampler 包含 runner 及可观测 descendants 的 RSS／CPU／thread，记录 baseline 和采样下界；共享页可能重复计入，run-level sampled peak 不能称每 trial 精确 native 峰值。native API 时钟只作独立 C 对照／诊断，与对象主计时分列。
+profile 为独立 pass，读取同一 resolved 配置另运行，在 run 自己的 profile 目录保存证据，不修改主 observations。当前 Linux sampler 包含 runner 及可观测 descendants 的 RSS／CPU／thread，记录 baseline 和采样下界；共享页可能重复计入，run-level sampled peak 不能称每 trial 精确 native 峰值。历史native API时钟只作独立C对照／诊断。新默认core主表必须由新driver和新run取得，不能复用该对象时间。
 
-## 当前源码身份的正式运行
+## 历史对象源码身份的正式运行
 
 以下结果来自本轮完整性与 provenance 修订后的新源码快照和独立 build，所有正式计时串行执行。CPU 六组核心正式结果分别为无损 833、时间戳 28、有损 ABS 63、经验质量 28、records 35、三源 pilot 105，合计 1092/1092。每组 report 都保留 unsupported/error 的分母，不能用旧 run 的同名数字替代当前身份。
 
@@ -44,7 +115,7 @@ profile 为独立 pass，读取同一 resolved 配置另运行，在 run 自己�
 
 cuSZp GPU qualification 的 48 success、48 fresh decoder、30 expected failure 见 [资格报告](research/cuszp_qualification_20261013.md)。两个 P4 formal run 都保留 252 个预定 exact slots：ABS=0.01 为 168 `ok`、84 `not_run`；ABS=0.1 为 210 `ok`、42 `not_run`。未运行槽位对应 f32 中等／大输入的严格原始域 `quality_violation`，不是 codec 崩溃、OOM 或设备不可用；summary 对这些 case 保持 null，因此两个 formal run 均不能标记为 complete success。`host_to_host` 与 `device_resident` 不合并，VRAM 未声明可实施上限；这组 synthetic 一维网格也不代表 ETT／weather MTS GPU 覆盖。
 
-## PeMS、安装构建与交付验证
+## 历史对象PeMS、安装构建与交付验证
 
 [PeMS结果](pems_results/README.md)保持4份源文件的原生rank3 `<f8`／C-order，取固定start1024、长度128／512／8192的12对象。48个请求中raw-store／Zstd／deflate共36 ready、Chimp128共12 unsupported；正式执行 **756/756 ok**，每个ready case有3sessions×7rounds。8192行对象原始大小23.5–60.4 MB，均大于本机cpu0所记录L3容量20,971,520 bytes；natural cache且未干预，不作缓存因果主张。嵌套窗口与同采集体系不增加独立source样本量；processed许可、单位、传感器映射未知。
 
@@ -54,13 +125,13 @@ PeMS exact wire-only恢复在新子进程完成，完整wire的descriptor／payl
 
 build.py修复保持CPU执行闭包 `d7d0f84e…`，GPU闭包含该文件，因此新控制面身份为 `1e37ea14…`，旧GPU正式矩阵继续保留 `742ab710…`。冻结的[检查配置](../benchmark/experiments/gpu-builder-check/gpu-fixed-smoke.toml)在f32长度33、f64长度32769和两个boundary完成4case、28/28正式trial，见[原始摘要](../runs/gpu/cuszp-builder-check-20261013/summary.json)。native参数0.009、任务strict ABS0.01；这是有限控制面验证，不扩展为新身份下840矩阵全重跑。
 
-本机框架与现有codec的适用任务、约束、拒绝原因和bench结果已具备验收证据，详见[需求范围审计](research/remaining_requirements_audit.md)。源码／配置／当前raw／实际build记录的私有本地导出见[复现说明](reproduction.md)；原始真实数组、系统runtime和不明再分发许可不会由该包取得公开发布授权。广域论文、跨物理机器及第三方复现仍按各自范围陈述。
+此前对象目标下的本机框架与现有codec适用任务、约束、拒绝及bench结果具备历史验收证据；此次原生目标的N1–N3另有前述六组新run。旧[需求范围审计](research/remaining_requirements_audit.md)和[复现说明](reproduction.md)保持各自历史scope；原始真实数组、系统runtime和不明再分发许可不会由历史导出取得公开发布授权。广域论文、跨物理机器及第三方复现仍按各自范围陈述。
 
 最终完整suite在基线Python3.11／NumPy1.24为 **308 passed／38.79s**，第二软件环境Python3.14／NumPy2.5为 **308 passed／35.00s**，串行完成且无failures／errors／skips。新增测试验证安装构建、获取读取期间文件变更、获取失败台账和导出证据hash／当前wheel选择等风险。此前267项及中间303项的记录保持历史scope；最新log／XML hash在[current_evidence.json](current_evidence.json)的builder_tests中，测试时间不作codec性能。
 
 ## 历史协议2正式运行
 
-最终代码83个测试通过，其中 runtime 绑定／同名 symlink target 变动的 resume 拒绝在20个 runtime 回归中验证。测试耗时不是 benchmark 观测。最终配置输出到名称含 `final` 的独立 run，均已完整串行执行；最终表与主图只采用这些新身份的完整结果，旧 runtime／transform 结果保留为独立历史证据。
+最终代码83个测试通过，其中 runtime 绑定／同名 symlink target 变动的 resume 拒绝在20个 runtime 回归中验证。测试耗时不是 benchmark 观测。最终配置输出到名称含 `final` 的独立 run，均已完整串行执行；当时的对象表与图只采用这些身份的完整结果，旧 runtime／transform 结果保留为独立历史证据。
 
 | 最终 Run | 请求矩阵／资格 | 正式 measurement trials |
 |---|---|---|
@@ -113,11 +184,11 @@ build.py修复保持CPU执行闭包 `d7d0f84e…`，GPU闭包含该文件，因�
 
 ## 可重建的图和逐点溯源
 
-[plot_results.py](../benchmark/tools/plot_results.py)只读取 manifest 和 observations，不 import runner／bridge，不启动 codec，也不重写 raw 或 report。默认主覆盖图采用最终前五组：**406 请求，141 complete、265 unsupported，36/36 real codec keys**。不同 fidelity 组的输入／请求数不同，records 复合 scheme 按 primary route codec 分组且完整各组件绑定保留在 trace；此图只表达覆盖，不能用条长排名。
+[plot_results.py](../benchmark/tools/plot_results.py)只读取 manifest 和 observations，不 import runner／bridge，不启动 codec，也不重写 raw 或 report。历史对象覆盖图采用最终前五组：**406 请求，141 complete、265 unsupported，36/36 real codec keys**。不同 fidelity 组的输入／请求数不同，records 复合 scheme 按 primary route codec 分组且完整各组件绑定保留在 trace；此图只表达覆盖，不能用条长排名。
 
 ![Codec coverage](figures/codec_coverage.png)
 
-三源图逐对象给出完整 wire stored fraction 及 object encode／decode throughput；每点为7轮 median，横线为 Q1–Q3。bare raw bytes 基准为1，raw-store 的完整 envelope 可超过1。所有 payload／header 均保留在 trace，未扣除 metadata 使短对象压缩率看起来更好。
+三源历史辅助图逐对象给出完整wire stored fraction及object encode／decode throughput；每点为7轮 median，横线为 Q1–Q3。bare raw bytes 基准为1，raw-store 的完整 envelope 可超过1。所有 payload／header 均保留在 trace，未扣除 metadata 使短对象压缩率看起来更好。
 
 ![Three-source CPU pilot](figures/three_source_pilot.png)
 
@@ -132,7 +203,7 @@ python benchmark/tools/plot_results.py --historical --output docs/figures/histor
 python benchmark/tools/plot_results.py --extra-coverage-run runs/<new-run>
 ```
 
-## 后续三源 study、边界与第二软件环境
+## 历史三源study、独立边界与第二软件环境
 
 [固定study](../benchmark/experiments/cpu-study/study_design.json)采用3来源×128／512点，3sessions×7rounds，全部132case／2772trial通过。42个无损case、54个严格ABS质量case和36个经验质量case分组保存；不跨误差界作同质量排名。[分析结果](study_results/README.md)给出同对象Zstd配对、完整／payload／header成本、原始域质量、全部状态和逐trial行号。来源等权bootstrap只在3个选定source上重采样，nested窗口与重复session不增加source数；区间为探索性描述。Pareto是实际误差／完整大小／encode／decode四维事后oracle，不是线上selector。
 
@@ -170,3 +241,18 @@ python benchmark/tools/plot_results.py --extra-coverage-run runs/<new-run>
 当前核心图采用新run只读重生成：[coverage](figures/current-20261013/codec_coverage.png)、[pilot](figures/current-20261013/three_source_pilot.png)、[trace](figures/current-20261013/trace.json)。纯分析风险回归37项通过。纯Python wheel构建和仓库外isolated decoder验证见 [package_verification.json](research/package_verification.json)；恢复只收到真实wire及明确安装roots，bitwise通过，但不称独立机器复现。
 
 [GPU只读分析](gpu_results/README.md)保留原参数和margin90/真实单列分层，6个formal run、64个case中58个成功case与6个原始失败case分别报告；实际源码和raw hash未改写，逐case结果可追到observations及artifact。
+
+## 2026-10-17 Chimp 家族活动实现更新
+
+旧 Chimp / Chimp128 已归档并移除，当前采用冻结 chimp-family-cpp-scalar-v1，10个 key 全部具有 native_core、辅助 C1/API 与对象路径；32/64位分别注册，Chimp128=ChimpN(128)。有损 f32 使用单位索引时间轴，默认逐输入严格 ABS 验证，兼容模式仅经验质量。完整 CFP1／CFS1 输出计费，owning-vector 暂存／重构／严格检查在操作内。当前注册45个真实CPU key，另有raw-store；上文正式性能仍对应当时37+1个入口，未升级为本实现性能。
+
+[报告](chimp_integration/README.md)记录11537案例／5679407输入值、本次新 Java 差分、40对象／40原生组合／120产物、64 sanitizer案例、962完整测试及10项满元素上限检查。范围限本机scalar研究接入，未继承独立包跨架构／fuzz或FULL_PARITY资格；严格模式保留拒绝源缺陷的行为。
+
+
+## Sprintz 原生发布包替换（2026-10-17）
+
+旧 Sprintz 目录、补丁、五张旧卡、旧来源卡和活动旧 build indexes 均先归档后删除；两个同名主键重登记为本次发布包身份，仅新增／保留四主键 Delta、FIRE、Delta-Huffman、FIRE-Huffman，不保留 *-u8 或 fire-huff0 别名。当前44个真实CPU codec +raw-store，既有历史37+1性能报告仍属原时点。
+
+四入口调用未改动的限定 native port，Linux x86_64、AVX2/BMI1/BMI2/LZCNT/POPCNT、8/16位整数、1–128维、最多64KiB。baseline API与ISA核心分别编译；显式path开放已验收的general/lowdim/bitpack/noRLE，非法组合拒绝。core和C1输出均为24字节SZF1头+原样payload，恢复参数从帧读取，完整输出计费，安全API staging/scan/分配/序列化均计时；不隐式量化或自动分块。
+
+本次774例fresh源码对照中722字节一致、52明确保留raw16长度修复并拒绝原版截断流；76canonical/真实整数、297专项测试、1259完整回归、32对象CLI冷恢复、32原生组合96产物、96ASan/UBSan/LSan绑定案例全部通过。报告、限制、初始失败记录与复验见[Sprintz接入报告](sprintz_integration/README.md)。没有签FULL_PARITY或新FORMAL性能，未继承独立包fuzz/TSan/跨编译器资格。

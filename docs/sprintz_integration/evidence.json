@@ -1,0 +1,365 @@
+{
+  "schema": "tsbench.sprintz-native-integration/1",
+  "date": "2026-10-17",
+  "status": "LIMITED_NATIVE_PORT_BINDING_VALIDATED",
+  "formal_performance": "NOT_RERUN",
+  "full_parity": "NOT_ASSERTED",
+  "platform": "Linux-6.8.0-101-generic-x86_64-with-glibc2.35",
+  "active_sprintz_keys": [
+    "sprintz-delta",
+    "sprintz-fire",
+    "sprintz-delta-huffman",
+    "sprintz-fire-huffman"
+  ],
+  "release_sha256": "757789b014f2e5f7804ea88b68ce22bc3b5f86b9121626861c2c7209f4e5e624",
+  "frozen_files": 1593,
+  "consumed_core_modified": false,
+  "builds": [
+    {
+      "key": "sprintz-delta",
+      "build_id": "sha256:5dff591913e133a00b2b474d93c27a5bc7be9346d9263051f16a24f38a81e9bc",
+      "record": "build/tsbench/5dff591913e133a00b2b474d93c27a5bc7be9346d9263051f16a24f38a81e9bc/sprintz-delta/build.json",
+      "record_sha256": "a04723759f98f221e8c996d5668d33e75ff0b8f0e0a784e77aba6e2251bfaa27",
+      "artifact": "build/tsbench/5dff591913e133a00b2b474d93c27a5bc7be9346d9263051f16a24f38a81e9bc/sprintz-delta/libtscb_sprintz_delta.so",
+      "artifact_sha256": "2eb515e69f21f53aefd201e0c2d7f9a32b346b6cfd8ea11253eaa977a67101a5",
+      "compiled_dependency_count": 405,
+      "source_artifact_id": "v2:source-artifact:sha256:77ec90ebc3a3e2fcda2cbca50835efb75e63634c72a9874a19c708f6157ec001"
+    },
+    {
+      "key": "sprintz-fire",
+      "build_id": "sha256:a1386910ce073eddc8c211ab1cef95180a6f64d8758f905bec5d1856b5d87fe4",
+      "record": "build/tsbench/a1386910ce073eddc8c211ab1cef95180a6f64d8758f905bec5d1856b5d87fe4/sprintz-fire/build.json",
+      "record_sha256": "f3b0f5cbd35a1163b1f54f1279969630f9acba4ea2c7630ac28dd728a851b51b",
+      "artifact": "build/tsbench/a1386910ce073eddc8c211ab1cef95180a6f64d8758f905bec5d1856b5d87fe4/sprintz-fire/libtscb_sprintz_fire.so",
+      "artifact_sha256": "ac705abb805116190c239a0de179092dc6715a8f65a1db73bd91e698a9994c26",
+      "compiled_dependency_count": 405,
+      "source_artifact_id": "v2:source-artifact:sha256:77ec90ebc3a3e2fcda2cbca50835efb75e63634c72a9874a19c708f6157ec001"
+    },
+    {
+      "key": "sprintz-delta-huffman",
+      "build_id": "sha256:6c14194d408c1c2483a4f2e3802c4fee5c70ae192283889d5fe5231282e0742b",
+      "record": "build/tsbench/6c14194d408c1c2483a4f2e3802c4fee5c70ae192283889d5fe5231282e0742b/sprintz-delta-huffman/build.json",
+      "record_sha256": "f4ec198fec8aa6df66cea6ce8cf8172447843c9253079247a1ff738abda75129",
+      "artifact": "build/tsbench/6c14194d408c1c2483a4f2e3802c4fee5c70ae192283889d5fe5231282e0742b/sprintz-delta-huffman/libtscb_sprintz_delta_huffman.so",
+      "artifact_sha256": "c883daacbda7241dec5dc1c0ec298a643f96b58a3ae78f37e23b8be991046cfd",
+      "compiled_dependency_count": 405,
+      "source_artifact_id": "v2:source-artifact:sha256:77ec90ebc3a3e2fcda2cbca50835efb75e63634c72a9874a19c708f6157ec001"
+    },
+    {
+      "key": "sprintz-fire-huffman",
+      "build_id": "sha256:9e0bae2330628c6fe5d0546eff2d458b13d30e77a458d7dcfd0d2890412a85c6",
+      "record": "build/tsbench/9e0bae2330628c6fe5d0546eff2d458b13d30e77a458d7dcfd0d2890412a85c6/sprintz-fire-huffman/build.json",
+      "record_sha256": "cc140d412ffb31737fbab07b719bac4f2f2bb1666cf585a306b2568b62ea69b5",
+      "artifact": "build/tsbench/9e0bae2330628c6fe5d0546eff2d458b13d30e77a458d7dcfd0d2890412a85c6/sprintz-fire-huffman/libtscb_sprintz_fire_huffman.so",
+      "artifact_sha256": "ffa0167df8a70e9f5f27ef6ed11094eaff8271149c6f947611202986392859f0",
+      "compiled_dependency_count": 405,
+      "source_artifact_id": "v2:source-artifact:sha256:77ec90ebc3a3e2fcda2cbca50835efb75e63634c72a9874a19c708f6157ec001"
+    }
+  ],
+  "verification": {
+    "fresh_source_differential_cases": 774,
+    "source_byte_identical": 722,
+    "source_16b_truncation_repairs": 52,
+    "source_truncated_streams_rejected": 52,
+    "canonical_and_real_cases": 76,
+    "standalone_api_roundtrips": 80448,
+    "standalone_ctest": {
+      "passed": 2,
+      "failed": 0
+    },
+    "targeted_sprintz_tests": 297,
+    "final_adjacent_tests": 330,
+    "full_python_suite": 1259,
+    "objects_with_new_process_cli_decode": 32,
+    "native_combinations": 32,
+    "validated_native_products": 96,
+    "sanitizer_binding_cases": 96,
+    "asan": true,
+    "ubsan": true,
+    "lsan_detect_leaks": true,
+    "final_sanitizer_stderr_bytes": 0
+  },
+  "historical_designs_unchanged": [
+    {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/native-all/native-all-real-prepared.toml",
+      "sha256": "5e1b6327f2e976cb505ae07f10c9e93207d4a5c305929a7babfc28bf3d0a1b50",
+      "original_sha256": "5e1b6327f2e976cb505ae07f10c9e93207d4a5c305929a7babfc28bf3d0a1b50"
+    },
+    {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/native-all/native-all-real-fresh.toml",
+      "sha256": "68ced412495b5b6b6c1af48012399bbf237bbf5ffd8b15099d29edd38f70b2f1",
+      "original_sha256": "68ced412495b5b6b6c1af48012399bbf237bbf5ffd8b15099d29edd38f70b2f1"
+    },
+    {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/native-all/native-all-entropy-prepared.toml",
+      "sha256": "005fbe9205e2d9766d62e142753925862176d343d91d757704a408ebbceddd03",
+      "original_sha256": "005fbe9205e2d9766d62e142753925862176d343d91d757704a408ebbceddd03"
+    },
+    {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/native-all/native-all-entropy-fresh.toml",
+      "sha256": "ec45aaf75c096243ab9e44a8057cce3ba4a83f6b141c41cb8dd68af1b0b14ea2",
+      "original_sha256": "ec45aaf75c096243ab9e44a8057cce3ba4a83f6b141c41cb8dd68af1b0b14ea2"
+    },
+    {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/native-all/native-all-floats-prepared.toml",
+      "sha256": "db930b72e5c3ed2c92682c0ac4faf6715fc6c2007c489871b0ee2c75f10471e5",
+      "original_sha256": "db930b72e5c3ed2c92682c0ac4faf6715fc6c2007c489871b0ee2c75f10471e5"
+    },
+    {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/native-all/native-all-floats-fresh.toml",
+      "sha256": "ec271abca48cd675f23a6b3bd2b5554fa5fc1bdb9625ae7b33f133e12c770a0c",
+      "original_sha256": "ec271abca48cd675f23a6b3bd2b5554fa5fc1bdb9625ae7b33f133e12c770a0c"
+    },
+    {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/native-all/native-all-integer-models-prepared.toml",
+      "sha256": "8d20d07218b62920ddcd2c5e1f4d2d8d9d36f15c7dc87a62cccf0b4d910457c1",
+      "original_sha256": "8d20d07218b62920ddcd2c5e1f4d2d8d9d36f15c7dc87a62cccf0b4d910457c1"
+    },
+    {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/native-all/native-all-integer-models-fresh.toml",
+      "sha256": "1e4da266e96ccdaedb7cc3808964bb476dfaba919b63dab316c41ab11272bf23",
+      "original_sha256": "1e4da266e96ccdaedb7cc3808964bb476dfaba919b63dab316c41ab11272bf23"
+    },
+    {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/native-all/native-all-integer-matrix-prepared.toml",
+      "sha256": "64d09007f8d5c678b71e208b47f26d7f9eb898265ca24f299e3370a7800dff13",
+      "original_sha256": "64d09007f8d5c678b71e208b47f26d7f9eb898265ca24f299e3370a7800dff13"
+    },
+    {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/native-all/native-all-integer-matrix-fresh.toml",
+      "sha256": "41af1855963ab2f7048bdb2834a8ff015434467a1c35f04627d470fdc4798648",
+      "original_sha256": "41af1855963ab2f7048bdb2834a8ff015434467a1c35f04627d470fdc4798648"
+    },
+    {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/native-all/native-all-integer-u8-prepared.toml",
+      "sha256": "2e39807159e52cf1c7c9deaa3309709e7eb28d7e1e4414597834bcd986a6afa8",
+      "original_sha256": "2e39807159e52cf1c7c9deaa3309709e7eb28d7e1e4414597834bcd986a6afa8"
+    },
+    {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/native-all/native-all-integer-u8-fresh.toml",
+      "sha256": "0e0726da4a877bb4ed2c34817cf98b93648502781348200fe162d30fa666e6ac",
+      "original_sha256": "0e0726da4a877bb4ed2c34817cf98b93648502781348200fe162d30fa666e6ac"
+    },
+    {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/native-all/native-all-integer-u32-prepared.toml",
+      "sha256": "327ab083c97eb9069b448ef34b606ad2d068e73f3811f937a200d799e3b7eece",
+      "original_sha256": "327ab083c97eb9069b448ef34b606ad2d068e73f3811f937a200d799e3b7eece"
+    },
+    {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/native-all/native-all-integer-u32-fresh.toml",
+      "sha256": "02dd22b13a8b76713452f4ff6bb4da6510f0bdcb0499901ef932292a0067dc60",
+      "original_sha256": "02dd22b13a8b76713452f4ff6bb4da6510f0bdcb0499901ef932292a0067dc60"
+    },
+    {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/native-all/native-all-bounded-prepared.toml",
+      "sha256": "3cda5adcb9c899ba0499295d08e35bc78d68737781f9a185e316cdf527a30ae6",
+      "original_sha256": "3cda5adcb9c899ba0499295d08e35bc78d68737781f9a185e316cdf527a30ae6"
+    },
+    {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/native-all/native-all-bounded-fresh.toml",
+      "sha256": "87e28ff744e224368d5382d4a5269dd47f30d7bf2679f1514fc006cc049e0058",
+      "original_sha256": "87e28ff744e224368d5382d4a5269dd47f30d7bf2679f1514fc006cc049e0058"
+    },
+    {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/native-all/native-all-empirical-prepared.toml",
+      "sha256": "2236f80277721b3b9b88db7cbc620192d8326f46ed26444beff17c923fbaa8b5",
+      "original_sha256": "2236f80277721b3b9b88db7cbc620192d8326f46ed26444beff17c923fbaa8b5"
+    },
+    {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/native-all/native-all-empirical-fresh.toml",
+      "sha256": "1df5d47b9eb77a78bad38928aac329cc8ad8fbee4c13136e93a7c0d86a70de7f",
+      "original_sha256": "1df5d47b9eb77a78bad38928aac329cc8ad8fbee4c13136e93a7c0d86a70de7f"
+    },
+    {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/native-all/native-all-deepzip-prepared.toml",
+      "sha256": "97f7ba112cd9d572c38ed9af8d16c15648aca97ec49ffe1fcfc56cb1ca8f78fe",
+      "original_sha256": "97f7ba112cd9d572c38ed9af8d16c15648aca97ec49ffe1fcfc56cb1ca8f78fe"
+    },
+    {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/native-all/native-all-deepzip-fresh.toml",
+      "sha256": "2e522aebb6c0850291ee3661b1cb2cf61d80b5c5ace14b2a94cbe6e4f6127cbf",
+      "original_sha256": "2e522aebb6c0850291ee3661b1cb2cf61d80b5c5ace14b2a94cbe6e4f6127cbf"
+    },
+    {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/native-all/native-all-dzip-prepared.toml",
+      "sha256": "2d727bcea242daf175aa548d843883746fd7ca22c0c04ff799dd251093871945",
+      "original_sha256": "2d727bcea242daf175aa548d843883746fd7ca22c0c04ff799dd251093871945"
+    },
+    {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/native-all/native-all-dzip-fresh.toml",
+      "sha256": "9204f9732cf83974ced16292ba0f734fc4f1dcf7ab4b3a3fedd1fbcbd6151028",
+      "original_sha256": "9204f9732cf83974ced16292ba0f734fc4f1dcf7ab4b3a3fedd1fbcbd6151028"
+    },
+    {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/native-all/native-all-records-prepared.toml",
+      "sha256": "2c9d3d84613ee72a00f19a897bbf7846d103e4012fed9cfac915786d14fb3f7c",
+      "original_sha256": "2c9d3d84613ee72a00f19a897bbf7846d103e4012fed9cfac915786d14fb3f7c"
+    },
+    {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/native-all/native-all-records-fresh.toml",
+      "sha256": "928a593ce246412a7a426bd0e6cdaebfac50666c3d5407f0ee58d9cf4abbeb98",
+      "original_sha256": "928a593ce246412a7a426bd0e6cdaebfac50666c3d5407f0ee58d9cf4abbeb98"
+    }
+  ],
+  "scope": "Linux x86_64 ISA profile; 8/16-bit integer bits; dimensions1..128; input<=65536 bytes; no float mapping/query/outer auto chunking",
+  "framing": {
+    "native_core": "SZF1",
+    "native_api": "SZF1",
+    "header_bytes": 24,
+    "payload": "unchanged released sz_* payload",
+    "complete_output_counted": true,
+    "decode_encoder_parameters_required": false
+  },
+  "files": [
+    {
+      "path": "adapters/sprintz_family/FROZEN_SOURCES.json",
+      "sha256": "b100d92350424e5159e34e03cc4f182c94685b2e6c2e3ab24706c486c21dc0f4",
+      "bytes": 356047
+    },
+    {
+      "path": "adapters/sprintz_family/native/direct_core.inc",
+      "sha256": "714747bd4874628536f428364a5db737e8aeb4844882f806923cb7225294693f",
+      "bytes": 3579
+    },
+    {
+      "path": "adapters/sprintz_family/native/tscb_sprintz_family.cc",
+      "sha256": "2c4ee065e045932773a123bed5bf580c4bef2c72c649acb0e937a7770ef8681e",
+      "bytes": 10740
+    },
+    {
+      "path": "benchmark/examples/sprintz-family.toml",
+      "sha256": "4746a2c1ddc886e15a4120c3985aa542d251619a2bb698a6906fd5007fb2416a",
+      "bytes": 911
+    },
+    {
+      "path": "benchmark/tests/test_sprintz_family.py",
+      "sha256": "36c3ee6bee9f16c3499c29347e605ef918620506897799342a3ba39aca2d5663",
+      "bytes": 9435
+    },
+    {
+      "path": "benchmark/tools/qualify_sprintz_family.py",
+      "sha256": "90b883fc0c57dbf2050c32d81c741e6a93c7b9821a7d48bd2243ef91f68abcd3",
+      "bytes": 9715
+    },
+    {
+      "path": "docs/sprintz_integration/PLAN.md",
+      "sha256": "6b63207af4dd2e45dd523dec6609809752405d89e400ba8f11d2630ce7be8e1d",
+      "bytes": 2229
+    },
+    {
+      "path": "docs/sprintz_integration/README.md",
+      "sha256": "c72420c3c20f9dcdcd9debe49c98df72101c8b30d4d51dd5d9f0726133f06281",
+      "bytes": 8857
+    },
+    {
+      "path": "docs/sprintz_integration/configuration-migration.json",
+      "sha256": "5b291c95da6c702da56bb3bc4602702651f5b028f8acc259cc02674a24ef45ce",
+      "bytes": 1383
+    },
+    {
+      "path": "docs/sprintz_integration/final-adjacent-tests.log",
+      "sha256": "72b0270a73d3f4799ab337092e2df8830411e67820b4ba5036aa8afb8ef90961",
+      "bytes": 420
+    },
+    {
+      "path": "docs/sprintz_integration/full-python-suite.log",
+      "sha256": "8ce9de0ce53cc0f4ef4c170f2fee06cf50b3e80e42fe3106a1a0fb57e3df3058",
+      "bytes": 1472
+    },
+    {
+      "path": "docs/sprintz_integration/initial-diagnostics/hidden-core-qualification.log.gz",
+      "sha256": "30adcb61fecce701b52d9c5387db5df76c0a1ab37559cf9ee66214bd8cc3af2f",
+      "bytes": 613
+    },
+    {
+      "path": "docs/sprintz_integration/initial-diagnostics/hidden-core-symbols.log.gz",
+      "sha256": "0a3b7d0d10621172dfe2d4ed19d9436afe9fe82356dd2006f8ebf35d1e57fee6",
+      "bytes": 11475
+    },
+    {
+      "path": "docs/sprintz_integration/initial-diagnostics/lsan-ptrace.log",
+      "sha256": "7d9dae3c24e11ac191c5c1ae0f3eacd0ad125faa732eefb6eb3aa7c7bbfdafb7",
+      "bytes": 256
+    },
+    {
+      "path": "docs/sprintz_integration/initial-diagnostics/sanitizer-fault-hook-short-input.json",
+      "sha256": "a37043376cda22cd2ff92b20888f504426e637f84c74dd785170f86be544e2cf",
+      "bytes": 73764
+    },
+    {
+      "path": "docs/sprintz_integration/legacy-archive.json",
+      "sha256": "a18470d06063e64c2e59a75ceffc92ebd0d8fc498f0c0cbebf9baaed4ab59767",
+      "bytes": 559
+    },
+    {
+      "path": "docs/sprintz_integration/legacy-before-replacement.tar.gz",
+      "sha256": "cd9bd7a2625dad5991e2e1c16d9a27067c89368b779c82cb6b4c0194b08013d7",
+      "bytes": 86377
+    },
+    {
+      "path": "docs/sprintz_integration/legacy-build-indexes.json",
+      "sha256": "09763defd3af60a0baa17557e43439fa868176d29dbf609cf6749c5ae73b301d",
+      "bytes": 1597
+    },
+    {
+      "path": "docs/sprintz_integration/object-native-qualification.json",
+      "sha256": "934d75b05e7b12fe8d8773241999d58620febdec968dd4487109d0611666373b",
+      "bytes": 623119
+    },
+    {
+      "path": "docs/sprintz_integration/qualify_objects.py",
+      "sha256": "243f661db6ef52b95351d29775054c32ac5a3a43c487bb3229b3ecb9ebe61e04",
+      "bytes": 3697
+    },
+    {
+      "path": "docs/sprintz_integration/run_sanitizers.py",
+      "sha256": "4d9b9388571d27123fd77bb234f923224a0407b21c403a34bc79e2e62858943c",
+      "bytes": 1885
+    },
+    {
+      "path": "docs/sprintz_integration/sanitizer-final.log",
+      "sha256": "d3c53c86a72d71411e465e78d94ef62dbc5316624e2f574be2f52feb6b0a7ad0",
+      "bytes": 37
+    },
+    {
+      "path": "docs/sprintz_integration/sanitizer.json",
+      "sha256": "32dc19a423b0636dbe48555c7619b6ea9b6c1e4942e28358f6bcc72ed7b96aab",
+      "bytes": 74016
+    },
+    {
+      "path": "docs/sprintz_integration/sanitizer_binding.cpp",
+      "sha256": "e0d7a872d73fd092a4c6926e08181316be3508208f47a9a9e3bf9fa081154ed1",
+      "bytes": 3141
+    },
+    {
+      "path": "docs/sprintz_integration/source-cases.jsonl.gz",
+      "sha256": "15a3f4dd512e91c7d31a6c88bf0e0866b41b83056d06e46abe88a31d2d036084",
+      "bytes": 45830
+    },
+    {
+      "path": "docs/sprintz_integration/source-qualification.json",
+      "sha256": "34be4a6e27c3ab2d6967d80834350381134e1ccf99520661d850ed16ad11583d",
+      "bytes": 19241
+    },
+    {
+      "path": "docs/sprintz_integration/standalone-ctest.log",
+      "sha256": "124196eae8813c00c7a56994f2f763725a4e532ca82595a82f14d7da49cd7318",
+      "bytes": 1456
+    },
+    {
+      "path": "docs/sprintz_integration/standalone-package-audit.json",
+      "sha256": "72725aafd68d7a6440380b57873e1094096285274bafd0091f75d07d1fa7a84c",
+      "bytes": 18069
+    },
+    {
+      "path": "docs/sprintz_integration/targeted-tests.log",
+      "sha256": "b5c0dd956514c1a7d1b59b49808bb226e85af7370c2f831dfdf58772a1a43c01",
+      "bytes": 420
+    },
+    {
+      "path": "docs/sprintz_integration/write_evidence.py",
+      "sha256": "c4403bf932214a5310c61d2d08444a93e4dfa075352511f0362dc52f2ab54bdc",
+      "bytes": 4459
+    }
+  ]
+}

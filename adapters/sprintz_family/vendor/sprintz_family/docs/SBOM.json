@@ -1,0 +1,55 @@
+{
+  "scope": "local research archive; production and oracle closures separated",
+  "components": [
+    {
+      "name": "Sprintz",
+      "commit": "a056cdb67d049669875ab5487359aca99ae873ea",
+      "license": "Apache-2.0",
+      "role": "production native core; safety patch included"
+    },
+    {
+      "name": "Huff0/FSE in author lzbench Zstd vendor",
+      "commit": "580c4f085381f31b1ad669525ed04e63cbc385f3",
+      "license": "BSD-2-Clause file notices; BSD-3-Clause root notice",
+      "role": "production entropy backend"
+    },
+    {
+      "name": "author lzbench wrapper",
+      "commit": "580c4f085381f31b1ad669525ed04e63cbc385f3",
+      "license": "GPL-3.0-or-later program context, wrappers no individual header",
+      "role": "exact extracted Huff0 oracle functions only, not installed library"
+    },
+    {
+      "name": "libstdc++/libgcc/libc/libm",
+      "role": "system runtime; versions recorded in toolchain-platform.json"
+    },
+    {
+      "name": "Catch/Eigen in frozen source tests",
+      "role": "source-only; not compiled by standalone tests"
+    }
+  ],
+  "production_core_files": [
+    "sprintz.cpp",
+    "format.cpp",
+    "sprintz_delta.cpp",
+    "sprintz_delta_rle.cpp",
+    "sprintz_delta_lowdim.cpp",
+    "sprintz_xff.cpp",
+    "sprintz_xff_rle.cpp",
+    "sprintz_xff_lowdim.cpp",
+    "delta.cpp",
+    "predict.cpp",
+    "univariate_8b.cpp"
+  ],
+  "production_huff_files": [
+    "common/entropy_common.c",
+    "common/fse_decompress.c",
+    "common/error_private.c",
+    "compress/huf_compress.c",
+    "compress/fse_compress.c",
+    "compress/hist.c",
+    "decompress/huf_decompress.c"
+  ],
+  "python_role": "verification only, never production codec",
+  "benchmark_dependency": false
+}

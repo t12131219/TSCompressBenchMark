@@ -1,0 +1,659 @@
+{
+  "schema": "tsbench.alp-integration-evidence/1",
+  "date": "2026-10-17",
+  "status": "INTEGRATED_PORTABLE_PROFILE_VERIFIED",
+  "route": "NATIVE_PORT",
+  "profile": {
+    "isa": "SCALAR",
+    "implementation_profile": "PORTABLE",
+    "threads": 1,
+    "platform": "local Linux x86_64 LP64 little endian",
+    "dtype": [
+      "f32",
+      "f64"
+    ],
+    "max_total_elements": 16777216,
+    "full_limit_executed": false,
+    "source_full_parity": false,
+    "formal_performance_rerun": false,
+    "bench_avx2_arm_tsan_fuzz_reproducible_builds": "NOT_RUN"
+  },
+  "release": {
+    "path": "/home/fzg/PycharmProjects/Compression_Rewrite/Release/alp-cwida-safe-v1-20261017.tar.gz",
+    "bytes": 106380298,
+    "sha256": "e5766bc2ffbcbb4f9d503058632b56bc81c85225876646b5a495678c38650ec7"
+  },
+  "frozen_release_files_checked": 56,
+  "legacy_archive": {
+    "path": "docs/alp_integration/legacy-alp-before-safe-v1.tar.gz",
+    "bytes": 112560,
+    "sha256": "48da6ed2649d41163fdb551d7a75ac31ed3fb95b0be5e343cf74ce6d6533b05b"
+  },
+  "active_legacy_source_removed": true,
+  "source_artifact_id": "v2:source-artifact:sha256:26e61e9379e9be7911d5d2eb10cabcef2b72e40868b055a06326e8c204c2d118",
+  "builds": {
+    "alp": {
+      "build_id": "sha256:41f8b9a556c172ced97b4c9d6165b349017b9d34544f9d18e27a918e1b70badd",
+      "binary": {
+        "path": "build/tsbench/41f8b9a556c172ced97b4c9d6165b349017b9d34544f9d18e27a918e1b70badd/alp/libtscb_alp.so",
+        "bytes": 1262600,
+        "sha256": "719d1aae54c6559d4360644d1a6b77b54242c28cc431b2c6274de6ab9997ea38"
+      },
+      "build_record": {
+        "path": "build/tsbench/41f8b9a556c172ced97b4c9d6165b349017b9d34544f9d18e27a918e1b70badd/alp/build.json",
+        "bytes": 70463,
+        "sha256": "6abaf77509a6a46cd7dcacba08c06388c02cb6601782b7fe81ea01f28566df78"
+      },
+      "saved_build_record": {
+        "path": "build/alp-safe-v1-integration/alp-build.json",
+        "bytes": 70463,
+        "sha256": "6abaf77509a6a46cd7dcacba08c06388c02cb6601782b7fe81ea01f28566df78"
+      },
+      "current_dependency_hash_checks": {
+        "sources": 70,
+        "compiled_source_closure": 277,
+        "toolchain_files": 10,
+        "runtime_dependencies": 5
+      },
+      "sanitizer_build_record": {
+        "path": "build/alp-safe-v1-integration/sanitizer/alp/build.json",
+        "bytes": 56543,
+        "sha256": "b01b4ef23869ff7f8163733acd32b94ccd5cc711118f22a829c76e011d0c9a35"
+      },
+      "sanitizer_binary": {
+        "path": "build/alp-safe-v1-integration/sanitizer/alp/binding_test",
+        "bytes": 23309216,
+        "sha256": "b1b75fd6b88c0c1aa04927412cbda6e1099635aaab013b071e7e63d34ac8c66d"
+      },
+      "sanitizer_success_log": {
+        "path": "build/alp-safe-v1-integration/sanitizer/alp/run-untraced.log",
+        "bytes": 89,
+        "sha256": "d680108ce0e2fcb30dc1cdcb2b5f38f4b898554091fcd4ba950e8092c6c693fb"
+      }
+    },
+    "alp-rd": {
+      "build_id": "sha256:f3f772b58bb0f7edd5cee5a4670c66a4c5e7447d00d4c3ea1c7dafe9948e398c",
+      "binary": {
+        "path": "build/tsbench/f3f772b58bb0f7edd5cee5a4670c66a4c5e7447d00d4c3ea1c7dafe9948e398c/alp-rd/libtscb_alp_rd.so",
+        "bytes": 1262600,
+        "sha256": "ccb26e3503ac6999d802583daec542ef283e101ce982d5a6c5b09d66df0307dd"
+      },
+      "build_record": {
+        "path": "build/tsbench/f3f772b58bb0f7edd5cee5a4670c66a4c5e7447d00d4c3ea1c7dafe9948e398c/alp-rd/build.json",
+        "bytes": 70571,
+        "sha256": "2306884d7bb6d4eff18034a1814ec1c126cd0f02f4521e2cea33f1c5c0883aad"
+      },
+      "saved_build_record": {
+        "path": "build/alp-safe-v1-integration/alp-rd-build.json",
+        "bytes": 70571,
+        "sha256": "2306884d7bb6d4eff18034a1814ec1c126cd0f02f4521e2cea33f1c5c0883aad"
+      },
+      "current_dependency_hash_checks": {
+        "sources": 70,
+        "compiled_source_closure": 277,
+        "toolchain_files": 10,
+        "runtime_dependencies": 5
+      },
+      "sanitizer_build_record": {
+        "path": "build/alp-safe-v1-integration/sanitizer/alp-rd/build.json",
+        "bytes": 56645,
+        "sha256": "d498766c6ce4cedba5f51bb4a1f436425477d683f51ee63eaed5bd2e1e04f3b0"
+      },
+      "sanitizer_binary": {
+        "path": "build/alp-safe-v1-integration/sanitizer/alp-rd/binding_test",
+        "bytes": 23309232,
+        "sha256": "49e4f1443c91ec15ec6d49bfe4bce60c0becc5bb3f7549d98e7b067a5f5d92f0"
+      },
+      "sanitizer_success_log": {
+        "path": "build/alp-safe-v1-integration/sanitizer/alp-rd/run-untraced.log",
+        "bytes": 89,
+        "sha256": "d680108ce0e2fcb30dc1cdcb2b5f38f4b898554091fcd4ba950e8092c6c693fb"
+      }
+    }
+  },
+  "execution_provenance": {
+    "schema": "tsbench.execution-provenance/1",
+    "source_id": "sha256:72c55af05317d45a161bbea660a78466c72dc93a3cedea3d34a652ae6e24606d",
+    "sources": [
+      {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/src/tsbench/__init__.py",
+        "module": "__init__.py",
+        "sha256": "sha256:153d2ee91a3d5d6d3519d3f44f41bf775a15a0c5efcce325a9ba6791dca3ca57"
+      },
+      {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/src/tsbench/__main__.py",
+        "module": "__main__.py",
+        "sha256": "sha256:f0841fdc1e37bc97b220d8de289a750c949e7857f04b79dbbe8cd117bce10905"
+      },
+      {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/src/tsbench/cli.py",
+        "module": "cli.py",
+        "sha256": "sha256:d769de75042e7957a56a495397e2cef467e0d9026558f6d8e8d61b59ae60e4d7"
+      },
+      {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/src/tsbench/config.py",
+        "module": "config.py",
+        "sha256": "sha256:316f3a23b992f82334b591f632bb737902f9a6d17ad07094951f63dfc1689e1a"
+      },
+      {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/src/tsbench/runner.py",
+        "module": "runner.py",
+        "sha256": "sha256:ef41a3e91a19b0befe0536bf5311462ab62a38f6b91295a8e2e7287381a7b2d4"
+      },
+      {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/src/tsbench/records.py",
+        "module": "records.py",
+        "sha256": "sha256:5ad6aeef7ce92a0d4883b54eb88a479fc8da1e841f139e8de109453d470030f4"
+      },
+      {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/src/tsbench/worker.py",
+        "module": "worker.py",
+        "sha256": "sha256:2c64df58fa7cfd7acd85d72c213770c1c5492900be76507d20078879128bbeba"
+      },
+      {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/src/tsbench/artifact.py",
+        "module": "artifact.py",
+        "sha256": "sha256:68e9a43e181a7a1bafb8faeb6996d6ac8f84bb4dce510f025b176da422f7423d"
+      },
+      {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/src/tsbench/schemes.py",
+        "module": "schemes.py",
+        "sha256": "sha256:5b50748f5472e7997ca466bce4f7724e82f40c70fb44221802a440da01e4ec1f"
+      },
+      {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/src/tsbench/validate.py",
+        "module": "validate.py",
+        "sha256": "sha256:c82c6fc85622cc2d49db391ccea7f01993e348e11b4f997244a2743ee7671a2f"
+      },
+      {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/src/tsbench/data.py",
+        "module": "data.py",
+        "sha256": "sha256:3e4ace27036d773d37fed15739cfd70c14de76f49b463ee8912427fb6b7fda09"
+      },
+      {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/src/tsbench/registry.py",
+        "module": "registry.py",
+        "sha256": "sha256:e9acc9184665970e475e344f43a2bd1e0f813a9cd276ecc28024e00862e02309"
+      },
+      {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/src/tsbench/errors.py",
+        "module": "errors.py",
+        "sha256": "sha256:58755e65c5a87f7d6c3d2f152a9f56c305fa9cc8f3d8274d6ec34b35760c86ea"
+      },
+      {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/src/tsbench/executors/cpu.py",
+        "module": "executors/cpu.py",
+        "sha256": "sha256:1eb391992b7c9765e04bce3a9a262cf1941ed857f55f2ce2381c4c03566a97b2"
+      },
+      {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/src/tsbench/runtime.py",
+        "module": "runtime.py",
+        "sha256": "sha256:099248225979177f93ce36971c8c2eabbb4ee3c30891fca89aa5fe849d2ca8db"
+      },
+      {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/src/tsbench/transforms.py",
+        "module": "transforms.py",
+        "sha256": "sha256:3de05f67d02991fad14724ee62e6ba1e37cb172ce806fbfbd6c99893cbdd01de"
+      },
+      {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/src/tsbench/provenance.py",
+        "module": "provenance.py",
+        "sha256": "sha256:f58c58232dc0451a106979b0c8a194c8ca1c45a6bff64c66278f6cfa8de48b57"
+      },
+      {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/src/tsbench/quality_metadata.py",
+        "module": "quality_metadata.py",
+        "sha256": "sha256:f25c56818717ca8d91b17e30ad2ac7d96da468e0fd7f798a1b1407271ba05259"
+      },
+      {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/src/tsbench/native.py",
+        "module": "native.py",
+        "sha256": "sha256:b889b3392506679309963bf54b2a39323b6164cf17fa1fb114b729a383f1eb0d"
+      },
+      {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/src/tsbench/bridges/__init__.py",
+        "module": "bridges/__init__.py",
+        "sha256": "sha256:8d9ea815442c22420fe4b051b360b253e52834bc7bbc02806716d6800dd0298d"
+      },
+      {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/src/tsbench/bridges/c_abi_v1.py",
+        "module": "bridges/c_abi_v1.py",
+        "sha256": "sha256:364bc5b0fcfb097c32b85aa6c6a7edc9521ce365a7345973821680223099fb2c"
+      },
+      {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/src/tsbench/bridges/cuszp.py",
+        "module": "bridges/cuszp.py",
+        "sha256": "sha256:a881ef410f2e70f3c3f08d3097ad14c3504a2bd8a41f0e8f18616d30a7d23e6c"
+      },
+      {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/src/tsbench/bridges/gorilla.py",
+        "module": "bridges/gorilla.py",
+        "sha256": "sha256:dbbb1ff30784cfcd7aa60152055fb21b805e1502618aedd014c76253520cad29"
+      },
+      {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/src/tsbench/bridges/rw_abi_v1.py",
+        "module": "bridges/rw_abi_v1.py",
+        "sha256": "sha256:456fd0ae73743b07ad482454da2fdb4774c503c2faa462ada6e86a02a1e9f396"
+      },
+      {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/native/core.hpp",
+        "module": "native/core.hpp",
+        "sha256": "sha256:eda18ed297c74e67efe735b65f94e72a89c9166966309c21c3055f5c67e931a2"
+      },
+      {
+        "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/native/driver.cpp",
+        "module": "native/driver.cpp",
+        "sha256": "sha256:f4b38ffa1bae1e664802be6182f4d7a87586e7c8108753db45916e81fddc643f"
+      }
+    ],
+    "scope": "named Python runner/measurement/codec bridge closure; native toolchain, source, binary, model and runtime identities are in each case's build_evidence/implementation_id",
+    "analysis_policy": "report/study/trial_analysis/plot code does not revoke measurement qualification; its hashes are recorded by the analyses"
+  },
+  "tests": {
+    "targeted": {
+      "tests": 155,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "log": {
+        "path": "build/alp-safe-v1-integration/targeted-tests.log",
+        "bytes": 383,
+        "sha256": "686501baab90dca8110590682596905594e6b76921ded1d689924ff225beb0b7"
+      },
+      "junit": {
+        "path": "build/alp-safe-v1-integration/targeted-junit.xml",
+        "bytes": 20575,
+        "sha256": "af10da264e2ebf6f74ab5c8f559c3e5ebccd041ee12f3c68b6d7f6ab47f98218"
+      }
+    },
+    "full": {
+      "tests": 798,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "log": {
+        "path": "build/alp-safe-v1-integration/full-tests.log",
+        "bytes": 1110,
+        "sha256": "3c655bcd6634df067f7a2e86a27ce950cbf6b418d80b4d1c7bb8f87de3403f74"
+      },
+      "junit": {
+        "path": "build/alp-safe-v1-integration/full-junit.xml",
+        "bytes": 112497,
+        "sha256": "19064979ac4e5589f2c8da7d95cec0773999319fdfb2d1c00f4fa6cbf5369e75"
+      }
+    }
+  },
+  "standalone_reference": {
+    "binary": {
+      "path": "build/alp-safe-v1-integration/standalone/libalp_port.so",
+      "bytes": 864456,
+      "sha256": "633bc478e458a65706b82d3d593e998f7791d2bc838bdb05ea73ff9415d5d959"
+    },
+    "tests": 3,
+    "logs": [
+      {
+        "path": "build/alp-safe-v1-integration/standalone-configure.log",
+        "bytes": 851,
+        "sha256": "054ebe19f9408d9b9d9003ef81afb51f95cc648e0af2d69a632757b0ac512adf"
+      },
+      {
+        "path": "build/alp-safe-v1-integration/standalone-build.log",
+        "bytes": 3922,
+        "sha256": "946f1e89337c8dd41cced0b90ffe3d77ded3e911a2a9bd5dbdbd8c76facb171c"
+      },
+      {
+        "path": "build/alp-safe-v1-integration/standalone-tests.log",
+        "bytes": 596,
+        "sha256": "f1630fb23bfc37636e963c5411114790e21ac3cb9ec73db437db80c606e97236"
+      }
+    ]
+  },
+  "corpus": {
+    "evidence_kind": "fresh Bench binding vs independently built frozen safe-v1 release; not unmodified-upstream parity",
+    "case_count": 284,
+    "processed_values": 10004036,
+    "cold_process_decodes": 28,
+    "status": "PASS",
+    "branch_vector_counts": {
+      "alp": {
+        "ALP": 4012,
+        "ALP_RD": 972
+      },
+      "alp-rd": {
+        "ALP_RD": 4984
+      }
+    },
+    "report": {
+      "path": "build/alp-safe-v1-integration/corpus-qualification/qualification.json",
+      "bytes": 297636,
+      "sha256": "b09ba57526f3cfba62da8bf28c26f9637923bf8e86afd3311b03594e74c1c028"
+    },
+    "log": {
+      "path": "build/alp-safe-v1-integration/corpus-qualification.log",
+      "bytes": 3170,
+      "sha256": "a3e8a0a5463d88fe33fd76d3b8e0784e2843ed3ac68f8898ac49109d2c5de660"
+    }
+  },
+  "objects": {
+    "object-wire": {
+      "case_count": 16,
+      "report": {
+        "path": "build/alp-safe-v1-integration/object-wire/qualification.json",
+        "bytes": 10257,
+        "sha256": "790d9fb4e849a3600ae700539224054f3aa7d0856a67fa7b98d6f8f3149b5099"
+      },
+      "runtime_records": [
+        {
+          "path": "build/alp-safe-v1-integration/object-wire/alp-4-C-whole/decoded/object.json",
+          "bytes": 490,
+          "sha256": "7ee54407a852ebad62a47c26b3929a6a17601b220eca1b4219803cd6d56e02fb"
+        },
+        {
+          "path": "build/alp-safe-v1-integration/object-wire/alp-4-C-channel-chunks/decoded/object.json",
+          "bytes": 490,
+          "sha256": "7ee54407a852ebad62a47c26b3929a6a17601b220eca1b4219803cd6d56e02fb"
+        },
+        {
+          "path": "build/alp-safe-v1-integration/object-wire/alp-4-F-whole/decoded/object.json",
+          "bytes": 490,
+          "sha256": "7ee54407a852ebad62a47c26b3929a6a17601b220eca1b4219803cd6d56e02fb"
+        },
+        {
+          "path": "build/alp-safe-v1-integration/object-wire/alp-4-F-channel-chunks/decoded/object.json",
+          "bytes": 490,
+          "sha256": "7ee54407a852ebad62a47c26b3929a6a17601b220eca1b4219803cd6d56e02fb"
+        },
+        {
+          "path": "build/alp-safe-v1-integration/object-wire/alp-8-C-whole/decoded/object.json",
+          "bytes": 490,
+          "sha256": "7ee54407a852ebad62a47c26b3929a6a17601b220eca1b4219803cd6d56e02fb"
+        },
+        {
+          "path": "build/alp-safe-v1-integration/object-wire/alp-8-C-channel-chunks/decoded/object.json",
+          "bytes": 490,
+          "sha256": "7ee54407a852ebad62a47c26b3929a6a17601b220eca1b4219803cd6d56e02fb"
+        },
+        {
+          "path": "build/alp-safe-v1-integration/object-wire/alp-8-F-whole/decoded/object.json",
+          "bytes": 490,
+          "sha256": "7ee54407a852ebad62a47c26b3929a6a17601b220eca1b4219803cd6d56e02fb"
+        },
+        {
+          "path": "build/alp-safe-v1-integration/object-wire/alp-8-F-channel-chunks/decoded/object.json",
+          "bytes": 490,
+          "sha256": "7ee54407a852ebad62a47c26b3929a6a17601b220eca1b4219803cd6d56e02fb"
+        },
+        {
+          "path": "build/alp-safe-v1-integration/object-wire/alp-rd-4-C-whole/decoded/object.json",
+          "bytes": 490,
+          "sha256": "7ee54407a852ebad62a47c26b3929a6a17601b220eca1b4219803cd6d56e02fb"
+        },
+        {
+          "path": "build/alp-safe-v1-integration/object-wire/alp-rd-4-C-channel-chunks/decoded/object.json",
+          "bytes": 490,
+          "sha256": "7ee54407a852ebad62a47c26b3929a6a17601b220eca1b4219803cd6d56e02fb"
+        },
+        {
+          "path": "build/alp-safe-v1-integration/object-wire/alp-rd-4-F-whole/decoded/object.json",
+          "bytes": 490,
+          "sha256": "7ee54407a852ebad62a47c26b3929a6a17601b220eca1b4219803cd6d56e02fb"
+        },
+        {
+          "path": "build/alp-safe-v1-integration/object-wire/alp-rd-4-F-channel-chunks/decoded/object.json",
+          "bytes": 490,
+          "sha256": "7ee54407a852ebad62a47c26b3929a6a17601b220eca1b4219803cd6d56e02fb"
+        },
+        {
+          "path": "build/alp-safe-v1-integration/object-wire/alp-rd-8-C-whole/decoded/object.json",
+          "bytes": 490,
+          "sha256": "7ee54407a852ebad62a47c26b3929a6a17601b220eca1b4219803cd6d56e02fb"
+        },
+        {
+          "path": "build/alp-safe-v1-integration/object-wire/alp-rd-8-C-channel-chunks/decoded/object.json",
+          "bytes": 490,
+          "sha256": "7ee54407a852ebad62a47c26b3929a6a17601b220eca1b4219803cd6d56e02fb"
+        },
+        {
+          "path": "build/alp-safe-v1-integration/object-wire/alp-rd-8-F-whole/decoded/object.json",
+          "bytes": 490,
+          "sha256": "7ee54407a852ebad62a47c26b3929a6a17601b220eca1b4219803cd6d56e02fb"
+        },
+        {
+          "path": "build/alp-safe-v1-integration/object-wire/alp-rd-8-F-channel-chunks/decoded/object.json",
+          "bytes": 490,
+          "sha256": "7ee54407a852ebad62a47c26b3929a6a17601b220eca1b4219803cd6d56e02fb"
+        }
+      ]
+    },
+    "object-wire-replay": {
+      "case_count": 16,
+      "report": {
+        "path": "build/alp-safe-v1-integration/object-wire-replay/qualification.json",
+        "bytes": 19787,
+        "sha256": "e28333bc60996a3140fd8cf7e2fec551a35cad7e7a6a66b20f6d972a96f20217"
+      },
+      "runtime_records": [
+        {
+          "path": "build/alp-safe-v1-integration/object-wire-replay/alp-4-C-whole/decoded/object.json",
+          "bytes": 448,
+          "sha256": "c7663e208714e82303dee66ea383510abb9791d1d2103b5c85266aef57f5e953"
+        },
+        {
+          "path": "build/alp-safe-v1-integration/object-wire-replay/alp-4-C-channel-chunks/decoded/object.json",
+          "bytes": 448,
+          "sha256": "c7663e208714e82303dee66ea383510abb9791d1d2103b5c85266aef57f5e953"
+        },
+        {
+          "path": "build/alp-safe-v1-integration/object-wire-replay/alp-4-F-whole/decoded/object.json",
+          "bytes": 448,
+          "sha256": "c7663e208714e82303dee66ea383510abb9791d1d2103b5c85266aef57f5e953"
+        },
+        {
+          "path": "build/alp-safe-v1-integration/object-wire-replay/alp-4-F-channel-chunks/decoded/object.json",
+          "bytes": 448,
+          "sha256": "c7663e208714e82303dee66ea383510abb9791d1d2103b5c85266aef57f5e953"
+        },
+        {
+          "path": "build/alp-safe-v1-integration/object-wire-replay/alp-8-C-whole/decoded/object.json",
+          "bytes": 448,
+          "sha256": "c7663e208714e82303dee66ea383510abb9791d1d2103b5c85266aef57f5e953"
+        },
+        {
+          "path": "build/alp-safe-v1-integration/object-wire-replay/alp-8-C-channel-chunks/decoded/object.json",
+          "bytes": 448,
+          "sha256": "c7663e208714e82303dee66ea383510abb9791d1d2103b5c85266aef57f5e953"
+        },
+        {
+          "path": "build/alp-safe-v1-integration/object-wire-replay/alp-8-F-whole/decoded/object.json",
+          "bytes": 448,
+          "sha256": "c7663e208714e82303dee66ea383510abb9791d1d2103b5c85266aef57f5e953"
+        },
+        {
+          "path": "build/alp-safe-v1-integration/object-wire-replay/alp-8-F-channel-chunks/decoded/object.json",
+          "bytes": 448,
+          "sha256": "c7663e208714e82303dee66ea383510abb9791d1d2103b5c85266aef57f5e953"
+        },
+        {
+          "path": "build/alp-safe-v1-integration/object-wire-replay/alp-rd-4-C-whole/decoded/object.json",
+          "bytes": 448,
+          "sha256": "c7663e208714e82303dee66ea383510abb9791d1d2103b5c85266aef57f5e953"
+        },
+        {
+          "path": "build/alp-safe-v1-integration/object-wire-replay/alp-rd-4-C-channel-chunks/decoded/object.json",
+          "bytes": 448,
+          "sha256": "c7663e208714e82303dee66ea383510abb9791d1d2103b5c85266aef57f5e953"
+        },
+        {
+          "path": "build/alp-safe-v1-integration/object-wire-replay/alp-rd-4-F-whole/decoded/object.json",
+          "bytes": 448,
+          "sha256": "c7663e208714e82303dee66ea383510abb9791d1d2103b5c85266aef57f5e953"
+        },
+        {
+          "path": "build/alp-safe-v1-integration/object-wire-replay/alp-rd-4-F-channel-chunks/decoded/object.json",
+          "bytes": 448,
+          "sha256": "c7663e208714e82303dee66ea383510abb9791d1d2103b5c85266aef57f5e953"
+        },
+        {
+          "path": "build/alp-safe-v1-integration/object-wire-replay/alp-rd-8-C-whole/decoded/object.json",
+          "bytes": 448,
+          "sha256": "c7663e208714e82303dee66ea383510abb9791d1d2103b5c85266aef57f5e953"
+        },
+        {
+          "path": "build/alp-safe-v1-integration/object-wire-replay/alp-rd-8-C-channel-chunks/decoded/object.json",
+          "bytes": 448,
+          "sha256": "c7663e208714e82303dee66ea383510abb9791d1d2103b5c85266aef57f5e953"
+        },
+        {
+          "path": "build/alp-safe-v1-integration/object-wire-replay/alp-rd-8-F-whole/decoded/object.json",
+          "bytes": 448,
+          "sha256": "c7663e208714e82303dee66ea383510abb9791d1d2103b5c85266aef57f5e953"
+        },
+        {
+          "path": "build/alp-safe-v1-integration/object-wire-replay/alp-rd-8-F-channel-chunks/decoded/object.json",
+          "bytes": 448,
+          "sha256": "c7663e208714e82303dee66ea383510abb9791d1d2103b5c85266aef57f5e953"
+        }
+      ]
+    },
+    "replay_log": {
+      "path": "build/alp-safe-v1-integration/object-wire-replay.log",
+      "bytes": 400,
+      "sha256": "4125d42f8319c8b7523a34133359c4f1c5b7abb144b8a24b139076dcdea1b580"
+    }
+  },
+  "native_batches": {
+    "tested_combinations": 8,
+    "warmup_per_combination": 1,
+    "operations_per_combination": 2,
+    "evidence": "full and targeted JUnit test_v4_batches_validate_all_products_and_independent_recovery"
+  },
+  "sanitizers": {
+    "dtype_length_cases_per_method": 22,
+    "methods": 2,
+    "flags": "address,undefined,float-cast-overflow",
+    "detect_leaks": true,
+    "success_requires_non_ptrace_run": true,
+    "initial_ptrace_failure_preserved": {
+      "path": "build/alp-safe-v1-integration/sanitizer/alp/run.log",
+      "bytes": 219,
+      "sha256": "a6d55f753cfe63b1b3fbe0062b8500cd80b9960f92ad3ef64bd5fa94b454ad1e"
+    }
+  },
+  "files": [
+    {
+      "path": "adapters/alp/FROZEN_SOURCES.json",
+      "bytes": 16888,
+      "sha256": "ec60920def3a0b3ad16ad5b5cd9f419b90fb263c13677875b69819e47c27399a"
+    },
+    {
+      "path": "adapters/alp/README.md",
+      "bytes": 1141,
+      "sha256": "79b2f863fc909acdc9fdcc043fc9cc541028f3fc51b7fe80f7a85ce3afb93245"
+    },
+    {
+      "path": "adapters/alp/native/tscb_alp.cc",
+      "bytes": 12115,
+      "sha256": "7a3715c45eda54d8e331f460106584292a971bbfda2e2513dc7e15ec18b8b103"
+    },
+    {
+      "path": "adapters/alp/native/direct_core.inc",
+      "bytes": 3939,
+      "sha256": "e12005600fe0a7c9b90ebba39e5fbde534724540c8c07ab48cc11d8fa387dd86"
+    },
+    {
+      "path": "benchmark/src/tsbench/_native_recipes.py",
+      "bytes": 32098,
+      "sha256": "dbee62f52ceee1187be8acb6ce30b008f069722720422bc40fa91bef9ed9328f"
+    },
+    {
+      "path": "benchmark/src/tsbench/bridges/c_abi_v1.py",
+      "bytes": 14848,
+      "sha256": "364bc5b0fcfb097c32b85aa6c6a7edc9521ce365a7345973821680223099fb2c"
+    },
+    {
+      "path": "registry/codecs/alp.json",
+      "bytes": 3741,
+      "sha256": "3cf3077237420f3d8cb29db3b4c1a65a41054e53059dd4c45b88db7963365cba"
+    },
+    {
+      "path": "registry/codecs/alp-rd.json",
+      "bytes": 3730,
+      "sha256": "da4b206867ecea2c5149122c5e25e3fe12bb542e6b9d6e2e6444cd7738aa6a3c"
+    },
+    {
+      "path": "registry/sources/alp-cwida-safe-v1.artifact.json",
+      "bytes": 1936,
+      "sha256": "59f55ed98da724b6f34bde4e3f6b3ad500f6a1cb71d196d64cf2357d36407e85"
+    },
+    {
+      "path": "benchmark/tests/test_alp_safe_v1.py",
+      "bytes": 17420,
+      "sha256": "b6ae176e8231b735b067d616d1d55b3c1a86b425f4bcbb558491ecaf1b9ee974"
+    },
+    {
+      "path": "benchmark/tests/test_core_floats.py",
+      "bytes": 9461,
+      "sha256": "8f822c3fe459c2b7e02f9b480692d10440e0834cb8025c60a3792e84097479be"
+    },
+    {
+      "path": "benchmark/tools/qualify_alp_safe_v1.py",
+      "bytes": 8021,
+      "sha256": "3ae88bf4939b675c0062c837b6d6e1545135e21e646c9763fea9fdcbe94b8606"
+    },
+    {
+      "path": "docs/alp_integration/binding_sanitizer.cc",
+      "bytes": 4539,
+      "sha256": "287b1c3c5e13d85defba2b80c32e3687c3e278144517085608badd0777353f21"
+    },
+    {
+      "path": "docs/alp_integration/qualify_objects.py",
+      "bytes": 4043,
+      "sha256": "72271cc68130811ad688a46b9cad96deedf2e8cb0ab0550f2df86a587200e189"
+    },
+    {
+      "path": "docs/alp_integration/PLAN.md",
+      "bytes": 4362,
+      "sha256": "1bba9fd2edb8893d754924fff1c99154e73422333b9d11565481769b45ddf764"
+    },
+    {
+      "path": "docs/alp_integration/README.md",
+      "bytes": 10045,
+      "sha256": "eac953faf09ee0e303b6cb426176f151d6361aba9f36980377c9bd46d3a39dac"
+    },
+    {
+      "path": "docs/development.md",
+      "bytes": 25273,
+      "sha256": "19217842b60c29f733d9a2fad3d753663c2f7754ab11c522314fc1c12a14a22b"
+    },
+    {
+      "path": "docs/development/core_floats.md",
+      "bytes": 5633,
+      "sha256": "90a82f651c2ad21cd603693a0b69bd0527273c2586f367d468b32dc36400ef96"
+    },
+    {
+      "path": "docs/alp_consistency_20261017.md",
+      "bytes": 6030,
+      "sha256": "06496b42a196398addba0e9154c20bb709caee929f7b12f02a76c494d8bc7652"
+    },
+    {
+      "path": "README.md",
+      "bytes": 17477,
+      "sha256": "c487a3d04670037883063be9a85540a60227c734a4ff9b58a52bce934d4c02fc"
+    },
+    {
+      "path": "docs/implementation.md",
+      "bytes": 43008,
+      "sha256": "e6b6b7fddd4d87834a153e2725a24bf2b5780158bf147ee58b354c2c1b9949dd"
+    },
+    {
+      "path": "Compression_Algorithm_CPP_Porting_Standard_v3.0.md",
+      "bytes": 217287,
+      "sha256": "72e0e8159add42151e7ffda4b3c790509feb579cb7c60b49e094fa87597c5e1e"
+    },
+    {
+      "path": "TimeSeries_Compression_Benchmark_V4.0_工程实施总计划.md",
+      "bytes": 109619,
+      "sha256": "e78372e9ed54a3f48f314a3f5a97564ed500c8e76e8bed5c240713c13e511367"
+    }
+  ]
+}

@@ -5,8 +5,9 @@ import math
 import re
 import tomllib
 
-DEFAULT_TASK={'kind':'values','fidelity':'bitwise','boundary':'object_memory','lifecycle':'independent_object','cache_policy':'natural'}
-DEFAULT_EXECUTION={'sessions':1,'rounds':7,'warmup_objects':2,'seed':20261012,'timeout_s':120,'qualification_cache':True,'save_artifacts':True}
+DEFAULT_TASK={'kind':'values','fidelity':'bitwise','boundary':'native_core','lifecycle':'prepared','cache_policy':'natural'}
+DEFAULT_EXECUTION={'sessions':1,'rounds':7,'warmup_objects':2,'seed':20261012,'timeout_s':120,'qualification_cache':True,'save_artifacts':True,
+                   'native_loops':8,'native_warmup_loops':2,'native_batch_memory_mb':256}
 DEFAULT_PROFILE={'id':'cpu-single','device':'cpu','native_threads':1,'object_workers':1,'memory_limit_mb':4096}
 
 
@@ -67,10 +68,11 @@ def resolve(source,base_dir=None):
     task=c.setdefault('task',{})
     _unknown(task,set(DEFAULT_TASK)|{'error_bound','relative_floor','special_values','invalid_values'},'task')
     c['task']={**DEFAULT_TASK,**task};task=c['task']
+    if task['boundary']=='object_memory' and 'lifecycle' not in source.get('task',{}):
+        task['lifecycle']='independent_object'
     if task['kind'] not in {'values','timestamps','records','component'}: raise ValueError('unsupported task kind')
     if task['fidelity'] not in {'bitwise','numeric_equivalent','bounded_abs','range_relative','point_relative','empirical_quality'}: raise ValueError('unknown fidelity')
-    if task['boundary']!='object_memory' or task['lifecycle']!='independent_object' or task['cache_policy']!='natural':
-        raise ValueError('this CPU executor supports object_memory/independent_object/natural only')
+    validate_boundary(task)
     if type(task.get('error_bound')) is bool:raise ValueError('error_bound must be a quality number; boolean is not accepted')
     if task['fidelity'] in {'bounded_abs','range_relative','point_relative'}:
         if 'error_bound' not in task or not math.isfinite(float(task['error_bound'])) or float(task['error_bound'])<0: raise ValueError('quality task needs finite nonnegative error_bound')
@@ -93,6 +95,9 @@ def resolve(source,base_dir=None):
     c['execution']={**DEFAULT_EXECUTION,**ex};ex=c['execution']
     for k in ('sessions','rounds'):_positive(ex[k],k)
     _positive(ex['warmup_objects'],'warmup_objects',0)
+    _positive(ex['native_loops'],'native_loops')
+    _positive(ex['native_warmup_loops'],'native_warmup_loops',0)
+    _positive(ex['native_batch_memory_mb'],'native_batch_memory_mb')
     if type(ex['seed']) is not int: raise ValueError('seed must be integer')
     if type(ex['timeout_s']) is bool or not math.isfinite(float(ex['timeout_s'])) or ex['timeout_s']<=0: raise ValueError('timeout_s must be positive finite')
     if 'total_budget_s' in ex and (type(ex['total_budget_s']) is bool or not math.isfinite(float(ex['total_budget_s'])) or ex['total_budget_s']<=0):raise ValueError('total_budget_s must be positive finite')
@@ -105,6 +110,15 @@ def resolve(source,base_dir=None):
     a.setdefault('summary','median_iqr');a.setdefault('inference','none')
     if a['inference']!='none' or a['summary']!='median_iqr': raise ValueError('only descriptive median_iqr/none is implemented')
     return c
+
+
+def validate_boundary(task):
+    boundary=task['boundary'];lifecycle=task['lifecycle']
+    if boundary not in {'native_core','native_api','object_memory'}:
+        raise ValueError('task.boundary must be native_core/native_api/object_memory')
+    expected={'independent_object'} if boundary=='object_memory' else {'prepared','fresh_request'}
+    if lifecycle not in expected or task['cache_policy']!='natural':
+        raise ValueError(f'{boundary} requires lifecycle in {sorted(expected)} and cache_policy=natural')
 
 
 def load(path):

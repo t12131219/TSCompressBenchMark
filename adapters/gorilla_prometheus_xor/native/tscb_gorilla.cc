@@ -131,3 +131,138 @@ tscb_status_v1 tscb_get_last_error(tscb_codec_handle_v1* h, const char** message
     *message = h->error; *length = std::strlen(h->error); return TSCB_STATUS_OK_V1;
 }
 }
+
+// Direct joint-records entry: raw LE int64 timestamp/f64-bit pairs, no C1
+// envelope, Sample staging array or caller-output copy of the encoded vector.
+#include "tsbench_core.hpp"
+#include <memory>
+
+namespace {
+struct GorillaCoreState final : tsbench_core::State {
+    gorilla::Path path = gorilla::Path::Canonical;
+    bool decoder = false;
+    std::size_t rows = 0, bytes = 0;
+};
+// Keep the native Encoder itself alive with the result so finalize()'s vector
+// view survives context destruction. This also avoids its one-shot API's
+// const-reference-to-vector copy; reset, append and finalize remain timed work.
+struct GorillaCoreOutput final : tsbench_core::Owner {
+    gorilla::Encoder encoder;
+    explicit GorillaCoreOutput(gorilla::Path path) : encoder(path) {}
+};
+GorillaCoreState* gorilla_core_state(void* context) {
+    tsbench_core::require(context != nullptr, "null direct Gorilla context");
+    return static_cast<GorillaCoreState*>(context);
+}
+void gorilla_core_input(const GorillaCoreState& state, const std::uint8_t* input,
+                        std::size_t size) {
+    tsbench_core::require((input || !size) && size == state.bytes,
+                          "direct Gorilla requires 16 bytes per declared T/V row");
+}
+}
+extern "C" std::uint32_t tsbench_core_version() { return 1; }
+extern "C" std::uint32_t tsbench_core_storage() { return 2; }
+extern "C" int tsbench_core_create(const tsbench_core_config* c, int decoder, void** output) {
+    return tsbench_core::guard(nullptr, [&] {
+        tsbench_core::require(c && output, "null direct Gorilla configuration");
+        *output = nullptr;
+        tsbench_core::require(c->version == 1, "unknown direct Gorilla contract version");
+        if (c->dtype != TSCB_DTYPE_BYTES_V1 || c->rank != 2 ||
+            c->order != 0 || c->shape[1] != 2)
+            throw tsbench_core::Unsupported("direct Gorilla requires C-order rank2 (rows,2) joint T/V pairs");
+        if (c->shape[0] > gorilla::max_samples)
+            throw tsbench_core::Unsupported("direct Gorilla count exceeds 65535");
+        auto state = std::make_unique<GorillaCoreState>();
+        state->decoder = decoder != 0;
+        state->rows = static_cast<std::size_t>(c->shape[0]);
+        state->bytes = tsbench_core::multiply(state->rows, 16);
+        const tsbench_core::Parameters parameters(c->parameters_json);
+        if (state->decoder) {
+            tsbench_core::require(parameters.empty() && (!c->model || !*c->model),
+                                  "direct Gorilla decoder must not receive encoder parameters");
+            // Canonical and optimized paths implement the identical EncXOR
+            // stream. The independent decoder needs no encoder-only path tag.
+        } else {
+            const auto path = parameters.string("path");
+            if (path == "canonical") state->path = gorilla::Path::Canonical;
+            else if (path == "optimized") {
+#ifdef GORILLA_HAS_OPTIMIZED
+                state->path = gorilla::Path::Optimized;
+#else
+                throw tsbench_core::Unsupported("Gorilla optimized path not built");
+#endif
+            } else throw tsbench_core::Unsupported("unknown direct Gorilla execution path");
+        }
+        *output = state.release();
+    });
+}
+extern "C" int tsbench_core_destroy(void* context) {
+    delete static_cast<GorillaCoreState*>(context); return 0;
+}
+extern "C" int tsbench_core_bound(void* context, const std::uint8_t* input,
+                                   std::size_t size, std::size_t* bound) {
+    auto* state = static_cast<GorillaCoreState*>(context);
+    return tsbench_core::guard(state, [&] {
+        state = gorilla_core_state(context);
+        tsbench_core::require(bound && !state->decoder, "invalid direct Gorilla bound request");
+        gorilla_core_input(*state, input, size);
+        *bound = gorilla::compress_bound(state->rows);
+    });
+}
+extern "C" int tsbench_core_encode(void* context, const std::uint8_t* input,
+    std::size_t size, std::uint8_t*, std::size_t capacity, tsbench_core_result* result) {
+    auto* state = static_cast<GorillaCoreState*>(context);
+    return tsbench_core::guard(state, [&] {
+        state = gorilla_core_state(context);
+        tsbench_core::require(result && !state->decoder, "invalid direct Gorilla encode request");
+        *result = {};
+        gorilla_core_input(*state, input, size);
+        auto owner = std::make_unique<GorillaCoreOutput>(state->path);
+        for (std::size_t i = 0; i < state->rows; ++i)
+            owner->encoder.append({gorilla::signed_bits(load_le(input + 16*i)),
+                                    load_le(input + 16*i + 8)});
+        const auto& encoded = owner->encoder.finalize();
+        if (encoded.size() > capacity)
+            throw tsbench_core::Capacity("direct Gorilla encoded output exceeds capacity");
+        result->data = encoded.data(); result->size = encoded.size();
+        result->capacity = encoded.capacity();
+        result->owner = static_cast<tsbench_core::Owner*>(owner.release());
+    });
+}
+extern "C" int tsbench_core_decode(void* context, const std::uint8_t* input,
+    std::size_t size, std::uint8_t* output, std::size_t capacity, tsbench_core_result* result) {
+    auto* state = static_cast<GorillaCoreState*>(context);
+    return tsbench_core::guard(state, [&] {
+        state = gorilla_core_state(context);
+        tsbench_core::require(result && state->decoder && input && size >= 2,
+                              "invalid direct Gorilla decode request");
+        *result = {};
+        const std::size_t rows = std::size_t(input[0])*256 + input[1];
+        tsbench_core::require(rows == state->rows && size <= gorilla::compress_bound(rows),
+                              "direct Gorilla raw count/extent differs from task");
+        if (capacity < state->bytes)
+            throw tsbench_core::Capacity("direct Gorilla decoded output exceeds capacity");
+        tsbench_core::require(output || !state->bytes, "null direct Gorilla decoded buffer");
+        if (size && capacity) {
+            const auto x = reinterpret_cast<std::uintptr_t>(input);
+            const auto y = reinterpret_cast<std::uintptr_t>(output);
+            tsbench_core::require(!(x <= y ? y - x < size : x - y < capacity),
+                                  "overlapping direct Gorilla decode buffers");
+        }
+        gorilla::Iterator decoder(input, size, state->path, true, gorilla::InputStorage::Borrowed);
+        std::size_t written = 0;
+        while (decoder.next()) {
+            const auto sample = decoder.at();
+            store_le(output + written, static_cast<std::uint64_t>(sample.timestamp));
+            store_le(output + written + 8, sample.value_bits);
+            written += 16;
+        }
+        tsbench_core::require(written == state->bytes, "direct Gorilla decoded count mismatch");
+        tsbench_core::caller_result(output, written, capacity, result);
+    });
+}
+extern "C" void tsbench_core_release(tsbench_core_result* result) { tsbench_core::release(result); }
+extern "C" const char* tsbench_core_error(void* context) {
+    return context ? static_cast<GorillaCoreState*>(context)->error.c_str()
+                   : tsbench_core::last_error().c_str();
+}

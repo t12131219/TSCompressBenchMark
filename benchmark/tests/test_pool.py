@@ -127,6 +127,7 @@ def test_encoder_input_mutation_has_error_and_remaining_not_run(tmp_path, monkey
     np.save(tmp_path / "original.npy", np.arange(7, dtype="<i2"))
     experiment = resolve({"schema": "tsbench.experiment/1", "name": "pool-mutation",
                           "asset_root": str(ROOT), "build_root": str(ROOT / "build/tsbench"),
+                          "task":{"boundary":"object_memory","lifecycle":"independent_object"},
                           "datasets": [{"id": "source", "path": "original.npy"}],
                           "methods": [{"id": "raw", "codec": "raw-store"}], "execution": {"timeout_s": 10}}, tmp_path)
     program = """from tsbench.schemes import ObjectScheme
@@ -166,6 +167,7 @@ def test_actual_raw_zstd_collection_processes_and_lifecycles(tmp_path):
     np.save(tmp_path / "second.npy", second)
     experiment = resolve({"schema": "tsbench.experiment/1", "name": "pool-correctness",
                           "asset_root": str(ROOT), "build_root": str(ROOT / "build/tsbench"),
+                          "task":{"boundary":"object_memory","lifecycle":"independent_object"},
                           "datasets": [{"id": "first", "path": "first.npy"}, {"id": "second", "path": "second.npy"}],
                           "methods": [{"id": "raw", "codec": "raw-store"}, {"id": "zstd", "codec": "zstd-frame"}],
                           "execution": {"timeout_s": 20}}, tmp_path)

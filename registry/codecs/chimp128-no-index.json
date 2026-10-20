@@ -1,0 +1,162 @@
+{
+  "schema_version": "tscb.codec-manifest.v2",
+  "key": "chimp128-no-index",
+  "identity": {
+    "display_name": "Chimp128-no-index",
+    "family": "CHIMP_FAMILY",
+    "source_artifact_id": "v2:source-artifact:sha256:6ffe2ac124597732f26d62394482aeb825051f9ee5cbe6e18001348d6e7a60cc",
+    "citations": [
+      "adapters/chimp_family/vendor/chimp_family/README.md",
+      "docs/chimp_integration/README.md"
+    ],
+    "standalone_qualification": "RESEARCH_REWRITE_VALIDATED",
+    "method_id": 4
+  },
+  "classification": {
+    "object_level": "P1_STANDALONE_CODEC",
+    "implementation_class": "CONVENTIONAL",
+    "tracks": [
+      "VALUE"
+    ],
+    "subtracks": [
+      "V0"
+    ]
+  },
+  "input": {
+    "topologies": [
+      "UTS",
+      "SYNCHRONOUS_MTS"
+    ],
+    "dtypes": [
+      "<f8"
+    ],
+    "ranks": [
+      1,
+      2
+    ],
+    "layouts": [
+      "ROW_MAJOR_CONTIG",
+      "SOA_COLUMNS"
+    ],
+    "endianness": [
+      "little"
+    ],
+    "alignment_bytes": 1,
+    "min_n": 0,
+    "max_n": 1048576,
+    "min_m": 1,
+    "max_m": 65535,
+    "validity_shapes": [
+      "NONE"
+    ],
+    "homogeneous_itemsize": true,
+    "max_total_raw_bytes": 8388608,
+    "value_coupling_mode": "COLUMN_INDEPENDENT",
+    "timestamp_semantics": {
+      "preserve_order": true,
+      "duplicates": true,
+      "out_of_order": true,
+      "negative_delta": true,
+      "absolute_epoch": true,
+      "overflow_policy": "NOT_APPLICABLE_VALUE_ONLY"
+    },
+    "value_domain": {
+      "kind": "FROZEN_SOURCE_WITH_BOUNDED_REJECTION",
+      "unsupported_action": "REJECT_BEFORE_OUTPUT",
+      "oracle_evidence": "adapters/chimp_family/vendor/chimp_family/validation/porting_report.md",
+      "rejection_reasons": [
+        "CANONICAL_POSITIVE_NAN_IS_EOF"
+      ]
+    },
+    "max_total_elements": 1048576
+  },
+  "semantics": {
+    "loss_modes": [
+      "LOSSLESS"
+    ],
+    "error_bound_types": [],
+    "reconstruction_modes": [
+      "EXACT_GRID"
+    ],
+    "rebuild_protocol": "CFP1_COMPLETE_FRAMES_CFS1_COLUMNS",
+    "preprocess_class": "NONE",
+    "preprocess_stages": [],
+    "decodability_profile": "SELF_CONTAINED_DESCRIPTOR_WITH_CHECKED_FROZEN_CODEC_FRAMES",
+    "bitstream_separability": "PER_COLUMN_BLOCK"
+  },
+  "lifecycle": {
+    "block_semantics": "CONFIGURED_SAMPLE_BLOCKS_WITH_EXACT_TAIL",
+    "state_semantics": "INDEPENDENT_FROZEN_OBJECT_PER_BLOCK",
+    "reset": "REQUIRED_MODE_ZERO",
+    "finalize": "REQUIRED_ZERO_BYTE_FINALIZE",
+    "safe_overread_bytes": 0,
+    "tail_policy": "EXACT_COUNT",
+    "dictionary": "NONE",
+    "model": "NONE",
+    "index": "NONE"
+  },
+  "execution": {
+    "backends": [
+      "C_ABI_V1"
+    ],
+    "isa": [
+      "SCALAR"
+    ],
+    "devices": [
+      "CPU"
+    ],
+    "threading": "SINGLE_THREAD",
+    "fallback_policy": "DISALLOWED_SOURCE_DOMAIN_ERRORS_REJECTED",
+    "runtime_dispatch": false,
+    "timing_scopes": [
+      "CORE",
+      "PIPELINE",
+      "E2E"
+    ]
+  },
+  "features": {
+    "streaming": false,
+    "query": false,
+    "random_access": false
+  },
+  "parameters": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "isa": {
+        "type": "string",
+        "enum": [
+          "SCALAR"
+        ],
+        "default": "SCALAR"
+      },
+      "native_timing": {
+        "type": "boolean",
+        "default": false
+      },
+      "block_size": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 1048576,
+        "default": 1000
+      }
+    },
+    "constraints": []
+  },
+  "adapter": {
+    "backend": "C_ABI_V1",
+    "version": "chimp-family-research-20261017-v1",
+    "factory": "CHIMP_FAMILY_CTYPES_V1",
+    "artifact_path": "build/tsbench/chimp128-no-index/libtscb_chimp128_no_index.so",
+    "timing_boundary": "OWNING_CPP_API_WITH_INPUT_STAGING_FULL_CFP1_AND_STRICT_CHECKS",
+    "accounting_hooks": [
+      "FINAL_STREAM_LENGTH",
+      "COMPLETE_CFP1_FRAMES",
+      "COLUMN_CONTAINER_BYTES"
+    ],
+    "native_core_storage": "OWNED_ENCODE_AND_DECODE",
+    "native_core_geometry": "PHYSICAL_CONTIGUOUS_SCALAR_STREAM",
+    "qualification_report": "docs/chimp_integration/README.md",
+    "license_scope": "LOCAL_RESEARCH_ONLY_UNTIL_2026-11-17"
+  }
+}

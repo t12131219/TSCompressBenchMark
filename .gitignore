@@ -1,10 +1,55 @@
+# Python environments, caches and packaging output
 __pycache__/
 *.py[cod]
 .pytest_cache/
 .ruff_cache/
+.mypy_cache/
+.hypothesis/
 *.egg-info/
 .venv/
+venv/
+.coverage
+.coverage.*
+htmlcov/
+/dist/
+
+# Native build output and benchmark runs
 build/
 runs/
+CMakeFiles/
+CMakeCache.txt
+*.o
+*.obj
+*.a
+*.so
+*.so.*
+*.dylib
+*.dll
+*.exe
+
+# Local datasets and generated experiment inputs (retain configs and generators)
 benchmark/examples/data/
 /Dataset_Verify/
+/forecasting_transpose/
+/benchmark/experiments/**/*.npy
+/benchmark/experiments/**/*.npz
+
+# Local editor settings, temporary files and credentials
+.idea/
+.vscode/
+.ipynb_checkpoints/
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+*.tmp
+/.aws/
+.env
+.env.*
+!.env.example
+!.env.template
+
+# Keep checked-in audit logs under docs; ignore other local logs
+*.log
+!/docs/**/*.log

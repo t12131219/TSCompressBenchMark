@@ -89,183 +89,54 @@ def _entropy_command(output: Path, profile: str, algorithm: str) -> list[str]:
     ]
 
 
-def _sprintz_command(output: Path, profile: str, algorithm: str) -> list[str]:
-    adapter = PROJECT_ROOT / "adapters/sprintz"
-    vendor = adapter / "vendor/sprintz"
-    patch = adapter / "patches/0001-lowdim-byte-safety.patch"
-    target = output.parent / "sprintz"
-    target.mkdir(parents=True, exist_ok=True)
-    for name in ("sprintz_delta_lowdim.cpp", "sprintz_xff_lowdim.cpp", "bitpack.h"):
-        shutil.copy2(vendor / name, target / name)
-    directory = str(output.parent.relative_to(PROJECT_ROOT))
-    _run(["git", "apply", "--check", f"--directory={directory}", str(patch)])
-    _run(["git", "apply", f"--directory={directory}", str(patch)])
-    flags = ["-std=c++17", "-fPIC", "-Wno-ignored-attributes", "-w", "-mavx2", "-mbmi2", "-mlzcnt"]
-    if profile == "release":
-        flags += ["-O3", "-DNDEBUG"]
-    elif profile == "sanitizer":
-        flags += ["-O1", "-g", "-fno-omit-frame-pointer", "-fsanitize=address,undefined"]
+SPRINTZ_FAMILY = {
+    'sprintz-delta': (0, 0), 'sprintz-fire': (1, 0),
+    'sprintz-delta-huffman': (0, 1), 'sprintz-fire-huffman': (1, 1),
+}
+
+
+def _sprintz_family_command(output: Path, profile: str, algorithm: str) -> list[str]:
+    adapter = PROJECT_ROOT / 'adapters/sprintz_family'
+    lock = json.loads((adapter / 'FROZEN_SOURCES.json').read_text())
+    for record in lock['files']:
+        if _sha256(PROJECT_ROOT / record['path']) != record['sha256']:
+            raise RuntimeError(f'frozen Sprintz source changed: {record["path"]}')
+    vendor = adapter / 'vendor/sprintz_family'
+    # Baseline API/binding is deliberately compiled without native ISA flags.
+    flags = ['-fPIC', '-fvisibility=hidden', '-Wall', '-Wextra', '-Wno-ignored-attributes',
+             '-march=x86-64', '-fno-fast-math', '-ffp-contract=off']
+    if profile == 'release':
+        flags += ['-O3', '-DNDEBUG']
+    elif profile == 'sanitizer':
+        flags += ['-O1', '-g', '-fsanitize=address,undefined', '-fno-omit-frame-pointer', '-fno-sanitize-recover=all']
     else:
-        raise ValueError(f"unknown build profile: {profile}")
-    return [
-        os.environ.get("CXX", "c++"),
-        *flags,
-        "-shared",
-        "-Wl,-Bsymbolic-functions",
-        f"-DTSCB_SPRINTZ_FIRE={int(algorithm == 'sprintz-fire-u8')}",
-        "-I",
-        str(PROJECT_ROOT / "native/include"),
-        "-I",
-        str(vendor),
-        str(adapter / "native/tscb_sprintz8.cc"),
-        str(adapter / "native/bounded_lowdim.cc"),
-        str(target / "sprintz_delta_lowdim.cpp"),
-        str(target / "sprintz_xff_lowdim.cpp"),
-        "-o",
-        str(output),
-    ]
-
-
-def _sprintz_full_command(output: Path, profile: str, algorithm: str) -> list[str]:
-    adapter = PROJECT_ROOT / "adapters/sprintz"
-    vendor = adapter / "vendor/sprintz"
-    patches = (
-        adapter / "patches/0001-lowdim-byte-safety.patch",
-        adapter / "patches/0002-generic-allocation-safety.patch",
-    )
-    target = output.parent / "sprintz"
-    target.mkdir(parents=True, exist_ok=True)
-    sources = (
-        "sprintz.cpp",
-        "sprintz_delta_lowdim.cpp",
-        "sprintz_xff_lowdim.cpp",
-        "sprintz_delta_rle.cpp",
-        "sprintz_xff_rle.cpp",
-        "format.cpp",
-    )
-    for name in (*sources, "bitpack.h"):
-        shutil.copy2(vendor / name, target / name)
-    directory = str(output.parent.relative_to(PROJECT_ROOT))
-    for patch in patches:
-        _run(["git", "apply", "--check", f"--directory={directory}", str(patch)])
-        _run(["git", "apply", f"--directory={directory}", str(patch)])
-    flags = [
-        "-std=c++17",
-        "-fPIC",
-        "-Wno-ignored-attributes",
-        "-w",
-        "-mavx2",
-        "-mbmi2",
-        "-mlzcnt",
-        "-fno-strict-aliasing",
-    ]
-    if profile == "release":
-        flags += ["-O3", "-DNDEBUG"]
-    elif profile == "sanitizer":
-        flags += [
-            "-O1",
-            "-g",
-            "-fno-omit-frame-pointer",
-            "-fsanitize=address,undefined",
-            "-fno-sanitize=alignment",
-        ]
-    else:
-        raise ValueError(f"unknown build profile: {profile}")
-    return [
-        os.environ.get("CXX", "c++"),
-        *flags,
-        "-shared",
-        "-Wl,-Bsymbolic-functions",
-        f"-DTSCB_SPRINTZ_FIRE={int(algorithm == 'sprintz-fire')}",
-        "-I",
-        str(PROJECT_ROOT / "native/include"),
-        "-I",
-        str(target),
-        "-I",
-        str(vendor),
-        str(adapter / "native/tscb_sprintz.cc"),
-        str(adapter / "native/bounded_sprintz.cc"),
-        *(str(target / name) for name in sources),
-        "-o",
-        str(output),
-    ]
-
-
-def _sprintz_fire_huff0_command(output: Path, profile: str) -> list[str]:
-    adapter = PROJECT_ROOT / "adapters/sprintz"
-    vendor = adapter / "vendor/sprintz"
-    entropy = PROJECT_ROOT / "adapters/entropy_fse/vendor/lib"
-    patches = (
-        adapter / "patches/0001-lowdim-byte-safety.patch",
-        adapter / "patches/0002-generic-allocation-safety.patch",
-        adapter / "patches/0003-fire-prediction-overflow.patch",
-    )
-    target = output.parent / "sprintz"
-    target.mkdir(parents=True, exist_ok=True)
-    sprintz_sources = (
-        "sprintz.cpp",
-        "sprintz_delta_lowdim.cpp",
-        "sprintz_xff_lowdim.cpp",
-        "sprintz_delta_rle.cpp",
-        "sprintz_xff_rle.cpp",
-        "format.cpp",
-    )
-    entropy_sources = (
-        "fse_compress.c",
-        "fse_decompress.c",
-        "huf_compress.c",
-        "huf_decompress.c",
-        "entropy_common.c",
-        "hist.c",
-    )
-    for name in (*sprintz_sources, "bitpack.h"):
-        shutil.copy2(vendor / name, target / name)
-    directory = str(output.parent.relative_to(PROJECT_ROOT))
-    for patch in patches:
-        _run(["git", "apply", "--check", f"--directory={directory}", str(patch)])
-        _run(["git", "apply", f"--directory={directory}", str(patch)])
-    flags = [
-        "-std=c++17",
-        "-fPIC",
-        "-Wno-ignored-attributes",
-        "-w",
-        "-mavx2",
-        "-mbmi2",
-        "-mlzcnt",
-        "-fno-strict-aliasing",
-    ]
-    if profile == "release":
-        flags += ["-O3", "-DNDEBUG"]
-    elif profile == "sanitizer":
-        flags += [
-            "-O1",
-            "-g",
-            "-fno-omit-frame-pointer",
-            "-fsanitize=address,undefined",
-            "-fno-sanitize=alignment",
-        ]
-    else:
-        raise ValueError(f"unknown build profile: {profile}")
-    return [
-        os.environ.get("CXX", "c++"),
-        *flags,
-        "-shared",
-        "-Wl,-Bsymbolic-functions",
-        "-I",
-        str(PROJECT_ROOT / "native/include"),
-        "-I",
-        str(target),
-        "-I",
-        str(vendor),
-        "-I",
-        str(entropy),
-        str(adapter / "native/tscb_sprintz_fire_huff0.cc"),
-        str(adapter / "native/bounded_sprintz.cc"),
-        *(str(target / name) for name in sprintz_sources),
-        *(str(entropy / name) for name in entropy_sources),
-        "-o",
-        str(output),
-    ]
+        raise ValueError(f'unknown build profile: {profile}')
+    isa = ['-mavx2', '-mbmi', '-mbmi2', '-mlzcnt', '-mpopcnt', '-fno-strict-aliasing']
+    includes = [str(vendor / p) for p in ('include','src','tools','vendor/core','vendor/huff0/lib','vendor/huff0/lib/common','vendor/huff0/lib/compress')]
+    inc = [v for path in includes for v in ('-I', path)]
+    core = ['sprintz.cpp','format.cpp','sprintz_delta.cpp','sprintz_delta_rle.cpp',
+            'sprintz_delta_lowdim.cpp','sprintz_xff.cpp','sprintz_xff_rle.cpp',
+            'sprintz_xff_lowdim.cpp','delta.cpp','predict.cpp','univariate_8b.cpp']
+    huff = ['common/entropy_common.c','common/fse_decompress.c','common/error_private.c',
+            'compress/huf_compress.c','compress/fse_compress.c','compress/hist.c','decompress/huf_decompress.c']
+    units = [(vendor / 'vendor/core' / p, True) for p in core]
+    units += [(vendor / 'src/native_dispatch.cpp', True), (vendor / 'src/api.cpp', False)]
+    units += [(vendor / 'vendor/huff0/lib' / p, False) for p in huff]
+    objects = []
+    unitdir = output.parent / 'sprintz-objects'; unitdir.mkdir()
+    for i, (source, native) in enumerate(units):
+        obj = unitdir / f'{i:02d}_{source.stem}.o'
+        cxx = source.suffix == '.cpp'
+        _run([os.environ.get('CXX' if cxx else 'CC','c++' if cxx else 'cc'),
+              '-std=c++17' if cxx else '-std=c11', *flags, *(isa if native else []), *inc,
+              '-MD', '-MF', str(obj.with_suffix('.o.d')), '-c', str(source), '-o', str(obj)])
+        objects.append(str(obj))
+    predictor, huffman = SPRINTZ_FAMILY[algorithm]
+    return [os.environ.get('CXX', 'c++'), '-std=c++17', *[f for f in flags if f != '-fvisibility=hidden'], '-shared', '-Wl,-z,defs', '-Wl,-Bsymbolic-functions',
+            f'-DTSCB_SPRINTZ_PREDICTOR={predictor}', f'-DTSCB_SPRINTZ_HUFFMAN={huffman}',
+            f'-DTSCB_SPRINTZ_KEY="{algorithm}"',
+            '-I', str(PROJECT_ROOT / 'native/include'), *inc,
+            str(adapter / 'native/tscb_sprintz_family.cc'), *objects, '-o', str(output)]
 
 
 def _zstd_command(output: Path, profile: str) -> list[str]:
@@ -732,56 +603,31 @@ def _lzss_command(output: Path, profile: str) -> tuple[list[str], dict[str, Any]
 
 
 def _alp_command(output: Path, profile: str, algorithm: str) -> list[str]:
+    """Consume the exact safe-v1 release API; never reapply the legacy patches."""
     adapter = PROJECT_ROOT / "adapters" / "alp"
-    vendor = adapter / "vendor" / "alp"
-    target = output.parent / "alp"
-    shutil.copytree(vendor, target, dirs_exist_ok=True)
-    patches = (
-        adapter / "patches" / "0001-float-factor-array-bound.patch",
-        adapter / "patches" / "0002-decoder-multiply-domain.patch",
-        adapter / "patches" / "0003-encoded-integer-range.patch",
-    )
-    directory = str(output.parent.relative_to(PROJECT_ROOT))
-    for patch in patches:
-        _run(["git", "apply", "--check", f"--directory={directory}", str(patch)])
-        _run(["git", "apply", f"--directory={directory}", str(patch)])
-    flags = [
-        "-std=c++17",
-        "-fPIC",
-        "-Wall",
-        "-Wextra",
-        "-Werror",
-        "-Wno-unused-parameter",
-        "-Wno-pass-failed",
-    ]
+    lock = json.loads((adapter / "FROZEN_SOURCES.json").read_text())
+    for record in lock["files"]:
+        path = PROJECT_ROOT / record["path"]
+        if not path.is_file() or hashlib.sha256(path.read_bytes()).hexdigest() != record["sha256"]:
+            raise RuntimeError(f"frozen ALP safe-v1 source changed: {path}")
+    package = adapter / "vendor" / "alp_safe_v1"
+    flags = ["-std=c++17", "-fPIC", "-fno-fast-math", "-ffp-contract=off",
+             "-fno-strict-aliasing"]
     if profile == "release":
         flags += ["-O3", "-DNDEBUG"]
     elif profile == "sanitizer":
-        flags += ["-O1", "-g", "-fno-omit-frame-pointer", "-fsanitize=address,undefined"]
+        flags += ["-O1", "-g", "-fno-omit-frame-pointer", "-fsanitize=address,undefined,float-cast-overflow"]
     else:
-        raise ValueError(f"unknown build profile: {profile}")
-    return [
-        os.environ.get("CXX", "clang++"),
-        *flags,
-        "-shared",
-        f"-DTSCB_ALP_RD={int(algorithm == 'alp-rd')}",
-        "-I",
-        str(PROJECT_ROOT / "native/include"),
-        "-I",
-        str(target / "include"),
-        str(adapter / "native/tscb_alp.cc"),
-        *(
-            str(target / "src" / name)
-            for name in (
-                "fastlanes_ffor.cpp",
-                "fastlanes_unffor.cpp",
-                "fastlanes_generated_ffor.cpp",
-                "fastlanes_generated_unffor.cpp",
-            )
-        ),
-        "-o",
-        str(output),
-    ]
+        raise ValueError(f"unknown ALP build profile: {profile}")
+    return [os.environ.get("CXX", "clang++"), *flags, "-shared",
+            f"-DTSCB_ALP_RD={int(algorithm == 'alp-rd')}",
+            "-I", str(PROJECT_ROOT / "native/include"),
+            "-I", str(package / "include"), "-I", str(package / "vendor/include"),
+            str(adapter / "native/tscb_alp.cc"), str(package / "src/codec.cpp"),
+            *(str(package / "vendor/src" / name) for name in (
+                "falp.cpp", "fastlanes_ffor.cpp", "fastlanes_unffor.cpp",
+                "fastlanes_generated_ffor.cpp", "fastlanes_generated_unffor.cpp")),
+            "-Wl,-z,defs", "-Wl,-Bsymbolic-functions", "-o", str(output)]
 
 
 def _serf_command(output: Path, profile: str, algorithm: str) -> list[str]:
@@ -966,6 +812,15 @@ def _rewrite_lossless_command(
         if _sha256(path) != record["sha256"]:
             raise RuntimeError(f"frozen standalone API changed: {record['path']}")
     vendor = adapter / "vendor" / entry["package"]
+    if algorithm in {'elf','elf-plus'}:
+        # Frozen originals stay immutable. Only a build-local copy receives the
+        # same encode path with its internal decode/memcmp self-test removed.
+        target = output.parent / 'patched-source'
+        for package in ('elf','elf-plus'):
+            shutil.copytree(adapter / 'vendor' / package, target / 'vendor' / package)
+        _run(['patch','--batch','-p1','-d',str(target),'-i',
+              str(adapter / 'patches/direct_core_no_validation.patch')])
+        vendor = target / 'vendor' / entry['package']
     command = [
         "c++",
         "-std=c++17",
@@ -1004,3 +859,36 @@ def _rewrite_lossless_command(
         },
     )
 
+
+
+CHIMP_FAMILY = {
+    'chimp': (1, False), 'chimp32': (2, False),
+    'chimp128': (3, False), 'chimpn': (3, True),
+    'chimp128-no-index': (4, False), 'chimpn32': (5, True),
+    'pmc-mr': (7, False), 'swing-filter': (8, False),
+    'swing-filter-disjoint': (9, False),
+    'swing-filter-disjoint-quantized': (10, False),
+}
+
+
+def _chimp_family_command(output: Path, profile: str, algorithm: str) -> list[str]:
+    adapter = PROJECT_ROOT / 'adapters/chimp_family'
+    lock = json.loads((adapter / 'FROZEN_SOURCES.json').read_text())
+    for record in lock['files']:
+        if _sha256(PROJECT_ROOT / record['path']) != record['sha256']:
+            raise RuntimeError(f'frozen Chimp family source changed: {record["path"]}')
+    method, variable = CHIMP_FAMILY[algorithm]
+    vendor = adapter / 'vendor/chimp_family'
+    flags = ['-std=c++17', '-fPIC', '-Wall', '-Wextra', '-Wpedantic', '-Werror',
+             '-Wno-misleading-indentation', '-fno-fast-math', '-ffp-contract=off']
+    if profile == 'release':
+        flags += ['-O3', '-DNDEBUG']
+    elif profile == 'sanitizer':
+        flags += ['-O1', '-g', '-fno-omit-frame-pointer', '-fsanitize=address,undefined']
+    else:
+        raise ValueError(f'unknown build profile: {profile}')
+    return [os.environ.get('CXX', 'c++'), *flags, '-shared', '-Wl,-z,defs', '-Wl,-Bsymbolic-functions',
+            f'-DTSCB_CHIMP_METHOD={method}', f'-DTSCB_CHIMP_VARIABLE_HISTORY={int(variable)}',
+            f'-DTSCB_CHIMP_KEY="{algorithm}"', '-I', str(PROJECT_ROOT / 'native/include'),
+            '-I', str(vendor / 'include'), str(adapter / 'native/tscb_chimp_family.cc'),
+            str(vendor / 'src/canonical/chimp_family.cpp'), '-o', str(output)]

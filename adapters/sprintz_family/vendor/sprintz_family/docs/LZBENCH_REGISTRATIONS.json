@@ -1,0 +1,154 @@
+[
+  {
+    "registration": "{ \"sprintzDelta1d\",    \"0.0\", 0, 0,   0,       0, lzbench_sprintz_delta_1d_compress,        lzbench_sprintz_delta_1d_decompress,        NULL,       NULL },",
+    "status": "EXPERIMENTAL_OR_OTHER_PIPELINE_NOT_SAFE_ABI"
+  },
+  {
+    "registration": "{ \"sprintzDblDelta1d\", \"0.0\", 0, 0,   0,       0, lzbench_sprintz_dbldelta_1d_compress,     lzbench_sprintz_dbldelta_1d_decompress,     NULL,       NULL },",
+    "status": "EXPERIMENTAL_OR_OTHER_PIPELINE_NOT_SAFE_ABI"
+  },
+  {
+    "registration": "{ \"sprintzDynDelta1d\", \"0.0\", 0, 0,   0,       0, lzbench_sprintz_dyndelta_1d_compress,     lzbench_sprintz_dyndelta_1d_decompress,     NULL,       NULL },",
+    "status": "EXPERIMENTAL_OR_OTHER_PIPELINE_NOT_SAFE_ABI"
+  },
+  {
+    "registration": "{ \"sprDelta2\",       \"0.0\", 0, 0,   0,       0, lzbench_sprintz_delta2_compress,       lzbench_sprintz_delta2_decompress,       NULL,       NULL },",
+    "status": "EXPERIMENTAL_OR_OTHER_PIPELINE_NOT_SAFE_ABI"
+  },
+  {
+    "registration": "{ \"sprDeltaRLE\",     \"0.0\", 0, 0,   0,       0, lzbench_sprintz_delta_rle_compress,    lzbench_sprintz_delta_rle_decompress,    NULL,       NULL },",
+    "status": "EXPERIMENTAL_OR_OTHER_PIPELINE_NOT_SAFE_ABI"
+  },
+  {
+    "registration": "{ \"sprDeltaRLE2\",    \"0.0\", 0, 0,   0,       0, lzbench_sprintz_delta_rle2_compress,   lzbench_sprintz_delta_rle2_decompress,   NULL,       NULL },",
+    "status": "EXPERIMENTAL_OR_OTHER_PIPELINE_NOT_SAFE_ABI"
+  },
+  {
+    "registration": "{ \"sprDeltaRLE_FSE\", \"0.0\", 0, 0,   0,       0, lzbench_sprintz_delta_rle_fse_compress,lzbench_sprintz_delta_rle_fse_decompress,NULL, NULL },",
+    "status": "EXPERIMENTAL_OR_OTHER_PIPELINE_NOT_SAFE_ABI"
+  },
+  {
+    "registration": "{ \"sprDeltaRLE_HUF\", \"0.0\", 0, 0,   0,  64<<10, lzbench_sprintz_delta_rle_huf_compress,lzbench_sprintz_delta_rle_huf_decompress,NULL, NULL },",
+    "status": "EXPERIMENTAL_OR_OTHER_PIPELINE_NOT_SAFE_ABI"
+  },
+  {
+    "registration": "{ \"sprDeltaRLE_Zstd\",\"0.0\", 1, 22,  0,       0, lzbench_sprintz_delta_rle_zstd_compress,lzbench_sprintz_delta_rle_zstd_decompress, lzbench_zstd_init, lzbench_zstd_deinit},",
+    "status": "EXPERIMENTAL_OR_OTHER_PIPELINE_NOT_SAFE_ABI"
+  },
+  {
+    "registration": "{ \"sprRowMajor\",     \"0.0\", 1, 128, 0,       0, lzbench_sprintz_row_compress,          lzbench_sprintz_row_decompress,          NULL,       NULL },",
+    "status": "REQUIRED_MAIN_OR_ABLATION"
+  },
+  {
+    "registration": "{ \"sprRowDelta\",     \"0.0\", 1, 128, 0,       0, lzbench_sprintz_row_delta_compress,    lzbench_sprintz_row_delta_decompress,    NULL,       NULL },",
+    "status": "REQUIRED_MAIN_OR_ABLATION"
+  },
+  {
+    "registration": "{ \"sprRowDelta_HUF\", \"0.0\", 1, 128, 0,  64<<10, lzbench_sprintz_row_delta_huf_compress,lzbench_sprintz_row_delta_huf_decompress,NULL,       NULL },",
+    "status": "REQUIRED_MAIN_OR_ABLATION"
+  },
+  {
+    "registration": "{ \"sprRowDelta_FSE\", \"0.0\", 1, 128, 0,       0, lzbench_sprintz_row_delta_fse_compress,lzbench_sprintz_row_delta_fse_decompress,NULL,       NULL },",
+    "status": "EXPERIMENTAL_OR_OTHER_PIPELINE_NOT_SAFE_ABI"
+  },
+  {
+    "registration": "{ \"sprRowDeltaRLE\",  \"0.0\", 1, 128, 0,       0, lzbench_sprintz_row_delta_rle_compress,lzbench_sprintz_row_delta_rle_decompress,NULL,       NULL },",
+    "status": "REQUIRED_MAIN_OR_ABLATION"
+  },
+  {
+    "registration": "{ \"sprRowDeltaRLE_lowdim\",\"0.0\",1,4,0,       0, lzbench_sprintz_row_delta_rle_lowdim_compress,lzbench_sprintz_row_delta_rle_lowdim_decompress, NULL,       NULL },",
+    "status": "REQUIRED_MAIN_OR_ABLATION"
+  },
+  {
+    "registration": "{ \"sprRowDeltaRLE_HUF\",\"0.0\",1,128, 0,  64<<10, lzbench_sprintz_row_delta_rle_huf_compress,lzbench_sprintz_row_delta_rle_huf_decompress,NULL,       NULL },",
+    "status": "REQUIRED_MAIN_OR_ABLATION"
+  },
+  {
+    "registration": "{ \"sprJustDelta\",    \"0.0\", 1, 128, 0,       0, lzbench_sprintz_delta_encode,          lzbench_sprintz_delta_decode,            NULL,       NULL },",
+    "status": "EXPERIMENTAL_OR_OTHER_PIPELINE_NOT_SAFE_ABI"
+  },
+  {
+    "registration": "{ \"sprJustDblDelta\", \"0.0\", 1, 128, 0,       0, lzbench_sprintz_doubledelta_encode,    lzbench_sprintz_doubledelta_decode,      NULL,       NULL },",
+    "status": "EXPERIMENTAL_OR_OTHER_PIPELINE_NOT_SAFE_ABI"
+  },
+  {
+    "registration": "{ \"sprJustXff\",      \"0.0\", 1, 128, 0,       0, lzbench_sprintz_xff_encode,            lzbench_sprintz_xff_decode,              NULL,       NULL },",
+    "status": "EXPERIMENTAL_OR_OTHER_PIPELINE_NOT_SAFE_ABI"
+  },
+  {
+    "registration": "{ \"sprJustDelta_16b\",    \"0.0\", 1, 128, 0,   0, lzbench_sprintz_delta_encode_16b,      lzbench_sprintz_delta_decode_16b,        NULL,       NULL },",
+    "status": "EXPERIMENTAL_OR_OTHER_PIPELINE_NOT_SAFE_ABI"
+  },
+  {
+    "registration": "{ \"sprJustDblDelta_16b\", \"0.0\", 1, 128, 0,   0, lzbench_sprintz_doubledelta_encode_16b,lzbench_sprintz_doubledelta_decode_16b,  NULL,       NULL },",
+    "status": "EXPERIMENTAL_OR_OTHER_PIPELINE_NOT_SAFE_ABI"
+  },
+  {
+    "registration": "{ \"sprJustXff_16b\",      \"0.0\", 1, 128, 0,   0, lzbench_sprintz_xff_encode_16b,        lzbench_sprintz_xff_decode_16b,          NULL,       NULL },",
+    "status": "EXPERIMENTAL_OR_OTHER_PIPELINE_NOT_SAFE_ABI"
+  },
+  {
+    "registration": "{ \"sprXffRLE\",       \"0.0\", 1, 128, 0,       0, lzbench_sprintz_row_xff_rle_compress,  lzbench_sprintz_row_xff_rle_decompress,  NULL,       NULL },",
+    "status": "REQUIRED_MAIN_OR_ABLATION"
+  },
+  {
+    "registration": "{ \"sprXffRLE_lowdim\",\"0.0\", 1, 4,   0,       0, lzbench_sprintz_row_xff_rle_lowdim_compress,  lzbench_sprintz_row_xff_rle_lowdim_decompress,  NULL,       NULL },",
+    "status": "REQUIRED_MAIN_OR_ABLATION"
+  },
+  {
+    "registration": "{ \"sprintzDelta\",    \"0.0\", 1, 128, 0,       0, lzbench_sprintz_delta_compress,  lzbench_sprintz_delta_decompress,              NULL,       NULL },",
+    "status": "REQUIRED_MAIN_OR_ABLATION"
+  },
+  {
+    "registration": "{ \"sprintzXff\",      \"0.0\", 1, 128, 0,       0, lzbench_sprintz_xff_compress,  lzbench_sprintz_xff_decompress,                  NULL,       NULL },",
+    "status": "REQUIRED_MAIN_OR_ABLATION"
+  },
+  {
+    "registration": "{ \"sprintzDelta_HUF\",\"0.0\", 1, 128, 0,  64<<10, lzbench_sprintz_delta_huf_compress,  lzbench_sprintz_delta_huf_decompress,      NULL,       NULL },",
+    "status": "REQUIRED_MAIN_OR_ABLATION"
+  },
+  {
+    "registration": "{ \"sprintzXff_HUF\",  \"0.0\", 1, 128, 0,  64<<10, lzbench_sprintz_xff_huf_compress,  lzbench_sprintz_xff_huf_decompress,          NULL,       NULL },",
+    "status": "REQUIRED_MAIN_OR_ABLATION"
+  },
+  {
+    "registration": "{ \"sprintzDelta_16b\",\"0.0\", 1, 128, 0,       0, lzbench_sprintz_delta_compress_16b,  lzbench_sprintz_delta_decompress_16b,         NULL,    NULL },",
+    "status": "REQUIRED_MAIN_OR_ABLATION"
+  },
+  {
+    "registration": "{ \"sprintzXff_16b\",  \"0.0\", 1, 128, 0,       0, lzbench_sprintz_xff_compress_16b,  lzbench_sprintz_xff_decompress_16b,             NULL,    NULL },",
+    "status": "REQUIRED_MAIN_OR_ABLATION"
+  },
+  {
+    "registration": "{ \"sprintzDelta_HUF_16b\",\"0.0\",  1,128,0,80<<10, lzbench_sprintz_delta_huf_compress_16b,   lzbench_sprintz_delta_huf_decompress_16b,    NULL,   NULL },",
+    "status": "REQUIRED_MAIN_OR_ABLATION"
+  },
+  {
+    "registration": "{ \"sprintzDelta_zstd_16b\",\"0.0\", 1,128,0,80<<10, lzbench_sprintz_delta_zstd_compress_16b,  lzbench_sprintz_delta_zstd_decompress_16b,   lzbench_zstd_init, lzbench_zstd_deinit },",
+    "status": "EXPERIMENTAL_OR_OTHER_PIPELINE_NOT_SAFE_ABI"
+  },
+  {
+    "registration": "{ \"sprintzDelta_bz2_16b\",\"0.0\",  1,128,0,80<<10, lzbench_sprintz_delta_bzip2_compress_16b, lzbench_sprintz_delta_bzip2_decompress_16b,  NULL,   NULL },",
+    "status": "EXPERIMENTAL_OR_OTHER_PIPELINE_NOT_SAFE_ABI"
+  },
+  {
+    "registration": "{ \"sprintzXff_HUF_16b\",  \"0.0\",  1,128,0,80<<10, lzbench_sprintz_xff_huf_compress_16b,     lzbench_sprintz_xff_huf_decompress_16b,      NULL,   NULL },",
+    "status": "REQUIRED_MAIN_OR_ABLATION"
+  },
+  {
+    "registration": "{ \"sprintzDeltaQuery0_8b\", \"0.0\", 1,128,0,80<<10, lzbench_sprintz_delta_compress,  lzbench_sprintz_delta_query0_8b,      NULL,       NULL },",
+    "status": "EXPERIMENTAL_OR_OTHER_PIPELINE_NOT_SAFE_ABI"
+  },
+  {
+    "registration": "{ \"sprintzXffQuery0_16b\",  \"0.0\", 1,128,0,80<<10, lzbench_sprintz_xff_compress_16b,  lzbench_sprintz_xff_query1_16b,    NULL,       NULL },",
+    "status": "EXPERIMENTAL_OR_OTHER_PIPELINE_NOT_SAFE_ABI"
+  },
+  {
+    "registration": "{ \"sprFixedBitpack\", \"0.0\", 1, 8,   0,       0, lzbench_fixed_bitpack_compress,  lzbench_fixed_bitpack_decompress,              NULL,       NULL }, // input bytes must all be <= 1",
+    "status": "EXPERIMENTAL_OR_OTHER_PIPELINE_NOT_SAFE_ABI"
+  },
+  {
+    "registration": "{ \"sprJustBitpack\",  \"0.0\", 0, 0,   0,       0, lzbench_just_bitpack_compress,   lzbench_just_bitpack_decompress,               NULL,       NULL }, // input bytes must all be <= 15",
+    "status": "EXPERIMENTAL_OR_OTHER_PIPELINE_NOT_SAFE_ABI"
+  }
+]

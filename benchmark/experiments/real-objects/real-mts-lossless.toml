@@ -180,6 +180,9 @@ object_workers = 1
 memory_limit_mb = 4096
 
 [task]
+boundary = "object_memory"
+lifecycle = "independent_object"
+cache_policy = "natural"
 kind = "values"
 fidelity = "bitwise"
 

@@ -1,0 +1,124 @@
+{
+  "schema": "tsbench.native-design/1",
+  "generated_from": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/tools/generate_native_experiments.py",
+  "date": "2026-10-15",
+  "selection": "predefined windows, no input conversion/tuning from results; fixture API matrix tests integration, not corpus ranking",
+  "core_scope": "raw/Zstd/LZ4/Snappy direct APIs; all other requests remain unsupported",
+  "profiles": "single thread primary; DZip caller+2 workers separate ABI auxiliary",
+  "configurations": [
+    "core.toml",
+    "fresh.toml",
+    "api_lossless.toml",
+    "api_bounded.toml",
+    "api_empirical.toml",
+    "object.toml"
+  ],
+  "raw_sources": [
+    {
+      "id": "etth1-values-c",
+      "format": "csv",
+      "path": "/home/fzg/PycharmProjects/材料/TSBench_Corpus/ETTh1.csv",
+      "dtype": "<f8",
+      "columns": [
+        "HUFL",
+        "HULL",
+        "MUFL",
+        "MULL",
+        "LUFL",
+        "LULL",
+        "OT"
+      ],
+      "timestamp_column": "date",
+      "timestamp_parser": "datetime64",
+      "time_unit": "ns",
+      "encoding": "utf-8",
+      "missing": "reject",
+      "start": 2048,
+      "stop": 10240,
+      "order": "C",
+      "source": "etth1"
+    },
+    {
+      "id": "etth1-values-f",
+      "format": "csv",
+      "path": "/home/fzg/PycharmProjects/材料/TSBench_Corpus/ETTh1.csv",
+      "dtype": "<f8",
+      "columns": [
+        "HUFL",
+        "HULL",
+        "MUFL",
+        "MULL",
+        "LUFL",
+        "LULL",
+        "OT"
+      ],
+      "timestamp_column": "date",
+      "timestamp_parser": "datetime64",
+      "time_unit": "ns",
+      "encoding": "utf-8",
+      "missing": "reject",
+      "start": 2048,
+      "stop": 10240,
+      "order": "F",
+      "source": "etth1"
+    },
+    {
+      "id": "weather-values-c",
+      "format": "csv",
+      "path": "/home/fzg/PycharmProjects/材料/TSBench_Corpus/weather.csv",
+      "dtype": "<f8",
+      "columns": [
+        "T (degC)",
+        "Tdew (degC)",
+        "Tlog (degC)"
+      ],
+      "timestamp_column": "date",
+      "timestamp_parser": "datetime64",
+      "time_unit": "ns",
+      "encoding": "utf-8",
+      "missing": "reject",
+      "start": 2048,
+      "stop": 34816,
+      "order": "C",
+      "source": "weather"
+    },
+    {
+      "id": "weather-values-f",
+      "format": "csv",
+      "path": "/home/fzg/PycharmProjects/材料/TSBench_Corpus/weather.csv",
+      "dtype": "<f8",
+      "columns": [
+        "T (degC)",
+        "Tdew (degC)",
+        "Tlog (degC)"
+      ],
+      "timestamp_column": "date",
+      "timestamp_parser": "datetime64",
+      "time_unit": "ns",
+      "encoding": "utf-8",
+      "missing": "reject",
+      "start": 2048,
+      "stop": 34816,
+      "order": "F",
+      "source": "weather"
+    },
+    {
+      "id": "ili-values-c",
+      "format": "csv",
+      "path": "/home/fzg/PycharmProjects/材料/TSBench_Corpus/national_illness.csv",
+      "dtype": "<f8",
+      "columns": [
+        "OT"
+      ],
+      "timestamp_column": "date",
+      "timestamp_parser": "datetime64",
+      "time_unit": "ns",
+      "encoding": "utf-8",
+      "missing": "reject",
+      "start": 0,
+      "stop": 512,
+      "order": "C",
+      "source": "ili"
+    }
+  ]
+}

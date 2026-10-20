@@ -17,6 +17,18 @@ def minimal_config():
             "methods": [{"id": "raw", "codec": "raw-store"}]}
 
 
+def test_default_is_native_with_explicit_object_mode_retained():
+    config=resolve(minimal_config())
+    assert config['task']['boundary']=='native_core' and config['task']['lifecycle']=='prepared'
+    assert config['execution']['native_loops']==8 and config['execution']['native_warmup_loops']==2
+    old=minimal_config();old['task']={'boundary':'object_memory'}
+    assert resolve(old)['task']['lifecycle']=='independent_object'
+    fresh=minimal_config();fresh['task']={'lifecycle':'fresh_request'}
+    assert resolve(fresh)['task']['boundary']=='native_core'
+    bad=minimal_config();bad['task']={'boundary':'native_core','lifecycle':'independent_object'}
+    with pytest.raises(ValueError):resolve(bad)
+
+
 @pytest.mark.parametrize("key,value", [("rounds", True), ("sessions", 0), ("warmup_objects", -1),
                                       ("timeout_s", 0), ("timeout_s", float("inf"))])
 def test_config_rejects_invalid_execution_budget(key, value):
@@ -48,7 +60,7 @@ def test_registry_rejects_unknown_and_bool_integer_parameters():
         with pytest.raises(UnsupportedError):
             registry.resolve_params("zstd-frame", params)
     assert registry.get("lz77").key == "deflate-zlib"
-    assert len(registry.list(include_reference=False)) == 37
+    assert len(registry.list(include_reference=False)) == 42
 
 
 def test_interrupted_jsonl_tail_is_preserved_before_recovery(tmp_path):

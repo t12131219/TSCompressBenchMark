@@ -1,0 +1,36 @@
+{
+  "schema_version": "tscb.source-artifact.v2",
+  "key": "sprintz-family-native-20261017",
+  "kind": "FROZEN_NATIVE_PORT_RELEASE",
+  "identity": {
+    "implementation": "sprintz-native-20261017-api-v1",
+    "upstream_repository": "https://github.com/dblalock/sprintz",
+    "upstream_commit": "a056cdb67d049669875ab5487359aca99ae873ea",
+    "huffman_wrapper_repository": "https://github.com/dblalock/lzbench",
+    "huffman_wrapper_commit": "580c4f085381f31b1ad669525ed04e63cbc385f3",
+    "release_sha256": "757789b014f2e5f7804ea88b68ce22bc3b5f86b9121626861c2c7209f4e5e624",
+    "frozen_sources_sha256": "b100d92350424e5159e34e03cc4f182c94685b2e6c2e3ab24706c486c21dc0f4",
+    "source_path": "adapters/sprintz_family/vendor/sprintz_family"
+  },
+  "license": {
+    "spdx": "Apache-2.0 AND BSD-2-Clause",
+    "status": "PER_FILE_NOTICES_RETAINED",
+    "files": [
+      "adapters/sprintz_family/vendor/sprintz_family/LICENSES/NOTICE.md"
+    ],
+    "oracle_context": "lzbench GPL context retained separately; not linked into production"
+  },
+  "build": {
+    "recipe": "tsbench._native_recipes._sprintz_family_command",
+    "frozen_sources": "adapters/sprintz_family/FROZEN_SOURCES.json",
+    "patches": [],
+    "upstream_repairs": "included in immutable native port; patches/native-safety.patch"
+  },
+  "qualification": {
+    "standalone": "NATIVE_PORT_QUALIFIED_LIMITED_SCOPE",
+    "source_full_parity": "NOT_ASSERTED",
+    "bench_binding": "docs/sprintz_integration/README.md",
+    "formal_performance": "NOT_RERUN"
+  },
+  "source_artifact_id": "v2:source-artifact:sha256:77ec90ebc3a3e2fcda2cbca50835efb75e63634c72a9874a19c708f6157ec001"
+}

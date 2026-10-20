@@ -97,7 +97,8 @@ def build_configs(sources, run_root: Path):
                    'T': {'codec': 'leats-lossless-i64', 'transform': 'integer_affine_gcd'}})]
 
     def experiment(name, datasets, methods, kind, fidelity, bound=None):
-        task = {'kind': kind, 'fidelity': fidelity}
+        task = {'kind': kind, 'fidelity': fidelity, 'boundary': 'object_memory',
+                'lifecycle': 'independent_object', 'cache_policy': 'natural'}
         if bound is not None:
             task['error_bound'] = bound
         return {'schema': 'tsbench.experiment/1', 'name': name,

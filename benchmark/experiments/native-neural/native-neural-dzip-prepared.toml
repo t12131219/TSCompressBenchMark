@@ -1,0 +1,53 @@
+# Frozen by generate_neural_core_experiments.py; no result-dependent tuning.
+schema = "tsbench.experiment/1"
+name = "native-neural-dzip-prepared"
+output = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/runs/native-neural-dzip-prepared-20261015"
+
+[[datasets]]
+id = "symbols4-c"
+format = "npy"
+path = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/examples/data/symbols4.npy"
+component = "V"
+order = "C"
+source = "development-fixture:symbols4"
+
+[[methods]]
+id = "dzip-bootstrap"
+codec = "dzip"
+params = { mode = "BOOTSTRAP" }
+
+[[methods]]
+id = "dzip-combined"
+codec = "dzip"
+params = { mode = "COMBINED" }
+
+[[profiles]]
+id = "cpu-dzip-three"
+device = "cpu"
+native_threads = 3
+object_workers = 1
+memory_limit_mb = 4096
+runtime_preload = ["/usr/lib/x86_64-linux-gnu/libstdc++.so.6"]
+
+[task]
+kind = "values"
+fidelity = "bitwise"
+boundary = "native_core"
+lifecycle = "prepared"
+cache_policy = "natural"
+
+[execution]
+sessions = 2
+rounds = 7
+warmup_objects = 0
+native_loops = 2
+native_warmup_loops = 2
+native_batch_memory_mb = 1024
+timeout_s = 600
+qualification_cache = true
+save_artifacts = true
+seed = 20261015
+
+[analysis]
+summary = "median_iqr"
+inference = "none"

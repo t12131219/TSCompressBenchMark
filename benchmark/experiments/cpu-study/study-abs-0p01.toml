@@ -79,6 +79,9 @@ codec = "zfp-accuracy-1d"
 params = { error_bound = "0.01" }
 
 [task]
+boundary = "object_memory"
+lifecycle = "independent_object"
+cache_policy = "natural"
 kind = "values"
 fidelity = "bounded_abs"
 error_bound = "0.01"

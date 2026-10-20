@@ -419,7 +419,12 @@ def load(path: str | Path) -> dict[str, Any]:
         raise ValueError("timeout_s must be positive finite")
     if type(config["seed"]) is not int:
         raise ValueError("seed must be integer")
-    experiment = resolve(config["experiment"], source.parent)
+    nested=copy.deepcopy(config['experiment'])
+    nested.setdefault('task',{}).setdefault('boundary','object_memory')
+    nested['task'].setdefault('lifecycle','independent_object')
+    experiment = resolve(nested, source.parent)
+    if experiment['task']['boundary']!='object_memory':
+        raise ValueError('the collection pool requires an explicit object_memory experiment')
     if len(experiment["profiles"]) != 1:
         raise ValueError("pool config requires exactly one per-worker resource profile")
     if max(config["workers"]) > len(experiment["datasets"]):
@@ -442,6 +447,10 @@ def run(config: dict[str, Any], output: str | Path | None = None) -> Path:
         raise FileExistsError("pool output already exists; use a new run directory")
     root.mkdir(parents=True, exist_ok=True)
     experiment = copy.deepcopy(config["experiment"])
+    experiment.setdefault('task',{}).setdefault('boundary','object_memory')
+    experiment['task'].setdefault('lifecycle','independent_object')
+    if experiment['task']['boundary']!='object_memory':
+        raise ValueError('the collection pool requires object_memory')
     experiment["execution"].update(sessions=1, rounds=1, warmup_objects=0, save_artifacts=True)
     reference = reference_run(experiment, output=root / "admission")
     reference_manifest = json.loads((reference / "manifest.json").read_bytes())

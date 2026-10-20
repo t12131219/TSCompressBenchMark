@@ -1,0 +1,139 @@
+{
+  "status": "PASS",
+  "archive_sha256": "757789b014f2e5f7804ea88b68ce22bc3b5f86b9121626861c2c7209f4e5e624",
+  "package_index_sha256": "9f544df5229136e999e08edc4d310f27c8ab4341ea576b79d91e4f0b7c77445e",
+  "indexed_files": 1665,
+  "all_archive_files_indexed": true,
+  "hashes_verified": true,
+  "package_outside_clean_offline_replay": {
+    "status": "PASS",
+    "network_used": false,
+    "clean_copied_tree": true,
+    "patch_replay": "PASS",
+    "results": [
+      {
+        "command": [
+          "patch",
+          "-p1",
+          "-i",
+          "/tmp/sprintz-offline-ya1hjsu4/root/ReWrite/sprintz-family/patches/native-safety.patch"
+        ],
+        "exit": 0,
+        "stdout": "patching file bitpack.h\npatching file delta.cpp\npatching file entropy.cpp\npatching file format.h\npatching file online.cpp\npatching file predict.cpp\npatching file sprintz_delta.cpp\npatching file sprintz_delta_lowdim.cpp\npatching file sprintz_delta_rle.cpp\npatching file sprintz_delta_rle_query.hpp\npatching file sprintz_xff.cpp\npatching file sprintz_xff_lowdim.cpp\npatching file sprintz_xff_rle.cpp\npatching file sprintz_xff_rle_query.hpp\npatching file transpose.h\npatching file univariate_8b.cpp\npatching file util.h\n",
+        "stderr": ""
+      },
+      {
+        "command": [
+          "/home/fzg/anaconda3/bin/python3",
+          "/tmp/sprintz-offline-ya1hjsu4/root/ReWrite/sprintz-family/tools/extract_oracle.py"
+        ],
+        "exit": 0,
+        "stdout": "oracle function extraction PASS\n",
+        "stderr": ""
+      },
+      {
+        "command": [
+          "cmake",
+          "-S",
+          "/tmp/sprintz-offline-ya1hjsu4/root/ReWrite/sprintz-family",
+          "-B",
+          "/tmp/sprintz-offline-ya1hjsu4/root/ReWrite/sprintz-family/build",
+          "-DCMAKE_BUILD_TYPE=Release"
+        ],
+        "exit": 0,
+        "stdout": "-- The C compiler identification is GNU 11.4.0\n-- The CXX compiler identification is GNU 11.4.0\n-- Detecting C compiler ABI info\n-- Detecting C compiler ABI info - done\n-- Check for working C compiler: /usr/bin/cc - skipped\n-- Detecting C compile features\n-- Detecting C compile features - done\n-- Detecting CXX compiler ABI info\n-- Detecting CXX compiler ABI info - done\n-- Check for working CXX compiler: /usr/bin/c++ - skipped\n-- Detecting CXX compile features\n-- Detecting CXX compile features - done\n-- Configuring done\n-- Generating done\n-- Build files have been written to: /tmp/sprintz-offline-ya1hjsu4/root/ReWrite/sprintz-family/build\n",
+        "stderr": ""
+      },
+      {
+        "command": [
+          "cmake",
+          "--build",
+          "/tmp/sprintz-offline-ya1hjsu4/root/ReWrite/sprintz-family/build",
+          "-j4"
+        ],
+        "exit": 0,
+        "stdout": "[  2%] Building CXX object CMakeFiles/sz_dispatch.dir/src/native_dispatch.cpp.o\n[  5%] Building C object CMakeFiles/sz_huff.dir/vendor/huff0/lib/common/entropy_common.c.o\n[  8%] Building CXX object CMakeFiles/sz_native.dir/vendor/core/sprintz.cpp.o\n[ 11%] Building CXX object CMakeFiles/sz_native.dir/vendor/core/format.cpp.o\n[ 14%] Building C object CMakeFiles/sz_huff.dir/vendor/huff0/lib/common/fse_decompress.c.o\n[ 17%] Building C object CMakeFiles/sz_huff.dir/vendor/huff0/lib/common/error_private.c.o\n[ 20%] Building C object CMakeFiles/sz_huff.dir/vendor/huff0/lib/compress/huf_compress.c.o\n[ 23%] Building CXX object CMakeFiles/sz_native.dir/vendor/core/sprintz_delta.cpp.o\n[ 23%] Built target sz_dispatch\n[ 26%] Building CXX object CMakeFiles/sz_native.dir/vendor/core/sprintz_delta_rle.cpp.o\n[ 29%] Building C object CMakeFiles/sz_huff.dir/vendor/huff0/lib/compress/fse_compress.c.o\n[ 32%] Building CXX object CMakeFiles/sz_native.dir/vendor/core/sprintz_delta_lowdim.cpp.o\n[ 35%] Building C object CMakeFiles/sz_huff.dir/vendor/huff0/lib/compress/hist.c.o\n[ 38%] Building C object CMakeFiles/sz_huff.dir/vendor/huff0/lib/decompress/huf_decompress.c.o\n[ 41%] Building CXX object CMakeFiles/sz_native.dir/vendor/core/sprintz_xff.cpp.o\n[ 44%] Building CXX object CMakeFiles/sz_native.dir/vendor/core/sprintz_xff_rle.cpp.o\n[ 44%] Built target sz_huff\n[ 47%] Building CXX object CMakeFiles/sz_native.dir/vendor/core/sprintz_xff_lowdim.cpp.o\n[ 50%] Building CXX object CMakeFiles/sz_native.dir/vendor/core/delta.cpp.o\n[ 52%] Building CXX object CMakeFiles/sz_native.dir/vendor/core/predict.cpp.o\n[ 55%] Building CXX object CMakeFiles/sz_native.dir/vendor/core/univariate_8b.cpp.o\n[ 55%] Built target sz_native\n[ 64%] Building CXX object CMakeFiles/sprintz_experiments.dir/tools/experiments.cpp.o\n[ 64%] Building CXX object CMakeFiles/sprintz_static.dir/src/api.cpp.o\n[ 64%] Building CXX object CMakeFiles/sprintz_oracle.dir/tools/native_cli.cpp.o\n[ 67%] Building CXX object CMakeFiles/sprintz.dir/src/api.cpp.o\n[ 70%] Linking CXX static library libsprintz_static.a\n[ 73%] Linking CXX shared library libsprintz.so\n[ 73%] Built target sprintz_static\n[ 76%] Building CXX object CMakeFiles/sprintz_oracle.dir/tools/source_huff.cpp.o\n[ 76%] Built target sprintz\n[ 79%] Building CXX object CMakeFiles/sprintz_cli.dir/tools/cli.cpp.o\n[ 82%] Building CXX object CMakeFiles/sprintz_tests.dir/tests/test_api.cpp.o\n[ 85%] Linking CXX executable sprintz_experiments\n[ 85%] Built target sprintz_experiments\n[ 88%] Building CXX object CMakeFiles/sprintz_negative.dir/tests/test_negative.cpp.o\n[ 91%] Linking CXX executable sprintz_oracle\n[ 94%] Linking CXX executable sprintz_cli\n[ 94%] Built target sprintz_cli\n[ 94%] Built target sprintz_oracle\n[ 97%] Linking CXX executable sprintz_tests\n[ 97%] Built target sprintz_tests\n[100%] Linking CXX executable sprintz_negative\n[100%] Built target sprintz_negative\n",
+        "stderr": "a long int}\n      |                                             %ld\nIn file included from /tmp/sprintz-offline-ya1hjsu4/root/ReWrite/sprintz-family/vendor/core/query.hpp:17,\n                 from /tmp/sprintz-offline-ya1hjsu4/root/ReWrite/sprintz-family/vendor/core/sprintz_delta.h:15,\n                 from /tmp/sprintz-offline-ya1hjsu4/root/ReWrite/sprintz-family/tools/native_bridge.hpp:3,\n                 from /tmp/sprintz-offline-ya1hjsu4/root/ReWrite/sprintz-family/tools/native_cli.cpp:1:\n/tmp/sprintz-offline-ya1hjsu4/root/ReWrite/sprintz-family/vendor/core/traits.hpp:37:40: warning: ignoring attributes on template argument \u2018__m256i\u2019 [-Wignored-attributes]\n   37 | template<> struct vector_traits<__m256i> {\n      |                                        ^\n/tmp/sprintz-offline-ya1hjsu4/root/ReWrite/sprintz-family/vendor/core/traits.hpp:48:57: warning: ignoring attributes on template argument \u2018scalar_traits<signed char>::vector_type\u2019 {aka \u2018__m256i\u2019} [-Wignored-attributes]\n   48 |     using packet_type = Packet<vector_traits<vector_type>::size, scalar_type>;\n      |                                                         ^\n/tmp/sprintz-offline-ya1hjsu4/root/ReWrite/sprintz-family/vendor/core/traits.hpp:55:57: warning: ignoring attributes on template argument \u2018scalar_traits<unsigned char>::vector_type\u2019 {aka \u2018__m256i\u2019} [-Wignored-attributes]\n   55 |     using packet_type = Packet<vector_traits<vector_type>::size, scalar_type>;\n      |                                                         ^\n/tmp/sprintz-offline-ya1hjsu4/root/ReWrite/sprintz-family/vendor/core/traits.hpp:62:57: warning: ignoring attributes on template argument \u2018scalar_traits<short int>::vector_type\u2019 {aka \u2018__m256i\u2019} [-Wignored-attributes]\n   62 |     using packet_type = Packet<vector_traits<vector_type>::size, scalar_type>;\n      |                                                         ^\n/tmp/sprintz-offline-ya1hjsu4/root/ReWrite/sprintz-family/vendor/core/traits.hpp:69:57: warning: ignoring attributes on template argument \u2018scalar_traits<short unsigned int>::vector_type\u2019 {aka \u2018__m256i\u2019} [-Wignored-attributes]\n   69 |     using packet_type = Packet<vector_traits<vector_type>::size, scalar_type>;\n      |                                                         ^\n/tmp/sprintz-offline-ya1hjsu4/root/ReWrite/sprintz-family/vendor/core/traits.hpp:76:57: warning: ignoring attributes on template argument \u2018scalar_traits<int>::vector_type\u2019 {aka \u2018__m256i\u2019} [-Wignored-attributes]\n   76 |     using packet_type = Packet<vector_traits<vector_type>::size, scalar_type>;\n      |                                                         ^\n/tmp/sprintz-offline-ya1hjsu4/root/ReWrite/sprintz-family/vendor/core/traits.hpp:83:57: warning: ignoring attributes on template argument \u2018scalar_traits<unsigned int>::vector_type\u2019 {aka \u2018__m256i\u2019} [-Wignored-attributes]\n   83 |     using packet_type = Packet<vector_traits<vector_type>::size, scalar_type>;\n      |                                                         ^\n"
+      },
+      {
+        "command": [
+          "ctest",
+          "--test-dir",
+          "/tmp/sprintz-offline-ya1hjsu4/root/ReWrite/sprintz-family/build",
+          "--output-on-failure"
+        ],
+        "exit": 0,
+        "stdout": "Internal ctest changing into directory: /tmp/sprintz-offline-ya1hjsu4/root/ReWrite/sprintz-family/build\nTest project /tmp/sprintz-offline-ya1hjsu4/root/ReWrite/sprintz-family/build\n    Start 1: negative\n1/2 Test #1: negative .........................   Passed    0.21 sec\n    Start 2: api\n2/2 Test #2: api ..............................   Passed    0.45 sec\n\n100% tests passed, 0 tests failed out of 2\n\nTotal Test time (real) =   0.66 sec\n",
+        "stderr": ""
+      },
+      {
+        "command": [
+          "cmake",
+          "-S",
+          "/tmp/sprintz-offline-ya1hjsu4/root/ReWrite/sprintz-family",
+          "-B",
+          "/tmp/sprintz-offline-ya1hjsu4/root/ReWrite/sprintz-family/build-baseline",
+          "-DSZ_CORE=/tmp/sprintz-offline-ya1hjsu4/root/Source/sprintz-family/upstream/core",
+          "-DCMAKE_BUILD_TYPE=Release"
+        ],
+        "exit": 0,
+        "stdout": "-- The C compiler identification is GNU 11.4.0\n-- The CXX compiler identification is GNU 11.4.0\n-- Detecting C compiler ABI info\n-- Detecting C compiler ABI info - done\n-- Check for working C compiler: /usr/bin/cc - skipped\n-- Detecting C compile features\n-- Detecting C compile features - done\n-- Detecting CXX compiler ABI info\n-- Detecting CXX compiler ABI info - done\n-- Check for working CXX compiler: /usr/bin/c++ - skipped\n-- Detecting CXX compile features\n-- Detecting CXX compile features - done\n-- Configuring done\n-- Generating done\n-- Build files have been written to: /tmp/sprintz-offline-ya1hjsu4/root/ReWrite/sprintz-family/build-baseline\n",
+        "stderr": ""
+      },
+      {
+        "command": [
+          "cmake",
+          "--build",
+          "/tmp/sprintz-offline-ya1hjsu4/root/ReWrite/sprintz-family/build-baseline",
+          "--target",
+          "sprintz_oracle",
+          "-j4"
+        ],
+        "exit": 0,
+        "stdout": "[  4%] Building CXX object CMakeFiles/sz_native.dir/tmp/sprintz-offline-ya1hjsu4/root/Source/sprintz-family/upstream/core/format.cpp.o\n[  9%] Building CXX object CMakeFiles/sz_native.dir/tmp/sprintz-offline-ya1hjsu4/root/Source/sprintz-family/upstream/core/sprintz_delta.cpp.o\n[ 14%] Building CXX object CMakeFiles/sz_native.dir/tmp/sprintz-offline-ya1hjsu4/root/Source/sprintz-family/upstream/core/sprintz.cpp.o\n[ 19%] Building C object CMakeFiles/sz_huff.dir/vendor/huff0/lib/common/entropy_common.c.o\n[ 23%] Building C object CMakeFiles/sz_huff.dir/vendor/huff0/lib/common/fse_decompress.c.o\n[ 28%] Building C object CMakeFiles/sz_huff.dir/vendor/huff0/lib/common/error_private.c.o\n[ 33%] Building C object CMakeFiles/sz_huff.dir/vendor/huff0/lib/compress/huf_compress.c.o\n[ 38%] Building CXX object CMakeFiles/sz_native.dir/tmp/sprintz-offline-ya1hjsu4/root/Source/sprintz-family/upstream/core/sprintz_delta_rle.cpp.o\n[ 42%] Building C object CMakeFiles/sz_huff.dir/vendor/huff0/lib/compress/fse_compress.c.o\n[ 47%] Building C object CMakeFiles/sz_huff.dir/vendor/huff0/lib/compress/hist.c.o\n[ 52%] Building C object CMakeFiles/sz_huff.dir/vendor/huff0/lib/decompress/huf_decompress.c.o\n[ 57%] Building CXX object CMakeFiles/sz_native.dir/tmp/sprintz-offline-ya1hjsu4/root/Source/sprintz-family/upstream/core/sprintz_delta_lowdim.cpp.o\n[ 61%] Building CXX object CMakeFiles/sz_native.dir/tmp/sprintz-offline-ya1hjsu4/root/Source/sprintz-family/upstream/core/sprintz_xff.cpp.o\n[ 66%] Building CXX object CMakeFiles/sz_native.dir/tmp/sprintz-offline-ya1hjsu4/root/Source/sprintz-family/upstream/core/sprintz_xff_rle.cpp.o\n[ 66%] Built target sz_huff\n[ 71%] Building CXX object CMakeFiles/sz_native.dir/tmp/sprintz-offline-ya1hjsu4/root/Source/sprintz-family/upstream/core/sprintz_xff_lowdim.cpp.o\n[ 76%] Building CXX object CMakeFiles/sz_native.dir/tmp/sprintz-offline-ya1hjsu4/root/Source/sprintz-family/upstream/core/delta.cpp.o\n[ 80%] Building CXX object CMakeFiles/sz_native.dir/tmp/sprintz-offline-ya1hjsu4/root/Source/sprintz-family/upstream/core/predict.cpp.o\n[ 85%] Building CXX object CMakeFiles/sz_native.dir/tmp/sprintz-offline-ya1hjsu4/root/Source/sprintz-family/upstream/core/univariate_8b.cpp.o\n[ 85%] Built target sz_native\n[ 90%] Building CXX object CMakeFiles/sprintz_oracle.dir/tools/native_cli.cpp.o\n[ 95%] Building CXX object CMakeFiles/sprintz_oracle.dir/tools/source_huff.cpp.o\n[100%] Linking CXX executable sprintz_oracle\n[100%] Built target sprintz_oracle\n",
+        "stderr": "t}\n      |                                             %ld\nIn file included from /tmp/sprintz-offline-ya1hjsu4/root/Source/sprintz-family/upstream/core/query.hpp:17,\n                 from /tmp/sprintz-offline-ya1hjsu4/root/Source/sprintz-family/upstream/core/sprintz_delta.h:15,\n                 from /tmp/sprintz-offline-ya1hjsu4/root/ReWrite/sprintz-family/tools/native_bridge.hpp:3,\n                 from /tmp/sprintz-offline-ya1hjsu4/root/ReWrite/sprintz-family/tools/native_cli.cpp:1:\n/tmp/sprintz-offline-ya1hjsu4/root/Source/sprintz-family/upstream/core/traits.hpp:37:40: warning: ignoring attributes on template argument \u2018__m256i\u2019 [-Wignored-attributes]\n   37 | template<> struct vector_traits<__m256i> {\n      |                                        ^\n/tmp/sprintz-offline-ya1hjsu4/root/Source/sprintz-family/upstream/core/traits.hpp:48:57: warning: ignoring attributes on template argument \u2018scalar_traits<signed char>::vector_type\u2019 {aka \u2018__m256i\u2019} [-Wignored-attributes]\n   48 |     using packet_type = Packet<vector_traits<vector_type>::size, scalar_type>;\n      |                                                         ^\n/tmp/sprintz-offline-ya1hjsu4/root/Source/sprintz-family/upstream/core/traits.hpp:55:57: warning: ignoring attributes on template argument \u2018scalar_traits<unsigned char>::vector_type\u2019 {aka \u2018__m256i\u2019} [-Wignored-attributes]\n   55 |     using packet_type = Packet<vector_traits<vector_type>::size, scalar_type>;\n      |                                                         ^\n/tmp/sprintz-offline-ya1hjsu4/root/Source/sprintz-family/upstream/core/traits.hpp:62:57: warning: ignoring attributes on template argument \u2018scalar_traits<short int>::vector_type\u2019 {aka \u2018__m256i\u2019} [-Wignored-attributes]\n   62 |     using packet_type = Packet<vector_traits<vector_type>::size, scalar_type>;\n      |                                                         ^\n/tmp/sprintz-offline-ya1hjsu4/root/Source/sprintz-family/upstream/core/traits.hpp:69:57: warning: ignoring attributes on template argument \u2018scalar_traits<short unsigned int>::vector_type\u2019 {aka \u2018__m256i\u2019} [-Wignored-attributes]\n   69 |     using packet_type = Packet<vector_traits<vector_type>::size, scalar_type>;\n      |                                                         ^\n/tmp/sprintz-offline-ya1hjsu4/root/Source/sprintz-family/upstream/core/traits.hpp:76:57: warning: ignoring attributes on template argument \u2018scalar_traits<int>::vector_type\u2019 {aka \u2018__m256i\u2019} [-Wignored-attributes]\n   76 |     using packet_type = Packet<vector_traits<vector_type>::size, scalar_type>;\n      |                                                         ^\n/tmp/sprintz-offline-ya1hjsu4/root/Source/sprintz-family/upstream/core/traits.hpp:83:57: warning: ignoring attributes on template argument \u2018scalar_traits<unsigned int>::vector_type\u2019 {aka \u2018__m256i\u2019} [-Wignored-attributes]\n   83 |     using packet_type = Packet<vector_traits<vector_type>::size, scalar_type>;\n      |                                                         ^\n"
+      },
+      {
+        "command": [
+          "/home/fzg/anaconda3/bin/python3",
+          "/tmp/sprintz-offline-ya1hjsu4/root/ReWrite/sprintz-family/tools/verify.py",
+          "--frozen-data"
+        ],
+        "exit": 0,
+        "stdout": "{\"cases\": 774, \"source_16b_truncations\": 52, \"real_cases\": 12, \"status\": \"PASS\"}\n",
+        "stderr": ""
+      },
+      {
+        "command": [
+          "/home/fzg/anaconda3/bin/python3",
+          "/tmp/sprintz-offline-ya1hjsu4/root/ReWrite/sprintz-family/tools/replay_frozen.py"
+        ],
+        "exit": 0,
+        "stdout": "{\"golden_cold_decode\": 30, \"canonical_frozen\": 72, \"status\": \"PASS\"}\n",
+        "stderr": ""
+      },
+      {
+        "command": [
+          "/home/fzg/anaconda3/bin/python3",
+          "/tmp/sprintz-offline-ya1hjsu4/root/ReWrite/sprintz-family/tools/install_consumer.py"
+        ],
+        "exit": 0,
+        "stdout": "install C11 consumers PASS 2\n",
+        "stderr": ""
+      }
+    ]
+  },
+  "runner": [
+    {
+      "command": [
+        "/home/fzg/anaconda3/bin/python3",
+        "/tmp/sprintz-package-audit-vli25y4a/ReWrite/sprintz-family/tools/offline_replay.py",
+        "--report",
+        "package-offline-replay.json"
+      ],
+      "exit": 0,
+      "stdout": "offline clean build, patch replay, differential, frozen datasets and consumers PASS\n",
+      "stderr": ""
+    }
+  ]
+}

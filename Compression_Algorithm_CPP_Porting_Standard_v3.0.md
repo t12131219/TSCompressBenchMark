@@ -320,13 +320,13 @@ FAIL
 
 ## Gate G2：Algorithm Contract 与 Oracle 冻结
 
-必须冻结输入类型、布局、参数、数学公式、边界条件、状态、bitstream、error bound、输出条件、CompatibilityTarget，并建立可执行 golden/differential/cross-decode oracle。还必须完成 `NATIVE_CAPABILITY_MATRIX.yaml` 的四态分类及逐项测试计划，并从项目 `datasets/` 中选择与算法输入域兼容的数据，形成 `DATASET_TEST_PLAN.yaml`；若当前没有兼容数据，必须记录证据并补充合法测试数据或提交 WAIVER。
+必须冻结输入类型、布局、参数、数学公式、边界条件、状态、bitstream、error bound、输出条件、CompatibilityTarget，并建立可执行 golden/differential/cross-decode oracle。还必须完成 `NATIVE_CAPABILITY_MATRIX.yaml` 的四态分类及逐项测试计划，并从项目 `datasets/` 或共享 `Dataset_Verify` 中选择与算法输入域兼容的数据，形成 `DATASET_TEST_PLAN.yaml`；若两处均没有兼容数据，必须记录证据并补充合法测试数据或提交 WAIVER。
 
 **G2 未通过，不允许编写 canonical C/C++。**
 
 ## Gate G3：Canonical Scalar Correctness
 
-要求 scalar C/C++、golden、differential、无损 round-trip 或有损误差合同、sanitizer、边界和 malformed-input 测试全部通过。原始实现与重写实现还必须在 `DATASET_TEST_PLAN.yaml` 选定的相同真实数据、相同预处理结果和相同参数上完成 dataset differential validation。
+要求 scalar C/C++、golden、differential、无损 round-trip 或有损误差合同、sanitizer、边界和 malformed-input 测试全部通过。原始实现与重写实现还必须在 `DATASET_TEST_PLAN.yaml` 选定的相同数据 case、相同预处理结果和相同参数上完成 dataset differential validation。
 
 ## Gate G4：独立 API 与资格测试
 
@@ -554,7 +554,9 @@ standalone_validation:
   preprocessing_included:
   execution_scopes: [CORE, PIPELINE, E2E]
   dataset_suite:
-    source_root: datasets/
+    source_roots: [] # e.g. datasets/ and ~/PycharmProjects/Compression_Rewrite/Dataset_Verify
+    dataset_index_path:
+    dataset_index_sha256:
     plan_sha256:
     selected_dataset_ids: []
     canonical_input_hashes: []
@@ -2910,13 +2912,15 @@ waiver identity, approval and expiration
 
 preflight 失败的任务只能产生资格诊断，不得声明 `REWRITE_DONE`。任何声明的 safe overread 必须有固定上限、可访问 padding 和 canary/guard-page 证据；不得把越界读取包装成“优化需要”。
 
-## 38.2 基于 `datasets/` 的原实现与重写实现对照验证
+## 38.2 基于兼容数据集的原实现与重写实现对照验证
 
-真实数据集验证是判断重写是否完善的强制证据之一，其目的首先是发现 toy vector 难以覆盖的分布、状态、边界、异常值和长序列问题，不是进行 TSDataCompressBenchMark 接入或正式排名。
+兼容数据集验证是判断重写是否完善的强制证据之一，其目的首先是发现 toy vector 难以覆盖的类型、分布、状态、边界、异常值和长序列问题，不是进行 TSDataCompressBenchMark 接入或正式排名。共享 `Dataset_Verify` 属于有索引的合成验证语料；当算法的合同还涉及自然数据分布时，应另选自然语料验证相应适用性。
+
+除项目自己的 `datasets/` 外，重写任务**可以并应优先考虑**使用共享语料 `~/PycharmProjects/Compression_Rewrite/Dataset_Verify`。该语料按 `index.json` 登记为 `tscb-canonical-v1`，当前包含 1,409 个样本，覆盖有/无 timestamp、单/多变量、`int8/16/32/64`、`uint8/16/32/64`、`float32/64`、mixed dtype、特殊浮点位模式、时间戳异常、通道数和长度边界等。它适合做 dtype/shape/源域/边界和恢复验证；其合成数据**不替代**真实自然语料上的分布适用性验证、训练/拟合数据或性能排名。执行时应重新读取索引、验证所选文件及 buffer hash，并在计划中记录解析后的根目录、索引 hash 和所选 `dataset_id`；不得硬编码依赖本机用户名的绝对路径。
 
 ### 数据集兼容性要求（TEST-008）
 
-只要项目 `datasets/` 中存在符合算法输入 dtype、维度、取值域、缺失值政策和 timestamp/value 关系的数据，每个重写任务必须选择适合的数据集，同时运行：
+只要项目 `datasets/` 或共享 `Dataset_Verify` 中存在符合算法输入 dtype、维度、取值域、缺失值政策和 timestamp/value 关系的数据，每个重写任务必须从兼容数据源选择适合的 case，同时运行：
 
 ```text
 冻结的原始实现 / reference oracle
@@ -2924,7 +2928,7 @@ preflight 失败的任务只能产生资格诊断，不得声明 `REWRITE_DONE`�
 适用时的 optimized C/C++ 实现
 ```
 
-当前候选数据池包括但不限于：
+项目自然数据候选示例包括但不限于：
 
 | 数据类型/形态 | 可选文件示例 | 典型用途 |
 |---|---|---|
@@ -2934,7 +2938,9 @@ preflight 失败的任务只能产生资格诊断，不得声明 `REWRITE_DONE`�
 | 整数 Sprintz NPZ | `sprintz_u8_uts.npz`、`sprintz_i16_mts.npz` | `uint8` 单变量和 `int16` 多变量整数 codec |
 | UCR 2018 单变量分类时序 | `UCRArchive_2018/<Dataset>/<Dataset>_TRAIN.tsv`、`*_TEST.tsv` | 大量不同长度和分布的独立浮点序列、逐序列 reset/finalize、长短 block 覆盖 |
 
-文件名只是当前快照示例。实际执行必须重新发现 `datasets/` 内容并按 hash 锁定，不得依赖文件名推断 dtype、shape 或语义。
+共享 `Dataset_Verify` 的选择应根据 `index.json` 中的 dtype、shape、tracks、source-domain 及分组元数据筛选；其典型目录包括 `data/with_timestamp_{univariate,multivariate}/`、`data/without_timestamp_{univariate,multivariate}/`、`data/boundary_n2/` 和 `data/special/`。应使用规范 reader 解析容器及具名 buffer，不能把无扩展名容器直接当裸数组读取。索引和文件名仅用于发现候选；实际执行仍须验证并锁定文件 hash、dtype、shape 和语义。项目自然数据也必须在运行时重新发现并按 hash 锁定。
+
+`Dataset_Verify/verification.json` 的 PASS 只证明该目录整理后的结构完整性和 hash 校验，不代表任何特定算法已通过编解码验证；每个重写仍须执行本节定义的 source-vs-rewrite 流程并生成自己的报告。
 
 ### 38.2.1 UCRArchive 2018 专项规则
 
@@ -2976,10 +2982,10 @@ canonical_case_hashes: []
 
 ### 38.2.2 数据选择规则
 
-- 至少选择 1 个兼容真实数据集；存在多个明显不同分布或 shape 时 SHOULD 选择不少于 3 个；
+- 至少选择 1 个兼容数据集 case；可以从共享 `Dataset_Verify` 选择，并按算法声明的 dtype、shape、维度和语义覆盖主要输入模式。存在多个明显不同分布或 shape 时 SHOULD 选择不少于 3 个；算法合同涉及自然数据分布、训练/拟合或泛化时，还必须选择相应自然语料；
 - 数据集必须覆盖算法声明的主要输入模式，例如单变量/多变量、整数/浮点、timestamp/value pairing、短块/长块；
 - 不得为了“让测试通过”而把不兼容数据任意 cast、截断、排序、去 NaN 或归一化；必要转换必须属于公开、可复现的测试输入合同；
-- 真实数据不能替代 N=0/1/2、B-1/B/B+1、极值、NaN/Inf、重复值和 malformed stream 等合成边界测试；两类测试都必须保留；
+- 数据集 case 不能替代 N=0/1/2、B-1/B/B+1、极值、NaN/Inf、重复值和 malformed stream 等合成边界测试；两类测试都必须保留；
 - P0 primitive 必须在其合法输入域测试；若它只能在完整 pipeline 中产生合法输入，应从 reference pipeline 捕获该阶段数据并记录 provenance；
 - learned/model codec 必须严格分离训练、验证和测试区间；用于正确性判定的数据不得泄漏到训练、字典构建或调参阶段，除非 Algorithm Contract 明确允许 online adaptation。
 
@@ -3578,7 +3584,7 @@ canonical input SHA-256
 config SHA-256
 ```
 
-同一 case 的原始实现、canonical C/C++ 和 optimized C/C++ 必须使用完全相同的 canonical input 和配置。`datasets/` 原始文件按只读资产处理，不得就地清洗或覆盖；派生输入必须可由 plan 中记录的命令重新生成。
+同一 case 的原始实现、canonical C/C++ 和 optimized C/C++ 必须使用完全相同的 canonical input 和配置。项目 `datasets/` 与共享 `Dataset_Verify` 的源文件均按只读资产处理，不得就地清洗或覆盖；派生输入必须可由 plan 中记录的命令重新生成。
 
 对 UCRArchive 2018，统计和性能汇总必须先保留 subdataset、TRAIN/TEST partition 和 row case 三层身份。不得把分类标签字节计入 value payload，不得在未声明 framing 的情况下跨行继承 codec state，也不得把 adjusted variant 与顶层原始 variant 合并统计。
 
@@ -4075,7 +4081,7 @@ decoder 必须测试 malformed input 和资源边界。
 G6 发布和 `REWRITE_DONE` 前必须通过独立 Qualification Preflight。
 
 ### TEST-008
-存在兼容数据时，必须用 `datasets/` 的相同 canonical input 和配置运行原始实现、canonical C/C++ 与适用的 optimized C/C++，并满足第 38.2 节的完善性条件。
+存在兼容数据时，必须用项目 `datasets/` 或共享 `Dataset_Verify` 中相同的 canonical input 和配置运行原始实现、canonical C/C++ 与适用的 optimized C/C++，并满足第 38.2 节的完善性条件。
 
 ### BENCH-001
 压缩指标必须从 `FinalBits` 派生，不得只统计 payload 或 bytes_written 的子集。
@@ -4677,7 +4683,7 @@ variant = avx2
 ## Dataset 对照验证
 
 - [ ] 已生成 `DATASET_TEST_PLAN.yaml`
-- [ ] 从 `datasets/` 选择了 dtype、shape、维度和语义兼容的数据
+- [ ] 从项目 `datasets/` 或共享 `Dataset_Verify` 选择了 dtype、shape、维度和语义兼容的数据
 - [ ] dataset 文件、选择范围、预处理、config 和 canonical input hash 已固定
 - [ ] 原始实现与 canonical C/C++ 使用相同输入和参数
 - [ ] optimized C/C++ 在适用时使用相同输入重新验证

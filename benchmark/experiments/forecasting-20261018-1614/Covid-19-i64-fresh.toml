@@ -1,0 +1,53 @@
+# Frozen by generate_all_core_experiments.py; no result-dependent tuning.
+schema = "tsbench.experiment/1"
+name = "Covid-19-i64-fresh"
+output = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/runs/forecasting-20261018-1614/Covid-19-i64-fresh"
+
+[[datasets]]
+id = "Covid-19-i64"
+path = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261018-1614/typed/Covid-19-i64.npy"
+format = "npy"
+component = "V"
+order = "C"
+source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/Covid-19.csv"
+schema = { forecasting_source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/Covid-19.csv", forecasting_source_sha256 = "9867153e4ab0643993ef015c420be614a2bd9039b7e33300a87bb7853dada6c2", forecasting_family = "Covid-19", all_source_rows_and_value_columns = true }
+
+[[methods]]
+id = "leats-lossless-i64"
+codec = "leats-lossless-i64"
+
+[[methods]]
+id = "neats-lossless-i64"
+codec = "neats-lossless-i64"
+
+[[profiles]]
+id = "cpu-single"
+device = "cpu"
+native_threads = 1
+object_workers = 1
+memory_limit_mb = 8192
+runtime_preload = ["/usr/lib/x86_64-linux-gnu/libstdc++.so.6"]
+
+[task]
+kind = "values"
+fidelity = "bitwise"
+boundary = "native_core"
+lifecycle = "fresh_request"
+cache_policy = "natural"
+
+[execution]
+sessions = 2
+rounds = 7
+warmup_objects = 0
+native_loops = 1
+native_warmup_loops = 1
+native_batch_memory_mb = 2048
+timeout_s = 1800
+qualification_cache = true
+save_artifacts = false
+max_pending_workers = 8
+seed = 20261018
+
+[analysis]
+summary = "median_iqr"
+inference = "none"

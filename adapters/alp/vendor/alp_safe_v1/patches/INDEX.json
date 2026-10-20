@@ -1,0 +1,21 @@
+{
+  "route": "NATIVE_PORT",
+  "variant": "safe-v1",
+  "patch": "safe-v1.patch",
+  "sha256": "b56934f279c8cf8e45b6fb4c9765c76ed7e94be6320f6bfaf209f22170d9a79c",
+  "files": {
+    "include/alp/encoder.hpp": {
+      "pre": "538329ab268a89a51627da12513a2d224851f22a267bd3221d03ae35d7a8e4d9",
+      "post": "152c5eff98334f38aeaed9ec73e847496be81d85803e7d70bf8b44cdd50ea1f5"
+    },
+    "include/alp/decoder.hpp": {
+      "pre": "10e06a92d5512d45bcbba487f4e4206d749b1ae93de2ffbb30108777a3f084e2",
+      "post": "c4617f50894c11e2646385b14d6abe9e48e7bba20653ae53f95457240ac7745a"
+    }
+  },
+  "classification": [
+    "safety: checked rounded casts on former UB paths",
+    "safety: exclude missing float FACT[10] candidate",
+    "numeric: defined modulo product consistent with generated FALP; source defined domain unchanged"
+  ]
+}

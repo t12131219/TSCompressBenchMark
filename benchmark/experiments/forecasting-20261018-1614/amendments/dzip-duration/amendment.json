@@ -1,0 +1,32 @@
+{
+  "time": "2026-10-18T18:09:45.572193+08:00",
+  "reason": "Exact admission showed about 48 s encode and 48 s decode per full 10898-symbol object. Reduce DZip inner batching only (8+2 to 1+1), before any formal DZip terminal result, to avoid redundant hours. Retain all rows, columns, 2 sessions x 7 rounds, both lifecycles and CPU profile. Original records remain at original paths.",
+  "native_loops": 1,
+  "native_warmup_loops": 1,
+  "evidence": [
+    {
+      "original_run": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/runs/forecasting-20261018-1614/small-symbols-dzip-prepared",
+      "original_config": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261018-1614/small-symbols-dzip-prepared.toml",
+      "formal_terminal_rows": 0,
+      "exact_qualification": [
+        {
+          "case_id": "kdd_cup_2018_dataset_without_missing_values_3-u8/dzip/cpu-dzip-three",
+          "encode_ns": 48101170036.125,
+          "decode_ns": 47608499800.125,
+          "loops": 8,
+          "status": "ok"
+        },
+        {
+          "case_id": "vehicle_trips_dataset_without_missing_values_254-u8/dzip/cpu-dzip-three",
+          "encode_ns": 43365163.625,
+          "decode_ns": 40185129.0,
+          "loops": 8,
+          "status": "ok"
+        }
+      ],
+      "replacement_run": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/runs/forecasting-20261018-1614/small-symbols-dzip-1loop-prepared",
+      "replacement_config": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261018-1614/small-symbols-dzip-1loop-prepared.toml"
+    }
+  ],
+  "process_check": "Both original TTY jobs stopped. Host process inventory confirmed no remaining tsbench/forecasting/native-driver processes before restart."
+}

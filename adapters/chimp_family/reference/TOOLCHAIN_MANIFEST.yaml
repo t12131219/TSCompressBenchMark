@@ -1,0 +1,19 @@
+{
+  "java": "/usr/lib/jvm/java-21-openjdk-amd64/bin/java",
+  "javac": "/usr/lib/jvm/java-21-openjdk-amd64/bin/javac",
+  "java_sha256": "831a06e155bd62ea0873fafcbeb3db841369d0beae0c77b714411eb3c361278c",
+  "javac_sha256": "55e9f17e0f8a959fac7e55a1e4126bc7f15869e3081b1144546bb0779d9a3167",
+  "version": "OpenJDK21.0.12+8-1-22.04-Ubuntu",
+  "backend": "HotSpot x86_64",
+  "acquisition": "Ubuntu package system installed JDK, not downloaded in this task",
+  "dependencies": "Java standard library only for frozen fixed-width oracle; no Maven or third-party binaries",
+  "build": "javac -d classes <all oracle-src Java files>",
+  "run": "java -Xmx512m -cp classes Oracle",
+  "patch": "PATCHES/fixed-width-oracle.patch",
+  "patch_sha256": "4b75f7650c06db351904d1d48dda569e0aec70db2c10fc384e4d618d4dc43692",
+  "infrastructure_sources": [
+    "oracle-src/gr/aueb/delorean/chimp/OracleSupport.java",
+    "oracle-src/Oracle.java"
+  ],
+  "system_runtime_note": "JDK runtime is an explicit host prerequisite; recorded binary/module hashes, not an embedded hermetic JVM"
+}

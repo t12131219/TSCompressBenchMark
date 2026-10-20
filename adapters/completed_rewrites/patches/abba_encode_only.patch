@@ -1,0 +1,59 @@
+--- a/src/canonical/abba.cpp
++++ b/src/canonical/abba.cpp
+@@ -855,6 +855,56 @@
+   return output;
+ }
+ 
++// Direct benchmark entry: preserve segmentation, digitization and the entire
++// native frame; do not materialize unused decoder pieces or reconstruction.
++std::vector<std::uint8_t> encode_only(const double* values, const std::size_t count,
++                                 const Config& config,
++                                 Accounting* accounting) {
++  if (count > static_cast<std::size_t>(std::numeric_limits<std::uint32_t>::max()) +
++                  1ULL) {
++    throw std::invalid_argument("ABBA input is too large for container v1");
++  }
++  const std::vector<Piece> pieces = compress(values, count, config);
++  const Digitized digitized = digitize(pieces, count, config);
++  const std::size_t symbol_count = digitized.symbols.size();
++  const std::size_t center_count = digitized.centers.size();
++  const std::size_t total_size =
++      kHeaderBytes + center_count * 16U + symbol_count * 2U + kChecksumBytes;
++  std::vector<std::uint8_t> output;
++  output.reserve(total_size);
++  output.push_back(static_cast<std::uint8_t>('A'));
++  output.push_back(static_cast<std::uint8_t>('B'));
++  output.push_back(static_cast<std::uint8_t>('B'));
++  output.push_back(static_cast<std::uint8_t>('A'));
++  append_le<std::uint16_t>(output, kVersion);
++  append_le<std::uint16_t>(output, kProfileFlags);
++  append_le<std::uint64_t>(output, static_cast<std::uint64_t>(count));
++  append_le<std::uint32_t>(output, static_cast<std::uint32_t>(symbol_count));
++  append_le<std::uint32_t>(output, static_cast<std::uint32_t>(center_count));
++  append_le<std::uint64_t>(output, double_bits(config.compression_tolerance));
++  append_le<std::uint64_t>(output, double_bits(config.digitization_tolerance));
++  append_le<std::uint64_t>(output, config.max_len);
++  append_le<std::uint32_t>(output, config.min_k);
++  append_le<std::uint32_t>(output, config.max_k);
++  append_le<std::uint64_t>(output, double_bits(values[0]));
++  for (const Center& center : digitized.centers) {
++    append_le<std::uint64_t>(output, double_bits(center.length));
++    append_le<std::uint64_t>(output, double_bits(center.increment));
++  }
++  for (const std::uint16_t symbol : digitized.symbols) {
++    append_le<std::uint16_t>(output, symbol);
++  }
++  append_le<std::uint32_t>(output, crc32(output.data(), output.size()));
++  if (output.size() != total_size) {
++    throw std::logic_error("ABBA container size mismatch after encoding");
++  }
++  const Accounting result = make_accounting(center_count, symbol_count, total_size);
++  if (accounting != nullptr) {
++    *accounting = result;
++  }
++  return output;
++}
++
+ std::vector<double> decode(const std::uint8_t* encoded, const std::size_t size,
+                            Accounting* accounting) {
+   const ParsedContainer parsed = parse_container(encoded, size);

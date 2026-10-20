@@ -17,7 +17,7 @@ def native(key):
     return create_bridge(ROOT, key), Registry(ROOT).resolve_params(key)
 
 
-@pytest.mark.parametrize("key", ["zstd-frame", "lzss-raw"])
+@pytest.mark.parametrize("key", ["zstd-frame", "snappy-raw"])
 @pytest.mark.parametrize("length", [0, 1, 257, 1024])
 def test_native_finished_frame_and_exact_tail(key, length):
     bridge, params = native(key)
@@ -58,7 +58,7 @@ def test_compiled_c_reference_matches_bridge_payload_and_abi(tmp_path):
     import shutil
     if not shutil.which("cc"):
         pytest.skip("C compiler unavailable")
-    for key in ("zstd-frame", "lzss-raw"):
+    for key in ("zstd-frame", "snappy-raw"):
         native(key)
     spec = importlib.util.spec_from_file_location("native_crosscheck", ROOT / "benchmark/tools/native_crosscheck.py")
     module = importlib.util.module_from_spec(spec)

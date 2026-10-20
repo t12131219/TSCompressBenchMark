@@ -194,8 +194,8 @@ template <typename T> void write_raw_record(Writer& writer, const T* values, uin
 }
 
 template <typename T> bool encode_typed(const InputView& input, Writer& writer,
-                                        uint64_t& raw_exception_blocks) {
-    writer.raw(kFrameMagic, 4);
+                                        uint64_t& raw_exception_blocks, bool checksum_enabled = true) {
+    writer.raw(checksum_enabled ? kFrameMagic : (TSCB_SERF_XOR ? "SXC1" : "SQC1"), 4);
     writer.integer<uint8_t>(1);
     writer.integer<uint8_t>(sizeof(T));
     writer.integer<uint8_t>(TSCB_SERF_XOR ? 1 : 0);
@@ -299,7 +299,7 @@ template <typename T> bool encode_typed(const InputView& input, Writer& writer,
             writer.raw(encoded.begin(), encoded.length());
         }
     }
-    writer.integer<uint64_t>(checksum(writer.bytes.data(), writer.bytes.size()));
+    if (checksum_enabled) writer.integer<uint64_t>(checksum(writer.bytes.data(), writer.bytes.size()));
     return true;
 }
 
@@ -313,10 +313,11 @@ struct FrameInfo {
     uint64_t record_count{};
 };
 
-bool parse_frame_header(Reader& reader, FrameInfo& frame) {
+bool parse_frame_header(Reader& reader, FrameInfo& frame, bool checksum_enabled = true) {
     std::array<char, 4> magic{};
     uint8_t version{}, scheme{}, reserved{};
-    return reader.raw(magic.data(), magic.size()) && !std::memcmp(magic.data(), kFrameMagic, 4) &&
+    const char* expected_magic = checksum_enabled ? kFrameMagic : (TSCB_SERF_XOR ? "SXC1" : "SQC1");
+    return reader.raw(magic.data(), magic.size()) && !std::memcmp(magic.data(), expected_magic, 4) &&
            reader.integer(version) && reader.integer(frame.width) && reader.integer(scheme) &&
            reader.integer(reserved) && reader.integer(frame.columns) &&
            reader.integer(frame.block_size) && reader.integer(frame.rows) &&
@@ -571,3 +572,5 @@ tscb_status_v1 tscb_get_last_error(tscb_codec_handle_v1* handle,
 }
 
 }  // extern "C"
+
+#include "direct_core.inc"

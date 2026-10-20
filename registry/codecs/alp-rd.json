@@ -2,13 +2,13 @@
   "schema_version": "tscb.codec-manifest.v2",
   "key": "alp-rd",
   "identity": {
-    "display_name": "ALP-RD (forced left-dictionary/right-part scheme)",
+    "display_name": "ALP-RD (safe-v1 forced RD)",
     "family": "ALP_RD",
     "citations": [
       "benchmark:cwida/ALP@31ca0ed1:benchmarks/benchmark.cpp",
       "publication:cwida/ALP@31ca0ed1:publication/source_code/bench_speed"
     ],
-    "source_artifact_id": "v2:source-artifact:sha256:278dbf62ed78758b1efa488719f953e3900dbe99e9f7ad30789f025de5f2c074"
+    "source_artifact_id": "v2:source-artifact:sha256:26e61e9379e9be7911d5d2eb10cabcef2b72e40868b055a06326e8c204c2d118"
   },
   "classification": {
     "object_level": "P1_STANDALONE_CODEC",
@@ -58,7 +58,8 @@
       "negative_delta": true,
       "absolute_epoch": true,
       "overflow_policy": "NOT_APPLICABLE_VALUE_ONLY"
-    }
+    },
+    "max_total_elements": 16777216
   },
   "semantics": {
     "loss_modes": [
@@ -68,10 +69,10 @@
     "reconstruction_modes": [
       "EXACT_GRID"
     ],
-    "rebuild_protocol": "TSCB_ALP_RD_CONTAINER_V1",
+    "rebuild_protocol": "TSCB_ALP_SAFE_V1_COLUMNS_APS1",
     "preprocess_class": "NONE",
     "preprocess_stages": [],
-    "decodability_profile": "SELF_CONTAINED_DESCRIPTOR_AND_NATIVE_ALP_FRAME",
+    "decodability_profile": "SELF_CONTAINED_APS1_COLUMNS_OF_ALPRW001",
     "bitstream_separability": "PER_COLUMN"
   },
   "lifecycle": {
@@ -81,7 +82,7 @@
     "finalize": "REQUIRED_ZERO_BYTE_FINALIZE",
     "safe_overread_bytes": 0,
     "tail_policy": "ZERO_PAD_TO_VECTOR_EXCLUDED_BY_LOGICAL_COUNT",
-    "dictionary": "ROWGROUP_LOCAL_LEFT_PART_DICTIONARY",
+    "dictionary": "ROWGROUP_LOCAL_LEFT_PART_DICTIONARY_WHEN_RD",
     "model": "ROWGROUP_SAMPLE",
     "index": "NONE"
   },
@@ -124,9 +125,9 @@
   },
   "adapter": {
     "backend": "C_ABI_V1",
-    "version": "alp-ctypes-v1-port-standard-v30-20261011",
-    "factory": "ALP_CTYPES_V1",
-    "artifact_path": "build/port-standard-v30-20261011/native-builds-v3/alp_rd/release/libtscb_alp_rd.so",
+    "version": "alp-safe-v1-cabi-binding-v2-20261017",
+    "factory": "ALP_SAFE_V1_CTYPES",
+    "artifact_path": "build/tsbench/unbuilt/alp-rd/libtscb_alp_rd.so",
     "timing_boundary": "PYTHON_LAYOUT_FFI_AND_CONTAINER_INCLUDED",
     "native_timing_capability": {
       "optional": true,
@@ -135,18 +136,16 @@
       "excludes": [
         "CONTEXT_LIFECYCLE",
         "PYTHON_LAYOUT_TRANSFORM",
-        "PYTHON_FFI_CONTAINER"
+        "PYTHON_FFI_CONTAINER",
+        "APS1_OUTER_CONTAINER_AND_CALLER_BUFFER_ALLOCATION"
       ]
     },
     "accounting_hooks": [
       "FINAL_STREAM_LENGTH",
-      "COMPLETE_NATIVE_ALP_FRAME",
-      "OUTPUT_CAPACITY",
+      "COMPLETE_ALPRW001_FRAMES",
+      "APS1_COLUMN_DESCRIPTOR_AND_LENGTHS",
+      "NO_RAW_FALLBACK",
       "FORCED_ALP_RD"
-    ],
-    "runtime_profile": {
-      "path": "docs/audits/20261011_port_standard_v30/runtime_profiles_v2/profiles/alp-rd.json",
-      "sha256": "57f2f083741cf1d40b9bd02669494ae2fc663fc183dfcb37c0a36f597ee5f3f8"
-    }
+    ]
   }
 }

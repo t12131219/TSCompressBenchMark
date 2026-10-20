@@ -24,6 +24,11 @@ bool strict_stream(const std::uint8_t* src, std::size_t n,
 void decode(const std::uint8_t* src, std::size_t n, std::uint8_t* dst,
             std::size_t expected) noexcept;
 
+// Direct benchmark decoder: combine token validation and restoration in one
+// pass. No separate whole-stream pre-scan is part of its decode measurement.
+bool decode_checked(const std::uint8_t* src, std::size_t n, std::uint8_t* dst,
+                    std::size_t expected) noexcept;
+
 }  // namespace tscb_lzss_raw
 
 #endif

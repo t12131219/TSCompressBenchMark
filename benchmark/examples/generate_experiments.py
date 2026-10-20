@@ -49,12 +49,15 @@ def generate(dzip_runtime_preload: str | None = None) -> list[Path]:
     cards = []
     for path in sorted((ROOT / "registry/codecs").glob("*.json")):
         card = json.loads(path.read_text())
-        if "key" in card and card.get("identity", {}).get("family") != "HARNESS_ORACLE":
+        if "key" in card and card.get("identity", {}).get("family") != "HARNESS_ORACLE" and card.get("admission", {}).get("status") != "EXCLUDED":
             cards.append(card)
-    if len(cards) != 36:
-        raise ValueError(f"expected the 36 retained real keys, got {len(cards)}")
+    if not cards or len({card["key"] for card in cards}) != len(cards):
+        raise ValueError("registry must contain unique real codec keys")
+    # Gorilla consumes paired timestamps and values. Its dedicated records
+    # experiment preserves that contract; this matrix projects values only.
     lossless = [{"codec": "raw-store"}] + [{"codec": card["key"]} for card in cards
-                                              if card["semantics"]["loss_modes"] == ["LOSSLESS"]]
+                                              if card["semantics"]["loss_modes"] == ["LOSSLESS"]
+                                              and card["key"] != "gorilla-prometheus-xor"]
     definitions = {
         "all_lossless.toml": experiment("all-lossless", ["float64", "float32", "int16", "uint8", "symbols4", "uint32"],
                                         lossless, "bitwise", [("cpu-single", 1), ("cpu-dzip-three", 3)]),

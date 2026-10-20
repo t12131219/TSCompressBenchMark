@@ -1,0 +1,171 @@
+{
+  "status": "RESEARCH_REWRITE_VALIDATED",
+  "standard": "V3.0 SOURCE_REWRITE local research scope",
+  "implementation": "chimp-family-cpp-scalar-v1",
+  "source_revision": "320d397157c7e0696b3c64dc1711fc17a3add3da",
+  "source_compatibility": "Lossless raw BYTE_IDENTICAL/four-way decode; lossy SEMANTIC segments+float outputs, arithmetic NaNs compared semantically",
+  "summary": {
+    "cases": 13481,
+    "pass_cases": 13473,
+    "expected_rejections": 8,
+    "values": 6628856,
+    "fail": 0,
+    "elapsed_seconds": 107.05572557449341,
+    "by_method": {
+      "chimp": {
+        "cases": 656,
+        "pass_cases": 655,
+        "quality_failed_cases": 0,
+        "nonfinite_cases": 0,
+        "source_equivalent": 655
+      },
+      "chimp32": {
+        "cases": 656,
+        "pass_cases": 655,
+        "quality_failed_cases": 0,
+        "nonfinite_cases": 0,
+        "source_equivalent": 655
+      },
+      "chimpn": {
+        "cases": 668,
+        "pass_cases": 667,
+        "quality_failed_cases": 0,
+        "nonfinite_cases": 0,
+        "source_equivalent": 667
+      },
+      "chimp128-no-index": {
+        "cases": 668,
+        "pass_cases": 667,
+        "quality_failed_cases": 0,
+        "nonfinite_cases": 0,
+        "source_equivalent": 667
+      },
+      "chimpn32": {
+        "cases": 668,
+        "pass_cases": 667,
+        "quality_failed_cases": 0,
+        "nonfinite_cases": 0,
+        "source_equivalent": 667
+      },
+      "fpc-chimp": {
+        "cases": 655,
+        "pass_cases": 655,
+        "quality_failed_cases": 0,
+        "nonfinite_cases": 0,
+        "source_equivalent": 655
+      },
+      "pmc-mr": {
+        "cases": 1902,
+        "pass_cases": 1902,
+        "quality_failed_cases": 0,
+        "nonfinite_cases": 0,
+        "source_equivalent": 1902
+      },
+      "swing-filter": {
+        "cases": 1902,
+        "pass_cases": 1899,
+        "quality_failed_cases": 41,
+        "nonfinite_cases": 0,
+        "source_equivalent": 1899
+      },
+      "swing-filter-disjoint": {
+        "cases": 1902,
+        "pass_cases": 1902,
+        "quality_failed_cases": 0,
+        "nonfinite_cases": 0,
+        "source_equivalent": 1902
+      },
+      "swing-filter-disjoint-quantized": {
+        "cases": 1902,
+        "pass_cases": 1902,
+        "quality_failed_cases": 82,
+        "nonfinite_cases": 3,
+        "source_equivalent": 1902
+      },
+      "swing-filter-disjoint-quantized.filter2": {
+        "cases": 1902,
+        "pass_cases": 1902,
+        "quality_failed_cases": 0,
+        "nonfinite_cases": 0,
+        "source_equivalent": 1902
+      }
+    }
+  },
+  "state_values": 362296,
+  "profiles": {
+    "clang": {
+      "status": "PASS",
+      "cases": 13473,
+      "values": 6621353,
+      "fail": 0,
+      "elapsed_seconds": 8.320584774017334,
+      "selection": "all successful baseline cases",
+      "cli_sha256": "c34123d229659199b193882405a99be162ed66a490437c203bc0656368fb8f29",
+      "baseline_sha256": "106d16525d6551961151274f7ade0cccb2d43d6723c0da68f1663acbf86f154a",
+      "command": [
+        "/tmp/chimp-work/clang/chimp_cli",
+        "server"
+      ]
+    },
+    "arm-qualified": {
+      "status": "PASS",
+      "cases": 2196,
+      "values": 994361,
+      "fail": 0,
+      "elapsed_seconds": 2.8256285190582275,
+      "selection": "all synthetic/shared plus all rows first numeric column each natural dataset",
+      "cli_sha256": "a4a017013218e35c1f1ab747015d5b786a89adcb4965942105dc42ed22b4d0b2",
+      "baseline_sha256": "106d16525d6551961151274f7ade0cccb2d43d6723c0da68f1663acbf86f154a",
+      "command": [
+        "/home/fzg/PycharmProjects/Compression_Rewrite/ReWrite/chimp-family/tools/arm64-run",
+        "/tmp/chimp-work/arm/chimp_cli",
+        "server"
+      ]
+    }
+  },
+  "source_quality_failed_cases": 123,
+  "gates": {
+    "G0": "PASS",
+    "G1": "PASS_WITH_USER_LOCAL_RESEARCH_WAIVER where license unknown",
+    "G2": "PASS frozen narrative contract, materialized machine matrix",
+    "G3": "PASS source-compatible semantics; strict quality refusals separately checked",
+    "G4": "PASS owning C++ API/state/OOM/malformed/concurrency",
+    "G5": "N/A no upstream optimized paths",
+    "G6": "External exact-archive clean-build/reproducibility attestation required"
+  },
+  "waiver": "WAIVER.json",
+  "external_release_attestation": "Release/chimp-family-research-20261017.validation.json",
+  "no_formal_rewrite_done": true,
+  "no_benchmark_integration": true,
+  "limits": [
+    "count<=1048576, N power-of-two1..65536",
+    "finite lossy inputs, source timestamp/unit-interval/sample-index semantics",
+    "AArch64 under QEMU; not physical ARM",
+    "JDK/system C++ runtimes explicit prerequisites, not hermetic archive",
+    "strict mode rejects source quality defects, no silent repair"
+  ],
+  "evidence": {
+    "qualified-v2/verification.json": "106d16525d6551961151274f7ade0cccb2d43d6723c0da68f1663acbf86f154a",
+    "qualified-v2/cases.jsonl": "58ca773f90366713ca7e26ad52213bf4456cebdce6435c0e34981088a28cdc1d",
+    "state-qualified/state.json": "e2f5accb5a71cd44b5b5abd2c2da45d8c998037591eac4f3c5713edd73354b7d",
+    "profile-clang/replay.json": "fb599562a5fdd654976b60dccd80dc403e6b88990d2ed1d6bc9016389b7f0d45",
+    "profile-arm-qualified/replay.json": "4b00bbcdb0707cf8c8feaf5d04c17aa37b18a48ac312b730e39632206c4ef5f1",
+    "test-release-final.log": "d8d54db79cff4b9a8f1a5f8c75089daa8f068b2a83ffeded1e3ba7073ded04d3",
+    "test-clang-final.log": "d83b9b8539e6e003bad162e7adaf31459fb52588676237b743daf3ae866a1790",
+    "test-arm-final.log": "4c968d35881e6a9a13f953fc69d187c0a56e44fb42365b5a787406c2d1812158",
+    "test-asan-final.log": "f34241987b5a46e823c005e087b70a1a0ff5b77fc6c6321e6dc304c06df9af8f",
+    "test-tsan-final.log": "ab06159b6a0298ee1797a3a8197a2966058cbfb26353900ef185260fb692cd36",
+    "fuzz-final.log": "19e0c2a10773935785396157213ada8f0a617411cceaa3dd01b3eef21f0104c9",
+    "static-analysis-final.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "BUILD_LOCK.json": "5e14920cfede56311ee581ae2c5bcc51eabb4bd07fe52f97f6b4ea681b77c8ad",
+    "performance.json": "9a2f5b128492389d3a7ad67ff4438492e9566e06292fd6d7b86b7df9a09adf54",
+    "source_quality_failures.json": "f2f714601050f3e12dc12d43488a2537000bec2edab1a161e80ebdd75710044f"
+  },
+  "core_hashes": {
+    "include/chimp_family.hpp": "ace7d8240cf29e579c3b7d48a1d81ddb1066bb2baa2c4a2c5a12ad22cc599e67",
+    "src/canonical/chimp_family.cpp": "522a8a8ea6b8a047f7b1ce9775310938ede3d8ead2b9341ee108d6332d061caa",
+    "contract.md": "b965b53c6ef94a75a305cdf94e6a6a163470116caf4f146ec293ec5749d5811f",
+    "FRAME_FORMAT.md": "a6f488e5273d826bab28fb699f4189286e1549c802fa64e9868b3e3be50df200",
+    "NATIVE_CAPABILITY_MATRIX.yaml": "d07057cd95253e0866a19cf76a761c0de52a1d4aeb385c05f089c23b6b775b09"
+  }
+}

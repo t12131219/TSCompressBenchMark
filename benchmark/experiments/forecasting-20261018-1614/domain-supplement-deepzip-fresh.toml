@@ -1,0 +1,49 @@
+# Frozen by generate_all_core_experiments.py; no result-dependent tuning.
+schema = "tsbench.experiment/1"
+name = "domain-supplement-deepzip-fresh"
+output = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/runs/forecasting-20261018-1614/domain-supplement-deepzip-fresh"
+
+[[datasets]]
+id = "vehicle_trips_dataset_without_missing_values_280-u8"
+format = "npy"
+component = "V"
+path = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261018-1614/typed/vehicle_trips_dataset_without_missing_values_280-u8.npy"
+order = "C"
+source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/vehicle_trips_dataset_without_missing_values_280.csv"
+schema = { forecasting_source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/vehicle_trips_dataset_without_missing_values_280.csv", forecasting_source_sha256 = "2d251214ea73ee03c2c0581fb4fee64bc897edc1f301095d2fffb382a2fd4da3", forecasting_family = "vehicle_trips", all_source_rows_and_value_columns = true, domain_supplement = "lower median by numeric count among all full corpus files exactly within 0..3 symbol domain; selected before formal measurements" }
+
+[[methods]]
+id = "deepzip"
+codec = "deepzip"
+
+[[profiles]]
+id = "cpu-single"
+device = "cpu"
+native_threads = 1
+object_workers = 1
+memory_limit_mb = 8192
+runtime_preload = ["/usr/lib/x86_64-linux-gnu/libstdc++.so.6"]
+
+[task]
+kind = "values"
+fidelity = "bitwise"
+boundary = "native_core"
+lifecycle = "fresh_request"
+cache_policy = "natural"
+
+[execution]
+sessions = 2
+rounds = 7
+warmup_objects = 0
+native_loops = 8
+native_warmup_loops = 2
+native_batch_memory_mb = 256
+timeout_s = 1800
+qualification_cache = true
+save_artifacts = false
+max_pending_workers = 8
+seed = 20261018
+
+[analysis]
+summary = "median_iqr"
+inference = "none"

@@ -1,0 +1,301 @@
+{
+  "schema": "tsbench.final-native-verification/1",
+  "status": "passed_current_native_scope",
+  "scope": "Existing 37 real CPU codecs plus driver raw-store, qualified frozen inputs and profiles, prepared and fresh_request. This file indexes evidence; it is not an additional framework gate.",
+  "source_id": "sha256:9f67a210226e2432d848229b9742fbec0457b89ef905da4073f7ba3dfb830d08",
+  "builds": {
+    "successful_real_cpu_codecs": 37,
+    "status": {
+      "path": "build/verification/all-core/build-status-symbolic-final.json",
+      "bytes": 6112,
+      "sha256": "sha256:c4567b9cfbc46892b6297d5d502c85a39639ea760438bce09f1f07ebd56bd85f"
+    },
+    "log": {
+      "path": "build/verification/all-core/build-final.log",
+      "bytes": 708,
+      "sha256": "sha256:ef4c4051f6ee9f3f402126b275a20067e9535d1206822d5fde10bed8e3628c44"
+    }
+  },
+  "runtime_test_suite": {
+    "tests": 715,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "seconds": 70.907,
+    "junit": {
+      "path": "build/verification/all-core/junit-symbolic-final.xml",
+      "bytes": 101731,
+      "sha256": "sha256:333ad9ec4bafc7117e57ace6923018993c3a3d9c921de122b7c77ad667728629"
+    },
+    "log": {
+      "path": "build/verification/all-core/pytest-symbolic-final.log",
+      "bytes": 958,
+      "sha256": "sha256:938cbcbd320e72856d577a6f605869526a147856ea0cc6ec39512413ee819947"
+    }
+  },
+  "report_display_tests": {
+    "tests": 4,
+    "status": "passed_separately_after_full_suite",
+    "evidence": "docs/development.md#正式结果报告极小数显示与模型身份说明",
+    "source": {
+      "path": "benchmark/tests/test_report_format.py",
+      "bytes": 2257,
+      "sha256": "sha256:48419fb05e4b4f67eac5fc6008abbd39ed2511e29e819e38e1dec54e41d8a9ec"
+    },
+    "note": "The 715-test runtime suite predates these four pure display tests; no full suite or codec measurement was repeated for the display-only change."
+  },
+  "formal_results": {
+    "runs": 28,
+    "keys": 38,
+    "unsupported_cases": 10,
+    "complete_cases": 348,
+    "extra_attempts": 0,
+    "formal_products": 48216,
+    "ok_primary_trials": 4872,
+    "planned_trials": 4872,
+    "qualification_products": 3444,
+    "ready_cases": 348,
+    "requested_cases": 358,
+    "status": {
+      "path": "build/verification/all-core/formal-status.json",
+      "bytes": 16615,
+      "sha256": "sha256:7b36d12522bf3ab8e4540980651549628ad21ecb21b7cb3d52d2fa6383a28cb4"
+    }
+  },
+  "report_audit": {
+    "passed": true,
+    "evidence": {
+      "path": "docs/all_core_evidence.json",
+      "bytes": 7160924,
+      "sha256": "sha256:31cacfca1f2603297d2fe193b1f6a190a2871d7ca8aea332714f6c1b74fd92be"
+    },
+    "log": {
+      "path": "build/verification/all-core/report-audit.log",
+      "bytes": 300,
+      "sha256": "sha256:98681e8560749849a185d4921a8db801a752a8fa21ce729f7e26f8e9f1c6cd8f"
+    },
+    "generated_reports": [
+      {
+        "bytes": 24769,
+        "path": "docs/all_core_results/README.md",
+        "sha256": "sha256:8386e6b4b7dac598245569c1fcd5c886d64faf683538b45158233be78b3942b8"
+      },
+      {
+        "bytes": 2601639,
+        "path": "docs/all_core_results/primary.csv",
+        "sha256": "sha256:e658fa100bf489cc9f7abe1510555a699173bba5f453637fdd1b43041288781b"
+      },
+      {
+        "bytes": 58017,
+        "path": "docs/all_core_results/coverage.md",
+        "sha256": "sha256:0a29dafb89e814881775ce8850ee9d8f381ce956516281da16c69c21e8fa7818"
+      },
+      {
+        "bytes": 3133,
+        "path": "docs/all_core_results/audit.md",
+        "sha256": "sha256:8977a68bd66a49189adbab904e7ca37ccd12a5603f0e6ccecf86014bc95e465e"
+      }
+    ],
+    "scope": "Rechecks stored records, complete compressed products and source/build/runtime hashes. Does not rerun decoders; deleted restored files retain digests and the original per-product validation records."
+  },
+  "diagrams": {
+    "visual_qa": "passed",
+    "files": [
+      {
+        "path": "docs/diagrams/architecture.svg",
+        "bytes": 11999,
+        "sha256": "sha256:065744e8430c1657f48b14ebd4acf403fa15b079fdb79b0b780df8358b31823b"
+      },
+      {
+        "path": "docs/diagrams/architecture.png",
+        "bytes": 366706,
+        "sha256": "sha256:c34ed8b4e879d3e9fd348df2e29982e4c5202d78e0a8069a0af2838c9a988976"
+      },
+      {
+        "path": "docs/diagrams/workflow.svg",
+        "bytes": 13383,
+        "sha256": "sha256:dcd6f6b58e146f509f2c4391e0af8ef5abd64dac9531cf4992569f2361747c08"
+      },
+      {
+        "path": "docs/diagrams/workflow.png",
+        "bytes": 437696,
+        "sha256": "sha256:e1057428703a9da3f5b902fabe4dc4124a2d79177155723786f56e0300d11b18"
+      },
+      {
+        "path": "docs/diagrams/render_diagrams.py",
+        "bytes": 13492,
+        "sha256": "sha256:4fa11a6cce17c7fb36e85d05fadeaeac93bf0d01c829cc0d318ba3ed80c7b6ee"
+      }
+    ]
+  },
+  "historical_diagnosis_section_sha256": "4fbc96a85ffdd57d8d94fda6e1885f8acc81dab6b73a814186927697476a96b1",
+  "documentation_links": {
+    "local_links_checked": 267,
+    "known_missing_historical_targets": [
+      {
+        "document": "docs/implementation.md",
+        "target": "../runs/current-core-20261013/all_lossless_runtime/report/README.md"
+      },
+      {
+        "document": "docs/implementation.md",
+        "target": "../runs/current-core-20261013/timestamps_normalized/report/README.md"
+      },
+      {
+        "document": "docs/implementation.md",
+        "target": "../runs/current-core-20261013/bounded_quality/report/README.md"
+      },
+      {
+        "document": "docs/implementation.md",
+        "target": "../runs/current-core-20261013/empirical_quality/report/README.md"
+      },
+      {
+        "document": "docs/implementation.md",
+        "target": "../runs/current-core-20261013/records_composite/report/README.md"
+      },
+      {
+        "document": "docs/implementation.md",
+        "target": "../runs/current-core-20261013/corpus_pilot/report/README.md"
+      },
+      {
+        "document": "docs/implementation.md",
+        "target": "../runs/current-real-20261013/"
+      },
+      {
+        "document": "docs/implementation.md",
+        "target": "../runs/gpu/cuszp-builder-check-20261013/summary.json"
+      },
+      {
+        "document": "docs/implementation.md",
+        "target": "../runs/all-lossless-explicit-runtime-final-20261013/report/README.md"
+      },
+      {
+        "document": "docs/implementation.md",
+        "target": "../runs/timestamps-integer-affine-final-20261013/report/README.md"
+      },
+      {
+        "document": "docs/implementation.md",
+        "target": "../runs/bounded-quality-final-20261013/report/README.md"
+      },
+      {
+        "document": "docs/implementation.md",
+        "target": "../runs/empirical-quality-final-20261013/report/README.md"
+      },
+      {
+        "document": "docs/implementation.md",
+        "target": "../runs/records-composite-final-20261013/report/README.md"
+      },
+      {
+        "document": "docs/implementation.md",
+        "target": "../runs/three-source-values-pilot-final-20261013/report/README.md"
+      },
+      {
+        "document": "docs/implementation.md",
+        "target": "../runs/all-lossless-explicit-runtime-20261013/manifest.json"
+      },
+      {
+        "document": "docs/implementation.md",
+        "target": "../runs/timestamps-integer-affine-20261013/manifest.json"
+      },
+      {
+        "document": "docs/implementation.md",
+        "target": "../runs/bounded-quality-current-20261013/manifest.json"
+      },
+      {
+        "document": "docs/implementation.md",
+        "target": "../runs/empirical-quality-current-20261013/manifest.json"
+      },
+      {
+        "document": "docs/implementation.md",
+        "target": "../runs/records-composite-current-20261013/manifest.json"
+      },
+      {
+        "document": "docs/implementation.md",
+        "target": "../runs/three-source-values-pilot-current-20261013/manifest.json"
+      },
+      {
+        "document": "docs/implementation.md",
+        "target": "../runs/all-lossless-20261013/report/README.md"
+      },
+      {
+        "document": "docs/implementation.md",
+        "target": "../runs/bounded-quality-20261013/report/README.md"
+      },
+      {
+        "document": "docs/implementation.md",
+        "target": "../runs/empirical-quality-20261013/report/README.md"
+      },
+      {
+        "document": "docs/implementation.md",
+        "target": "../runs/minimal-20261013/report/README.md"
+      },
+      {
+        "document": "docs/implementation.md",
+        "target": "../runs/records-composite-validated-20261013/report/README.md"
+      },
+      {
+        "document": "docs/implementation.md",
+        "target": "../runs/three-source-values-pilot-validated-20261013/report/README.md"
+      },
+      {
+        "document": "docs/implementation.md",
+        "target": "../runs/timestamps-20261013/report/README.md"
+      },
+      {
+        "document": "TimeSeries_Compression_Benchmark_V4.0_工程实施总计划.md",
+        "target": "runs/all-lossless-explicit-runtime-final-20261013/report/README.md"
+      },
+      {
+        "document": "TimeSeries_Compression_Benchmark_V4.0_工程实施总计划.md",
+        "target": "runs/timestamps-integer-affine-final-20261013/report/README.md"
+      },
+      {
+        "document": "TimeSeries_Compression_Benchmark_V4.0_工程实施总计划.md",
+        "target": "runs/bounded-quality-final-20261013/report/README.md"
+      },
+      {
+        "document": "TimeSeries_Compression_Benchmark_V4.0_工程实施总计划.md",
+        "target": "runs/empirical-quality-final-20261013/report/README.md"
+      },
+      {
+        "document": "TimeSeries_Compression_Benchmark_V4.0_工程实施总计划.md",
+        "target": "runs/records-composite-final-20261013/report/README.md"
+      },
+      {
+        "document": "TimeSeries_Compression_Benchmark_V4.0_工程实施总计划.md",
+        "target": "runs/three-source-values-pilot-final-20261013/report/README.md"
+      },
+      {
+        "document": "TimeSeries_Compression_Benchmark_V4.0_工程实施总计划.md",
+        "target": "runs/process-object-pool-final-20261013/README.md"
+      },
+      {
+        "document": "TimeSeries_Compression_Benchmark_V4.0_工程实施总计划.md",
+        "target": "runs/current-core-20261013/"
+      },
+      {
+        "document": "TimeSeries_Compression_Benchmark_V4.0_工程实施总计划.md",
+        "target": "runs/current-real-20261013/"
+      },
+      {
+        "document": "TimeSeries_Compression_Benchmark_V4.0_工程实施总计划.md",
+        "target": "runs/gpu/cuszp-formal-0p01-20261013/"
+      },
+      {
+        "document": "TimeSeries_Compression_Benchmark_V4.0_工程实施总计划.md",
+        "target": "runs/gpu/cuszp-formal-0p1-20261013/"
+      },
+      {
+        "document": "TimeSeries_Compression_Benchmark_V4.0_工程实施总计划.md",
+        "target": "runs/gpu/"
+      }
+    ],
+    "note": "These 39 historical run targets were already absent from this checkout. Current native result links exist. Historical text and raw identities were not rewritten."
+  },
+  "new_version_suffixed_paths": [],
+  "limitations": [
+    "Results apply to recorded inputs, modes, quality constraints, runtime profiles and this machine; not a universal supported-domain or cross-task ranking claim.",
+    "DeepZip uses the bundled fixed fixture model; its training provenance was not established.",
+    "The user-named old private reproduction bundle is absent and was not used.",
+    "Broader corpus, a second physical machine, OS/ISA portability and independent third-party reproduction require their own evidence."
+  ]
+}

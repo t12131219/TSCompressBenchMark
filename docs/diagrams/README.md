@@ -1,163 +1,124 @@
-# TSBench V4.0 框架结构与执行流程
+# TSBench 原生默认架构与执行流程
 
-绘制日期：2026-10-13。依据：[V4.0 工程实施总计划](../../TimeSeries_Compression_Benchmark_V4.0_工程实施总计划.md) §3–§11。CPU object_memory 主路径已实施；外部进程pool、native边界实验及source-cluster统计为独立工具，复用对象／bridge协议而各存执行身份。cuSZp GPU plugin 已完成 host_to_host 与 device_resident formal 路径；图中的 GPU 节点对应真实执行器，具体分母、质量失败和身份见总计划 §14 及 GPU run。stream/query仍为未声称的设计扩展。
+修订日期：2026-10-15。依据[工程实施总计划](../../TimeSeries_Compression_Benchmark_V4.0_工程实施总计划.md)§3–§13及§14.18–§14.20。默认目标为 **`native_core / prepared / natural`**：Python负责数据准备、资格、隔离、调度与记录；C/C++ driver直接调用codec并内部重复计时。**现有37个真实CPU codec加raw-store，共38个key，均已取得prepared与fresh_request的完整直接原生结果。** 28组正式实验共358请求、348 ready、10 unsupported，4872／4872正式批次成功；完整suite为715 passed。统一审计通过的[全量原生结果](../all_core_results/README.md)与[证据索引](../all_core_evidence.json)保存本轮身份。原有API／object、GPU／pool及首阶段六组结果保留各自历史边界。
 
-图中 V / T / mask 分别代表数值、时间戳与有效性标记；wire 是包含恢复描述、payload 和必要依赖的序列化产物。实线表示核心关系或流程，虚线标注可选扩展、独立 profiling 或父进程异常补记；每条虚线的具体含义以标签为准。
+`native_api`测完整C1／RW接口，shim内部扫描、转换和分配都计入，是辅助原生层；不能冒称纯core。`object_memory / independent_object / natural`显式保留，计完整typed wire及对象延迟。V／T／mask代表值、时间戳和有效性标记；shared T只计一次有效输入，padding／ABI头不能扩大分母。
 
-## 1. 模块结构
+本轮38个key的统一`tsbench_core_*`入口直接调用各算法，结果可由caller buffer或codec vector持有，绕过C1／RW envelope与额外复制；prepared仅提前准备合法context／固定模型，每次采样、训练与逻辑状态重置仍在encode内。Gorilla支持无mask的UTS联合T/V交错输入，16bytes／行。SVG／PNG与下列Mermaid均已同步本轮实现和实证范围；[开发日志](../development.md)持续记录变更。
+
+正式阶段验证48216对压缩／恢复产物（38472对测量操作、9744对warmup），精确资格另验证3444对；内循环不增加统计样本数。神经补充使用完整257符号：DeepZip／DZip每次编解码各193次预测，COMBINED各含一次训练及65次更新后预测，次数由源码推导，非动态counter；原64符号零预测短流独立保留。Sprintz F布局6请求和强制ALP4请求为明确unsupported，不自动转置或回退。
+统一storage两位flag分别声明encode／decode是否使用caller buffer，driver只分配所需caller容量；owned产物在context销毁后仍保持有效，计时外验证后release。附加`validate_input`准入和`validate`完整流安全检查在主计时外进行，允许独立context验证，decode只接收已验证的不可变产物。算法本身必需工作保持计时。原始输入content hash、dtype／shape／layout及真实有效bytes在Python、driver和独立恢复间一致，详细契约见[计划§14.19](../../TimeSeries_Compression_Benchmark_V4.0_工程实施总计划.md)。
+
+## 模块结构
 
 ![模块结构](architecture.png)
 
-[SVG 矢量图](architecture.svg)。三个核心职责是 **bridge 调 codec、scheme 产完整对象、executor 落实计时和完成**。worker 是进程隔离单位，codec session 是每个独立对象的状态生命周期，二者不可混用。
+[SVG](architecture.svg)。profiling虚线表示独立pass。38个key在各自合法输入、质量、参数与线程约束下均已完成两个生命周期的直接原生实测；不支持的请求保留，不自动降级API／object。C1／RW辅助为单组件、无外部分块／transform，RW仅rank1；历史完整大小未审定者保留null。
 
 ```mermaid
 flowchart TB
-  cfg["一份 experiment.toml<br/>方法、对象、质量、边界、资源 profile"] --> cli["CLI / config<br/>解析与展开默认值"]
-  sources["数据源<br/>npy / CSV / source catalog"] --> data["data<br/>canonical V / T / mask 与身份"]
-  assets["保留 codec 源码 / 模型"] --> build["registry / build<br/>能力、factory、构建库"]
-  cli --> runner
-  data --> runner
-  build --> runner
-  subgraph parent["父进程"]
-    runner["runner<br/>case 矩阵、schedule、预算、恢复"] <--> cache["资格缓存<br/>implementation / exact-input"]
-  end
-  runner -->|"按 schedule 调度 / IPC"| executor
-  subgraph worker["隔离 worker：method × resource profile × session"]
-    executor["executor<br/>CPU wall；边界、生命周期、资源与完成"] -->|"encode 计时"| scheme["scheme / artifact<br/>适配、组合、Finish、完整 wire"]
-    executor -->|"decode 计时"| decoder["DecoderRegistry<br/>wire → 新 decoder session → 恢复对象"]
-    scheme -->|"wire + 已计费依赖"| decoder
-    scheme --> bridge["bridges<br/>C ABI v1 / RW ABI v1"]
-    decoder --> bridge
-    bridge --> native["构建后的 CPU native codec"]
-    decoder --> verify["validate：计时外<br/>恢复 / 质量 / 输入不变性"]
-  end
-  data -->|"原始对象：验证端使用"| verify
-  build -->|"库、factory、能力"| bridge
-  verify --> records["records / run artifacts<br/>manifest + observations.jsonl + 代表 wire"]
-  runner -.->|"crash / timeout 等父进程补记"| records
-  records --> report["report / study<br/>描述、覆盖与失败；配对与source-cluster统计"]
-  records -.->|"读取 manifest，另开 pass"| profile["可选 profiling<br/>RSS / 显存 / perf / 能耗"]
-  profile -.->|"独立 profile 结果"| report
-  extension["P4 GPU plugin<br/>cuSZp opaque owners / completion"] --> executor
-  extension --> gpu_native["独立 CUDA native API<br/>DeviceInput / payload / decoded ownership"]
-  gpu_native --> verify
-  pool["独立 process pool workload<br/>cold/persistent；任务完成 wall"] --> scheme
-  pool --> decoder
-  pool --> records
+  config["配置：native_core / prepared 默认"] --> parent["Python：解析 / 全请求矩阵 / 资格 / schedule"]
+  data["同任务 dtype / shape / layout / 有效 bytes"] --> parent
+  assets["codec 来源 / build / binary / model 身份"] --> parent
+  parent --> admission["主时钟外：源域准入 / 输入身份核对\nstorage 决定 caller buffer 或独立 owner"]
+  admission --> core["core driver：38 key已实测验证\nC++时钟内完整采样 / 建模 / encode+Finish / decode"]
+  parent --> api["辅助 native_api：C1 / RW 完整接口\nshim 转换 / 解析 / 分配照实计入"]
+  parent --> object["保留 object_memory\n完整 wire / Python wall / 独立 session"]
+  core --> output["真实每份输出与恢复\ncodec 必要输出 / ABI envelope / framework 分账"]
+  api --> output
+  object --> output
+  output --> verify["计时外逐份验证：bitwise / 质量 / 输入不变"]
+  verify --> raw["append-only raw：真实 totals / loops / bytes / 状态"]
+  raw --> report["只读报告：core 主表；API / object 辅助\nprepared 与 fresh_request 分列；失败保留分母"]
+  raw -.-> profile["同 manifest，独立 profiling pass"]
 ```
 
-CPU/GPU executor 使用各自真实 API。GPU 插件不能把 device 指针传给现有 host C/RW ABI；上图中的 C/RW bridge 是当前保留资产的路径。CPU 的 ISA／内部线程属于实现和资源因素，不能从 CPU 支持 SIMD 或配置写了线程数推定已经执行该路径。
+codec完整必要输出包括真实header、参数、模型／字典、索引、exceptions、tail和finalize；框架实验JSON、hash、来源及纯ABI envelope在旁记录。`native_output_bytes`不自动等于`codec_complete_bytes`，只有真实格式区间和依赖审核后才入主表；无法核实时null及原因，禁止估计扣除。独立恢复不能借original／encoder context或免费的输入相关参数。
 
-## 2. 一次实验的运行流程
+## 运行流程
 
 ![运行流程](workflow.png)
 
-[SVG 矢量图](workflow.svg)。图展开一个比较 block/session 内的主流程，runner 对完整矩阵重复相应准备和调度。首版同一时刻只有一个主计时任务；不同方法可以有独立待命 worker。
+[SVG](workflow.svg)。主计时独占串行；构建、数据准备、测试、绘图和profiling均在其外。拒绝case保留请求分母，不伪造正式trial；尚未运行的已计划slot保留not_run。
 
 ```mermaid
 flowchart TB
-  config["读取一份配置"] --> resolve["解析对象 / 方法 / 质量 / 边界 / profile<br/>展开请求 case 矩阵"]
-  resolve --> available{"静态能力与环境支持？"}
-  available -->|"否"| casefail["保留 case 与真实原因<br/>unsupported / unavailable"]
-  available -->|"是"| prepare["建立 method / session worker<br/>在 pool、设备初始化和 first-touch 前落实资源政策"]
-  prepare --> load["加载实际库与当前 block<br/>核验有效线程 / affinity / NUMA / backend"]
-  load --> resource{"有效资源符合比较条件？"}
-  resource -->|"否"| resfail["拒绝当前 profile 或显式另建资源层<br/>记录原因；重建对应 case / schedule"]
-  resource -->|"是"| hit{"两种资格缓存的所需项都命中？"}
-  hit -->|"否：只补缺项"| qualification["必要 implementation suite / exact-input 检查<br/>输入检查含 wire-only 新进程恢复"]
-  qualification --> passed{"资格通过？"}
-  passed -->|"否"| qfail["真实资格失败 / 不可执行 case<br/>保留 stage、reason 与证据"]
-  passed -->|"是"| savecache["保存 PASS 范围与资格缓存"]
-  savecache --> warmup
-  hit -->|"是"| warmup["计时粒度诊断 / 校准<br/>本 worker 预热，丢弃预热 codec session"]
-  warmup --> schedule["最终可执行 case 的随机 round schedule<br/>保存实际 schedule 与 resolved manifest"]
-  schedule --> start["父进程记录 planned / started<br/>按 schedule 发出 trial"]
-  start --> encode["encode 计时<br/>对象 → 完整 wire；本次 encoder 关闭完成"]
-  encode --> decode["decode 计时<br/>wire → 新 decoder session → 完整恢复对象"]
-  decode --> verify["计时外验证<br/>恢复、原始域误差、输入未改变；记录 bytes / hash"]
-  verify --> valid{"验证通过？"}
-  valid -->|"是"| ok["ok + 原始 encode/decode 时间<br/>大小、质量与实际资源"]
-  valid -->|"否"| error["error + stage / reason<br/>quality_violation 是 reason；已测时间仅作诊断"]
-  encode -->|"native 返回错误"| error
-  decode -->|"native 返回错误"| error
-  start -.->|"父进程持续监控；异常可发生在任意 stage"| abort["crash / timeout / 有证据的 oom<br/>失效 worker 不复用；GPU 恢复未确认则设备余项 not_run"]
-  ok --> raw["追加 JSONL 与必要工件<br/>历史 attempt 不覆盖"]
+  resolve["读取配置 → 同输入请求矩阵"] --> support{"真实入口 / 源域 / 生命周期支持？"}
+  support -->|"否"| reject["unsupported / unavailable + reason\n不静默fallback"]
+  support -->|"是"| prepare["worker prepare / 资格复用 / warmup\n原生 loops 和保留内存有界"]
+  prepare --> schedule["保存 schedule；父进程 planned / started"]
+  schedule --> encode["C++：独立逻辑 reset\n原生时钟测完整 encode+Finish；保留每份输出"]
+  encode --> validate["主时钟外：逐产物完整流安全检查\n独立 decoder context；不可变真实产物"]
+  validate --> decode["C++：独立 decoder 状态\n原生时钟测完整 decode；保留每份恢复"]
+  decode --> verify["停表后逐份验证 / 输入不变 / 完整字节账单"]
+  verify --> raw["追加真实 totals / loops / 输出数 / 验证覆盖 / 状态"]
+  reject --> raw
+  encode -.-> error["错误 / crash / timeout\n时间仅诊断；清理失效worker"]
+  decode -.-> error
   error --> raw
-  abort --> raw
-  casefail --> raw
-  resfail --> raw
-  qfail --> raw
-  raw --> more{"runner 还有待执行计划项？"}
-  more -->|"是"| ready{"对应 worker 就绪且健康？"}
-  ready -->|"是：既定下一 trial"| start
-  ready -->|"否：新 case/session 或失效 worker"| prepare
-  more -->|"否"| close["关闭剩余 worker / session<br/>设备停用后已记 not_run 的项不再调度"]
-  close --> report["读取 raw 生成描述报告<br/>覆盖 / 失败 / 条件性能；可选推断"]
-  report -.->|"同 manifest，独立 pass"| profile["可选资源 profiling<br/>附加独立结果，报告可重生成"]
+  raw --> more{"还有计划项？"}
+  more -->|"是，健康worker"| schedule
+  more -->|"是，需准备"| prepare
+  more -->|"否"| report["关闭 → 只读 core 主表与辅助表"]
 ```
 
-静态支持检查只是提前拒绝显然不支持的 case；实际内容域、资源和动态资格仍在后续确认。不支持 case 不生成虚假的重复 trial；计划可执行后未运行的 trial 保留 not_run。资源不符时不能沿原资源层继续比较；另建层后重新生成相应条件和调度。当前 GPU formal 中 f32 大输入的严格质量违例就是这种 admission failure，成功 case 与失败分母分开报告。
+## 单个原生trial的时间范围
 
-核心重复箭头从“写入 raw”经安全调度回到健康 worker 的“下一 trial”，不回到完整资格套件。case 拒绝只推进其他 case；新 case/session 或失效 worker 需要准备／重建，按内容身份查询资格复用范围。GPU 恢复未确认时结束该设备 session、余项记 not_run，不继续该设备测量。资格命中不能跳过正式编码、独立恢复或逐 trial 验证。retry 增加 attempt，resume 补未完成项，均保留历史失败。
-
-## 3. 单个 CPU trial：数据与计时边界
+`prepared`在计时外建立合法context／buffer容量，但每次operation必须独立reset逻辑预测、字典和在线状态，reset与输入相关算法准备计入所测操作；不能把ALP采样或模型构建预计算移出。`fresh_request`原生时钟另包含context创建／配置、bound、caller buffer分配、完整操作及context关闭；为逐份验证保留的压缩／恢复buffer最终释放在计时外，不是含全部产物释放的总生命周期延迟。它不含Python进程启动，也不等于cache冷。对象目标继续使用新encoder／decoder session与Python wall。
 
 ```mermaid
 sequenceDiagram
-  participant W as Worker / executor
-  participant S as ObjectScheme
-  participant B as C/RW bridge + native codec
-  participant D as DecoderRegistry
+  participant P as Python worker
+  participant C as C++ batch driver
+  participant K as Direct codec API
   participant V as Validator
   participant R as Records
-  Note over W,R: canonical 对象已就绪；库加载、资格与预热已完成
-  rect rgb(231, 241, 255)
-    Note over W,B: encode_ns：t0 → t1
-    W->>S: encode_once(original)
-    S->>B: 本次状态、适配、bound、encode、必要 Finish
-    B-->>S: payload / 实际长度 / 状态
-    S->>S: descriptor、依赖与完整 wire；关闭 encoder
-    S-->>W: EncodedObject(wire)
+  Note over P,R: 解析 / 配置 / 加载 / 资格 / prepare / warmup 已在主计时外完成
+  P->>C: 一次 batch 请求（默认 loops=8，有内存上限）
+  C->>K: validate_input 源域准入（主计时外）
+  loop 每份encode operation
+    C->>K: reset + 完整encode / sampling / modeling / Finish（原生计时）
+    K-->>C: 真实输出 / used bytes / status
+    C->>C: 保留caller storage或独立owner
   end
-  rect rgb(234, 247, 241)
-    Note over W,D: decode_ns：t1 → t2
-    W->>D: decode_once(wire)
-    D->>D: 解析描述；新建 decoder session
-    D->>B: 只用 wire 与已计费依赖配置恢复
-    B-->>D: decoded components
-    D->>D: 逆变换、完整对象；关闭 decoder
-    D-->>W: 拥有独立有效存储的 restored
+  C->>K: 每份stream完整安全validate（主计时外）
+  loop 每份decode operation
+    C->>K: 独立逻辑decoder的完整decode（原生计时）
+    K-->>C: 当前真实恢复结果
   end
-  W->>V: original + restored；输入 fingerprint
-  V-->>W: bitwise / quality / input unchanged
-  W->>R: 时间、完整 bytes、wire hash、实际资源、终态
-  Note over D,V: decoder 不拿 original、encoder context 或免费配置
+  C-->>P: encode/decode totals + loops + 每份输出 / 恢复
+  P->>V: 停表后逐份bitwise / 原始域quality / input unchanged
+  V-->>P: 所有operation覆盖与状态
+  P->>R: 真实时间 / 完整必要输出账单 / 失败分母
+  Note over C,V: 可有界分批计时后验证；每段总量和覆盖必须记录，不把loops当独立样本
 ```
 
-正式 trial 的新 decoder session 可以位于同一 worker。新 decoder **进程**属于未命中的 exact-input 独立恢复资格检查，不是默认每个 trial 的开销。默认刚生成的 wire 不表示冷 cache，natural 只表示不主动干预缓存。
+分母为有效逻辑输入／恢复bytes，不是实际ABI envelope或重复共享T bytes。解码来自本次真实产物，natural cache不保证冷；独立decoder进程仍在exact-input资格路径，正式逻辑decoder不借encoder状态。GPU／pool保持具名完成wall或device-event，不混入CPU core主表。
 
-GPU 扩展保留同一逻辑：先 quiesce，再从 submit 计到 complete；所选边界需要的传输、status、materialize 与独立对象 teardown 均完成后停止 wall timer。device-event 时间作为独立细分指标，不能代替 host_to_host 完成时间。
+## 与计划及生成源对应
 
-## 4. 与计划的对应关系
-
-| 图中部分 | V4.0 计划依据 |
+| 图内容 | 计划依据 |
 |---|---|
-| V/T/mask、case 与公平条件 | §3 |
-| 独立包、bridge/scheme/executor、两 ABI | §4 |
-| wire、依赖和完整大小 | §5 |
-| encode/decode、生命周期、GPU completion | §6 |
-| 两资格缓存、worker、随机 round、失败恢复 | §7 |
-| 一份配置、有效资源与 inspect/build/run | §8 |
-| 正确性与质量验证 | §9 |
-| JSONL、覆盖与失败、描述／研究统计 | §10 |
-| 线程／SIMD／GPU／pool 与独立 profiling | §11 |
+| typed任务、真实分母、公平条件 | §3 |
+| Python控制面、直接core／C1／RW driver | §4 |
+| codec必要输出、ABI与wire账单 | §5 |
+| 原生循环、prepared／fresh、cache／GPU完成 | §6 |
+| 两级资格、隔离worker、schedule、失败 | §7 |
+| native默认与显式object配置 | §8 |
+| 计时外逐份质量、模型政策 | §9 |
+| 主／辅助表、raw与分层统计 | §10 |
+| profiling与资源、N0–N5实施 | §11–§13 |
 
-最小实现从 raw-store + zstd-frame + lzss-raw 的对象闭环开始（P0），随后补两 ABI／对象能力与可靠重复（P1/P2）。资源扩展按 P4 接入，不成为首轮 CPU 有效测量的前置条件。
-
-两张静态图由 [render_diagrams.py](render_diagrams.py) 生成 SVG，使用 Pillow、Noto Sans CJK 字体与 `rsvg-convert` 生成预览；上面的 Mermaid 是可编辑的逻辑图源。重新生成命令在仓库根目录执行：
+[生成源](render_diagrams.py)仅绘图，不执行codec；Pillow／Noto Sans CJK及rsvg-convert同步生成SVG／PNG：
 
 ```bash
 python docs/diagrams/render_diagrams.py
 rsvg-convert docs/diagrams/architecture.svg -o docs/diagrams/architecture.png
 rsvg-convert docs/diagrams/workflow.svg -o docs/diagrams/workflow.png
 ```
+
+已实现入口与示例见[README](../../README.md)、[native.toml](../../benchmark/examples/native.toml)和[fresh_request示例](../../benchmark/examples/native_fresh.toml)。当前38-key结果见[全量原生报告](../all_core_results/README.md)。
+
+以下保留首阶段历史范围：当时完整测试372项通过，六组run共792请求、181 ready、611 unsupported，2534／2534正式trial成功：core prepared／fresh各280，辅助API无损1582、bounded84、empirical28，对象对照280。2254个native trial的8次正式及2次warmup各份产物均计时外验证，不把loops当独立样本。
+
+该历史core主表覆盖3来源5种真实V表示上的四个入口（含raw参考）；当时36个真实CPU codec的通用API辅助覆盖不等于36个direct core，未核实完整输出大小者保持null。typed API资格与真实core结果分列，fresh／对象对照各自保持生命周期。历史逐run报告、图表、输入窗口、限制和溯源见[首阶段原生报告](../native_results/README.md)与[首阶段证据索引](../native_evidence.json)。

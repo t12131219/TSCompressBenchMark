@@ -1,0 +1,33 @@
+{
+  "created_at": "2026-10-19T13:03:30.940381+08:00",
+  "rule": {
+    "remove_if": "rows < 128 OR f64_value_bytes < 1024",
+    "value_bytes_exclude": [
+      "date column",
+      "CSV text formatting"
+    ]
+  },
+  "source_root": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose",
+  "inventory": {
+    "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261018-1614/inventory.json",
+    "sha256": "c0aeb96c81ce55abd0c3f1536bbfcac1aeccddec0cd020d44314d04a04efbc1b"
+  },
+  "reference_results": {
+    "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/forecasting_results_20261018_1614/primary.csv",
+    "sha256": "ee81b5a7dbaf1b717596bcfd5127e125a72773379d9a1f7a6f39272c61879d6e"
+  },
+  "archive": {
+    "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/forecasting_size_filter_20261019/removed_csv.tar.gz",
+    "sha256": "7ffe5d65c655477b713051953cbd72f9316f97812c96d86a2e6fa5b1ae83a3c2",
+    "member_count": 3967,
+    "all_member_hashes_verified": true
+  },
+  "before_count": 8093,
+  "removed_count": 3967,
+  "retained_count": 4126,
+  "removed_csv_bytes": 6801658,
+  "retained_csv_bytes": 704486745,
+  "status": "complete",
+  "all_retained_hashes_verified": true,
+  "removed_files_absent": true
+}

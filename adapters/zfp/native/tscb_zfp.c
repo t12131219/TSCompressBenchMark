@@ -647,3 +647,5 @@ tscb_status_v1 tscb_get_last_error(tscb_codec_handle_v1 *handle,
     *length = strlen(*message);
     return TSCB_STATUS_OK_V1;
 }
+
+#include "direct_core.inc"

@@ -64,7 +64,8 @@ def generate(corpus: Path, output: Path):
             if params:
                 lines.append('params = { '+', '.join(f'{key} = {quoted(value)}' for key,value in params.items())+' }')
             lines.append('')
-        lines.extend(['[task]','kind = "values"', f'fidelity = {quoted(fidelity)}'])
+        lines.extend(['[task]','kind = "values"', f'fidelity = {quoted(fidelity)}',
+                      'boundary = "object_memory"', 'lifecycle = "independent_object"', 'cache_policy = "natural"'])
         if bound is not None:lines.append(f'error_bound = {quoted(bound)}')
         lines.extend(['','[execution]','sessions = 3','rounds = 7','warmup_objects = 2',
                       'seed = 20261013','timeout_s = 120','qualification_cache = true',''])

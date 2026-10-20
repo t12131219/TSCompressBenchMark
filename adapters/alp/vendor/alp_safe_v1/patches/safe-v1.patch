@@ -1,0 +1,63 @@
+--- a/include/alp/encoder.hpp
++++ b/include/alp/encoder.hpp
+@@ -82,9 +82,18 @@
+ 	static ST encode_value(const PT value, const factor_idx_t factor_idx, const exponent_idx_t exponent_idx) {
+ 		PT tmp_encoded_value = value * Constants<PT>::EXP_ARR[exponent_idx] * Constants<PT>::FRAC_ARR[factor_idx];
+ 		if constexpr (SAFE) {
+-			if (is_impossible_to_encode(tmp_encoded_value)) { return ENCODING_UPPER_LIMIT; }
++			if (is_impossible_to_encode(tmp_encoded_value)) { return std::numeric_limits<ST>::max(); }
+ 		}
+ 		tmp_encoded_value = tmp_encoded_value + Constants<PT>::MAGIC_NUMBER - Constants<PT>::MAGIC_NUMBER;
++		// safe-v1: check the rounded value too, with exact wide boundaries.
++		if constexpr (SAFE) {
++			const long double v = tmp_encoded_value;
++			if (!std::isfinite(tmp_encoded_value) ||
++			    v < static_cast<long double>(std::numeric_limits<ST>::min()) ||
++			    v > static_cast<long double>(std::numeric_limits<ST>::max())) {
++				return std::numeric_limits<ST>::max();
++			}
++		}
+ 		return static_cast<ST>(tmp_encoded_value);
+ 	}
+ 
+@@ -158,6 +167,8 @@
+ 			// We try all combinations in search for the one which minimize the compression size
+ 			for (int8_t exp_ref = Constants<PT>::MAX_EXPONENT; exp_ref >= 0; exp_ref--) {
+ 				for (int8_t factor_idx = exp_ref; factor_idx >= 0; factor_idx--) {
++					// float source has EXP[10] but only FACT[0..9].
++					if (static_cast<size_t>(factor_idx) >= std::size(Constants<PT>::FACT_ARR)) { continue; }
+ 					uint16_t exceptions_count           = {0};
+ 					uint16_t non_exceptions_count       = {0};
+ 					uint32_t estimated_bits_per_value   = {0};
+@@ -342,7 +353,7 @@
+ 			auto const actual_value = VALUE_ARR_WITHOUT_SPECIALS[i];
+ 
+ 			// Attempt conversion
+-			const ST encoded_value = encode_value<false>(actual_value, factor_idx, exponent_idx);
++			const ST encoded_value = encode_value<true>(actual_value, factor_idx, exponent_idx);
+ 			encoded_integers[i]    = encoded_value;
+ 			const PT decoded_value = decoder<PT>::decode_value(encoded_value, factor_idx, exponent_idx);
+ 			ENCODED_VALUE_ARR[i]   = decoded_value;
+--- a/include/alp/decoder.hpp
++++ b/include/alp/decoder.hpp
+@@ -3,6 +3,7 @@
+ 
+ #include "common.hpp"
+ #include <cstdint>
++#include <cstring>
+ 
+ // NOLINTBEGIN
+ 
+@@ -126,7 +127,11 @@
+ 
+ 	//! Scalar decoding a single value with ALP
+ 	static inline PT decode_value(const ST encoded_value, const uint8_t factor, const uint8_t exponent) {
+-		const PT decoded_value = encoded_value * Constants<PT>::FACT_ARR[factor] * Constants<PT>::FRAC_ARR[exponent];
++		// Match generated FALP modulo arithmetic without signed overflow.
++		const UT product = static_cast<UT>(encoded_value) * static_cast<UT>(Constants<PT>::FACT_ARR[factor]);
++		ST signed_product;
++		std::memcpy(&signed_product, &product, sizeof(ST));
++		const PT decoded_value = signed_product * Constants<PT>::FRAC_ARR[exponent];
+ 		return decoded_value;
+ 	}
+ 

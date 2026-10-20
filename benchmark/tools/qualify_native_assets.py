@@ -142,7 +142,7 @@ def codec_grid(root,key,build_root=None):
         if rank in spec.ranks:
             shape=(3,)*rank
             case('native-nd-rank-'+str(rank),values(spec,spec.dtypes[0],int(np.prod(shape))).reshape(shape))
-    if key in {'sprintz-delta','sprintz-fire','sprintz-fire-huff0','sprintz-delta-u8','sprintz-fire-u8'}:
+    if key in {'sprintz-delta','sprintz-fire','sprintz-delta-huffman','sprintz-fire-huffman'}:
         for dtype in spec.dtypes:
             dtype=np.dtype(dtype);limits=np.iinfo(dtype)
             pattern=np.array([limits.min,limits.max,0,1,limits.max-1,limits.min+1],dtype=dtype)

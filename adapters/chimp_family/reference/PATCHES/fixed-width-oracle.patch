@@ -1,0 +1,105 @@
+--- a/src/main/java/gr/aueb/delorean/chimp/InputBitStream.java
++++ b/src/main/java/gr/aueb/delorean/chimp/InputBitStream.java
+@@ -12,15 +12,6 @@
+ import java.lang.reflect.InvocationTargetException;
+ import java.nio.channels.FileChannel;
+ 
+-import it.unimi.dsi.bits.Fast;
+-import it.unimi.dsi.fastutil.booleans.BooleanIterator;
+-import it.unimi.dsi.fastutil.ints.IntIterators;
+-import it.unimi.dsi.fastutil.io.BinIO;
+-import it.unimi.dsi.fastutil.io.FastBufferedInputStream;
+-import it.unimi.dsi.fastutil.io.RepositionableStream;
+-import it.unimi.dsi.io.DebugInputBitStream;
+-import it.unimi.dsi.io.NullInputStream;
+-import it.unimi.dsi.io.OutputBitStream;
+ 
+ 
+ /** Bit-level input stream.
+@@ -106,42 +97,8 @@
+ 	 * The upper 16 bits contain code lengths, the lower 16 bits decoded values. 0 means undecodable. */
+ 	public static final int[] GAMMA = new int[256 * 256], DELTA = new int[256 * 256], ZETA_3 = new int[256 * 256], SHIFTED_GAMMA = new int[256 * 256];
+ 
+-	static void fillArrayFromResource(final String resource, final int array[]) throws IOException {
+-		final String resouceFullPath = "/it/unimi/dsi/io/" + resource;
+-        final InputStream ris = InputBitStream.class.getResourceAsStream(resouceFullPath);
+-        if (ris == null) throw new IOException("Cannot open resource " + resouceFullPath);
+-        final DataInputStream dis = new DataInputStream(new FastBufferedInputStream(ris));
+-		BinIO.loadInts(dis, array, 0, array.length);
+-		dis.close();
+-		assert checkLength(resource, array, resouceFullPath);
+-	}
+-
+-	public static boolean checkLength(final String resource, final int[] array, final String resouceFullPath) {
+-		final DataInputStream dis = new DataInputStream(InputBitStream.class.getResourceAsStream(resouceFullPath));
+-		final int actualLength = IntIterators.unwrap(BinIO.asIntIterator(dis)).length;
+-		assert array.length == actualLength : resource + " is long " + actualLength + " but we think it should rather be " + array.length;
+-		try {
+-			dis.close();
+-		} catch (final IOException e) {
+-			throw new RuntimeException(e);
+-		}
+-		return true;
+-	}
+-
+-	static {
+-		/* We load all precomputed arrays from resource files,
+-		 * to work around the limit on static initialiser code. */
+-		try {
+-			fillArrayFromResource("gamma.in.16", GAMMA);
+-			fillArrayFromResource("delta.in.16", DELTA);
+-			fillArrayFromResource("zeta3.in.16", ZETA_3);
+-			fillArrayFromResource("shiftedgamma.in.16", SHIFTED_GAMMA);
+-		}
+-		catch (final IOException e) {
+-			throw new RuntimeException(e);
+-		}
+-	}
+-
++	// Fixed-width-only oracle: unused variable-length-code resource tables intentionally not loaded.
++	static void fillArrayFromResource(String resource, int[] array) throws IOException { throw new UnsupportedOperationException("variable-length codes excluded from oracle"); }
+ 	/** The default size of the byte buffer in bytes (8Ki). */
+ 	public static final int DEFAULT_BUFFER_SIZE = 8 * 1024;
+ 	/** The underlying {@link InputStream}. */
+@@ -278,7 +235,7 @@
+ 	 * @param a the byte array to wrap.
+ 	 */
+ 	public InputBitStream(final byte[] a) {
+-		is = NullInputStream.getInstance();
++		is = new java.io.ByteArrayInputStream(new byte[0]);
+ 		repositionableStream = null;
+ 		fileChannel = null;
+ 
+--- a/src/main/java/gr/aueb/delorean/chimp/OutputBitStream.java
++++ b/src/main/java/gr/aueb/delorean/chimp/OutputBitStream.java
+@@ -11,9 +11,6 @@
+ import java.lang.reflect.InvocationTargetException;
+ import java.nio.channels.FileChannel;
+ 
+-import it.unimi.dsi.bits.Fast;
+-import it.unimi.dsi.fastutil.booleans.BooleanIterator;
+-import it.unimi.dsi.fastutil.io.RepositionableStream;
+ 
+ 
+ /** Bit-level output stream.
+@@ -107,19 +104,7 @@
+ 	public static final int[] GAMMA = new int[MAX_PRECOMPUTED], DELTA = new int[MAX_PRECOMPUTED], ZETA_3 = new int[MAX_PRECOMPUTED],
+ 			SHIFTED_GAMMA = new int[MAX_PRECOMPUTED];
+ 
+-	static {
+-		/* We load all precomputed arrays from resource files,
+-		 * to work around the limit on static initialiser code. */
+-		try {
+-			InputBitStream.fillArrayFromResource("gamma.out.12", GAMMA);
+-			InputBitStream.fillArrayFromResource("delta.out.12", DELTA);
+-			InputBitStream.fillArrayFromResource("zeta3.out.12", ZETA_3);
+-			InputBitStream.fillArrayFromResource("shiftedgamma.out.12", SHIFTED_GAMMA);
+-		}
+-		catch (final IOException e) {
+-			throw new RuntimeException(e);
+-		}
+-	}
++	// Fixed-width-only oracle: unused variable-code output resources not loaded.
+ 
+ 	/** The default size of the byte buffer in bytes (16Ki). */
+ 	public static final int DEFAULT_BUFFER_SIZE = 16 * 1024;

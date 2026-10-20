@@ -48,6 +48,9 @@ def _bridge(root,key,build_root):
 
 def capability(method,obj,task,profile,asset_root=None,build_root=None):
     root,build_root=_roots(asset_root,build_root)
+    if task.get('boundary') in {'native_core','native_api'}:
+        from .native import capability as native_capability
+        return native_capability(method,obj,task,profile,root,build_root)
     reg=Registry(root)
     roles=obj.schema.get('roles',{})
     libraries=[];deps=[];models=[];threads=1;identities=[]
@@ -64,6 +67,7 @@ def capability(method,obj,task,profile,asset_root=None,build_root=None):
             items=obj.components.items()
         for name,a in items:
             route=_route(method,name,roles);spec=reg.get(route['codec']);params=reg.resolve_params(spec.key,route.get('params',{}))
+            spec.require_enabled()
             if spec.key=='deepzip':
                 model_record=spec.document['adapter']['models'][params['model_key']]
                 model_path=root/model_record['path']
@@ -74,6 +78,12 @@ def capability(method,obj,task,profile,asset_root=None,build_root=None):
             if spec.lossy and roles.get(name,name)!='V': raise Unsupported(f'{name}: timestamps and masks require bitwise codecs',stage='capability')
             if spec.lossy and task.get('fidelity','bitwise') in {'bitwise','numeric_equivalent'}: raise Unsupported(f'{spec.key}: needs a quality task',stage='capability')
             if spec.key in {'abba','fabba'} and task.get('fidelity')!='empirical_quality': raise Unsupported(f'{spec.key}: tolerance is empirical; use empirical_quality',stage='capability')
+            if spec.key in {'pmc-mr','swing-filter','swing-filter-disjoint','swing-filter-disjoint-quantized'}:
+                fidelity = task.get('fidelity')
+                if params['quality_mode'] == 'compatible' and fidelity != 'empirical_quality':
+                    raise Unsupported(f'{spec.key}: compatible mode requires empirical_quality', stage='capability')
+                if fidelity not in {'bounded_abs', 'empirical_quality'}:
+                    raise Unsupported(f'{spec.key}: only absolute or empirical quality is qualified', stage='capability')
             if spec.key=='dzip':
                 threads=max(threads,3)
 
@@ -84,7 +94,7 @@ def capability(method,obj,task,profile,asset_root=None,build_root=None):
                 for line in cpuinfo.read_text().splitlines():
                     if line.startswith('flags'):
                         flags=set(line.partition(':')[2].split());break
-            required={'SSE4_1':{'sse4_1'},'AVX2':{'avx2'},'AVX':{'avx'},'AVX2_BMI2_LZCNT':{'avx2','bmi2','abm'}}.get(isa,set())
+            required={'SSE4_1':{'sse4_1'},'AVX2':{'avx2'},'AVX':{'avx'},'AVX2_BMI2_LZCNT':{'avx2','bmi2','abm'},'AVX2_BMI1_BMI2_LZCNT_POPCNT':{'avx2','bmi1','bmi2','abm','popcnt'}}.get(isa,set())
             if required and not required.issubset(flags):raise Unavailable(f'{spec.key}: CPU ISA {isa} unavailable or unverified',stage='capability')
             for part,_,_,_ in _parts(a,method):
                 transformed,_=forward(part,route.get('transform'))

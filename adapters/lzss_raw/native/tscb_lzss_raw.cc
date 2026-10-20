@@ -276,3 +276,5 @@ tscb_status_v1 tscb_get_last_error(
 }
 
 }  // extern "C"
+
+#include "direct_core.hpp"

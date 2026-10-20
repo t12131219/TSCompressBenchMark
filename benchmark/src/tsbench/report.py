@@ -35,6 +35,43 @@ def _distribution(values: list[int | float]) -> dict[str, Any]:
             "min": min(finite), "max": max(finite)}
 
 
+def _scope(case: dict[str, Any]) -> tuple[str, str, str]:
+    # Missing boundary belongs to the historical object protocol, regardless
+    # of the current config parser's defaults.
+    boundary = case.get("boundary", "object_memory")
+    lifecycle = case.get("lifecycle", "prepared" if boundary in {"native_core", "native_api"} else "independent_object")
+    return boundary, lifecycle, case.get("cache_policy", "natural")
+
+
+def _unique(values: list[Any]) -> list[Any]:
+    seen = {}
+    for value in values:
+        if value is not None:
+            seen.setdefault(stable_hash(value), value)
+    return list(seen.values())
+
+
+def _measurement_trace(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    # Preserve actual timer/batch evidence without inventing measurements for
+    # legacy rows. An absent field remains absent, not a newly inferred clock.
+    fields = {"boundary", "measurement_scope", "lifecycle", "loops", "clock", "timer",
+              "clock_resolution_ns", "native_timer", "native_clock", "native_timing",
+              "native_encode_total_ns", "native_decode_total_ns", "encode_total_ns", "decode_total_ns",
+              "encode_batch_ns", "decode_batch_ns", "sampling_unit", "driver_build_id", "driver_binary_hash",
+              "native_output_bytes", "codec_complete_bytes", "codec_complete_bytes_null_reason",
+              "output_accounting_status", "output_accounting", "validation_coverage",
+              "verified_outputs", "encoded_outputs", "decoded_outputs", "native_batch",
+              "native_driver", "driver", "setup_ns", "close_ns", "prepare_ns"}
+    trace = []
+    for row in rows:
+        evidence = {key: value for key, value in row.items()
+                    if key in fields or key.startswith(("native_", "batch_", "clock_", "validation_"))}
+        trace.append({"session": row["session"], "round": row["round"],
+                      "attempt": row.get("attempt", 0), "status": row["status"],
+                      "observation_line": row["observation_line"], **evidence})
+    return trace
+
+
 def generate(run_dir: str | Path) -> dict[str, Any]:
     root = Path(run_dir).resolve()
     manifest = json.loads((root / "manifest.json").read_bytes())
@@ -76,10 +113,27 @@ def generate(run_dir: str | Path) -> dict[str, Any]:
             entry["trial_trace"].append({"session": row["session"], "round": row["round"],
                                          "attempt": row.get("attempt", 0), "status": row["status"],
                                          "observation_line": row["observation_line"]})
+        boundary, lifecycle, cache_policy = _scope(case)
+        native = boundary in {"native_core", "native_api"}
+        for row in rows:
+            for field, expected_scope in zip(("boundary", "lifecycle", "cache_policy"),
+                                              (boundary, lifecycle, cache_policy)):
+                if row.get(field) is not None and row[field] != expected_scope:
+                    raise ValueError(f"measurement {field} differs from case scope: {case_id}")
         raw_bytes = case.get("raw_bytes")
         encode = _distribution([row["encode_ns"] for row in ok if row.get("encode_ns") is not None])
         decode = _distribution([row["decode_ns"] for row in ok if row.get("decode_ns") is not None])
-        stored = _distribution([row["stored_bytes"] for row in ok if row.get("stored_bytes") is not None])
+        size_field = "codec_complete_bytes" if native else "stored_bytes"
+        known_sizes = [row[size_field] for row in ok if row.get(size_field) is not None]
+        size_complete = bool(ok) and len(known_sizes) == len(ok)
+        # A median over only known native sizes must not hide missing output
+        # accounting in other successful trials.
+        stored = _distribution(known_sizes if not native or size_complete else [])
+        size_reasons = _unique([row.get("codec_complete_bytes_null_reason") for row in ok
+                                if row.get("codec_complete_bytes") is None]) if native else []
+        if native and not size_complete and not size_reasons:
+            size_reasons = ["codec complete output size not recorded" if ok else "no successful primary trials"]
+        size_reason = "; ".join(str(reason) for reason in size_reasons) or None
         def rate(duration: Any) -> float | None:
             return raw_bytes * 1e9 / duration / 2**20 if raw_bytes and duration and duration > 0 else None
         def fraction(size: Any) -> float | None:
@@ -102,9 +156,7 @@ def generate(run_dir: str | Path) -> dict[str, Any]:
                    "stored_fraction": fraction(stored["median"]),
                    "compression_ratio": raw_bytes / stored["median"] if raw_bytes and stored["median"] and stored["median"] > 0 else None,
                    "encode_MiB_s": rate(encode["median"]), "decode_MiB_s": rate(decode["median"]),
-                   "boundary": case.get("boundary", "object_memory"),
-                   "lifecycle": case.get("lifecycle", "independent_object"),
-                   "cache_policy": case.get("cache_policy", "natural"),
+                   "boundary": boundary, "lifecycle": lifecycle, "cache_policy": cache_policy,
                    "payload_bytes": _distribution([row["payload_bytes"] for row in ok if row.get("payload_bytes") is not None]),
                    "header_bytes": _distribution([row["header_bytes"] for row in ok if row.get("header_bytes") is not None]),
                    "bits_per_value": _distribution([row["bits_per_value"] for row in ok if row.get("bits_per_value") is not None]),
@@ -125,6 +177,43 @@ def generate(run_dir: str | Path) -> dict[str, Any]:
                                            "compression_ratio": "empty task" if not raw_bytes else None,
                                            "encode_MiB_s": "empty task or nonpositive time" if not raw_bytes or not encode["median"] else None,
                                            "decode_MiB_s": "empty task or nonpositive time" if not raw_bytes or not decode["median"] else None}}
+        summary.update({
+            "measurement_scope": "; ".join(str(value) for value in _unique([row.get("measurement_scope") for row in primary])) or boundary,
+            "report_role": "primary" if (boundary, lifecycle) == ("native_core", "prepared") else "auxiliary",
+            "size_scope": "codec_complete_output" if native else "complete_object_wire",
+            "time_scope": "native_driver_per_operation" if native else "completed_object_wall" if boundary == "object_memory" else boundary,
+            "codec_complete_bytes": stored if native else _distribution([]),
+            "codec_complete_bytes_known_subset": _distribution(known_sizes) if native else _distribution([]),
+            "codec_complete_bytes_null_reason": size_reason if native else "not measured in object protocol",
+            "codec_size_complete_for_successful_trials": size_complete if native else None,
+            "native_output_bytes": _distribution([row.get("native_output_bytes") for row in ok]),
+            "encode_batch_ns": _distribution([row.get("encode_batch_ns") for row in ok]),
+            "decode_batch_ns": _distribution([row.get("decode_batch_ns") for row in ok]),
+            "native_encode_total_ns": _distribution([row.get("encode_batch_ns", row.get("native_encode_total_ns")) for row in ok]),
+            "native_decode_total_ns": _distribution([row.get("decode_batch_ns", row.get("native_decode_total_ns")) for row in ok]),
+            "sampling_units": _unique([row.get("sampling_unit") for row in primary]),
+            "loops": _distribution([row.get("loops") for row in ok]),
+            "value_count": _distribution([row.get("value_count") for row in ok]),
+            "timestamp_count": _distribution([row.get("timestamp_count") for row in ok]),
+            "reported_measurement_scopes": _unique([row.get("measurement_scope") for row in primary]),
+            "clock_metadata": _unique([{key: value for key, value in source.items()
+                                         if key in {"clock", "timer", "native_timer", "native_clock"} or key.startswith("clock_")}
+                                        for row in primary for source in (row, row.get("native_batch", {}))
+                                        if isinstance(source, dict) and (any(key in source for key in ("clock", "timer", "native_timer", "native_clock"))
+                                        or any(key.startswith("clock_") for key in source))]),
+            "measurement_trace": _measurement_trace(primary),
+            "primary_reasons": dict(Counter(str(row["reason"]) for row in primary if row.get("reason"))),
+        })
+        if native:
+            for metric, count_field in (("bits_per_value", "value_count"), ("bits_per_timestamp", "timestamp_count")):
+                summary[metric] = _distribution([8 * row["codec_complete_bytes"] / row[count_field] for row in ok
+                                                  if size_complete and row.get(count_field) and row[count_field] > 0])
+            for metric in ("stored_fraction", "compression_ratio"):
+                summary["metric_null_reasons"][metric] = "empty task" if not raw_bytes else size_reason
+            summary["metric_null_reasons"]["bits_per_value"] = size_reason or ("no values" if not summary["bits_per_value"]["n"] else None)
+            summary["metric_null_reasons"]["bits_per_timestamp"] = size_reason or ("no timestamps" if not summary["bits_per_timestamp"]["n"] else None)
+        for field in ("codec_complete_bytes", "native_output_bytes", "bits_per_value", "bits_per_timestamp"):
+            summary[field + "_median"] = summary[field]["median"]
         cases.append(summary)
     report = {"schema": "tsbench.report/1", "run_id": manifest["run_id"],
               "analysis_code_hash": file_hash(__file__), "trial_analysis_hash": analysis_dependency_hash(),
@@ -136,11 +225,31 @@ def generate(run_dir: str | Path) -> dict[str, Any]:
               "requested_case_status_counts": dict(Counter(case.get("status", "unknown") for case in manifest.get("cases", []))),
               "admission_counts": dict(Counter(case.get("status", "unknown") for case in manifest.get("cases", []))),
               "cases": cases, "retry_policy": "earliest executed attempt; successful retry never replaces executed failure; unexecuted placeholders are skipped when execution exists"}
+    groups = []
+    grouped = defaultdict(list)
+    for case in cases:
+        grouped[(case["boundary"], case["lifecycle"], case["cache_policy"])].append(case)
+    for (boundary, lifecycle, cache_policy), members in sorted(grouped.items()):
+        groups.append({"boundary": boundary, "lifecycle": lifecycle, "cache_policy": cache_policy,
+                       "report_role": members[0]["report_role"], "requested_cases": len(members),
+                       "executable_cases": sum(member["planned_trials"] > 0 for member in members),
+                       "planned_trials": sum(member["planned_trials"] for member in members),
+                       "ok_primary_trials": sum(member["ok_primary_trials"] for member in members),
+                       "complete_cases": sum(member["complete_case"] for member in members),
+                       "case_ids": [member["case_id"] for member in members],
+                       "case_status_counts": dict(Counter(member["case_status"] for member in members))})
+    report.update({"measurement_groups": groups,
+                   "primary_case_ids": [case["case_id"] for case in cases if case["report_role"] == "primary"],
+                   "auxiliary_case_ids": [case["case_id"] for case in cases if case["report_role"] != "primary"],
+                   "primary_metric_scope": "native_core/prepared; every other boundary or lifecycle is auxiliary; no cross-boundary ranking"})
     directory = root / "report"
     directory.mkdir(parents=True, exist_ok=True)
     write_json(directory / "summary.json", report)
-    columns = ["case_id", "codec", "profile_id", "case_status", "raw_bytes", "planned_trials",
-               "ok_primary_trials", "complete_case", "stored_fraction", "compression_ratio", "encode_MiB_s", "decode_MiB_s"]
+    columns = ["case_id", "codec", "profile_id", "boundary", "lifecycle", "cache_policy", "measurement_scope",
+               "report_role", "size_scope", "time_scope", "case_status", "reason", "raw_bytes", "planned_trials",
+               "ok_primary_trials", "complete_case", "codec_complete_bytes_median", "native_output_bytes_median",
+               "codec_complete_bytes_null_reason", "stored_fraction", "compression_ratio", "bits_per_value_median",
+               "bits_per_timestamp_median", "encode_MiB_s", "decode_MiB_s"]
     with (directory / "summary.csv").open("w", encoding="utf-8", newline="") as handle:
         writer = csv.DictWriter(handle, fieldnames=columns)
         writer.writeheader()
@@ -148,14 +257,33 @@ def generate(run_dir: str | Path) -> dict[str, Any]:
             writer.writerow({name: case.get(name) for name in columns})
     lines = [f"# {manifest.get('name', manifest['run_id'])}", "",
              f"Requested cases: {len(cases)}; executable cases: {report['executable_cases']}; planned trials: {len(schedule)}.", "",
-             "Time and size summaries use successful primary attempts; failures and retries remain in the recorded coverage. A partial case reports performance conditional on success.", "",
-             "| Case | Status | OK / planned | Stored fraction | Encode MiB/s | Decode MiB/s |", "|---|---|---:|---:|---:|---:|"]
+             "Time and size summaries use successful primary attempts; failures and retries remain in coverage. Partial cases are conditional on success.", "",
+             "The primary table uses native_core/prepared. Native API, first requests, and complete object measurements are auxiliary and are never ranked across boundaries. Historical rows without a boundary retain object_memory semantics.", "",
+             "Native size means verified complete codec output, including required headers, parameters, models, indices and finalization. Unknown size stays null; API output is not a substitute. Object size remains complete framework wire."]
     def display(value: Any) -> str:
-        return "—" if value is None else f"{value:.6g}" if isinstance(value, float) else str(value)
-    for case in cases:
-        lines.append("| " + " | ".join([case["case_id"], display(case["case_status"]),
-                     f"{case['ok_primary_trials']} / {case['planned_trials']}", display(case["stored_fraction"]),
-                     display(case["encode_MiB_s"]), display(case["decode_MiB_s"])]) + " |")
+        text = "—" if value is None else f"{value:.6g}" if isinstance(value, float) else str(value)
+        return text.replace("|", "\\|").replace("\n", " ")
+    for role, title in (("primary", "Primary: native core with prepared context/buffer"),
+                        ("auxiliary", "Auxiliary measurements")):
+        lines.extend(["", "## " + title, ""])
+        matching = [group for group in groups if group["report_role"] == role]
+        if not matching:
+            lines.append("No requested cases in this measurement scope.")
+        for group in matching:
+            size_label = "complete object wire" if group["boundary"] == "object_memory" else "verified complete codec output"
+            lines.extend([f"### {group['boundary']} / {group['lifecycle']} / {group['cache_policy']}", "",
+                          f"Requested: {group['requested_cases']}; executable: {group['executable_cases']}; complete: {group['complete_cases']}; OK / planned trials: {group['ok_primary_trials']} / {group['planned_trials']}.", "",
+                          f"Compression ratio = effective raw bytes / {size_label} bytes (larger is better). Throughput uses effective raw bytes and the named measurement boundary.", "",
+                          "| Case | Status | OK / planned | Ratio (raw/compressed) | Bits/value | Stored fraction | Encode MiB/s | Decode MiB/s | Reason / null size |",
+                          "|---|---|---:|---:|---:|---:|---:|---:|---|"])
+            for case in cases:
+                if case["case_id"] not in group["case_ids"]:
+                    continue
+                reason = case.get("reason") or "; ".join(case["primary_reasons"]) or (case.get("codec_complete_bytes_null_reason") if case["boundary"] in {"native_core", "native_api"} else None)
+                lines.append("| " + " | ".join([display(case["case_id"]), display(case["case_status"]),
+                             f"{case['ok_primary_trials']} / {case['planned_trials']}", display(case["compression_ratio"]),
+                             display(case["bits_per_value_median"]), display(case["stored_fraction"]),
+                             display(case["encode_MiB_s"]), display(case["decode_MiB_s"]), display(reason)]) + " |")
     (directory / "README.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
     return report
 

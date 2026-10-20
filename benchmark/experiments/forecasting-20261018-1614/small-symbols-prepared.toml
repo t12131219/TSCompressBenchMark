@@ -1,0 +1,58 @@
+# Frozen by generate_all_core_experiments.py; no result-dependent tuning.
+schema = "tsbench.experiment/1"
+name = "small-symbols-prepared"
+output = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/runs/forecasting-20261018-1614/small-symbols-prepared"
+
+[[datasets]]
+id = "kdd_cup_2018_dataset_without_missing_values_3-u8"
+path = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261018-1614/typed/kdd_cup_2018_dataset_without_missing_values_3-u8.npy"
+format = "npy"
+component = "V"
+order = "C"
+source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/kdd_cup_2018_dataset_without_missing_values_3.csv"
+schema = { forecasting_source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/kdd_cup_2018_dataset_without_missing_values_3.csv", forecasting_source_sha256 = "02b1584b84a673399067393f307cf1eb4822867b9b6ad3b610e8a0f75bea0c6f", forecasting_family = "kdd_cup_2018", all_source_rows_and_value_columns = true }
+
+[[datasets]]
+id = "vehicle_trips_dataset_without_missing_values_254-u8"
+path = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261018-1614/typed/vehicle_trips_dataset_without_missing_values_254-u8.npy"
+format = "npy"
+component = "V"
+order = "C"
+source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/vehicle_trips_dataset_without_missing_values_254.csv"
+schema = { forecasting_source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/vehicle_trips_dataset_without_missing_values_254.csv", forecasting_source_sha256 = "0d53a79e79f3588bd69ecd774915e930de00c7310b9feb0b3e610cd31b22d8c0", forecasting_family = "vehicle_trips", all_source_rows_and_value_columns = true }
+
+[[methods]]
+id = "deepzip"
+codec = "deepzip"
+
+[[profiles]]
+id = "cpu-single"
+device = "cpu"
+native_threads = 1
+object_workers = 1
+memory_limit_mb = 8192
+runtime_preload = ["/usr/lib/x86_64-linux-gnu/libstdc++.so.6"]
+
+[task]
+kind = "values"
+fidelity = "bitwise"
+boundary = "native_core"
+lifecycle = "prepared"
+cache_policy = "natural"
+
+[execution]
+sessions = 2
+rounds = 7
+warmup_objects = 0
+native_loops = 8
+native_warmup_loops = 2
+native_batch_memory_mb = 256
+timeout_s = 1800
+qualification_cache = true
+save_artifacts = false
+max_pending_workers = 8
+seed = 20261018
+
+[analysis]
+summary = "median_iqr"
+inference = "none"

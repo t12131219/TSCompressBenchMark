@@ -22,6 +22,9 @@ memory_limit_mb = 4096
 runtime_preload = ["/usr/lib/x86_64-linux-gnu/libstdc++.so.6"]
 
 [task]
+boundary = "object_memory"
+lifecycle = "independent_object"
+cache_policy = "natural"
 kind = "values"
 fidelity = "bitwise"
 

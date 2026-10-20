@@ -19,9 +19,8 @@ from typing import Any, Callable
 
 from .records import append, canonical_json, preserve_tail, read_jsonl, stable_hash, write_json
 from .provenance import execution_provenance, snapshot_sources
+from .config import DEFAULT_TASK, DEFAULT_EXECUTION, validate_boundary
 
-DEFAULT_EXECUTION = {"sessions": 1, "rounds": 7, "warmup_objects": 2, "seed": 20261012,
-                     "timeout_s": 120, "qualification_cache": True}
 
 
 class WorkerProcess:
@@ -208,23 +207,26 @@ def run(config: dict[str, Any], output: str | Path | None = None, resume: bool =
     from .worker import implementation_identity
     cfg = copy.deepcopy(config)
     cfg["execution"] = {**DEFAULT_EXECUTION, **cfg.get("execution", {})}
-    cfg["task"] = {"kind": "values", "fidelity": "bitwise", "boundary": "object_memory",
-                   "lifecycle": "independent_object", "cache_policy": "natural", **cfg.get("task", {})}
+    requested_task=cfg.get('task',{})
+    cfg["task"] = {**DEFAULT_TASK, **requested_task}
+    if cfg['task']['boundary']=='object_memory' and 'lifecycle' not in requested_task:
+        cfg['task']['lifecycle']='independent_object'
     execution, task = cfg["execution"], cfg["task"]
     retry = retry or execution.get("retry", False)
     cfg.setdefault("profiles", [{"id": "cpu-single", "device": "cpu", "native_threads": 1,
                                  "object_workers": 1, "memory_limit_mb": 4096}])
     for profile in cfg["profiles"]:
         profile.setdefault("memory_limit_mb", 4096)
-    for key, required in (("boundary", "object_memory"), ("lifecycle", "independent_object"), ("cache_policy", "natural")):
-        if task[key] != required:
-            raise ValueError(f"unsupported: initial runner requires task.{key}={required}")
+    validate_boundary(task)
     if execution["sessions"] < 1 or execution["rounds"] < 1 or execution["warmup_objects"] < 0 or execution["timeout_s"] <= 0:
         raise ValueError("execution sessions/rounds/timeout must be positive; warmup_objects must be nonnegative")
     base_dir = Path(cfg.get("_base_dir", cfg.get("base_dir", "."))).resolve()
     asset_root = Path(cfg.get("_asset_root", cfg.get("asset_root", Path(__file__).resolve().parents[3]))).resolve()
     build_root = Path(cfg.get("_build_root", cfg.get("build_root", asset_root / "build" / "tsbench"))).resolve()
     registry = Registry(asset_root)
+    if task['boundary'] in {'native_core','native_api'}:
+        from .native import ensure_driver
+        ensure_driver(asset_root,build_root)
     for method in cfg["methods"]:
         method["codec"] = registry.get(method["codec"]).key
         method["params"] = registry.resolve_params(method["codec"], method.get("params", {}))
@@ -488,7 +490,7 @@ def run(config: dict[str, Any], output: str | Path | None = None, resume: bool =
             result = worker.request({"op": "trial", "artifact_dir": str(root / "artifacts"),
                                      "save_wire": execution.get("save_artifacts", True) and trial["round"] == 0}, timeout, phase)
             merged = {**context, **{name: value for name, value in result.items() if name != "event"}}
-            if merged.get("status") == "ok" and min(merged.get("encode_ns", 0), merged.get("decode_ns", 0)) < 10000:
+            if task['boundary']=='object_memory' and merged.get("status") == "ok" and min(merged.get("encode_ns", 0), merged.get("decode_ns", 0)) < 10000:
                 merged["timing_warning"] = "short object duration; Python/FFI/timer overhead is included"
             record("measurement", "terminal", **merged)
         completed_normally = True

@@ -50,6 +50,8 @@ def classify_error(error: BaseException) -> dict[str, Any]:
     for field in ("returncode", "signal"):
         if getattr(error, field, None) is not None:
             result[field] = getattr(error, field)
+    if getattr(error,'native_batch',None) is not None:
+        result['diagnostic_native_batch']=error.native_batch
     return result
 
 
@@ -110,6 +112,10 @@ def implementation_identity(method: dict[str, Any], capability: dict[str, Any], 
     from .provenance import execution_files
     package = Path(__file__).resolve().parent
     files = execution_files(package)
+    if capability.get('driver'):
+        driver=capability['driver']
+        files += [Path(driver['binary']),Path(driver['record_path'])]
+        files += [Path(entry['path']) for entry in driver.get('compiled_dependencies',[])]
     libraries = capability.get("library_paths") or ([capability["library_path"]] if capability.get("library_path") else [])
     if libraries:
         files += [Path(path) for path in libraries]
@@ -123,7 +129,9 @@ def implementation_identity(method: dict[str, Any], capability: dict[str, Any], 
     files += [asset_root / "registry" / "codecs" / (key + ".json") for key in sorted(cards)]
     files += [Path(item["path"]) for item in capability.get("model_dependencies", [])]
     files += [Path(item["path"]) for item in effective.get("runtime", {}).get("libraries", [])]
+    files += [Path(item['path']) for item in effective.get('native_runtime',{}).get('libraries',[])]
     identity = {"method": method, "implementation": capability.get("implementation_id"),
+                'native_abi':capability.get('native_abi'),'driver_build_id':capability.get('driver',{}).get('build_id'),
                 "requested_preload_files": preload_identity(effective.get('requested_runtime_preload', [])),
                 "files": [{"path": str(path), "hash": file_hash(path)} for path in files if path.is_file()],
                 "effective": effective, "python": sys.version, "numpy": np.__version__,
@@ -168,13 +176,21 @@ class Worker:
             if support.get("effective_native_threads") is not None:
                 self.effective["effective_native_threads"] = support["effective_native_threads"]
                 self.effective["thread_evidence"] = support.get("thread_evidence", "codec capability")
-            self.scheme = ObjectScheme(self.method, asset_root=self.asset_root, build_root=self.build_root)
+            if self.task['boundary'] in {'native_core','native_api'}:
+                from .native import NativeMeasurement
+                self.scheme=NativeMeasurement(self.method,self.task,self.execution,support,self.asset_root,self.build_root)
+            else:
+                self.scheme = ObjectScheme(self.method, asset_root=self.asset_root, build_root=self.build_root)
             self.scheme.prepare(self.original)
             from .runtime import loaded_runtime
             self.effective["requested_runtime_preload"] = self.profile.get("runtime_preload", [])
             self.effective["runtime"] = loaded_runtime(support.get("runtime_dependencies", []))
+            if self.task['boundary'] in {'native_core','native_api'}:
+                self.effective['native_runtime']=self.scheme.runtime
             self.identity = implementation_identity(self.method, support, self.asset_root, self.build_root, self.effective)
             build_evidence = []
+            if support.get('driver'):
+                build_evidence.append({'kind':'native_driver',**support['driver']})
             for library in support.get("library_paths", []):
                 record_path = Path(library).parent / "build.json"
                 if record_path.is_file():
@@ -193,6 +209,19 @@ class Worker:
             from .executors.cpu import measure_object
             if self.original is None or self.scheme is None:
                 raise RuntimeError("worker must prepare an eligible case first")
+            if self.task['boundary'] in {'native_core','native_api'}:
+                from .data import fingerprint
+                if fingerprint(self.original)!=self.original_fingerprint:
+                    raise ValueError('trusted canonical input changed before native operation')
+                row,_=self.scheme.measure(self.original,independent=operation=='qualify',
+                                          artifact_dir=command.get('artifact_dir') if command.get('save_wire') or self.execution.get('save_artifacts',True) else None,
+                                          on_stage=self.phase)
+                if operation=='calibrate':
+                    row['clock_diagnostics']={'policy':'fixed configured loops; no overhead subtraction',
+                                              'clock':row['native_batch'].get('clock'),
+                                              'loops':row['loops'],'inner_loops_are_independent_samples':False}
+                row['implementation_id']=self.identity
+                return row
             row, wire = measure_object(self.scheme, self.original, self.task, asset_root=self.asset_root,
                                        build_root=self.build_root, on_stage=self.phase,
                                        expected_fingerprint=self.original_fingerprint)
@@ -254,8 +283,11 @@ class Worker:
                 continue
             self.phase(f"qualification.suite.rows_{rows}")
             try:
-                row, wire = measure_object(self.scheme, fixture, self.task, asset_root=self.asset_root,
-                                           build_root=self.build_root, on_stage=self.phase)
+                if self.task['boundary'] in {'native_core','native_api'}:
+                    row,wire=self.scheme.measure(fixture,loops=1,warmup=0,independent=True,on_stage=self.phase)
+                else:
+                    row, wire = measure_object(self.scheme, fixture, self.task, asset_root=self.asset_root,
+                                               build_root=self.build_root, on_stage=self.phase)
             except BaseException as error:
                 rejection = classify_error(error)
                 if rejection["status"] != "unsupported":
@@ -264,7 +296,7 @@ class Worker:
                 continue
             if row["status"] != "ok":
                 return {"status": "error", "stage": "qualification.implementation", "reason": "implementation boundary fixture did not recover", "fixture": rows, "verification": row["verification"]}
-            recovery = _wire_recovery(wire, fixture, self.task, self.asset_root, self.build_root,
+            recovery = row['independent_recovery'] if self.task['boundary'] in {'native_core','native_api'} else _wire_recovery(wire, fixture, self.task, self.asset_root, self.build_root,
                                       float(self.execution["timeout_s"]))
             accepted += 1
             evidence.append({"rows": rows, "status": "ok", "artifact_hash": row["artifact_hash"], "independent_recovery": recovery})

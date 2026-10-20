@@ -1,0 +1,118 @@
+{
+  "format": "local native qualification report v1 (not registry schema)",
+  "standard": "v3.0",
+  "date": "2026-10-17",
+  "route": "NATIVE_PORT",
+  "algorithms": [
+    "ALP adaptive",
+    "ALP-RD forced"
+  ],
+  "implementation": "cwida-alp-native-safe-v1",
+  "conclusion": "NATIVE_PORT_QUALIFIED(frozen bounded native profile)",
+  "full_upstream_parity": "NOT_CLAIMED",
+  "source_commit": "31ca0ed11c93c99d3f5b5c30e01a3e1c3832d3ce",
+  "contract_sha256": "76f6e8016173f4bdec2e7ba5593269d56b19cd3e53ee86589b92a107f4be6e5e",
+  "gates": [
+    {
+      "gate": "N0",
+      "status": "PASS",
+      "scope": "Source selection, deduplicated ALP/RD and complete capability inventory",
+      "evidence": {
+        "docs/SOURCE_LOCK.json": "c52e2303ec4a45afaa6da07af3f322bef89a29ab34d7b3f33e62a735d8eb7e4d",
+        "docs/NATIVE_CAPABILITY_MATRIX.yaml": "94d37e5c445fd4db6d3b56b9876ff8a4dec1f87547d31e332130654655b2747b",
+        "docs/MATRICES.md": "1d35915cec74a1181fbb0b75e63e351995f77a94bbf5867ecb3af928967bbc60"
+      }
+    },
+    {
+      "gate": "N1",
+      "status": "PASS",
+      "scope": "Frozen MIT source, executable independent original baseline, build/runtime closure",
+      "evidence": {
+        "docs/SOURCE_LOCK.json": "c52e2303ec4a45afaa6da07af3f322bef89a29ab34d7b3f33e62a735d8eb7e4d",
+        "reports/BUILD_LOCK.json": "5d75f2e47775b3716b2facd96352ad95e75d390cd8e8931987567e05da07d9cd",
+        "SBOM.json": "e7d18261e4869283e6ff26d60ff96eaadb773cb1444eec98fc8f4a9fa4b3b0cf",
+        "reports/verification-qualified/commands.json": "b2ffafe917f63de0abca5188e7612c83ca247523486488f4def58a4c2bef622a"
+      }
+    },
+    {
+      "gate": "N2",
+      "status": "PASS",
+      "scope": "Bounded input/FP/state/wire/resource and safety-variant contract; no RAW",
+      "evidence": {
+        "docs/CONTRACT.md": "76f6e8016173f4bdec2e7ba5593269d56b19cd3e53ee86589b92a107f4be6e5e",
+        "docs/SOURCE_DEFECTS.md": "25eb161b1bc9f9370043daa7a64240f89bf29f4aa04ee82f58fd0e5cd66521dc",
+        "patches/INDEX.json": "26ceaa4ce5ed2adae40d58965a6db0d7cc0dd9d7afa52ea30f7ab23ce86d6168",
+        "patches/safe-v1.patch": "b56934f279c8cf8e45b6fb4c9765c76ed7e94be6320f6bfaf209f22170d9a79c"
+      }
+    },
+    {
+      "gate": "N3",
+      "status": "PASS",
+      "scope": "Bitpattern recovery, C ABI, atomic capacity/OOM/malformed refusals, ASan/UBSan/LSan/fuzz/concurrency",
+      "evidence": {
+        "reports/test-asan-qualified.log": "13e12519590d254478f6c991f81374f909af2e8eaab94bf86f319bc07f41601d",
+        "reports/test-asan-avx2-qualified.log": "05b76d61f7331a123e1927ba8332888ed37324e700215d6fd657823d3c6fc628",
+        "reports/test-tsan-qualified.log": "e6d6ae429a0a31b742c5842a93fe5a3609ff80697915d639e3fff7948cbbc641",
+        "reports/fuzz-qualified.log": "5a2464f18993ae714c80a04f1a65a521b704ee8dd0664ec4774a4eb05b5dec2b",
+        "reports/test-release-qualified.log": "33e99cb8184c7aaf9c5f5d412bb07289c6c9e7111a7193f4ebf435a2eae84aba"
+      }
+    },
+    {
+      "gate": "N4",
+      "status": "PASS",
+      "scope": "Fresh independent original-source differential and cross-decode with explicit source UB exclusions; real columns and forced profiles",
+      "evidence": {
+        "reports/verification-qualified/verification.json": "581dbc2c03f26b9073d7c5abe2b8672bd37e7d3ef3294c94f42f65e9eb4baa64",
+        "reports/profiles-clang-qualified/profiles.json": "878b9c81e9329cac9169e1d0ecd01957537f21c39dcbc28655a96c942adf3866",
+        "reports/profiles-arm64-qualified/profiles.json": "92c322584c0bff45acdc23e00e0f8f6c15de246792fbd031a6b96f53d41c5c40",
+        "reports/source-defects.json": "acc3b73466efe0a8036528f701cb11a287c06c62f1a4ce9745216e5ab9b4042d"
+      }
+    },
+    {
+      "gate": "N5",
+      "status": "PASS",
+      "scope": "Independent extracted build, original oracle, exact patch replay, installed cold recovery and reproducible binaries",
+      "evidence": {
+        "reports/standalone-clean-validation.json": "5847e270703dd596b6fcd09c6097c48469f5451c3bda871bede2451951285659",
+        "reports/patch-replay.log": "adc1571854c34b0513ee91be55d81ab1fdc22b1b27b8ff748178ae9f67bfa394",
+        "HANDOFF.md": "b465878bc693f5999c33ccfe03a0431d7162f6319766643034bd589eb117209f",
+        "README.md": "62660aec7912e095a7eb4dfe723ec94993d9c6aac733c8077285aa26b708216a"
+      }
+    }
+  ],
+  "fresh_source_totals": {
+    "cases": 284,
+    "pass": 284,
+    "fail": 0,
+    "values": 10004036,
+    "raw_byte_identical": 272,
+    "raw_byte_compared": 282,
+    "source_UB_frames_rejected": 10,
+    "FinalBits": 339878304
+  },
+  "additional_profiles": {
+    "clang": {
+      "cases": 284,
+      "pass": 284,
+      "fail": 0,
+      "values": 10004036,
+      "byte_identical": 284
+    },
+    "AArch64_QEMU": {
+      "cases": 56,
+      "pass": 56,
+      "fail": 0,
+      "values": 1371908,
+      "byte_identical": 56
+    }
+  },
+  "limits": [
+    "No universal bitstream equivalence on original UB paths; 10 source FACT[10] frames expected rejected, 2 special IEEE adaptive source encodes not run on frozen UB domain.",
+    "Original release parity on source UB arithmetic is empirical only; bitpattern and safe output source decode are independent checks.",
+    "AVX512 and publication intrinsic fused decoders remain unopened, without a FULL_PARITY claim.",
+    "No internal MT, continuous stream, GPU, timestamps/null mask, Benchmark integration or FORMAL performance claim.",
+    "System C/C++ libraries and QEMU not sanitizer-instrumented; ARM is emulated, not physical.",
+    "n<=2^24 checked resource ceiling; maximum-sized allocation is not asserted tested."
+  ],
+  "build_note": "CLI build RPATH uses $ORIGIN for reproducible relocation; initial candidate had identical library but differing CLI build-id from absolute build paths. Initial failed reproducibility check is preserved in history; final clean binaries both match."
+}

@@ -1,0 +1,518 @@
+# Frozen by generate_all_core_experiments.py; no result-dependent tuning.
+schema = "tsbench.experiment/1"
+name = "quality-variant-quantized-strict-fresh"
+output = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/runs/forecasting-20261018-1614/quality-variant-quantized-strict-fresh"
+
+[[datasets]]
+id = "ILI-f32"
+format = "npy"
+component = "V"
+order = "C"
+path = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261018-1614/typed/ILI-f32.npy"
+source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/ILI.csv"
+schema = { forecasting_source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/ILI.csv", forecasting_source_sha256 = "be6fff8f58a70496a9c87e04c3ed6ebcc3ace97474dc78e605813571ff490298", forecasting_family = "ILI", all_source_rows_and_value_columns = true }
+
+[[datasets]]
+id = "NASDAQ-f32"
+format = "npy"
+component = "V"
+order = "C"
+path = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261018-1614/typed/NASDAQ-f32.npy"
+source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/NASDAQ.csv"
+schema = { forecasting_source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/NASDAQ.csv", forecasting_source_sha256 = "3137963956dedc8c6db174b9eda2c52a2dd375a0c0718343f5a5de68b023f8f1", forecasting_family = "NASDAQ", all_source_rows_and_value_columns = true }
+
+[[datasets]]
+id = "NYSE-f32"
+format = "npy"
+component = "V"
+order = "C"
+path = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261018-1614/typed/NYSE-f32.npy"
+source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/NYSE.csv"
+schema = { forecasting_source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/NYSE.csv", forecasting_source_sha256 = "f50bb8a45bb22289de96d79034490aca2c66542234817dca9b0c9a9d2b8250d7", forecasting_family = "NYSE", all_source_rows_and_value_columns = true }
+
+[[datasets]]
+id = "bitcoin_dataset_without_missing_values_9-f32"
+format = "npy"
+component = "V"
+order = "C"
+path = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261018-1614/typed/bitcoin_dataset_without_missing_values_9-f32.npy"
+source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/bitcoin_dataset_without_missing_values_9.csv"
+schema = { forecasting_source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/bitcoin_dataset_without_missing_values_9.csv", forecasting_source_sha256 = "bee54fdd9f0a2433521555aa9a1ed90c3f2bfac19f9aed4d7e58b1671fc2db93", forecasting_family = "bitcoin", all_source_rows_and_value_columns = true }
+
+[[datasets]]
+id = "cif_2016_dataset_16-f32"
+format = "npy"
+component = "V"
+order = "C"
+path = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261018-1614/typed/cif_2016_dataset_16-f32.npy"
+source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/cif_2016_dataset_16.csv"
+schema = { forecasting_source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/cif_2016_dataset_16.csv", forecasting_source_sha256 = "ee65a7cd76f3e35cd5be7b962d8a538ba72358ff9b29b78dbabec6208224f926", forecasting_family = "cif_2016", all_source_rows_and_value_columns = true }
+
+[[datasets]]
+id = "dominick_dataset_47900-f32"
+format = "npy"
+component = "V"
+order = "C"
+path = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261018-1614/typed/dominick_dataset_47900-f32.npy"
+source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/dominick_dataset_47900.csv"
+schema = { forecasting_source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/dominick_dataset_47900.csv", forecasting_source_sha256 = "6a12341239b8561f5103b0dd690be115542cf83173d89993ce5957b4b23a35c3", forecasting_family = "dominick", all_source_rows_and_value_columns = true }
+
+[[datasets]]
+id = "economics_22-f32"
+format = "npy"
+component = "V"
+order = "C"
+path = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261018-1614/typed/economics_22-f32.npy"
+source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/economics_22.csv"
+schema = { forecasting_source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/economics_22.csv", forecasting_source_sha256 = "a53efe889773a337daed0c0723c1ee04abcbdd90d35a5ee953612c8df5d51007", forecasting_family = "economics", all_source_rows_and_value_columns = true }
+
+[[datasets]]
+id = "finance_66-f32"
+format = "npy"
+component = "V"
+order = "C"
+path = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261018-1614/typed/finance_66-f32.npy"
+source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/finance_66.csv"
+schema = { forecasting_source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/finance_66.csv", forecasting_source_sha256 = "321c41d38b11239590474692b869740b7234acd262403fa4dcb83f35865a6ec2", forecasting_family = "finance", all_source_rows_and_value_columns = true }
+
+[[datasets]]
+id = "human_26-f32"
+format = "npy"
+component = "V"
+order = "C"
+path = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261018-1614/typed/human_26-f32.npy"
+source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/human_26.csv"
+schema = { forecasting_source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/human_26.csv", forecasting_source_sha256 = "74abcbb77ddd2d5f32559eaf0dc47739100f268b08b4a742b71b53f7ba411d32", forecasting_family = "human", all_source_rows_and_value_columns = true }
+
+[[datasets]]
+id = "kdd_cup_2018_dataset_without_missing_values_3-f32"
+format = "npy"
+component = "V"
+order = "C"
+path = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261018-1614/typed/kdd_cup_2018_dataset_without_missing_values_3-f32.npy"
+source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/kdd_cup_2018_dataset_without_missing_values_3.csv"
+schema = { forecasting_source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/kdd_cup_2018_dataset_without_missing_values_3.csv", forecasting_source_sha256 = "02b1584b84a673399067393f307cf1eb4822867b9b6ad3b610e8a0f75bea0c6f", forecasting_family = "kdd_cup_2018", all_source_rows_and_value_columns = true }
+
+[[datasets]]
+id = "m1_monthly_dataset_297-f32"
+format = "npy"
+component = "V"
+order = "C"
+path = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261018-1614/typed/m1_monthly_dataset_297-f32.npy"
+source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/m1_monthly_dataset_297.csv"
+schema = { forecasting_source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/m1_monthly_dataset_297.csv", forecasting_source_sha256 = "f4f6b9266f848c182d742517e46ad5fb59592b12cbe636899e623fbff5ddc29e", forecasting_family = "m1_monthly", all_source_rows_and_value_columns = true }
+
+[[datasets]]
+id = "m1_quarterly_dataset_91-f32"
+format = "npy"
+component = "V"
+order = "C"
+path = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261018-1614/typed/m1_quarterly_dataset_91-f32.npy"
+source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/m1_quarterly_dataset_91.csv"
+schema = { forecasting_source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/m1_quarterly_dataset_91.csv", forecasting_source_sha256 = "1bdff9db7e6976ee89da938f0fb630b009adf3aa791c045eadb8667c7b884ef8", forecasting_family = "m1_quarterly", all_source_rows_and_value_columns = true }
+
+[[datasets]]
+id = "m1_yearly_dataset_31-f32"
+format = "npy"
+component = "V"
+order = "C"
+path = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261018-1614/typed/m1_yearly_dataset_31-f32.npy"
+source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/m1_yearly_dataset_31.csv"
+schema = { forecasting_source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/m1_yearly_dataset_31.csv", forecasting_source_sha256 = "b766c2f01224cdf04fea4d5d365db159e2bee7b85da08fca05e8364593324d0d", forecasting_family = "m1_yearly", all_source_rows_and_value_columns = true }
+
+[[datasets]]
+id = "m3_monthly_dataset_261-f32"
+format = "npy"
+component = "V"
+order = "C"
+path = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261018-1614/typed/m3_monthly_dataset_261-f32.npy"
+source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/m3_monthly_dataset_261.csv"
+schema = { forecasting_source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/m3_monthly_dataset_261.csv", forecasting_source_sha256 = "0c9015988e76a70d4203e9284286d5e34a40a2ceb6521058f58bc19c5f198643", forecasting_family = "m3_monthly", all_source_rows_and_value_columns = true }
+
+[[datasets]]
+id = "m3_other_dataset_66-f32"
+format = "npy"
+component = "V"
+order = "C"
+path = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261018-1614/typed/m3_other_dataset_66-f32.npy"
+source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/m3_other_dataset_66.csv"
+schema = { forecasting_source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/m3_other_dataset_66.csv", forecasting_source_sha256 = "e2918386e743ac788a6d280e49cfc01a09eed2d137f9a48e392eb573c5f3ea48", forecasting_family = "m3_other", all_source_rows_and_value_columns = true }
+
+[[datasets]]
+id = "m3_quarterly_dataset_416-f32"
+format = "npy"
+component = "V"
+order = "C"
+path = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261018-1614/typed/m3_quarterly_dataset_416-f32.npy"
+source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/m3_quarterly_dataset_416.csv"
+schema = { forecasting_source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/m3_quarterly_dataset_416.csv", forecasting_source_sha256 = "7b8bebb8e7237f43d945ae6a09420157bbfa26e5909957658cd5adc388baad32", forecasting_family = "m3_quarterly", all_source_rows_and_value_columns = true }
+
+[[datasets]]
+id = "m3_yearly_dataset_173-f32"
+format = "npy"
+component = "V"
+order = "C"
+path = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261018-1614/typed/m3_yearly_dataset_173-f32.npy"
+source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/m3_yearly_dataset_173.csv"
+schema = { forecasting_source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/m3_yearly_dataset_173.csv", forecasting_source_sha256 = "3661af0da01c6199031916857a63ee2ff18af595d43c7265999b535bd3d2198b", forecasting_family = "m3_yearly", all_source_rows_and_value_columns = true }
+
+[[datasets]]
+id = "m4_daily_dataset_3070-f32"
+format = "npy"
+component = "V"
+order = "C"
+path = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261018-1614/typed/m4_daily_dataset_3070-f32.npy"
+source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/m4_daily_dataset_3070.csv"
+schema = { forecasting_source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/m4_daily_dataset_3070.csv", forecasting_source_sha256 = "b3af754e32123ec71da0cceca501f20654b251a5c5e9be5ebc7bede5ce983449", forecasting_family = "m4_daily", all_source_rows_and_value_columns = true }
+
+[[datasets]]
+id = "m4_hourly_dataset_207-f32"
+format = "npy"
+component = "V"
+order = "C"
+path = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261018-1614/typed/m4_hourly_dataset_207-f32.npy"
+source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/m4_hourly_dataset_207.csv"
+schema = { forecasting_source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/m4_hourly_dataset_207.csv", forecasting_source_sha256 = "85a2a3aa89f6955d69647daec815af3f281d1e46c03f5b049ad01b39c5d8231b", forecasting_family = "m4_hourly", all_source_rows_and_value_columns = true }
+
+[[datasets]]
+id = "m4_monthly_dataset_38783-f32"
+format = "npy"
+component = "V"
+order = "C"
+path = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261018-1614/typed/m4_monthly_dataset_38783-f32.npy"
+source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/m4_monthly_dataset_38783.csv"
+schema = { forecasting_source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/m4_monthly_dataset_38783.csv", forecasting_source_sha256 = "c46aaafccb615f6038bc66821baa5222a9e9095f4feb049027400e31b8507fe4", forecasting_family = "m4_monthly", all_source_rows_and_value_columns = true }
+
+[[datasets]]
+id = "m4_quarterly_dataset_19867-f32"
+format = "npy"
+component = "V"
+order = "C"
+path = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261018-1614/typed/m4_quarterly_dataset_19867-f32.npy"
+source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/m4_quarterly_dataset_19867.csv"
+schema = { forecasting_source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/m4_quarterly_dataset_19867.csv", forecasting_source_sha256 = "6ad70b741326dd92cdc50cf2995a8991fb0e150b33b1d3144388ee53dbd94d54", forecasting_family = "m4_quarterly", all_source_rows_and_value_columns = true }
+
+[[datasets]]
+id = "m4_weekly_dataset_36-f32"
+format = "npy"
+component = "V"
+order = "C"
+path = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261018-1614/typed/m4_weekly_dataset_36-f32.npy"
+source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/m4_weekly_dataset_36.csv"
+schema = { forecasting_source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/m4_weekly_dataset_36.csv", forecasting_source_sha256 = "8159aa127527b6a000c1eb39474799179fe7a2c52f8d364492c5d10e0bc78f2f", forecasting_family = "m4_weekly", all_source_rows_and_value_columns = true }
+
+[[datasets]]
+id = "m4_yearly_dataset_664-f32"
+format = "npy"
+component = "V"
+order = "C"
+path = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261018-1614/typed/m4_yearly_dataset_664-f32.npy"
+source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/m4_yearly_dataset_664.csv"
+schema = { forecasting_source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/m4_yearly_dataset_664.csv", forecasting_source_sha256 = "2fa24f67ea8f2bdfec1383fc61f1467bdc107a2b22d24c5baf46db0400c7538e", forecasting_family = "m4_yearly", all_source_rows_and_value_columns = true }
+
+[[datasets]]
+id = "nature_73-f32"
+format = "npy"
+component = "V"
+order = "C"
+path = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261018-1614/typed/nature_73-f32.npy"
+source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/nature_73.csv"
+schema = { forecasting_source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/nature_73.csv", forecasting_source_sha256 = "8b03b1436677e5787edce0d11ba509ad7c92a72a02b747c478901d9bec54846b", forecasting_family = "nature", all_source_rows_and_value_columns = true }
+
+[[datasets]]
+id = "pedestrian_counts_dataset_58-f32"
+format = "npy"
+component = "V"
+order = "C"
+path = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261018-1614/typed/pedestrian_counts_dataset_58-f32.npy"
+source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/pedestrian_counts_dataset_58.csv"
+schema = { forecasting_source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/pedestrian_counts_dataset_58.csv", forecasting_source_sha256 = "a69ed2e4374c8cd076f59dfcc240044fc303207e5fbc4d64ec01a4419ddef894", forecasting_family = "pedestrian_counts", all_source_rows_and_value_columns = true }
+
+[[datasets]]
+id = "tourism_monthly_dataset_189-f32"
+format = "npy"
+component = "V"
+order = "C"
+path = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261018-1614/typed/tourism_monthly_dataset_189-f32.npy"
+source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/tourism_monthly_dataset_189.csv"
+schema = { forecasting_source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/tourism_monthly_dataset_189.csv", forecasting_source_sha256 = "cf22362ddb744f244a95d466858ade19e0ef48a67b880757a67f291b15ba3f37", forecasting_family = "tourism_monthly", all_source_rows_and_value_columns = true }
+
+[[datasets]]
+id = "tourism_quarterly_dataset_318-f32"
+format = "npy"
+component = "V"
+order = "C"
+path = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261018-1614/typed/tourism_quarterly_dataset_318-f32.npy"
+source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/tourism_quarterly_dataset_318.csv"
+schema = { forecasting_source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/tourism_quarterly_dataset_318.csv", forecasting_source_sha256 = "30209e7eda061be72684b84c5bdda3d71fbdc04e0065d2c099f64da2d970cddd", forecasting_family = "tourism_quarterly", all_source_rows_and_value_columns = true }
+
+[[datasets]]
+id = "tourism_yearly_dataset_396-f32"
+format = "npy"
+component = "V"
+order = "C"
+path = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261018-1614/typed/tourism_yearly_dataset_396-f32.npy"
+source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/tourism_yearly_dataset_396.csv"
+schema = { forecasting_source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/tourism_yearly_dataset_396.csv", forecasting_source_sha256 = "160508696fd952d328e14cd3e6f528ae2f61d67b481e15ff2b6a1b565598fb2a", forecasting_family = "tourism_yearly", all_source_rows_and_value_columns = true }
+
+[[datasets]]
+id = "us_births_dataset_1-f32"
+format = "npy"
+component = "V"
+order = "C"
+path = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261018-1614/typed/us_births_dataset_1-f32.npy"
+source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/us_births_dataset_1.csv"
+schema = { forecasting_source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/us_births_dataset_1.csv", forecasting_source_sha256 = "d471e313daba3a1de7c5fd0646d14b76e5d0790a0acae742a24ef241153e462e", forecasting_family = "us_births", all_source_rows_and_value_columns = true }
+
+[[datasets]]
+id = "vehicle_trips_dataset_without_missing_values_254-f32"
+format = "npy"
+component = "V"
+order = "C"
+path = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261018-1614/typed/vehicle_trips_dataset_without_missing_values_254-f32.npy"
+source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/vehicle_trips_dataset_without_missing_values_254.csv"
+schema = { forecasting_source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/vehicle_trips_dataset_without_missing_values_254.csv", forecasting_source_sha256 = "0d53a79e79f3588bd69ecd774915e930de00c7310b9feb0b3e610cd31b22d8c0", forecasting_family = "vehicle_trips", all_source_rows_and_value_columns = true }
+
+[[datasets]]
+id = "weather_dataset_39-f32"
+format = "npy"
+component = "V"
+order = "C"
+path = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261018-1614/typed/weather_dataset_39-f32.npy"
+source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/weather_dataset_39.csv"
+schema = { forecasting_source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/weather_dataset_39.csv", forecasting_source_sha256 = "287bd21600840e8001e62ca79845438e22dbd3a56e916641d78a234b1db55eca", forecasting_family = "weather", all_source_rows_and_value_columns = true }
+
+[[datasets]]
+id = "AQShunyi-f32"
+format = "npy"
+component = "V"
+order = "C"
+path = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261018-1614/typed/AQShunyi-f32.npy"
+source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/AQShunyi.csv"
+schema = { forecasting_source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/AQShunyi.csv", forecasting_source_sha256 = "d4d05d2575d0d806016e37f53039841388b6828d1c754fbea022510ac90dc8b2", forecasting_family = "AQShunyi", all_source_rows_and_value_columns = true }
+
+[[datasets]]
+id = "AQWan-f32"
+format = "npy"
+component = "V"
+order = "C"
+path = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261018-1614/typed/AQWan-f32.npy"
+source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/AQWan.csv"
+schema = { forecasting_source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/AQWan.csv", forecasting_source_sha256 = "1b3e798b07f4bac2b4f3398b234644443f2d14888d5afb975189a1fde34bc56c", forecasting_family = "AQWan", all_source_rows_and_value_columns = true }
+
+[[datasets]]
+id = "Covid-19-f32"
+format = "npy"
+component = "V"
+order = "C"
+path = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261018-1614/typed/Covid-19-f32.npy"
+source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/Covid-19.csv"
+schema = { forecasting_source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/Covid-19.csv", forecasting_source_sha256 = "9867153e4ab0643993ef015c420be614a2bd9039b7e33300a87bb7853dada6c2", forecasting_family = "Covid-19", all_source_rows_and_value_columns = true }
+
+[[datasets]]
+id = "CzeLan-f32"
+format = "npy"
+component = "V"
+order = "C"
+path = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261018-1614/typed/CzeLan-f32.npy"
+source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/CzeLan.csv"
+schema = { forecasting_source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/CzeLan.csv", forecasting_source_sha256 = "5d55b25fc30a8f76d37abddfa0a92db77ed8e89116103a44ca0b15f4a933db70", forecasting_family = "CzeLan", all_source_rows_and_value_columns = true }
+
+[[datasets]]
+id = "ETTh1-f32"
+format = "npy"
+component = "V"
+order = "C"
+path = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261018-1614/typed/ETTh1-f32.npy"
+source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/ETTh1.csv"
+schema = { forecasting_source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/ETTh1.csv", forecasting_source_sha256 = "a5b9850ed853c62428b41a2d07a640e9eb904e3940442c326839a7e219855963", forecasting_family = "ETTh1", all_source_rows_and_value_columns = true }
+
+[[datasets]]
+id = "ETTh2-f32"
+format = "npy"
+component = "V"
+order = "C"
+path = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261018-1614/typed/ETTh2-f32.npy"
+source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/ETTh2.csv"
+schema = { forecasting_source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/ETTh2.csv", forecasting_source_sha256 = "d27e44534e8ed71761d9fedf884469b66b4e1a5e70e9980651e2126bce9b21af", forecasting_family = "ETTh2", all_source_rows_and_value_columns = true }
+
+[[datasets]]
+id = "ETTm1-f32"
+format = "npy"
+component = "V"
+order = "C"
+path = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261018-1614/typed/ETTm1-f32.npy"
+source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/ETTm1.csv"
+schema = { forecasting_source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/ETTm1.csv", forecasting_source_sha256 = "93c1630ff330ac3570eb5b29dbb843330bfae807aadb15a179dd51e5f990f046", forecasting_family = "ETTm1", all_source_rows_and_value_columns = true }
+
+[[datasets]]
+id = "ETTm2-f32"
+format = "npy"
+component = "V"
+order = "C"
+path = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261018-1614/typed/ETTm2-f32.npy"
+source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/ETTm2.csv"
+schema = { forecasting_source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/ETTm2.csv", forecasting_source_sha256 = "9ae9ad1e65c7e5723bed423b0c5bad3ae8d9140f4178fed890b5e2bf4490644d", forecasting_family = "ETTm2", all_source_rows_and_value_columns = true }
+
+[[datasets]]
+id = "Electricity-f32"
+format = "npy"
+component = "V"
+order = "C"
+path = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261018-1614/typed/Electricity-f32.npy"
+source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/Electricity.csv"
+schema = { forecasting_source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/Electricity.csv", forecasting_source_sha256 = "7b7d6099b4cc2be5ab2edf1234b61d3a2b12dc415b9651380f15d30a41b630df", forecasting_family = "Electricity", all_source_rows_and_value_columns = true }
+
+[[datasets]]
+id = "Exchange-f32"
+format = "npy"
+component = "V"
+order = "C"
+path = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261018-1614/typed/Exchange-f32.npy"
+source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/Exchange.csv"
+schema = { forecasting_source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/Exchange.csv", forecasting_source_sha256 = "3c2b8fa1aafb8d50e1e8bc885b4e0e3d03663d0ef2dee819cb56be3c71a1e346", forecasting_family = "Exchange", all_source_rows_and_value_columns = true }
+
+[[datasets]]
+id = "FRED-MD-f32"
+format = "npy"
+component = "V"
+order = "C"
+path = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261018-1614/typed/FRED-MD-f32.npy"
+source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/FRED-MD.csv"
+schema = { forecasting_source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/FRED-MD.csv", forecasting_source_sha256 = "c1c8825b24f8c8285e73744b9fe89707b2675cfe17c3d3ddea16ab8d7977af02", forecasting_family = "FRED-MD", all_source_rows_and_value_columns = true }
+
+[[datasets]]
+id = "METR-LA-f32"
+format = "npy"
+component = "V"
+order = "C"
+path = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261018-1614/typed/METR-LA-f32.npy"
+source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/METR-LA.csv"
+schema = { forecasting_source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/METR-LA.csv", forecasting_source_sha256 = "41a14cb0b0df79fdda15dda1152a4498d9ddbad1955f5c34c31340de04f5a150", forecasting_family = "METR-LA", all_source_rows_and_value_columns = true }
+
+[[datasets]]
+id = "NN5-f32"
+format = "npy"
+component = "V"
+order = "C"
+path = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261018-1614/typed/NN5-f32.npy"
+source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/NN5.csv"
+schema = { forecasting_source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/NN5.csv", forecasting_source_sha256 = "3fb343bcd2063ebef3d35c508aa944529d9667c9343711f2e6baf2b5aa60fa05", forecasting_family = "NN5", all_source_rows_and_value_columns = true }
+
+[[datasets]]
+id = "PEMS-BAY-f32"
+format = "npy"
+component = "V"
+order = "C"
+path = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261018-1614/typed/PEMS-BAY-f32.npy"
+source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/PEMS-BAY.csv"
+schema = { forecasting_source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/PEMS-BAY.csv", forecasting_source_sha256 = "43a0d7158da621175e10af93b235b98950ea473b7eb209362831b564f612b50b", forecasting_family = "PEMS-BAY", all_source_rows_and_value_columns = true }
+
+[[datasets]]
+id = "PEMS04-f32"
+format = "npy"
+component = "V"
+order = "C"
+path = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261018-1614/typed/PEMS04-f32.npy"
+source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/PEMS04.csv"
+schema = { forecasting_source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/PEMS04.csv", forecasting_source_sha256 = "9eafcbb54d544ff6b6dfbda87f7d1739fd66a4c42fa33a5e973fd00605796643", forecasting_family = "PEMS04", all_source_rows_and_value_columns = true }
+
+[[datasets]]
+id = "PEMS08-f32"
+format = "npy"
+component = "V"
+order = "C"
+path = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261018-1614/typed/PEMS08-f32.npy"
+source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/PEMS08.csv"
+schema = { forecasting_source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/PEMS08.csv", forecasting_source_sha256 = "07e741501c1aa556ccba1ee0d2a93b09d50f546feced96388a17e9431ab32473", forecasting_family = "PEMS08", all_source_rows_and_value_columns = true }
+
+[[datasets]]
+id = "Solar-f32"
+format = "npy"
+component = "V"
+order = "C"
+path = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261018-1614/typed/Solar-f32.npy"
+source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/Solar.csv"
+schema = { forecasting_source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/Solar.csv", forecasting_source_sha256 = "a1c68c5b9f9a477cc39d735b93ba92fb044df8dd41793a484ac1e973da26b7bb", forecasting_family = "Solar", all_source_rows_and_value_columns = true }
+
+[[datasets]]
+id = "Traffic-f32"
+format = "npy"
+component = "V"
+order = "C"
+path = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261018-1614/typed/Traffic-f32.npy"
+source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/Traffic.csv"
+schema = { forecasting_source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/Traffic.csv", forecasting_source_sha256 = "b7ffd67234a45ff81f17f16e742ba5c02abae162cfe0f59ddbf64ea4ddc17633", forecasting_family = "Traffic", all_source_rows_and_value_columns = true }
+
+[[datasets]]
+id = "Weather-f32"
+format = "npy"
+component = "V"
+order = "C"
+path = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261018-1614/typed/Weather-f32.npy"
+source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/Weather.csv"
+schema = { forecasting_source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/Weather.csv", forecasting_source_sha256 = "0ca16610da8c784b57c6fe6281feae6bba750dbc4b8717329161bb1a22c492a8", forecasting_family = "Weather", all_source_rows_and_value_columns = true }
+
+[[datasets]]
+id = "Wike2000-f32"
+format = "npy"
+component = "V"
+order = "C"
+path = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261018-1614/typed/Wike2000-f32.npy"
+source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/Wike2000.csv"
+schema = { forecasting_source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/Wike2000.csv", forecasting_source_sha256 = "8967cb784f1b3c7744593473e933b614ee82ab154be07964ce19e528de9b04ad", forecasting_family = "Wike2000", all_source_rows_and_value_columns = true }
+
+[[datasets]]
+id = "Wind-f32"
+format = "npy"
+component = "V"
+order = "C"
+path = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261018-1614/typed/Wind-f32.npy"
+source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/Wind.csv"
+schema = { forecasting_source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/Wind.csv", forecasting_source_sha256 = "8810a5f3a56c7d115dcf7e6cc78680f3723ead9dcd822dfb9bd4aadf7ba7faeb", forecasting_family = "Wind", all_source_rows_and_value_columns = true }
+
+[[datasets]]
+id = "ZafNoo-f32"
+format = "npy"
+component = "V"
+order = "C"
+path = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261018-1614/typed/ZafNoo-f32.npy"
+source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/ZafNoo.csv"
+schema = { forecasting_source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/ZafNoo.csv", forecasting_source_sha256 = "d77ddc838877c83ad8d8ac902feea471b5f62fb964ae44ba3f0841509e6a7ff6", forecasting_family = "ZafNoo", all_source_rows_and_value_columns = true }
+
+[[methods]]
+id = "swing-filter-disjoint-quantized-strict-abs"
+codec = "swing-filter-disjoint-quantized"
+params = { epsilon = "0.1", quality_mode = "strict_abs" }
+
+[[profiles]]
+id = "cpu-single"
+device = "cpu"
+native_threads = 1
+object_workers = 1
+memory_limit_mb = 8192
+runtime_preload = ["/usr/lib/x86_64-linux-gnu/libstdc++.so.6"]
+
+[task]
+kind = "values"
+fidelity = "empirical_quality"
+boundary = "native_core"
+lifecycle = "fresh_request"
+cache_policy = "natural"
+
+[execution]
+sessions = 2
+rounds = 7
+warmup_objects = 0
+native_loops = 1
+native_warmup_loops = 1
+native_batch_memory_mb = 2048
+timeout_s = 1800
+qualification_cache = true
+save_artifacts = false
+max_pending_workers = 8
+seed = 20261018
+
+[analysis]
+summary = "median_iqr"
+inference = "none"

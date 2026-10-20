@@ -1,0 +1,57 @@
+# Frozen by generate_native_experiments.py; no result-dependent tuning.
+schema = "tsbench.experiment/1"
+name = "native-api-bounded"
+output = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/runs/native-api-bounded-20261015"
+
+[[datasets]]
+id = "float64"
+format = "npy"
+path = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/examples/data/float64.npy"
+component = "V"
+
+[[datasets]]
+id = "float32"
+format = "npy"
+path = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/examples/data/float32.npy"
+component = "V"
+
+[[methods]]
+id = "serf-qt"
+codec = "serf-qt"
+params = { error_bound = "0.01" }
+
+[[methods]]
+id = "serf-xor"
+codec = "serf-xor"
+params = { error_bound = "0.01" }
+
+[[methods]]
+id = "zfp-accuracy-1d"
+codec = "zfp-accuracy-1d"
+params = { error_bound = "0.01" }
+
+[[profiles]]
+id = "cpu-single"
+device = "cpu"
+native_threads = 1
+object_workers = 1
+
+[task]
+kind = "values"
+fidelity = "bounded_abs"
+boundary = "native_api"
+lifecycle = "prepared"
+cache_policy = "natural"
+error_bound = "0.01"
+
+[execution]
+sessions = 2
+rounds = 7
+warmup_objects = 0
+native_loops = 8
+native_warmup_loops = 2
+native_batch_memory_mb = 256
+timeout_s = 120
+qualification_cache = true
+save_artifacts = true
+seed = 20261015

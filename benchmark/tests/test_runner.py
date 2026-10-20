@@ -153,7 +153,7 @@ def test_records_npz_binary_masks_pass_suite_and_exact_admission(tmp_path, mask_
     config["datasets"] = [{"id": "records", "path": source.name, "format": "npz",
                            "components": {"V": "V", "T": "T", "mask": "mask"},
                            "time_unit": "ns"}]
-    config["task"] = {"kind": "records", "fidelity": "bitwise"}
+    config["task"] = {"kind": "records", "fidelity": "bitwise", "boundary":"object_memory", "lifecycle":"independent_object"}
     config["execution"]["qualification_cache"] = False
 
     root = run(config, tmp_path / "records-run")

@@ -1,0 +1,46 @@
+# Chimp research profile example; run explicitly, not a performance acceptance.
+schema = "tsbench.experiment/1"
+name = "chimp-family-lossless32"
+output = "../../runs/chimp-family-lossless32-20261017"
+
+[[datasets]]
+id = "etth1-ot-f32"
+format = "csv"
+path = "../../../材料/TSBench_Corpus/ETTh1.csv"
+dtype = "<f4"
+columns = ["OT"]
+start = 2048
+stop = 2560
+
+[[methods]]
+id = "chimp32"
+codec = "chimp32"
+
+[[methods]]
+id = "chimpn32"
+codec = "chimpn32"
+
+[[profiles]]
+id = "cpu-single"
+device = "cpu"
+native_threads = 1
+object_workers = 1
+
+[task]
+kind = "values"
+fidelity = "bitwise"
+boundary = "native_core"
+lifecycle = "prepared"
+cache_policy = "natural"
+
+[execution]
+sessions = 1
+rounds = 7
+native_loops = 8
+native_warmup_loops = 2
+timeout_s = 120
+save_artifacts = true
+
+[analysis]
+summary = "median_iqr"
+inference = "none"

@@ -1,0 +1,57 @@
+{
+  "format": "local standalone SBOM v1",
+  "implementation": "cwida-alp-native-safe-v1",
+  "route": "NATIVE_PORT",
+  "licenses": [
+    {
+      "component": "cwida ALP and in-tree FastLanes generated primitives",
+      "version": "31ca0ed11c93c99d3f5b5c30e01a3e1c3832d3ce",
+      "license": "MIT",
+      "notice": "LICENSE.upstream",
+      "notice_sha256": "905b4e0855ce0a277d19bb7c00d61e3d46598eb62446a95fd8c8c6cccad53d86"
+    },
+    {
+      "component": "new wrapper, CLI, tests and replay tools",
+      "license": "MIT",
+      "notice": "LICENSE",
+      "notice_sha256": "205f58e6161c98a3343ca1b3d0525d430de34890f15bab844b4f5be95896a03b"
+    }
+  ],
+  "source_dependencies": "vendored original headers and five committed generated/native TUs; no build-time generator, downloads, GTest or external codec",
+  "runtime": "Linux libc/libm/libstdc++/libgcc plus loader; exact files and hash in reports/BUILD_LOCK.json",
+  "verification_only": [
+    "independent frozen source driver",
+    "Python 3.11 CSV preparation",
+    "Clang sanitizer/libFuzzer runtimes",
+    "GCC 11 AArch64 cross toolchain and QEMU 6.2"
+  ],
+  "source_archive": {
+    "archive": "upstream-31ca0ed.tar.gz",
+    "sha256": "4147b3c601e4fa4939af378ef3ae2e1b13407e279e8b8719b513812291e481bd",
+    "bytes": 154875,
+    "unmodified": true,
+    "source_lock_sha256": "c52e2303ec4a45afaa6da07af3f322bef89a29ab34d7b3f33e62a735d8eb7e4d",
+    "source_status": "git clean, no submodules, checked again 2026-10-17"
+  },
+  "vendor_files": {
+    "vendor/include/alp/common.hpp": "1ce00e6c0035b24a108cc54bceeb2d51e206c73570af5b6ddf814c2e8e3c6654",
+    "vendor/include/alp/config.hpp": "a8765c13b6749f9bcee159d6464733fc6e7159babb0d469d61d691e6f8f6acf1",
+    "vendor/include/alp/constants.hpp": "678a7e59902aa09e54ead214874c33322f27d8e3d87e948fb008f0b422074708",
+    "vendor/include/alp/decoder.hpp": "c4617f50894c11e2646385b14d6abe9e48e7bba20653ae53f95457240ac7745a",
+    "vendor/include/alp/encoder.hpp": "152c5eff98334f38aeaed9ec73e847496be81d85803e7d70bf8b44cdd50ea1f5",
+    "vendor/include/alp/falp.hpp": "bbb0fee084b2de5f0c76e9bd156cfc6eb02e5dd8a5f613d86cd8a8affb978be9",
+    "vendor/include/alp/rd.hpp": "c3f9b2b6f4161b2f3f19341520e3de2976f045b82b4c0188156058fb7dc7e43a",
+    "vendor/include/alp/sampler.hpp": "817bbb7576f809649efbb033a706c7c98b79ed9c322fcf114249038b82e54b2a",
+    "vendor/include/alp/storer.hpp": "b09515f1c2d470245c4fcd64795d13b75bcfee3840d0f2da8d3a11527417d3df",
+    "vendor/include/alp.hpp": "fbbb77d7033c01a915df11aad09e9ffb58def937fdf5be8aac1c54ae1053ce9a",
+    "vendor/include/fastlanes/ffor.hpp": "204d2a756ede07c6b93195a5613178bf504cd0891b1c83928c746bbf8bd7f6c9",
+    "vendor/include/fastlanes/macros.hpp": "e49ce2f92653b0860ce7600bc5bfd618923e91ad663ff19aadc1cd7519eb6958",
+    "vendor/include/fastlanes/unffor.hpp": "c5d75d0714ea30f6fc12be9ade733c28bbb1e9e9095700b47b1c88f2db787d64",
+    "vendor/src/CMakeLists.txt": "529071ef32ec28d5f6322b6010c76a1711baabe5c8b002c8fdf58703864a99bd",
+    "vendor/src/falp.cpp": "6fca13b00a6e4f6ad6f1cb93c10ca466150b2cd4d0836d27ce78d034751ba79a",
+    "vendor/src/fastlanes_ffor.cpp": "26de38c080f7936f21bf95f8eab9e2eea0e69ffba0c30dbb4d1b3ff005a0fafa",
+    "vendor/src/fastlanes_generated_ffor.cpp": "0dfdd1757675bec963a19d1ba9b392ac097a655c35dd2cbd52bc996eac51c95c",
+    "vendor/src/fastlanes_generated_unffor.cpp": "e0a15e0c8ac8fea96d0aabc14c48451e679491fca1e412e54f4faac2c121b5ca",
+    "vendor/src/fastlanes_unffor.cpp": "29835cad8de080df62adb9367c7ca301cbd897080b2c275e19833884aa65d2f9"
+  }
+}

@@ -26,6 +26,9 @@ codec = "leats-lossless-i64"
 transform = "integer_affine_gcd"
 
 [task]
+boundary = "object_memory"
+lifecycle = "independent_object"
+cache_policy = "natural"
 kind = "timestamps"
 fidelity = "bitwise"
 

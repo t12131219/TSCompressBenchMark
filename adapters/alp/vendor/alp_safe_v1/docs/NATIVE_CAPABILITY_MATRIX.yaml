@@ -1,0 +1,26 @@
+standard_version: v3.0
+route: NATIVE_PORT
+source_commit: 31ca0ed11c93c99d3f5b5c30e01a3e1c3832d3ce
+scope: safe-v1 bounded native profile
+full_upstream_parity: false
+capabilities:
+  - {key: float32_float64, classification: REQUIRED_PARITY, in_profile: true, evidence: include/alp.hpp}
+  - {key: adaptive_ALP_with_RD, classification: REQUIRED_PARITY, in_profile: true, evidence: include/alp/encoder.hpp}
+  - {key: forced_RD, classification: REQUIRED_PARITY, in_profile: true, evidence: include/alp/rd.hpp}
+  - {key: rowgroup_dictionary_sampling, classification: REQUIRED_PARITY, in_profile: true, evidence: include/alp/sampler.hpp}
+  - {key: FFOR_scalar_FALP, classification: REQUIRED_PARITY, in_profile: true, evidence: src/CMakeLists.txt}
+  - {key: AVX2_compile_time_encoder, classification: REQUIRED_PARITY, in_profile: true, evidence: include/alp/encoder.hpp}
+  - {key: AVX512_compile_time_encoder, classification: REQUIRED_PARITY, in_profile: false, status: NOT_OPENED_NO_HARDWARE, evidence: include/alp/encoder.hpp}
+  - {key: publication_AVX2_fused_decode, classification: REQUIRED_PARITY, in_profile: false, status: NOT_OPENED_PUBLICATION_BUILD, evidence: publication/source_code/generated/x86_64}
+  - {key: publication_AVX512_fused_decode, classification: REQUIRED_PARITY, in_profile: false, status: NOT_OPENED_NO_HARDWARE, evidence: publication/source_code/generated/x86_64}
+  - {key: publication_NEON_fused_decode, classification: REQUIRED_PARITY, in_profile: false, status: NOT_OPENED_PUBLICATION_BUILD, evidence: publication/source_code/generated/arm64v8}
+  - {key: publication_SVE_experimental, classification: OPTIONAL_OPTIMIZATION, in_profile: false, status: NOT_OPENED_DORMANT_UPSTREAM_PATH, reason: SVE generated source exists but publication arm64v8 CMake selects only NEON; SVE uses legacy headers and is outside release build, evidence: publication/source_code/generated/arm64v8/CMakeLists.txt}
+  - {key: SSE_WASM_helper_unit64_declarations, classification: NOT_APPLICABLE, in_profile: false, reason: declarations exist but no corresponding implemented export in the selected src or publication generated build; declaration alone does not establish an executable capability, evidence: include/alp/falp.hpp}
+  - {key: concurrent_calls_TLS, classification: REQUIRED_PARITY, in_profile: true, evidence: include/alp/encoder.hpp}
+  - {key: user_mutable_state, classification: REQUIRED_PARITY, in_profile: false, status: NATIVE_STATE_USED_INTERNALLY_NOT_PUBLIC_WRAPPER_API, evidence: include/alp/encoder.hpp}
+  - {key: MemReader_MemStorer, classification: NOT_APPLICABLE, in_profile: false, reason: unchecked memory utility; not complete codec serialization, evidence: include/alp/storer.hpp}
+  - {key: incremental_stream_flush_finalize_seek_backpressure, classification: NOT_APPLICABLE, reason: upstream exposes fixed block primitives only}
+  - {key: internal_MT_GPU_training_online_model_query_null_timestamp, classification: NOT_APPLICABLE, reason: absent from core source API}
+  - {key: one_shot_frame_capacity_errors_C_ABI, classification: NOT_APPLICABLE, in_profile: true, reason: new wrapper capability with separate tests}
+  - {key: runtime_ISA_dispatch, classification: NOT_APPLICABLE, reason: source uses compile time ISA macros}
+  - {key: inplace_zero_copy, classification: NOT_APPLICABLE, reason: distinct caller owned input/output workspaces in source codec API}

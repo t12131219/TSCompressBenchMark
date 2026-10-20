@@ -1,0 +1,49 @@
+# Frozen by generate_all_core_experiments.py; no result-dependent tuning.
+schema = "tsbench.experiment/1"
+name = "ZafNoo-f64-dzip-fresh"
+output = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/runs/forecasting-20261018-1614/ZafNoo-f64-dzip-fresh"
+
+[[datasets]]
+id = "ZafNoo-f64"
+path = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261018-1614/data/ZafNoo.npy"
+format = "npy"
+component = "V"
+order = "C"
+source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/ZafNoo.csv"
+schema = { forecasting_source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/ZafNoo.csv", forecasting_source_sha256 = "d77ddc838877c83ad8d8ac902feea471b5f62fb964ae44ba3f0841509e6a7ff6", forecasting_family = "ZafNoo", all_source_rows_and_value_columns = true }
+
+[[methods]]
+id = "dzip"
+codec = "dzip"
+
+[[profiles]]
+id = "cpu-dzip-three"
+device = "cpu"
+native_threads = 3
+object_workers = 1
+memory_limit_mb = 8192
+runtime_preload = ["/usr/lib/x86_64-linux-gnu/libstdc++.so.6"]
+
+[task]
+kind = "values"
+fidelity = "bitwise"
+boundary = "native_core"
+lifecycle = "fresh_request"
+cache_policy = "natural"
+
+[execution]
+sessions = 2
+rounds = 7
+warmup_objects = 0
+native_loops = 1
+native_warmup_loops = 1
+native_batch_memory_mb = 2048
+timeout_s = 1800
+qualification_cache = true
+save_artifacts = false
+max_pending_workers = 8
+seed = 20261018
+
+[analysis]
+summary = "median_iqr"
+inference = "none"

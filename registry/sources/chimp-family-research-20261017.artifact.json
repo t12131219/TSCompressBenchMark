@@ -1,0 +1,36 @@
+{
+  "schema_version": "tscb.source-artifact.v2",
+  "key": "chimp-family-research-20261017",
+  "kind": "FROZEN_SOURCE_REWRITE_RELEASE",
+  "identity": {
+    "implementation": "chimp-family-cpp-scalar-v1",
+    "upstream_repository": "https://github.com/panagiotisl/chimp",
+    "upstream_commit": "320d397157c7e0696b3c64dc1711fc17a3add3da",
+    "release_sha256": "7161320b6df76d07dc397a1199ca6341012e088ffebb5d10173cbbc11caf46dc",
+    "frozen_sources_sha256": "45899192a8c3d4e62edd67fd61ffc8b81df593c749d041030b2b60126949556b",
+    "source_path": "adapters/chimp_family/vendor/chimp_family"
+  },
+  "license": {
+    "spdx": "LicenseRef-Local-Research",
+    "status": "LOCAL_RESEARCH_ONLY",
+    "waiver_id": "CHIMP-LOCAL-RESEARCH-20261017",
+    "expires": "2026-11-17",
+    "redistribution": "NOT_GRANTED",
+    "files": [
+      "adapters/chimp_family/vendor/chimp_family/validation/WAIVER.json",
+      "adapters/chimp_family/vendor/chimp_family/SBOM.json"
+    ]
+  },
+  "build": {
+    "recipe": "tsbench._native_recipes._chimp_family_command",
+    "frozen_sources": "adapters/chimp_family/FROZEN_SOURCES.json",
+    "patches": []
+  },
+  "qualification": {
+    "standalone": "RESEARCH_REWRITE_VALIDATED",
+    "source_full_parity": "NOT_ASSERTED",
+    "bench_binding": "docs/chimp_integration/README.md",
+    "formal_performance": "NOT_RERUN"
+  },
+  "source_artifact_id": "v2:source-artifact:sha256:6ffe2ac124597732f26d62394482aeb825051f9ee5cbe6e18001348d6e7a60cc"
+}

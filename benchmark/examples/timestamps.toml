@@ -16,9 +16,6 @@ codec = "raw-store"
 id = "zstd"
 codec = "zstd-frame"
 [[methods]]
-id = "lzss"
-codec = "lzss-raw"
-[[methods]]
 id = "neats"
 codec = "neats-lossless-i64"
 [[methods]]
@@ -26,6 +23,9 @@ id = "leats"
 codec = "leats-lossless-i64"
 
 [task]
+boundary = "object_memory"
+lifecycle = "independent_object"
+cache_policy = "natural"
 kind = "timestamps"
 fidelity = "bitwise"
 

@@ -1,0 +1,314 @@
+{
+  "schema": "tsbench.native-all-design/1",
+  "design_role": "supplemental_neural_paths",
+  "date": "2026-10-15",
+  "generated_from": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/tools/generate_neural_core_experiments.py",
+  "generator_sha256": "sha256:b8d1b6054480ebef8d06b2c0c999a71aa3383d1f78f56367b2653e1bb8ac4d76",
+  "scope": "DeepZip inference; DZip BOOTSTRAP inference and COMBINED online training; both lifecycles",
+  "selection": "Complete original symbols4.npy uint8[257], fixed from source thresholds before formal runs; no result-dependent tuning",
+  "evidence_limit": "static registry/input checks and source-derived branch counts only; not executed branch counters or measured success",
+  "native_work_executed": false,
+  "short_stream_evidence": {
+    "design_path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/native-all/design.json",
+    "preserved": true,
+    "symbols": 64,
+    "predict_calls_per_operation": 0,
+    "online_train_batches_per_operation": 0,
+    "scope": "Original frozen short streams exercise uniform coding and complete model/container cost only; N<65 is a declared native extension"
+  },
+  "threshold_reason": "N>64 starts prediction; COMBINED first trains after symbol index 191, once 128 predictions close. N=257 gives 193 predictions, one full train batch and 65 predictions using updated weights. N=192 would train only after the final symbol.",
+  "training_note": "Per encode and per decode, COMBINED uses one 128x64 context batch and 128 labels, one forward/backward plus Adam update; no partial tail update. BOOTSTRAP never trains. DeepZip training remains external model authoring. DZip default initial weights are native seeded/untrained, not an imported trained checkpoint.",
+  "qualification_note": "Qualification and independent decode are run by the framework before measured trials; nominal counts below cover measured operations only and do not prove runtime branch execution.",
+  "source_references": [
+    {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/vendor/deepzip/src/deepzip.cpp",
+      "sha256": "sha256:313fc314956545157a14a6511ba6d41265e9583b7617a00e285fd7eb5a86298d",
+      "evidence": "encode_group/decode_group: first 64 symbols uniform; j=64..length-1 invokes predict; lanes=1"
+    },
+    {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/vendor/deepzip/contract_v1.md",
+      "sha256": "sha256:5e533cbc62e0b5df6f9516bf2de8764cb1abc460dbeaac3fa50e6447a0a79c2c",
+      "evidence": "N<65 is a safe short-stream extension; training is external model authoring, not codec execution"
+    },
+    {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/vendor/dzip/src/codec.cpp",
+      "sha256": "sha256:db4d1a58bc896f325bf52f124e765fb1f29790b741b0eb2e67e7b8fb7d555c7f",
+      "evidence": "encode_raw/decode_raw: first 64 uniform; predict thereafter; COMBINED adapts every 128 predicted symbols"
+    },
+    {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/vendor/dzip/src/nn.cpp",
+      "sha256": "sha256:53d8cfabb16245c4e68144c94beac109091b051b93808606abe6f861ecbf37f0",
+      "evidence": "Network::predict executes forward; Network::train differentiates a full batch and advances one Adam step"
+    },
+    {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/vendor/dzip/include/dzip_nn.hpp",
+      "sha256": "sha256:3369ce09e61d35325d074c4c0188164ed2723bc9b429a3e2e6f0bf5eb3904aa5",
+      "evidence": "TrainOptions: scalar TensorFlow Adam, lr=5e-4, beta1=.9, beta2=.999, epsilon=1e-8, microbatch=0"
+    },
+    {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/native/binding.cpp",
+      "sha256": "sha256:5740e843351292d4d3fed50cef535a47ec01a985b18ffb2e5d5b0597f590bbea",
+      "evidence": "DZip input-dependent seeded model is freshly created per encode; mode selects bootstrap_cpu/combined_cpu"
+    },
+    {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/examples/data/manifest.json",
+      "sha256": "sha256:a45c3adf206790b4a8628c431c56ab0f164dba71a54a93572e572fedee0023c6",
+      "evidence": "Existing symbols4 fixture is uint8[257]; never padded or repeated"
+    },
+    {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/tools/generate_all_core_experiments.py",
+      "sha256": "sha256:ba92a3ce865b0eacd86f1f1457beef0659e68c8e06f5ff41607f78304da4024c",
+      "evidence": "Shared static registry checks and serialization helpers"
+    }
+  ],
+  "configurations": [
+    {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/native-neural/native-neural-deepzip-prepared.toml",
+      "sha256": "sha256:378b566c25ca446253fc49d5a8a43da752e01b1ed9c25cc3c79d0a01b44c5553",
+      "requests": 1,
+      "sessions": 2,
+      "rounds": 7,
+      "native_loops": 8,
+      "native_warmup_loops": 2,
+      "timeout_s": 600
+    },
+    {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/native-neural/native-neural-deepzip-fresh.toml",
+      "sha256": "sha256:a43b7e266def68235959f15dd21ba478c3eda123c9bd5d574d077eb45f595f25",
+      "requests": 1,
+      "sessions": 2,
+      "rounds": 7,
+      "native_loops": 8,
+      "native_warmup_loops": 2,
+      "timeout_s": 600
+    },
+    {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/native-neural/native-neural-dzip-prepared.toml",
+      "sha256": "sha256:1339a5e620edaba89c4c0bd020075d8204ab9ca667d9ee670b2a850065897e46",
+      "requests": 2,
+      "sessions": 2,
+      "rounds": 7,
+      "native_loops": 2,
+      "native_warmup_loops": 2,
+      "timeout_s": 600
+    },
+    {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/native-neural/native-neural-dzip-fresh.toml",
+      "sha256": "sha256:708c5abe8baf3088a2427108e6025e843ef69347d2f12da171dd1f84ebb859e1",
+      "requests": 2,
+      "sessions": 2,
+      "rounds": 7,
+      "native_loops": 2,
+      "native_warmup_loops": 2,
+      "timeout_s": 600
+    }
+  ],
+  "expected_codec_coverage": {
+    "deepzip": {
+      "prepared": 1,
+      "fresh_request": 1
+    },
+    "dzip": {
+      "prepared": 2,
+      "fresh_request": 2
+    }
+  },
+  "request_count": 6,
+  "nominal_trial_count": 84,
+  "nominal_measured_operations": 336,
+  "dependencies": "Same deterministic fixture and repeated rounds; descriptive summaries only. Source counts are per complete encode/decode and inner loops are not independent samples.",
+  "requests": [
+    {
+      "configuration": "native-neural-deepzip-prepared.toml",
+      "dataset": "symbols4-c",
+      "codec": "deepzip",
+      "method": "deepzip-biGRU",
+      "profile": "cpu-single",
+      "boundary": "native_core",
+      "lifecycle": "prepared",
+      "fidelity": "bitwise",
+      "kind": "values",
+      "object_id": "sha256:14e2121a02a193c2425bce5e272933bd6e0f52ff399b280bd5972c4fca4a8a52",
+      "raw_bytes": 257,
+      "value_count": 257,
+      "timestamp_count": 0,
+      "dtype": "|u1",
+      "shape": [
+        257
+      ],
+      "order": "C",
+      "expected_declared_domain": "eligible",
+      "qualification_or_timing_executed": false,
+      "mode": "biGRU",
+      "source_derived_operation_counts": {
+        "scope": "per encode and per decode; source-derived, not runtime counters",
+        "uniform_symbols": 64,
+        "predict_calls": 193,
+        "online_train_batches": 0,
+        "online_train_batch_windows": 0,
+        "adam_steps": 0,
+        "post_update_predict_calls": 0
+      }
+    },
+    {
+      "configuration": "native-neural-deepzip-fresh.toml",
+      "dataset": "symbols4-c",
+      "codec": "deepzip",
+      "method": "deepzip-biGRU",
+      "profile": "cpu-single",
+      "boundary": "native_core",
+      "lifecycle": "fresh_request",
+      "fidelity": "bitwise",
+      "kind": "values",
+      "object_id": "sha256:14e2121a02a193c2425bce5e272933bd6e0f52ff399b280bd5972c4fca4a8a52",
+      "raw_bytes": 257,
+      "value_count": 257,
+      "timestamp_count": 0,
+      "dtype": "|u1",
+      "shape": [
+        257
+      ],
+      "order": "C",
+      "expected_declared_domain": "eligible",
+      "qualification_or_timing_executed": false,
+      "mode": "biGRU",
+      "source_derived_operation_counts": {
+        "scope": "per encode and per decode; source-derived, not runtime counters",
+        "uniform_symbols": 64,
+        "predict_calls": 193,
+        "online_train_batches": 0,
+        "online_train_batch_windows": 0,
+        "adam_steps": 0,
+        "post_update_predict_calls": 0
+      }
+    },
+    {
+      "configuration": "native-neural-dzip-prepared.toml",
+      "dataset": "symbols4-c",
+      "codec": "dzip",
+      "method": "dzip-bootstrap",
+      "profile": "cpu-dzip-three",
+      "boundary": "native_core",
+      "lifecycle": "prepared",
+      "fidelity": "bitwise",
+      "kind": "values",
+      "object_id": "sha256:14e2121a02a193c2425bce5e272933bd6e0f52ff399b280bd5972c4fca4a8a52",
+      "raw_bytes": 257,
+      "value_count": 257,
+      "timestamp_count": 0,
+      "dtype": "|u1",
+      "shape": [
+        257
+      ],
+      "order": "C",
+      "expected_declared_domain": "eligible",
+      "qualification_or_timing_executed": false,
+      "mode": "BOOTSTRAP",
+      "source_derived_operation_counts": {
+        "scope": "per encode and per decode; source-derived, not runtime counters",
+        "uniform_symbols": 64,
+        "predict_calls": 193,
+        "online_train_batches": 0,
+        "online_train_batch_windows": 0,
+        "adam_steps": 0,
+        "post_update_predict_calls": 0
+      }
+    },
+    {
+      "configuration": "native-neural-dzip-prepared.toml",
+      "dataset": "symbols4-c",
+      "codec": "dzip",
+      "method": "dzip-combined",
+      "profile": "cpu-dzip-three",
+      "boundary": "native_core",
+      "lifecycle": "prepared",
+      "fidelity": "bitwise",
+      "kind": "values",
+      "object_id": "sha256:14e2121a02a193c2425bce5e272933bd6e0f52ff399b280bd5972c4fca4a8a52",
+      "raw_bytes": 257,
+      "value_count": 257,
+      "timestamp_count": 0,
+      "dtype": "|u1",
+      "shape": [
+        257
+      ],
+      "order": "C",
+      "expected_declared_domain": "eligible",
+      "qualification_or_timing_executed": false,
+      "mode": "COMBINED",
+      "source_derived_operation_counts": {
+        "scope": "per encode and per decode; source-derived, not runtime counters",
+        "uniform_symbols": 64,
+        "predict_calls": 193,
+        "online_train_batches": 1,
+        "online_train_batch_windows": 128,
+        "adam_steps": 1,
+        "post_update_predict_calls": 65
+      }
+    },
+    {
+      "configuration": "native-neural-dzip-fresh.toml",
+      "dataset": "symbols4-c",
+      "codec": "dzip",
+      "method": "dzip-bootstrap",
+      "profile": "cpu-dzip-three",
+      "boundary": "native_core",
+      "lifecycle": "fresh_request",
+      "fidelity": "bitwise",
+      "kind": "values",
+      "object_id": "sha256:14e2121a02a193c2425bce5e272933bd6e0f52ff399b280bd5972c4fca4a8a52",
+      "raw_bytes": 257,
+      "value_count": 257,
+      "timestamp_count": 0,
+      "dtype": "|u1",
+      "shape": [
+        257
+      ],
+      "order": "C",
+      "expected_declared_domain": "eligible",
+      "qualification_or_timing_executed": false,
+      "mode": "BOOTSTRAP",
+      "source_derived_operation_counts": {
+        "scope": "per encode and per decode; source-derived, not runtime counters",
+        "uniform_symbols": 64,
+        "predict_calls": 193,
+        "online_train_batches": 0,
+        "online_train_batch_windows": 0,
+        "adam_steps": 0,
+        "post_update_predict_calls": 0
+      }
+    },
+    {
+      "configuration": "native-neural-dzip-fresh.toml",
+      "dataset": "symbols4-c",
+      "codec": "dzip",
+      "method": "dzip-combined",
+      "profile": "cpu-dzip-three",
+      "boundary": "native_core",
+      "lifecycle": "fresh_request",
+      "fidelity": "bitwise",
+      "kind": "values",
+      "object_id": "sha256:14e2121a02a193c2425bce5e272933bd6e0f52ff399b280bd5972c4fca4a8a52",
+      "raw_bytes": 257,
+      "value_count": 257,
+      "timestamp_count": 0,
+      "dtype": "|u1",
+      "shape": [
+        257
+      ],
+      "order": "C",
+      "expected_declared_domain": "eligible",
+      "qualification_or_timing_executed": false,
+      "mode": "COMBINED",
+      "source_derived_operation_counts": {
+        "scope": "per encode and per decode; source-derived, not runtime counters",
+        "uniform_symbols": 64,
+        "predict_calls": 193,
+        "online_train_batches": 1,
+        "online_train_batch_windows": 128,
+        "adam_steps": 1,
+        "post_update_predict_calls": 65
+      }
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+# Frozen by generate_all_core_experiments.py; no result-dependent tuning.
+schema = "tsbench.experiment/1"
+name = "PEMS-BAY-f32-lossless-fresh"
+output = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/runs/forecasting-20261018-1614/PEMS-BAY-f32-lossless-fresh"
+
+[[datasets]]
+id = "PEMS-BAY-f32"
+path = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261018-1614/typed/PEMS-BAY-f32.npy"
+format = "npy"
+component = "V"
+order = "C"
+source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/PEMS-BAY.csv"
+schema = { forecasting_source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/PEMS-BAY.csv", forecasting_source_sha256 = "43a0d7158da621175e10af93b235b98950ea473b7eb209362831b564f612b50b", forecasting_family = "PEMS-BAY", all_source_rows_and_value_columns = true }
+
+[[methods]]
+id = "chimp32"
+codec = "chimp32"
+
+[[methods]]
+id = "chimpn32"
+codec = "chimpn32"
+
+[[profiles]]
+id = "cpu-single"
+device = "cpu"
+native_threads = 1
+object_workers = 1
+memory_limit_mb = 8192
+runtime_preload = ["/usr/lib/x86_64-linux-gnu/libstdc++.so.6"]
+
+[task]
+kind = "values"
+fidelity = "bitwise"
+boundary = "native_core"
+lifecycle = "fresh_request"
+cache_policy = "natural"
+
+[execution]
+sessions = 2
+rounds = 7
+warmup_objects = 0
+native_loops = 1
+native_warmup_loops = 1
+native_batch_memory_mb = 2048
+timeout_s = 1800
+qualification_cache = true
+save_artifacts = false
+max_pending_workers = 8
+seed = 20261018
+
+[analysis]
+summary = "median_iqr"
+inference = "none"

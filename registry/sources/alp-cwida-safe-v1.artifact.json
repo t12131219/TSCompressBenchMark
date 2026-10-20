@@ -1,0 +1,46 @@
+{
+  "schema_version": "tscb.source-artifact.v2",
+  "key": "alp-cwida-safe-v1",
+  "kind": "FROZEN_NATIVE_PORT_RELEASE",
+  "identity": {
+    "kind": "FROZEN_NATIVE_PORT_RELEASE",
+    "key": "alp-cwida-safe-v1",
+    "upstream_repository": "https://github.com/cwida/ALP.git",
+    "upstream_commit": "31ca0ed11c93c99d3f5b5c30e01a3e1c3832d3ce",
+    "implementation": "cwida-alp-native-safe-v1",
+    "source_path": "adapters/alp/vendor/alp_safe_v1",
+    "release_sha256": "e5766bc2ffbcbb4f9d503058632b56bc81c85225876646b5a495678c38650ec7",
+    "frozen_sources_sha256": "ec60920def3a0b3ad16ad5b5cd9f419b90fb263c13677875b69819e47c27399a",
+    "execution_variant": "SAFE_V1_ADAPTIVE_OR_FORCED_RD_PORTABLE_C_ABI_ALPRW001"
+  },
+  "license": {
+    "spdx": "MIT",
+    "status": "RUN_ALLOWED",
+    "redistribution": "ALLOWED_WITH_LICENSE_NOTICE",
+    "files": [
+      "adapters/alp/vendor/alp_safe_v1/LICENSE"
+    ]
+  },
+  "build": {
+    "recipe": "PYTHONPATH=benchmark/src python3 -m tsbench build alp alp-rd",
+    "frozen_sources": "adapters/alp/FROZEN_SOURCES.json",
+    "patches": [
+      "adapters/alp/vendor/alp_safe_v1/patches/safe-v1.patch"
+    ],
+    "patch_policy": "Already applied in frozen vendor; do not apply twice",
+    "translation_units": [
+      "adapters/alp/native/tscb_alp.cc",
+      "adapters/alp/vendor/alp_safe_v1/src/codec.cpp",
+      "adapters/alp/vendor/alp_safe_v1/vendor/src/falp.cpp",
+      "adapters/alp/vendor/alp_safe_v1/vendor/src/fastlanes_ffor.cpp",
+      "adapters/alp/vendor/alp_safe_v1/vendor/src/fastlanes_unffor.cpp",
+      "adapters/alp/vendor/alp_safe_v1/vendor/src/fastlanes_generated_ffor.cpp",
+      "adapters/alp/vendor/alp_safe_v1/vendor/src/fastlanes_generated_unffor.cpp"
+    ]
+  },
+  "qualification": {
+    "standalone": "NATIVE_PORT_QUALIFIED (safe-v1 limited profile)",
+    "source_full_parity": "NOT_ASSERTED",
+    "bench_binding": "See docs/alp_integration/README.md; separately verified"
+  }
+}

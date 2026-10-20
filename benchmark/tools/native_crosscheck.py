@@ -38,14 +38,13 @@ def crosscheck(root: Path = ROOT, output: Path | None = None) -> dict:
         subprocess.run(command, check=True, capture_output=True, text=True)
         evidence["compile_command"] = command
         registry = Registry(root)
-        for key in ("zstd-frame", "lzss-raw"):
+        for key in ("zstd-frame", "snappy-raw"):
             library = artifact_path(root, key)
             if not library.is_file():
                 raise FileNotFoundError(f"native library missing: run tsbench build {key}")
             params = registry.resolve_params(key)
             bridge = create_bridge(root, key)
-            config = ({"compression_level": params["compression_level"], "content_checksum": params["content_checksum"]}
-                      if key == "zstd-frame" else {name: params[name] for name in ("ei", "ej", "initial_byte")})
+            config = {name: params[name] for name in ("compression_level", "content_checksum")}
             for length in (0, 1, 257):
                 original = (np.arange(length) % 251).astype(np.uint8)
                 source = temporary / "input.bin"

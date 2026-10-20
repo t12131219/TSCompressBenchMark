@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+set -euo pipefail
+: "${CHIMP_ARM_TOOLCHAIN:?set extracted AArch64 GCC/QEMU root}"
+export LD_LIBRARY_PATH="${CHIMP_ARM_TOOLCHAIN}/usr/lib/x86_64-linux-gnu${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+exec "${CHIMP_ARM_TOOLCHAIN}/usr/bin/aarch64-linux-gnu-g++-11" --sysroot="${CHIMP_ARM_TOOLCHAIN}" "$@"

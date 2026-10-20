@@ -1,0 +1,73 @@
+# Frozen by generate_all_core_experiments.py; no result-dependent tuning.
+schema = "tsbench.experiment/1"
+name = "PEMS04-f64-empirical-prepared"
+output = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/runs/forecasting-20261018-1614/PEMS04-f64-empirical-prepared"
+
+[[datasets]]
+id = "PEMS04-f64"
+path = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261018-1614/data/PEMS04.npy"
+format = "npy"
+component = "V"
+order = "C"
+source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/PEMS04.csv"
+schema = { forecasting_source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/PEMS04.csv", forecasting_source_sha256 = "9eafcbb54d544ff6b6dfbda87f7d1739fd66a4c42fa33a5e973fd00605796643", forecasting_family = "PEMS04", all_source_rows_and_value_columns = true }
+
+[[methods]]
+id = "abba"
+codec = "abba"
+
+[[methods]]
+id = "fabba"
+codec = "fabba"
+
+[[methods]]
+id = "pmc-mr"
+codec = "pmc-mr"
+params = { epsilon = "0.1", quality_mode = "compatible" }
+
+[[methods]]
+id = "swing-filter"
+codec = "swing-filter"
+params = { epsilon = "0.1", quality_mode = "compatible" }
+
+[[methods]]
+id = "swing-filter-disjoint"
+codec = "swing-filter-disjoint"
+params = { epsilon = "0.1", quality_mode = "compatible" }
+
+[[methods]]
+id = "swing-filter-disjoint-quantized"
+codec = "swing-filter-disjoint-quantized"
+params = { epsilon = "0.1", quality_mode = "compatible" }
+
+[[profiles]]
+id = "cpu-single"
+device = "cpu"
+native_threads = 1
+object_workers = 1
+memory_limit_mb = 8192
+runtime_preload = ["/usr/lib/x86_64-linux-gnu/libstdc++.so.6"]
+
+[task]
+kind = "values"
+fidelity = "empirical_quality"
+boundary = "native_core"
+lifecycle = "prepared"
+cache_policy = "natural"
+
+[execution]
+sessions = 2
+rounds = 7
+warmup_objects = 0
+native_loops = 1
+native_warmup_loops = 1
+native_batch_memory_mb = 2048
+timeout_s = 1800
+qualification_cache = true
+save_artifacts = false
+max_pending_workers = 8
+seed = 20261018
+
+[analysis]
+summary = "median_iqr"
+inference = "none"

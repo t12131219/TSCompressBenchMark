@@ -442,3 +442,5 @@ tscb_status_v1 tscb_get_last_error(tscb_codec_handle_v1* handle,
 }
 
 }  // extern "C"
+
+#include "direct_core.inc"

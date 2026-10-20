@@ -189,4 +189,29 @@ void decode(const std::uint8_t* src, std::size_t n, std::uint8_t* dst,
     }
 }
 
+bool decode_checked(const std::uint8_t* src, std::size_t n, std::uint8_t* dst,
+                    std::size_t expected) noexcept {
+    if ((n && !src) || (expected && !dst)) return false;
+    std::array<std::uint8_t, kN> buffer;
+    buffer.fill(kInitialByte);
+    BitReader reader(src, n);
+    std::size_t r=kN-kF, produced=0;
+    while(produced<expected) {
+        std::uint32_t token;
+        if(!reader.read(9,token))return false;
+        if(token&0x100U) {
+            auto value=static_cast<std::uint8_t>(token);dst[produced++]=value;buffer[r]=value;r=(r+1)&(kN-1);
+        } else {
+            std::uint32_t suffix;if(!reader.read(kEi+kEj-8,suffix))return false;
+            token=(token<<(kEi+kEj-8))|suffix;
+            const std::size_t offset=token>>kEj,count=(token&((1U<<kEj)-1U))+kP+1;
+            if(count>expected-produced)return false;
+            for(std::size_t k=0;k<count;++k) {
+                auto value=buffer[(offset+k)&(kN-1)];dst[produced++]=value;buffer[r]=value;r=(r+1)&(kN-1);
+            }
+        }
+    }
+    return reader.zero_padding_only();
+}
+
 }  // namespace tscb_lzss_raw

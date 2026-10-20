@@ -1,0 +1,468 @@
+[
+  {
+    "file": "bitpack.h",
+    "scope": "REQUIRED_CORE_OR_SUPPORT",
+    "sha256": "49ecd9f46b9d0b9e2b7aa6ae650fc898a3bf2ced53c61c5427fe587d3580fbe7",
+    "symbols": [
+      "_prevent_unused_warnings",
+      "compress8b_bitpack",
+      "decompress8b_bitpack",
+      "zigzag_encode_16b"
+    ]
+  },
+  {
+    "file": "debug_utils.hpp",
+    "scope": "REQUIRED_CORE_OR_SUPPORT",
+    "sha256": "6b0f76daa2ccde9dc531c9b7b980eaa06889a644c2464f48837c3899d79c1274",
+    "symbols": [
+      "dumpBigEndianBits",
+      "dump_16B",
+      "dump_16B_aligned",
+      "dump_bits",
+      "dump_bytes",
+      "dump_elements",
+      "dump_m128i",
+      "dump_m128i_bits",
+      "dump_m256i",
+      "dump_m256i_bits",
+      "print",
+      "print_array",
+      "print_var"
+    ]
+  },
+  {
+    "file": "delta.cpp",
+    "scope": "ABLATION_NATIVE_DIAGNOSTIC",
+    "sha256": "6ced037a2f898d2d030fce8cee705cbcb08bed39e51919af888a7ab67bb24490",
+    "symbols": [
+      "decode_delta_serial",
+      "encode_doubledelta_serial"
+    ]
+  },
+  {
+    "file": "delta.h",
+    "scope": "ABLATION_NATIVE_DIAGNOSTIC",
+    "sha256": "fe02fbe579a58d652dde89d48d6cd8f8a3eb421c8a1b3ddecf08a7b70d13331f",
+    "symbols": [
+      "encode_doubledelta_serial"
+    ]
+  },
+  {
+    "file": "entropy.cpp",
+    "scope": "INCOMPLETE_KAYAK_NOT_HUFFMAN",
+    "sha256": "ab38402f0b178d5533621febd1ce08218a350b554923349dd28c83371b1eb279",
+    "symbols": []
+  },
+  {
+    "file": "entropy.hpp",
+    "scope": "INCOMPLETE_KAYAK_NOT_HUFFMAN",
+    "sha256": "b5362c4326067ed4a56861044149f755775e40e57f4e05745459f5218e18349c",
+    "symbols": []
+  },
+  {
+    "file": "format.cpp",
+    "scope": "REQUIRED_CORE_OR_SUPPORT",
+    "sha256": "3b02e35961357361f15246261733060cbaacdde3fc85735a2e2e4f60768e3b43",
+    "symbols": [
+      "read_metadata_rle_16b",
+      "read_metadata_rle_8b",
+      "read_metadata_simple1d_16b",
+      "read_metadata_simple1d_8b",
+      "read_metadata_simple_16b",
+      "read_metadata_simple_8b",
+      "write_metadata_rle_16b",
+      "write_metadata_rle_8b",
+      "write_metadata_simple1d_16b",
+      "write_metadata_simple1d_8b",
+      "write_metadata_simple_16b",
+      "write_metadata_simple_8b"
+    ]
+  },
+  {
+    "file": "format.h",
+    "scope": "REQUIRED_CORE_OR_SUPPORT",
+    "sha256": "7828a0bf18fbcaf7bd36e9c339de7f623aeb4460d377c508055ff6fef97f39fc",
+    "symbols": [
+      "read_metadata_rle",
+      "read_metadata_rle_16b",
+      "read_metadata_rle_8b",
+      "read_metadata_simple",
+      "read_metadata_simple1d",
+      "read_metadata_simple1d_16b",
+      "read_metadata_simple1d_8b",
+      "read_metadata_simple_16b",
+      "read_metadata_simple_8b",
+      "write_metadata_rle",
+      "write_metadata_rle_16b",
+      "write_metadata_rle_8b",
+      "write_metadata_simple",
+      "write_metadata_simple1d",
+      "write_metadata_simple1d_16b",
+      "write_metadata_simple1d_8b",
+      "write_metadata_simple_16b",
+      "write_metadata_simple_8b"
+    ]
+  },
+  {
+    "file": "macros.h",
+    "scope": "REQUIRED_CORE_OR_SUPPORT",
+    "sha256": "3846a740f237779db683a308fd40506aef16a815446d1f1824d460c2cd98db54",
+    "symbols": []
+  },
+  {
+    "file": "main.cpp",
+    "scope": "UPSTREAM_TEST_RUNNER",
+    "sha256": "c7d5b3157d00156653a2d87238baa634964663aa1f68b52749dfe6dd242ead38",
+    "symbols": [
+      "main"
+    ]
+  },
+  {
+    "file": "nn_search.hpp",
+    "scope": "EXPERIMENTAL_AUXILIARY_NOT_SAFE_ABI",
+    "sha256": "0efc983206844d71d048636767dcf027b6fea1881cbed014d778e909655c6f17",
+    "symbols": [
+      "operator"
+    ]
+  },
+  {
+    "file": "nn_utils.hpp",
+    "scope": "EXPERIMENTAL_AUXILIARY_NOT_SAFE_ABI",
+    "sha256": "b20fd10ed0e9799101089e836c421e90e83dab7b3efb91a0a74aa26fb7a40a93",
+    "symbols": [
+      "sort_neighbors_ascending_distance",
+      "sort_neighbors_ascending_idx"
+    ]
+  },
+  {
+    "file": "online.cpp",
+    "scope": "EXPERIMENTAL_AUXILIARY_NOT_SAFE_ABI",
+    "sha256": "762c6a608480a853fd82ac044bf42b4880acecc76e5013d99bcdfefbe180f28d",
+    "symbols": []
+  },
+  {
+    "file": "online.hpp",
+    "scope": "EXPERIMENTAL_AUXILIARY_NOT_SAFE_ABI",
+    "sha256": "da590c0c94d18ad8c5da8e7780b8658f645286c0cb455819020e2bf25be97e1b",
+    "symbols": [
+      "_add_with_wraparound",
+      "_add_with_wraparound_i16",
+      "full_init",
+      "init",
+      "jump",
+      "train"
+    ]
+  },
+  {
+    "file": "predict.cpp",
+    "scope": "ABLATION_NATIVE_DIAGNOSTIC",
+    "sha256": "566f5ce2bb11d10712253f87bb84db15398a7389296e8dd77c336f264667266b",
+    "symbols": [
+      "decode_delta_serial"
+    ]
+  },
+  {
+    "file": "predict.h",
+    "scope": "ABLATION_NATIVE_DIAGNOSTIC",
+    "sha256": "c3cb5bb16f2d3ad7eebd05665aa954bfaafec41e8f6f99f8c3583380d057b335",
+    "symbols": []
+  },
+  {
+    "file": "query.hpp",
+    "scope": "REQUIRED_CORE_OR_SUPPORT",
+    "sha256": "8fb275db8d805f22cff74dc55f7e1b90422a23725a4e957c7cb6b4a626bcf9b7",
+    "symbols": [
+      "accumulate",
+      "operator"
+    ]
+  },
+  {
+    "file": "search.hpp",
+    "scope": "EXPERIMENTAL_AUXILIARY_NOT_SAFE_ABI",
+    "sha256": "f3ab1785ecf9e5aa7d0fca6d45b71c2f285968267d192a2d00c583caa42e2da0",
+    "symbols": [
+      "init",
+      "ncols",
+      "reset",
+      "update",
+      "write_means"
+    ]
+  },
+  {
+    "file": "sprintz.cpp",
+    "scope": "REQUIRED_CORE_OR_SUPPORT",
+    "sha256": "dec494f3c05e43f0709bc9cd7c64ee38a0d478733cd7ce0e567269befeaf0797",
+    "symbols": [
+      "sprintz_compress_delta_16b",
+      "sprintz_compress_delta_8b",
+      "sprintz_compress_xff_16b",
+      "sprintz_compress_xff_8b",
+      "sprintz_decompress_delta_16b",
+      "sprintz_decompress_delta_8b",
+      "sprintz_decompress_xff_16b",
+      "sprintz_decompress_xff_8b"
+    ]
+  },
+  {
+    "file": "sprintz.h",
+    "scope": "REQUIRED_CORE_OR_SUPPORT",
+    "sha256": "2c9490d9d248653db22b65172cc18e2833e1ceb2ed0fdf6290746f2b496bb8b1",
+    "symbols": [
+      "sprintz_compress_delta_16b",
+      "sprintz_compress_delta_8b",
+      "sprintz_compress_xff_16b",
+      "sprintz_compress_xff_8b",
+      "sprintz_decompress_delta_16b",
+      "sprintz_decompress_delta_8b",
+      "sprintz_decompress_xff_16b",
+      "sprintz_decompress_xff_8b"
+    ]
+  },
+  {
+    "file": "sprintz_delta.cpp",
+    "scope": "REQUIRED_CORE_OR_SUPPORT",
+    "sha256": "1e11326177bfd8867c933101d262450f5ae3095b8ab31023ff1045b7abf92969",
+    "symbols": [
+      "compress_rowmajor",
+      "compress_rowmajor_16b",
+      "compress_rowmajor_8b",
+      "compress_rowmajor_delta",
+      "compress_rowmajor_delta_16b",
+      "compress_rowmajor_delta_8b",
+      "decompress_rowmajor",
+      "decompress_rowmajor_16b",
+      "decompress_rowmajor_8b",
+      "decompress_rowmajor_delta",
+      "decompress_rowmajor_delta_16b",
+      "decompress_rowmajor_delta_8b"
+    ]
+  },
+  {
+    "file": "sprintz_delta.h",
+    "scope": "REQUIRED_CORE_OR_SUPPORT",
+    "sha256": "e0977698f5f4661a3a30ddc8c63d1ae6c97dc272708af15c6b759a8b27f1566c",
+    "symbols": [
+      "compress_rowmajor_16b",
+      "compress_rowmajor_8b",
+      "compress_rowmajor_delta_16b",
+      "compress_rowmajor_delta_8b",
+      "compress_rowmajor_delta_rle_16b",
+      "compress_rowmajor_delta_rle_8b",
+      "compress_rowmajor_delta_rle_lowdim_16b",
+      "compress_rowmajor_delta_rle_lowdim_8b",
+      "decompress_rowmajor_16b",
+      "decompress_rowmajor_8b",
+      "decompress_rowmajor_delta_16b",
+      "decompress_rowmajor_delta_8b",
+      "decompress_rowmajor_delta_rle_16b",
+      "decompress_rowmajor_delta_rle_8b",
+      "decompress_rowmajor_delta_rle_lowdim_16b",
+      "decompress_rowmajor_delta_rle_lowdim_8b",
+      "query_rowmajor_delta_rle_16b",
+      "query_rowmajor_delta_rle_8b"
+    ]
+  },
+  {
+    "file": "sprintz_delta_lowdim.cpp",
+    "scope": "REQUIRED_CORE_OR_SUPPORT",
+    "sha256": "5a51d6c94a5df7a2fd66303a6eb0e823ff332127b71dedbac6c6af7079c0e11f",
+    "symbols": [
+      "compress_rowmajor_delta_rle_lowdim",
+      "compress_rowmajor_delta_rle_lowdim_16b",
+      "compress_rowmajor_delta_rle_lowdim_8b",
+      "decompress_rowmajor_delta_rle_lowdim",
+      "decompress_rowmajor_delta_rle_lowdim_16b",
+      "decompress_rowmajor_delta_rle_lowdim_8b"
+    ]
+  },
+  {
+    "file": "sprintz_delta_rle.cpp",
+    "scope": "REQUIRED_CORE_OR_SUPPORT",
+    "sha256": "dbf697cda56630543bac0353440ffccb77946bd2cb880649666388c0beeed69f",
+    "symbols": [
+      "compress_rowmajor_delta_rle",
+      "compress_rowmajor_delta_rle_16b",
+      "compress_rowmajor_delta_rle_8b",
+      "decompress_rowmajor_delta_rle",
+      "decompress_rowmajor_delta_rle_16b",
+      "decompress_rowmajor_delta_rle_8b"
+    ]
+  },
+  {
+    "file": "sprintz_delta_rle_query.cpp",
+    "scope": "QUERY_RESEARCH_ONLY_NOT_SAFE_ABI",
+    "sha256": "6ce586fb71b21dae07e4822dd74eeae5909500ccfb34d3bc6ae6808b603d3aeb",
+    "symbols": [
+      "call_appropriate_query_func",
+      "dispatch_query",
+      "query_rowmajor_delta_rle_16b",
+      "query_rowmajor_delta_rle_8b"
+    ]
+  },
+  {
+    "file": "sprintz_delta_rle_query.hpp",
+    "scope": "QUERY_RESEARCH_ONLY_NOT_SAFE_ABI",
+    "sha256": "829185daf444cccdbe4575f98f276ef00e6536f8a69f1c32d6f3c45520fb184e",
+    "symbols": [
+      "query_rowmajor_delta_rle"
+    ]
+  },
+  {
+    "file": "sprintz_xff.cpp",
+    "scope": "REQUIRED_CORE_OR_SUPPORT",
+    "sha256": "aa6576d955d3f4ccd60717806450fde47293ddd3af1cea7699a46d7386f9537b",
+    "symbols": [
+      "compress8b_rowmajor_xff",
+      "decompress8b_rowmajor_xff"
+    ]
+  },
+  {
+    "file": "sprintz_xff.h",
+    "scope": "REQUIRED_CORE_OR_SUPPORT",
+    "sha256": "bf7a325e20d8f87379ad4a6f1eeb7c6fbc56b94e7214fa8a2bf6ea058db0d608",
+    "symbols": [
+      "compress8b_rowmajor_xff",
+      "compress_rowmajor_xff_16b",
+      "compress_rowmajor_xff_rle_16b",
+      "compress_rowmajor_xff_rle_8b",
+      "compress_rowmajor_xff_rle_lowdim_16b",
+      "compress_rowmajor_xff_rle_lowdim_8b",
+      "decompress8b_rowmajor_xff",
+      "decompress_rowmajor_xff_16b",
+      "decompress_rowmajor_xff_rle_16b",
+      "decompress_rowmajor_xff_rle_8b",
+      "decompress_rowmajor_xff_rle_lowdim_16b",
+      "decompress_rowmajor_xff_rle_lowdim_8b",
+      "query_rowmajor_xff_rle_16b",
+      "query_rowmajor_xff_rle_8b"
+    ]
+  },
+  {
+    "file": "sprintz_xff_lowdim.cpp",
+    "scope": "REQUIRED_CORE_OR_SUPPORT",
+    "sha256": "ebd7345fbca90312067736406271bfb717bd46ec92559caa2de6a6c620977297",
+    "symbols": [
+      "compress_rowmajor_xff_rle_lowdim",
+      "compress_rowmajor_xff_rle_lowdim_16b",
+      "compress_rowmajor_xff_rle_lowdim_8b",
+      "decompress_rowmajor_xff_rle_lowdim",
+      "decompress_rowmajor_xff_rle_lowdim_16b",
+      "decompress_rowmajor_xff_rle_lowdim_8b"
+    ]
+  },
+  {
+    "file": "sprintz_xff_rle.cpp",
+    "scope": "REQUIRED_CORE_OR_SUPPORT",
+    "sha256": "f0782653b8b2142ff9f3685c9f126bd8574ece11e61c30ce66433cfddc8a844e",
+    "symbols": [
+      "compress_rowmajor_xff_rle",
+      "compress_rowmajor_xff_rle_16b",
+      "compress_rowmajor_xff_rle_8b",
+      "decompress_rowmajor_xff_rle",
+      "decompress_rowmajor_xff_rle_16b",
+      "decompress_rowmajor_xff_rle_8b"
+    ]
+  },
+  {
+    "file": "sprintz_xff_rle_query.cpp",
+    "scope": "QUERY_RESEARCH_ONLY_NOT_SAFE_ABI",
+    "sha256": "b1f720cc543a20b22107919d3dfba21fb580f836ea2f5ed635eba5694d075758",
+    "symbols": [
+      "call_appropriate_query_func",
+      "query_rowmajor_xff_rle_16b",
+      "query_rowmajor_xff_rle_8b"
+    ]
+  },
+  {
+    "file": "sprintz_xff_rle_query.hpp",
+    "scope": "QUERY_RESEARCH_ONLY_NOT_SAFE_ABI",
+    "sha256": "16f62cb08fdc7ce31815820f3cf3b2e3714d31e764d16f9ac44d4860db694df8",
+    "symbols": [
+      "query_rowmajor_xff_rle"
+    ]
+  },
+  {
+    "file": "traits.hpp",
+    "scope": "REQUIRED_CORE_OR_SUPPORT",
+    "sha256": "de1f9ffc9f1012b28ffcf3a9450bcbacc3b414eb9adf292149aedb2a4a9a408a",
+    "symbols": []
+  },
+  {
+    "file": "transpose.h",
+    "scope": "REQUIRED_CORE_OR_SUPPORT",
+    "sha256": "f759f7b98237666566bd7e91579156d8ca6b8581dedc1d8ef1a04ed012ac8984",
+    "symbols": [
+      "transpose_2x8_16b",
+      "transpose_2x8_8b",
+      "transpose_3x8_16b",
+      "transpose_3x8_8b",
+      "transpose_4x8_8b"
+    ]
+  },
+  {
+    "file": "univariate_8b.cpp",
+    "scope": "ABLATION_NATIVE_DIAGNOSTIC",
+    "sha256": "393f144b37f174337d66cbd3eb8531824f8ebd5d9a528be9f53a32b04a1e34f0",
+    "symbols": [
+      "compress8b_delta",
+      "compress8b_delta2_online",
+      "compress8b_delta_online",
+      "compress8b_delta_rle",
+      "compress8b_delta_rle2",
+      "compress8b_delta_simple",
+      "compress8b_doubledelta",
+      "compress8b_dyndelta",
+      "compress8b_naiveDelta",
+      "compress8b_online",
+      "compressed_size_bound",
+      "decompress8b_delta",
+      "decompress8b_delta2_online",
+      "decompress8b_delta_online",
+      "decompress8b_delta_rle",
+      "decompress8b_delta_rle2",
+      "decompress8b_delta_simple",
+      "decompress8b_doubledelta",
+      "decompress8b_dyndelta",
+      "decompress8b_naiveDelta",
+      "decompress8b_online"
+    ]
+  },
+  {
+    "file": "univariate_8b.h",
+    "scope": "ABLATION_NATIVE_DIAGNOSTIC",
+    "sha256": "c8be40b55fae5b8c48eec9cc7dc2b9cda33a94f234e0aa05494a3ef26b2af7d5",
+    "symbols": [
+      "compress8b_delta",
+      "compress8b_delta2_online",
+      "compress8b_delta_online",
+      "compress8b_delta_rle",
+      "compress8b_delta_rle2",
+      "compress8b_delta_simple",
+      "compress8b_doubledelta",
+      "compress8b_dyndelta",
+      "compress8b_naiveDelta",
+      "compress8b_online",
+      "decompress8b_delta",
+      "decompress8b_delta2_online",
+      "decompress8b_delta_online",
+      "decompress8b_delta_rle",
+      "decompress8b_delta_rle2",
+      "decompress8b_delta_simple",
+      "decompress8b_doubledelta",
+      "decompress8b_dyndelta",
+      "decompress8b_naiveDelta",
+      "decompress8b_online"
+    ]
+  },
+  {
+    "file": "util.h",
+    "scope": "REQUIRED_CORE_OR_SUPPORT",
+    "sha256": "896f1fbdb9efa89180185348e0c7c0d17fe6b790fc2087f2b0a6aac32577bd1d",
+    "symbols": [
+      "_aligned_free",
+      "memrep",
+      "mm256_shuffle_epi8_to_epi16",
+      "swap"
+    ]
+  }
+]

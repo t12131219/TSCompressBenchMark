@@ -1,6 +1,11 @@
 # Requested lossless rewrites
 
-This adapter registers six entry points from five frozen C++17 package APIs.
+This adapter now registers four Elf / SElf entry points. Chimp and Chimp128 moved to
+`adapters/chimp_family`; their old sources and this original README were archived
+in `docs/chimp_integration/legacy-chimp-before-family.tar.gz`. The qualification
+commands and results below are historical, not current Chimp admission.
+
+This adapter originally registered six entry points from five frozen C++17 package APIs.
 `FROZEN_APIS.json` hashes the snapshots; `UPSTREAM_PROVENANCE.json`
 records each source closure, original commit, qualification report and local license
 decision. Canonical packages and their standalone releases remain under
@@ -8,8 +13,6 @@ decision. Canonical packages and their standalone releases remain under
 
 | Registry key | Input | Source behavior |
 | --- | --- | --- |
-| `chimp` | VALUE, binary32/64 | Chimp |
-| `chimp128` | VALUE, binary32/64 | ChimpN, fixed history 128 |
 | `elf` | VALUE, binary32/64 | VLDB2023 Elf, per-value beta |
 | `elf-plus` | VALUE, binary32/64 | Elf+, beta reuse and implicit XOR bit |
 | `elf-star` | VALUE, binary32/64 | Elf*, original block Huffman format |

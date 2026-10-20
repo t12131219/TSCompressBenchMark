@@ -1,0 +1,49 @@
+# Correctness/development example for the four new native port IDs.
+schema = "tsbench.experiment/1"
+name = "sprintz-family-native-20261017"
+output = "../../runs/sprintz-family-native-20261017"
+
+[[datasets]]
+id = "int16-matrix"
+format = "npy"
+path = "data/int16.npy"
+component = "V"
+
+[[methods]]
+id = "sprintz-delta"
+codec = "sprintz-delta"
+
+[[methods]]
+id = "sprintz-fire"
+codec = "sprintz-fire"
+
+[[methods]]
+id = "sprintz-delta-huffman"
+codec = "sprintz-delta-huffman"
+
+[[methods]]
+id = "sprintz-fire-huffman"
+codec = "sprintz-fire-huffman"
+
+[[profiles]]
+id = "cpu-single"
+device = "cpu"
+native_threads = 1
+object_workers = 1
+memory_limit_mb = 4096
+
+[task]
+kind = "values"
+fidelity = "bitwise"
+boundary = "native_core"
+lifecycle = "prepared"
+cache_policy = "natural"
+
+[execution]
+sessions = 1
+rounds = 1
+native_loops = 2
+native_warmup_loops = 1
+native_batch_memory_mb = 16
+timeout_s = 60
+save_artifacts = true

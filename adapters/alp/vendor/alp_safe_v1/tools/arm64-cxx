@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+set -euo pipefail
+: "${ALP_ARM_TOOLCHAIN:?Set ALP_ARM_TOOLCHAIN to extracted Debian AArch64 GCC 11/QEMU toolchain root}"
+export LD_LIBRARY_PATH="${ALP_ARM_TOOLCHAIN}/usr/lib/x86_64-linux-gnu${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+exec "${ALP_ARM_TOOLCHAIN}/usr/bin/aarch64-linux-gnu-g++-11" --sysroot="${ALP_ARM_TOOLCHAIN}" "$@"

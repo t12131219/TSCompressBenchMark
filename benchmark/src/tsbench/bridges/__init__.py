@@ -29,6 +29,7 @@ class RawStoreBridge:
 def create_bridge(root, key, build_root=None):
     root = Path(root).resolve()
     spec = Registry(root).get(key)
+    spec.require_enabled()
     if spec.key == 'raw-store':
         return RawStoreBridge()
     path = artifact_path(root,spec.key,build_root=build_root)

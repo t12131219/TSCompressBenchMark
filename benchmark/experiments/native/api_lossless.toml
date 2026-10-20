@@ -1,0 +1,197 @@
+# Sprintz migration 20261017: frozen native port, four current IDs; new result identity.
+# Frozen by generate_native_experiments.py; no result-dependent tuning.
+schema = "tsbench.experiment/1"
+name = "native-api-lossless-sprintz-native-20261017"
+output = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/runs/native-api-lossless-20261015-sprintz-native-20261017"
+
+[[datasets]]
+id = "float64"
+format = "npy"
+path = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/examples/data/float64.npy"
+component = "V"
+
+[[datasets]]
+id = "float32"
+format = "npy"
+path = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/examples/data/float32.npy"
+component = "V"
+
+[[datasets]]
+id = "int16"
+format = "npy"
+path = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/examples/data/int16.npy"
+component = "V"
+
+[[datasets]]
+id = "uint8"
+format = "npy"
+path = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/examples/data/uint8.npy"
+component = "V"
+
+[[datasets]]
+id = "symbols4"
+format = "npy"
+path = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/examples/data/symbols4.npy"
+component = "V"
+
+[[datasets]]
+id = "uint32"
+format = "npy"
+path = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/examples/data/uint32.npy"
+component = "V"
+
+[[methods]]
+id = "alp-rd"
+codec = "alp-rd"
+
+[[methods]]
+id = "alp"
+codec = "alp"
+
+[[methods]]
+id = "brotli-stream"
+codec = "brotli-stream"
+
+[[methods]]
+id = "bzip2-stream"
+codec = "bzip2-stream"
+
+[[methods]]
+id = "chimp"
+codec = "chimp"
+
+[[methods]]
+id = "chimp128"
+codec = "chimp128"
+
+[[methods]]
+id = "deepzip"
+codec = "deepzip"
+
+[[methods]]
+id = "deflate-zlib"
+codec = "deflate-zlib"
+
+[[methods]]
+id = "dzip"
+codec = "dzip"
+
+[[methods]]
+id = "elf-plus"
+codec = "elf-plus"
+
+[[methods]]
+id = "elf-star"
+codec = "elf-star"
+
+[[methods]]
+id = "elf"
+codec = "elf"
+
+[[methods]]
+id = "fse"
+codec = "fse"
+
+[[methods]]
+id = "gorilla-prometheus-xor"
+codec = "gorilla-prometheus-xor"
+
+[[methods]]
+id = "huff0"
+codec = "huff0"
+
+[[methods]]
+id = "leats-lossless-i64"
+codec = "leats-lossless-i64"
+
+[[methods]]
+id = "lz4-frame"
+codec = "lz4-frame"
+
+[[methods]]
+id = "lzss-dipperstein-c"
+codec = "lzss-dipperstein-c"
+
+[[methods]]
+id = "lzss-raw"
+codec = "lzss-raw"
+
+[[methods]]
+id = "lzsse2-raw"
+codec = "lzsse2-raw"
+
+[[methods]]
+id = "lzsse8-raw"
+codec = "lzsse8-raw"
+
+[[methods]]
+id = "neats-lossless-i64"
+codec = "neats-lossless-i64"
+
+[[methods]]
+id = "self-star"
+codec = "self-star"
+
+[[methods]]
+id = "simdcomp-u32"
+codec = "simdcomp-u32"
+
+[[methods]]
+id = "snappy-raw"
+codec = "snappy-raw"
+
+[[methods]]
+id = "sprintz-delta"
+codec = "sprintz-delta"
+
+[[methods]]
+id = "sprintz-delta-huffman"
+codec = "sprintz-delta-huffman"
+
+[[methods]]
+id = "sprintz-fire-huffman"
+codec = "sprintz-fire-huffman"
+
+[[methods]]
+id = "sprintz-fire"
+codec = "sprintz-fire"
+
+[[methods]]
+id = "xz-stream"
+codec = "xz-stream"
+
+[[methods]]
+id = "zstd-frame"
+codec = "zstd-frame"
+
+[[profiles]]
+id = "cpu-single"
+device = "cpu"
+native_threads = 1
+object_workers = 1
+
+[[profiles]]
+id = "cpu-dzip-three"
+device = "cpu"
+native_threads = 3
+object_workers = 1
+runtime_preload = ["/usr/lib/x86_64-linux-gnu/libstdc++.so.6"]
+
+[task]
+kind = "values"
+fidelity = "bitwise"
+boundary = "native_api"
+lifecycle = "prepared"
+cache_policy = "natural"
+
+[execution]
+sessions = 2
+rounds = 7
+warmup_objects = 0
+native_loops = 8
+native_warmup_loops = 2
+native_batch_memory_mb = 256
+timeout_s = 120
+qualification_cache = true
+save_artifacts = true
+seed = 20261015

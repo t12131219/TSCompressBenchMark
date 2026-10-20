@@ -1,8 +1,6 @@
 // Benchmark framing only. Codec operations consume frozen standalone public APIs.
 #include "tscb_adapter_v1.h"
-#if TSCB_REWRITE_KIND == 1 || TSCB_REWRITE_KIND == 2
-#include "chimp.hpp"
-#elif TSCB_REWRITE_KIND == 3
+#if TSCB_REWRITE_KIND == 3
 #include "elf_plus.hpp"
 #elif TSCB_REWRITE_KIND == 4
 #include "self_star.hpp"
@@ -58,9 +56,7 @@ std::uint64_t bound(const Header& h){
 #else
     for(std::uint64_t start=0;start<h.rows;start+=h.block){
         const auto count=static_cast<std::size_t>(std::min<std::uint64_t>(h.block,h.rows-start));std::size_t b=0;
-#if TSCB_REWRITE_KIND == 1 || TSCB_REWRITE_KIND == 2
-        b=chimp::compress_bound(count,static_cast<chimp::Width>(h.width*8),TSCB_REWRITE_KIND==1?chimp::Variant::chimp:chimp::Variant::chimp128);
-#elif TSCB_REWRITE_KIND == 3
+#if TSCB_REWRITE_KIND == 3
         b=elf_plus::compress_bound(count,static_cast<elf_plus::Width>(h.width*8));
 #elif TSCB_REWRITE_KIND == 6
         b=elf_vldb::compress_bound(count,static_cast<elf_vldb::Width>(h.width*8));
@@ -84,9 +80,7 @@ Bytes encode(const std::uint8_t* p,std::size_t size){
 #else
         for(std::uint64_t start=0;start<h.rows;start+=h.block){
             const auto count=static_cast<std::size_t>(std::min<std::uint64_t>(h.block,h.rows-start));auto q=values+(col*h.rows+start)*h.width;Bytes bytes;
-#if TSCB_REWRITE_KIND == 1 || TSCB_REWRITE_KIND == 2
-            bytes=chimp::compress(q,count,static_cast<chimp::Width>(h.width*8),TSCB_REWRITE_KIND==1?chimp::Variant::chimp:chimp::Variant::chimp128).bytes;
-#elif TSCB_REWRITE_KIND == 3
+#if TSCB_REWRITE_KIND == 3
             bytes=elf_plus::compress(q,count,static_cast<elf_plus::Width>(h.width*8)).bytes;
 #elif TSCB_REWRITE_KIND == 6
             bytes=elf_vldb::compress(q,count,static_cast<elf_vldb::Width>(h.width*8)).bytes;
@@ -109,9 +103,7 @@ Bytes decode(const std::uint8_t* p,std::size_t size){
             need(pos<=size-8&&size-8-pos>=12,"truncated record");auto count=load(p+pos,4),len=load(p+pos+4,8);pos+=12;
             const auto start=TSCB_REWRITE_KIND==4?0:record*h.block;
             need(count==(TSCB_REWRITE_KIND==4?h.rows:std::min<std::uint64_t>(h.block,h.rows-start))&&len<=size-8-pos,"invalid record geometry");Bytes decoded;
-#if TSCB_REWRITE_KIND == 1 || TSCB_REWRITE_KIND == 2
-            auto d=chimp::decompress(p+pos,static_cast<std::size_t>(len));need(static_cast<unsigned>(d.width)==h.width*8&&static_cast<unsigned>(d.variant)==(TSCB_REWRITE_KIND==1?1:128)&&d.count==count,"Chimp identity/count mismatch");decoded=std::move(d.values);
-#elif TSCB_REWRITE_KIND == 3
+#if TSCB_REWRITE_KIND == 3
             auto d=elf_plus::decompress(p+pos,static_cast<std::size_t>(len));need(static_cast<unsigned>(d.width)==h.width*8&&d.count==count,"Elf+ identity/count mismatch");decoded=std::move(d.values);
 #elif TSCB_REWRITE_KIND == 6
             auto d=elf_vldb::decompress(p+pos,static_cast<std::size_t>(len));need(static_cast<unsigned>(d.width)==h.width*8&&d.count==count,"Elf identity/count mismatch");decoded=std::move(d.values);
@@ -147,3 +139,5 @@ EXPORT tscb_status_v1 tscb_decompress(tscb_codec_handle_v1* h,const tscb_buffer_
 EXPORT tscb_status_v1 tscb_query(tscb_codec_handle_v1* h,const char*,std::uint64_t,char*,std::uint64_t,std::uint64_t*){return call(h,[]{return TSCB_STATUS_UNSUPPORTED_V1;});}
 EXPORT tscb_status_v1 tscb_get_accounting_json(tscb_codec_handle_v1* h,const char** p,std::uint64_t* n){return call(h,[&]{if(!p||!n)return TSCB_STATUS_INVALID_ARGUMENT_V1;if(!h->finalized)return TSCB_STATUS_FINALIZE_REQUIRED_V1;h->accounting="{\"final_bits\":"+std::to_string(h->encoded*8)+"}";*p=h->accounting.c_str();*n=h->accounting.size();return TSCB_STATUS_OK_V1;});}
 EXPORT tscb_status_v1 tscb_get_last_error(tscb_codec_handle_v1* h,const char** p,std::uint64_t* n){return call(h,[&]{if(!p||!n)return TSCB_STATUS_INVALID_ARGUMENT_V1;*p=h->error.c_str();*n=h->error.size();return TSCB_STATUS_OK_V1;});}
+
+#include "direct_core.inc"

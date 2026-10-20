@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+set -euo pipefail
+alp_package_root="$(cd -- "$(dirname -- "$0")/.." && pwd)"
+exec "${alp_package_root}/tools/arm64-run" "${alp_package_root}/build/arm64/alp_cli" "$@"

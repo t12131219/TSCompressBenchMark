@@ -1,0 +1,4781 @@
+{
+  "date": "2026-10-20",
+  "conclusion": "NOT_THE_SAME_IMPLEMENTATION_OR_FULL_SEMANTICS",
+  "scope": "Bounded native differential spot check; not a full parity qualification. CLI compiled directly from current Benchmark vendor source. Symbol characters normalized to center indices. Numeric tolerance: abs 1e-10 + rel 1e-12.",
+  "old_build": "g++ -std=c++17 -O2 -fno-fast-math -ffp-contract=off -pthread; current vendor CLI + canonical source (+ CKmeans *.cpp for ABBA)",
+  "new_binary": "/home/fzg/PycharmProjects/Compression_Rewrite/ReWrite/abba-family/build/abba_family_cli",
+  "frozen_source_hash_check": {
+    "abba": {
+      "files": 35,
+      "mismatches": 0
+    },
+    "fabba": {
+      "files": 27,
+      "mismatches": 0
+    }
+  },
+  "groups": [
+    {
+      "algorithm": "abba",
+      "variant": "mapped_default",
+      "cases": 18,
+      "both_succeeded": 18,
+      "all_stage_fields_match": 18,
+      "reconstruction_match": 18
+    },
+    {
+      "algorithm": "abba",
+      "variant": "positive_scl",
+      "cases": 18,
+      "both_succeeded": 18,
+      "all_stage_fields_match": 18,
+      "reconstruction_match": 18
+    },
+    {
+      "algorithm": "abba",
+      "variant": "incremental",
+      "cases": 18,
+      "both_succeeded": 18,
+      "all_stage_fields_match": 14,
+      "reconstruction_match": 14
+    },
+    {
+      "algorithm": "abba",
+      "variant": "norm1",
+      "cases": 18,
+      "both_succeeded": 18,
+      "all_stage_fields_match": 18,
+      "reconstruction_match": 18
+    },
+    {
+      "algorithm": "fabba",
+      "variant": "mapped_default",
+      "cases": 18,
+      "both_succeeded": 18,
+      "all_stage_fields_match": 9,
+      "reconstruction_match": 18
+    },
+    {
+      "algorithm": "fabba",
+      "variant": "alpha05",
+      "cases": 18,
+      "both_succeeded": 18,
+      "all_stage_fields_match": 10,
+      "reconstruction_match": 17
+    }
+  ],
+  "case_comparisons": [
+    {
+      "algorithm": "abba",
+      "variant": "mapped_default",
+      "name": "simple",
+      "config": {
+        "tol": [
+          0.1,
+          0.1
+        ],
+        "scl": 0,
+        "min_k": 1,
+        "max_k": 100,
+        "seed": true
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "abba",
+      "variant": "mapped_default",
+      "name": "constant",
+      "config": {
+        "tol": [
+          0.1,
+          0.1
+        ],
+        "scl": 0,
+        "min_k": 1,
+        "max_k": 100,
+        "seed": true
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "abba",
+      "variant": "mapped_default",
+      "name": "linear",
+      "config": {
+        "tol": [
+          0.1,
+          0.1
+        ],
+        "scl": 0,
+        "min_k": 1,
+        "max_k": 100,
+        "seed": true
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "abba",
+      "variant": "mapped_default",
+      "name": "zigzag",
+      "config": {
+        "tol": [
+          0.1,
+          0.1
+        ],
+        "scl": 0,
+        "min_k": 1,
+        "max_k": 100,
+        "seed": true
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "abba",
+      "variant": "mapped_default",
+      "name": "tied_norm",
+      "config": {
+        "tol": [
+          0.1,
+          0.1
+        ],
+        "scl": 0,
+        "min_k": 1,
+        "max_k": 100,
+        "seed": true
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "abba",
+      "variant": "mapped_default",
+      "name": "tiny",
+      "config": {
+        "tol": [
+          0.1,
+          0.1
+        ],
+        "scl": 0,
+        "min_k": 1,
+        "max_k": 100,
+        "seed": true
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "abba",
+      "variant": "mapped_default",
+      "name": "random_walk_0",
+      "config": {
+        "tol": [
+          0.1,
+          0.1
+        ],
+        "scl": 0,
+        "min_k": 1,
+        "max_k": 100,
+        "seed": true
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "abba",
+      "variant": "mapped_default",
+      "name": "random_walk_1",
+      "config": {
+        "tol": [
+          0.1,
+          0.1
+        ],
+        "scl": 0,
+        "min_k": 1,
+        "max_k": 100,
+        "seed": true
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "abba",
+      "variant": "mapped_default",
+      "name": "random_walk_2",
+      "config": {
+        "tol": [
+          0.1,
+          0.1
+        ],
+        "scl": 0,
+        "min_k": 1,
+        "max_k": 100,
+        "seed": true
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "abba",
+      "variant": "mapped_default",
+      "name": "random_walk_3",
+      "config": {
+        "tol": [
+          0.1,
+          0.1
+        ],
+        "scl": 0,
+        "min_k": 1,
+        "max_k": 100,
+        "seed": true
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "abba",
+      "variant": "mapped_default",
+      "name": "random_walk_4",
+      "config": {
+        "tol": [
+          0.1,
+          0.1
+        ],
+        "scl": 0,
+        "min_k": 1,
+        "max_k": 100,
+        "seed": true
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "abba",
+      "variant": "mapped_default",
+      "name": "random_walk_5",
+      "config": {
+        "tol": [
+          0.1,
+          0.1
+        ],
+        "scl": 0,
+        "min_k": 1,
+        "max_k": 100,
+        "seed": true
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "abba",
+      "variant": "mapped_default",
+      "name": "random_walk_6",
+      "config": {
+        "tol": [
+          0.1,
+          0.1
+        ],
+        "scl": 0,
+        "min_k": 1,
+        "max_k": 100,
+        "seed": true
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "abba",
+      "variant": "mapped_default",
+      "name": "random_walk_7",
+      "config": {
+        "tol": [
+          0.1,
+          0.1
+        ],
+        "scl": 0,
+        "min_k": 1,
+        "max_k": 100,
+        "seed": true
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "abba",
+      "variant": "mapped_default",
+      "name": "random_walk_8",
+      "config": {
+        "tol": [
+          0.1,
+          0.1
+        ],
+        "scl": 0,
+        "min_k": 1,
+        "max_k": 100,
+        "seed": true
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "abba",
+      "variant": "mapped_default",
+      "name": "random_walk_9",
+      "config": {
+        "tol": [
+          0.1,
+          0.1
+        ],
+        "scl": 0,
+        "min_k": 1,
+        "max_k": 100,
+        "seed": true
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "abba",
+      "variant": "mapped_default",
+      "name": "random_walk_10",
+      "config": {
+        "tol": [
+          0.1,
+          0.1
+        ],
+        "scl": 0,
+        "min_k": 1,
+        "max_k": 100,
+        "seed": true
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "abba",
+      "variant": "mapped_default",
+      "name": "random_walk_11",
+      "config": {
+        "tol": [
+          0.1,
+          0.1
+        ],
+        "scl": 0,
+        "min_k": 1,
+        "max_k": 100,
+        "seed": true
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "abba",
+      "variant": "positive_scl",
+      "name": "simple",
+      "config": {
+        "tol": [
+          0.1,
+          0.1
+        ],
+        "scl": 1,
+        "min_k": 1,
+        "max_k": 100,
+        "seed": true
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "abba",
+      "variant": "positive_scl",
+      "name": "constant",
+      "config": {
+        "tol": [
+          0.1,
+          0.1
+        ],
+        "scl": 1,
+        "min_k": 1,
+        "max_k": 100,
+        "seed": true
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "abba",
+      "variant": "positive_scl",
+      "name": "linear",
+      "config": {
+        "tol": [
+          0.1,
+          0.1
+        ],
+        "scl": 1,
+        "min_k": 1,
+        "max_k": 100,
+        "seed": true
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "abba",
+      "variant": "positive_scl",
+      "name": "zigzag",
+      "config": {
+        "tol": [
+          0.1,
+          0.1
+        ],
+        "scl": 1,
+        "min_k": 1,
+        "max_k": 100,
+        "seed": true
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "abba",
+      "variant": "positive_scl",
+      "name": "tied_norm",
+      "config": {
+        "tol": [
+          0.1,
+          0.1
+        ],
+        "scl": 1,
+        "min_k": 1,
+        "max_k": 100,
+        "seed": true
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "abba",
+      "variant": "positive_scl",
+      "name": "tiny",
+      "config": {
+        "tol": [
+          0.1,
+          0.1
+        ],
+        "scl": 1,
+        "min_k": 1,
+        "max_k": 100,
+        "seed": true
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "abba",
+      "variant": "positive_scl",
+      "name": "random_walk_0",
+      "config": {
+        "tol": [
+          0.1,
+          0.1
+        ],
+        "scl": 1,
+        "min_k": 1,
+        "max_k": 100,
+        "seed": true
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "abba",
+      "variant": "positive_scl",
+      "name": "random_walk_1",
+      "config": {
+        "tol": [
+          0.1,
+          0.1
+        ],
+        "scl": 1,
+        "min_k": 1,
+        "max_k": 100,
+        "seed": true
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "abba",
+      "variant": "positive_scl",
+      "name": "random_walk_2",
+      "config": {
+        "tol": [
+          0.1,
+          0.1
+        ],
+        "scl": 1,
+        "min_k": 1,
+        "max_k": 100,
+        "seed": true
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "abba",
+      "variant": "positive_scl",
+      "name": "random_walk_3",
+      "config": {
+        "tol": [
+          0.1,
+          0.1
+        ],
+        "scl": 1,
+        "min_k": 1,
+        "max_k": 100,
+        "seed": true
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "abba",
+      "variant": "positive_scl",
+      "name": "random_walk_4",
+      "config": {
+        "tol": [
+          0.1,
+          0.1
+        ],
+        "scl": 1,
+        "min_k": 1,
+        "max_k": 100,
+        "seed": true
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "abba",
+      "variant": "positive_scl",
+      "name": "random_walk_5",
+      "config": {
+        "tol": [
+          0.1,
+          0.1
+        ],
+        "scl": 1,
+        "min_k": 1,
+        "max_k": 100,
+        "seed": true
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "abba",
+      "variant": "positive_scl",
+      "name": "random_walk_6",
+      "config": {
+        "tol": [
+          0.1,
+          0.1
+        ],
+        "scl": 1,
+        "min_k": 1,
+        "max_k": 100,
+        "seed": true
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "abba",
+      "variant": "positive_scl",
+      "name": "random_walk_7",
+      "config": {
+        "tol": [
+          0.1,
+          0.1
+        ],
+        "scl": 1,
+        "min_k": 1,
+        "max_k": 100,
+        "seed": true
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "abba",
+      "variant": "positive_scl",
+      "name": "random_walk_8",
+      "config": {
+        "tol": [
+          0.1,
+          0.1
+        ],
+        "scl": 1,
+        "min_k": 1,
+        "max_k": 100,
+        "seed": true
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "abba",
+      "variant": "positive_scl",
+      "name": "random_walk_9",
+      "config": {
+        "tol": [
+          0.1,
+          0.1
+        ],
+        "scl": 1,
+        "min_k": 1,
+        "max_k": 100,
+        "seed": true
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "abba",
+      "variant": "positive_scl",
+      "name": "random_walk_10",
+      "config": {
+        "tol": [
+          0.1,
+          0.1
+        ],
+        "scl": 1,
+        "min_k": 1,
+        "max_k": 100,
+        "seed": true
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "abba",
+      "variant": "positive_scl",
+      "name": "random_walk_11",
+      "config": {
+        "tol": [
+          0.1,
+          0.1
+        ],
+        "scl": 1,
+        "min_k": 1,
+        "max_k": 100,
+        "seed": true
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "abba",
+      "variant": "incremental",
+      "name": "simple",
+      "config": {
+        "tol": [
+          0.1,
+          0.1
+        ],
+        "scl": 0,
+        "min_k": 1,
+        "max_k": 100,
+        "seed": true,
+        "c_method": "incremental"
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "abba",
+      "variant": "incremental",
+      "name": "constant",
+      "config": {
+        "tol": [
+          0.1,
+          0.1
+        ],
+        "scl": 0,
+        "min_k": 1,
+        "max_k": 100,
+        "seed": true,
+        "c_method": "incremental"
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "abba",
+      "variant": "incremental",
+      "name": "linear",
+      "config": {
+        "tol": [
+          0.1,
+          0.1
+        ],
+        "scl": 0,
+        "min_k": 1,
+        "max_k": 100,
+        "seed": true,
+        "c_method": "incremental"
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "abba",
+      "variant": "incremental",
+      "name": "zigzag",
+      "config": {
+        "tol": [
+          0.1,
+          0.1
+        ],
+        "scl": 0,
+        "min_k": 1,
+        "max_k": 100,
+        "seed": true,
+        "c_method": "incremental"
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "abba",
+      "variant": "incremental",
+      "name": "tied_norm",
+      "config": {
+        "tol": [
+          0.1,
+          0.1
+        ],
+        "scl": 0,
+        "min_k": 1,
+        "max_k": 100,
+        "seed": true,
+        "c_method": "incremental"
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": false,
+        "symbols_equal": false,
+        "reconstruction_close": false
+      }
+    },
+    {
+      "algorithm": "abba",
+      "variant": "incremental",
+      "name": "tiny",
+      "config": {
+        "tol": [
+          0.1,
+          0.1
+        ],
+        "scl": 0,
+        "min_k": 1,
+        "max_k": 100,
+        "seed": true,
+        "c_method": "incremental"
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "abba",
+      "variant": "incremental",
+      "name": "random_walk_0",
+      "config": {
+        "tol": [
+          0.1,
+          0.1
+        ],
+        "scl": 0,
+        "min_k": 1,
+        "max_k": 100,
+        "seed": true,
+        "c_method": "incremental"
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "abba",
+      "variant": "incremental",
+      "name": "random_walk_1",
+      "config": {
+        "tol": [
+          0.1,
+          0.1
+        ],
+        "scl": 0,
+        "min_k": 1,
+        "max_k": 100,
+        "seed": true,
+        "c_method": "incremental"
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "abba",
+      "variant": "incremental",
+      "name": "random_walk_2",
+      "config": {
+        "tol": [
+          0.1,
+          0.1
+        ],
+        "scl": 0,
+        "min_k": 1,
+        "max_k": 100,
+        "seed": true,
+        "c_method": "incremental"
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "abba",
+      "variant": "incremental",
+      "name": "random_walk_3",
+      "config": {
+        "tol": [
+          0.1,
+          0.1
+        ],
+        "scl": 0,
+        "min_k": 1,
+        "max_k": 100,
+        "seed": true,
+        "c_method": "incremental"
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "abba",
+      "variant": "incremental",
+      "name": "random_walk_4",
+      "config": {
+        "tol": [
+          0.1,
+          0.1
+        ],
+        "scl": 0,
+        "min_k": 1,
+        "max_k": 100,
+        "seed": true,
+        "c_method": "incremental"
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "abba",
+      "variant": "incremental",
+      "name": "random_walk_5",
+      "config": {
+        "tol": [
+          0.1,
+          0.1
+        ],
+        "scl": 0,
+        "min_k": 1,
+        "max_k": 100,
+        "seed": true,
+        "c_method": "incremental"
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "abba",
+      "variant": "incremental",
+      "name": "random_walk_6",
+      "config": {
+        "tol": [
+          0.1,
+          0.1
+        ],
+        "scl": 0,
+        "min_k": 1,
+        "max_k": 100,
+        "seed": true,
+        "c_method": "incremental"
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": false,
+        "symbols_equal": false,
+        "reconstruction_close": false
+      }
+    },
+    {
+      "algorithm": "abba",
+      "variant": "incremental",
+      "name": "random_walk_7",
+      "config": {
+        "tol": [
+          0.1,
+          0.1
+        ],
+        "scl": 0,
+        "min_k": 1,
+        "max_k": 100,
+        "seed": true,
+        "c_method": "incremental"
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "abba",
+      "variant": "incremental",
+      "name": "random_walk_8",
+      "config": {
+        "tol": [
+          0.1,
+          0.1
+        ],
+        "scl": 0,
+        "min_k": 1,
+        "max_k": 100,
+        "seed": true,
+        "c_method": "incremental"
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "abba",
+      "variant": "incremental",
+      "name": "random_walk_9",
+      "config": {
+        "tol": [
+          0.1,
+          0.1
+        ],
+        "scl": 0,
+        "min_k": 1,
+        "max_k": 100,
+        "seed": true,
+        "c_method": "incremental"
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "abba",
+      "variant": "incremental",
+      "name": "random_walk_10",
+      "config": {
+        "tol": [
+          0.1,
+          0.1
+        ],
+        "scl": 0,
+        "min_k": 1,
+        "max_k": 100,
+        "seed": true,
+        "c_method": "incremental"
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": false,
+        "reconstruction_close": false
+      }
+    },
+    {
+      "algorithm": "abba",
+      "variant": "incremental",
+      "name": "random_walk_11",
+      "config": {
+        "tol": [
+          0.1,
+          0.1
+        ],
+        "scl": 0,
+        "min_k": 1,
+        "max_k": 100,
+        "seed": true,
+        "c_method": "incremental"
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": false,
+        "symbols_equal": false,
+        "reconstruction_close": false
+      }
+    },
+    {
+      "algorithm": "abba",
+      "variant": "norm1",
+      "name": "simple",
+      "config": {
+        "tol": [
+          0.1,
+          0.1
+        ],
+        "scl": 0,
+        "min_k": 1,
+        "max_k": 100,
+        "seed": true,
+        "norm": 1
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "abba",
+      "variant": "norm1",
+      "name": "constant",
+      "config": {
+        "tol": [
+          0.1,
+          0.1
+        ],
+        "scl": 0,
+        "min_k": 1,
+        "max_k": 100,
+        "seed": true,
+        "norm": 1
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "abba",
+      "variant": "norm1",
+      "name": "linear",
+      "config": {
+        "tol": [
+          0.1,
+          0.1
+        ],
+        "scl": 0,
+        "min_k": 1,
+        "max_k": 100,
+        "seed": true,
+        "norm": 1
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "abba",
+      "variant": "norm1",
+      "name": "zigzag",
+      "config": {
+        "tol": [
+          0.1,
+          0.1
+        ],
+        "scl": 0,
+        "min_k": 1,
+        "max_k": 100,
+        "seed": true,
+        "norm": 1
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "abba",
+      "variant": "norm1",
+      "name": "tied_norm",
+      "config": {
+        "tol": [
+          0.1,
+          0.1
+        ],
+        "scl": 0,
+        "min_k": 1,
+        "max_k": 100,
+        "seed": true,
+        "norm": 1
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "abba",
+      "variant": "norm1",
+      "name": "tiny",
+      "config": {
+        "tol": [
+          0.1,
+          0.1
+        ],
+        "scl": 0,
+        "min_k": 1,
+        "max_k": 100,
+        "seed": true,
+        "norm": 1
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "abba",
+      "variant": "norm1",
+      "name": "random_walk_0",
+      "config": {
+        "tol": [
+          0.1,
+          0.1
+        ],
+        "scl": 0,
+        "min_k": 1,
+        "max_k": 100,
+        "seed": true,
+        "norm": 1
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "abba",
+      "variant": "norm1",
+      "name": "random_walk_1",
+      "config": {
+        "tol": [
+          0.1,
+          0.1
+        ],
+        "scl": 0,
+        "min_k": 1,
+        "max_k": 100,
+        "seed": true,
+        "norm": 1
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "abba",
+      "variant": "norm1",
+      "name": "random_walk_2",
+      "config": {
+        "tol": [
+          0.1,
+          0.1
+        ],
+        "scl": 0,
+        "min_k": 1,
+        "max_k": 100,
+        "seed": true,
+        "norm": 1
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "abba",
+      "variant": "norm1",
+      "name": "random_walk_3",
+      "config": {
+        "tol": [
+          0.1,
+          0.1
+        ],
+        "scl": 0,
+        "min_k": 1,
+        "max_k": 100,
+        "seed": true,
+        "norm": 1
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "abba",
+      "variant": "norm1",
+      "name": "random_walk_4",
+      "config": {
+        "tol": [
+          0.1,
+          0.1
+        ],
+        "scl": 0,
+        "min_k": 1,
+        "max_k": 100,
+        "seed": true,
+        "norm": 1
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "abba",
+      "variant": "norm1",
+      "name": "random_walk_5",
+      "config": {
+        "tol": [
+          0.1,
+          0.1
+        ],
+        "scl": 0,
+        "min_k": 1,
+        "max_k": 100,
+        "seed": true,
+        "norm": 1
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "abba",
+      "variant": "norm1",
+      "name": "random_walk_6",
+      "config": {
+        "tol": [
+          0.1,
+          0.1
+        ],
+        "scl": 0,
+        "min_k": 1,
+        "max_k": 100,
+        "seed": true,
+        "norm": 1
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "abba",
+      "variant": "norm1",
+      "name": "random_walk_7",
+      "config": {
+        "tol": [
+          0.1,
+          0.1
+        ],
+        "scl": 0,
+        "min_k": 1,
+        "max_k": 100,
+        "seed": true,
+        "norm": 1
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "abba",
+      "variant": "norm1",
+      "name": "random_walk_8",
+      "config": {
+        "tol": [
+          0.1,
+          0.1
+        ],
+        "scl": 0,
+        "min_k": 1,
+        "max_k": 100,
+        "seed": true,
+        "norm": 1
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "abba",
+      "variant": "norm1",
+      "name": "random_walk_9",
+      "config": {
+        "tol": [
+          0.1,
+          0.1
+        ],
+        "scl": 0,
+        "min_k": 1,
+        "max_k": 100,
+        "seed": true,
+        "norm": 1
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "abba",
+      "variant": "norm1",
+      "name": "random_walk_10",
+      "config": {
+        "tol": [
+          0.1,
+          0.1
+        ],
+        "scl": 0,
+        "min_k": 1,
+        "max_k": 100,
+        "seed": true,
+        "norm": 1
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "abba",
+      "variant": "norm1",
+      "name": "random_walk_11",
+      "config": {
+        "tol": [
+          0.1,
+          0.1
+        ],
+        "scl": 0,
+        "min_k": 1,
+        "max_k": 100,
+        "seed": true,
+        "norm": 1
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "fabba",
+      "variant": "mapped_default",
+      "name": "simple",
+      "config": {
+        "tol": 0.1,
+        "alpha": 0.1,
+        "scl": 1,
+        "sorting": "2-norm"
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "fabba",
+      "variant": "mapped_default",
+      "name": "constant",
+      "config": {
+        "tol": 0.1,
+        "alpha": 0.1,
+        "scl": 1,
+        "sorting": "2-norm"
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "fabba",
+      "variant": "mapped_default",
+      "name": "linear",
+      "config": {
+        "tol": 0.1,
+        "alpha": 0.1,
+        "scl": 1,
+        "sorting": "2-norm"
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "fabba",
+      "variant": "mapped_default",
+      "name": "zigzag",
+      "config": {
+        "tol": 0.1,
+        "alpha": 0.1,
+        "scl": 1,
+        "sorting": "2-norm"
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "fabba",
+      "variant": "mapped_default",
+      "name": "tied_norm",
+      "config": {
+        "tol": 0.1,
+        "alpha": 0.1,
+        "scl": 1,
+        "sorting": "2-norm"
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": false,
+        "symbols_equal": false,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "fabba",
+      "variant": "mapped_default",
+      "name": "tiny",
+      "config": {
+        "tol": 0.1,
+        "alpha": 0.1,
+        "scl": 1,
+        "sorting": "2-norm"
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "fabba",
+      "variant": "mapped_default",
+      "name": "random_walk_0",
+      "config": {
+        "tol": 0.1,
+        "alpha": 0.1,
+        "scl": 1,
+        "sorting": "2-norm"
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": false,
+        "symbols_equal": false,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "fabba",
+      "variant": "mapped_default",
+      "name": "random_walk_1",
+      "config": {
+        "tol": 0.1,
+        "alpha": 0.1,
+        "scl": 1,
+        "sorting": "2-norm"
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "fabba",
+      "variant": "mapped_default",
+      "name": "random_walk_2",
+      "config": {
+        "tol": 0.1,
+        "alpha": 0.1,
+        "scl": 1,
+        "sorting": "2-norm"
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": false,
+        "symbols_equal": false,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "fabba",
+      "variant": "mapped_default",
+      "name": "random_walk_3",
+      "config": {
+        "tol": 0.1,
+        "alpha": 0.1,
+        "scl": 1,
+        "sorting": "2-norm"
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "fabba",
+      "variant": "mapped_default",
+      "name": "random_walk_4",
+      "config": {
+        "tol": 0.1,
+        "alpha": 0.1,
+        "scl": 1,
+        "sorting": "2-norm"
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": false,
+        "symbols_equal": false,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "fabba",
+      "variant": "mapped_default",
+      "name": "random_walk_5",
+      "config": {
+        "tol": 0.1,
+        "alpha": 0.1,
+        "scl": 1,
+        "sorting": "2-norm"
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": false,
+        "symbols_equal": false,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "fabba",
+      "variant": "mapped_default",
+      "name": "random_walk_6",
+      "config": {
+        "tol": 0.1,
+        "alpha": 0.1,
+        "scl": 1,
+        "sorting": "2-norm"
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": false,
+        "symbols_equal": false,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "fabba",
+      "variant": "mapped_default",
+      "name": "random_walk_7",
+      "config": {
+        "tol": 0.1,
+        "alpha": 0.1,
+        "scl": 1,
+        "sorting": "2-norm"
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": false,
+        "symbols_equal": false,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "fabba",
+      "variant": "mapped_default",
+      "name": "random_walk_8",
+      "config": {
+        "tol": 0.1,
+        "alpha": 0.1,
+        "scl": 1,
+        "sorting": "2-norm"
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": false,
+        "symbols_equal": false,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "fabba",
+      "variant": "mapped_default",
+      "name": "random_walk_9",
+      "config": {
+        "tol": 0.1,
+        "alpha": 0.1,
+        "scl": 1,
+        "sorting": "2-norm"
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "fabba",
+      "variant": "mapped_default",
+      "name": "random_walk_10",
+      "config": {
+        "tol": 0.1,
+        "alpha": 0.1,
+        "scl": 1,
+        "sorting": "2-norm"
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": false,
+        "symbols_equal": false,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "fabba",
+      "variant": "mapped_default",
+      "name": "random_walk_11",
+      "config": {
+        "tol": 0.1,
+        "alpha": 0.1,
+        "scl": 1,
+        "sorting": "2-norm"
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "fabba",
+      "variant": "alpha05",
+      "name": "simple",
+      "config": {
+        "tol": 0.1,
+        "alpha": 0.5,
+        "scl": 1,
+        "sorting": "2-norm"
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "fabba",
+      "variant": "alpha05",
+      "name": "constant",
+      "config": {
+        "tol": 0.1,
+        "alpha": 0.5,
+        "scl": 1,
+        "sorting": "2-norm"
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "fabba",
+      "variant": "alpha05",
+      "name": "linear",
+      "config": {
+        "tol": 0.1,
+        "alpha": 0.5,
+        "scl": 1,
+        "sorting": "2-norm"
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "fabba",
+      "variant": "alpha05",
+      "name": "zigzag",
+      "config": {
+        "tol": 0.1,
+        "alpha": 0.5,
+        "scl": 1,
+        "sorting": "2-norm"
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "fabba",
+      "variant": "alpha05",
+      "name": "tied_norm",
+      "config": {
+        "tol": 0.1,
+        "alpha": 0.5,
+        "scl": 1,
+        "sorting": "2-norm"
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": false,
+        "symbols_equal": false,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "fabba",
+      "variant": "alpha05",
+      "name": "tiny",
+      "config": {
+        "tol": 0.1,
+        "alpha": 0.5,
+        "scl": 1,
+        "sorting": "2-norm"
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "fabba",
+      "variant": "alpha05",
+      "name": "random_walk_0",
+      "config": {
+        "tol": 0.1,
+        "alpha": 0.5,
+        "scl": 1,
+        "sorting": "2-norm"
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": false,
+        "symbols_equal": false,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "fabba",
+      "variant": "alpha05",
+      "name": "random_walk_1",
+      "config": {
+        "tol": 0.1,
+        "alpha": 0.5,
+        "scl": 1,
+        "sorting": "2-norm"
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "fabba",
+      "variant": "alpha05",
+      "name": "random_walk_2",
+      "config": {
+        "tol": 0.1,
+        "alpha": 0.5,
+        "scl": 1,
+        "sorting": "2-norm"
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": false,
+        "symbols_equal": false,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "fabba",
+      "variant": "alpha05",
+      "name": "random_walk_3",
+      "config": {
+        "tol": 0.1,
+        "alpha": 0.5,
+        "scl": 1,
+        "sorting": "2-norm"
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "fabba",
+      "variant": "alpha05",
+      "name": "random_walk_4",
+      "config": {
+        "tol": 0.1,
+        "alpha": 0.5,
+        "scl": 1,
+        "sorting": "2-norm"
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": false,
+        "symbols_equal": false,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "fabba",
+      "variant": "alpha05",
+      "name": "random_walk_5",
+      "config": {
+        "tol": 0.1,
+        "alpha": 0.5,
+        "scl": 1,
+        "sorting": "2-norm"
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": false,
+        "symbols_equal": false,
+        "reconstruction_close": false
+      }
+    },
+    {
+      "algorithm": "fabba",
+      "variant": "alpha05",
+      "name": "random_walk_6",
+      "config": {
+        "tol": 0.1,
+        "alpha": 0.5,
+        "scl": 1,
+        "sorting": "2-norm"
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": false,
+        "symbols_equal": false,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "fabba",
+      "variant": "alpha05",
+      "name": "random_walk_7",
+      "config": {
+        "tol": 0.1,
+        "alpha": 0.5,
+        "scl": 1,
+        "sorting": "2-norm"
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "fabba",
+      "variant": "alpha05",
+      "name": "random_walk_8",
+      "config": {
+        "tol": 0.1,
+        "alpha": 0.5,
+        "scl": 1,
+        "sorting": "2-norm"
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": false,
+        "symbols_equal": false,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "fabba",
+      "variant": "alpha05",
+      "name": "random_walk_9",
+      "config": {
+        "tol": 0.1,
+        "alpha": 0.5,
+        "scl": 1,
+        "sorting": "2-norm"
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "fabba",
+      "variant": "alpha05",
+      "name": "random_walk_10",
+      "config": {
+        "tol": 0.1,
+        "alpha": 0.5,
+        "scl": 1,
+        "sorting": "2-norm"
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": false,
+        "symbols_equal": false,
+        "reconstruction_close": true
+      }
+    },
+    {
+      "algorithm": "fabba",
+      "variant": "alpha05",
+      "name": "random_walk_11",
+      "config": {
+        "tol": 0.1,
+        "alpha": 0.5,
+        "scl": 1,
+        "sorting": "2-norm"
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": true,
+        "symbols_equal": true,
+        "reconstruction_close": true
+      }
+    }
+  ],
+  "counterexamples": [
+    {
+      "algorithm": "abba",
+      "variant": "incremental",
+      "name": "tied_norm",
+      "input": [
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0
+      ],
+      "config": {
+        "tol": [
+          0.1,
+          0.1
+        ],
+        "scl": 0,
+        "min_k": 1,
+        "max_k": 100,
+        "seed": true,
+        "c_method": "incremental"
+      },
+      "old": {
+        "ok": true,
+        "result": {
+          "pieces": [
+            [
+              1,
+              1,
+              0
+            ],
+            [
+              1,
+              -1,
+              0
+            ],
+            [
+              1,
+              0,
+              0
+            ],
+            [
+              1,
+              1,
+              0
+            ],
+            [
+              1,
+              -1,
+              0
+            ],
+            [
+              1,
+              0,
+              0
+            ],
+            [
+              1,
+              1,
+              0
+            ],
+            [
+              1,
+              -1,
+              0
+            ],
+            [
+              1,
+              0,
+              0
+            ],
+            [
+              1,
+              1,
+              0
+            ],
+            [
+              1,
+              -1,
+              0
+            ],
+            [
+              1,
+              0,
+              0
+            ],
+            [
+              1,
+              1,
+              0
+            ],
+            [
+              1,
+              -1,
+              0
+            ],
+            [
+              1,
+              0,
+              0
+            ],
+            [
+              1,
+              1,
+              0
+            ],
+            [
+              1,
+              -1,
+              0
+            ],
+            [
+              1,
+              0,
+              0
+            ],
+            [
+              1,
+              1,
+              0
+            ],
+            [
+              1,
+              -1,
+              0
+            ],
+            [
+              1,
+              0,
+              0
+            ],
+            [
+              1,
+              1,
+              0
+            ],
+            [
+              1,
+              -1,
+              0
+            ],
+            [
+              1,
+              0,
+              0
+            ],
+            [
+              1,
+              1,
+              0
+            ],
+            [
+              1,
+              -1,
+              0
+            ],
+            [
+              1,
+              0,
+              0
+            ],
+            [
+              1,
+              1,
+              0
+            ],
+            [
+              1,
+              -1,
+              0
+            ],
+            [
+              1,
+              0,
+              0
+            ],
+            [
+              1,
+              1,
+              0
+            ],
+            [
+              1,
+              -1,
+              0
+            ],
+            [
+              1,
+              0,
+              0
+            ],
+            [
+              1,
+              1,
+              0
+            ],
+            [
+              1,
+              -1,
+              0
+            ]
+          ],
+          "variance_bound": 0.1,
+          "labels_raw": [
+            0,
+            1,
+            0,
+            2,
+            1,
+            0,
+            2,
+            1,
+            0,
+            2,
+            1,
+            0,
+            2,
+            1,
+            0,
+            2,
+            1,
+            0,
+            2,
+            1,
+            0,
+            2,
+            1,
+            0,
+            2,
+            1,
+            0,
+            2,
+            1,
+            0,
+            2,
+            1,
+            0,
+            2,
+            1
+          ],
+          "centers_raw": [
+            [
+              1,
+              0.08333333333333333
+            ],
+            [
+              1,
+              -1
+            ],
+            [
+              1,
+              1
+            ]
+          ],
+          "symbols": [
+            0,
+            1,
+            0,
+            2,
+            1,
+            0,
+            2,
+            1,
+            0,
+            2,
+            1,
+            0,
+            2,
+            1,
+            0,
+            2,
+            1,
+            0,
+            2,
+            1,
+            0,
+            2,
+            1,
+            0,
+            2,
+            1,
+            0,
+            2,
+            1,
+            0,
+            2,
+            1,
+            0,
+            2,
+            1
+          ],
+          "centers": [
+            [
+              1,
+              0.08333333333333333
+            ],
+            [
+              1,
+              -1
+            ],
+            [
+              1,
+              1
+            ]
+          ],
+          "quantized_pieces": [
+            [
+              1,
+              0.08333333333333333
+            ],
+            [
+              1,
+              -1
+            ],
+            [
+              1,
+              0.08333333333333333
+            ],
+            [
+              1,
+              1
+            ],
+            [
+              1,
+              -1
+            ],
+            [
+              1,
+              0.08333333333333333
+            ],
+            [
+              1,
+              1
+            ],
+            [
+              1,
+              -1
+            ],
+            [
+              1,
+              0.08333333333333333
+            ],
+            [
+              1,
+              1
+            ],
+            [
+              1,
+              -1
+            ],
+            [
+              1,
+              0.08333333333333333
+            ],
+            [
+              1,
+              1
+            ],
+            [
+              1,
+              -1
+            ],
+            [
+              1,
+              0.08333333333333333
+            ],
+            [
+              1,
+              1
+            ],
+            [
+              1,
+              -1
+            ],
+            [
+              1,
+              0.08333333333333333
+            ],
+            [
+              1,
+              1
+            ],
+            [
+              1,
+              -1
+            ],
+            [
+              1,
+              0.08333333333333333
+            ],
+            [
+              1,
+              1
+            ],
+            [
+              1,
+              -1
+            ],
+            [
+              1,
+              0.08333333333333333
+            ],
+            [
+              1,
+              1
+            ],
+            [
+              1,
+              -1
+            ],
+            [
+              1,
+              0.08333333333333333
+            ],
+            [
+              1,
+              1
+            ],
+            [
+              1,
+              -1
+            ],
+            [
+              1,
+              0.08333333333333333
+            ],
+            [
+              1,
+              1
+            ],
+            [
+              1,
+              -1
+            ],
+            [
+              1,
+              0.08333333333333333
+            ],
+            [
+              1,
+              1
+            ],
+            [
+              1,
+              -1
+            ]
+          ],
+          "reconstructed": [
+            0,
+            0.08333333333333333,
+            -0.9166666666666666,
+            -0.8333333333333333,
+            0.16666666666666674,
+            -0.8333333333333333,
+            -0.7499999999999999,
+            0.2500000000000001,
+            -0.7499999999999999,
+            -0.6666666666666665,
+            0.3333333333333335,
+            -0.6666666666666665,
+            -0.5833333333333331,
+            0.41666666666666685,
+            -0.5833333333333331,
+            -0.49999999999999983,
+            0.5000000000000002,
+            -0.4999999999999998,
+            -0.41666666666666646,
+            0.5833333333333335,
+            -0.4166666666666665,
+            -0.3333333333333332,
+            0.6666666666666667,
+            -0.33333333333333326,
+            -0.24999999999999994,
+            0.75,
+            -0.25,
+            -0.16666666666666669,
+            0.8333333333333333,
+            -0.16666666666666674,
+            -0.08333333333333341,
+            0.9166666666666666,
+            -0.08333333333333337,
+            -4.163336342344337e-17,
+            1,
+            0
+          ],
+          "container_hex": "4142424101000100240000000000000023000000030000009a9999999999b93f9a9999999999b93fffffffffffffffff01000000640000000000000000000000000000000000f03f555555555555b53f000000000000f03f000000000000f0bf000000000000f03f000000000000f03f000001000000020001000000020001000000020001000000020001000000020001000000020001000000020001000000020001000000020001000000020001000000020001000cc55539",
+          "accounting": {
+            "header_bits": 512,
+            "codebook_bits": 384,
+            "symbol_stream_bits": 560,
+            "checksum_bits": 32,
+            "serialized_bits": 1488,
+            "external_side_information_bits": 0,
+            "final_bits": 1488
+          }
+        }
+      },
+      "new": {
+        "ok": true,
+        "result": {
+          "alphabet": [
+            "a",
+            "b",
+            "c"
+          ],
+          "centers": [
+            [
+              1.0,
+              1.0
+            ],
+            [
+              1.0,
+              -0.08333333333333333
+            ],
+            [
+              1.0,
+              -1.0
+            ]
+          ],
+          "model": {
+            "algorithm": "abba",
+            "alphabet": [
+              "a",
+              "b",
+              "c"
+            ],
+            "centers": [
+              [
+                1.0,
+                1.0
+              ],
+              [
+                1.0,
+                -0.08333333333333333
+              ],
+              [
+                1.0,
+                -1.0
+              ]
+            ],
+            "config": {
+              "c_method": "incremental",
+              "max_k": 100,
+              "min_k": 1,
+              "scl": 0,
+              "seed": true,
+              "tol": [
+                0.1,
+                0.1
+              ]
+            },
+            "sample_counts": [
+              36
+            ],
+            "single": true,
+            "starts": [
+              0.0
+            ],
+            "symbols": [
+              "a",
+              "c",
+              "b",
+              "a",
+              "c",
+              "b",
+              "a",
+              "c",
+              "b",
+              "a",
+              "c",
+              "b",
+              "a",
+              "c",
+              "b",
+              "a",
+              "c",
+              "b",
+              "a",
+              "c",
+              "b",
+              "a",
+              "c",
+              "b",
+              "a",
+              "c",
+              "b",
+              "a",
+              "b",
+              "b",
+              "a",
+              "c",
+              "b",
+              "a",
+              "c"
+            ],
+            "version": 1
+          },
+          "pieces": [
+            [
+              1.0,
+              1.0,
+              0.0
+            ],
+            [
+              1.0,
+              -1.0,
+              0.0
+            ],
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              1.0,
+              1.0,
+              0.0
+            ],
+            [
+              1.0,
+              -1.0,
+              0.0
+            ],
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              1.0,
+              1.0,
+              0.0
+            ],
+            [
+              1.0,
+              -1.0,
+              0.0
+            ],
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              1.0,
+              1.0,
+              0.0
+            ],
+            [
+              1.0,
+              -1.0,
+              0.0
+            ],
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              1.0,
+              1.0,
+              0.0
+            ],
+            [
+              1.0,
+              -1.0,
+              0.0
+            ],
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              1.0,
+              1.0,
+              0.0
+            ],
+            [
+              1.0,
+              -1.0,
+              0.0
+            ],
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              1.0,
+              1.0,
+              0.0
+            ],
+            [
+              1.0,
+              -1.0,
+              0.0
+            ],
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              1.0,
+              1.0,
+              0.0
+            ],
+            [
+              1.0,
+              -1.0,
+              0.0
+            ],
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              1.0,
+              1.0,
+              0.0
+            ],
+            [
+              1.0,
+              -1.0,
+              0.0
+            ],
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              1.0,
+              1.0,
+              0.0
+            ],
+            [
+              1.0,
+              -1.0,
+              0.0
+            ],
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              1.0,
+              1.0,
+              0.0
+            ],
+            [
+              1.0,
+              -1.0,
+              0.0
+            ],
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              1.0,
+              1.0,
+              0.0
+            ],
+            [
+              1.0,
+              -1.0,
+              0.0
+            ]
+          ],
+          "reconstructed": [
+            0.0,
+            1.0,
+            0.0,
+            -0.08333333333333333,
+            0.9166666666666666,
+            -0.08333333333333337,
+            -0.16666666666666669,
+            0.8333333333333333,
+            -0.16666666666666674,
+            -0.25000000000000006,
+            0.75,
+            -0.25,
+            -0.3333333333333333,
+            0.6666666666666667,
+            -0.33333333333333326,
+            -0.4166666666666666,
+            0.5833333333333335,
+            -0.4166666666666665,
+            -0.49999999999999983,
+            0.5000000000000002,
+            -0.4999999999999998,
+            -0.5833333333333331,
+            0.41666666666666685,
+            -0.5833333333333331,
+            -0.6666666666666665,
+            0.3333333333333335,
+            -0.6666666666666665,
+            -0.7499999999999999,
+            0.2500000000000001,
+            0.1666666666666668,
+            0.08333333333333347,
+            1.0833333333333335,
+            0.08333333333333348,
+            1.5265566588595902e-16,
+            1.0000000000000002,
+            2.220446049250313e-16
+          ],
+          "symbols": [
+            "a",
+            "c",
+            "b",
+            "a",
+            "c",
+            "b",
+            "a",
+            "c",
+            "b",
+            "a",
+            "c",
+            "b",
+            "a",
+            "c",
+            "b",
+            "a",
+            "c",
+            "b",
+            "a",
+            "c",
+            "b",
+            "a",
+            "c",
+            "b",
+            "a",
+            "c",
+            "b",
+            "a",
+            "b",
+            "b",
+            "a",
+            "c",
+            "b",
+            "a",
+            "c"
+          ]
+        }
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": false,
+        "symbols_equal": false,
+        "reconstruction_close": false
+      }
+    },
+    {
+      "algorithm": "fabba",
+      "variant": "alpha05",
+      "name": "random_walk_5",
+      "input": [
+        0.0,
+        -2.0,
+        -1.9,
+        -1.4,
+        -0.3999999999999999,
+        -0.29999999999999993,
+        0.20000000000000007,
+        0.30000000000000004,
+        -1.7,
+        -2.7,
+        -2.6,
+        -3.6,
+        -3.1,
+        -5.1,
+        -5.0,
+        -5.3,
+        -5.2,
+        -3.2,
+        -2.2,
+        -2.1,
+        -2.0,
+        0.0,
+        2.0,
+        0.0,
+        0.1,
+        -0.19999999999999998,
+        -2.2,
+        -0.20000000000000018,
+        0.2999999999999998,
+        -1.6653345369377348e-16,
+        0.09999999999999984,
+        0.5999999999999999,
+        1.0999999999999999,
+        3.0999999999999996,
+        3.1999999999999997,
+        5.199999999999999,
+        7.199999999999999
+      ],
+      "config": {
+        "tol": 0.1,
+        "alpha": 0.5,
+        "scl": 1,
+        "sorting": "2-norm"
+      },
+      "old": {
+        "ok": true,
+        "result": {
+          "pieces": [
+            [
+              1,
+              -2,
+              0
+            ],
+            [
+              2,
+              0.6000000000000001,
+              0.03999999999999998
+            ],
+            [
+              1,
+              1,
+              0
+            ],
+            [
+              3,
+              0.7,
+              0.03555555555555556
+            ],
+            [
+              1,
+              -2,
+              0
+            ],
+            [
+              1,
+              -1.0000000000000002,
+              0
+            ],
+            [
+              1,
+              0.10000000000000009,
+              0
+            ],
+            [
+              1,
+              -1,
+              0
+            ],
+            [
+              1,
+              0.5,
+              0
+            ],
+            [
+              1,
+              -1.9999999999999996,
+              0
+            ],
+            [
+              3,
+              -0.10000000000000053,
+              0.035555555555555306
+            ],
+            [
+              1,
+              2,
+              0
+            ],
+            [
+              1,
+              1,
+              0
+            ],
+            [
+              2,
+              0.20000000000000018,
+              0
+            ],
+            [
+              2,
+              4,
+              0
+            ],
+            [
+              1,
+              -2,
+              0
+            ],
+            [
+              2,
+              -0.19999999999999998,
+              0.04000000000000001
+            ],
+            [
+              1,
+              -2,
+              0
+            ],
+            [
+              1,
+              2,
+              0
+            ],
+            [
+              1,
+              0.5,
+              0
+            ],
+            [
+              2,
+              -0.19999999999999998,
+              0.04000000000000001
+            ],
+            [
+              2,
+              1,
+              0
+            ],
+            [
+              1,
+              1.9999999999999998,
+              0
+            ],
+            [
+              1,
+              0.10000000000000009,
+              0
+            ],
+            [
+              2,
+              3.9999999999999996,
+              0
+            ]
+          ],
+          "length_std": 0.6374950980203691,
+          "increment_std": 1.654405029005896,
+          "sorted_indices": [
+            6,
+            23,
+            8,
+            19,
+            2,
+            5,
+            7,
+            12,
+            9,
+            0,
+            4,
+            11,
+            15,
+            17,
+            18,
+            22,
+            13,
+            16,
+            20,
+            1,
+            21,
+            14,
+            24,
+            10,
+            3
+          ],
+          "starting_points": [
+            6,
+            2,
+            5,
+            9,
+            11,
+            13,
+            14,
+            10
+          ],
+          "labels_raw": [
+            3,
+            5,
+            1,
+            7,
+            3,
+            2,
+            0,
+            2,
+            0,
+            3,
+            7,
+            4,
+            1,
+            5,
+            6,
+            3,
+            5,
+            3,
+            4,
+            0,
+            5,
+            5,
+            4,
+            0,
+            6
+          ],
+          "centers_raw": [
+            [
+              1,
+              0.30000000000000004
+            ],
+            [
+              1,
+              1
+            ],
+            [
+              1,
+              -1
+            ],
+            [
+              1,
+              -2
+            ],
+            [
+              1,
+              2
+            ],
+            [
+              2,
+              0.2800000000000001
+            ],
+            [
+              2,
+              4
+            ],
+            [
+              3,
+              0.2999999999999997
+            ]
+          ],
+          "symbols": [
+            3,
+            5,
+            1,
+            7,
+            3,
+            2,
+            0,
+            2,
+            0,
+            3,
+            7,
+            4,
+            1,
+            5,
+            6,
+            3,
+            5,
+            3,
+            4,
+            0,
+            5,
+            5,
+            4,
+            0,
+            6
+          ],
+          "centers": [
+            [
+              1,
+              0.30000000000000004
+            ],
+            [
+              1,
+              1
+            ],
+            [
+              1,
+              -1
+            ],
+            [
+              1,
+              -2
+            ],
+            [
+              1,
+              2
+            ],
+            [
+              2,
+              0.2800000000000001
+            ],
+            [
+              2,
+              4
+            ],
+            [
+              3,
+              0.2999999999999997
+            ]
+          ],
+          "quantized_pieces": [
+            [
+              1,
+              -2
+            ],
+            [
+              2,
+              0.2800000000000001
+            ],
+            [
+              1,
+              1
+            ],
+            [
+              3,
+              0.2999999999999997
+            ],
+            [
+              1,
+              -2
+            ],
+            [
+              1,
+              -1
+            ],
+            [
+              1,
+              0.30000000000000004
+            ],
+            [
+              1,
+              -1
+            ],
+            [
+              1,
+              0.30000000000000004
+            ],
+            [
+              1,
+              -2
+            ],
+            [
+              3,
+              0.2999999999999997
+            ],
+            [
+              1,
+              2
+            ],
+            [
+              1,
+              1
+            ],
+            [
+              2,
+              0.2800000000000001
+            ],
+            [
+              2,
+              4
+            ],
+            [
+              1,
+              -2
+            ],
+            [
+              2,
+              0.2800000000000001
+            ],
+            [
+              1,
+              -2
+            ],
+            [
+              1,
+              2
+            ],
+            [
+              1,
+              0.30000000000000004
+            ],
+            [
+              2,
+              0.2800000000000001
+            ],
+            [
+              2,
+              0.2800000000000001
+            ],
+            [
+              1,
+              2
+            ],
+            [
+              1,
+              0.30000000000000004
+            ],
+            [
+              2,
+              4
+            ]
+          ],
+          "reconstructed": [
+            0,
+            -2,
+            -1.8599999999999999,
+            -1.72,
+            -0.72,
+            -0.6200000000000001,
+            -0.5200000000000002,
+            -0.42000000000000026,
+            -2.4200000000000004,
+            -3.4200000000000004,
+            -3.12,
+            -4.12,
+            -3.8200000000000003,
+            -5.82,
+            -5.720000000000001,
+            -5.62,
+            -5.5200000000000005,
+            -3.5200000000000005,
+            -2.5200000000000005,
+            -2.3800000000000003,
+            -2.24,
+            -0.2400000000000002,
+            1.7599999999999998,
+            -0.2400000000000002,
+            -0.10000000000000017,
+            0.03999999999999987,
+            -1.9600000000000002,
+            0.039999999999999813,
+            0.33999999999999986,
+            0.47999999999999987,
+            0.6199999999999999,
+            0.7599999999999999,
+            0.8999999999999999,
+            2.9,
+            3.2,
+            5.2,
+            7.2
+          ],
+          "container_hex": "4641424201000100250000000000000019000000080000009a9999999999b93f000000000000e03fffffffffffffffff000000000000f03f00000000000000000200000000000000000000000000f03f343333333333d33f000000000000f03f000000000000f03f000000000000f03f000000000000f0bf000000000000f03f00000000000000c0000000000000f03f00000000000000400000000000000040ed51b81e85ebd13f0000000000000040000000000000104000000000000008402e3333333333d33f0300050001000700030002000000020000000300070004000100050006000300050003000400000005000500040000000600ed4c7df4",
+          "accounting": {
+            "header_bits": 576,
+            "codebook_bits": 1024,
+            "symbol_stream_bits": 400,
+            "checksum_bits": 32,
+            "serialized_bits": 2032,
+            "external_side_information_bits": 0,
+            "final_bits": 2032
+          }
+        }
+      },
+      "new": {
+        "ok": true,
+        "result": {
+          "alphabet": [
+            "A",
+            "a",
+            "B",
+            "b",
+            "C",
+            "c",
+            "D",
+            "d",
+            "E"
+          ],
+          "centers": [
+            [
+              1.0,
+              0.30000000000000004
+            ],
+            [
+              1.0,
+              1.0
+            ],
+            [
+              1.0,
+              -1.0
+            ],
+            [
+              1.0,
+              -2.0
+            ],
+            [
+              1.0,
+              2.0
+            ],
+            [
+              2.0,
+              0.10000000000000009
+            ],
+            [
+              2.0,
+              1.0
+            ],
+            [
+              2.0,
+              4.0
+            ],
+            [
+              3.0,
+              0.2999999999999997
+            ]
+          ],
+          "model": {
+            "algorithm": "fabba",
+            "alphabet": [
+              "A",
+              "a",
+              "B",
+              "b",
+              "C",
+              "c",
+              "D",
+              "d",
+              "E"
+            ],
+            "centers": [
+              [
+                1.0,
+                0.30000000000000004
+              ],
+              [
+                1.0,
+                1.0
+              ],
+              [
+                1.0,
+                -1.0
+              ],
+              [
+                1.0,
+                -2.0
+              ],
+              [
+                1.0,
+                2.0
+              ],
+              [
+                2.0,
+                0.10000000000000009
+              ],
+              [
+                2.0,
+                1.0
+              ],
+              [
+                2.0,
+                4.0
+              ],
+              [
+                3.0,
+                0.2999999999999997
+              ]
+            ],
+            "config": {
+              "alpha": 0.5,
+              "scl": 1,
+              "sorting": "2-norm",
+              "tol": 0.1
+            },
+            "sample_counts": [
+              37
+            ],
+            "single": true,
+            "starts": [
+              0.0
+            ],
+            "symbols": [
+              "b",
+              "c",
+              "a",
+              "E",
+              "b",
+              "B",
+              "A",
+              "B",
+              "A",
+              "b",
+              "E",
+              "C",
+              "a",
+              "c",
+              "d",
+              "b",
+              "c",
+              "b",
+              "C",
+              "A",
+              "c",
+              "D",
+              "C",
+              "A",
+              "d"
+            ],
+            "version": 1
+          },
+          "pieces": [
+            [
+              1.0,
+              -2.0,
+              0.0
+            ],
+            [
+              2.0,
+              0.6000000000000001,
+              0.03999999999999998
+            ],
+            [
+              1.0,
+              1.0,
+              0.0
+            ],
+            [
+              3.0,
+              0.7,
+              0.03555555555555556
+            ],
+            [
+              1.0,
+              -2.0,
+              0.0
+            ],
+            [
+              1.0,
+              -1.0000000000000002,
+              0.0
+            ],
+            [
+              1.0,
+              0.10000000000000009,
+              0.0
+            ],
+            [
+              1.0,
+              -1.0,
+              0.0
+            ],
+            [
+              1.0,
+              0.5,
+              0.0
+            ],
+            [
+              1.0,
+              -1.9999999999999996,
+              0.0
+            ],
+            [
+              3.0,
+              -0.10000000000000053,
+              0.035555555555555306
+            ],
+            [
+              1.0,
+              2.0,
+              0.0
+            ],
+            [
+              1.0,
+              1.0,
+              0.0
+            ],
+            [
+              2.0,
+              0.20000000000000018,
+              0.0
+            ],
+            [
+              2.0,
+              4.0,
+              0.0
+            ],
+            [
+              1.0,
+              -2.0,
+              0.0
+            ],
+            [
+              2.0,
+              -0.19999999999999998,
+              0.04000000000000001
+            ],
+            [
+              1.0,
+              -2.0,
+              0.0
+            ],
+            [
+              1.0,
+              2.0,
+              0.0
+            ],
+            [
+              1.0,
+              0.5,
+              0.0
+            ],
+            [
+              2.0,
+              -0.19999999999999998,
+              0.04000000000000001
+            ],
+            [
+              2.0,
+              1.0,
+              0.0
+            ],
+            [
+              1.0,
+              1.9999999999999998,
+              0.0
+            ],
+            [
+              1.0,
+              0.10000000000000009,
+              0.0
+            ],
+            [
+              2.0,
+              3.9999999999999996,
+              0.0
+            ]
+          ],
+          "reconstructed": [
+            0.0,
+            -2.0,
+            -1.95,
+            -1.9,
+            -0.8999999999999999,
+            -0.8,
+            -0.7000000000000001,
+            -0.6000000000000002,
+            -2.6,
+            -3.6,
+            -3.3,
+            -4.3,
+            -4.0,
+            -6.0,
+            -5.9,
+            -5.8,
+            -5.7,
+            -3.7,
+            -2.7,
+            -2.6500000000000004,
+            -2.6,
+            -0.6000000000000001,
+            1.4,
+            -0.6000000000000001,
+            -0.55,
+            -0.5,
+            -2.5,
+            -0.5,
+            -0.19999999999999996,
+            -0.1499999999999999,
+            -0.09999999999999987,
+            0.40000000000000013,
+            0.9000000000000001,
+            2.9000000000000004,
+            3.2,
+            5.2,
+            7.2
+          ],
+          "splist": [
+            [
+              6.0,
+              0.0,
+              1.0,
+              1.5686395128453965,
+              0.06044469053632435
+            ],
+            [
+              12.0,
+              1.0,
+              1.0,
+              1.5686395128453965,
+              0.604446905363243
+            ],
+            [
+              5.0,
+              2.0,
+              1.0,
+              1.5686395128453965,
+              -0.6044469053632431
+            ],
+            [
+              9.0,
+              3.0,
+              1.0,
+              1.5686395128453965,
+              -1.2088938107264855
+            ],
+            [
+              22.0,
+              4.0,
+              1.0,
+              1.5686395128453965,
+              1.2088938107264857
+            ],
+            [
+              16.0,
+              5.0,
+              1.0,
+              3.137279025690793,
+              -0.12088938107264857
+            ],
+            [
+              21.0,
+              6.0,
+              1.0,
+              3.137279025690793,
+              0.604446905363243
+            ],
+            [
+              14.0,
+              7.0,
+              1.0,
+              3.137279025690793,
+              2.417787621452972
+            ],
+            [
+              10.0,
+              8.0,
+              1.0,
+              4.7059185385361895,
+              -0.06044469053632461
+            ]
+          ],
+          "symbols": [
+            "b",
+            "c",
+            "a",
+            "E",
+            "b",
+            "B",
+            "A",
+            "B",
+            "A",
+            "b",
+            "E",
+            "C",
+            "a",
+            "c",
+            "d",
+            "b",
+            "c",
+            "b",
+            "C",
+            "A",
+            "c",
+            "D",
+            "C",
+            "A",
+            "d"
+          ]
+        }
+      },
+      "comparison": {
+        "pieces_close": true,
+        "centers_close": false,
+        "symbols_equal": false,
+        "reconstruction_close": false
+      }
+    }
+  ],
+  "container_checks": [
+    {
+      "algorithm": "abba",
+      "old_magic": "ABBA",
+      "new_magic": "AFS1",
+      "old_bytes": 124,
+      "new_bytes": 315,
+      "new_decodes_old": {
+        "exit_code": 0,
+        "stdout": "{\"error\":\"frame magic\",\"ok\":false}\n"
+      },
+      "old_decodes_new": {
+        "exit_code": 2,
+        "stdout": "{\"ok\":true,\"result\":{{\"ok\":false,\"error\":\"invalid ABBA magic\"}\n"
+      }
+    },
+    {
+      "algorithm": "fabba",
+      "old_magic": "FABB",
+      "new_magic": "AFS1",
+      "old_bytes": 132,
+      "new_bytes": 307,
+      "new_decodes_old": {
+        "exit_code": 0,
+        "stdout": "{\"error\":\"frame magic\",\"ok\":false}\n"
+      },
+      "old_decodes_new": {
+        "exit_code": 1,
+        "stdout": "{\"ok\":true,\"result\":{{\"ok\":false,\"error\":\"invalid fABBA magic\"}\n"
+      }
+    }
+  ],
+  "sha256": {
+    "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/src/tsbench/build.py": "26ac5909b7162ceee5ef288ee50f85fca5924d570cd28f4dbb57608c107e273b",
+    "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/native/binding.cpp": "8e446c2fc322dc82e959b0fad7429af9d53a96346b6f8d92ac4eaf4997dd9330",
+    "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/vendor/abba/src/canonical/abba.cpp": "3bc7e025acf1e73262b8096959dc9a9c508c917b4f8e9398a6230a797109a2de",
+    "/home/fzg/PycharmProjects/TSDataCompressBenchMark/registry/codecs/abba.json": "82ef07e2b2e1543ec1c7e92d549a81532e3731534e66c3fd1942df17a3b8c749",
+    "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/completed_rewrites/vendor/fabba/src/canonical/fabba.cpp": "0663a765bb99d6fdfa63858ae1f5c80cf139ee3c7f7123d57f6f32b86037daa8",
+    "/home/fzg/PycharmProjects/TSDataCompressBenchMark/registry/codecs/fabba.json": "1c04599d576bda1d6671c9d03d1482189e559c49c96fa971437a7c6234ccb890",
+    "/home/fzg/PycharmProjects/Compression_Rewrite/ReWrite/abba-family/build/abba_family_cli": "9a686e266483fa6d380d44ea17037e851ef980c9fc93d5177b798e6f9c041540",
+    "/home/fzg/PycharmProjects/Compression_Rewrite/ReWrite/abba-family/src/math.cpp": "002cc9456b560b56a102f1f49f3b216d956be6486548b5187a9a3a46c1469c2d",
+    "/home/fzg/PycharmProjects/Compression_Rewrite/ReWrite/abba-family/src/clustering.cpp": "8559e95cfb6792c0d43c0c3d4e9cdc5634429022fe11823721e3e177d366a302",
+    "/home/fzg/PycharmProjects/Compression_Rewrite/ReWrite/abba-family/src/models.cpp": "2e17eaa93428374c2ff1d45eb4001eff051e13fcbca532536c3013587ecf656a",
+    "/home/fzg/PycharmProjects/Compression_Rewrite/ReWrite/abba-family/src/container.cpp": "a6b39e36b560e76f122a76349cc17a8974453b2b3525197b8c1b2949d7b2ef86"
+  },
+  "source_oracle_followup": {
+    "date": "2026-10-20",
+    "target": "Frozen original ABBA and fABBA Python classes for the new abba-family source commits; not a replay of the historical fABBA commit used by Benchmark.",
+    "runner": "/home/fzg/PycharmProjects/Compression_Rewrite/ReWrite/abba-family/tools/oracle.py",
+    "runner_sha256": "66af27e77b75cab031686595486479266d4cd06ddd229f1c70f6fd0de9ca8b5f",
+    "results": [
+      {
+        "comparison": {
+          "algorithm": "abba",
+          "source_ok": true,
+          "old_reconstruction_matches_source": false,
+          "old_max_abs_diff_from_source": 0.9166666666666666,
+          "new_reconstruction_matches_source": true,
+          "new_max_abs_diff_from_source": 0.0
+        },
+        "source": {
+          "ok": true,
+          "result": {
+            "pieces": [
+              [
+                1.0,
+                1.0,
+                0.0
+              ],
+              [
+                1.0,
+                -1.0,
+                0.0
+              ],
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                1.0,
+                1.0,
+                0.0
+              ],
+              [
+                1.0,
+                -1.0,
+                0.0
+              ],
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                1.0,
+                1.0,
+                0.0
+              ],
+              [
+                1.0,
+                -1.0,
+                0.0
+              ],
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                1.0,
+                1.0,
+                0.0
+              ],
+              [
+                1.0,
+                -1.0,
+                0.0
+              ],
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                1.0,
+                1.0,
+                0.0
+              ],
+              [
+                1.0,
+                -1.0,
+                0.0
+              ],
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                1.0,
+                1.0,
+                0.0
+              ],
+              [
+                1.0,
+                -1.0,
+                0.0
+              ],
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                1.0,
+                1.0,
+                0.0
+              ],
+              [
+                1.0,
+                -1.0,
+                0.0
+              ],
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                1.0,
+                1.0,
+                0.0
+              ],
+              [
+                1.0,
+                -1.0,
+                0.0
+              ],
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                1.0,
+                1.0,
+                0.0
+              ],
+              [
+                1.0,
+                -1.0,
+                0.0
+              ],
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                1.0,
+                1.0,
+                0.0
+              ],
+              [
+                1.0,
+                -1.0,
+                0.0
+              ],
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                1.0,
+                1.0,
+                0.0
+              ],
+              [
+                1.0,
+                -1.0,
+                0.0
+              ],
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                1.0,
+                1.0,
+                0.0
+              ],
+              [
+                1.0,
+                -1.0,
+                0.0
+              ]
+            ],
+            "symbols": [
+              "a",
+              "c",
+              "b",
+              "a",
+              "c",
+              "b",
+              "a",
+              "c",
+              "b",
+              "a",
+              "c",
+              "b",
+              "a",
+              "c",
+              "b",
+              "a",
+              "c",
+              "b",
+              "a",
+              "c",
+              "b",
+              "a",
+              "c",
+              "b",
+              "a",
+              "c",
+              "b",
+              "a",
+              "b",
+              "b",
+              "a",
+              "c",
+              "b",
+              "a",
+              "c"
+            ],
+            "centers": [
+              [
+                1.0,
+                1.0
+              ],
+              [
+                1.0,
+                -0.08333333333333333
+              ],
+              [
+                1.0,
+                -1.0
+              ]
+            ],
+            "reconstructed": [
+              0.0,
+              1.0,
+              0.0,
+              -0.08333333333333333,
+              0.9166666666666666,
+              -0.08333333333333337,
+              -0.16666666666666669,
+              0.8333333333333333,
+              -0.16666666666666674,
+              -0.25000000000000006,
+              0.75,
+              -0.25,
+              -0.3333333333333333,
+              0.6666666666666667,
+              -0.33333333333333326,
+              -0.4166666666666666,
+              0.5833333333333335,
+              -0.4166666666666665,
+              -0.49999999999999983,
+              0.5000000000000002,
+              -0.4999999999999998,
+              -0.5833333333333331,
+              0.41666666666666685,
+              -0.5833333333333331,
+              -0.6666666666666665,
+              0.3333333333333335,
+              -0.6666666666666665,
+              -0.7499999999999999,
+              0.2500000000000001,
+              0.1666666666666668,
+              0.08333333333333347,
+              1.0833333333333335,
+              0.08333333333333348,
+              1.5265566588595902e-16,
+              1.0000000000000002,
+              2.220446049250313e-16
+            ]
+          }
+        },
+        "request": {
+          "algorithm": "abba",
+          "values": [
+            0,
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+            1,
+            0
+          ],
+          "config": {
+            "tol": [
+              0.1,
+              0.1
+            ],
+            "scl": 0,
+            "min_k": 1,
+            "max_k": 100,
+            "seed": true,
+            "c_method": "incremental"
+          }
+        }
+      },
+      {
+        "comparison": {
+          "algorithm": "fabba",
+          "source_ok": true,
+          "old_reconstruction_matches_source": false,
+          "old_max_abs_diff_from_source": 0.7199999999999998,
+          "new_reconstruction_matches_source": true,
+          "new_max_abs_diff_from_source": 0.0
+        },
+        "source": {
+          "ok": true,
+          "result": {
+            "pieces": [
+              [
+                1.0,
+                -2.0,
+                0.0
+              ],
+              [
+                2.0,
+                0.6000000000000001,
+                0.03999999999999998
+              ],
+              [
+                1.0,
+                1.0,
+                0.0
+              ],
+              [
+                3.0,
+                0.7,
+                0.03555555555555556
+              ],
+              [
+                1.0,
+                -2.0,
+                0.0
+              ],
+              [
+                1.0,
+                -1.0000000000000002,
+                0.0
+              ],
+              [
+                1.0,
+                0.10000000000000009,
+                0.0
+              ],
+              [
+                1.0,
+                -1.0,
+                0.0
+              ],
+              [
+                1.0,
+                0.5,
+                0.0
+              ],
+              [
+                1.0,
+                -1.9999999999999996,
+                0.0
+              ],
+              [
+                3.0,
+                -0.10000000000000053,
+                0.035555555555555306
+              ],
+              [
+                1.0,
+                2.0,
+                0.0
+              ],
+              [
+                1.0,
+                1.0,
+                0.0
+              ],
+              [
+                2.0,
+                0.20000000000000018,
+                0.0
+              ],
+              [
+                2.0,
+                4.0,
+                0.0
+              ],
+              [
+                1.0,
+                -2.0,
+                0.0
+              ],
+              [
+                2.0,
+                -0.19999999999999998,
+                0.04000000000000001
+              ],
+              [
+                1.0,
+                -2.0,
+                0.0
+              ],
+              [
+                1.0,
+                2.0,
+                0.0
+              ],
+              [
+                1.0,
+                0.5,
+                0.0
+              ],
+              [
+                2.0,
+                -0.19999999999999998,
+                0.04000000000000001
+              ],
+              [
+                2.0,
+                1.0,
+                0.0
+              ],
+              [
+                1.0,
+                1.9999999999999998,
+                0.0
+              ],
+              [
+                1.0,
+                0.10000000000000009,
+                0.0
+              ],
+              [
+                2.0,
+                3.9999999999999996,
+                0.0
+              ]
+            ],
+            "symbols": [
+              "b",
+              "c",
+              "a",
+              "E",
+              "b",
+              "B",
+              "A",
+              "B",
+              "A",
+              "b",
+              "E",
+              "C",
+              "a",
+              "c",
+              "d",
+              "b",
+              "c",
+              "b",
+              "C",
+              "A",
+              "c",
+              "D",
+              "C",
+              "A",
+              "d"
+            ],
+            "centers": [
+              [
+                1.0,
+                0.30000000000000004
+              ],
+              [
+                1.0,
+                1.0
+              ],
+              [
+                1.0,
+                -1.0
+              ],
+              [
+                1.0,
+                -2.0
+              ],
+              [
+                1.0,
+                2.0
+              ],
+              [
+                2.0,
+                0.10000000000000009
+              ],
+              [
+                2.0,
+                1.0
+              ],
+              [
+                2.0,
+                4.0
+              ],
+              [
+                3.0,
+                0.2999999999999997
+              ]
+            ],
+            "alphabet": [
+              "A",
+              "a",
+              "B",
+              "b",
+              "C",
+              "c",
+              "D",
+              "d",
+              "E"
+            ],
+            "splist": [
+              [
+                6.0,
+                0.0,
+                1.0,
+                1.5686395128453965,
+                0.06044469053632435
+              ],
+              [
+                12.0,
+                1.0,
+                1.0,
+                1.5686395128453965,
+                0.604446905363243
+              ],
+              [
+                5.0,
+                2.0,
+                1.0,
+                1.5686395128453965,
+                -0.6044469053632431
+              ],
+              [
+                9.0,
+                3.0,
+                1.0,
+                1.5686395128453965,
+                -1.2088938107264855
+              ],
+              [
+                22.0,
+                4.0,
+                1.0,
+                1.5686395128453965,
+                1.2088938107264857
+              ],
+              [
+                16.0,
+                5.0,
+                1.0,
+                3.137279025690793,
+                -0.12088938107264857
+              ],
+              [
+                21.0,
+                6.0,
+                1.0,
+                3.137279025690793,
+                0.604446905363243
+              ],
+              [
+                14.0,
+                7.0,
+                1.0,
+                3.137279025690793,
+                2.417787621452972
+              ],
+              [
+                10.0,
+                8.0,
+                1.0,
+                4.7059185385361895,
+                -0.06044469053632461
+              ]
+            ],
+            "reconstructed": [
+              0.0,
+              -2.0,
+              -1.95,
+              -1.9,
+              -0.8999999999999999,
+              -0.8,
+              -0.7000000000000001,
+              -0.6000000000000002,
+              -2.6,
+              -3.6,
+              -3.3,
+              -4.3,
+              -4.0,
+              -6.0,
+              -5.9,
+              -5.8,
+              -5.7,
+              -3.7,
+              -2.7,
+              -2.6500000000000004,
+              -2.6,
+              -0.6000000000000001,
+              1.4,
+              -0.6000000000000001,
+              -0.55,
+              -0.5,
+              -2.5,
+              -0.5,
+              -0.19999999999999996,
+              -0.1499999999999999,
+              -0.09999999999999987,
+              0.40000000000000013,
+              0.9000000000000001,
+              2.9000000000000004,
+              3.2,
+              5.2,
+              7.2
+            ]
+          }
+        },
+        "request": {
+          "algorithm": "fabba",
+          "values": [
+            0.0,
+            -2.0,
+            -1.9,
+            -1.4,
+            -0.3999999999999999,
+            -0.29999999999999993,
+            0.20000000000000007,
+            0.30000000000000004,
+            -1.7,
+            -2.7,
+            -2.6,
+            -3.6,
+            -3.1,
+            -5.1,
+            -5.0,
+            -5.3,
+            -5.2,
+            -3.2,
+            -2.2,
+            -2.1,
+            -2.0,
+            0.0,
+            2.0,
+            0.0,
+            0.1,
+            -0.19999999999999998,
+            -2.2,
+            -0.20000000000000018,
+            0.2999999999999998,
+            -1.6653345369377348e-16,
+            0.09999999999999984,
+            0.5999999999999999,
+            1.0999999999999999,
+            3.0999999999999996,
+            3.1999999999999997,
+            5.199999999999999,
+            7.199999999999999
+          ],
+          "config": {
+            "tol": 0.1,
+            "alpha": 0.5,
+            "scl": 1,
+            "sorting": "2-norm"
+          }
+        }
+      }
+    ]
+  }
+}

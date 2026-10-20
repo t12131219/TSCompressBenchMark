@@ -1,0 +1,3120 @@
+--- a/bitpack.h
++++ b/bitpack.h
+@@ -1,3 +1,4 @@
++#include "native_compat.hpp"
+ //
+ //  bitpack.cpp
+ //  Compress
+@@ -241,7 +242,7 @@
+ }
+ 
+ static inline uint8_t needed_nbits_i8x8(const int8_t* x) {
+-    __m128i v = _mm_loadu_si128((__m128i*)x);
++    __m128i v = _mm_loadl_epi64((const __m128i*)x);
+     return needed_nbits_epi8x8(v);
+ }
+ 
+@@ -289,7 +290,7 @@
+ // ------------------------------------------------ zigzag
+ 
+ // static inline uint8_t zigzag_encode_i16(int8_t x) {
+-//     return (x << 1) ^ (x >> 7);
++//     return ((uint32_t)x << 1) ^ (x >> 7);
+ // }
+ 
+ // static inline int8_t zigzag_decode_i16(uint8_t x) {
+@@ -299,18 +300,18 @@
+ // NOTE to self: this will yield subtlely wrong behavior if the
+ // expression (x) has side effects; use the functions below instead for
+ // new code
+-#define ZIGZAG_ENCODE_SCALAR(x) ( ((x) << 1) ^ ((x) >> (8 * sizeof(x) - 1)) )
++#define ZIGZAG_ENCODE_SCALAR(x) ( ((uint64_t)(x) << 1) ^ ((x) >> (8 * sizeof(x) - 1)) )
+ #define ZIGZAG_DECODE_SCALAR(x) ( ((x) >> 1) ^ -((x) & 0x01) )
+ 
+ static inline uint8_t zigzag_encode_8b(int8_t x) {
+-    return (x << 1) ^ (x >> 7);
++    return ((uint32_t)x << 1) ^ (x >> 7);
+ }
+ static inline int8_t zigzag_decode_8b(uint8_t x) {
+     return (x >> 1) ^ -(x & 0x01);
+ }
+ 
+ static inline uint16_t zigzag_encode_16b(int16_t x) {
+-    return (x << 1) ^ (x >> 15);
++    return ((uint32_t)x << 1) ^ (x >> 15);
+ }
+ static inline int16_t zigzag_decode_16b(uint16_t x) {
+     return (x >> 1) ^ -(x & 0x01);
+@@ -386,10 +387,10 @@
+     //
+     // __m256i fourVals = _mm256_setzero_si256();
+     // for (uint64_t b = 0; b < nblocks; b += 4) {
+-    //     uint64_t data0 = *(uint64_t*)(&src[block_sz*(b + 0)]);
+-    //     uint64_t data1 = *(uint64_t*)(&src[block_sz*(b + 1)]);
+-    //     uint64_t data2 = *(uint64_t*)(&src[block_sz*(b + 2)]);
+-    //     uint64_t data3 = *(uint64_t*)(&src[block_sz*(b + 3)]);
++    //     uint64_t data0 = *(sz_uint64_t*)(&src[block_sz*(b + 0)]);
++    //     uint64_t data1 = *(sz_uint64_t*)(&src[block_sz*(b + 1)]);
++    //     uint64_t data2 = *(sz_uint64_t*)(&src[block_sz*(b + 2)]);
++    //     uint64_t data3 = *(sz_uint64_t*)(&src[block_sz*(b + 3)]);
+     //     uint64_t packed0 = _pext_u64(data0, mask);
+     //     uint64_t packed1 = _pext_u64(data1, mask);
+     //     uint64_t packed2 = _pext_u64(data2, mask);
+@@ -399,9 +400,9 @@
+     // }
+ 
+     for (uint64_t b = 0; b < nblocks; b++) {
+-        uint64_t data = *(uint64_t*)(src);
++        uint64_t data = *(sz_uint64_t*)(src);
+         uint64_t packed = _pext_u64(data, mask);
+-        *((uint64_t*)dest) = packed;
++        *((sz_uint64_t*)dest) = packed;
+         dest += nbits;
+         src += block_sz;
+     }
+@@ -439,16 +440,16 @@
+ #define MAIN_LOOP(nbits)                                                    \
+     for (uint64_t g = 0; g < ngroups; g++) {                                \
+         for (int b = 0; b < group_sz; b++) {                                \
+-            uint64_t unpacked = _pdep_u64(*(uint64_t*)src, mask);           \
+-            *((uint64_t*)(dest + (b * block_sz))) = unpacked;               \
++            uint64_t unpacked = _pdep_u64(*(sz_uint64_t*)src, mask);           \
++            *((sz_uint64_t*)(dest + (b * block_sz))) = unpacked;               \
+             src += nbits;                                                   \
+         }                                                                   \
+         src += nbits * group_sz;                                            \
+         dest += block_sz * group_sz;                                        \
+     }                                                                       \
+     for (uint64_t b = ngroups * group_sz * block_sz; b < nblocks; b++) {    \
+-        uint64_t unpacked = _pdep_u64(*(uint64_t*)src, mask);               \
+-        *((uint64_t*)dest) = unpacked;                                      \
++        uint64_t unpacked = _pdep_u64(*(sz_uint64_t*)src, mask);               \
++        *((sz_uint64_t*)dest) = unpacked;                                      \
+         src += nbits;                                                       \
+         dest += block_sz;                                                   \
+     }
+@@ -473,7 +474,7 @@
+         __m256i fourVals = _mm256_setzero_si256();
+         for (uint64_t g = 0; g < ngroups; g++) {
+             for (int b = 0; b < group_sz; b++) {
+-                uint64_t unpacked = _pdep_u64(*(uint64_t*)(src + b * nbits), mask);
++                uint64_t unpacked = _pdep_u64(*(sz_uint64_t*)(src + b * nbits), mask);
+                 fourVals = _mm256_insert_epi64(fourVals, unpacked, b);
+                 // src += nbits;
+             }
+@@ -485,8 +486,8 @@
+         //    __m256i fourVals = _mm256_setzero_si256();
+         for (uint64_t g = 0; g < ngroups; g++) {
+             for (int b = 0; b < group_sz; b++) {
+-                uint64_t unpacked = _pdep_u64(*(uint64_t*)(src + b * nbits), mask);
+-                *((uint64_t*)(dest + (b * block_sz))) = unpacked;
++                uint64_t unpacked = _pdep_u64(*(sz_uint64_t*)(src + b * nbits), mask);
++                *((sz_uint64_t*)(dest + (b * block_sz))) = unpacked;
+                 // src += nbits;
+             }
+             src += nbits * group_sz;
+@@ -494,8 +495,8 @@
+         }
+     #endif
+     for (uint64_t b = ngroups * group_sz * block_sz; b < nblocks; b++) {
+-        uint64_t unpacked = _pdep_u64(*(uint64_t*)src, mask);
+-        *((uint64_t*)dest) = unpacked;
++        uint64_t unpacked = _pdep_u64(*(sz_uint64_t*)src, mask);
++        *((sz_uint64_t*)dest) = unpacked;
+         src += nbits;
+         dest += block_sz;
+     }
+--- a/delta.cpp
++++ b/delta.cpp
+@@ -1,3 +1,4 @@
++#include "native_compat.hpp"
+ //
+ //  delta.cpp
+ //  Compress
+@@ -48,7 +49,7 @@
+     uint32_t padded_ndims = round_up_to_multiple(ndims, vector_sz);
+     uint16_t nvectors = padded_ndims / vector_sz + ((padded_ndims % vector_sz) > 0);
+ 
+-    uint_t* prev_vals_ar = (uint_t*)calloc(vector_sz * elem_sz, nvectors);
++    uint_t* prev_vals_ar = (uint_t*)sz_mem::alloc(vector_sz * elem_sz, nvectors, true);
+ 
+     uint16_t metadata_len = 0;
+     if (write_size) {
+@@ -116,7 +117,7 @@
+         src++;
+     }
+ 
+-    free(prev_vals_ar);
++    sz_mem::release(prev_vals_ar);
+     return len + metadata_len;
+ }
+ uint32_t encode_delta_rowmajor_8b(const uint8_t* src, uint32_t len,
+@@ -190,7 +191,7 @@
+     uint32_t padded_ndims = round_up_to_multiple(ndims, vector_sz);
+     uint16_t nvectors = padded_ndims / vector_sz + ((padded_ndims % vector_sz) > 0);
+ 
+-    uint_t* prev_vals_ar = (uint_t*)calloc(vector_sz * elem_sz, nvectors);
++    uint_t* prev_vals_ar = (uint_t*)sz_mem::alloc(vector_sz * elem_sz, nvectors, true);
+ 
+     // ensure we don't write past the end of the output
+     uint16_t overrun_ndims = vector_sz - (ndims % vector_sz);
+@@ -226,7 +227,7 @@
+     // undo delta coding for trailing elements serially
+     decode_delta_serial(src, dest, orig_dest + len, ndims, nblocks == 0);
+ 
+-    free(prev_vals_ar);
++    sz_mem::release(prev_vals_ar);
+     return len;
+ }
+ 
+@@ -246,7 +247,7 @@
+     uint32_t padded_ndims = round_up_to_multiple(ndims, vector_sz);
+     uint16_t nvectors = padded_ndims / vector_sz + ((padded_ndims % vector_sz) > 0);
+ 
+-    uint_t* prev_vals_ar = (uint_t*)calloc(vector_sz * elem_sz, nvectors);
++    uint_t* prev_vals_ar = (uint_t*)sz_mem::alloc(vector_sz * elem_sz, nvectors, true);
+ 
+     // printf("-------- decompression (len = %lld, ndims = %d)\n", (int64_t)len, ndims);
+     // printf("saw compressed data:\n");
+@@ -302,7 +303,7 @@
+     // printf("reconstructed input:\n");
+     // dump_bytes(orig_dest, ndims * 8, ndims);
+ 
+-    free(prev_vals_ar);
++    sz_mem::release(prev_vals_ar);
+     return len;
+ }
+ 
+@@ -362,13 +363,13 @@
+     //
+     // static const uint8_t batch_nblocks = 8;
+     // uint32_t batch_size_elems = block_sz_elems * batch_nblocks;
+-    // uint8_t* tmp = (uint8_t*)malloc(batch_size_elems + vector_sz);
++    // uint8_t* tmp = (uint8_t*)sz_native_malloc(batch_size_elems + vector_sz);
+     // decode_delta_rowmajor((int8_t*)buff, len, tmp, ndims);
+ 
+-    uint_t* tmp = (uint_t*)malloc(len * sizeof(int_t));
++    uint_t* tmp = (uint_t*)sz_native_malloc(len * sizeof(int_t));
+     uint32_t sz = decode_delta_rowmajor((int_t*)buff, len, tmp, ndims);
+     memcpy(buff, tmp, sz * sizeof(int_t));
+-    free(tmp);
++    sz_mem::release(tmp);
+     return sz;
+ }
+ 
+@@ -418,10 +419,10 @@
+     bool own_prev_vals = prev_vals == NULL;
+     bool own_prev_deltas = prev_deltas == NULL;
+     if (own_prev_vals) {
+-        prev_vals = (uint_t*)calloc(lag * elem_sz, 1);
++        prev_vals = (uint_t*)sz_mem::alloc(lag * elem_sz, 1, true);
+     }
+     if (own_prev_deltas) {
+-        prev_deltas = (int_t*)calloc(lag * elem_sz, 1);
++        prev_deltas = (int_t*)sz_mem::alloc(lag * elem_sz, 1, true);
+     }
+ 
+     // enccode first row using prev_vals array passed in (or initialized to 0)
+@@ -459,8 +460,8 @@
+         dest++;
+     }
+ 
+-    if (own_prev_vals) { free((uint_t*)prev_vals); }
+-    if (own_prev_deltas) { free(prev_deltas); }
++    if (own_prev_vals) { sz_mem::release((uint_t*)prev_vals); }
++    if (own_prev_deltas) { sz_mem::release(prev_deltas); }
+     return len;
+ }
+ 
+@@ -479,10 +480,10 @@
+     bool own_prev_vals = prev_vals == NULL;
+     bool own_prev_deltas = prev_deltas == NULL;
+     if (own_prev_vals) {
+-        prev_vals = (uint_t*)calloc(lag * elem_sz, 1);
++        prev_vals = (uint_t*)sz_mem::alloc(lag * elem_sz, 1, true);
+     }
+     if (own_prev_deltas) {
+-        prev_deltas = (int_t*)calloc(lag * elem_sz, 1);
++        prev_deltas = (int_t*)sz_mem::alloc(lag * elem_sz, 1, true);
+     }
+ 
+     // decode first row using prev_vals array passed in (or initialized to 0)
+@@ -522,8 +523,8 @@
+         dest++;
+     }
+ 
+-    if (own_prev_vals) { free((uint_t*)prev_vals); }
+-    if (own_prev_deltas) { free(prev_deltas); }
++    if (own_prev_vals) { sz_mem::release((uint_t*)prev_vals); }
++    if (own_prev_deltas) { sz_mem::release(prev_deltas); }
+     return len;
+ }
+ 
+@@ -546,7 +547,7 @@
+     uint32_t padded_ndims = round_up_to_multiple(ndims, vector_sz);
+     uint16_t nvectors = padded_ndims / vector_sz + ((padded_ndims % vector_sz) > 0);
+ 
+-    uint_t* prev_vals_ar = (uint_t*)calloc(2 * vector_sz * elem_sz, nvectors);
++    uint_t* prev_vals_ar = (uint_t*)sz_mem::alloc(2 * vector_sz * elem_sz, nvectors, true);
+     int_t* prev_deltas_ar = (int_t*)prev_vals_ar + vector_sz * nvectors;
+ 
+     uint16_t metadata_len = 0;
+@@ -606,7 +607,7 @@
+     encode_doubledelta_serial(src, remaining_len, dest, ndims,
+                               use_prev_vals, use_prev_deltas);
+ 
+-    free(prev_vals_ar);
++    sz_mem::release(prev_vals_ar);
+     return len + metadata_len;
+ }
+ uint32_t encode_doubledelta_rowmajor_8b(const uint8_t* src, uint32_t len,
+@@ -638,7 +639,7 @@
+     uint32_t padded_ndims = round_up_to_multiple(ndims, vector_sz);
+     uint16_t nvectors = padded_ndims / vector_sz + ((padded_ndims % vector_sz) > 0);
+ 
+-    uint_t* prev_vals_ar = (uint_t*)calloc(2 * vector_sz * elem_sz, nvectors);
++    uint_t* prev_vals_ar = (uint_t*)sz_mem::alloc(2 * vector_sz * elem_sz, nvectors, true);
+     int_t* prev_deltas_ar = (int_t*)prev_vals_ar + vector_sz * nvectors;
+ 
+     // ensure we don't write past the end of the output
+@@ -689,7 +690,7 @@
+     decode_doubledelta_serial(src, remaining_len, dest, ndims,
+                               use_prev_vals, use_prev_deltas);
+ 
+-    free(prev_vals_ar);
++    sz_mem::release(prev_vals_ar);
+     return len;
+ }
+ uint32_t decode_doubledelta_rowmajor_8b(const int8_t* src, uint32_t len,
+@@ -708,11 +709,11 @@
+                                        uint16_t ndims)
+ {
+     // return decode_delta_rowmajor_inplace<int_t>(buff, len, ndims);
+-    uint_t* tmp = (uint_t*)malloc(len * sizeof(int_t) + 1024);
++    uint_t* tmp = (uint_t*)sz_native_malloc(len * sizeof(int_t) + 1024);
+     uint32_t sz = decode_doubledelta_rowmajor((int_t*)buff, len, tmp, ndims);
+     // uint32_t sz = decode_delta_rowmajor((int_t*)buff, len, tmp, ndims); // XXX rm after debug
+     memcpy(buff, tmp, sz * sizeof(int_t));
+-    free(tmp);
++    sz_mem::release(tmp);
+     return sz;
+ }
+ uint32_t decode_doubledelta_rowmajor_inplace_8b(uint8_t* buff, uint32_t len,
+--- a/entropy.cpp
++++ b/entropy.cpp
+@@ -1,3 +1,4 @@
++#include "native_compat.hpp"
+ //
+ //  entropy.cpp
+ //  Compress
+@@ -89,9 +90,9 @@
+     uint8_t* orig_dest = dest;
+ 
+     if (write_params) {  // store info about input and encoding
+-        *(uint32_t*)dest = len;
++        *(sz_uint32_t*)dest = len;
+         dest += 4;
+-        *(uint16_t*)dest = HistoryLen;
++        *(sz_uint16_t*)dest = HistoryLen;
+         dest += 2;
+         *(uint8_t*)dest = (PrefixNumBits - 1); // XXX must be between 1 and 16
+         *(uint8_t*)dest |= ((uint8_t)do_copy) << 7;
+@@ -145,7 +146,7 @@
+     found_val:
+         // OR this code into the output buffer (which we assume is zeroed)
+         uint32_t write_code = ((uint32_t)code) << offset_nbits;
+-        *(uint32_t*)dest |= write_code;
++        *(sz_uint32_t*)dest |= write_code;
+         offset_nbits += code_nbits;
+         dest += offset_nbits / 8;
+         offset_nbits = offset_nbits % 8;
+@@ -181,7 +182,7 @@
+     idx_t lag = M;
+     uint32_t offset_nbits = 0;
+     for (idx_t i = 0; i < remaining_len; i++) {
+-        uint16_t code = ((*(uint32_t*)src) >> offset_nbits) & code_mask;
++        uint16_t code = ((*(sz_uint32_t*)src) >> offset_nbits) & code_mask;
+         DecodeInfo info = decode_lut[code];
+         uint8_t distance = info.distance;
+ 
+@@ -202,9 +203,9 @@
+ 
+ uint32_t kayak_decode(const uint8_t* src, uint8_t* dest) {
+     // read info from compressed data
+-    int32_t len = *(uint32_t*)src;
++    int32_t len = *(sz_uint32_t*)src;
+     src += 4;
+-    uint16_t history_len = *(uint16_t*)src;
++    uint16_t history_len = *(sz_uint16_t*)src;
+     src += 2;
+     uint8_t prefix_nbits = (*(uint8_t*)src & 0x0f) + 1;
+     bool did_copy = (*(uint8_t*)src & 0x80) >> 7;
+--- a/format.h
++++ b/format.h
+@@ -1,3 +1,4 @@
++#include "native_compat.hpp"
+ //
+ //  format.hpp
+ //  Compress
+@@ -37,9 +38,9 @@
+     uint32_t ngroups, uint16_t remaining_len)
+ {
+     int8_t* dest8 = (int8_t*)orig_dest;
+-    *(uint32_t*)dest8 = ngroups;
+-    *(uint16_t*)(dest8 + 4) = (uint16_t)remaining_len;
+-    *(uint16_t*)(dest8 + 6) = ndims;
++    *(sz_uint32_t*)dest8 = ngroups;
++    *(sz_uint16_t*)(dest8 + 4) = (uint16_t)remaining_len;
++    *(sz_uint16_t*)(dest8 + 6) = ndims;
+ 
+     return DIV_ROUND_UP(kMetaDataLenBytesRle, sizeof(int_t));
+ }
+@@ -53,10 +54,10 @@
+     // static const uint32_t len_nbytes = 4;
+     // uint64_t one = 1; // make next line legible
+     // uint64_t len_mask = (one << (8 * len_nbytes)) - 1;
+-    // *p_ngroups = (*(uint64_t*)src) & len_mask;
+-    *p_ngroups = *(uint32_t*)src;
+-    *p_remaining_len = (*(uint16_t*)(src8 + 4));
+-    *p_ndims = (*(uint16_t*)(src8 + 6));
++    // *p_ngroups = (*(sz_uint64_t*)src) & len_mask;
++    *p_ngroups = *(sz_uint32_t*)src;
++    *p_remaining_len = (*(sz_uint16_t*)(src8 + 4));
++    *p_ndims = (*(sz_uint16_t*)(src8 + 6));
+ 
+     return DIV_ROUND_UP(kMetaDataLenBytesRle, sizeof(int_t));
+ }
+@@ -65,8 +66,8 @@
+ static inline uint16_t write_metadata_simple(int_t* dest, uint16_t ndims, uint32_t len) {
+     static const uint8_t elem_sz = sizeof(int_t);
+     uint8_t* dest8 = (uint8_t*)dest;
+-    *(uint32_t*)dest8 = len;
+-    *(uint16_t*)(dest8 + 4) = ndims;
++    *(sz_uint32_t*)dest8 = len;
++    *(sz_uint16_t*)(dest8 + 4) = ndims;
+ 
+     return DIV_ROUND_UP(kMetaDataLenBytesSimple, sizeof(int_t));
+ }
+@@ -77,8 +78,8 @@
+ {
+     static const uint8_t elem_sz = sizeof(int_t);
+     uint8_t* src8 = (uint8_t*)src;
+-    *p_len = *(uint32_t*)src8;
+-    *p_ndims = *(uint16_t*)(src8 + 4);
++    *p_len = *(sz_uint32_t*)src8;
++    *p_ndims = *(sz_uint16_t*)(src8 + 4);
+ 
+     return DIV_ROUND_UP(kMetaDataLenBytesSimple, sizeof(int_t));
+     // uint8_t len_nbytes = kMetaDataLenBytesSimple;
+@@ -88,13 +89,13 @@
+ template<typename int_t>
+ static inline uint16_t write_metadata_simple1d(int_t* dest, uint32_t len)
+ {
+-    *(uint32_t*)dest = len;
++    *(sz_uint32_t*)dest = len;
+     return DIV_ROUND_UP(kMetaDataLenBytesSimple1d, sizeof(int_t));
+ }
+ template<typename int_t>
+ static inline uint16_t read_metadata_simple1d(const int_t* src, uint32_t* p_len)
+ {
+-    *p_len = *(uint32_t*)src;
++    *p_len = *(sz_uint32_t*)src;
+     return DIV_ROUND_UP(kMetaDataLenBytesSimple1d, sizeof(int_t));
+ }
+ 
+--- a/online.cpp
++++ b/online.cpp
+@@ -1,3 +1,4 @@
++#include "native_compat.hpp"
+ //
+ //  online.cpp
+ //  Compress
+@@ -454,7 +455,7 @@
+                 // printf("intra_u64_shift: %d\n", intra_u64_shift);
+                 packed |= val << intra_u64_shift;
+                 intra_u64_shift += nbits;
+-                // printf("packed: "); dump_elements((uint16_t*)&packed, 4);
++                // printf("packed: "); dump_elements((sz_uint16_t*)&packed, 4);
+             }
+ 
+             // write out packed data, then update write ptr and shift
+@@ -465,7 +466,7 @@
+             // happens with even nbits), or this chunk takes at most 13*4=52b,
+             // so trailing 4b from previous writes are okay
+             // printf("crap in data out: "); dump_elements(data_out, 4);
+-            *((uint64_t*)data_out) |= packed << shift;
++            *((sz_uint64_t*)data_out) |= packed << shift;
+             uint8_t nbits_written = nbits * elems_per_u64;
+             shift += nbits_written;
+             data_out = (int_t*)(((uint8_t*)data_out) + shift / 8);
+@@ -486,9 +487,9 @@
+         *data_out++ = *data_in++;
+     }
+ 
+-    // printf("enc wrote encoded elems: "); dump_elements((uint16_t*)data_out - length, length);
+-    // printf("enc wrote encoded elems: "); dump_elements((uint16_t*)data_out - 8, 8);
+-    // printf("enc wrote encoded elems: "); dump_elements((uint16_t*)data_out - 12, 12);
++    // printf("enc wrote encoded elems: "); dump_elements((sz_uint16_t*)data_out - length, length);
++    // printf("enc wrote encoded elems: "); dump_elements((sz_uint16_t*)data_out - 8, 8);
++    // printf("enc wrote encoded elems: "); dump_elements((sz_uint16_t*)data_out - 12, 12);
+     // printf("enc out ptr: %p\n", data_out - length);
+     // printf("enc wrote header: "); //dump_elements(headers_out - headers_len, headers_len);
+     // for (int i = 0; i < nblocks; i++) {
+@@ -507,7 +508,7 @@
+     assert(ret <= length);
+     // printf("enc returning len %d\n", ret);
+     // auto byteptr = ((uint8_t*)orig_data_out) + ret_nbytes;
+-    // printf("enc encoded elems v2: "); dump_elements(((uint16_t*)byteptr) - 12, 12);
++    // printf("enc encoded elems v2: "); dump_elements(((sz_uint16_t*)byteptr) - 12, 12);
+     return ret;
+ 
+     // return length;
+@@ -540,8 +541,8 @@
+ 
+     // printf("dec in ptr: %p\n", data_in);
+     // printf("dec sees length: %d\n", length);
+-    // printf("dec sees initial encoded elems: "); dump_elements((uint16_t*)data_in, 8);
+-    // printf("dec sees encoded elems: "); dump_elements((uint16_t*)data_in, length);
++    // printf("dec sees initial encoded elems: "); dump_elements((sz_uint16_t*)data_in, 8);
++    // printf("dec sees encoded elems: "); dump_elements((sz_uint16_t*)data_in, length);
+     // printf("dec sees header: ");
+     // printf("dec tail len: %d\n", tail_len);
+ 
+@@ -558,14 +559,14 @@
+     //     printf("dec mean nbits: %g\n", nbits_sum / nblocks);
+     // }
+ 
+-    // printf("dec sees encoded 8B before memset: "); dump_elements((uint16_t*)data_in, length);
++    // printf("dec sees encoded 8B before memset: "); dump_elements((sz_uint16_t*)data_in, length);
+ 
+     auto block_payload_nbytes = BlockSz * sizeof(uint_t);
+     if (nblocks >= 1) {
+         memset(data_out, 0, block_payload_nbytes);
+     }
+ 
+-    // printf("dec sees encoded 8B after memset: "); dump_elements((uint16_t*)data_in, length);
++    // printf("dec sees encoded 8B after memset: "); dump_elements((sz_uint16_t*)data_in, length);
+ 
+     uint8_t shift = 0;  // for reading non-byte-aligned data
+     for (len_t b = 0; b < nblocks; b++) {
+@@ -588,12 +589,12 @@
+ 
+         // read payload
+         for (int c = 0; c < u64_chunks_per_block; c++) {
+-            auto in_ptr = (const uint64_t*)data_in;
++            auto in_ptr = (const sz_uint64_t*)data_in;
+             uint64_t packed = (*in_ptr) >> shift;
+ 
+ 
+-            // printf("dec sees encoded 8B: "); dump_elements((uint16_t*)in_ptr, 4);
+-            // printf("packed: "); dump_elements((uint16_t*)&packed, 4);
++            // printf("dec sees encoded 8B: "); dump_elements((sz_uint16_t*)in_ptr, 4);
++            // printf("packed: "); dump_elements((sz_uint16_t*)&packed, 4);
+ 
+ 
+             for (int cc = 0; cc < elems_per_u64; cc++) {
+@@ -661,7 +662,7 @@
+     // uint8_t* headers_out = (uint8_t*)(data_out + length);
+     len_t headers_size = (sprintzpack_headers_size_bytes_u16(length) + 1) / 2;
+     uint8_t* headers_out = (uint8_t*)(data_out);
+-    // int16_t* payloads_out = (int16_t*)((uint8_t*)data_out + headers_size);
++    // int16_t* payloads_out = (sz_int16_t*)((uint8_t*)data_out + headers_size);
+     int16_t* payloads_out = data_out + headers_size;
+     auto len = sprintzpack_encode_u16(
+         data_in, length, payloads_out, headers_out, zigzag);
+--- a/predict.cpp
++++ b/predict.cpp
+@@ -1,3 +1,4 @@
++#include "native_compat.hpp"
+ //
+ //  predict.cpp
+ //  Compress
+@@ -79,9 +80,9 @@
+ 
+     // allocate these three arrays contiguously
+     uint32_t row_sz = nvectors * vector_sz;
+-    uint_t* prev_vals_ar   = (uint_t*)calloc(2 * row_sz * elem_sz, 1);
++    uint_t* prev_vals_ar   = (uint_t*)sz_mem::alloc(2 * row_sz * elem_sz, 1, true);
+     int_t*  prev_deltas_ar = (int_t* )prev_vals_ar + row_sz;
+-    uint_t* coeffs_ar_even = (uint_t*)calloc(2 * row_sz * elem_sz, 1);
++    uint_t* coeffs_ar_even = (uint_t*)sz_mem::alloc(2 * row_sz * elem_sz, 1, true);
+     uint_t* coeffs_ar_odd = coeffs_ar_even + row_sz;
+ 
+     uint16_t metadata_len = 0;
+@@ -281,8 +282,8 @@
+ 
+     // printf("got thru encoding without dying\n");
+ 
+-    free(prev_vals_ar);
+-    free(coeffs_ar_even);
++    sz_mem::release(prev_vals_ar);
++    sz_mem::release(coeffs_ar_even);
+     return len + metadata_len;
+     // if (write_size) { return len + 6; }
+     // return len;
+@@ -325,22 +326,22 @@
+     uint16_t nvectors = padded_ndims / vector_sz + ((padded_ndims % vector_sz) > 0);
+ 
+     // allocate these three arrays contiguously
+-    // uint8_t* prev_vals_ar   = (uint8_t*)calloc(4 * nvectors, vector_sz);
++    // uint8_t* prev_vals_ar   = (uint8_t*)sz_mem::alloc(4 * nvectors, vector_sz, true);
+     // int8_t*  prev_deltas_ar = (int8_t* )prev_vals_ar + vector_sz * 1 * nvectors;
+     // uint8_t* coeffs_ar_even = (uint8_t*)prev_vals_ar + vector_sz * 2 * nvectors;
+     // uint8_t* coeffs_ar_odd  = (uint8_t*)prev_vals_ar + vector_sz * 3 * nvectors;
+ 
+-    // uint_t* prev_vals_ar   = (uint_t*)calloc(4 * nvectors * elem_sz, vector_sz);
+-    // // uint8_t* prev_vals_ar   = (uint8_t*)calloc(4 * nvectors * elem_sz, vector_sz);
++    // uint_t* prev_vals_ar   = (uint_t*)sz_mem::alloc(4 * nvectors * elem_sz, vector_sz, true);
++    // // uint8_t* prev_vals_ar   = (uint8_t*)sz_mem::alloc(4 * nvectors * elem_sz, vector_sz, true);
+     // int_t*  prev_deltas_ar = (int_t* )prev_vals_ar + vector_sz * 1 * nvectors;
+     // // int8_t*  prev_deltas_ar = (int8_t* )prev_vals_ar + vector_sz * 1 * nvectors;
+     // uint8_t* coeffs_ar_even = (uint8_t*)prev_vals_ar + vector_sz * 2 * nvectors;
+     // uint8_t* coeffs_ar_odd  = (uint8_t*)prev_vals_ar + vector_sz * 3 * nvectors;
+ 
+     uint32_t row_sz = nvectors * vector_sz;
+-    uint_t* prev_vals_ar   = (uint_t*)calloc(2 * row_sz, elem_sz);
++    uint_t* prev_vals_ar   = (uint_t*)sz_mem::alloc(2 * row_sz, elem_sz, true);
+     int_t*  prev_deltas_ar = (int_t* )prev_vals_ar + row_sz;
+-    uint_t* coeffs_ar_even = (uint_t*)calloc(2 * row_sz, elem_sz);
++    uint_t* coeffs_ar_even = (uint_t*)sz_mem::alloc(2 * row_sz, elem_sz, true);
+     uint_t* coeffs_ar_odd = coeffs_ar_even + row_sz;
+ 
+     // printf("-------- decompression (len = %lld, ndims = %d)\n", (int64_t)len, ndims);
+@@ -512,8 +513,8 @@
+         printf("decompressed data:\n"); dump_bytes(orig_dest, len, ndims * 4);
+     }
+ 
+-    free(prev_vals_ar);
+-    free(coeffs_ar_even);
++    sz_mem::release(prev_vals_ar);
++    sz_mem::release(coeffs_ar_even);
+     return len;
+ }
+ uint32_t decode_xff_rowmajor_8b(const int8_t* src, uint32_t len, uint8_t* dest,
+@@ -535,10 +536,10 @@
+     static const uint8_t elem_sz = sizeof(int_t);
+     // XXX padding is necessary for for 8bit with ndims=1, but shouldn't be
+     // EDIT: maybe fixed by better handling of reducing nblocks in low-dim case
+-    uint_t* tmp = (uint_t*)malloc(len * elem_sz + 1024);
++    uint_t* tmp = (uint_t*)sz_native_malloc(len * elem_sz + 1024);
+     uint32_t sz = decode_xff_rowmajor((int_t*)buff, len, tmp, ndims);
+     memcpy(buff, tmp, sz * elem_sz);
+-    free(tmp);
++    sz_mem::release(tmp);
+     return sz;
+ }
+ uint32_t decode_xff_rowmajor_inplace_8b(uint8_t* buff, uint32_t len,
+--- a/sprintz_delta.cpp
++++ b/sprintz_delta.cpp
+@@ -1,3 +1,4 @@
++#include "native_compat.hpp"
+ //
+ //  sprintz2.c
+ //  Compress
+@@ -106,7 +107,7 @@
+ 
+     // {
+     //     printf("------ input length, ndims = %lu, %d\n", len, ndims);
+-    //     uint64_t written = *(uint64_t*)orig_dest;
++    //     uint64_t written = *(sz_uint64_t*)orig_dest;
+     //     int64_t written_length = written & (((uint64_t)1 << 48) - 1);
+     //     uint16_t written_ndims = (uint16_t)(written >> 48);
+     //     printf("just wrote out length %lld, ndims %d\n", written_length, written_ndims);
+@@ -122,11 +123,11 @@
+     if (debug > 1) { printf("total header bits, bytes: %d, %d\n", total_header_bits, total_header_bytes); }
+ 
+     // ------------------------ temp storage
+-    uint8_t*  stripe_bitwidths  = (uint8_t*) malloc(nstripes*sizeof(uint8_t));
+-    uint32_t* stripe_bitoffsets = (uint32_t*)malloc(nstripes*sizeof(uint32_t));
+-    uint64_t* stripe_masks      = (uint64_t*)malloc(nstripes*sizeof(uint64_t));
+-    uint32_t* stripe_headers    = (uint32_t*)malloc(nstripes*sizeof(uint32_t));
+-    uint8_t*  header_bytes      = (uint8_t*) calloc(total_header_bytes + 4, 1);
++    uint8_t*  stripe_bitwidths  = (uint8_t*) sz_native_malloc(nstripes*sizeof(uint8_t));
++    uint32_t* stripe_bitoffsets = (sz_uint32_t*)sz_native_malloc(nstripes*sizeof(uint32_t));
++    uint64_t* stripe_masks      = (sz_uint64_t*)sz_native_malloc(nstripes*sizeof(uint64_t));
++    uint32_t* stripe_headers    = (sz_uint32_t*)sz_native_malloc(nstripes*sizeof(uint32_t));
++    uint8_t*  header_bytes      = (uint8_t*) sz_mem::alloc(total_header_bytes + 4, 1, true);
+ 
+     // ================================ main loop
+ 
+@@ -211,7 +212,7 @@
+                 uint16_t bit_offset = header_bit_offset & 0x07;
+ 
+                 if (elem_sz == 1) {
+-                    *(uint32_t*)(header_dest + byte_offset) |= \
++                    *(sz_uint32_t*)(header_dest + byte_offset) |= \
+                         stripe_headers[stripe] << bit_offset;
+                 } else {
+                     // if (debug > 0) {
+@@ -219,7 +220,7 @@
+                     //     dump_bytes(header_dest, 8, true);
+                     //     printf("ORing in header value: %d\n", (int)(stripe_headers[stripe] << bit_offset));
+                     // }
+-                    *(uint64_t*)(header_dest + byte_offset) |= \
++                    *(sz_uint64_t*)(header_dest + byte_offset) |= \
+                         ((uint64_t)(stripe_headers[stripe])) << bit_offset;
+                     // if (debug > 0) {
+                     //     printf("new contents of header dest: ");
+@@ -284,17 +285,17 @@
+                         // uint8_t orig_outptr_byte = *outptr;
+ 
+                         // 8B write to store (at least most of) the data
+-                        uint64_t data = *(uint64_t*)inptr;
++                        uint64_t data = *(sz_uint64_t*)inptr;
+                         uint64_t packed_data = _pext_u64(data, mask);
+                         uint64_t write_data = packed_data << offset_bits;
+-                        *(uint64_t*)outptr = write_data | (*(uint64_t*)outptr);
++                        *(sz_uint64_t*)outptr = write_data | (*(sz_uint64_t*)outptr);
+ 
+                         // printf("packing block: "); dump_bytes(data, false);
+-                        // printf("\t-> "); dump_bytes(*(uint64_t*)outptr);
++                        // printf("\t-> "); dump_bytes(*(sz_uint64_t*)outptr);
+ 
+                         // printf("packing block: "); dumpEndianBits(data, false);
+                         // printf("\t-> "); dumpEndianBits(orig_outptr_byte, false); printf(" | "); dumpEndianBits(packed_data, false); printf(" >> %d", offset_bits);
+-                        // printf("\t-> "); dumpEndianBits(*(uint64_t*)outptr, false); dumpEndianBits(*(outptr+8));
++                        // printf("\t-> "); dumpEndianBits(*(sz_uint64_t*)outptr, false); dumpEndianBits(*(outptr+8));
+ 
+                         outptr += out_row_nbytes;
+                         inptr += ndims * elem_sz;
+@@ -304,26 +305,26 @@
+                     uint8_t nbits_lost = total_bits - 64;
+                     for (int i = 0; i < block_sz; i++) { // for each sample in block
+                         // uint8_t orig_outptr_byte = *outptr; // TODO rm after debug
+-                        uint64_t data = *(uint64_t*)inptr;
++                        uint64_t data = *(sz_uint64_t*)inptr;
+                         uint64_t packed_data = _pext_u64(data, mask);
+                         uint8_t extra_byte = (uint8_t)(packed_data >> (nbits - nbits_lost));
+                         uint64_t write_data = packed_data << offset_bits;
+-                        *(uint64_t*)outptr = write_data | (*(uint64_t*)outptr);
++                        *(sz_uint64_t*)outptr = write_data | (*(sz_uint64_t*)outptr);
+                         *(outptr + 8) = extra_byte;
+ 
+                         // printf("packing block: "); dump_bytes(data, false);
+-                        // printf("\t-> "); dump_bytes(*(uint64_t*)outptr);
++                        // printf("\t-> "); dump_bytes(*(sz_uint64_t*)outptr);
+ 
+                         // printf("extra byte = "); dumpEndianBits(extra_byte);
+                         // printf("packing block: "); dumpEndianBits(data, false);
+                         // printf("\t-> "); dumpEndianBits(orig_outptr_byte, false); printf(" | "); dumpEndianBits(packed_data, false); printf(" >> %d", offset_bits);
+-                        // printf("\t-> "); dumpEndianBits(*(uint64_t*)outptr, false); dumpEndianBits(*(outptr+8));
++                        // printf("\t-> "); dumpEndianBits(*(sz_uint64_t*)outptr, false); dumpEndianBits(*(outptr+8));
+ 
+                         outptr += out_row_nbytes;
+                         inptr += ndims * elem_sz;
+                     }
+                 }
+-                // printf("read back header: "); dumpEndianBits(*(uint32_t*)(header_dest - stripe_header_sz));
++                // printf("read back header: "); dumpEndianBits(*(sz_uint32_t*)(header_dest - stripe_header_sz));
+             } // for each stripe
+ 
+             // if (debug) { printf("header dest at end of block: "); dump_bytes(header_dest, 8); }
+@@ -342,10 +343,10 @@
+ 
+     } // for each group
+ 
+-    free(stripe_bitwidths);
+-    free(stripe_bitoffsets);
+-    free(stripe_masks);
+-    free(stripe_headers);
++    sz_mem::release(stripe_bitwidths);
++    sz_mem::release(stripe_bitoffsets);
++    sz_mem::release(stripe_masks);
++    sz_mem::release(stripe_headers);
+ 
+     uint32_t remaining_len = (uint32_t)(len - (src - orig_src));
+     // printf("read src bytes: %lu\n", (uint32_t)(src - orig_src));
+@@ -354,7 +355,7 @@
+     memcpy(dest, src, remaining_len * elem_sz);
+ 
+     // {
+-    //     uint64_t written = *(uint64_t*)orig_dest;
++    //     uint64_t written = *(sz_uint64_t*)orig_dest;
+     //     int64_t written_length = written & (((uint64_t)1 << 48) - 1);
+     //     uint16_t written_ndims = (uint16_t)(written >> 48);
+     //     printf("final written length %lld, ndims %d\n", written_length, written_ndims);
+@@ -373,7 +374,7 @@
+     // uint32_t dest_sz = dest + remaining_len - orig_dest;
+     // if (dest_sz >= len) { // if made things larger, just mempcpy
+     //     memcpy(orig_dest + 8, orig_src, len);
+-    //     *(uint64_t*)orig_dest |= ((uint64_t)1) << 47;
++    //     *(sz_uint64_t*)orig_dest |= ((uint64_t)1) << 47;
+     //     return len + 8;
+     // }
+ 
+@@ -430,8 +431,8 @@
+     // static const uint32_t len_nbytes = 6;
+     // uint64_t one = 1; // make next line legible
+     // uint64_t len_mask = (one << (8 * len_nbytes)) - 1;
+-    // uint64_t orig_len = (*(uint64_t*)src) & len_mask;
+-    // uint16_t ndims = (*(uint16_t*)(src + len_nbytes));
++    // uint64_t orig_len = (*(sz_uint64_t*)src) & len_mask;
++    // uint16_t ndims = (*(sz_uint16_t*)(src + len_nbytes));
+     // src += 8;
+     uint16_t ndims;
+     uint32_t orig_len; // TODO make len a u32
+@@ -493,11 +494,11 @@
+     // allocate temp vars of minimal possible size such that we can
+     // do vector loads and stores (except bitwidths, which are u64s so
+     // that we can store directly after sad_epu8)
+-    uint64_t* headers_tmp       = (uint64_t*)calloc(nheader_stripes, 8);
+-    uint8_t*  headers           = (uint8_t*) calloc(1, group_header_sz);
+-    uint64_t* data_masks        = (uint64_t*)calloc(nstripes_in_vectors * elem_sz, 8);
+-    bitwidth_t* stripe_bitwidths  = (bitwidth_t*)calloc(nstripes_in_vectors, 8);
+-    uint32_t* stripe_bitoffsets = (uint32_t*)calloc(nstripes, 4);
++    uint64_t* headers_tmp       = (sz_uint64_t*)sz_mem::alloc(nheader_stripes, 8, true);
++    uint8_t*  headers           = (uint8_t*) sz_mem::alloc(1, group_header_sz * elem_sz, true);
++    uint64_t* data_masks        = (sz_uint64_t*)sz_mem::alloc(nstripes_in_vectors * elem_sz, 8, true);
++    bitwidth_t* stripe_bitwidths  = (bitwidth_t*)sz_mem::alloc(nstripes_in_vectors, 8, true);
++    uint32_t* stripe_bitoffsets = (sz_uint32_t*)sz_mem::alloc(nstripes, 4, true);
+ 
+     // ================================ main loop
+ 
+@@ -518,9 +519,9 @@
+         // because we need to zero-pad final stripe's headers in each block
+         // so that stripe widths don't get messed up (from initial data in
+         // next block's header)
+-        uint64_t* header_write_ptr = (uint64_t*)headers_tmp;
++        uint64_t* header_write_ptr = (sz_uint64_t*)headers_tmp;
+         for (uint32_t stripe = 0; stripe < nheader_stripes - 1; stripe++) {
+-            uint64_t packed_header = *(uint32_t*)header_src;
++            uint64_t packed_header = *(sz_uint32_t*)header_src;
+             header_src += stripe_header_sz;
+             uint64_t header = _pdep_u64(packed_header, kHeaderUnpackMask);
+             if (debug) {
+@@ -530,7 +531,7 @@
+             header_write_ptr++;
+         }
+         // unpack header for the last stripe in the last block
+-        uint64_t packed_header = (*(uint32_t*)header_src) & final_header_mask;
++        uint64_t packed_header = (*(sz_uint32_t*)header_src) & final_header_mask;
+         uint64_t header = _pdep_u64(packed_header, kHeaderUnpackMask);
+         *header_write_ptr = header;
+ 
+@@ -627,7 +628,7 @@
+         }
+ 
+         if (debug) {
+-            printf("padded masks:     "); dump_elements((uint16_t*)data_masks, group_header_sz);
++            printf("padded masks:     "); dump_elements((sz_uint16_t*)data_masks, group_header_sz);
+             // printf("padded masks:     "); dump_bytes((uint8_t*)data_masks, group_header_sz * elem_sz);
+             printf("padded bitwidths: "); dump_bytes(stripe_bitwidths, nstripes_in_vectors);
+         }
+@@ -704,9 +705,9 @@
+                 // this is the hot loop
+                 if (total_bits <= 64) { // input guaranteed to fit in 8B
+                     for (int i = 0; i < block_sz; i++) {
+-                        uint64_t packed_data = (*(uint64_t*)inptr) >> offset_bits;
++                        uint64_t packed_data = (*(sz_uint64_t*)inptr) >> offset_bits;
+                         // if (debug) { printf("packed_data "); dump_bytes(packed_data); }
+-                        *(uint64_t*)outptr = _pdep_u64(packed_data, mask);
++                        *(sz_uint64_t*)outptr = _pdep_u64(packed_data, mask);
+                         inptr += in_row_nbytes;
+                         outptr += out_row_nbytes;
+                     }
+@@ -714,11 +715,11 @@
+                     // printf(">>> executing the slow path!\n");
+                     uint8_t nbits_lost = total_bits - 64;
+                     for (int i = 0; i < block_sz; i++) {
+-                        uint64_t packed_data = (*(uint64_t*)inptr) >> offset_bits;
++                        uint64_t packed_data = (*(sz_uint64_t*)inptr) >> offset_bits;
+                         // printf("packed_data "); dump_bytes(packed_data);
+-                        packed_data |= (*(uint64_t*)(inptr + 8)) << (nbits - nbits_lost);
++                        packed_data |= (*(sz_uint64_t*)(inptr + 8)) << (nbits - nbits_lost);
+                         // printf("packed_data after OR "); dump_bytes(packed_data);
+-                        *(uint64_t*)outptr = _pdep_u64(packed_data, mask);
++                        *(sz_uint64_t*)outptr = _pdep_u64(packed_data, mask);
+                         inptr += in_row_nbytes;
+                         outptr += out_row_nbytes;
+                     }
+@@ -734,11 +735,11 @@
+         // printf("will now write to dest at offset %lld\n", (uint64_t)(dest - orig_dest));
+     } // for each group
+ 
+-    free(headers_tmp);
+-    free(headers);
+-    free(data_masks);
+-    free(stripe_bitwidths);
+-    free(stripe_bitoffsets);
++    sz_mem::release(headers_tmp);
++    sz_mem::release(headers);
++    sz_mem::release(data_masks);
++    sz_mem::release(stripe_bitwidths);
++    sz_mem::release(stripe_bitoffsets);
+ 
+     // printf("bytes read: %lld\n", (uint64_t)(src - orig_src));
+ 
+@@ -823,18 +824,18 @@
+     if (debug > 1) { printf("total header bits, bytes: %d, %d\n", total_header_bits, total_header_bytes); }
+ 
+     // ------------------------ temp storage
+-    uint8_t*  stripe_bitwidths  = (uint8_t*) malloc(nstripes*sizeof(uint8_t));
+-    uint32_t* stripe_bitoffsets = (uint32_t*)malloc(nstripes*sizeof(uint32_t));
+-    uint64_t* stripe_masks      = (uint64_t*)malloc(nstripes*sizeof(uint64_t));
+-    uint32_t* stripe_headers    = (uint32_t*)malloc(nstripes*sizeof(uint32_t));
++    uint8_t*  stripe_bitwidths  = (uint8_t*) sz_native_malloc(nstripes*sizeof(uint8_t));
++    uint32_t* stripe_bitoffsets = (sz_uint32_t*)sz_native_malloc(nstripes*sizeof(uint32_t));
++    uint64_t* stripe_masks      = (sz_uint64_t*)sz_native_malloc(nstripes*sizeof(uint64_t));
++    uint32_t* stripe_headers    = (sz_uint32_t*)sz_native_malloc(nstripes*sizeof(uint32_t));
+ 
+     uint32_t total_header_bytes_padded = total_header_bytes + 4;
+-    uint8_t* header_bytes = (uint8_t*)calloc(total_header_bytes_padded, 1);
++    uint8_t* header_bytes = (uint8_t*)sz_mem::alloc(total_header_bytes_padded, 1, true);
+ 
+     // extra row is for storing previous values
+     // TODO just look at src and special case first row
+-    // uint8_t* deltas = (uint8_t*)calloc(1, (block_sz + 1) * ndims);
+-    int_t* deltas = (int_t*)calloc(elem_sz, (block_sz + 1) * ndims);
++    // uint8_t* deltas = (uint8_t*)sz_mem::alloc(1, (block_sz + 1) * ndims, true);
++    int_t* deltas = (int_t*)sz_mem::alloc(elem_sz, (block_sz + 1) * ndims, true);
+     uint_t* prev_vals_ar = (uint_t*)(deltas + block_sz * ndims);
+ 
+     // ================================ main loop
+@@ -917,10 +918,10 @@
+                 uint16_t bit_offset = header_bit_offset & 0x07;
+ 
+                 if (elem_sz == 1) {
+-                    *(uint32_t*)(header_dest + byte_offset) |= \
++                    *(sz_uint32_t*)(header_dest + byte_offset) |= \
+                         stripe_headers[stripe] << bit_offset;
+                 } else {
+-                    *(uint64_t*)(header_dest + byte_offset) |= \
++                    *(sz_uint64_t*)(header_dest + byte_offset) |= \
+                         ((uint64_t)(stripe_headers[stripe])) << bit_offset;
+                 }
+ 
+@@ -964,10 +965,10 @@
+                 if (total_bits <= 64) { // always fits in one u64
+                     for (int i = 0; i < block_sz; i++) { // for each sample in block
+                         // 8B write to store (at least most of) the data
+-                        uint64_t data = *(uint64_t*)inptr;
++                        uint64_t data = *(sz_uint64_t*)inptr;
+                         uint64_t packed_data = _pext_u64(data, mask);
+                         uint64_t write_data = packed_data << offset_bits;
+-                        *(uint64_t*)outptr = write_data | (*(uint64_t*)outptr);
++                        *(sz_uint64_t*)outptr = write_data | (*(sz_uint64_t*)outptr);
+ 
+                         outptr += out_row_nbytes;
+                         inptr += ndims * elem_sz;
+@@ -976,29 +977,29 @@
+                     // printf(">>> executing the slow path!\n");
+                     uint8_t nbits_lost = total_bits - 64;
+                     for (int i = 0; i < block_sz; i++) { // for each sample in block
+-                        uint64_t data = *(uint64_t*)inptr;
++                        uint64_t data = *(sz_uint64_t*)inptr;
+                         uint64_t packed_data = _pext_u64(data, mask);
+                         uint8_t extra_byte = (uint8_t)(packed_data >> (nbits - nbits_lost));
+                         uint64_t write_data = packed_data << offset_bits;
+-                        *(uint64_t*)outptr = write_data | (*(uint64_t*)outptr);
++                        *(sz_uint64_t*)outptr = write_data | (*(sz_uint64_t*)outptr);
+                         *(outptr + 8) = extra_byte;
+ 
+                         outptr += out_row_nbytes;
+                         inptr += ndims * elem_sz;
+                     }
+                 }
+-                // printf("read back header: "); dumpEndianBits(*(uint32_t*)(header_dest - stripe_header_sz));
++                // printf("read back header: "); dumpEndianBits(*(sz_uint32_t*)(header_dest - stripe_header_sz));
+             } // for each stripe
+             src += block_sz * ndims;
+             dest += block_sz * out_row_nbytes / elem_sz;
+         } // for each block
+     } // for each group
+ 
+-    free(stripe_bitwidths);
+-    free(stripe_bitoffsets);
+-    free(stripe_masks);
+-    free(stripe_headers);
+-    free(deltas);
++    sz_mem::release(stripe_bitwidths);
++    sz_mem::release(stripe_bitoffsets);
++    sz_mem::release(stripe_masks);
++    sz_mem::release(stripe_headers);
++    sz_mem::release(deltas);
+ 
+     uint32_t remaining_len = (uint32_t)(len - (src - orig_src));
+     if (debug) { printf("remaining len: %d\n", remaining_len); }
+@@ -1059,8 +1060,8 @@
+     // static const uint32_t len_nbytes = 6;
+     // uint64_t one = 1; // make next line legible
+     // uint64_t len_mask = (one << (8 * len_nbytes)) - 1;
+-    // uint64_t orig_len = (*(uint64_t*)src) & len_mask;
+-    // uint16_t ndims = (*(uint16_t*)(src + len_nbytes));
++    // uint64_t orig_len = (*(sz_uint64_t*)src) & len_mask;
++    // uint16_t ndims = (*(sz_uint16_t*)(src + len_nbytes));
+     // src += 8;
+     uint16_t ndims;
+     uint32_t orig_len; // TODO make len a u32
+@@ -1122,16 +1123,16 @@
+     // allocate temp vars of minimal possible size such that we can
+     // do vector loads and stores (except bitwidths, which are u64s so
+     // that we can store directly after sad_epu8)
+-    uint64_t* headers_tmp       = (uint64_t*)calloc(nheader_stripes, 8);
+-    uint8_t*  headers           = (uint8_t*) calloc(1, group_header_sz);
+-    uint64_t* data_masks        = (uint64_t*)calloc(nstripes_in_vectors * elem_sz, 8);
+-    bitwidth_t* stripe_bitwidths= (bitwidth_t*)calloc(nstripes_in_vectors, 8);
+-    uint32_t* stripe_bitoffsets = (uint32_t*)calloc(nstripes, 4);
++    uint64_t* headers_tmp       = (sz_uint64_t*)sz_mem::alloc(nheader_stripes, 8, true);
++    uint8_t*  headers           = (uint8_t*) sz_mem::alloc(1, group_header_sz * elem_sz, true);
++    uint64_t* data_masks        = (sz_uint64_t*)sz_mem::alloc(nstripes_in_vectors * elem_sz, 8, true);
++    bitwidth_t* stripe_bitwidths= (bitwidth_t*)sz_mem::alloc(nstripes_in_vectors, 8, true);
++    uint32_t* stripe_bitoffsets = (sz_uint32_t*)sz_mem::alloc(nstripes, 4, true);
+ 
+     // extra row in deltas is to store last decoded values
+     // TODO just special case very first row
+-    int_t* deltas = (int_t*)calloc(block_sz * padded_ndims, elem_sz);
+-    uint_t* prev_vals_ar = (uint_t*)calloc(padded_ndims, elem_sz);
++    int_t* deltas = (int_t*)sz_mem::alloc(block_sz * padded_ndims, elem_sz, true);
++    uint_t* prev_vals_ar = (uint_t*)sz_mem::alloc(padded_ndims, elem_sz, true);
+ 
+     // printf("nvectors, padded_ndims = %d, %d\n", nvectors, padded_ndims);
+ 
+@@ -1147,16 +1148,16 @@
+         // because we need to zero-pad final stripe's headers in each block
+         // so that stripe widths don't get messed up (from initial data in
+         // next block's header)
+-        uint64_t* header_write_ptr = (uint64_t*)headers_tmp;
++        uint64_t* header_write_ptr = (sz_uint64_t*)headers_tmp;
+         for (uint32_t stripe = 0; stripe < nheader_stripes - 1; stripe++) {
+-            uint64_t packed_header = *(uint32_t*)header_src;
++            uint64_t packed_header = *(sz_uint32_t*)header_src;
+             header_src += stripe_header_sz;
+             uint64_t header = _pdep_u64(packed_header, kHeaderUnpackMask);
+             *header_write_ptr = header;
+             header_write_ptr++;
+         }
+         // unpack header for the last stripe in the last block
+-        uint64_t packed_header = (*(uint32_t*)header_src) & final_header_mask;
++        uint64_t packed_header = (*(sz_uint32_t*)header_src) & final_header_mask;
+         uint64_t header = _pdep_u64(packed_header, kHeaderUnpackMask);
+         *header_write_ptr = header;
+ 
+@@ -1230,7 +1231,7 @@
+         }
+ 
+         if (debug) {
+-            printf("padded masks:     "); dump_elements((uint16_t*)data_masks, group_header_sz);
++            printf("padded masks:     "); dump_elements((sz_uint16_t*)data_masks, group_header_sz);
+             // printf("padded masks:     "); dump_bytes((uint8_t*)data_masks, group_header_sz * elem_sz);
+             printf("padded bitwidths: "); dump_bytes(stripe_bitwidths, nstripes_in_vectors);
+             printf("\n");
+@@ -1290,17 +1291,17 @@
+                 // this is the hot loop
+                 if (total_bits <= 64) { // input guaranteed to fit in 8B
+                     for (int i = 0; i < block_sz; i++) {
+-                        uint64_t packed_data = (*(uint64_t*)inptr) >> offset_bits;
+-                        *(uint64_t*)outptr = _pdep_u64(packed_data, mask);
++                        uint64_t packed_data = (*(sz_uint64_t*)inptr) >> offset_bits;
++                        *(sz_uint64_t*)outptr = _pdep_u64(packed_data, mask);
+                         inptr += in_row_nbytes;
+                         outptr += out_row_nbytes;
+                     }
+                 } else { // input spans 9 bytes
+                     uint8_t nbits_lost = total_bits - 64;
+                     for (int i = 0; i < block_sz; i++) {
+-                        uint64_t packed_data = (*(uint64_t*)inptr) >> offset_bits;
+-                        packed_data |= (*(uint64_t*)(inptr + 8)) << (nbits - nbits_lost);
+-                        *(uint64_t*)outptr = _pdep_u64(packed_data, mask);
++                        uint64_t packed_data = (*(sz_uint64_t*)inptr) >> offset_bits;
++                        packed_data |= (*(sz_uint64_t*)(inptr + 8)) << (nbits - nbits_lost);
++                        *(sz_uint64_t*)outptr = _pdep_u64(packed_data, mask);
+                         inptr += in_row_nbytes;
+                         outptr += out_row_nbytes;
+                     }
+@@ -1361,13 +1362,13 @@
+         // printf("will now write to dest at offset %lld\n", (uint64_t)(dest - orig_dest));
+     } // for each group
+ 
+-    free(headers_tmp);
+-    free(headers);
+-    free(data_masks);
+-    free(stripe_bitwidths);
+-    free(stripe_bitoffsets);
+-    free(deltas);
+-    free(prev_vals_ar);
++    sz_mem::release(headers_tmp);
++    sz_mem::release(headers);
++    sz_mem::release(data_masks);
++    sz_mem::release(stripe_bitwidths);
++    sz_mem::release(stripe_bitoffsets);
++    sz_mem::release(deltas);
++    sz_mem::release(prev_vals_ar);
+ 
+     // copy over trailing data
+     uint32_t remaining_len = (uint32_t)(orig_len - (dest - orig_dest));
+--- a/sprintz_delta_lowdim.cpp
++++ b/sprintz_delta_lowdim.cpp
+@@ -1,3 +1,4 @@
++#include "native_compat.hpp"
+ //
+ //  sprintz3.cpp
+ //  Compress
+@@ -108,13 +109,13 @@
+     }
+ 
+     // ------------------------ temp storage
+-    uint8_t* dims_nbits = (uint8_t*)(malloc(ndims*sizeof(uint8_t)));
++    uint8_t* dims_nbits = (uint8_t*)(sz_native_malloc(ndims*sizeof(uint8_t)));
+ 
+     uint32_t total_header_bytes_padded = total_header_bytes + 4;
+-    uint8_t* header_bytes = (uint8_t*)calloc(total_header_bytes_padded, 1);
++    uint8_t* header_bytes = (uint8_t*)sz_mem::alloc(total_header_bytes_padded, 1, true);
+ 
+     // extra row is for storing previous values
+-    int_t* deltas = (int_t*)calloc(elem_sz, (block_sz + 1) * ndims);
++    int_t* deltas = (int_t*)sz_mem::alloc(elem_sz, (block_sz + 1) * ndims, true);
+     uint_t* prev_vals_ar = (uint_t*)(deltas + block_sz * ndims);
+ 
+     // ================================ main loop
+@@ -286,7 +287,7 @@
+                 uint16_t byte_offset = header_bit_offset >> 3;
+                 uint8_t bit_offset = header_bit_offset & 0x07;
+                 uint8_t write_nbits = dims_nbits[dim] - (dims_nbits[dim] == elem_sz_nbits);
+-                *(uint32_t*)(header_dest + byte_offset) |= \
++                *(sz_uint32_t*)(header_dest + byte_offset) |= \
+                         write_nbits << bit_offset;
+                 header_bit_offset += nbits_sz_bits;
+             }
+@@ -303,12 +304,12 @@
+             //     printf("deltas: \n"); dump_elements(deltas, ndims * block_sz, block_sz);
+             // }
+ 
+-            uint64_t* delta_buff_u64 = (uint64_t*)deltas;
++            uint64_t* delta_buff_u64 = (sz_uint64_t*)deltas;
+             for (uint16_t dim = 0; dim < ndims; dim++) {
+                 uint8_t nbits = dims_nbits[dim];
+                 if (elem_sz == 1) {
+                     uint64_t mask = kBitpackMasks8[nbits];
+-                    *((uint64_t*)dest) = _pext_u64(delta_buff_u64[dim], mask);
++                    *((sz_uint64_t*)dest) = _pext_u64(delta_buff_u64[dim], mask);
+                 } else if (elem_sz == 2) {
+                     uint64_t mask = kBitpackMasks16[nbits];
+                     static const uint8_t stripe_sz = stripe_sz_nbytes / elem_sz;
+@@ -342,7 +343,7 @@
+                         // if (debug) { printf("packing deltas: "); dump_bytes(delta_buff_u64[in_idx]); }
+                         uint64_t packed_data = _pext_u64(
+                             delta_buff_u64[in_idx], mask);
+-                        *(uint64_t*)(dest8 + byte_offset) |= packed_data << bit_offset;
++                        *(sz_uint64_t*)(dest8 + byte_offset) |= packed_data << bit_offset;
+                         total_bit_offset += nbits * stripe_sz;
+                         // if (debug) printf("total_bit_offset: %d\n", total_bit_offset);
+                     }
+@@ -362,9 +363,9 @@
+ 
+ main_loop_end:
+ 
+-    free(deltas);
+-    free(dims_nbits);
+-    free(header_bytes);
++    sz_mem::release(deltas);
++    sz_mem::release(dims_nbits);
++    sz_mem::release(header_bytes);
+ 
+     uint16_t remaining_len = (uint16_t)(src_end - src);
+     if (write_size) {
+@@ -474,9 +475,9 @@
+     // allocate temp vars of minimal possible size such that we can
+     // do vector loads and stores (except bitwidths, which are u64s so
+     // that we can store directly after sad_epu8)
+-    uint8_t*  headers = (uint8_t*) calloc(1, total_header_bytes);
+-    uint_t* deltas = (uint_t*)calloc(block_sz * padded_ndims, elem_sz);
+-    uint_t* prev_vals_ar = (uint_t*)calloc(padded_ndims, elem_sz);
++    uint8_t*  headers = (uint8_t*) sz_mem::alloc(1, nheader_stripes * 8, true);
++    uint_t* deltas = (uint_t*)sz_mem::alloc(block_sz * padded_ndims, elem_sz, true);
++    uint_t* prev_vals_ar = (uint_t*)sz_mem::alloc(padded_ndims, elem_sz, true);
+ 
+     // ================================ main loop
+ 
+@@ -495,17 +496,17 @@
+         // because we need to zero-pad final stripe's headers in each block
+         // so that stripe widths don't get messed up (from initial data in
+         // next block's header)
+-        uint64_t* header_write_ptr = (uint64_t*)headers;
++        uint64_t* header_write_ptr = (sz_uint64_t*)headers;
+         for (size_t stripe = 0; stripe < nheader_stripes - 1; stripe++) {
+-            uint64_t packed_header = *(uint32_t*)header_src;
++            uint64_t packed_header = *(sz_uint32_t*)header_src;
+             uint64_t header = _pdep_u64(packed_header, kHeaderUnpackMask);
+             *header_write_ptr = header;
+             header_src += stripe_header_sz;
+             header_write_ptr++;
+         }
+         // unpack header for the last stripe in the last block
+-        // uint64_t packed_header = (*(uint32_t*)header_src) & final_header_mask;
+-        uint64_t packed_header = (*(uint32_t*)header_src);
++        // uint64_t packed_header = (*(sz_uint32_t*)header_src) & final_header_mask;
++        uint64_t packed_header = (*(sz_uint32_t*)header_src);
+         uint64_t header = _pdep_u64(packed_header, kHeaderUnpackMask);
+         *header_write_ptr = header;
+ 
+@@ -564,7 +565,7 @@
+                 if (elem_sz == 1) {
+                     uint64_t mask = kBitpackMasks8[nbits];
+                     int8_t* outptr = ((int8_t*)deltas) + (dim * block_sz);
+-                    *((uint64_t*)outptr) = _pdep_u64(*(uint64_t*)src, mask);
++                    *((sz_uint64_t*)outptr) = _pdep_u64(*(sz_uint64_t*)src, mask);
+                 } else if (elem_sz == 2) {
+                     uint64_t mask = kBitpackMasks16[nbits];
+                     // if (debug) { printf("true nbits: %d;  ", true_nbits); }
+@@ -573,20 +574,20 @@
+                     static const uint8_t nstripes =
+                         elem_sz * block_sz / stripe_nbytes;
+ 
+-                    uint64_t* delta_buff_u64 = (uint64_t*)deltas;
++                    uint64_t* delta_buff_u64 = (sz_uint64_t*)deltas;
+                     int8_t* src8 = (int8_t*)src;
+                     uint16_t total_bit_offset = 0;
+                     for (uint8_t s = 0; s < nstripes; s++) {
+                         uint32_t out_idx = dim * nstripes + s;
+                         uint8_t byte_offset = total_bit_offset >> 3;
+                         uint8_t bit_offset = total_bit_offset & 0x07;
+-                        uint64_t packed_data = *(uint64_t*)(src8 + byte_offset);
++                        uint64_t packed_data = *(sz_uint64_t*)(src8 + byte_offset);
+                         uint64_t unpacked_data = _pdep_u64(
+                             packed_data >> bit_offset, mask);
+                         delta_buff_u64[out_idx] = unpacked_data;
+                         // delta_buff_u64[out_idx] = _pext_u64(
+                             // packed_data >> bit_offset, mask);
+-                        // if (debug) { printf("packed data:   "); dump_bytes(*(uint64_t*)(src8 + byte_offset)); }
++                        // if (debug) { printf("packed data:   "); dump_bytes(*(sz_uint64_t*)(src8 + byte_offset)); }
+                         if (debug) { printf("unpacked data: "); dump_bytes(unpacked_data); }
+                         // if (debug) { printf("unpacked data in buff: "); dump_bytes(delta_buff_u64[out_idx]); }
+                         total_bit_offset += true_nbits * stripe_sz;
+@@ -706,7 +707,7 @@
+                 if (ndims == 2) {
+                     // deltas were already u16s if this gets called, but
+                     // compiler doesn't know that
+-                    transpose_2x8_16b((uint16_t*)deltas, (uint16_t*)deltas);
++                    transpose_2x8_16b((sz_uint16_t*)deltas, (sz_uint16_t*)deltas);
+                 }
+ 
+                 // if (debug && g <= 2) {
+@@ -767,9 +768,9 @@
+         } // for each block
+     } // for each group
+ 
+-    free(headers);
+-    free(deltas);
+-    free(prev_vals_ar);
++    sz_mem::release(headers);
++    sz_mem::release(deltas);
++    sz_mem::release(prev_vals_ar);
+ 
+     memcpy(dest, src, remaining_len * elem_sz);
+ 
+--- a/sprintz_delta_rle.cpp
++++ b/sprintz_delta_rle.cpp
+@@ -1,3 +1,4 @@
++#include "native_compat.hpp"
+ //
+ //  sprintz_delta_rle.cpp
+ //  Compress
+@@ -112,19 +113,19 @@
+     }
+ 
+     // ------------------------ temp storage
+-    uint8_t*  stripe_bitwidths  = (uint8_t*) malloc(nstripes*sizeof(uint8_t));
+-    uint32_t* stripe_bitoffsets = (uint32_t*)malloc(nstripes*sizeof(uint32_t));
+-    uint64_t* stripe_masks      = (uint64_t*)malloc(nstripes*sizeof(uint64_t));
+-    uint32_t* stripe_headers    = (uint32_t*)malloc(nstripes*sizeof(uint32_t));
++    uint8_t*  stripe_bitwidths  = (uint8_t*) sz_native_malloc(nstripes*sizeof(uint8_t));
++    uint32_t* stripe_bitoffsets = (sz_uint32_t*)sz_native_malloc(nstripes*sizeof(uint32_t));
++    uint64_t* stripe_masks      = (sz_uint64_t*)sz_native_malloc(nstripes*sizeof(uint64_t));
++    uint32_t* stripe_headers    = (sz_uint32_t*)sz_native_malloc(nstripes*sizeof(uint32_t));
+ 
+     uint32_t total_header_bytes_padded = total_header_bytes + 4;
+-    uint8_t* header_bytes = (uint8_t*)calloc(total_header_bytes_padded, 1);
++    uint8_t* header_bytes = (uint8_t*)sz_mem::alloc(total_header_bytes_padded, 1, true);
+ 
+     // extra row is for storing previous values
+     // TODO just look at src and special case first row
+-    int_t* deltas = (int_t*)calloc(elem_sz, (block_sz + 1) * ndims);
++    int_t* deltas = (int_t*)sz_mem::alloc(elem_sz, (block_sz + 1) * ndims, true);
+     uint_t* prev_vals_ar = (uint_t*)(deltas + block_sz * ndims);
+-    // int8_t* deltas = (int8_t*)calloc(1, (block_sz + 1) * ndims);
++    // int8_t* deltas = (int8_t*)sz_mem::alloc(1, (block_sz + 1) * ndims, true);
+     // uint8_t* prev_vals_ar = (uint8_t*)(deltas + block_sz * ndims);
+ 
+     // ================================ main loop
+@@ -317,10 +318,10 @@
+                 uint16_t bit_offset = header_bit_offset & 0x07;
+ 
+                 if (elem_sz == 1) {
+-                    *(uint32_t*)(header_dest + byte_offset) |= \
++                    *(sz_uint32_t*)(header_dest + byte_offset) |= \
+                         stripe_headers[stripe] << bit_offset;
+                 } else {
+-                    *(uint64_t*)(header_dest + byte_offset) |= \
++                    *(sz_uint64_t*)(header_dest + byte_offset) |= \
+                         ((uint64_t)(stripe_headers[stripe])) << bit_offset;
+                 }
+ 
+@@ -355,10 +356,10 @@
+ 
+                 if (total_bits <= 64) { // always fits in one u64
+                     for (int i = 0; i < block_sz; i++) { // for each sample in block
+-                        uint64_t data = *(uint64_t*)inptr;
++                        uint64_t data = *(sz_uint64_t*)inptr;
+                         uint64_t packed_data = _pext_u64(data, mask);
+                         uint64_t write_data = packed_data << offset_bits;
+-                        *(uint64_t*)outptr = write_data | (*(uint64_t*)outptr);
++                        *(sz_uint64_t*)outptr = write_data | (*(sz_uint64_t*)outptr);
+ 
+                         outptr += out_row_nbytes;
+                         inptr += ndims * elem_sz;
+@@ -366,18 +367,18 @@
+                 } else { // data spans 9 bytes
+                     uint8_t nbits_lost = total_bits - 64;
+                     for (int i = 0; i < block_sz; i++) { // for each sample in block
+-                        uint64_t data = *(uint64_t*)inptr;
++                        uint64_t data = *(sz_uint64_t*)inptr;
+                         uint64_t packed_data = _pext_u64(data, mask);
+                         uint8_t extra_byte = (uint8_t)(packed_data >> (nbits - nbits_lost));
+                         uint64_t write_data = packed_data << offset_bits;
+-                        *(uint64_t*)outptr = write_data | (*(uint64_t*)outptr);
++                        *(sz_uint64_t*)outptr = write_data | (*(sz_uint64_t*)outptr);
+                         *(outptr + 8) = extra_byte;
+ 
+                         outptr += out_row_nbytes;
+                         inptr += ndims * elem_sz;
+                     }
+                 }
+-                // printf("read back header: "); dumpEndianBits(*(uint32_t*)(header_dest - stripe_header_sz));
++                // printf("read back header: "); dumpEndianBits(*(sz_uint32_t*)(header_dest - stripe_header_sz));
+             } // for each stripe
+             src += block_sz * ndims;
+             dest += block_sz * out_row_nbytes / elem_sz;
+@@ -389,11 +390,11 @@
+ 
+ main_loop_end:
+ 
+-    free(stripe_bitwidths);
+-    free(stripe_bitoffsets);
+-    free(stripe_masks);
+-    free(stripe_headers);
+-    free(deltas);
++    sz_mem::release(stripe_bitwidths);
++    sz_mem::release(stripe_bitoffsets);
++    sz_mem::release(stripe_masks);
++    sz_mem::release(stripe_headers);
++    sz_mem::release(deltas);
+ 
+     uint32_t remaining_len = (uint32_t)(src_end - src);
+     if (write_size) {
+@@ -510,16 +511,16 @@
+     // allocate temp vars of minimal possible size such that we can
+     // do vector loads and stores (except bitwidths, which are u64s so
+     // that we can store directly after sad_epu8)
+-    uint64_t* headers_tmp       = (uint64_t*)calloc(nheader_stripes, 8);
+-    uint8_t*  headers           = (uint8_t*) calloc(1, group_header_sz);
+-    uint64_t* data_masks        = (uint64_t*)calloc(nstripes_in_vectors * elem_sz, 8);
+-    bitwidth_t* stripe_bitwidths= (bitwidth_t*)calloc(nstripes_in_vectors, 8);
+-    uint32_t* stripe_bitoffsets = (uint32_t*)calloc(nstripes, 4);
++    uint64_t* headers_tmp       = (sz_uint64_t*)sz_mem::alloc(nheader_stripes, 8, true);
++    uint8_t*  headers           = (uint8_t*) sz_mem::alloc(1, group_header_sz * elem_sz, true);
++    uint64_t* data_masks        = (sz_uint64_t*)sz_mem::alloc(nstripes_in_vectors * elem_sz, 8, true);
++    bitwidth_t* stripe_bitwidths= (bitwidth_t*)sz_mem::alloc(nstripes_in_vectors, 8, true);
++    uint32_t* stripe_bitoffsets = (sz_uint32_t*)sz_mem::alloc(nstripes, 4, true);
+ 
+     // extra row in deltas is to store last decoded values
+     // TODO just special case very first row
+-    int_t* deltas = (int_t*)calloc(block_sz * padded_ndims, elem_sz);
+-    uint_t* prev_vals_ar = (uint_t*)calloc(padded_ndims, elem_sz);
++    int_t* deltas = (int_t*)sz_mem::alloc(block_sz * padded_ndims, elem_sz, true);
++    uint_t* prev_vals_ar = (uint_t*)sz_mem::alloc(padded_ndims, elem_sz, true);
+ 
+     // ================================ main loop
+ 
+@@ -534,16 +535,16 @@
+         // because we need to zero-pad final stripe's headers in each block
+         // so that stripe widths don't get messed up (from initial data in
+         // next block's header)
+-        uint64_t* header_write_ptr = (uint64_t*)headers_tmp;
++        uint64_t* header_write_ptr = (sz_uint64_t*)headers_tmp;
+         for (uint32_t stripe = 0; stripe < nheader_stripes - 1; stripe++) {
+-            uint64_t packed_header = *(uint32_t*)header_src;
++            uint64_t packed_header = *(sz_uint32_t*)header_src;
+             header_src += stripe_header_sz;
+             uint64_t header = _pdep_u64(packed_header, kHeaderUnpackMask);
+             *header_write_ptr = header;
+             header_write_ptr++;
+         }
+         // unpack header for the last stripe in the last block
+-        uint64_t packed_header = (*(uint32_t*)header_src) & final_header_mask;
++        uint64_t packed_header = (*(sz_uint32_t*)header_src) & final_header_mask;
+         uint64_t header = _pdep_u64(packed_header, kHeaderUnpackMask);
+         *header_write_ptr = header;
+ 
+@@ -617,7 +618,7 @@
+         }
+ 
+         if (debug) {
+-            printf("padded masks:     "); dump_elements((uint16_t*)data_masks, group_header_sz);
++            printf("padded masks:     "); dump_elements((sz_uint16_t*)data_masks, group_header_sz);
+             // printf("padded masks:     "); dump_bytes((uint8_t*)data_masks, group_header_sz * elem_sz);
+             printf("padded bitwidths: "); dump_bytes(stripe_bitwidths, nstripes_in_vectors);
+             printf("\n");
+@@ -683,17 +684,17 @@
+                 // this is the hot loop
+                 if (total_bits <= 64) { // input guaranteed to fit in 8B
+                     for (int i = 0; i < block_sz; i++) {
+-                        uint64_t packed_data = (*(uint64_t*)inptr) >> offset_bits;
+-                        *(uint64_t*)outptr = _pdep_u64(packed_data, mask);
++                        uint64_t packed_data = (*(sz_uint64_t*)inptr) >> offset_bits;
++                        *(sz_uint64_t*)outptr = _pdep_u64(packed_data, mask);
+                         inptr += in_row_nbytes;
+                         outptr += out_row_nbytes;
+                     }
+                 } else { // input spans 9 bytes
+                     uint8_t nbits_lost = total_bits - 64;
+                     for (int i = 0; i < block_sz; i++) {
+-                        uint64_t packed_data = (*(uint64_t*)inptr) >> offset_bits;
+-                        packed_data |= (*(uint64_t*)(inptr + 8)) << (nbits - nbits_lost);
+-                        *(uint64_t*)outptr = _pdep_u64(packed_data, mask);
++                        uint64_t packed_data = (*(sz_uint64_t*)inptr) >> offset_bits;
++                        packed_data |= (*(sz_uint64_t*)(inptr + 8)) << (nbits - nbits_lost);
++                        *(sz_uint64_t*)outptr = _pdep_u64(packed_data, mask);
+                         inptr += in_row_nbytes;
+                         outptr += out_row_nbytes;
+                     }
+@@ -743,13 +744,13 @@
+         } // for each block
+     } // for each group
+ 
+-    free(headers_tmp);
+-    free(headers);
+-    free(data_masks);
+-    free(stripe_bitwidths);
+-    free(stripe_bitoffsets);
+-    free(deltas);
+-    free(prev_vals_ar);
++    sz_mem::release(headers_tmp);
++    sz_mem::release(headers);
++    sz_mem::release(data_masks);
++    sz_mem::release(stripe_bitwidths);
++    sz_mem::release(stripe_bitoffsets);
++    sz_mem::release(deltas);
++    sz_mem::release(prev_vals_ar);
+ 
+     // printf("bytes read: %lld\n", (uint64_t)(src - orig_src));
+ 
+--- a/sprintz_delta_rle_query.hpp
++++ b/sprintz_delta_rle_query.hpp
+@@ -1,3 +1,4 @@
++#include "native_compat.hpp"
+ //
+ //  sprintz_delta_rle.cpp
+ //  Compress
+@@ -140,16 +141,16 @@
+     // allocate temp vars of minimal possible size such that we can
+     // do vector loads and stores (except bitwidths, which are u64s so
+     // that we can store directly after sad_epu8)
+-    uint64_t* headers_tmp       = (uint64_t*)calloc(nheader_stripes, 8);
+-    uint8_t*  headers           = (uint8_t*) calloc(1, group_header_sz);
+-    uint64_t* data_masks        = (uint64_t*)calloc(nstripes_in_vectors * elem_sz, 8);
+-    bitwidth_t* stripe_bitwidths= (bitwidth_t*)calloc(nstripes_in_vectors, 8);
+-    uint32_t* stripe_bitoffsets = (uint32_t*)calloc(nstripes, 4);
++    uint64_t* headers_tmp       = (sz_uint64_t*)sz_mem::alloc(nheader_stripes, 8, true);
++    uint8_t*  headers           = (uint8_t*) sz_mem::alloc(1, group_header_sz * elem_sz, true);
++    uint64_t* data_masks        = (sz_uint64_t*)sz_mem::alloc(nstripes_in_vectors * elem_sz, 8, true);
++    bitwidth_t* stripe_bitwidths= (bitwidth_t*)sz_mem::alloc(nstripes_in_vectors, 8, true);
++    uint32_t* stripe_bitoffsets = (sz_uint32_t*)sz_mem::alloc(nstripes, 4, true);
+ 
+     // extra row in deltas is to store last decoded values
+     // TODO just special case very first row
+-    int_t* deltas = (int_t*)calloc(block_sz * padded_ndims, elem_sz);
+-    uint_t* prev_vals_ar = (uint_t*)calloc(padded_ndims, elem_sz);
++    int_t* deltas = (int_t*)sz_mem::alloc(block_sz * padded_ndims, elem_sz, true);
++    uint_t* prev_vals_ar = (uint_t*)sz_mem::alloc(padded_ndims, elem_sz, true);
+ 
+     // ================================ main loop
+ 
+@@ -166,16 +167,16 @@
+         // because we need to zero-pad final stripe's headers in each block
+         // so that stripe widths don't get messed up (from initial data in
+         // next block's header)
+-        uint64_t* header_write_ptr = (uint64_t*)headers_tmp;
++        uint64_t* header_write_ptr = (sz_uint64_t*)headers_tmp;
+         for (uint32_t stripe = 0; stripe < nheader_stripes - 1; stripe++) {
+-            uint64_t packed_header = *(uint32_t*)header_src;
++            uint64_t packed_header = *(sz_uint32_t*)header_src;
+             header_src += stripe_header_sz;
+             uint64_t header = _pdep_u64(packed_header, kHeaderUnpackMask);
+             *header_write_ptr = header;
+             header_write_ptr++;
+         }
+         // unpack header for the last stripe in the last block
+-        uint64_t packed_header = (*(uint32_t*)header_src) & final_header_mask;
++        uint64_t packed_header = (*(sz_uint32_t*)header_src) & final_header_mask;
+         uint64_t header = _pdep_u64(packed_header, kHeaderUnpackMask);
+         *header_write_ptr = header;
+ 
+@@ -249,7 +250,7 @@
+         }
+ 
+         if (debug) {
+-            printf("padded masks:     "); dump_elements((uint16_t*)data_masks, group_header_sz);
++            printf("padded masks:     "); dump_elements((sz_uint16_t*)data_masks, group_header_sz);
+             // printf("padded masks:     "); dump_bytes((uint8_t*)data_masks, group_header_sz * elem_sz);
+             printf("padded bitwidths: "); dump_bytes(stripe_bitwidths, nstripes_in_vectors);
+             printf("\n");
+@@ -327,17 +328,17 @@
+                 // this is the hot loop
+                 if (total_bits <= 64) { // input guaranteed to fit in 8B
+                     for (int i = 0; i < block_sz; i++) {
+-                        uint64_t packed_data = (*(uint64_t*)inptr) >> offset_bits;
+-                        *(uint64_t*)outptr = _pdep_u64(packed_data, mask);
++                        uint64_t packed_data = (*(sz_uint64_t*)inptr) >> offset_bits;
++                        *(sz_uint64_t*)outptr = _pdep_u64(packed_data, mask);
+                         inptr += in_row_nbytes;
+                         outptr += out_row_nbytes;
+                     }
+                 } else { // input spans 9 bytes
+                     uint8_t nbits_lost = total_bits - 64;
+                     for (int i = 0; i < block_sz; i++) {
+-                        uint64_t packed_data = (*(uint64_t*)inptr) >> offset_bits;
+-                        packed_data |= (*(uint64_t*)(inptr + 8)) << (nbits - nbits_lost);
+-                        *(uint64_t*)outptr = _pdep_u64(packed_data, mask);
++                        uint64_t packed_data = (*(sz_uint64_t*)inptr) >> offset_bits;
++                        packed_data |= (*(sz_uint64_t*)(inptr + 8)) << (nbits - nbits_lost);
++                        *(sz_uint64_t*)outptr = _pdep_u64(packed_data, mask);
+                         inptr += in_row_nbytes;
+                         outptr += out_row_nbytes;
+                     }
+@@ -394,18 +395,18 @@
+ 
+     // printf("headers_tmp = %p, headers = %p\n", headers_tmp, headers);
+ 
+-    free(headers_tmp);
++    sz_mem::release(headers_tmp);
+     // printf("freed headers_tmp\n");
+-    free(headers);
++    sz_mem::release(headers);
+     // printf("freed headers\n");
+-    free(data_masks);
++    sz_mem::release(data_masks);
+     // printf("freed data masks\n");
+-    free(stripe_bitwidths);
++    sz_mem::release(stripe_bitwidths);
+     // printf("freed stripe_bitwidths\n");
+-    free(stripe_bitoffsets);
++    sz_mem::release(stripe_bitoffsets);
+     // printf("freed most stuff; about to free deltas and prev_vals\n");
+-    free(deltas);
+-    free(prev_vals_ar);
++    sz_mem::release(deltas);
++    sz_mem::release(prev_vals_ar);
+ 
+     // printf("bytes read: %lld\n", (long long)(src - orig_src));
+ 
+--- a/sprintz_xff.cpp
++++ b/sprintz_xff.cpp
+@@ -1,3 +1,4 @@
++#include "native_compat.hpp"
+ //
+ //  sprintz_xff.c
+ //  Compress
+@@ -63,8 +64,8 @@
+     // ------------------------ store data size and number of dimensions
+     if (write_size) {
+         assert(len < ((uint64_t)1) << 48);
+-        *(uint64_t*)dest = len;
+-        *(uint16_t*)(dest + 6) = ndims;
++        *(sz_uint64_t*)dest = len;
++        *(sz_uint16_t*)(dest + 6) = ndims;
+         dest += 8;
+     }
+     // handle low dims and low length; we'd read way past the end of the
+@@ -79,22 +80,22 @@
+     // printf("saw original data:\n"); dump_bytes(src, len, ndims);
+ 
+     // ------------------------ temp storage
+-    uint8_t*  stripe_bitwidths  = (uint8_t*) malloc(nstripes*sizeof(uint8_t));
+-    uint32_t* stripe_bitoffsets = (uint32_t*)malloc(nstripes*sizeof(uint32_t));
+-    uint64_t* stripe_masks      = (uint64_t*)malloc(nstripes*sizeof(uint64_t));
+-    uint32_t* stripe_headers    = (uint32_t*)malloc(nstripes*sizeof(uint32_t));
++    uint8_t*  stripe_bitwidths  = (uint8_t*) sz_native_malloc(nstripes*sizeof(uint8_t));
++    uint32_t* stripe_bitoffsets = (sz_uint32_t*)sz_native_malloc(nstripes*sizeof(uint32_t));
++    uint64_t* stripe_masks      = (sz_uint64_t*)sz_native_malloc(nstripes*sizeof(uint64_t));
++    uint32_t* stripe_headers    = (sz_uint32_t*)sz_native_malloc(nstripes*sizeof(uint32_t));
+ 
+     uint32_t total_header_bytes_padded = total_header_bytes + 4;
+-    uint8_t* header_bytes = (uint8_t*)calloc(total_header_bytes_padded, 1);
++    uint8_t* header_bytes = (uint8_t*)sz_mem::alloc(total_header_bytes_padded, 1, true);
+ 
+     // extra row is for storing previous values
+     // TODO just look at src and special case first row
+-    // int8_t* deltas = (int8_t*)calloc(1, (block_sz + 2) * ndims);
++    // int8_t* deltas = (int8_t*)sz_mem::alloc(1, (block_sz + 2) * ndims, true);
+     // uint8_t* prev_vals_ar = (uint8_t*)(deltas + block_sz * ndims);
+-    int8_t* errs = (int8_t*)calloc(1, (block_sz + 4) * ndims);
++    int8_t* errs = (int8_t*)sz_mem::alloc(1, (block_sz + 4) * ndims, true);
+     uint8_t* prev_vals_ar   = (uint8_t*)(errs + block_sz * ndims);
+     int8_t* prev_deltas_ar  = (int8_t* )(errs + (block_sz + 1) * ndims);
+-    int16_t* coef_counters_ar=(int16_t*)(errs + (block_sz + 2) * ndims);
++    int16_t* coef_counters_ar=(sz_int16_t*)(errs + (block_sz + 2) * ndims);
+ 
+     // ================================ main loop
+ 
+@@ -127,12 +128,12 @@
+ 
+             // ------------------------ compute info for each stripe
+ 
+-            // auto deltas = (int8_t*)calloc(ndims * block_sz, 1); // TODO rm
+-            // auto predictions = (int8_t*)calloc(ndims * block_sz, 1); // TODO rm
+-            // auto grads = (int8_t*)calloc(ndims, 1); // TODO rm
+-            // // auto grad_sums = (int8_t*)calloc(ndims * block_sz / learning_downsample, 1); // TODO rm
+-            // auto grad_sums = (int8_t*)calloc(ndims * block_sz, 1); // TODO rm
+-            // auto all_grads = (int8_t*)calloc(ndims * block_sz, 1); // TODO rm
++            // auto deltas = (int8_t*)sz_mem::alloc(ndims * block_sz, 1, true); // TODO rm
++            // auto predictions = (int8_t*)sz_mem::alloc(ndims * block_sz, 1, true); // TODO rm
++            // auto grads = (int8_t*)sz_mem::alloc(ndims, 1, true); // TODO rm
++            // // auto grad_sums = (int8_t*)sz_mem::alloc(ndims * block_sz / learning_downsample, 1, true); // TODO rm
++            // auto grad_sums = (int8_t*)sz_mem::alloc(ndims * block_sz, 1, true); // TODO rm
++            // auto all_grads = (int8_t*)sz_mem::alloc(ndims * block_sz, 1, true); // TODO rm
+ 
+             for (uint16_t dim = 0; dim < ndims; dim++) {
+                 // compute maximum number of bits used by any value of this dim,
+@@ -141,7 +142,7 @@
+                 uint8_t prev_val = prev_vals_ar[dim];
+                 int8_t prev_delta = prev_deltas_ar[dim];
+ 
+-                int16_t coef = (coef_counters_ar[dim] >> (learning_shift + 4)) << 4;
++                int16_t coef = (coef_counters_ar[dim] >> (learning_shift + 4)) * 16;
+                 int8_t grad_sum = 0;
+ 
+                 for (uint8_t i = 0; i < block_sz; i++) {
+@@ -201,11 +202,11 @@
+             //     printf("mean grads:\n"); dump_elements(grads, ndims, ndims);
+             //     printf("coef counters:\n"); dump_elements(coef_counters_ar, ndims, ndims);
+             // }
+-            // free(predictions);
+-            // free(deltas);
+-            // free(grads);
+-            // free(grad_sums);
+-            // free(all_grads);
++            // sz_mem::release(predictions);
++            // sz_mem::release(deltas);
++            // sz_mem::release(grads);
++            // sz_mem::release(grad_sums);
++            // sz_mem::release(all_grads);
+ 
+             // compute start offsets of each stripe (in bits)
+             stripe_bitoffsets[0] = 0;
+@@ -225,7 +226,7 @@
+                 uint16_t bit_offset = header_bit_offset & 0x07;
+                 // Note: this write will get more complicated when upper byte
+                 // of each stripe_header isn't guaranteed to be 0
+-                *(uint32_t*)(header_dest + byte_offset) |= \
++                *(sz_uint32_t*)(header_dest + byte_offset) |= \
+                     stripe_headers[stripe] << bit_offset;
+ 
+                 uint8_t is_final_stripe = stripe == (nstripes - 1);
+@@ -261,10 +262,10 @@
+                 if (total_bits <= 64) { // always fits in one u64
+                     for (int i = 0; i < block_sz; i++) { // for each sample in block
+                         // 8B write to store (at least most of) the data
+-                        uint64_t data = *(uint64_t*)inptr;
++                        uint64_t data = *(sz_uint64_t*)inptr;
+                         uint64_t packed_data = _pext_u64(data, mask);
+                         uint64_t write_data = packed_data << offset_bits;
+-                        *(uint64_t*)outptr = write_data | (*(uint64_t*)outptr);
++                        *(sz_uint64_t*)outptr = write_data | (*(sz_uint64_t*)outptr);
+ 
+                         outptr += in_row_nbytes;
+                         inptr += ndims;
+@@ -272,18 +273,18 @@
+                 } else { // data spans 9 bytes
+                     uint8_t nbits_lost = total_bits - 64;
+                     for (int i = 0; i < block_sz; i++) { // for each sample in block
+-                        uint64_t data = *(uint64_t*)inptr;
++                        uint64_t data = *(sz_uint64_t*)inptr;
+                         uint64_t packed_data = _pext_u64(data, mask);
+                         uint8_t extra_byte = (uint8_t)(packed_data >> (nbits - nbits_lost));
+                         uint64_t write_data = packed_data << offset_bits;
+-                        *(uint64_t*)outptr = write_data | (*(uint64_t*)outptr);
++                        *(sz_uint64_t*)outptr = write_data | (*(sz_uint64_t*)outptr);
+                         *(outptr + 8) = extra_byte;
+ 
+                         outptr += in_row_nbytes;
+                         inptr += ndims;
+                     }
+                 }
+-                // printf("read back header: "); dumpEndianBits(*(uint32_t*)(header_dest - stripe_header_sz));
++                // printf("read back header: "); dumpEndianBits(*(sz_uint32_t*)(header_dest - stripe_header_sz));
+             } // for each stripe
+             src += block_sz * ndims;
+             dest += block_sz * in_row_nbytes;
+@@ -292,11 +293,11 @@
+ 
+ main_loop_end:
+ 
+-    free(stripe_bitwidths);
+-    free(stripe_bitoffsets);
+-    free(stripe_masks);
+-    free(stripe_headers);
+-    free(errs);
++    sz_mem::release(stripe_bitwidths);
++    sz_mem::release(stripe_bitoffsets);
++    sz_mem::release(stripe_masks);
++    sz_mem::release(stripe_headers);
++    sz_mem::release(errs);
+ 
+     uint32_t remaining_len = (uint32_t)(len - (src - orig_src));
+     memcpy(dest, src, remaining_len);
+@@ -334,8 +335,8 @@
+     static const uint8_t len_nbytes = 6;
+     uint64_t one = 1; // make next line legible
+     uint64_t len_mask = (one << (8 * len_nbytes)) - 1;
+-    uint64_t orig_len = (*(uint64_t*)src) & len_mask;
+-    uint16_t ndims = (*(uint16_t*)(src + len_nbytes));
++    uint64_t orig_len = (*(sz_uint64_t*)src) & len_mask;
++    uint16_t ndims = (*(sz_uint16_t*)(src + len_nbytes));
+     src += 8;
+ 
+     bool just_cpy = orig_len < 8 * block_sz * group_sz_blocks;
+@@ -385,15 +386,15 @@
+     // allocate temp vars of minimal possible size such that we can
+     // do vector loads and stores (except bitwidths, which are u64s so
+     // that we can store directly after sad_epu8)
+-    uint64_t* headers_tmp       = (uint64_t*)calloc(nheader_stripes, 8);
+-    uint8_t*  headers           = (uint8_t*) calloc(1, group_header_sz);
+-    uint64_t* data_masks        = (uint64_t*)calloc(nstripes_in_vectors, 8);
+-    uint64_t* stripe_bitwidths  = (uint64_t*)calloc(nstripes_in_vectors, 8);
+-    uint32_t* stripe_bitoffsets = (uint32_t*)calloc(nstripes, 4);
++    uint64_t* headers_tmp       = (sz_uint64_t*)sz_mem::alloc(nheader_stripes, 8, true);
++    uint8_t*  headers           = (uint8_t*) sz_mem::alloc(1, group_header_sz, true);
++    uint64_t* data_masks        = (sz_uint64_t*)sz_mem::alloc(nstripes_in_vectors, 8, true);
++    uint64_t* stripe_bitwidths  = (sz_uint64_t*)sz_mem::alloc(nstripes_in_vectors, 8, true);
++    uint32_t* stripe_bitoffsets = (sz_uint32_t*)sz_mem::alloc(nstripes, 4, true);
+ 
+     // extra row in deltas is to store last decoded values
+     // TODO just special case very first row
+-    int8_t* errs_ar = (int8_t*)calloc((block_sz + 4) * padded_ndims, 1);
++    int8_t* errs_ar = (int8_t*)sz_mem::alloc((block_sz + 4) * padded_ndims, 1, true);
+     uint8_t* prev_vals_ar = (uint8_t*)(errs_ar + (block_sz + 0) * padded_ndims);
+     int8_t* prev_deltas_ar = (int8_t*)(errs_ar + (block_sz + 1) * padded_ndims);
+     int8_t* coeffs_ar_even = (int8_t*)(errs_ar + (block_sz + 2) * padded_ndims);
+@@ -411,16 +412,16 @@
+         // because we need to zero-pad final stripe's headers in each block
+         // so that stripe widths don't get messed up (from initial data in
+         // next block's header)
+-        uint64_t* header_write_ptr = (uint64_t*)headers_tmp;
++        uint64_t* header_write_ptr = (sz_uint64_t*)headers_tmp;
+         for (size_t stripe = 0; stripe < nheader_stripes - 1; stripe++) {
+-            uint64_t packed_header = *(uint32_t*)header_src;
++            uint64_t packed_header = *(sz_uint32_t*)header_src;
+             header_src += stripe_header_sz;
+             uint64_t header = _pdep_u64(packed_header, kHeaderUnpackMask);
+             *header_write_ptr = header;
+             header_write_ptr++;
+         }
+         // unpack header for the last stripe in the last block
+-        uint64_t packed_header = (*(uint32_t*)header_src) & final_header_mask;
++        uint64_t packed_header = (*(sz_uint32_t*)header_src) & final_header_mask;
+         uint64_t header = _pdep_u64(packed_header, kHeaderUnpackMask);
+         *header_write_ptr = header;
+ 
+@@ -491,19 +492,19 @@
+                 // this is the hot loop
+                 if (total_bits <= 64) { // input guaranteed to fit in 8B
+                     for (int i = 0; i < block_sz; i++) {
+-                        uint64_t packed_data = (*(uint64_t*)inptr) >> offset_bits;
+-                        *(uint64_t*)outptr = _pdep_u64(packed_data, mask);
++                        uint64_t packed_data = (*(sz_uint64_t*)inptr) >> offset_bits;
++                        *(sz_uint64_t*)outptr = _pdep_u64(packed_data, mask);
+                         inptr += in_row_nbytes;
+                         outptr += out_row_nbytes;
+                     }
+                 } else { // input spans 9 bytes
+                     uint8_t nbits_lost = total_bits - 64;
+                     for (int i = 0; i < block_sz; i++) {
+-                        uint64_t packed_data = (*(uint64_t*)inptr) >> offset_bits;
++                        uint64_t packed_data = (*(sz_uint64_t*)inptr) >> offset_bits;
+                         // printf("packed_data "); dump_bytes(packed_data);
+-                        packed_data |= (*(uint64_t*)(inptr + 8)) << (nbits - nbits_lost);
++                        packed_data |= (*(sz_uint64_t*)(inptr + 8)) << (nbits - nbits_lost);
+                         // printf("packed_data after OR "); dump_bytes(packed_data);
+-                        *(uint64_t*)outptr = _pdep_u64(packed_data, mask);
++                        *(sz_uint64_t*)outptr = _pdep_u64(packed_data, mask);
+                         inptr += in_row_nbytes;
+                         outptr += out_row_nbytes;
+                     }
+@@ -611,11 +612,11 @@
+         // printf("will now write to dest at offset %lld\n", (uint64_t)(dest - orig_dest));
+     } // for each group
+ 
+-    free(headers_tmp);
+-    free(headers);
+-    free(data_masks);
+-    free(stripe_bitwidths);
+-    free(stripe_bitoffsets);
++    sz_mem::release(headers_tmp);
++    sz_mem::release(headers);
++    sz_mem::release(data_masks);
++    sz_mem::release(stripe_bitwidths);
++    sz_mem::release(stripe_bitoffsets);
+ 
+     // copy over trailing data
+     size_t remaining_len = orig_len - (dest - orig_dest);
+--- a/sprintz_xff_lowdim.cpp
++++ b/sprintz_xff_lowdim.cpp
+@@ -1,3 +1,4 @@
++#include "native_compat.hpp"
+ //
+ //  sprintz3.cpp
+ //  Compress
+@@ -119,16 +120,16 @@
+     }
+ 
+     // ------------------------ temp storage
+-    uint8_t* dims_nbits = (uint8_t*)(malloc(ndims*sizeof(uint8_t)));
++    uint8_t* dims_nbits = (uint8_t*)(sz_native_malloc(ndims*sizeof(uint8_t)));
+ 
+     uint32_t total_header_bytes_padded = total_header_bytes + 4;
+-    uint8_t* header_bytes = (uint8_t*)calloc(total_header_bytes_padded, 1);
++    uint8_t* header_bytes = (uint8_t*)sz_mem::alloc(total_header_bytes_padded, 1, true);
+ 
+     // extra row is for storing previous values
+-    int_t*  errs             = (int_t* )calloc(elem_sz, (block_sz + 2) * ndims);
++    int_t*  errs             = (int_t* )sz_mem::alloc(elem_sz, (block_sz + 2) * ndims, true);
+     uint_t* prev_vals_ar     = (uint_t*)(errs + (block_sz + 0) * ndims);
+     int_t*  prev_deltas_ar   = (int_t* )(errs + (block_sz + 1) * ndims);
+-    counter_t* coef_counters_ar = (counter_t*)calloc(sizeof(counter_t), ndims);
++    counter_t* coef_counters_ar = (counter_t*)sz_mem::alloc(sizeof(counter_t), ndims, true);
+ 
+     // ================================ main loop
+ 
+@@ -170,7 +171,7 @@
+                 const uint8_t shft = truncate_coeffs ? elem_sz_nbits - 4 : 0;
+                 // if (!truncate_coeffs) { shft = 0; }
+                 counter_t counter = coef_counters_ar[dim];
+-                counter_t coef = (coef_counters_ar[dim] >> (learning_shift + shft)) << shft;
++                counter_t coef = (coef_counters_ar[dim] >> (learning_shift + shft)) * (1 << shft);
+                 int_t grad_sum = 0;
+ 
+                 // printf("coef: %d\n", coef);
+@@ -180,11 +181,11 @@
+                     uint32_t out_offset = (dim * block_sz) + i; // colmajor
+                     uint_t val = src[in_offset];
+                     int_t delta = (int_t)(val - prev_val);
+-                    int_t prediction = (((counter_t)prev_delta) * coef) >> elem_sz_nbits;
++                    int_t prediction = sz_mul_wrap32(prev_delta, coef) >> elem_sz_nbits;
+ 
+                     // if (elem_sz == 2) { prediction = prediction << 2; }
+ 
+-                    // int_t prediction = (((int32_t)prev_delta) * coef) >> 8; // TODO rm
++                    // int_t prediction = sz_mul_wrap32(prev_delta, coef) >> 8; // TODO rm
+ 
+                     int_t err = delta - prediction;
+                     uint_t bits = ZIGZAG_ENCODE_SCALAR(err);
+@@ -332,7 +333,7 @@
+                 // Note: this write will get more complicated when upper byte
+                 // of each stripe_header isn't guaranteed to be 0
+                 uint8_t write_nbits = dims_nbits[dim] - (dims_nbits[dim] == elem_sz_nbits);
+-                *(uint32_t*)(header_dest + byte_offset) |= \
++                *(sz_uint32_t*)(header_dest + byte_offset) |= \
+                     write_nbits << bit_offset;
+                 header_bit_offset += nbits_sz_bits;
+             }
+@@ -346,12 +347,12 @@
+             uint32_t data_sz = total_dims_nbits * block_sz / 8;
+             memset(dest, 0, data_sz * elem_sz);
+ 
+-            uint64_t* delta_buff_u64 = (uint64_t*)errs;
++            uint64_t* delta_buff_u64 = (sz_uint64_t*)errs;
+             for (uint16_t dim = 0; dim < ndims; dim++) {
+                 uint8_t nbits = dims_nbits[dim];
+                 if (elem_sz == 1) {
+                     uint64_t mask = kBitpackMasks8[nbits];
+-                    *((uint64_t*)dest) = _pext_u64(delta_buff_u64[dim], mask);
++                    *((sz_uint64_t*)dest) = _pext_u64(delta_buff_u64[dim], mask);
+                 } else if (elem_sz == 2) {
+                     uint64_t mask = kBitpackMasks16[nbits];
+                     static const uint8_t stripe_sz = stripe_sz_nbytes / elem_sz;
+@@ -368,7 +369,7 @@
+                         // if (debug) { printf("packing deltas: "); dump_bytes(delta_buff_u64[in_idx]); }
+                         uint64_t packed_data = _pext_u64(
+                             delta_buff_u64[in_idx], mask);
+-                        *(uint64_t*)(dest8 + byte_offset) |= packed_data << bit_offset;
++                        *(sz_uint64_t*)(dest8 + byte_offset) |= packed_data << bit_offset;
+                         total_bit_offset += nbits * stripe_sz;
+                         // if (debug) printf("total_bit_offset: %d\n", total_bit_offset);
+                     }
+@@ -385,9 +386,9 @@
+ 
+ main_loop_end:
+ 
+-    free(errs);
+-    free(dims_nbits);
+-    free(header_bytes);
++    sz_mem::release(errs);
++    sz_mem::release(dims_nbits);
++    sz_mem::release(header_bytes);
+ 
+     uint16_t remaining_len = (uint16_t)(src_end - src);
+     if (write_size) {
+@@ -497,19 +498,19 @@
+     // allocate temp vars of minimal possible size such that we can
+     // do vector loads and stores (except bitwidths, which are u64s so
+     // that we can store directly after sad_epu8)
+-    // uint8_t*  headers = (uint8_t*) calloc(1, group_header_sz);
+-    uint8_t*  headers = (uint8_t*)calloc(1, total_header_bytes);
++    // uint8_t*  headers = (uint8_t*) sz_mem::alloc(1, group_header_sz * elem_sz, true);
++    uint8_t*  headers = (uint8_t*)sz_mem::alloc(1, nheader_stripes * 8, true);
+ 
+     // extra row in errs is to store last decoded values
+     // TODO just special case very first row
+-    int_t*  errs_ar          = (int_t* )calloc(elem_sz, (block_sz + 2) * padded_ndims);
++    int_t*  errs_ar          = (int_t* )sz_mem::alloc(elem_sz, (block_sz + 2) * padded_ndims, true);
+     uint_t* prev_vals_ar     = (uint_t*)(errs_ar + (block_sz + 0) * padded_ndims);
+     int_t*  prev_deltas_ar   = (int_t* )(errs_ar + (block_sz + 1) * padded_ndims);
+-    // int8_t* errs_ar = (int8_t*)calloc((block_sz + 4) * padded_ndims, 1);
++    // int8_t* errs_ar = (int8_t*)sz_mem::alloc((block_sz + 4) * padded_ndims, 1, true);
+     // uint8_t* prev_vals_ar = (uint8_t*)(errs_ar + (block_sz + 0) * padded_ndims);
+     // int8_t* prev_deltas_ar = (int8_t*)(errs_ar + (block_sz + 1) * padded_ndims);
+-    int8_t* coeffs_ar_even = (int8_t*)calloc(elem_sz, padded_ndims);
+-    int8_t* coeffs_ar_odd = (int8_t*)calloc(elem_sz, padded_ndims);
++    int8_t* coeffs_ar_even = (int8_t*)sz_mem::alloc(elem_sz, padded_ndims, true);
++    int8_t* coeffs_ar_odd = (int8_t*)sz_mem::alloc(elem_sz, padded_ndims, true);
+     // int8_t* coeffs_ar_even = (int8_t*)(errs_ar + (block_sz + 2) * padded_ndims);
+     // int8_t* coeffs_ar_odd =  (int8_t*)(errs_ar + (block_sz + 3) * padded_ndims);
+ 
+@@ -530,18 +531,18 @@
+         // because we need to zero-pad final stripe's headers in each block
+         // so that stripe widths don't get messed up (from initial data in
+         // next block's header)
+-        // uint64_t* header_write_ptr = (uint64_t*)headers_tmp;
+-        uint64_t* header_write_ptr = (uint64_t*)headers;
++        // uint64_t* header_write_ptr = (sz_uint64_t*)headers_tmp;
++        uint64_t* header_write_ptr = (sz_uint64_t*)headers;
+         for (size_t stripe = 0; stripe < nheader_stripes - 1; stripe++) {
+-            uint64_t packed_header = *(uint32_t*)header_src;
++            uint64_t packed_header = *(sz_uint32_t*)header_src;
+             uint64_t header = _pdep_u64(packed_header, kHeaderUnpackMask);
+             *header_write_ptr = header;
+             header_src += stripe_header_sz;
+             header_write_ptr++;
+         }
+         // unpack header for the last stripe in the last block
+-        // uint64_t packed_header = (*(uint32_t*)header_src) & final_header_mask;
+-        uint64_t packed_header = (*(uint32_t*)header_src);
++        // uint64_t packed_header = (*(sz_uint32_t*)header_src) & final_header_mask;
++        uint64_t packed_header = (*(sz_uint32_t*)header_src);
+         uint64_t header = _pdep_u64(packed_header, kHeaderUnpackMask);
+         *header_write_ptr = header;
+ 
+@@ -641,15 +642,15 @@
+                     if (ndims == 1) {
+                         // const counter_t* counters = (const counter_t*)coeffs_ar_even;
+                         counter_t counter = *(counter_t*)coeffs_ar_even;
+-                        counter_t coef = (counter >> (learning_shift + shft)) << shft;
++                        counter_t coef = (counter >> (learning_shift + shft)) * (1 << shft);
+                         uint_t prev_val = prev_vals_ar[0];
+                         int_t prev_delta = prev_deltas_ar[0];
+                         for (uint32_t i = 0; i < length * block_sz; i++) {
+-                            int_t prediction = (((int32_t)prev_delta) * coef) >> elem_sz_nbits;
++                            int_t prediction = sz_mul_wrap32(prev_delta, coef) >> elem_sz_nbits;
+ 
+                             // prediction = prediction << 2;
+ 
+-                            // int_t prediction = (((int32_t)prev_delta) * coef) >> 8; // TODO rm
++                            // int_t prediction = sz_mul_wrap32(prev_delta, coef) >> 8; // TODO rm
+ 
+                             uint_t val = prev_val + prediction;
+                             *dest = val;
+@@ -662,15 +663,15 @@
+                     } else { // assumes ndims == 2
+                         counter_t counter0 = *(counter_t*)coeffs_ar_even;
+                         counter_t counter1 = *(counter_t*)coeffs_ar_odd;
+-                        counter_t coef0 = (counter0 >> (learning_shift + shft)) << shft;
+-                        counter_t coef1 = (counter1 >> (learning_shift + shft)) << shft;
++                        counter_t coef0 = (counter0 >> (learning_shift + shft)) * (1 << shft);
++                        counter_t coef1 = (counter1 >> (learning_shift + shft)) * (1 << shft);
+                         uint_t prev_val0 = prev_vals_ar[0];
+                         uint_t prev_val1 = prev_vals_ar[1];
+                         int_t prev_delta0 = prev_deltas_ar[0];
+                         int_t prev_delta1 = prev_deltas_ar[1];
+                         for (uint32_t i = 0; i < length * block_sz; i++) {
+-                            int_t prediction0 = (((int32_t)prev_delta0) * coef0) >> elem_sz_nbits;
+-                            int_t prediction1 = (((int32_t)prev_delta1) * coef1) >> elem_sz_nbits;
++                            int_t prediction0 = sz_mul_wrap32(prev_delta0, coef0) >> elem_sz_nbits;
++                            int_t prediction1 = sz_mul_wrap32(prev_delta1, coef1) >> elem_sz_nbits;
+ 
+                             // prediction0 = prediction0 << 2;
+                             // prediction1 = prediction1 << 2;
+@@ -714,7 +715,7 @@
+                 if (elem_sz == 1) {
+                     uint64_t mask = kBitpackMasks8[nbits];
+                     int8_t* outptr = ((int8_t*)errs_ar) + (dim * block_sz);
+-                    *((uint64_t*)outptr) = _pdep_u64(*(uint64_t*)src, mask);
++                    *((sz_uint64_t*)outptr) = _pdep_u64(*(sz_uint64_t*)src, mask);
+                 } else if (elem_sz == 2) {
+                     uint64_t mask = kBitpackMasks16[nbits];
+                     // if (debug) { printf("true nbits: %d;  ", true_nbits); }
+@@ -723,21 +724,21 @@
+                     static const uint8_t nstripes =
+                         elem_sz * block_sz / stripe_nbytes;
+ 
+-                    uint64_t* delta_buff_u64 = (uint64_t*)errs_ar;
++                    uint64_t* delta_buff_u64 = (sz_uint64_t*)errs_ar;
+                     int8_t* src8 = (int8_t*)src;
+                     uint16_t total_bit_offset = 0;
+                     for (uint8_t s = 0; s < nstripes; s++) {
+                         uint32_t out_idx = dim * nstripes + s;
+                         uint8_t byte_offset = total_bit_offset >> 3;
+                         uint8_t bit_offset = total_bit_offset & 0x07;
+-                        uint64_t packed_data = *(uint64_t*)(src8 + byte_offset);
++                        uint64_t packed_data = *(sz_uint64_t*)(src8 + byte_offset);
+                         uint64_t unpacked_data = _pdep_u64(
+                             packed_data >> bit_offset, mask);
+                         delta_buff_u64[out_idx] = unpacked_data;
+                         total_bit_offset += true_nbits * stripe_sz;
+                         // delta_buff_u64[out_idx] = _pext_u64(
+                             // packed_data >> bit_offset, mask);
+-                        // if (debug) { printf("packed data:   "); dump_bytes(*(uint64_t*)(src8 + byte_offset)); }
++                        // if (debug) { printf("packed data:   "); dump_bytes(*(sz_uint64_t*)(src8 + byte_offset)); }
+                         // if (debug) { printf("unpacked data: "); dump_bytes(unpacked_data); }
+                         // if (debug) { printf("unpacked data in buff: "); dump_bytes(delta_buff_u64[out_idx]); }
+                         // if (debug) printf("new total bit offset: %d\n", total_bit_offset);
+@@ -827,7 +828,7 @@
+                 counter_t counter = counters_ar[0];
+                 // printf("raw counter: %d\n", counter);
+                 // printf("raw counter: %d\n", counter);
+-                counter_t coef = (counter >> (learning_shift + shft)) << shft;
++                counter_t coef = (counter >> (learning_shift + shft)) * (1 << shft);
+                 int_t grad_sum = 0;
+ 
+                 switch (ndims) {
+@@ -889,7 +890,7 @@
+                     for (uint8_t i = 0; i < block_sz; i++) {
+                         // int8_t err = _mm256_extract_epi8(verrs, i);
+                         int8_t err = errs[i];
+-                        int8_t prediction = (((int32_t)prev_delta) * coef) >> elem_sz_nbits;
++                        int8_t prediction = sz_mul_wrap32(prev_delta, coef) >> elem_sz_nbits;
+                         int8_t delta = err + (uint8_t)prediction;
+                         uint8_t val = prev_val + delta;
+ 
+@@ -980,7 +981,7 @@
+             } else if (elem_sz == 2) {
+ 
+                 if (ndims == 2) {
+-                    transpose_2x8_16b((uint16_t*)errs_ar, (uint16_t*)errs_ar);
++                    transpose_2x8_16b((sz_uint16_t*)errs_ar, (sz_uint16_t*)errs_ar);
+                 }
+ 
+                 __m256i raw_verrs = _mm256_loadu_si256((const __m256i*)errs_ar);
+@@ -990,7 +991,7 @@
+                 if (ndims == 1) {
+                     counter_t* counters_ar = (counter_t*)coeffs_ar_even;
+                     counter_t counter = counters_ar[0];
+-                    counter_t coef = (counter >> (learning_shift + quantize_shft)) << quantize_shft;
++                    counter_t coef = (counter >> (learning_shift + quantize_shft)) * (1 << quantize_shft);
+                     int_t grad_sum = 0;
+ 
+                     uint_t prev_val = prev_vals_ar[0];
+@@ -1007,7 +1008,7 @@
+                     #undef EXTRACT_VAL
+ 
+                     for (uint32_t i = 0; i < block_sz; i++) {
+-                        int_t prediction = (((int32_t)prev_delta) * coef) >> elem_sz_nbits;
++                        int_t prediction = sz_mul_wrap32(prev_delta, coef) >> elem_sz_nbits;
+                         // int_t err = _mm256_extract_epi16(verrs, i);
+                         int_t err = errs[i];
+                         int_t delta = err + (uint_t)prediction;
+@@ -1036,8 +1037,8 @@
+                 } else { // assumes ndims == 2
+                     counter_t counter0 = *(counter_t*)coeffs_ar_even;
+                     counter_t counter1 = *(counter_t*)coeffs_ar_odd;
+-                    counter_t coef0 = (counter0 >> (learning_shift + quantize_shft)) << quantize_shft;
+-                    counter_t coef1 = (counter1 >> (learning_shift + quantize_shft)) << quantize_shft;
++                    counter_t coef0 = (counter0 >> (learning_shift + quantize_shft)) * (1 << quantize_shft);
++                    counter_t coef1 = (counter1 >> (learning_shift + quantize_shft)) * (1 << quantize_shft);
+                     int_t grad_sum0 = 0;
+                     int_t grad_sum1 = 0;
+                     uint_t prev_val0 = prev_vals_ar[0];
+@@ -1061,8 +1062,8 @@
+                     #undef EXTRACT_VAL
+ 
+                     for (uint32_t i = 0; i < block_sz; i++) {
+-                        int_t prediction0 = (((int32_t)prev_delta0) * coef0) >> elem_sz_nbits;
+-                        int_t prediction1 = (((int32_t)prev_delta1) * coef1) >> elem_sz_nbits;
++                        int_t prediction0 = sz_mul_wrap32(prev_delta0, coef0) >> elem_sz_nbits;
++                        int_t prediction1 = sz_mul_wrap32(prev_delta1, coef1) >> elem_sz_nbits;
+ 
+                         // int_t err0 = _mm256_extract_epi16(verrs, 2 * i);
+                         // int_t err1 = _mm256_extract_epi16(verrs, 2 * i + 1);
+@@ -1101,10 +1102,10 @@
+         } // for each block
+     } // for each group
+ 
+-    free(headers);
+-    free(errs_ar);
+-    free(coeffs_ar_even);
+-    free(coeffs_ar_odd);
++    sz_mem::release(headers);
++    sz_mem::release(errs_ar);
++    sz_mem::release(coeffs_ar_even);
++    sz_mem::release(coeffs_ar_odd);
+ 
+     memcpy(dest, src, remaining_len * elem_sz);
+ 
+--- a/sprintz_xff_rle.cpp
++++ b/sprintz_xff_rle.cpp
+@@ -1,3 +1,4 @@
++#include "native_compat.hpp"
+ //
+ //  sprintz_xff_rle.cpp
+ //  Compress
+@@ -132,24 +133,24 @@
+     // // printf("saw original data:\n"); dump_bytes(src, len, 16);
+ 
+     // ------------------------ temp storage
+-    uint8_t*  stripe_bitwidths  = (uint8_t*) malloc(nstripes*sizeof(uint8_t));
+-    uint32_t* stripe_bitoffsets = (uint32_t*)malloc(nstripes*sizeof(uint32_t));
+-    uint64_t* stripe_masks      = (uint64_t*)malloc(nstripes*sizeof(uint64_t));
+-    uint32_t* stripe_headers    = (uint32_t*)malloc(nstripes*sizeof(uint32_t));
++    uint8_t*  stripe_bitwidths  = (uint8_t*) sz_native_malloc(nstripes*sizeof(uint8_t));
++    uint32_t* stripe_bitoffsets = (sz_uint32_t*)sz_native_malloc(nstripes*sizeof(uint32_t));
++    uint64_t* stripe_masks      = (sz_uint64_t*)sz_native_malloc(nstripes*sizeof(uint64_t));
++    uint32_t* stripe_headers    = (sz_uint32_t*)sz_native_malloc(nstripes*sizeof(uint32_t));
+ 
+     uint32_t total_header_bytes_padded = total_header_bytes + 4;
+-    uint8_t* header_bytes = (uint8_t*)calloc(total_header_bytes_padded, 1);
++    uint8_t* header_bytes = (uint8_t*)sz_mem::alloc(total_header_bytes_padded, 1, true);
+ 
+     // contiguous allocation of xff stats
+-    // int8_t* errs = (int8_t*)calloc(1, (block_sz + 4) * ndims);
++    // int8_t* errs = (int8_t*)sz_mem::alloc(1, (block_sz + 4) * ndims, true);
+     // uint8_t* prev_vals_ar   = (uint8_t*)(errs + block_sz * ndims);
+     // int8_t* prev_deltas_ar  = (int8_t* )(errs + (block_sz + 1) * ndims);
+-    // int16_t* coef_counters_ar=(int16_t*)(errs + (block_sz + 2) * ndims);
+-
+-    int_t*  errs             = (int_t* )calloc((block_sz + 2) * ndims, elem_sz);
++    // int16_t* coef_counters_ar=(sz_int16_t*)(errs + (block_sz + 2) * ndims);
++
++    int_t*  errs             = (int_t* )sz_mem::alloc((block_sz + 2) * ndims, elem_sz, true);
+     uint_t* prev_vals_ar     = (uint_t*)(errs + (block_sz + 0) * ndims);
+     int_t*  prev_deltas_ar   = (int_t* )(errs + (block_sz + 1) * ndims);
+-    counter_t* coef_counters_ar = (counter_t*)calloc(ndims, sizeof(counter_t));
++    counter_t* coef_counters_ar = (counter_t*)sz_mem::alloc(ndims, sizeof(counter_t), true);
+ 
+     // ================================ main loop
+ 
+@@ -187,12 +188,12 @@
+ 
+             // ------------------------ compute info for each stripe
+ 
+-            // auto deltas = (int8_t*)calloc(ndims * block_sz, 1); // TODO rm
+-            // auto predictions = (int8_t*)calloc(ndims * block_sz, 1); // TODO rm
+-            // auto grads = (int8_t*)calloc(ndims, 1); // TODO rm
+-            // // auto grad_sums = (int8_t*)calloc(ndims * block_sz / learning_downsample, 1); // TODO rm
+-            // auto grad_sums = (int8_t*)calloc(ndims * block_sz, 1); // TODO rm
+-            // auto all_grads = (int8_t*)calloc(ndims * block_sz, 1); // TODO rm
++            // auto deltas = (int8_t*)sz_mem::alloc(ndims * block_sz, 1, true); // TODO rm
++            // auto predictions = (int8_t*)sz_mem::alloc(ndims * block_sz, 1, true); // TODO rm
++            // auto grads = (int8_t*)sz_mem::alloc(ndims, 1, true); // TODO rm
++            // // auto grad_sums = (int8_t*)sz_mem::alloc(ndims * block_sz / learning_downsample, 1, true); // TODO rm
++            // auto grad_sums = (int8_t*)sz_mem::alloc(ndims * block_sz, 1, true); // TODO rm
++            // auto all_grads = (int8_t*)sz_mem::alloc(ndims * block_sz, 1, true); // TODO rm
+ 
+             for (uint16_t dim = 0; dim < ndims; dim++) {
+                 // compute maximum number of bits used by any value of this dim,
+@@ -204,7 +205,7 @@
+                 uint_t prev_val = prev_vals_ar[dim];
+                 int_t prev_delta = prev_deltas_ar[dim];
+ 
+-                // int16_t coef = (coef_counters_ar[dim] >> (learning_shift + 4)) << 4;
++                // int16_t coef = (coef_counters_ar[dim] >> (learning_shift + 4)) * 16;
+                 // int8_t grad_sum = 0;
+                 const uint8_t shft = elem_sz_nbits - 4;
+                 counter_t counter = coef_counters_ar[dim];
+@@ -214,15 +215,15 @@
+                 //  floor(32767 / (2^12)) * 2^(12) = 28,672
+                 // which is only 14/15 of actual double delta coding
+                 //
+-                int16_t coef = (coef_counters_ar[dim] >> (learning_shift + shft)) << shft;
+-                // counter_t coef = (coef_counters_ar[dim] >> (learning_shift + shft)) << shft;
++                int16_t coef = (coef_counters_ar[dim] >> (learning_shift + shft)) * (1 << shft);
++                // counter_t coef = (coef_counters_ar[dim] >> (learning_shift + shft)) * (1 << shft);
+                 int_t grad_sum = 0;
+ 
+                 for (uint8_t i = 0; i < block_sz; i++) {
+                     uint32_t offset = (i * ndims) + dim;
+                     uint_t val = src[offset];
+                     int_t delta = (int_t)(val - prev_val);
+-                    int_t prediction = (((counter_t)prev_delta) * coef) >> elem_sz_nbits;
++                    int_t prediction = sz_mul_wrap32(prev_delta, coef) >> elem_sz_nbits;
+ 
+                     // TODO I think we actually want this, but for now rm
+                     // it since it complicates the paper and we don't have
+@@ -312,16 +313,16 @@
+             //     printf("coef counters:\n"); dump_elements(coef_counters_ar, ndims, ndims);
+             //     int8_t coeffs[3];
+             //     for (int dim = 0; dim < 3; dim++) {
+-            //         coeffs[dim] = (coef_counters_ar[dim] >> (learning_shift + 4)) << 4;
++            //         coeffs[dim] = (coef_counters_ar[dim] >> (learning_shift + 4)) * 16;
+             //     }
+             //     printf("coeffs:\n"); dump_elements(coeffs, 3, 3);
+             // }
+-            // free(predictions);
+-            // free(deltas);
+-            // free(grads);
+-            // free(grad_sums);
+-            // free(all_grads);
+-            // free(coef_counters_ar);
++            // sz_mem::release(predictions);
++            // sz_mem::release(deltas);
++            // sz_mem::release(grads);
++            // sz_mem::release(grad_sums);
++            // sz_mem::release(all_grads);
++            // sz_mem::release(coef_counters_ar);
+ 
+             // compute start offsets of each stripe (in bits)
+             stripe_bitoffsets[0] = 0;
+@@ -461,10 +462,10 @@
+                 uint16_t bit_offset = header_bit_offset & 0x07;
+ 
+                 if (elem_sz == 1) {
+-                    *(uint32_t*)(header_dest + byte_offset) |= \
++                    *(sz_uint32_t*)(header_dest + byte_offset) |= \
+                         stripe_headers[stripe] << bit_offset;
+                 } else {
+-                    *(uint64_t*)(header_dest + byte_offset) |= \
++                    *(sz_uint64_t*)(header_dest + byte_offset) |= \
+                         ((uint64_t)(stripe_headers[stripe])) << bit_offset;
+                 }
+ 
+@@ -498,10 +499,10 @@
+ 
+                 if (total_bits <= 64) { // always fits in one u64
+                     for (int i = 0; i < block_sz; i++) { // for each sample in block
+-                        uint64_t data = *(uint64_t*)inptr;
++                        uint64_t data = *(sz_uint64_t*)inptr;
+                         uint64_t packed_data = _pext_u64(data, mask);
+                         uint64_t write_data = packed_data << offset_bits;
+-                        *(uint64_t*)outptr = write_data | (*(uint64_t*)outptr);
++                        *(sz_uint64_t*)outptr = write_data | (*(sz_uint64_t*)outptr);
+ 
+                         outptr += out_row_nbytes;
+                         inptr += ndims * elem_sz;
+@@ -509,18 +510,18 @@
+                 } else { // data spans 9 bytes
+                     uint8_t nbits_lost = total_bits - 64;
+                     for (int i = 0; i < block_sz; i++) { // for each sample in block
+-                        uint64_t data = *(uint64_t*)inptr;
++                        uint64_t data = *(sz_uint64_t*)inptr;
+                         uint64_t packed_data = _pext_u64(data, mask);
+                         uint8_t extra_byte = (uint8_t)(packed_data >> (nbits - nbits_lost));
+                         uint64_t write_data = packed_data << offset_bits;
+-                        *(uint64_t*)outptr = write_data | (*(uint64_t*)outptr);
++                        *(sz_uint64_t*)outptr = write_data | (*(sz_uint64_t*)outptr);
+                         *(outptr + 8) = extra_byte;
+ 
+                         outptr += out_row_nbytes;
+                         inptr += ndims * elem_sz;
+                     }
+                 }
+-                // printf("read back header: "); dumpEndianBits(*(uint32_t*)(header_dest - stripe_header_sz));
++                // printf("read back header: "); dumpEndianBits(*(sz_uint32_t*)(header_dest - stripe_header_sz));
+             } // for each stripe
+             src += block_sz * ndims;
+             dest += block_sz * out_row_nbytes / elem_sz;
+@@ -532,19 +533,19 @@
+ 
+ main_loop_end:
+ 
+-    free(stripe_bitwidths);
+-    free(stripe_bitoffsets);
+-    free(stripe_masks);
+-    free(stripe_headers);
+-    free(errs);
++    sz_mem::release(stripe_bitwidths);
++    sz_mem::release(stripe_bitoffsets);
++    sz_mem::release(stripe_masks);
++    sz_mem::release(stripe_headers);
++    sz_mem::release(errs);
+ 
+     // printf("wrote ngroups: %d\n", (int)ngroups);
+     size_t remaining_len = src_end - src;
+     if (write_size) {
+         write_metadata_rle(orig_dest, ndims, ngroups, remaining_len);
+-        // *(uint32_t*)orig_dest = ngroups;
+-        // *(uint16_t*)(orig_dest + 4) = (uint16_t)remaining_len;
+-        // *(uint16_t*)(orig_dest + 6) = ndims;
++        // *(sz_uint32_t*)orig_dest = ngroups;
++        // *(sz_uint16_t*)(orig_dest + 4) = (uint16_t)remaining_len;
++        // *(sz_uint16_t*)(orig_dest + 6) = ndims;
+     }
+     if (debug)  printf("remaining_len len: %d\n", (int)remaining_len);
+     // printf("remaining_len len: %d (%d -> %d)\n",
+@@ -665,26 +666,26 @@
+     // allocate temp vars of minimal possible size such that we can
+     // do vector loads and stores (except bitwidths, which are u64s so
+     // that we can store directly after sad_epu8)
+-    uint64_t* headers_tmp       = (uint64_t*)calloc(nheader_stripes, 8);
+-    uint8_t*  headers           = (uint8_t*) calloc(1, group_header_sz);
+-    uint64_t* data_masks        = (uint64_t*)calloc(nstripes_in_vectors * elem_sz, 8);
+-    bitwidth_t* stripe_bitwidths= (bitwidth_t*)calloc(nstripes_in_vectors, 8);
+-    uint32_t* stripe_bitoffsets = (uint32_t*)calloc(nstripes, 4);
++    uint64_t* headers_tmp       = (sz_uint64_t*)sz_mem::alloc(nheader_stripes, 8, true);
++    uint8_t*  headers           = (uint8_t*) sz_mem::alloc(1, group_header_sz * elem_sz, true);
++    uint64_t* data_masks        = (sz_uint64_t*)sz_mem::alloc(nstripes_in_vectors * elem_sz, 8, true);
++    bitwidth_t* stripe_bitwidths= (bitwidth_t*)sz_mem::alloc(nstripes_in_vectors, 8, true);
++    uint32_t* stripe_bitoffsets = (sz_uint32_t*)sz_mem::alloc(nstripes, 4, true);
+ 
+     // extra row in deltas is to store last decoded values
+     // TODO just special case very first row
+-    // uint8_t* deltas = (uint8_t*)calloc((block_sz + 1) * padded_ndims, 1);
+-
+-    // int8_t* errs_ar = (int8_t*)calloc((block_sz + 4) * padded_ndims, 1);
++    // uint8_t* deltas = (uint8_t*)sz_mem::alloc((block_sz + 1) * padded_ndims, 1, true);
++
++    // int8_t* errs_ar = (int8_t*)sz_mem::alloc((block_sz + 4) * padded_ndims, 1, true);
+     // uint8_t* prev_vals_ar = (uint8_t*)(errs_ar + (block_sz + 0) * padded_ndims);
+     // int8_t* prev_deltas_ar = (int8_t*)(errs_ar + (block_sz + 1) * padded_ndims);
+     // int8_t* coeffs_ar_even = (int8_t*)(errs_ar + (block_sz + 2) * padded_ndims);
+     // int8_t* coeffs_ar_odd =  (int8_t*)(errs_ar + (block_sz + 3) * padded_ndims);
+ 
+-    int_t*  errs_ar         = (int_t* )calloc((block_sz + 2) * padded_ndims, elem_sz);
++    int_t*  errs_ar         = (int_t* )sz_mem::alloc((block_sz + 2) * padded_ndims, elem_sz, true);
+     uint_t* prev_vals_ar    = (uint_t*)(errs_ar + (block_sz + 0) * padded_ndims);
+     int_t*  prev_deltas_ar  = (int_t* )(errs_ar + (block_sz + 1) * padded_ndims);
+-    uint_t* coeffs_ar_even  = (uint_t*)calloc(2 * padded_ndims, elem_sz);
++    uint_t* coeffs_ar_even  = (uint_t*)sz_mem::alloc(2 * padded_ndims, elem_sz, true);
+     uint_t* coeffs_ar_odd   = coeffs_ar_even + padded_ndims;
+ 
+     if (debug) printf("padded ndims: %d\n", padded_ndims);
+@@ -710,16 +711,16 @@
+         // because we need to zero-pad final stripe's headers in each block
+         // so that stripe widths don't get messed up (from initial data in
+         // next block's header)
+-        uint64_t* header_write_ptr = (uint64_t*)headers_tmp;
++        uint64_t* header_write_ptr = (sz_uint64_t*)headers_tmp;
+         for (uint32_t stripe = 0; stripe < nheader_stripes - 1; stripe++) {
+-            uint64_t packed_header = *(uint32_t*)header_src;
++            uint64_t packed_header = *(sz_uint32_t*)header_src;
+             header_src += stripe_header_sz;
+             uint64_t header = _pdep_u64(packed_header, kHeaderUnpackMask);
+             *header_write_ptr = header;
+             header_write_ptr++;
+         }
+         // unpack header for the last stripe in the last block
+-        uint64_t packed_header = (*(uint32_t*)header_src) & final_header_mask;
++        uint64_t packed_header = (*(sz_uint32_t*)header_src) & final_header_mask;
+         uint64_t header = _pdep_u64(packed_header, kHeaderUnpackMask);
+         *header_write_ptr = header;
+ 
+@@ -793,7 +794,7 @@
+         }
+ 
+         // if (debug) {
+-        //     printf("padded masks:     "); dump_elements((uint16_t*)data_masks, group_header_sz);
++        //     printf("padded masks:     "); dump_elements((sz_uint16_t*)data_masks, group_header_sz);
+         //     // printf("padded masks:     "); dump_bytes((uint8_t*)data_masks, group_header_sz * elem_sz);
+         //     printf("padded bitwidths: "); dump_bytes(stripe_bitwidths, nstripes_in_vectors);
+         //     printf("\n");
+@@ -972,17 +973,17 @@
+                 // this is the hot loop
+                 if (total_bits <= 64) { // input guaranteed to fit in 8B
+                     for (int i = 0; i < block_sz; i++) {
+-                        uint64_t packed_data = (*(uint64_t*)inptr) >> offset_bits;
+-                        *(uint64_t*)outptr = _pdep_u64(packed_data, mask);
++                        uint64_t packed_data = (*(sz_uint64_t*)inptr) >> offset_bits;
++                        *(sz_uint64_t*)outptr = _pdep_u64(packed_data, mask);
+                         inptr += in_row_nbytes;
+                         outptr += out_row_nbytes;
+                     }
+                 } else { // input spans 9 bytes
+                     uint8_t nbits_lost = total_bits - 64;
+                     for (int i = 0; i < block_sz; i++) {
+-                        uint64_t packed_data = (*(uint64_t*)inptr) >> offset_bits;
+-                        packed_data |= (*(uint64_t*)(inptr + 8)) << (nbits - nbits_lost);
+-                        *(uint64_t*)outptr = _pdep_u64(packed_data, mask);
++                        uint64_t packed_data = (*(sz_uint64_t*)inptr) >> offset_bits;
++                        packed_data |= (*(sz_uint64_t*)(inptr + 8)) << (nbits - nbits_lost);
++                        *(sz_uint64_t*)outptr = _pdep_u64(packed_data, mask);
+                         inptr += in_row_nbytes;
+                         outptr += out_row_nbytes;
+                     }
+@@ -1158,13 +1159,13 @@
+         // printf("will now write to dest at offset %lld\n", (uint64_t)(dest - orig_dest));
+     } // for each group
+ 
+-    free(headers_tmp);
+-    free(headers);
+-    free(data_masks);
+-    free(stripe_bitwidths);
+-    free(stripe_bitoffsets);
+-    free(errs_ar);
+-    free(coeffs_ar_even);
++    sz_mem::release(headers_tmp);
++    sz_mem::release(headers);
++    sz_mem::release(data_masks);
++    sz_mem::release(stripe_bitwidths);
++    sz_mem::release(stripe_bitoffsets);
++    sz_mem::release(errs_ar);
++    sz_mem::release(coeffs_ar_even);
+ 
+     // copy over trailing data
+     if (debug) { printf("remaining len: %d\n", remaining_len); }
+--- a/sprintz_xff_rle_query.hpp
++++ b/sprintz_xff_rle_query.hpp
+@@ -1,3 +1,4 @@
++#include "native_compat.hpp"
+ //
+ //  sprintz_xff_rle.cpp
+ //  Compress
+@@ -129,26 +130,26 @@
+     // allocate temp vars of minimal possible size such that we can
+     // do vector loads and stores (except bitwidths, which are u64s so
+     // that we can store directly after sad_epu8)
+-    uint64_t* headers_tmp       = (uint64_t*)calloc(nheader_stripes, 8);
+-    uint8_t*  headers           = (uint8_t*) calloc(1, group_header_sz);
+-    uint64_t* data_masks        = (uint64_t*)calloc(nstripes_in_vectors * elem_sz, 8);
+-    bitwidth_t* stripe_bitwidths= (bitwidth_t*)calloc(nstripes_in_vectors, 8);
+-    uint32_t* stripe_bitoffsets = (uint32_t*)calloc(nstripes, 4);
++    uint64_t* headers_tmp       = (sz_uint64_t*)sz_mem::alloc(nheader_stripes, 8, true);
++    uint8_t*  headers           = (uint8_t*) sz_mem::alloc(1, group_header_sz * elem_sz, true);
++    uint64_t* data_masks        = (sz_uint64_t*)sz_mem::alloc(nstripes_in_vectors * elem_sz, 8, true);
++    bitwidth_t* stripe_bitwidths= (bitwidth_t*)sz_mem::alloc(nstripes_in_vectors, 8, true);
++    uint32_t* stripe_bitoffsets = (sz_uint32_t*)sz_mem::alloc(nstripes, 4, true);
+ 
+     // extra row in deltas is to store last decoded values
+     // TODO just special case very first row
+-    // uint8_t* deltas = (uint8_t*)calloc((block_sz + 1) * padded_ndims, 1);
+-
+-    // int8_t* errs_ar = (int8_t*)calloc((block_sz + 4) * padded_ndims, 1);
++    // uint8_t* deltas = (uint8_t*)sz_mem::alloc((block_sz + 1) * padded_ndims, 1, true);
++
++    // int8_t* errs_ar = (int8_t*)sz_mem::alloc((block_sz + 4) * padded_ndims, 1, true);
+     // uint8_t* prev_vals_ar = (uint8_t*)(errs_ar + (block_sz + 0) * padded_ndims);
+     // int8_t* prev_deltas_ar = (int8_t*)(errs_ar + (block_sz + 1) * padded_ndims);
+     // int8_t* coeffs_ar_even = (int8_t*)(errs_ar + (block_sz + 2) * padded_ndims);
+     // int8_t* coeffs_ar_odd =  (int8_t*)(errs_ar + (block_sz + 3) * padded_ndims);
+ 
+-    int_t*  errs_ar         = (int_t* )calloc((block_sz + 2) * padded_ndims, elem_sz);
++    int_t*  errs_ar         = (int_t* )sz_mem::alloc((block_sz + 2) * padded_ndims, elem_sz, true);
+     uint_t* prev_vals_ar    = (uint_t*)(errs_ar + (block_sz + 0) * padded_ndims);
+     int_t*  prev_deltas_ar  = (int_t* )(errs_ar + (block_sz + 1) * padded_ndims);
+-    uint_t* coeffs_ar_even  = (uint_t*)calloc(2 * padded_ndims, elem_sz);
++    uint_t* coeffs_ar_even  = (uint_t*)sz_mem::alloc(2 * padded_ndims, elem_sz, true);
+     uint_t* coeffs_ar_odd   = coeffs_ar_even + padded_ndims;
+ 
+     if (debug) printf("padded ndims: %d\n", padded_ndims);
+@@ -174,16 +175,16 @@
+         // because we need to zero-pad final stripe's headers in each block
+         // so that stripe widths don't get messed up (from initial data in
+         // next block's header)
+-        uint64_t* header_write_ptr = (uint64_t*)headers_tmp;
++        uint64_t* header_write_ptr = (sz_uint64_t*)headers_tmp;
+         for (uint32_t stripe = 0; stripe < nheader_stripes - 1; stripe++) {
+-            uint64_t packed_header = *(uint32_t*)header_src;
++            uint64_t packed_header = *(sz_uint32_t*)header_src;
+             header_src += stripe_header_sz;
+             uint64_t header = _pdep_u64(packed_header, kHeaderUnpackMask);
+             *header_write_ptr = header;
+             header_write_ptr++;
+         }
+         // unpack header for the last stripe in the last block
+-        uint64_t packed_header = (*(uint32_t*)header_src) & final_header_mask;
++        uint64_t packed_header = (*(sz_uint32_t*)header_src) & final_header_mask;
+         uint64_t header = _pdep_u64(packed_header, kHeaderUnpackMask);
+         *header_write_ptr = header;
+ 
+@@ -257,7 +258,7 @@
+         }
+ 
+         // if (debug) {
+-        //     printf("padded masks:     "); dump_elements((uint16_t*)data_masks, group_header_sz);
++        //     printf("padded masks:     "); dump_elements((sz_uint16_t*)data_masks, group_header_sz);
+         //     // printf("padded masks:     "); dump_bytes((uint8_t*)data_masks, group_header_sz * elem_sz);
+         //     printf("padded bitwidths: "); dump_bytes(stripe_bitwidths, nstripes_in_vectors);
+         //     printf("\n");
+@@ -449,17 +450,17 @@
+                 // this is the hot loop
+                 if (total_bits <= 64) { // input guaranteed to fit in 8B
+                     for (int i = 0; i < block_sz; i++) {
+-                        uint64_t packed_data = (*(uint64_t*)inptr) >> offset_bits;
+-                        *(uint64_t*)outptr = _pdep_u64(packed_data, mask);
++                        uint64_t packed_data = (*(sz_uint64_t*)inptr) >> offset_bits;
++                        *(sz_uint64_t*)outptr = _pdep_u64(packed_data, mask);
+                         inptr += in_row_nbytes;
+                         outptr += out_row_nbytes;
+                     }
+                 } else { // input spans 9 bytes
+                     uint8_t nbits_lost = total_bits - 64;
+                     for (int i = 0; i < block_sz; i++) {
+-                        uint64_t packed_data = (*(uint64_t*)inptr) >> offset_bits;
+-                        packed_data |= (*(uint64_t*)(inptr + 8)) << (nbits - nbits_lost);
+-                        *(uint64_t*)outptr = _pdep_u64(packed_data, mask);
++                        uint64_t packed_data = (*(sz_uint64_t*)inptr) >> offset_bits;
++                        packed_data |= (*(sz_uint64_t*)(inptr + 8)) << (nbits - nbits_lost);
++                        *(sz_uint64_t*)outptr = _pdep_u64(packed_data, mask);
+                         inptr += in_row_nbytes;
+                         outptr += out_row_nbytes;
+                     }
+@@ -641,13 +642,13 @@
+         // printf("will now write to dest at offset %lld\n", (uint64_t)(dest - orig_dest));
+     } // for each group
+ 
+-    free(headers_tmp);
+-    free(headers);
+-    free(data_masks);
+-    free(stripe_bitwidths);
+-    free(stripe_bitoffsets);
+-    free(errs_ar);
+-    free(coeffs_ar_even);
++    sz_mem::release(headers_tmp);
++    sz_mem::release(headers);
++    sz_mem::release(data_masks);
++    sz_mem::release(stripe_bitwidths);
++    sz_mem::release(stripe_bitoffsets);
++    sz_mem::release(errs_ar);
++    sz_mem::release(coeffs_ar_even);
+ 
+     // copy over trailing data
+     if (debug) { printf("remaining len: %d\n", remaining_len); }
+--- a/transpose.h
++++ b/transpose.h
+@@ -1,3 +1,4 @@
++#include "native_compat.hpp"
+ //
+ //  transpose.h
+ //  Compress
+@@ -185,7 +186,7 @@
+ 
+     __m256i vsrc0 = _mm256_loadu_si256((const __m256i*)src);
+     __m256i first_two_rows = _mm256_permute2x128_si256(vsrc0, vsrc0, 0x00);
+-    __m256i third_row = _mm256_set1_epi64x(*(uint64_t*)(src + 16));
++    __m256i third_row = _mm256_set1_epi64x(*(sz_uint64_t*)(src + 16));
+ 
+     __m256i shuffled0 = _mm256_shuffle_epi8(first_two_rows, idxs0);
+     __m256i shuffled1 = _mm256_shuffle_epi8(third_row, idxs1);
+--- a/univariate_8b.cpp
++++ b/univariate_8b.cpp
+@@ -1,3 +1,4 @@
++#include "native_compat.hpp"
+ //
+ //  sprintz.c
+ //  Compress
+@@ -96,7 +97,7 @@
+ 
+     // store how long this is
+     if (write_size) {
+-        *(uint64_t*)dest = len;
++        *(sz_uint64_t*)dest = len;
+         dest += 8;
+     }
+ 
+@@ -128,12 +129,12 @@
+         // write packed data
+         uint64_t mask0 = kBitpackMasks8[nbits0];
+         uint64_t mask1 = kBitpackMasks8[nbits1];
+-        uint64_t data0 = *(uint64_t*)(delta_buff + 8 * 0);
+-        uint64_t data1 = *(uint64_t*)(delta_buff + 8 * 1);
+-
+-        *((uint64_t*)dest) = _pext_u64(data0, mask0);
++        uint64_t data0 = *(sz_uint64_t*)(delta_buff + 8 * 0);
++        uint64_t data1 = *(sz_uint64_t*)(delta_buff + 8 * 1);
++
++        *((sz_uint64_t*)dest) = _pext_u64(data0, mask0);
+         dest += nbits0;
+-        *((uint64_t*)dest) = _pext_u64(data1, mask1);
++        *((sz_uint64_t*)dest) = _pext_u64(data1, mask1);
+         dest += nbits1;
+     }
+     // final trailing samples just get copied with no compression
+@@ -161,7 +162,7 @@
+ 
+     // read in size of original data, if not provided
+     if (orig_len < 1) {
+-        orig_len = *(uint64_t*)src;
++        orig_len = *(sz_uint64_t*)src;
+         src += 8;
+     }
+ 
+@@ -183,22 +184,22 @@
+ 
+         uint64_t mask0 = kBitUnpackMasks8[nbits0];
+         uint64_t mask1 = kBitUnpackMasks8[nbits1];
+-        int64_t deltas0 = _pdep_u64(*(uint64_t*)src, mask0);
++        int64_t deltas0 = _pdep_u64(*(sz_uint64_t*)src, mask0);
+         src += nbits0;
+-        int64_t deltas1 = _pdep_u64(*(uint64_t*)src, mask1);
++        int64_t deltas1 = _pdep_u64(*(sz_uint64_t*)src, mask1);
+         src += nbits1;
+ 
+         // cumsum each block; the tricky part here is that we unpacked
+         // everything into the most significant bits, so that we could
+         // shift right arithmetic to get sign extension
+         for (int shift = 56; shift >= 0; shift -= 8) {
+-            int64_t delta = (deltas0 << shift) >> (64 - nbits0);
++            int64_t delta = sz_extract_signed(deltas0, shift, nbits0);
+             *dest = prev_val + (int8_t)delta;
+             prev_val = *dest;
+             dest++;
+         }
+         for (int shift = 56; shift >= 0; shift -= 8) {
+-            int64_t delta = (deltas1 << shift) >> (64 - nbits1);
++            int64_t delta = sz_extract_signed(deltas1, shift, nbits1);
+             *dest = prev_val + (int8_t)delta;
+             prev_val = *dest;
+             dest++;
+@@ -226,7 +227,7 @@
+ 
+     // store how long this is
+     if (write_size) {
+-        *(uint64_t*)dest = len;
++        *(sz_uint64_t*)dest = len;
+         dest += 8;
+     }
+ 
+@@ -256,8 +257,8 @@
+ 
+             // write out packed data
+             uint64_t mask = kBitpackMasks8[nbits];
+-            // *((uint64_t*)dest) = _pext_u64(delta_buff_u64, mask);
+-            *((uint64_t*)dest) = _pext_u64(*(uint64_t*)src, mask);
++            // *((sz_uint64_t*)dest) = _pext_u64(delta_buff_u64, mask);
++            *((sz_uint64_t*)dest) = _pext_u64(*(sz_uint64_t*)src, mask);
+             dest += nbits + (nbits == 7);
+             src += block_sz;
+         }
+@@ -282,7 +283,7 @@
+     uint8_t* orig_dest = dest;
+ 
+     // read in size of original data
+-    uint64_t orig_len = *(uint64_t*)src;
++    uint64_t orig_len = *(sz_uint64_t*)src;
+     src += 8;
+ 
+     // copy first 8B to simplify delta computation (for encoder)
+@@ -295,7 +296,7 @@
+     size_t ngroups = orig_len / group_sz;
+     for (int g = 0; g < ngroups; g++) {
+         // read header to get nbits for each block
+-        uint32_t header = *(uint32_t*)src;
++        uint32_t header = *(sz_uint32_t*)src;
+         src += stripe_header_sz;
+ 
+         uint64_t nbits_u64 = _pdep_u64(header, kBitpackMasks8[nbits_sz_bits]);
+@@ -308,11 +309,11 @@
+             // XXX this masks array can't handle negative numbers; just getting
+             // us an upper bound on speed we could get without deltas
+             uint64_t mask = kBitpackMasks8[nbits];
+-            uint64_t unpacked = _pdep_u64(*(uint64_t*)src, mask);
++            uint64_t unpacked = _pdep_u64(*(sz_uint64_t*)src, mask);
+             nbits += nbits == 7;
+             src += nbits;
+ 
+-            *(uint64_t*)dest = unpacked;
++            *(sz_uint64_t*)dest = unpacked;
+             dest += block_sz;
+         }
+     }
+@@ -336,7 +337,7 @@
+ 
+     // store how long this is
+     if (write_size) {
+-        *(uint64_t*)dest = len;
++        *(sz_uint64_t*)dest = len;
+         dest += 8;
+     }
+ 
+@@ -369,7 +370,7 @@
+     for (int g = 0; g < ngroups; g++) { // for each group
+         int8_t* header_dest = dest;
+         dest += stripe_header_sz;
+-        // *(uint32_t*)header_dest = 0; // zero this so we can OR at the bottom
++        // *(sz_uint32_t*)header_dest = 0; // zero this so we can OR at the bottom
+ 
+         for (int b = 0; b < group_sz_blocks; b++) { // for each block
+             for (int i = block_sz - 1; i >= 0; i--) {
+@@ -384,14 +385,14 @@
+ 
+             // write out packed data
+             uint64_t mask = kBitpackMasks8[nbits];
+-            *((uint64_t*)dest) = _pext_u64(delta_buff_u64, mask);
++            *((sz_uint64_t*)dest) = _pext_u64(delta_buff_u64, mask);
+             dest += nbits + (nbits == 7);
+         }
+         // write out header for whole group; 3b for each nbits
+         uint32_t packed_header = (uint32_t)_pext_u64(nbits_buff_u64, kHeaderMask8b);
+         memcpy(header_dest, &packed_header, 3);
+         // uint32_t orig_contents = *header_dest; // writing 4B, but 3B header
+-        // *(uint32_t*)header_dest = packed_header | orig_contents;
++        // *(sz_uint32_t*)header_dest = packed_header | orig_contents;
+         // header_dest += (group_sz_blocks * nbits_sz_bits) / 8;
+     }
+     // just memcpy remaining bytes (up to 63 of them)
+@@ -413,7 +414,7 @@
+     // int8_t* orig_src = src;  // TODO rm
+ 
+     // read in size of original data
+-    uint64_t orig_len = *(uint64_t*)src;
++    uint64_t orig_len = *(sz_uint64_t*)src;
+     src += 8;
+ 
+     // copy first 8B to simplify delta computation (for encoder)
+@@ -439,8 +440,8 @@
+     int8_t prev_val = src[-1];
+     for (int g = 0; g < ngroups; g++) {
+         // read header to get nbits for each block
+-        uint32_t header = *(uint32_t*)src;
+-        // uint32_t header = (*(uint32_t*)src) & 0x00ffffff;
++        uint32_t header = *(sz_uint32_t*)src;
++        // uint32_t header = (*(sz_uint32_t*)src) & 0x00ffffff;
+         src += stripe_header_sz;
+         // header_src += (group_sz_blocks * nbits_sz_bits) / 8;
+ 
+@@ -453,13 +454,13 @@
+             // uint8_t nbits = ((uint8_t*)(&nbits_u64))[b];
+ 
+             uint64_t mask = kBitUnpackMasks8[nbits];
+-            int64_t deltas = _pdep_u64(*(uint64_t*)src, mask);
++            int64_t deltas = _pdep_u64(*(sz_uint64_t*)src, mask);
+             nbits += nbits == 7;
+             src += nbits;
+ 
+             // cumsum deltas (stored in upper bits to get sign extension)
+             for (int shift = 56; shift >= 0; shift -= 8) {
+-                int64_t delta = (deltas << shift) >> (64 - nbits);
++                int64_t delta = sz_extract_signed(deltas, shift, nbits);
+                 *dest = prev_val + (int8_t)delta;
+                 prev_val = *dest;
+                 dest++;
+@@ -493,7 +494,7 @@
+ 
+     // store how long this is
+     if (write_size) {
+-        *(uint64_t*)dest = len;
++        *(sz_uint64_t*)dest = len;
+         dest += 8;
+     }
+ 
+@@ -514,7 +515,7 @@
+     for (int g = 0; g < ngroups; g++) { // for each group
+         int8_t* header_dest = dest;
+         dest += stripe_header_sz;
+-        // *(uint32_t*)header_dest = 0; // zero this so we can OR at the bottom
++        // *(sz_uint32_t*)header_dest = 0; // zero this so we can OR at the bottom
+ 
+         for (int b = 0; b < group_sz_blocks; b++) { // for each block
+             for (int i = block_sz - 1; i >= 0; i--) {
+@@ -529,7 +530,7 @@
+ 
+             // write out packed data
+             uint64_t mask = kBitpackMasks8[nbits];
+-            *((uint64_t*)dest) = _pext_u64(delta_buff_u64, mask);
++            *((sz_uint64_t*)dest) = _pext_u64(delta_buff_u64, mask);
+             dest += nbits + (nbits == 7);
+         }
+         // write out header for whole group; 3b for each nbits
+@@ -554,7 +555,7 @@
+     uint8_t* orig_dest = dest;
+ 
+     // read in size of original data
+-    uint64_t orig_len = *(uint64_t*)src;
++    uint64_t orig_len = *(sz_uint64_t*)src;
+     src += 8;
+ 
+     // copy first 8B to simplify delta computation (for encoder)
+@@ -568,7 +569,7 @@
+     int8_t prev_val = src[-delta_delay];
+     for (int g = 0; g < ngroups; g++) {
+         // read header to get nbits for each block
+-        uint32_t header = *(uint32_t*)src;
++        uint32_t header = *(sz_uint32_t*)src;
+         src += stripe_header_sz;
+ 
+         // read deltas for each block
+@@ -576,13 +577,13 @@
+             uint8_t nbits = (header >> (nbits_sz_bits * b)) & nbits_sz_mask;
+ 
+             uint64_t mask = kBitUnpackMasks8[nbits];
+-            int64_t deltas = _pdep_u64(*(uint64_t*)src, mask);
++            int64_t deltas = _pdep_u64(*(sz_uint64_t*)src, mask);
+             nbits += nbits == 7;
+             src += nbits;
+ 
+             // cumsum deltas (stored in upper bits to get sign extension)
+             for (int shift = 56; shift >= 0; shift -= 8) {
+-                int64_t delta = (deltas << shift) >> (64 - nbits);
++                int64_t delta = sz_extract_signed(deltas, shift, nbits);
+                 *dest = prev_val + (int8_t)delta;
+                 prev_val = *(dest - delta_delay + 1);
+                 dest++;
+@@ -612,9 +613,9 @@
+ 
+     // store how long this is
+     if (write_size) {
+-        // *(uint64_t*)dest = len;
+-        // *(uint64_t*)dest = (uint32_t)len;
+-        // *(uint32_t*)dest = (uint32_t)len;
++        // *(sz_uint64_t*)dest = len;
++        // *(sz_uint64_t*)dest = (uint32_t)len;
++        // *(sz_uint32_t*)dest = (uint32_t)len;
+         dest += 8;
+     }
+ 
+@@ -748,7 +749,7 @@
+             // ------------------------ case 1: didn't just finish const section
+             // write out packed data
+             uint64_t mask = kBitpackMasks8[nbits];
+-            *((uint64_t*)dest) = _pext_u64(delta_buff_u64, mask);
++            *((sz_uint64_t*)dest) = _pext_u64(delta_buff_u64, mask);
+             dest += nbits + (nbits == 7);
+ 
+             nconstant_blocks = 0;
+@@ -759,7 +760,7 @@
+         uint32_t packed_header = (uint32_t)_pext_u64(nbits_buff_u64, kHeaderMask8b);
+         memcpy(header_dest, &packed_header, 3);
+         // uint32_t orig_contents = *header_dest; // writing 4B, but 3B header
+-        // *(uint32_t*)header_dest = packed_header | orig_contents;
++        // *(sz_uint32_t*)header_dest = packed_header | orig_contents;
+         // header_dest += (group_sz_blocks * nbits_sz_bits) / 8;
+ 
+         ngroups++;  // increment counter only if we got thru the whole group
+@@ -789,9 +790,9 @@
+     // group count (can be longer because of RLE)
+     if (write_size) {
+         len += cpy_len; // undo shrinking from initial forced copy
+-        // *(uint32_t*)orig_dest = (uint32_t)(len + cpy_len);
+-        *(uint32_t*)orig_dest = ngroups;
+-        *(uint32_t*)(orig_dest + 4) = (uint32_t)(len - (ngroups * group_sz));
++        // *(sz_uint32_t*)orig_dest = (uint32_t)(len + cpy_len);
++        *(sz_uint32_t*)orig_dest = ngroups;
++        *(sz_uint32_t*)(orig_dest + 4) = (uint32_t)(len - (ngroups * group_sz));
+     }
+ 
+     return dest + remaining_len - orig_dest;
+@@ -809,11 +810,11 @@
+     // int8_t* orig_src = src;  // TODO rm
+ 
+     // read in size of original data
+-    // uint64_t orig_len = *(uint64_t*)src;
+-    uint32_t ngroups = *(uint32_t*)src;
+-    uint32_t extra_len = *(uint32_t*)(src + 4);
++    // uint64_t orig_len = *(sz_uint64_t*)src;
++    uint32_t ngroups = *(sz_uint32_t*)src;
++    uint32_t extra_len = *(sz_uint32_t*)(src + 4);
+     uint64_t orig_len = (ngroups * group_sz) + extra_len; // XXX: wat? groups can be of variable length...
+-    // uint64_t orig_len = *(uint32_t*)src;
++    // uint64_t orig_len = *(sz_uint32_t*)src;
+ 
+     // printf("read ngroups, extra_len, orig_len: %d, %d, %lld\n", ngroups, extra_len, orig_len);
+ 
+@@ -835,7 +836,7 @@
+     int8_t prev_val = src[-1];
+     for (int g = 0; g < ngroups; g++) {
+         // read header to get nbits for each block
+-        uint32_t header = *(uint32_t*)src;
++        uint32_t header = *(sz_uint32_t*)src;
+         src += stripe_header_sz;
+ 
+         // printf("read header:\t"); dumpEndianBits(header);
+@@ -864,13 +865,13 @@
+             }
+ 
+             uint64_t mask = kBitUnpackMasks8[nbits];
+-            int64_t deltas = _pdep_u64(*(uint64_t*)src, mask);
++            int64_t deltas = _pdep_u64(*(sz_uint64_t*)src, mask);
+             nbits += nbits == 7;
+             src += nbits;
+ 
+             // cumsum deltas (stored in upper bits to get sign extension)
+             for (int shift = 56; shift >= 0; shift -= 8) {
+-                int64_t delta = (deltas << shift) >> (64 - nbits);
++                int64_t delta = sz_extract_signed(deltas, shift, nbits);
+                 *dest = prev_val + (int8_t)delta;
+                 prev_val = *dest;
+                 dest++;
+@@ -1071,7 +1072,7 @@
+             // ------------------------ case 1: didn't just finish const section
+             // write out packed data
+             uint64_t mask = kBitpackMasks8[nbits];
+-            *((uint64_t*)dest) = _pext_u64(delta_buff_u64, mask);
++            *((sz_uint64_t*)dest) = _pext_u64(delta_buff_u64, mask);
+             dest += nbits + (nbits == 7);
+ 
+             nconstant_blocks = 0;
+@@ -1106,8 +1107,8 @@
+     // group count (can be longer because of RLE)
+     if (write_size) {
+         len += cpy_len; // undo shrinking from initial forced copy
+-        *(uint32_t*)orig_dest = ngroups;
+-        *(uint32_t*)(orig_dest + 4) = (uint32_t)(len - (ngroups * group_sz));
++        *(sz_uint32_t*)orig_dest = ngroups;
++        *(sz_uint32_t*)(orig_dest + 4) = (uint32_t)(len - (ngroups * group_sz));
+     }
+ 
+     return dest + remaining_len - orig_dest;
+@@ -1123,8 +1124,8 @@
+     uint8_t* orig_dest = dest;
+ 
+     // read in size of original data
+-    uint32_t ngroups = *(uint32_t*)src;
+-    uint32_t extra_len = *(uint32_t*)(src + 4);
++    uint32_t ngroups = *(sz_uint32_t*)src;
++    uint32_t extra_len = *(sz_uint32_t*)(src + 4);
+     uint64_t orig_len = (ngroups * group_sz) + extra_len;
+ 
+     // printf("read ngroups, extra_len, orig_len: %d, %d, %lld\n", ngroups, extra_len, orig_len);
+@@ -1140,7 +1141,7 @@
+     int8_t prev_val = src[-1];
+     for (int g = 0; g < ngroups; g++) {
+         // read header to get nbits for each block
+-        uint32_t header = *(uint32_t*)src;
++        uint32_t header = *(sz_uint32_t*)src;
+         src += stripe_header_sz;
+ 
+         // read deltas for each block
+@@ -1177,13 +1178,13 @@
+             }
+ 
+             uint64_t mask = kBitUnpackMasks8[nbits];
+-            int64_t deltas = _pdep_u64(*(uint64_t*)src, mask);
++            int64_t deltas = _pdep_u64(*(sz_uint64_t*)src, mask);
+             nbits += nbits == 7;
+             src += nbits;
+ 
+             // cumsum deltas (stored in upper bits to get sign extension)
+             for (int shift = 56; shift >= 0; shift -= 8) {
+-                int64_t delta = (deltas << shift) >> (64 - nbits);
++                int64_t delta = sz_extract_signed(deltas, shift, nbits);
+                 *dest = prev_val + (int8_t)delta;
+                 prev_val = *dest;
+                 dest++;
+@@ -1223,7 +1224,7 @@
+ 
+     // store how long this is
+     if (write_size) {
+-        *(uint64_t*)dest = len;
++        *(sz_uint64_t*)dest = len;
+         dest += 8;
+     }
+ 
+@@ -1287,12 +1288,12 @@
+ 
+             // write out packed data
+             uint64_t mask = kBitpackMasks8[nbits];
+-            *((uint64_t*)dest) = _pext_u64(delta_buff_u64, mask);
++            *((sz_uint64_t*)dest) = _pext_u64(delta_buff_u64, mask);
+             dest += nbits + (nbits == 7);
+         }
+         // write out header for whole group; 3b for each nbits
+         uint32_t packed_header = (uint32_t)_pext_u64(nbits_buff_u64, kHeaderMask8b);
+-        *(uint32_t*)header_dest = packed_header;
++        *(sz_uint32_t*)header_dest = packed_header;
+         header_dest += (group_sz_blocks * nbits_sz_bits) / 8;
+     }
+     // compress (up to 63) trailing samples using a smaller block size / memcpy
+@@ -1328,7 +1329,7 @@
+     // int8_t* orig_src = src;  // TODO rm
+ 
+     // read in size of original data
+-    uint64_t orig_len = *(uint64_t*)src;
++    uint64_t orig_len = *(sz_uint64_t*)src;
+     src += 8;
+ 
+     size_t cpy_len = MIN(8, orig_len);
+@@ -1347,20 +1348,20 @@
+     int8_t prev_val = header_src[-1]; // because src just got increased
+     for (int g = 0; g < ngroups; g++) {
+         // read header to get nbits for each block
+-        uint32_t header = *(uint32_t*)header_src;
++        uint32_t header = *(sz_uint32_t*)header_src;
+         header_src += (group_sz_blocks * nbits_sz_bits) / 8;
+ 
+         // read deltas for each block
+         for (int b = 0; b < group_sz_blocks; b++) {
+             uint8_t nbits = (header >> (nbits_sz_bits * b)) & nbits_sz_mask;
+             uint64_t mask = kBitUnpackMasks8[nbits];
+-            int64_t deltas = _pdep_u64(*(uint64_t*)src, mask);
++            int64_t deltas = _pdep_u64(*(sz_uint64_t*)src, mask);
+             nbits += nbits == 7;
+             src += nbits;
+ 
+             // cumsum deltas (stored in upper bits to get sign extension)
+             for (int shift = 56; shift >= 0; shift -= 8) {
+-                int64_t delta = (deltas << shift) >> (64 - nbits);
++                int64_t delta = sz_extract_signed(deltas, shift, nbits);
+                 *dest = prev_val + (int8_t)delta;
+                 prev_val = *dest;
+                 dest++;
+@@ -1400,7 +1401,7 @@
+ 
+     // store how long this is
+     if (write_size) {
+-        *(uint64_t*)dest = len;
++        *(sz_uint64_t*)dest = len;
+         dest += 8;
+     }
+ 
+@@ -1446,13 +1447,13 @@
+ 
+             // write out packed data
+             uint64_t mask = kBitpackMasks8[nbits];
+-            *((uint64_t*)dest) = _pext_u64(delta_buff_u64, mask);
++            *((sz_uint64_t*)dest) = _pext_u64(delta_buff_u64, mask);
+             dest += nbits + (nbits == 7);
+         }
+ 
+         // write out header for whole group; 3b for each nbits
+         uint32_t packed_header = (uint32_t)_pext_u64(nbits_buff_u64, kHeaderMask8b);
+-        *(uint32_t*)header_dest = packed_header;
++        *(sz_uint32_t*)header_dest = packed_header;
+         header_dest += (group_sz_blocks * nbits_sz_bits) / 8;
+     }
+     // compress (up to 63) trailing samples using a smaller block size / memcpy
+@@ -1477,7 +1478,7 @@
+     uint8_t* orig_dest = dest;
+ 
+     // read in size of original data
+-    uint64_t orig_len = *(uint64_t*)src;
++    uint64_t orig_len = *(sz_uint64_t*)src;
+     src += 8;
+ 
+     // figure out number of blocks and where packed data starts
+@@ -1489,20 +1490,20 @@
+     int8_t prev_delta = 0;
+     for (int g = 0; g < ngroups; g++) {
+         // read header to get nbits for each block
+-        uint32_t header = *(uint32_t*)header_src;
++        uint32_t header = *(sz_uint32_t*)header_src;
+         header_src += (group_sz_blocks * nbits_sz_bits) / 8;
+ 
+         // read deltas for each block
+         for (int b = 0; b < group_sz_blocks; b++) {
+             uint8_t nbits = (header >> (nbits_sz_bits * b)) & nbits_sz_mask;
+             uint64_t mask = kBitUnpackMasks8[nbits];
+-            int64_t errs = _pdep_u64(*(uint64_t*)src, mask);
++            int64_t errs = _pdep_u64(*(sz_uint64_t*)src, mask);
+             nbits += nbits == 7;
+             src += nbits;
+ 
+             // cumsum deltas (stored in upper bits to get sign extension)
+             for (int shift = 56; shift >= 0; shift -= 8) {
+-                int8_t err = (int8_t)((errs << shift) >> (64 - nbits));
++                int8_t err = (int8_t)(sz_extract_signed(errs, shift, nbits));
+                 int8_t delta = err + prev_delta;
+                 *dest = prev_val + (int8_t)delta;
+                 prev_val = *dest;
+@@ -1534,7 +1535,7 @@
+ 
+     // store how long this is
+     if (write_size) {
+-        *(uint64_t*)dest = len;
++        *(sz_uint64_t*)dest = len;
+         dest += 8;
+     }
+ 
+@@ -1589,16 +1590,16 @@
+             // write out packed data
+             uint64_t mask = kBitpackMasks8[nbits];
+             if (indicator) {
+-                *((uint64_t*)dest) = _pext_u64(double_delta_buff_u64, mask);
++                *((sz_uint64_t*)dest) = _pext_u64(double_delta_buff_u64, mask);
+             } else {
+-                *((uint64_t*)dest) = _pext_u64(delta_buff_u64, mask);
++                *((sz_uint64_t*)dest) = _pext_u64(delta_buff_u64, mask);
+             }
+             dest += nbits + (nbits == 7);
+         }
+ 
+         // write out header for whole group; 3b for each nbits
+         uint32_t packed_header = (uint32_t)_pext_u64(nbits_buff_u64, kHeaderMaskDynDelta8b);
+-        *(uint32_t*)header_dest = packed_header;
++        *(sz_uint32_t*)header_dest = packed_header;
+         header_dest += (group_sz_blocks * block_header_sz_bits) / 8;
+         // if (g == 0) {printf("wrote packed header:\n"); dumpEndianBits(packed_header); }
+     };
+@@ -1625,7 +1626,7 @@
+     uint8_t* orig_dest = dest;
+ 
+     // read in size of original data
+-    uint64_t orig_len = *(uint64_t*)src;
++    uint64_t orig_len = *(sz_uint64_t*)src;
+     src += 8;
+ 
+     // figure out number of blocks and where packed data starts
+@@ -1637,7 +1638,7 @@
+     int8_t prev_delta = 0;
+     for (int g = 0; g < ngroups; g++) {
+         // read header to get nbits for each block
+-        uint32_t header = *(uint32_t*)header_src;
++        uint32_t header = *(sz_uint32_t*)header_src;
+         header_src += (group_sz_blocks * block_header_sz_bits) / 8;
+ 
+         // if (g == 0) {printf("read packed header:\n"); dumpEndianBits(header); }
+@@ -1647,7 +1648,7 @@
+             int8_t block_header = (header >> (block_header_sz_bits * b));
+             uint8_t nbits = block_header & nbits_sz_mask;
+             uint64_t mask = kBitUnpackMasks8[nbits];
+-            int64_t errs = _pdep_u64(*(uint64_t*)src, mask);
++            int64_t errs = _pdep_u64(*(sz_uint64_t*)src, mask);
+             nbits += nbits == 7;
+             src += nbits;
+ 
+@@ -1659,7 +1660,7 @@
+ 
+             // cumsum deltas (stored in upper bits to get sign extension)
+             for (int shift = 56; shift >= 0; shift -= 8) {
+-                int8_t err = (int8_t)((errs << shift) >> (64 - nbits));
++                int8_t err = (int8_t)(sz_extract_signed(errs, shift, nbits));
+                 int8_t delta = err + (prev_delta & prev_delta_mask);
+                 // int8_t delta = err;
+                 *dest = prev_val + delta;
+--- a/util.h
++++ b/util.h
+@@ -1,3 +1,4 @@
++#include "native_compat.hpp"
+ //
+ //  util.h
+ //  Compress
+@@ -87,7 +88,7 @@
+  */
+ static inline void* _aligned_alloc(size_t alignment, size_t size, bool zero) {
+     size_t request_size = size + alignment;
+-    char* buf = (char*)(zero ? calloc(1, request_size) : malloc(request_size));
++    char* buf = (char*)(zero ? sz_mem::alloc(1, request_size, true) : sz_native_malloc(request_size));
+ 
+     uint64_t remainder = ((uint64_t)buf) % alignment;
+     size_t offset = alignment - remainder;
+@@ -104,7 +105,7 @@
+ /* Free memory allocated with _aligned_alloc */
+ static inline void _aligned_free(void* aligned_ptr) {
+     int offset = *(((char*)aligned_ptr) - 1);
+-    free(((char*)aligned_ptr) - offset);
++    sz_mem::release(((char*)aligned_ptr) - offset);
+ }
+ 
+ template<typename DataT, int AlignBytes=32>
+@@ -252,7 +253,7 @@
+     case 1:
+         v = _mm256_set1_epi8(*(const uint8_t*)src); break;
+     case 2:
+-        v = _mm256_set1_epi16(*(const uint16_t*)src); break;
++        v = _mm256_set1_epi16(*(const sz_uint16_t*)src); break;
+     case 3:
+         memcpy(dest, src, 3); memcpy(dest + 3, src, 3);
+         memcpy(dest + 6, dest, 6); memcpy(dest + 12, dest, 12);
+@@ -265,7 +266,7 @@
+         ncopies -= 8;
+         break;
+     case 4:
+-        v = _mm256_set1_epi32(*(const uint32_t*)src); break;
++        v = _mm256_set1_epi32(*(const sz_uint32_t*)src); break;
+     case 5:
+         memcpy(dest, src, in_nbytes);
+         memcpy(dest + in_nbytes, dest, in_nbytes);
+@@ -293,7 +294,7 @@
+         ncopies -= 4;
+         break;
+     case 8:
+-        v = _mm256_set1_epi64x(*(const uint64_t*)src); break;
++        v = _mm256_set1_epi64x(*(const sz_uint64_t*)src); break;
+     case 9: case 10:
+         memcpy(dest, src, in_nbytes);
+         memcpy(dest + in_nbytes, dest, in_nbytes);

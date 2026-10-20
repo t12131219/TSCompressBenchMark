@@ -1,0 +1,61 @@
+# Frozen by generate_all_core_experiments.py; no result-dependent tuning.
+schema = "tsbench.experiment/1"
+name = "Solar-f64-bounded-prepared"
+output = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/runs/forecasting-20261018-1614/Solar-f64-bounded-prepared"
+
+[[datasets]]
+id = "Solar-f64"
+path = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261018-1614/data/Solar.npy"
+format = "npy"
+component = "V"
+order = "C"
+source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/Solar.csv"
+schema = { forecasting_source = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/forecasting_transpose/Solar.csv", forecasting_source_sha256 = "a1c68c5b9f9a477cc39d735b93ba92fb044df8dd41793a484ac1e973da26b7bb", forecasting_family = "Solar", all_source_rows_and_value_columns = true }
+
+[[methods]]
+id = "serf-qt"
+codec = "serf-qt"
+params = { error_bound = "0.01" }
+
+[[methods]]
+id = "serf-xor"
+codec = "serf-xor"
+params = { error_bound = "0.01" }
+
+[[methods]]
+id = "zfp-accuracy-1d"
+codec = "zfp-accuracy-1d"
+params = { error_bound = "0.01" }
+
+[[profiles]]
+id = "cpu-single"
+device = "cpu"
+native_threads = 1
+object_workers = 1
+memory_limit_mb = 8192
+runtime_preload = ["/usr/lib/x86_64-linux-gnu/libstdc++.so.6"]
+
+[task]
+kind = "values"
+fidelity = "bounded_abs"
+boundary = "native_core"
+lifecycle = "prepared"
+cache_policy = "natural"
+error_bound = "0.01"
+
+[execution]
+sessions = 2
+rounds = 7
+warmup_objects = 0
+native_loops = 1
+native_warmup_loops = 1
+native_batch_memory_mb = 2048
+timeout_s = 1800
+qualification_cache = true
+save_artifacts = false
+max_pending_workers = 8
+seed = 20261018
+
+[analysis]
+summary = "median_iqr"
+inference = "none"

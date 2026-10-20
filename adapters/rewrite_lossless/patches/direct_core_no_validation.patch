@@ -1,0 +1,24 @@
+--- a/vendor/elf/src/codec.cpp
++++ b/vendor/elf/src/codec.cpp
+@@ -238,6 +238,9 @@
+ Decoded decode_raw(const std::uint8_t* v,std::size_t n,Width w) {
+     width_of(w);return w==Width::binary32?raw_decode<float>(v,n):raw_decode<double>(v,n);
+ }
++Encoded compress_unchecked(const std::uint8_t* v,std::size_t n,Width w) {
++    width_of(w);return frame(w==Width::binary32?raw_encode<float>(v,n,true):raw_encode<double>(v,n,true),n,w);
++}
+ Encoded compress(const std::uint8_t* v,std::size_t n,Width w) {
+     width_of(w);auto raw=w==Width::binary32?raw_encode<float>(v,n,true):raw_encode<double>(v,n,true);
+     auto check=decode_raw(raw.bytes.data(),raw.bytes.size(),w);need(check.values.size()==n*(width_of(w)/8) && (!check.values.size() || std::memcmp(v,check.values.data(),check.values.size())==0),"original source recovery is not lossless");
+--- a/vendor/elf-plus/src/codec.cpp
++++ b/vendor/elf-plus/src/codec.cpp
+@@ -258,6 +258,9 @@
+ Decoded decode_raw(const std::uint8_t* v,std::size_t n,Width w) {
+     width_of(w);return w==Width::binary32?raw_decode<float>(v,n):raw_decode<double>(v,n);
+ }
++Encoded compress_unchecked(const std::uint8_t* v,std::size_t n,Width w) {
++    width_of(w);return frame(w==Width::binary32?raw_encode<float>(v,n,true):raw_encode<double>(v,n,true),n,w);
++}
+ Encoded compress(const std::uint8_t* v,std::size_t n,Width w) {
+     width_of(w);auto raw=w==Width::binary32?raw_encode<float>(v,n,true):raw_encode<double>(v,n,true);
+     auto decoded=decode_raw(raw.bytes.data(),raw.bytes.size(),w);

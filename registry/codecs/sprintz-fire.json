@@ -2,13 +2,15 @@
   "schema_version": "tscb.codec-manifest.v2",
   "key": "sprintz-fire",
   "identity": {
-    "display_name": "Sprintz-FIRE/XFF (native 8/16-bit integer UTS/MTS)",
-    "family": "SPRINTZ_FIRE",
+    "display_name": "Sprintz-FIRE",
+    "family": "SPRINTZ",
     "citations": [
-      "benchmark:dblalock/lzbench@580c4f08:_lzbench/compressors.cpp:sprintzXff",
-      "upstream:dblalock/sprintz@a056cdb6:sprintz/sprintz.cpp"
+      "adapters/sprintz_family/vendor/sprintz_family/README.md"
     ],
-    "source_artifact_id": "v2:source-artifact:sha256:a26eb4d896ea01cb2ad8e239fbe4ba922ab54a2d524a6c2b53fe03385e22718d"
+    "source_artifact_id": "v2:source-artifact:sha256:77ec90ebc3a3e2fcda2cbca50835efb75e63634c72a9874a19c708f6157ec001",
+    "implementation_id": "sprintz-native-20261017-api-v1",
+    "predictor": "FIRE",
+    "huffman": false
   },
   "classification": {
     "object_level": "P1_STANDALONE_CODEC",
@@ -26,10 +28,10 @@
       "SYNCHRONOUS_MTS"
     ],
     "dtypes": [
-      "|i1",
       "|u1",
-      "<i2",
-      "<u2"
+      "|i1",
+      "<u2",
+      "<i2"
     ],
     "ranks": [
       1,
@@ -44,7 +46,7 @@
     ],
     "alignment_bytes": 1,
     "min_n": 0,
-    "max_n": 131072,
+    "max_n": 65536,
     "min_m": 1,
     "max_m": 128,
     "validity_shapes": [
@@ -59,7 +61,9 @@
       "negative_delta": true,
       "absolute_epoch": true,
       "overflow_policy": "NOT_APPLICABLE_VALUE_ONLY"
-    }
+    },
+    "max_total_raw_bytes": 65536,
+    "max_total_elements": 65536
   },
   "semantics": {
     "loss_modes": [
@@ -69,21 +73,21 @@
     "reconstruction_modes": [
       "EXACT_GRID"
     ],
-    "rebuild_protocol": "TSCB_SPRINTZ_DESCRIPTOR_V2",
+    "rebuild_protocol": "TSCB_SZF1_NATIVE_PORT_V1",
     "preprocess_class": "NONE",
     "preprocess_stages": [],
-    "decodability_profile": "SELF_CONTAINED_DESCRIPTOR_NATIVE_ENVELOPE_AND_RLE_HEADER",
+    "decodability_profile": "SELF_CONTAINED_SZF1_24_BYTE_HEADER_PLUS_RELEASE_NATIVE_PAYLOAD",
     "bitstream_separability": "INDEPENDENT"
   },
   "lifecycle": {
-    "block_semantics": "ONE_NATIVE_ROW_MAJOR_RLE_STREAM_PER_VALUE_OBJECT",
-    "state_semantics": "INDEPENDENT_CONTEXT_PER_REPETITION",
-    "reset": "NEW_CONTEXT_REQUIRED",
+    "block_semantics": "ONE_NATIVE_CALL_PER_OBJECT_MAX_64KIB",
+    "state_semantics": "RESET_PREDICTOR_EVERY_CALL",
+    "reset": "REQUIRED_MODE_ZERO",
     "finalize": "REQUIRED_ZERO_BYTE_FINALIZE",
     "safe_overread_bytes": 0,
     "tail_policy": "EXACT_LENGTH",
     "dictionary": "NONE",
-    "model": "NONE",
+    "model": "NONE_EXTERNAL",
     "index": "NONE"
   },
   "execution": {
@@ -91,13 +95,13 @@
       "C_ABI_V1"
     ],
     "isa": [
-      "AVX2_BMI2_LZCNT"
+      "AVX2_BMI1_BMI2_LZCNT_POPCNT"
     ],
     "devices": [
       "CPU"
     ],
     "threading": "SINGLE_THREAD",
-    "fallback_policy": "DISALLOWED",
+    "fallback_policy": "NO_ISA_FALLBACK_AUTHOR_HUFF0_RAW_ENVELOPE_ONLY",
     "runtime_dispatch": false
   },
   "features": {
@@ -109,45 +113,54 @@
     "type": "object",
     "additionalProperties": false,
     "properties": {
-      "native_timing": {
-        "type": "boolean",
-        "default": true
+      "path": {
+        "type": "integer",
+        "enum": [
+          0,
+          1,
+          2,
+          5
+        ],
+        "default": 0
       },
       "isa": {
         "type": "string",
         "enum": [
-          "AVX2_BMI2_LZCNT"
+          "AVX2_BMI1_BMI2_LZCNT_POPCNT"
         ],
-        "default": "AVX2_BMI2_LZCNT"
+        "default": "AVX2_BMI1_BMI2_LZCNT_POPCNT"
+      },
+      "native_timing": {
+        "type": "boolean",
+        "default": false
       }
     },
     "constraints": []
   },
   "adapter": {
     "backend": "C_ABI_V1",
-    "version": "sprintz-ctypes-v2-port-standard-v30-20261011",
-    "factory": "SPRINTZ_CTYPES_V1",
-    "artifact_path": "build/port-standard-v30-20261011/native-builds-v3/sprintz_fire/release/libtscb_sprintz_fire.so",
-    "timing_boundary": "PYTHON_SOA_INTERLEAVE_FFI_AND_CONTAINER_INCLUDED",
-    "native_timing_capability": {
-      "optional": true,
-      "boundary": "CODEC_API_ONLY_V1",
-      "clock": "CLOCK_MONOTONIC",
-      "excludes": [
-        "CONTEXT_LIFECYCLE",
-        "PYTHON_SOA_INTERLEAVE",
-        "PYTHON_FFI_CONTAINER"
-      ]
-    },
+    "version": "sprintz-native-20261017-binding-v1",
+    "factory": "SPRINTZ_FAMILY_CTYPES_V1",
+    "artifact_path": "build/tsbench/{build_id}/sprintz-fire/libtscb_sprintz_fire.so",
+    "timing_boundary": "SAFE_NATIVE_API_STAGING_VALIDATION_AND_SZF1_INCLUDED",
     "accounting_hooks": [
       "FINAL_STREAM_LENGTH",
-      "NATIVE_ENVELOPE",
-      "NATIVE_HEADER",
+      "RECOVERY_HEADER_24_BYTES",
+      "UNCHANGED_NATIVE_PAYLOAD",
       "OUTPUT_CAPACITY"
     ],
-    "runtime_profile": {
-      "path": "docs/audits/20261011_port_standard_v30/runtime_profiles_v2/profiles/sprintz-fire.json",
-      "sha256": "2fc8dceff45c4f693ca705d1bccd18ae5681919e8fbad386a9167ac966ccfa1c"
+    "native_timing_capability": {
+      "optional": true,
+      "boundary": "SAFE_NATIVE_API_AND_SZF1",
+      "clock": "CLOCK_MONOTONIC"
+    },
+    "qualification": {
+      "status": "LIMITED_NATIVE_PORT_BINDING",
+      "platform": "LINUX_X86_64",
+      "limits": "8/16-bit integer bits, dimensions1..128, max65536 bytes, single thread",
+      "evidence": "docs/sprintz_integration/README.md",
+      "source_repairs": "raw16 final byte extent; safety and modulo arithmetic",
+      "formal_performance": "NOT_RERUN"
     }
   }
 }

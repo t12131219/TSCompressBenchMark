@@ -128,7 +128,7 @@ def test_worker_build_evidence_keeps_actual_compilers_and_commands(tmp_path, mon
     monkeypatch.setattr(tsbench.schemes.ObjectScheme, 'prepare', lambda *args: None)
     monkeypatch.setattr(tsbench.worker, 'implementation_identity', lambda *args: 'fixture-identity')
     worker = Worker(lambda event: None)
-    assert worker.dispatch({'op': 'init', 'method': {'codec': 'raw-store'}, 'task': {'kind': 'values'},
+    assert worker.dispatch({'op': 'init', 'method': {'codec': 'raw-store'}, 'task': {'kind': 'values','boundary':'object_memory'},
                             'profile': {}, 'execution': {'memory_limit_mb': None}, 'asset_root': str(root),
                             'build_root': str(tmp_path), 'base_dir': str(tmp_path)})['status'] == 'ok'
     evidence = worker.dispatch({'op': 'prepare', 'dataset': {'path': 'source.npy'}})['build_evidence'][0]

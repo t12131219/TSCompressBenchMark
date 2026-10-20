@@ -21,6 +21,11 @@ class UnsupportedError(Unsupported, CodecError):
     """Input, platform or parameters lie outside a declared capability."""
 
 
+class ExcludedError(UnsupportedError):
+    """A registered implementation is excluded from current execution."""
+    status = 'excluded'
+
+
 class SourceDomainError(UnsupportedError):
     """The actual content was rejected by the frozen source algorithm."""
 
@@ -34,6 +39,18 @@ class CodecSpec:
     root: Path
     key: str
     document: dict[str, Any]
+
+    @property
+    def excluded(self) -> bool:
+        return self.document.get('admission', {}).get('status') == 'EXCLUDED'
+
+    @property
+    def exclusion_reason(self) -> str | None:
+        return self.document.get('admission', {}).get('reason') if self.excluded else None
+
+    def require_enabled(self) -> None:
+        if self.excluded:
+            raise ExcludedError(f'{self.key}: {self.exclusion_reason}', stage='registry.admission')
 
     @property
     def dtypes(self) -> tuple[str, ...]:
@@ -68,6 +85,7 @@ class CodecSpec:
         return tuple(self.document['execution']['isa'])
 
     def validate_array(self, array: np.ndarray) -> None:
+        self.require_enabled()
         if not isinstance(array, np.ndarray) or array.dtype.str not in self.dtypes:
             raise UnsupportedError(f'{self.key}: dtype must be one of {self.dtypes}')
         if array.ndim not in self.ranks:
@@ -109,12 +127,12 @@ class Registry:
         }
         self._specs['raw-store'] = CodecSpec(self.root, 'raw-store', raw)
 
-    def list(self, *, include_reference: bool = True) -> list[CodecSpec]:
-        return [v for k,v in sorted(self._specs.items()) if include_reference or k != 'raw-store']
+    def list(self, *, include_reference: bool = True, include_excluded: bool = False) -> list[CodecSpec]:
+        return [v for k,v in sorted(self._specs.items())
+                if (include_reference or k != 'raw-store') and (include_excluded or not v.excluded)]
 
     def get(self, key: str) -> CodecSpec:
-        if key == 'lz77':
-            key = 'deflate-zlib'
+        key = {'lz77': 'deflate-zlib'}.get(key, key)
         if key not in self._specs:
             raise UnsupportedError(f'unknown codec: {key}')
         return self._specs[key]
@@ -166,4 +184,10 @@ class Registry:
         if key.startswith('serf-') or key == 'zfp-accuracy-1d':
             if Decimal(resolved['error_bound']) <= 0:
                 raise UnsupportedError(f'{key}: error_bound must be positive')
+        if key in {'pmc-mr','swing-filter','swing-filter-disjoint','swing-filter-disjoint-quantized'}:
+            epsilon = Decimal(resolved['epsilon'])
+            if epsilon > 0 and np.float32(float(epsilon)) == 0:
+                raise UnsupportedError(f'{key}: positive epsilon underflows float32')
+        if key in {'chimpn', 'chimpn32'} and resolved['history'] & (resolved['history'] - 1):
+            raise UnsupportedError(f'{key}: history must be a power of two')
         return resolved

@@ -167,7 +167,7 @@ def test_saved_wire_decodes_in_new_process_and_runner_records_failures(bridge,tm
     for name,file in meta['components'].items():assert np.load(tmp_path/'decoded'/file).tobytes()==o.components[name].tobytes()
     config={'schema':'tsbench.experiment/1','name':'gorilla-admission','_base_dir':str(tmp_path),'_asset_root':str(ROOT),
             'datasets':[{'id':'paired','path':'records.npz','components':{'T':'T','V':'V'}}, {'id':'unpaired','path':'values.npy'}],
-            'methods':[{'id':'gorilla',**method()}],'task':{'kind':'records','fidelity':'bitwise'},
+            'methods':[{'id':'gorilla',**method()}],'task':{'kind':'records','fidelity':'bitwise','boundary':'object_memory','lifecycle':'independent_object'},
             'execution':{'sessions':1,'rounds':2,'warmup_objects':0,'timeout_s':30,'qualification_cache':False}}
     dest=run(config,tmp_path/'run');manifest=json.loads((dest/'manifest.json').read_text())
     assert sorted(c['status'] for c in manifest['cases'])==['ready','unsupported']

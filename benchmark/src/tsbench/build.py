@@ -22,10 +22,12 @@ _FOLDERS = {
     'zfp-accuracy-1d': 'zfp', 'simdcomp-u32': 'simdcomp',
     'lzss-dipperstein-c': 'lzss_dipperstein',
 }
-for _key in ('chimp', 'chimp128', 'elf', 'elf-plus', 'elf-star', 'self-star'):
+for _key in ('elf', 'elf-plus', 'elf-star', 'self-star'):
     _FOLDERS[_key] = 'rewrite_lossless'
-for _key in ('sprintz-delta', 'sprintz-fire', 'sprintz-fire-huff0', 'sprintz-delta-u8', 'sprintz-fire-u8'):
-    _FOLDERS[_key] = 'sprintz'
+for _key in recipes.SPRINTZ_FAMILY:
+    _FOLDERS[_key] = 'sprintz_family'
+for _key in recipes.CHIMP_FAMILY:
+    _FOLDERS[_key] = 'chimp_family'
 for _key in _RW:
     _FOLDERS[_key] = 'completed_rewrites'
 
@@ -54,8 +56,8 @@ def artifact_path(root: str | Path, key: str, build_root=None) -> Path:
 def _source_files(root: Path, key: str) -> list[dict]:
     folder = root / 'adapters' / _FOLDERS.get(key, key.replace('-', '_'))
     folders = [folder, root / 'native/include']
-    if key == 'sprintz-fire-huff0':
-        folders.append(root / 'adapters/entropy_fse')
+    if key == 'lzsse8-raw':
+        folders.append(root / 'adapters/lzsse2_raw/native')
     entries = []
     for base in folders:
         if not base.is_dir():
@@ -101,10 +103,21 @@ def _compile_native(command: list[str], output: Path) -> None:
     substitutions = {}
     for index,source in enumerate(sources):
         obj = objects / f'{index:03d}_{Path(source).stem}.o'
-        _run([command[0],*flags,'-c','-MD','-MF',str(obj.with_suffix('.o.d')),
+        cxx = Path(source).suffix in {'.cc','.cpp'}
+        compiler = command[0]
+        unit_flags = flags
+        # Compile genuine C sources as C and the direct C++ shim as C++; retain
+        # separate dependency files and link mixed units with the C++ runtime.
+        if cxx and any(flag.startswith('-std=c') and not flag.startswith('-std=c++') for flag in flags):
+            compiler = os.environ.get('CXX','c++')
+            unit_flags = [flag for flag in flags if not flag.startswith('-std=')] + ['-std=c++17']
+        _run([compiler,*unit_flags,'-c','-MD','-MF',str(obj.with_suffix('.o.d')),
               '-MT',str(obj),source,'-o',str(obj)])
         substitutions[source] = str(obj)
-    _run([substitutions.get(value,value) for value in command])
+    link = [substitutions.get(value,value) for value in command]
+    if any(Path(source).suffix in {'.cc','.cpp'} for source in sources):
+        link[0] = os.environ.get('CXX','c++') if any(Path(source).suffix == '.c' for source in sources) else command[0]
+    _run(link)
 
 
 def _compiled_dependencies(root: Path, folder: Path) -> list[dict]:
@@ -141,6 +154,15 @@ def _rw_build(root: Path, key: str, output: Path) -> None:
     for record in lock['packages'][key]['files']:
         if sha(root / record['path']) != record['sha256']:
             raise Unavailable(f'frozen source changed: {record["path"]}', stage='build')
+    source = adapter / 'vendor' / key
+    if key in {'abba', 'fabba'}:
+        # Append an encode-only entry in the build-local copy. Original native
+        # encode/transform and the RW/object API keep their historical behavior.
+        derived = output.parent / 'patched-source'
+        shutil.copytree(source, derived)
+        patch = adapter / 'patches' / (key + '_encode_only.patch')
+        _run(['patch', '--batch', '--forward', '-p1', '-d', str(derived), '-i', str(patch)])
+        source = derived
     recipe = output.parent / 'recipe'
     recipe.mkdir()
     recipe.joinpath('CMakeLists.txt').write_text(f'''cmake_minimum_required(VERSION 3.18)
@@ -148,9 +170,10 @@ project(tsbench_rw_binding LANGUAGES C CXX)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_CXX_STANDARD 17)
-add_subdirectory("{adapter / 'vendor' / key}" standalone EXCLUDE_FROM_ALL)
+add_subdirectory("{source}" standalone EXCLUDE_FROM_ALL)
 add_library(tsbench_binding SHARED "{adapter / 'native/binding.cpp'}")
 target_link_libraries(tsbench_binding PRIVATE {key})
+target_include_directories(tsbench_binding PRIVATE "{root / 'native/include'}")
 target_compile_definitions(tsbench_binding PRIVATE RW_KIND={_RW[key]} RW_KEY="{key}")
 set_target_properties(tsbench_binding PROPERTIES OUTPUT_NAME tscb_{key.replace('-', '_')}
  LIBRARY_OUTPUT_DIRECTORY "{output.parent}")
@@ -186,7 +209,13 @@ def _simd_build(root: Path, output: Path) -> None:
               '-I',str(root / 'native/include'),'-I',str(source / 'include'),'-MD','-MF',str(obj.with_suffix('.d')),
               '-c',str(unit),'-o',str(obj)])
         objects.append(str(obj))
-    _run([os.environ.get('CC','cc'),'-shared','-Wl,-z,defs','-Wl,-Bsymbolic-functions',*objects,'-o',str(output)])
+    direct = adapter / 'native/direct_core.cc'
+    obj = output.parent / 'direct_core.o'
+    _run([os.environ.get('CXX','c++'),'-std=c++17','-fPIC','-Wall','-Wextra','-Werror','-O3','-DNDEBUG',*baseline,
+          '-I',str(root / 'native/include'),'-I',str(source / 'include'),'-MD','-MF',str(obj.with_suffix('.d')),
+          '-c',str(direct),'-o',str(obj)])
+    objects.append(str(obj))
+    _run([os.environ.get('CXX','c++'),'-shared','-Wl,-z,defs','-Wl,-Bsymbolic-functions',*objects,'-o',str(output)])
 
 
 def _command(key: str, output: Path) -> list[str]:
@@ -212,16 +241,15 @@ def _command(key: str, output: Path) -> list[str]:
         'deflate-zlib': recipes._deflate_zlib_command, 'bzip2-stream': recipes._bzip2_command,
         'xz-stream': recipes._xz_command, 'lzss-raw': recipes._lzss_command,
         'lzss-dipperstein-c': recipes._lzss_dipperstein_command, 'zfp-accuracy-1d': recipes._zfp_command,
-        'sprintz-fire-huff0': recipes._sprintz_fire_huff0_command,
     }
     if key in mapping:
         result = mapping[key](output, 'release')
     elif key in ('huff0','fse'):
         result = recipes._entropy_command(output,'release',key)
-    elif key.endswith('-u8') and key.startswith('sprintz-'):
-        result = recipes._sprintz_command(output,'release',key)
-    elif key in ('sprintz-delta','sprintz-fire'):
-        result = recipes._sprintz_full_command(output,'release',key)
+    elif key in recipes.SPRINTZ_FAMILY:
+        result = recipes._sprintz_family_command(output,'release',key)
+    elif key in recipes.CHIMP_FAMILY:
+        result = recipes._chimp_family_command(output,'release',key)
     elif key in ('alp','alp-rd'):
         result = recipes._alp_command(output,'release',key)
     elif key.startswith('serf-'):
@@ -230,12 +258,18 @@ def _command(key: str, output: Path) -> list[str]:
         result = recipes._neats_command(output,'release',key)
     else:
         result = recipes._rewrite_lossless_command(output,'release',key)
-    return result[0] if isinstance(result,tuple) else result
+    command = result[0] if isinstance(result,tuple) else result
+    folder = recipes.PROJECT_ROOT / 'adapters' / _FOLDERS.get(key,key.replace('-','_')) / 'native'
+    direct = folder / 'direct_core.cc'
+    if direct.is_file():
+        command.insert(command.index('-o'), str(direct))
+    return command
 
 
 def build_codec(root: str | Path, key: str, *, force: bool = False, build_root=None) -> dict:
     root = Path(root).resolve()
     spec = Registry(root).get(key)
+    spec.require_enabled()
     key = spec.key
     if key == 'raw-store':
         return {'status':'ok','codec':key,'build_id':'builtin:raw-store-v1','artifact':None}

@@ -1,0 +1,70 @@
+# Frozen by generate_all_core_experiments.py; no result-dependent tuning.
+schema = "tsbench.experiment/1"
+name = "native-all-records-fresh"
+output = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/runs/native-all-records-fresh-20261015"
+
+[[datasets]]
+id = "etth1-records-c"
+format = "csv"
+path = "/home/fzg/PycharmProjects/材料/TSBench_Corpus/ETTh1.csv"
+dtype = "<f8"
+columns = ["OT"]
+timestamp_column = "date"
+timestamp_parser = "datetime64"
+time_unit = "ns"
+encoding = "utf-8"
+missing = "reject"
+start = 2048
+stop = 2560
+order = "C"
+source = "etth1"
+
+[[datasets]]
+id = "weather-records-c"
+format = "csv"
+path = "/home/fzg/PycharmProjects/材料/TSBench_Corpus/weather.csv"
+dtype = "<f8"
+columns = ["T (degC)"]
+timestamp_column = "date"
+timestamp_parser = "datetime64"
+time_unit = "ns"
+encoding = "utf-8"
+missing = "reject"
+start = 2048
+stop = 2560
+order = "C"
+source = "weather"
+
+[[methods]]
+id = "gorilla-prometheus-xor"
+codec = "gorilla-prometheus-xor"
+
+[[profiles]]
+id = "cpu-single"
+device = "cpu"
+native_threads = 1
+object_workers = 1
+memory_limit_mb = 4096
+
+[task]
+kind = "records"
+fidelity = "bitwise"
+boundary = "native_core"
+lifecycle = "fresh_request"
+cache_policy = "natural"
+
+[execution]
+sessions = 2
+rounds = 7
+warmup_objects = 0
+native_loops = 8
+native_warmup_loops = 2
+native_batch_memory_mb = 256
+timeout_s = 120
+qualification_cache = true
+save_artifacts = true
+seed = 20261015
+
+[analysis]
+summary = "median_iqr"
+inference = "none"

@@ -1,0 +1,53 @@
+schema = "tsbench.experiment/1"
+name = "native-prepared"
+output = "../../runs/native-prepared"
+
+[[datasets]]
+id = "float64-tail"
+format = "npy"
+path = "data/float64.npy"
+component = "V"
+
+[[methods]]
+id = "raw"
+codec = "raw-store"
+
+[[methods]]
+id = "zstd-3"
+codec = "zstd-frame"
+params = { compression_level = 3 }
+
+[[methods]]
+id = "lz4-frame"
+codec = "lz4-frame"
+
+[[methods]]
+id = "snappy-raw"
+codec = "snappy-raw"
+
+[task]
+kind = "values"
+fidelity = "bitwise"
+# boundary and lifecycle intentionally omitted: native_core / prepared defaults.
+cache_policy = "natural"
+
+[[profiles]]
+id = "cpu-single"
+device = "cpu"
+native_threads = 1
+object_workers = 1
+
+[execution]
+sessions = 1
+rounds = 7
+native_loops = 8
+native_warmup_loops = 2
+native_batch_memory_mb = 256
+seed = 20261015
+timeout_s = 120
+qualification_cache = true
+save_artifacts = true
+
+[analysis]
+summary = "median_iqr"
+inference = "none"

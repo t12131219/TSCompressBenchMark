@@ -36,6 +36,7 @@ def main(argv=None):
     parser.add_argument('--version',action='version',version=__version__)
     sub=parser.add_subparsers(dest='command',required=True)
     p=sub.add_parser('build');p.add_argument('keys',nargs='*');p.add_argument('--all',action='store_true');p.add_argument('--force',action='store_true');p.add_argument('--asset-root',type=Path);p.add_argument('--build-root',type=Path)
+    p=sub.add_parser('build-driver');p.add_argument('--asset-root',type=Path);p.add_argument('--build-root',type=Path)
     for name in ('inspect','run'):
         p=sub.add_parser(name);p.add_argument('config',type=Path)
         if name=='run':
@@ -46,6 +47,10 @@ def main(argv=None):
     p=sub.add_parser('codecs');p.add_argument('--asset-root',type=Path)
     args=parser.parse_args(argv)
     from .schemes import ASSET_ROOT
+    if args.command=='build-driver':
+        from .native import ensure_driver
+        _json(ensure_driver(args.asset_root or ASSET_ROOT,args.build_root or (args.asset_root or ASSET_ROOT)/'build/tsbench'))
+        return 0
     if args.command=='build':
         from .build import build_all
         if not args.all and not args.keys:parser.error('build needs keys or --all')
@@ -76,7 +81,9 @@ def main(argv=None):
         _json({'output':str(args.output)});return 0
     if args.command=='codecs':
         from .registry import Registry
-        _json([{'key':s.key,'dtypes':s.dtypes,'ranks':s.ranks,'loss_mode':s.loss_mode,'threading':s.threading,'isa':s.isa} for s in Registry(args.asset_root or ASSET_ROOT).list()]);return 0
+        _json([{'key':s.key,'status':'excluded' if s.excluded else 'enabled','reason':s.exclusion_reason,
+                'dtypes':s.dtypes,'ranks':s.ranks,'loss_mode':s.loss_mode,'threading':s.threading,'isa':s.isa}
+               for s in Registry(args.asset_root or ASSET_ROOT).list(include_excluded=True)]);return 0
     return 2
 
 

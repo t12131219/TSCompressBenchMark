@@ -1,0 +1,166 @@
+{
+  "schema_version": "tscb.codec-manifest.v2",
+  "key": "sprintz-fire-huffman",
+  "identity": {
+    "display_name": "Sprintz-FIRE + Huffman (Huff0)",
+    "family": "SPRINTZ",
+    "citations": [
+      "adapters/sprintz_family/vendor/sprintz_family/README.md"
+    ],
+    "source_artifact_id": "v2:source-artifact:sha256:77ec90ebc3a3e2fcda2cbca50835efb75e63634c72a9874a19c708f6157ec001",
+    "implementation_id": "sprintz-native-20261017-api-v1",
+    "predictor": "FIRE",
+    "huffman": true
+  },
+  "classification": {
+    "object_level": "P1_STANDALONE_CODEC",
+    "implementation_class": "CONVENTIONAL",
+    "tracks": [
+      "VALUE"
+    ],
+    "subtracks": [
+      "V0"
+    ]
+  },
+  "input": {
+    "topologies": [
+      "UTS",
+      "SYNCHRONOUS_MTS"
+    ],
+    "dtypes": [
+      "|u1",
+      "|i1",
+      "<u2",
+      "<i2"
+    ],
+    "ranks": [
+      1,
+      2
+    ],
+    "layouts": [
+      "ROW_MAJOR_CONTIG",
+      "SOA_COLUMNS"
+    ],
+    "endianness": [
+      "little"
+    ],
+    "alignment_bytes": 1,
+    "min_n": 0,
+    "max_n": 65536,
+    "min_m": 1,
+    "max_m": 128,
+    "validity_shapes": [
+      "NONE"
+    ],
+    "homogeneous_itemsize": true,
+    "value_coupling_mode": "FULL_MATRIX",
+    "timestamp_semantics": {
+      "preserve_order": true,
+      "duplicates": true,
+      "out_of_order": true,
+      "negative_delta": true,
+      "absolute_epoch": true,
+      "overflow_policy": "NOT_APPLICABLE_VALUE_ONLY"
+    },
+    "max_total_raw_bytes": 65536,
+    "max_total_elements": 65536
+  },
+  "semantics": {
+    "loss_modes": [
+      "LOSSLESS"
+    ],
+    "error_bound_types": [],
+    "reconstruction_modes": [
+      "EXACT_GRID"
+    ],
+    "rebuild_protocol": "TSCB_SZF1_NATIVE_PORT_V1",
+    "preprocess_class": "NONE",
+    "preprocess_stages": [],
+    "decodability_profile": "SELF_CONTAINED_SZF1_24_BYTE_HEADER_PLUS_RELEASE_NATIVE_PAYLOAD",
+    "bitstream_separability": "INDEPENDENT"
+  },
+  "lifecycle": {
+    "block_semantics": "ONE_NATIVE_CALL_PER_OBJECT_MAX_64KIB",
+    "state_semantics": "RESET_PREDICTOR_EVERY_CALL",
+    "reset": "REQUIRED_MODE_ZERO",
+    "finalize": "REQUIRED_ZERO_BYTE_FINALIZE",
+    "safe_overread_bytes": 0,
+    "tail_policy": "EXACT_LENGTH",
+    "dictionary": "NONE",
+    "model": "NONE_EXTERNAL",
+    "index": "NONE"
+  },
+  "execution": {
+    "backends": [
+      "C_ABI_V1"
+    ],
+    "isa": [
+      "AVX2_BMI1_BMI2_LZCNT_POPCNT"
+    ],
+    "devices": [
+      "CPU"
+    ],
+    "threading": "SINGLE_THREAD",
+    "fallback_policy": "NO_ISA_FALLBACK_AUTHOR_HUFF0_RAW_ENVELOPE_ONLY",
+    "runtime_dispatch": false
+  },
+  "features": {
+    "streaming": false,
+    "query": false,
+    "random_access": false
+  },
+  "parameters": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "path": {
+        "type": "integer",
+        "enum": [
+          0,
+          1,
+          2,
+          5
+        ],
+        "default": 0
+      },
+      "isa": {
+        "type": "string",
+        "enum": [
+          "AVX2_BMI1_BMI2_LZCNT_POPCNT"
+        ],
+        "default": "AVX2_BMI1_BMI2_LZCNT_POPCNT"
+      },
+      "native_timing": {
+        "type": "boolean",
+        "default": false
+      }
+    },
+    "constraints": []
+  },
+  "adapter": {
+    "backend": "C_ABI_V1",
+    "version": "sprintz-native-20261017-binding-v1",
+    "factory": "SPRINTZ_FAMILY_CTYPES_V1",
+    "artifact_path": "build/tsbench/{build_id}/sprintz-fire-huffman/libtscb_sprintz_fire_huffman.so",
+    "timing_boundary": "SAFE_NATIVE_API_STAGING_VALIDATION_AND_SZF1_INCLUDED",
+    "accounting_hooks": [
+      "FINAL_STREAM_LENGTH",
+      "RECOVERY_HEADER_24_BYTES",
+      "UNCHANGED_NATIVE_PAYLOAD",
+      "OUTPUT_CAPACITY"
+    ],
+    "native_timing_capability": {
+      "optional": true,
+      "boundary": "SAFE_NATIVE_API_AND_SZF1",
+      "clock": "CLOCK_MONOTONIC"
+    },
+    "qualification": {
+      "status": "LIMITED_NATIVE_PORT_BINDING",
+      "platform": "LINUX_X86_64",
+      "limits": "8/16-bit integer bits, dimensions1..128, max65536 bytes, single thread",
+      "evidence": "docs/sprintz_integration/README.md",
+      "source_repairs": "raw16 final byte extent; safety and modulo arithmetic",
+      "formal_performance": "NOT_RERUN"
+    }
+  }
+}

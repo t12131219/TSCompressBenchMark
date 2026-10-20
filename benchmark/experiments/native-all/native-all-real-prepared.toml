@@ -1,0 +1,194 @@
+# Frozen by generate_all_core_experiments.py; no result-dependent tuning.
+schema = "tsbench.experiment/1"
+name = "native-all-real-prepared"
+output = "/home/fzg/PycharmProjects/TSDataCompressBenchMark/runs/native-all-real-prepared-20261015"
+
+[[datasets]]
+id = "etth1-values-c"
+format = "csv"
+path = "/home/fzg/PycharmProjects/材料/TSBench_Corpus/ETTh1.csv"
+dtype = "<f8"
+columns = ["HUFL", "HULL", "MUFL", "MULL", "LUFL", "LULL", "OT"]
+timestamp_column = "date"
+timestamp_parser = "datetime64"
+time_unit = "ns"
+encoding = "utf-8"
+missing = "reject"
+start = 2048
+stop = 10240
+order = "C"
+source = "etth1"
+
+[[datasets]]
+id = "etth1-values-f"
+format = "csv"
+path = "/home/fzg/PycharmProjects/材料/TSBench_Corpus/ETTh1.csv"
+dtype = "<f8"
+columns = ["HUFL", "HULL", "MUFL", "MULL", "LUFL", "LULL", "OT"]
+timestamp_column = "date"
+timestamp_parser = "datetime64"
+time_unit = "ns"
+encoding = "utf-8"
+missing = "reject"
+start = 2048
+stop = 10240
+order = "F"
+source = "etth1"
+
+[[datasets]]
+id = "weather-values-c"
+format = "csv"
+path = "/home/fzg/PycharmProjects/材料/TSBench_Corpus/weather.csv"
+dtype = "<f8"
+columns = ["T (degC)", "Tdew (degC)", "Tlog (degC)"]
+timestamp_column = "date"
+timestamp_parser = "datetime64"
+time_unit = "ns"
+encoding = "utf-8"
+missing = "reject"
+start = 2048
+stop = 34816
+order = "C"
+source = "weather"
+
+[[datasets]]
+id = "weather-values-f"
+format = "csv"
+path = "/home/fzg/PycharmProjects/材料/TSBench_Corpus/weather.csv"
+dtype = "<f8"
+columns = ["T (degC)", "Tdew (degC)", "Tlog (degC)"]
+timestamp_column = "date"
+timestamp_parser = "datetime64"
+time_unit = "ns"
+encoding = "utf-8"
+missing = "reject"
+start = 2048
+stop = 34816
+order = "F"
+source = "weather"
+
+[[datasets]]
+id = "ili-values-c"
+format = "csv"
+path = "/home/fzg/PycharmProjects/材料/TSBench_Corpus/national_illness.csv"
+dtype = "<f8"
+columns = ["OT"]
+timestamp_column = "date"
+timestamp_parser = "datetime64"
+time_unit = "ns"
+encoding = "utf-8"
+missing = "reject"
+start = 0
+stop = 512
+order = "C"
+source = "ili"
+
+[[methods]]
+id = "raw-store"
+codec = "raw-store"
+
+[[methods]]
+id = "brotli-stream"
+codec = "brotli-stream"
+
+[[methods]]
+id = "bzip2-stream"
+codec = "bzip2-stream"
+
+[[methods]]
+id = "deflate-zlib"
+codec = "deflate-zlib"
+
+[[methods]]
+id = "lz4-frame"
+codec = "lz4-frame"
+
+[[methods]]
+id = "lzss-dipperstein-c"
+codec = "lzss-dipperstein-c"
+
+[[methods]]
+id = "lzss-raw"
+codec = "lzss-raw"
+
+[[methods]]
+id = "lzsse2-raw"
+codec = "lzsse2-raw"
+
+[[methods]]
+id = "lzsse8-raw"
+codec = "lzsse8-raw"
+
+[[methods]]
+id = "snappy-raw"
+codec = "snappy-raw"
+
+[[methods]]
+id = "xz-stream"
+codec = "xz-stream"
+
+[[methods]]
+id = "zstd-frame"
+codec = "zstd-frame"
+
+[[methods]]
+id = "alp"
+codec = "alp"
+
+[[methods]]
+id = "alp-rd"
+codec = "alp-rd"
+
+[[methods]]
+id = "chimp"
+codec = "chimp"
+
+[[methods]]
+id = "chimp128"
+codec = "chimp128"
+
+[[methods]]
+id = "elf"
+codec = "elf"
+
+[[methods]]
+id = "elf-plus"
+codec = "elf-plus"
+
+[[methods]]
+id = "elf-star"
+codec = "elf-star"
+
+[[methods]]
+id = "self-star"
+codec = "self-star"
+
+[[profiles]]
+id = "cpu-single"
+device = "cpu"
+native_threads = 1
+object_workers = 1
+memory_limit_mb = 4096
+
+[task]
+kind = "values"
+fidelity = "bitwise"
+boundary = "native_core"
+lifecycle = "prepared"
+cache_policy = "natural"
+
+[execution]
+sessions = 2
+rounds = 7
+warmup_objects = 0
+native_loops = 8
+native_warmup_loops = 2
+native_batch_memory_mb = 256
+timeout_s = 120
+qualification_cache = true
+save_artifacts = true
+seed = 20261015
+
+[analysis]
+summary = "median_iqr"
+inference = "none"
