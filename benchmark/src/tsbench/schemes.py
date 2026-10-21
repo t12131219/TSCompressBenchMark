@@ -77,7 +77,7 @@ def capability(method,obj,task,profile,asset_root=None,build_root=None):
                 models.append({'path':str(model_path),'sha256':model_hash})
             if spec.lossy and roles.get(name,name)!='V': raise Unsupported(f'{name}: timestamps and masks require bitwise codecs',stage='capability')
             if spec.lossy and task.get('fidelity','bitwise') in {'bitwise','numeric_equivalent'}: raise Unsupported(f'{spec.key}: needs a quality task',stage='capability')
-            if spec.key in {'abba','fabba'} and task.get('fidelity')!='empirical_quality': raise Unsupported(f'{spec.key}: tolerance is empirical; use empirical_quality',stage='capability')
+            if spec.key in {'abba','fabba','qabba'} and task.get('fidelity')!='empirical_quality': raise Unsupported(f'{spec.key}: tolerance is empirical; use empirical_quality',stage='capability')
             if spec.key in {'pmc-mr','swing-filter','swing-filter-disjoint','swing-filter-disjoint-quantized'}:
                 fidelity = task.get('fidelity')
                 if params['quality_mode'] == 'compatible' and fidelity != 'empirical_quality':

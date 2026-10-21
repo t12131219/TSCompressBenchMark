@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+set -euo pipefail
+: "${AF_ARM_ROOT:?Set AF_ARM_ROOT}"
+af_family="$(cd -- "$(dirname -- "$0")/../.." && pwd)"
+exec "${AF_ARM_ROOT}/usr/bin/qemu-aarch64" -L "${AF_ARM_ROOT}/usr/aarch64-linux-gnu" "${af_family}/build-arm64/abba_family_cli" "$@"

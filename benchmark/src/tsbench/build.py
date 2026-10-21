@@ -14,7 +14,8 @@ from . import _native_recipes as recipes
 from .errors import Unavailable
 from .registry import Registry
 
-_RW = {'abba': 1, 'fabba': 2, 'deepzip': 7, 'dzip': 8}
+_RW = {'deepzip': 7, 'dzip': 8}
+_ABBA_FAMILY = {'abba', 'fabba', 'qabba'}
 _FOLDERS = {
     'alp': 'alp', 'alp-rd': 'alp', 'serf-qt': 'serf', 'serf-xor': 'serf',
     'huff0': 'entropy_fse', 'fse': 'entropy_fse',
@@ -28,6 +29,8 @@ for _key in recipes.SPRINTZ_FAMILY:
     _FOLDERS[_key] = 'sprintz_family'
 for _key in recipes.CHIMP_FAMILY:
     _FOLDERS[_key] = 'chimp_family'
+for _key in _ABBA_FAMILY:
+    _FOLDERS[_key] = 'abba_family'
 for _key in _RW:
     _FOLDERS[_key] = 'completed_rewrites'
 
@@ -134,6 +137,16 @@ def _compiled_dependencies(root: Path, folder: Path) -> list[dict]:
             if not entry.is_absolute():
                 entry = root / entry
             closure.add(entry.resolve(strict=True))
+    for path in folder.rglob('*.Plo'):
+        # Automake emits phony header rules after the first dependency rule.
+        first = path.read_text().replace('\\\n', ' ').split('\n', 1)[0]
+        if ':' not in first:
+            continue
+        for value in shlex.split(first.split(':', 1)[1], comments=False):
+            entry = Path(value)
+            if not entry.is_absolute():
+                entry = path.parent.parent / entry
+            closure.add(entry.resolve(strict=True))
     return [{'path':str(path),'sha256':sha(path)} for path in sorted(closure)]
 
 
@@ -155,14 +168,6 @@ def _rw_build(root: Path, key: str, output: Path) -> None:
         if sha(root / record['path']) != record['sha256']:
             raise Unavailable(f'frozen source changed: {record["path"]}', stage='build')
     source = adapter / 'vendor' / key
-    if key in {'abba', 'fabba'}:
-        # Append an encode-only entry in the build-local copy. Original native
-        # encode/transform and the RW/object API keep their historical behavior.
-        derived = output.parent / 'patched-source'
-        shutil.copytree(source, derived)
-        patch = adapter / 'patches' / (key + '_encode_only.patch')
-        _run(['patch', '--batch', '--forward', '-p1', '-d', str(derived), '-i', str(patch)])
-        source = derived
     recipe = output.parent / 'recipe'
     recipe.mkdir()
     recipe.joinpath('CMakeLists.txt').write_text(f'''cmake_minimum_required(VERSION 3.18)
@@ -183,6 +188,40 @@ set_target_properties(tsbench_binding PROPERTIES OUTPUT_NAME tscb_{key.replace('
           '-DDEEPZIP_WITH_HDF5=OFF', '-DDEEPZIP_WITH_CUDA=OFF',
           '-DDZIP_WITH_HDF5=OFF', '-DDZIP_WITH_CUDA=OFF'])
     _run(['cmake', '--build', str(output.parent / 'cmake'), '--target', 'tsbench_binding', '--parallel', '2'])
+
+
+def _abba_build(root: Path, key: str, output: Path) -> None:
+    adapter = root / 'adapters/abba_family'
+    lock = json.loads((adapter / 'FROZEN_SOURCES.json').read_text())
+    for entry in lock['files']:
+        if sha(root / entry['path']) != entry['sha256']:
+            raise Unavailable(f'frozen ABBA family source changed: {entry["path"]}', stage='build')
+    # Autotools can regenerate distribution files; build only a private copy.
+    source = output.parent / 'release-source'
+    shutil.copytree(adapter / 'vendor/abba_family', source)
+    recipe = output.parent / 'recipe'
+    recipe.mkdir()
+    exports = recipe / 'exports.map'
+    exports.write_text('{ global: tscb_*; tsbench_core_*; local: *; };\n')
+    recipe.joinpath('CMakeLists.txt').write_text(f'''cmake_minimum_required(VERSION 3.18)
+project(tsbench_abba LANGUAGES C CXX)
+find_package(Threads REQUIRED)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(BUILD_TESTING OFF CACHE BOOL "" FORCE)
+add_subdirectory("{source}" standalone EXCLUDE_FROM_ALL)
+add_library(tsbench_binding SHARED "{adapter / 'native/binding.cc'}")
+target_include_directories(tsbench_binding PRIVATE "{root / 'native/include'}" "{source / 'vendor/zlib'}")
+target_link_libraries(tsbench_binding PRIVATE abba_family_static af_ckmeans af_byte_zlib af_byte_zstd af_byte_bz2 af_lzma Threads::Threads)
+target_compile_definitions(tsbench_binding PRIVATE AF_KEY="{key}")
+target_compile_options(tsbench_binding PRIVATE -Wall -Wextra -Wpedantic)
+target_link_options(tsbench_binding PRIVATE -Wl,-z,defs -Wl,-Bsymbolic-functions -Wl,--exclude-libs,ALL "-Wl,--version-script={exports}")
+set_target_properties(tsbench_binding PROPERTIES OUTPUT_NAME tscb_{key} LIBRARY_OUTPUT_DIRECTORY "{output.parent}")
+''')
+    _run(['cmake','-S',str(recipe),'-B',str(output.parent / 'cmake'),'-DCMAKE_BUILD_TYPE=Release',
+          '-DCMAKE_CXX_FLAGS=-fno-fast-math -ffp-contract=off','-DCMAKE_C_FLAGS=-fno-fast-math -ffp-contract=off'])
+    _run(['cmake','--build',str(output.parent / 'cmake'),'--target','tsbench_binding','--parallel','2'])
 
 
 def _simd_build(root: Path, output: Path) -> None:
@@ -303,7 +342,9 @@ def build_codec(root: str | Path, key: str, *, force: bool = False, build_root=N
     recipes.PROJECT_ROOT = root
     recipes.COMMANDS.clear()
     try:
-        if key in _RW:
+        if key in _ABBA_FAMILY:
+            _abba_build(root,key,output)
+        elif key in _RW:
             _rw_build(root,key,output)
         elif key == 'simdcomp-u32':
             _simd_build(root,output)

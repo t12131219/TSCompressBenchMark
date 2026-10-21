@@ -38,7 +38,8 @@ CHIMP_METHODS = dict(zip(('chimp','chimp32','chimp128','chimpn','chimp128-no-ind
                          'pmc-mr','swing-filter','swing-filter-disjoint','swing-filter-disjoint-quantized'),
                         (1,2,3,3,4,5,7,8,9,10)))
 SPRINTZ_FAMILY = {'sprintz-delta','sprintz-fire','sprintz-delta-huffman','sprintz-fire-huffman'}
-_COLUMN_KEYS = CHIMP_FAMILY | {'alp','alp-rd','chimp','chimp128','elf','elf-plus','elf-star','self-star',
+ABBA_FAMILY = {'abba','fabba','qabba'}
+_COLUMN_KEYS = ABBA_FAMILY | CHIMP_FAMILY | {'alp','alp-rd','chimp','chimp128','elf','elf-plus','elf-star','self-star',
                 'serf-qt','serf-xor','neats-lossless-i64','leats-lossless-i64','zfp-accuracy-1d'}
 _KINDS = {'elf-plus':3,'self-star':4,'elf':6,'elf-star':7}
 _CONFIG_KEYS = {
@@ -134,6 +135,8 @@ class CAbiBridge:
         if self.key in CHIMP_FAMILY and (self.native_manifest.get('implementation') != 'chimp-family-cpp-scalar-v1'
                 or self.native_manifest.get('frame') != 'CFP1'):
             raise CodecError(f'{self.key}: stale Chimp library; rebuild the family binding')
+        if self.key in ABBA_FAMILY and (self.native_manifest.get('implementation') != 'abba-family-20261020-binding-v1' or self.native_manifest.get('frame') != 'AFS1/AFM1'):
+            raise CodecError(f'{self.key}: stale ABBA family library; rebuild required')
         if self.key in SPRINTZ_FAMILY and (self.native_manifest.get('implementation') != 'sprintz-native-20261017-api-v1' or self.native_manifest.get('frame') != 'SZF1'):
             raise CodecError(f'{self.key}: stale Sprintz library; rebuild the native port binding')
         if spec.document['adapter']['factory'] == 'ALP_SAFE_V1_CTYPES':
@@ -142,7 +145,7 @@ class CAbiBridge:
                 raise CodecError(f'{self.key}: stale ALP library; rebuild the safe-v1 binding')
 
     def _config(self, params: dict) -> bytes:
-        if self.key in CHIMP_FAMILY | SPRINTZ_FAMILY:
+        if self.key in CHIMP_FAMILY | SPRINTZ_FAMILY | ABBA_FAMILY:
             return json.dumps({'algorithm': self.key, **params}, sort_keys=True, separators=(',', ':')).encode()
         if self.key in _CONFIG_KEYS:
             config = {name:params[name] for name in _CONFIG_KEYS[self.key]}
@@ -203,6 +206,8 @@ class CAbiBridge:
         m = array.shape[1] if array.ndim == 2 else 1
         width = array.dtype.itemsize
         payload = array.T.copy(order='C').tobytes() if self.key in _COLUMN_KEYS and array.ndim == 2 else array.tobytes(order='C')
+        if self.key in ABBA_FAMILY:
+            return struct.pack('<4sIQQ', b'AFI1', 1, n, m) + payload
         if self.key in CHIMP_FAMILY:
             return struct.pack('<4sBBHQ', b'CFI1', width, CHIMP_METHODS[self.key], m, n) + payload
         if self.key in ('alp','alp-rd'):
@@ -274,8 +279,24 @@ class CAbiBridge:
         if self.key in SPRINTZ_FAMILY:
             if len(payload) < 24 or payload[:4] != b'SZF1' or payload[4] != dtype.itemsize or struct.unpack_from('<H',payload,8)[0] != (shape[1] if len(shape)==2 else 1) or struct.unpack_from('<I',payload,12)[0] != math.prod(shape)*dtype.itemsize:
                 raise CodecError(f'{self.key}: Sprintz frame geometry differs from requested descriptor')
+        if self.key in ABBA_FAMILY:
+            if dtype.str != '<f8' or len(shape) not in (1,2):
+                raise CodecError('ABBA family descriptor mismatch')
+            columns = shape[1] if len(shape)==2 else 1
+            if columns == 1:
+                if len(payload)<24 or payload[:4]!=b'AFS1':
+                    raise CodecError('ABBA family single frame magic')
+                size=struct.unpack_from('<I',payload,8)[0]
+                try:
+                    model=json.loads(payload[20:20+size])
+                    if model['sample_counts'] != [shape[0]] or not model['single'] or model['algorithm'] != self.key:
+                        raise CodecError('ABBA family sample count/algorithm mismatch')
+                except (ValueError,KeyError,TypeError) as error:
+                    raise CodecError('invalid ABBA family metadata') from error
+            elif len(payload)<28 or payload[:4]!=b'AFM1' or struct.unpack_from('<IQQ',payload,4)!=(1,shape[0],columns):
+                raise CodecError('ABBA family matrix shape mismatch')
         result = np.empty(shape,dtype=dtype)
-        self.spec.validate_array(result) if self.key not in {'abba','fabba'} else None
+        self.spec.validate_array(result) if self.key not in ABBA_FAMILY else None
         params = self.registry.resolve_params(self.key,params)
         storage = ct.create_string_buffer(payload,max(1,len(payload)))
         source = byte_buffer(storage,capacity=len(payload),used=len(payload))

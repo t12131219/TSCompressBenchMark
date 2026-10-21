@@ -891,3 +891,12 @@ native_core使用真实`alp_port_*` API及完整ALPRW001输出，按输入C/F物
 ### 14.25 LZSS 异常排除（2026-10-17）
 
 按用户明确要求，lzss-raw与lzss-dipperstein-c标记EXCLUDED，原因“算法接入异常，处于排除状态”。三边界准入、组件路由、显式构建及bridge加载／操作统一拒绝；默认选择、build --all和当前示例／生成器不纳入。CLI保留状态展示和来源查询，源码／原生工件／历史运行／冻结设计保留。LZSSE2／8未被排除；当前42个可用真实CPU key另加raw-store。专项142 passed；完整回归1255 passed、4 subtests passed，无失败／skip。详见[排除记录](docs/lzss_exclusion_20261017.md)。§14.24及历史性能仍对应排除前审计／实验身份，不能作为当前执行准入依据。
+
+
+### 14.26 ABBA 家族重写发布包替换接入（2026-10-20）
+
+用户授权删除旧ABBA/fABBA后接入ABBA/fABBA/QABBA。依[N0计划](docs/abba_family_integration/PLAN.md)归档旧源码/补丁/登记/共享配方/测试和indexes，移除活动旧分支；新消费发布包SHA ec70b59fd9e0a48303604596df43fa8e21090b6f577513f11894e727a6240b1e，7830成员核验且核心无修改。保留LGPL >=3 CKmeans、全部补丁/许可证及重链接源码。生产库静态包含字节库且仅导出绑定符号，实际CMake/Autotools依赖均记录；build使用私有副本，冻结源码不被Autotools改写。
+
+主路径rank1 binary64 owning encode/decode，API/对象可矩阵独立列；全部AFS1和AFM1恢复信息计费，decoder不需编码参数或外部模型。拟合、分配、源encode内部重建、完整帧及额外原网格恢复检查均计时。单worker、FE_TONEAREST、无fast-math、关闭contraction；最多1048576总值、4096列、256MiB帧及源码工作预算。容差仅empirical_quality；QABBA恢复长度变化对象unsupported，禁止补点/重采样。未开放共享多序列模型/复用/图像等独立包其它路径。
+
+187组26670值中144完整frame和双向恢复成功、43预期QABBA网格拒绝；120数据对象的99成功/21拒绝全部保留分母。重新执行源码数值对照、独立CMake参考与ctest1/1通过；12主边界/生命周期组合36产物、24对象新进程恢复、147绑定+共享发布核心ASan/UBSan/LSan案例通过。最终完整Python1387 passed、4 subtests passed、无失败/skip。当前43可用真实CPU key+raw-store，LZSS两项继续排除；新实现状态BENCH_BINDING_QUALIFIED_LIMITED_SCOPE，不继承独立FULL_PARITY/跨架构/fuzz/OOM资格，历史FORMAL结果不改签，正式吞吐未重跑。详见[报告](docs/abba_family_integration/README.md)及[证据](docs/abba_family_integration/evidence.json)。

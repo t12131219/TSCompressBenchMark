@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+set -euo pipefail
+: "${AF_ARM_ROOT:?Set AF_ARM_ROOT to the extracted arm64 cross toolchain}"
+export LD_LIBRARY_PATH="${AF_ARM_ROOT}/usr/lib/x86_64-linux-gnu${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+exec "${AF_ARM_ROOT}/usr/bin/aarch64-linux-gnu-gcc-11" --sysroot="${AF_ARM_ROOT}" "$@"

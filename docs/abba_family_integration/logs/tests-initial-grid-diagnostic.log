@@ -1,0 +1,38 @@
+...................F...................................................  [100%]
+=================================== FAILURES ===================================
+__ test_symbolic_core_matches_current_c1_complete_bytes[17-qabba-overrides4] ___
+
+key = 'qabba', overrides = {}, count = 17
+
+    @pytest.mark.parametrize('key,overrides', _SYMBOLIC_PROFILES)
+    @pytest.mark.parametrize('count', [2, 17, 65])
+    def test_symbolic_core_matches_current_c1_complete_bytes(key, overrides, count):
+        lib = library(key)
+        params = Registry(ROOT).resolve_params(key, overrides)
+        values = ((np.arange(count, dtype=np.int64) % 7) - 3).astype('<f8') / 8
+        raw = values.tobytes()
+        direct = encode_all(lib, key, count, [raw], params)[0]
+        bridge = create_bridge(ROOT, key)
+        reference = bridge.encode(values, params)
+        assert direct == reference
+>       restored = decode(lib, key, count, direct, values.nbytes)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+benchmark/tests/test_core_model_records.py:179: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+benchmark/tests/test_core_model_records.py:119: in decode
+    check(lib, lib.tsbench_core_decode(handle, source, len(stream), output,
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+lib = <CDLL '/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/tsbench/6cc5307a560e62eb1526f62fae30bca7a347f153eb500c02824f0432da91fb10/qabba/libtscb_qabba.so', handle 5c1238063310 at 0x7cbccf267850>
+code = 2, context = c_void_p(101233311856608)
+
+    def check(lib, code, context=None):
+>       assert code == 0, (code, lib.tsbench_core_error(context).decode())
+E       AssertionError: (2, 'SOURCE_RECONSTRUCTED_LENGTH_DIFFERS_FROM_GRID')
+E       assert 2 == 0
+
+benchmark/tests/test_core_floats.py:63: AssertionError
+=========================== short test summary info ============================
+FAILED benchmark/tests/test_core_model_records.py::test_symbolic_core_matches_current_c1_complete_bytes[17-qabba-overrides4]
+1 failed, 70 passed in 19.22s

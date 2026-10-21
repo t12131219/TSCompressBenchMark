@@ -6,11 +6,7 @@
 #include <limits>
 #include <stdexcept>
 #include <vector>
-#if RW_KIND == 1
-#include "abba.hpp"
-#elif RW_KIND == 2
-#include "fabba.hpp"
-#elif RW_KIND == 7
+#if RW_KIND == 7
 #include "deepzip/deepzip.hpp"
 #elif RW_KIND == 8
 #include "dzip.hpp"
@@ -50,11 +46,7 @@ static unsigned input_alphabet(const std::uint8_t* p,std::size_t size) {
 }
 #endif
 static std::size_t bound(const RwConfig& c,const std::uint8_t* p,std::size_t size) {
-#if RW_KIND == 1
-  valid(c,size,8); return abba::max_encoded_size(c.rows);
-#elif RW_KIND == 2
-  valid(c,size,8); return fabba::max_encoded_size(c.rows);
-#elif RW_KIND == 7
+#if RW_KIND == 7
   auto model=deepzip::Model::load(read_model(c.model)); deepzip::Config config;
   config.lanes=c.a; for(unsigned i=0;i<model.alphabet_size();++i) config.alphabet.push_back(static_cast<std::uint8_t>(i));
   return deepzip::compress_bound(model,size,config);
@@ -65,15 +57,7 @@ static std::size_t bound(const RwConfig& c,const std::uint8_t* p,std::size_t siz
 #endif
 }
 static Bytes encode(const RwConfig& c,const std::uint8_t* p,std::size_t size) {
-#if RW_KIND == 1
-  auto v=values<double>(p,size); abba::Config s; s.compression_tolerance=c.x; s.digitization_tolerance=c.y;
-  s.min_k=c.a;s.max_k=c.b;s.max_len=c.c;s.norm=c.d;s.scl=c.z;
-  s.clustering=c.mode?abba::Config::ClusteringMethod::Incremental:abba::Config::ClusteringMethod::Kmeans;
-  return abba::encode(v.data(),v.size(),s);
-#elif RW_KIND == 2
-  auto v=values<double>(p,size); fabba::Config s;s.tolerance=c.x;s.alpha=c.y;s.scl=c.z;s.max_len=c.a;s.threads=1;
-  return fabba::encode(v.data(),v.size(),s);
-#elif RW_KIND == 7
+#if RW_KIND == 7
   auto model=deepzip::Model::load(read_model(c.model));deepzip::Config s;s.lanes=c.a;
   for(unsigned i=0;i<model.alphabet_size();++i)s.alphabet.push_back(static_cast<std::uint8_t>(i));
   return deepzip::compress(model,Bytes(p,p+size),s).bytes;
@@ -83,11 +67,7 @@ static Bytes encode(const RwConfig& c,const std::uint8_t* p,std::size_t size) {
 #endif
 }
 static Bytes decode(const std::uint8_t* p,std::size_t size,std::size_t capacity) {
-#if RW_KIND == 1
-  return raw(abba::decode(p,size));
-#elif RW_KIND == 2
-  return raw(fabba::decode(p,size));
-#elif RW_KIND == 7
+#if RW_KIND == 7
   return deepzip::decompress(Bytes(p,p+size));
 #elif RW_KIND == 8
   return dzip::decompress(Bytes(p,p+size));
@@ -127,27 +107,12 @@ extern "C" int rw_decode(const std::uint8_t* p,std::size_t size,std::uint8_t* ou
 // original contract; no RW column envelope or RW caller-buffer copy is used here.
 #include "tsbench_core.hpp"
 #include <memory>
-#if RW_KIND == 1
-namespace abba {
-// Appended only in build-local derived source; frozen public headers and
-// original encode/transform remain unchanged for the historical RW API.
-std::vector<std::uint8_t> encode_only(const double*, std::size_t, const Config&, Accounting*);
-}
-#elif RW_KIND == 2
-namespace fabba {
-std::vector<std::uint8_t> encode_only(const double*, std::size_t, const Config&, Accounting*);
-}
-#endif
 
 namespace {
 struct CoreModelState final : tsbench_core::State {
   bool decoder = false;
   std::size_t rows = 0, bytes = 0;
-#if RW_KIND == 1
-  abba::Config config;
-#elif RW_KIND == 2
-  fabba::Config config;
-#elif RW_KIND == 7
+#if RW_KIND == 7
   deepzip::Config config;
   std::unique_ptr<deepzip::Model> model;
 #elif RW_KIND == 8
@@ -170,33 +135,7 @@ std::uint64_t core_model_u64(const std::uint8_t* p) {
   for (unsigned i = 0; i < 8; ++i) result |= std::uint64_t(p[i]) << (8*i);
   return result;
 }
-#if RW_KIND == 1 || RW_KIND == 2
-const double* core_model_values(const CoreModelState& state, const std::uint8_t* p,
-                                std::size_t size) {
-  core_model_input(state, p, size);
-  tsbench_core::require(reinterpret_cast<std::uintptr_t>(p) % alignof(double) == 0,
-                        "direct float64 input is not naturally aligned");
-  const auto* input = reinterpret_cast<const double*>(p);
-  // The native segmenter cannot advance after a nonrepresentable endpoint.
-  // Enforce the same source domain as the RW bridge in the explicit admission
-  // hook. The driver runs this pass outside all main operation clocks.
-  for (std::size_t i = 0; i < state.rows; ++i) {
-    if (!std::isfinite(input[i]))
-      throw tsbench_core::Unsupported("ABBA/fABBA requires finite input");
-    if (i + 1 < state.rows) {
-      const double residual = input[i] + (input[i+1] - input[i]) - input[i+1];
-#if RW_KIND == 1
-      const double error = state.config.norm == 1 ? std::fabs(residual) : residual*residual;
-#else
-      const double error = residual*residual;
-#endif
-      if (!std::isfinite(error) || error > std::numeric_limits<double>::epsilon())
-        throw tsbench_core::Unsupported("SEGMENT_ENDPOINT_ARITHMETIC_UNSUPPORTED");
-    }
-  }
-  return input;
-}
-#elif RW_KIND == 8
+#if RW_KIND == 8
 dzip::Network core_model_initial(const CoreModelState& state, const std::uint8_t* p,
                                   std::size_t size) {
   const unsigned alphabet = input_alphabet(p, size);
@@ -220,59 +159,20 @@ extern "C" int tsbench_core_create(const tsbench_core_config* c, int decoder, vo
     tsbench_core::require(c && out, "null direct model configuration");
     *out = nullptr;
     if (c->rank != 1) throw tsbench_core::Unsupported("RW direct core currently requires rank1");
-#if RW_KIND == 1 || RW_KIND == 2
-    if (c->dtype != TSCB_DTYPE_F64_LE_V1)
-      throw tsbench_core::Unsupported("ABBA/fABBA direct core requires float64");
-    const std::uint16_t endian = 1;
-    if (*reinterpret_cast<const std::uint8_t*>(&endian) != 1)
-      throw tsbench_core::Unsupported("ABBA/fABBA direct float64 requires a little-endian host");
-#else
     if (c->dtype != TSCB_DTYPE_U8_V1)
       throw tsbench_core::Unsupported("DeepZip/DZip direct core requires uint8 symbols");
-#endif
     auto state = std::make_unique<CoreModelState>();
     state->decoder = decoder != 0;
     state->rows = tsbench_core::elements(*c);
     state->bytes = tsbench_core::input_bytes(*c);
     if (state->rows > 16777216)
       throw tsbench_core::Unsupported("direct model input exceeds 16M element contract");
-#if RW_KIND == 1 || RW_KIND == 2
-    if (state->rows < 2) throw tsbench_core::Unsupported("ABBA/fABBA requires at least two samples");
-#endif
     const tsbench_core::Parameters parameters(c->parameters_json);
     if (state->decoder) {
       tsbench_core::require(parameters.empty() && (!c->model || !*c->model),
                             "direct decoder must not receive encoder parameters or model");
     } else {
-#if RW_KIND == 1
-      auto& config = state->config;
-      config.compression_tolerance = parameters.real("compression_tolerance");
-      config.digitization_tolerance = parameters.real("digitization_tolerance");
-      config.min_k = parameters.integer("min_k", 1, 65535);
-      config.max_k = parameters.integer("max_k", config.min_k, 65535);
-      config.max_len = parameters.integer("max_len", 1, UINT32_MAX);
-      config.norm = parameters.integer("norm", 1, 2);
-      config.scl = parameters.real("scl");
-      const auto clustering = parameters.string("clustering");
-      if (clustering == "KMEANS") config.clustering = abba::Config::ClusteringMethod::Kmeans;
-      else if (clustering == "INCREMENTAL") config.clustering = abba::Config::ClusteringMethod::Incremental;
-      else throw tsbench_core::Unsupported("unknown ABBA clustering method");
-      tsbench_core::require(config.compression_tolerance >= 0 &&
-          config.digitization_tolerance >= 0 && config.scl >= 0, "invalid ABBA parameters");
-      if (parameters.contains("isa") && parameters.string("isa") != "SCALAR")
-        throw tsbench_core::Unsupported("ABBA only supports the declared scalar path");
-#elif RW_KIND == 2
-      auto& config = state->config;
-      config.tolerance = parameters.real("tolerance");
-      config.alpha = parameters.real("alpha");
-      config.scl = parameters.real("scl");
-      config.max_len = parameters.integer("max_len", 1, UINT32_MAX);
-      config.threads = 1;
-      tsbench_core::require(config.tolerance >= 0 && config.alpha >= 0 && config.scl > 0,
-                            "invalid fABBA parameters");
-      if (parameters.contains("isa") && parameters.string("isa") != "SCALAR")
-        throw tsbench_core::Unsupported("fABBA only supports the declared scalar path");
-#elif RW_KIND == 7
+#if RW_KIND == 7
       state->config.lanes = parameters.integer("lanes", 1, 4096);
       if (parameters.contains("isa") && parameters.string("isa") != "SCALAR")
         throw tsbench_core::Unsupported("DeepZip direct core only supports the scalar backend");
@@ -307,9 +207,7 @@ extern "C" int tsbench_core_validate_input(void* context, const std::uint8_t* p,
     state = core_model_state(context);
     tsbench_core::require(!state->decoder, "input admission requires an encoder context");
     core_model_input(*state, p, size);
-#if RW_KIND == 1 || RW_KIND == 2
-    (void)core_model_values(*state, p, size);
-#elif RW_KIND == 7
+#if RW_KIND == 7
     for (std::size_t i = 0; i < size; ++i)
       if (p[i] >= state->model->alphabet_size())
         throw tsbench_core::Unsupported("DeepZip MODEL_ALPHABET_UNSUPPORTED");
@@ -323,11 +221,7 @@ extern "C" int tsbench_core_bound(void* context, const std::uint8_t* p,
     state = core_model_state(context);
     tsbench_core::require(output && !state->decoder, "invalid direct model bound request");
     core_model_input(*state, p, size);
-#if RW_KIND == 1
-    *output = abba::max_encoded_size(state->rows);
-#elif RW_KIND == 2
-    *output = fabba::max_encoded_size(state->rows);
-#elif RW_KIND == 7
+#if RW_KIND == 7
     *output = deepzip::compress_bound(*state->model, size, state->config);
 #elif RW_KIND == 8
     // This temporary bound model is discarded. Encode must create its own
@@ -346,11 +240,7 @@ extern "C" int tsbench_core_encode(void* context, const std::uint8_t* p,
     *result = {};
     core_model_input(*state, p, size);
     Bytes encoded;
-#if RW_KIND == 1
-    encoded = abba::encode_only(reinterpret_cast<const double*>(p), state->rows, state->config, nullptr);
-#elif RW_KIND == 2
-    encoded = fabba::encode_only(reinterpret_cast<const double*>(p), state->rows, state->config, nullptr);
-#elif RW_KIND == 7
+#if RW_KIND == 7
     // The native API requires a vector input. Its materialization is timed;
     // the returned complete native frame transfers without the RW output copy.
     const Bytes input = size ? Bytes(p, p + size) : Bytes{};
@@ -373,15 +263,7 @@ extern "C" int tsbench_core_decode(void* context, const std::uint8_t* p,
                           "invalid direct model decode request");
     *result = {};
     if (capacity < state->bytes) throw tsbench_core::Capacity("direct model decoded output exceeds capacity");
-#if RW_KIND == 1 || RW_KIND == 2
-    tsbench_core::require(size >= 16 && core_model_u64(p + 8) == state->rows,
-                          "direct ABBA/fABBA frame count differs from task");
-#if RW_KIND == 1
-    auto decoded = abba::decode(p, size);
-#else
-    auto decoded = fabba::decode(p, size);
-#endif
-#elif RW_KIND == 7
+#if RW_KIND == 7
     tsbench_core::require(size >= 24 && core_model_u64(p + 16) == state->rows,
                           "direct DeepZip frame count differs from task");
     auto decoded = deepzip::decompress(Bytes(p, p + size));

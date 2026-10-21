@@ -1,5 +1,7 @@
 # Benchmark 实施状态与结果范围（2026-10-15）
 
+2026-10-20增量：ABBA/fABBA已用独立abba-family替换，并新增QABBA；当前43可用真实CPU key+raw-store，LZSS两项继续排除。QABBA的源码恢复长度变化对象明确unsupported，不修改网格。见[本次接入报告](abba_family_integration/README.md)；下文旧实现的正式性能/测试结论不继承。
+
 2026-10-17增量：当前ALP／ALP-RD已切换为冻结safe-v1绑定，原生输出为ALPRW001；[接入与验证报告](alp_integration/README.md)单独记录本次身份。下述2026-10-15测试和正式性能数字属于当时的旧实现，不能作为新ALP绑定的测量证据。
 
 **默认目标为原生codec：`native_core / prepared / natural`。当前registry的37／37个真实CPU codec构建成功，加上driver提供的raw-store，共38个key均完成prepared与fresh_request下共同合法输入的direct core案例。** 28份冻结配置串行完成358请求：348 ready、10 unsupported，**4872／4872正式trial成功，额外尝试0**；统一严格审计通过。当前结果见[全量原生报告](all_core_results/README.md)、[全部请求与原因](all_core_results/coverage.md)及[证据索引](all_core_evidence.json)。`native_api`保留为适配器辅助目标，显式`object_memory / independent_object / natural`保留原目标；后文首阶段／对象／GPU结果保留各自身份和完成边界。

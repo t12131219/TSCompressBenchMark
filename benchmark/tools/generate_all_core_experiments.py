@@ -120,7 +120,7 @@ def definitions(corpus, run_root):
         ('integer-u8', [fixture('uint8')], ('sprintz-delta', 'sprintz-fire', 'sprintz-delta-huffman', 'sprintz-fire-huffman'), 'bitwise', 'values', SINGLE, {}),
         ('integer-u32', [fixture('uint32')], ('simdcomp-u32',), 'bitwise', 'values', SINGLE, {}),
         ('bounded', floats, BOUNDED_KEYS, 'bounded_abs', 'values', SINGLE, {}),
-        ('empirical', real[-1:], ('abba', 'fabba'), 'empirical_quality', 'values', SINGLE, {}),
+        ('empirical', real[-1:], ('abba', 'fabba', 'qabba'), 'empirical_quality', 'values', SINGLE, {}),
         ('deepzip', [fixture('symbols4', stop=64)], ('deepzip',), 'bitwise', 'values', SINGLE,
          {'timeout_s': 600}),
         ('dzip', [fixture('symbols4', stop=64)], ('dzip',), 'bitwise', 'values', DZIP,
@@ -190,7 +190,7 @@ def static_requests(documents, registry):
                     assert task['fidelity'] == 'empirical_quality'
                 else:
                     assert task['fidelity'] == 'bounded_abs' and params['error_bound'] == task['error_bound']
-                if spec.key in {'abba', 'fabba', 'deepzip', 'dzip'}:
+                if spec.key in {'abba', 'fabba', 'qabba', 'deepzip', 'dzip'}:
                     assert values.ndim == 1
                 if spec.key == 'deepzip':
                     alphabet = spec.document['adapter']['models'][params['model_key']]['alphabet_size']

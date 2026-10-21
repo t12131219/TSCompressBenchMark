@@ -1,0 +1,299 @@
+{
+  "algorithms": [
+    "abba",
+    "fabba",
+    "qabba"
+  ],
+  "datasets": [
+    {
+      "id": "ECG5000",
+      "source": "/home/fzg/PycharmProjects/\u6750\u6599/New_Source_Code/CORAD/datasets/UCRArchive_2018/ECG5000/ECG5000_TEST.tsv",
+      "source_sha256": "0192997dd1793880633bfb34ae3ad5129c09a8e0f210c469225451b92cdd8548",
+      "series": 12,
+      "samples": 1680,
+      "frozen": "tests/data/ECG5000.json",
+      "payload_sha256": "3368cdacd731b1a5dbfafab55b91d19f125fba04f3473e29ef95ee48f4ef85c7",
+      "preprocessing": "Exclude first classification label; parse remaining original finite binary64; no normalization",
+      "training_frozen": "tests/data/ECG5000-TRAIN-first.json",
+      "training_source_sha256": "df86ac15d7e283e731db6be7865f5004b65bc639014cb8b9753c26e24a9092a1",
+      "training_frozen_sha256": "4be147d7504e2422cdf54e3d64362499bdd29b6cf0fd721e383fc1b237797b71"
+    },
+    {
+      "id": "Chinatown",
+      "source": "/home/fzg/PycharmProjects/\u6750\u6599/New_Source_Code/CORAD/datasets/UCRArchive_2018/Chinatown/Chinatown_TEST.tsv",
+      "source_sha256": "8230b1c642c8ffb407e82f65ce3c5de7121d4051e8713a303a7d9e6d0268a72b",
+      "series": 12,
+      "samples": 288,
+      "frozen": "tests/data/Chinatown.json",
+      "payload_sha256": "c709b0ed2e7c250058e3ab5246206121d09602956cd8182aab81a1bfe5d037d2",
+      "preprocessing": "Exclude first classification label; parse remaining original finite binary64; no normalization",
+      "training_frozen": "tests/data/Chinatown-TRAIN-first.json",
+      "training_source_sha256": "35ea63b86017b3b01c4f39e84c147daf9290c1cdccdace9af89f4e12fabf35ca",
+      "training_frozen_sha256": "3b5c1397b3b35c15db73e6d0f6fed550a545c0e840b376cbf0cdd965a4a584ec"
+    },
+    {
+      "id": "Coffee",
+      "source": "/home/fzg/PycharmProjects/\u6750\u6599/New_Source_Code/CORAD/datasets/UCRArchive_2018/Coffee/Coffee_TEST.tsv",
+      "source_sha256": "07f25cedb9fd819a201e7de6abbdc444695b4b16ee70295010e401f18c38babd",
+      "series": 12,
+      "samples": 3432,
+      "frozen": "tests/data/Coffee.json",
+      "payload_sha256": "1491c4fd740a739729223e95269b66aa4f2ae72e3dc26e873a64c1e02207ab57",
+      "preprocessing": "Exclude first classification label; parse remaining original finite binary64; no normalization",
+      "training_frozen": "tests/data/Coffee-TRAIN-first.json",
+      "training_source_sha256": "a722ab8acd6c18b11b8fa835fbe523fc072e6ce4434b44d7919fa95152d377bf",
+      "training_frozen_sha256": "33bbcd333d039e4f99a57e230075be7a6bb8e120fc42135eaafd859f5de0ca8e"
+    }
+  ],
+  "parameters": "default plus all required alternative path configurations",
+  "comparison": "source/C++ stages, symbols, model, reconstruction and source-relative lossy metrics",
+  "shared_corpus": {
+    "relative_root": "../../Dataset_Verify",
+    "index_sha256": "a86c2748371327d2979f9574e832f9b84acad3c1a46fa85d194bbb63ee79ff78",
+    "selection": "All four main-profile 4KiB entries without timestamp, univariate float64 n512; no cast/normalization. IEEE extrema fixtures audited separately as unsupported numerical overflow.",
+    "entries": [
+      {
+        "key": "dv_3a1c83ed4f219d976bb4",
+        "path": "data/without_timestamp_univariate/float64/main/4KiB__constant__none__n512__c1",
+        "group": "main",
+        "category": "without_timestamp_univariate",
+        "dataset_id": "v2:dataset:sha256:7395b54c99666de8a79fe5efe32be7838306c86445448874b38a51a66da8b2a1",
+        "file_sha256": "83e7949aa73a36d75e8de5026712f8ba98edba7db0fc6f0c5631a74ffc7f8e31",
+        "content_sha256": "cfb41907823c5759e098d26d1d7f7ccf5c421aacae08dfdae5ee493c093a743a",
+        "legacy_semantic_content_sha256": "342f77c50413ac45b22bf0520432804ff7424c21495a57964b5dd2ff153ac04a",
+        "file_bytes": 5259,
+        "payload_bytes": 4096,
+        "n_rows": 512,
+        "shape": [
+          512
+        ],
+        "buffer_count": 1,
+        "available_tracks": [
+          "VALUE"
+        ],
+        "license": {
+          "spdx": "CC0-1.0",
+          "status": "RUN_ALLOWED"
+        },
+        "split": {
+          "learned_eligible": false,
+          "policy": "UNSPECIFIED",
+          "reason": "Qualification only; no training split claimed."
+        },
+        "generation_spec": {
+          "category": "without_timestamp_univariate",
+          "channels": 1,
+          "dtype": "float64",
+          "group": "main",
+          "n_rows": 512,
+          "profile": "constant",
+          "seed": 17276233526807769608,
+          "target_payload_bytes": 4096,
+          "tier": "4KiB",
+          "timestamp_mode": "none",
+          "value_dtypes": [
+            "float64"
+          ]
+        },
+        "source_provenance": {
+          "notes": "Transport hash is provenance; identity uses verified semantic content.",
+          "retrieved_at": "LOCAL",
+          "uri": "local:canonical"
+        },
+        "previous_paths": [
+          "v3/data/without_timestamp_univariate/float64/main/4KiB__constant__none__n512__c1"
+        ],
+        "supersedes": {
+          "file_sha256": "d2e1a31d92072ae4a3e26cc523491a5cad027ae9b627969d526cc3e169ad03de",
+          "content_sha256": "186a255f157554fcc10acec14a67274bb3565b7e2b2717b65139d7237dadc00d",
+          "logical_shape": [
+            512,
+            1
+          ]
+        }
+      },
+      {
+        "key": "dv_6244c2448f3b342b167c",
+        "path": "data/without_timestamp_univariate/float64/main/4KiB__periodic__none__n512__c1",
+        "group": "main",
+        "category": "without_timestamp_univariate",
+        "dataset_id": "v2:dataset:sha256:9601e91231c4b78ad34b5003c1f510b6097fac41c776e13654e5431f3a3abc86",
+        "file_sha256": "450566370f21d4f776c79e42bed40c305667ffdd9df04005a539d98af96a561b",
+        "content_sha256": "4156a7f807eea6ef149e268c96aa0e5699396290f9474b7e86512c418ca214a7",
+        "legacy_semantic_content_sha256": "9bb32b44ee48dc652485777cdb0babb2883ce50b45d6570ef5f9a09a678f37fa",
+        "file_bytes": 5259,
+        "payload_bytes": 4096,
+        "n_rows": 512,
+        "shape": [
+          512
+        ],
+        "buffer_count": 1,
+        "available_tracks": [
+          "VALUE"
+        ],
+        "license": {
+          "spdx": "CC0-1.0",
+          "status": "RUN_ALLOWED"
+        },
+        "split": {
+          "learned_eligible": false,
+          "policy": "UNSPECIFIED",
+          "reason": "Qualification only; no training split claimed."
+        },
+        "generation_spec": {
+          "category": "without_timestamp_univariate",
+          "channels": 1,
+          "dtype": "float64",
+          "group": "main",
+          "n_rows": 512,
+          "profile": "periodic",
+          "seed": 4750867833188321648,
+          "target_payload_bytes": 4096,
+          "tier": "4KiB",
+          "timestamp_mode": "none",
+          "value_dtypes": [
+            "float64"
+          ]
+        },
+        "source_provenance": {
+          "notes": "Transport hash is provenance; identity uses verified semantic content.",
+          "retrieved_at": "LOCAL",
+          "uri": "local:canonical"
+        },
+        "previous_paths": [
+          "v3/data/without_timestamp_univariate/float64/main/4KiB__periodic__none__n512__c1"
+        ],
+        "supersedes": {
+          "file_sha256": "0259644690bd08d7d359578e15c4484f4c113bd48f48919525cedd9da1112641",
+          "content_sha256": "fe68ba04d9a8b9f351ec3ddaf94e4cedfd372af27b53bf0f70f74158c669a972",
+          "logical_shape": [
+            512,
+            1
+          ]
+        }
+      },
+      {
+        "key": "dv_6f567d22883594800d0b",
+        "path": "data/without_timestamp_univariate/float64/main/4KiB__random__none__n512__c1",
+        "group": "main",
+        "category": "without_timestamp_univariate",
+        "dataset_id": "v2:dataset:sha256:301b94dc98eedc5fd5fbf4ecf4abc49958056c2892e5acaee6c23171554431bf",
+        "file_sha256": "3e5de644495615c7cf4f42663329b08408b95133f854fac19dbea8d875035575",
+        "content_sha256": "034ce1d78d584a83ae1f597f346b9afbf31fc717cbb5d75a1f927a7588f5590b",
+        "legacy_semantic_content_sha256": "05e416d5dc56feae40dc5f6e0c888063b6b012503e5ade6a140a6c53beda7e93",
+        "file_bytes": 5259,
+        "payload_bytes": 4096,
+        "n_rows": 512,
+        "shape": [
+          512
+        ],
+        "buffer_count": 1,
+        "available_tracks": [
+          "VALUE"
+        ],
+        "license": {
+          "spdx": "CC0-1.0",
+          "status": "RUN_ALLOWED"
+        },
+        "split": {
+          "learned_eligible": false,
+          "policy": "UNSPECIFIED",
+          "reason": "Qualification only; no training split claimed."
+        },
+        "generation_spec": {
+          "category": "without_timestamp_univariate",
+          "channels": 1,
+          "dtype": "float64",
+          "group": "main",
+          "n_rows": 512,
+          "profile": "random",
+          "seed": 13940937943599384693,
+          "target_payload_bytes": 4096,
+          "tier": "4KiB",
+          "timestamp_mode": "none",
+          "value_dtypes": [
+            "float64"
+          ]
+        },
+        "source_provenance": {
+          "notes": "Transport hash is provenance; identity uses verified semantic content.",
+          "retrieved_at": "LOCAL",
+          "uri": "local:canonical"
+        },
+        "previous_paths": [
+          "v3/data/without_timestamp_univariate/float64/main/4KiB__random__none__n512__c1"
+        ],
+        "supersedes": {
+          "file_sha256": "4db4c9d4d549356781c7ddda7e36f9934f258c461545abebb123d1df817466d7",
+          "content_sha256": "c203ace70701890e43bb59cff2b284ac8f382b285882a794f413f01d748a0960",
+          "logical_shape": [
+            512,
+            1
+          ]
+        }
+      },
+      {
+        "key": "dv_8a6f3c05f484d5129699",
+        "path": "data/without_timestamp_univariate/float64/main/4KiB__slow__none__n512__c1",
+        "group": "main",
+        "category": "without_timestamp_univariate",
+        "dataset_id": "v2:dataset:sha256:4d0928a39712e152df746c1cbf3125ebf2a417f2fd98c75f6f966d0b7620b135",
+        "file_sha256": "5d3a438c607d6f0fc85d5faf40fd24fed5566f2c1af1ee504828ba92992daef4",
+        "content_sha256": "5b2a75a61164151d923eb68e33754d46d502d68c797331996688ac03f2c10fd8",
+        "legacy_semantic_content_sha256": "9198f9a2d6798bc4df95c16ffb7641268d54b4a95d0ef54c3b4a0f1429278b24",
+        "file_bytes": 5259,
+        "payload_bytes": 4096,
+        "n_rows": 512,
+        "shape": [
+          512
+        ],
+        "buffer_count": 1,
+        "available_tracks": [
+          "VALUE"
+        ],
+        "license": {
+          "spdx": "CC0-1.0",
+          "status": "RUN_ALLOWED"
+        },
+        "split": {
+          "learned_eligible": false,
+          "policy": "UNSPECIFIED",
+          "reason": "Qualification only; no training split claimed."
+        },
+        "generation_spec": {
+          "category": "without_timestamp_univariate",
+          "channels": 1,
+          "dtype": "float64",
+          "group": "main",
+          "n_rows": 512,
+          "profile": "slow",
+          "seed": 4224482257520149453,
+          "target_payload_bytes": 4096,
+          "tier": "4KiB",
+          "timestamp_mode": "none",
+          "value_dtypes": [
+            "float64"
+          ]
+        },
+        "source_provenance": {
+          "notes": "Transport hash is provenance; identity uses verified semantic content.",
+          "retrieved_at": "LOCAL",
+          "uri": "local:canonical"
+        },
+        "previous_paths": [
+          "v3/data/without_timestamp_univariate/float64/main/4KiB__slow__none__n512__c1"
+        ],
+        "supersedes": {
+          "file_sha256": "f3ac2ea83ac64f61be8cadc6b593dd197c663861485dbcdc30a996a6484fc001",
+          "content_sha256": "ab3391bf6c8983594433c8c0eab2f1faf01f671dec7be80947e1de008ba7dcc2",
+          "logical_shape": [
+            512,
+            1
+          ]
+        }
+      }
+    ],
+    "frozen": "tests/data/shared-float64.json"
+  },
+  "fit_policy": "Per-object adaptive codebook learned only from the encoded input, fully serialized; no corpus model or TEST-based tuning. Frozen-model reuse separately uses TRAIN fit and TEST transform."
+}

@@ -18,7 +18,7 @@ from tsbench.bridges import create_bridge
 from tsbench.runtime import loaded_runtime, worker_environment
 from test_core_floats import ROOT, Config, Result, U8P, buffer, check, library
 
-MODELS = ('abba', 'fabba', 'deepzip', 'dzip')
+MODELS = ('abba', 'fabba', 'qabba', 'deepzip', 'dzip')
 GORILLA = 'gorilla-prometheus-xor'
 BITS = np.array([0, 1 << 63, 0x7ff0000000000000, 0xfff0000000000000,
                  0x7ff0000000000001, 0x7ff8123456781234, 1, 0xffffffffffffffff], dtype='<u8')
@@ -64,7 +64,7 @@ def dzip_runtime_subprocess(request):
 
 
 def configuration(key, count, params, model=None):
-    dtype = 11 if key == GORILLA else 10 if key in ('abba', 'fabba') else 2
+    dtype = 11 if key == GORILLA else 10 if key in ('abba', 'fabba', 'qabba') else 2
     shape = (count, 2) if key == GORILLA else (count,)
     return Config(1, dtype, len(shape), 0, (C.c_uint64 * 8)(*shape),
                   json.dumps(params, separators=(',', ':')).encode(),
@@ -133,18 +133,17 @@ def decode(lib, key, count, stream, expected_bytes):
         lib.tsbench_core_release(C.byref(result))
 
 
-@pytest.mark.parametrize('key', ['abba', 'fabba'])
+@pytest.mark.parametrize('key', ['abba', 'fabba', 'qabba'])
 @pytest.mark.parametrize('count', [2, 17])
 def test_symbolic_complete_native_model_restores_grid_with_no_encoder_state(key, count):
     lib = library(key)
     values = np.arange(count, dtype='<f8') / 8
     params = Registry(ROOT).resolve_params(key, {'max_len': 4})
     stream = encode_all(lib, key, count, [values.tobytes()], params)[0]
-    assert stream[:4] == (b'ABBA' if key == 'abba' else b'FABB')
-    assert int.from_bytes(stream[8:16], 'little') == count
-    symbols, centers = struct.unpack_from('<II', stream, 16)
-    header = 64 if key == 'abba' else 72
-    assert symbols and centers and len(stream) == header + centers * 16 + symbols * 2 + 4
+    assert stream[:4] == b'AFS1'
+    metadata=json.loads(stream[20:20+struct.unpack_from('<I',stream,8)[0]])
+    assert metadata['sample_counts'] == [count]
+    assert metadata['algorithm'] == key and metadata['streams']
     restored = np.frombuffer(decode(lib, key, count, stream, values.nbytes), dtype='<f8')
     # This dyadic straight line is represented exactly; this is not a general
     # error guarantee for the empirical ABBA/fABBA algorithms.
@@ -158,6 +157,7 @@ _SYMBOLIC_PROFILES = [
     ('abba', {'compression_tolerance': '0.05', 'digitization_tolerance': '0.3',
               'max_len': 7, 'max_k': 8, 'norm': 2, 'scl': '1.5'}),
     ('abba', {'max_len': 31, 'norm': 1, 'clustering': 'INCREMENTAL', 'scl': '1'}),
+    ('qabba', {}),
     ('fabba', {}),
     ('fabba', {'tolerance': '0', 'alpha': '0', 'max_len': 3}),
     ('fabba', {'tolerance': '0.05', 'alpha': '0.25', 'max_len': 7, 'scl': '0.5'}),
@@ -167,24 +167,22 @@ _SYMBOLIC_PROFILES = [
 
 @pytest.mark.parametrize('key,overrides', _SYMBOLIC_PROFILES)
 @pytest.mark.parametrize('count', [2, 17, 65])
-def test_symbolic_encode_only_matches_original_native_complete_bytes(key, overrides, count):
+def test_symbolic_core_matches_current_c1_complete_bytes(key, overrides, count):
     lib = library(key)
     params = Registry(ROOT).resolve_params(key, overrides)
     values = ((np.arange(count, dtype=np.int64) % 7) - 3).astype('<f8') / 8
     raw = values.tobytes()
+    if key == 'qabba' and count == 17:
+        from tsbench.registry import SourceDomainError
+        with pytest.raises(SourceDomainError, match='SOURCE_RECONSTRUCTED_LENGTH_DIFFERS_FROM_GRID'):
+            create_bridge(ROOT,key).encode(values,params)
+        return
     direct = encode_all(lib, key, count, [raw], params)[0]
-    # RW's native binding still calls the original encode -> transform path,
-    # including its unused reconstructed vector. Compare the native stream,
-    # before Python adds any RW collection framing.
-    original = create_bridge(ROOT, key)
-    config = original._config(count, params)
-    capacity = original._call('bound', raw, config)
-    reference = original._call('encode', raw, config, capacity)
+    bridge = create_bridge(ROOT, key)
+    reference = bridge.encode(values, params)
     assert direct == reference
-    # Recovery/quality is a separate operation after encoding. The new entry
-    # must preserve every native header, parameter, center, symbol and CRC.
     restored = decode(lib, key, count, direct, values.nbytes)
-    reference_restored = original._call('decode', reference, capacity=values.nbytes)
+    reference_restored = bridge.decode(reference, values.dtype, values.shape, {}).tobytes()
     assert restored == reference_restored
     assert np.isfinite(np.frombuffer(restored, dtype='<f8')).all()
     assert values.tobytes() == raw
@@ -247,7 +245,7 @@ def test_independent_model_decoder_rejects_encoder_parameters_and_external_model
         assert handle.value is None
 
 
-@pytest.mark.parametrize('key', ['abba', 'fabba', 'deepzip'])
+@pytest.mark.parametrize('key', ['abba', 'fabba', 'qabba', 'deepzip'])
 def test_input_admission_rejects_domains_outside_algorithm_contract(key):
     lib = library(key)
     registry = Registry(ROOT)

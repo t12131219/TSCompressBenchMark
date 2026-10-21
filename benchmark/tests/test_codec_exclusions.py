@@ -64,7 +64,7 @@ def test_build_all_omits_excluded_codecs(monkeypatch):
     def fake(root,key,**kwargs):called.append(key);return {'status':'ok','codec':key}
     monkeypatch.setattr(build,'build_codec',fake)
     records=build.build_all(ROOT)
-    assert len(records)==42 and not set(EXCLUDED)&set(called)
+    assert len(records)==43 and not set(EXCLUDED)&set(called)
     assert {'lzsse2-raw','lzsse8-raw'}<=set(called)
 
 

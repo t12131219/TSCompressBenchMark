@@ -1,0 +1,406 @@
+{
+  "schema_version": "tscb.abba-family-binding-evidence.v1",
+  "date": "2026-10-20",
+  "status": "BENCH_BINDING_QUALIFIED_LIMITED_SCOPE",
+  "release_sha256": "ec70b59fd9e0a48303604596df43fa8e21090b6f577513f11894e727a6240b1e",
+  "frozen_members": 7830,
+  "consumed_core_modified": false,
+  "validation": {
+    "source_and_independent_cases": 187,
+    "input_values": 26670,
+    "successful_recovery": 144,
+    "expected_qabba_grid_rejections": 43,
+    "standalone_reference_ctest": "1/1",
+    "native_boundary_lifecycle_combinations": 12,
+    "validated_native_products": 36,
+    "cold_object_combinations": 24,
+    "binding_sanitizer_cases": 147,
+    "sanitizer_linkage": "BINDING_PLUS_SHARED_RELEASE_CORE; PRODUCTION_STATIC_CLOSURE_CHECKED_SEPARATELY",
+    "sanitizer_stderr_bytes": 0,
+    "full_suite_passed": 1387,
+    "subtests_passed": 4,
+    "failures": 0,
+    "skipped": 0,
+    "formal_performance": "NOT_RERUN"
+  },
+  "limitations": [
+    "empirical_quality only",
+    "rank1 core; column-independent C1/object",
+    "source grid/numerical/work-limit rejections",
+    "No inherited standalone cross-ISA/fuzz/OOM/reproducibility qualification"
+  ],
+  "builds": {
+    "abba": {
+      "index": {
+        "path": "build/tsbench/abba.index.json",
+        "sha256": "2c50135646c6fd6345aaa409a4f88b3f6d5be3c0a464563d5ddbe6e41487f269",
+        "bytes": 425
+      },
+      "build": {
+        "path": "build/tsbench/d161e47c5529c949a7e29dba48693f244c763bda2d53372a096f02968b8449b8/abba/build.json",
+        "sha256": "f70da6c3e1e38c84e9716bfaab9e82701a3de40e5f61e59b680f5a9be0786b74",
+        "bytes": 1788670
+      },
+      "artifact": {
+        "path": "build/tsbench/d161e47c5529c949a7e29dba48693f244c763bda2d53372a096f02968b8449b8/abba/libtscb_abba.so",
+        "sha256": "ff31e1e360fb6b8cede9614bcc4f9da5486bb2ae62ee571fd7379b2444184918",
+        "bytes": 2194048
+      },
+      "build_id": "sha256:d161e47c5529c949a7e29dba48693f244c763bda2d53372a096f02968b8449b8",
+      "compiled_dependencies": 735
+    },
+    "fabba": {
+      "index": {
+        "path": "build/tsbench/fabba.index.json",
+        "sha256": "5730fc4e60c42598d87f67901b49a9afcebb5fb50ecc9a27eadc91d115524711",
+        "bytes": 428
+      },
+      "build": {
+        "path": "build/tsbench/65066afef30e902acf61629a1ef0a11fe9019bd212cfb2ff956995a49c4a4024/fabba/build.json",
+        "sha256": "f626fb708b476a3bf28cdfaf718fbf6dc1264c5dbb7b7ea7fbed4de4294fc3db",
+        "bytes": 1788937
+      },
+      "artifact": {
+        "path": "build/tsbench/65066afef30e902acf61629a1ef0a11fe9019bd212cfb2ff956995a49c4a4024/fabba/libtscb_fabba.so",
+        "sha256": "30b6fb12a62a7961435e07930932ba7f0eb5102361b064307b657579c40b92e2",
+        "bytes": 2194048
+      },
+      "build_id": "sha256:65066afef30e902acf61629a1ef0a11fe9019bd212cfb2ff956995a49c4a4024",
+      "compiled_dependencies": 735
+    },
+    "qabba": {
+      "index": {
+        "path": "build/tsbench/qabba.index.json",
+        "sha256": "13546fe357f8a448a58bff9ef9297b4af9cf2a9d69ba8922e0c0e1f386a0846f",
+        "bytes": 428
+      },
+      "build": {
+        "path": "build/tsbench/cd5506c2c00b572a3b550cf8406dfa18a5b5503e6a87cc6c8057988151ff6648/qabba/build.json",
+        "sha256": "b46592dca305998f6cabb5e05794296128f13ce7954c7166d3f134a6fe325f00",
+        "bytes": 1788937
+      },
+      "artifact": {
+        "path": "build/tsbench/cd5506c2c00b572a3b550cf8406dfa18a5b5503e6a87cc6c8057988151ff6648/qabba/libtscb_qabba.so",
+        "sha256": "8ea35f733f1d186689776dc189994cd0084f37185a656a9400ec0d06098708e4",
+        "bytes": 2194048
+      },
+      "build_id": "sha256:cd5506c2c00b572a3b550cf8406dfa18a5b5503e6a87cc6c8057988151ff6648",
+      "compiled_dependencies": 735
+    },
+    "deepzip": {
+      "index": {
+        "path": "build/tsbench/deepzip.index.json",
+        "sha256": "f980c5b175892a6dc437bc53e808eee0f1955c436d0f62cdae4b616d85b6911c",
+        "bytes": 434
+      },
+      "build": {
+        "path": "build/tsbench/ba747a4ec86577e73439a25acca5a862695216993e035c690b45d12eb52a4497/deepzip/build.json",
+        "sha256": "52f0c026951f5c83577649347a42855b7eb8e893281e4c436c759d69528fde91",
+        "bytes": 289082
+      },
+      "artifact": {
+        "path": "build/tsbench/ba747a4ec86577e73439a25acca5a862695216993e035c690b45d12eb52a4497/deepzip/libtscb_deepzip.so",
+        "sha256": "f32fbc16545c7f61aff6c4bdd40068b00e8b7e43d4f4bf50e2edde537d8ab4ac",
+        "bytes": 184696
+      },
+      "build_id": "sha256:ba747a4ec86577e73439a25acca5a862695216993e035c690b45d12eb52a4497",
+      "compiled_dependencies": 281
+    },
+    "dzip": {
+      "index": {
+        "path": "build/tsbench/dzip.index.json",
+        "sha256": "b1790ca3d0f64dbc6ff4b9d2cd30a29549b438f8d3e6d59709a583398358b8b5",
+        "bytes": 425
+      },
+      "build": {
+        "path": "build/tsbench/31a59216f678e52aacdbe47142c33304cdbdca72486449eb83e28636e49f4d7a/dzip/build.json",
+        "sha256": "ddec1ff66ccab5f5c9544b362eaa2259afbf87ee12d73acc08c35e21e7627b80",
+        "bytes": 442242
+      },
+      "artifact": {
+        "path": "build/tsbench/31a59216f678e52aacdbe47142c33304cdbdca72486449eb83e28636e49f4d7a/dzip/libtscb_dzip.so",
+        "sha256": "fe447c315d4c3ba010a9c21102d9170bfb4044bf35ce212e66f9396476aea37d",
+        "bytes": 2484312
+      },
+      "build_id": "sha256:31a59216f678e52aacdbe47142c33304cdbdca72486449eb83e28636e49f4d7a",
+      "compiled_dependencies": 931
+    }
+  },
+  "files": [
+    {
+      "path": "TimeSeries_Compression_Benchmark_V4.0_工程实施总计划.md",
+      "sha256": "34c59a30e0c0cf21ebbcd147ad3e47bedd4f3aeb0c496a700a311caa40a8d4d8",
+      "bytes": 117488
+    },
+    {
+      "path": "adapters/abba_family/FROZEN_SOURCES.json",
+      "sha256": "973d5b379fd93f41c7efdc5ec740179396738be2a1619a607491ccb01f70b73a",
+      "bytes": 2520885
+    },
+    {
+      "path": "adapters/abba_family/README.md",
+      "sha256": "873575050324b8635026ba6fcf47a6d0f15859682704da34ea9fe5ad6a662463",
+      "bytes": 3113
+    },
+    {
+      "path": "adapters/abba_family/native/binding.cc",
+      "sha256": "2b5c0c0889aba8eaa7fbd97f2cb4ed688081555544092c0b708cbf5fa3f9fd33",
+      "bytes": 17134
+    },
+    {
+      "path": "benchmark/examples/abba-family.toml",
+      "sha256": "aadd26641a6e5357cc705968ef1ae1904d11c923b6910deee17122042a146aff",
+      "bytes": 975
+    },
+    {
+      "path": "benchmark/src/tsbench/bridges/c_abi_v1.py",
+      "sha256": "e30525df9306b47c65c3e159ffb2cee66e68bdc86991c0d291b4fa89f0028e73",
+      "bytes": 18344
+    },
+    {
+      "path": "benchmark/src/tsbench/bridges/rw_abi_v1.py",
+      "sha256": "d655f3766868d77556c2343890a22d45e82229aa31e2d2decddc1c1546bccb6f",
+      "bytes": 6813
+    },
+    {
+      "path": "benchmark/src/tsbench/build.py",
+      "sha256": "c5d021c1abca6ee0e2babab13d9685fee226ad6ff7868c1b4ba54bb14ddee17c",
+      "bytes": 20573
+    },
+    {
+      "path": "benchmark/src/tsbench/native.py",
+      "sha256": "f2c0d9e717e053989dfeeba1f6c58d4f1f59eb0f1074aab1c4bc6b0d08a156d8",
+      "bytes": 31718
+    },
+    {
+      "path": "benchmark/src/tsbench/registry.py",
+      "sha256": "0832f665d4b8052deecfecc05c5068c8591ea21cc134a1d40e8123676b29d070",
+      "bytes": 9264
+    },
+    {
+      "path": "benchmark/src/tsbench/schemes.py",
+      "sha256": "6a1944bdf44f80151b2f54811a89539dbeb98991db4bf7937cb3e90665662a8a",
+      "bytes": 14939
+    },
+    {
+      "path": "benchmark/tests/test_abba_family.py",
+      "sha256": "e7bb5d447a567177558c7ace965f636997e764fae6feb7985e33bc77c0ffb087",
+      "bytes": 11441
+    },
+    {
+      "path": "benchmark/tests/test_codec_exclusions.py",
+      "sha256": "5d96cb3e7e2bdfb0f9b4e1f577843f700ca264f0972b41da653ede84ee878e20",
+      "bytes": 3629
+    },
+    {
+      "path": "benchmark/tests/test_config_and_records.py",
+      "sha256": "194d91b2c7a14658765161f557998052efcc2b1b79d99053d2069c5205e5d9d0",
+      "bytes": 6110
+    },
+    {
+      "path": "benchmark/tests/test_core_model_records.py",
+      "sha256": "ee8fcd8f5f9141ca07377bc71fc3c792be4d32f38e38ede3d61c9402d28a5a3b",
+      "bytes": 15084
+    },
+    {
+      "path": "benchmark/tools/qualify_abba_family.py",
+      "sha256": "90afc73241b1d7f4e7d7f8b248cd83694f21a999c548e95ce12593612131632d",
+      "bytes": 9158
+    },
+    {
+      "path": "docs/abba_family_integration/PLAN.md",
+      "sha256": "bb33413f805875035358fc5f5fb7a41f05d92f7affe5321bd94ad64f9462fb99",
+      "bytes": 1811
+    },
+    {
+      "path": "docs/abba_family_integration/README.md",
+      "sha256": "7ba769c240745757775f9d4de903f2882122626268486369ff3d01b5d90691c8",
+      "bytes": 9151
+    },
+    {
+      "path": "docs/abba_family_integration/abba-exports.txt",
+      "sha256": "3bb90c959d34480b47e03d08068b51c3d48d2821941f195bcccecf38b84f6e4a",
+      "bytes": 912
+    },
+    {
+      "path": "docs/abba_family_integration/binding_safety.cpp",
+      "sha256": "00977d50e14cd81ab7bc9b284ad33ccb01065022fdf1a158fca914e081d396ac",
+      "bytes": 4851
+    },
+    {
+      "path": "docs/abba_family_integration/build_sanitized.sh",
+      "sha256": "32ca6f8e36686185733e5cdc1c52e89d86a2ea952b62ad10b2bbf06c42f656f3",
+      "bytes": 989
+    },
+    {
+      "path": "docs/abba_family_integration/example-check.json",
+      "sha256": "9bdc2cb38a7f533281946d5a6e98766b62b20148687f57ae700308625a22ebc4",
+      "bytes": 966
+    },
+    {
+      "path": "docs/abba_family_integration/fabba-exports.txt",
+      "sha256": "3bb90c959d34480b47e03d08068b51c3d48d2821941f195bcccecf38b84f6e4a",
+      "bytes": 912
+    },
+    {
+      "path": "docs/abba_family_integration/legacy-abba.index.json",
+      "sha256": "1bcf51f0ab34c5ba3bef071cdb60c3e1ac98daf955452a65c208106dcfdbc172",
+      "bytes": 425
+    },
+    {
+      "path": "docs/abba_family_integration/legacy-auxiliary.tar.gz",
+      "sha256": "44e83a5930dd46fdc777afb71af838c079509486ba3f60e332a32085af533544",
+      "bytes": 4284
+    },
+    {
+      "path": "docs/abba_family_integration/legacy-before-replacement.tar.gz",
+      "sha256": "5dbb1cbf9f4f5778ac3a34b3dae31395d4757989ffd95132b5afa9c260c2afcd",
+      "bytes": 238667
+    },
+    {
+      "path": "docs/abba_family_integration/legacy-fabba.index.json",
+      "sha256": "8698550d51035c68d892e5a4a401f6f2d90beae52c5e7199ddb3bbb75560c37f",
+      "bytes": 428
+    },
+    {
+      "path": "docs/abba_family_integration/logs/build-final.log",
+      "sha256": "f993c49717d23b88f5aa0f3a25466e7419103dfb35ee835e7d02694c245c7734",
+      "bytes": 6333598
+    },
+    {
+      "path": "docs/abba_family_integration/logs/build-immutable-source-diagnostic.log",
+      "sha256": "38bd4e31a4fece5647058cc88a360c9a59aacaa01deb9f262dd1840a85933f0c",
+      "bytes": 1791338
+    },
+    {
+      "path": "docs/abba_family_integration/logs/build-initial-failed.log",
+      "sha256": "804f91cf0202542529bc3b492ff4268c6680e2b1311c469fff8c75435b496639",
+      "bytes": 4859
+    },
+    {
+      "path": "docs/abba_family_integration/logs/build-private-source.log",
+      "sha256": "bdf6fc66eb4a7529fee8277eb13faf79e8021d5a9eea9f5cbcd277a2a62e6f1c",
+      "bytes": 5402363
+    },
+    {
+      "path": "docs/abba_family_integration/logs/full-suite-final.log",
+      "sha256": "d57aa5aeeeebf5a5ca4471d27c9ef2902f6a576c40587caecb9a19c7b0f3aecb",
+      "bytes": 1647
+    },
+    {
+      "path": "docs/abba_family_integration/logs/full-suite-final.xml",
+      "sha256": "f0338eea4c2a0fb476c1a30eaa0c5ea3c8ac5f5086605d702f9f8666b5286208",
+      "bytes": 193885
+    },
+    {
+      "path": "docs/abba_family_integration/logs/full-suite-initial-count-diagnostic.log",
+      "sha256": "bacee74352adf769a6ff37880a6aa4a652460ca047dfc2ea55d935ffe093c3f1",
+      "bytes": 4196
+    },
+    {
+      "path": "docs/abba_family_integration/logs/reference-build-and-ctest.log",
+      "sha256": "9085c68cd4935c8880c5288fd030098f6290cba250b10ee0b415df2efc26b87c",
+      "bytes": 152318
+    },
+    {
+      "path": "docs/abba_family_integration/logs/sanitized-build.log",
+      "sha256": "3462f036317d2eca3d65a4f34603ff0f7e0d70022ae09a7be5f5a23479087d5f",
+      "bytes": 126994
+    },
+    {
+      "path": "docs/abba_family_integration/logs/sanitizer-host.err",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "docs/abba_family_integration/logs/sanitizer-host.json",
+      "sha256": "a7845f44f810ef3088fdc7d3571298762ab33a7919190bfc6ae3cc8cdb15e5f2",
+      "bytes": 30
+    },
+    {
+      "path": "docs/abba_family_integration/logs/sanitizer-ptrace-attempt.err",
+      "sha256": "94c3532a59cb16ca6ac81d82ea87ddac0ddd681e22afb310285fae2aa4dd4a4e",
+      "bytes": 219
+    },
+    {
+      "path": "docs/abba_family_integration/logs/sanitizer-ptrace-attempt.json",
+      "sha256": "a7845f44f810ef3088fdc7d3571298762ab33a7919190bfc6ae3cc8cdb15e5f2",
+      "bytes": 30
+    },
+    {
+      "path": "docs/abba_family_integration/logs/source-qualification.log",
+      "sha256": "e6bb00d58445f1483ea3045dee326f00884ff4dc0a932e15588784dbf09eaa7a",
+      "bytes": 347
+    },
+    {
+      "path": "docs/abba_family_integration/logs/targeted.xml",
+      "sha256": "1a143c93b6c0bee4b0d64eff67cda98cc3be0076cc1e13ad21082cc55c009a19",
+      "bytes": 15863
+    },
+    {
+      "path": "docs/abba_family_integration/logs/tests-core-and-c1.log",
+      "sha256": "1d03f19926fb375e7179558e85e75d6c5b580eb8e6a684601eb3458630fde180",
+      "bytes": 261
+    },
+    {
+      "path": "docs/abba_family_integration/logs/tests-initial-grid-diagnostic.log",
+      "sha256": "7cb8e51d89611083f91a35a37b04a18008e69b3596118471b386017a9227f836",
+      "bytes": 2117
+    },
+    {
+      "path": "docs/abba_family_integration/logs/tests-object-final.log",
+      "sha256": "ea88852afd473a75d7833482663e3c2db396b164d30c96d565f4e0e4773b5a4a",
+      "bytes": 180
+    },
+    {
+      "path": "docs/abba_family_integration/logs/tests-underflow.log",
+      "sha256": "aef9a9fe43c8172b49bbcd496652074d2985427fc4c48eb07159b6938f5b58fd",
+      "bytes": 114
+    },
+    {
+      "path": "docs/abba_family_integration/qabba-exports.txt",
+      "sha256": "3bb90c959d34480b47e03d08068b51c3d48d2821941f195bcccecf38b84f6e4a",
+      "bytes": 912
+    },
+    {
+      "path": "docs/abba_family_integration/qualification.json",
+      "sha256": "b5edca2d8417476e7a78fc90d2768eb840c5f123659055b3f7e789efd9bb01d4",
+      "bytes": 773599
+    },
+    {
+      "path": "docs/abba_family_integration/reference-build.json",
+      "sha256": "8be853b3a758038c33bf4ce27132bcf4af73c7fde172ef4b058023dc9ddd448f",
+      "bytes": 131880
+    },
+    {
+      "path": "docs/abba_family_integration/source-oracle-identity.json",
+      "sha256": "8a9e7a66f598b871d34a68d69b24f34a107216c3b44c25fb927f60df8aab51a6",
+      "bytes": 343607
+    },
+    {
+      "path": "docs/development.md",
+      "sha256": "f276a301b3bd5080a38ec0b4d50d98a35f594cd2ef7fe8ca264da94196e4180d",
+      "bytes": 36906
+    },
+    {
+      "path": "registry/codecs/abba.json",
+      "sha256": "f83b8b2c4b510fc20fbc66cac12cbe08cbae0f56b6da2a1f99a000b6973edc1e",
+      "bytes": 5490
+    },
+    {
+      "path": "registry/codecs/fabba.json",
+      "sha256": "a3bd2f8bede5111adadb1cf024439cf40a37f2137a4da4341dcc007beeb2dc64",
+      "bytes": 5020
+    },
+    {
+      "path": "registry/codecs/qabba.json",
+      "sha256": "dfc878ac684df9309e7193def7ce863b5cfda70cee6f75596721558c857a2aae",
+      "bytes": 6378
+    },
+    {
+      "path": "registry/sources/abba-family-20261020.artifact.json",
+      "sha256": "03daa61ffc8be522103a2c0ddf3af6e4de32c8866bcd8d66306f0817464706b2",
+      "bytes": 2100
+    }
+  ]
+}

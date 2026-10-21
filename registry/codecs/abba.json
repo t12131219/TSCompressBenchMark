@@ -2,12 +2,12 @@
   "schema_version": "tscb.codec-manifest.v2",
   "key": "abba",
   "identity": {
-    "display_name": "abba",
+    "display_name": "ABBA (2026 rewrite)",
     "family": "ABBA",
     "citations": [
-      "adapters/completed_rewrites/vendor/abba/contract.md"
+      "adapters/abba_family/vendor/abba_family/docs/CONTRACT.md"
     ],
-    "source_artifact_id": "v2:source-artifact:sha256:c6558d93ae396c292a82853ce3294493f1d97358d3a22783f36c5ff50029f240"
+    "source_artifact_id": "v2:source-artifact:sha256:f136f5dc5e21c9a2f826255af52983d5bfd245c6c4b39efae60abd68e88f0968"
   },
   "classification": {
     "object_level": "P2_PIPELINE",
@@ -40,14 +40,14 @@
     ],
     "alignment_bytes": 1,
     "min_n": 2,
-    "max_n": 16777216,
+    "max_n": 1048576,
     "min_m": 1,
-    "max_m": 65535,
+    "max_m": 4096,
     "validity_shapes": [
       "NONE"
     ],
     "homogeneous_itemsize": true,
-    "max_total_raw_bytes": 134217728,
+    "max_total_raw_bytes": 8388608,
     "value_coupling_mode": "COLUMN_INDEPENDENT",
     "timestamp_semantics": {
       "preserve_order": true,
@@ -57,14 +57,15 @@
       "absolute_epoch": true,
       "overflow_policy": "NOT_APPLICABLE_VALUE_ONLY"
     },
-    "max_total_elements": 16777216,
+    "max_total_elements": 1048576,
     "value_domain": {
       "kind": "FROZEN_SOURCE_WITH_BOUNDED_REJECTION",
       "unsupported_action": "REJECT_BEFORE_OUTPUT",
-      "oracle_evidence": "adapters/completed_rewrites/vendor/abba/contract.md",
+      "oracle_evidence": "adapters/abba_family/vendor/abba_family/docs/CONTRACT.md",
       "rejection_reasons": [
         "FINITE_INPUT_REQUIRED",
-        "SEGMENT_ENDPOINT_ARITHMETIC_UNSUPPORTED"
+        "SOURCE_ARITHMETIC_OR_RESOURCE_LIMIT",
+        "SOURCE_RECONSTRUCTED_LENGTH_DIFFERS_FROM_GRID"
       ]
     }
   },
@@ -76,10 +77,10 @@
     "reconstruction_modes": [
       "APPROX_GRID"
     ],
-    "rebuild_protocol": "COMPLETE_NATIVE_FRAME_WITH_ORIGINAL_GRID_V1",
+    "rebuild_protocol": "AFS1_SOURCE_RECONSTRUCTION_ON_ORIGINAL_GRID_NO_RESAMPLING",
     "preprocess_class": "NONE",
     "preprocess_stages": [],
-    "decodability_profile": "SELF_CONTAINED_DESCRIPTOR_AND_NATIVE_FRAMES",
+    "decodability_profile": "SELF_CONTAINED_AFS1_OR_AFM1_COLUMN_COLLECTION",
     "bitstream_separability": "PER_COLUMN"
   },
   "lifecycle": {
@@ -95,7 +96,8 @@
   },
   "execution": {
     "backends": [
-      "COMPLETED_REWRITE_ABI_V1"
+      "C_ABI_V1",
+      "NATIVE_CORE_OWNED_CPP"
     ],
     "isa": [
       "SCALAR"
@@ -121,13 +123,30 @@
     "type": "object",
     "additionalProperties": false,
     "properties": {
+      "isa": {
+        "type": "string",
+        "default": "SCALAR",
+        "enum": [
+          "SCALAR"
+        ]
+      },
+      "native_timing": {
+        "type": "boolean",
+        "default": false
+      },
+      "max_len": {
+        "type": "integer",
+        "default": 1048576,
+        "minimum": 1,
+        "maximum": 4294967295
+      },
       "compression_tolerance": {
         "type": "decimal-string",
-        "default": "0.1"
+        "default": ".1"
       },
       "digitization_tolerance": {
         "type": "decimal-string",
-        "default": "0.1"
+        "default": ".1"
       },
       "min_k": {
         "type": "integer",
@@ -140,12 +159,6 @@
         "default": 100,
         "minimum": 1,
         "maximum": 65535
-      },
-      "max_len": {
-        "type": "integer",
-        "default": 4294967295,
-        "minimum": 1,
-        "maximum": 4294967295
       },
       "norm": {
         "type": "integer",
@@ -165,20 +178,16 @@
           "INCREMENTAL"
         ]
       },
-      "isa": {
-        "type": "string",
-        "default": "SCALAR",
-        "enum": [
-          "SCALAR"
-        ]
+      "weighted": {
+        "type": "boolean",
+        "default": false
+      },
+      "symmetric": {
+        "type": "boolean",
+        "default": true
       }
     },
     "constraints": [
-      {
-        "kind": "ordered",
-        "lower": "min_k",
-        "upper": "max_k"
-      },
       {
         "kind": "numeric_range",
         "parameter": "compression_tolerance",
@@ -193,158 +202,28 @@
         "kind": "numeric_range",
         "parameter": "scl",
         "minimum": "0"
+      },
+      {
+        "kind": "ordered",
+        "lower": "min_k",
+        "upper": "max_k"
       }
     ]
   },
   "adapter": {
-    "backend": "COMPLETED_REWRITE_ABI_V1",
-    "version": "completed-rewrites-v1",
-    "factory": "COMPLETED_REWRITE_CTYPES_V1",
-    "artifact_path": "build/port-standard-v30-20261011/adapters/abba/release/libtscb_abba.so",
-    "timing_boundary": "PYTHON_LAYOUT_C_ABI_NATIVE_FRAME_AND_MODEL_LOAD_INCLUDED",
+    "backend": "C_ABI_V1",
+    "factory": "ABBA_FAMILY_CTYPES_V1",
+    "version": "abba-family-20261020-binding-v1",
+    "artifact_path": "build/tsbench/abba/libtscb_abba.so",
+    "timing_boundary": "OWNING_CPP_API_INCLUDES_FIT_STAGING_MODEL_FULL_FRAME_AND_RECONSTRUCTION",
     "accounting_hooks": [
       "FINAL_STREAM_LENGTH",
-      "CONTAINER_BYTES",
-      "COMPLETE_NATIVE_FRAMES_WITH_ALL_MODEL_BITS"
+      "COMPLETE_AFS1_FRAMES",
+      "AFM1_COLUMN_COLLECTION_BYTES"
     ],
-    "parameter_contract": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "compression_tolerance": {
-          "type": "decimal-string",
-          "default": "0.1"
-        },
-        "digitization_tolerance": {
-          "type": "decimal-string",
-          "default": "0.1"
-        },
-        "min_k": {
-          "type": "integer",
-          "default": 1,
-          "minimum": 1,
-          "maximum": 65535
-        },
-        "max_k": {
-          "type": "integer",
-          "default": 100,
-          "minimum": 1,
-          "maximum": 65535
-        },
-        "max_len": {
-          "type": "integer",
-          "default": 4294967295,
-          "minimum": 1,
-          "maximum": 4294967295
-        },
-        "norm": {
-          "type": "integer",
-          "default": 2,
-          "minimum": 1,
-          "maximum": 2
-        },
-        "scl": {
-          "type": "decimal-string",
-          "default": "0"
-        },
-        "clustering": {
-          "type": "string",
-          "default": "KMEANS",
-          "enum": [
-            "KMEANS",
-            "INCREMENTAL"
-          ]
-        },
-        "isa": {
-          "type": "string",
-          "default": "SCALAR",
-          "enum": [
-            "SCALAR"
-          ]
-        }
-      },
-      "constraints": [
-        {
-          "kind": "ordered",
-          "lower": "min_k",
-          "upper": "max_k"
-        },
-        {
-          "kind": "numeric_range",
-          "parameter": "compression_tolerance",
-          "minimum": "0"
-        },
-        {
-          "kind": "numeric_range",
-          "parameter": "digitization_tolerance",
-          "minimum": "0"
-        },
-        {
-          "kind": "numeric_range",
-          "parameter": "scl",
-          "minimum": "0"
-        }
-      ]
-    },
-    "input_contract": {
-      "topologies": [
-        "UTS",
-        "SYNCHRONOUS_MTS"
-      ],
-      "dtypes": [
-        "<f8"
-      ],
-      "ranks": [
-        1,
-        2
-      ],
-      "layouts": [
-        "ROW_MAJOR_CONTIG",
-        "SOA_COLUMNS"
-      ],
-      "endianness": [
-        "little"
-      ],
-      "alignment_bytes": 1,
-      "min_n": 2,
-      "max_n": 16777216,
-      "min_m": 1,
-      "max_m": 65535,
-      "validity_shapes": [
-        "NONE"
-      ],
-      "homogeneous_itemsize": true,
-      "max_total_raw_bytes": 134217728,
-      "value_coupling_mode": "COLUMN_INDEPENDENT",
-      "timestamp_semantics": {
-        "preserve_order": true,
-        "duplicates": true,
-        "out_of_order": true,
-        "negative_delta": true,
-        "absolute_epoch": true,
-        "overflow_policy": "NOT_APPLICABLE_VALUE_ONLY"
-      },
-      "max_total_elements": 16777216,
-      "value_domain": {
-        "kind": "FROZEN_SOURCE_WITH_BOUNDED_REJECTION",
-        "unsupported_action": "REJECT_BEFORE_OUTPUT",
-        "oracle_evidence": "adapters/completed_rewrites/vendor/abba/contract.md",
-        "rejection_reasons": [
-          "FINITE_INPUT_REQUIRED",
-          "SEGMENT_ENDPOINT_ARITHMETIC_UNSUPPORTED"
-        ]
-      }
-    },
-    "runtime_profile": {
-      "path": "docs/audits/20261011_port_standard_v30/runtime_profiles_v2/profiles/abba.json",
-      "sha256": "c8ff6199dfad5e23861dd68b5ae1f6fc2ccc120d71d9730ef7d3d927895a69e1"
-    },
-    "isa_scope": "NATIVE_BASELINE",
-    "timing_scope_boundaries": {
-      "CORE": "HARNESS_SESSION_API: compress_update + finalize / decompress; prepared routed input, created session and encode output capacity outside timer; includes API-internal descriptors, staging, copies, native frames, model work and decode materialization; reset via fresh independent session outside timer",
-      "PIPELINE": "HARNESS_OBJECT_PIPELINE: compatibility preparation, session creation, bound/capacity allocation, CORE, finalized stream materialization, accounting, native telemetry and close; decode includes inverse compatibility work",
-      "E2E": "CANONICAL_MEMORY_ROUTED_VIEW: complete encode/decode object pipeline and phase transitions; excludes file I/O and post-timing correctness/determinism checks",
-      "NATIVE": "UNAVAILABLE_NULL: no optional internal native timer; CORE uses harness wall clock, never inferred native duration"
-    }
+    "native_core_storage": "OWNED_ENCODE_AND_DECODE",
+    "native_core_geometry": "ONE_COLUMN_ONLY",
+    "qualification_report": "docs/abba_family_integration/README.md",
+    "license_scope": "INCLUDES_LGPL_3_OR_LATER_CKMEANS_SOURCE_AND_RELINK_RIGHTS"
   }
 }

@@ -1,4 +1,4 @@
-"""Bridge for the four stateless rw_* bindings, with explicit column framing."""
+"""Bridge for the two stateless rw_* bindings, with explicit column framing."""
 from __future__ import annotations
 
 import ctypes as ct
@@ -54,14 +54,7 @@ class RwAbiBridge:
 
     def _config(self, rows: int, params: dict) -> Config:
         c = Config(rows,1,0,0,0,0,params.get('model_seed',0),0,0,0,0,b'')
-        if self.key == 'abba':
-            c.a,c.b,c.c,c.d = params['min_k'],params['max_k'],params['max_len'],params['norm']
-            c.x,c.y,c.z = float(params['compression_tolerance']),float(params['digitization_tolerance']),float(params['scl'])
-            c.mode = int(params['clustering'] == 'INCREMENTAL')
-        elif self.key == 'fabba':
-            c.a = params['max_len']
-            c.x,c.y,c.z = float(params['tolerance']),float(params['alpha']),float(params['scl'])
-        elif self.key == 'deepzip':
+        if self.key == 'deepzip':
             c.a = params['lanes']
             record = self.spec.document['adapter']['models'][params['model_key']]
             model = self.spec.root / record['path']
@@ -114,12 +107,6 @@ class RwAbiBridge:
         }
         frames = []
         for column in columns:
-            if self.key in {'abba','fabba'}:
-                with np.errstate(all='ignore'):
-                    residual = column[:-1] + (column[1:] - column[:-1]) - column[1:]
-                    error = np.abs(residual) if self.key == 'abba' and params['norm'] == 1 else residual*residual
-                if np.any(~np.isfinite(error)) or np.any(error > np.finfo(np.float64).eps):
-                    raise SourceDomainError(f'{self.key}: SEGMENT_ENDPOINT_ARITHMETIC_UNSUPPORTED')
             if self.key == 'dzip' and np.unique(column).size == 9:
                 raise SourceDomainError('DZip: MODEL_ALPHABET_UNSUPPORTED')
             data = np.ascontiguousarray(column).tobytes()

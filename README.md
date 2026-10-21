@@ -1,6 +1,8 @@
 # TSBench
 
-**当前排除项（2026-10-17）：** `lzss-raw`、`lzss-dipperstein-c` 已标记为“算法接入异常，处于排除状态”，禁止在所有 Benchmark 边界使用。当前可用真实CPU codec为42个，另加raw-store；LZSSE2／LZSSE8保持可用。源码与历史结果保留，详见[排除记录](docs/lzss_exclusion_20261017.md)。以下历史性能数字保留原实验身份。
+2026-10-20：旧 ABBA／fABBA 接入已归档删除，替换为本次独立重写版，并新增 `qabba`。三者仅按经验质量使用；部分 QABBA 对象因源码重建长度变化被明确拒绝。当前43个可用真实CPU codec（另加raw-store），LZSS两项继续排除。见[接入报告](docs/abba_family_integration/README.md)、[示例](benchmark/examples/abba-family.toml)。新实现正式性能未重跑。
+
+**当前排除项（2026-10-17）：** `lzss-raw`、`lzss-dipperstein-c` 已标记为“算法接入异常，处于排除状态”，禁止在所有 Benchmark 边界使用。当前可用真实CPU codec为43个，另加raw-store；LZSSE2／LZSSE8保持可用。源码与历史结果保留，详见[排除记录](docs/lzss_exclusion_20261017.md)。以下历史性能数字保留原实验身份。
 
 **默认目标：codec原生性能（2026-10-15修订）。** Python负责数据准备、调度、资格与结果收集，C/C++ driver内部循环直接调用codec并计时；默认`native_core / prepared / natural`。`native_api`适配器测量与`object_memory / independent_object / natural`完整对象目标保留为辅助配置。37／37个真实CPU codec构建成功，加上driver提供的raw-store，38个key均在prepared与fresh_request下完成合法direct core案例；最终完整suite **715 passed**，无失败、错误或跳过。
 

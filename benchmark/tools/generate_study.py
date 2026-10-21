@@ -83,6 +83,8 @@ def generate(corpus: Path, output: Path):
                         'params':{'compression_tolerance':tol,'digitization_tolerance':tol}})
         methods.append({'id':'fabba-'+tol.replace('.','p'), 'codec':'fabba',
                         'params':{'tolerance':tol, 'alpha':tol}})
+        methods.append({'id':'qabba-'+tol.replace('.','p'), 'codec':'qabba',
+                        'params':{'tolerance':tol, 'alpha':tol}})
     paths.append(experiment('study-empirical-grid', methods, 'empirical_quality'))
     return paths
 

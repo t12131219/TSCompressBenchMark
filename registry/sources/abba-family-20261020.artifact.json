@@ -1,0 +1,44 @@
+{
+  "schema_version": "tscb.source-artifact.v2",
+  "key": "abba-family-20261020",
+  "kind": "FROZEN_CPP_REWRITE_RELEASE",
+  "identity": {
+    "implementation": "abba-family-20261020-binding-v1",
+    "release_sha256": "ec70b59fd9e0a48303604596df43fa8e21090b6f577513f11894e727a6240b1e",
+    "frozen_sources_sha256": "973d5b379fd93f41c7efdc5ec740179396738be2a1619a607491ccb01f70b73a",
+    "source_path": "adapters/abba_family/vendor/abba_family",
+    "upstream_commits": {
+      "abba": "614d56841cd2f1c2925cea4d2c2648a7b2ac791d",
+      "fabba": "d8727ecffd6232308898d7bcb2415187ab456c57",
+      "qabba": "abfd22739b8a2d625f1538a7de9abe3a55f04471"
+    }
+  },
+  "license": {
+    "spdx": "MIT AND BSD-3-Clause AND LGPL-3.0-or-later AND Zlib AND bzip2-1.0.6 AND LicenseRef-XZ",
+    "status": "PER_FILE_NOTICES_AND_RELINKABLE_SOURCE_RETAINED",
+    "files": [
+      "adapters/abba_family/vendor/abba_family/LICENSES/ABBA-MIT.txt",
+      "adapters/abba_family/vendor/abba_family/LICENSES/GPL-3.0.txt",
+      "adapters/abba_family/vendor/abba_family/LICENSES/LGPL-3.0.txt",
+      "adapters/abba_family/vendor/abba_family/LICENSES/LICENSE",
+      "adapters/abba_family/vendor/abba_family/LICENSES/NumPy-BSD-3-Clause.txt",
+      "adapters/abba_family/vendor/abba_family/LICENSES/QABBA-MIT.txt",
+      "adapters/abba_family/vendor/abba_family/LICENSES/XZ-COPYING.txt",
+      "adapters/abba_family/vendor/abba_family/LICENSES/Zstd-BSD.txt",
+      "adapters/abba_family/vendor/abba_family/LICENSES/bzip2.txt",
+      "adapters/abba_family/vendor/abba_family/LICENSES/nlohmann-MIT.txt",
+      "adapters/abba_family/vendor/abba_family/LICENSES/zlib-README.txt"
+    ]
+  },
+  "build": {
+    "recipe": "tsbench.build._abba_build",
+    "frozen_sources": "adapters/abba_family/FROZEN_SOURCES.json",
+    "patches": []
+  },
+  "qualification": {
+    "standalone": "REWRITE_DONE_FULL_PARITY_SEMANTIC",
+    "bench_binding": "docs/abba_family_integration/README.md",
+    "formal_performance": "NOT_RERUN"
+  },
+  "source_artifact_id": "v2:source-artifact:sha256:f136f5dc5e21c9a2f826255af52983d5bfd245c6c4b39efae60abd68e88f0968"
+}

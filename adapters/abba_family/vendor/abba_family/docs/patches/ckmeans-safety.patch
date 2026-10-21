@@ -1,0 +1,69 @@
+--- Source/abba/upstream/src/Ckmeans.1d.dp.cpp
++++ vendor/ckmeans/Ckmeans.1d.dp.cpp
+@@ -10,6 +10,7 @@
+ #include <vector>
+ #include <cassert>
+ #include <cstring>
++#include <stdexcept>
+ 
+ template <class ForwardIterator>
+ size_t numberOfUnique(ForwardIterator first, ForwardIterator last)
+@@ -29,24 +30,22 @@
+   return nUnique;
+ }
+ 
+-static const double * px;
+-bool compi(size_t i, size_t j)
+-{
+-  return px[i] < px[j];
+-}
+-
+-
+ Output kmeans_1d_dp(std::vector<double> x_v, size_t Kmin, size_t Kmax,
+                                   double var, const std::string & method)
+ {
+   const size_t N = x_v.size();
+-  const double* x = &x_v[0];
+ 
+-  int* cluster = new int[N];
+-  double* centres = new double[Kmax];
+-  double* withinss = new double[Kmax];
+-  double* size = new double[Kmax];
+-  double* BIC = new double[Kmax-Kmin+1];
++
++  if(N==0 || Kmin==0 || Kmin>Kmax || Kmax>65535 || N>1048576 ||
++     Kmax>8000000/N || !std::isfinite(var) || var<0)
++    throw std::invalid_argument("CKmeans resource/configuration limits");
++  const double* x = x_v.data();
++  std::vector<int> cluster_storage(N);
++  std::vector<double> centres_storage(Kmax), withinss_storage(Kmax),
++    size_storage(Kmax), BIC_storage(Kmax-Kmin+1);
++  auto cluster=cluster_storage.data();auto centres=centres_storage.data();
++  auto withinss=withinss_storage.data();auto size=size_storage.data();
++  auto BIC=BIC_storage.data();
+ 
+ 
+   // Input:
+@@ -70,8 +69,7 @@
+   }
+   std::vector<double> x_sorted(x, x+N);
+   if(! is_sorted) {
+-    px = x;
+-    std::sort(order.begin(), order.end(), compi);
++    std::sort(order.begin(), order.end(), [x](size_t i,size_t j){return x[i]<x[j];});
+ 
+     for(size_t i=0ul; i<order.size(); ++i) {
+       x_sorted[i] = x[order[i]];
+@@ -129,12 +127,6 @@
+ 
+   Output output = Output(cluster_v, centres_v, withinss_v, size_v, BIC_v, Kopt);
+ 
+-  delete[] cluster;
+-  delete[] centres;
+-  delete[] withinss;
+-  delete[] size;
+-  delete[] BIC;
+-
+   return output;
+ 
+ }  //end of kmeans_1d_dp()

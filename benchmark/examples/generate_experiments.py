@@ -66,7 +66,7 @@ def generate(dzip_runtime_preload: str | None = None) -> list[Path]:
                                             for key in ("serf-qt", "serf-xor", "zfp-accuracy-1d")],
                                            "bounded_abs", [("cpu-single", 1)], "0.01"),
         "empirical_quality.toml": experiment("empirical-quality", ["float64", "noise64"],
-                                             [{"codec": "abba"}, {"codec": "fabba"}],
+                                             [{"codec": "abba"}, {"codec": "fabba"}, {"codec": "qabba"}],
                                              "empirical_quality", [("cpu-single", 1)]),
     }
     if dzip_runtime_preload:

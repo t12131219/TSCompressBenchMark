@@ -1,5 +1,7 @@
 # V4 native codec 接入资格（2026-10-13）
 
+2026-10-20当前接入：ABBA/fABBA旧vendor与RW分支已归档删除，三算法改用abba-family（新增qabba），见[接入报告](abba_family_integration/README.md)。下表及32 C1/4 RW、834通过等数字是2026-10-13历史资格，不能用于当前替换实现。
+
 本轮从保留的 native/vendor/patch 源码构建36个真实成员；新 `tsbench` bridge 不导入或运行旧 `tscompbench`。资格结果仅覆盖下表记录的输入、配置、binary和bridge，不等同于upstream全域一致性。
 
 独立 `encode` / `decode` 每次新建和销毁 C ABI context；RW API为无句柄操作。32个 C1 成员分别适配真实格式和Finish语义，4个RW成员按列显式封装完整native frames。native timer默认关闭；参数显式 `native_timing=true` 用于独立诊断。

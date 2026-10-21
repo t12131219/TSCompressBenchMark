@@ -26,12 +26,12 @@ CORE = {'raw-store': 'raw', 'zstd-frame': 'zstd', 'lz4-frame': 'lz4', 'snappy-ra
                         'lzss-raw','lzss-dipperstein-c','lzsse2-raw','lzsse8-raw',
                         'alp','alp-rd','chimp','chimp128','chimp32','chimpn','chimpn32','chimp128-no-index',
                         'pmc-mr','swing-filter','swing-filter-disjoint','swing-filter-disjoint-quantized','elf','elf-plus','elf-star','self-star',
-                        'serf-qt','serf-xor','zfp-accuracy-1d','abba','fabba','deepzip','dzip',
+                        'serf-qt','serf-xor','zfp-accuracy-1d','abba','fabba','qabba','deepzip','dzip',
                         'gorilla-prometheus-xor',
                         'sprintz-delta','sprintz-fire','sprintz-delta-huffman','sprintz-fire-huffman','simdcomp-u32',
                         'neats-lossless-i64','leats-lossless-i64'), 'core')}
 API_COMPLETE_STREAMS = {'raw-store','zstd-frame','lz4-frame','snappy-raw'} | {'brotli-stream', 'bzip2-stream', 'deflate-zlib', 'xz-stream',
-                               'abba', 'fabba', 'deepzip', 'dzip'}
+                               'abba', 'fabba', 'qabba', 'deepzip', 'dzip'}
 API_COMPLETE_STREAMS |= {'chimp','chimp32','chimp128','chimpn','chimpn32','chimp128-no-index',
                          'pmc-mr','swing-filter','swing-filter-disjoint','swing-filter-disjoint-quantized'}
 API_COMPLETE_STREAMS |= {'sprintz-delta','sprintz-fire','sprintz-delta-huffman','sprintz-fire-huffman'}
@@ -143,6 +143,8 @@ def capability(method, obj, task, profile, asset_root, build_root):
         array = next(iter(obj.components.values()))
         if rw and array.ndim != 1:
             raise Unsupported('RW native batches require rank 1 / columns=1; collection framing belongs to object mode')
+        if boundary == 'native_core' and key in {'abba','fabba','qabba'} and array.ndim != 1:
+            raise Unsupported('ABBA family native_core requires rank1; use object/native_api for independent columns')
         if boundary == 'native_api' and array_order(array) != 'C':
             raise Unsupported('native_api currently requires C layout; it cannot silently materialize a different layout')
         if boundary == 'native_core' and key in {'pmc-mr','swing-filter','swing-filter-disjoint','swing-filter-disjoint-quantized'} and array.ndim == 2 and array.shape[1] != 1:
@@ -234,19 +236,13 @@ class NativeMeasurement:
         input_layout = order
         if self.abi not in {'raw'}:
             bridge = _bridge(str(self.root), self.key, str(self.build_root))
-            if self.abi == 'rw' or (self.abi == 'core' and self.key in {'abba','fabba','deepzip','dzip'}):
+            if self.abi == 'rw' or (self.abi == 'core' and self.key in {'deepzip','dzip'}):
                 # Reuse content-domain guards, outside all native clocks. This
                 # does no encode and preserves the existing admission contract.
                 if self.key == 'deepzip':
                     alphabet = bridge.spec.document['adapter']['models'][params['model_key']]['alphabet_size']
                     if np.any(array >= alphabet):
                         raise Unsupported('DeepZip: MODEL_ALPHABET_UNSUPPORTED')
-                if self.key in {'abba', 'fabba'}:
-                    with np.errstate(all='ignore'):
-                        residual = array[:-1] + (array[1:] - array[:-1]) - array[1:]
-                        errors = np.abs(residual) if self.key == 'abba' and params['norm'] == 1 else residual * residual
-                    if np.any(~np.isfinite(errors)) or np.any(errors > np.finfo(np.float64).eps):
-                        raise Unsupported(self.key + ': SEGMENT_ENDPOINT_ARITHMETIC_UNSUPPORTED')
                 if self.key == 'dzip' and np.unique(array).size == 9:
                     raise Unsupported('DZip: MODEL_ALPHABET_UNSUPPORTED')
                 c = bridge._config(array.size, params)

@@ -12,7 +12,7 @@ for spec in Registry(root).list(include_reference=False):
   print(spec.key,'BUILD ok',round(time.monotonic()-start,2),flush=True)
   n=max(65,spec.document['input'].get('min_n',0))
   dtype=np.dtype(spec.dtypes[0])
-  if spec.key in ['abba','fabba']:
+  if spec.key in ['abba','fabba','qabba']:
    a=(np.sin(np.arange(n)/8)+np.arange(n)/10).astype(dtype)
   elif spec.key in ['deepzip','dzip']:
    a=(np.arange(n)%4).astype(dtype)

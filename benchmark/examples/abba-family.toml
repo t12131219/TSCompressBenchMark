@@ -1,0 +1,51 @@
+# Current release, per-object codebook fitting. This example is not a formal result.
+schema = "tsbench.experiment/1"
+name = "abba-family-20261020"
+output = "../../runs/abba-family-20261020"
+
+[[datasets]]
+id = "etth1-ot-f64"
+format = "csv"
+path = "../../../材料/TSBench_Corpus/ETTh1.csv"
+dtype = "<f8"
+columns = ["OT"]
+start = 2048
+stop = 2304
+
+[[methods]]
+id = "abba"
+codec = "abba"
+[[methods]]
+id = "fabba"
+codec = "fabba"
+[[methods]]
+id = "qabba-unit-segments"
+codec = "qabba"
+# Explicit short-segment profile; default QABBA may change reconstruction length.
+[methods.params]
+max_len = 1
+
+[[profiles]]
+id = "cpu-single"
+device = "cpu"
+native_threads = 1
+object_workers = 1
+
+[task]
+kind = "values"
+fidelity = "empirical_quality"
+boundary = "native_core"
+lifecycle = "prepared"
+cache_policy = "natural"
+
+[execution]
+sessions = 1
+rounds = 7
+native_loops = 2
+native_warmup_loops = 1
+timeout_s = 120
+save_artifacts = true
+
+[analysis]
+summary = "median_iqr"
+inference = "none"

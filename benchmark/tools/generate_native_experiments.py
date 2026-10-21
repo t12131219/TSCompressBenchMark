@@ -52,7 +52,7 @@ def generate(destination):
         'fresh.toml':text('native-core-fresh',real,methods,lifecycle='fresh_request'),
         'api_lossless.toml':text('native-api-lossless',fixtures,lossless,'native_api',profiles=[single,triple]),
         'api_bounded.toml':text('native-api-bounded',fixtures[:2],[{'id':k,'codec':k,'params':{'error_bound':'0.01'}} for k in ('serf-qt','serf-xor','zfp-accuracy-1d')],'native_api',fidelity='bounded_abs'),
-        'api_empirical.toml':text('native-api-empirical',real[-1:],[{'id':k,'codec':k} for k in ('abba','fabba')],'native_api',fidelity='empirical_quality'),
+        'api_empirical.toml':text('native-api-empirical',real[-1:],[{'id':k,'codec':k} for k in ('abba','fabba','qabba')],'native_api',fidelity='empirical_quality'),
         'object.toml':text('object-reference-real',real,[m for m in methods if m['codec'] in ('raw-store','zstd-frame','lz4-frame','snappy-raw')],'object_memory','independent_object'),
     }
     for name,body in definitions.items():

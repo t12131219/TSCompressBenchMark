@@ -155,3 +155,14 @@ ABBA／fABBA encode-only修正后，因构建配方源身份变化，统一重�
 用户明确要求暂停LZSS使用并标记“算法接入异常，处于排除状态”。两种LZSS登记（lzss-raw、lzss-dipperstein-c）均设admission=EXCLUDED，统一中文原因。新增可检查登记但默认不可选择的状态门禁：三测试边界、组件路由、显式构建／bridge加载／操作全部拒绝，报告status=excluded、stage=registry.admission；build --all、当前示例与未来生成器不选用。CLI codecs保留状态和原因，参数／来源查询可用。LZSSE2／8继续开放；当前42个可用真实CPU codec+raw-store，44个真实登记中2项排除。
 
 既有源码／二进制／历史原始结果及冻结配置保留，不将此前只读审计改签恢复失败。通用测试和C ABI交叉探针改用仍开放的Snappy／LZSSE2，新增排除策略回归。专项142 passed；完整Python回归1255 passed、4 subtests passed，无失败或skip。见[排除记录与日志](lzss_exclusion_20261017.md)。本次不产生性能结果、不解除其他算法的既有限制。
+
+
+## ABBA / fABBA / QABBA 独立发布包替换接入（2026-10-20）
+
+用户要求完整阅读交付md后删除旧ABBA/fABBA，接入三算法。先写[N0计划](abba_family_integration/PLAN.md)，旧vendor/四补丁/两source卡/原共享binding与构建配方、辅助溯源和测试、旧indexes归档；随后移除活动分支，DeepZip/DZip保留并重建。新三卡、source/binding/build身份与C1 manifest拒绝旧库，不改历史设计和正式结果。冻结发布包SHA ec70b59fd9e0a48303604596df43fa8e21090b6f577513f11894e727a6240b1e，7830消费/参考成员不改核心，保留LGPL >=3 CKmeans及JSON安全补丁、完整许可证和重链接源码。
+
+主core为binary64单列owning API，C1/对象为独立列矩阵；完整AFS1/AFM1计费，冷decoder无编码参数或外部模型。每对象拟合、staging/模型/符号编码/CRC/序列化/恢复检查在计时内，bound不拟合；原发布encoder的fit重建工作照实保留。FE_TONEAREST、无fast-math、关闭contraction，最多1048576总值、4096列、256MiB完整帧，单worker。只开放empirical_quality；不开放模型复用/共享多序列拟合/图像/缺失填充等未接入路径。ABBA min_k=1是明确Bench默认；fABBA alpha变为新源码默认0.5；QABBA宽度1..64与九种非上下文符号编码按登记开放。源码重建长度变化的对象提交前unsupported，不做补点或重采样，额外检查计时。
+
+独立CMake参考/native_safety ctest1/1，187组/26670值源码与完整frame对照中144成功、43预期QABBA网格拒绝；原120数据对象全部纳入，99成功/21拒绝。所有成功逐字节与独立CLI一致、双向恢复、C1一致，Python源码数值abs/rel 1e-10对照；拒绝另验源码长度。12组主边界×生命周期保存并验证36产物，24对象C/F×列/块组合新进程恢复。绑定+独立重编发布核心的ASan/UBSan/LSan147例通过，宿主detect_leaks=1、stderr为空；其共享链接控制不冒称生产二进制本体开启sanitizer。最终完整1387 passed、4 subtests passed，0失败/skip，88.78s。
+
+首次外层Threads目标缺失、Autotools改写14个distribution文件（已恢复后转私有副本）、Unicode splitlines拆JSON、旧测试误认QABBA网格及两处旧42键断言、LSan沙箱ptrace失败均保留诊断。每生产库实际依赖735项，含Autotools.Plo；字节库静态本地符号，不覆盖其它codec。当前43可用真实CPU key+raw-store、45登记中LZSS两项继续排除。未来生成器加入QABBA，新示例明确QABBA max_len=1，三方法ETTh1 256值实测通过。未运行FORMAL，不继承独立包跨ISA/fuzz/OOM/可复现构建资格。见[报告](abba_family_integration/README.md)与[证据索引](abba_family_integration/evidence.json)。

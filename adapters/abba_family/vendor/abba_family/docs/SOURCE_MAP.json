@@ -1,0 +1,75 @@
+[
+  {
+    "module": "src/math.cpp",
+    "sources": [
+      "abba/upstream/ABBA.py:195-270,777-804",
+      "fabba/upstream/fABBA/chainApproximation.py",
+      "fabba/upstream/fABBA/inverse_t.py",
+      "qabba/upstream/src/qabba/comp.py",
+      "qabba/upstream/src/qabba/inverset.py",
+      "abba-family-dependencies/numpy-quicksort.cpp",
+      "abba-family-dependencies/numpy-heapsort.h"
+    ],
+    "method": "TRANSLATED",
+    "differences": "bounded work, reject nonfinite/overflow; NumPy sorter one-before pointer replaced by indices"
+  },
+  {
+    "module": "src/clustering.cpp",
+    "sources": [
+      "abba/upstream/ABBA.py:270-777",
+      "fabba/upstream/fABBA/digitization.py",
+      "fabba/upstream/fABBA/fabba_agg.py",
+      "fabba/upstream/fABBA/separate/aggregation.py",
+      "fabba/upstream/fABBA/extmod/fabba_agg_cm.pyx",
+      "qabba/upstream/src/qabba/agg.py",
+      "qabba/upstream/src/qabba/fkmns.py",
+      "qabba/upstream/src/qabba/_quantization.py"
+    ],
+    "method": "TRANSLATED",
+    "differences": "native deterministic MT19937/sklearn-style kmeans; optional source backend metadata differences explicit"
+  },
+  {
+    "module": "vendor/ckmeans",
+    "sources": [
+      "abba/upstream/src/*.cpp",
+      "abba/upstream/src/Ckmeans.1d.dp.h"
+    ],
+    "method": "NATIVE_REUSE_PATCHED",
+    "differences": "docs/patches/ckmeans-safety.patch"
+  },
+  {
+    "module": "src/models.cpp",
+    "sources": [
+      "abba/upstream/ABBA.py",
+      "fabba/upstream/fABBA/fabba.py",
+      "fabba/upstream/fABBA/digitization.py",
+      "qabba/upstream/src/qabba/qabba.py",
+      "qabba/upstream/src/qabba/_symbols.py",
+      "qabba/upstream/src/qabba/storage.py"
+    ],
+    "method": "TRANSLATED_WITH_NATIVE_VALUE_API",
+    "differences": "list-normalized symbols; versioned explicit model; safety bounds; request state independent"
+  },
+  {
+    "module": "src/image.cpp",
+    "sources": [
+      "fabba/upstream/fABBA/fabba.py:229-257"
+    ],
+    "method": "TRANSLATED",
+    "differences": "JSON image values, NumPy scalar pairwise sum, dimension <=32"
+  },
+  {
+    "module": "src/symbols.cpp",
+    "sources": [
+      "qabba/upstream/src/qabba/symbol_codecs.py"
+    ],
+    "method": "TRANSLATED_ACCOUNTING_AND_NEW_REVERSIBLE_FORMAT",
+    "differences": "source accounting is separate; independent native canonical Huffman/LZW/byte streams carry required model state"
+  },
+  {
+    "module": "src/container.cpp,src/api.cpp",
+    "sources": [],
+    "method": "NEW_PACKAGE_IMPLEMENTATION",
+    "differences": "new AFS1 model-inclusive frame and capacity checked C11 API; no upstream binary format claimed"
+  }
+]

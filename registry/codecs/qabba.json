@@ -1,0 +1,271 @@
+{
+  "schema_version": "tscb.codec-manifest.v2",
+  "key": "qabba",
+  "identity": {
+    "display_name": "QABBA (v0.2.0 rewrite)",
+    "family": "ABBA",
+    "citations": [
+      "adapters/abba_family/vendor/abba_family/docs/CONTRACT.md"
+    ],
+    "source_artifact_id": "v2:source-artifact:sha256:f136f5dc5e21c9a2f826255af52983d5bfd245c6c4b39efae60abd68e88f0968"
+  },
+  "classification": {
+    "object_level": "P2_PIPELINE",
+    "implementation_class": "LEARNED",
+    "tracks": [
+      "VALUE"
+    ],
+    "subtracks": [
+      "V0"
+    ]
+  },
+  "input": {
+    "topologies": [
+      "UTS",
+      "SYNCHRONOUS_MTS"
+    ],
+    "dtypes": [
+      "<f8"
+    ],
+    "ranks": [
+      1,
+      2
+    ],
+    "layouts": [
+      "ROW_MAJOR_CONTIG",
+      "SOA_COLUMNS"
+    ],
+    "endianness": [
+      "little"
+    ],
+    "alignment_bytes": 1,
+    "min_n": 2,
+    "max_n": 1048576,
+    "min_m": 1,
+    "max_m": 4096,
+    "validity_shapes": [
+      "NONE"
+    ],
+    "homogeneous_itemsize": true,
+    "max_total_raw_bytes": 8388608,
+    "value_coupling_mode": "COLUMN_INDEPENDENT",
+    "timestamp_semantics": {
+      "preserve_order": true,
+      "duplicates": true,
+      "out_of_order": true,
+      "negative_delta": true,
+      "absolute_epoch": true,
+      "overflow_policy": "NOT_APPLICABLE_VALUE_ONLY"
+    },
+    "max_total_elements": 1048576,
+    "value_domain": {
+      "kind": "FROZEN_SOURCE_WITH_BOUNDED_REJECTION",
+      "unsupported_action": "REJECT_BEFORE_OUTPUT",
+      "oracle_evidence": "adapters/abba_family/vendor/abba_family/docs/CONTRACT.md",
+      "rejection_reasons": [
+        "FINITE_INPUT_REQUIRED",
+        "SOURCE_ARITHMETIC_OR_RESOURCE_LIMIT",
+        "SOURCE_RECONSTRUCTED_LENGTH_DIFFERS_FROM_GRID"
+      ]
+    }
+  },
+  "semantics": {
+    "loss_modes": [
+      "UNBOUNDED_LOSSY"
+    ],
+    "error_bound_types": [],
+    "reconstruction_modes": [
+      "APPROX_GRID"
+    ],
+    "rebuild_protocol": "AFS1_SOURCE_RECONSTRUCTION_ON_ORIGINAL_GRID_NO_RESAMPLING",
+    "preprocess_class": "NONE",
+    "preprocess_stages": [],
+    "decodability_profile": "SELF_CONTAINED_AFS1_OR_AFM1_COLUMN_COLLECTION",
+    "bitstream_separability": "PER_COLUMN"
+  },
+  "lifecycle": {
+    "block_semantics": "WHOLE_OBJECT",
+    "state_semantics": "INDEPENDENT_OBJECT",
+    "reset": "REQUIRED_MODE_ZERO",
+    "finalize": "REQUIRED_ZERO_BYTE_FINALIZE",
+    "safe_overread_bytes": 0,
+    "tail_policy": "EXACT_COUNT",
+    "dictionary": "EMBEDDED_AND_CHARGED",
+    "model": "EMBEDDED_AND_CHARGED",
+    "index": "NONE"
+  },
+  "execution": {
+    "backends": [
+      "C_ABI_V1",
+      "NATIVE_CORE_OWNED_CPP"
+    ],
+    "isa": [
+      "SCALAR"
+    ],
+    "devices": [
+      "CPU"
+    ],
+    "threading": "SINGLE_THREAD",
+    "fallback_policy": "DISALLOWED",
+    "runtime_dispatch": false,
+    "timing_scopes": [
+      "CORE",
+      "PIPELINE",
+      "E2E"
+    ]
+  },
+  "features": {
+    "streaming": false,
+    "query": false,
+    "random_access": false
+  },
+  "parameters": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "isa": {
+        "type": "string",
+        "default": "SCALAR",
+        "enum": [
+          "SCALAR"
+        ]
+      },
+      "native_timing": {
+        "type": "boolean",
+        "default": false
+      },
+      "max_len": {
+        "type": "integer",
+        "default": 1048576,
+        "minimum": 1,
+        "maximum": 4294967295
+      },
+      "tolerance": {
+        "type": "decimal-string",
+        "default": ".2"
+      },
+      "alpha": {
+        "type": "decimal-string",
+        "default": ".5"
+      },
+      "digitizer": {
+        "type": "string",
+        "default": "agg",
+        "enum": [
+          "agg",
+          "kmeans",
+          "f-kmeans"
+        ]
+      },
+      "sorting": {
+        "type": "string",
+        "default": "norm",
+        "enum": [
+          "norm",
+          "pca"
+        ]
+      },
+      "n_symbols": {
+        "type": "integer",
+        "default": 2,
+        "minimum": 1,
+        "maximum": 65535
+      },
+      "sample_rate": {
+        "type": "decimal-string",
+        "default": ".5"
+      },
+      "scale_length": {
+        "type": "decimal-string",
+        "default": "1"
+      },
+      "bits_for_len": {
+        "type": "integer",
+        "default": 8,
+        "minimum": 1,
+        "maximum": 64
+      },
+      "bits_for_inc": {
+        "type": "integer",
+        "default": 16,
+        "minimum": 1,
+        "maximum": 64
+      },
+      "max_iter": {
+        "type": "integer",
+        "default": 100,
+        "minimum": 1,
+        "maximum": 10000
+      },
+      "random_state": {
+        "type": "integer",
+        "default": 0,
+        "minimum": 0,
+        "maximum": 4294967295
+      },
+      "symbol_codec": {
+        "type": "string",
+        "default": "none",
+        "enum": [
+          "none",
+          "fixed",
+          "huffman",
+          "lzw",
+          "zlib",
+          "gzip",
+          "bz2",
+          "lzma",
+          "zstd"
+        ]
+      }
+    },
+    "constraints": [
+      {
+        "kind": "numeric_range",
+        "parameter": "tolerance",
+        "minimum": "0",
+        "exclusive_minimum": true
+      },
+      {
+        "kind": "numeric_range",
+        "parameter": "alpha",
+        "minimum": "0",
+        "exclusive_minimum": true
+      },
+      {
+        "kind": "numeric_range",
+        "parameter": "sample_rate",
+        "minimum": "0",
+        "exclusive_minimum": true
+      },
+      {
+        "kind": "numeric_range",
+        "parameter": "scale_length",
+        "minimum": "0"
+      },
+      {
+        "kind": "numeric_range",
+        "parameter": "sample_rate",
+        "maximum": "1",
+        "minimum": "0",
+        "exclusive_minimum": true
+      }
+    ]
+  },
+  "adapter": {
+    "backend": "C_ABI_V1",
+    "factory": "ABBA_FAMILY_CTYPES_V1",
+    "version": "abba-family-20261020-binding-v1",
+    "artifact_path": "build/tsbench/qabba/libtscb_qabba.so",
+    "timing_boundary": "OWNING_CPP_API_INCLUDES_FIT_STAGING_MODEL_FULL_FRAME_AND_RECONSTRUCTION",
+    "accounting_hooks": [
+      "FINAL_STREAM_LENGTH",
+      "COMPLETE_AFS1_FRAMES",
+      "AFM1_COLUMN_COLLECTION_BYTES"
+    ],
+    "native_core_storage": "OWNED_ENCODE_AND_DECODE",
+    "native_core_geometry": "ONE_COLUMN_ONLY",
+    "qualification_report": "docs/abba_family_integration/README.md",
+    "license_scope": "INCLUDES_LGPL_3_OR_LATER_CKMEANS_SOURCE_AND_RELINK_RIGHTS"
+  }
+}

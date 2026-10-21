@@ -1,0 +1,55 @@
+........................................................................ [  5%]
+........................................................................ [ 10%]
+........................................................................ [ 15%]
+........................................................................ [ 20%]
+........................................................................ [ 26%]
+................................................F........F.............. [ 31%]
+........................................................................ [ 36%]
+........................................................................ [ 41%]
+........................................................................ [ 46%]
+........................................................................ [ 52%]
+........................................................................ [ 57%]
+........................................................................ [ 62%]
+........................................................................ [ 67%]
+........................................................................ [ 72%]
+.................................................................... [ 77%]
+........................................................................ [ 82%]
+........................................................................ [ 88%]
+........................................................................ [ 93%]
+........................................................................ [ 98%]
+....................                                                     [100%]
+=================================== FAILURES ===================================
+_____________________ test_build_all_omits_excluded_codecs _____________________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x77424dcffdd0>
+
+    def test_build_all_omits_excluded_codecs(monkeypatch):
+        called=[]
+        def fake(root,key,**kwargs):called.append(key);return {'status':'ok','codec':key}
+        monkeypatch.setattr(build,'build_codec',fake)
+        records=build.build_all(ROOT)
+>       assert len(records)==42 and not set(EXCLUDED)&set(called)
+E       AssertionError: assert (43 == 42)
+E        +  where 43 = len([{'status': 'ok', 'codec': 'abba'}, {'status': 'ok', 'codec': 'alp'}, {'status': 'ok', 'codec': 'alp-rd'}, {'status': 'ok', 'codec': 'brotli-stream'}, {'status': 'ok', 'codec': 'bzip2-stream'}, {'status': 'ok', 'codec': 'chimp'}, ...])
+
+benchmark/tests/test_codec_exclusions.py:67: AssertionError
+__________ test_registry_rejects_unknown_and_bool_integer_parameters ___________
+
+    def test_registry_rejects_unknown_and_bool_integer_parameters():
+        from pathlib import Path
+        registry = Registry(Path(__file__).resolve().parents[2])
+        for params in ({"block_size": True}, {"imaginary_option": 1}, {"compression_level": 100}):
+            with pytest.raises(UnsupportedError):
+                registry.resolve_params("zstd-frame", params)
+        assert registry.get("lz77").key == "deflate-zlib"
+>       assert len(registry.list(include_reference=False)) == 42
+E       AssertionError: assert 43 == 42
+E        +  where 43 = len([CodecSpec(root=PosixPath('/home/fzg/PycharmProjects/TSDataCompressBenchMark'), key='abba', document={'schema_version'...ification_report': 'docs/chimp_integration/README.md', 'license_scope': 'LOCAL_RESEARCH_ONLY_UNTIL_2026-11-17'}}), ...])
+E        +    where [CodecSpec(root=PosixPath('/home/fzg/PycharmProjects/TSDataCompressBenchMark'), key='abba', document={'schema_version'...ification_report': 'docs/chimp_integration/README.md', 'license_scope': 'LOCAL_RESEARCH_ONLY_UNTIL_2026-11-17'}}), ...] = list(include_reference=False)
+E        +      where list = <tsbench.registry.Registry object at 0x77424de55cd0>.list
+
+benchmark/tests/test_config_and_records.py:63: AssertionError
+=========================== short test summary info ============================
+FAILED benchmark/tests/test_codec_exclusions.py::test_build_all_omits_excluded_codecs
+FAILED benchmark/tests/test_config_and_records.py::test_registry_rejects_unknown_and_bool_integer_parameters
+2 failed, 1382 passed, 4 subtests passed in 89.88s (0:01:29)

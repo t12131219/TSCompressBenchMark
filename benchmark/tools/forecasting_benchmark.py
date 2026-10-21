@@ -157,7 +157,7 @@ def freeze(destination):
         add(batch_id+'-f64-bounded',base,bounded,'bounded_abs',large=large)
         add(batch_id+'-f64-empirical',base,empirical,'empirical_quality',large=large)
         add(batch_id+'-f32-lossless',typed['f32'],['chimp32','chimpn32'],large=large)
-        add(batch_id+'-f32-filters',typed['f32'],[k for k in empirical if k not in {'abba','fabba'}],
+        add(batch_id+'-f32-filters',typed['f32'],[k for k in empirical if k not in {'abba','fabba','qabba'}],
             'empirical_quality',large=large)
         add(batch_id+'-i64',typed['i64'],['neats-lossless-i64','leats-lossless-i64'],large=large)
         add(batch_id+'-i16',typed['i16'],['sprintz-delta','sprintz-fire','sprintz-delta-huffman','sprintz-fire-huffman'],large=large)

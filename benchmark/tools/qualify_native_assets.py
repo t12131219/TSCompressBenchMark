@@ -50,7 +50,7 @@ def values(spec,dtype,n):
     dtype = np.dtype(dtype)
     if spec.key in {'deepzip','dzip'}:
         return (np.arange(n)%4).astype(dtype)
-    if spec.key in {'abba','fabba'}:
+    if spec.key in {'abba','fabba','qabba'}:
         return (np.sin(np.arange(n)/8)+np.arange(n)/10).astype(dtype)
     if dtype.kind == 'f':
         return ((np.arange(n)%17)/8).astype(dtype)
