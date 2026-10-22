@@ -1,5 +1,8 @@
 # V4 native codec 接入资格（2026-10-13）
 
+
+2026-10-22：新增 CAMEO/SIP、VW、PIP、TP、SWAB、Sim-Piece、PMC-Mean、connected SWING、DFT、正交 DCT-II 共10项 repaired-v1 接入；主core单列binary64、API/对象独立列、empirical_quality。当前53可用真实CPU codec（另有raw-store），LZSS两项继续排除；历史性能不改签。详见[接入报告](cameo_family_integration/README.md)及 `benchmark/examples/cameo-family.toml`。
+
 2026-10-20当前接入：ABBA/fABBA旧vendor与RW分支已归档删除，三算法改用abba-family（新增qabba），见[接入报告](abba_family_integration/README.md)。下表及32 C1/4 RW、834通过等数字是2026-10-13历史资格，不能用于当前替换实现。
 
 本轮从保留的 native/vendor/patch 源码构建36个真实成员；新 `tsbench` bridge 不导入或运行旧 `tscompbench`。资格结果仅覆盖下表记录的输入、配置、binary和bridge，不等同于upstream全域一致性。

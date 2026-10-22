@@ -1,0 +1,121 @@
+--- a/compression/hpc/hp_agg_vw.pyx
++++ b/compression/hpc/hp_agg_vw.pyx
+@@ -47,8 +47,8 @@
+         double ace = 0.0, x_a, right_area, left_area, inf = INFINITY
+         double[:] real_areas
+         long double[:] aggregates = np.empty(n // kappa, dtype=np.longdouble)
+-        long double * raw_acf = <long double *> malloc(nlags * sizeof(double))
+-        long double * c_acf = <long double *> malloc(nlags * sizeof(double))
++        long double * raw_acf = <long double *> malloc(nlags * sizeof(long double))
++        long double * c_acf = <long double *> malloc(nlags * sizeof(long double))
+         HPHeap * area_heap = <HPHeap *> malloc(sizeof(HPHeap))
+         HPAcfAgg * acf_model = <HPAcfAgg *> malloc(sizeof(HPAcfAgg))
+         unordered_map[Py_ssize_t, Py_ssize_t] map_node_to_heap
+--- a/compression/lpc/pip.pyx
++++ b/compression/lpc/pip.pyx
+@@ -29,7 +29,7 @@
+     for i in range(N):
+         pip_heap.add(pip_importance_heap, i, y[i])
+ 
+-    while pip_importance_heap.values[0].value < INFINITY:
++    while pip_importance_heap.values[0].cache < INFINITY:
+         min_node = pip_heap.remove_at(pip_importance_heap, 0)
+         start = min_node.left.ts
+         end = min_node.right.ts
+--- a/compression/hpc/hp_agg_pip.pyx
++++ b/compression/hpc/hp_agg_pip.pyx
+@@ -29,7 +29,7 @@
+     for i in range(N):
+         hp_pip_heap.add(pip_importance_heap, i, y[i])
+ 
+-    while pip_importance_heap.values[0].value < INFINITY:
++    while pip_importance_heap.values[0].cache < INFINITY:
+         min_node = hp_pip_heap.remove_at(pip_importance_heap, 0)
+         start = min_node.left.ts
+         end = min_node.right.ts
+--- a/compression/lpc/tp.pyx
++++ b/compression/lpc/tp.pyx
+@@ -71,7 +71,7 @@
+         if not is_line(x, i) and (is_convex(x, i) or is_concave(x, i)):
+             selected_tp[tp_count] = i
+             if selected_tp[tp_count-1] + 1 < selected_tp[tp_count]:
+-                if selected_tp[tp_count-1] + 2 < selected_tp[tp_count]:
++                if tp_count == 1 or selected_tp[tp_count-1] + 2 < selected_tp[tp_count]:
+                     inc_acf.interpolate_update(model, x, selected_tp[tp_count-1], selected_tp[tp_count])
+                 else:
+                     left = x[selected_tp[tp_count-2]]
+@@ -87,7 +87,11 @@
+                 for k in range(selected_tp[tp_count - 1], selected_tp[tp_count] + 1):
+                     accum_abs_error += fabs(slope * k + intercept - original_x[k])
+ 
+-                importance_tp[tp_count] = accum_abs_error/(selected_tp[tp_count - 1]-selected_tp[tp_count - 2])
++                if tp_count == 1:
++                    # repaired-v1: no predecessor exists before the origin.
++                    importance_tp[tp_count] = accum_abs_error/(selected_tp[tp_count]-selected_tp[tp_count - 1])
++                else:
++                    importance_tp[tp_count] = accum_abs_error/(selected_tp[tp_count - 1]-selected_tp[tp_count - 2])
+             else:
+                 importance_tp[tp_count] = 0
+ 
+@@ -142,7 +146,7 @@
+ 
+     if ace >= acf_threshold:
+         # The error bound cannot be sustained after the first turning point removal
+-        heap.release_memory(tp_importance_heap)
++        free(tp_importance_heap)
+         inc_acf.release_memory(acf_agg)
+         free(raw_acf)
+         free(selected_tp)
+--- a/compression/hpc/hp_agg_tp.pyx
++++ b/compression/hpc/hp_agg_tp.pyx
+@@ -72,7 +72,7 @@
+         if not is_line(x, i) and (is_convex(x, i) or is_concave(x, i)):
+             selected_tp[tp_count] = i
+             if selected_tp[tp_count-1] + 1 < selected_tp[tp_count]:
+-                if selected_tp[tp_count-1] + 2 < selected_tp[tp_count]:
++                if tp_count == 1 or selected_tp[tp_count-1] + 2 < selected_tp[tp_count]:
+                     hp_acf_agg_model.interpolate_update(model, x, aggregates, selected_tp[tp_count-1], selected_tp[tp_count], kappa)
+                 else:
+                     left = x[selected_tp[tp_count-2]]
+@@ -88,7 +88,11 @@
+                 for k in range(selected_tp[tp_count - 1], selected_tp[tp_count] + 1):
+                     accum_abs_error += fabs(slope * k + intercept - original_x[k])
+ 
+-                importance_tp[tp_count] = accum_abs_error/(selected_tp[tp_count - 1]-selected_tp[tp_count - 2])
++                if tp_count == 1:
++                    # repaired-v1: no predecessor exists before the origin.
++                    importance_tp[tp_count] = accum_abs_error/(selected_tp[tp_count]-selected_tp[tp_count - 1])
++                else:
++                    importance_tp[tp_count] = accum_abs_error/(selected_tp[tp_count - 1]-selected_tp[tp_count - 2])
+             else:
+                 importance_tp[tp_count] = 0
+ 
+@@ -145,7 +149,7 @@
+     ace /= acf_agg.nlags
+ 
+     if ace >= acf_threshold:
+-        hp_heap.release_memory(tp_importance_heap)
++        free(tp_importance_heap)
+         hp_acf_agg_model.release_memory(acf_agg)
+         free(raw_acf)
+         free(selected_tp)
+--- a/compression/lpc/swab.pyx
++++ b/compression/lpc/swab.pyx
+@@ -95,7 +95,7 @@
+     heap.values = <Segment *>malloc(segments_size * sizeof(Segment))
+     while i < n:
+         start_seg = xs[i]
+-        end_seg = min(xs[i + 1], xs[n - 1])  # 2 points if available
++        end_seg = xs[min(i + 1, n - 1)]  # 2 points if available
+         heap.values[seg_id] = Segment(INFINITY, seg_id, start_seg, end_seg, prev_id, -1)
+ 
+         if prev_id != -1:
+@@ -181,7 +181,7 @@
+     heap.values = <Segment *>malloc(segments_size * sizeof(Segment))
+     while i < end_idx:
+         start_seg = xs[i]
+-        end_seg = min(xs[i + 1], xs[end_idx])  # 2 points if available
++        end_seg = xs[min(i + 1, xs.shape[0] - 1)]  # 2 points if available
+         heap.values[seg_id] = Segment(INFINITY, seg_id, start_seg, end_seg, prev_id, -1)
+ 
+         if prev_id != -1:

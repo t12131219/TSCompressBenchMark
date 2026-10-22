@@ -166,3 +166,11 @@ ABBA／fABBA encode-only修正后，因构建配方源身份变化，统一重�
 独立CMake参考/native_safety ctest1/1，187组/26670值源码与完整frame对照中144成功、43预期QABBA网格拒绝；原120数据对象全部纳入，99成功/21拒绝。所有成功逐字节与独立CLI一致、双向恢复、C1一致，Python源码数值abs/rel 1e-10对照；拒绝另验源码长度。12组主边界×生命周期保存并验证36产物，24对象C/F×列/块组合新进程恢复。绑定+独立重编发布核心的ASan/UBSan/LSan147例通过，宿主detect_leaks=1、stderr为空；其共享链接控制不冒称生产二进制本体开启sanitizer。最终完整1387 passed、4 subtests passed，0失败/skip，88.78s。
 
 首次外层Threads目标缺失、Autotools改写14个distribution文件（已恢复后转私有副本）、Unicode splitlines拆JSON、旧测试误认QABBA网格及两处旧42键断言、LSan沙箱ptrace失败均保留诊断。每生产库实际依赖735项，含Autotools.Plo；字节库静态本地符号，不覆盖其它codec。当前43可用真实CPU key+raw-store、45登记中LZSS两项继续排除。未来生成器加入QABBA，新示例明确QABBA max_len=1，三方法ETTh1 256值实测通过。未运行FORMAL，不继承独立包跨ISA/fuzz/OOM/可复现构建资格。见[报告](abba_family_integration/README.md)与[证据索引](abba_family_integration/evidence.json)。
+
+## CAMEO 家族 repaired-v1 接入（2026-10-22）
+
+已完整阅读交付 README、PORT_MANIFEST、验证报告、契约、API、修复、数值依赖及来源/离线复现文档，依 [N0 计划](cameo_family_integration/PLAN.md)冻结发布包，1692 个消费/参考文件逐成员保留，核心未修改。新增 cameo（含 SIP）、vw、pip、tp、swab、sim-piece、pmc-mean、swing-connected、dft、dwt-dct-ii 十项；SWING 为 connected，DWT 实为正交 DCT-II，和已有 Chimp filters/PMC-MR 分开。兼容目标为授权 repaired-v1；原版缺陷与 BLOCKED 历史保留。
+
+主 core 单列 binary64 owning API，C1/对象独立列。完整 CF01 与 CFM1 包装计费，容量查询不拟合；拟合、转换、分配、源内部恢复及序列化计时。恢复长度变化提交前拒绝，不补点/重采样。全部先仅开放 empirical_quality，不把 ACF/fit/float32+余量/fraction 当作逐点界。源码数值库离线编译且保留原生20内核分派/FMA规则、OpenMP 显式worker；不虚标SCALAR或继承独立包跨平台资格。构建共享缓存按源码与工具链寻址、加锁并核验实际依赖和归档，所有绑定数值符号隔离。当前53个可用真实CPU key+raw-store，LZSS两项保持排除。验证结果见[接入报告](cameo_family_integration/README.md)。
+
+最终验证：598组/114816值与独立参考完整CF01字节一致、C1一致、Bench/CLI双向冷恢复及fresh repaired源码恢复数值通过；参考CTest3/3。最终245项家族专项、全仓1632 passed+4 subtests（零失败/skip）、40原生边界/生命周期组120产物、80对象组合新进程恢复、361 ASan/UBSan/宿主LSan探针、十库符号/runtime隔离及五路径131072值上限通过。数值归档为sanitizer明示原生边界，未继承其插桩资格。每库13555实际依赖、映射身份及热缓存核验通过；示例十项真实ETTh1窗口通过。新目录未来设计54活动key含raw-store的静态生成检查完成，不执行正式吞吐。首次ratio配置状态、来源测试fixture预期、LSan ptrace失败均保留后再通过。状态BENCH_BINDING_QUALIFIED_LIMITED_SCOPE，不继承Clang/ARM/强制20内核/fuzz/OOM/可复现资格，不改历史FORMAL结果。

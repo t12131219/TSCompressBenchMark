@@ -1,0 +1,146 @@
+{
+  "format": "cameo-family-component-inventory-v1",
+  "status": "optimized source closure; final qualification recorded in PORT_MANIFEST.json",
+  "components": [
+    {
+      "name": "cameo-family translated core",
+      "version": "1.1.0-repaired-v1",
+      "route": "SOURCE_REWRITE",
+      "license": "Apache-2.0",
+      "paths": [
+        "src",
+        "include"
+      ],
+      "origin": "damslab/reproducibility and cmcuza/TerseTS frozen sources",
+      "production": true
+    },
+    {
+      "name": "pocketfft",
+      "route": "NATIVE_REUSE",
+      "license": "BSD-3-Clause",
+      "paths": [
+        "vendor/pocketfft"
+      ],
+      "production": true
+    },
+    {
+      "name": "NumPy indirect sort translation",
+      "version": "1.24.3",
+      "route": "utility translation reused from abba-family",
+      "license": "MIT AND BSD-3-Clause",
+      "paths": [
+        "src/numpy_sort.cpp",
+        "LICENSES/NumPy-BSD-3-Clause.txt"
+      ],
+      "production": true
+    },
+    {
+      "name": "nlohmann/json",
+      "version": "3.11.3",
+      "route": "NATIVE_REUSE",
+      "license": "MIT",
+      "paths": [
+        "tools/json.hpp"
+      ],
+      "production": "CLI/test only"
+    },
+    {
+      "name": "libgfortran-040039e1.so.5.0.0",
+      "route": "NATIVE_REUSE",
+      "license": "see LICENSES/numpy-openblas-bundled.txt (OpenBLAS BSD; GCC runtime GPL with runtime exception)",
+      "production": false,
+      "instrumented": false,
+      "path": "vendor/linear-algebra/libgfortran-040039e1.so.5.0.0",
+      "sha256": "47ab3b68295b0a3ce8990a448de7fab11abddbc160f8895972ca9aa712cf86d0",
+      "bytes": 2686064,
+      "role": "historical binary/oracle asset; no longer linked or installed"
+    },
+    {
+      "name": "libopenblas64_p-r0-15028c96.3.21.so",
+      "route": "NATIVE_REUSE",
+      "license": "see LICENSES/numpy-openblas-bundled.txt (OpenBLAS BSD; GCC runtime GPL with runtime exception)",
+      "production": false,
+      "instrumented": false,
+      "path": "vendor/linear-algebra/libopenblas64_p-r0-15028c96.3.21.so",
+      "sha256": "554bde1d8a0c71d8dc21ae74de05c44da4fff5dbc6791a819f6acf5adfe90bd9",
+      "bytes": 32955056,
+      "role": "historical binary/oracle asset; no longer linked or installed"
+    },
+    {
+      "name": "libquadmath-96973f99.so.0.0.0",
+      "route": "NATIVE_REUSE",
+      "license": "see LICENSES/numpy-openblas-bundled.txt (OpenBLAS BSD; GCC runtime GPL with runtime exception)",
+      "production": false,
+      "instrumented": false,
+      "path": "vendor/linear-algebra/libquadmath-96973f99.so.0.0.0",
+      "sha256": "97cda85ddb5163e2da6e1edb4e1d6b557833a99a40eda079ae37e5039465b65d",
+      "bytes": 247608,
+      "role": "historical binary/oracle asset; no longer linked or installed"
+    },
+    {
+      "name": "system C/C++/OpenMP runtimes",
+      "route": "system shared dependency",
+      "license": "system distributor notices",
+      "production": true,
+      "closure_log": "validation/native-runtime.json"
+    },
+    {
+      "name": "CPython/Cython/NumPy/SciPy/Zig/setuptools/wheel",
+      "route": "offline reference-only tools",
+      "production": false,
+      "artifact_manifest": "../../Source/cameo-family/TOOLCHAIN_MANIFEST.json"
+    },
+    {
+      "name": "LLVM14 Archer/libomp/clang-format",
+      "route": "reference-validation-only tool",
+      "license": "Apache-2.0 WITH LLVM-exception; see dependencies/LLVM-LICENSE.TXT",
+      "production": false,
+      "artifact_manifest": "../../Source/cameo-family/SOURCE_MANIFEST.json"
+    },
+    {
+      "name": "OpenBLAS",
+      "version": "0.3.21",
+      "route": "NATIVE_PORT: source build plus explicit native AVX512 FMA compiler overlay",
+      "production": true,
+      "license": "BSD-3-Clause; per-file notices in archive",
+      "path": "vendor/openblas/OpenBLAS-0.3.21.tar.gz",
+      "sha256": "f36ba3d7a60e7c8bcc54cd9aaa9b1223dd42eaf02c811791c37e8ca707c241ca",
+      "build_recipe": "cmake/source_lapack.cmake",
+      "scope": "ILP64 DGELSD m-by-2; source BLAS dispatch reused, unrelated BLAS APIs are not codec interfaces",
+      "build_overlays": [
+        {
+          "path": "cmake/openblas_native_fma.cmake",
+          "sha256": "1cbcef360f3d486302c4564323d34a8efbce15b5685ee15aa2b3bed73cf2b382",
+          "reason": "retain source native FMA reduction rounding, independent of canonical C++ FP flags"
+        }
+      ]
+    },
+    {
+      "name": "QEMU",
+      "version": "6.2 / 11.1.2",
+      "license": "GPL-2.0-or-later",
+      "production": false,
+      "role": "local validation instruction interpreter, frozen archive in Source/dependencies; licenses retained in tool packages"
+    },
+    {
+      "name": "Valgrind",
+      "version": "3.18.1",
+      "license": "GPL-2.0-or-later",
+      "production": false,
+      "role": "local validation instruction interpreter, frozen archive in Source/dependencies; licenses retained in tool packages"
+    },
+    {
+      "name": "Intel SDE",
+      "version": "10.13.1-2026-07-28",
+      "license": "proprietary Intel Simplified Software License and bundled notices",
+      "production": false,
+      "role": "local validation instruction interpreter, frozen archive in Source/dependencies; licenses retained in tool packages"
+    }
+  ],
+  "source_manifest": "../../Source/cameo-family/SOURCE_MANIFEST.json",
+  "file_inventory": "validation/EVIDENCE_INDEX.json",
+  "notices": "NOTICE.md",
+  "redistribution": "Local research review only; included dataset redistribution rights not asserted.",
+  "semantic_variant": "cameo-family-repaired-v1",
+  "repair_manifest": "../../Source/cameo-family/REPAIR_MANIFEST.json"
+}

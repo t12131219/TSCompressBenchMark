@@ -9,6 +9,7 @@ from .artifact import EncodedObject, pack_bundle, read_bundle_prefix, validate_d
 from .data import TimeSeriesObject, array_descriptor, array_order, canonical_json, fingerprint
 from .errors import Unsupported, Unavailable
 from .registry import Registry
+from .families import CAMEO_FAMILY
 from .transforms import forward, inverse
 
 ASSET_ROOT = Path(__file__).resolve().parents[3]
@@ -77,13 +78,15 @@ def capability(method,obj,task,profile,asset_root=None,build_root=None):
                 models.append({'path':str(model_path),'sha256':model_hash})
             if spec.lossy and roles.get(name,name)!='V': raise Unsupported(f'{name}: timestamps and masks require bitwise codecs',stage='capability')
             if spec.lossy and task.get('fidelity','bitwise') in {'bitwise','numeric_equivalent'}: raise Unsupported(f'{spec.key}: needs a quality task',stage='capability')
-            if spec.key in {'abba','fabba','qabba'} and task.get('fidelity')!='empirical_quality': raise Unsupported(f'{spec.key}: tolerance is empirical; use empirical_quality',stage='capability')
+            if spec.key in {'abba','fabba','qabba'} | CAMEO_FAMILY.keys() and task.get('fidelity')!='empirical_quality': raise Unsupported(f'{spec.key}: tolerance is empirical; use empirical_quality',stage='capability')
             if spec.key in {'pmc-mr','swing-filter','swing-filter-disjoint','swing-filter-disjoint-quantized'}:
                 fidelity = task.get('fidelity')
                 if params['quality_mode'] == 'compatible' and fidelity != 'empirical_quality':
                     raise Unsupported(f'{spec.key}: compatible mode requires empirical_quality', stage='capability')
                 if fidelity not in {'bounded_abs', 'empirical_quality'}:
                     raise Unsupported(f'{spec.key}: only absolute or empirical quality is qualified', stage='capability')
+            if spec.key in CAMEO_FAMILY:
+                threads=max(threads,params.get('threads',1))
             if spec.key=='dzip':
                 threads=max(threads,3)
 
@@ -112,7 +115,7 @@ def capability(method,obj,task,profile,asset_root=None,build_root=None):
         implementation='sha256:'+hashlib.sha256(canonical_json({'libraries':identities,'methods':method})).hexdigest()
         return {'supported':True,'status':'ok','reason':None,'implementation_id':implementation,
                 'library_path':libraries[0] if len(libraries)==1 else None,'library_paths':libraries,'runtime_dependencies':deps,'model_dependencies':models,
-                'effective_native_threads':threads,'thread_evidence':'frozen source contract; DZip caller+two Eigen workers' if threads==3 else 'frozen single-thread API contract',
+                'effective_native_threads':threads,'thread_evidence':'frozen per-codec worker contracts; explicit CAMEO OpenMP workers; DZip caller plus two Eigen workers',
                 'executor_features':{'object':True,'stream':False,'query':False,'gpu':False}}
     except Exception as e:
         if isinstance(e,(Unsupported,Unavailable,ValueError,KeyError)):

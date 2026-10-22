@@ -21,6 +21,8 @@ from .data import TimeSeriesObject, array_order, fingerprint, object_id
 from .errors import BenchError, Unavailable, Unsupported, ValidationError
 from .records import file_hash, stable_hash, write_json
 
+from .families import CAMEO_FAMILY
+
 CORE = {'raw-store': 'raw', 'zstd-frame': 'zstd', 'lz4-frame': 'lz4', 'snappy-raw': 'snappy',
         **dict.fromkeys(('brotli-stream','bzip2-stream','deflate-zlib','xz-stream','huff0','fse',
                         'lzss-raw','lzss-dipperstein-c','lzsse2-raw','lzsse8-raw',
@@ -30,11 +32,14 @@ CORE = {'raw-store': 'raw', 'zstd-frame': 'zstd', 'lz4-frame': 'lz4', 'snappy-ra
                         'gorilla-prometheus-xor',
                         'sprintz-delta','sprintz-fire','sprintz-delta-huffman','sprintz-fire-huffman','simdcomp-u32',
                         'neats-lossless-i64','leats-lossless-i64'), 'core')}
+CORE.update(dict.fromkeys(CAMEO_FAMILY, 'core'))
+
 API_COMPLETE_STREAMS = {'raw-store','zstd-frame','lz4-frame','snappy-raw'} | {'brotli-stream', 'bzip2-stream', 'deflate-zlib', 'xz-stream',
                                'abba', 'fabba', 'qabba', 'deepzip', 'dzip'}
 API_COMPLETE_STREAMS |= {'chimp','chimp32','chimp128','chimpn','chimpn32','chimp128-no-index',
                          'pmc-mr','swing-filter','swing-filter-disjoint','swing-filter-disjoint-quantized'}
 API_COMPLETE_STREAMS |= {'sprintz-delta','sprintz-fire','sprintz-delta-huffman','sprintz-fire-huffman'}
+API_COMPLETE_STREAMS |= CAMEO_FAMILY.keys()
 SIZE_REASON = 'ABI output includes recovery framing/state not yet separated by a reviewed format parser'
 
 
@@ -143,8 +148,8 @@ def capability(method, obj, task, profile, asset_root, build_root):
         array = next(iter(obj.components.values()))
         if rw and array.ndim != 1:
             raise Unsupported('RW native batches require rank 1 / columns=1; collection framing belongs to object mode')
-        if boundary == 'native_core' and key in {'abba','fabba','qabba'} and array.ndim != 1:
-            raise Unsupported('ABBA family native_core requires rank1; use object/native_api for independent columns')
+        if boundary == 'native_core' and key in {'abba','fabba','qabba'} | CAMEO_FAMILY.keys() and array.ndim != 1:
+            raise Unsupported(f'{key}: native_core requires rank1; use object/native_api for independent columns')
         if boundary == 'native_api' and array_order(array) != 'C':
             raise Unsupported('native_api currently requires C layout; it cannot silently materialize a different layout')
         if boundary == 'native_core' and key in {'pmc-mr','swing-filter','swing-filter-disjoint','swing-filter-disjoint-quantized'} and array.ndim == 2 and array.shape[1] != 1:

@@ -900,3 +900,13 @@ native_core使用真实`alp_port_*` API及完整ALPRW001输出，按输入C/F物
 主路径rank1 binary64 owning encode/decode，API/对象可矩阵独立列；全部AFS1和AFM1恢复信息计费，decoder不需编码参数或外部模型。拟合、分配、源encode内部重建、完整帧及额外原网格恢复检查均计时。单worker、FE_TONEAREST、无fast-math、关闭contraction；最多1048576总值、4096列、256MiB帧及源码工作预算。容差仅empirical_quality；QABBA恢复长度变化对象unsupported，禁止补点/重采样。未开放共享多序列模型/复用/图像等独立包其它路径。
 
 187组26670值中144完整frame和双向恢复成功、43预期QABBA网格拒绝；120数据对象的99成功/21拒绝全部保留分母。重新执行源码数值对照、独立CMake参考与ctest1/1通过；12主边界/生命周期组合36产物、24对象新进程恢复、147绑定+共享发布核心ASan/UBSan/LSan案例通过。最终完整Python1387 passed、4 subtests passed、无失败/skip。当前43可用真实CPU key+raw-store，LZSS两项继续排除；新实现状态BENCH_BINDING_QUALIFIED_LIMITED_SCOPE，不继承独立FULL_PARITY/跨架构/fuzz/OOM资格，历史FORMAL结果不改签，正式吞吐未重跑。详见[报告](docs/abba_family_integration/README.md)及[证据](docs/abba_family_integration/evidence.json)。
+
+### 14.27 CAMEO 家族 repaired-v1 接入（2026-10-22）
+
+按用户请求完整阅读交付文档后，依[N0计划](docs/cameo_family_integration/PLAN.md)消费最终full-parity-20261021包（SHA 067004bf7df057ae78b41bdd25e5c989c274e659db735c778990c97e46bacfee），1692成员冻结且核心不改。新增 cameo（CAMEO/SIP同一算法）、vw、pip、tp、swab、sim-piece、pmc-mean、swing-connected、dft、dwt-dct-ii 十入口，connected Swing、PMC-Mean、正交DCT-II均与既有同族/误称区分。资格目标仅授权修复cameo-family-repaired-v1，原版BLOCKED历史保留。
+
+主core为单列binary64 owning C++ API，C1/对象独立列；完整CF01和CFM1全部计费，空参数冷decoder无原信号/模型依赖。bound不拟合，暂存、阶段拟合/转换、分配、源内部重建及序列化计时；恢复长度变化明确拒绝，不补点。只开放empirical_quality，不把ACF相关误差、SWAB fit、TerseTS float32阈值/余量或频率fraction当成通用逐点界。资源预算、FE_TONEAREST、FMA语义保留；ACF显式worker匹配profile，数值库单线程且保留20内核动态分派构建，不虚标SCALAR。
+
+最终1632 passed +4 subtests、无失败/skip；598组114816值与独立CLI完整frame/C1/双向冷恢复通过，fresh repaired源码恢复值对照通过；参考CTest3/3，40原生边界/生命周期组120产物、80对象组合新进程恢复、361绑定+核心ASan/UBSan/宿主LSan探针、十库符号隔离及五路径131072值上限通过。每库13555实际编译/归档/工具链依赖、映射源码身份和全闭包热缓存检查；未来设计54活动key（含raw-store）静态生成，历史冻结设计不改。当前53可用真实CPU key+raw-store，55真实登记中LZSS两项继续排除。
+
+状态BENCH_BINDING_QUALIFIED_LIMITED_SCOPE，不继承独立包Clang/ARM、强制20内核执行、fuzz/OOM/可复现资格；未运行FORMAL吞吐，原始历史不改签。默认实际数值core=Prescott如实登记。ratio参数错误状态、安装来源测试预期和LSan沙箱ptrace失败及修复记录均保留。详见[报告](docs/cameo_family_integration/README.md)与[证据](docs/cameo_family_integration/evidence.json)。

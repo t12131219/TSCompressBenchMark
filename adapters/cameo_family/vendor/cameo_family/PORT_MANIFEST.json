@@ -1,0 +1,135 @@
+{
+  "family": "cameo-family",
+  "algorithms": [
+    "cameo",
+    "vw",
+    "pip",
+    "tp",
+    "swab",
+    "sim-piece",
+    "pmc",
+    "swing",
+    "dft",
+    "dwt-dct-ii"
+  ],
+  "display_names": {
+    "dwt-dct-ii": "DWT(DCT-II)",
+    "cameo": "CAMEO / SIP"
+  },
+  "status": "REWRITE_DONE",
+  "implementation_route": "SOURCE_REWRITE",
+  "port_method": "TRANSLATED",
+  "compatibility_target": "SEMANTIC",
+  "gates": {
+    "G0": "PASS",
+    "G1": "PASS",
+    "G2": "PASS",
+    "G3": "PASS",
+    "G4": "PASS",
+    "G5": "PASS",
+    "G6": "PASS",
+    "CAP-GATE": "PASS"
+  },
+  "contract_sha256": "ae15724c25597f4fc1f8d60bcc29fa89b6796b839bc30bf69684da37edc38938",
+  "source_manifest": "../../Source/cameo-family/SOURCE_MANIFEST.json",
+  "notes": [
+    "all requested algorithms share one directory; native pocketfft component separately identified",
+    "TerseTS core selected for PMC-Mean/SwingFilter/SimPiece; no ModelarDB system port",
+    "DWT(DCT-II) requested display name confirmed by user",
+    "Original contract and planning matrix retained under docs/history; source defects are not waivers.",
+    "User-authorized repair target in contract revision3; original-source failures are retained as history.",
+    "API/frame representation stays CF01; default encoder now applies tp-first-span-v1.",
+    "Default numerical dependency is built offline from source; historical wheel binaries are not linked or installed.",
+    "Native AVX512 FMA rounding is preserved separately from strict canonical-core FP settings.",
+    "Qualification applies to accepted repaired-v1; original failures, failed attempts and initial ARM/x86 stage differences are preserved.",
+    "Final archive status is effective together with its matching external integrity/rebuild audit. No Bench integration or FORMAL claim."
+  ],
+  "assessment_date": "2026-10-21",
+  "contract_revision": 4,
+  "reviewer": "Codex automated evidence review; not independent human approval",
+  "full_parity": true,
+  "gate_records": {
+    "G0": {
+      "inputs": "frozen repository/public API inspection",
+      "outputs": "docs/SOURCE_MAP.md",
+      "reason": "Ten requested numerical objects identified; no Bench integration.",
+      "reviewer": "Codex automated evidence audit, not independent human approval"
+    },
+    "G1": {
+      "inputs": "selected Apache-2.0 algorithm sources; dependency artifacts",
+      "outputs": "../../Source/cameo-family/SOURCE_MANIFEST.json; SBOM.json; NOTICE.md",
+      "reason": "Licensed algorithm/reference closure frozen. Discovery-only data retained for local research review; no public data redistribution claim.",
+      "reviewer": "Codex automated evidence audit, not independent human approval"
+    },
+    "G2": {
+      "inputs": "User-authorized repaired-v1 semantics; revision4 implementation/platform contract; original and patched references separately frozen",
+      "outputs": "docs/CONTRACT.md; ../../Source/cameo-family/REPAIR_MANIFEST.json",
+      "reason": "Full frozen required capability set retained. TP first-span semantics are explicit; no original-source qualification is promoted.",
+      "reviewer": "Codex automated evidence audit, not independent human approval"
+    },
+    "G3": {
+      "inputs": "repaired-v1 C++ and independent frozen patched Cython/Zig reference",
+      "outputs": "validation/differential-release.json; validation/differential-clang-release.json; validation/boundaries-release.json; validation/repair-regressions.json",
+      "reason": "GCC/Clang598 each, boundaries194 and directed80 PASS; unchanged source expectations/tolerance.",
+      "reviewer": "Codex automated evidence audit, not independent human approval"
+    },
+    "G4": {
+      "inputs": "standalone API, bounded source-native dependency, negative/OOM/concurrency/fuzz tests",
+      "outputs": "validation/final-native-tests.log; validation/final-clang-tests.log; validation/final-asan-tests.log; validation/final-tsan-tests.log; validation/final-fuzz.log; validation/arm-source-tests.log",
+      "reason": "Three suites pass GCC/Clang, ASan/UBSan/LSan, baseline TSan/Archer and AArch64/QEMU. Explicit native assembly/system boundary; 119160 fuzz executions.",
+      "reviewer": "Codex automated evidence audit, not independent human approval"
+    },
+    "G5": {
+      "inputs": "forced baseline/FFT DCT; all source native DGELSD dispatch; OpenMP paths",
+      "outputs": "validation/fast-dct-release.json; validation/numeric-dispatch-final.json; validation/platform-interchange-final.json",
+      "reason": "512 DCT cases and maximum length PASS; all20 actual numeric kernels, 460 source cases, 22 awkward lengths/80 concurrent calls each PASS; 1196 cross-architecture cold decodes.",
+      "reviewer": "Codex automated evidence audit, not independent human approval"
+    },
+    "G6": {
+      "inputs": "full source/API/license/evidence closure, two clean builds and installed consumers",
+      "outputs": "validation/reproducibility-release-final.json; validation/final_qualification.json; ../../Release/cameo-family/cameo-family-full-parity-20261021.audit.json",
+      "reason": "Eight artifacts identical in two independent directories; final archive must additionally pass the matching external extract/hash/rebuild/consumer audit.",
+      "reviewer": "Codex automated evidence audit, not independent human approval"
+    },
+    "CAP-GATE": {
+      "inputs": "unchanged50 required capability rows and accepted repaired-v1 target",
+      "outputs": "NATIVE_CAPABILITY_MATRIX.json; native_capability_validation_report.md",
+      "reason": "50/50 PASS, zero waiver; all original status/history retained separately.",
+      "reviewer": "Codex automated evidence audit, not independent human approval"
+    }
+  },
+  "blockers": [],
+  "capability_matrix": "NATIVE_CAPABILITY_MATRIX.yaml",
+  "dataset_plan": "docs/DATASET_TEST_PLAN.yaml",
+  "reports": [
+    "docs/VALIDATION_REPORT.md",
+    "dataset_validation_report.md",
+    "native_capability_validation_report.md",
+    "docs/REPRODUCIBILITY.md"
+  ],
+  "native_dependencies": [
+    "pocketfft C",
+    "source-built OpenBLAS0.3.21 ILP64 C LAPACK/native kernels with explicit AVX512 FMA overlay",
+    "OpenMP and C/C++ system runtimes",
+    "nlohmann/json CLI utility"
+  ],
+  "semantic_variant": "cameo-family-repaired-v1",
+  "tp_policy": "tp-first-span-v1",
+  "repair_validation": "PASS",
+  "original_source_qualification": "BLOCKED; historical evidence not promoted",
+  "repaired_evidence": "validation/final_qualification.json",
+  "historical_original_evidence": "validation/assessment.json",
+  "native_capability_parity_result": "FULL_PARITY",
+  "implementation_id": "cameo-family-cpp17-repaired-v1-1.1.0",
+  "qualification_scope": {
+    "target": "cameo-family-repaired-v1",
+    "source_parity_platform": "Linux x86_64, matching emulated/native CPU model for native dispatch",
+    "second_architecture": "AArch64 under QEMU: API/safety, own encoding and independent cross-architecture recovery; no encoder bit-identity claim",
+    "security": "instrumented own C++/pocketfft/source C numerical baseline; native assembly and system runtimes explicitly bounded",
+    "original_source": "BLOCKED historical target; no unmodified-source FULL_PARITY claim",
+    "waivers": [],
+    "required_capabilities": 50
+  },
+  "release_archive": "../../Release/cameo-family/cameo-family-full-parity-20261021.tar.gz",
+  "release_audit": "../../Release/cameo-family/cameo-family-full-parity-20261021.audit.json"
+}

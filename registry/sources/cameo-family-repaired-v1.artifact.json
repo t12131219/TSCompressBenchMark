@@ -1,0 +1,43 @@
+{
+  "schema_version": "tscb.source-artifact.v2",
+  "key": "cameo-family-repaired-v1",
+  "kind": "FROZEN_CPP_REWRITE_RELEASE",
+  "source_artifact_id": "v2:source-artifact:sha256:067004bf7df057ae78b41bdd25e5c989c274e659db735c778990c97e46bacfee",
+  "identity": {
+    "implementation": "cameo-family-cpp17-repaired-v1-1.1.0",
+    "binding": "cameo-repaired-v1-bench-v1",
+    "qualified_target": "cameo-family-repaired-v1",
+    "release_sha256": "067004bf7df057ae78b41bdd25e5c989c274e659db735c778990c97e46bacfee",
+    "frozen_sources_sha256": "3016025ca0f9b4c7ede8018662293cfa5386653e56871d5b69dc909b397cc7f4",
+    "source_path": "adapters/cameo_family/vendor/cameo_family",
+    "upstream_commits": {
+      "damslab/reproducibility": "3fad358974c895cb639782995218bde42324d1ae",
+      "cmcuza/TerseTS": "64abd7767f8fc6ac1ef4e932f2027a74cf8fb4a0"
+    }
+  },
+  "license": {
+    "spdx": "Apache-2.0 AND BSD-3-Clause AND MIT",
+    "status": "PER_FILE_NOTICES_RETAINED",
+    "files": [
+      "adapters/cameo_family/vendor/cameo_family/LICENSES/NumPy-BSD-3-Clause.txt",
+      "adapters/cameo_family/vendor/cameo_family/LICENSES/OpenBLAS-BSD-3-Clause.txt",
+      "adapters/cameo_family/vendor/cameo_family/LICENSES/cameo-Apache-2.0.txt",
+      "adapters/cameo_family/vendor/cameo_family/LICENSES/nlohmann-MIT.txt",
+      "adapters/cameo_family/vendor/cameo_family/LICENSES/numpy-openblas-bundled.txt",
+      "adapters/cameo_family/vendor/cameo_family/LICENSES/pocketfft-BSD-3-Clause.txt",
+      "adapters/cameo_family/vendor/cameo_family/LICENSES/tersets-Apache-2.0.txt"
+    ]
+  },
+  "build": {
+    "recipe": "tsbench.build._cameo_build",
+    "frozen_sources": "adapters/cameo_family/FROZEN_SOURCES.json",
+    "patches": [],
+    "numerical_native_reuse": "OpenBLAS0.3.21 ILP64 C LAPACK + pocketfft, source-built offline; 20-kernel native dispatch and qualified FMA overlay preserved"
+  },
+  "qualification": {
+    "standalone": "REWRITE_DONE / FULL_PARITY against authorized repaired-v1 only",
+    "original_source": "BLOCKED_HISTORY_PRESERVED",
+    "bench_binding": "docs/cameo_family_integration/README.md",
+    "formal_performance": "NOT_RERUN"
+  }
+}

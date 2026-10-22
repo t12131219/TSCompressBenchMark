@@ -1,5 +1,8 @@
 # TSBench
 
+
+2026-10-22：新增 CAMEO/SIP、VW、PIP、TP、SWAB、Sim-Piece、PMC-Mean、connected SWING、DFT、正交 DCT-II 共10项 repaired-v1 接入；主core单列binary64、API/对象独立列、empirical_quality。当前53可用真实CPU codec（另有raw-store），LZSS两项继续排除；历史性能不改签。详见[接入报告](docs/cameo_family_integration/README.md)及 `benchmark/examples/cameo-family.toml`。
+
 2026-10-20：旧 ABBA／fABBA 接入已归档删除，替换为本次独立重写版，并新增 `qabba`。三者仅按经验质量使用；部分 QABBA 对象因源码重建长度变化被明确拒绝。当前43个可用真实CPU codec（另加raw-store），LZSS两项继续排除。见[接入报告](docs/abba_family_integration/README.md)、[示例](benchmark/examples/abba-family.toml)。新实现正式性能未重跑。
 
 **当前排除项（2026-10-17）：** `lzss-raw`、`lzss-dipperstein-c` 已标记为“算法接入异常，处于排除状态”，禁止在所有 Benchmark 边界使用。当前可用真实CPU codec为43个，另加raw-store；LZSSE2／LZSSE8保持可用。源码与历史结果保留，详见[排除记录](docs/lzss_exclusion_20261017.md)。以下历史性能数字保留原实验身份。

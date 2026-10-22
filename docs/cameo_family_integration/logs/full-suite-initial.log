@@ -1,0 +1,207 @@
+........................................................................ [  4%]
+........................................................................ [  8%]
+........................................................................ [ 13%]
+...........FF.....F..................................................... [ 17%]
+........................................................................ [ 22%]
+........................................................................ [ 26%]
+........................................................................ [ 31%]
+........................................................................ [ 35%]
+........................................................................ [ 40%]
+........................................................................ [ 44%]
+........................................................................ [ 48%]
+........................................................................ [ 53%]
+........................................................................ [ 57%]
+........................................................................ [ 62%]
+........................................................................ [ 66%]
+........................................................................ [ 71%]
+........................................................................ [ 75%]
+.................................................................... [ 79%]
+........................................................................ [ 84%]
+........................................................................ [ 88%]
+........................................................................ [ 93%]
+........................................................................ [ 97%]
+.....................................                                    [100%]
+=================================== FAILURES ===================================
+_____ test_installed_recipe_sources_keep_real_origin_and_content_identity ______
+
+root = PosixPath('/tmp/pytest-of-fzg/pytest-8/test_installed_recipe_sources_0/assets')
+key = 'zstd-frame'
+
+    def _source_files(root: Path, key: str) -> list[dict]:
+        folder = root / 'adapters' / _FOLDERS.get(key, key.replace('-', '_'))
+        folders = [folder, root / 'native/include']
+        if key == 'lzsse8-raw':
+            folders.append(root / 'adapters/lzsse2_raw/native')
+        entries = []
+        for base in folders:
+            if not base.is_dir():
+                raise Unavailable(f'missing native asset directory: {base}', stage='build')
+            for path in sorted(base.rglob('*')):
+                if path.is_file() and '__pycache__' not in path.parts:
+                    entries.append({'path': str(path.relative_to(root)), 'sha256': sha(path)})
+        for path, module in [(Path(__file__), 'build.py'), (Path(recipes.__file__), '_native_recipes.py'), (Path(__file__).with_name('families.py'), 'families.py')]:
+            path = path.resolve()
+            try:
+>               entry = {'path': str(path.relative_to(root)), 'sha256': sha(path)}
+                                     ^^^^^^^^^^^^^^^^^^^^^^
+
+benchmark/src/tsbench/build.py:77: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/tmp/pytest-of-fzg/pytest-8/test_installed_recipe_sources_0/installed/tsbench/families.py')
+other = PosixPath('/tmp/pytest-of-fzg/pytest-8/test_installed_recipe_sources_0/assets')
+walk_up = False
+
+    def relative_to(self, other, *, walk_up=False):
+        """Return the relative path to another path identified by the passed
+        arguments.  If the operation is not possible (because this is not
+        related to the other path), raise ValueError.
+    
+        The *walk_up* parameter controls whether `..` may be used to resolve
+        the path.
+        """
+        if not hasattr(other, 'with_segments'):
+            other = self.with_segments(other)
+        for step, path in enumerate(chain([other], other.parents)):
+            if path == self or path in self.parents:
+                break
+            elif not walk_up:
+>               raise ValueError(f"{str(self)!r} is not in the subpath of {str(other)!r}")
+E               ValueError: '/tmp/pytest-of-fzg/pytest-8/test_installed_recipe_sources_0/installed/tsbench/families.py' is not in the subpath of '/tmp/pytest-of-fzg/pytest-8/test_installed_recipe_sources_0/assets'
+
+../../anaconda3/envs/CompressBench14/lib/python3.14/pathlib/__init__.py:490: ValueError
+
+During handling of the above exception, another exception occurred:
+
+tmp_path = PosixPath('/tmp/pytest-of-fzg/pytest-8/test_installed_recipe_sources_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x772caa9fd950>
+
+    def test_installed_recipe_sources_keep_real_origin_and_content_identity(tmp_path, monkeypatch):
+        root = tmp_path / 'assets'
+        assets(root)
+        package = tmp_path / 'installed/tsbench'
+        package.mkdir(parents=True)
+        local_build = package / 'build.py'
+        local_recipe = package / '_native_recipes.py'
+        local_build.write_text('installed build')
+        local_recipe.write_text('installed recipe')
+        monkeypatch.setattr(build, '__file__', str(local_build))
+        monkeypatch.setattr(build.recipes, '__file__', str(local_recipe))
+>       records = build._source_files(root, 'zstd-frame')
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+benchmark/tests/test_build.py:37: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+benchmark/src/tsbench/build.py:81: in _source_files
+    entry = {'path': 'package:tsbench/' + module, 'source_path': str(path), 'sha256': sha(path)}
+                                                                                      ^^^^^^^^^
+benchmark/src/tsbench/build.py:42: in sha
+    with path.open('rb') as stream:
+         ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/tmp/pytest-of-fzg/pytest-8/test_installed_recipe_sources_0/installed/tsbench/families.py')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/tmp/pytest-of-fzg/pytest-8/test_installed_recipe_sources_0/installed/tsbench/families.py'
+
+../../anaconda3/envs/CompressBench14/lib/python3.14/pathlib/__init__.py:771: FileNotFoundError
+___________ test_checkout_recipe_sources_keep_asset_relative_labels ____________
+
+tmp_path = PosixPath('/tmp/pytest-of-fzg/pytest-8/test_checkout_recipe_sources_k0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x772caab54150>
+
+    def test_checkout_recipe_sources_keep_asset_relative_labels(tmp_path, monkeypatch):
+        assets(tmp_path)
+        package = tmp_path / 'benchmark/src/tsbench'
+        package.mkdir(parents=True)
+        for name in ('build.py', '_native_recipes.py'):
+            (package / name).write_text(name)
+        monkeypatch.setattr(build, '__file__', str(package / 'build.py'))
+        monkeypatch.setattr(build.recipes, '__file__', str(package / '_native_recipes.py'))
+>       records = build._source_files(tmp_path, 'zstd-frame')
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+benchmark/tests/test_build.py:55: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+benchmark/src/tsbench/build.py:77: in _source_files
+    entry = {'path': str(path.relative_to(root)), 'sha256': sha(path)}
+                                                            ^^^^^^^^^
+benchmark/src/tsbench/build.py:42: in sha
+    with path.open('rb') as stream:
+         ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/tmp/pytest-of-fzg/pytest-8/test_checkout_recipe_sources_k0/benchmark/src/tsbench/families.py')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/tmp/pytest-of-fzg/pytest-8/test_checkout_recipe_sources_k0/benchmark/src/tsbench/families.py'
+
+../../anaconda3/envs/CompressBench14/lib/python3.14/pathlib/__init__.py:771: FileNotFoundError
+____ test_installed_wheel_builds_native_zstd_and_wire_only_decoder_restores ____
+
+tmp_path = PosixPath('/tmp/pytest-of-fzg/pytest-8/test_installed_wheel_builds_na0')
+
+    def test_installed_wheel_builds_native_zstd_and_wire_only_decoder_restores(tmp_path):
+        """Exercise the installed CLI with real assets and a fresh build, without timing."""
+        if not shutil.which('cc') or not shutil.which('ldd'):
+            pytest.skip('real Zstd build requires the local C compiler and ldd')
+        root = Path(__file__).resolve().parents[2]
+        project = tmp_path / 'native-assets'
+        shutil.copytree(root / 'adapters/zstd_frame', project / 'adapters/zstd_frame')
+        shutil.copytree(root / 'native/include', project / 'native/include')
+        (project / 'registry/codecs').mkdir(parents=True)
+        shutil.copy2(root / 'registry/codecs/zstd-frame.json', project / 'registry/codecs/zstd-frame.json')
+        package_source = tmp_path / 'package-source'
+        package_source.mkdir()
+        shutil.copy2(root / 'benchmark/pyproject.toml', package_source / 'pyproject.toml')
+        shutil.copytree(root / 'benchmark/src', package_source / 'src', ignore=shutil.ignore_patterns('__pycache__', '*.egg-info'))
+        wheels = tmp_path / 'wheels'
+        wheels.mkdir()
+        def invoke(arguments, env=None):
+            return subprocess.run([sys.executable, *arguments], cwd=tmp_path, env=env,
+                                  capture_output=True, text=True, timeout=180, check=True)
+        invoke(['-m', 'pip', 'wheel', '--no-deps', '--no-build-isolation', str(package_source), '--wheel-dir', str(wheels)])
+        wheel = next(wheels.glob('tsbench-*.whl'))
+        installed = tmp_path / 'installed'
+        invoke(['-m', 'pip', 'install', '--no-deps', '--no-index', '--target', str(installed), str(wheel)])
+        env = {**os.environ, 'PYTHONPATH': str(installed)}
+        build_root = project / 'new-build'
+        built = invoke(['-m', 'tsbench', 'build', 'zstd-frame', '--asset-root', str(project),
+                        '--build-root', str(build_root)], env)
+        record = json.loads(built.stdout)[0]
+        assert record['status'] == 'ok' and record['dependency_capture'] == 'ACTUAL_PER_TU_MD'
+        package_sources = [row for row in record['sources'] if row['path'].startswith('package:')]
+>       assert {row['path'] for row in package_sources} == {'package:tsbench/build.py', 'package:tsbench/_native_recipes.py'}
+E       AssertionError: assert {'package:tsb.../families.py'} == {'package:tsb...nch/build.py'}
+E         
+E         Extra items in the left set:
+E         'package:tsbench/families.py'
+E         Use -v to get more diff
+
+benchmark/tests/test_build.py:121: AssertionError
+=========================== short test summary info ============================
+FAILED benchmark/tests/test_build.py::test_installed_recipe_sources_keep_real_origin_and_content_identity
+FAILED benchmark/tests/test_build.py::test_checkout_recipe_sources_keep_asset_relative_labels
+FAILED benchmark/tests/test_build.py::test_installed_wheel_builds_native_zstd_and_wire_only_decoder_restores
+3 failed, 1614 passed, 4 subtests passed in 168.03s (0:02:48)

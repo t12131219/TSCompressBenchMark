@@ -120,6 +120,7 @@ def definitions(corpus, run_root):
         ('integer-u8', [fixture('uint8')], ('sprintz-delta', 'sprintz-fire', 'sprintz-delta-huffman', 'sprintz-fire-huffman'), 'bitwise', 'values', SINGLE, {}),
         ('integer-u32', [fixture('uint32')], ('simdcomp-u32',), 'bitwise', 'values', SINGLE, {}),
         ('bounded', floats, BOUNDED_KEYS, 'bounded_abs', 'values', SINGLE, {}),
+        ('cameo-family', real[-1:], ('cameo','vw','pip','tp','swab','sim-piece','pmc-mean','swing-connected','dft','dwt-dct-ii'), 'empirical_quality', 'values', SINGLE, {}),
         ('empirical', real[-1:], ('abba', 'fabba', 'qabba'), 'empirical_quality', 'values', SINGLE, {}),
         ('deepzip', [fixture('symbols4', stop=64)], ('deepzip',), 'bitwise', 'values', SINGLE,
          {'timeout_s': 600}),
@@ -190,7 +191,7 @@ def static_requests(documents, registry):
                     assert task['fidelity'] == 'empirical_quality'
                 else:
                     assert task['fidelity'] == 'bounded_abs' and params['error_bound'] == task['error_bound']
-                if spec.key in {'abba', 'fabba', 'qabba', 'deepzip', 'dzip'}:
+                if spec.key in {'abba', 'fabba', 'qabba', 'deepzip', 'dzip', 'cameo','vw','pip','tp','swab','sim-piece','pmc-mean','swing-connected','dft','dwt-dct-ii'}:
                     assert values.ndim == 1
                 if spec.key == 'deepzip':
                     alphabet = spec.document['adapter']['models'][params['model_key']]['alphabet_size']
@@ -238,7 +239,7 @@ def generate(destination, corpus, run_root):
                                'requests': sum(item['configuration'] == path.name for item in requests),
                                'sessions': 2, 'rounds': 7, 'native_loops': document['execution']['native_loops'],
                                'native_warmup_loops': 2, 'timeout_s': document['execution']['timeout_s']})
-    design = {'schema': 'tsbench.native-all-design/1', 'date': '2026-10-17',
+    design = {'schema': 'tsbench.native-all-design/1', 'date': '2026-10-22',
               'generated_from': str(Path(__file__).resolve()),
               'generator_sha256': 'sha256:' + hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
               'scope': f'{len(coverage)} registry keys; direct native_core; every declared-domain request, status and reason retained',
@@ -260,7 +261,7 @@ def generate(destination, corpus, run_root):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--output', type=Path, default=ROOT / 'benchmark/experiments/native-all-20261017')
+    parser.add_argument('--output', type=Path, default=ROOT / 'benchmark/experiments/native-all-20261022')
     parser.add_argument('--corpus', type=Path, default=Path('/home/fzg/PycharmProjects/材料/TSBench_Corpus'))
     parser.add_argument('--run-root', type=Path, default=ROOT / 'runs')
     options = parser.parse_args()

@@ -1,5 +1,8 @@
 # Benchmark 实施状态与结果范围（2026-10-15）
 
+
+2026-10-22：新增 CAMEO/SIP、VW、PIP、TP、SWAB、Sim-Piece、PMC-Mean、connected SWING、DFT、正交 DCT-II 共10项 repaired-v1 接入；主core单列binary64、API/对象独立列、empirical_quality。当前53可用真实CPU codec（另有raw-store），LZSS两项继续排除；历史性能不改签。详见[接入报告](cameo_family_integration/README.md)及 `benchmark/examples/cameo-family.toml`。
+
 2026-10-20增量：ABBA/fABBA已用独立abba-family替换，并新增QABBA；当前43可用真实CPU key+raw-store，LZSS两项继续排除。QABBA的源码恢复长度变化对象明确unsupported，不修改网格。见[本次接入报告](abba_family_integration/README.md)；下文旧实现的正式性能/测试结论不继承。
 
 2026-10-17增量：当前ALP／ALP-RD已切换为冻结safe-v1绑定，原生输出为ALPRW001；[接入与验证报告](alp_integration/README.md)单独记录本次身份。下述2026-10-15测试和正式性能数字属于当时的旧实现，不能作为新ALP绑定的测量证据。

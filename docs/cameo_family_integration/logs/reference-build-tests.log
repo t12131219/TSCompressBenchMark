@@ -1,0 +1,82 @@
+-- The C compiler identification is GNU 11.4.0
+-- The CXX compiler identification is GNU 11.4.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Found OpenMP_C: -fopenmp (found version "4.5") 
+-- Found OpenMP_CXX: -fopenmp (found version "4.5") 
+-- Found OpenMP: TRUE (found version "4.5")  
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /tmp/cameo-family-reference
+[  3%] Building C object CMakeFiles/cf_pocketfft.dir/vendor/pocketfft/pocketfft.c.o
+[  7%] Linking C static library libcf_pocketfft.a
+[  7%] Built target cf_pocketfft
+[ 10%] Building CXX object CMakeFiles/cameo_family.dir/src/acf.cpp.o
+[ 14%] Building CXX object CMakeFiles/cameo_family_static.dir/src/acf.cpp.o
+/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/cameo_family/vendor/cameo_family/src/acf.cpp: In instantiation of ‘cameo_family::Stages cameo_family::{anonymous}::simplify(cameo_family::Values, const cameo_family::Config&) [with T = long double; cameo_family::Values = std::vector<double>]’:
+/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/cameo_family/vendor/cameo_family/src/acf.cpp:621:47:   required from here
+/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/cameo_family/vendor/cameo_family/src/acf.cpp:584:46: warning: suggest parentheses around ‘&&’ within ‘||’ [-Wparentheses]
+  584 |             } else if (!c.parallel_lookahead && !c.ratio_stopping || ace != 0) {
+      |                        ~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~
+/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/cameo_family/vendor/cameo_family/src/acf.cpp: In instantiation of ‘cameo_family::Stages cameo_family::{anonymous}::simplify(cameo_family::Values, const cameo_family::Config&) [with T = long double; cameo_family::Values = std::vector<double>]’:
+/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/cameo_family/vendor/cameo_family/src/acf.cpp:621:47:   required from here
+/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/cameo_family/vendor/cameo_family/src/acf.cpp:584:46: warning: suggest parentheses around ‘&&’ within ‘||’ [-Wparentheses]
+  584 |             } else if (!c.parallel_lookahead && !c.ratio_stopping || ace != 0) {
+      |                        ~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~
+/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/cameo_family/vendor/cameo_family/src/acf.cpp: In instantiation of ‘cameo_family::Stages cameo_family::{anonymous}::simplify(cameo_family::Values, const cameo_family::Config&) [with T = double; cameo_family::Values = std::vector<double>]’:
+/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/cameo_family/vendor/cameo_family/src/acf.cpp:621:72:   required from here
+/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/cameo_family/vendor/cameo_family/src/acf.cpp:584:46: warning: suggest parentheses around ‘&&’ within ‘||’ [-Wparentheses]
+/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/cameo_family/vendor/cameo_family/src/acf.cpp: In instantiation of ‘cameo_family::Stages cameo_family::{anonymous}::simplify(cameo_family::Values, const cameo_family::Config&) [with T = double; cameo_family::Values = std::vector<double>]’:
+/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/cameo_family/vendor/cameo_family/src/acf.cpp:621:72:   required from here
+/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/cameo_family/vendor/cameo_family/src/acf.cpp:584:46: warning: suggest parentheses around ‘&&’ within ‘||’ [-Wparentheses]
+[ 17%] Building CXX object CMakeFiles/cameo_family.dir/src/linear_algebra.cpp.o
+[ 21%] Building CXX object CMakeFiles/cameo_family_static.dir/src/linear_algebra.cpp.o
+[ 25%] Building CXX object CMakeFiles/cameo_family.dir/src/swab.cpp.o
+[ 28%] Building CXX object CMakeFiles/cameo_family_static.dir/src/swab.cpp.o
+[ 32%] Building CXX object CMakeFiles/cameo_family.dir/src/frequency.cpp.o
+[ 35%] Building CXX object CMakeFiles/cameo_family_static.dir/src/frequency.cpp.o
+[ 39%] Building CXX object CMakeFiles/cameo_family.dir/src/raw.cpp.o
+[ 42%] Building CXX object CMakeFiles/cameo_family_static.dir/src/raw.cpp.o
+[ 46%] Building CXX object CMakeFiles/cameo_family_static.dir/src/numpy_sort.cpp.o
+[ 50%] Building CXX object CMakeFiles/cameo_family.dir/src/numpy_sort.cpp.o
+[ 53%] Building CXX object CMakeFiles/cameo_family_static.dir/src/api.cpp.o
+[ 57%] Building CXX object CMakeFiles/cameo_family.dir/src/api.cpp.o
+[ 60%] Linking CXX static library libcameo_family_static.a
+[ 64%] Linking CXX shared library libcameo_family.so
+[ 64%] Built target cameo_family_static
+[ 64%] Built target cameo_family
+[ 67%] Building CXX object CMakeFiles/cameo_cli.dir/tools/cli.cpp.o
+[ 71%] Building CXX object CMakeFiles/cf_native_tests.dir/tests/native.cpp.o
+[ 75%] Linking CXX executable cf_native_tests
+[ 75%] Built target cf_native_tests
+[ 78%] Building CXX object CMakeFiles/cf_numeric_tests.dir/tests/numeric_safety.cpp.o
+[ 82%] Linking CXX executable cf_numeric_tests
+[ 82%] Built target cf_numeric_tests
+[ 85%] Building CXX object CMakeFiles/cf_performance.dir/tests/performance.cpp.o
+[ 89%] Linking CXX executable cameo_cli
+[ 89%] Built target cameo_cli
+[ 92%] Building CXX object CMakeFiles/cf_transform_tests.dir/tests/transform.cpp.o
+[ 96%] Linking CXX executable cf_performance
+[ 96%] Built target cf_performance
+[100%] Linking CXX executable cf_transform_tests
+[100%] Built target cf_transform_tests
+Internal ctest changing into directory: /tmp/cameo-family-reference
+Test project /tmp/cameo-family-reference
+    Start 1: native_safety
+1/3 Test #1: native_safety ....................   Passed    0.21 sec
+    Start 2: numerical_dependency
+2/3 Test #2: numerical_dependency .............   Passed    0.18 sec
+    Start 3: transform_parity
+3/3 Test #3: transform_parity .................   Passed    1.00 sec
+
+100% tests passed, 0 tests failed out of 3
+
+Total Test time (real) =   1.39 sec

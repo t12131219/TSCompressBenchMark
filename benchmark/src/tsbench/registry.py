@@ -11,6 +11,7 @@ from typing import Any
 import numpy as np
 
 from .errors import BenchError, Unsupported
+from .families import CAMEO_FAMILY
 
 
 class CodecError(BenchError):
@@ -102,7 +103,7 @@ class CodecSpec:
             raise UnsupportedError(f'{self.key}: native byte limit exceeded')
         if self.key == 'serf-xor' and array.dtype.itemsize == 4:
             pass  # adjust_digit is checked with the resolved parameters by its bridge.
-        if self.key in {'abba', 'fabba', 'qabba'} and not np.isfinite(array).all():
+        if self.key in {'abba', 'fabba', 'qabba'} | CAMEO_FAMILY.keys() and not np.isfinite(array).all():
             raise SourceDomainError(f'{self.key}: FINITE_INPUT_REQUIRED')
 
 
@@ -181,6 +182,10 @@ class Registry:
                         raise UnsupportedError(f'{key}: {constraint["parameter"]} below allowed range')
                 if 'maximum' in constraint and value > Decimal(str(constraint['maximum'])):
                     raise UnsupportedError(f'{key}: {constraint["parameter"]} above allowed range')
+        if spec.key == 'cameo' and resolved['criterion'] == 'cr':
+            ratio = Decimal(resolved['error_bound'])
+            if resolved['kappa'] != 1 or ratio < 1 or ratio > 131072 or ratio != ratio.to_integral_value():
+                raise UnsupportedError('cameo: ratio stopping requires integer error_bound in 1..131072 and kappa=1')
         if key == 'qabba':
             for name in ('tolerance','alpha','sample_rate'):
                 if float(Decimal(resolved[name])) == 0:

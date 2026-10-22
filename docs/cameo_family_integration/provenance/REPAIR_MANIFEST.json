@@ -1,0 +1,40 @@
+{
+  "variant": "cameo-family-repaired-v1",
+  "tp_policy": "tp-first-span-v1",
+  "authorization": "User requested appropriate repairs to the previously reported original failures.",
+  "scope": "Modified reference, not unmodified-source parity; cumulative patch against frozen originals.",
+  "repairs": [
+    {
+      "file": "compression/hpc/hp_agg_vw.pyx",
+      "original_sha256": "5c9cd024d60dabda0d44e99223af76fc45bf1aae53323c60b689ae165317aa2b",
+      "repaired_sha256": "b2a906967851121d1c9bf913fe6a46847a9a02e557bd6730146857e8cf091147"
+    },
+    {
+      "file": "compression/lpc/pip.pyx",
+      "original_sha256": "b8029fdd70e608bfa940c6bea8a59c001becdc88070d4d62390b1c37c5538022",
+      "repaired_sha256": "7c36cea1fba8b2ac461ebffcee5c53dc3bdfe87d5b003075b5666fce46a7af75"
+    },
+    {
+      "file": "compression/hpc/hp_agg_pip.pyx",
+      "original_sha256": "5e3b2592946ef54214ef71c18504c5f64e3b14c6a049ed8ceb19753d4283ff52",
+      "repaired_sha256": "860f05ca6d3eba3ea2adcaa1d5fbe5b84c5efaa8bc23c8c0534824d99d36021f"
+    },
+    {
+      "file": "compression/lpc/tp.pyx",
+      "original_sha256": "71099d1ca5bc72e98a0669e865c3ad6396b4decef75e21a5a0666064930a9e43",
+      "repaired_sha256": "19ef007a1f1889563b48171e672be8f2e7606334308962f3b5c7c13a4445a3d8"
+    },
+    {
+      "file": "compression/hpc/hp_agg_tp.pyx",
+      "original_sha256": "7fd58a832f92bb398339e3108572902c4f4be1c96fbe91da8113634e57df024b",
+      "repaired_sha256": "4d0bff3c5ad3e80885a24aa0d7d25fa563f76444223774719fb84cb861e35711"
+    },
+    {
+      "file": "compression/lpc/swab.pyx",
+      "original_sha256": "e17499a4ad16ed3ce5e7fd04dd98e4ba2dc709e2c71b15b4ed9c267e31732494",
+      "repaired_sha256": "2b775db442a40f7eca24f1fe83c0f6c9532a7207e5724082d70a2a08ddce28ca"
+    }
+  ],
+  "patch_sha256": "e55c361e973355d219b4d96952f7150ef1ac93602a89012f33c1ae0c2a05bdc6",
+  "policy": "First TP span interpolates origin to first turn and normalizes by that span; subsequent defined branches unchanged."
+}

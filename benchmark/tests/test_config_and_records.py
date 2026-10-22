@@ -60,7 +60,7 @@ def test_registry_rejects_unknown_and_bool_integer_parameters():
         with pytest.raises(UnsupportedError):
             registry.resolve_params("zstd-frame", params)
     assert registry.get("lz77").key == "deflate-zlib"
-    assert len(registry.list(include_reference=False)) == 43
+    assert len(registry.list(include_reference=False)) == 53
 
 
 def test_interrupted_jsonl_tail_is_preserved_before_recovery(tmp_path):

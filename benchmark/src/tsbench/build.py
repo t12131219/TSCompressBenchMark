@@ -13,6 +13,7 @@ from pathlib import Path
 from . import _native_recipes as recipes
 from .errors import Unavailable
 from .registry import Registry
+from .families import CAMEO_FAMILY
 
 _RW = {'deepzip': 7, 'dzip': 8}
 _ABBA_FAMILY = {'abba', 'fabba', 'qabba'}
@@ -29,6 +30,8 @@ for _key in recipes.SPRINTZ_FAMILY:
     _FOLDERS[_key] = 'sprintz_family'
 for _key in recipes.CHIMP_FAMILY:
     _FOLDERS[_key] = 'chimp_family'
+for _key in CAMEO_FAMILY:
+    _FOLDERS[_key] = 'cameo_family'
 for _key in _ABBA_FAMILY:
     _FOLDERS[_key] = 'abba_family'
 for _key in _RW:
@@ -68,7 +71,7 @@ def _source_files(root: Path, key: str) -> list[dict]:
         for path in sorted(base.rglob('*')):
             if path.is_file() and '__pycache__' not in path.parts:
                 entries.append({'path': str(path.relative_to(root)), 'sha256': sha(path)})
-    for path, module in [(Path(__file__), 'build.py'), (Path(recipes.__file__), '_native_recipes.py')]:
+    for path, module in [(Path(__file__), 'build.py'), (Path(recipes.__file__), '_native_recipes.py'), (Path(__file__).with_name('families.py'), 'families.py')]:
         path = path.resolve()
         try:
             entry = {'path': str(path.relative_to(root)), 'sha256': sha(path)}
@@ -124,6 +127,9 @@ def _compile_native(command: list[str], output: Path) -> None:
 
 
 def _compiled_dependencies(root: Path, folder: Path) -> list[dict]:
+    shared = folder / 'compiled-family.json'
+    if shared.is_file():
+        return json.loads(shared.read_text())
     closure = set()
     files = [*folder.rglob('*.o.d'),*folder.glob('*.d')]
     if not files:
@@ -222,6 +228,81 @@ set_target_properties(tsbench_binding PROPERTIES OUTPUT_NAME tscb_{key} LIBRARY_
     _run(['cmake','-S',str(recipe),'-B',str(output.parent / 'cmake'),'-DCMAKE_BUILD_TYPE=Release',
           '-DCMAKE_CXX_FLAGS=-fno-fast-math -ffp-contract=off','-DCMAKE_C_FLAGS=-fno-fast-math -ffp-contract=off'])
     _run(['cmake','--build',str(output.parent / 'cmake'),'--target','tsbench_binding','--parallel','2'])
+
+
+def _cameo_build(root: Path, key: str, output: Path) -> None:
+    """Build one isolated numerical closure for the ten canonical bindings.
+
+    Shared products are content-addressed, locked, and checked against every
+    actual compiler input, toolchain and archive before reuse. No system BLAS.
+    """
+    import fcntl
+    adapter = root / 'adapters/cameo_family'
+    lock = json.loads((adapter / 'FROZEN_SOURCES.json').read_text())
+    for entry in lock['files']:
+        if sha(root / entry['path']) != entry['sha256']:
+            raise Unavailable(f'frozen CAMEO source changed: {entry["path"]}', stage='build')
+    source_identity = [x for x in _source_files(root,key) if not x['path'].startswith('registry/codecs/')]
+    compiler_identity = {}
+    for name in (os.environ.get('CC','cc'),os.environ.get('CXX','c++'),'cmake','make'):
+        path = Path(shutil.which(name)).resolve()
+        compiler_identity[str(path)] = sha(path)
+    identity = hashlib.sha256(json.dumps([source_identity,compiler_identity,CAMEO_FAMILY],sort_keys=True).encode()).hexdigest()
+    common = output.parents[2] / 'cameo-family-cache' / identity
+    common.parent.mkdir(parents=True,exist_ok=True)
+    with (common.parent / (identity+'.lock')).open('w') as mutex:
+        fcntl.flock(mutex,fcntl.LOCK_EX)
+        record_path = common / 'closure.json'
+        record = json.loads(record_path.read_text()) if record_path.is_file() else {}
+        entries = record.get('files',[])
+        valid = bool(entries) and all(Path(x['path']).is_file() and sha(Path(x['path']))==x['sha256'] for x in entries)
+        if not valid:
+            if common.exists():
+                shutil.rmtree(common)
+            common.mkdir()
+            source = common / 'release-source'
+            shutil.copytree(adapter / 'vendor/cameo_family',source)
+            recipe = common / 'recipe'
+            recipe.mkdir()
+            exports = recipe / 'exports.map'
+            exports.write_text('{ global: tscb_*; tsbench_core_*; local: *; };\n')
+            lines = [f'''cmake_minimum_required(VERSION 3.18)
+project(tsbench_cameo LANGUAGES C CXX)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(BUILD_TESTING OFF CACHE BOOL "" FORCE)
+add_subdirectory("{source}" standalone EXCLUDE_FROM_ALL)
+''']
+            for name,kind in CAMEO_FAMILY.items():
+                target = name.replace('-','_')
+                lines.append(f'''add_library(tscb_{target} SHARED "{adapter / 'native/binding.cc'}")
+target_include_directories(tscb_{target} PRIVATE "{root / 'native/include'}" "{source / 'tools'}")
+target_link_libraries(tscb_{target} PRIVATE cameo_family_static)
+target_compile_definitions(tscb_{target} PRIVATE CF_KEY="{name}" CF_KIND={kind})
+target_compile_options(tscb_{target} PRIVATE -Wall -Wextra -Wpedantic)
+target_link_options(tscb_{target} PRIVATE -Wl,-z,defs -Wl,-Bsymbolic-functions -Wl,--exclude-libs,ALL "-Wl,--version-script={exports}")
+set_target_properties(tscb_{target} PROPERTIES LIBRARY_OUTPUT_DIRECTORY "{common / 'lib'}")
+''')
+            recipe.joinpath('CMakeLists.txt').write_text('\n'.join(lines))
+            _run(['cmake','-S',str(recipe),'-B',str(common/'cmake'),'-DCMAKE_BUILD_TYPE=Release',
+                  '-DCMAKE_C_COMPILER='+os.environ.get('CC','cc'),'-DCMAKE_CXX_COMPILER='+os.environ.get('CXX','c++'),
+                  '-DCMAKE_CXX_FLAGS=-fno-fast-math -ffp-contract=off','-DCMAKE_C_FLAGS=-fno-fast-math -ffp-contract=off'])
+            targets = ['tscb_'+name.replace('-','_') for name in CAMEO_FAMILY]
+            _run(['cmake','--build',str(common/'cmake'),'--target',*targets,'--parallel','2'])
+            entries = _compiled_dependencies(root,common)
+            products = [*sorted((common/'lib').glob('*.so')),*sorted((common/'cmake').rglob('*.a')),
+                        recipe/'CMakeLists.txt',exports]
+            entries += [{'path':str(p),'sha256':sha(p)} for p in products]
+            compilers = {os.environ.get('CC','cc'):{'path':shutil.which(os.environ.get('CC','cc'))},
+                         os.environ.get('CXX','c++'):{'path':shutil.which(os.environ.get('CXX','c++'))}}
+            entries += _toolchain_dependencies(compilers)
+            record = {'identity':identity,'files':entries,'commands':recipes.COMMANDS.copy()}
+            record_path.write_text(json.dumps(record,indent=2)+'\n')
+        else:
+            recipes.COMMANDS.append({'shared_family_build_record':str(record_path),'sha256':sha(record_path)})
+        shutil.copy2(common/'lib'/output.name,output)
+        (output.parent/'compiled-family.json').write_text(json.dumps(record['files'],indent=2)+'\n')
 
 
 def _simd_build(root: Path, output: Path) -> None:
@@ -342,7 +423,9 @@ def build_codec(root: str | Path, key: str, *, force: bool = False, build_root=N
     recipes.PROJECT_ROOT = root
     recipes.COMMANDS.clear()
     try:
-        if key in _ABBA_FAMILY:
+        if key in CAMEO_FAMILY:
+            _cameo_build(root,key,output)
+        elif key in _ABBA_FAMILY:
             _abba_build(root,key,output)
         elif key in _RW:
             _rw_build(root,key,output)

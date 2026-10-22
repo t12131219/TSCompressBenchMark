@@ -1,0 +1,160 @@
+{
+  "artifact_kind": "local research standalone release",
+  "whole_family_status": "REWRITE_DONE",
+  "archive_sha256": "067004bf7df057ae78b41bdd25e5c989c274e659db735c778990c97e46bacfee",
+  "steps": [
+    {
+      "command": [
+        "python3",
+        "/tmp/cameo-review-unpacked-51sebvy8/cameo-family-review/ReWrite/cameo-family/tools/verify_inventory.py"
+      ],
+      "cwd": "/tmp/cameo-review-unpacked-51sebvy8/cameo-family-review",
+      "exit": 0,
+      "log": "/home/fzg/PycharmProjects/Compression_Rewrite/Release/cameo-family/cameo-family-full-parity-20261021.inventory.log"
+    },
+    {
+      "command": [
+        "cmake",
+        "-S",
+        ".",
+        "-B",
+        "build",
+        "-DCMAKE_BUILD_TYPE=Release"
+      ],
+      "cwd": "/tmp/cameo-review-unpacked-51sebvy8/cameo-family-review/ReWrite/cameo-family",
+      "exit": 0,
+      "log": "/home/fzg/PycharmProjects/Compression_Rewrite/Release/cameo-family/cameo-family-full-parity-20261021.configure.log"
+    },
+    {
+      "command": [
+        "cmake",
+        "--build",
+        "build",
+        "-j3"
+      ],
+      "cwd": "/tmp/cameo-review-unpacked-51sebvy8/cameo-family-review/ReWrite/cameo-family",
+      "exit": 0,
+      "log": "/home/fzg/PycharmProjects/Compression_Rewrite/Release/cameo-family/cameo-family-full-parity-20261021.build.log"
+    },
+    {
+      "command": [
+        "ctest",
+        "--test-dir",
+        "build",
+        "--output-on-failure"
+      ],
+      "cwd": "/tmp/cameo-review-unpacked-51sebvy8/cameo-family-review/ReWrite/cameo-family",
+      "exit": 0,
+      "log": "/home/fzg/PycharmProjects/Compression_Rewrite/Release/cameo-family/cameo-family-full-parity-20261021.tests.log"
+    },
+    {
+      "command": [
+        "cmake",
+        "--install",
+        "build",
+        "--prefix",
+        "/tmp/cameo-review-unpacked-51sebvy8/cameo-family-review/ReWrite/cameo-family/stage"
+      ],
+      "cwd": "/tmp/cameo-review-unpacked-51sebvy8/cameo-family-review/ReWrite/cameo-family",
+      "exit": 0,
+      "log": "/home/fzg/PycharmProjects/Compression_Rewrite/Release/cameo-family/cameo-family-full-parity-20261021.install.log"
+    },
+    {
+      "command": [
+        "cc",
+        "-std=c11",
+        "/tmp/cameo-review-unpacked-51sebvy8/cameo-family-review/ReWrite/cameo-family/tests/c_consumer.c",
+        "-I/tmp/cameo-review-unpacked-51sebvy8/cameo-family-review/ReWrite/cameo-family/stage/include",
+        "-L/tmp/cameo-review-unpacked-51sebvy8/cameo-family-review/ReWrite/cameo-family/stage/lib",
+        "-lcameo_family",
+        "-Wl,-rpath,/tmp/cameo-review-unpacked-51sebvy8/cameo-family-review/ReWrite/cameo-family/stage/lib",
+        "-Wl,-rpath-link,/tmp/cameo-review-unpacked-51sebvy8/cameo-family-review/ReWrite/cameo-family/stage/lib/linear-algebra",
+        "-o",
+        "/tmp/cameo-review-unpacked-51sebvy8/cameo-family-review/ReWrite/cameo-family/consumer"
+      ],
+      "cwd": "/tmp/cameo-review-unpacked-51sebvy8/cameo-family-review/ReWrite/cameo-family",
+      "exit": 0,
+      "log": "/home/fzg/PycharmProjects/Compression_Rewrite/Release/cameo-family/cameo-family-full-parity-20261021.consumer-compile.log"
+    },
+    {
+      "command": [
+        "/tmp/cameo-review-unpacked-51sebvy8/cameo-family-review/ReWrite/cameo-family/consumer"
+      ],
+      "cwd": "/tmp/cameo-review-unpacked-51sebvy8/cameo-family-review/ReWrite/cameo-family",
+      "exit": 0,
+      "log": "/home/fzg/PycharmProjects/Compression_Rewrite/Release/cameo-family/cameo-family-full-parity-20261021.consumer.log"
+    },
+    {
+      "command": [
+        "c++",
+        "-std=c++17",
+        "/tmp/cameo-review-unpacked-51sebvy8/cameo-family-review/ReWrite/cameo-family/tests/cpp_consumer.cpp",
+        "-I/tmp/cameo-review-unpacked-51sebvy8/cameo-family-review/ReWrite/cameo-family/stage/include",
+        "/tmp/cameo-review-unpacked-51sebvy8/cameo-family-review/ReWrite/cameo-family/stage/lib/libcameo_family_static.a",
+        "/tmp/cameo-review-unpacked-51sebvy8/cameo-family-review/ReWrite/cameo-family/stage/lib/libcf_pocketfft.a",
+        "/tmp/cameo-review-unpacked-51sebvy8/cameo-family-review/ReWrite/cameo-family/stage/lib/libcf_lapack.a",
+        "-fopenmp",
+        "-lm",
+        "-pthread",
+        "-o",
+        "/tmp/cameo-review-unpacked-51sebvy8/cameo-family-review/ReWrite/cameo-family/cpp-consumer"
+      ],
+      "cwd": "/tmp/cameo-review-unpacked-51sebvy8/cameo-family-review/ReWrite/cameo-family",
+      "exit": 0,
+      "log": "/home/fzg/PycharmProjects/Compression_Rewrite/Release/cameo-family/cameo-family-full-parity-20261021.cpp-consumer-compile.log"
+    },
+    {
+      "command": [
+        "/tmp/cameo-review-unpacked-51sebvy8/cameo-family-review/ReWrite/cameo-family/cpp-consumer"
+      ],
+      "cwd": "/tmp/cameo-review-unpacked-51sebvy8/cameo-family-review/ReWrite/cameo-family",
+      "exit": 0,
+      "log": "/home/fzg/PycharmProjects/Compression_Rewrite/Release/cameo-family/cameo-family-full-parity-20261021.cpp-consumer.log"
+    }
+  ],
+  "artifact_comparison": [
+    {
+      "file": "libcameo_family.so",
+      "sha256": "68d103bb06e951150a2011eec76c9f1abff69d0b0bb4b4ba9e928a67f8908edb",
+      "identical": true
+    },
+    {
+      "file": "libcameo_family_static.a",
+      "sha256": "d689178b1a7303c2b9f8075e24265621a2220dd9f8bf875ada6a4b41a5b61864",
+      "identical": true
+    },
+    {
+      "file": "libcf_pocketfft.a",
+      "sha256": "87e0bf5dc98ff68a9df0ccd93ff81ad543ab990adcb78030c8375dede19e3982",
+      "identical": true
+    },
+    {
+      "file": "cameo_cli",
+      "sha256": "0512ee5bff103225d800ad26189e19061b2e5c42506d18b7e607421308eb48e0",
+      "identical": true
+    },
+    {
+      "file": "cf_native_tests",
+      "sha256": "b90ee0d84832bc70a37433e05fd09bb59232b4247bf873327d31713517eb095e",
+      "identical": true
+    },
+    {
+      "file": "cf_numeric_tests",
+      "sha256": "39316b51a4585691756e06559cc01cd5f7069db7fa3b9f12e412c98785b3bb18",
+      "identical": true
+    },
+    {
+      "file": "cf_transform_tests",
+      "sha256": "59816fcbc358f4e59da335fbea341d5088bc9b8306119619c8779b7240f70f83",
+      "identical": true
+    },
+    {
+      "file": "numeric/src/cf_lapack_source-build/lib/libopenblas_64.a",
+      "sha256": "ad56f63def2c402d595e9c82a2fe46db8ae682097075b1b4df85db27a4cece5c",
+      "identical": true
+    }
+  ],
+  "integrity_and_rebuild": "PASS",
+  "extracted_root": "/tmp/cameo-review-unpacked-51sebvy8/cameo-family-review",
+  "status_preserved": "REWRITE_DONE"
+}

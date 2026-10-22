@@ -1,0 +1,816 @@
+{
+  "schema": "tsbench.cameo-family-integration/1",
+  "date": "2026-10-22",
+  "status": "BENCH_BINDING_QUALIFIED_LIMITED_SCOPE",
+  "target": "cameo-family-repaired-v1",
+  "release_sha256": "067004bf7df057ae78b41bdd25e5c989c274e659db735c778990c97e46bacfee",
+  "frozen_members": 1692,
+  "frozen_lock": {
+    "path": "adapters/cameo_family/FROZEN_SOURCES.json",
+    "sha256": "3016025ca0f9b4c7ede8018662293cfa5386653e56871d5b69dc909b397cc7f4"
+  },
+  "results": {
+    "full_suite_passed": 1632,
+    "subtests_passed": 4,
+    "full_suite_failed": 0,
+    "full_suite_skipped": 0,
+    "cameo_tests": 245,
+    "source_and_full_frame_cases": 598,
+    "input_values": 114816,
+    "native_matrix_groups": 40,
+    "native_matrix_products": 120,
+    "object_cold_process_cases": 80,
+    "reference_ctest_passed": 3,
+    "sanitizer_probe_cases": 361,
+    "sanitizer_leak_check": "HOST_PASS_DETECT_LEAKS_1",
+    "symbol_isolation_libraries": 10,
+    "released_sample_ceiling_paths": 5,
+    "future_static_design_keys_including_raw": 54,
+    "formal_performance": "NOT_RUN"
+  },
+  "limits": [
+    "Linux x86_64 GCC binding qualification only",
+    "empirical_quality only; ACF/fit/TerseTS/fraction are different quality semantics",
+    "native_core rank1 f64; C ABI/object independent columns",
+    "Source C++ and pocketfft reference independently compiled; numerical archive shared with production",
+    "Sanitizer covers binding/C++/pocketfft, numerical archive uninstrumented",
+    "No inheritance of Clang, ARM, forced 20-kernel, fuzz, OOM or reproducible-build qualification"
+  ],
+  "files": [
+    {
+      "path": "docs/cameo_family_integration/PLAN.md",
+      "sha256": "f643aa6392779209ecfdda14e7a9d419168973615420043c393420c13e4464c1",
+      "bytes": 1716
+    },
+    {
+      "path": "docs/cameo_family_integration/README.md",
+      "sha256": "44242dd862c89675adaef4b740ba2ec5632e4660baaf0fb68473a4be1eecbf7e",
+      "bytes": 7627
+    },
+    {
+      "path": "docs/cameo_family_integration/build_identities.json",
+      "sha256": "e5724cee00245a6af3bd25ef1105c86c63545c3fd1ef6a5ac30d77bf2c1fa85b",
+      "bytes": 18748
+    },
+    {
+      "path": "docs/cameo_family_integration/build_sanitizer.py",
+      "sha256": "137b58eea8a68e8911bc237549da370c521fdbfc1647b4c95783480eb5dfbc49",
+      "bytes": 1742
+    },
+    {
+      "path": "docs/cameo_family_integration/example_smoke.json",
+      "sha256": "e9525282a1c2a4cbffb614875d2ea76c7b944d50b7ac6f35c79ed1c7534e79ce",
+      "bytes": 1321
+    },
+    {
+      "path": "docs/cameo_family_integration/future_design_check.json",
+      "sha256": "a2119d7fe13731e0abd0bc4bc87219759adab84b8ac7f88feb7366057adb7ab5",
+      "bytes": 4419
+    },
+    {
+      "path": "docs/cameo_family_integration/logs/build-final.log",
+      "sha256": "baed915c5afa8d7d897b9da04d93a0adab668bb41ee10f09c29325dd19896a4a",
+      "bytes": 161
+    },
+    {
+      "path": "docs/cameo_family_integration/logs/build-initial.log",
+      "sha256": "baed915c5afa8d7d897b9da04d93a0adab668bb41ee10f09c29325dd19896a4a",
+      "bytes": 161
+    },
+    {
+      "path": "docs/cameo_family_integration/logs/build-regression.log",
+      "sha256": "aa02c50c4024859b34dbf7f7f56c05a4e897cf4e6ee9bade486930eb89f84e80",
+      "bytes": 99
+    },
+    {
+      "path": "docs/cameo_family_integration/logs/ceiling.log",
+      "sha256": "7799918c9a1ee0c4a9ea4755a40ee671c40df2b8e67d7af856d0291ee72927b3",
+      "bytes": 114
+    },
+    {
+      "path": "docs/cameo_family_integration/logs/full-suite-final.log",
+      "sha256": "0e8af3201adef6ca90ec9390e1b4f1b8e640fb628d2d0c1a904c3595f669360c",
+      "bytes": 1888
+    },
+    {
+      "path": "docs/cameo_family_integration/logs/full-suite-initial.log",
+      "sha256": "8455afd9ef8e2f935b8751ca1c62ed558facdc270cc601daad2764b069a30eae",
+      "bytes": 12300
+    },
+    {
+      "path": "docs/cameo_family_integration/logs/generator.log",
+      "sha256": "bafdd8386df3656b01f608a3d45e90b9d30ae40ac3d726d5634b32d74fa7d46d",
+      "bytes": 2054
+    },
+    {
+      "path": "docs/cameo_family_integration/logs/isolation.log",
+      "sha256": "40c4bebdb1ecaffe86a002348f966fc6a8adf645a0c8054fcddea8bb46c004d5",
+      "bytes": 115
+    },
+    {
+      "path": "docs/cameo_family_integration/logs/native-matrix.log",
+      "sha256": "3944e51e4dd71dabdad06c0cfef878316dd51504294f821efc2142bbb9667c8f",
+      "bytes": 28
+    },
+    {
+      "path": "docs/cameo_family_integration/logs/qualification-final.log",
+      "sha256": "7b2f34140491ae32d41e3abe850c27901d84edb4f3243b82fce856cea438f759",
+      "bytes": 16
+    },
+    {
+      "path": "docs/cameo_family_integration/logs/reference-build-tests.log",
+      "sha256": "9b2be0402d5c09f770fe5a791395412b4cca3ed86fd7f9c209b37282fec24404",
+      "bytes": 6295
+    },
+    {
+      "path": "docs/cameo_family_integration/logs/sanitizer-build.log",
+      "sha256": "08cdc182b728fd93e27a326d831313c533c4daf1739132d4d993166453059965",
+      "bytes": 5597
+    },
+    {
+      "path": "docs/cameo_family_integration/logs/sanitizer-host-pass.log",
+      "sha256": "c8685bb111a1eb3fb98a5402b11bdb22262fa52e68f83674a2986ba624434bc6",
+      "bytes": 28
+    },
+    {
+      "path": "docs/cameo_family_integration/logs/sanitizer-sandbox-ptrace-failure.log",
+      "sha256": "5809c31eb6bf44f2d9a832aa4aeb076aae9db40371c8dd40c1837dbd716f6c31",
+      "bytes": 247
+    },
+    {
+      "path": "docs/cameo_family_integration/logs/targeted-after-parameter-fix.log",
+      "sha256": "ae09cbce2956352230bfa4b65af63fee31ad26cf22f1fdccb3641ee8ec35f69f",
+      "bytes": 341
+    },
+    {
+      "path": "docs/cameo_family_integration/logs/targeted-initial.log",
+      "sha256": "225d5c5ebb80590b036c54ba7a32c628cc61cf6373229a67fe7333d49fc90fbe",
+      "bytes": 3930
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/cameo/native_api/fresh_request/0422f06252c337c00814fd900042f4e40b7870a0cff8e7b40938cf3cae947dd4.codec",
+      "sha256": "0422f06252c337c00814fd900042f4e40b7870a0cff8e7b40938cf3cae947dd4",
+      "bytes": 404
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/cameo/native_api/fresh_request/5e5bb23c549dd8e5dc881b53e4af27d18e6d2c2f10cc7700fe6931b5ce57ab43.maps.txt",
+      "sha256": "5e5bb23c549dd8e5dc881b53e4af27d18e6d2c2f10cc7700fe6931b5ce57ab43",
+      "bytes": 7272
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/cameo/native_api/fresh_request/82c8a366b5bdaf55cabfb79c9c6b6383378d7c8f6fabedf9a790aa31a85088ad.experiment.json",
+      "sha256": "dd558626b811ecbada92fffc982a3cd3386daa8dbad7a2f623bcade1ff4b32cb",
+      "bytes": 15862
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/cameo/native_api/prepared/0422f06252c337c00814fd900042f4e40b7870a0cff8e7b40938cf3cae947dd4.codec",
+      "sha256": "0422f06252c337c00814fd900042f4e40b7870a0cff8e7b40938cf3cae947dd4",
+      "bytes": 404
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/cameo/native_api/prepared/e9782da4dd8ee1879080595e097c234362823da2a53a8d1c14b07822f40dcc9b.maps.txt",
+      "sha256": "e9782da4dd8ee1879080595e097c234362823da2a53a8d1c14b07822f40dcc9b",
+      "bytes": 7272
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/cameo/native_api/prepared/f9a791e64820fda8fc9d416a5f6208ed7616316ca88be2c4bd3aa86f2c72c2d4.experiment.json",
+      "sha256": "56d75385d74457abca1208a2d18bd2b36bfdad220ae81d0c05e47fc7c090ca24",
+      "bytes": 15921
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/cameo/native_core/fresh_request/0422f06252c337c00814fd900042f4e40b7870a0cff8e7b40938cf3cae947dd4.codec",
+      "sha256": "0422f06252c337c00814fd900042f4e40b7870a0cff8e7b40938cf3cae947dd4",
+      "bytes": 404
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/cameo/native_core/fresh_request/94f61ce5e4ae4569fcf2524a784387dd374f290c973e72c99e4ba44c78c073dc.experiment.json",
+      "sha256": "3f1334fa9bcf1f1dfc12d2989283a68a01102671bb636508e4b9637ab2c7aeec",
+      "bytes": 15831
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/cameo/native_core/fresh_request/faf5dd01e71d644afc31e788b97a355d10c444c1958b851a2b9d1534f55b7154.maps.txt",
+      "sha256": "faf5dd01e71d644afc31e788b97a355d10c444c1958b851a2b9d1534f55b7154",
+      "bytes": 7272
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/cameo/native_core/prepared/00f52fb0e0f668fa0829d9a0adb6fceab9dbcf19b4fcf9ca11f61e033ba29f4e.maps.txt",
+      "sha256": "00f52fb0e0f668fa0829d9a0adb6fceab9dbcf19b4fcf9ca11f61e033ba29f4e",
+      "bytes": 7272
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/cameo/native_core/prepared/0422f06252c337c00814fd900042f4e40b7870a0cff8e7b40938cf3cae947dd4.codec",
+      "sha256": "0422f06252c337c00814fd900042f4e40b7870a0cff8e7b40938cf3cae947dd4",
+      "bytes": 404
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/cameo/native_core/prepared/b1267d931624daf1a2d6a939a9971ccfc834c004bc961c9c80a62ef0d4a383a7.experiment.json",
+      "sha256": "7e07f4c5df76fe3189754ea573b0d88f7feb387f83b16156e94cdc8b86edf318",
+      "bytes": 15794
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/dft/native_api/fresh_request/26fc7af5b2794ef275a1399194bb9c68538c92883b41af3082b1497dd110ae2a.codec",
+      "sha256": "26fc7af5b2794ef275a1399194bb9c68538c92883b41af3082b1497dd110ae2a",
+      "bytes": 836
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/dft/native_api/fresh_request/8b0e509ca6de1386ecee2d1d92b97705ba73f64aacc36c57352d6374e6e4094e.experiment.json",
+      "sha256": "f4a9774d3ab1cba4d61f56966c690be7f04f985838f31d82e467183897d72886",
+      "bytes": 15888
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/dft/native_api/fresh_request/ba4521b08316a203936dfb48a8ddf187df897b29dbf87a85d41567be6034615a.maps.txt",
+      "sha256": "ba4521b08316a203936dfb48a8ddf187df897b29dbf87a85d41567be6034615a",
+      "bytes": 7240
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/dft/native_api/prepared/0e808135b17b9bbac23bb4e57e07a90ffe1c840831c73601f078c089aafc5cd5.maps.txt",
+      "sha256": "0e808135b17b9bbac23bb4e57e07a90ffe1c840831c73601f078c089aafc5cd5",
+      "bytes": 7240
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/dft/native_api/prepared/26fc7af5b2794ef275a1399194bb9c68538c92883b41af3082b1497dd110ae2a.codec",
+      "sha256": "26fc7af5b2794ef275a1399194bb9c68538c92883b41af3082b1497dd110ae2a",
+      "bytes": 836
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/dft/native_api/prepared/d945846766a287151165ada096d8a0cdda6a262e84867f48f3e57687870ac7df.experiment.json",
+      "sha256": "89e8b0246e3bdfbbddcf8d6aad9b13da5cb95ac8b27e87d99943f09ddc8ab952",
+      "bytes": 15947
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/dft/native_core/fresh_request/14b74236fee1b8e54b1eb051eb68442d3bd2e2c07ff7168a01d41f9fd5c230b1.experiment.json",
+      "sha256": "64e89247906d304c0f9b399f2f49899a88f709b138d41f87ba5b097f368d596a",
+      "bytes": 15858
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/dft/native_core/fresh_request/26fc7af5b2794ef275a1399194bb9c68538c92883b41af3082b1497dd110ae2a.codec",
+      "sha256": "26fc7af5b2794ef275a1399194bb9c68538c92883b41af3082b1497dd110ae2a",
+      "bytes": 836
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/dft/native_core/fresh_request/fb8083d995a988c4acf7b84dee58939282a3137ccb5108969aa233a6b766f9ef.maps.txt",
+      "sha256": "fb8083d995a988c4acf7b84dee58939282a3137ccb5108969aa233a6b766f9ef",
+      "bytes": 7240
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/dft/native_core/prepared/03f0b862129f73c03da15e0b66c1a53e13c84fbd714e47b64428e80411bb5f48.experiment.json",
+      "sha256": "48de13a9a7992836577af077b2487871db5b4b3d0083f4e41103f6de87c4f53d",
+      "bytes": 15820
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/dft/native_core/prepared/0ff5d6b2b124eaaeacc5922a43b60cfb76a6fdd66d88c35b727fb6d61e6af861.maps.txt",
+      "sha256": "0ff5d6b2b124eaaeacc5922a43b60cfb76a6fdd66d88c35b727fb6d61e6af861",
+      "bytes": 7240
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/dft/native_core/prepared/26fc7af5b2794ef275a1399194bb9c68538c92883b41af3082b1497dd110ae2a.codec",
+      "sha256": "26fc7af5b2794ef275a1399194bb9c68538c92883b41af3082b1497dd110ae2a",
+      "bytes": 836
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/dwt-dct-ii/native_api/fresh_request/0e80026bef724fae4e4c5f9c9d8d45a423b7fdba9e81cf0c367db2418eecb942.maps.txt",
+      "sha256": "0e80026bef724fae4e4c5f9c9d8d45a423b7fdba9e81cf0c367db2418eecb942",
+      "bytes": 7352
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/dwt-dct-ii/native_api/fresh_request/7fa7fa83438c8f1e6a047e457d484aaea3e9f820ae886f7212e5668792d063e8.experiment.json",
+      "sha256": "a808397a99f420ec7cfbd79beffcd161ff71ccd00af5d750365362942fbb123c",
+      "bytes": 15934
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/dwt-dct-ii/native_api/fresh_request/b9748af38c1209c4e6d4a7da91b6b5f23c17d297505f1898dea109b9209e450a.codec",
+      "sha256": "b9748af38c1209c4e6d4a7da91b6b5f23c17d297505f1898dea109b9209e450a",
+      "bytes": 580
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/dwt-dct-ii/native_api/prepared/b9748af38c1209c4e6d4a7da91b6b5f23c17d297505f1898dea109b9209e450a.codec",
+      "sha256": "b9748af38c1209c4e6d4a7da91b6b5f23c17d297505f1898dea109b9209e450a",
+      "bytes": 580
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/dwt-dct-ii/native_api/prepared/c024e2deed74666646215cff007a9a27de868deded5315e4a7fdc97f7cf959ee.experiment.json",
+      "sha256": "2bef116f64da1b1a575ab49157cf4024a27a204ed7e9be88370ba691f8b928e2",
+      "bytes": 15993
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/dwt-dct-ii/native_api/prepared/d2c273fb4423f1b638a3a8f1214829defaf62d1563b6775feb47ced665d9a2ac.maps.txt",
+      "sha256": "d2c273fb4423f1b638a3a8f1214829defaf62d1563b6775feb47ced665d9a2ac",
+      "bytes": 7352
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/dwt-dct-ii/native_core/fresh_request/3484ec46f314cd3e69631f12d4a56d143ae5cbe246aa59bb0c4f76edf8fba570.experiment.json",
+      "sha256": "1bb3de9e5e17a5a7764068eccd1091cd28f6807af3d0aea590b18b6d7f3ef403",
+      "bytes": 15902
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/dwt-dct-ii/native_core/fresh_request/a18ddeb174fdaa76db63b14127e822162fe1b88f9c90ee68bcf09fe5557844ec.maps.txt",
+      "sha256": "a18ddeb174fdaa76db63b14127e822162fe1b88f9c90ee68bcf09fe5557844ec",
+      "bytes": 7352
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/dwt-dct-ii/native_core/fresh_request/b9748af38c1209c4e6d4a7da91b6b5f23c17d297505f1898dea109b9209e450a.codec",
+      "sha256": "b9748af38c1209c4e6d4a7da91b6b5f23c17d297505f1898dea109b9209e450a",
+      "bytes": 580
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/dwt-dct-ii/native_core/prepared/b51b6bd1af9cfc776acf3359543bcd75779c09c12c381d30825bb94a089b691f.maps.txt",
+      "sha256": "b51b6bd1af9cfc776acf3359543bcd75779c09c12c381d30825bb94a089b691f",
+      "bytes": 7352
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/dwt-dct-ii/native_core/prepared/b9748af38c1209c4e6d4a7da91b6b5f23c17d297505f1898dea109b9209e450a.codec",
+      "sha256": "b9748af38c1209c4e6d4a7da91b6b5f23c17d297505f1898dea109b9209e450a",
+      "bytes": 580
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/dwt-dct-ii/native_core/prepared/bda6e13885e826b36ccbe904186c326b614fe8144a14cdb4cf928df89d82da5a.experiment.json",
+      "sha256": "86a64ed884c29ddfca78b3721b1202ae02b97cf647cc287ffdebdfa8432ef656",
+      "bytes": 15865
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/pip/native_api/fresh_request/8ee7bb1406f60915a34fb383d6a1cb7619faf4ea7eb5a5e148013523bc01331d.experiment.json",
+      "sha256": "0a1f3ecd1ec27e48f4e5faca58d891e9dfc5728eabc82ac78be6ef3850ab4177",
+      "bytes": 15823
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/pip/native_api/fresh_request/ada8d0069daaa75424442e08a506986b0fe1feef02dc1ea6417844c71098db8e.maps.txt",
+      "sha256": "ada8d0069daaa75424442e08a506986b0fe1feef02dc1ea6417844c71098db8e",
+      "bytes": 7240
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/pip/native_api/fresh_request/c5076905c3127d9e2d614b4a8b33b527709f5eadd792ddff584c3a35e8ebbed2.codec",
+      "sha256": "c5076905c3127d9e2d614b4a8b33b527709f5eadd792ddff584c3a35e8ebbed2",
+      "bytes": 356
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/pip/native_api/prepared/915d2212a0c6f190a32dfee8144331c77601f77fae573643ee85c197ce2b8b77.maps.txt",
+      "sha256": "915d2212a0c6f190a32dfee8144331c77601f77fae573643ee85c197ce2b8b77",
+      "bytes": 7240
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/pip/native_api/prepared/a3a55aebe083f5896d3aef1c8ba39e51c96b9b386a94c7199f6f60549f97b033.experiment.json",
+      "sha256": "9d30b96decf05e671165cc70ecf70bcab7bf933c6fb6527bc2d38754e3d74f57",
+      "bytes": 15882
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/pip/native_api/prepared/c5076905c3127d9e2d614b4a8b33b527709f5eadd792ddff584c3a35e8ebbed2.codec",
+      "sha256": "c5076905c3127d9e2d614b4a8b33b527709f5eadd792ddff584c3a35e8ebbed2",
+      "bytes": 356
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/pip/native_core/fresh_request/5d6636a45b3b91432cd2c9ce97b61fa4b5bb72acc68066bd8a152d6009a3d083.maps.txt",
+      "sha256": "5d6636a45b3b91432cd2c9ce97b61fa4b5bb72acc68066bd8a152d6009a3d083",
+      "bytes": 7240
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/pip/native_core/fresh_request/b1e420a18ff1c9056191bbd40ad3a7fc368fa5eeaae7b5d3cd96e2a062c3d4b8.experiment.json",
+      "sha256": "d338d77fd330cc46302a0edfd4f5c9b31927e205063d641fce62a8dc8d373967",
+      "bytes": 15792
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/pip/native_core/fresh_request/c5076905c3127d9e2d614b4a8b33b527709f5eadd792ddff584c3a35e8ebbed2.codec",
+      "sha256": "c5076905c3127d9e2d614b4a8b33b527709f5eadd792ddff584c3a35e8ebbed2",
+      "bytes": 356
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/pip/native_core/prepared/09599b6bc535ec167ed3f36d51f32d65befa694df9848b103db8747cc0c4189a.experiment.json",
+      "sha256": "c0a0c50e52b6d269235f518c2db476685dd5a5ede8d286b016b5f36d710fa7c5",
+      "bytes": 15755
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/pip/native_core/prepared/1ae9fd583ac47fe2de6e4464dcbbafe0a75c96afccdd6f2e381b2dcc991359e6.maps.txt",
+      "sha256": "1ae9fd583ac47fe2de6e4464dcbbafe0a75c96afccdd6f2e381b2dcc991359e6",
+      "bytes": 7240
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/pip/native_core/prepared/c5076905c3127d9e2d614b4a8b33b527709f5eadd792ddff584c3a35e8ebbed2.codec",
+      "sha256": "c5076905c3127d9e2d614b4a8b33b527709f5eadd792ddff584c3a35e8ebbed2",
+      "bytes": 356
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/pmc-mean/native_api/fresh_request/1b291e044bcd6725165b811c492640befe01303eceef281949056e0699a3f482.experiment.json",
+      "sha256": "b13bc9837924c36f07f8c74d4b80eb803825d0985da659ca65c91f74130ea32b",
+      "bytes": 15963
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/pmc-mean/native_api/fresh_request/41b47b263089098cdc52fac8f493109955da95c8c27607cfc6e135d65e68d359.codec",
+      "sha256": "41b47b263089098cdc52fac8f493109955da95c8c27607cfc6e135d65e68d359",
+      "bytes": 1061
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/pmc-mean/native_api/fresh_request/b2820d353dc1b38b7bbc3a9cb268a61debc7e2b79e16d68f6dc729e6f2e1e99d.maps.txt",
+      "sha256": "b2820d353dc1b38b7bbc3a9cb268a61debc7e2b79e16d68f6dc729e6f2e1e99d",
+      "bytes": 7320
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/pmc-mean/native_api/prepared/41b47b263089098cdc52fac8f493109955da95c8c27607cfc6e135d65e68d359.codec",
+      "sha256": "41b47b263089098cdc52fac8f493109955da95c8c27607cfc6e135d65e68d359",
+      "bytes": 1061
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/pmc-mean/native_api/prepared/c5ea2467e0727ed0e8976c6c47a81b618eb8e9fcb435440452e1c74e2b1feae3.maps.txt",
+      "sha256": "c5ea2467e0727ed0e8976c6c47a81b618eb8e9fcb435440452e1c74e2b1feae3",
+      "bytes": 7320
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/pmc-mean/native_api/prepared/d46831ddabd1e6d91153a39ebc593ec713c2a791288b98db6e5cb1b782322c9a.experiment.json",
+      "sha256": "0afbaf4d11d8029fad6831fbf3c6dc07a360a9e33c3217c585e1ee987a8ea6e7",
+      "bytes": 16021
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/pmc-mean/native_core/fresh_request/093761626dfd3a54c30bb5a7092a035ecc3eaf3a3ff93df7c5060279820a9797.maps.txt",
+      "sha256": "093761626dfd3a54c30bb5a7092a035ecc3eaf3a3ff93df7c5060279820a9797",
+      "bytes": 7320
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/pmc-mean/native_core/fresh_request/311354930ec953fabf9773279657475d811ff255e3d1b9d956428c5e9d14742b.experiment.json",
+      "sha256": "1d3dc6f5fcc35aa4fed12d489361f0554b3391518539a11ee6c2403cacdacfa3",
+      "bytes": 15929
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/pmc-mean/native_core/fresh_request/41b47b263089098cdc52fac8f493109955da95c8c27607cfc6e135d65e68d359.codec",
+      "sha256": "41b47b263089098cdc52fac8f493109955da95c8c27607cfc6e135d65e68d359",
+      "bytes": 1061
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/pmc-mean/native_core/prepared/41b47b263089098cdc52fac8f493109955da95c8c27607cfc6e135d65e68d359.codec",
+      "sha256": "41b47b263089098cdc52fac8f493109955da95c8c27607cfc6e135d65e68d359",
+      "bytes": 1061
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/pmc-mean/native_core/prepared/e4b9c868db07eae41285ead3beddef25138609e99acb9e157a9671aa9d05f9d2.maps.txt",
+      "sha256": "e4b9c868db07eae41285ead3beddef25138609e99acb9e157a9671aa9d05f9d2",
+      "bytes": 7320
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/pmc-mean/native_core/prepared/f442d3a0958f904ae9594f27ad9a29e8462c6e15d55b8fe1506bc0097542acd9.experiment.json",
+      "sha256": "b90807c3b98cdbef1f08f795e3d50dc916effd6e76d3e1c50781fb6d475bda9a",
+      "bytes": 15893
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/results.json",
+      "sha256": "4b71977e0e6d5ab7a8798c3ae0e055f71201ceba7c1de2361e1759f10526579b",
+      "bytes": 922116
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/sim-piece/native_api/fresh_request/c90bd530824f04384b0dbb15e15899a3ba0cded951f92a2f98b4f2ac6f597a80.experiment.json",
+      "sha256": "0f03f9053a91cdef364fed0938fbe306bf60935aa26e4f5ca1c94d37684ecda0",
+      "bytes": 15957
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/sim-piece/native_api/fresh_request/cbe5b75760e98709d6d99577b6c2955e4f9dad813b97bfe512d577ee3bd92de1.codec",
+      "sha256": "cbe5b75760e98709d6d99577b6c2955e4f9dad813b97bfe512d577ee3bd92de1",
+      "bytes": 1245
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/sim-piece/native_api/fresh_request/ff146d2efe2d3da75ce4fe0c94c54ff7c34ee1e874ea1abe758208cd0aed07c8.maps.txt",
+      "sha256": "ff146d2efe2d3da75ce4fe0c94c54ff7c34ee1e874ea1abe758208cd0aed07c8",
+      "bytes": 7336
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/sim-piece/native_api/prepared/17bed34592597384c96bfcefbac584fb7528969e01ca2cd779acfe4093dfcd04.maps.txt",
+      "sha256": "17bed34592597384c96bfcefbac584fb7528969e01ca2cd779acfe4093dfcd04",
+      "bytes": 7336
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/sim-piece/native_api/prepared/816f7df30e1f30a98a7f85cba867b61b417a389b2dd319b21f8f412782c23473.experiment.json",
+      "sha256": "3056c224124c2df5b170e24af572535f8cf061b3ba92b82d41ce051e4279aa98",
+      "bytes": 16017
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/sim-piece/native_api/prepared/cbe5b75760e98709d6d99577b6c2955e4f9dad813b97bfe512d577ee3bd92de1.codec",
+      "sha256": "cbe5b75760e98709d6d99577b6c2955e4f9dad813b97bfe512d577ee3bd92de1",
+      "bytes": 1245
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/sim-piece/native_core/fresh_request/097621fd9a700063cfbb60648d003f8d8e33da1d9b47e680095820fd0fc696ac.experiment.json",
+      "sha256": "d3d0abcf03021a506f22c6d9864464e59dd6abb159e84ffdca3762d9c2efe7d3",
+      "bytes": 15926
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/sim-piece/native_core/fresh_request/cbe5b75760e98709d6d99577b6c2955e4f9dad813b97bfe512d577ee3bd92de1.codec",
+      "sha256": "cbe5b75760e98709d6d99577b6c2955e4f9dad813b97bfe512d577ee3bd92de1",
+      "bytes": 1245
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/sim-piece/native_core/fresh_request/db3474f537486c6fe8c958c42700d8f695d905d9b9b985b9bbb8c0ae6447d8e9.maps.txt",
+      "sha256": "db3474f537486c6fe8c958c42700d8f695d905d9b9b985b9bbb8c0ae6447d8e9",
+      "bytes": 7336
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/sim-piece/native_core/prepared/74bbe3dcec400a3ed34695c1e38a0a42d039c2dc60d0f4ffb8623f0b6ae8b3ee.maps.txt",
+      "sha256": "74bbe3dcec400a3ed34695c1e38a0a42d039c2dc60d0f4ffb8623f0b6ae8b3ee",
+      "bytes": 7336
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/sim-piece/native_core/prepared/cbe5b75760e98709d6d99577b6c2955e4f9dad813b97bfe512d577ee3bd92de1.codec",
+      "sha256": "cbe5b75760e98709d6d99577b6c2955e4f9dad813b97bfe512d577ee3bd92de1",
+      "bytes": 1245
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/sim-piece/native_core/prepared/e76a9f772c11b79f2507f6ac1ee205f42b0cb7377a7df231afa5c0265ea48f9f.experiment.json",
+      "sha256": "5897d32c8d68166c029ba2459e7ef2e691eccaa8c469036058dc2bf4312a29b8",
+      "bytes": 15889
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/swab/native_api/fresh_request/732390df8a605a0849a7c49a8b425375707a2943c039f8ee3c991a9e9165b645.experiment.json",
+      "sha256": "48f7ce16da3703337f28eae7813a884e42a0634b4a85bd8fe97f563a0f5a4314",
+      "bytes": 15874
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/swab/native_api/fresh_request/f006d9afc822df116c20bfda7d3c64dc357f04c623ee44c0523f53c7077f7412.codec",
+      "sha256": "f006d9afc822df116c20bfda7d3c64dc357f04c623ee44c0523f53c7077f7412",
+      "bytes": 1060
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/swab/native_api/fresh_request/f535d893c2c77763f76821cc17c4e9ea570befaee10c2d2ef8b77d4c84594b42.maps.txt",
+      "sha256": "f535d893c2c77763f76821cc17c4e9ea570befaee10c2d2ef8b77d4c84594b42",
+      "bytes": 7256
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/swab/native_api/prepared/36ab30b25df0ccaa6e6d98b1a65032bda75e8c50d6381162b6e7a957f6afc1bd.experiment.json",
+      "sha256": "63d093d8bb4107d36b2093999072d4d9fbb64f599683d63df8f6f5391aa29d21",
+      "bytes": 15934
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/swab/native_api/prepared/c4c74e3da666d6de249b2f32b2cf7411f2987781794ead5756ce5a56b66f1752.maps.txt",
+      "sha256": "c4c74e3da666d6de249b2f32b2cf7411f2987781794ead5756ce5a56b66f1752",
+      "bytes": 7256
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/swab/native_api/prepared/f006d9afc822df116c20bfda7d3c64dc357f04c623ee44c0523f53c7077f7412.codec",
+      "sha256": "f006d9afc822df116c20bfda7d3c64dc357f04c623ee44c0523f53c7077f7412",
+      "bytes": 1060
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/swab/native_core/fresh_request/0a9ca2f5515d237229fcc2ab2081769f8edec39c27705e151c9d18e0ee13ed99.experiment.json",
+      "sha256": "4da54551acbe09d6984da83ea4b35efecf00b732860d87c61b32f931fcce27df",
+      "bytes": 15844
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/swab/native_core/fresh_request/a908452b299be5eedc7c700caa921b0e70ea586e2c7e0207115a406f61e70f86.maps.txt",
+      "sha256": "a908452b299be5eedc7c700caa921b0e70ea586e2c7e0207115a406f61e70f86",
+      "bytes": 7256
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/swab/native_core/fresh_request/f006d9afc822df116c20bfda7d3c64dc357f04c623ee44c0523f53c7077f7412.codec",
+      "sha256": "f006d9afc822df116c20bfda7d3c64dc357f04c623ee44c0523f53c7077f7412",
+      "bytes": 1060
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/swab/native_core/prepared/0308998e7c51a2f0cb3d995661c60d624e60f61705656747e805f0a71deaa5cf.maps.txt",
+      "sha256": "0308998e7c51a2f0cb3d995661c60d624e60f61705656747e805f0a71deaa5cf",
+      "bytes": 7256
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/swab/native_core/prepared/99b31761eb22e458f1b1ec6111757b75e1750fbdf44b87f84bb3d0917f982a3e.experiment.json",
+      "sha256": "fdc644f322f86a29c03689c409444fdb25aa09e885cdad4c5823ec49ac33e008",
+      "bytes": 15806
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/swab/native_core/prepared/f006d9afc822df116c20bfda7d3c64dc357f04c623ee44c0523f53c7077f7412.codec",
+      "sha256": "f006d9afc822df116c20bfda7d3c64dc357f04c623ee44c0523f53c7077f7412",
+      "bytes": 1060
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/swing-connected/native_api/fresh_request/4a701541a89001bdb4a59c571f086d0c5639777df1d1dd1e5d972fa24a9d8a53.maps.txt",
+      "sha256": "4a701541a89001bdb4a59c571f086d0c5639777df1d1dd1e5d972fa24a9d8a53",
+      "bytes": 7432
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/swing-connected/native_api/fresh_request/8bb7d8b491e41ac867bdc03a0562ee811e3c55d9629c8a9b43cb29cfb059dd9f.experiment.json",
+      "sha256": "18e1c5bc4289dc7ff17d9d9dde46d82889074807c2ee5b50bf1b24b6d8dcfb52",
+      "bytes": 16023
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/swing-connected/native_api/fresh_request/d1f16e814c9446a710e1937eec2aae88ea287331e08b749db14a235246507a94.codec",
+      "sha256": "d1f16e814c9446a710e1937eec2aae88ea287331e08b749db14a235246507a94",
+      "bytes": 1021
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/swing-connected/native_api/prepared/a5b2857b934f5e4c3d6d7c92cd754888445642890d15e81d2db58669710f26a2.experiment.json",
+      "sha256": "7de1339baa338806633a6f97155ef11c41ab41148648080051c305a08e0001a1",
+      "bytes": 16085
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/swing-connected/native_api/prepared/b2db42b887648d4e7d9c5853802c00baaf5f7a16684fdc0e53bec8b81adefcd9.maps.txt",
+      "sha256": "b2db42b887648d4e7d9c5853802c00baaf5f7a16684fdc0e53bec8b81adefcd9",
+      "bytes": 7432
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/swing-connected/native_api/prepared/d1f16e814c9446a710e1937eec2aae88ea287331e08b749db14a235246507a94.codec",
+      "sha256": "d1f16e814c9446a710e1937eec2aae88ea287331e08b749db14a235246507a94",
+      "bytes": 1021
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/swing-connected/native_core/fresh_request/1e12607a675169c87799e1f544a3580d476d5a9a15e1064d4f0f27ce09f45680.experiment.json",
+      "sha256": "8b0daaa7cac516280beb00680c8a295c2a644e6681108db5c440501999e9f05c",
+      "bytes": 15993
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/swing-connected/native_core/fresh_request/58ec1d73c0963d8aef8defc3456543d1ad6ce1fa8ea52dfced40b5a3aef32a77.maps.txt",
+      "sha256": "58ec1d73c0963d8aef8defc3456543d1ad6ce1fa8ea52dfced40b5a3aef32a77",
+      "bytes": 7432
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/swing-connected/native_core/fresh_request/d1f16e814c9446a710e1937eec2aae88ea287331e08b749db14a235246507a94.codec",
+      "sha256": "d1f16e814c9446a710e1937eec2aae88ea287331e08b749db14a235246507a94",
+      "bytes": 1021
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/swing-connected/native_core/prepared/18d7b2b2a0fc1dca3fdc67336e23c4f75a3fb588ec1d08e02232c344674220ce.experiment.json",
+      "sha256": "c5187e8792e571f447656a55289aacca199b13577f87ba3054f1211551674852",
+      "bytes": 15956
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/swing-connected/native_core/prepared/20c0c3858c1eab333a69925b7bea3a992b91812d1da5acfeb29c7667f4697ff6.maps.txt",
+      "sha256": "20c0c3858c1eab333a69925b7bea3a992b91812d1da5acfeb29c7667f4697ff6",
+      "bytes": 7432
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/swing-connected/native_core/prepared/d1f16e814c9446a710e1937eec2aae88ea287331e08b749db14a235246507a94.codec",
+      "sha256": "d1f16e814c9446a710e1937eec2aae88ea287331e08b749db14a235246507a94",
+      "bytes": 1021
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/tp/native_api/fresh_request/4ca3a4161b975ded858974a47f6b1cdc25629ed034ff309d12cbb0e21854a947.maps.txt",
+      "sha256": "4ca3a4161b975ded858974a47f6b1cdc25629ed034ff309d12cbb0e21854a947",
+      "bytes": 7224
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/tp/native_api/fresh_request/b284a859f9f8feacc17d33c3821d3b0b2e08bafb7089f48f64f5eacf8279f0e6.experiment.json",
+      "sha256": "c885cf2a4e789237d33b4a9823df6195a1c7407f6d6115ff547311f4b53194e4",
+      "bytes": 15848
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/tp/native_api/fresh_request/f9cc6b0573e8622ff95c591945ef519e08386d71529b30f56b4d3fb47b38594b.codec",
+      "sha256": "f9cc6b0573e8622ff95c591945ef519e08386d71529b30f56b4d3fb47b38594b",
+      "bytes": 1092
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/tp/native_api/prepared/501a9339e025735f6d79e61aa65f98e3b1d7e262bea6b04fab3ce2828b03eeee.maps.txt",
+      "sha256": "501a9339e025735f6d79e61aa65f98e3b1d7e262bea6b04fab3ce2828b03eeee",
+      "bytes": 7224
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/tp/native_api/prepared/6fe9bc83f776437fd67582e4bbe869e9da0ffb2cab4b9b540c46852c8f15ae24.experiment.json",
+      "sha256": "6266358393bfd137fe1b7822956a16c05339a711012b5d8aae0014d9df1251dd",
+      "bytes": 15907
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/tp/native_api/prepared/f9cc6b0573e8622ff95c591945ef519e08386d71529b30f56b4d3fb47b38594b.codec",
+      "sha256": "f9cc6b0573e8622ff95c591945ef519e08386d71529b30f56b4d3fb47b38594b",
+      "bytes": 1092
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/tp/native_core/fresh_request/1bf99c79505b546d6d28688ceaa405ebc09f4c2a7042ff7461521175f9c52717.experiment.json",
+      "sha256": "86ab0b8e667668bd6240d197756a13c28adb6349e3ce1f1d28198d08d16b816c",
+      "bytes": 15817
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/tp/native_core/fresh_request/b0a2c5a2fc74a61f2bd0b943d236c23f3cdf2cb05524fd758a543285feb9c982.maps.txt",
+      "sha256": "b0a2c5a2fc74a61f2bd0b943d236c23f3cdf2cb05524fd758a543285feb9c982",
+      "bytes": 7273
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/tp/native_core/fresh_request/f9cc6b0573e8622ff95c591945ef519e08386d71529b30f56b4d3fb47b38594b.codec",
+      "sha256": "f9cc6b0573e8622ff95c591945ef519e08386d71529b30f56b4d3fb47b38594b",
+      "bytes": 1092
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/tp/native_core/prepared/0f2176b1565f651a2202d7a6cd19afd9c17fa307b67627b49defbe1bbe7eb969.experiment.json",
+      "sha256": "2cc527bb6d0ee209620f7b385882c28a64feacd76b93596fa599f503c2f21465",
+      "bytes": 15779
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/tp/native_core/prepared/4d2fa9d0c7d87d06d2a107bbc12db4761d6696cb8d90972b5b9277c974dfb67c.maps.txt",
+      "sha256": "4d2fa9d0c7d87d06d2a107bbc12db4761d6696cb8d90972b5b9277c974dfb67c",
+      "bytes": 7224
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/tp/native_core/prepared/f9cc6b0573e8622ff95c591945ef519e08386d71529b30f56b4d3fb47b38594b.codec",
+      "sha256": "f9cc6b0573e8622ff95c591945ef519e08386d71529b30f56b4d3fb47b38594b",
+      "bytes": 1092
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/vw/native_api/fresh_request/286b7ad5f267471649df62cd270ec477f4ecde023e8d6140f43929cb120edf93.codec",
+      "sha256": "286b7ad5f267471649df62cd270ec477f4ecde023e8d6140f43929cb120edf93",
+      "bytes": 388
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/vw/native_api/fresh_request/55702976e057929585e15978254a180dbc680211c0bc496c4b6e55bdd4f5849a.maps.txt",
+      "sha256": "55702976e057929585e15978254a180dbc680211c0bc496c4b6e55bdd4f5849a",
+      "bytes": 7224
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/vw/native_api/fresh_request/f7790424c758e68d234e843f4d2078571d8c268041da60efa6b60f7e154679f6.experiment.json",
+      "sha256": "54a2cadeaaff0d9a039b746011eea8f244c8b15fe0ff93826ef83b439cdfdb85",
+      "bytes": 15812
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/vw/native_api/prepared/286b7ad5f267471649df62cd270ec477f4ecde023e8d6140f43929cb120edf93.codec",
+      "sha256": "286b7ad5f267471649df62cd270ec477f4ecde023e8d6140f43929cb120edf93",
+      "bytes": 388
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/vw/native_api/prepared/2f87331423596843a192b572266bf20e0861d11a0ef2b3545a5fb8952178dc87.experiment.json",
+      "sha256": "3646f64946d4103dce289717c260e370c9c68200c878b263be28be0c4f5d90f6",
+      "bytes": 15871
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/vw/native_api/prepared/93cf32d78b4fe1d05227826ef15c91e32e60d8c35bb2e1ce256364e67958a740.maps.txt",
+      "sha256": "93cf32d78b4fe1d05227826ef15c91e32e60d8c35bb2e1ce256364e67958a740",
+      "bytes": 7224
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/vw/native_core/fresh_request/286b7ad5f267471649df62cd270ec477f4ecde023e8d6140f43929cb120edf93.codec",
+      "sha256": "286b7ad5f267471649df62cd270ec477f4ecde023e8d6140f43929cb120edf93",
+      "bytes": 388
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/vw/native_core/fresh_request/7cb41af19913e8010368fad51ca973c3315dde8668e98daa808e6632e22840b4.maps.txt",
+      "sha256": "7cb41af19913e8010368fad51ca973c3315dde8668e98daa808e6632e22840b4",
+      "bytes": 7224
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/vw/native_core/fresh_request/aaf0b0b53f91bf3abb01255af6f84147e9a0f0dc85e77b8d72b17d4b10363f7a.experiment.json",
+      "sha256": "ddbbd80e2773fdf1bca8e70631e9b99d4e01bbbbd3c71ae0ce6769b48467c395",
+      "bytes": 15781
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/vw/native_core/prepared/286b7ad5f267471649df62cd270ec477f4ecde023e8d6140f43929cb120edf93.codec",
+      "sha256": "286b7ad5f267471649df62cd270ec477f4ecde023e8d6140f43929cb120edf93",
+      "bytes": 388
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/vw/native_core/prepared/2b2c703f21e89731f5e9a6bfd4a293abe839538aa4b39538e676f79d168ac464.maps.txt",
+      "sha256": "2b2c703f21e89731f5e9a6bfd4a293abe839538aa4b39538e676f79d168ac464",
+      "bytes": 7224
+    },
+    {
+      "path": "docs/cameo_family_integration/native_matrix/vw/native_core/prepared/ba243b250612dbceee3fbfbb8de81f8bf0cf3d2ee9fd189f0829a7053405965b.experiment.json",
+      "sha256": "82359d82903e901dc3fe296a98c3795480e6cc778ed05d6f74422fc1879cdbdf",
+      "bytes": 15744
+    },
+    {
+      "path": "docs/cameo_family_integration/production-CMakeLists.txt",
+      "sha256": "606cc01d931c0239980d681ab7ec070cd0686ea05229145815b72f34243706ae",
+      "bytes": 11774
+    },
+    {
+      "path": "docs/cameo_family_integration/production-compile_commands.json",
+      "sha256": "6684553cdbb8dd1b4b0bb1dd81ef72db7ea32234d783b136e56c06b787d4ec31",
+      "bytes": 34657
+    },
+    {
+      "path": "docs/cameo_family_integration/provenance/0002-repaired-v1-cumulative.patch",
+      "sha256": "e55c361e973355d219b4d96952f7150ef1ac93602a89012f33c1ae0c2a05bdc6",
+      "bytes": 5776
+    },
+    {
+      "path": "docs/cameo_family_integration/provenance/REPAIR_MANIFEST.json",
+      "sha256": "d81a14efa837a372fa6c94431fb524ebb0d0174f1905f5a319bc5f82bad356fb",
+      "bytes": 1978
+    },
+    {
+      "path": "docs/cameo_family_integration/provenance/SOURCE_MANIFEST.json",
+      "sha256": "9eefd4767a94b6acbbf9f6763a4077c2da605f01731e11c06dbdf73c8eddb0d1",
+      "bytes": 67006
+    },
+    {
+      "path": "docs/cameo_family_integration/provenance/release-audit.json",
+      "sha256": "b39bdfccbba79c3f59d050dd38bb64b6af50af3bf7bc83239240692f2aaaeb5d",
+      "bytes": 6443
+    },
+    {
+      "path": "docs/cameo_family_integration/qualification.json",
+      "sha256": "27bf37918437efa815bf7d16768d8a61b7d84c3bc71777c8109a0070c26504c8",
+      "bytes": 241094
+    },
+    {
+      "path": "docs/cameo_family_integration/reference_identity.json",
+      "sha256": "3ded853bb2714259d54e63808ee7417312c7b48fa28d599b74e24e4590eb70ba",
+      "bytes": 15499
+    },
+    {
+      "path": "docs/cameo_family_integration/run_native_matrix.py",
+      "sha256": "3fd6d08900f59d6bdaaffc829d0499a36f7cbf646464f203302763ca5c5fe298",
+      "bytes": 2231
+    },
+    {
+      "path": "docs/cameo_family_integration/sanitizer-scope.txt",
+      "sha256": "5fed4a0cee57ecbc6f6343c5f3baf58ce380dd80a0700e97f10bd985f7be7df8",
+      "bytes": 367
+    },
+    {
+      "path": "docs/cameo_family_integration/sanitizer_identity.json",
+      "sha256": "e4a36ba36568f1e1ad2c274b2bb33fbd54b850f7376abecbc3215451aec9b917",
+      "bytes": 6192
+    },
+    {
+      "path": "docs/cameo_family_integration/sanitizer_probe.cpp",
+      "sha256": "65e785e353cac5813f83aa6c3e60832e93e97fda2f1ea373a87dfab5cbf800f9",
+      "bytes": 3781
+    }
+  ]
+}

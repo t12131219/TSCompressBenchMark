@@ -32,11 +32,12 @@ def test_installed_recipe_sources_keep_real_origin_and_content_identity(tmp_path
     local_recipe = package / '_native_recipes.py'
     local_build.write_text('installed build')
     local_recipe.write_text('installed recipe')
+    (package / 'families.py').write_text('installed canonical family mapping')
     monkeypatch.setattr(build, '__file__', str(local_build))
     monkeypatch.setattr(build.recipes, '__file__', str(local_recipe))
     records = build._source_files(root, 'zstd-frame')
     installed = {row['path']: row for row in records if row['path'].startswith('package:')}
-    assert set(installed) == {'package:tsbench/build.py', 'package:tsbench/_native_recipes.py'}
+    assert set(installed) == {'package:tsbench/build.py', 'package:tsbench/_native_recipes.py', 'package:tsbench/families.py'}
     assert installed['package:tsbench/build.py']['source_path'] == str(local_build)
     assert installed['package:tsbench/_native_recipes.py']['sha256'] == build.sha(local_recipe)
     assert any(row['path'] == 'registry/codecs/zstd-frame.json' for row in records)
@@ -48,14 +49,14 @@ def test_checkout_recipe_sources_keep_asset_relative_labels(tmp_path, monkeypatc
     assets(tmp_path)
     package = tmp_path / 'benchmark/src/tsbench'
     package.mkdir(parents=True)
-    for name in ('build.py', '_native_recipes.py'):
+    for name in ('build.py', '_native_recipes.py', 'families.py'):
         (package / name).write_text(name)
     monkeypatch.setattr(build, '__file__', str(package / 'build.py'))
     monkeypatch.setattr(build.recipes, '__file__', str(package / '_native_recipes.py'))
     records = build._source_files(tmp_path, 'zstd-frame')
     python_records = [row for row in records if row['path'].endswith('.py')]
     assert python_records == [{'path': 'benchmark/src/tsbench/' + name, 'sha256': build.sha(package / name)}
-                              for name in ('build.py', '_native_recipes.py')]
+                              for name in ('build.py', '_native_recipes.py', 'families.py')]
 
 
 @pytest.mark.parametrize('registry_present', [False, True])
@@ -118,7 +119,7 @@ def test_installed_wheel_builds_native_zstd_and_wire_only_decoder_restores(tmp_p
     record = json.loads(built.stdout)[0]
     assert record['status'] == 'ok' and record['dependency_capture'] == 'ACTUAL_PER_TU_MD'
     package_sources = [row for row in record['sources'] if row['path'].startswith('package:')]
-    assert {row['path'] for row in package_sources} == {'package:tsbench/build.py', 'package:tsbench/_native_recipes.py'}
+    assert {row['path'] for row in package_sources} == {'package:tsbench/build.py', 'package:tsbench/_native_recipes.py', 'package:tsbench/families.py'}
     assert all(Path(row['source_path']).is_relative_to(installed) for row in package_sources)
     assert not (root / record['artifact']).exists()  # The fresh artifact belongs to this isolated asset checkout.
     encoded = invoke(['-c', '''

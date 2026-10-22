@@ -1,0 +1,69 @@
+# CAMEO repaired-v1 release; ACF/fit/fraction targets are empirical quality. This example is not a formal result.
+schema = "tsbench.experiment/1"
+name = "cameo-family-20261022"
+output = "../../runs/cameo-family-20261022"
+
+[[datasets]]
+id = "etth1-ot-f64"
+format = "csv"
+path = "../../../材料/TSBench_Corpus/ETTh1.csv"
+dtype = "<f8"
+columns = ["OT"]
+start = 2048
+stop = 2304
+
+[[methods]]
+id = "cameo"
+codec = "cameo"
+[[methods]]
+id = "vw"
+codec = "vw"
+[[methods]]
+id = "pip"
+codec = "pip"
+[[methods]]
+id = "tp"
+codec = "tp"
+[[methods]]
+id = "swab"
+codec = "swab"
+[[methods]]
+id = "sim-piece"
+codec = "sim-piece"
+[[methods]]
+id = "pmc-mean"
+codec = "pmc-mean"
+[[methods]]
+id = "swing-connected"
+codec = "swing-connected"
+[[methods]]
+id = "dft"
+codec = "dft"
+[[methods]]
+id = "dwt-dct-ii"
+codec = "dwt-dct-ii"
+
+[[profiles]]
+id = "cpu-single"
+device = "cpu"
+native_threads = 1
+object_workers = 1
+
+[task]
+kind = "values"
+fidelity = "empirical_quality"
+boundary = "native_core"
+lifecycle = "prepared"
+cache_policy = "natural"
+
+[execution]
+sessions = 1
+rounds = 7
+native_loops = 2
+native_warmup_loops = 1
+timeout_s = 120
+save_artifacts = true
+
+[analysis]
+summary = "median_iqr"
+inference = "none"

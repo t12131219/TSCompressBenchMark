@@ -1,0 +1,8 @@
+set(CMAKE_SYSTEM_NAME Linux)
+set(CMAKE_SYSTEM_PROCESSOR aarch64)
+get_filename_component(CF_ARM_ROOT "${CMAKE_CURRENT_LIST_DIR}/../../../Toolchains/cameo-arm64" ABSOLUTE)
+set(CMAKE_C_COMPILER "${CMAKE_CURRENT_LIST_DIR}/../tools/arm64-cc")
+set(CMAKE_CXX_COMPILER "${CMAKE_CURRENT_LIST_DIR}/../tools/arm64-cxx")
+set(CMAKE_Fortran_COMPILER "${CMAKE_CURRENT_LIST_DIR}/../tools/arm64-fc")
+set(CMAKE_SYSROOT "${CF_ARM_ROOT}")
+set(CMAKE_CROSSCOMPILING_EMULATOR "${CF_ARM_ROOT}/usr/bin/qemu-aarch64;-L;${CF_ARM_ROOT}/usr/aarch64-linux-gnu")

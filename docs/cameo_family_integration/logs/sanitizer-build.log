@@ -1,0 +1,71 @@
+-- The C compiler identification is GNU 11.4.0
+-- The CXX compiler identification is GNU 11.4.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Found OpenMP_C: -fopenmp (found version "4.5") 
+-- Found OpenMP_CXX: -fopenmp (found version "4.5") 
+-- Found OpenMP: TRUE (found version "4.5")  
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /tmp/cameo-binding-sanitizer/build
+[  3%] Building C object standalone/CMakeFiles/cf_pocketfft.dir/vendor/pocketfft/pocketfft.c.o
+[  6%] Building CXX object CMakeFiles/probe.dir/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/cameo_family_integration/sanitizer_probe.cpp.o
+[  9%] Linking CXX executable probe
+[  9%] Built target probe
+[ 12%] Linking C static library libcf_pocketfft.a
+[ 12%] Built target cf_pocketfft
+[ 15%] Building CXX object standalone/CMakeFiles/cameo_family_static.dir/src/linear_algebra.cpp.o
+[ 18%] Building CXX object standalone/CMakeFiles/cameo_family_static.dir/src/acf.cpp.o
+/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/cameo_family/vendor/cameo_family/src/acf.cpp: In instantiation of ‘cameo_family::Stages cameo_family::{anonymous}::simplify(cameo_family::Values, const cameo_family::Config&) [with T = long double; cameo_family::Values = std::vector<double>]’:
+/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/cameo_family/vendor/cameo_family/src/acf.cpp:621:47:   required from here
+/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/cameo_family/vendor/cameo_family/src/acf.cpp:584:46: warning: suggest parentheses around ‘&&’ within ‘||’ [-Wparentheses]
+  584 |             } else if (!c.parallel_lookahead && !c.ratio_stopping || ace != 0) {
+      |                        ~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~
+/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/cameo_family/vendor/cameo_family/src/acf.cpp: In instantiation of ‘cameo_family::Stages cameo_family::{anonymous}::simplify(cameo_family::Values, const cameo_family::Config&) [with T = double; cameo_family::Values = std::vector<double>]’:
+/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/cameo_family/vendor/cameo_family/src/acf.cpp:621:72:   required from here
+/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/cameo_family/vendor/cameo_family/src/acf.cpp:584:46: warning: suggest parentheses around ‘&&’ within ‘||’ [-Wparentheses]
+[ 21%] Building CXX object standalone/CMakeFiles/cameo_family_static.dir/src/swab.cpp.o
+[ 25%] Building CXX object standalone/CMakeFiles/cameo_family_static.dir/src/frequency.cpp.o
+[ 28%] Building CXX object standalone/CMakeFiles/cameo_family_static.dir/src/raw.cpp.o
+[ 31%] Building CXX object standalone/CMakeFiles/cameo_family_static.dir/src/numpy_sort.cpp.o
+[ 34%] Building CXX object standalone/CMakeFiles/cameo_family_static.dir/src/api.cpp.o
+[ 37%] Linking CXX static library libcameo_family_static.a
+[ 37%] Built target cameo_family_static
+[ 40%] Building CXX object CMakeFiles/tscb_vw.dir/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/cameo_family/native/binding.cc.o
+[ 43%] Building CXX object CMakeFiles/tscb_cameo.dir/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/cameo_family/native/binding.cc.o
+[ 46%] Linking CXX shared library libtscb_vw.so
+[ 50%] Linking CXX shared library libtscb_cameo.so
+[ 50%] Built target tscb_vw
+[ 53%] Building CXX object CMakeFiles/tscb_pip.dir/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/cameo_family/native/binding.cc.o
+[ 53%] Built target tscb_cameo
+[ 56%] Building CXX object CMakeFiles/tscb_tp.dir/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/cameo_family/native/binding.cc.o
+[ 59%] Linking CXX shared library libtscb_tp.so
+[ 62%] Linking CXX shared library libtscb_pip.so
+[ 62%] Built target tscb_tp
+[ 65%] Building CXX object CMakeFiles/tscb_swab.dir/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/cameo_family/native/binding.cc.o
+[ 65%] Built target tscb_pip
+[ 68%] Building CXX object CMakeFiles/tscb_sim_piece.dir/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/cameo_family/native/binding.cc.o
+[ 71%] Linking CXX shared library libtscb_swab.so
+[ 75%] Linking CXX shared library libtscb_sim_piece.so
+[ 75%] Built target tscb_swab
+[ 78%] Building CXX object CMakeFiles/tscb_pmc_mean.dir/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/cameo_family/native/binding.cc.o
+[ 78%] Built target tscb_sim_piece
+[ 81%] Building CXX object CMakeFiles/tscb_swing_connected.dir/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/cameo_family/native/binding.cc.o
+[ 84%] Linking CXX shared library libtscb_pmc_mean.so
+[ 87%] Linking CXX shared library libtscb_swing_connected.so
+[ 87%] Built target tscb_pmc_mean
+[ 90%] Building CXX object CMakeFiles/tscb_dft.dir/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/cameo_family/native/binding.cc.o
+[ 90%] Built target tscb_swing_connected
+[ 93%] Building CXX object CMakeFiles/tscb_dwt_dct_ii.dir/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/cameo_family/native/binding.cc.o
+[ 96%] Linking CXX shared library libtscb_dft.so
+[100%] Linking CXX shared library libtscb_dwt_dct_ii.so
+[100%] Built target tscb_dft
+[100%] Built target tscb_dwt_dct_ii

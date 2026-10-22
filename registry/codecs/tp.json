@@ -1,0 +1,191 @@
+{
+  "schema_version": "tscb.codec-manifest.v2",
+  "key": "tp",
+  "identity": {
+    "display_name": "TP (repaired-v1)",
+    "family": "CAMEO",
+    "citations": [
+      "adapters/cameo_family/vendor/cameo_family/docs/CONTRACT.md"
+    ],
+    "source_artifact_id": "v2:source-artifact:sha256:067004bf7df057ae78b41bdd25e5c989c274e659db735c778990c97e46bacfee"
+  },
+  "classification": {
+    "object_level": "P1_STANDALONE_CODEC",
+    "implementation_class": "CONVENTIONAL",
+    "tracks": [
+      "VALUE"
+    ],
+    "subtracks": [
+      "V0"
+    ]
+  },
+  "input": {
+    "topologies": [
+      "UTS",
+      "SYNCHRONOUS_MTS"
+    ],
+    "dtypes": [
+      "<f8"
+    ],
+    "ranks": [
+      1,
+      2
+    ],
+    "layouts": [
+      "ROW_MAJOR_CONTIG",
+      "SOA_COLUMNS"
+    ],
+    "endianness": [
+      "little"
+    ],
+    "alignment_bytes": 1,
+    "min_n": 1,
+    "max_n": 131072,
+    "min_m": 1,
+    "max_m": 4096,
+    "validity_shapes": [
+      "NONE"
+    ],
+    "homogeneous_itemsize": true,
+    "max_total_raw_bytes": 1048576,
+    "value_coupling_mode": "COLUMN_INDEPENDENT",
+    "timestamp_semantics": {
+      "preserve_order": true,
+      "duplicates": true,
+      "out_of_order": true,
+      "negative_delta": true,
+      "absolute_epoch": true,
+      "overflow_policy": "NOT_APPLICABLE_VALUE_ONLY"
+    },
+    "max_total_elements": 131072,
+    "value_domain": {
+      "kind": "FROZEN_SOURCE_WITH_BOUNDED_REJECTION",
+      "unsupported_action": "REJECT_BEFORE_OUTPUT",
+      "oracle_evidence": "adapters/cameo_family/vendor/cameo_family/docs/CONTRACT.md",
+      "rejection_reasons": [
+        "FINITE_INPUT_REQUIRED",
+        "SOURCE_ARITHMETIC_OR_RESOURCE_LIMIT",
+        "SOURCE_RECONSTRUCTED_LENGTH_DIFFERS_FROM_GRID"
+      ]
+    }
+  },
+  "semantics": {
+    "loss_modes": [
+      "UNBOUNDED_LOSSY"
+    ],
+    "error_bound_types": [],
+    "reconstruction_modes": [
+      "APPROX_GRID"
+    ],
+    "rebuild_protocol": "CF01_INDEPENDENT_INVERSE_ON_ORIGINAL_GRID",
+    "preprocess_class": "NONE",
+    "preprocess_stages": [],
+    "decodability_profile": "SELF_CONTAINED_CF01_OR_CFM1_COLUMN_COLLECTION",
+    "bitstream_separability": "PER_COLUMN"
+  },
+  "lifecycle": {
+    "block_semantics": "WHOLE_OBJECT",
+    "state_semantics": "INDEPENDENT_OBJECT",
+    "reset": "REQUIRED_MODE_ZERO",
+    "finalize": "REQUIRED_ZERO_BYTE_FINALIZE",
+    "safe_overread_bytes": 0,
+    "tail_policy": "EXACT_COUNT",
+    "dictionary": "EMBEDDED_AND_CHARGED",
+    "model": "EMBEDDED_AND_CHARGED",
+    "index": "NONE"
+  },
+  "execution": {
+    "backends": [
+      "C_ABI_V1",
+      "NATIVE_CORE_OWNED_CPP"
+    ],
+    "isa": [
+      "NATIVE_DISPATCH"
+    ],
+    "devices": [
+      "CPU"
+    ],
+    "threading": "INTERNAL_THREADS",
+    "fallback_policy": "DISALLOWED",
+    "runtime_dispatch": true,
+    "timing_scopes": [
+      "CORE",
+      "PIPELINE",
+      "E2E"
+    ]
+  },
+  "features": {
+    "streaming": false,
+    "query": false,
+    "random_access": false
+  },
+  "parameters": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "isa": {
+        "type": "string",
+        "default": "NATIVE_DISPATCH",
+        "enum": [
+          "NATIVE_DISPATCH"
+        ]
+      },
+      "native_timing": {
+        "type": "boolean",
+        "default": false
+      },
+      "error_bound": {
+        "type": "decimal-string",
+        "default": ".01"
+      },
+      "nlags": {
+        "type": "integer",
+        "default": 4,
+        "minimum": 1,
+        "maximum": 65535
+      },
+      "hops": {
+        "type": "integer",
+        "default": 2,
+        "minimum": 1,
+        "maximum": 131072
+      },
+      "kappa": {
+        "type": "integer",
+        "default": 1,
+        "minimum": 1,
+        "maximum": 131072
+      },
+      "threads": {
+        "type": "integer",
+        "default": 1,
+        "minimum": 1,
+        "maximum": 64
+      }
+    },
+    "constraints": [
+      {
+        "kind": "numeric_range",
+        "parameter": "error_bound",
+        "minimum": "0"
+      }
+    ]
+  },
+  "adapter": {
+    "backend": "C_ABI_V1",
+    "factory": "CAMEO_FAMILY_CTYPES_V1",
+    "version": "cameo-repaired-v1-bench-v1",
+    "artifact_path": "build/tsbench/tp/libtscb_tp.so",
+    "timing_boundary": "OWNING_CPP_API_INCLUDES_STAGING_ANALYZE_SOURCE_RECONSTRUCTION_COMPLETE_FRAME",
+    "accounting_hooks": [
+      "FINAL_STREAM_LENGTH",
+      "COMPLETE_CF01_FRAMES",
+      "CFM1_COLUMN_COLLECTION_BYTES"
+    ],
+    "native_core_storage": "OWNED_ENCODE_AND_DECODE",
+    "native_core_geometry": "ONE_COLUMN_ONLY",
+    "qualification_report": "docs/cameo_family_integration/README.md",
+    "qualified_target": "cameo-family-repaired-v1",
+    "error_semantics": "MEAN_ABSOLUTE_PER_LAG_PEARSON_ACF_ERROR"
+  }
+}

@@ -1,0 +1,111 @@
+{
+  "status": "PASS",
+  "cases": 361,
+  "scope": "Sanitizer scope: actual Benchmark binding and unchanged released C++/pocketfft rebuilt with ASan+UBSan; production source-built OpenBLAS archive linked as an explicit uninstrumented native boundary. No numerical-library instrumentation claim. Owning result lifetime, valid encode/decode, C1 capacity and malformed frame rejection exercised for all 10 algorithm keys.\n",
+  "options": {
+    "ASAN_OPTIONS": "detect_leaks=1:halt_on_error=1",
+    "UBSAN_OPTIONS": "halt_on_error=1"
+  },
+  "native_uninstrumented_numerical_boundary": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/tsbench/cameo-family-cache/517b69d34c1e9529c088a3217cac257a0a59af10c89c90ba8b7e320c19e39abe/cmake/standalone/numeric/src/cf_lapack_source-build/lib/libopenblas_64.a",
+  "source_files": [
+    {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/cameo_family/native/binding.cc",
+      "sha256": "158a0566f8fe03147cb500cf019fc9ca23d65db8bd0c08c69b60b65597a9817a"
+    },
+    {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/cameo_family/vendor/cameo_family/src/acf.cpp",
+      "sha256": "84d3853476aeaa1505e414f134eefa621ffe0d14a8ae2d1f73f9e0a4b83dc08b"
+    },
+    {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/cameo_family/vendor/cameo_family/src/api.cpp",
+      "sha256": "dc469c8bab28e70c4943e14ca526dd37d87ef1d33e713e69f8e4bd2237d7d775"
+    },
+    {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/cameo_family/vendor/cameo_family/src/frequency.cpp",
+      "sha256": "e7e7e9e177f8d010c41213e44741c3736f900a423c0071e808f087fa330c2c0d"
+    },
+    {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/cameo_family/vendor/cameo_family/src/internal.hpp",
+      "sha256": "bee530ffe458ea04370ce7f708194f6b7c5e6f8fd6cc8e66014d35523f0f0a95"
+    },
+    {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/cameo_family/vendor/cameo_family/src/linear_algebra.cpp",
+      "sha256": "d0b2d808faf246d26316121c0b98bb3206f5a6d7cd68b19ed55e6d2ab565845f"
+    },
+    {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/cameo_family/vendor/cameo_family/src/numpy_sort.cpp",
+      "sha256": "03ad8927fa985123946e9354df8ed34fc72ac963d1abd33580ff8b2a70044e89"
+    },
+    {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/cameo_family/vendor/cameo_family/src/raw.cpp",
+      "sha256": "4ff4b9c9aaa59f88a1dc7c99c2916dc485770cbafbab662adef3675aea66de83"
+    },
+    {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/cameo_family/vendor/cameo_family/src/swab.cpp",
+      "sha256": "a791aa07fa478c3a9cf7f3e5699d2cb7919f01a6f1eb14993d57cbd97873dea7"
+    },
+    {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/adapters/cameo_family/vendor/cameo_family/vendor/pocketfft/pocketfft.c",
+      "sha256": "6fadcc4c75837f2372a4604694bf4ec24e0ccef33b69dffd0ec4888ecd57b63c"
+    }
+  ],
+  "products": [
+    {
+      "path": "/tmp/cameo-binding-sanitizer/build/probe",
+      "sha256": "fee47af2a16fed839b49c84788104f813c0026766159f6198cc8f715c5861469"
+    },
+    {
+      "path": "/tmp/cameo-binding-sanitizer/build/libtscb_cameo.so",
+      "sha256": "38144a29f700f3a48c7300720a7bd72bc0fb56900c5f601e566c5602d83acf1c"
+    },
+    {
+      "path": "/tmp/cameo-binding-sanitizer/build/libtscb_dft.so",
+      "sha256": "5b568e8109523c903b1600ea80a72820ad4ffe99f178f20ce4f4f1c6c8f4b797"
+    },
+    {
+      "path": "/tmp/cameo-binding-sanitizer/build/libtscb_dwt_dct_ii.so",
+      "sha256": "e220c6c74787174e0fe57f88461da2a181585306b9ed701c760301e845d6f2fc"
+    },
+    {
+      "path": "/tmp/cameo-binding-sanitizer/build/libtscb_pip.so",
+      "sha256": "acabb1b3250549e0e43c9bceae1ad7bf8971d306f2e771a2c8789adca0ef96bd"
+    },
+    {
+      "path": "/tmp/cameo-binding-sanitizer/build/libtscb_pmc_mean.so",
+      "sha256": "6800f4682b4db2dfd1d3b13982ce5c0bbf77f1d06f56136c32be1c9704731d01"
+    },
+    {
+      "path": "/tmp/cameo-binding-sanitizer/build/libtscb_sim_piece.so",
+      "sha256": "645005b5951e7b79c7f9976dace7f414662f141eec6dba154f8123e19b50f850"
+    },
+    {
+      "path": "/tmp/cameo-binding-sanitizer/build/libtscb_swab.so",
+      "sha256": "68c8cf36a75883a9158b16e0de9d3c675c8dfd6c6696093310f6286934e5e497"
+    },
+    {
+      "path": "/tmp/cameo-binding-sanitizer/build/libtscb_swing_connected.so",
+      "sha256": "fa496261a6cb0ed5307c89ebb17f8d47d33078a8747a87ff87b556af9c9a3566"
+    },
+    {
+      "path": "/tmp/cameo-binding-sanitizer/build/libtscb_tp.so",
+      "sha256": "1f6e26986bf0792eb69a16d7a83fab28f3061e3ccd83ccbc63443b59fcb20c17"
+    },
+    {
+      "path": "/tmp/cameo-binding-sanitizer/build/libtscb_vw.so",
+      "sha256": "5ca9d0cb548eae0ccbd7ae21530aabdc7d720743c78cdf6310ca66c6ec89c26d"
+    },
+    {
+      "path": "/tmp/cameo-binding-sanitizer/build/standalone/libcameo_family_static.a",
+      "sha256": "95b111084872ccd1c27bb8c0c845010a225c102d37e8df7ed985dba27ec0dd0e"
+    },
+    {
+      "path": "/tmp/cameo-binding-sanitizer/build/standalone/libcf_pocketfft.a",
+      "sha256": "5fa4d24d098d792d7b5522252fad55bba7daadcba4fb1bec08871bba0efa7ea6"
+    },
+    {
+      "path": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/build/tsbench/cameo-family-cache/517b69d34c1e9529c088a3217cac257a0a59af10c89c90ba8b7e320c19e39abe/cmake/standalone/numeric/src/cf_lapack_source-build/lib/libopenblas_64.a",
+      "sha256": "ad56f63def2c402d595e9c82a2fe46db8ae682097075b1b4df85db27a4cece5c"
+    }
+  ],
+  "runtime": "\tlinux-vdso.so.1 (0x00007fff0459f000)\n\tlibasan.so.6 => /lib/x86_64-linux-gnu/libasan.so.6 (0x0000724116400000)\n\tlibgomp.so.1 => /lib/x86_64-linux-gnu/libgomp.so.1 (0x0000724116f48000)\n\tlibstdc++.so.6 => /lib/x86_64-linux-gnu/libstdc++.so.6 (0x0000724116000000)\n\tlibm.so.6 => /lib/x86_64-linux-gnu/libm.so.6 (0x0000724116e61000)\n\tlibubsan.so.1 => /lib/x86_64-linux-gnu/libubsan.so.1 (0x0000724115800000)\n\tlibgcc_s.so.1 => /lib/x86_64-linux-gnu/libgcc_s.so.1 (0x0000724116e3f000)\n\tlibc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x0000724115400000)\n\t/lib64/ld-linux-x86-64.so.2 (0x00007241197f3000)\n"
+}

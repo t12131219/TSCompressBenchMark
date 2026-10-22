@@ -17,6 +17,7 @@ from pathlib import Path
 import numpy as np
 
 from ..errors import Unavailable
+from ..families import CAMEO_FAMILY
 from ..registry import CapacityError, CodecError, CodecSpec, Registry, SourceDomainError, UnsupportedError
 
 
@@ -39,7 +40,7 @@ CHIMP_METHODS = dict(zip(('chimp','chimp32','chimp128','chimpn','chimp128-no-ind
                         (1,2,3,3,4,5,7,8,9,10)))
 SPRINTZ_FAMILY = {'sprintz-delta','sprintz-fire','sprintz-delta-huffman','sprintz-fire-huffman'}
 ABBA_FAMILY = {'abba','fabba','qabba'}
-_COLUMN_KEYS = ABBA_FAMILY | CHIMP_FAMILY | {'alp','alp-rd','chimp','chimp128','elf','elf-plus','elf-star','self-star',
+_COLUMN_KEYS = CAMEO_FAMILY.keys() | ABBA_FAMILY | CHIMP_FAMILY | {'alp','alp-rd','chimp','chimp128','elf','elf-plus','elf-star','self-star',
                 'serf-qt','serf-xor','neats-lossless-i64','leats-lossless-i64','zfp-accuracy-1d'}
 _KINDS = {'elf-plus':3,'self-star':4,'elf':6,'elf-star':7}
 _CONFIG_KEYS = {
@@ -135,6 +136,8 @@ class CAbiBridge:
         if self.key in CHIMP_FAMILY and (self.native_manifest.get('implementation') != 'chimp-family-cpp-scalar-v1'
                 or self.native_manifest.get('frame') != 'CFP1'):
             raise CodecError(f'{self.key}: stale Chimp library; rebuild the family binding')
+        if self.key in CAMEO_FAMILY and (self.native_manifest.get('implementation') != 'cameo-repaired-v1-bench-v1' or self.native_manifest.get('frame') != 'CF01/CFM1'):
+            raise CodecError('stale CAMEO family binding; rebuild required')
         if self.key in ABBA_FAMILY and (self.native_manifest.get('implementation') != 'abba-family-20261020-binding-v1' or self.native_manifest.get('frame') != 'AFS1/AFM1'):
             raise CodecError(f'{self.key}: stale ABBA family library; rebuild required')
         if self.key in SPRINTZ_FAMILY and (self.native_manifest.get('implementation') != 'sprintz-native-20261017-api-v1' or self.native_manifest.get('frame') != 'SZF1'):
@@ -145,7 +148,7 @@ class CAbiBridge:
                 raise CodecError(f'{self.key}: stale ALP library; rebuild the safe-v1 binding')
 
     def _config(self, params: dict) -> bytes:
-        if self.key in CHIMP_FAMILY | SPRINTZ_FAMILY | ABBA_FAMILY:
+        if self.key in CHIMP_FAMILY | SPRINTZ_FAMILY | ABBA_FAMILY | CAMEO_FAMILY.keys():
             return json.dumps({'algorithm': self.key, **params}, sort_keys=True, separators=(',', ':')).encode()
         if self.key in _CONFIG_KEYS:
             config = {name:params[name] for name in _CONFIG_KEYS[self.key]}
@@ -206,6 +209,8 @@ class CAbiBridge:
         m = array.shape[1] if array.ndim == 2 else 1
         width = array.dtype.itemsize
         payload = array.T.copy(order='C').tobytes() if self.key in _COLUMN_KEYS and array.ndim == 2 else array.tobytes(order='C')
+        if self.key in CAMEO_FAMILY:
+            return struct.pack('<4sIQQ', b'CMI1', 1, n, m) + payload
         if self.key in ABBA_FAMILY:
             return struct.pack('<4sIQQ', b'AFI1', 1, n, m) + payload
         if self.key in CHIMP_FAMILY:
@@ -295,8 +300,17 @@ class CAbiBridge:
                     raise CodecError('invalid ABBA family metadata') from error
             elif len(payload)<28 or payload[:4]!=b'AFM1' or struct.unpack_from('<IQQ',payload,4)!=(1,shape[0],columns):
                 raise CodecError('ABBA family matrix shape mismatch')
+        if self.key in CAMEO_FAMILY:
+            if dtype.str != '<f8' or len(shape) not in (1,2):
+                raise CodecError('CAMEO family descriptor mismatch')
+            columns = shape[1] if len(shape)==2 else 1
+            if columns == 1:
+                if len(payload)<68 or payload[:4]!=b'CF01' or struct.unpack_from('<QQ',payload,4)!=(1,CAMEO_FAMILY[self.key]) or struct.unpack_from('<QQ',payload,28)!=(shape[0],shape[0]):
+                    raise CodecError('CAMEO family frame algorithm/geometry mismatch')
+            elif len(payload)<28 or payload[:4]!=b'CFM1' or struct.unpack_from('<IQQ',payload,4)!=(1,shape[0],columns):
+                raise CodecError('CAMEO family matrix geometry mismatch')
         result = np.empty(shape,dtype=dtype)
-        self.spec.validate_array(result) if self.key not in ABBA_FAMILY else None
+        self.spec.validate_array(result) if self.key not in ABBA_FAMILY | CAMEO_FAMILY.keys() else None
         params = self.registry.resolve_params(self.key,params)
         storage = ct.create_string_buffer(payload,max(1,len(payload)))
         source = byte_buffer(storage,capacity=len(payload),used=len(payload))

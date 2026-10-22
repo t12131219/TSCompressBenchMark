@@ -1,0 +1,62 @@
+........................................................................ [ 31%]
+........................................................................ [ 62%]
+........................................................................ [ 93%]
+..F...........                                                           [100%]
+=================================== FAILURES ===================================
+___________________ test_scalar_dct_and_zero_tolerance_scope ___________________
+
+reference = PosixPath('/tmp/cameo-family-reference/cameo_cli')
+
+    def test_scalar_dct_and_zero_tolerance_scope(reference):
+        a=np.sin(np.arange(32)*.49).astype('<f8');p={'transform':'scalar'}
+        frame=q.core(q.load('dwt-dct-ii'),a,p);ref=q.call([reference],[dict(q.request('dwt-dct-ii',a,p),operation='encode')])[0];assert frame==bytes(ref['frame'])
+        with pytest.raises(UnsupportedError):create_bridge(ROOT,'sim-piece').encode(a,{'error_bound':'0'})
+        with pytest.raises(UnsupportedError):create_bridge(ROOT,'swab').encode(a,{'window_fraction':'.0001'})
+>       with pytest.raises(UnsupportedError):create_bridge(ROOT,'cameo').encode(a,{'criterion':'cr','error_bound':'1.5'})
+                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+benchmark/tests/test_cameo_family.py:181: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+benchmark/src/tsbench/bridges/c_abi_v1.py:252: in encode
+    with self._session(params,'encode') as handle:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../anaconda3/envs/CompressBench14/lib/python3.14/contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+benchmark/src/tsbench/bridges/c_abi_v1.py:188: in _session
+    self._check(status,handle,'create')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <tsbench.bridges.c_abi_v1.CAbiBridge object at 0x775d48702330>
+status = 4, handle = c_void_p(None), operation = 'create'
+
+    def _check(self, status: int, handle, operation: str) -> None:
+        if not status:
+            return
+        pointer,length = ct.c_char_p(),ct.c_uint64()
+        message = ''
+        if handle.value and not self.lib.tscb_get_last_error(handle,ct.byref(pointer),ct.byref(length)) and pointer:
+            message = ct.string_at(pointer,length.value).decode(errors='replace')
+        detail = f'{self.key} {operation} status={status}: {message}'
+        if status == 3:
+            raise CapacityError(detail)
+        if operation == 'compress' and (status == 2 or self.key in _KINDS and any(word in message.lower() for word in ('source','nan','decimal','lossless','significance','erasure','beta'))):
+            raise SourceDomainError(detail)
+        if status == 2:
+            raise UnsupportedError(detail)
+>       raise CodecError(detail)
+E       tsbench.registry.CodecError: cameo create status=4:
+
+benchmark/src/tsbench/bridges/c_abi_v1.py:180: CodecError
+=============================== warnings summary ===============================
+../../anaconda3/envs/CompressBench14/lib/python3.14/site-packages/_pytest/python.py:124
+  /home/fzg/anaconda3/envs/CompressBench14/lib/python3.14/site-packages/_pytest/python.py:124: PytestRemovedIn10Warning: Passing a non-Collection iterable to parametrize is deprecated.
+  Test: tests/test_cameo_family.py::test_profiles_against_independent_release, argvalues type: generator
+  Please convert to a list or tuple.
+  See https://docs.pytest.org/en/stable/deprecations.html#parametrize-iterators
+    metafunc.parametrize(*marker.args, **marker.kwargs, _param_mark=marker)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED benchmark/tests/test_cameo_family.py::test_scalar_dct_and_zero_tolerance_scope
+1 failed, 229 passed, 1 warning in 53.60s
