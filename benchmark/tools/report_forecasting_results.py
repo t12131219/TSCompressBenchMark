@@ -56,16 +56,27 @@ def audit(entry, allow_incomplete):
     assert summary['observations_hash']==file_hash(directory/'observations.jsonl')
     assert not summary['interrupted_jsonl_tail']
     assert manifest['state']=='complete' and manifest['execution_source_unchanged']
+    excluded_codecs=set(entry.get('analysis_excluded_codecs',[]))
+    case_map={x['case_id']:x for x in manifest['cases']}
     schedule=Counter((x['case_id'],x['session'],x['round']) for x in manifest['schedule'])
     assert all(n==1 for n in schedule.values())
-    actual=Counter()
+    attempts=defaultdict(list); included_status_counts=Counter()
     products=0; quality_failures=0
     with (directory/'observations.jsonl').open() as stream:
         for line in stream:
             row=json.loads(line)
             if row.get('event')!='terminal' or row.get('phase')!='measurement':continue
-            actual[(row['case_id'],row['session'],row['round'])]+=1
-            assert row.get('attempt',0)==0
+            attempts[(row['case_id'],row['session'],row['round'])].append(row)
+    actual=Counter()
+    for trial, rows in attempts.items():
+        rows.sort(key=lambda row:row.get('attempt',0))
+        assert [row.get('attempt',0) for row in rows]==list(range(len(rows)))
+        assert all(row['status']=='error' and row.get('reason')=='interrupted_attempt_without_terminal'
+                   for row in rows[:-1]), f'unexpected retry history: {directory} {trial}'
+        row=rows[-1]
+        actual[trial]=1
+        if case_map[row['case_id']]['codec'] not in excluded_codecs:
+            included_status_counts[row['status']]+=1
             if row['status']!='ok':continue
             assert row['verification']['passed'] and row['verification']['input_unchanged']
             batch=row['native_batch']
@@ -85,10 +96,10 @@ def audit(entry, allow_incomplete):
             assert row['raw_bytes']==row['codec_input_bytes']
             assert row['framework_management_bytes_in_codec_size']==0
     assert schedule==actual, f'incomplete/extra trial schedule: {directory}'
-    case_map={x['case_id']:x for x in manifest['cases']}
     rows=[]
     for case in summary['cases']:
         raw=case_map[case['case_id']]
+        if raw['codec'] in excluded_codecs:continue
         value=raw.get('components',{}).get('V',{})
         rows.append({**case,'fidelity':entry['fidelity'],'kind':entry['kind'],
                      'raw_object_id':raw['raw_object_id'],
@@ -99,9 +110,13 @@ def audit(entry, allow_incomplete):
                      'input_path':raw['dataset']['path'],
                      'source_file':raw['dataset'].get('source'),
                      'params':raw['method']['params']})
-    return rows,{'run':str(directory),'requested_cases':len(rows),'planned_trials':len(schedule),
+    included_cases=[c for c in manifest['cases'] if c['codec'] not in excluded_codecs]
+    included_trials=sum(n for (case_id,_,_),n in schedule.items()
+                        if case_map[case_id]['codec'] not in excluded_codecs)
+    return rows,{'run':str(directory),'requested_cases':len(rows),'planned_trials':included_trials,
                 'complete_cases':sum(x['complete_case'] for x in rows),
-                'status_counts':summary['status_counts'],'admission_counts':summary['admission_counts'],
+                'status_counts':dict(included_status_counts),
+                'admission_counts':dict(Counter(c.get('status','unknown') for c in included_cases)),
                 'verified_products':products,'source_id':manifest['execution_provenance']['source_id'],
                 'files':[identity(directory/p) for p in ['manifest.json','observations.jsonl','report/summary.json']]}
 
@@ -228,6 +243,9 @@ def fast_overview(rows, output):
 def generate(design_path, output, allow_incomplete=False):
     design_path=Path(design_path).resolve();output=Path(output).resolve();output.mkdir(parents=True,exist_ok=True)
     design=json.loads(design_path.read_text())
+    user_skipped=design.get('user_skipped_codecs',[])
+    report_design={**design,'codecs':[codec for codec in design['codecs'] if codec not in user_skipped]}
+    inventory_count=json.loads((design_path.parent/'inventory.json').read_text()).get('count', 0)
     # Bind the selected source and prepared numeric bytes to the frozen design.
     for row in design['selected']+design.get('domain_supplements',[]):
         assert hashlib.file_digest(Path(row['source']).open('rb'),'sha256').hexdigest()==row['source_sha256']
@@ -241,8 +259,10 @@ def generate(design_path, output, allow_incomplete=False):
         amendment_paths.add(parallel_path)
         amendment_paths.update(parallel_path.parent.glob('host_readback.json'))
         if not allow_incomplete:
+            additional_parallel_runs=parallel.get('additional_runs',[])
             assert any(e['event']=='parallel_complete' for e in parallel['events'])
             assert len(parallel['runs'])==24 and all(r['complete'] and r['returncode']==0 for r in parallel['runs'])
+            assert all(r['complete'] and r['returncode']==0 for r in additional_parallel_runs)
         write_json(output/'parallel_schedule.json',parallel)
     amendments=[identity(path) for path in sorted(amendment_paths)]
     all_rows=[];audits=[]
@@ -287,12 +307,12 @@ def generate(design_path, output, allow_incomplete=False):
     good=sum(r['complete_case'] for r in all_rows)
     trials=sum(x['planned_trials'] for x in audits)
     ok=sum(x['status_counts'].get('ok',0) for x in audits)
-    stamp=design_path.parent.name.replace('forecasting-','')
+    stamp=datetime.now(ZoneInfo('Asia/Shanghai')).strftime('%Y%m%d_%H%M%S')
     (output/'figures').mkdir(exist_ok=True)
     report=output/('visual_report_'+stamp+'.md')
     lines=['# forecasting_transpose 压缩算法可视化报告','',f'生成时间：{datestr}。',
-           '',f'选自 **8,093 个 CSV、53 个数据家族的 53 个代表文件**；每个代表文件使用全部行、全部数值列。完整 float64 主输入未截断、填补、归一化或额外量化；补充 dtype 任务单独声明。',
-           '',f'当前 **42 个 CPU codec**（排除 `lzss-raw`、`lzss-dipperstein-c`；不含 raw-store 基线）；冻结 **{requested:,} 个请求**，已审计 {completed:,} 个，完整有效 {good:,} 个，正式批次 {ok:,}/{trials:,} 成功。'+(' **本文件为进度报告，尚未完成全设计。**' if completed!=requested else ''),
+           '',f'选自 **{inventory_count:,} 个 CSV、{len(design["selected"])} 个数据家族的 {len(design["selected"])} 个代表文件**；每个代表文件使用全部行、全部数值列。完整 float64 主输入未截断、填补、归一化或额外量化；补充 dtype 任务单独声明。',
+           '',f'当前 **{len(report_design["codecs"])} 个纳入请求的 CPU codec**（注册表排除项：{"、".join("`"+key+"`" for key in design.get("excluded", []))}；用户跳过项：{"、".join("`"+key+"`" for key in user_skipped) or "无"}；不含 raw-store 基线）；冻结 **{requested:,} 个请求**，已审计 {completed:,} 个，完整有效 {good:,} 个，正式批次 {ok:,}/{trials:,} 成功。'+(' **本文件为进度报告，尚未完成全设计。**' if completed!=requested else ''),
            '', '[平均结果](#averages) · [逐数据集结果](#datasets) · [算法覆盖](#coverage) · [GPU结果](#gpu) · [统计口径与复现](#methodology)',
            '', '[逐案例 CSV](primary.csv) · [审计证据](audit.json) · [冻结选样和配置](../../benchmark/experiments/'+design_path.parent.name+'/design.json)',
            '', '以下CPU图的压缩倍数 = 有效原始 bytes / 完整 codec 输出 bytes；编码、解码按相同原始 bytes 归一化为 MiB/s。完整输出包含 codec 必要参数、模型和结束数据；实验管理 JSON、hash 不计入。实心为 prepared，斜线为空心 fresh_request；吞吐使用对数轴，误差线由批次时长的 Q3/Q1 反算。GPU采用独立对象边界和完整object wire，见GPU章节，不混合比较。1×虚线表示膨胀分界。N/A 表示拒绝、缺失或未完整完成，不能解释为零性能。',
@@ -308,10 +328,10 @@ def generate(design_path, output, allow_incomplete=False):
             gpu_text,
             '', '[GPU 可用性检查](../../benchmark/experiments/'+design_path.parent.name+'/gpu_availability.json)','']
     if design.get('domain_supplements'):
-        insert=next(i for i,s in enumerate(lines) if s.startswith('当前 **42'))+2
-        lines[insert:insert]=['另加 1 个完整文件作为 DeepZip 原生符号域补充，单独展示，不改变 53 个代表文件的平均分母。该补充在正式测量前，按符合 0..3 符号域的 4 个完整文件取下中位选出。','']
+        insert=next(i for i,s in enumerate(lines) if s.startswith('当前 **'))+2
+        lines[insert:insert]=[f'另加 1 个完整文件作为 DeepZip 原生符号域补充，单独展示，不改变 {len(design["selected"])} 个代表文件的平均分母。该补充在正式测量前，按符合 0..3 符号域的 4 个完整文件取下中位选出。','']
     if gpu_rows:
-        insert=next(i for i,s in enumerate(lines) if s.startswith('当前 **42'))+2
+        insert=next(i for i,s in enumerate(lines) if s.startswith('当前 **'))+2
         gpu_good=sum(r['complete_case'] for r in gpu_rows)
         lines[insert:insert]=[f'另有 **1 个 GPU codec（cuSZp）**：已审计 {len(gpu_rows)} 个请求，完整有效 {gpu_good} 个。本页合计 **43 个算法、{completed+len(gpu_rows):,} 个请求、{good+gpu_good:,} 个完整有效案例**；CPU与GPU的计时、存储边界分别声明。','']
     if fast_overview(all_rows,output):
@@ -388,12 +408,12 @@ def generate(design_path, output, allow_incomplete=False):
             lines += ['<details><summary>完整数值、有效批次及拒绝原因</summary>','']+table(pairs)+['</details>','']
     lines += ['<a id="coverage"></a>','','## 算法覆盖','',
               '| codec | 请求数 | 完整有效数 | 拒绝／未完整数 |', '|---|---:|---:|---:|']
-    for codec in design['codecs']:
+    for codec in report_design['codecs']:
         rs=[r for r in all_rows if r['codec']==codec];valid=sum(r['complete_case'] for r in rs)
         lines.append(f'| {codec} | {len(rs)} | {valid} | {len(rs)-valid} |')
     if not allow_incomplete:
         lines += ['', '下图是本轮 prepared 请求的实测覆盖：每格为有效／请求数，包含分别声明的 dtype 与 T+V 任务。部分有效不代表该算法对整个原始 f64 文件提供无损支持。','']
-        for slug in support_figures(all_rows,design,output):
+        for slug in support_figures(all_rows,report_design,output):
             lines += [f'![实测能力支持矩阵](figures/{slug}.png)','',f'[SVG](figures/{slug}.svg)','']
     lines += ['', 'DeepZip 固定模型仅支持 0..3 符号，DZip 要求其原生符号域；未对原始连续数值任意离散化或重新编号。不满足输入域时保留拒绝，不能把请求覆盖写成性能有效覆盖。',
               '', '<a id="methodology"></a>','','## 统计口径与复现','',
@@ -402,23 +422,28 @@ def generate(design_path, output, allow_incomplete=False):
               '- Gorilla T+V 仅使用原文件本来就是单变量的代表文件，保留所有行；datetime 转为 int64 纳秒，原数字索引保持原整数值且不假称物理时间。多变量文件不选取单列冒充整文件。',
               '- 无损、ABS≤0.01 与经验质量分别报告；filter epsilon=0.1、quality_mode=compatible。误差数值可在原始 summary.json 的 quality 中读取。缺失、NaN、超范围和超大小限制不修补，不支持时保留原因。',
               '- Quantized 的 compatible 模式按源码保留单点斜率溢出，资格检查发现非有限恢复后，另加注册表默认的 strict_abs 模式作为独立补充条件；它拒绝不满足实际恢复检查的帧。该补充在观察资格失败后冻结，原 compatible 失败完整保留，两种参数不混合统计。',
-              '- 每案例 2 sessions × 7 rounds；≤128 KiB 的基础 f64 文件每批 8 次计时内循环、2 次 warmup，其余整文件每批 1 次计时内循环、1 次 warmup。DZip 和 Quantized strict_abs 独立补充统一使用1次计时、1次warmup。内循环不当独立样本。',
-              '- DZip 时长修订：完整10,898点输入的资格检查显示单次编码/解码约48秒，在尚无正式DZip结果时，将双生命周期内部批次由8计时+2预热调整为1计时+1预热；14个正式批次、输入内容和线程配置均保留。原配置及原资格记录未删除，修改前设计与理由见冻结目录的 amendments/dzip-duration/amendment.json。',
+              '- 每案例 2 sessions × 7 rounds；≤128 KiB 的基础 f64 文件每批 8 次计时内循环、2 次 warmup，其余整文件每批 1 次计时内循环、1 次 warmup。Quantized strict_abs 独立补充统一使用1次计时、1次warmup。内循环不当独立样本。',
+              (f'- 按用户要求跳过 `{", ".join(user_skipped)}`；这些 codec 的既有部分或完整运行目录予以保留，但不进入本报告的请求数、排名或覆盖图。范围变更记录见 `{design.get("user_skip_amendment", "")}`。' if user_skipped else '- DZip 时长修订：完整10,898点输入的资格检查显示单次编码/解码约48秒，在尚无正式DZip结果时，将双生命周期内部批次由8计时+2预热调整为1计时+1预热；14个正式批次、输入内容和线程配置均保留。原配置及原资格记录未删除，修改前设计与理由见冻结目录的 amendments/dzip-duration/amendment.json。'),
               '- Python 仅调度、准备和校验；CLOCK_MONOTONIC 位于原生 driver 内。每次 warmup 和正式产物均在主时钟外验证恢复和输入不变性；每案例 exact 资格包含独立 decoder 恢复。',
               '- prepared 与 fresh_request 分开；CPU 单线程，DZip 按实际 caller+2 workers 单列。'+('按用户要求加入 Wind、ZafNoo 两条独立核心辅助队列，主队列与辅助队列可并行；具体时间及亲和性见下方调度记录。' if parallel else '每次只测一个配置，不并行测量其他 codec。')+'正式重复产物保留 hash 与验证记录，exact 资格保存代表 payload，不保存所有重复 payload 的字节副本。',
-              '- 图中误差线为时长四分位数换算的描述区间，不是置信区间；53 个家族是本地语料选择，不据此推断独立物理总体或跨任务总排名。','',
+              f'- 图中误差线为时长四分位数换算的描述区间，不是置信区间；{len(design["selected"])} 个家族是本地语料选择，不据此推断独立物理总体或跨任务总排名。','',
               '```bash', f'PYTHONPATH=benchmark/src python benchmark/tools/forecasting_benchmark.py run benchmark/experiments/{design_path.parent.name}',
               f'python benchmark/tools/report_forecasting_results.py {design_path} --output {output}', '```','']
     if parallel:
         starts=[e['at'] for e in parallel['events'] if e['event']=='parallel_started']
         ends=[e['at'] for e in parallel['events'] if e['event']=='parallel_complete']
+        parallel_description=(f'Wind 使用 CPU 12，ZafNoo 使用 CPU 13；主队列亲和性保持原调度范围 `{parallel["main_parallel_affinity"]}`。主队列未限制在其他 CPU，因此并行时仍可能调度到相同 CPU 并产生资源竞争；逐配置实际亲和性见 CSV。所有输入、codec 参数、生命周期和正式重复次数保持冻结值。' if not parallel.get('main_affinity_modified', True) else f'Wind 使用 CPU 12，ZafNoo 使用 CPU 13；两者为无 SMT 兄弟的独立物理核心。主调度进程在并行期间限制为 `{parallel["main_parallel_affinity"]}`，测量结束后恢复其原亲和性。所有输入、codec 参数、生命周期和正式重复次数保持冻结值。')
+        if parallel.get('additional_runs'):
+            extra=', '.join(f'{Path(run["configuration"]).stem} 使用 CPU {run["cpu"]}'
+                            for run in parallel['additional_runs'])
+            parallel_description+=f' 追加轻量配置：{extra}；主队列保持原线程配置，运行间可能共享缓存与内存带宽。'
         lines += ['### 并行调度记录','',
                   f'并行开始：{starts[0] if starts else "等待当前配置结束"}；辅助队列结束：{ends[-1] if ends else "尚未结束"}。',
-                  '',f'Wind 使用 CPU 12，ZafNoo 使用 CPU 13；两者为无 SMT 兄弟的独立物理核心。并行期间主调度进程允许核心为 `{parallel["main_parallel_affinity"]}`；已有主配置在原核心条件下完成后才启动辅助测量。辅助结束后恢复主调度父进程的原亲和性；当时正在运行的配置保留已继承的核心集合，后续新配置继承恢复后的集合，逐配置实际值见 CSV。所有输入、codec 参数、生命周期和正式重复次数保持冻结值。',
+                  parallel_description,
                   '', '各队列共享末级缓存、内存带宽和整机功耗预算，固定核心与可迁移核心集合的条件也不同；核心隔离不能消除这些影响。此前顺序结果与并行期间结果具有不同运行条件，吞吐及跨家族均值应结合调度记录解读。',
                   '', '[完整调度与逐配置时间](parallel_schedule.json) · [宿主机亲和性及拓扑核验](../../benchmark/experiments/'+design_path.parent.name+'/amendments/parallel-light/host_readback.json)',
                   '', '| 辅助配置 | CPU | 开始 | 结束 | 状态 |', '|---|---:|---|---|---|']
-        for run in parallel['runs']:
+        for run in parallel['runs']+parallel.get('additional_runs',[]):
             lines.append(f'| {Path(run["configuration"]).stem} | {run["cpu"]} | {run["started_at"]} | {run["ended_at"]} | {"完成" if run["complete"] else "失败"} |')
         lines.append('')
     if gpu_rows:

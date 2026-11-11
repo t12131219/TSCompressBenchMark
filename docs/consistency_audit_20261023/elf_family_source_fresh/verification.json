@@ -1,0 +1,170 @@
+{
+  "summary": {
+    "cases": 702,
+    "values": 192596,
+    "status_counts": {
+      "PASS": 359,
+      "REPAIRED_BUILD_SOURCE_PASS": 193,
+      "SOURCE_DOMAIN_FAILURE": 123,
+      "SOURCE_ROUNDTRIP_DEFECT": 27
+    },
+    "elapsed_seconds": 2.88677716255188,
+    "by_variant": {
+      "elf": {
+        "PASS": 19,
+        "REPAIRED_BUILD_SOURCE_PASS": 23,
+        "SOURCE_DOMAIN_FAILURE": 38,
+        "SOURCE_ROUNDTRIP_DEFECT": 2
+      },
+      "elf-plus": {
+        "PASS": 34,
+        "REPAIRED_BUILD_SOURCE_PASS": 34,
+        "SOURCE_DOMAIN_FAILURE": 11,
+        "SOURCE_ROUNDTRIP_DEFECT": 3
+      },
+      "elf-star": {
+        "PASS": 34,
+        "REPAIRED_BUILD_SOURCE_PASS": 34,
+        "SOURCE_DOMAIN_FAILURE": 11,
+        "SOURCE_ROUNDTRIP_DEFECT": 3
+      },
+      "elf-star-nohuff": {
+        "PASS": 34,
+        "REPAIRED_BUILD_SOURCE_PASS": 34,
+        "SOURCE_DOMAIN_FAILURE": 11,
+        "SOURCE_ROUNDTRIP_DEFECT": 3
+      },
+      "self-star": {
+        "PASS": 34,
+        "REPAIRED_BUILD_SOURCE_PASS": 34,
+        "SOURCE_DOMAIN_FAILURE": 11,
+        "SOURCE_ROUNDTRIP_DEFECT": 3
+      },
+      "elf-star-no-fr-pruning": {
+        "PASS": 34,
+        "REPAIRED_BUILD_SOURCE_PASS": 0,
+        "SOURCE_DOMAIN_FAILURE": 6,
+        "SOURCE_ROUNDTRIP_DEFECT": 2
+      },
+      "elf-star-no-frz-pruning": {
+        "PASS": 34,
+        "REPAIRED_BUILD_SOURCE_PASS": 0,
+        "SOURCE_DOMAIN_FAILURE": 6,
+        "SOURCE_ROUNDTRIP_DEFECT": 2
+      },
+      "elf-star-no-frzg-pruning": {
+        "PASS": 34,
+        "REPAIRED_BUILD_SOURCE_PASS": 0,
+        "SOURCE_DOMAIN_FAILURE": 6,
+        "SOURCE_ROUNDTRIP_DEFECT": 2
+      },
+      "elf-huff": {
+        "PASS": 34,
+        "REPAIRED_BUILD_SOURCE_PASS": 0,
+        "SOURCE_DOMAIN_FAILURE": 6,
+        "SOURCE_ROUNDTRIP_DEFECT": 2
+      },
+      "elf-star-no-s": {
+        "PASS": 34,
+        "REPAIRED_BUILD_SOURCE_PASS": 0,
+        "SOURCE_DOMAIN_FAILURE": 6,
+        "SOURCE_ROUNDTRIP_DEFECT": 2
+      },
+      "elf-star-no-sc": {
+        "PASS": 34,
+        "REPAIRED_BUILD_SOURCE_PASS": 0,
+        "SOURCE_DOMAIN_FAILURE": 6,
+        "SOURCE_ROUNDTRIP_DEFECT": 2
+      },
+      "self-star-nohuff32": {
+        "PASS": 0,
+        "REPAIRED_BUILD_SOURCE_PASS": 34,
+        "SOURCE_DOMAIN_FAILURE": 5,
+        "SOURCE_ROUNDTRIP_DEFECT": 1
+      }
+    }
+  },
+  "cli_sha256": "3b32503ba3af91659acb61e9f2699e595ff9336174358001b7d8d66a5ba27d74",
+  "case_index_sha256": "08fe12c8118c127088fdbfc725815f57f104f887b6439c14570913321253b599",
+  "sources": {
+    "src/codec.cpp": "11459507a0b8d376ce83017ccdf6e5b415d6811388757def843c0c4662addda5",
+    "src/java_runtime.hpp": "54f4d4ee852076ccb49d5fea14bc626d2f927ba5d666bb1bac8999bb93e837ad",
+    "src/translated.hpp": "a43ef0f513faa0a7629e77ae964df6c973585a0fbfd39e4216d2741ef0ead142",
+    "src/factory.inc": "6c2d03c5df42d4811e2df54718809ea61f4c9e485280261c7059042e86b11b05",
+    "src/stages.inc": "d75b09462f24430b146c2943c5f4ea70df665a021be6ab51d91194aa0c69cf14",
+    "tools/cli.cpp": "3097d45c88a8900bbfdd371ee8468f48bf36aa02a8882666f2db36e605ce4885",
+    "include/elf_family/codec.hpp": "9df651b4be2f8d78c5b21c11a4369b35ff2d5893fd93a9a72e3da10fafdf6026",
+    "oracle/Oracle.java": "3409bf311963288c28d73ea35a0e4b02e56a044938ecd20ed77005dbf424bd58",
+    "tools/verify.py": "610e40fd4c51f6553a0ab2eaa51292397bd5aa9c5c482a9575e636ce9f8d6a2a",
+    "src/generated/compressor/ElfCompressor.hpp": "5a8f63b0db73cc00045d73dc0a85d6f97bf6abdded8fc5732a9cab50a21978de",
+    "src/generated/compressor/ElfPlusCompressor.hpp": "68d7ae2b69f62374b331c10df0de7b56c41cc696a6e6232ace8818b92b62e107",
+    "src/generated/compressor/ElfStarCompressor.hpp": "6934f4f3c852b566a7c6d24714f01ec0142eb8a4f205182f98d835df8fbac5dd",
+    "src/generated/compressor/ElfStarCompressorNoHuff.hpp": "5a55b0f8b0de4285b1e7f96055451fe7de9cf768d8bf65ec0a52cc39ca64c2c9",
+    "src/generated/compressor/SElfStarCompressor.hpp": "3f177b28ece3d3578f3d714ed039ddf6e841d41f67bd9420ccfe69b7247304ca",
+    "src/generated/compressor/xor/ElfHuffXORCompressor.hpp": "3abf213d1c872d4e935e86ef6416148b717a407896522eb5aca0c0d2079b2974",
+    "src/generated/compressor/xor/ElfPlusXORCompressor.hpp": "dcc0780a2fe6ef8dd0a675a2af5b4c219175b2bcb5fb8e5b3cc9420e5b1801ae",
+    "src/generated/compressor/xor/ElfStarXORCompressor.hpp": "9c40ca32a26f7d95243a4cdba3a5995e95e31b68f9113bf988292481e47f2387",
+    "src/generated/compressor/xor/ElfStarXORCompressorNoFRPruning.hpp": "9769f8c464b74810f46541a6b3f9b7b17138a2bc4fe931a466c0bb5d4e5a45b7",
+    "src/generated/compressor/xor/ElfStarXORCompressorNoFRZGPruning.hpp": "30b30dee2dc846e6d24d8a70ecf7e2021f6d35d50d881089d6b7899d5d71f501",
+    "src/generated/compressor/xor/ElfStarXORCompressorNoFRZPruning.hpp": "d557aa593aa934fc09c83bb796a0658a6319ffb983b4e09f67997f35fed54433",
+    "src/generated/compressor/xor/ElfStarXORCompressorNoS.hpp": "8975c2314d11e1c1257a82c692e4faefe96f07d937d69642eb5291857551577d",
+    "src/generated/compressor/xor/ElfStarXORCompressorNoSC.hpp": "3cf4a528f34acf8118780e55f9a68315b246669a67e1ab1a76efaff5b32044c7",
+    "src/generated/compressor/xor/ElfXORCompressor.hpp": "89ab58b2e76a445ee635f7cc1d0a5d5d8d4f836b02f246278f6624178cabcd9a",
+    "src/generated/compressor/xor/SElfStarXORCompressor.hpp": "9755e7ff511752e06a60d10fefe2b7bb7806b0772c69a81c76b9116e4df6204e",
+    "src/generated/compressor32/ElfCompressor32.hpp": "365607b6e394ca1ec145b4e17fa37b28d7c86eb381b09a8785f5be9744b1bfe3",
+    "src/generated/compressor32/ElfPlusCompressor32.hpp": "8f77f613d63d0e79ae015712d98b929104b5d1a73fff7cd330e81a00bce15181",
+    "src/generated/compressor32/ElfStarCompressor32.hpp": "d1456ccd1fc1f1a5599b6e8399ca8153130961b529a7e2d45c3a0373dbc4896d",
+    "src/generated/compressor32/ElfStarCompressorNoHuff32.hpp": "9bb2bf6c7158d37f1611bcadd38d03df2bd665f608b34b1776c81e36f363134e",
+    "src/generated/compressor32/SElfStarCompressor32.hpp": "2db55f8ac3a98787273a3f144f34cbafbfb0da2e966ee7774f1fd52a5a9ecc90",
+    "src/generated/compressor32/SElfStarCompressorNoHuff32.hpp": "f9ce5711ae8c226e7643b58d9ae28dff9264fe0c5118e4f24c4716703da76688",
+    "src/generated/compressor32/xor/ElfPlusXORCompressor32.hpp": "8a99d557a19a85546fc003dafbb961f30b263703a363f91a2ed79b0f972926ae",
+    "src/generated/compressor32/xor/ElfStarXORCompressor32.hpp": "dd8631592d044246273bc1ee5434c3fb880f0deafe302da31ac8cc2c4ddef08c",
+    "src/generated/compressor32/xor/ElfXORCompressor32.hpp": "adb400aa4fec7d7b17d04377c4128604e48e99f78a8a2d42b41be39743e8d99a",
+    "src/generated/compressor32/xor/SElfStarXORCompressor32.hpp": "147842184c73a53188c8c9a4c5721fc57f7bbf020a9ce4c367001b7f3b6321a4",
+    "src/generated/decompressor/ElfDecompressor.hpp": "ed0e834946e5afa563276237a35b64a5b0676205fcff9df8359c0ff57980bdab",
+    "src/generated/decompressor/ElfPlusDecompressor.hpp": "0da33537bac4e272bc93eb8d7e0fa4238c4d9fc7214490eb69f6e04aafa2561f",
+    "src/generated/decompressor/ElfStarDecompressor.hpp": "37811e1a1f67595fe16483ebb1f19b050eb5415b0b6cdc04502427130d5ef4e8",
+    "src/generated/decompressor/ElfStarDecompressorNoHuff.hpp": "9cac59e1c4765a8ea3dbca185b7706726794675b18260fc7b5018efeb91593a2",
+    "src/generated/decompressor/SElfStarDecompressor.hpp": "4574835ffad881521a6d640c38651c27794d6d91058045b2c41edfd6118bf255",
+    "src/generated/decompressor/xor/ElfHuffXORDecompressor.hpp": "c21a7e4c86f500f4f29624606c1122a69eb6c579a240c7c0e0df7cc0ad30a6b1",
+    "src/generated/decompressor/xor/ElfPlusXORDecompressor.hpp": "5c6ec87e6866b630a1320bddd0d1756f82511caa85494a4fe0b31620fe66f188",
+    "src/generated/decompressor/xor/ElfStarXORDecompressor.hpp": "1996ec109a29298fe382ffeeaafa458407a765fad1014ac01a7aa12b64344303",
+    "src/generated/decompressor/xor/ElfStarXORDecompressorNoFRPruning.hpp": "142c3e5adf2cb83cc0efb7b5eae3f09c8856fde719c8d43ef717017edf995f22",
+    "src/generated/decompressor/xor/ElfStarXORDecompressorNoFRZGPruning.hpp": "9d04f5cf850891bf221e4b2f08f9f2f04447e07584c27641a1e441042a050bd0",
+    "src/generated/decompressor/xor/ElfStarXORDecompressorNoFRZPruning.hpp": "8b0c7238a850cf0ba3cfcb2e144d19ac517b618895838e01de4967005c3144d0",
+    "src/generated/decompressor/xor/ElfStarXORDecompressorNoS.hpp": "677bd7f786067e6627bc120d66a537c05b805c4ff841a9d4a27a082875617798",
+    "src/generated/decompressor/xor/ElfStarXORDecompressorNoSC.hpp": "c4898c4f9570f0301926f64dca357e7741c6635aa598c07fb3ed455d672d95fa",
+    "src/generated/decompressor/xor/ElfXORDecompressor.hpp": "71abe4406b7073f9e0d397fdae80551798079f44d1794a0d9ac4c20079c80437",
+    "src/generated/decompressor/xor/SElfStarXORDecompressor.hpp": "4059ed50c732edd1fa673836a4e945113a660598f1e3e5764974737a40029807",
+    "src/generated/decompressor32/ElfDecompressor32.hpp": "56471ce3209e8e206faa4f0a4a024cc4c0d055e4b51f4ce51fcb48a0b2cf4f89",
+    "src/generated/decompressor32/ElfPlusDecompressor32.hpp": "eb755703eb5f3fd875fc18e82c1dfaa17d758fef81f227b2607c4db3ab5fe99e",
+    "src/generated/decompressor32/ElfStarDecompressor32.hpp": "538f6f2621889c88bab97be900ac1104144ed9641e8d2d47d0614330f94d7201",
+    "src/generated/decompressor32/ElfStarDecompressorNoHuff32.hpp": "d5421f021167b4177d542d76d3847c71f88550ed767dbb7001b57f1d84e7dcb2",
+    "src/generated/decompressor32/SElfStarDecompressor32.hpp": "85e14b350872abe3f3162b9eecbca84baa805ce7741b9f4406f80584608eb23b",
+    "src/generated/decompressor32/xor/ElfPlusXORDecompressor32.hpp": "fa9b697252f655fe2b46e1be5c2f2251e413540bccb7a9686e8fed931f703828",
+    "src/generated/decompressor32/xor/ElfStarXORDecompressor32.hpp": "77b743266931bf9fcc3f9e8dc626335f75876e34a358da914a6aede6759fbdb7",
+    "src/generated/decompressor32/xor/ElfXORDecompressor32.hpp": "42ba06f1cb07e82d165e2c9feb447bcae6b4db8f152385b1f0e4d8740c39dae4",
+    "src/generated/decompressor32/xor/SElfStarXORDecompressor32.hpp": "bc26cdba5e65db23696df9c911a748fb325fe14e616d6b97cb257f2c0a88e55f",
+    "src/generated/utils/Elf32Utils.hpp": "78a29764ba4ee9e953ef80cbc7a73f552646c804d95e4005dd4f17b1eb7fd1bb",
+    "src/generated/utils/Elf64Utils.hpp": "b97dc7aceaf151c392bd329fa4608f2a537de2e44e9e174c0c5b7f730fdda4e4",
+    "src/generated/utils/PostOfficeSolver.hpp": "2938a34e47fcdb277a210e4968041f7be5cc1038b3d4b158bb2c553536d00b9e",
+    "src/generated/utils/PostOfficeSolver32.hpp": "49aa629538d218288c439f323ab809ede78aab722b64397f7497bb74306b1e89",
+    "src/generated/utils/PostOfficeSolverNoFRPruning.hpp": "e779eb9500f14e70f1942a12debe101761d735ea5196984a7fb750e73c629726",
+    "src/generated/utils/PostOfficeSolverNoFRZGPruning.hpp": "3d19f746fae62d3075f875dcf3a60c76a84b75eadb3989278af9d894865c6a0c",
+    "src/generated/utils/PostOfficeSolverNoFRZPruning.hpp": "a3147d916984ff53bc24ff6f16104f05013ca0aaf8cde1cc7eb3714bc4ff514f"
+  },
+  "commands": {
+    "java": [
+      "java",
+      "-XX:-UsePerfData",
+      "-Xmx512m",
+      "-cp",
+      "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/consistency_audit_20261023/elf_family_source_fresh/oracle/classes",
+      "Oracle"
+    ],
+    "cpp": [
+      "/home/fzg/PycharmProjects/Compression_Rewrite/ReWrite/elf-family/build/elf_codec",
+      "server"
+    ]
+  }
+}

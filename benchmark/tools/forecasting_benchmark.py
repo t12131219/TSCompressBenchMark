@@ -48,7 +48,8 @@ def freeze(destination):
     registry = Registry(ROOT)
     specs = registry.list(include_reference=False)
     keys = {spec.key for spec in specs}
-    assert len(keys) == 42 and not keys.intersection({'lzss-raw', 'lzss-dipperstein-c'})
+    excluded = {spec.key for spec in registry.list(include_excluded=True) if spec.excluded}
+    assert keys.isdisjoint(excluded)
     data_dir = destination / 'typed'
     data_dir.mkdir(exist_ok=True)
     documents = []
@@ -167,7 +168,7 @@ def freeze(destination):
         add(batch_id+'-records',records,['gorilla-prometheus-xor'],kind='records',large=large)
     design={'schema':'tsbench.forecasting-design/1', 'created_at':datetime.now(ZoneInfo('Asia/Shanghai')).isoformat(),
             'selection':'family = prefix before _dataset, otherwise strip trailing _digits; lower median by (full numeric element count, filename)',
-            'scope':'53 representative files; every row and every non-date value column; C layout; no windows, imputation, normalization or quantization',
+            'scope':f'{len(selected)} representative files; every row and every non-date value column; C layout; no windows, imputation, normalization or quantization',
             'typed_tasks':'Primary f64; supplementary f32 declared separately; integer casts only if finite, integral, within range and exactly reversible; records only for source single-channel files, native date units retained',
             'excluded':[s.key for s in registry.list(include_excluded=True) if s.excluded],
             'codecs':sorted(keys),'selected':selected,'typed_inputs':inputs,'record_inputs':record_inputs,'configurations':documents,

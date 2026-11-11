@@ -1,0 +1,373 @@
+{
+  "schema": "tsbench.parallel-light-amendment/1",
+  "created_at": "2026-10-22T11:37:33.453738+08:00",
+  "reason": "User requested lightweight datasets alongside the main sweep",
+  "main_pid": null,
+  "main_original_affinity": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15
+  ],
+  "main_parallel_affinity": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15
+  ],
+  "main_affinity_modified": false,
+  "queues": {
+    "12": [
+      "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261022-1130/Wind-f64-lossless-prepared.toml",
+      "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261022-1130/Wind-f64-lossless-fresh.toml",
+      "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261022-1130/Wind-f64-dzip-prepared.toml",
+      "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261022-1130/Wind-f64-dzip-fresh.toml",
+      "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261022-1130/Wind-f64-bounded-prepared.toml",
+      "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261022-1130/Wind-f64-bounded-fresh.toml",
+      "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261022-1130/Wind-f64-empirical-prepared.toml",
+      "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261022-1130/Wind-f64-empirical-fresh.toml",
+      "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261022-1130/Wind-f32-lossless-prepared.toml",
+      "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261022-1130/Wind-f32-lossless-fresh.toml",
+      "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261022-1130/Wind-f32-filters-prepared.toml",
+      "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261022-1130/Wind-f32-filters-fresh.toml"
+    ],
+    "13": [
+      "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261022-1130/ZafNoo-f64-lossless-prepared.toml",
+      "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261022-1130/ZafNoo-f64-lossless-fresh.toml",
+      "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261022-1130/ZafNoo-f64-dzip-prepared.toml",
+      "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261022-1130/ZafNoo-f64-dzip-fresh.toml",
+      "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261022-1130/ZafNoo-f64-bounded-prepared.toml",
+      "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261022-1130/ZafNoo-f64-bounded-fresh.toml",
+      "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261022-1130/ZafNoo-f64-empirical-prepared.toml",
+      "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261022-1130/ZafNoo-f64-empirical-fresh.toml",
+      "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261022-1130/ZafNoo-f32-lossless-prepared.toml",
+      "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261022-1130/ZafNoo-f32-lossless-fresh.toml",
+      "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261022-1130/ZafNoo-f32-filters-prepared.toml",
+      "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261022-1130/ZafNoo-f32-filters-fresh.toml"
+    ]
+  },
+  "protocol": "Auxiliary workers pinned to CPUs 12 and 13 while the main queue continued with its original scheduler affinity. The main queue was not restricted, so runnable workers may contend when scheduled on those CPUs; inputs, codec parameters and repetition counts are unchanged.",
+  "status": "parallel_complete",
+  "events": [
+    {
+      "at": "2026-10-22T11:37:33.453766+08:00",
+      "event": "parallel_started",
+      "main_completed_configurations": 0
+    },
+    {
+      "at": "2026-10-22T11:37:33.453772+08:00",
+      "event": "retry_after_missing_pythonpath",
+      "failed_launch_attempts": 2
+    },
+    {
+      "at": "2026-10-22T11:49:35.597034+08:00",
+      "event": "parallel_complete"
+    }
+  ],
+  "runs": [
+    {
+      "configuration": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261022-1130/ZafNoo-f64-lossless-prepared.toml",
+      "run": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/runs/forecasting-20261022-1130/ZafNoo-f64-lossless-prepared",
+      "cpu": 13,
+      "started_at": "2026-10-22T11:37:33.454870+08:00",
+      "ended_at": "2026-10-22T11:41:32.569299+08:00",
+      "returncode": 0,
+      "complete": true
+    },
+    {
+      "configuration": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261022-1130/Wind-f64-lossless-prepared.toml",
+      "run": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/runs/forecasting-20261022-1130/Wind-f64-lossless-prepared",
+      "cpu": 12,
+      "started_at": "2026-10-22T11:37:33.454679+08:00",
+      "ended_at": "2026-10-22T11:43:09.070404+08:00",
+      "returncode": 0,
+      "complete": true
+    },
+    {
+      "configuration": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261022-1130/ZafNoo-f64-lossless-fresh.toml",
+      "run": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/runs/forecasting-20261022-1130/ZafNoo-f64-lossless-fresh",
+      "cpu": 13,
+      "started_at": "2026-10-22T11:41:32.569821+08:00",
+      "ended_at": "2026-10-22T11:45:25.369190+08:00",
+      "returncode": 0,
+      "complete": true
+    },
+    {
+      "configuration": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261022-1130/ZafNoo-f64-dzip-prepared.toml",
+      "run": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/runs/forecasting-20261022-1130/ZafNoo-f64-dzip-prepared",
+      "cpu": 13,
+      "started_at": "2026-10-22T11:45:25.369693+08:00",
+      "ended_at": "2026-10-22T11:45:26.090323+08:00",
+      "returncode": 0,
+      "complete": true
+    },
+    {
+      "configuration": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261022-1130/ZafNoo-f64-dzip-fresh.toml",
+      "run": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/runs/forecasting-20261022-1130/ZafNoo-f64-dzip-fresh",
+      "cpu": 13,
+      "started_at": "2026-10-22T11:45:26.090773+08:00",
+      "ended_at": "2026-10-22T11:45:26.815682+08:00",
+      "returncode": 0,
+      "complete": true
+    },
+    {
+      "configuration": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261022-1130/ZafNoo-f64-bounded-prepared.toml",
+      "run": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/runs/forecasting-20261022-1130/ZafNoo-f64-bounded-prepared",
+      "cpu": 13,
+      "started_at": "2026-10-22T11:45:26.816127+08:00",
+      "ended_at": "2026-10-22T11:45:36.437155+08:00",
+      "returncode": 0,
+      "complete": true
+    },
+    {
+      "configuration": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261022-1130/ZafNoo-f64-bounded-fresh.toml",
+      "run": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/runs/forecasting-20261022-1130/ZafNoo-f64-bounded-fresh",
+      "cpu": 13,
+      "started_at": "2026-10-22T11:45:36.437665+08:00",
+      "ended_at": "2026-10-22T11:45:46.223702+08:00",
+      "returncode": 0,
+      "complete": true
+    },
+    {
+      "configuration": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261022-1130/ZafNoo-f64-empirical-prepared.toml",
+      "run": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/runs/forecasting-20261022-1130/ZafNoo-f64-empirical-prepared",
+      "cpu": 13,
+      "started_at": "2026-10-22T11:45:46.224569+08:00",
+      "ended_at": "2026-10-22T11:45:47.228695+08:00",
+      "returncode": 0,
+      "complete": true
+    },
+    {
+      "configuration": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261022-1130/ZafNoo-f64-empirical-fresh.toml",
+      "run": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/runs/forecasting-20261022-1130/ZafNoo-f64-empirical-fresh",
+      "cpu": 13,
+      "started_at": "2026-10-22T11:45:47.229529+08:00",
+      "ended_at": "2026-10-22T11:45:48.232744+08:00",
+      "returncode": 0,
+      "complete": true
+    },
+    {
+      "configuration": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261022-1130/ZafNoo-f32-lossless-prepared.toml",
+      "run": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/runs/forecasting-20261022-1130/ZafNoo-f32-lossless-prepared",
+      "cpu": 13,
+      "started_at": "2026-10-22T11:45:48.233657+08:00",
+      "ended_at": "2026-10-22T11:45:56.497870+08:00",
+      "returncode": 0,
+      "complete": true
+    },
+    {
+      "configuration": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261022-1130/ZafNoo-f32-lossless-fresh.toml",
+      "run": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/runs/forecasting-20261022-1130/ZafNoo-f32-lossless-fresh",
+      "cpu": 13,
+      "started_at": "2026-10-22T11:45:56.498759+08:00",
+      "ended_at": "2026-10-22T11:46:05.227939+08:00",
+      "returncode": 0,
+      "complete": true
+    },
+    {
+      "configuration": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261022-1130/ZafNoo-f32-filters-prepared.toml",
+      "run": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/runs/forecasting-20261022-1130/ZafNoo-f32-filters-prepared",
+      "cpu": 13,
+      "started_at": "2026-10-22T11:46:05.228894+08:00",
+      "ended_at": "2026-10-22T11:46:06.059601+08:00",
+      "returncode": 0,
+      "complete": true
+    },
+    {
+      "configuration": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261022-1130/ZafNoo-f32-filters-fresh.toml",
+      "run": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/runs/forecasting-20261022-1130/ZafNoo-f32-filters-fresh",
+      "cpu": 13,
+      "started_at": "2026-10-22T11:46:06.060660+08:00",
+      "ended_at": "2026-10-22T11:46:06.894399+08:00",
+      "returncode": 0,
+      "complete": true
+    },
+    {
+      "configuration": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261022-1130/Wind-f64-lossless-fresh.toml",
+      "run": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/runs/forecasting-20261022-1130/Wind-f64-lossless-fresh",
+      "cpu": 12,
+      "started_at": "2026-10-22T11:43:09.070881+08:00",
+      "ended_at": "2026-10-22T11:48:40.083939+08:00",
+      "returncode": 0,
+      "complete": true
+    },
+    {
+      "configuration": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261022-1130/Wind-f64-dzip-prepared.toml",
+      "run": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/runs/forecasting-20261022-1130/Wind-f64-dzip-prepared",
+      "cpu": 12,
+      "started_at": "2026-10-22T11:48:40.084585+08:00",
+      "ended_at": "2026-10-22T11:48:40.937352+08:00",
+      "returncode": 0,
+      "complete": true
+    },
+    {
+      "configuration": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261022-1130/Wind-f64-dzip-fresh.toml",
+      "run": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/runs/forecasting-20261022-1130/Wind-f64-dzip-fresh",
+      "cpu": 12,
+      "started_at": "2026-10-22T11:48:40.938037+08:00",
+      "ended_at": "2026-10-22T11:48:41.814753+08:00",
+      "returncode": 0,
+      "complete": true
+    },
+    {
+      "configuration": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261022-1130/Wind-f64-bounded-prepared.toml",
+      "run": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/runs/forecasting-20261022-1130/Wind-f64-bounded-prepared",
+      "cpu": 12,
+      "started_at": "2026-10-22T11:48:41.815450+08:00",
+      "ended_at": "2026-10-22T11:48:55.569962+08:00",
+      "returncode": 0,
+      "complete": true
+    },
+    {
+      "configuration": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261022-1130/Wind-f64-bounded-fresh.toml",
+      "run": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/runs/forecasting-20261022-1130/Wind-f64-bounded-fresh",
+      "cpu": 12,
+      "started_at": "2026-10-22T11:48:55.570953+08:00",
+      "ended_at": "2026-10-22T11:49:09.175489+08:00",
+      "returncode": 0,
+      "complete": true
+    },
+    {
+      "configuration": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261022-1130/Wind-f64-empirical-prepared.toml",
+      "run": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/runs/forecasting-20261022-1130/Wind-f64-empirical-prepared",
+      "cpu": 12,
+      "started_at": "2026-10-22T11:49:09.176124+08:00",
+      "ended_at": "2026-10-22T11:49:10.264826+08:00",
+      "returncode": 0,
+      "complete": true
+    },
+    {
+      "configuration": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261022-1130/Wind-f64-empirical-fresh.toml",
+      "run": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/runs/forecasting-20261022-1130/Wind-f64-empirical-fresh",
+      "cpu": 12,
+      "started_at": "2026-10-22T11:49:10.265480+08:00",
+      "ended_at": "2026-10-22T11:49:11.356899+08:00",
+      "returncode": 0,
+      "complete": true
+    },
+    {
+      "configuration": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261022-1130/Wind-f32-lossless-prepared.toml",
+      "run": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/runs/forecasting-20261022-1130/Wind-f32-lossless-prepared",
+      "cpu": 12,
+      "started_at": "2026-10-22T11:49:11.357930+08:00",
+      "ended_at": "2026-10-22T11:49:22.680034+08:00",
+      "returncode": 0,
+      "complete": true
+    },
+    {
+      "configuration": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261022-1130/Wind-f32-lossless-fresh.toml",
+      "run": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/runs/forecasting-20261022-1130/Wind-f32-lossless-fresh",
+      "cpu": 12,
+      "started_at": "2026-10-22T11:49:22.680991+08:00",
+      "ended_at": "2026-10-22T11:49:34.025151+08:00",
+      "returncode": 0,
+      "complete": true
+    },
+    {
+      "configuration": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261022-1130/Wind-f32-filters-prepared.toml",
+      "run": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/runs/forecasting-20261022-1130/Wind-f32-filters-prepared",
+      "cpu": 12,
+      "started_at": "2026-10-22T11:49:34.026233+08:00",
+      "ended_at": "2026-10-22T11:49:34.813279+08:00",
+      "returncode": 0,
+      "complete": true
+    },
+    {
+      "configuration": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261022-1130/Wind-f32-filters-fresh.toml",
+      "run": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/runs/forecasting-20261022-1130/Wind-f32-filters-fresh",
+      "cpu": 12,
+      "started_at": "2026-10-22T11:49:34.814414+08:00",
+      "ended_at": "2026-10-22T11:49:35.595859+08:00",
+      "returncode": 0,
+      "complete": true
+    }
+  ],
+  "failed_launch_attempts": [
+    {
+      "configuration": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261022-1130/Wind-f64-lossless-prepared.toml",
+      "run": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/runs/forecasting-20261022-1130/Wind-f64-lossless-prepared",
+      "cpu": 12,
+      "started_at": "2026-10-22T11:37:07.967468+08:00",
+      "ended_at": "2026-10-22T11:37:07.993036+08:00",
+      "returncode": 1,
+      "complete": false
+    },
+    {
+      "configuration": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261022-1130/ZafNoo-f64-lossless-prepared.toml",
+      "run": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/runs/forecasting-20261022-1130/ZafNoo-f64-lossless-prepared",
+      "cpu": 13,
+      "started_at": "2026-10-22T11:37:07.967635+08:00",
+      "ended_at": "2026-10-22T11:37:07.993260+08:00",
+      "returncode": 1,
+      "complete": false
+    }
+  ],
+  "additional_runs": [
+    {
+      "configuration": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261022-1130/NN5-f64-lossless-prepared-no-deepzip.toml",
+      "run": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/runs/forecasting-20261022-1130/NN5-f64-lossless-prepared-no-deepzip",
+      "config_sha256": "sha256:e15dc9a734e08877b3b115eed0df60f1ffb3f0860ab9b8e11455353d34fd02e4",
+      "run_id": "4b86017d758a4118b3f3ebc46a077f9e",
+      "cpu": 12,
+      "started_at": "2026-10-22T21:13:02.473682+08:00",
+      "ended_at": "2026-10-22T21:15:11.171550+08:00",
+      "returncode": 0,
+      "complete": true,
+      "requested_cases": 31,
+      "case_statuses": {
+        "ready": 19,
+        "unsupported": 12
+      },
+      "planned_trials": 266,
+      "trial_statuses": {
+        "ok": 266
+      },
+      "launch_command": "taskset -c 12 env PYTHONPATH=benchmark/src:benchmark/tools python -m tsbench run benchmark/experiments/forecasting-20261022-1130/NN5-f64-lossless-prepared-no-deepzip.toml"
+    },
+    {
+      "configuration": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/benchmark/experiments/forecasting-20261022-1130/NN5-f64-lossless-fresh-no-deepzip.toml",
+      "run": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/runs/forecasting-20261022-1130/NN5-f64-lossless-fresh-no-deepzip",
+      "config_sha256": "sha256:dddb50897fcaf5bf33af4d107afccc12ec104e6637611692a5419b7a7e6ed15b",
+      "run_id": "35de881332474700a7e8d3654f8c067d",
+      "cpu": 13,
+      "started_at": "2026-10-22T21:21:04.238770+08:00",
+      "ended_at": "2026-10-22T21:23:12.519553+08:00",
+      "returncode": 0,
+      "complete": true,
+      "requested_cases": 31,
+      "case_statuses": {
+        "ready": 19,
+        "unsupported": 12
+      },
+      "planned_trials": 266,
+      "trial_statuses": {
+        "ok": 266
+      },
+      "launch_command": "taskset -c 13 env PYTHONPATH=benchmark/src:benchmark/tools python -m tsbench run benchmark/experiments/forecasting-20261022-1130/NN5-f64-lossless-fresh-no-deepzip.toml"
+    }
+  ]
+}

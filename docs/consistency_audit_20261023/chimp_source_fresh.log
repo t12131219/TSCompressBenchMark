@@ -1,0 +1,18 @@
+Traceback (most recent call last):
+  File "/home/fzg/PycharmProjects/Compression_Rewrite/ReWrite/chimp-family/tools/verify.py", line 144, in <module>
+    if __name__=='__main__':main()
+                            ^^^^^^
+  File "/home/fzg/PycharmProjects/Compression_Rewrite/ReWrite/chimp-family/tools/verify.py", line 143, in main
+    p=argparse.ArgumentParser();p.add_argument('--cli',type=pathlib.Path,required=True);p.add_argument('--out',type=pathlib.Path,required=True);p.add_argument('--synthetic-only',action='store_true');p.add_argument('--shared',type=pathlib.Path,default=ROOT/'Dataset_Verify');p.add_argument('--corpus',type=pathlib.Path,default=ROOT.parent/'材料/TSBench_Corpus');p.add_argument('--prefix',nargs=argparse.REMAINDER,default=[]);run(p.parse_args())
+                                                                                                                                                                                                                                                                                                                                                                                                                                      ^^^^^^^^^^^^^^^^^^^
+  File "/home/fzg/PycharmProjects/Compression_Rewrite/ReWrite/chimp-family/tools/verify.py", line 59, in run
+    java=Server(['java','-Xmx512m','-cp',classes,'Oracle']);cpp=Server(a.prefix+[str(a.cli),'server'])
+                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/fzg/PycharmProjects/Compression_Rewrite/ReWrite/chimp-family/tools/verify.py", line 13, in __init__
+    def __init__(self,cmd):self.cmd=list(map(str,cmd));self.proc=subprocess.Popen(self.cmd,stdin=subprocess.PIPE,stdout=subprocess.PIPE)
+                                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/fzg/anaconda3/lib/python3.11/subprocess.py", line 1026, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "/home/fzg/anaconda3/lib/python3.11/subprocess.py", line 1950, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+FileNotFoundError: [Errno 2] No such file or directory: '/home/fzg/PycharmProjects/Compression_Rewrite/ReWrite/chimp-family/dist/x86_64/chimp_cli'

@@ -1,0 +1,253 @@
+{
+  "summary": {
+    "cases": 263,
+    "pass_cases": 255,
+    "expected_rejections": 8,
+    "values": 69116,
+    "fail": 0,
+    "elapsed_seconds": 1.1220881938934326,
+    "by_method": {
+      "chimp": {
+        "cases": 13,
+        "pass_cases": 12,
+        "quality_failed_cases": 0,
+        "nonfinite_cases": 0,
+        "source_equivalent": 12
+      },
+      "chimp32": {
+        "cases": 13,
+        "pass_cases": 12,
+        "quality_failed_cases": 0,
+        "nonfinite_cases": 0,
+        "source_equivalent": 12
+      },
+      "chimpn": {
+        "cases": 25,
+        "pass_cases": 24,
+        "quality_failed_cases": 0,
+        "nonfinite_cases": 0,
+        "source_equivalent": 24
+      },
+      "chimp128-no-index": {
+        "cases": 25,
+        "pass_cases": 24,
+        "quality_failed_cases": 0,
+        "nonfinite_cases": 0,
+        "source_equivalent": 24
+      },
+      "chimpn32": {
+        "cases": 25,
+        "pass_cases": 24,
+        "quality_failed_cases": 0,
+        "nonfinite_cases": 0,
+        "source_equivalent": 24
+      },
+      "fpc-chimp": {
+        "cases": 12,
+        "pass_cases": 12,
+        "quality_failed_cases": 0,
+        "nonfinite_cases": 0,
+        "source_equivalent": 12
+      },
+      "pmc-mr": {
+        "cases": 30,
+        "pass_cases": 30,
+        "quality_failed_cases": 0,
+        "nonfinite_cases": 0,
+        "source_equivalent": 30
+      },
+      "swing-filter": {
+        "cases": 30,
+        "pass_cases": 27,
+        "quality_failed_cases": 1,
+        "nonfinite_cases": 0,
+        "source_equivalent": 27
+      },
+      "swing-filter-disjoint": {
+        "cases": 30,
+        "pass_cases": 30,
+        "quality_failed_cases": 0,
+        "nonfinite_cases": 0,
+        "source_equivalent": 30
+      },
+      "swing-filter-disjoint-quantized": {
+        "cases": 30,
+        "pass_cases": 30,
+        "quality_failed_cases": 3,
+        "nonfinite_cases": 3,
+        "source_equivalent": 30
+      },
+      "swing-filter-disjoint-quantized.filter2": {
+        "cases": 30,
+        "pass_cases": 30,
+        "quality_failed_cases": 0,
+        "nonfinite_cases": 0,
+        "source_equivalent": 30
+      }
+    }
+  },
+  "cli_sha256": "ea9f2dd5b8212faa731dce2b834f5f3ad26479a1eeed2134d4270777c0ea005e",
+  "source_manifest_sha256": "544ad07e48cf1789be20323ecebccb158308b59c44f7b2d6f96aed771a16a3cd",
+  "contract_sha256": "b965b53c6ef94a75a305cdf94e6a6a163470116caf4f146ec293ec5749d5811f",
+  "case_index_sha256": "789b70a6193c30fff801465e260f0590f15be2b7260ed4d2a883cfbcc768f02d",
+  "commands": {
+    "javac": [
+      "javac",
+      "-d",
+      "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/consistency_audit_20261023/chimp_source_fresh_retry/java-classes",
+      "/home/fzg/PycharmProjects/Compression_Rewrite/Source/chimp-family/oracle-src/Oracle.java",
+      "/home/fzg/PycharmProjects/Compression_Rewrite/Source/chimp-family/oracle-src/com/github/kutschkem/fpc/DfcmPredictor.java",
+      "/home/fzg/PycharmProjects/Compression_Rewrite/Source/chimp-family/oracle-src/com/github/kutschkem/fpc/FcmPredictor.java",
+      "/home/fzg/PycharmProjects/Compression_Rewrite/Source/chimp-family/oracle-src/com/github/kutschkem/fpc/FpcCompressor.java",
+      "/home/fzg/PycharmProjects/Compression_Rewrite/Source/chimp-family/oracle-src/gr/aueb/delorean/chimp/Chimp.java",
+      "/home/fzg/PycharmProjects/Compression_Rewrite/Source/chimp-family/oracle-src/gr/aueb/delorean/chimp/Chimp32.java",
+      "/home/fzg/PycharmProjects/Compression_Rewrite/Source/chimp-family/oracle-src/gr/aueb/delorean/chimp/ChimpDecompressor.java",
+      "/home/fzg/PycharmProjects/Compression_Rewrite/Source/chimp-family/oracle-src/gr/aueb/delorean/chimp/ChimpDecompressor32.java",
+      "/home/fzg/PycharmProjects/Compression_Rewrite/Source/chimp-family/oracle-src/gr/aueb/delorean/chimp/ChimpN.java",
+      "/home/fzg/PycharmProjects/Compression_Rewrite/Source/chimp-family/oracle-src/gr/aueb/delorean/chimp/ChimpN32.java",
+      "/home/fzg/PycharmProjects/Compression_Rewrite/Source/chimp-family/oracle-src/gr/aueb/delorean/chimp/ChimpNDecompressor.java",
+      "/home/fzg/PycharmProjects/Compression_Rewrite/Source/chimp-family/oracle-src/gr/aueb/delorean/chimp/ChimpNDecompressor32.java",
+      "/home/fzg/PycharmProjects/Compression_Rewrite/Source/chimp-family/oracle-src/gr/aueb/delorean/chimp/ChimpNNoIndex.java",
+      "/home/fzg/PycharmProjects/Compression_Rewrite/Source/chimp-family/oracle-src/gr/aueb/delorean/chimp/DecompressorPmcMr.java",
+      "/home/fzg/PycharmProjects/Compression_Rewrite/Source/chimp-family/oracle-src/gr/aueb/delorean/chimp/DecompressorSwingFilter.java",
+      "/home/fzg/PycharmProjects/Compression_Rewrite/Source/chimp-family/oracle-src/gr/aueb/delorean/chimp/InputBitStream.java",
+      "/home/fzg/PycharmProjects/Compression_Rewrite/Source/chimp-family/oracle-src/gr/aueb/delorean/chimp/LinearFunction.java",
+      "/home/fzg/PycharmProjects/Compression_Rewrite/Source/chimp-family/oracle-src/gr/aueb/delorean/chimp/OracleSupport.java",
+      "/home/fzg/PycharmProjects/Compression_Rewrite/Source/chimp-family/oracle-src/gr/aueb/delorean/chimp/OutputBitStream.java",
+      "/home/fzg/PycharmProjects/Compression_Rewrite/Source/chimp-family/oracle-src/gr/aueb/delorean/chimp/PmcMR.java",
+      "/home/fzg/PycharmProjects/Compression_Rewrite/Source/chimp-family/oracle-src/gr/aueb/delorean/chimp/Point.java",
+      "/home/fzg/PycharmProjects/Compression_Rewrite/Source/chimp-family/oracle-src/gr/aueb/delorean/chimp/SwingFilter.java",
+      "/home/fzg/PycharmProjects/Compression_Rewrite/Source/chimp-family/oracle-src/gr/aueb/delorean/chimp/SwingFilterDisjoint.java",
+      "/home/fzg/PycharmProjects/Compression_Rewrite/Source/chimp-family/oracle-src/gr/aueb/delorean/chimp/SwingFilterDisjointQuantized.java",
+      "/home/fzg/PycharmProjects/Compression_Rewrite/Source/chimp-family/oracle-src/gr/aueb/delorean/chimp/SwingSegment.java",
+      "/home/fzg/PycharmProjects/Compression_Rewrite/Source/chimp-family/oracle-src/gr/aueb/delorean/chimp/SwingSegmentDisjointQuantized.java",
+      "/home/fzg/PycharmProjects/Compression_Rewrite/Source/chimp-family/oracle-src/gr/aueb/delorean/chimp/Value.java"
+    ],
+    "oracle": [
+      "java",
+      "-Xmx512m",
+      "-cp",
+      "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/consistency_audit_20261023/chimp_source_fresh_retry/java-classes",
+      "Oracle"
+    ],
+    "cpp": [
+      "/home/fzg/PycharmProjects/Compression_Rewrite/ReWrite/chimp-family/dist/x86_64/bin/chimp_cli",
+      "server"
+    ]
+  },
+  "environment": {
+    "java": "openjdk version \"21.0.12\" 2026-07-21\nOpenJDK Runtime Environment (build 21.0.12+8-1-22.04-Ubuntu)\nOpenJDK 64-Bit Server VM (build 21.0.12+8-1-22.04-Ubuntu, mixed mode, sharing)\n",
+    "python": "3.11.5 (main, Sep 11 2023, 13:54:46) [GCC 11.2.0]"
+  },
+  "verifier_sha256": "7791b71b10f71eb4f167dc340b45cec6989e80dd15453e7cab320fd1432a381c",
+  "source_files": [
+    {
+      "path": "oracle-src/Oracle.java",
+      "sha256": "df986894d087d9d292052cfad11bed5ee7481b3c4902d442b252b66e0fc19a49"
+    },
+    {
+      "path": "oracle-src/com/github/kutschkem/fpc/DfcmPredictor.java",
+      "sha256": "ddcdad6431b98214031b6e6f6fa8560d46b63c6f7a69bdd04a3ccb95c9ab082a"
+    },
+    {
+      "path": "oracle-src/com/github/kutschkem/fpc/FcmPredictor.java",
+      "sha256": "52fce0bca9475a1a3ea345f15b3cae1f48d958aaa77b61dbe25b29309eb4050a"
+    },
+    {
+      "path": "oracle-src/com/github/kutschkem/fpc/FpcCompressor.java",
+      "sha256": "c7c77b92cd48b5016c8128fa9df531aed7b6668599d84bf252c45babf9ea5fe6"
+    },
+    {
+      "path": "oracle-src/gr/aueb/delorean/chimp/Chimp.java",
+      "sha256": "aaf0926c09ed459fc7b51f13d9af3b6faed91bc17b49f99b5c82eb403930bfc7"
+    },
+    {
+      "path": "oracle-src/gr/aueb/delorean/chimp/Chimp32.java",
+      "sha256": "0262b7b24c65fe9b4654d1682b06248fbd2faa6726b58e3c44fb8bcf41a9ee7e"
+    },
+    {
+      "path": "oracle-src/gr/aueb/delorean/chimp/ChimpDecompressor.java",
+      "sha256": "b0c2b121f41c98b69b20d033cd8d0c3b1c6d204fac557d93795aaf474a86924c"
+    },
+    {
+      "path": "oracle-src/gr/aueb/delorean/chimp/ChimpDecompressor32.java",
+      "sha256": "bc9fee1d5c25f2180eaac8c1449bcf81bfcdb955691730d0dbc93afd12e71c69"
+    },
+    {
+      "path": "oracle-src/gr/aueb/delorean/chimp/ChimpN.java",
+      "sha256": "87ed26168d5874dc844582a007f9e72236fda6497c464bb836eacef8e75d33c0"
+    },
+    {
+      "path": "oracle-src/gr/aueb/delorean/chimp/ChimpN32.java",
+      "sha256": "a347dd0e6b9fb17f7881100f25887dca80f63f4a41cb07be3c437ac9c630760a"
+    },
+    {
+      "path": "oracle-src/gr/aueb/delorean/chimp/ChimpNDecompressor.java",
+      "sha256": "ec70842b0fa258e7bbf0d738857fe61b32e3fd32e58bd991960696039d27e408"
+    },
+    {
+      "path": "oracle-src/gr/aueb/delorean/chimp/ChimpNDecompressor32.java",
+      "sha256": "d337414f23b96bafb3ae5d6057260b80876b3ed910027555c110c6533236977d"
+    },
+    {
+      "path": "oracle-src/gr/aueb/delorean/chimp/ChimpNNoIndex.java",
+      "sha256": "e839e015b4ca809482614170dc0fde3cf8a161ac89eb2236784bcb90cbbf4f44"
+    },
+    {
+      "path": "oracle-src/gr/aueb/delorean/chimp/DecompressorPmcMr.java",
+      "sha256": "4f095b3858b21f2e3e147b90512bc456dc8028589bd2e48a137d0c6985023a2c"
+    },
+    {
+      "path": "oracle-src/gr/aueb/delorean/chimp/DecompressorSwingFilter.java",
+      "sha256": "4fb8ba6aa65b4c8c8432e0f497d249b46e69610f29b0c680193dac567fc8000a"
+    },
+    {
+      "path": "oracle-src/gr/aueb/delorean/chimp/InputBitStream.java",
+      "sha256": "67e85768551a88b75efdcbfddbcdfe448eb0d9e2ad2781de40e633dee1068564"
+    },
+    {
+      "path": "oracle-src/gr/aueb/delorean/chimp/LinearFunction.java",
+      "sha256": "94b6900ec78df2a88ebeed45b8748a301b82fc609f3e4148b9587add65a5a6e5"
+    },
+    {
+      "path": "oracle-src/gr/aueb/delorean/chimp/OracleSupport.java",
+      "sha256": "75aceff6f3dd6caa8f94a30d218c1366f0d4acace58dd7885fb6f375f7366dcf"
+    },
+    {
+      "path": "oracle-src/gr/aueb/delorean/chimp/OutputBitStream.java",
+      "sha256": "9efb3d719d10a463f40f8f3e206e61a130f865cfdf44605c4b4f4ea9c59b480b"
+    },
+    {
+      "path": "oracle-src/gr/aueb/delorean/chimp/PmcMR.java",
+      "sha256": "ebb36c789961c90492c7ac51a30bfa3bdc06dcf3425a34dd86266dbb965d1a9a"
+    },
+    {
+      "path": "oracle-src/gr/aueb/delorean/chimp/Point.java",
+      "sha256": "7c01be8cbe3d67af3bcd95c8d1beae37c2aed5f79b765938a88dd14e28317f02"
+    },
+    {
+      "path": "oracle-src/gr/aueb/delorean/chimp/SwingFilter.java",
+      "sha256": "378efb5bd1493f16045b351160ae7eaf5c339e7c561aa53670855064902e0364"
+    },
+    {
+      "path": "oracle-src/gr/aueb/delorean/chimp/SwingFilterDisjoint.java",
+      "sha256": "e4db3212081dabffdcfcec65ff54da2cf053bf828da70dd71ab09fa4711b09be"
+    },
+    {
+      "path": "oracle-src/gr/aueb/delorean/chimp/SwingFilterDisjointQuantized.java",
+      "sha256": "29fb464b3787cfd7cbe5cb91ad55df6ef09c331d1176adb08deec87d21cd8fdd"
+    },
+    {
+      "path": "oracle-src/gr/aueb/delorean/chimp/SwingSegment.java",
+      "sha256": "3763ef8fd7ac7f6bf1833a054e51d69b4e2fea0f5715e6938f42e92a81803fa0"
+    },
+    {
+      "path": "oracle-src/gr/aueb/delorean/chimp/SwingSegmentDisjointQuantized.java",
+      "sha256": "6d08b23e62c19db335b5067b90395376cd74d14c437464fdda4513ed996faf01"
+    },
+    {
+      "path": "oracle-src/gr/aueb/delorean/chimp/Value.java",
+      "sha256": "3df03bb327675991dcf3d1588e56f574d37d660d813bc5ca4dfa09f68ab77181"
+    }
+  ]
+}

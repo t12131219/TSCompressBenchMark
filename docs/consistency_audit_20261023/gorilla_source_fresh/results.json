@@ -1,0 +1,4577 @@
+{
+  "label": "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/consistency_audit_20261023/gorilla_source_fresh",
+  "evidence_state": "FRESH_SOURCE_PARITY",
+  "path": "canonical",
+  "cases": 227,
+  "samples": 489274,
+  "real_cases": 22,
+  "input_sha256": "90a0d0ea462af7d60bad16069cda1d908350bab838565c6c4c85fcb5d6356f30",
+  "source_raw_sha256": "9b2373ca2ff23191548b3749a0a1bb379762ca8a000d490d1e55c78184498896",
+  "rewrite_raw_sha256": "9b2373ca2ff23191548b3749a0a1bb379762ca8a000d490d1e55c78184498896",
+  "oracle_sha256": "0de4761ae6a41a748ad8f485074be1ee1675f68f69bb5d5abe7b8abc4f0aa4e1",
+  "cli_sha256": "364150baeb6fe08ac001020f86267be029e6fcafd9204e9cde4bf55171cb667c",
+  "commands": [
+    [
+      "/home/fzg/PycharmProjects/Compression_Rewrite/Source/gorilla-prometheus-xor/oracle_bin",
+      "encode",
+      "/home/fzg/PycharmProjects/Compression_Rewrite/ReWrite/gorilla-prometheus-xor/validation/fixtures/all.input",
+      "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/consistency_audit_20261023/gorilla_source_fresh/source.raw",
+      "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/consistency_audit_20261023/gorilla_source_fresh/source.trace"
+    ],
+    [
+      "/home/fzg/PycharmProjects/Compression_Rewrite/ReWrite/gorilla-prometheus-xor/build/release/gorilla_cli",
+      "encode",
+      "canonical",
+      "/home/fzg/PycharmProjects/Compression_Rewrite/ReWrite/gorilla-prometheus-xor/validation/fixtures/all.input",
+      "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/consistency_audit_20261023/gorilla_source_fresh/rewrite.raw",
+      "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/consistency_audit_20261023/gorilla_source_fresh/rewrite.trace"
+    ],
+    [
+      "/home/fzg/PycharmProjects/Compression_Rewrite/Source/gorilla-prometheus-xor/oracle_bin",
+      "decode",
+      "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/consistency_audit_20261023/gorilla_source_fresh/source.raw",
+      "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/consistency_audit_20261023/gorilla_source_fresh/source-self.decoded"
+    ],
+    [
+      "/home/fzg/PycharmProjects/Compression_Rewrite/ReWrite/gorilla-prometheus-xor/build/release/gorilla_cli",
+      "decode",
+      "canonical",
+      "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/consistency_audit_20261023/gorilla_source_fresh/rewrite.raw",
+      "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/consistency_audit_20261023/gorilla_source_fresh/rewrite-self.decoded"
+    ],
+    [
+      "/home/fzg/PycharmProjects/Compression_Rewrite/Source/gorilla-prometheus-xor/oracle_bin",
+      "decode",
+      "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/consistency_audit_20261023/gorilla_source_fresh/rewrite.raw",
+      "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/consistency_audit_20261023/gorilla_source_fresh/source-decodes-rewrite.decoded"
+    ],
+    [
+      "/home/fzg/PycharmProjects/Compression_Rewrite/ReWrite/gorilla-prometheus-xor/build/release/gorilla_cli",
+      "decode",
+      "canonical",
+      "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/consistency_audit_20261023/gorilla_source_fresh/source.raw",
+      "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/consistency_audit_20261023/gorilla_source_fresh/rewrite-decodes-source.decoded"
+    ],
+    [
+      "/home/fzg/PycharmProjects/Compression_Rewrite/ReWrite/gorilla-prometheus-xor/build/release/gorilla_cli",
+      "encode",
+      "canonical",
+      "/home/fzg/PycharmProjects/Compression_Rewrite/ReWrite/gorilla-prometheus-xor/tests/golden/input.bin",
+      "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/consistency_audit_20261023/gorilla_source_fresh/golden.raw",
+      "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/consistency_audit_20261023/gorilla_source_fresh/golden.trace"
+    ]
+  ],
+  "results": [
+    {
+      "case_id": "length-0",
+      "samples": 0,
+      "canonical_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7",
+      "raw_bytes": 2,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 0,
+        "value_bits": 0,
+        "padding_bits": 0,
+        "final_bits": 16
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "length-1",
+      "samples": 1,
+      "canonical_sha256": "374708fff7719dd5979ec875d56cd2286f6d3cf7ec317a3b25632aab28ec37bb",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "d560aa3d0dd36a4c8df8413c621eaa8c3306d9a9e5ad4ea1d194a452edc0c997",
+      "raw_bytes": 11,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 8,
+        "value_bits": 64,
+        "padding_bits": 0,
+        "final_bits": 88
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "length-2",
+      "samples": 2,
+      "canonical_sha256": "9bb71699a406d8f10039434a6fe3848a660165353f212435f797dadb34a190bc",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "d4b24987a6ca040e988d76fe33cb21d021af4c4e913b04d9047f7caa2b5bfaba",
+      "raw_bytes": 19,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 24,
+        "value_bits": 110,
+        "padding_bits": 2,
+        "final_bits": 152
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "length-3",
+      "samples": 3,
+      "canonical_sha256": "b67a1eaf5cd88ce9f9257816960eef2c9a640ed059dac21a2a3823debca5ecea",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "1a5168f6e3e2f5ffd7e28fd9ff87f708e7bfc43b10be3306cfae97b0f516aa51",
+      "raw_bytes": 29,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 25,
+        "value_bits": 187,
+        "padding_bits": 4,
+        "final_bits": 232
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "length-7",
+      "samples": 7,
+      "canonical_sha256": "628f0719546d7a37903c64411730db9b45c6632a3dd7e34b75038cb186ed3c37",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "129e5e2ab70afc7443450d0211b865bb9035bd4837836449e5370f9a02c8cad4",
+      "raw_bytes": 62,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 29,
+        "value_bits": 451,
+        "padding_bits": 0,
+        "final_bits": 496
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "length-8",
+      "samples": 8,
+      "canonical_sha256": "ec455dbbec15a1161d97eec35f3bdb234f859a565d7afc1c57507dd0960f90fe",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "3abccac40913c7de670f46ce11076c1a93ce03d1a502549a68436371e0fb5cab",
+      "raw_bytes": 71,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 30,
+        "value_bits": 517,
+        "padding_bits": 5,
+        "final_bits": 568
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "length-9",
+      "samples": 9,
+      "canonical_sha256": "059f6c5222b2e87b852ed95a2cab7b1754b89bb97bbc31eec738b77b16d4d02d",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "16bf89750a763781523b65e4881169c6890c6cf042c32299ea88dc68c9c6fa29",
+      "raw_bytes": 79,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 31,
+        "value_bits": 583,
+        "padding_bits": 2,
+        "final_bits": 632
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "length-31",
+      "samples": 31,
+      "canonical_sha256": "e351e4f7deca1b785e379880d93eddb8cafcd172cad2302b3c5e652f7fb077d3",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "1a794ca65b515f241930fb8d88b6613d5764dfded1d5edcc183a74525125bae1",
+      "raw_bytes": 263,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 53,
+        "value_bits": 2035,
+        "padding_bits": 0,
+        "final_bits": 2104
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "length-32",
+      "samples": 32,
+      "canonical_sha256": "444decf02364cc8a4de99cb834251c643efb0c9b3dc28fdecd71c6c215375737",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "755b96f3e3ffce4245c52ce235fd49a7ca9f3e21558ab536fdc6d9534694ee78",
+      "raw_bytes": 272,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 54,
+        "value_bits": 2101,
+        "padding_bits": 5,
+        "final_bits": 2176
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "length-33",
+      "samples": 33,
+      "canonical_sha256": "8e2f7d965a3c82f1e9ad1604eff4617e626a4a3793ed4f66e23161598c87f195",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "96b1f8568cae6bfd8e0f5ea4de57afd11d180e9747d14a7426ee98074ad55374",
+      "raw_bytes": 280,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 55,
+        "value_bits": 2167,
+        "padding_bits": 2,
+        "final_bits": 2240
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "length-63",
+      "samples": 63,
+      "canonical_sha256": "f29f50c18479cadbc9189acab8b8c6c3cb9a027c9f6ecbef481ddde65e43673d",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "8e094478c04025b54b27640699ba28221b7fe508923bfc8674ebb14c245d116f",
+      "raw_bytes": 531,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 85,
+        "value_bits": 4147,
+        "padding_bits": 0,
+        "final_bits": 4248
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "length-64",
+      "samples": 64,
+      "canonical_sha256": "f52c4632bf971f16c9be7027bf977134c817fa95c5b338675f47bda22494c1f7",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "2671a09a04f0310c96d462065e18ea2193af1d792ed34343bbbaf0e162e44b7c",
+      "raw_bytes": 540,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 86,
+        "value_bits": 4213,
+        "padding_bits": 5,
+        "final_bits": 4320
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "length-65",
+      "samples": 65,
+      "canonical_sha256": "4c8ce423172e97e1afe296f73360683a4a25077e99ea669b24a1d109905dbfa8",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "ef6e035014f8773a4fd8edf382ee6eb17f7c1edb7a28f362d92810e5a4ca7af9",
+      "raw_bytes": 548,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 87,
+        "value_bits": 4279,
+        "padding_bits": 2,
+        "final_bits": 4384
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "length-127",
+      "samples": 127,
+      "canonical_sha256": "ec83d85f12164b233a9dc988dfe97599d244f562fd457416455fc1a47edfa4d7",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "f8445b1ea5221532cb9142b3d174aef1502a6ff9b091677f721cffe46c6924cb",
+      "raw_bytes": 1067,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 149,
+        "value_bits": 8371,
+        "padding_bits": 0,
+        "final_bits": 8536
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "length-128",
+      "samples": 128,
+      "canonical_sha256": "096c92aac38bc2ba31ac3a08bda170bb28f93b3b3702f835ddfe8142cc065aae",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "b33fb4314c223d927902e455567c76358518c9cb8fe0b77d195cc6a91e940aee",
+      "raw_bytes": 1076,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 150,
+        "value_bits": 8437,
+        "padding_bits": 5,
+        "final_bits": 8608
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "length-129",
+      "samples": 129,
+      "canonical_sha256": "62d849a6470d88c34780f4f4446c6130dd0ab74fdbd9e4a8d6d0e069f90932c1",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "b195d83b81a7b0d809cd76b5efcc3ce61316379ab99da1aaefc78ed56a4a7029",
+      "raw_bytes": 1084,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 151,
+        "value_bits": 8503,
+        "padding_bits": 2,
+        "final_bits": 8672
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "length-1023",
+      "samples": 1023,
+      "canonical_sha256": "58438cfceff17f8abfe782edb5c886f65885690b652b7e29198885f63c194e2b",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "a50e1a765959d9387d0438b44a6d03745aba3b8933b1a6eb353fb908d5dad47f",
+      "raw_bytes": 8571,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 1045,
+        "value_bits": 67507,
+        "padding_bits": 0,
+        "final_bits": 68568
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "length-1024",
+      "samples": 1024,
+      "canonical_sha256": "54e031a7c3e247cf62634b488bad1e90903b27c6c7c33da5e5167c6281ee522e",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "b6a94d2999e8c90329e702921526b236c7cea66e073094cfee535fcba3273b31",
+      "raw_bytes": 8580,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 1046,
+        "value_bits": 67573,
+        "padding_bits": 5,
+        "final_bits": 68640
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "length-1025",
+      "samples": 1025,
+      "canonical_sha256": "1162aa105ddbdd5419044a44fbaa06863a4763e3195650b3745d5ba2507367bf",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "45d45bc090b8f757cb3ad343b962c0e5eabdca05eac3da4e1d4495c62c7368ff",
+      "raw_bytes": 8588,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 1047,
+        "value_bits": 67639,
+        "padding_bits": 2,
+        "final_bits": 68704
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "length-65534",
+      "samples": 65534,
+      "canonical_sha256": "3cdf00fbfa018cd5ea4e135df7f51a20473d5f7f18ad53b6f32b5dad1741a471",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "5f329cc0d8f78d958eb06eb550e63ea92b904e37965c41434e540cdd49a4ce53",
+      "raw_bytes": 548851,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 65556,
+        "value_bits": 4325233,
+        "padding_bits": 3,
+        "final_bits": 4390808
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "length-65535",
+      "samples": 65535,
+      "canonical_sha256": "4c15809ce70a0b651b221aa74e8448736d9e5fa3fa0043540d64c844a11ecca3",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "63d8462ca723b2df7f64b4b22feb16a6e18643c1b6170964dd56420525e07480",
+      "raw_bytes": 548859,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 65557,
+        "value_bits": 4325299,
+        "padding_bits": 0,
+        "final_bits": 4390872
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "dod-0",
+      "samples": 4,
+      "canonical_sha256": "b79edf7f6d66ab6e627d4189ae310c633a7124249a9dc02a4843f44f82101c04",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "ea2e497119c347468912e0fc67db3e23c12975b9d7d3d50b8e7e0f2515c40d80",
+      "raw_bytes": 31,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 26,
+        "value_bits": 200,
+        "padding_bits": 6,
+        "final_bits": 248
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "dod--8192",
+      "samples": 4,
+      "canonical_sha256": "e4718e5b5603d57413323ffd5fcd87371c6b4010279d6f51cbd435ea6df2ea8e",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "de7712b6b3c2c0a19572a8f3aa8d439cfdae113cf556f562a784e28578d5484a",
+      "raw_bytes": 33,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 45,
+        "value_bits": 200,
+        "padding_bits": 3,
+        "final_bits": 264
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "dod--8191",
+      "samples": 4,
+      "canonical_sha256": "9c12acf054f37d116d4c15585b1168411ae0b7c5f268f6c3692b2f30a9845a73",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "4b3854e544d4b3227c90099f234df456ce9ff024350b6a9a82fb1765bc1d6759",
+      "raw_bytes": 33,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 41,
+        "value_bits": 200,
+        "padding_bits": 7,
+        "final_bits": 264
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "dod-8191",
+      "samples": 4,
+      "canonical_sha256": "8dd4d66eb65188b4afe9e56302cec1ae1cfbc917198b20c43079a072245c3db2",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "2baf4aafe85da202750b6423ec853c048c38eeae6e05d92d1aa13c5044e15a61",
+      "raw_bytes": 33,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 41,
+        "value_bits": 200,
+        "padding_bits": 7,
+        "final_bits": 264
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "dod-8192",
+      "samples": 4,
+      "canonical_sha256": "a198e3383e724de5e50df9a29f6ff0b05ec48e3b0f9eb6dd4a67af38e1cac67f",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "3340b4842b76934e158550126c988a0ce3cea679f562e429d92cfe191f42ac4c",
+      "raw_bytes": 33,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 41,
+        "value_bits": 200,
+        "padding_bits": 7,
+        "final_bits": 264
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "dod-8193",
+      "samples": 4,
+      "canonical_sha256": "ba60ce1412b8a04ef28130fa8b0bc6b6d4330797de2f4a2378907dc1b5b575b1",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "e28a3779cacbe1815dd910995f1be994316d1a77e781209d8ca40523b7d7739d",
+      "raw_bytes": 33,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 45,
+        "value_bits": 200,
+        "padding_bits": 3,
+        "final_bits": 264
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "dod--65536",
+      "samples": 4,
+      "canonical_sha256": "48fc143275a9036bef629aaba4232f3a4e1b0a3b5e212655583f8eab1216e051",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "09842021b38cb0fca3decb79c8b75d482b846384c02fd9e03b28893a67e5c313",
+      "raw_bytes": 34,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 49,
+        "value_bits": 200,
+        "padding_bits": 7,
+        "final_bits": 272
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "dod--65535",
+      "samples": 4,
+      "canonical_sha256": "f7c4a76cd7cb5f94336237289340985473da49a63c4235a19fcbfb073002d590",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "83e29ecf6777812996abd1adc334cc9bcacdf3052a02da8e2e16664b8144ab46",
+      "raw_bytes": 33,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 45,
+        "value_bits": 200,
+        "padding_bits": 3,
+        "final_bits": 264
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "dod-65535",
+      "samples": 4,
+      "canonical_sha256": "6cc5c456920f7d8abc8dcbfd96407dea01778eff0adf9c6f56436dfa6e99449b",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "df88ea00c03e2b6a2a558da9655b8c164499be31dbf82bd53d434856ababdcaf",
+      "raw_bytes": 33,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 45,
+        "value_bits": 200,
+        "padding_bits": 3,
+        "final_bits": 264
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "dod-65536",
+      "samples": 4,
+      "canonical_sha256": "440ecdcaeb63e5ed552cc59f9b410a0039d5ed48982b6aecbbed22e585b7b50e",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "7c835a100de7c98d2275bf7ee2efbcbf21e0dbdbda41bc3d62bc3ff048483687",
+      "raw_bytes": 33,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 45,
+        "value_bits": 200,
+        "padding_bits": 3,
+        "final_bits": 264
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "dod-65537",
+      "samples": 4,
+      "canonical_sha256": "268a2608ddf236a4d6ceacbf5303a6b056f2020ffbc6ba1f0afa5082b5de2cfd",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "1a6fc70973e83e9b3ce4131ee7706827f3b31ae9987c95c7b88866557a5be203",
+      "raw_bytes": 34,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 49,
+        "value_bits": 200,
+        "padding_bits": 7,
+        "final_bits": 272
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "dod--524288",
+      "samples": 4,
+      "canonical_sha256": "150853fb3489d2db68a021d2ef36a761bd13a8262b9c75dad1d87f3a33d6e13c",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "6e3f8bb600054decb6bae29dad25eb357f14b9a2b37a83b28925829fd86cc45d",
+      "raw_bytes": 39,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 93,
+        "value_bits": 200,
+        "padding_bits": 3,
+        "final_bits": 312
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "dod--524287",
+      "samples": 4,
+      "canonical_sha256": "76e28be8544e8bff71780edc46b0032619e550809eae196d579757745d220947",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "345ea414b0dacfb199c73254a82d8fdb8e9b27a446af524a29f8a0ab5378e8cf",
+      "raw_bytes": 34,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 49,
+        "value_bits": 200,
+        "padding_bits": 7,
+        "final_bits": 272
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "dod-524287",
+      "samples": 4,
+      "canonical_sha256": "46570c5c34748f75cc9bd56ffd10d3a2547043fbdef6e4c84da0282a35fa5baa",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "bc8030ea71a8bb5f05812352b90107ed4f09129413b280e2c313700d5c2bb97c",
+      "raw_bytes": 34,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 49,
+        "value_bits": 200,
+        "padding_bits": 7,
+        "final_bits": 272
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "dod-524288",
+      "samples": 4,
+      "canonical_sha256": "2ae382af0d0b9eea0a86080ab0220f84fd64446d56a8e052754e782c20310a42",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "830b9536b96c30853495c09a293eeefdf04d680b3aab13557864384f7b458ec9",
+      "raw_bytes": 34,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 49,
+        "value_bits": 200,
+        "padding_bits": 7,
+        "final_bits": 272
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "dod-524289",
+      "samples": 4,
+      "canonical_sha256": "1f018677b72b4c678a131d372021bcf19fbe2d47f38ea444e9ea34a581158a78",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "582761429f492c18585c3a5630837f9eb4f6252eaf8af02b58c651a21bfcd173",
+      "raw_bytes": 39,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 93,
+        "value_bits": 200,
+        "padding_bits": 3,
+        "final_bits": 312
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "dod--9223372036854775808",
+      "samples": 4,
+      "canonical_sha256": "56633b518ed289ac4cd63b63bb0287776a3fcffa101c669a387716e9a1d0ac4a",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "077cd4580b7da29c9452b87d891ce2ee5760b2c460491aebb5ebfb17ecdffc26",
+      "raw_bytes": 39,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 93,
+        "value_bits": 200,
+        "padding_bits": 3,
+        "final_bits": 312
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "dod-9223372036854775807",
+      "samples": 4,
+      "canonical_sha256": "6eec8c972c0496eba1f6e4ba28a263831050a59338f36dadc5b411cbeddfa8f6",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "0b136528bc93e7c8d622ea7d9d730e33f274b5bfcb2825526e58723373267690",
+      "raw_bytes": 39,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 93,
+        "value_bits": 200,
+        "padding_bits": 3,
+        "final_bits": 312
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "timestamp-extrema",
+      "samples": 8,
+      "canonical_sha256": "22ce6049b44540da7037221a2de23b604a9bf835ee49343f063e86c6de47ffa3",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "1c082d6ac892eac6f3063e088409a3262b52ad1fbc8426967760daef7f47a69c",
+      "raw_bytes": 125,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 464,
+        "value_bits": 517,
+        "padding_bits": 3,
+        "final_bits": 1000
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "zero-constant",
+      "samples": 2048,
+      "canonical_sha256": "c9792a28417b0e8b5ec61dc5825ec60dd95c445512eec18f3d080a479c19a78d",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "7682b8ffc784ec6eb477a7257130330fccb26e619807030e94f04e267d5feaba",
+      "raw_bytes": 525,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 2070,
+        "value_bits": 2111,
+        "padding_bits": 3,
+        "final_bits": 4200
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "one-constant",
+      "samples": 2048,
+      "canonical_sha256": "d156ff93e0241e76d87436fe6513e1898667f6829b8a6ba2438710c65c301b70",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "c8025d8cf53e1599b778244d5db409ce4b18ee07161c3f9368189e331934aace",
+      "raw_bytes": 525,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 2070,
+        "value_bits": 2111,
+        "padding_bits": 3,
+        "final_bits": 4200
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "timestamp-decreasing",
+      "samples": 1024,
+      "canonical_sha256": "4669e0633c255eb2e4e286e1323b96e4dfdea29f70deb0fa74a94658caee4e35",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "47ce0774ae6144cdb0be47754eeb346cb622d7346181fe79a3d3d70fb5c41dda",
+      "raw_bytes": 1389,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 1126,
+        "value_bits": 9968,
+        "padding_bits": 2,
+        "final_bits": 11112
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "duplicates",
+      "samples": 2048,
+      "canonical_sha256": "d796f9eb12658f8ba24f823fe36c01febfc9543077da3a5f82add9ba148bb874",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "bdd3b90b42dae3361d35a60f9e78e4eae9afa74e7f7fc66759b38027421702a9",
+      "raw_bytes": 4108,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 2062,
+        "value_bits": 30784,
+        "padding_bits": 2,
+        "final_bits": 32864
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "xor-windows",
+      "samples": 71,
+      "canonical_sha256": "b74bdbef4c27e362ed709cd53aecab98f5aaff079ff000f9006f65dfe9147ce1",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "fbdf0b83bcadafccd9bef0e6fe8859a5490ec6f5af4f2722e6df7e255477c858",
+      "raw_bytes": 278,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 93,
+        "value_bits": 2112,
+        "padding_bits": 3,
+        "final_bits": 2224
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-0",
+      "samples": 716,
+      "canonical_sha256": "b2c2299fdcbd945bec0e2075fa8d63436b6d4e65a17acc1c36f0e261e6d0e10c",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "74858675daeb124fdd4cec9ca35b1ce4ac9064b3ff706e8175dc902e09130cd1",
+      "raw_bytes": 9390,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 27817,
+        "value_bits": 47287,
+        "padding_bits": 0,
+        "final_bits": 75120
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-1",
+      "samples": 2040,
+      "canonical_sha256": "546f0124b870e008dd0b65caad538d2c3ab1df592f0098abdf096bb62d020afd",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "c6e33ed3d3fe103a9e0902b05e9b2fb8e4e399b2eb67dc1cc202028b8fa05cac",
+      "raw_bytes": 23056,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 72216,
+        "value_bits": 112213,
+        "padding_bits": 3,
+        "final_bits": 184448
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-2",
+      "samples": 1019,
+      "canonical_sha256": "70948dd4c1cb62559cfc8268834b385362a47ac2fc81f36f94e5d8dbc2602c64",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "9ddd82aeffc275dfb3bfaa735d45c8875881082a4789ab410c9864dee53e48cd",
+      "raw_bytes": 11614,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 37952,
+        "value_bits": 54939,
+        "padding_bits": 5,
+        "final_bits": 92912
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-3",
+      "samples": 788,
+      "canonical_sha256": "bff93a1c70c593eaad81ae4bd2005a3444084e3d9d3ee696a4085268f3898f6a",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "fce87bd156bd4e2cf303a05e84770fa0f12291e273901cd09a12c66804cb4d55",
+      "raw_bytes": 10224,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 29730,
+        "value_bits": 52039,
+        "padding_bits": 7,
+        "final_bits": 81792
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-4",
+      "samples": 41,
+      "canonical_sha256": "afeb2c131ede3c5e592670ce00fd7a661dd14aa6a9fb5a25ecd4858a0d480463",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "e1cc23f2999e0d38386c344e3199f0257d5e87cf8a6451946ee08bc02c0fbd8c",
+      "raw_bytes": 363,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 1231,
+        "value_bits": 1653,
+        "padding_bits": 4,
+        "final_bits": 2904
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-5",
+      "samples": 1939,
+      "canonical_sha256": "40f57e0523fde761f81edf24bfb2e4283f78194754e713a2c05600d0563eed3e",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "f8215291361fddf2112068879dfd80caac91329def99ae3ad85805121b91663b",
+      "raw_bytes": 21829,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 67541,
+        "value_bits": 107068,
+        "padding_bits": 7,
+        "final_bits": 174632
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-6",
+      "samples": 263,
+      "canonical_sha256": "23469229ddfc6658cf23cf49bda75a603bca1dfe90d8acd59d73f513a4a604f0",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "800608d89f41942a196748a76d230aff42a1029e2f86aeb1e3755a65d0eb50f6",
+      "raw_bytes": 3394,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 9755,
+        "value_bits": 17376,
+        "padding_bits": 5,
+        "final_bits": 27152
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-7",
+      "samples": 1637,
+      "canonical_sha256": "51feadcf841542d124087a5b2270f8b30d59e288d2dd9a07f808ae2358d85175",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "325bd5f3e9d887164d360d19b69c03fdeca70aac969ee3873514b1ace71f8ca0",
+      "raw_bytes": 18706,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 58481,
+        "value_bits": 91149,
+        "padding_bits": 2,
+        "final_bits": 149648
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-8",
+      "samples": 1,
+      "canonical_sha256": "46635d3c4f0eaa2c42b3caa655f4966dc3181a75aa2fce635901bdcc3adbf297",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "e8f259b4ff736828dcae71c6fac7fec4874b176f77b114aa455ac644f6bad7c2",
+      "raw_bytes": 20,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 80,
+        "value_bits": 64,
+        "padding_bits": 0,
+        "final_bits": 160
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-9",
+      "samples": 1679,
+      "canonical_sha256": "eb7e5a99acab2f3f620214d5008ffccb92671f9a454dac908c56f8048be5d63e",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "caa2d8f6c62decfcfc95e95795a40d09c244d2110dead9d85d99e10887f2838d",
+      "raw_bytes": 21266,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 59256,
+        "value_bits": 110850,
+        "padding_bits": 6,
+        "final_bits": 170128
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-10",
+      "samples": 958,
+      "canonical_sha256": "ababe124a845996246c1403c4a8d559f066c89a619c6d67125fe97b5b58a2ea3",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "2b26489c099e1f1fe1e2b8a8aced1c588c5108877cc2b4390e8a8c978b7abaf4",
+      "raw_bytes": 10896,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 33208,
+        "value_bits": 53942,
+        "padding_bits": 2,
+        "final_bits": 87168
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-11",
+      "samples": 1539,
+      "canonical_sha256": "6ea69fe0aa28df818303ce7824a7bd2d4f7f8edfb80ebeff7110c4533f4287e0",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "74a249ba817bf214f191530298d3e4fad5c5ecfccf22dcd3ec5747107b5fb9a1",
+      "raw_bytes": 17451,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 54788,
+        "value_bits": 84804,
+        "padding_bits": 0,
+        "final_bits": 139608
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-12",
+      "samples": 945,
+      "canonical_sha256": "dd6074d8e13f0c42541e244430266c16d300d26afa4694ca3b99cee47515f7d9",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "c830e64d8a775a8564c9ace64b453fb04db25abfc453155f44ab9f9f3c0f42bd",
+      "raw_bytes": 12323,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 36184,
+        "value_bits": 62379,
+        "padding_bits": 5,
+        "final_bits": 98584
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-13",
+      "samples": 1181,
+      "canonical_sha256": "c3761c46e9129070bfc1064756cf05577006e3643fbee462d6409e3f34f5ac8f",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "2092cbe30a7ffad5f05266d68cf2fc8c72e3b37cee2600ade357b9039dccea27",
+      "raw_bytes": 13401,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 41413,
+        "value_bits": 65776,
+        "padding_bits": 3,
+        "final_bits": 107208
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-14",
+      "samples": 284,
+      "canonical_sha256": "a1e678d6737b6a6367b5219e57917ddb97eb9148054fe8d2573e56b4ec95108c",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "8c21e421f901f81a631ec6dc46ca359bd78bb8403a533e33e32f33de2edb2447",
+      "raw_bytes": 3107,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 9762,
+        "value_bits": 15077,
+        "padding_bits": 1,
+        "final_bits": 24856
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-15",
+      "samples": 1519,
+      "canonical_sha256": "6d8350f67c9ba011c946f79b7aeb9d5b20ace70fb0d092d953a60867f076935b",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "cfb3f8a89146a84594e481b6347fb5e62c544e32aca091c2a137507b5a8fc1f4",
+      "raw_bytes": 19493,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 55662,
+        "value_bits": 100263,
+        "padding_bits": 3,
+        "final_bits": 155944
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-16",
+      "samples": 21,
+      "canonical_sha256": "4b8b8d78822c67ef5c3a0169af578f005b9b2d0225e55d0b067f3eb15e09b619",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "081925c52729541dc6b942fa14c9c73560af966a3ed42841a4ad5d8adcf303e7",
+      "raw_bytes": 196,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 882,
+        "value_bits": 668,
+        "padding_bits": 2,
+        "final_bits": 1568
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-17",
+      "samples": 957,
+      "canonical_sha256": "6a8f3e1d706d5644ab5a69a3745879a34e649c058af8ed5eb3255a4b1a7420bc",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "7f9b6c1faeb78be4d44c3b2d5b5e0fca6319754f8451dbbd0ae6d2277eb67e45",
+      "raw_bytes": 10637,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 33761,
+        "value_bits": 51318,
+        "padding_bits": 1,
+        "final_bits": 85096
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-18",
+      "samples": 611,
+      "canonical_sha256": "9c549a9b71c462c5b3973a565c3ef39507c4b88e2233ee84f8be9c99f2bedffa",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "22f15e6615d2c620ab42b6b4ed06f1a6fbb82330ab75eed0f69ed6448f583fdf",
+      "raw_bytes": 7760,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 21722,
+        "value_bits": 40342,
+        "padding_bits": 0,
+        "final_bits": 62080
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-19",
+      "samples": 396,
+      "canonical_sha256": "85844c2025ef7d6ce3656acf7ece4bf8b13e126326f96253823eb0d254a6608e",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "afaa406c1f70d05a4ed7d536f762df8d4891a8b086749c73904140362d3255ff",
+      "raw_bytes": 4135,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 12173,
+        "value_bits": 20891,
+        "padding_bits": 0,
+        "final_bits": 33080
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-20",
+      "samples": 1999,
+      "canonical_sha256": "6f8836522c3fdff95968df2509f13427c1db288daf002db78b11092ed5762801",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "1a14ab300cbcfd4f59ae084e8ae17f2370971e6d001f7ae9e3a1d08f351a62c9",
+      "raw_bytes": 22377,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 69434,
+        "value_bits": 109564,
+        "padding_bits": 2,
+        "final_bits": 179016
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-21",
+      "samples": 1534,
+      "canonical_sha256": "2b913561c8d2ae638f7012dcaa9bea2450e0655849eea603a7caf027925ff74d",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "34085a6f2bc3f205ecb08db6429d8433e4d0780a31ddbf3ebaff49bd4b464bff",
+      "raw_bytes": 19397,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 53859,
+        "value_bits": 101299,
+        "padding_bits": 2,
+        "final_bits": 155176
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-22",
+      "samples": 1240,
+      "canonical_sha256": "19948bee52a169e8902191608b39741523e18f261ee24af6cd8167d7f264dfcd",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "bf502b52b76d0d1b90bbb0146e176364d41a56e1994120dbc023404cb50780a5",
+      "raw_bytes": 13806,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 43840,
+        "value_bits": 66588,
+        "padding_bits": 4,
+        "final_bits": 110448
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-23",
+      "samples": 208,
+      "canonical_sha256": "0077e248fdea6ea7f7b21bca4e2523e2993b474ae9a8c7347bd33b4114172cbf",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "3f1c156dd0889d718d50d993da95fa2f21b665b9ff9c2ffa0cace30f6b80c254",
+      "raw_bytes": 2262,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 7189,
+        "value_bits": 10887,
+        "padding_bits": 4,
+        "final_bits": 18096
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-24",
+      "samples": 1618,
+      "canonical_sha256": "0703fc45bed187e04873d500558dc2d11804c309a4b367cabdfac8d5f7812744",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "caf78e5e6fdcc0445cb88bb7e11952e9d431df9e795bee3dda73ff865cbd6438",
+      "raw_bytes": 20178,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 54596,
+        "value_bits": 106806,
+        "padding_bits": 6,
+        "final_bits": 161424
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-25",
+      "samples": 589,
+      "canonical_sha256": "ede7745da3150acef69576995181216abdb71095b77ec1053b20af4deef0b3e0",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "a021bcebfb23c1eac61556b9902b15d8a22bd2a2683df5f3edfa7d825064e020",
+      "raw_bytes": 6709,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 20777,
+        "value_bits": 32878,
+        "padding_bits": 1,
+        "final_bits": 53672
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-26",
+      "samples": 1033,
+      "canonical_sha256": "bbe6fed21f7f2e0b3aec2ba1f8259e9a6f83e850255a407345dad2c5954bcc84",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "a422cb3438450b9d5dce1f1dd56d3ff5ce161bcceea2e93b540d84cb3826518a",
+      "raw_bytes": 11889,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 38434,
+        "value_bits": 56657,
+        "padding_bits": 5,
+        "final_bits": 95112
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-27",
+      "samples": 1890,
+      "canonical_sha256": "88d839f1bc016fadfd8bd867ba0a7d4e2a687ced54720b55775b4947571882c9",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "529ea52a5e2be3b8a857f6db8ac0b032f21d900edaedbd5f8fc0360842ce80ef",
+      "raw_bytes": 24012,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 67310,
+        "value_bits": 124766,
+        "padding_bits": 4,
+        "final_bits": 192096
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-28",
+      "samples": 305,
+      "canonical_sha256": "a868223f606d89bc31612583d9e57bd52b090b392ef437d7a781a577c830340f",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "143e25696346e8bf022cebb1c803bede3ada49d0cf75f8ca8418276f0a9eb3b3",
+      "raw_bytes": 3551,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 10982,
+        "value_bits": 17410,
+        "padding_bits": 0,
+        "final_bits": 28408
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-29",
+      "samples": 1795,
+      "canonical_sha256": "287aef25dc66fd1767fc2ac9604e4a7d0178db5cb8768640fa3dc53e63af3163",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "8bbde92ee9ad32f35d9a809000253e151b73d9e02b295fb4e1460261e4907ea5",
+      "raw_bytes": 20677,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 66656,
+        "value_bits": 98744,
+        "padding_bits": 0,
+        "final_bits": 165416
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-30",
+      "samples": 1390,
+      "canonical_sha256": "59c67eb3f1a5d4eb4dc5bc6b61681c65ee35a9913ba60402fc2e3125da29fb4f",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "d697b64eaaf34865be09d9d365fa6db15093f3183831e26de6e8eebb17fcf9b3",
+      "raw_bytes": 17742,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 50162,
+        "value_bits": 91756,
+        "padding_bits": 2,
+        "final_bits": 141936
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-31",
+      "samples": 514,
+      "canonical_sha256": "c50506c90ad33c5085f7d71f350291daaa6946f8bf296dd30b4ee3f1ccd021ba",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "3de1442a4a77e83ddf8f1c5c827c6655149efc54bacbf5efc48d5bc85f90f9fb",
+      "raw_bytes": 5921,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 19261,
+        "value_bits": 28088,
+        "padding_bits": 3,
+        "final_bits": 47368
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-32",
+      "samples": 286,
+      "canonical_sha256": "77db87c487170a902eeb7ddbfef87e5ed4b4eacc24b9bccf95839955bcc75fc3",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "6e09ddafacc6713bd1714d39275f54348c710970504c5f07c398195b4aeda9bf",
+      "raw_bytes": 3080,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 10089,
+        "value_bits": 14529,
+        "padding_bits": 6,
+        "final_bits": 24640
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-33",
+      "samples": 1548,
+      "canonical_sha256": "073357d43843a9c405b0497cb21a2fce894e29381c5a0e6744228515588d1fc1",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "b39b2299151904120800a8ee034b808e64c8ffd9636c6260cdeef2d5291ab8c9",
+      "raw_bytes": 19911,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 57082,
+        "value_bits": 102185,
+        "padding_bits": 5,
+        "final_bits": 159288
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-34",
+      "samples": 1829,
+      "canonical_sha256": "8ab6906c4dde9e274c702502720c73f7360b5c1283f53b9d29db666e8619306d",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "2df34fb4a35e20d0c5e055de67f93875de85ece7171b877c926a6b16b100eeee",
+      "raw_bytes": 20955,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 65643,
+        "value_bits": 101980,
+        "padding_bits": 1,
+        "final_bits": 167640
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-35",
+      "samples": 1210,
+      "canonical_sha256": "141cd35348bffedf1a0376c2590aebc795d84acbe86fd3d75e3622490260c9e3",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "9a930601649b5b25533c23dcfc66b66b66db3fa45692b44bbbbd6571c34f9965",
+      "raw_bytes": 13810,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 44657,
+        "value_bits": 65807,
+        "padding_bits": 0,
+        "final_bits": 110480
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-36",
+      "samples": 461,
+      "canonical_sha256": "ee7c8ea1a481093b8d9584bedefd1c4a0e0bb9eec6e9fdb39049311709c84b8c",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "431318b35b89ec5877ea17246954b337f99052abfba8634ca44513efa5eb5e31",
+      "raw_bytes": 5834,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 16194,
+        "value_bits": 30460,
+        "padding_bits": 2,
+        "final_bits": 46672
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-37",
+      "samples": 1079,
+      "canonical_sha256": "947c68a1185129d1acbec4f35a0eef1767cdc016acaecfbb46dc3c22f223ed38",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "724676d615da9be5622f7a5c7879df38b22beb3d0cd3bff826054f99472e9f11",
+      "raw_bytes": 11941,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 36641,
+        "value_bits": 58865,
+        "padding_bits": 6,
+        "final_bits": 95528
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-38",
+      "samples": 1778,
+      "canonical_sha256": "acd608a3e87756b2793b12f618279f6483c800650f37d01d4f6edd88c4802d30",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "ef314111a20c562cef54e779fa46039d2c6f201e486cf56c67497aca35bc8a99",
+      "raw_bytes": 20450,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 64762,
+        "value_bits": 98815,
+        "padding_bits": 7,
+        "final_bits": 163600
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-39",
+      "samples": 1262,
+      "canonical_sha256": "39a33f695074123b5cc82ef2b1590a6dc20255b0cfc30179469638ac12131fa0",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "c08060631afd7f4bcdaff4f5d36d63027feff2e0b3402a56c9ae4ee1db391f21",
+      "raw_bytes": 15927,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 44096,
+        "value_bits": 83301,
+        "padding_bits": 3,
+        "final_bits": 127416
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-40",
+      "samples": 721,
+      "canonical_sha256": "9735b5d0af797ccd909457245958e02e05260a1c235fac5088e9a03a5df6be8d",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "05d1077b7745802da61cefd9b32aea3bbd35561e5a6d56cf05761bf7f249ba04",
+      "raw_bytes": 7798,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 23580,
+        "value_bits": 38787,
+        "padding_bits": 1,
+        "final_bits": 62384
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-41",
+      "samples": 1268,
+      "canonical_sha256": "39d323734182f2d07317a6aeecffcf600ddcda47d2df3704d69277a192f8c812",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "15c722d05c28046e33bec1cf8803254ba258433c0a6aa5900ada6b996e2d82ae",
+      "raw_bytes": 14429,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 46236,
+        "value_bits": 69177,
+        "padding_bits": 3,
+        "final_bits": 115432
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-42",
+      "samples": 850,
+      "canonical_sha256": "b9e63774b29cc771191a21097957f3f2e29db83b234a917a11ec56c568273c07",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "dccf85e478664ed6048729e52bf0c8d7d0ac9ba5142129d3a657a4a255ae72fa",
+      "raw_bytes": 10884,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 30934,
+        "value_bits": 56119,
+        "padding_bits": 3,
+        "final_bits": 87072
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-43",
+      "samples": 1906,
+      "canonical_sha256": "86d287692485e9987c0e8ef79afc4ccd96b872ec0c3542f73bca254b9f58014d",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "e775acddb0502e5fd9a2d6f42a5a7bbcd008add974d1f1a83a2c6fe51bcd97bb",
+      "raw_bytes": 21275,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 69340,
+        "value_bits": 100837,
+        "padding_bits": 7,
+        "final_bits": 170200
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-44",
+      "samples": 1172,
+      "canonical_sha256": "5973efe085356b67672ef5feaf7c495a908e244869922783c4d5ad4013fe6187",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "793b84e319f4429643956569b0ea208c6fd1b133c3c44cf23032c7bf6a35c13b",
+      "raw_bytes": 13586,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 43887,
+        "value_bits": 64785,
+        "padding_bits": 0,
+        "final_bits": 108688
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-45",
+      "samples": 560,
+      "canonical_sha256": "acdfe4b8e132d8da117c875bb8a13ff1168c83ff0cac7f4be6b2178b5fc7960f",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "ca124e30ec85f225b45a80143779838ce72635ab40824a065712c12c8396a1d3",
+      "raw_bytes": 7308,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 21452,
+        "value_bits": 36989,
+        "padding_bits": 7,
+        "final_bits": 58464
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-46",
+      "samples": 630,
+      "canonical_sha256": "b397777bd177a9fbcc70f104daf3aa46ddb0b618055b852a7fd64ba53b9de806",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "f2c134945fa871cacd4fbfc936d153311f925aa89a7f62755486fa713b5fc20e",
+      "raw_bytes": 7075,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 22941,
+        "value_bits": 33639,
+        "padding_bits": 4,
+        "final_bits": 56600
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-47",
+      "samples": 619,
+      "canonical_sha256": "d8a8b949ca1fbab6b67bb978a3f47555a5136e39bb2cf1a9ac39e3c69231bc2f",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "0fb7dd71cc931eb7dac15842d96d108a54b460a5ea5f10d2c527ebb44bfc5923",
+      "raw_bytes": 6972,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 20834,
+        "value_bits": 34925,
+        "padding_bits": 1,
+        "final_bits": 55776
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-48",
+      "samples": 213,
+      "canonical_sha256": "d7196172b5175d3d4f5d845d841034038fcdeeb7acb2d4c3b4a0647a77348bbf",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "4bd3148f823ab35143804ef8a509ff5dd08b1ee15a0fce251f06536b797abf09",
+      "raw_bytes": 2720,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 7677,
+        "value_bits": 14067,
+        "padding_bits": 0,
+        "final_bits": 21760
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-49",
+      "samples": 1762,
+      "canonical_sha256": "c78b3a910fc219e16a763a81109e75a706997a1a39269a5b6561503cba68ddef",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "ff5f503cdaab72470560b89fd097bdf383dcfc5b8c2cd0639f57ef273b9973ff",
+      "raw_bytes": 19906,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 62115,
+        "value_bits": 97110,
+        "padding_bits": 7,
+        "final_bits": 159248
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-50",
+      "samples": 543,
+      "canonical_sha256": "763ed31c933e6ccea2a72424d85535210e0d56ce00bfffeb2003ccde80cb2354",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "0d075c82e350fe83ee47c619b57689dfd231c439aa545afbf5d006098a673f7b",
+      "raw_bytes": 6151,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 19173,
+        "value_bits": 30016,
+        "padding_bits": 3,
+        "final_bits": 49208
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-51",
+      "samples": 1926,
+      "canonical_sha256": "0cbd1ba5e765f6ab56199dfc4615439e87380de631c5199f29ee6c07e872926d",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "a512bf3190c83fc6a579d627261d09f54e39043939241c39f7616b6d1be67bdc",
+      "raw_bytes": 24852,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 71590,
+        "value_bits": 127203,
+        "padding_bits": 7,
+        "final_bits": 198816
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-52",
+      "samples": 940,
+      "canonical_sha256": "a280a04d7ba6dc8d0960510600d9877f18b595d7125a51a50924f15577aeb0a4",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "7e40262c2b8697013d43bc23ddba7b71baa16bb86debaa470e86407a5df838b2",
+      "raw_bytes": 10541,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 31716,
+        "value_bits": 52589,
+        "padding_bits": 7,
+        "final_bits": 84328
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-53",
+      "samples": 1631,
+      "canonical_sha256": "ce05d4f55d5ffe08a27a1db1dfd3dc077f5d232514f6eda076a880b0d0db01ce",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "01fe507b2f0ae5ed9e09b1351825e445b6f1001f941424f1851f11461e1ee298",
+      "raw_bytes": 18995,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 60973,
+        "value_bits": 90970,
+        "padding_bits": 1,
+        "final_bits": 151960
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-54",
+      "samples": 370,
+      "canonical_sha256": "65bdfae7f3754913f0e600b9b1241fd01f5c5c892459b2324b5c8e810030ea9a",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "46a450fb142d94ebf4ed9b11c3582a294908b448535a9d1266875955a8f3c611",
+      "raw_bytes": 4595,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 12286,
+        "value_bits": 24457,
+        "padding_bits": 1,
+        "final_bits": 36760
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-55",
+      "samples": 1359,
+      "canonical_sha256": "bd96fa36c1635af03ef14e5d242588982f84a755af200000d49c7168584d8509",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "5c6fd0656c59080ac3fdd0666f93516ed75319c51c437c591ebec53c3adbc7d9",
+      "raw_bytes": 15576,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 50248,
+        "value_bits": 74344,
+        "padding_bits": 0,
+        "final_bits": 124608
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-56",
+      "samples": 395,
+      "canonical_sha256": "e1bcd25ee268327c4e759cee54f5f33d59d64b34430166f45355ae7860f7ca27",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "5a3769719c142e75d435a3356b1722249a04d32c2aa7cf5c06d03b3541dc72f7",
+      "raw_bytes": 4640,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 15682,
+        "value_bits": 21422,
+        "padding_bits": 0,
+        "final_bits": 37120
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-57",
+      "samples": 1614,
+      "canonical_sha256": "cbfac72a9ae4be6cfdf3a982b4e2c4fd3b640c6d415b36b8ebe40f91fcb2f6fe",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "618bfe84b73b12c4e1ceca89a2c71f8386862b84a7c46323edee85bcde081668",
+      "raw_bytes": 20675,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 58849,
+        "value_bits": 106533,
+        "padding_bits": 2,
+        "final_bits": 165400
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-58",
+      "samples": 238,
+      "canonical_sha256": "5865b8728e8b4262c07627fd3a835bac043f03e084550820680b55ed01d36f0c",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "5c34d49e5319e55d9a8640badd953c76e5cc1341f4aee17969b6fb948b65d138",
+      "raw_bytes": 2778,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 8790,
+        "value_bits": 13414,
+        "padding_bits": 4,
+        "final_bits": 22224
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-59",
+      "samples": 1565,
+      "canonical_sha256": "baa66bdb9b9b349d2d42f7b86563a5cdb69844664cb9979a1d7c6603c8581c2a",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "42a6a1075223f4edea3e64f0a507e2606fff6eee68e7c276cdabfb012f7f441f",
+      "raw_bytes": 17804,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 56193,
+        "value_bits": 86216,
+        "padding_bits": 7,
+        "final_bits": 142432
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-60",
+      "samples": 1974,
+      "canonical_sha256": "1bb5eaae2edae587590e5d4993d18b70f34c1acdd665f9176aaace5e18efafbf",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "c8b3f639a07c60c770e72a33950a358de5924db5a2c16fe5f160a817eb9442bd",
+      "raw_bytes": 25230,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 71524,
+        "value_bits": 130293,
+        "padding_bits": 7,
+        "final_bits": 201840
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-61",
+      "samples": 1066,
+      "canonical_sha256": "0483973521f472ece55e50b5975d9664b5ae7e93fa3274af02b63d95d560406a",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "df2b35623f7ebe7d2312d9a63d408ba8372edb8d0478e0efda5caf3b6efee3d1",
+      "raw_bytes": 11973,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 37545,
+        "value_bits": 58218,
+        "padding_bits": 5,
+        "final_bits": 95784
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-62",
+      "samples": 1607,
+      "canonical_sha256": "3379865493bf188d0a293f8e14c8eb752f5205a263241591d6c53a36e9c97e58",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "864adb1393b3621ae26524e25b9ca93bb558d6afd973e15c6d56f92f5d8ff2fb",
+      "raw_bytes": 18970,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 59753,
+        "value_bits": 91991,
+        "padding_bits": 0,
+        "final_bits": 151760
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-63",
+      "samples": 1117,
+      "canonical_sha256": "3de903bf8dd47794951b37746b0b0f48eba31ad582a4bf4f90896386b67938a9",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "022a373cc9bafc9b57d2c96390d5f9025f2f3992fb309927ced9a65b9e3d3727",
+      "raw_bytes": 14384,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 41314,
+        "value_bits": 73740,
+        "padding_bits": 2,
+        "final_bits": 115072
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-64",
+      "samples": 1462,
+      "canonical_sha256": "77c68a9723858b7ab680762b468f56146b417552160b3ff7ff5fdc5074ed4236",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "37da8609186868e25544f19337e2a825ba428ea4db23daf39222e85aac526f13",
+      "raw_bytes": 16756,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 53736,
+        "value_bits": 80290,
+        "padding_bits": 6,
+        "final_bits": 134048
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-65",
+      "samples": 1555,
+      "canonical_sha256": "0487d45a916bf87c14dce56bd565988a83a8015ec69044f1d7536b2dc1d015e1",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "150c0ed925615a3e294c4227060beac68bb4b845522f054373694d92fc179430",
+      "raw_bytes": 18126,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 57982,
+        "value_bits": 87003,
+        "padding_bits": 7,
+        "final_bits": 145008
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-66",
+      "samples": 3,
+      "canonical_sha256": "af5cdbc1da5e64f81e5bf2a9637ced752c23e70ee770fecc467360ca4c2bbabf",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "639280add1e0c5e47e57ec32e43aeab6ee65ff465ba174663a0714aa52e49fcf",
+      "raw_bytes": 49,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 164,
+        "value_bits": 207,
+        "padding_bits": 5,
+        "final_bits": 392
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-67",
+      "samples": 643,
+      "canonical_sha256": "f61d38d48850c42263a0ae18f6f73f462e5bec23d5e6624d0b0e8309ad492df6",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "9ee1a3a4c1c778fcaa342d81cfcaa05999e10685694af7a037c013711be14bd9",
+      "raw_bytes": 7136,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 21791,
+        "value_bits": 35275,
+        "padding_bits": 6,
+        "final_bits": 57088
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-68",
+      "samples": 2,
+      "canonical_sha256": "fc1cacfc9dcf803177ad7d40abdd77cc88d8070a6dcd257d0539cd723030ae4e",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "9e4f252f65c592667595e325c72e1cdb5af7221f9d38df2f42d5406f91219985",
+      "raw_bytes": 30,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 88,
+        "value_bits": 129,
+        "padding_bits": 7,
+        "final_bits": 240
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-69",
+      "samples": 78,
+      "canonical_sha256": "93286879025da9be77edf774b43cfc786d146b309afc54ace5137b629dc716c7",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "8b3f96aa09ed152806d117f7b8206a96e94f0b8ede31b94b9400f851665bf280",
+      "raw_bytes": 986,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 2653,
+        "value_bits": 5212,
+        "padding_bits": 7,
+        "final_bits": 7888
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-70",
+      "samples": 1084,
+      "canonical_sha256": "4bf35b1d33ef88dea0375dd95ccdda40a5c31a8dde216a72a46984d000e93ae8",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "d388fee7b92a22abebe1bc95c6e0f1eda9235f959a304120d5364f89e3d0a549",
+      "raw_bytes": 12043,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 37666,
+        "value_bits": 58660,
+        "padding_bits": 2,
+        "final_bits": 96344
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-71",
+      "samples": 1539,
+      "canonical_sha256": "ff5d3f54f6891ba656c787364974662abe7d3d5b766980361c96392c3c47f75e",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "feffca6f187f25fb2d9b5836f822d7c32e09f523cacde164d7c87ed6cff97ef4",
+      "raw_bytes": 17592,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 55586,
+        "value_bits": 85131,
+        "padding_bits": 3,
+        "final_bits": 140736
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-72",
+      "samples": 801,
+      "canonical_sha256": "f9b1578513d1a5859fbf2929356c48f5365f53a1b93a748a1943c35d3e052e7a",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "d947e108b69ed70bbec24ebdff5f4298ff734c226e3ce1cc655320e9e78dd0c4",
+      "raw_bytes": 10145,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 28269,
+        "value_bits": 52875,
+        "padding_bits": 0,
+        "final_bits": 81160
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-73",
+      "samples": 96,
+      "canonical_sha256": "b9e4d0f62cf4fa8e2e30414d1b7a3068485c8446d735ed3aecf4fc05b54ac881",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "7bd543fdb9d5793833097269a4cc7355faec9581a087a6d69122b2dbf0f44c5d",
+      "raw_bytes": 1028,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 3503,
+        "value_bits": 4699,
+        "padding_bits": 6,
+        "final_bits": 8224
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-74",
+      "samples": 1276,
+      "canonical_sha256": "a093f5762e893613a3633d530239394b11e7d2679bc0d3d5ec43344494c6ee0b",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "299fd5e1fe93bdd0eb70786028b7adf85330d9729ea4272b207633e965239412",
+      "raw_bytes": 14451,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 46176,
+        "value_bits": 69412,
+        "padding_bits": 4,
+        "final_bits": 115608
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-75",
+      "samples": 1934,
+      "canonical_sha256": "4721be78357fe80916700becb9f1a64bf60fdea0f7935bd7fd3abca100877e27",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "5e9f6506743a61abc4a5a4dd946522063639ffe1ffab997f38df10b10623d644",
+      "raw_bytes": 24814,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 70810,
+        "value_bits": 127682,
+        "padding_bits": 4,
+        "final_bits": 198512
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-76",
+      "samples": 389,
+      "canonical_sha256": "9800fea12b97e513621acb03fca9132b916b8b4201fcc96fb0517655287eba0b",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "0b29560a8f63653518dda731d608375e4d0c48aaacbd0f5ba79f8c81f03037d2",
+      "raw_bytes": 4390,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 13743,
+        "value_bits": 21355,
+        "padding_bits": 6,
+        "final_bits": 35120
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-77",
+      "samples": 994,
+      "canonical_sha256": "69ff3b4c7fb9259ddd26961e9c29d24c5d3e5e83bb8eff0a0c765a1a0d7924e9",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "cd5bfbfdd42bf6cae8807743446e139cb48ef0fc80d1d536f2be1083ab39d8f8",
+      "raw_bytes": 11468,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 36212,
+        "value_bits": 55512,
+        "padding_bits": 4,
+        "final_bits": 91744
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-78",
+      "samples": 1576,
+      "canonical_sha256": "982f7ecadc156f0a47e35e9c638571b933c5ef3c59d4ce843e3a40a097cbd986",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "a4b9e4fd2a0cca3194d28dc95b55fb1692ee097ab523a76afa734e36439155f8",
+      "raw_bytes": 19797,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 54323,
+        "value_bits": 104034,
+        "padding_bits": 3,
+        "final_bits": 158376
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-79",
+      "samples": 287,
+      "canonical_sha256": "9547e9791548c6594e992185136c43df707e7c4cf7d24259fbd077c7fc47b06a",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "4e8cb551118732fd2d4408fc928dc6e8b6f2ac71ce0411b152b70bb2c63cf3a7",
+      "raw_bytes": 3295,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 10699,
+        "value_bits": 15641,
+        "padding_bits": 4,
+        "final_bits": 26360
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-80",
+      "samples": 1410,
+      "canonical_sha256": "240ec95be00dabb1a9bfc9c45f35c33c1ef07f16a8f596bec7a778ad6bd6e728",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "9494ba20add0dfbe34fd5befaeb9042c2c0e41e3b9918fd94b8556469d31c6d3",
+      "raw_bytes": 16324,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 52345,
+        "value_bits": 78225,
+        "padding_bits": 6,
+        "final_bits": 130592
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-81",
+      "samples": 1871,
+      "canonical_sha256": "7892dd62c635eac3406e0f276956a3dcd375570a52b092bd3a9fc5b5c9ac2be6",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "91d1cd71fbe12432eccc20a5a91855b9f887438c83c67b4252ea44ffa80e1b6f",
+      "raw_bytes": 23393,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 63624,
+        "value_bits": 123504,
+        "padding_bits": 0,
+        "final_bits": 187144
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-82",
+      "samples": 1956,
+      "canonical_sha256": "44b0db440782e1a3dac014d5260e986442d6357d82adad3046084efcc18d7e91",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "c8ef82781ff6971a896179118344a3f380e75abb4f29d7f60b6d880603665c7a",
+      "raw_bytes": 22572,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 72298,
+        "value_bits": 108262,
+        "padding_bits": 0,
+        "final_bits": 180576
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-83",
+      "samples": 1373,
+      "canonical_sha256": "ac610cedabd69ad164aecd549ab6f161feeae3405aef016b3a0e582d67a89207",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "617312dabb31e4945ab160b30af1c5224d5a8f49b89647a3f73914c791cc6bc0",
+      "raw_bytes": 15694,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 50202,
+        "value_bits": 75332,
+        "padding_bits": 2,
+        "final_bits": 125552
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-84",
+      "samples": 644,
+      "canonical_sha256": "1853f6da30796089c425fc9566471266772dfe6fd2262933212120529e51ae9b",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "83b44cc2be9b6d56b725ddcae9b2960d05def4b37deba74c2b0679b83f298fbd",
+      "raw_bytes": 8118,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 22409,
+        "value_bits": 42513,
+        "padding_bits": 6,
+        "final_bits": 64944
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-85",
+      "samples": 1069,
+      "canonical_sha256": "7e66ddc9f3feb04b98dd26314d68ebcb5740ab194bd5598b5eed9a5b1eee8299",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "c0a1c7b02d0e0d2075875f66472b4206f928372ac7222cd419b94f1c3fd552f9",
+      "raw_bytes": 12199,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 39271,
+        "value_bits": 58303,
+        "padding_bits": 2,
+        "final_bits": 97592
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-86",
+      "samples": 822,
+      "canonical_sha256": "defaf546abcb79db6d33ce9396c31dc23df3945de80b4c38d4df89ff60757b61",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "87c2159d2e283c96c01237c3dafa6eba3b7fc0404ccd1bbbc4bd58100926f194",
+      "raw_bytes": 9450,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 29304,
+        "value_bits": 46274,
+        "padding_bits": 6,
+        "final_bits": 75600
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-87",
+      "samples": 738,
+      "canonical_sha256": "9482f4e95ea1a31b691ecb69532fdaf93aa939f6488ddaf0258a742b48d3f1be",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "15fe8d4b1a5db82a94156a59327661558e6e06eb27a080a92c6f6af1c80c322c",
+      "raw_bytes": 9504,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 27266,
+        "value_bits": 48746,
+        "padding_bits": 4,
+        "final_bits": 76032
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-88",
+      "samples": 1590,
+      "canonical_sha256": "f08b48ec24e0ead31924787b17bd2652d6392465bedae3bbfe8a708a61effbd9",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "bce83010fec946195960b39eae28ec4bfb1c91f2b14a4005dc062c62f502c0eb",
+      "raw_bytes": 18216,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 57403,
+        "value_bits": 88306,
+        "padding_bits": 3,
+        "final_bits": 145728
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-89",
+      "samples": 1027,
+      "canonical_sha256": "7fdd1e8bdd8bb0eb32264bc7ba1d57e35d4646a16cbc141cd6f8eceba2dcf349",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "7290f9574ef1b39d881afcc0f8447da4f4ce4abd3c8703f3909c690aedc6cd3c",
+      "raw_bytes": 11702,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 36249,
+        "value_bits": 57350,
+        "padding_bits": 1,
+        "final_bits": 93616
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-90",
+      "samples": 1874,
+      "canonical_sha256": "c44c77ac4cd32b0caca435936801ce1391016d52a567baff90bff3139c3627ec",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "f7a016e5a438e32cfcbd3e0dcbedc5b020af77155b00d75e8dc9163204621aff",
+      "raw_bytes": 23562,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 64783,
+        "value_bits": 123693,
+        "padding_bits": 4,
+        "final_bits": 188496
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-91",
+      "samples": 419,
+      "canonical_sha256": "453feab09b2e49ab452fc008a6c19db85576b5b1fe5b9fc38468365d5bb2ce04",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "925792d3df9458c348dd72da582838c7808b68a731329696b1fb93d1e6466f5d",
+      "raw_bytes": 4754,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 14134,
+        "value_bits": 23878,
+        "padding_bits": 4,
+        "final_bits": 38032
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-92",
+      "samples": 1959,
+      "canonical_sha256": "15fc5d8e0d9b511be57e73eb90e6dcbb7ec7cfbe9acd4b1d8a5ff90abe1d7398",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "a3ee0f383484a59ebab75b6ba4bdff7148b78ce8b2b281ed1b1ebfed5205ee63",
+      "raw_bytes": 22388,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 69946,
+        "value_bits": 109139,
+        "padding_bits": 3,
+        "final_bits": 179104
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-93",
+      "samples": 1643,
+      "canonical_sha256": "6319ab13449ea7d25b3f693c29b5ede2ed6e3dff7ecd206c3b4f94c49086657d",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "c43b15e294d216f1eadb504c18674efa890c927175f0505a9f15b18e28c949ef",
+      "raw_bytes": 21402,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 62742,
+        "value_bits": 108453,
+        "padding_bits": 5,
+        "final_bits": 171216
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-94",
+      "samples": 961,
+      "canonical_sha256": "6ee92f9b85380116966fde5f461299aa104e8856baacae3baeb3e9d76cc54a4f",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "1bc213de6ea5b7cacf664eb3e353e2534410a3d619bfd97b6ec91ab8e789b974",
+      "raw_bytes": 10746,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 33465,
+        "value_bits": 52485,
+        "padding_bits": 2,
+        "final_bits": 85968
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-95",
+      "samples": 295,
+      "canonical_sha256": "81d5f067c7f95b1ee3f4424a5a58e78bb4c8df9b91a02a97e53ebd45a161c3ab",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "f24cb5b3c9f9e31dd65c3da2035422c1f19b8e8426a6167cdd847c5dc63cd0ab",
+      "raw_bytes": 3315,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 10190,
+        "value_bits": 16307,
+        "padding_bits": 7,
+        "final_bits": 26520
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-96",
+      "samples": 1091,
+      "canonical_sha256": "39af1a58d9159a1567c0d185e96959c179bc428b63d1b03b78a1285db788adb3",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "2480c5db8538b6d31d182c6cf9d4afad068250c6bfb55339b84bc78e82ce0d40",
+      "raw_bytes": 14153,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 41183,
+        "value_bits": 72022,
+        "padding_bits": 3,
+        "final_bits": 113224
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-97",
+      "samples": 1335,
+      "canonical_sha256": "a19481590ace5888261c4f4e540d498aef1371359f892226a7cbcef0c186dc62",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "b2c21b67a998fec939bf2ef860914cfbe31b44366f649ca43bc50cbc08c08537",
+      "raw_bytes": 14963,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 47600,
+        "value_bits": 72084,
+        "padding_bits": 4,
+        "final_bits": 119704
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-98",
+      "samples": 267,
+      "canonical_sha256": "e904f2d568abfab6950aa1931ae6f997503dc78930d745587641d01a4cfda33a",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "11cb4ac3ebfb6c400c3da4c7fbe1785b0bb12164710ef5e7a4a51b651a7be7bb",
+      "raw_bytes": 3074,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 10158,
+        "value_bits": 14415,
+        "padding_bits": 3,
+        "final_bits": 24592
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-99",
+      "samples": 14,
+      "canonical_sha256": "e24c91856293cf28f8e36068599f5748aa18d5abe82aafae233e5911221c0949",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "d65ff1d9313a6e4c1c978ff574807815aa5a206d4b64205a762a93476bb7c10e",
+      "raw_bytes": 205,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 673,
+        "value_bits": 949,
+        "padding_bits": 2,
+        "final_bits": 1640
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-100",
+      "samples": 765,
+      "canonical_sha256": "b0df364221624f52d54ba28a1012475bd61530a5c5bd69d744351d15cd5bd7e1",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "27444911e5f56ba16fa22831e5edc19b245a5b2ed10dc6f39f78636f2dc8a9aa",
+      "raw_bytes": 8675,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 28177,
+        "value_bits": 41202,
+        "padding_bits": 5,
+        "final_bits": 69400
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-101",
+      "samples": 934,
+      "canonical_sha256": "ffbf05fc95822d23cc797e48a58144b8df2c3c6609d51019ef45222f54c17ee9",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "e9b723c5df0e5c80f82ec2336441e7688537ef010539aeb26c08964d7fbe7c2e",
+      "raw_bytes": 10686,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 35206,
+        "value_bits": 50266,
+        "padding_bits": 0,
+        "final_bits": 85488
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-102",
+      "samples": 1318,
+      "canonical_sha256": "f911932d47a8d1ffbeef28c093386b2d4d02937de16e6067c66dbab2d514de8e",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "51cdbd5b64b734624cd3d81fa1bd4f5ab12a437ee1e44e96d8ac8454f2eebe33",
+      "raw_bytes": 16666,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 46308,
+        "value_bits": 87003,
+        "padding_bits": 1,
+        "final_bits": 133328
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-103",
+      "samples": 1144,
+      "canonical_sha256": "db7723e996694484c3a26c47c47c7120ad0d9c79322eb275f6429a8ea26f5c3f",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "04dcd4fc71690ff010bf88ba9fad9e6344b4cd86d2117bcb1f60b875181ee08b",
+      "raw_bytes": 13004,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 38955,
+        "value_bits": 65055,
+        "padding_bits": 6,
+        "final_bits": 104032
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-104",
+      "samples": 793,
+      "canonical_sha256": "960399d2125c2c43c93be536fc2bd84937327b431d69f787052de57d472a4465",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "40312e5f8bd75a562eed98f7124079cbcf42d975f06f7e20e69b43581f22dc7f",
+      "raw_bytes": 9093,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 29517,
+        "value_bits": 43211,
+        "padding_bits": 0,
+        "final_bits": 72744
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-105",
+      "samples": 642,
+      "canonical_sha256": "b09b2dabb3959c60f271b58e444d3b4d34fd8bfdbd672e37e9766be9fd17a202",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "fd9e3ab7e30cab2cbe5851260a4c417e6fec9615ba9edd885deb41a0b6e4a4a9",
+      "raw_bytes": 8149,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 22782,
+        "value_bits": 42391,
+        "padding_bits": 3,
+        "final_bits": 65192
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-106",
+      "samples": 1117,
+      "canonical_sha256": "af01445bd8e53a996a4484a5eea143987d0c13c95ebef88c678f7fc93d0632d1",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "2bc9cd5c0a21022566481518168ccac3b3765b9296e2d56794756eb88d66ce6d",
+      "raw_bytes": 12248,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 36980,
+        "value_bits": 60983,
+        "padding_bits": 5,
+        "final_bits": 97984
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-107",
+      "samples": 1353,
+      "canonical_sha256": "ce34460ebe76ae9b6fdc2ef2a6b6db2e7de1b608c3c53512ce0691cd61b2577f",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "6af4abc0834be3c215a89c14a7e74e6bf96c35cafb4580e51c3e0192ffeb6175",
+      "raw_bytes": 15600,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 49555,
+        "value_bits": 75223,
+        "padding_bits": 6,
+        "final_bits": 124800
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-108",
+      "samples": 1532,
+      "canonical_sha256": "03cf49a3c8497716dd57071314083ee2995315f9625aaf83a1890987996053a5",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "f14681db15a0d522d408735258c2e30e5a63c5c23ff9d9c5bf1d7dd92bd823e8",
+      "raw_bytes": 19642,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 55990,
+        "value_bits": 101129,
+        "padding_bits": 1,
+        "final_bits": 157136
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-109",
+      "samples": 1223,
+      "canonical_sha256": "824055289ad592c9d0c8c6005904c149a7390a7915d25d694d3db44e90a6437a",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "a351fa6df3e4ffb25228bad491b9f90788e05fa07b8709af0d6791a470313ffa",
+      "raw_bytes": 13509,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 42829,
+        "value_bits": 65224,
+        "padding_bits": 3,
+        "final_bits": 108072
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-110",
+      "samples": 248,
+      "canonical_sha256": "508327fe7486d6c90271d079974fcb5cb4f9c7faf923e5be234aebfc22bd6f33",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "4507de4026ae59992b8c9ae8118eb6ed68c2e31239f88843b9888fb904e2cc6f",
+      "raw_bytes": 2748,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 8942,
+        "value_bits": 13021,
+        "padding_bits": 5,
+        "final_bits": 21984
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-111",
+      "samples": 1827,
+      "canonical_sha256": "396711b17380e809587a06456f353fa4378a1320ec79d4226d4efe99814ebd1b",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "5b9c538a0be5950a7598f9e6809fe34de55b076b1f46134a8cdad347609ce71d",
+      "raw_bytes": 23211,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 65065,
+        "value_bits": 120601,
+        "padding_bits": 6,
+        "final_bits": 185688
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-112",
+      "samples": 1354,
+      "canonical_sha256": "fe9bfbce5825e2a28b8f5b11fbb0c614bca31e015c2a78f985604a8e6d2c18a7",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "dd3c09128bc58f0e192424086e7069ba7d5b175f5f42fbedba2343f191495cf0",
+      "raw_bytes": 15965,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 51466,
+        "value_bits": 76238,
+        "padding_bits": 0,
+        "final_bits": 127720
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-113",
+      "samples": 1629,
+      "canonical_sha256": "2b8992cbbb328dc9383e2e6fe330b6cd443089de15b5d31d70840d3846e77d1e",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "628bc2b25f75b09e716bf488c1e8564a4851c8fc5773fdff2ec7c66b78dbabcd",
+      "raw_bytes": 18626,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 59689,
+        "value_bits": 89302,
+        "padding_bits": 1,
+        "final_bits": 149008
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-114",
+      "samples": 1023,
+      "canonical_sha256": "88116235a8c2c284df24af2917cb8f57b1a55c5ca39e8e501a6dace1085300e7",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "d76517200d2bb40d150de81e78faa59852c90de5189bbb3cf39f6aa2b6935904",
+      "raw_bytes": 13201,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 38052,
+        "value_bits": 67534,
+        "padding_bits": 6,
+        "final_bits": 105608
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-115",
+      "samples": 260,
+      "canonical_sha256": "1daf30610e1095c15a60fcbf3cd699147b94ccf736131f5f7cc5041b8953e699",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "b4196e59de215bc731856434c75fcce108d837daf7710fb6166eadd031e3c1bd",
+      "raw_bytes": 2875,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 9149,
+        "value_bits": 13832,
+        "padding_bits": 3,
+        "final_bits": 23000
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-116",
+      "samples": 980,
+      "canonical_sha256": "20836a2e5f8246160a959929a7a3f3928e3258915a8c83c2f9b700685044f81c",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "db86278775024d8f7fb9358ed6b1ea020a200090af69ea41c66709a6003f0385",
+      "raw_bytes": 11221,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 35249,
+        "value_bits": 54501,
+        "padding_bits": 2,
+        "final_bits": 89768
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-117",
+      "samples": 635,
+      "canonical_sha256": "62fb79953fcc135f0e3b98fd8c1131cdfb03593c52339d8d4afebe46abc4c192",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "f982ea830ea3ba7de947907429e8987544deaa16845b6bfa298022a2988ac717",
+      "raw_bytes": 8022,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 22156,
+        "value_bits": 42001,
+        "padding_bits": 3,
+        "final_bits": 64176
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-118",
+      "samples": 235,
+      "canonical_sha256": "9cbe4fbbd2395f3205811b6c39ed654f611bd0cfaa3c8ac6ea767fde40c3bc0e",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "43b0de672f606e225ce8f763fe5545fc9a02091c3276a8fc127b5428bbd5978f",
+      "raw_bytes": 2493,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 7397,
+        "value_bits": 12528,
+        "padding_bits": 3,
+        "final_bits": 19944
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-119",
+      "samples": 692,
+      "canonical_sha256": "e9ae893e17b11b9a4be5c8909cad71befd27d8a43a53250089a4b7b11b5d2a87",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "1852b8940fcca240c5397bd95bb0fc2bb3d37d2490aaaf880bcda82ee1aa1a64",
+      "raw_bytes": 7862,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 26254,
+        "value_bits": 36623,
+        "padding_bits": 3,
+        "final_bits": 62896
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-120",
+      "samples": 991,
+      "canonical_sha256": "bcfab93e97410487255f5de4e7fb9b73b92ac30479f7fce9f8e013e82d49e7cc",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "dd572f7572136d3cbb29cf2da8b3d8e3b22cb728bd859f6d85a661cfdc2b74e5",
+      "raw_bytes": 12422,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 33933,
+        "value_bits": 65422,
+        "padding_bits": 5,
+        "final_bits": 99376
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-121",
+      "samples": 732,
+      "canonical_sha256": "f02080ceb0b84ede49dda0e64e23be8c1a58cfd8879e81f2a00d2316f1874706",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "ae51ef2610de8e890217a1b8b70558a19fd0b547cd3b363ef44b4651fe780f5e",
+      "raw_bytes": 7950,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 25593,
+        "value_bits": 37989,
+        "padding_bits": 2,
+        "final_bits": 63600
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-122",
+      "samples": 1547,
+      "canonical_sha256": "1fcade1ee0ae47965481f2fa302a4a4e58f3e7060d9923351fb16103998823d2",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "01cde46bd134a016549e126f7908795cc375697b2baa1c8308be1111d1210b59",
+      "raw_bytes": 17847,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 57595,
+        "value_bits": 85161,
+        "padding_bits": 4,
+        "final_bits": 142776
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-123",
+      "samples": 626,
+      "canonical_sha256": "88150094528f5b9cf6ff4a45e3ab3ba5ef650b874e7c331e2e2b21134b925300",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "ba0f8f26900729e4902bff2bdf28b693c0510dde9a3e066546aa8a41fee54bcb",
+      "raw_bytes": 8227,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 24455,
+        "value_bits": 41344,
+        "padding_bits": 1,
+        "final_bits": 65816
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-124",
+      "samples": 1305,
+      "canonical_sha256": "0dc019b9c1c0ae3e1ca9a2a0e93851f97329dbaade15692066a97c036d17ea37",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "6beb2a537d5044f68d17102a98650a85c96bf8d946e03bdbbd7110ba9f916b7d",
+      "raw_bytes": 14821,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 47390,
+        "value_bits": 71157,
+        "padding_bits": 5,
+        "final_bits": 118568
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-125",
+      "samples": 486,
+      "canonical_sha256": "4286f312be4f04f949c61b29f428273acdfd29f23a1f4d80bc25f8e584f35b32",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "4f3181f5daa3777e60609123db15c56230fd073a5790d5b6acd4e17ce7844224",
+      "raw_bytes": 5318,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 16294,
+        "value_bits": 26227,
+        "padding_bits": 7,
+        "final_bits": 42544
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-126",
+      "samples": 1210,
+      "canonical_sha256": "14aa111b8d47db6e4a0639ed945436ff2fa0d277f90597e047d3116479408504",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "69dbb186029e1ad61a907ffb3bd380ec3750c9813ee313d2e2496b6f2258828b",
+      "raw_bytes": 15438,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 43598,
+        "value_bits": 79889,
+        "padding_bits": 1,
+        "final_bits": 123504
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-127",
+      "samples": 221,
+      "canonical_sha256": "5facefbab0886c5aba44806c45ebb0c04cc5a22d6903121d9f36a5d23bbcd49c",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "17d1581405d977e1be1a5d74ff608dc043a58e7455ef9729721a19ba9ddc4c54",
+      "raw_bytes": 2420,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 6846,
+        "value_bits": 12497,
+        "padding_bits": 1,
+        "final_bits": 19360
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-128",
+      "samples": 882,
+      "canonical_sha256": "4d971949f37c8d2ec74401db339cf0b904081223ff524f0c0959f7f7303a63a0",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "499f4149ff00c212b8b86a7feae6f218356cf27cbc3e0e09c1dd52197d539107",
+      "raw_bytes": 10075,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 32439,
+        "value_bits": 48145,
+        "padding_bits": 0,
+        "final_bits": 80600
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-129",
+      "samples": 1963,
+      "canonical_sha256": "0e5445bb0787f858c1a834fce96075a15c724f7c79923bc1405dac796308a234",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "8739defc5ba14109b1bfd59be69463285a4fce56a7be5c9d49c0ad9da0e0f505",
+      "raw_bytes": 25077,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 71009,
+        "value_bits": 129587,
+        "padding_bits": 4,
+        "final_bits": 200616
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-130",
+      "samples": 659,
+      "canonical_sha256": "b010e5256e5d186f599bf777f8ee6cac7a439557b87959994abee8d3ad6ea33e",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "92d26820cb6cc44ab72e78ee200e022ce5ea9f58cbfa7c2bb9395330e3d84ff0",
+      "raw_bytes": 7289,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 20868,
+        "value_bits": 37423,
+        "padding_bits": 5,
+        "final_bits": 58312
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-131",
+      "samples": 784,
+      "canonical_sha256": "e7793c50519844df39719ddf67a332cb1745f867f21b9851720d14d1f0a48527",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "3570480aaa2811e55a34faea05d6e92a476986b1f21c6553baa1012493a9cc0b",
+      "raw_bytes": 8913,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 28785,
+        "value_bits": 42500,
+        "padding_bits": 3,
+        "final_bits": 71304
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-132",
+      "samples": 412,
+      "canonical_sha256": "0ade450336195060a337376a91fe11a6186174e3bdca4a2142255f7eac2cff33",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "2e3b6bfb2e50ba117b55618694d72f7965b9881f1e9b450bc80e9c040d19dee7",
+      "raw_bytes": 5467,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 16479,
+        "value_bits": 27234,
+        "padding_bits": 7,
+        "final_bits": 43736
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-133",
+      "samples": 615,
+      "canonical_sha256": "600502de07fc30f6c112f3ebf1143ae74ab173749e481341b2e36203aa2cd884",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "725863990fd54d155bc883df1f606db5139dbd51a2a936ba2756573b629c6d94",
+      "raw_bytes": 6990,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 22092,
+        "value_bits": 33811,
+        "padding_bits": 1,
+        "final_bits": 55920
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-134",
+      "samples": 1608,
+      "canonical_sha256": "5fe959186d32caa656c7eab9ff17bd8f0e42caa122f04d09de498918235fb6f8",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "7ac7a9f68165acb8e2aeb2e7c2c89249cfd980419e04b88582acf1da398702e9",
+      "raw_bytes": 18506,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 58522,
+        "value_bits": 89507,
+        "padding_bits": 3,
+        "final_bits": 148048
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-135",
+      "samples": 1244,
+      "canonical_sha256": "845b593539a73cc2c4b187aef298fdd66b88a6107e041b8a06d0b40eb11c7523",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "2d8fd6ea3dd8605a39b8cba7b2979b728a7e1eccfb43d4a7fe90c979470a77a2",
+      "raw_bytes": 15519,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 42012,
+        "value_bits": 82123,
+        "padding_bits": 1,
+        "final_bits": 124152
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-136",
+      "samples": 163,
+      "canonical_sha256": "6600dc368f7e980115c3e0034fd442dd92730e962ce87f5b1a4a5c3f82048e3e",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "7fad0a5956fb59e1eb05336a3de37c5621359d3330b98e123af014d611f25c8b",
+      "raw_bytes": 1782,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 5891,
+        "value_bits": 8344,
+        "padding_bits": 5,
+        "final_bits": 14256
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-137",
+      "samples": 214,
+      "canonical_sha256": "40307bcd7060cdb528b8645223b2647b430b0cbe7e9188fca09a89ed72e48d50",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "8035d4049e4f2c39f216c93dc35b4f974f3f4d2fb7b86e3819e797cde1d981cb",
+      "raw_bytes": 2472,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 7939,
+        "value_bits": 11819,
+        "padding_bits": 2,
+        "final_bits": 19776
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-138",
+      "samples": 77,
+      "canonical_sha256": "ae986f32668e23be3f032f7b2d51f94fac52a60cff069f454c32597481471ff1",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "a24da1b5b4014e11c628d71a15879c18c73b9f178562461c5b15a7724d364461",
+      "raw_bytes": 966,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 2620,
+        "value_bits": 5091,
+        "padding_bits": 1,
+        "final_bits": 7728
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-139",
+      "samples": 19,
+      "canonical_sha256": "3bdc4eeb81f596c9dc731a0c83483b23cc4b8986108de36c450109658377b10e",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "0884c9ecbab18586697471850a2dadde1db1c95b200d42a16c1f01d7be906fd2",
+      "raw_bytes": 176,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 500,
+        "value_bits": 889,
+        "padding_bits": 3,
+        "final_bits": 1408
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-140",
+      "samples": 294,
+      "canonical_sha256": "f9d4fbc896d7f98ff9a41b0c3046d20de8ca36816ae4a3891bada17acf27cf2e",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "545725da4441a19a5e1a66d5bf46ef5da25942ac1963f46f6acc61598c9bd71c",
+      "raw_bytes": 3470,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 11180,
+        "value_bits": 16563,
+        "padding_bits": 1,
+        "final_bits": 27760
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-141",
+      "samples": 1044,
+      "canonical_sha256": "835c90078b035fde80a9d25b33101c1443957baa0cd25eee495c0fdbdeb7738e",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "019dae015a8a837e6de8f2d75ea19be007a20623c2d5cffd3f234715b4f49120",
+      "raw_bytes": 13220,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 36826,
+        "value_bits": 68913,
+        "padding_bits": 5,
+        "final_bits": 105760
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-142",
+      "samples": 1402,
+      "canonical_sha256": "78ee8260879321586338db144e839fe61fbe52c1b25cbe3320db16d8de013d70",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "1bc51eb93ee52c3d14445e97775e9fee700ef2834d576b1f92bf783651371142",
+      "raw_bytes": 16106,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 50627,
+        "value_bits": 78201,
+        "padding_bits": 4,
+        "final_bits": 128848
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-143",
+      "samples": 767,
+      "canonical_sha256": "5c644c64679a3a5184f798cf17569edef7512d691f365a9c57c476af43233715",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "674e46d3f8a5b3be3f60a3f2f455b33adf1dd0c292845181763199e27c93793a",
+      "raw_bytes": 8598,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 26629,
+        "value_bits": 42138,
+        "padding_bits": 1,
+        "final_bits": 68784
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-144",
+      "samples": 795,
+      "canonical_sha256": "918244f795b4e14cf01b0af20120448dae177b14767739b2ba49d8a98ecd436a",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "75a3b081bd8823a5ec493fd3b2be26a14edf1a06c3dbbd49e1c24ab2418fb32d",
+      "raw_bytes": 10126,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 28499,
+        "value_bits": 52488,
+        "padding_bits": 5,
+        "final_bits": 81008
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-145",
+      "samples": 224,
+      "canonical_sha256": "b9fe3cebf205e22f1af604a043f21e6c27c02a85fdef1e4b3cb532b5142648d1",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "d161b9a486c79b6b918f46caa24ed7a49cde1748652f966f50dfb4e5016fcbe7",
+      "raw_bytes": 2549,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 8113,
+        "value_bits": 12260,
+        "padding_bits": 3,
+        "final_bits": 20392
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-146",
+      "samples": 711,
+      "canonical_sha256": "943269fcaeb1dc23246e33499e63fea17439720c9d8f7fa0b4a00bc731ba433e",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "7da1516bb4f2b9e2c279ee0a1aff11387e6bb90308e12e171c231b98fc19ee2d",
+      "raw_bytes": 8166,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 25506,
+        "value_bits": 39799,
+        "padding_bits": 7,
+        "final_bits": 65328
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-147",
+      "samples": 711,
+      "canonical_sha256": "0f429e3802728cea48a26c6858509903e5e0630dfe0174495934924252870cf8",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "e8dcd444f94fc86874bc8b9303652531cd09ca075c057f5922a63bdfc46c0fb0",
+      "raw_bytes": 8924,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 24373,
+        "value_bits": 47003,
+        "padding_bits": 0,
+        "final_bits": 71392
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-148",
+      "samples": 319,
+      "canonical_sha256": "07100b87ded5007ce8a14a4bb44d9c4ae05e80c0f99fa1aa357230887a039caf",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "f42deb9514ddc17df25e39268596f677d5eb0bceedc5f9442f09841e2f143876",
+      "raw_bytes": 3627,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 11606,
+        "value_bits": 17388,
+        "padding_bits": 6,
+        "final_bits": 29016
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-149",
+      "samples": 284,
+      "canonical_sha256": "cb8eba50117a835334c104ac03caf6e77a29b55a142d67c0a26ed8b7e6680047",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "ed849ff6d9d1ec28d4e598e9b897bfec406abc57622d071a6040ecb8d7a7cdde",
+      "raw_bytes": 3173,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 10112,
+        "value_bits": 15253,
+        "padding_bits": 3,
+        "final_bits": 25384
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-150",
+      "samples": 1101,
+      "canonical_sha256": "a31833f556fb5c0bb35c1ab5200646d02789e51cbbe637d46e660c5bf2597ba4",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "6fa1821279177f96427cb3f58b4655fd5a7478f34c68ea50e4a770d21fe3adeb",
+      "raw_bytes": 14117,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 40196,
+        "value_bits": 72717,
+        "padding_bits": 7,
+        "final_bits": 112936
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-151",
+      "samples": 1391,
+      "canonical_sha256": "257bc52866abe7bd31c6d6a487937261a55cf3c6275f45dc42fdc0ff1839659d",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "1df463843c1155e9e11d0451249d45a22c8fb9a89eba56f12eb16cbfe07d6abe",
+      "raw_bytes": 16163,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 51471,
+        "value_bits": 77814,
+        "padding_bits": 3,
+        "final_bits": 129304
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-152",
+      "samples": 1665,
+      "canonical_sha256": "3366b52972ef4338c2f5ab0ac8b1b0b3f70dcc9c622bce646b0b9d9f77fb23fb",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "bb2731ca247b255afcf77fe1aed3588ddbaad5e02cf68ff12e40d58f5c5bbbfb",
+      "raw_bytes": 19011,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 59266,
+        "value_bits": 92800,
+        "padding_bits": 6,
+        "final_bits": 152088
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-153",
+      "samples": 1502,
+      "canonical_sha256": "ba70f35a4c6c4abf57ec327a0896da2e521f09ce354355d7367d6e58de39427f",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "c739094ea009401cc91a66e4b3fd87e855766f37e94a8c1f26a3939d6d118479",
+      "raw_bytes": 19107,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 53684,
+        "value_bits": 99150,
+        "padding_bits": 6,
+        "final_bits": 152856
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-154",
+      "samples": 7,
+      "canonical_sha256": "f5dcc82e342b17f84e9bb43dddf4090810a6a5157f27fba4713b4f8042b04428",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "611d7bfd536bd0ad15f814422ced908c2d446a772e98f4f82be5af2205ee6592",
+      "raw_bytes": 81,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 269,
+        "value_bits": 361,
+        "padding_bits": 2,
+        "final_bits": 648
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-155",
+      "samples": 1913,
+      "canonical_sha256": "36204632478bdf80023ecba4f939064ff2c43fb888e80e27de4f3fb086faf674",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "3745176664985a2d61cb390f25f50424ff0e9a985089fae72c389ab0e7a9120e",
+      "raw_bytes": 21962,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 69762,
+        "value_bits": 105911,
+        "padding_bits": 7,
+        "final_bits": 175696
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-156",
+      "samples": 1869,
+      "canonical_sha256": "9cda27064ba8b0a089673605d149759adc42a757751a9ccf195146b11dca7bf1",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "4119a21e3460a63f4e4603824d2fab9c6e1857c4a08929e5b425a03fed5c5371",
+      "raw_bytes": 23713,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 66321,
+        "value_bits": 123364,
+        "padding_bits": 3,
+        "final_bits": 189704
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-157",
+      "samples": 576,
+      "canonical_sha256": "6058379960ade597f38ff57b16f90d2afbfeba35f5395d83d6b72397ecaef29b",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "878e602f3940d7c820117fe69be6c9b09bee809ba2ebceafc89a597ac73dbca2",
+      "raw_bytes": 6357,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 19720,
+        "value_bits": 31118,
+        "padding_bits": 2,
+        "final_bits": 50856
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-158",
+      "samples": 1332,
+      "canonical_sha256": "d69e9534e1f477af022de142bba0498c6bd59ee2135bc60ac1f4527143e0e608",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "6db1573a2a4106519bbdc59e461644b16e9706a0a471df32707787b5d6be555d",
+      "raw_bytes": 14850,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 47111,
+        "value_bits": 71671,
+        "padding_bits": 2,
+        "final_bits": 118800
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "random-159",
+      "samples": 112,
+      "canonical_sha256": "8b5dab98a917c1859b481268052d477e0ff6239c7c618736e6ee6f5318464284",
+      "kind": "synthetic",
+      "seed": 20261014,
+      "status": "PASS",
+      "source_raw_sha256": "ea291d4a95033331ec123b85f56ee0a90b397f6dab1b05951a055e1b2d905bfa",
+      "raw_bytes": 1450,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 4170,
+        "value_bits": 7410,
+        "padding_bits": 4,
+        "final_bits": 11600
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "ETTh1.csv:HUFL:0",
+      "samples": 17420,
+      "canonical_sha256": "a90be3d6a9b182da82505415c05d5ed8de583577654e2c2ba6f4f394feb820ca",
+      "kind": "real",
+      "file": "/home/fzg/PycharmProjects/\u6750\u6599/TSBench_Corpus/ETTh1.csv",
+      "source_sha256": "f18de3ad269cef59bb07b5438d79bb3042d3be49bdeecf01c1cd6d29695ee066",
+      "column": "HUFL",
+      "start": 0,
+      "stop": 17420,
+      "dtype": "float64",
+      "layout": "1D pairs",
+      "timestamp": "CSV date UTC ms",
+      "missing": "none",
+      "preprocessing": "CPython float; no normalize/sort/cast",
+      "status": "PASS",
+      "source_raw_sha256": "c3a6732473ef9f057bdecab858771b1a511ce8c27984654c6ae1ca8a41a9b7ba",
+      "raw_bytes": 135434,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 17498,
+        "value_bits": 1065952,
+        "padding_bits": 6,
+        "final_bits": 1083472
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "ETTh1.csv:HULL:0",
+      "samples": 17420,
+      "canonical_sha256": "d8e98d6b06cd91268759449bbfae1441c8974207174ba92eb02881f7eceabb34",
+      "kind": "real",
+      "file": "/home/fzg/PycharmProjects/\u6750\u6599/TSBench_Corpus/ETTh1.csv",
+      "source_sha256": "f18de3ad269cef59bb07b5438d79bb3042d3be49bdeecf01c1cd6d29695ee066",
+      "column": "HULL",
+      "start": 0,
+      "stop": 17420,
+      "dtype": "float64",
+      "layout": "1D pairs",
+      "timestamp": "CSV date UTC ms",
+      "missing": "none",
+      "preprocessing": "CPython float; no normalize/sort/cast",
+      "status": "PASS",
+      "source_raw_sha256": "d8f6d11bfb95f3895922494bf8daf610ae4479ed812ca92747eff792fb6cfff3",
+      "raw_bytes": 134995,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 17498,
+        "value_bits": 1062445,
+        "padding_bits": 1,
+        "final_bits": 1079960
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "ETTh1.csv:MUFL:0",
+      "samples": 17420,
+      "canonical_sha256": "9c3dfc8402e8fcb0a8ea3b53680dfa3ae48e85b5089701fe290632bf29d89be7",
+      "kind": "real",
+      "file": "/home/fzg/PycharmProjects/\u6750\u6599/TSBench_Corpus/ETTh1.csv",
+      "source_sha256": "f18de3ad269cef59bb07b5438d79bb3042d3be49bdeecf01c1cd6d29695ee066",
+      "column": "MUFL",
+      "start": 0,
+      "stop": 17420,
+      "dtype": "float64",
+      "layout": "1D pairs",
+      "timestamp": "CSV date UTC ms",
+      "missing": "none",
+      "preprocessing": "CPython float; no normalize/sort/cast",
+      "status": "PASS",
+      "source_raw_sha256": "cdc2d2811dd79ddbb3e9230c742a2b467f1e3fe815d50e7290bbd8b46b4ecd71",
+      "raw_bytes": 140276,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 17498,
+        "value_bits": 1104689,
+        "padding_bits": 5,
+        "final_bits": 1122208
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "ETTh1.csv:MULL:0",
+      "samples": 17420,
+      "canonical_sha256": "fed9c3dc8ff7191da7de372c781a9ef1933c67e156961318f4bbccc023c7680b",
+      "kind": "real",
+      "file": "/home/fzg/PycharmProjects/\u6750\u6599/TSBench_Corpus/ETTh1.csv",
+      "source_sha256": "f18de3ad269cef59bb07b5438d79bb3042d3be49bdeecf01c1cd6d29695ee066",
+      "column": "MULL",
+      "start": 0,
+      "stop": 17420,
+      "dtype": "float64",
+      "layout": "1D pairs",
+      "timestamp": "CSV date UTC ms",
+      "missing": "none",
+      "preprocessing": "CPython float; no normalize/sort/cast",
+      "status": "PASS",
+      "source_raw_sha256": "9a60a6e4f58130dccaed93d039066570df338e6cc37ed24b3a431e30334e7f3c",
+      "raw_bytes": 137762,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 17498,
+        "value_bits": 1084579,
+        "padding_bits": 3,
+        "final_bits": 1102096
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "ETTh1.csv:LUFL:0",
+      "samples": 17420,
+      "canonical_sha256": "781e8577ded32f685c0f81782c72292de2fbd360d95fed2644e0712e39752743",
+      "kind": "real",
+      "file": "/home/fzg/PycharmProjects/\u6750\u6599/TSBench_Corpus/ETTh1.csv",
+      "source_sha256": "f18de3ad269cef59bb07b5438d79bb3042d3be49bdeecf01c1cd6d29695ee066",
+      "column": "LUFL",
+      "start": 0,
+      "stop": 17420,
+      "dtype": "float64",
+      "layout": "1D pairs",
+      "timestamp": "CSV date UTC ms",
+      "missing": "none",
+      "preprocessing": "CPython float; no normalize/sort/cast",
+      "status": "PASS",
+      "source_raw_sha256": "310c7bffc47232434318ed48c3bc099aa171b29d4d65041b6ef23fe5513d73cc",
+      "raw_bytes": 133786,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 17498,
+        "value_bits": 1052772,
+        "padding_bits": 2,
+        "final_bits": 1070288
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "ETTh1.csv:LULL:0",
+      "samples": 17420,
+      "canonical_sha256": "fd489d8ff85098cc9094ebf0f8d64b244b3b02f1c598c41f7eeb915980862717",
+      "kind": "real",
+      "file": "/home/fzg/PycharmProjects/\u6750\u6599/TSBench_Corpus/ETTh1.csv",
+      "source_sha256": "f18de3ad269cef59bb07b5438d79bb3042d3be49bdeecf01c1cd6d29695ee066",
+      "column": "LULL",
+      "start": 0,
+      "stop": 17420,
+      "dtype": "float64",
+      "layout": "1D pairs",
+      "timestamp": "CSV date UTC ms",
+      "missing": "none",
+      "preprocessing": "CPython float; no normalize/sort/cast",
+      "status": "PASS",
+      "source_raw_sha256": "afa816602c33a594ed9ed66b1752630e60daabf7bc50b2ed1af5dcb4081fcd08",
+      "raw_bytes": 121176,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 17498,
+        "value_bits": 951893,
+        "padding_bits": 1,
+        "final_bits": 969408
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "ETTh1.csv:OT:0",
+      "samples": 17420,
+      "canonical_sha256": "5906ccd7c724f2d9fd84cf3eef8e0d732b75bb9299d94b1fb298e40803fefef1",
+      "kind": "real",
+      "file": "/home/fzg/PycharmProjects/\u6750\u6599/TSBench_Corpus/ETTh1.csv",
+      "source_sha256": "f18de3ad269cef59bb07b5438d79bb3042d3be49bdeecf01c1cd6d29695ee066",
+      "column": "OT",
+      "start": 0,
+      "stop": 17420,
+      "dtype": "float64",
+      "layout": "1D pairs",
+      "timestamp": "CSV date UTC ms",
+      "missing": "none",
+      "preprocessing": "CPython float; no normalize/sort/cast",
+      "status": "PASS",
+      "source_raw_sha256": "6f8fb43195840a663122c53b83e6906059c57d8121365c670d18b948f89b437a",
+      "raw_bytes": 130383,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 17498,
+        "value_bits": 1025549,
+        "padding_bits": 1,
+        "final_bits": 1043064
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "exchange_rate.csv:0:0",
+      "samples": 7588,
+      "canonical_sha256": "0a906f76293621339320f43e04713669d34491b209621956e5aed393d7a5f6c8",
+      "kind": "real",
+      "file": "/home/fzg/PycharmProjects/\u6750\u6599/TSBench_Corpus/exchange_rate.csv",
+      "source_sha256": "48b4d9d3d508f5104162e85b9a6042e3557fde11aa9f2944eba8c0d0efc89842",
+      "column": "0",
+      "start": 0,
+      "stop": 7588,
+      "dtype": "float64",
+      "layout": "1D pairs",
+      "timestamp": "CSV date UTC ms",
+      "missing": "none",
+      "preprocessing": "CPython float; no normalize/sort/cast",
+      "status": "PASS",
+      "source_raw_sha256": "58ec6ee04d5d0017387b7e94359e08574c5731a7ae929a90aba26b408a867d07",
+      "raw_bytes": 51058,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 7666,
+        "value_bits": 400776,
+        "padding_bits": 6,
+        "final_bits": 408464
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "exchange_rate.csv:1:0",
+      "samples": 7588,
+      "canonical_sha256": "eb5fe88f68c8a7462a8f49485a5887f3a8ca5745b780508737f9c8ff9ac028ba",
+      "kind": "real",
+      "file": "/home/fzg/PycharmProjects/\u6750\u6599/TSBench_Corpus/exchange_rate.csv",
+      "source_sha256": "48b4d9d3d508f5104162e85b9a6042e3557fde11aa9f2944eba8c0d0efc89842",
+      "column": "1",
+      "start": 0,
+      "stop": 7588,
+      "dtype": "float64",
+      "layout": "1D pairs",
+      "timestamp": "CSV date UTC ms",
+      "missing": "none",
+      "preprocessing": "CPython float; no normalize/sort/cast",
+      "status": "PASS",
+      "source_raw_sha256": "29cae0d509218fef19a652c2e4e7b8504a6e4f99a9f208c13af1b6c4746197f3",
+      "raw_bytes": 53900,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 7666,
+        "value_bits": 423516,
+        "padding_bits": 2,
+        "final_bits": 431200
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "exchange_rate.csv:2:0",
+      "samples": 7588,
+      "canonical_sha256": "cf70a1416a311171b7cfb16fecb02e180e71c08a0cbe75f35207d742846a470a",
+      "kind": "real",
+      "file": "/home/fzg/PycharmProjects/\u6750\u6599/TSBench_Corpus/exchange_rate.csv",
+      "source_sha256": "48b4d9d3d508f5104162e85b9a6042e3557fde11aa9f2944eba8c0d0efc89842",
+      "column": "2",
+      "start": 0,
+      "stop": 7588,
+      "dtype": "float64",
+      "layout": "1D pairs",
+      "timestamp": "CSV date UTC ms",
+      "missing": "none",
+      "preprocessing": "CPython float; no normalize/sort/cast",
+      "status": "PASS",
+      "source_raw_sha256": "39fcd0ea3e9c722d1d57c9b5e340e61dad96d77476893ee02d7355fd3f7fbc4d",
+      "raw_bytes": 49806,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 7666,
+        "value_bits": 390761,
+        "padding_bits": 5,
+        "final_bits": 398448
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "exchange_rate.csv:3:0",
+      "samples": 7588,
+      "canonical_sha256": "bc0d09606e9de0b18dd0fbe0178a5b392d7bf1863b8a0de8980da3a917cfdc71",
+      "kind": "real",
+      "file": "/home/fzg/PycharmProjects/\u6750\u6599/TSBench_Corpus/exchange_rate.csv",
+      "source_sha256": "48b4d9d3d508f5104162e85b9a6042e3557fde11aa9f2944eba8c0d0efc89842",
+      "column": "3",
+      "start": 0,
+      "stop": 7588,
+      "dtype": "float64",
+      "layout": "1D pairs",
+      "timestamp": "CSV date UTC ms",
+      "missing": "none",
+      "preprocessing": "CPython float; no normalize/sort/cast",
+      "status": "PASS",
+      "source_raw_sha256": "96a09ee32f514062fbb3b643926b7abc9c6ed20cb129b454bf2a567845fefff8",
+      "raw_bytes": 50200,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 7666,
+        "value_bits": 393915,
+        "padding_bits": 3,
+        "final_bits": 401600
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "exchange_rate.csv:4:0",
+      "samples": 7588,
+      "canonical_sha256": "d6f974816c76f0c17c24eed2247335e667c537079d0a70f916346bf1fc2cd246",
+      "kind": "real",
+      "file": "/home/fzg/PycharmProjects/\u6750\u6599/TSBench_Corpus/exchange_rate.csv",
+      "source_sha256": "48b4d9d3d508f5104162e85b9a6042e3557fde11aa9f2944eba8c0d0efc89842",
+      "column": "4",
+      "start": 0,
+      "stop": 7588,
+      "dtype": "float64",
+      "layout": "1D pairs",
+      "timestamp": "CSV date UTC ms",
+      "missing": "none",
+      "preprocessing": "CPython float; no normalize/sort/cast",
+      "status": "PASS",
+      "source_raw_sha256": "9be6e5ff4ea0a2ea282eb17b1dc58cb40a1fe2366bde4d62e09e9f09e8daa0d4",
+      "raw_bytes": 36269,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 7666,
+        "value_bits": 282469,
+        "padding_bits": 1,
+        "final_bits": 290152
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "exchange_rate.csv:5:0",
+      "samples": 7588,
+      "canonical_sha256": "06ea167b8ff3a0d3808cd86c95a891f252763a2f0eda7fa6f83b7c66caa4bc9f",
+      "kind": "real",
+      "file": "/home/fzg/PycharmProjects/\u6750\u6599/TSBench_Corpus/exchange_rate.csv",
+      "source_sha256": "48b4d9d3d508f5104162e85b9a6042e3557fde11aa9f2944eba8c0d0efc89842",
+      "column": "5",
+      "start": 0,
+      "stop": 7588,
+      "dtype": "float64",
+      "layout": "1D pairs",
+      "timestamp": "CSV date UTC ms",
+      "missing": "none",
+      "preprocessing": "CPython float; no normalize/sort/cast",
+      "status": "PASS",
+      "source_raw_sha256": "f248f4226713f6ab01926aa0e753414b52ea879887cf95722338981da314c5ad",
+      "raw_bytes": 53039,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 7666,
+        "value_bits": 416624,
+        "padding_bits": 6,
+        "final_bits": 424312
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "exchange_rate.csv:6:0",
+      "samples": 7588,
+      "canonical_sha256": "a944ce4f5c1f73b4d0bc6fb437362c9c61269953ac75257416839a12f4db630c",
+      "kind": "real",
+      "file": "/home/fzg/PycharmProjects/\u6750\u6599/TSBench_Corpus/exchange_rate.csv",
+      "source_sha256": "48b4d9d3d508f5104162e85b9a6042e3557fde11aa9f2944eba8c0d0efc89842",
+      "column": "6",
+      "start": 0,
+      "stop": 7588,
+      "dtype": "float64",
+      "layout": "1D pairs",
+      "timestamp": "CSV date UTC ms",
+      "missing": "none",
+      "preprocessing": "CPython float; no normalize/sort/cast",
+      "status": "PASS",
+      "source_raw_sha256": "a70630e513c19810df1a493c04fef77ae1905f05f821b71db7f255fca88176de",
+      "raw_bytes": 47399,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 7666,
+        "value_bits": 371509,
+        "padding_bits": 1,
+        "final_bits": 379192
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "exchange_rate.csv:OT:0",
+      "samples": 7588,
+      "canonical_sha256": "849bae28b7f2b0d5e8ab00a749b6a43862031d9f427ba63b7887b73ce5e47ccf",
+      "kind": "real",
+      "file": "/home/fzg/PycharmProjects/\u6750\u6599/TSBench_Corpus/exchange_rate.csv",
+      "source_sha256": "48b4d9d3d508f5104162e85b9a6042e3557fde11aa9f2944eba8c0d0efc89842",
+      "column": "OT",
+      "start": 0,
+      "stop": 7588,
+      "dtype": "float64",
+      "layout": "1D pairs",
+      "timestamp": "CSV date UTC ms",
+      "missing": "none",
+      "preprocessing": "CPython float; no normalize/sort/cast",
+      "status": "PASS",
+      "source_raw_sha256": "03d16265b4beef2d4cc0759285ad5c3794da807d1abd4c72d9793a091716590a",
+      "raw_bytes": 50559,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 7666,
+        "value_bits": 396788,
+        "padding_bits": 2,
+        "final_bits": 404472
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "national_illness.csv:% WEIGHTED ILI:0",
+      "samples": 966,
+      "canonical_sha256": "f7c2101cd167d35f87b16b92b5bebfeada8321f0fd2bc4910f5461fad8e63999",
+      "kind": "real",
+      "file": "/home/fzg/PycharmProjects/\u6750\u6599/TSBench_Corpus/national_illness.csv",
+      "source_sha256": "93601f64d2566dc796ca4305adad8b8560c2db1a1ff04543c3bd813a7263570a",
+      "column": "% WEIGHTED ILI",
+      "start": 0,
+      "stop": 966,
+      "dtype": "float64",
+      "layout": "1D pairs",
+      "timestamp": "CSV date UTC ms",
+      "missing": "none",
+      "preprocessing": "CPython float; no normalize/sort/cast",
+      "status": "PASS",
+      "source_raw_sha256": "8f999e3381289d707e391608936c41580169b5b8facc00b2acd505ebe2dba84d",
+      "raw_bytes": 7972,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 1052,
+        "value_bits": 62703,
+        "padding_bits": 5,
+        "final_bits": 63776
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "national_illness.csv:%UNWEIGHTED ILI:0",
+      "samples": 966,
+      "canonical_sha256": "d3212a4c363ccb56531032b58fd897043679d870a6d651d4f9fb5b8737bb2ec7",
+      "kind": "real",
+      "file": "/home/fzg/PycharmProjects/\u6750\u6599/TSBench_Corpus/national_illness.csv",
+      "source_sha256": "93601f64d2566dc796ca4305adad8b8560c2db1a1ff04543c3bd813a7263570a",
+      "column": "%UNWEIGHTED ILI",
+      "start": 0,
+      "stop": 966,
+      "dtype": "float64",
+      "layout": "1D pairs",
+      "timestamp": "CSV date UTC ms",
+      "missing": "none",
+      "preprocessing": "CPython float; no normalize/sort/cast",
+      "status": "PASS",
+      "source_raw_sha256": "20a64b873fd520390fd426ff4111b1d843d8fcb5d22219bf620a0d302d50f0fe",
+      "raw_bytes": 7970,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 1052,
+        "value_bits": 62689,
+        "padding_bits": 3,
+        "final_bits": 63760
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "national_illness.csv:AGE 0-4:0",
+      "samples": 966,
+      "canonical_sha256": "f4771e46627d2f13712f586fcf410ea3d1dca249dac57af626a2f9bb396eb7a9",
+      "kind": "real",
+      "file": "/home/fzg/PycharmProjects/\u6750\u6599/TSBench_Corpus/national_illness.csv",
+      "source_sha256": "93601f64d2566dc796ca4305adad8b8560c2db1a1ff04543c3bd813a7263570a",
+      "column": "AGE 0-4",
+      "start": 0,
+      "stop": 966,
+      "dtype": "float64",
+      "layout": "1D pairs",
+      "timestamp": "CSV date UTC ms",
+      "missing": "none",
+      "preprocessing": "CPython float; no normalize/sort/cast",
+      "status": "PASS",
+      "source_raw_sha256": "91db80cf5b06f3a26a9f464b362620eac0ca7c18da14b2153ad92bbd4016c055",
+      "raw_bytes": 2183,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 1052,
+        "value_bits": 16390,
+        "padding_bits": 6,
+        "final_bits": 17464
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "national_illness.csv:AGE 5-24:0",
+      "samples": 966,
+      "canonical_sha256": "548c9f70b65ff93785c709372530df7403a7cf496387b82f039b4ec1218b3ddf",
+      "kind": "real",
+      "file": "/home/fzg/PycharmProjects/\u6750\u6599/TSBench_Corpus/national_illness.csv",
+      "source_sha256": "93601f64d2566dc796ca4305adad8b8560c2db1a1ff04543c3bd813a7263570a",
+      "column": "AGE 5-24",
+      "start": 0,
+      "stop": 966,
+      "dtype": "float64",
+      "layout": "1D pairs",
+      "timestamp": "CSV date UTC ms",
+      "missing": "none",
+      "preprocessing": "CPython float; no normalize/sort/cast",
+      "status": "PASS",
+      "source_raw_sha256": "4484f4c764dde377e7fad166527eeb05b0828cdbc2508c4f4465feb68b953a4b",
+      "raw_bytes": 2246,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 1052,
+        "value_bits": 16894,
+        "padding_bits": 6,
+        "final_bits": 17968
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "national_illness.csv:ILITOTAL:0",
+      "samples": 966,
+      "canonical_sha256": "7cc017bde485f6715053e7d25157c709c353adac0348164544b73d729390adad",
+      "kind": "real",
+      "file": "/home/fzg/PycharmProjects/\u6750\u6599/TSBench_Corpus/national_illness.csv",
+      "source_sha256": "93601f64d2566dc796ca4305adad8b8560c2db1a1ff04543c3bd813a7263570a",
+      "column": "ILITOTAL",
+      "start": 0,
+      "stop": 966,
+      "dtype": "float64",
+      "layout": "1D pairs",
+      "timestamp": "CSV date UTC ms",
+      "missing": "none",
+      "preprocessing": "CPython float; no normalize/sort/cast",
+      "status": "PASS",
+      "source_raw_sha256": "20bdfe787c0d64de90d2c4a443b13621397d7946ac92da3c59d9cd9da9d78a14",
+      "raw_bytes": 2377,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 1052,
+        "value_bits": 17947,
+        "padding_bits": 1,
+        "final_bits": 19016
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "national_illness.csv:NUM. OF PROVIDERS:0",
+      "samples": 966,
+      "canonical_sha256": "8f1e0233afd5830bee2c4b3e74459962bda87662774d6fcc759916627994524c",
+      "kind": "real",
+      "file": "/home/fzg/PycharmProjects/\u6750\u6599/TSBench_Corpus/national_illness.csv",
+      "source_sha256": "93601f64d2566dc796ca4305adad8b8560c2db1a1ff04543c3bd813a7263570a",
+      "column": "NUM. OF PROVIDERS",
+      "start": 0,
+      "stop": 966,
+      "dtype": "float64",
+      "layout": "1D pairs",
+      "timestamp": "CSV date UTC ms",
+      "missing": "none",
+      "preprocessing": "CPython float; no normalize/sort/cast",
+      "status": "PASS",
+      "source_raw_sha256": "4a2b624fc0f46d9b5c22b8e00c79afb70e28e400bfe57e73377ae945b3450e89",
+      "raw_bytes": 1931,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 1052,
+        "value_bits": 14373,
+        "padding_bits": 7,
+        "final_bits": 15448
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    },
+    {
+      "case_id": "national_illness.csv:OT:0",
+      "samples": 966,
+      "canonical_sha256": "79110d4768418715bc745e531e01a332d2ce74efd69c6a8f82a1debd49aa0ecb",
+      "kind": "real",
+      "file": "/home/fzg/PycharmProjects/\u6750\u6599/TSBench_Corpus/national_illness.csv",
+      "source_sha256": "93601f64d2566dc796ca4305adad8b8560c2db1a1ff04543c3bd813a7263570a",
+      "column": "OT",
+      "start": 0,
+      "stop": 966,
+      "dtype": "float64",
+      "layout": "1D pairs",
+      "timestamp": "CSV date UTC ms",
+      "missing": "none",
+      "preprocessing": "CPython float; no normalize/sort/cast",
+      "status": "PASS",
+      "source_raw_sha256": "858d0e6f6c39bf1e84d7f4e3a4347ee4d91d0432f1ff6d78ef770b382e09d9d4",
+      "raw_bytes": 2944,
+      "accounting": {
+        "metadata_bits": 16,
+        "timestamp_bits": 1052,
+        "value_bits": 22483,
+        "padding_bits": 1,
+        "final_bits": 23552
+      },
+      "four_way": "PASS",
+      "trace": "PASS"
+    }
+  ]
+}

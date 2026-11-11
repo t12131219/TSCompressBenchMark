@@ -1,0 +1,101 @@
+{
+  "summary": {
+    "cases": 82,
+    "values": 22656,
+    "status_counts": {
+      "PASS": 68,
+      "SOURCE_DOMAIN_FAILURE": 11,
+      "SOURCE_ROUNDTRIP_DEFECT": 3
+    },
+    "elapsed_seconds": 1.3985302448272705,
+    "by_variant": {
+      "elf": {
+        "PASS": 68,
+        "SOURCE_DOMAIN_FAILURE": 11,
+        "SOURCE_ROUNDTRIP_DEFECT": 3
+      },
+      "elf-plus": {
+        "PASS": 0,
+        "SOURCE_DOMAIN_FAILURE": 0,
+        "SOURCE_ROUNDTRIP_DEFECT": 0
+      },
+      "elf-star": {
+        "PASS": 0,
+        "SOURCE_DOMAIN_FAILURE": 0,
+        "SOURCE_ROUNDTRIP_DEFECT": 0
+      },
+      "elf-star-nohuff": {
+        "PASS": 0,
+        "SOURCE_DOMAIN_FAILURE": 0,
+        "SOURCE_ROUNDTRIP_DEFECT": 0
+      },
+      "self-star": {
+        "PASS": 0,
+        "SOURCE_DOMAIN_FAILURE": 0,
+        "SOURCE_ROUNDTRIP_DEFECT": 0
+      },
+      "elf-star-no-fr-pruning": {
+        "PASS": 0,
+        "SOURCE_DOMAIN_FAILURE": 0,
+        "SOURCE_ROUNDTRIP_DEFECT": 0
+      },
+      "elf-star-no-frz-pruning": {
+        "PASS": 0,
+        "SOURCE_DOMAIN_FAILURE": 0,
+        "SOURCE_ROUNDTRIP_DEFECT": 0
+      },
+      "elf-star-no-frzg-pruning": {
+        "PASS": 0,
+        "SOURCE_DOMAIN_FAILURE": 0,
+        "SOURCE_ROUNDTRIP_DEFECT": 0
+      },
+      "elf-huff": {
+        "PASS": 0,
+        "SOURCE_DOMAIN_FAILURE": 0,
+        "SOURCE_ROUNDTRIP_DEFECT": 0
+      },
+      "elf-star-no-s": {
+        "PASS": 0,
+        "SOURCE_DOMAIN_FAILURE": 0,
+        "SOURCE_ROUNDTRIP_DEFECT": 0
+      },
+      "elf-star-no-sc": {
+        "PASS": 0,
+        "SOURCE_DOMAIN_FAILURE": 0,
+        "SOURCE_ROUNDTRIP_DEFECT": 0
+      },
+      "self-star-nohuff32": {
+        "PASS": 0,
+        "SOURCE_DOMAIN_FAILURE": 0,
+        "SOURCE_ROUNDTRIP_DEFECT": 0
+      }
+    }
+  },
+  "cli_sha256": "a04ef8e1a016a1f26e7a1ffc211ea2b45255de1688dc3fda1f7dd4f7649e170a",
+  "case_index_sha256": "4b31863b0bee29ca745a27c8f25a139e2650584a7ad4690294bf1e2d1fbadeb7",
+  "sources": {
+    "src/codec.cpp": "ec6be2783d68566da53dd5032e7d6fd43e2d5fd8a1928f7dfcbfd5845f72f442",
+    "src/java_runtime.hpp": "8735d2bc5e47a8d4690a6f254788c191d5548bc474ee903cfd60d47ab6d50f8e",
+    "src/translated.hpp": "52145e575b14c71bc0de5c15220f1c1332e2cb423d2d9aadd849ef83744c67ac",
+    "src/factory.inc": "1d9d62cb027c253287220b9e4dd8077bd28cd321ee2a601de2520a4868c25ee6",
+    "src/stages.inc": "404ac36c07e8dc87c41cd04476e772257dbd0b7eea06136524058b966b19546e",
+    "tools/cli.cpp": "079085f75100eca50a369c7b4513ef17665d9499e502e1dc90df5cc3ceb6b963",
+    "include/elf_original/codec.hpp": "3836b1d4218f9eb7513bc313269dd09232cdf177fee674a67a1f76a08bb6e144",
+    "oracle/Oracle.java": "7b2fe9cd46d2266e3609fef6ceafd6f6658826133d499f9d1bbf173cc6cc2e09",
+    "tools/verify.py": "2412d187d822543c59a6dd482bad155787fe0a47c57166a9b05cd1ee3b7e8bd5"
+  },
+  "commands": {
+    "java": [
+      "java",
+      "-XX:-UsePerfData",
+      "-Xmx512m",
+      "-cp",
+      "/home/fzg/PycharmProjects/TSDataCompressBenchMark/docs/consistency_audit_20261023/elf_original_source_fresh/oracle/classes",
+      "Oracle"
+    ],
+    "cpp": [
+      "/home/fzg/PycharmProjects/Compression_Rewrite/ReWrite/elf-original/build/elf_original_codec",
+      "server"
+    ]
+  }
+}
