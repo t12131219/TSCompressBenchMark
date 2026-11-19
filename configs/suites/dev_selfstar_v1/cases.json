@@ -1,0 +1,11 @@
+{
+  "schema": "bmk.dev-selfstar-cases/1",
+  "selection": 4,
+  "method": {"plugin":"selfstar-batch", "role":"value", "algorithm":"SF_SELF_STAR", "options":{}, "threads":1, "block_values":512},
+  "fixtures": {"generator":"selfstar_finite_regime_and_special_bits_v1", "widths":[32,64], "object_counts":[1,512,1591,2049]},
+  "incremental": {"add_schedule":[1,7,63,121], "native_limits":[1,1000], "initial_state":"fresh_directional_context", "end":"drain_through_has_value_zero"},
+  "validator": "selfstar_native_wire_parity_state_replay_and_bit_exact_v1",
+  "corpus": "datasets/manifests/first-batch-real-v2.json",
+  "corpus_id": "a9904b1ce2068186e1c3e47eccf406e030d9e73973defe50d0508c91334929b3",
+  "window": {"dataset":"mpi-beutenberg-weather", "column":"co2", "partition":"test", "offset":0, "count":1543}
+}

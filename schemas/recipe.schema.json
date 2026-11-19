@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:tsbench:schema:recipe:1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "id", "runner", "suite", "selection_policy", "max_depth", "conditions", "graphs", "methods"],
+  "properties": {
+    "schema": {"const": "bmk.recipe/1"},
+    "id": {"$ref": "#/$defs/name"},
+    "runner": {"const": "tv-bundle/1"},
+    "suite": {
+      "type": "object", "additionalProperties": false, "required": ["path", "content_id"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1},
+        "content_id": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "selection_policy": {"const": "force_recipe"},
+    "max_depth": {"type": "integer", "minimum": 1, "maximum": 8},
+    "conditions": {
+      "type": "object", "additionalProperties": false,
+      "required": ["quality", "access", "extent", "ingress", "state", "validation", "accounting", "resources"],
+      "properties": {
+        "quality": {"const": "bitwise_exact"},
+        "access": {"enum": ["batch_whole", "stream_chunked"]},
+        "extent": {"enum": ["pipeline_service", "end_to_end"]},
+        "ingress": {"enum": ["canonical_before_clock", "source_inside_clock"]},
+        "state": {"enum": ["reset_per_message", "ordered_session"]},
+        "validation": {"const": "artifact_each"},
+        "accounting": {"const": "all_serialized_bundle_bytes"},
+        "resources": {
+          "type": "object", "additionalProperties": false,
+          "required": ["deadline_ns", "max_serialized_bytes", "participant_threads", "enforcement"],
+          "properties": {
+            "deadline_ns": {"type": "integer", "minimum": 1},
+            "max_serialized_bytes": {"type": "integer", "minimum": 1},
+            "participant_threads": {"type": "integer", "minimum": 1},
+            "enforcement": {"enum": ["per_process_deadline_and_bounded_frame_not_core_or_memory_isolation", "exclusive_cpu_and_memory"]}
+          }
+        }
+      }
+    },
+    "graphs": {
+      "type": "object", "minProperties": 1, "maxProperties": 16,
+      "propertyNames": {"$ref": "#/$defs/name"},
+      "additionalProperties": {
+        "type": "array", "minItems": 1, "maxItems": 16,
+        "items": {
+          "type": "object", "additionalProperties": false,
+          "required": ["id", "op", "inputs", "inverse"],
+          "properties": {
+            "id": {"$ref": "#/$defs/name"},
+            "op": {"$ref": "#/$defs/name"},
+            "inputs": {"type": "array", "maxItems": 2, "uniqueItems": true, "items": {"$ref": "#/$defs/name"}},
+            "inverse": {"$ref": "#/$defs/name"}
+          }
+        }
+      }
+    },
+    "methods": {
+      "type": "object", "minProperties": 1, "maxProperties": 32,
+      "propertyNames": {"$ref": "#/$defs/name"},
+      "additionalProperties": {"$ref": "#/$defs/name"}
+    }
+  },
+  "$defs": {"name": {"type": "string", "maxLength": 64, "pattern": "^[a-z][a-z0-9-]*$"}}
+}

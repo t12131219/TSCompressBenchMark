@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Candidate serial worker admission and accounting policy (not hard resource isolation)",
+  "type": "object", "additionalProperties": false,
+  "required": ["schema", "disk_free_floor_bytes", "disk_free_inodes_floor", "host_available_memory_floor_bytes",
+    "disk_guard", "memory_guard", "operation_usage", "workspace", "resource_isolation"],
+  "properties": {
+    "schema": {"const": "bmk.resource-candidate-policy/1"},
+    "disk_free_floor_bytes": {"type": "integer", "minimum": 1},
+    "disk_free_inodes_floor": {"type": "integer", "minimum": 1},
+    "host_available_memory_floor_bytes": {"type": "integer", "minimum": 1},
+    "disk_guard": {"const": "results_mount_before_each_slot_frame_cap_plus_input"},
+    "memory_guard": {"const": "host_memavailable_advisory_not_cgroup"},
+    "operation_usage": {"const": "linux_wait4_direct_child"},
+    "workspace": {"const": "commit_verified_before_release_preserve_failed"},
+    "resource_isolation": {"const": "not_enforced"}
+  }
+}

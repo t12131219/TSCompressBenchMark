@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bmk.m2-stage-receipt/1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "stage", "stage_accepted", "qualification_granted", "timing_admitted", "scope", "evidence", "open_items", "receipt_id"],
+  "properties": {
+    "schema": {"const": "bmk.m2-stage-receipt/1"},
+    "stage": {"const": "M2"},
+    "stage_accepted": {"const": true},
+    "qualification_granted": {"const": false},
+    "timing_admitted": {"const": false},
+    "scope": {"const": "controlled_measurement_and_scheduler_protocol"},
+    "evidence": {"type": "object", "minProperties": 1},
+    "open_items": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+    "receipt_id": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

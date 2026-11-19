@@ -1,0 +1,22 @@
+{
+  "schema":"bmk.dev-corad-cases/1",
+  "selection":80,
+  "corpus":"datasets/manifests/first-batch-real-v2.json",
+  "corpus_id":"a9904b1ce2068186e1c3e47eccf406e030d9e73973defe50d0508c91334929b3",
+  "dataset":"mpi-beutenberg-weather",
+  "columns":["pressure","air_temperature","relative_humidity"],
+  "train":{"partition":"train","offset":113,"count":129},
+  "evaluation":{"partition":"test","offset":31,"count":67},
+  "tricklet":4,
+  "atoms":4,
+  "nonzero":2,
+  "threshold":0.9,
+  "training_column_mask":7,
+  "alpha":0.25,
+  "c_seed":20261103,
+  "c_max_iter":6,
+  "c_solver_max_iter":4000,
+  "c_sparse_solver_tolerance":1e-8,
+  "c_sparse_solver":"lars",
+  "validator":"crd1_independent_parser_and_original_column_error_v1"
+}

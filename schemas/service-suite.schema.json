@@ -1,0 +1,227 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "id",
+    "definition_stage",
+    "target_stage",
+    "predecessor",
+    "workloads",
+    "policies",
+    "expected_counts",
+    "inherited_locks"
+  ],
+  "properties": {
+    "schema": {
+      "const": "bmk.service-suite/1"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?![\\s\\S])"
+    },
+    "definition_stage": {
+      "const": "M0"
+    },
+    "target_stage": {
+      "const": "M5"
+    },
+    "predecessor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "suite"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*(?![\\s\\S])"
+        },
+        "suite": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "path",
+            "sha256"
+          ],
+          "properties": {
+            "path": {
+              "type": "string",
+              "minLength": 1
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}(?![\\s\\S])"
+            }
+          }
+        }
+      }
+    },
+    "workloads": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "sha256"
+      ],
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}(?![\\s\\S])"
+        }
+      }
+    },
+    "policies": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "verification",
+        "submission",
+        "raw_fallback",
+        "selection_must_contribute",
+        "timing_admission",
+        "report_rejections"
+      ],
+      "properties": {
+        "verification": {
+          "const": "artifact_each"
+        },
+        "submission": {
+          "const": "one_complete_plan_one_run"
+        },
+        "raw_fallback": {
+          "const": false
+        },
+        "selection_must_contribute": {
+          "const": true
+        },
+        "timing_admission": {
+          "const": false
+        },
+        "report_rejections": {
+          "const": true
+        }
+      }
+    },
+    "expected_counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "selections",
+        "groups",
+        "atomic_requirements",
+        "display_cells",
+        "atomic_relations",
+        "cases",
+        "case_obligations",
+        "rejection_obligations"
+      ],
+      "properties": {
+        "selections": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100000
+        },
+        "groups": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100000
+        },
+        "atomic_requirements": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100000
+        },
+        "display_cells": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100000
+        },
+        "atomic_relations": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100000
+        },
+        "cases": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100000
+        },
+        "case_obligations": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100000
+        },
+        "rejection_obligations": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100000
+        }
+      }
+    },
+    "inherited_locks": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "suite",
+        "requirements",
+        "native_inventory",
+        "fixture_manifest",
+        "real_corpus",
+        "corpus_feature_policy",
+        "corpus_boundary_fixtures",
+        "draft_cases",
+        "sources",
+        "contract_schemas"
+      ],
+      "properties": {
+        "suite": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}(?![\\s\\S])"
+        },
+        "requirements": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}(?![\\s\\S])"
+        },
+        "native_inventory": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}(?![\\s\\S])"
+        },
+        "fixture_manifest": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}(?![\\s\\S])"
+        },
+        "real_corpus": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}(?![\\s\\S])"
+        },
+        "corpus_feature_policy": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}(?![\\s\\S])"
+        },
+        "corpus_boundary_fixtures": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}(?![\\s\\S])"
+        },
+        "draft_cases": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}(?![\\s\\S])"
+        },
+        "sources": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}(?![\\s\\S])"
+        },
+        "contract_schemas": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}(?![\\s\\S])"
+        }
+      }
+    }
+  }
+}

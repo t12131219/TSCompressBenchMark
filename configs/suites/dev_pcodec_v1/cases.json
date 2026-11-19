@@ -1,0 +1,12 @@
+{
+  "schema": "bmk.dev-pcodec-cases/1",
+  "selection": 11,
+  "corpus": "datasets/manifests/first-batch-real-v2.json",
+  "corpus_id": "a9904b1ce2068186e1c3e47eccf406e030d9e73973defe50d0508c91334929b3",
+  "window": {"dataset": "unique-forecast-traffic", "column": "channel_0", "partition": "test", "offset": 0, "count": 773},
+  "batch": {"role": "value", "methods": ["pcodec-source-auto", "pcodec-c-native-auto"], "options": {}, "validator": "direct_standalone_payload_and_isolated_value_bits_v1"},
+  "pages": {"routes": ["source-pages", "native-pages"], "page_counts": [513, 260], "read_capacity": 256, "validator": "detached_pages_bits_and_state_v1"},
+  "intmult": {"dtype": "u32", "count": 2048, "base": 4093, "u64_count": 513, "u64_base": 9007199254740993,
+              "level": 8, "delta": 0, "chunk_n": 262144, "read_capacity": 256,
+              "validator": "intmult_domain_wire_mode_and_detached_bits_v2"}
+}

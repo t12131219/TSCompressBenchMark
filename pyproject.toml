@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools>=65"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tsdata-compress-bench-mark"
+version = "0.1.0.dev0"
+requires-python = ">=3.11"
+dependencies = ["jsonschema==4.23.0", "referencing>=0.28.4"]
+
+[project.scripts]
+bmk = "tsbench.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

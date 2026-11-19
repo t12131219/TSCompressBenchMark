@@ -1,0 +1,377 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Verified local first-batch real corpus, partial coverage",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "id",
+    "state",
+    "intake",
+    "datasets"
+  ],
+  "properties": {
+    "schema": {
+      "const": "bmk.real-corpus/1"
+    },
+    "id": {
+      "enum": [
+        "first_batch_real_v1",
+        "first_batch_real_v2",
+        "first_batch_real_v3"
+      ]
+    },
+    "state": {
+      "enum": [
+        "partial_scope",
+        "domain_coverage_only"
+      ]
+    },
+    "intake": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "sha256"
+      ],
+      "properties": {
+        "path": {
+          "enum": [
+            "datasets/manifests/first-batch-real-intake.json",
+            "datasets/manifests/first-batch-real-intake-v2.json",
+            "datasets/manifests/first-batch-real-intake-v3.json"
+          ]
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha"
+        }
+      }
+    },
+    "datasets": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/dataset"
+      },
+      "minItems": 1
+    }
+  },
+  "$defs": {
+    "sha": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}(?![\\s\\S])"
+    },
+    "stamp": {
+      "oneOf": [
+        {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}(?![\\s\\S])"
+        },
+        {
+          "type": "string",
+          "pattern": "^(?:0|[1-9][0-9]{0,8})(?![\\s\\S])"
+        }
+      ]
+    },
+    "partition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "first_timestamp",
+        "last_timestamp",
+        "rows",
+        "logical_bytes",
+        "canonical_id"
+      ],
+      "properties": {
+        "first_timestamp": {
+          "$ref": "#/$defs/stamp"
+        },
+        "last_timestamp": {
+          "$ref": "#/$defs/stamp"
+        },
+        "rows": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "logical_bytes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "canonical_id": {
+          "$ref": "#/$defs/sha"
+        }
+      }
+    },
+    "dataset": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "source_cluster",
+        "domain",
+        "header_profile",
+        "split_at",
+        "asset",
+        "audit"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9-]+(?![\\s\\S])"
+        },
+        "source_cluster": {
+          "type": "string",
+          "pattern": "^[a-z0-9-]+(?![\\s\\S])"
+        },
+        "domain": {
+          "enum": [
+            "sensor",
+            "energy",
+            "traffic",
+            "finance",
+            "server_metrics",
+            "scientific_computing"
+          ]
+        },
+        "header_profile": {
+          "enum": [
+            "project_uci_16_v1",
+            "project_mpi_21_v1",
+            "project_unique_traffic_32_v1",
+            "project_unique_exchange_8_v1",
+            "westermo_system1_elapsed_v1",
+            "ceda_cmip6_gsat_year_v1"
+          ]
+        },
+        "nominal_step_seconds": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "split_at": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/stamp"
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "asset": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "path",
+            "sha256",
+            "bytes"
+          ],
+          "properties": {
+            "path": {
+              "type": "string",
+              "pattern": "^datasets/raw/[a-z0-9-]+\\.(?:csv|txt)\\.gz(?![\\s\\S])"
+            },
+            "sha256": {
+              "$ref": "#/$defs/sha"
+            },
+            "bytes": {
+              "type": "integer",
+              "minimum": 1
+            }
+          }
+        },
+        "audit": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "rows",
+            "value_columns",
+            "timestamp_steps",
+            "literal_minus_9999",
+            "partitions"
+          ],
+          "properties": {
+            "rows": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "value_columns": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "timestamp_steps": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "nominal",
+                "duplicates",
+                "positive_non_nominal",
+                "backward"
+              ],
+              "properties": {
+                "nominal": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "duplicates": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "positive_non_nominal": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "backward": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              }
+            },
+            "literal_minus_9999": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "partitions": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "train",
+                "development",
+                "test"
+              ],
+              "properties": {
+                "train": {
+                  "$ref": "#/$defs/partition"
+                },
+                "development": {
+                  "$ref": "#/$defs/partition"
+                },
+                "test": {
+                  "$ref": "#/$defs/partition"
+                }
+              }
+            }
+          }
+        },
+        "nominal_step_ticks": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "header_profile": {
+                "enum": [
+                  "westermo_system1_elapsed_v1",
+                  "ceda_cmip6_gsat_year_v1"
+                ]
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "nominal_step_ticks"
+            ],
+            "not": {
+              "required": [
+                "nominal_step_seconds"
+              ]
+            }
+          },
+          "else": {
+            "required": [
+              "nominal_step_seconds"
+            ],
+            "not": {
+              "required": [
+                "nominal_step_ticks"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "id": {
+            "const": "first_batch_real_v1"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "intake": {
+            "properties": {
+              "path": {
+                "const": "datasets/manifests/first-batch-real-intake.json"
+              }
+            }
+          },
+          "datasets": {
+            "minItems": 2,
+            "maxItems": 2
+          },
+          "state": {
+            "const": "partial_scope"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "id": {
+            "const": "first_batch_real_v2"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "intake": {
+            "properties": {
+              "path": {
+                "const": "datasets/manifests/first-batch-real-intake-v2.json"
+              }
+            }
+          },
+          "datasets": {
+            "minItems": 4,
+            "maxItems": 4
+          },
+          "state": {
+            "const": "partial_scope"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "id": {
+            "const": "first_batch_real_v3"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "intake": {
+            "properties": {
+              "path": {
+                "const": "datasets/manifests/first-batch-real-intake-v3.json"
+              }
+            }
+          },
+          "state": {
+            "const": "domain_coverage_only"
+          },
+          "datasets": {
+            "minItems": 6,
+            "maxItems": 6
+          }
+        }
+      }
+    }
+  ]
+}

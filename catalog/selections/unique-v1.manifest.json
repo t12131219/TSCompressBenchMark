@@ -1,0 +1,919 @@
+{
+  "schema": 2,
+  "created_date": "2026-11-10",
+  "policy": "82 variants / 29 projects / one primary implementation per algorithm, with capability components; no historical or independent comparison implementations",
+  "origin": "Selected_Compression_Rewrite (unchanged historical backup)",
+  "selection_file": "docs/bench/selected_compression_mine_fix_2.csv",
+  "selection_sha256": "f5145a6e5848870265068fedc2417cd0f234f39c0ba7e71e3f44908551387a57",
+  "algorithm_count": 82,
+  "repository_count": 29,
+  "repositories": [
+    {
+      "repository": "elf-selfstar-native",
+      "source": "fix_ReWrite/elf-selfstar-native",
+      "release": "fix_Release/elf-selfstar-native/unique-v1",
+      "archive": "fix_Release/elf-selfstar-native/unique-v1/elf-selfstar-native-source-unique-v1.tar.gz",
+      "archive_sha256": "0febcf79b0a42c1c58b042478ff476b2fcafbdfe4de5b1abc2e60c34839ba355",
+      "source_manifest": "fix_Release/elf-selfstar-native/unique-v1/source-manifest.json",
+      "functional_report": "fix_ReWrite/elf-selfstar-native/FUNCTIONAL_REPORT.md",
+      "documentation": "docs/algorithms/elf-selfstar-native/INDEX.md",
+      "file_count": 8,
+      "primary_target": "selfstar_c",
+      "selections": [
+        {
+          "id": "1",
+          "algorithm": "ELF",
+          "target": "selfstar_c",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/elf-selfstar-native；C11 独立内核；elf-selfstar-native / V1；目标 selfstar_c；sf_c_create + sf_c_encode/sf_c_decode，SF_ELF=0、SF_F64；512值块，独立块，原生裸位流；明确选择V1，既有V2历史指标不代表本选版成绩；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/elf-selfstar-native/unique-v1；归档SHA256=0febcf79b0a42c1c58b042478ff476b2fcafbdfe4de5b1abc2e60c34839ba355。历史性能列未重测。"
+        },
+        {
+          "id": "2",
+          "algorithm": "Elf+",
+          "target": "selfstar_c",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/elf-selfstar-native；C11 独立内核；elf-selfstar-native / V1；目标 selfstar_c；sf_c_create + sf_c_encode/sf_c_decode，SF_ELF_PLUS=1、SF_F64；512值块，独立块，原生裸位流；明确选择V1，既有V2历史指标不代表本选版成绩；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/elf-selfstar-native/unique-v1；归档SHA256=0febcf79b0a42c1c58b042478ff476b2fcafbdfe4de5b1abc2e60c34839ba355。历史性能列未重测。"
+        },
+        {
+          "id": "3",
+          "algorithm": "Elf*",
+          "target": "selfstar_c",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/elf-selfstar-native；C11 独立内核；elf-selfstar-native / V1；目标 selfstar_c；sf_c_create + sf_c_encode/sf_c_decode，SF_ELF_STAR=2、SF_F64；512值块，独立块，原生裸位流；明确选择V1，既有V2历史指标不代表本选版成绩；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/elf-selfstar-native/unique-v1；归档SHA256=0febcf79b0a42c1c58b042478ff476b2fcafbdfe4de5b1abc2e60c34839ba355。历史性能列未重测。"
+        },
+        {
+          "id": "4",
+          "algorithm": "SElf*",
+          "target": "selfstar_c",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/elf-selfstar-native；C11 独立内核；elf-selfstar-native / V1；目标 selfstar_c；sf_c_create + sf_c_encode/sf_c_decode，SF_SELF_STAR=3、SF_F64；512值块，同列跨块保留状态，换列重置，原生裸位流；明确选择V1，既有V2历史指标不代表本选版成绩；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/elf-selfstar-native/unique-v1；归档SHA256=0febcf79b0a42c1c58b042478ff476b2fcafbdfe4de5b1abc2e60c34839ba355。历史性能列未重测。"
+        }
+      ]
+    },
+    {
+      "repository": "chimp-native-v2",
+      "source": "fix_ReWrite/chimp-native-v2",
+      "release": "fix_Release/chimp-native-v2/unique-v1",
+      "archive": "fix_Release/chimp-native-v2/unique-v1/chimp-native-v2-source-unique-v1.tar.gz",
+      "archive_sha256": "035340f116254ea94e92cbe39c168de10de4cbc6fcfdf726cffe0fc5e7003dd7",
+      "source_manifest": "fix_Release/chimp-native-v2/unique-v1/source-manifest.json",
+      "functional_report": "fix_ReWrite/chimp-native-v2/FUNCTIONAL_REPORT.md",
+      "documentation": "docs/algorithms/chimp-native-v2/INDEX.md",
+      "file_count": 9,
+      "primary_target": "chimp_c",
+      "selections": [
+        {
+          "id": "5",
+          "algorithm": "Chimp",
+          "target": "chimp_c",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/chimp-native-v2；C11 独立内核；chimp-native-v2 / V2；目标 chimp_c；cp_compress/cp_decompress，CP_CHIMP、width=64、window=1；512值独立块，Java兼容裸位流（含原生结束标记），不加CHMP帧头或CRC；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/chimp-native-v2/unique-v1；归档SHA256=035340f116254ea94e92cbe39c168de10de4cbc6fcfdf726cffe0fc5e7003dd7。历史性能列未重测。"
+        },
+        {
+          "id": "6",
+          "algorithm": "ChimpN",
+          "target": "chimp_c",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/chimp-native-v2；C11 独立内核；chimp-native-v2 / V2；目标 chimp_c；cp_compress/cp_decompress，CP_CHIMPN、width=64、window=128；512值独立块，Java兼容裸位流（含原生结束标记），不加CHMP帧头或CRC；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/chimp-native-v2/unique-v1；归档SHA256=035340f116254ea94e92cbe39c168de10de4cbc6fcfdf726cffe0fc5e7003dd7。历史性能列未重测。"
+        }
+      ]
+    },
+    {
+      "repository": "gorilla-native",
+      "source": "fix_ReWrite/gorilla-native",
+      "release": "fix_Release/gorilla-native/unique-v1",
+      "archive": "fix_Release/gorilla-native/unique-v1/gorilla-native-source-unique-v1.tar.gz",
+      "archive_sha256": "0d9ce35f06b721db46b11f1de9006150a175eace61810b650b032502c0022f79",
+      "source_manifest": "fix_Release/gorilla-native/unique-v1/source-manifest.json",
+      "functional_report": "fix_ReWrite/gorilla-native/FUNCTIONAL_REPORT.md",
+      "documentation": "docs/algorithms/gorilla-native/INDEX.md",
+      "file_count": 9,
+      "primary_target": "gorilla_c",
+      "selections": [
+        {
+          "id": "7",
+          "algorithm": "Gorilla / XORChunk",
+          "target": "gorilla_c",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/gorilla-native；C11 独立内核；gorilla-native / Prometheus XORChunk；目标 gorilla_c；g_compress/g_decompress；int64毫秒时间戳 + binary64值，512样本独立块；保留原生2字节头，无附加帧头或CRC；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/gorilla-native/unique-v1；归档SHA256=0d9ce35f06b721db46b11f1de9006150a175eace61810b650b032502c0022f79。历史性能列未重测。"
+        }
+      ]
+    },
+    {
+      "repository": "gorilla-xor2-native",
+      "source": "fix_ReWrite/gorilla-xor2-native",
+      "release": "fix_Release/gorilla-xor2-native/unique-v1",
+      "archive": "fix_Release/gorilla-xor2-native/unique-v1/gorilla-xor2-native-source-unique-v1.tar.gz",
+      "archive_sha256": "997b699c0c12d8074fd228f52376af2c655f22d7a379bdc661cc4114d0aa220d",
+      "source_manifest": "fix_Release/gorilla-xor2-native/unique-v1/source-manifest.json",
+      "functional_report": "fix_ReWrite/gorilla-xor2-native/FUNCTIONAL_REPORT.md",
+      "documentation": "docs/algorithms/gorilla-xor2-native/INDEX.md",
+      "file_count": 9,
+      "primary_target": "gorilla_xor2_c",
+      "selections": [
+        {
+          "id": "8",
+          "algorithm": "Gorilla XOR2",
+          "target": "gorilla_xor2_c",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/gorilla-xor2-native；C11 独立内核；gorilla-xor2-native / Prometheus XOR2Chunk；目标 gorilla_xor2_c；x2_compress/x2_decompress；int64毫秒时间戳 + binary64值，512样本独立块、ST=0；保留原生3字节头及逐样本ST规则；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/gorilla-xor2-native/unique-v1；归档SHA256=997b699c0c12d8074fd228f52376af2c655f22d7a379bdc661cc4114d0aa220d。历史性能列未重测。"
+        }
+      ]
+    },
+    {
+      "repository": "alp-native",
+      "source": "fix_ReWrite/alp-native",
+      "release": "fix_Release/alp-native/unique-v1",
+      "archive": "fix_Release/alp-native/unique-v1/alp-native-source-unique-v1.tar.gz",
+      "archive_sha256": "684ec6ef490b263cda133867ccfa5437d14c9c9d6024f5fefd244e2f7476e605",
+      "source_manifest": "fix_Release/alp-native/unique-v1/source-manifest.json",
+      "functional_report": "fix_ReWrite/alp-native/FUNCTIONAL_REPORT.md",
+      "documentation": "docs/algorithms/alp-native/INDEX.md",
+      "file_count": 31,
+      "primary_target": "alp_native",
+      "selections": [
+        {
+          "id": "9",
+          "algorithm": "ALP（Auto）",
+          "target": "alp_native",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/alp-native；C++17 原核心加固移植；alp-native；目标 alp_native（Release）；C ABI alpn_compress/alpn_decompress，ALPN_AUTO=0；默认保留raw fallback、scalar FastLanes及加固unFOR解码；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/alp-native/unique-v1；归档SHA256=3438204da027cafe16b2271eb9264d5752d80f40bac3a1d3dfd56f2565b19c2c。历史性能列未重测。"
+        },
+        {
+          "id": "10",
+          "algorithm": "ALP-RD",
+          "target": "alp_native",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/alp-native；C++17 原核心加固移植；alp-native / ALP-RD强制尝试模式；目标 alp_native（Release）；C ABI alpn_compress/alpn_decompress，ALPN_RD=2；默认保留raw fallback及scalar FastLanes；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/alp-native/unique-v1；归档SHA256=3438204da027cafe16b2271eb9264d5752d80f40bac3a1d3dfd56f2565b19c2c。历史性能列未重测。"
+        }
+      ]
+    },
+    {
+      "repository": "pcodec-native",
+      "source": "fix_ReWrite/pcodec-native",
+      "release": "fix_Release/pcodec-native/unique-v1",
+      "archive": "fix_Release/pcodec-native/unique-v1/pcodec-native-source-unique-v1.tar.gz",
+      "archive_sha256": "a62b4ca351fd6975b7eaf06df6d49b6c6175b541a8cea2df7af9ce09dcc3120d",
+      "source_manifest": "fix_Release/pcodec-native/unique-v1/source-manifest.json",
+      "functional_report": "fix_ReWrite/pcodec-native/FUNCTIONAL_REPORT.md",
+      "documentation": "docs/algorithms/pcodec-native/INDEX.md",
+      "file_count": 463,
+      "primary_target": "pcodec_c",
+      "selections": [
+        {
+          "id": "11",
+          "algorithm": "pcodec / pco",
+          "target": "pcodec_c",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/pcodec-native；C11 共享源码核心的C编译版本；pcodec-native / V4（pco 1.0.4）；目标 pcodec_c；主选 pc_compress/pc_decompress，PC_F64、Native Auto（mode=-1、delta=-1）、level=8、chunk_n=262144；PC_NATIVE=ON，保留V4批次/SIMD解码及显式IntMult入口；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/pcodec-native/unique-v1；归档SHA256=e1f80a1dee5d5d4bfbc9a10fd11935140132c2bed84dc25c2e57455dedbfdfbc。历史性能列未重测。"
+        }
+      ]
+    },
+    {
+      "repository": "serf-xor-fixed",
+      "source": "fix_ReWrite/serf-xor-fixed",
+      "release": "fix_Release/serf-xor-fixed/unique-v1",
+      "archive": "fix_Release/serf-xor-fixed/unique-v1/serf-xor-fixed-source-unique-v1.tar.gz",
+      "archive_sha256": "6a5eaaa051c27deb936850dfebccac6fb84f3bba127c9bb74ad48d7ca9c653a6",
+      "source_manifest": "fix_Release/serf-xor-fixed/unique-v1/source-manifest.json",
+      "functional_report": "fix_ReWrite/serf-xor-fixed/FUNCTIONAL_REPORT.md",
+      "documentation": "docs/algorithms/serf-xor-fixed/INDEX.md",
+      "file_count": 33,
+      "primary_target": "serf_xor_fixed",
+      "selections": [
+        {
+          "id": "12",
+          "algorithm": "Serf-XOR",
+          "target": "serf_xor_fixed",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/serf-xor-fixed；C++17 仅修复版（保留原生数值行为）；serf-xor-fixed / 2026-11-05；目标 serf_xor_fixed；serf_xor::Codec::encode/decode_f64；width=64、epsilon=0.001、window=4096、adjustment=0，512值块、同列跨块保留状态；保留原生误差限制，C ABI调用同一C++核心；既有serf-native质量修正版历史指标不代表本选版成绩；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/serf-xor-fixed/unique-v1；归档SHA256=6a5eaaa051c27deb936850dfebccac6fb84f3bba127c9bb74ad48d7ca9c653a6。历史性能列未重测。"
+        }
+      ]
+    },
+    {
+      "repository": "serf-qt-fixed",
+      "source": "fix_ReWrite/serf-qt-fixed",
+      "release": "fix_Release/serf-qt-fixed/unique-v1",
+      "archive": "fix_Release/serf-qt-fixed/unique-v1/serf-qt-fixed-source-unique-v1.tar.gz",
+      "archive_sha256": "67bb4bcb23299bbbcf763c751e90ba480d2738636a0e8f3d2acd0406a1ed2e52",
+      "source_manifest": "fix_Release/serf-qt-fixed/unique-v1/source-manifest.json",
+      "functional_report": "fix_ReWrite/serf-qt-fixed/FUNCTIONAL_REPORT.md",
+      "documentation": "docs/algorithms/serf-qt-fixed/INDEX.md",
+      "file_count": 27,
+      "primary_target": "serf_qt_fixed",
+      "selections": [
+        {
+          "id": "13",
+          "algorithm": "Serf-Qt",
+          "target": "serf_qt_fixed",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/serf-qt-fixed；C++17 仅修复版（保留原生数值行为）；serf-qt-fixed / 2026-11-05；目标 serf_qt_fixed；serf_qt::Codec::encode/decode_f64；width=64、epsilon=0.001、512值独立块；修复Gamma64，保留原生量化与误差限制，C ABI调用同一C++核心；既有serf-native质量修正版历史指标不代表本选版成绩；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/serf-qt-fixed/unique-v1；归档SHA256=67bb4bcb23299bbbcf763c751e90ba480d2738636a0e8f3d2acd0406a1ed2e52。历史性能列未重测。"
+        }
+      ]
+    },
+    {
+      "repository": "neats-native",
+      "source": "fix_ReWrite/neats-native",
+      "release": "fix_Release/neats-native/unique-v1",
+      "archive": "fix_Release/neats-native/unique-v1/neats-native-source-unique-v1.tar.gz",
+      "archive_sha256": "2391bc1c3ffe625c074deb88603c99ec3718f85fbf70200e424ad730b7dbbc94",
+      "source_manifest": "fix_Release/neats-native/unique-v1/source-manifest.json",
+      "functional_report": "fix_ReWrite/neats-native/FUNCTIONAL_REPORT.md",
+      "documentation": "docs/algorithms/neats-native/INDEX.md",
+      "file_count": 74,
+      "primary_target": "nts_port",
+      "selections": [
+        {
+          "id": "14",
+          "algorithm": "NeaTS",
+          "target": "nts_port",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/neats-native；C++ 原版核心（以C++20构建）+ 公共浮点/存储适配；neats-native / port安全修复与优化版；目标 nts_port；neats::compress/neats::decompress，Algorithm::NeaTS=1、max_bpc=32；binary64可逆高低位拆分，整列NTS1流；采用安全packed field读取、SIMD参数初始化及unique_ptr→optional临时对象优化；当前选用port-cpp直接C++ API；主bench入口bench_selected（cpp），C ABI仅作可选兼容；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/neats-native/unique-v1；归档SHA256=2391bc1c3ffe625c074deb88603c99ec3718f85fbf70200e424ad730b7dbbc94。历史性能列未重测。",
+          "implementation": "port-cpp",
+          "api": "cpp",
+          "benchmark_target": "bench_selected",
+          "cpp_header": "neats/neats.hpp"
+        },
+        {
+          "id": "15",
+          "algorithm": "LeaTS",
+          "target": "nts_port",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/neats-native；C++ 原版核心（以C++20构建）+ 公共浮点/存储适配；neats-native / port优化版；目标 nts_port；neats::compress/neats::decompress，Algorithm::LeaTS=2、max_bpc=32；binary64可逆高低位拆分，整列NTS1流；采用unique_ptr→optional临时对象优化；NeaTS专用packed读取及SIMD初始化补丁不作为LeaTS修改项；当前选用port-cpp直接C++ API；主bench入口bench_selected（cpp），C ABI仅作可选兼容；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/neats-native/unique-v1；归档SHA256=2391bc1c3ffe625c074deb88603c99ec3718f85fbf70200e424ad730b7dbbc94。历史性能列未重测。",
+          "implementation": "port-cpp",
+          "api": "cpp",
+          "benchmark_target": "bench_selected",
+          "cpp_header": "neats/neats.hpp"
+        }
+      ]
+    },
+    {
+      "repository": "fpc-burtscher",
+      "source": "fix_ReWrite/fpc-burtscher",
+      "release": "fix_Release/fpc-burtscher/unique-v1",
+      "archive": "fix_Release/fpc-burtscher/unique-v1/fpc-burtscher-source-unique-v1.tar.gz",
+      "archive_sha256": "09bafc8830291f1a4173a0ea8a38a60a7194cf5434f9eb7fea54d577e0a5f22c",
+      "source_manifest": "fix_Release/fpc-burtscher/unique-v1/source-manifest.json",
+      "functional_report": "fix_ReWrite/fpc-burtscher/FUNCTIONAL_REPORT.md",
+      "documentation": "docs/algorithms/fpc-burtscher/INDEX.md",
+      "file_count": 4,
+      "primary_target": "fpc-original",
+      "selections": [
+        {
+          "id": "16",
+          "algorithm": "FPC (Burtscher 1.1)",
+          "target": "fpc-original",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/fpc-burtscher；C 原版核心（以C17构建，仅build-only编译修正）；fpc-burtscher / Burtscher FPC 1.1 original；目标 fpc-original；level=20、32768值块、原生FILE流；保留已披露原版UB限制，不选repaired-v1或C++重写；本行仍选fpc-original，不切换repaired/rewrite；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/fpc-burtscher/unique-v1；归档SHA256=09bafc8830291f1a4173a0ea8a38a60a7194cf5434f9eb7fea54d577e0a5f22c。历史性能列未重测。"
+        }
+      ]
+    },
+    {
+      "repository": "tsx-native",
+      "source": "fix_ReWrite/tsx-native",
+      "release": "fix_Release/tsx-native/unique-v1",
+      "archive": "fix_Release/tsx-native/unique-v1/tsx-native-source-unique-v1.tar.gz",
+      "archive_sha256": "81f1da28c36b8eef6f2fe44d31cc0fb9a92d5fa26717f13107010a0b8c2cce23",
+      "source_manifest": "fix_Release/tsx-native/unique-v1/source-manifest.json",
+      "functional_report": "fix_ReWrite/tsx-native/FUNCTIONAL_REPORT.md",
+      "documentation": "docs/algorithms/tsx-native/INDEX.md",
+      "file_count": 9,
+      "primary_target": "tsx_c",
+      "selections": [
+        {
+          "id": "17",
+          "algorithm": "TSXor",
+          "target": "tsx_c",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/tsx-native；C11 独立数值内核 + 共享C时间戳/容器层；tsx-native；目标 tsx_c；tsx_c_encode/tsx_c_decode，mode=0（纯数值）、W=127；binary64、512行块、逐列独立历史窗口；TSX_TIMESTAMP_WORD_READER=OFF（保留主版本）；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/tsx-native/unique-v1；归档SHA256=06eeecb6194ec30b98c74bcb515219464145de6126658c8b2ba7308b6b9a2d74。历史性能列未重测。"
+        }
+      ]
+    },
+    {
+      "repository": "Sprintz-family",
+      "source": "fix_ReWrite/Sprintz-family",
+      "release": "fix_Release/Sprintz-family/unique-v1",
+      "archive": "fix_Release/Sprintz-family/unique-v1/Sprintz-family-source-unique-v1.tar.gz",
+      "archive_sha256": "18c47f8dd0dae6770b4147b1a2870dc9c73e8927efe9761e7fe9bd3c10fd6466",
+      "source_manifest": "fix_Release/Sprintz-family/unique-v1/source-manifest.json",
+      "functional_report": "fix_ReWrite/Sprintz-family/FUNCTIONAL_REPORT.md",
+      "documentation": "docs/algorithms/Sprintz-family/INDEX.md",
+      "file_count": 78,
+      "primary_target": "repaired_codec",
+      "selections": [
+        {
+          "id": "18",
+          "algorithm": "Sprintz-Delta",
+          "target": "repaired_codec",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/Sprintz-family；C/C++ 原生核心的修复参考；Sprintz-family / sf-v2 / backend=repaired；目标 repaired_codec（别名sf::codec），CLI repaired_worker；algorithm=0、width=16、ndims=4×数值列数、PATH=0；完整SFB1帧、每块≤65536字节；沿用修复参考的资源与协议限制；修复主目标保留四变体、8/16位、1..128通道、自动lowdim/generic SIMD与scratch复用；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/Sprintz-family/unique-v1；归档SHA256=18c47f8dd0dae6770b4147b1a2870dc9c73e8927efe9761e7fe9bd3c10fd6466；接入修复上游generic AVX2 query，lowdim标量后备，结果返回实际backend。历史性能列未重测。"
+        },
+        {
+          "id": "19",
+          "algorithm": "Sprintz-FIRE",
+          "target": "repaired_codec",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/Sprintz-family；C/C++ 原生核心的修复参考；Sprintz-family / sf-v2 / backend=repaired；目标 repaired_codec（别名sf::codec），CLI repaired_worker；algorithm=1、width=16、ndims=4×数值列数、PATH=0；完整SFB1帧、每块≤65536字节；沿用修复参考的资源与协议限制；修复主目标保留四变体、8/16位、1..128通道、自动lowdim/generic SIMD与scratch复用；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/Sprintz-family/unique-v1；归档SHA256=18c47f8dd0dae6770b4147b1a2870dc9c73e8927efe9761e7fe9bd3c10fd6466；接入修复上游generic AVX2 query，lowdim标量后备，结果返回实际backend。历史性能列未重测。"
+        },
+        {
+          "id": "20",
+          "algorithm": "Sprintz-Delta-Huffman",
+          "target": "repaired_codec",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/Sprintz-family；C/C++ 原生核心的修复参考；Sprintz-family / sf-v2 / backend=repaired；目标 repaired_codec（别名sf::codec），CLI repaired_worker；algorithm=2、width=16、ndims=4×数值列数、PATH=0；完整SFB1帧、每块≤65536字节；沿用修复参考的资源与协议限制；修复主目标保留四变体、8/16位、1..128通道、自动lowdim/generic SIMD与scratch复用；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/Sprintz-family/unique-v1；归档SHA256=18c47f8dd0dae6770b4147b1a2870dc9c73e8927efe9761e7fe9bd3c10fd6466；接入修复上游generic AVX2 query，lowdim标量后备，结果返回实际backend。历史性能列未重测。"
+        },
+        {
+          "id": "21",
+          "algorithm": "Sprintz-FIRE-Huffman",
+          "target": "repaired_codec",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/Sprintz-family；C/C++ 原生核心的修复参考；Sprintz-family / sf-v2 / backend=repaired；目标 repaired_codec（别名sf::codec），CLI repaired_worker；algorithm=3、width=16、ndims=4×数值列数、PATH=0；完整SFB1帧、每块≤65536字节；沿用修复参考的资源与协议限制；修复主目标保留四变体、8/16位、1..128通道、自动lowdim/generic SIMD与scratch复用；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/Sprintz-family/unique-v1；归档SHA256=18c47f8dd0dae6770b4147b1a2870dc9c73e8927efe9761e7fe9bd3c10fd6466；接入修复上游generic AVX2 query，lowdim标量后备，结果返回实际backend。历史性能列未重测。"
+        }
+      ],
+      "query_revision": "upstream-simd-query-v1"
+    },
+    {
+      "repository": "FiniteStateEntropy",
+      "source": "fix_ReWrite/FiniteStateEntropy",
+      "release": "fix_Release/FiniteStateEntropy/unique-v1",
+      "archive": "fix_Release/FiniteStateEntropy/unique-v1/FiniteStateEntropy-source-unique-v1.tar.gz",
+      "archive_sha256": "10fd2afb4c8cab1983fd19b148f58b2cd9632831a0a9c1b57d850ff417299055",
+      "source_manifest": "fix_Release/FiniteStateEntropy/unique-v1/source-manifest.json",
+      "functional_report": "fix_ReWrite/FiniteStateEntropy/FUNCTIONAL_REPORT.md",
+      "documentation": "docs/algorithms/FiniteStateEntropy/INDEX.md",
+      "file_count": 27,
+      "primary_target": "reference",
+      "selections": [
+        {
+          "id": "28",
+          "algorithm": "FSE",
+          "target": "reference",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/FiniteStateEntropy；C99 原版核心 + C++17公共适配；FiniteStateEntropy / reference（上游9f30e0918f87bd835fa040d922a208d7b219e50b）；目标 reference（底层reference_core）；entropy_port::Codec，Algorithm::FSE=1；32KiB独立块、完整FEC1帧/CRC、DYNAMIC_BMI2=0；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/FiniteStateEntropy/unique-v1；归档SHA256=f85ac249a8445537a84a6c7e3641004985ac934e78d29fc015e5a6dc638394a9。历史性能列未重测。"
+        },
+        {
+          "id": "29",
+          "algorithm": "Huff0 / Huff (HUF)",
+          "target": "reference",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/FiniteStateEntropy；C99 原版核心 + C++17公共适配；FiniteStateEntropy / reference（上游9f30e0918f87bd835fa040d922a208d7b219e50b）；目标 reference（底层reference_core）；entropy_port::Codec，Algorithm::Huff=2；32KiB独立块、完整FEC1帧/CRC、DYNAMIC_BMI2=0；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/FiniteStateEntropy/unique-v1；归档SHA256=f85ac249a8445537a84a6c7e3641004985ac934e78d29fc015e5a6dc638394a9。历史性能列未重测。"
+        },
+        {
+          "id": "30",
+          "algorithm": "ZLIBH",
+          "target": "reference",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/FiniteStateEntropy；C99 原版核心 + C++17公共适配；FiniteStateEntropy / reference（上游9f30e0918f87bd835fa040d922a208d7b219e50b）；目标 reference（底层reference_core）；entropy_port::Codec，Algorithm::Zlibh=3；32KiB独立块、完整FEC1帧/CRC、DYNAMIC_BMI2=0；解码保留原C无界路径，仅限已验证可信流；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/FiniteStateEntropy/unique-v1；归档SHA256=f85ac249a8445537a84a6c7e3641004985ac934e78d29fc015e5a6dc638394a9。历史性能列未重测。"
+        }
+      ]
+    },
+    {
+      "repository": "zfp-native",
+      "source": "fix_ReWrite/zfp-native",
+      "release": "fix_Release/zfp-native/unique-v1",
+      "archive": "fix_Release/zfp-native/unique-v1/zfp-native-source-unique-v1.tar.gz",
+      "archive_sha256": "97ad797ebe89ba9585a9cf49932caf15297c824765ba774bda4418b5cec4c34f",
+      "source_manifest": "fix_Release/zfp-native/unique-v1/source-manifest.json",
+      "functional_report": "fix_ReWrite/zfp-native/FUNCTIONAL_REPORT.md",
+      "documentation": "docs/algorithms/zfp-native/INDEX.md",
+      "file_count": 127,
+      "primary_target": "zfp_native_c",
+      "selections": [
+        {
+          "id": "31",
+          "algorithm": "ZFP",
+          "target": "zfp_native_c",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/zfp-native；C 官方原核心 + C11配置/缓冲包装；zfp-native / ZFP 1.0.1+DEVELOP（codec5）；目标 zfp_native_c；zn_config_1d + zn_create/zn_encode/zn_decode，ZN_F64、ZN_REVERSIBLE；1D、4096值外块、裸ZFP流；本默认配置串行/非CUDA，参数与块边界由调用方保存；本行默认仍serial/contiguous；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/zfp-native/unique-v1；归档SHA256=390394bde5fb6586bebcf84e96649cb1a19558fac66c59e772151c7818c338b3。历史性能列未重测。"
+        }
+      ]
+    },
+    {
+      "repository": "lzbench-native",
+      "source": "fix_ReWrite/lzbench-native",
+      "release": "fix_Release/lzbench-native/unique-v1",
+      "archive": "fix_Release/lzbench-native/unique-v1/lzbench-native-source-unique-v1.tar.gz",
+      "archive_sha256": "54ddb93af4de953c6dd833c2d16f84286116d2c13b90b01dd87adffd2e173d7e",
+      "source_manifest": "fix_Release/lzbench-native/unique-v1/source-manifest.json",
+      "functional_report": "fix_ReWrite/lzbench-native/FUNCTIONAL_REPORT.md",
+      "documentation": "docs/algorithms/lzbench-native/INDEX.md",
+      "file_count": 424,
+      "primary_target": "lzbench_native",
+      "selections": [
+        {
+          "id": "32",
+          "algorithm": "Brotli",
+          "target": "lzbench_native",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/lzbench-native；C99原核心+C ABI/C++17适配；lzbench-native v1（lzbench@fa871e66b3543a70fd4d060f7c12719343ff4ac3）；目标 lzbench_native；LN_BROTLI/quality=5/window=22/mode=generic；64KiB独立块；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/lzbench-native/unique-v1；归档SHA256=54ddb93af4de953c6dd833c2d16f84286116d2c13b90b01dd87adffd2e173d7e。历史性能列未重测。"
+        },
+        {
+          "id": "33",
+          "algorithm": "Bzip2",
+          "target": "lzbench_native",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/lzbench-native；C99原核心+C ABI/C++17适配；lzbench-native v1（lzbench@fa871e66b3543a70fd4d060f7c12719343ff4ac3）；目标 lzbench_native；LN_BZIP2/level=6/workFactor=0；64KiB独立块；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/lzbench-native/unique-v1；归档SHA256=54ddb93af4de953c6dd833c2d16f84286116d2c13b90b01dd87adffd2e173d7e。历史性能列未重测。"
+        },
+        {
+          "id": "34",
+          "algorithm": "DEFLATE（libdeflate raw）",
+          "target": "lzbench_native",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/lzbench-native；libdeflate C99原核心+C ABI/C++17适配；lzbench-native v1（lzbench@fa871e66b3543a70fd4d060f7c12719343ff4ac3）；目标 lzbench_native；LN_DEFLATE/raw DEFLATE/level=6（非zlib/gzip）；64KiB独立块；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/lzbench-native/unique-v1；归档SHA256=54ddb93af4de953c6dd833c2d16f84286116d2c13b90b01dd87adffd2e173d7e。历史性能列未重测。"
+        },
+        {
+          "id": "35",
+          "algorithm": "LZ4",
+          "target": "lzbench_native",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/lzbench-native；C99原核心+C ABI/C++17适配；lzbench-native v1（lzbench@fa871e66b3543a70fd4d060f7c12719343ff4ac3）；目标 lzbench_native；LN_LZ4/raw block/default=0（非LZ4 frame）；64KiB独立块；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/lzbench-native/unique-v1；归档SHA256=54ddb93af4de953c6dd833c2d16f84286116d2c13b90b01dd87adffd2e173d7e。历史性能列未重测。"
+        },
+        {
+          "id": "36",
+          "algorithm": "LZSSE2",
+          "target": "lzbench_native",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/lzbench-native；C++原核心+C ABI/C++17适配；lzbench-native v1（lzbench@fa871e66b3543a70fd4d060f7c12719343ff4ac3）；目标 lzbench_native；LN_LZSSE2/optimal parse/level=5/SSE4.1；64KiB独立块；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/lzbench-native/unique-v1；归档SHA256=54ddb93af4de953c6dd833c2d16f84286116d2c13b90b01dd87adffd2e173d7e。历史性能列未重测。"
+        },
+        {
+          "id": "37",
+          "algorithm": "LZSSE8",
+          "target": "lzbench_native",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/lzbench-native；C++原核心+C ABI/C++17适配；lzbench-native v1（lzbench@fa871e66b3543a70fd4d060f7c12719343ff4ac3）；目标 lzbench_native；LN_LZSSE8/optimal parse/level=5/SSE4.1；64KiB独立块；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/lzbench-native/unique-v1；归档SHA256=54ddb93af4de953c6dd833c2d16f84286116d2c13b90b01dd87adffd2e173d7e。历史性能列未重测。"
+        },
+        {
+          "id": "38",
+          "algorithm": "Snappy",
+          "target": "lzbench_native",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/lzbench-native；C++原核心+C ABI/C++17适配；lzbench-native v1（lzbench@fa871e66b3543a70fd4d060f7c12719343ff4ac3）；目标 lzbench_native；LN_SNAPPY/raw=0；64KiB独立块；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/lzbench-native/unique-v1；归档SHA256=54ddb93af4de953c6dd833c2d16f84286116d2c13b90b01dd87adffd2e173d7e。历史性能列未重测。"
+        },
+        {
+          "id": "39",
+          "algorithm": "XZ / LZMA2",
+          "target": "lzbench_native",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/lzbench-native；liblzma C99原核心+C ABI/C++17适配；lzbench-native v1（lzbench@fa871e66b3543a70fd4d060f7c12719343ff4ac3）；目标 lzbench_native；LN_XZ/preset=6/check=NONE/threads=1；64KiB独立块；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/lzbench-native/unique-v1；归档SHA256=54ddb93af4de953c6dd833c2d16f84286116d2c13b90b01dd87adffd2e173d7e。历史性能列未重测。"
+        },
+        {
+          "id": "40",
+          "algorithm": "Zstandard",
+          "target": "lzbench_native",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/lzbench-native；C99原核心+C ABI/C++17适配；lzbench-native v1（lzbench@fa871e66b3543a70fd4d060f7c12719343ff4ac3）；目标 lzbench_native；LN_ZSTD/level=3/contentSizeFlag=1/threads=1/checksum=0；64KiB独立块；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/lzbench-native/unique-v1；归档SHA256=54ddb93af4de953c6dd833c2d16f84286116d2c13b90b01dd87adffd2e173d7e。历史性能列未重测。"
+        }
+      ]
+    },
+    {
+      "repository": "abba-family-native",
+      "source": "fix_ReWrite/abba-family-native",
+      "release": "fix_Release/abba-family-native/unique-v1",
+      "archive": "fix_Release/abba-family-native/unique-v1/abba-family-native-source-unique-v1.tar.gz",
+      "archive_sha256": "31a54f944c809f8a1a44b7edc963d41ee26fa7e43b6ca544135e7e800d7a6172",
+      "source_manifest": "fix_Release/abba-family-native/unique-v1/source-manifest.json",
+      "functional_report": "fix_ReWrite/abba-family-native/FUNCTIONAL_REPORT.md",
+      "documentation": "docs/algorithms/abba-family-native/INDEX.md",
+      "file_count": 18,
+      "primary_target": "abba_c",
+      "selections": [
+        {
+          "id": "41",
+          "algorithm": "ABBA",
+          "target": "abba_c",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/abba-family-native；C11 独立聚类核心 + 共享C标准化/格式/解码；abba-family-native / ABF1；目标 abba_c；af_c_encode/af_c_decode，algorithm=0；binary64、1024值块、tol=0.01、dtol=0.1、alpha=0.1；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/abba-family-native/unique-v1；归档SHA256=8593467e76bd3f9cceab0a9d4a702e12fbbe1dbf5373eb20165f1e356895aa29。历史性能列未重测。"
+        },
+        {
+          "id": "42",
+          "algorithm": "fABBA",
+          "target": "abba_c",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/abba-family-native；C11 独立聚类核心 + 共享C标准化/格式/解码；abba-family-native / ABF1；目标 abba_c；af_c_encode/af_c_decode，algorithm=1；binary64、1024值块、tol=0.01、dtol=0.1、alpha=0.1；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/abba-family-native/unique-v1；归档SHA256=8593467e76bd3f9cceab0a9d4a702e12fbbe1dbf5373eb20165f1e356895aa29。历史性能列未重测。"
+        },
+        {
+          "id": "43",
+          "algorithm": "QABBA",
+          "target": "abba_c",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/abba-family-native；C11 固定码本完整编码与原生解码；目标 abba_c；主选 af_qabba_codebook_create/load/encode + af_c_decode；独立可执行bench为qabba_native。QCB1持久模型加载后，标准化、分段、按解量化中心分配标签及完整ABF1/ABF2写入均在C内完成；binary64、n=1..4096，原1024值块仍适用；tol/max_len/length_bits/increment_bits由冻结码本显式固定并记录模型哈希；数据帧完整携带码本。既有af_c_encode及encode_ex/聚类路径保留；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/abba-family-native/unique-v1；归档SHA256=8593467e76bd3f9cceab0a9d4a702e12fbbe1dbf5373eb20165f1e356895aa29。历史性能列未重测。"
+        }
+      ]
+    },
+    {
+      "repository": "cameo-native",
+      "source": "fix_ReWrite/cameo-native",
+      "release": "fix_Release/cameo-native/unique-v1",
+      "archive": "fix_Release/cameo-native/unique-v1/cameo-native-source-unique-v1.tar.gz",
+      "archive_sha256": "f29a3da942774bf8b95563c8f2a2d7fa4bf6db243f857f454b468a9a3864f0bb",
+      "source_manifest": "fix_Release/cameo-native/unique-v1/source-manifest.json",
+      "functional_report": "fix_ReWrite/cameo-native/FUNCTIONAL_REPORT.md",
+      "documentation": "docs/algorithms/cameo-native/INDEX.md",
+      "file_count": 11,
+      "primary_target": "cameo_c",
+      "selections": [
+        {
+          "id": "44",
+          "algorithm": "CAMEO",
+          "target": "cameo_c",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/cameo-native；C11+OpenMP；cameo-native / CAM1最终ACF审计版 / CAMEO / double / 原序列ACF；目标 cameo_c；variant=0,threads=1；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/cameo-native/unique-v1；归档SHA256=f29a3da942774bf8b95563c8f2a2d7fa4bf6db243f857f454b468a9a3864f0bb。历史性能列未重测。"
+        },
+        {
+          "id": "45",
+          "algorithm": "CAMEO-AGG",
+          "target": "cameo_c",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/cameo-native；C11+OpenMP；cameo-native / CAM1最终ACF审计版 / CAMEO-AGG / long double / kappa均值ACF；目标 cameo_c；variant=1,threads=1；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/cameo-native/unique-v1；归档SHA256=f29a3da942774bf8b95563c8f2a2d7fa4bf6db243f857f454b468a9a3864f0bb。历史性能列未重测。"
+        },
+        {
+          "id": "46",
+          "algorithm": "CAMEO-FG",
+          "target": "cameo_c",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/cameo-native；C11+OpenMP；cameo-native / CAM1最终ACF审计版 / CAMEO-FG / double / 原序列ACF；目标 cameo_c；variant=2,threads=4；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/cameo-native/unique-v1；归档SHA256=f29a3da942774bf8b95563c8f2a2d7fa4bf6db243f857f454b468a9a3864f0bb。历史性能列未重测。"
+        },
+        {
+          "id": "47",
+          "algorithm": "CAMEO-FG-AGG",
+          "target": "cameo_c",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/cameo-native；C11+OpenMP；cameo-native / CAM1最终ACF审计版 / CAMEO-FG-AGG / long double / kappa均值ACF；目标 cameo_c；variant=3,threads=4；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/cameo-native/unique-v1；归档SHA256=f29a3da942774bf8b95563c8f2a2d7fa4bf6db243f857f454b468a9a3864f0bb。历史性能列未重测。"
+        }
+      ]
+    },
+    {
+      "repository": "cameo-other",
+      "source": "fix_ReWrite/cameo-other",
+      "release": "fix_Release/cameo-other/unique-v1",
+      "archive": "fix_Release/cameo-other/unique-v1/cameo-other-source-unique-v1.tar.gz",
+      "archive_sha256": "de4d75861f47d4de528b0a0ab4df032728dc73593397a38194094768cf4a799c",
+      "source_manifest": "fix_Release/cameo-other/unique-v1/source-manifest.json",
+      "functional_report": "fix_ReWrite/cameo-other/FUNCTIONAL_REPORT.md",
+      "documentation": "docs/algorithms/cameo-other/INDEX.md",
+      "file_count": 12,
+      "primary_target": "cameo_other_c",
+      "selections": [
+        {
+          "id": "48",
+          "algorithm": "VW",
+          "target": "cameo_other_c",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/cameo-other；C11；cameo-other / COF1 / VW / 增量ACF+最终审计路径；目标 cameo_other_c；algorithm=0；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/cameo-other/unique-v1；归档SHA256=de4d75861f47d4de528b0a0ab4df032728dc73593397a38194094768cf4a799c。历史性能列未重测。"
+        },
+        {
+          "id": "49",
+          "algorithm": "PIP",
+          "target": "cameo_other_c",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/cameo-other；C11；cameo-other / COF1 / PIP bottom-up / 增量ACF+最终审计路径；目标 cameo_other_c；algorithm=1；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/cameo-other/unique-v1；归档SHA256=de4d75861f47d4de528b0a0ab4df032728dc73593397a38194094768cf4a799c。历史性能列未重测。"
+        },
+        {
+          "id": "50",
+          "algorithm": "TP",
+          "target": "cameo_other_c",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/cameo-other；C11；cameo-other / COF1 / TP / 增量ACF+最终审计路径；目标 cameo_other_c；algorithm=2；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/cameo-other/unique-v1；归档SHA256=de4d75861f47d4de528b0a0ab4df032728dc73593397a38194094768cf4a799c。历史性能列未重测。"
+        },
+        {
+          "id": "51",
+          "algorithm": "SWAB",
+          "target": "cameo_other_c",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/cameo-other；C11；cameo-other / COF1 / SWAB前缀OLS / 前缀OLS root-SSE路径；目标 cameo_other_c；algorithm=3；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/cameo-other/unique-v1；归档SHA256=de4d75861f47d4de528b0a0ab4df032728dc73593397a38194094768cf4a799c。历史性能列未重测。"
+        },
+        {
+          "id": "53",
+          "algorithm": "DCT",
+          "target": "cameo_other_c",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/cameo-other；C11；cameo-other / DCT V2（COF1兼容V1，n/2 FFT+前缀IDCT）；目标 cameo_other_c；CO_DCT=5；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/cameo-other/unique-v1；归档SHA256=de4d75861f47d4de528b0a0ab4df032728dc73593397a38194094768cf4a799c。历史性能列未重测。"
+        }
+      ]
+    },
+    {
+      "repository": "timeseries-native",
+      "source": "fix_ReWrite/timeseries-native",
+      "release": "fix_Release/timeseries-native/unique-v1",
+      "archive": "fix_Release/timeseries-native/unique-v1/timeseries-native-source-unique-v1.tar.gz",
+      "archive_sha256": "9e8201c92647766daed1978f4a2cd856a7adb1e58ee1fb8cd87bbb24502399e3",
+      "source_manifest": "fix_Release/timeseries-native/unique-v1/source-manifest.json",
+      "functional_report": "fix_ReWrite/timeseries-native/FUNCTIONAL_REPORT.md",
+      "documentation": "docs/algorithms/timeseries-native/INDEX.md",
+      "file_count": 14,
+      "primary_target": "ts_c_core",
+      "selections": [
+        {
+          "id": "52",
+          "algorithm": "DFT",
+          "target": "ts_c_core",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/timeseries-native；C11；timeseries-native / extended / 格式v1 / DFT / rFFT低频前缀；目标 ts_c_core（STATIC纯C）；TS_DFT=3；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/timeseries-native/unique-v1；归档SHA256=9e8201c92647766daed1978f4a2cd856a7adb1e58ee1fb8cd87bbb24502399e3。历史性能列未重测。"
+        },
+        {
+          "id": "54",
+          "algorithm": "DWT",
+          "target": "ts_c_core",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/timeseries-native；C11；timeseries-native / extended / 格式v1 / DWT / Haar粗尺度前缀；目标 ts_c_core（STATIC纯C）；TS_DWT=5；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/timeseries-native/unique-v1；归档SHA256=9e8201c92647766daed1978f4a2cd856a7adb1e58ee1fb8cd87bbb24502399e3。历史性能列未重测。"
+        },
+        {
+          "id": "55",
+          "algorithm": "WaveletPacket",
+          "target": "ts_c_core",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/timeseries-native；C11；timeseries-native / extended / 格式v1 / WaveletPacket / Haar全分支+top-k；目标 ts_c_core（STATIC纯C）；TS_WP=7；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/timeseries-native/unique-v1；归档SHA256=9e8201c92647766daed1978f4a2cd856a7adb1e58ee1fb8cd87bbb24502399e3。历史性能列未重测。"
+        },
+        {
+          "id": "56",
+          "algorithm": "DWT-hard",
+          "target": "ts_c_core",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/timeseries-native；C11；timeseries-native / extended / 格式v1 / DWT-hard / detail硬阈值；目标 ts_c_core（STATIC纯C）；TS_HARD=8；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/timeseries-native/unique-v1；归档SHA256=9e8201c92647766daed1978f4a2cd856a7adb1e58ee1fb8cd87bbb24502399e3。历史性能列未重测。"
+        },
+        {
+          "id": "57",
+          "algorithm": "DWT-soft",
+          "target": "ts_c_core",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/timeseries-native；C11；timeseries-native / extended / 格式v1 / DWT-soft / detail软阈值；目标 ts_c_core（STATIC纯C）；TS_SOFT=9；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/timeseries-native/unique-v1；归档SHA256=9e8201c92647766daed1978f4a2cd856a7adb1e58ee1fb8cd87bbb24502399e3。历史性能列未重测。"
+        },
+        {
+          "id": "58",
+          "algorithm": "DST-II",
+          "target": "ts_c_core",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/timeseries-native；C11；timeseries-native / extended / 格式v1 / DST-II / backward低频前缀；目标 ts_c_core（STATIC纯C）；TS_DST=10；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/timeseries-native/unique-v1；归档SHA256=9e8201c92647766daed1978f4a2cd856a7adb1e58ee1fb8cd87bbb24502399e3。历史性能列未重测。"
+        },
+        {
+          "id": "59",
+          "algorithm": "Hartley",
+          "target": "ts_c_core",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/timeseries-native；C11；timeseries-native / extended / 格式v1 / Hartley / 对称低频；目标 ts_c_core（STATIC纯C）；TS_HARTLEY=11；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/timeseries-native/unique-v1；归档SHA256=9e8201c92647766daed1978f4a2cd856a7adb1e58ee1fb8cd87bbb24502399e3。历史性能列未重测。"
+        },
+        {
+          "id": "60",
+          "algorithm": "PMC-MR",
+          "target": "ts_c_core",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/timeseries-native；C11；timeseries-native / extended / 格式v1 / PMC-MR / f32模型；目标 ts_c_core（STATIC纯C）；TS_PMC=1；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/timeseries-native/unique-v1；归档SHA256=9e8201c92647766daed1978f4a2cd856a7adb1e58ee1fb8cd87bbb24502399e3。历史性能列未重测。"
+        },
+        {
+          "id": "61",
+          "algorithm": "PAA",
+          "target": "ts_c_core",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/timeseries-native；C11；timeseries-native / extended / 格式v1 / PAA / 加权聚合+同定义积分inverse；目标 ts_c_core（STATIC纯C）；TS_PAA=2；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/timeseries-native/unique-v1；归档SHA256=9e8201c92647766daed1978f4a2cd856a7adb1e58ee1fb8cd87bbb24502399e3。历史性能列未重测。"
+        },
+        {
+          "id": "62",
+          "algorithm": "Swing",
+          "target": "ts_c_core",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/timeseries-native；C11；timeseries-native / extended / 格式v1 / Swing / f32样本+f64斜率；目标 ts_c_core（STATIC纯C）；TS_SWING=6；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/timeseries-native/unique-v1；归档SHA256=9e8201c92647766daed1978f4a2cd856a7adb1e58ee1fb8cd87bbb24502399e3。历史性能列未重测。"
+        }
+      ]
+    },
+    {
+      "repository": "plr-native",
+      "source": "fix_ReWrite/plr-native",
+      "release": "fix_Release/plr-native/unique-v1",
+      "archive": "fix_Release/plr-native/unique-v1/plr-native-source-unique-v1.tar.gz",
+      "archive_sha256": "f59a0a13a3637cff719da878acd7af1b261ab0572dc3ee0308626189b0825ae6",
+      "source_manifest": "fix_Release/plr-native/unique-v1/source-manifest.json",
+      "functional_report": "fix_ReWrite/plr-native/FUNCTIONAL_REPORT.md",
+      "documentation": "docs/algorithms/plr-native/INDEX.md",
+      "file_count": 2348,
+      "primary_target": "plr_c",
+      "selections": [
+        {
+          "id": "63",
+          "algorithm": "Greedy PLR",
+          "target": "plr_c",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/plr-native；C11 独立状态机/平坦凸包 + 共享数值/格式/解码；plr-native / source-faithful-v1 + plr-model-v1；目标 plr_c；plr_c_fit + plr_pack/plr_decode，PLR_GREEDY=0，保留条件MPFR128路径；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/plr-native/unique-v1；归档SHA256=f59a0a13a3637cff719da878acd7af1b261ab0572dc3ee0308626189b0825ae6。历史性能列未重测。"
+        },
+        {
+          "id": "64",
+          "algorithm": "Optimal PLR",
+          "target": "plr_c",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/plr-native；C11 独立状态机/平坦凸包 + 共享数值/格式/解码；plr-native / source-faithful-v1 + plr-model-v1；目标 plr_c；plr_c_fit + plr_pack/plr_decode，PLR_OPTIMAL=1（按算法名及源码枚举纠正原填PLR_GREEDY=0），保留条件MPFR128路径；保留上游gamma超界缺陷，仅缺陷复现；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/plr-native/unique-v1；归档SHA256=f59a0a13a3637cff719da878acd7af1b261ab0572dc3ee0308626189b0825ae6。历史性能列未重测。"
+        }
+      ]
+    },
+    {
+      "repository": "apca-repaired-native",
+      "source": "fix_ReWrite/apca-repaired-native",
+      "release": "fix_Release/apca-repaired-native/unique-v1",
+      "archive": "fix_Release/apca-repaired-native/unique-v1/apca-repaired-native-source-unique-v1.tar.gz",
+      "archive_sha256": "33ed6c1b84640c0da0b706e3405deb9852612cf90ead991f5d4c63869395e43b",
+      "source_manifest": "fix_Release/apca-repaired-native/unique-v1/source-manifest.json",
+      "functional_report": "fix_ReWrite/apca-repaired-native/FUNCTIONAL_REPORT.md",
+      "documentation": "docs/algorithms/apca-repaired-native/INDEX.md",
+      "file_count": 44,
+      "primary_target": "apca_repaired_c",
+      "selections": [
+        {
+          "id": "65",
+          "algorithm": "APCA (Adaptive Predictive)",
+          "target": "apca_repaired_c",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/apca-repaired-native；C11 独立预测/在线权重更新/重建修复版 + 共享C存储/zlib 1.2.13；目标 apca_repaired_c；保留主选repaired身份与apca_repaired_c_encode/decode，window=3、lr=0.001、zlib level=6；显式初始权重入流、取消输出裁剪、稀疏位修正；有限binary64、|x|≤1e100、n≤10000000、nearest/even且禁用FMA/fast-math的约定域内逐位无损。扩展apca_repaired_encode_ex/decode_ex支持window=1..4096与APCRW2；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/apca-repaired-native/unique-v1；归档SHA256=33ed6c1b84640c0da0b706e3405deb9852612cf90ead991f5d4c63869395e43b。历史性能列未重测。"
+        }
+      ]
+    },
+    {
+      "repository": "splineop-native",
+      "source": "fix_ReWrite/splineop-native",
+      "release": "fix_Release/splineop-native/unique-v1",
+      "archive": "fix_Release/splineop-native/unique-v1/splineop-native-source-unique-v1.tar.gz",
+      "archive_sha256": "b125cdb3c59b108f5013d558cc1a0a17ed78713bb17e889897daeacd08007a54",
+      "source_manifest": "fix_Release/splineop-native/unique-v1/source-manifest.json",
+      "functional_report": "fix_ReWrite/splineop-native/FUNCTIONAL_REPORT.md",
+      "documentation": "docs/algorithms/splineop-native/INDEX.md",
+      "file_count": 21,
+      "primary_target": "splineop_c",
+      "selections": [
+        {
+          "id": "66",
+          "algorithm": "SplineOP",
+          "target": "splineop_c",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/splineop-native；C11；splineop-native / SPO1平坦DP引擎（source-faithful configured profile）；目标 splineop_c；SP_PENALIZED=0；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/splineop-native/unique-v1；归档SHA256=b125cdb3c59b108f5013d558cc1a0a17ed78713bb17e889897daeacd08007a54。历史性能列未重测。"
+        },
+        {
+          "id": "67",
+          "algorithm": "SplineOP / pruning-v1",
+          "target": "splineop_c",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/splineop-native；C11；splineop-native / SPO1平坦DP引擎（source-faithful configured profile）；目标 splineop_c；SP_PRUNING_V1=1；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/splineop-native/unique-v1；归档SHA256=b125cdb3c59b108f5013d558cc1a0a17ed78713bb17e889897daeacd08007a54。历史性能列未重测。"
+        },
+        {
+          "id": "68",
+          "algorithm": "SplineOP / pruning-v2",
+          "target": "splineop_c",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/splineop-native；C11；splineop-native / SPO1平坦DP引擎（source-faithful configured profile）；目标 splineop_c；SP_PRUNING_V2=2；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/splineop-native/unique-v1；归档SHA256=b125cdb3c59b108f5013d558cc1a0a17ed78713bb17e889897daeacd08007a54。历史性能列未重测。"
+        },
+        {
+          "id": "69",
+          "algorithm": "SplineOP / iterated",
+          "target": "splineop_c",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/splineop-native；C11；splineop-native / SPO1平坦DP引擎（source-faithful configured profile）；目标 splineop_c；SP_ITERATED=3；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/splineop-native/unique-v1；归档SHA256=b125cdb3c59b108f5013d558cc1a0a17ed78713bb17e889897daeacd08007a54。历史性能列未重测。"
+        },
+        {
+          "id": "70",
+          "algorithm": "SplineOP / iterated-pruning-v1",
+          "target": "splineop_c",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/splineop-native；C11；splineop-native / SPO1平坦DP引擎（source-faithful configured profile）；目标 splineop_c；SP_ITERATED_V1=4；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/splineop-native/unique-v1；归档SHA256=b125cdb3c59b108f5013d558cc1a0a17ed78713bb17e889897daeacd08007a54。历史性能列未重测。"
+        },
+        {
+          "id": "71",
+          "algorithm": "SplineOP / iterated-pruning-v2",
+          "target": "splineop_c",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/splineop-native；C11；splineop-native / SPO1平坦DP引擎（source-faithful configured profile）；目标 splineop_c；SP_ITERATED_V2=5；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/splineop-native/unique-v1；归档SHA256=b125cdb3c59b108f5013d558cc1a0a17ed78713bb17e889897daeacd08007a54。历史性能列未重测。"
+        },
+        {
+          "id": "72",
+          "algorithm": "SplineOP / constrained",
+          "target": "splineop_c",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/splineop-native；C11；splineop-native / SPO1平坦DP引擎（source-faithful configured profile）；目标 splineop_c；SP_CONSTRAINED=6；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/splineop-native/unique-v1；归档SHA256=b125cdb3c59b108f5013d558cc1a0a17ed78713bb17e889897daeacd08007a54。历史性能列未重测。"
+        }
+      ]
+    },
+    {
+      "repository": "piecewise-linear-native",
+      "source": "fix_ReWrite/piecewise-linear-native",
+      "release": "fix_Release/piecewise-linear-native/unique-v1",
+      "archive": "fix_Release/piecewise-linear-native/unique-v1/piecewise-linear-native-source-unique-v1.tar.gz",
+      "archive_sha256": "f8304e698077325b56d5aeebc6dcb7d03263d851d9077f82625041078944baa8",
+      "source_manifest": "fix_Release/piecewise-linear-native/unique-v1/source-manifest.json",
+      "functional_report": "fix_ReWrite/piecewise-linear-native/FUNCTIONAL_REPORT.md",
+      "documentation": "docs/algorithms/piecewise-linear-native/INDEX.md",
+      "file_count": 12,
+      "primary_target": "pl_cpp",
+      "selections": [
+        {
+          "id": "73",
+          "algorithm": "PiecewiseLinearTimeSeriesApproximation DP",
+          "target": "pl_cpp",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/piecewise-linear-native；C++17；piecewise-linear-native / pl-model-v1 / 原C++核心+精确SSE memoization；目标 pl_cpp；dp_linear,mode=0,config={0,1,2,4}；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/piecewise-linear-native/unique-v1；归档SHA256=f8304e698077325b56d5aeebc6dcb7d03263d851d9077f82625041078944baa8。历史性能列未重测。"
+        },
+        {
+          "id": "74",
+          "algorithm": "PiecewiseLinearTimeSeriesApproximation Heuristic1",
+          "target": "pl_cpp",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/piecewise-linear-native；C++17；piecewise-linear-native / pl-model-v1 / 原C++核心+精确SSE memoization + DEF-001修复；目标 pl_cpp；heuristic1,mode=4,config={4,0,2,4}；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/piecewise-linear-native/unique-v1；归档SHA256=f8304e698077325b56d5aeebc6dcb7d03263d851d9077f82625041078944baa8。历史性能列未重测。"
+        },
+        {
+          "id": "75",
+          "algorithm": "PiecewiseLinearTimeSeriesApproximation Heuristic2",
+          "target": "pl_cpp",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/piecewise-linear-native；C++17；piecewise-linear-native / pl-model-v1 / 原C++核心+精确SSE memoization + DEF-001修复；目标 pl_cpp；heuristic2,mode=5,config={5,0,2,4}；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/piecewise-linear-native/unique-v1；归档SHA256=f8304e698077325b56d5aeebc6dcb7d03263d851d9077f82625041078944baa8。历史性能列未重测。"
+        },
+        {
+          "id": "76",
+          "algorithm": "PiecewiseLinearTimeSeriesApproximation TopDown",
+          "target": "pl_cpp",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/piecewise-linear-native；C++17；piecewise-linear-native / pl-model-v1 / 原C++核心+精确SSE memoization；目标 pl_cpp；td_adaptive,mode=1,config={1,0,2,4}；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/piecewise-linear-native/unique-v1；归档SHA256=f8304e698077325b56d5aeebc6dcb7d03263d851d9077f82625041078944baa8。历史性能列未重测。"
+        },
+        {
+          "id": "77",
+          "algorithm": "PiecewiseLinearTimeSeriesApproximation Alternate Flat",
+          "target": "pl_cpp",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/piecewise-linear-native；C++17；piecewise-linear-native / pl-model-v1 / 原C++核心+精确SSE memoization；目标 pl_cpp；alternate_flat,mode=2,config={2,0,1,4}；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/piecewise-linear-native/unique-v1；归档SHA256=f8304e698077325b56d5aeebc6dcb7d03263d851d9077f82625041078944baa8。历史性能列未重测。"
+        },
+        {
+          "id": "78",
+          "algorithm": "PiecewiseLinearTimeSeriesApproximation Alternate Linear",
+          "target": "pl_cpp",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/piecewise-linear-native；C++17；piecewise-linear-native / pl-model-v1 / 原C++核心+精确SSE memoization；目标 pl_cpp；alternate_linear,mode=3,config={3,1,2,4}；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/piecewise-linear-native/unique-v1；归档SHA256=f8304e698077325b56d5aeebc6dcb7d03263d851d9077f82625041078944baa8。历史性能列未重测。"
+        }
+      ]
+    },
+    {
+      "repository": "acd-native",
+      "source": "fix_ReWrite/acd-native",
+      "release": "fix_Release/acd-native/unique-v1",
+      "archive": "fix_Release/acd-native/unique-v1/acd-native-source-unique-v1.tar.gz",
+      "archive_sha256": "f6536660dc0180d29929ff99bd7a570aa6a936d18142856279fe1400bf4b185f",
+      "source_manifest": "fix_Release/acd-native/unique-v1/source-manifest.json",
+      "functional_report": "fix_ReWrite/acd-native/FUNCTIONAL_REPORT.md",
+      "documentation": "docs/algorithms/acd-native/INDEX.md",
+      "file_count": 90,
+      "primary_target": "acd_c",
+      "selections": [
+        {
+          "id": "79",
+          "algorithm": "ACD",
+          "target": "acd_c",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/acd-native；C11独立编码+shared checked C解码/Zstd1.5.6；acd-native v1.0；目标 acd_c；f64-lossless bitcast int64 / precisionBits=64 / ≤512字独立块；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/acd-native/unique-v1；归档SHA256=f6536660dc0180d29929ff99bd7a570aa6a936d18142856279fe1400bf4b185f。历史性能列未重测。"
+        }
+      ]
+    },
+    {
+      "repository": "corad-native",
+      "source": "fix_ReWrite/corad-native",
+      "release": "fix_Release/corad-native/unique-v1",
+      "archive": "fix_Release/corad-native/unique-v1/corad-native-source-unique-v1.tar.gz",
+      "archive_sha256": "b95e04c6ad63e2f3c0cf06dbf853311dc112544ba9d36553dce3feb89c7fab83",
+      "source_manifest": "fix_Release/corad-native/unique-v1/source-manifest.json",
+      "functional_report": "fix_ReWrite/corad-native/FUNCTIONAL_REPORT.md",
+      "documentation": "docs/algorithms/corad-native/INDEX.md",
+      "file_count": 13,
+      "primary_target": "corad_c",
+      "selections": [
+        {
+          "id": "80",
+          "algorithm": "CORAD",
+          "target": "corad_c",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/corad-native；C11 原生冻结模型加载/推理 + 共享C decoder；目标 corad_c；主选 corad_model_pack/load/config/encode + corad_decode；独立可执行bench为corad_native。模型为rows=0的CRD1持久帧，包含字典、均值与尺度；输入列顺序须与模型一致，原生输入为column-major binary64；保留L=40/K=200/nonzero=4/threshold=0.8的原选参数及可配置入口。归一化、Gram/OMP、相关引用选择、完整模型及全部尾行均纳入原生编解码；数据帧完整计入字典/统计，不扣除所谓免费模型；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/corad-native/unique-v1；归档SHA256=3bcceaba7bf7c0aac2a61e05a2caf3bd59064e00f19b1965a1d131b719e73133。历史性能列未重测。"
+        }
+      ]
+    },
+    {
+      "repository": "hire-native",
+      "source": "fix_ReWrite/hire-native",
+      "release": "fix_Release/hire-native/unique-v1",
+      "archive": "fix_Release/hire-native/unique-v1/hire-native-source-unique-v1.tar.gz",
+      "archive_sha256": "137bd71ceeb6de77962aba8409993e3d82fe7f82c822e274b97e316dcf6fb589",
+      "source_manifest": "fix_Release/hire-native/unique-v1/source-manifest.json",
+      "functional_report": "fix_ReWrite/hire-native/FUNCTIONAL_REPORT.md",
+      "documentation": "docs/algorithms/hire-native/INDEX.md",
+      "file_count": 120,
+      "primary_target": "hire_c",
+      "selections": [
+        {
+          "id": "81",
+          "algorithm": "HIRE",
+          "target": "hire_c",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/hire-native；C11层次encoder/decoder+原生TurboRC BWT lev9；hire-native v1.0 / HIR1 v1；目标 hire_c；epsilon=0.005/B=4096/start=0；AVX2、单线程；默认线程仍1；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/hire-native/unique-v1；归档SHA256=137bd71ceeb6de77962aba8409993e3d82fe7f82c822e274b97e316dcf6fb589。历史性能列未重测。"
+        },
+        {
+          "id": "82",
+          "algorithm": "Multivariate HIRE",
+          "target": "hire_c",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/hire-native；C11 独立矩阵层次核心 + 共享矩阵/数值/容器/TurboRC；hire-native / 20261105 / HIM1 v1；目标 hire_c；hire_c_mv_encode/hire_c_mv_decode；所有列/块堆叠、binary16/Fortran交错后一次TurboRC BWT lev9；epsilon=0.005、B=4096、start=0；AVX2、单线程；默认线程仍1；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/hire-native/unique-v1；归档SHA256=137bd71ceeb6de77962aba8409993e3d82fe7f82c822e274b97e316dcf6fb589。历史性能列未重测。"
+        }
+      ]
+    },
+    {
+      "repository": "mixsim-native",
+      "source": "fix_ReWrite/mixsim-native",
+      "release": "fix_Release/mixsim-native/unique-v1",
+      "archive": "fix_Release/mixsim-native/unique-v1/mixsim-native-source-unique-v1.tar.gz",
+      "archive_sha256": "0e373dc1a98d244274024216de69f3d3bc1f2592413380af05569e8d32a9ee51",
+      "source_manifest": "fix_Release/mixsim-native/unique-v1/source-manifest.json",
+      "functional_report": "fix_ReWrite/mixsim-native/FUNCTIONAL_REPORT.md",
+      "documentation": "docs/algorithms/mixsim-native/INDEX.md",
+      "file_count": 75,
+      "primary_target": "mixsim_c",
+      "selections": [
+        {
+          "id": "83",
+          "algorithm": "Mix-Piece",
+          "target": "mixsim_c",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/mixsim-native；C11独立模型+共享C serializer/decoder+Zstd1.5.4 level3；mixsim-native v1.0；目标 mixsim_c；algorithm=0；epsilon=列range×0.01（原常量列规则保留）；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/mixsim-native/unique-v1；归档SHA256=0e373dc1a98d244274024216de69f3d3bc1f2592413380af05569e8d32a9ee51。历史性能列未重测。"
+        },
+        {
+          "id": "84",
+          "algorithm": "Sim-Piece",
+          "target": "mixsim_c",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/mixsim-native；C11独立模型+共享C serializer/decoder+Zstd1.5.4 level3；mixsim-native v1.0；目标 mixsim_c；algorithm=1；epsilon=列range×0.01（原常量列规则保留）；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/mixsim-native/unique-v1；归档SHA256=0e373dc1a98d244274024216de69f3d3bc1f2592413380af05569e8d32a9ee51。历史性能列未重测。"
+        }
+      ]
+    },
+    {
+      "repository": "titchy-native",
+      "source": "fix_ReWrite/titchy-native",
+      "release": "fix_Release/titchy-native/unique-v1",
+      "archive": "fix_Release/titchy-native/unique-v1/titchy-native-source-unique-v1.tar.gz",
+      "archive_sha256": "e58fcb2d06b212d4b2d5e7ded20f8d5d02fc118ad5463bdfc72a299a2f69c62e",
+      "source_manifest": "fix_Release/titchy-native/unique-v1/source-manifest.json",
+      "functional_report": "fix_ReWrite/titchy-native/FUNCTIONAL_REPORT.md",
+      "documentation": "docs/algorithms/titchy-native/INDEX.md",
+      "file_count": 12,
+      "primary_target": "titchy_c",
+      "selections": [
+        {
+          "id": "85",
+          "algorithm": "Titchy",
+          "target": "titchy_c",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/titchy-native；目标 titchy_c；C11独立batch/range核心仍为主选；TCHY v2；titchy_c_encode/decode/range；bits=64/chunk=4/split=1000/threshold=0.25/endian=little/max_active_bytes=UINT64_MAX；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/titchy-native/unique-v1；归档SHA256=a03bae5f178ae05e913a645484aa8f4e70af8e6ddfa0b6444f069a5388d0feba。历史性能列未重测。"
+        }
+      ]
+    },
+    {
+      "repository": "tsbenchmark-algorithms-native",
+      "source": "fix_ReWrite/tsbenchmark-algorithms-native",
+      "release": "fix_Release/tsbenchmark-algorithms-native/unique-v1",
+      "archive": "fix_Release/tsbenchmark-algorithms-native/unique-v1/tsbenchmark-algorithms-native-source-unique-v1.tar.gz",
+      "archive_sha256": "ceccd9a9cddc8875b24f2bd24558bf7bcfaba03bfdbf220705a5ff92f57215cb",
+      "source_manifest": "fix_Release/tsbenchmark-algorithms-native/unique-v1/source-manifest.json",
+      "functional_report": "fix_ReWrite/tsbenchmark-algorithms-native/FUNCTIONAL_REPORT.md",
+      "documentation": "docs/algorithms/tsbenchmark-algorithms-native/INDEX.md",
+      "file_count": 115,
+      "primary_target": "tba_native",
+      "selections": [
+        {
+          "id": "86",
+          "algorithm": "Kangaroo",
+          "target": "tba_native",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/tsbenchmark-algorithms-native；C++17；tsbenchmark-algorithms-native / 原生集成v1 + benchmark-v2 int32接口 / KANG v1 / f64位无损 / W32 Fast erasure；目标 tba_native（固定port核心）；kind=0；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/tsbenchmark-algorithms-native/unique-v1；归档SHA256=ceccd9a9cddc8875b24f2bd24558bf7bcfaba03bfdbf220705a5ff92f57215cb。历史性能列未重测。"
+        },
+        {
+          "id": "87",
+          "algorithm": "PBEPLA-RR",
+          "target": "tba_native",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/tsbenchmark-algorithms-native；C++17；tsbenchmark-algorithms-native / 原生集成v1 + benchmark-v2 int32接口 / PBEP三层 / range×5%,1%,.5%；目标 tba_native（固定port核心）；kind=1；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/tsbenchmark-algorithms-native/unique-v1；归档SHA256=ceccd9a9cddc8875b24f2bd24558bf7bcfaba03bfdbf220705a5ff92f57215cb。历史性能列未重测。"
+        },
+        {
+          "id": "88",
+          "algorithm": "ACTSD",
+          "target": "tba_native",
+          "selection": "Unique唯一主选unique-v1；来源fix_ReWrite/tsbenchmark-algorithms-native；C++17；tsbenchmark-algorithms-native / 原生集成v1 + benchmark-v2 int32接口 / ACTSD二维f32 / ZOrder paper R1 / block8192；目标 tba_native（固定port核心）；kind=2；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/tsbenchmark-algorithms-native/unique-v1；归档SHA256=ceccd9a9cddc8875b24f2bd24558bf7bcfaba03bfdbf220705a5ff92f57215cb。历史性能列未重测。"
+        }
+      ]
+    }
+  ]
+}

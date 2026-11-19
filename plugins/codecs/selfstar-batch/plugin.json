@@ -1,0 +1,24 @@
+{
+  "schema": "bmk.plugin/1",
+  "id": "selfstar-batch",
+  "kind": "codec",
+  "build": {"cmake_dir": "plugins/codecs/selfstar-batch", "target": "tsbench_selfstar_batch"},
+  "abi_version": 1,
+  "implementation_version": "v1",
+  "format_id": "selfstar-batch.ordered512-envelope.v1",
+  "roles": ["value"],
+  "options_schema": "plugins/codecs/selfstar-batch/options.json",
+  "runtime_dependencies": ["libselfstar_c.so"],
+  "source_files": [
+    "plugins/codecs/selfstar-batch/CMakeLists.txt",
+    "plugins/codecs/selfstar-batch/adapter.cpp",
+    "plugins/codecs/common/linear_frame.hpp",
+    "include/tsbench/plugin_abi.h",
+    "cmake/frozen.cmake",
+    "tools/prepare_plugin_source.py",
+    "tools/probe_release_builds.py",
+    "third_party/sources.lock.json",
+    "third_party/provenance/elf-selfstar-native/source-manifest.json",
+    "third_party/archives/elf-selfstar-native-source-unique-v1.tar.gz"
+  ]
+}

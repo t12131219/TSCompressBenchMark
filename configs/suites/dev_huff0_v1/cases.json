@@ -1,0 +1,13 @@
+{
+  "schema": "bmk.dev-huff0-cases/1",
+  "selection": 29,
+  "batch": {"plugin":"huff0-reference", "role":"value", "dtype":"u8", "options":{}, "format":"FEC1", "block_bytes":32768},
+  "table": {"model":"ETB1", "block_header_bytes":9, "table_log":0, "streams":[1,4], "max_training_bytes":32768},
+  "fixture": "skew_byte_v1",
+  "validator": "huff0_fec1_crc_and_etb1_detached_byte_exact_v1",
+  "corpus": "datasets/manifests/first-batch-real-v2.json",
+  "corpus_id": "a9904b1ce2068186e1c3e47eccf406e030d9e73973defe50d0508c91334929b3",
+  "transform": "canonical_f64_le_bytes_as_u8_v1",
+  "train": {"dataset":"mpi-beutenberg-weather", "column":"co2", "partition":"train", "offset":0, "count":4096},
+  "test": {"dataset":"mpi-beutenberg-weather", "column":"co2", "partition":"test", "offset":0, "count":4103}
+}

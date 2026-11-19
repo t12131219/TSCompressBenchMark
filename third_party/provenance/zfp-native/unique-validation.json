@@ -1,0 +1,69 @@
+{
+  "status": "PASS",
+  "archive_sha256": "97ad797ebe89ba9585a9cf49932caf15297c824765ba774bda4418b5cec4c34f",
+  "isolated_build": true,
+  "functional_checks": [
+    {
+      "repository": "zfp-native",
+      "test": "zfp-native-array",
+      "status": "PASS",
+      "exit_code": 0
+    },
+    {
+      "repository": "zfp-native",
+      "test": "zfp-native-features",
+      "status": "PASS",
+      "exit_code": 0
+    },
+    {
+      "repository": "zfp-native",
+      "test": "zfp-native-cuda",
+      "status": "SKIP_NO_GPU",
+      "exit_code": 77
+    },
+    {
+      "repository": "zfp-native",
+      "test": "OpenMP-field-workers",
+      "status": "PASS"
+    },
+    {
+      "repository": "zfp-native",
+      "test": "zfp-cuda-build",
+      "status": "PASS",
+      "runtime": "SKIP_NO_GPU"
+    }
+  ],
+  "isolated_functional_checks": [
+    {
+      "repository": "zfp-native",
+      "test": "zfp-native-array",
+      "status": "PASS",
+      "exit_code": 0
+    },
+    {
+      "repository": "zfp-native",
+      "test": "zfp-native-features",
+      "status": "PASS",
+      "exit_code": 0
+    },
+    {
+      "repository": "zfp-native",
+      "test": "zfp-native-cuda",
+      "status": "SKIP_NO_GPU",
+      "exit_code": 77
+    }
+  ],
+  "optional_components": {
+    "rust_build": "PASS",
+    "rust_c_consumer": "PASS",
+    "cuda_build": "PASS",
+    "cuda_runtime": "SKIP_NO_GPU",
+    "isolated_packages": true
+  },
+  "scope": "Functional checks and independent source-package build. No new performance measurements. GPU runtime unavailable.",
+  "capability_fix_validation": {
+    "source_tree": "/tmp/unique-capability-fixes-20261110",
+    "isolated_build": "PASS",
+    "scope": "Capability fixes; no performance measurements; unsupported ISA/GPU runtime not executed"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "schema": "bmk.dev-titchy-cases/2",
+  "selection": 85,
+  "corpus": "datasets/manifests/first-batch-real-v2.json",
+  "corpus_id": "a9904b1ce2068186e1c3e47eccf406e030d9e73973defe50d0508c91334929b3",
+  "window": {"dataset": "unique-forecast-traffic", "column": "channel_0", "partition": "test", "offset": 0, "count": 4013},
+  "transform": "canonical_f64_to_u64_bitcast_le_inverse_v1",
+  "batch": {"plugin": "titchy-batch", "role": "value", "options": {}, "widths": [8,16,32,64]},
+  "stream": {"chunks_per_packet": 7, "max_active_bytes": 72, "validator": "native_packet_and_tstr_detached_bits_v1"},
+  "reader": {"point": 4001, "range": [3997,9], "bits": [0,63,256064,256127], "validator": "native_read_at_boundaries_and_file_bits_v2",
+             "policy": {"max_backing_bytes": 131072, "open": 96, "point": 64, "range": 192, "bit": 32}}
+}

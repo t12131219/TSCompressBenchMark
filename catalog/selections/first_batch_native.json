@@ -1,0 +1,544 @@
+{
+  "schema": "bmk.native-inventory/1",
+  "state": "source_review_in_progress",
+  "entries": [
+    {
+      "selection": 9,
+      "selection_id": "bac5fd67841ca5c39f20f52fb67cc40ff007ff3d830e6130721dfe4061a77eb4",
+      "archive_sha256": "684ec6ef490b263cda133867ccfa5437d14c9c9d6024f5fefd244e2f7476e605",
+      "target": "alp_native",
+      "operations": [
+        {
+          "route": "auto-batch",
+          "source_member": "alp-native/include/alp_native.h",
+          "declaration_tokens": [
+            "alpn_compress",
+            "alpn_inspect",
+            "alpn_decompress"
+          ],
+          "domain_and_required_checks": "f32/f64 ALPN_AUTO chooses by rowgroup sampling. Read actual ALN1 decimal/RD/raw group and vector kinds plus decimal exception bits; verify regime changes, tails, and FE_TONEAREST. Raw group output does not record the rejected candidate scheme.",
+          "qualification": "not_run"
+        },
+        {
+          "route": "decode-backends",
+          "source_member": "alp-native/include/alp_native.h",
+          "declaration_tokens": [
+            "alpn_decompress_ex",
+            "alpn_backend_built",
+            "alpn_backend_available"
+          ],
+          "domain_and_required_checks": "Record build/width/CPU availability, requested versus selected dispatch, and actual available native counters per wire branch. FALP decimal kernel can have zero work on RD/raw. Native SIMD counter is AVX2-only; unavailable targets are rejected, not counted.",
+          "qualification": "not_run"
+        }
+      ],
+      "unsupported_platform_m6": "GPU and non-frozen-platform ISA are not part of Linux CPU initial platform; actual native support recorded separately."
+    },
+    {
+      "selection": 11,
+      "selection_id": "6e895f880edf131bef3cd88e4bb31c6b430f6a4a741335aea7bafac25ab49287",
+      "archive_sha256": "a62b4ca351fd6975b7eaf06df6d49b6c6175b541a8cea2df7af9ce09dcc3120d",
+      "target": "pcodec_c",
+      "operations": [
+        {
+          "route": "source-auto",
+          "source_member": "pcodec-native/include/pcodec.h",
+          "declaration_tokens": [
+            "pc_source_backend_available",
+            "pc_compress",
+            "pc_decompress",
+            "pc_decompress_bounded"
+          ],
+          "domain_and_required_checks": "Full build pc_compress and pc_decompress_bounded dispatch to Rust Source. Exercise f16 including special bits, all typed V inputs, and independent restoration with default options; do not infer Auto mode/fallback.",
+          "qualification": "not_run"
+        },
+        {
+          "route": "c-native-auto",
+          "source_member": "pcodec-native/include/pcodec.h",
+          "declaration_tokens": [
+            "pc_compress_native",
+            "pc_decompress_bounded"
+          ],
+          "domain_and_required_checks": "Explicit C NativeAuto encoder with the full build Rust Source decoder. Different plugin envelope. Reject f16; never label this a pure C roundtrip.",
+          "qualification": "not_run"
+        },
+        {
+          "route": "source-pages",
+          "source_member": "pcodec-native/include/pcodec_source.h",
+          "declaration_tokens": [
+            "pcs_chunk_new",
+            "pcs_chunk_header_meta",
+            "pcs_chunk_page",
+            "pcs_wrapped_open",
+            "pcs_wrapped_start_page",
+            "pcs_read"
+          ],
+          "domain_and_required_checks": "Whole-chunk metadata training; full compressed pages supplied before incremental output. Per-page limit, detached recovery with metadata, missing-metadata and drain rejection.",
+          "qualification": "not_run"
+        },
+        {
+          "route": "native-pages",
+          "source_member": "pcodec-native/include/pcodec_native_ext.h",
+          "declaration_tokens": [
+            "pcn_chunk_new",
+            "pcn_chunk_header_meta",
+            "pcn_chunk_page",
+            "pcn_wrapped_open",
+            "pcn_wrapped_start_page",
+            "pcn_read"
+          ],
+          "domain_and_required_checks": "Same page workload via pcn_* with cumulative decoder output limit. Distinct state/ownership; not an online stream.",
+          "qualification": "not_run"
+        },
+        {
+          "route": "intmult",
+          "source_member": "pcodec-native/include/pcodec.h",
+          "declaration_tokens": [
+            "pc_compress_intmult"
+          ],
+          "domain_and_required_checks": "Full build uses TryIntMult. Verify emitted IntMult, size fallback to Classic and exact uint64 base in chunk metadata separately from Auto; reject invalid base and float.",
+          "qualification": "not_run"
+        }
+      ],
+      "unsupported_platform_m6": null
+    },
+    {
+      "selection": 19,
+      "selection_id": "b263447aac8a6253fb503133a7897b1b2b8d241607152d6ccee1cc757c497648",
+      "archive_sha256": "18c47f8dd0dae6770b4147b1a2870dc9c73e8927efe9761e7fe9bd3c10fd6466",
+      "target": "repaired_codec",
+      "operations": [
+        {
+          "route": "fire-batch",
+          "source_member": "Sprintz-family/include/sf_codec.hpp",
+          "declaration_tokens": [
+            "Codec",
+            "encode",
+            "decode",
+            "frame",
+            "unframe",
+            "backend",
+            "supported"
+          ],
+          "domain_and_required_checks": "u8/u16, FIRE, 1–128 channels subject to entry/message bounds; actual lowdim/generic SIMD and frame/payload separated; f64 limbs are external.",
+          "qualification": "not_run"
+        },
+        {
+          "route": "query",
+          "source_member": "Sprintz-family/include/sf_codec.hpp",
+          "declaration_tokens": [
+            "query"
+          ],
+          "domain_and_required_checks": "Unsigned COUNT/SUM/MAX, actual generic AVX2 and applicable lowdim fallback; preserve shape and accumulator semantics.",
+          "qualification": "not_run"
+        }
+      ],
+      "unsupported_platform_m6": null
+    },
+    {
+      "selection": 85,
+      "selection_id": "dac366e9fae667d204c64f512c64ce44b374195bca0361efd0d6f2afb27fbb96",
+      "archive_sha256": "e58fcb2d06b212d4b2d5e7ded20f8d5d02fc118ad5463bdfc72a299a2f69c62e",
+      "target": "titchy_c",
+      "operations": [
+        {
+          "route": "batch",
+          "source_member": "titchy-native/include/titchy.h",
+          "declaration_tokens": [
+            "titchy_bound",
+            "titchy_c_encode",
+            "titchy_c_decode"
+          ],
+          "domain_and_required_checks": "TCHY v2 batch baseline 64/4/1000; adapter exposes 8/16/32/64-bit unsigned values at fixed 4/1000 and no implicit bitcast, restores true count and checks native/envelope agreement. Other native options remain to be verified.",
+          "qualification": "not_run"
+        },
+        {
+          "route": "packet-stream",
+          "source_member": "titchy-native/include/titchy.h",
+          "declaration_tokens": [
+            "titchy_stream_encoder_create",
+            "titchy_stream_push",
+            "titchy_stream_pop",
+            "titchy_stream_finish",
+            "titchy_stream_encoder_reset",
+            "titchy_stream_decode_packet",
+            "titchy_stream_decoder_reset"
+          ],
+          "domain_and_required_checks": "Stateful sample push / packet pop. Verify early packets, backpressure retry, reset, tail and cumulative decoder padded-value quota; the encoder LRU is logical, not a decoder or total-memory cap. Charge packet framing and all TSC1 configuration.",
+          "qualification": "not_run"
+        },
+        {
+          "route": "loaded-file-access",
+          "source_member": "titchy-native/include/titchy.h",
+          "declaration_tokens": [
+            "titchy_reader_open",
+            "titchy_reader_open_file",
+            "titchy_reader_range",
+            "titchy_reader_sample",
+            "titchy_reader_bit",
+            "titchy_reader_free"
+          ],
+          "domain_and_required_checks": "Reader opens immutable read_at backing (memory callback or FILE), validates header/index once; point/bit/range validate only touched pairs. Count actual callback requests separately at open and per query; not physical disk I/O.",
+          "qualification": "not_run"
+        },
+        {
+          "route": "batch-range",
+          "source_member": "titchy-native/include/titchy.h",
+          "declaration_tokens": [
+            "titchy_c_range"
+          ],
+          "domain_and_required_checks": "Each stateless invocation validates the entire container before reconstructing intersecting chunks; verify unrelated bad split rejection, quota, capacity and bounds separately from a reused reader.",
+          "qualification": "not_run"
+        }
+      ],
+      "unsupported_platform_m6": null
+    },
+    {
+      "selection": 7,
+      "selection_id": "28eb1e4239ee6c635aace4f3af5e54e4f271f0f757f534fdd86f002070d0ce81",
+      "archive_sha256": "0d9ce35f06b721db46b11f1de9006150a175eace61810b650b032502c0022f79",
+      "target": "gorilla_c",
+      "operations": [
+        {
+          "route": "tv-batch",
+          "source_member": "gorilla-native/include/gorilla.h",
+          "declaration_tokens": [
+            "g_compress_bound",
+            "g_compress",
+            "g_decompress"
+          ],
+          "domain_and_required_checks": "Native int64 T and f64 V; check declared maximum per message, timestamp/delta edges and bitwise V.",
+          "qualification": "not_run"
+        },
+        {
+          "route": "append-resume",
+          "source_member": "gorilla-native/include/gorilla.h",
+          "declaration_tokens": [
+            "g_encoder_create",
+            "g_encoder_append",
+            "g_encoder_snapshot",
+            "g_encoder_finish",
+            "g_encoder_reset",
+            "g_encoder_resume",
+            "g_encoder_progress"
+          ],
+          "domain_and_required_checks": "Track append state and snapshot/resume costs; scan/copy of old frame cannot be omitted.",
+          "qualification": "not_run"
+        },
+        {
+          "route": "iterator",
+          "source_member": "gorilla-native/include/gorilla.h",
+          "declaration_tokens": [
+            "g_iterator_create",
+            "g_iterator_next",
+            "g_iterator_seek",
+            "g_iterator_reset"
+          ],
+          "domain_and_required_checks": "Validate iterator and forward seek without index/random access attribution.",
+          "qualification": "not_run"
+        }
+      ],
+      "unsupported_platform_m6": null
+    },
+    {
+      "selection": 31,
+      "selection_id": "fcbd13383b65ce671776b1a47f11478215c2296499a735cd6ff2aefef6091d68",
+      "archive_sha256": "97ad797ebe89ba9585a9cf49932caf15297c824765ba774bda4418b5cec4c34f",
+      "target": "zfp_native_c",
+      "operations": [
+        {
+          "route": "field-baseline",
+          "source_member": "zfp-native/include/zfp_native.h",
+          "declaration_tokens": [
+            "zn_config_1d",
+            "zn_create",
+            "zn_encode",
+            "zn_decode"
+          ],
+          "domain_and_required_checks": "Serial 1D reversible i32/i64/f32/f64; predeclared dtype and nonempty count, typed alignment, raw word-padded payload and independently restored external schema. Raw decode is trusted-artifact only.",
+          "qualification": "not_run"
+        },
+        {
+          "route": "field-modes",
+          "source_member": "zfp-native/include/zfp_native.h",
+          "declaration_tokens": [
+            "zn_defaults",
+            "zn_create_ex",
+            "zn_get_info",
+            "zn_encode_field",
+            "zn_decode_field"
+          ],
+          "domain_and_required_checks": "1–4D direct field diagnostics with nonoverlap, signed/permuted strides and untouched padding; separate requested, effective and observed quality for reversible, rate, precision and floating accuracy.",
+          "qualification": "not_run"
+        },
+        {
+          "route": "openmp-encode",
+          "source_member": "zfp-native/include/zfp_native.h",
+          "declaration_tokens": [
+            "zn_encode_field",
+            "zn_backend_info"
+          ],
+          "domain_and_required_checks": "Compare serial and OpenMP 1/2 for the same reversible field, instrument actual native full-block work by thread ID, keep decode serial and verify policy restoration.",
+          "qualification": "not_run"
+        },
+        {
+          "route": "fixed-rate-array",
+          "source_member": "zfp-native/include/zfp_native.h",
+          "declaration_tokens": [
+            "zn_array_create",
+            "zn_array_import",
+            "zn_array_get",
+            "zn_array_set",
+            "zn_array_get_range",
+            "zn_array_set_range",
+            "zn_array_set_cache_size",
+            "zn_array_flush",
+            "zn_array_flush_cache",
+            "zn_array_export"
+          ],
+          "domain_and_required_checks": "Separate aligned fixed-rate array format and metadata. Inspect cached exact writes versus post-eviction/flush quality, cross-block ranges and reopen; set_cache_size only flushes in this frozen source.",
+          "qualification": "not_run"
+        }
+      ],
+      "unsupported_platform_m6": "GPU and non-frozen-platform ISA are not part of Linux CPU initial platform; actual native support recorded separately."
+    },
+    {
+      "selection": 40,
+      "selection_id": "0d7a6b86c340c380576b2d5e0aee52d3dcd148f5871d7c6cf4629b507de91375",
+      "archive_sha256": "54ddb93af4de953c6dd833c2d16f84286116d2c13b90b01dd87adffd2e173d7e",
+      "target": "lzbench_native",
+      "operations": [
+        {
+          "route": "zstd-baseline",
+          "source_member": "lzbench-native/include/lzbench_native.h",
+          "declaration_tokens": [
+            "ln_create",
+            "ln_compress",
+            "ln_decompress"
+          ],
+          "domain_and_required_checks": "Legacy LN_ZSTD level 3, 0..65536 input bytes, bound-sized destination, precise original length on decode, default synchronous frame with content size on and checksum off.",
+          "qualification": "not_run"
+        },
+        {
+          "route": "zstd-session",
+          "source_member": "lzbench-native/include/lzbench_extended.hpp",
+          "declaration_tokens": [
+            "session",
+            "streaming",
+            "reset",
+            "process",
+            "effective_parameters"
+          ],
+          "domain_and_required_checks": "Required native process with caller spans, bounded progress, repeated finish, directional reset, independent frame decode and truncation rejection; streaming session rejects the batch-only methods.",
+          "qualification": "not_run"
+        },
+        {
+          "route": "zstd-dictionary",
+          "source_member": "lzbench-native/include/lzbench_extended.hpp",
+          "declaration_tokens": [
+            "train_zstd_dictionary",
+            "configured"
+          ],
+          "domain_and_required_checks": "Required trainer and dictionary load for both directions. Separate samples and held-out input; retain dictionary identity and actual bytes; fresh-process decode rejects missing or wrong trained dictionary.",
+          "qualification": "not_run"
+        },
+        {
+          "route": "zstd-workers",
+          "source_member": "lzbench-native/include/lzbench_extended.hpp",
+          "declaration_tokens": [
+            "reset_worker_stats",
+            "get_worker_stats",
+            "effective_parameters"
+          ],
+          "domain_and_required_checks": "Conditional native encoder workers on an eligible frame and build. Record jobs and distinct worker identities with a synchronous control; the selected decode path does not expose workers.",
+          "qualification": "not_run"
+        }
+      ],
+      "unsupported_platform_m6": null
+    },
+    {
+      "selection": 39,
+      "selection_id": "9c4b1281fca3e2edf9103e8f6fe0a4c301d6390ef8828074cc39c30f84886f7e",
+      "archive_sha256": "54ddb93af4de953c6dd833c2d16f84286116d2c13b90b01dd87adffd2e173d7e",
+      "target": "lzbench_native",
+      "operations": [
+        {
+          "route": "xz-baseline",
+          "source_member": "lzbench-native/include/lzbench_native.h",
+          "declaration_tokens": [
+            "ln_create",
+            "ln_compress",
+            "ln_decompress"
+          ],
+          "domain_and_required_checks": "Legacy LN_XZ preset 6, 0..65536 input bytes, CHECK_NONE, threads=1. Decode trusts precise original length, ignores payload checks and sets a 256 MiB stop limit.",
+          "qualification": "not_run"
+        },
+        {
+          "route": "xz-session",
+          "source_member": "lzbench-native/include/lzbench_extended.hpp",
+          "declaration_tokens": [
+            "configured",
+            "session",
+            "streaming",
+            "reset",
+            "process",
+            "effective_parameters"
+          ],
+          "domain_and_required_checks": "Required framed process with caller spans, repeat finish and directional reset. Verify multi-block LZMA2, checks, admissible filters and memory limits; distinguish rejected configurations from valid ones. No external dictionary.",
+          "qualification": "not_run"
+        },
+        {
+          "route": "xz-workers",
+          "source_member": "lzbench-native/include/lzbench_extended.hpp",
+          "declaration_tokens": [
+            "reset_worker_stats",
+            "get_worker_stats"
+          ],
+          "domain_and_required_checks": "Conditional on block eligibility, memory and build. Observe encoder and decoder native hooks separately. Control decoder comparison on the same multi-block stream; a configuration count alone is not proof.",
+          "qualification": "not_run"
+        }
+      ],
+      "unsupported_platform_m6": null
+    },
+    {
+      "selection": 4,
+      "selection_id": "33a6fe53ae7b2d8fed072b6069c290d15f8931041f94ae091061eaaf75812a2e",
+      "archive_sha256": "0febcf79b0a42c1c58b042478ff476b2fcafbdfe4de5b1abc2e60c34839ba355",
+      "target": "selfstar_c",
+      "operations": [
+        {
+          "route": "selfstar-batch",
+          "source_member": "elf-selfstar-native/include/selfstar.h",
+          "declaration_tokens": [
+            "SF_DECLARE",
+            "sf_c",
+            "SF_SELF_STAR",
+            "SF_F64",
+            "SF_F32"
+          ],
+          "domain_and_required_checks": "Macro SF_DECLARE generates sf_c_create/encode/decode/reset; 1–1000 non-NaN f32/f64 per native block. selfstar-batch uses the Unique 512-value boundary with a short tail and a fresh initial state per object; consecutive native blocks retain same-column learning.",
+          "qualification": "not_run"
+        },
+        {
+          "route": "selfstar-incremental",
+          "source_member": "elf-selfstar-native/include/selfstar.h",
+          "declaration_tokens": [
+            "SF_LIVE_DECLARE",
+            "sf_c",
+            "SF_SELF_STAR"
+          ],
+          "domain_and_required_checks": "Macro SF_LIVE_DECLARE generates begin/add/finish/read_begin/next/progress. Separate bits written into the borrowed buffer from a finished immutable block; consume the sentinel before reading the next block. Direct controls verify batch/live parity at block boundaries, reset and ordered replay. No partial-input reader or flush-to-consumer promise.",
+          "qualification": "not_run"
+        }
+      ],
+      "unsupported_platform_m6": null
+    },
+    {
+      "selection": 29,
+      "selection_id": "d9fcfe6b9c9c3cb7c02dab0fe958d95c4c80dd5eb65d3b7425a71773d232215d",
+      "archive_sha256": "10fd2afb4c8cab1983fd19b148f58b2cd9632831a0a9c1b57d850ff417299055",
+      "target": "reference",
+      "operations": [
+        {
+          "route": "huff0-reference",
+          "source_member": "FiniteStateEntropy/include/entropy_port.hpp",
+          "declaration_tokens": [
+            "Codec",
+            "encode",
+            "decode",
+            "cpu_backend"
+          ],
+          "domain_and_required_checks": "Codec(Algorithm::Huff) FEC1: 32 KiB independent u8 blocks with per-block CRC. Read raw/RLE/Huffman tags and count actual BMI2-aware decoder calls only for Huffman blocks. Frozen release defaults dynamic ON; portable OFF is a distinct build.",
+          "qualification": "not_run"
+        },
+        {
+          "route": "huff0-shared-table",
+          "source_member": "FiniteStateEntropy/include/entropy_port.hpp",
+          "declaration_tokens": [
+            "TableCodec",
+            "model",
+            "huffman_streams",
+            "encode_block",
+            "decode_block"
+          ],
+          "domain_and_required_checks": "TableCodec ETB1: train on nonempty <=32 KiB bytes, serialize and reload exact model identity, then independently restore 1X/4X blocks in reverse order. Count model bytes and 9-byte record headers; shared blocks have no CRC. Observe actual usingCTable/usingDTable entries, not generic SIMD or threads.",
+          "qualification": "not_run"
+        }
+      ],
+      "unsupported_platform_m6": null
+    },
+    {
+      "selection": 87,
+      "selection_id": "2d89569d85e10068a7dd4abaf11d796e50adf2a81d387e39ccadfb39b1728ba9",
+      "archive_sha256": "ceccd9a9cddc8875b24f2bd24558bf7bcfaba03bfdbf220705a5ff92f57215cb",
+      "target": "tba_native",
+      "operations": [
+        {
+          "route": "pbepla-progressive",
+          "source_member": "tsbenchmark-algorithms-native/include/tba.h",
+          "declaration_tokens": [
+            "tba_pbepla_encode_ex",
+            "tba_pbepla_inspect",
+            "tba_pbepla_prefix",
+            "tba_pbepla_approximate",
+            "tba_decode"
+          ],
+          "domain_and_required_checks": "Local C++ reproduction exposed by C ABI. Finite f64 under FE_TONEAREST; 1–16 positive strictly decreasing eps, bounded value-layer work. Verify full PBEP and detached prefixes, exact original-domain absolute error at each level, advertised/effective bounds and corrupt-layer rejection; observed errors need not be monotone.",
+          "qualification": "not_run"
+        },
+        {
+          "route": "pbepla-replay",
+          "source_member": "tsbenchmark-algorithms-native/include/tba.h",
+          "declaration_tokens": [
+            "tba_pbepla_encode_stream",
+            "tba_pbepla_decode_stream"
+          ],
+          "domain_and_required_checks": "Finite replayable input; count passes, first sink write, source/sink bytes and temporary logical stdio, verify against batch and inject changed source/rewind/sink failures. Not single-pass online, physical I/O, or random access.",
+          "qualification": "not_run"
+        }
+      ],
+      "unsupported_platform_m6": null
+    },
+    {
+      "selection": 80,
+      "selection_id": "8b5b136dfd2cf54bc6b9b7810e00cab1a25526c5c58d6938f4016f7c1be644ab",
+      "archive_sha256": "b95e04c6ad63e2f3c0cf06dbf853311dc112544ba9d36553dce3feb89c7fab83",
+      "target": "corad_c",
+      "operations": [
+        {
+          "route": "corad-inference",
+          "source_member": "corad-native/include/corad.h",
+          "declaration_tokens": [
+            "corad_model_load",
+            "corad_model_info",
+            "corad_model_save",
+            "corad_model_config",
+            "corad_model_encode",
+            "corad_decode"
+          ],
+          "domain_and_required_checks": "Finite column-major f64 with ordered columns; verify model identity before encode, model save/load, independent data-frame decode, original-column quality and short tails. CRD1 re-embeds model data in every frame, has no checksum, and does not carry column names; threshold is not a pointwise error bound.",
+          "qualification": "not_run"
+        },
+        {
+          "route": "corad-c-training",
+          "source_member": "corad-native/include/corad.h",
+          "declaration_tokens": [
+            "corad_sparse_code",
+            "corad_dictionary_fit",
+            "corad_model_train",
+            "corad_model_pack"
+          ],
+          "domain_and_required_checks": "Separate native C11 training; bind train-only data, normalization and explicit column mask/seed/sample caps; independently validate LARS and coordinate descent KKT, sparse nonconvergence and bounded model construction. Report outer-iteration completion separately from sparse-solver convergence.",
+          "qualification": "not_run"
+        },
+        {
+          "route": "corad-source-training",
+          "source_member": "corad-native/source_backend/train.py",
+          "declaration_tokens": [],
+          "domain_and_required_checks": "Execute the frozen sklearn Source bridge in locked tsbench, bind train-only tricklets, keep input, dictionary and packed model identities, then validate native inference on disjoint held-out columns. Unmodified bridge RNG is not frozen; no numerical or byte equivalence to C training.",
+          "qualification": "not_run"
+        }
+      ],
+      "unsupported_platform_m6": null
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "schema": "bmk.service-suite/1",
+  "id": "first_batch_service_v4",
+  "definition_stage": "M0",
+  "target_stage": "M5",
+  "predecessor": {
+    "id": "first_batch_service_v3",
+    "suite": {
+      "path": "configs/suites/first_batch_service_v3/suite.json",
+      "sha256": "b82e1a904955d57e92198769ee79aba7a5b8e23cee7d82cb90bc5d43e5222bd4"
+    }
+  },
+  "workloads": {
+    "path": "configs/suites/first_batch_service_v4/workloads.json",
+    "sha256": "c961a31e7fb8a231beaaa7e0e8c198d21fe77fa79de039a61594664beaf7a2ff"
+  },
+  "policies": {
+    "verification": "artifact_each",
+    "submission": "one_complete_plan_one_run",
+    "raw_fallback": false,
+    "selection_must_contribute": true,
+    "timing_admission": false,
+    "report_rejections": true
+  },
+  "expected_counts": {
+    "selections": 12,
+    "groups": 17,
+    "atomic_requirements": 22,
+    "display_cells": 204,
+    "atomic_relations": 264,
+    "cases": 47,
+    "case_obligations": 564,
+    "rejection_obligations": 132
+  },
+  "inherited_locks": {
+    "suite": "bba1571edd82e8d028065b102492fcfe17c109d012ea97d60782c31c8286faaf",
+    "requirements": "9f812621da3fa724b6f19b808666f5afbf6db29f20e2b77dcd446c0d8998d17f",
+    "native_inventory": "a6fb548f4a709f5047db594d53f0cd294bad58e31d1657dce5ccddb3ab6c6c57",
+    "fixture_manifest": "b55617d8b48e0b8714a71704eb5b3a1d3f2395e006b8fcc18b31b933103e4cce",
+    "real_corpus": "825ffefd229088e7ea8f7a6f1d09c34ab929fc07d3f50fe0e78c1aaa935a45ae",
+    "corpus_feature_policy": "1d069b93aa1e3f1e306e391110db322ae846e9af234bc97aa1f6af8d2c52c9e3",
+    "corpus_boundary_fixtures": "7cbbbd497b84ce5244a92b8ffd8efdf673cab1c609a28945580c3d0dc263cb44",
+    "draft_cases": "0d3be61ed0a9d3efe5b0d7c0f0b3f39684f0824519524c65a4ff72e85f3596ef",
+    "sources": "ef6d08bdeb38e88328889e136bd72ae4e16d8f54baae54ac9cecfd2af5fbd48d",
+    "contract_schemas": "9d5a3d8d2290437051664c21f124c3c117a72aca6617d8a14b8333d024953c37"
+  }
+}

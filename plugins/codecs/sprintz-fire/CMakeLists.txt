@@ -1,0 +1,8 @@
+tsbench_frozen_source(Sprintz-family repaired_codec)
+if("sprintz-fire" IN_LIST BMK_SELECTED_PLUGIN_IDS)
+  tsbench_codec_module(tsbench_sprintz_fire bmk_sprintz_fire adapter.cpp repaired_codec)
+endif()
+if("sprintz-fire-u16-group" IN_LIST BMK_SELECTED_PLUGIN_IDS)
+  tsbench_codec_module(tsbench_sprintz_fire_u16_group bmk_sprintz_fire_u16_group adapter.cpp repaired_codec)
+  target_compile_definitions(tsbench_sprintz_fire_u16_group PRIVATE BMK_SPRINTZ_GROUP=1)
+endif()

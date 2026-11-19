@@ -1,0 +1,36 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "type":"object","additionalProperties":false,
+  "required":["schema","corpus","corpus_id","chunk_rows","timeout_seconds","cases","profiles","methods","comparisons"],
+  "properties":{
+    "schema":{"const":"bmk.dev-tv-suite/1"},
+    "corpus":{"type":"string","minLength":1},
+    "corpus_id":{"type":"string","pattern":"^[0-9a-f]{64}$"},
+    "chunk_rows":{"type":"integer","minimum":1,"maximum":512},
+    "timeout_seconds":{"type":"integer","minimum":1,"maximum":30},
+    "cases":{"$ref":"#/$defs/map","additionalProperties":{"oneOf":[
+      {"type":"object","required":["fixture"],"additionalProperties":false,"properties":{"fixture":{"enum":["empty","edge-bits","five-value-edge-bits"]}}},
+      {"type":"object","required":["window"],"additionalProperties":false,"properties":{"window":{"type":"object","additionalProperties":false,
+        "required":["dataset","partition","offset","count","columns"],"properties":{"dataset":{"$ref":"#/$defs/name"},"partition":{"const":"test"},
+          "offset":{"type":"integer","minimum":0},"count":{"type":"integer","minimum":1,"maximum":8192},
+          "columns":{"type":"array","minItems":1,"maxItems":5,"uniqueItems":true,"items":{"type":"string","minLength":1}}}}}}
+    ]}},
+    "profiles":{"$ref":"#/$defs/map","additionalProperties":{"type":"object","additionalProperties":false,
+      "required":["plugin","role","options"],"properties":{"plugin":{"$ref":"#/$defs/name"},
+      "role":{"enum":["timestamp","value","timestamp_value"]},"options":{"type":"object"}}}},
+    "methods":{"$ref":"#/$defs/map","additionalProperties":{"type":"object","additionalProperties":false,
+      "oneOf":[{"required":["joint"],"maxProperties":1},{"required":["timestamp","value"],"not":{"required":["joint"]}}],
+      "properties":{"joint":{"$ref":"#/$defs/name"},"timestamp":{"$ref":"#/$defs/name"},"value":{"$ref":"#/$defs/name"},
+        "value_transform":{"type":"object","additionalProperties":false,"required":["id","value_columns"],"properties":{
+          "id":{"const":"f64-le-limbs-row-major/1"},"value_columns":{"type":"integer","minimum":1,"maximum":5}}}}}},
+    "comparisons":{"$ref":"#/$defs/map","additionalProperties":{"type":"object","additionalProperties":false,
+      "required":["task","control","methods","cases"],"properties":{"task":{"enum":["shared_t_controlled","whole_object"]},
+      "control":{"enum":[null,"fixed_timestamp_route","fixed_value_route"]},
+      "methods":{"type":"array","maxItems":16,"minItems":2,"uniqueItems":true,"items":{"$ref":"#/$defs/name"}},
+      "cases":{"type":"array","maxItems":16,"minItems":1,"uniqueItems":true,"items":{"$ref":"#/$defs/name"}}}}}
+  },
+  "$defs":{
+    "name":{"type":"string","pattern":"^[a-z0-9][a-z0-9_.-]{0,79}(?![\\s\\S])"},
+    "map":{"type":"object","minProperties":1,"maxProperties":16,"propertyNames":{"$ref":"#/$defs/name"}}
+  }
+}

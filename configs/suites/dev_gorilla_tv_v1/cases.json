@@ -1,0 +1,12 @@
+{
+  "schema": "bmk.dev-gorilla-tv-cases/1",
+  "method": {"plugin": "gorilla-tv", "selection": 7, "role": "timestamp_value", "options": {}, "max_chunk_rows": 512},
+  "corpus": "datasets/manifests/first-batch-real-v2.json",
+  "corpus_id": "a9904b1ce2068186e1c3e47eccf406e030d9e73973defe50d0508c91334929b3",
+  "time_conversion": "civil_i64_s_to_i64_ms_exact_x1000",
+  "validator": "native_xor_payload_and_independent_tv_bits_v1",
+  "windows": [
+    {"dataset": "unique-forecast-traffic", "column": "channel_0", "partition": "test", "offset": 0, "count": 512},
+    {"dataset": "unique-forecast-exchange", "column": "rate_OT", "partition": "test", "offset": 1731, "count": 13}
+  ]
+}

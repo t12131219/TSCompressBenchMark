@@ -1,0 +1,10 @@
+{
+  "schema":"bmk.corad-quality-policy/1",
+  "scope":"empirical_on_frozen_heldout_only",
+  "calibration":"frozen_train_window_only",
+  "reference":"per_column_exact_arithmetic_mean_constant_predictor",
+  "bounds":["training_reference_max_abs_error","training_reference_mean_squared_error"],
+  "combine":"all_metrics_all_columns_inclusive",
+  "on_exceedance":"reject_quality_not_comparable",
+  "units":{"pressure":"mbar","air_temperature":"degC","relative_humidity":"percentage_point"}
+}

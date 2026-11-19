@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object", "additionalProperties": false,
+  "required": ["schema", "scope", "suite", "required_denominator", "work", "process", "retention"],
+  "properties": {
+    "schema": {"const": "bmk.native-submission-policy/1"},
+    "scope": {"const": "m0_preflight_only"},
+    "suite": {"const": "extended-v20"},
+    "required_denominator": {
+      "type": "object", "additionalProperties": false,
+      "required": ["selections", "routes", "required", "conditional"],
+      "properties": {"selections": {"const": 12}, "routes": {"const": 36}, "required": {"const": 180}, "conditional": {"const": 6}}
+    },
+    "work": {
+      "type": "object", "additionalProperties": false,
+      "required": ["max_slots", "max_operations", "max_sum_child_deadlines_seconds"],
+      "properties": {"max_slots": {"$ref": "#/$defs/positive"}, "max_operations": {"$ref": "#/$defs/positive"}, "max_sum_child_deadlines_seconds": {"$ref": "#/$defs/positive"}}
+    },
+    "process": {
+      "type": "object", "additionalProperties": false,
+      "required": ["address_space_bytes", "file_bytes", "wall_seconds"],
+      "properties": {"address_space_bytes": {"$ref": "#/$defs/positive"}, "file_bytes": {"$ref": "#/$defs/positive"}, "wall_seconds": {"$ref": "#/$defs/positive"}}
+    },
+    "retention": {
+      "type": "object", "additionalProperties": false,
+      "required": ["mode", "max_planned_retained_bytes", "workspace_and_metadata_reserve_bytes", "free_inodes_floor", "host_memory_reserve_bytes"],
+      "properties": {
+        "mode": {"const": "retain_sealed_products_controls_logs_and_recovery"},
+        "max_planned_retained_bytes": {"$ref": "#/$defs/positive"},
+        "workspace_and_metadata_reserve_bytes": {"$ref": "#/$defs/positive"},
+        "free_inodes_floor": {"$ref": "#/$defs/positive"},
+        "host_memory_reserve_bytes": {"$ref": "#/$defs/positive"}
+      }
+    }
+  },
+  "$defs": {"positive": {"type": "integer", "minimum": 1}}
+}

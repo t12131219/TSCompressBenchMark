@@ -1,0 +1,91 @@
+{
+  "schema": "bmk.corpus-feature-policy/2",
+  "id": "first_batch_corpus_features_v2",
+  "corpus_manifest": "datasets/manifests/first-batch-real-v2.json",
+  "fixture_manifest": "datasets/fixtures/manifest.json",
+  "axes": {
+    "domains": [
+      "sensor",
+      "energy",
+      "traffic",
+      "finance",
+      "server_metrics",
+      "scientific_computing"
+    ],
+    "types": [
+      "i8",
+      "u8",
+      "i16",
+      "u16",
+      "i32",
+      "u32",
+      "i64",
+      "u64",
+      "f32",
+      "f64",
+      "bool",
+      "timestamp",
+      "mixed"
+    ],
+    "structure": [
+      "univariate",
+      "multivariate",
+      "regular",
+      "irregular",
+      "different_lengths",
+      "matrix",
+      "tensor"
+    ],
+    "numeric": [
+      "constant",
+      "trend_indicator",
+      "periodicity_indicator",
+      "jump_indicator",
+      "noise",
+      "sparse_zero",
+      "integer_extrema",
+      "float_special_bits"
+    ],
+    "size": [
+      "very_short",
+      "block_boundary_triplet",
+      "cache_inside",
+      "cache_outside",
+      "long_sequence_available",
+      "resource_refusal"
+    ],
+    "dependence": [
+      "strong_pearson",
+      "weak_pearson",
+      "shared_axis",
+      "different_axes_in_object"
+    ],
+    "anomalies": [
+      "missing_validity",
+      "duplicate_timestamp",
+      "negative_timestamp",
+      "large_gap",
+      "nan",
+      "infinity"
+    ]
+  },
+  "thresholds": {
+    "minimum_shape_rows": 32,
+    "trend_direction_fraction_ppm": 950000,
+    "period_correlation_ppm": 800000,
+    "jump_over_nonzero_delta_median": 16,
+    "sparse_zero_fraction_ppm": 900000,
+    "strong_abs_pearson_ppm": 900000,
+    "weak_abs_pearson_ppm": 100000,
+    "large_gap_nominal_steps": 4,
+    "very_short_max_rows": 16,
+    "long_min_rows": 65536
+  },
+  "seasonal_lag_seconds": {
+    "uci-electricity-pt": 86400,
+    "mpi-beutenberg-weather": 86400,
+    "unique-forecast-traffic": 86400,
+    "unique-forecast-exchange": 604800
+  },
+  "boundary_manifest": "datasets/fixtures/corpus-boundaries-v1/manifest.json"
+}

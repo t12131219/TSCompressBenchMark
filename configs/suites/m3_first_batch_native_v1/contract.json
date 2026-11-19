@@ -1,0 +1,1181 @@
+{
+  "schema": "bmk.native-requirements/1",
+  "target_stage": "M3",
+  "state": "partial_case_bindings",
+  "scope_suite": "first_batch_service_v3",
+  "policies": {
+    "verification": "artifact_each",
+    "measurement": "not_collected",
+    "single_submission": true,
+    "restore": "new_process_product_and_declared_assets_only",
+    "bytes": "complete_serialized_product_and_required_assets",
+    "retention": "keep_case_restore_product_dependencies_and_failure_reason",
+    "execution_model": "function_only"
+  },
+  "expected": {
+    "selections": 12,
+    "routes": 36
+  },
+  "groups": [
+    {
+      "selection": 9,
+      "route": "auto-batch",
+      "task": "values_only",
+      "protocol": "batch",
+      "quality": "bitwise_exact",
+      "required": [
+        "vector_boundary_triplet",
+        "f32_special_bits",
+        "domain_v3_values_exact",
+        "f32_f64_decimal_rd_and_raw",
+        "decimal_exception_bits",
+        "rowgroup_regime_switch",
+        "rounding_mode_controls",
+        "corrupt_side_info"
+      ],
+      "conditional": [],
+      "out_of_scope": []
+    },
+    {
+      "selection": 9,
+      "route": "decode-backends",
+      "task": "values_only",
+      "protocol": "batch",
+      "quality": "bitwise_exact",
+      "required": [
+        "scalar_and_auto_dispatch",
+        "effective_backend_and_branch_counts",
+        "unavailable_configuration_rejected",
+        "rd_raw_no_decimal_work"
+      ],
+      "conditional": [
+        {
+          "predicate": "alp_f64_avx2_available",
+          "require": "avx2_decimal_with_native_work"
+        },
+        {
+          "predicate": "alp_f64_avx512bw_available",
+          "require": "avx512bw_decimal_with_effective_dispatch",
+          "verification": {
+            "built_backend": "falp-avx512bw",
+            "cpu_features_all_of": ["avx512f", "avx512bw", "avx512dq"],
+            "dtype": "f64",
+            "required_wire_branch": "decimal",
+            "runtime_unavailable": "pending_supported_runtime",
+            "prove": ["explicit_backend_dispatch", "auto_backend_dispatch", "detached_bit_exact_restore"]
+          }
+        }
+      ],
+      "out_of_scope": [
+        {
+          "claim": "arm_simd",
+          "reason": "ARM NEON/SVE are outside the Linux x86_64 initial platform"
+        },
+        {
+          "claim": "avx512bw_native_vector_counter",
+          "reason": "The frozen native SIMD counter counts AVX2 only"
+        }
+      ]
+    },
+    {
+      "selection": 11,
+      "route": "source-auto",
+      "task": "values_only",
+      "protocol": "batch",
+      "quality": "bitwise_exact",
+      "required": [
+        "rust_source_dispatch",
+        "all_declared_dtypes",
+        "f16_special_bits",
+        "frame_identity",
+        "output_count_bound",
+        "missing_metadata_and_corrupt_rejection"
+      ],
+      "conditional": [],
+      "out_of_scope": []
+    },
+    {
+      "selection": 11,
+      "route": "c-native-auto",
+      "task": "values_only",
+      "protocol": "batch",
+      "quality": "bitwise_exact",
+      "required": [
+        "c_native_encoder_rust_source_decoder",
+        "all_declared_dtypes",
+        "explicit_f16_rejection",
+        "output_count_bound",
+        "separate_format"
+      ],
+      "conditional": [],
+      "out_of_scope": [
+        {
+          "claim": "pure_c_roundtrip",
+          "reason": "The selected full build uses the Source decoder"
+        }
+      ]
+    },
+    {
+      "selection": 11,
+      "route": "source-pages",
+      "task": "values_only",
+      "protocol": "complete_pages_incremental_decode",
+      "quality": "bitwise_exact",
+      "required": [
+        "train_chunk_header_separately",
+        "full_page_required",
+        "bounded_incremental_drain",
+        "detached_page_with_metadata",
+        "missing_metadata_rejected",
+        "source_page_output_limit"
+      ],
+      "conditional": [],
+      "out_of_scope": [
+        {
+          "claim": "single_pass_online",
+          "reason": "Chunk metadata precedes complete pages"
+        }
+      ]
+    },
+    {
+      "selection": 11,
+      "route": "native-pages",
+      "task": "values_only",
+      "protocol": "complete_pages_incremental_decode",
+      "quality": "bitwise_exact",
+      "required": [
+        "native_page_ownership",
+        "full_page_required",
+        "bounded_incremental_drain",
+        "detached_page_with_metadata",
+        "cumulative_decoder_quota",
+        "invalid_page_and_drain_rejected"
+      ],
+      "conditional": [],
+      "out_of_scope": [
+        {
+          "claim": "single_pass_online",
+          "reason": "This is incremental decode of prepared pages, not online encoding"
+        }
+      ]
+    },
+    {
+      "selection": 11,
+      "route": "intmult",
+      "task": "values_only",
+      "protocol": "batch",
+      "quality": "bitwise_exact",
+      "required": [
+        "emitted_intmult",
+        "exact_uint64_base",
+        "classic_size_fallback",
+        "invalid_base_and_float_rejected"
+      ],
+      "conditional": [],
+      "out_of_scope": []
+    },
+    {
+      "selection": 19,
+      "route": "fire-batch",
+      "task": "values_only",
+      "protocol": "batch",
+      "quality": "bitwise_exact",
+      "required": [
+        "u8_u16_lowdim_generic",
+        "dims_and_short_tail",
+        "channel_count_and_size_reject",
+        "native_payload_and_frame",
+        "distinct_shape_recovery"
+      ],
+      "conditional": [],
+      "out_of_scope": [
+        {
+          "claim": "native_f64",
+          "reason": "Four u16 limbs are an external transform"
+        },
+        {
+          "claim": "portable_no_avx2",
+          "reason": "The selected build requires the frozen x86 ISA flags"
+        }
+      ]
+    },
+    {
+      "selection": 19,
+      "route": "query",
+      "task": "values_only",
+      "protocol": "native_query",
+      "quality": "exact_aggregate",
+      "required": [
+        "unsigned_count_sum_max",
+        "generic_avx2_and_lowdim_fallback",
+        "query_matches_original",
+        "per_channel_accumulator_and_tail",
+        "input_range_and_message_limits"
+      ],
+      "conditional": [],
+      "out_of_scope": [
+        {
+          "claim": "general_predicate_query",
+          "reason": "The frozen claim covers only the selected unsigned aggregates"
+        }
+      ]
+    },
+    {
+      "selection": 85,
+      "route": "batch",
+      "task": "values_only",
+      "protocol": "batch",
+      "quality": "bitwise_exact",
+      "required": [
+        "u8_u16_u32_u64",
+        "chunk_and_split_boundaries",
+        "independent_frame_count",
+        "native_frame_agreement",
+        "size_capacity_and_options_rejected"
+      ],
+      "conditional": [],
+      "out_of_scope": []
+    },
+    {
+      "selection": 85,
+      "route": "packet-stream",
+      "task": "values_only",
+      "protocol": "native_packet_stream",
+      "quality": "bitwise_exact",
+      "required": [
+        "packet_before_finish",
+        "backpressure_retry",
+        "tail_and_reset",
+        "bounded_padded_values",
+        "finish_and_truncation",
+        "independent_tsc1_restore"
+      ],
+      "conditional": [],
+      "out_of_scope": [
+        {
+          "claim": "lru_as_process_memory_limit",
+          "reason": "The encoder LRU does not bound the decoder or RSS"
+        }
+      ]
+    },
+    {
+      "selection": 85,
+      "route": "loaded-file-access",
+      "task": "values_only",
+      "protocol": "indexed_read_at",
+      "quality": "bitwise_exact",
+      "required": [
+        "open_index_validation",
+        "point_bit_range_oracle",
+        "log_open_and_request_bytes",
+        "separate_capacity_and_bounds",
+        "touched_pair_corruption",
+        "repeated_immutable_reader"
+      ],
+      "conditional": [],
+      "out_of_scope": [
+        {
+          "claim": "physical_read_bytes",
+          "reason": "read_at records logical requests, not disk I/O"
+        }
+      ]
+    },
+    {
+      "selection": 85,
+      "route": "batch-range",
+      "task": "values_only",
+      "protocol": "stateless_range_validates_container",
+      "quality": "bitwise_exact",
+      "required": [
+        "range_original_slice",
+        "unrelated_split_corruption",
+        "whole_container_validation",
+        "output_quota_and_capacity",
+        "input_range_reject"
+      ],
+      "conditional": [],
+      "out_of_scope": [
+        {
+          "claim": "indexed_open_amortization",
+          "reason": "Each stateless call validates the complete container"
+        }
+      ]
+    },
+    {
+      "selection": 7,
+      "route": "tv-batch",
+      "task": "whole_object",
+      "protocol": "batch",
+      "quality": "bitwise_exact",
+      "required": [
+        "chunk_boundary_triplet",
+        "timestamp_and_delta_edges",
+        "f64_bits_empty_and_single",
+        "native_payload_cross_decode"
+      ],
+      "conditional": [],
+      "out_of_scope": [
+        {
+          "claim": "native_t_or_v_only",
+          "reason": "This joint entry emits both logical columns"
+        }
+      ]
+    },
+    {
+      "selection": 7,
+      "route": "append-resume",
+      "task": "whole_object",
+      "protocol": "snapshot_replay",
+      "quality": "bitwise_exact",
+      "required": [
+        "append_snapshot_tail_resume",
+        "independent_snapshot_restore",
+        "invalid_snapshot_and_order",
+        "source_scan_and_copy_accounting",
+        "final_frame_equals_uninterrupted"
+      ],
+      "conditional": [],
+      "out_of_scope": [
+        {
+          "claim": "constant_checkpoint_cost",
+          "reason": "The frozen resume scans or copies prior frame data"
+        }
+      ]
+    },
+    {
+      "selection": 7,
+      "route": "iterator",
+      "task": "whole_object",
+      "protocol": "sequential_iterator",
+      "quality": "bitwise_exact",
+      "required": [
+        "iterator_and_forward_seek_oracle",
+        "seek_duplicate_and_edges",
+        "scan_work_and_unsupported_backward"
+      ],
+      "conditional": [],
+      "out_of_scope": [
+        {
+          "claim": "arbitrary_indexed_seek",
+          "reason": "The frozen iterator is sequential and has no general index"
+        }
+      ]
+    },
+    {
+      "selection": 31,
+      "route": "field-baseline",
+      "task": "values_only",
+      "protocol": "batch",
+      "quality": "bitwise_exact",
+      "required": [
+        "i32_i64_f32_f64_reversible",
+        "block_edges_and_tail",
+        "independent_schema_and_word_padding",
+        "wrong_dtype_and_empty_rejected"
+      ],
+      "conditional": [],
+      "out_of_scope": [
+        {
+          "claim": "untrusted_raw_decode",
+          "reason": "This raw API requires trusted payload and checked side metadata"
+        }
+      ]
+    },
+    {
+      "selection": 31,
+      "route": "field-modes",
+      "task": "values_only",
+      "protocol": "batch",
+      "quality": "per_case_absolute_error",
+      "required": [
+        "reversible_and_rate_precision_accuracy",
+        "rank_1_to_4",
+        "strides_and_untouched_padding",
+        "effective_mode_vs_request",
+        "per_mode_original_domain_bound",
+        "invalid_layout_and_options"
+      ],
+      "conditional": [],
+      "out_of_scope": []
+    },
+    {
+      "selection": 31,
+      "route": "openmp-encode",
+      "task": "values_only",
+      "protocol": "batch_parallel",
+      "quality": "bitwise_exact",
+      "required": [
+        "serial_control_and_openmp_one",
+        "identical_field_workers_policy",
+        "serial_decode_restore"
+      ],
+      "conditional": [
+        {
+          "predicate": "zfp_openmp_two_threads_available",
+          "require": "native_block_work_on_two_threads"
+        }
+      ],
+      "out_of_scope": [
+        {
+          "claim": "parallel_decode",
+          "reason": "The tested field decode is serial"
+        },
+        {
+          "claim": "cuda",
+          "reason": "GPU is outside the initial CPU platform"
+        }
+      ]
+    },
+    {
+      "selection": 31,
+      "route": "fixed-rate-array",
+      "task": "values_only",
+      "protocol": "mutable_array",
+      "quality": "per_case_absolute_error",
+      "required": [
+        "separate_array_format",
+        "requested_vs_aligned_rate",
+        "cache_write_evict_flush",
+        "reopen_and_cross_block_range",
+        "post_persist_bound_untouched_blocks",
+        "invalid_metadata"
+      ],
+      "conditional": [],
+      "out_of_scope": [
+        {
+          "claim": "configurable_cache_size",
+          "reason": "The frozen function ignores size and flushes"
+        }
+      ]
+    },
+    {
+      "selection": 40,
+      "route": "zstd-baseline",
+      "task": "bytes_only",
+      "protocol": "batch",
+      "quality": "bitwise_exact",
+      "required": [
+        "block_boundary_triplet",
+        "domain_v3_bytes_exact",
+        "empty_and_short",
+        "native_frame_flags",
+        "correct_output_length_and_truncation",
+        "independent_upstream_frame"
+      ],
+      "conditional": [],
+      "out_of_scope": [
+        {
+          "claim": "native_typed_v",
+          "reason": "This byte codec consumes canonical V bytes, not typed values"
+        }
+      ]
+    },
+    {
+      "selection": 40,
+      "route": "zstd-session",
+      "task": "bytes_only",
+      "protocol": "native_span_stream",
+      "quality": "bitwise_exact",
+      "required": [
+        "caller_span_progress",
+        "first_bytes_finish_drain",
+        "directional_reset",
+        "independent_frame_restore",
+        "truncation_and_batch_only_reject"
+      ],
+      "conditional": [],
+      "out_of_scope": []
+    },
+    {
+      "selection": 40,
+      "route": "zstd-dictionary",
+      "task": "bytes_only",
+      "protocol": "dictionary_batch",
+      "quality": "bitwise_exact",
+      "required": [
+        "disjoint_training_and_holdout",
+        "trainer_bounds",
+        "exact_dictionary_identity_and_charge",
+        "independent_restore_with_dictionary",
+        "missing_and_wrong_dictionary_rejected"
+      ],
+      "conditional": [],
+      "out_of_scope": []
+    },
+    {
+      "selection": 40,
+      "route": "zstd-workers",
+      "task": "bytes_only",
+      "protocol": "batch_parallel",
+      "quality": "bitwise_exact",
+      "required": [
+        "synchronous_control",
+        "same_frame_options",
+        "independent_decode"
+      ],
+      "conditional": [
+        {
+          "predicate": "zstd_mt_enabled_and_frame_eligible",
+          "require": "encoder_jobs_and_distinct_native_worker_ids"
+        }
+      ],
+      "out_of_scope": [
+        {
+          "claim": "parallel_decode",
+          "reason": "The selected Zstd decode route has no exposed worker control"
+        }
+      ]
+    },
+    {
+      "selection": 39,
+      "route": "xz-baseline",
+      "task": "bytes_only",
+      "protocol": "batch",
+      "quality": "bitwise_exact",
+      "required": [
+        "byte_block_boundary_triplet",
+        "empty_and_short",
+        "preset_threads_and_check",
+        "correct_output_size",
+        "memlimit_and_truncation"
+      ],
+      "conditional": [],
+      "out_of_scope": []
+    },
+    {
+      "selection": 39,
+      "route": "xz-session",
+      "task": "bytes_only",
+      "protocol": "native_span_stream",
+      "quality": "bitwise_exact",
+      "required": [
+        "caller_span_progress",
+        "finish_drain_and_reset",
+        "multiblock_lzma2",
+        "check_and_filter_independent_decode",
+        "low_memlimit_and_unsupported_filters"
+      ],
+      "conditional": [],
+      "out_of_scope": []
+    },
+    {
+      "selection": 39,
+      "route": "xz-workers",
+      "task": "bytes_only",
+      "protocol": "batch_parallel",
+      "quality": "bitwise_exact",
+      "required": [
+        "synchronous_control",
+        "multiblock_frames_under_matched_options",
+        "identical_original_bytes"
+      ],
+      "conditional": [
+        {
+          "predicate": "xz_mt_budget_and_frame_eligible",
+          "require": "trace_encoder_and_decoder_separately"
+        }
+      ],
+      "out_of_scope": []
+    },
+    {
+      "selection": 4,
+      "route": "selfstar-batch",
+      "task": "values_only",
+      "protocol": "batch",
+      "quality": "bitwise_exact",
+      "required": [
+        "block_boundary_512_empty_tail",
+        "bits_and_canonical_nan_policy",
+        "block_reset_order",
+        "independent_native_compare",
+        "exception_or_domain_reject"
+      ],
+      "conditional": [],
+      "out_of_scope": []
+    },
+    {
+      "selection": 4,
+      "route": "selfstar-incremental",
+      "task": "values_only",
+      "protocol": "finish_finalized_incremental",
+      "quality": "bitwise_exact",
+      "required": [
+        "add_finish_and_replay_bits",
+        "state_reset_and_exception",
+        "full_finalized_block_recovery",
+        "incremental_state_bounds"
+      ],
+      "conditional": [],
+      "out_of_scope": [
+        {
+          "claim": "durable_first_value_latency",
+          "reason": "Internal writing or temporary values are not durable completed frames"
+        }
+      ]
+    },
+    {
+      "selection": 29,
+      "route": "huff0-reference",
+      "task": "bytes_only",
+      "protocol": "batch",
+      "quality": "bitwise_exact",
+      "required": [
+        "fec1_fixed_4x_etb1_stream_boundary",
+        "empty_flat_and_incompressible",
+        "native_stream_observed",
+        "adaptive_modes",
+        "full_frame_independent_restore",
+        "length_corruption_and_size_reject"
+      ],
+      "conditional": [
+        {
+          "predicate": "huff0_dynamic_bmi2_and_cpu_available",
+          "require": "bmi2_dispatch_vs_portable_decode"
+        }
+      ],
+      "out_of_scope": []
+    },
+    {
+      "selection": 29,
+      "route": "huff0-shared-table",
+      "task": "bytes_only",
+      "protocol": "dictionary_batch",
+      "quality": "bitwise_exact",
+      "required": [
+        "etb1_holdout_table_identity",
+        "account_table_and_payload",
+        "stored_original_length",
+        "independent_restore_with_table",
+        "reject_unbound_table_and_bad_lengths"
+      ],
+      "conditional": [],
+      "out_of_scope": [
+        {
+          "claim": "native_crc_guarantee",
+          "reason": "ETB1 has no checksum"
+        }
+      ]
+    },
+    {
+      "selection": 87,
+      "route": "pbepla-progressive",
+      "task": "values_only",
+      "protocol": "progressive_prefix",
+      "quality": "per_case_absolute_error",
+      "required": [
+        "decreasing_eps_and_work_bound",
+        "each_prefix_without_later_layers",
+        "rational_error_each_level",
+        "effective_eps_and_bytes",
+        "reject_bad_layers_and_nonfinite"
+      ],
+      "conditional": [],
+      "out_of_scope": []
+    },
+    {
+      "selection": 87,
+      "route": "pbepla-replay",
+      "task": "values_only",
+      "protocol": "multipass_replay",
+      "quality": "per_case_absolute_error",
+      "required": [
+        "same_output_levels_as_batch",
+        "verify_each_original_domain_bound",
+        "source_passes_first_write_and_staging",
+        "changed_source_rewind_and_sink_failures"
+      ],
+      "conditional": [],
+      "out_of_scope": [
+        {
+          "claim": "single_pass_online",
+          "reason": "Nonempty source is replayed"
+        },
+        {
+          "claim": "physical_io",
+          "reason": "Prior direct diagnostics trace logical temporary I/O"
+        }
+      ]
+    },
+    {
+      "selection": 80,
+      "route": "corad-inference",
+      "task": "values_only",
+      "protocol": "model_batch",
+      "quality": "predeclared_empirical_per_column",
+      "required": [
+        "ordered_finite_columns",
+        "model_identity_and_short_tail",
+        "isolated_crd1_restore",
+        "original_domain_max_error_and_rmse",
+        "bound_predeclared_before_formal_run",
+        "wrong_model_order_and_budget_rejected"
+      ],
+      "conditional": [],
+      "out_of_scope": [
+        {
+          "claim": "threshold_as_absolute_error_bound",
+          "reason": "Threshold is correlation-based; an original-domain budget must be separately frozen"
+        }
+      ]
+    },
+    {
+      "selection": 80,
+      "route": "corad-c-training",
+      "task": "training_only",
+      "protocol": "model_training",
+      "quality": "model_solver_oracle",
+      "required": [
+        "disjoint_train_only",
+        "explicit_seed_column_mask_and_sample_caps",
+        "lars_and_cd_known_answer",
+        "kkt_and_sparse_nonconvergence",
+        "outer_limit_reported_separately",
+        "heldout_with_frozen_model"
+      ],
+      "conditional": [],
+      "out_of_scope": []
+    },
+    {
+      "selection": 80,
+      "route": "corad-source-training",
+      "task": "training_only",
+      "protocol": "model_training",
+      "quality": "model_solver_oracle",
+      "required": [
+        "disjoint_train_only",
+        "locked_sklearn_bridge",
+        "model_and_dictionary_bound",
+        "heldout_native_inference",
+        "training_budget_and_repeatability_policy"
+      ],
+      "conditional": [],
+      "out_of_scope": [
+        {
+          "claim": "byte_equivalence_to_c",
+          "reason": "Source and C trainers are different numeric implementations"
+        }
+      ]
+    }
+  ],
+  "boundary_contracts": [
+    {
+      "selection": 9,
+      "route": "auto-batch",
+      "checks": {
+        "vector_boundary_triplet": [
+          "alp-auto-minus",
+          "alp-auto-at",
+          "alp-auto-plus"
+        ],
+        "f32_special_bits": [
+          "alp-auto-f32-special"
+        ],
+        "domain_v3_values_exact": [
+          "westermo-system1-alp-auto",
+          "ceda-cmip6-gsat-alp-auto"
+        ]
+      }
+    },
+    {
+      "selection": 7,
+      "route": "tv-batch",
+      "checks": {
+        "chunk_boundary_triplet": [
+          "gorilla-tv-minus",
+          "gorilla-tv-at",
+          "gorilla-tv-plus"
+        ]
+      }
+    },
+    {
+      "selection": 40,
+      "route": "zstd-baseline",
+      "checks": {
+        "block_boundary_triplet": [
+          "zstd-minus",
+          "zstd-at",
+          "zstd-plus"
+        ],
+        "domain_v3_bytes_exact": [
+          "westermo-system1-zstd",
+          "ceda-cmip6-gsat-zstd"
+        ]
+      }
+    }
+  ],
+  "titchy_access_contracts": [
+    {"selection": 85, "route": "loaded-file-access", "checks": {
+      "point_bit_range_oracle": ["titchy-loaded-query-oracle"],
+      "log_open_and_request_bytes": ["titchy-loaded-logical-reads"]
+    }},
+    {"selection": 85, "route": "batch-range", "checks": {
+      "range_original_slice": ["titchy-stateless-range-oracle"]
+    }}
+  ],
+  "titchy_native_contracts": [
+    {
+      "selection": 85,
+      "route": "batch",
+      "checks": {
+        "u8_u16_u32_u64": [
+          "titchy-batch-u8-u16-u32-u64"
+        ],
+        "chunk_and_split_boundaries": [
+          "titchy-batch-chunk-and-split-boundaries"
+        ],
+        "independent_frame_count": [
+          "titchy-batch-independent-frame-count"
+        ],
+        "native_frame_agreement": [
+          "titchy-batch-native-frame-agreement"
+        ],
+        "size_capacity_and_options_rejected": [
+          "titchy-batch-size-capacity-and-options-rejected"
+        ]
+      }
+    },
+    {
+      "selection": 85,
+      "route": "packet-stream",
+      "checks": {
+        "packet_before_finish": [
+          "titchy-packet-stream-packet-before-finish"
+        ],
+        "backpressure_retry": [
+          "titchy-packet-stream-backpressure-retry"
+        ],
+        "tail_and_reset": [
+          "titchy-packet-stream-tail-and-reset"
+        ],
+        "bounded_padded_values": [
+          "titchy-packet-stream-bounded-padded-values"
+        ],
+        "finish_and_truncation": [
+          "titchy-packet-stream-finish-and-truncation"
+        ],
+        "independent_tsc1_restore": [
+          "titchy-packet-stream-independent-tsc1-restore"
+        ]
+      }
+    },
+    {
+      "selection": 85,
+      "route": "loaded-file-access",
+      "checks": {
+        "open_index_validation": [
+          "titchy-loaded-file-access-open-index-validation"
+        ],
+        "separate_capacity_and_bounds": [
+          "titchy-loaded-file-access-separate-capacity-and-bounds"
+        ],
+        "touched_pair_corruption": [
+          "titchy-loaded-file-access-touched-pair-corruption"
+        ],
+        "repeated_immutable_reader": [
+          "titchy-loaded-file-access-repeated-immutable-reader"
+        ]
+      }
+    },
+    {
+      "selection": 85,
+      "route": "batch-range",
+      "checks": {
+        "unrelated_split_corruption": [
+          "titchy-batch-range-unrelated-split-corruption"
+        ],
+        "whole_container_validation": [
+          "titchy-batch-range-whole-container-validation"
+        ],
+        "output_quota_and_capacity": [
+          "titchy-batch-range-output-quota-and-capacity"
+        ],
+        "input_range_reject": [
+          "titchy-batch-range-input-range-reject"
+        ]
+      }
+    }
+  ],
+  "selfstar_contracts": [
+    {"selection":4,"route":"selfstar-batch","checks":{"block_boundary_512_empty_tail":["block-boundary-512-empty-tail"],"bits_and_canonical_nan_policy":["bits-and-canonical-nan-policy"],"block_reset_order":["block-reset-order"],"independent_native_compare":["independent-native-compare"],"exception_or_domain_reject":["exception-or-domain-reject"]}},
+    {"selection":4,"route":"selfstar-incremental","checks":{"add_finish_and_replay_bits":["add-finish-and-replay-bits"],"state_reset_and_exception":["state-reset-and-exception"],"full_finalized_block_recovery":["full-finalized-block-recovery"],"incremental_state_bounds":["incremental-state-bounds"]}}
+  ],
+  "huff0_contracts": [
+    {"selection":29,"route":"huff0-reference","checks":{"fec1_fixed_4x_etb1_stream_boundary":["fec1-fixed-4x-etb1-stream-boundary"],"empty_flat_and_incompressible":["empty-flat-and-incompressible"],"native_stream_observed":["native-stream-observed"],"adaptive_modes":["adaptive-modes"],"full_frame_independent_restore":["full-frame-independent-restore"],"length_corruption_and_size_reject":["length-corruption-and-size-reject"]}},
+    {"selection":29,"route":"huff0-shared-table","checks":{"etb1_holdout_table_identity":["etb1-holdout-table-identity"],"account_table_and_payload":["account-table-and-payload"],"stored_original_length":["stored-original-length"],"independent_restore_with_table":["independent-restore-with-table"],"reject_unbound_table_and_bad_lengths":["reject-unbound-table-and-bad-lengths"]}}
+  ],
+  "zfp_contracts": [
+    {
+      "selection": 31,
+      "route": "field-baseline",
+      "checks": {
+        "i32_i64_f32_f64_reversible": [
+          "zfp-field-baseline-i32-i64-f32-f64-reversible"
+        ],
+        "block_edges_and_tail": [
+          "zfp-field-baseline-block-edges-and-tail"
+        ],
+        "independent_schema_and_word_padding": [
+          "zfp-field-baseline-independent-schema-and-word-padding"
+        ],
+        "wrong_dtype_and_empty_rejected": [
+          "zfp-field-baseline-wrong-dtype-and-empty-rejected"
+        ]
+      }
+    },
+    {
+      "selection": 31,
+      "route": "field-modes",
+      "checks": {
+        "reversible_and_rate_precision_accuracy": [
+          "zfp-field-modes-reversible-and-rate-precision-accuracy"
+        ],
+        "rank_1_to_4": [
+          "zfp-field-modes-rank-1-to-4"
+        ],
+        "strides_and_untouched_padding": [
+          "zfp-field-modes-strides-and-untouched-padding"
+        ],
+        "effective_mode_vs_request": [
+          "zfp-field-modes-effective-mode-vs-request"
+        ],
+        "per_mode_original_domain_bound": [
+          "zfp-field-modes-per-mode-original-domain-bound"
+        ],
+        "invalid_layout_and_options": [
+          "zfp-field-modes-invalid-layout-and-options"
+        ]
+      }
+    },
+    {
+      "selection": 31,
+      "route": "openmp-encode",
+      "checks": {
+        "serial_control_and_openmp_one": [
+          "zfp-openmp-encode-serial-control-and-openmp-one"
+        ],
+        "identical_field_workers_policy": [
+          "zfp-openmp-encode-identical-field-workers-policy"
+        ],
+        "serial_decode_restore": [
+          "zfp-openmp-encode-serial-decode-restore"
+        ]
+      }
+    },
+    {
+      "selection": 31,
+      "route": "fixed-rate-array",
+      "checks": {
+        "separate_array_format": [
+          "zfp-fixed-rate-array-separate-array-format"
+        ],
+        "requested_vs_aligned_rate": [
+          "zfp-fixed-rate-array-requested-vs-aligned-rate"
+        ],
+        "cache_write_evict_flush": [
+          "zfp-fixed-rate-array-cache-write-evict-flush"
+        ],
+        "reopen_and_cross_block_range": [
+          "zfp-fixed-rate-array-reopen-and-cross-block-range"
+        ],
+        "post_persist_bound_untouched_blocks": [
+          "zfp-fixed-rate-array-post-persist-bound-untouched-blocks"
+        ],
+        "invalid_metadata": [
+          "zfp-fixed-rate-array-invalid-metadata"
+        ]
+      }
+    }
+  ],
+  "sprintz_contracts": [
+    {
+      "selection": 19,
+      "route": "fire-batch",
+      "checks": {
+        "u8_u16_lowdim_generic": [
+          "sprintz-fire-batch-u8-u16-lowdim-generic"
+        ],
+        "dims_and_short_tail": [
+          "sprintz-fire-batch-dims-and-short-tail"
+        ],
+        "channel_count_and_size_reject": [
+          "sprintz-fire-batch-channel-count-and-size-reject"
+        ],
+        "native_payload_and_frame": [
+          "sprintz-fire-batch-native-payload-and-frame"
+        ],
+        "distinct_shape_recovery": [
+          "sprintz-fire-batch-distinct-shape-recovery"
+        ]
+      }
+    },
+    {
+      "selection": 19,
+      "route": "query",
+      "checks": {
+        "unsigned_count_sum_max": [
+          "sprintz-query-unsigned-count-sum-max"
+        ],
+        "generic_avx2_and_lowdim_fallback": [
+          "sprintz-query-generic-avx2-and-lowdim-fallback"
+        ],
+        "query_matches_original": [
+          "sprintz-query-query-matches-original"
+        ],
+        "per_channel_accumulator_and_tail": [
+          "sprintz-query-per-channel-accumulator-and-tail"
+        ],
+        "input_range_and_message_limits": [
+          "sprintz-query-input-range-and-message-limits"
+        ]
+      }
+    }
+  ],
+  "pcodec_contracts": [
+    {"selection": 11, "route": "source-auto", "checks": {
+      "rust_source_dispatch": ["pcodec-source-auto-rust-source-dispatch"],
+      "all_declared_dtypes": ["pcodec-source-auto-all-declared-dtypes"],
+      "f16_special_bits": ["pcodec-source-auto-f16-special-bits"],
+      "frame_identity": ["pcodec-source-auto-frame-identity"],
+      "output_count_bound": ["pcodec-source-auto-output-count-bound"],
+      "missing_metadata_and_corrupt_rejection": ["pcodec-source-auto-missing-metadata-and-corrupt-rejection"]
+    }},
+    {"selection": 11, "route": "c-native-auto", "checks": {
+      "c_native_encoder_rust_source_decoder": ["pcodec-c-native-auto-c-native-encoder-rust-source-decoder"],
+      "all_declared_dtypes": ["pcodec-c-native-auto-all-declared-dtypes"],
+      "explicit_f16_rejection": ["pcodec-c-native-auto-explicit-f16-rejection"],
+      "output_count_bound": ["pcodec-c-native-auto-output-count-bound"],
+      "separate_format": ["pcodec-c-native-auto-separate-format"]
+    }},
+    {"selection": 11, "route": "source-pages", "checks": {
+      "train_chunk_header_separately": ["pcodec-source-pages-train-chunk-header-separately"],
+      "full_page_required": ["pcodec-source-pages-full-page-required"],
+      "bounded_incremental_drain": ["pcodec-source-pages-bounded-incremental-drain"],
+      "detached_page_with_metadata": ["pcodec-source-pages-detached-page-with-metadata"],
+      "missing_metadata_rejected": ["pcodec-source-pages-missing-metadata-rejected"],
+      "source_page_output_limit": ["pcodec-source-pages-source-page-output-limit"]
+    }},
+    {"selection": 11, "route": "native-pages", "checks": {
+      "native_page_ownership": ["pcodec-native-pages-native-page-ownership"],
+      "full_page_required": ["pcodec-native-pages-full-page-required"],
+      "bounded_incremental_drain": ["pcodec-native-pages-bounded-incremental-drain"],
+      "detached_page_with_metadata": ["pcodec-native-pages-detached-page-with-metadata"],
+      "cumulative_decoder_quota": ["pcodec-native-pages-cumulative-decoder-quota"],
+      "invalid_page_and_drain_rejected": ["pcodec-native-pages-invalid-page-and-drain-rejected"]
+    }},
+    {"selection": 11, "route": "intmult", "checks": {
+      "emitted_intmult": ["pcodec-intmult-emitted-intmult"],
+      "exact_uint64_base": ["pcodec-intmult-exact-uint64-base"],
+      "classic_size_fallback": ["pcodec-intmult-classic-size-fallback"],
+      "invalid_base_and_float_rejected": ["pcodec-intmult-invalid-base-and-float-rejected"]
+    }}
+  ],
+  "lzbench_contracts": [
+    {"selection": 40, "route": "zstd-baseline", "checks": {
+      "empty_and_short": ["zstd-baseline-empty-and-short"],
+      "native_frame_flags": ["zstd-baseline-native-frame-flags"],
+      "correct_output_length_and_truncation": ["zstd-baseline-correct-output-length-and-truncation"],
+      "independent_upstream_frame": ["zstd-baseline-independent-upstream-frame"]
+    }},
+    {"selection": 40, "route": "zstd-session", "checks": {
+      "caller_span_progress": ["zstd-session-caller-span-progress"],
+      "first_bytes_finish_drain": ["zstd-session-first-bytes-finish-drain"],
+      "directional_reset": ["zstd-session-directional-reset"],
+      "independent_frame_restore": ["zstd-session-independent-frame-restore"],
+      "truncation_and_batch_only_reject": ["zstd-session-truncation-and-batch-only-reject"]
+    }},
+    {"selection": 39, "route": "xz-baseline", "checks": {
+      "byte_block_boundary_triplet": ["xz-baseline-byte-block-boundary-triplet"],
+      "empty_and_short": ["xz-baseline-empty-and-short"],
+      "preset_threads_and_check": ["xz-baseline-preset-threads-and-check"],
+      "correct_output_size": ["xz-baseline-correct-output-size"],
+      "memlimit_and_truncation": ["xz-baseline-memlimit-and-truncation"]
+    }},
+    {"selection": 39, "route": "xz-session", "checks": {
+      "caller_span_progress": ["xz-session-caller-span-progress"],
+      "finish_drain_and_reset": ["xz-session-finish-drain-and-reset"],
+      "multiblock_lzma2": ["xz-session-multiblock-lzma2"],
+      "check_and_filter_independent_decode": ["xz-session-check-and-filter-independent-decode"],
+      "low_memlimit_and_unsupported_filters": ["xz-session-low-memlimit-and-unsupported-filters"]
+    }},
+    {"selection": 40, "route": "zstd-dictionary", "checks": {
+      "disjoint_training_and_holdout": ["zstd-dictionary-disjoint-training-and-holdout"],
+      "trainer_bounds": ["zstd-dictionary-trainer-bounds"],
+      "exact_dictionary_identity_and_charge": ["zstd-dictionary-exact-dictionary-identity-and-charge"],
+      "independent_restore_with_dictionary": ["zstd-dictionary-independent-restore-with-dictionary"],
+      "missing_and_wrong_dictionary_rejected": ["zstd-dictionary-missing-and-wrong-dictionary-rejected"]
+    }},
+    {"selection": 40, "route": "zstd-workers", "checks": {
+      "synchronous_control": ["zstd-workers-synchronous-control"],
+      "same_frame_options": ["zstd-workers-same-frame-options"],
+      "independent_decode": ["zstd-workers-independent-decode"]
+    }},
+    {"selection": 39, "route": "xz-workers", "checks": {
+      "synchronous_control": ["xz-workers-synchronous-control"],
+      "multiblock_frames_under_matched_options": ["xz-workers-multiblock-frames-under-matched-options"],
+      "identical_original_bytes": ["xz-workers-identical-original-bytes"]
+    }}
+  ],
+  "alp_contracts": [
+    {"selection": 9, "route": "auto-batch", "checks": {
+      "f32_f64_decimal_rd_and_raw": ["alp-f32-f64-decimal-rd-and-raw"],
+      "decimal_exception_bits": ["alp-decimal-exception-bits"],
+      "rowgroup_regime_switch": ["alp-rowgroup-regime-switch"],
+      "rounding_mode_controls": ["alp-rounding-mode-controls"],
+      "corrupt_side_info": ["alp-corrupt-side-info"]
+    }},
+    {"selection": 9, "route": "decode-backends", "checks": {
+      "scalar_and_auto_dispatch": ["alp-scalar-and-auto-dispatch"],
+      "effective_backend_and_branch_counts": ["alp-effective-backend-and-branch-counts"],
+      "unavailable_configuration_rejected": ["alp-unavailable-configuration-rejected"],
+      "rd_raw_no_decimal_work": ["alp-rd-raw-no-decimal-work"]
+    }}
+  ],
+  "gorilla_contracts": [
+    {"selection": 7, "route": "tv-batch", "checks": {
+      "timestamp_and_delta_edges": ["gorilla-timestamp-and-delta-edges"],
+      "f64_bits_empty_and_single": ["gorilla-f64-bits-empty-and-single"],
+      "native_payload_cross_decode": ["gorilla-native-payload-cross-decode"]
+    }},
+    {"selection": 7, "route": "append-resume", "checks": {
+      "append_snapshot_tail_resume": ["gorilla-append-snapshot-tail-resume"],
+      "independent_snapshot_restore": ["gorilla-independent-snapshot-restore"],
+      "invalid_snapshot_and_order": ["gorilla-invalid-snapshot-and-order"],
+      "source_scan_and_copy_accounting": ["gorilla-source-scan-and-copy-accounting"],
+      "final_frame_equals_uninterrupted": ["gorilla-final-frame-equals-uninterrupted"]
+    }},
+    {"selection": 7, "route": "iterator", "checks": {
+      "iterator_and_forward_seek_oracle": ["gorilla-iterator-and-forward-seek-oracle"],
+      "seek_duplicate_and_edges": ["gorilla-seek-duplicate-and-edges"],
+      "scan_work_and_unsupported_backward": ["gorilla-scan-work-and-unsupported-backward"]
+    }}
+  ],
+  "corad_training_contracts": [
+    {"selection":80,"route":"corad-c-training","checks":{"disjoint_train_only":["c-training-disjoint-train-only"],"explicit_seed_column_mask_and_sample_caps":["c-training-explicit-seed-column-mask-and-sample-caps"],"lars_and_cd_known_answer":["c-training-lars-and-cd-known-answer"],"kkt_and_sparse_nonconvergence":["c-training-kkt-and-sparse-nonconvergence"],"outer_limit_reported_separately":["c-training-outer-limit-reported-separately"],"heldout_with_frozen_model":["c-training-heldout-with-frozen-model"]}},
+    {"selection":80,"route":"corad-source-training","checks":{"disjoint_train_only":["source-training-disjoint-train-only"],"locked_sklearn_bridge":["source-training-locked-sklearn-bridge"],"model_and_dictionary_bound":["source-training-model-and-dictionary-bound"],"heldout_native_inference":["source-training-heldout-native-inference"],"training_budget_and_repeatability_policy":["source-training-training-budget-and-repeatability-policy"]}}
+  ],
+  "corad_contracts": [
+    {"selection": 80, "route": "corad-inference", "checks": {
+      "ordered_finite_columns": ["ordered-heldout-columns"],
+      "model_identity_and_short_tail": ["c-lars-tail", "source-sklearn-tail"],
+      "isolated_crd1_restore": ["c-lars-restore", "source-sklearn-restore"],
+      "original_domain_max_error_and_rmse": ["c-lars-original-error", "source-sklearn-original-error"],
+      "bound_predeclared_before_formal_run": ["heldout-predeclared-quality"],
+      "wrong_model_order_and_budget_rejected": ["wrong-model-order-budget"]
+    }}
+  ],
+  "pbepla_contracts": [
+    {"selection": 87, "route": "pbepla-progressive", "checks": {
+      "decreasing_eps_and_work_bound": ["pbepla-decreasing_eps_and_work_bound"],
+      "reject_bad_layers_and_nonfinite": ["pbepla-reject_bad_layers_and_nonfinite"],
+      "each_prefix_without_later_layers": ["empty-each_prefix_without_later_layers", "constant-each_prefix_without_later_layers", "piecewise-each_prefix_without_later_layers", "sixteen-layers-each_prefix_without_later_layers", "weather-each_prefix_without_later_layers", "connected-explicit-grid-each_prefix_without_later_layers", "symmetric-single-each_prefix_without_later_layers"],
+      "rational_error_each_level": ["empty-rational_error_each_level", "constant-rational_error_each_level", "piecewise-rational_error_each_level", "sixteen-layers-rational_error_each_level", "weather-rational_error_each_level", "connected-explicit-grid-rational_error_each_level", "symmetric-single-rational_error_each_level"],
+      "effective_eps_and_bytes": ["empty-effective_eps_and_bytes", "constant-effective_eps_and_bytes", "piecewise-effective_eps_and_bytes", "sixteen-layers-effective_eps_and_bytes", "weather-effective_eps_and_bytes", "connected-explicit-grid-effective_eps_and_bytes", "symmetric-single-effective_eps_and_bytes"]
+    }},
+    {"selection": 87, "route": "pbepla-replay", "checks": {
+      "changed_source_rewind_and_sink_failures": ["pbepla-changed_source_rewind_and_sink_failures"],
+      "same_output_levels_as_batch": ["empty-same_output_levels_as_batch", "piecewise-same_output_levels_as_batch", "weather-same_output_levels_as_batch"],
+      "verify_each_original_domain_bound": ["empty-verify_each_original_domain_bound", "piecewise-verify_each_original_domain_bound", "weather-verify_each_original_domain_bound"],
+      "source_passes_first_write_and_staging": ["empty-source_passes_first_write_and_staging", "piecewise-source_passes_first_write_and_staging", "weather-source_passes_first_write_and_staging"]
+    }}
+  ]
+}

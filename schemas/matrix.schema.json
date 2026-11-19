@@ -1,0 +1,574 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "BMK M0 draft scope and matrix expansion v1 (not execution evidence)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "planner_protocol",
+    "scope_id",
+    "suite_id",
+    "suite_state",
+    "target_stage",
+    "runnable",
+    "bindings",
+    "policies",
+    "resolved_execution",
+    "coverage",
+    "estimates",
+    "selection_rows",
+    "display_groups",
+    "atomic_semantics",
+    "draft_cases",
+    "display_cells",
+    "required_slots",
+    "plan_content_id",
+    "corpus"
+  ],
+  "properties": {
+    "schema": {
+      "const": "bmk.plan/1"
+    },
+    "planner_protocol": {
+      "const": "m0-scope-planner/2"
+    },
+    "scope_id": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}(?![\\s\\S])"
+    },
+    "suite_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9_-]+(?![\\s\\S])"
+    },
+    "suite_state": {
+      "const": "draft_m0"
+    },
+    "target_stage": {
+      "const": "M5"
+    },
+    "runnable": {
+      "const": false
+    },
+    "bindings": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "suite",
+        "plugin_catalog",
+        "requirements",
+        "native_inventory",
+        "fixture_manifest",
+        "draft_cases",
+        "sources",
+        "contract_schemas",
+        "real_corpus",
+        "corpus_feature_policy",
+        "corpus_boundary_fixtures"
+      ],
+      "properties": {
+        "suite": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}(?![\\s\\S])"
+        },
+        "plugin_catalog": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}(?![\\s\\S])"
+        },
+        "requirements": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}(?![\\s\\S])"
+        },
+        "native_inventory": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}(?![\\s\\S])"
+        },
+        "fixture_manifest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}(?![\\s\\S])"
+        },
+        "draft_cases": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}(?![\\s\\S])"
+        },
+        "sources": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}(?![\\s\\S])"
+        },
+        "contract_schemas": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}(?![\\s\\S])"
+        },
+        "real_corpus": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}(?![\\s\\S])"
+        },
+        "corpus_boundary_fixtures": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}(?![\\s\\S])"
+        },
+        "corpus_feature_policy": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}(?![\\s\\S])"
+        }
+      }
+    },
+    "policies": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "platform",
+        "function_verification",
+        "timing_resource_policy",
+        "submission",
+        "retention",
+        "allow_raw_fallback",
+        "max_validation_workers"
+      ],
+      "properties": {
+        "platform": {
+          "const": "linux_cpu"
+        },
+        "function_verification": {
+          "const": "artifact_each"
+        },
+        "timing_resource_policy": {
+          "const": "exclusive"
+        },
+        "submission": {
+          "const": "one_complete_plan_one_run"
+        },
+        "retention": {
+          "const": "preserve_evidence_and_independent_restore_sample_per_required_case"
+        },
+        "allow_raw_fallback": {
+          "const": false
+        },
+        "max_validation_workers": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "resolved_execution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "max_validation_workers",
+        "performance_candidates_concurrent"
+      ],
+      "properties": {
+        "max_validation_workers": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "performance_candidates_concurrent": {
+          "const": false
+        }
+      }
+    },
+    "coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "selections",
+        "groups",
+        "atomic_requirements",
+        "display_cells",
+        "atomic_relations",
+        "executed",
+        "qualified",
+        "unverified_atomic_relations"
+      ],
+      "properties": {
+        "selections": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "groups": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "atomic_requirements": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "display_cells": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "atomic_relations": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "executed": {
+          "const": 0
+        },
+        "qualified": {
+          "const": 0
+        },
+        "unverified_atomic_relations": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "estimates": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "included_distinct_fixture_source_bytes",
+        "full_corpus_bytes",
+        "estimated_peak_memory_bytes",
+        "estimated_peak_disk_bytes",
+        "missing_estimates_reason"
+      ],
+      "properties": {
+        "included_distinct_fixture_source_bytes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "full_corpus_bytes": {
+          "const": null
+        },
+        "estimated_peak_memory_bytes": {
+          "const": null
+        },
+        "estimated_peak_disk_bytes": {
+          "const": null
+        },
+        "missing_estimates_reason": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "selection_rows": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "number",
+          "algorithm",
+          "source_id",
+          "target",
+          "selection_note",
+          "selection_field_sha256",
+          "selection_id"
+        ],
+        "properties": {
+          "number": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "algorithm": {
+            "type": "string",
+            "minLength": 1
+          },
+          "source_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "target": {
+            "type": "string",
+            "minLength": 1
+          },
+          "selection_note": {
+            "type": "string",
+            "minLength": 1
+          },
+          "selection_field_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}(?![\\s\\S])"
+          },
+          "selection_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}(?![\\s\\S])"
+          }
+        }
+      }
+    },
+    "display_groups": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "label",
+          "atoms"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9._-]*(?![\\s\\S])"
+          },
+          "label": {
+            "type": "string",
+            "minLength": 1
+          },
+          "atoms": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z0-9_]+/[a-z0-9_]+_v[1-9][0-9]*(?![\\s\\S])"
+            }
+          }
+        }
+      }
+    },
+    "atomic_semantics": {
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": {
+        "type": "string",
+        "pattern": "^[a-z0-9_]+/[a-z0-9_]+_v[1-9][0-9]*(?![\\s\\S])"
+      },
+      "additionalProperties": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "draft_cases": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "atoms",
+          "development_fixtures",
+          "checks"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9._-]*(?![\\s\\S])"
+          },
+          "atoms": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z0-9_]+/[a-z0-9_]+_v[1-9][0-9]*(?![\\s\\S])"
+            }
+          },
+          "development_fixtures": {
+            "type": "array",
+            "minItems": 0,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z0-9][a-z0-9._-]*(?![\\s\\S])"
+            }
+          },
+          "checks": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      }
+    },
+    "display_cells": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "selection",
+          "group",
+          "slots",
+          "status"
+        ],
+        "properties": {
+          "selection": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "group": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9._-]*(?![\\s\\S])"
+          },
+          "slots": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}(?![\\s\\S])"
+            }
+          },
+          "status": {
+            "const": "not_run"
+          }
+        }
+      }
+    },
+    "required_slots": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "slot_id",
+          "selection",
+          "selection_id",
+          "group",
+          "requirement",
+          "draft_cases",
+          "status",
+          "reasons"
+        ],
+        "properties": {
+          "slot_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}(?![\\s\\S])"
+          },
+          "selection": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "selection_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}(?![\\s\\S])"
+          },
+          "group": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9._-]*(?![\\s\\S])"
+          },
+          "requirement": {
+            "type": "string",
+            "pattern": "^[a-z0-9_]+/[a-z0-9_]+_v[1-9][0-9]*(?![\\s\\S])"
+          },
+          "draft_cases": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z0-9][a-z0-9._-]*(?![\\s\\S])"
+            }
+          },
+          "status": {
+            "const": "not_run"
+          },
+          "reasons": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      }
+    },
+    "plan_content_id": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}(?![\\s\\S])"
+    },
+    "corpus": {
+      "type": "object",
+      "required": [
+        "datasets",
+        "source_clusters",
+        "partitions",
+        "stored_bytes",
+        "logical_bytes",
+        "rows",
+        "included_domains",
+        "missing_domains",
+        "corpus_id",
+        "state",
+        "canonical_audit_performed"
+      ],
+      "properties": {
+        "datasets": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "source_clusters": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "partitions": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "stored_bytes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "logical_bytes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "rows": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "included_domains": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "sensor",
+              "energy",
+              "traffic",
+              "finance",
+              "server_metrics",
+              "scientific_computing"
+            ]
+          }
+        },
+        "missing_domains": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "sensor",
+              "energy",
+              "traffic",
+              "finance",
+              "server_metrics",
+              "scientific_computing"
+            ]
+          }
+        },
+        "corpus_id": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}(?![\\s\\S])"
+        },
+        "state": {
+          "enum": [
+            "partial_scope",
+            "domain_coverage_only"
+          ]
+        },
+        "canonical_audit_performed": {
+          "const": false
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

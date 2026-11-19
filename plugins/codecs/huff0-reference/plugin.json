@@ -1,0 +1,24 @@
+{
+  "schema":"bmk.plugin/1",
+  "id":"huff0-reference",
+  "kind":"codec",
+  "build":{"cmake_dir":"plugins/codecs/huff0-reference","target":"tsbench_huff0_reference"},
+  "abi_version":1,
+  "implementation_version":"v1",
+  "format_id":"huff0-reference.fec1-envelope.v1",
+  "roles":["value"],
+  "options_schema":"plugins/codecs/huff0-reference/options.json",
+  "runtime_dependencies":["libreference.so"],
+  "source_files":[
+    "plugins/codecs/huff0-reference/CMakeLists.txt",
+    "plugins/codecs/huff0-reference/adapter.cpp",
+    "plugins/codecs/common/linear_frame.hpp",
+    "include/tsbench/plugin_abi.h",
+    "cmake/frozen.cmake",
+    "tools/prepare_plugin_source.py",
+    "tools/probe_release_builds.py",
+    "third_party/sources.lock.json",
+    "third_party/provenance/FiniteStateEntropy/source-manifest.json",
+    "third_party/archives/FiniteStateEntropy-source-unique-v1.tar.gz"
+  ]
+}

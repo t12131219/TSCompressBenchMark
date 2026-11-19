@@ -1,0 +1,12 @@
+tsbench_frozen_source(corad-native corad_c)
+tsbench_codec_module(tsbench_corad_frozen bmk_corad_frozen adapter.cpp corad_c)
+
+add_executable(tsbench_corad_inference_control EXCLUDE_FROM_ALL inference_control.c)
+target_link_libraries(tsbench_corad_inference_control PRIVATE corad_c)
+set_target_properties(tsbench_corad_inference_control PROPERTIES C_STANDARD 11 C_STANDARD_REQUIRED YES
+  C_EXTENSIONS NO BUILD_RPATH_USE_ORIGIN YES BUILD_RPATH "$ORIGIN")
+
+add_executable(tsbench_corad_training_control EXCLUDE_FROM_ALL training_control.c)
+target_link_libraries(tsbench_corad_training_control PRIVATE corad_c)
+set_target_properties(tsbench_corad_training_control PROPERTIES C_STANDARD 11 C_STANDARD_REQUIRED YES
+  C_EXTENSIONS NO BUILD_RPATH_USE_ORIGIN YES BUILD_RPATH "$ORIGIN")

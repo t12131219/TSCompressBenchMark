@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "BMK draft native entry inventory v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "state",
+    "entries"
+  ],
+  "properties": {
+    "schema": {
+      "const": "bmk.native-inventory/1"
+    },
+    "state": {
+      "const": "source_review_in_progress"
+    },
+    "entries": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "selection",
+          "selection_id",
+          "archive_sha256",
+          "target",
+          "unsupported_platform_m6",
+          "operations"
+        ],
+        "properties": {
+          "selection": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "selection_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}(?![\\s\\S])"
+          },
+          "archive_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}(?![\\s\\S])"
+          },
+          "target": {
+            "type": "string",
+            "minLength": 1
+          },
+          "unsupported_platform_m6": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "minLength": 1
+          },
+          "operations": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "route",
+                "source_member",
+                "declaration_tokens",
+                "domain_and_required_checks",
+                "qualification"
+              ],
+              "properties": {
+                "route": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9][a-z0-9._-]*(?![\\s\\S])"
+                },
+                "source_member": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "declaration_tokens": {
+                  "type": "array",
+                  "minItems": 0,
+                  "uniqueItems": true,
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "domain_and_required_checks": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "qualification": {
+                  "const": "not_run"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

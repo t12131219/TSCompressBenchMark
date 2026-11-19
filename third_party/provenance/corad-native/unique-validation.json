@@ -1,0 +1,40 @@
+{
+  "status": "PASS",
+  "archive_sha256": "b95e04c6ad63e2f3c0cf06dbf853311dc112544ba9d36553dce3feb89c7fab83",
+  "isolated_build": true,
+  "functional_checks": [
+    {
+      "repository": "corad-native",
+      "test": "corad-native-test_model",
+      "status": "PASS",
+      "exit_code": 0
+    },
+    {
+      "repository": "corad-native",
+      "test": "corad-native-training",
+      "status": "PASS",
+      "exit_code": 0
+    }
+  ],
+  "isolated_functional_checks": [
+    {
+      "repository": "corad-native",
+      "test": "corad-native-test_model",
+      "status": "PASS",
+      "exit_code": 0
+    },
+    {
+      "repository": "corad-native",
+      "test": "corad-native-training",
+      "status": "PASS",
+      "exit_code": 0
+    }
+  ],
+  "optional_components": {},
+  "scope": "Functional checks and independent source-package build. No new performance measurements. GPU runtime unavailable.",
+  "capability_fix_validation": {
+    "source_tree": "/tmp/unique-capability-fixes-20261110",
+    "isolated_build": "PASS",
+    "scope": "Capability fixes; no performance measurements; unsupported ISA/GPU runtime not executed"
+  }
+}

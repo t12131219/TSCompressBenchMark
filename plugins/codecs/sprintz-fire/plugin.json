@@ -1,0 +1,29 @@
+{
+  "schema": "bmk.plugin/1",
+  "id": "sprintz-fire",
+  "kind": "codec",
+  "build": {"cmake_dir": "plugins/codecs/sprintz-fire", "target": "tsbench_sprintz_fire"},
+  "abi_version": 1,
+  "implementation_version": "v1",
+  "format_id": "sprintz-fire.u16-4lane-envelope.v1",
+  "roles": [
+    "value"
+  ],
+  "options_schema": "plugins/codecs/sprintz-fire/options.json",
+  "runtime_dependencies": [
+    "librepaired_codec.so"
+  ],
+  "source_files": [
+    "plugins/codecs/sprintz-fire/CMakeLists.txt",
+    "plugins/codecs/sprintz-fire/adapter.cpp",
+    "plugins/codecs/sprintz-fire/native_profile.hpp",
+    "plugins/codecs/common/linear_frame.hpp",
+    "include/tsbench/plugin_abi.h",
+    "cmake/frozen.cmake",
+    "tools/prepare_plugin_source.py",
+    "tools/probe_release_builds.py",
+    "third_party/sources.lock.json",
+    "third_party/provenance/Sprintz-family/source-manifest.json",
+    "third_party/archives/Sprintz-family-source-unique-v1.tar.gz"
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "schema":"bmk.plugin/1",
+  "id":"corad-frozen",
+  "kind":"codec",
+  "build":{"cmake_dir":"plugins/codecs/corad-frozen","target":"tsbench_corad_frozen"},
+  "abi_version":1,
+  "implementation_version":"v1",
+  "format_id":"corad-frozen.crd1-envelope.v1",
+  "roles":["value"],
+  "options_schema":"plugins/codecs/corad-frozen/options.json",
+  "runtime_dependencies":["libcorad_c.so"],
+  "source_files":[
+    "plugins/codecs/corad-frozen/CMakeLists.txt",
+    "plugins/codecs/corad-frozen/adapter.cpp",
+    "plugins/codecs/common/linear_frame.hpp",
+    "include/tsbench/plugin_abi.h",
+    "cmake/frozen.cmake",
+    "tools/prepare_plugin_source.py",
+    "tools/probe_release_builds.py",
+    "third_party/sources.lock.json",
+    "third_party/provenance/corad-native/source-manifest.json",
+    "third_party/archives/corad-native-source-unique-v1.tar.gz"
+  ]
+}

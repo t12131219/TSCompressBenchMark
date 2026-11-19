@@ -1,0 +1,24 @@
+{
+  "schema":"bmk.plugin/1",
+  "id":"pbepla-rr",
+  "kind":"codec",
+  "build":{"cmake_dir":"plugins/codecs/pbepla-rr","target":"tsbench_pbepla_rr"},
+  "abi_version":1,
+  "implementation_version":"v1",
+  "format_id":"pbepla-rr.pbep-envelope.v1",
+  "roles":["value"],
+  "options_schema":"plugins/codecs/pbepla-rr/options.json",
+  "runtime_dependencies":["libtba_native.so"],
+  "source_files":[
+    "plugins/codecs/pbepla-rr/CMakeLists.txt",
+    "plugins/codecs/pbepla-rr/adapter.cpp",
+    "plugins/codecs/common/linear_frame.hpp",
+    "include/tsbench/plugin_abi.h",
+    "cmake/frozen.cmake",
+    "tools/prepare_plugin_source.py",
+    "tools/probe_release_builds.py",
+    "third_party/sources.lock.json",
+    "third_party/provenance/tsbenchmark-algorithms-native/source-manifest.json",
+    "third_party/archives/tsbenchmark-algorithms-native-source-unique-v1.tar.gz"
+  ]
+}

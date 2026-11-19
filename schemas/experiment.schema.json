@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "BMK schema-1 plan request (after TOML parsing, M0 subset)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema"
+  ],
+  "properties": {
+    "schema": {
+      "type": "integer",
+      "const": 1
+    },
+    "suite": {
+      "type": "string",
+      "pattern": "^[a-z0-9_-]+(?![\\s\\S])"
+    },
+    "max_workers": {
+      "type": "integer",
+      "minimum": 1
+    }
+  }
+}

@@ -1,0 +1,510 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "scope",
+    "definition_stage",
+    "qualification_stage",
+    "run",
+    "validation",
+    "formal_blockers",
+    "programs",
+    "coverage",
+    "routes",
+    "obligations",
+    "products",
+    "qualification_granted",
+    "stage_accepted",
+    "timing_admitted",
+    "audit_id"
+  ],
+  "properties": {
+    "schema": {
+      "const": "bmk.native-qualification-audit/1"
+    },
+    "scope": {
+      "const": "candidate_evidence_only"
+    },
+    "definition_stage": {
+      "const": "M0"
+    },
+    "qualification_stage": {
+      "const": "M3"
+    },
+    "run": {
+      "$ref": "#/$defs/run"
+    },
+    "validation": {
+      "$ref": "#/$defs/validation"
+    },
+    "formal_blockers": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "programs": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/digest"
+      },
+      "propertyNames": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "coverage": {
+      "$ref": "#/$defs/coverage"
+    },
+    "routes": {
+      "$ref": "#/$defs/routes"
+    },
+    "obligations": {
+      "$ref": "#/$defs/obligations"
+    },
+    "products": {
+      "$ref": "#/$defs/products"
+    },
+    "qualification_granted": {
+      "const": false
+    },
+    "stage_accepted": {
+      "const": false
+    },
+    "timing_admitted": {
+      "const": false
+    },
+    "audit_id": {
+      "$ref": "#/$defs/digest"
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:tsbench:schema:qualification:1",
+  "$defs": {
+    "digest": {
+      "type": "string",
+      "minLength": 64,
+      "maxLength": 64,
+      "pattern": "^[a-f0-9]+$"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[a-z0-9][a-z0-9_-]*(?![\\s\\S])"
+    },
+    "run": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "run_id",
+        "seal_id",
+        "plan_content_id",
+        "admission_plan_id",
+        "build_id",
+        "recovery_id",
+        "ledger_sha256",
+        "execution_binding_id",
+        "reconstructed_report_id",
+        "detached_audit_id"
+      ],
+      "properties": {
+        "run_id": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{32}$",
+          "minLength": 32,
+          "maxLength": 32
+        },
+        "seal_id": {
+          "$ref": "#/$defs/digest"
+        },
+        "plan_content_id": {
+          "$ref": "#/$defs/digest"
+        },
+        "admission_plan_id": {
+          "$ref": "#/$defs/digest"
+        },
+        "build_id": {
+          "$ref": "#/$defs/digest"
+        },
+        "recovery_id": {
+          "$ref": "#/$defs/digest"
+        },
+        "ledger_sha256": {
+          "$ref": "#/$defs/digest"
+        },
+        "execution_binding_id": {
+          "$ref": "#/$defs/digest"
+        },
+        "reconstructed_report_id": {
+          "$ref": "#/$defs/digest"
+        },
+        "detached_audit_id": {
+          "$ref": "#/$defs/digest"
+        }
+      }
+    },
+    "validation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_id",
+        "frozen_python",
+        "audit_python",
+        "strength",
+        "recovery",
+        "launchers_id",
+        "validation_protocol_id"
+      ],
+      "properties": {
+        "schema_id": {
+          "$ref": "#/$defs/digest"
+        },
+        "frozen_python": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/digest"
+          },
+          "propertyNames": {
+            "type": "string",
+            "pattern": "^src/tsbench/[a-z_][a-z0-9_/]*\\.py(?![\\s\\S])"
+          }
+        },
+        "audit_python": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/digest"
+          },
+          "propertyNames": {
+            "type": "string",
+            "pattern": "^src/tsbench/[a-z_][a-z0-9_/]*\\.py(?![\\s\\S])"
+          }
+        },
+        "strength": {
+          "const": "artifact_each"
+        },
+        "recovery": {
+          "const": "rerun_sealed_recovery_detached"
+        },
+        "launchers_id": {
+          "$ref": "#/$defs/digest"
+        },
+        "validation_protocol_id": {
+          "$ref": "#/$defs/digest"
+        }
+      }
+    },
+    "coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "routes",
+        "qualified_routes",
+        "obligations",
+        "required",
+        "conditional",
+        "product_slots",
+        "recovery"
+      ],
+      "properties": {
+        "routes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "qualified_routes": {
+          "const": 0
+        },
+        "obligations": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "required": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "propertyNames": {
+            "$ref": "#/$defs/name"
+          }
+        },
+        "conditional": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "propertyNames": {
+            "$ref": "#/$defs/name"
+          }
+        },
+        "product_slots": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "recovery": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "propertyNames": {
+            "$ref": "#/$defs/name"
+          }
+        }
+      }
+    },
+    "routes": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "domain_id",
+          "quality_id",
+          "access_id",
+          "retention_id",
+          "source_identity_id",
+          "selection",
+          "route",
+          "obligations",
+          "required_counts",
+          "conditional_counts",
+          "out_of_scope_claims",
+          "qualification"
+        ],
+        "properties": {
+          "domain_id": {
+            "$ref": "#/$defs/digest"
+          },
+          "quality_id": {
+            "$ref": "#/$defs/digest"
+          },
+          "access_id": {
+            "$ref": "#/$defs/digest"
+          },
+          "retention_id": {
+            "$ref": "#/$defs/digest"
+          },
+          "source_identity_id": {
+            "$ref": "#/$defs/digest"
+          },
+          "selection": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "route": {
+            "$ref": "#/$defs/name"
+          },
+          "obligations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/digest"
+            },
+            "minItems": 1,
+            "uniqueItems": true
+          },
+          "required_counts": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "propertyNames": {
+              "$ref": "#/$defs/name"
+            }
+          },
+          "conditional_counts": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "propertyNames": {
+              "$ref": "#/$defs/name"
+            }
+          },
+          "out_of_scope_claims": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "qualification": {
+            "const": "not_qualified"
+          }
+        }
+      },
+      "propertyNames": {
+        "$ref": "#/$defs/digest"
+      }
+    },
+    "obligations": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "route_contract_id",
+          "check",
+          "kind",
+          "state",
+          "reason",
+          "predicate",
+          "product_slots"
+        ],
+        "properties": {
+          "route_contract_id": {
+            "$ref": "#/$defs/digest"
+          },
+          "check": {
+            "$ref": "#/$defs/name"
+          },
+          "kind": {
+            "enum": [
+              "required",
+              "conditional"
+            ]
+          },
+          "state": {
+            "enum": [
+              "verified_candidate",
+              "not_run",
+              "quality_rejected",
+              "pending_supported_runtime",
+              "pending_supported_build",
+              "missing_or_failed_products",
+              "incomplete_direct_c_cross_control",
+              "incomplete_required_control"
+            ]
+          },
+          "reason": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "predicate": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "product_slots": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/digest"
+            },
+            "minItems": 0,
+            "uniqueItems": true
+          }
+        }
+      },
+      "propertyNames": {
+        "$ref": "#/$defs/digest"
+      }
+    },
+    "products": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "method",
+          "driver_id",
+          "case_domain_id",
+          "configuration_id",
+          "programs",
+          "terminal",
+          "terminal_reason",
+          "ledger_row_id",
+          "audit_state",
+          "detached_observation"
+        ],
+        "properties": {
+          "method": {
+            "type": "string",
+            "minLength": 1
+          },
+          "driver_id": {
+            "$ref": "#/$defs/digest"
+          },
+          "case_domain_id": {
+            "$ref": "#/$defs/digest"
+          },
+          "configuration_id": {
+            "$ref": "#/$defs/digest"
+          },
+          "programs": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "minItems": 1,
+            "uniqueItems": true
+          },
+          "terminal": {
+            "enum": [
+              "verified",
+              "expected_rejection",
+              "cancelled",
+              "timeout",
+              "crash",
+              "dependency_failed",
+              "file_limit_signal",
+              "sandbox_failed",
+              "validation_failed",
+              "execution_failed"
+            ]
+          },
+          "terminal_reason": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "ledger_row_id": {
+            "$ref": "#/$defs/digest"
+          },
+          "audit_state": {
+            "enum": [
+              "restored",
+              "rejection_replayed",
+              "rejection_validated_in_ledger_only",
+              "not_applicable_nonpassing_terminal"
+            ]
+          },
+          "detached_observation": {
+            "oneOf": [
+              {
+                "const": null
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "observation_kind",
+                  "observation_id"
+                ],
+                "properties": {
+                  "observation_kind": {
+                    "$ref": "#/$defs/name"
+                  },
+                  "observation_id": {
+                    "$ref": "#/$defs/digest"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      },
+      "propertyNames": {
+        "$ref": "#/$defs/digest"
+      }
+    }
+  }
+}

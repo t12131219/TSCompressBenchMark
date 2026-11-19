@@ -1,0 +1,55 @@
+{
+  "schema": "bmk.first-batch-real-intake/2",
+  "base_intake": {
+    "path": "datasets/manifests/first-batch-real-intake.json",
+    "sha256": "efc1eea4d06fec4126c4930acca4b5085030db238b66148d1efdec272eab5ec9"
+  },
+  "datasets": [
+    {
+      "id": "unique-forecast-traffic",
+      "source_cluster": "unique-forecast-traffic",
+      "domain": "traffic",
+      "provenance_policy": "user_verified_local_copy",
+      "selection_reason": "Retain all rows. Select labels 27*i (i=0..30) and OT in source order before comparing any codec.",
+      "unique_members": [
+        {
+          "path": "datasets/Forecast_TS/traffic.csv",
+          "bytes": 136478119,
+          "sha256": "cb06463d56fa17d87f47027cd9389ceae82a69eddee51cdb61480e120dab0b16"
+        }
+      ],
+      "asset_path": "datasets/raw/unique-forecast-traffic-v1.csv.gz",
+      "header_profile": "project_unique_traffic_32_v1",
+      "delimiter": ",",
+      "decimal_point": ".",
+      "nominal_step_seconds": 3600,
+      "split_at": [
+        "2017-01-01 00:00:00",
+        "2018-01-01 00:00:00"
+      ]
+    },
+    {
+      "id": "unique-forecast-exchange",
+      "source_cluster": "unique-forecast-exchange",
+      "domain": "finance",
+      "provenance_policy": "user_verified_local_copy",
+      "selection_reason": "Retain all rows and all eight values in source order. Normalize slash dates to the common midnight civil coordinate; source currency pair labels and units are not inferred.",
+      "unique_members": [
+        {
+          "path": "datasets/Forecast_TS/exchange_rate.csv",
+          "bytes": 637800,
+          "sha256": "48b4d9d3d508f5104162e85b9a6042e3557fde11aa9f2944eba8c0d0efc89842"
+        }
+      ],
+      "asset_path": "datasets/raw/unique-forecast-exchange-v1.csv.gz",
+      "header_profile": "project_unique_exchange_8_v1",
+      "delimiter": ",",
+      "decimal_point": ".",
+      "nominal_step_seconds": 86400,
+      "split_at": [
+        "2002-01-01 00:00:00",
+        "2006-01-01 00:00:00"
+      ]
+    }
+  ]
+}

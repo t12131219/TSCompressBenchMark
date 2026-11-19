@@ -1,0 +1,77 @@
+schema = "bmk.plugin-registry/1"
+
+# Production routes are added when their adapter packages exist. A Unique
+# source selection or native declaration alone is not a loadable plugin.
+[plugins]
+
+[plugins."raw-store"]
+enabled = true
+manifest = "plugins/codecs/raw-store/plugin.json"
+
+[plugins."zstd"]
+enabled = true
+manifest = "plugins/codecs/zstd/plugin.json"
+
+[plugins."xz-baseline"]
+enabled = true
+manifest = "plugins/codecs/zstd/xz-baseline.json"
+
+[plugins."alp-auto"]
+enabled = true
+manifest = "plugins/codecs/alp-auto/plugin.json"
+
+[plugins."sprintz-fire"]
+enabled = true
+manifest = "plugins/codecs/sprintz-fire/plugin.json"
+
+[plugins."sprintz-fire-u16-group"]
+enabled = true
+manifest = "plugins/codecs/sprintz-fire/group-plugin.json"
+
+[plugins."gorilla-tv"]
+enabled = true
+manifest = "plugins/codecs/gorilla-tv/plugin.json"
+
+[plugins."pcodec-source-auto"]
+enabled = true
+manifest = "plugins/codecs/pcodec/source-auto.json"
+
+[plugins."pcodec-c-native-auto"]
+enabled = true
+manifest = "plugins/codecs/pcodec/c-native-auto.json"
+
+[plugins."titchy-batch"]
+enabled = true
+manifest = "plugins/codecs/titchy-batch/plugin.json"
+
+[plugins."zfp-reversible"]
+enabled = true
+manifest = "plugins/codecs/zfp-reversible/plugin.json"
+
+[plugins."selfstar-batch"]
+enabled = true
+manifest = "plugins/codecs/selfstar-batch/plugin.json"
+
+[plugins."huff0-reference"]
+enabled = true
+manifest = "plugins/codecs/huff0-reference/plugin.json"
+
+[plugins."pbepla-rr"]
+enabled = true
+manifest = "plugins/codecs/pbepla-rr/plugin.json"
+
+[plugins."corad-frozen"]
+enabled = true
+manifest = "plugins/codecs/corad-frozen/plugin.json"
+
+[plugins."gorilla-t-derived"]
+enabled = true
+manifest = "plugins/codecs/gorilla-derived/t.json"
+
+[plugins."gorilla-v-derived"]
+enabled = true
+manifest = "plugins/codecs/gorilla-derived/v.json"
+
+[plugins."raw-timestamp"]
+enabled = true
+manifest = "plugins/codecs/raw-timestamp/plugin.json"

@@ -1,0 +1,134 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Development lossless terminal observation v1 (not qualification or performance)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "slot_id", "attempt", "operations", "status", "reason", "artifact"],
+  "properties": {
+    "schema": {"const": "bmk.dev-observation/1"},
+    "slot_id": {"$ref": "#/$defs/sha256"},
+    "attempt": {"type": "integer", "const": 1},
+    "operations": {
+      "type": "array",
+      "prefixItems": [
+        {"$ref": "#/$defs/operation", "properties": {"operation": {"const": "encode"}}},
+        {"$ref": "#/$defs/operation", "properties": {"operation": {"const": "decode"}}}
+      ],
+      "items": false
+    },
+    "status": {"enum": ["verified", "failed", "timeout", "crash", "dependency_failed", "input_failed", "cancelled", "validation_failed", "resource_blocked", "sandbox_failed", "file_limit_signal"]},
+    "reason": {"type": "string"},
+    "artifact": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/artifact"}]},
+    "execution": {"$ref": "#/$defs/execution"},
+    "resource_guard": {"$ref": "#/$defs/resource_guard"},
+    "workspace": {"type": "array", "maxItems": 4, "items": {"type": "object", "additionalProperties": false,
+      "required": ["name", "bytes", "sha256"], "properties": {"name": {"enum": ["original.bin", "original.json", "restored.bin", "restored.json"]},
+        "bytes": {"$ref": "#/$defs/nonnegative"}, "sha256": {"$ref": "#/$defs/sha256"}}}}
+  },
+  "if": {"properties": {"status": {"const": "verified"}}},
+  "then": {
+    "required": ["execution"],
+    "properties": {
+      "artifact": {"$ref": "#/$defs/artifact"},
+      "reason": {"const": ""},
+      "operations": {"minItems": 2, "items": false, "prefixItems": [
+        {"properties": {"status": {"const": "completed"}}},
+        {"properties": {"status": {"const": "completed"}}}
+      ]}
+    }
+  },
+  "else": {
+    "not": {"required": ["execution"]},
+    "properties": {"reason": {"minLength": 1}}
+  },
+  "$defs": {
+    "nonnegative": {"type": "integer", "minimum": 0},
+    "nullable_count": {"type": ["integer", "null"], "minimum": 0},
+    "resource_guard": {"type": "object", "additionalProperties": false, "required": ["sample", "minimum", "reasons"],
+      "properties": {
+        "minimum": {"type": "object", "additionalProperties": false, "required": ["available_bytes", "available_inodes", "host_memavailable_bytes"],
+          "properties": {"available_bytes": {"$ref": "#/$defs/nonnegative"}, "available_inodes": {"$ref": "#/$defs/nonnegative"}, "host_memavailable_bytes": {"$ref": "#/$defs/nonnegative"}}},
+        "sample": {"type": "object", "additionalProperties": false, "required": ["disk", "host_memavailable_bytes"],
+          "properties": {"host_memavailable_bytes": {"$ref": "#/$defs/nullable_count"}, "disk": {"type": ["object", "null"], "additionalProperties": false,
+            "required": ["device", "available_bytes", "available_inodes"], "properties": {"device": {"$ref": "#/$defs/nonnegative"},
+              "available_bytes": {"$ref": "#/$defs/nonnegative"}, "available_inodes": {"$ref": "#/$defs/nullable_count"}}}}},
+        "reasons": {"type": "array", "uniqueItems": true, "items": {"enum": ["results_mount_capacity_unavailable", "results_mount_free_bytes_below_floor",
+          "results_mount_free_inodes_below_floor", "host_memavailable_unavailable", "host_memavailable_below_advisory_floor"]}}
+      }},
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}(?![\\s\\S])"},
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "bytes", "sha256"],
+      "properties": {
+        "path": {"type": "string", "pattern": "^artifacts/[0-9a-f]{64}\\.bmk(?![\\s\\S])"},
+        "bytes": {"type": "integer", "minimum": 0},
+        "sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "mount": {"type": "object", "additionalProperties": false, "required": ["bytes", "sha256"],
+      "properties": {"bytes": {"$ref": "#/$defs/nonnegative"}, "sha256": {"$ref": "#/$defs/sha256"}}},
+    "operation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["operation", "status", "pid", "session_id", "returncode", "reason"],
+      "properties": {
+        "operation": {"enum": ["encode", "decode"]},
+        "status": {"enum": ["completed", "failed", "timeout", "crash", "dependency_failed", "cancelled", "sandbox_failed", "file_limit_signal"]},
+        "pid": {"type": ["integer", "null"], "minimum": 1},
+        "session_id": {"type": ["string", "null"], "pattern": "^[0-9a-f]{32}(?![\\s\\S])"},
+        "returncode": {"type": ["integer", "null"]},
+        "process_wall_ns": {"type": "integer", "minimum": 1},
+        "reason": {"type": "string"},
+        "input_mounts": {"type": "object", "minProperties": 1, "maxProperties": 2, "additionalProperties": false,
+          "properties": {"frame.bmk": {"$ref": "#/$defs/mount"}, "original.bin": {"$ref": "#/$defs/mount"}, "original.json": {"$ref": "#/$defs/mount"}}},
+        "child_usage": {"type": "object", "additionalProperties": false, "required": ["user_cpu_ns", "system_cpu_ns", "maxrss_bytes"],
+          "properties": {"user_cpu_ns": {"$ref": "#/$defs/nonnegative"}, "system_cpu_ns": {"$ref": "#/$defs/nonnegative"}, "maxrss_bytes": {"$ref": "#/$defs/nonnegative"}}}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"pid": {"type": "null"}}},
+          "then": {"not": {"required": ["process_wall_ns"]},
+            "properties": {"session_id": {"type": "null"}, "returncode": {"type": "null"},
+            "status": {"enum": ["failed", "dependency_failed", "cancelled"]}}},
+          "else": {"properties": {"session_id": {"type": "string"}, "returncode": {"type": "integer"},
+            "status": {"not": {"const": "dependency_failed"}}}}
+        },
+        {
+          "if": {"properties": {"status": {"const": "completed"}}},
+          "then": {"properties": {"returncode": {"const": 0}, "reason": {"const": ""}}},
+          "else": {"properties": {"reason": {"minLength": 1}}}
+        },
+        {
+          "if": {"properties": {"status": {"const": "crash"}}},
+          "then": {"properties": {"returncode": {"anyOf": [{"maximum": -1}, {"minimum": 129, "maximum": 192}]}}}
+        },
+        {
+          "if": {"properties": {"status": {"const": "failed"}, "pid": {"type": "integer"}}},
+          "then": {"properties": {"returncode": {"minimum": 1}}}
+        }
+      ]
+    },
+    "execution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["encode", "decode"],
+      "properties": {
+        "encode": {"$ref": "#/$defs/metadata", "properties": {"operation": {"const": "encode"}}},
+        "decode": {"$ref": "#/$defs/metadata", "properties": {"operation": {"const": "decode"}}}
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "required": ["operation", "mode", "backend", "threads", "fallback"],
+      "properties": {
+        "operation": {"enum": ["encode", "decode"]},
+        "mode": {"const": "batch"},
+        "backend": {"type": "string", "minLength": 1},
+        "threads": {"type": "integer", "const": 1},
+        "fallback": {"type": "boolean"}
+      },
+      "additionalProperties": {"type": ["integer", "boolean", "string"]}
+    }
+  }
+}

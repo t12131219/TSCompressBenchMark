@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object", "additionalProperties": false,
+  "required": ["schema", "base_intake", "base_manifest", "datasets"],
+  "properties": {
+    "schema": {"const": "bmk.first-batch-real-intake/3"},
+    "base_intake": {"$ref": "#/$defs/ref"}, "base_manifest": {"$ref": "#/$defs/ref"},
+    "datasets": {"type":"array","minItems":2,"maxItems":2,"items":{"$ref":"#/$defs/dataset"}}
+  },
+  "$defs": {
+    "sha": {"type":"string","pattern":"^[a-f0-9]{64}(?![\\s\\S])"},
+    "ref": {"type":"object","additionalProperties":false,"required":["path","sha256"],"properties":{"path":{"type":"string"},"sha256":{"$ref":"#/$defs/sha"}}},
+    "asset": {"type":"object","additionalProperties":false,"required":["path","sha256","bytes"],
+      "properties":{"path":{"type":"string"},"sha256":{"$ref":"#/$defs/sha"},"bytes":{"type":"integer","minimum":1,"maximum":1048576}}},
+    "dataset": {
+      "type":"object","additionalProperties":false,
+      "required":["id","source_cluster","domain","header_profile","asset_path","delimiter","decimal_point","nominal_step_ticks","split_at","rows","selection_reason","license","license_evidence","attribution","source_url","source_version","source_asset"],
+      "properties":{
+        "id":{"enum":["westermo-system1","ceda-cmip6-gsat"]},
+        "source_cluster":{"enum":["westermo-lab-telemetry","ceda-ipcc-ar6-cmip6"]},
+        "domain":{"enum":["server_metrics","scientific_computing"]},
+        "header_profile":{"enum":["westermo_system1_elapsed_v1","ceda_cmip6_gsat_year_v1"]},
+        "asset_path":{"type":"string"}, "delimiter":{"const":","}, "decimal_point":{"const":"."},
+        "nominal_step_ticks":{"type":"integer","minimum":1},
+        "split_at":{"type":"array","minItems":2,"maxItems":2,"items":{"type":"string","pattern":"^[0-9]{1,8}$"}},
+        "rows":{"type":"integer","minimum":1,"maximum":4320},
+        "selection_reason":{"type":"string","minLength":1}, "license":{"const":"CC-BY-4.0"},
+        "license_evidence":{"$ref":"#/$defs/asset"}, "attribution":{"$ref":"#/$defs/asset"},
+        "source_url":{"type":"string","pattern":"^https://"}, "source_version":{"type":"string","minLength":1},
+        "source_asset":{"$ref":"#/$defs/asset"}
+      },
+      "oneOf":[
+        {"properties":{"id":{"const":"westermo-system1"},"domain":{"const":"server_metrics"},"source_cluster":{"const":"westermo-lab-telemetry"},"header_profile":{"const":"westermo_system1_elapsed_v1"},"nominal_step_ticks":{"const":30},"rows":{"const":4320}}},
+        {"properties":{"id":{"const":"ceda-cmip6-gsat"},"domain":{"const":"scientific_computing"},"source_cluster":{"const":"ceda-ipcc-ar6-cmip6"},"header_profile":{"const":"ceda_cmip6_gsat_year_v1"},"nominal_step_ticks":{"const":1},"rows":{"const":171}}}
+      ]
+    }
+  }
+}

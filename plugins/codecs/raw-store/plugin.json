@@ -1,0 +1,13 @@
+{
+  "schema": "bmk.plugin/1",
+  "id": "raw-store",
+  "kind": "codec",
+  "build": {"cmake_dir": "plugins/codecs/raw-store", "target": "tsbench_raw_store"},
+  "supported_tasks": ["linear_f64_bitwise"],
+  "abi_version": 1,
+  "implementation_version": "v1",
+  "format_id": "raw-store.le.v1",
+  "roles": ["value", "bytes"],
+  "options_schema": "plugins/codecs/raw-store/options.json",
+  "source_files": ["plugins/codecs/raw-store/CMakeLists.txt", "plugins/codecs/raw-store/raw_store.c", "include/tsbench/plugin_abi.h"]
+}

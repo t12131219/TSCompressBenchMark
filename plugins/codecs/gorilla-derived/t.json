@@ -1,0 +1,32 @@
+{
+  "schema": "bmk.plugin/1",
+  "id": "gorilla-t-derived",
+  "kind": "codec",
+  "build": {
+    "cmake_dir": "plugins/codecs/gorilla-derived",
+    "target": "tsbench_gorilla_t_derived"
+  },
+  "abi_version": 1,
+  "implementation_version": "v1",
+  "format_id": "gorilla.t.delta-column.v1",
+  "roles": [
+    "timestamp"
+  ],
+  "options_schema": "plugins/codecs/gorilla-derived/options.json",
+  "source_files": [
+    "plugins/codecs/gorilla-derived/CMakeLists.txt",
+    "plugins/codecs/gorilla-derived/column.c",
+    "plugins/codecs/gorilla-derived/column.h",
+    "plugins/codecs/gorilla-derived/adapter.cpp",
+    "plugins/codecs/common/linear_frame.hpp",
+    "include/tsbench/plugin_abi.h",
+    "cmake/frozen.cmake",
+    "tools/extract_gorilla_bit_io.py",
+    "tools/prepare_plugin_source.py",
+    "tools/probe_release_builds.py",
+    "catalog/selections/gorilla_role_derivations.json",
+    "third_party/sources.lock.json",
+    "third_party/provenance/gorilla-native/source-manifest.json",
+    "third_party/archives/gorilla-native-source-unique-v1.tar.gz"
+  ]
+}

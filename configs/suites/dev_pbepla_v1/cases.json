@@ -1,0 +1,25 @@
+{
+  "schema":"bmk.dev-pbepla-cases/2",
+  "selection":87,
+  "method":{"plugin":"pbepla-rr","role":"value","dtype":"f64","format":"PBEP","max_delay":64,"value_layer_budget":2097152},
+  "fixtures":[
+    {"id":"empty","count":0,"eps":[1]},
+    {"id":"constant","count":129,"eps":[1,0.25,0.0625]},
+    {"id":"piecewise","count":259,"eps":[0.5,0.125,0.03125]},
+    {"id":"sixteen-layers","count":17,"eps":[128,64,32,16,8,4,2,1,0.5,0.25,0.125,0.0625,0.03125,0.015625,0.0078125,0.00390625]}
+  ],
+  "replay":{"cases":["empty","piecewise","weather"],"faults":["changed","no-rewind","sink-fail","value-limit"],
+            "accounting":{"scope":"logical_callback_and_stdio_not_physical_io","empty_passes":1,"nonempty_passes_without_retry":3,
+                          "max_numerical_retries":0,"expect_batch_payload_identity":true}},
+  "alternate_geometry":[
+    {"id":"connected-explicit-grid","count":129,"eps":[0.5,0.125],
+     "geometry":{"connected":1,"has_source_range":1,"source_min":-2,"source_max":2,"max_delay":16,"resolutions":[10,10]}},
+    {"id":"symmetric-single","count":129,"eps":[0.5],"geometry":{"symmetric_band":1,"max_delay":16}}
+  ],
+  "retention":{"max_frame_bytes":131072,"frame_each_level":true,"one_word_file_per_input":true},
+  "validator":"pbep_prefix_bytes_replay_and_exact_original_domain_max_error_v2",
+  "corpus":"datasets/manifests/first-batch-real-v2.json",
+  "corpus_id":"a9904b1ce2068186e1c3e47eccf406e030d9e73973defe50d0508c91334929b3",
+  "window":{"dataset":"mpi-beutenberg-weather","column":"co2","partition":"test","offset":0,"count":1029},
+  "window_eps":[16,4,1]
+}

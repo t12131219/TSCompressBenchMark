@@ -1,0 +1,17 @@
+{
+  "schema": "bmk.case-catalog/1",
+  "state": "draft_case_intent_not_run",
+  "cases": [
+    {"id": "cross-format-logical-object", "atoms": ["source/csv_v1", "source/npy_v1", "source/txt_v1"], "development_fixtures": ["tiny-tv"], "checks": ["identity_of_canonical_TV", "wrong_schema_rejected", "bitwise_restore"]},
+    {"id": "type-and-special-boundaries", "atoms": ["type/exact_v1", "type/checked_conversion_v1", "special/mask_bits_v1"], "development_fixtures": ["f64-boundaries", "i64-boundaries"], "checks": ["signed_zero", "nan_payload", "integer_overflow_rejected_or_sidecar", "validity_bitmap_exact"]},
+    {"id": "quality-in-original-domain", "atoms": ["quality/bounded_quantization_v1", "quality/repair_fallback_v1"], "development_fixtures": ["tiny-tv", "f64-boundaries"], "checks": ["actual_pointwise_bound", "exception_and_repair_bytes", "raw_fallback_policy", "bad_repair_rejected"]},
+    {"id": "shared-time-axis", "atoms": ["route/whole_object_v1"], "development_fixtures": ["tiny-tv"], "checks": ["roles_restored", "t_stored_once_if_shared", "missing_t_rejected", "nonintegral_unit_conversion_rejected"]},
+    {"id": "runtime-resource-evidence", "atoms": ["execution/external_parallel_v1", "execution/observed_isa_v1", "measurement/l0_l1_v1"], "development_fixtures": ["tiny-tv"], "checks": ["effective_backend_and_workers", "same_budget", "outer_wall_clock", "distinct_profile_pass"]},
+    {"id": "packetized-stream", "atoms": ["stream/chunked_v1"], "development_fixtures": ["tiny-tv"], "checks": ["first_packet_before_finish", "bounded_state", "backpressure", "non_full_tail", "full_recovery"]},
+    {"id": "access-and-query", "atoms": ["point_read/service_v1", "range_read/service_v1", "query/service_v1"], "development_fixtures": ["tiny-tv"], "checks": ["original_domain_results", "index_or_full_decode_clearly_attributed", "out_of_bounds_rejected", "read_amplification"]},
+    {"id": "quality-levels", "atoms": ["progressive/quality_service_v1"], "development_fixtures": ["tiny-tv"], "checks": ["quality_per_level", "incremental_and_cumulative_cost", "invalid_prefix_rejected"]},
+    {"id": "durable-change-and-resume", "atoms": ["mutable/persistent_v1", "checkpoint/replay_v1"], "development_fixtures": ["tiny-tv"], "checks": ["flush_and_reopen", "interruption_replay", "modified_point", "untouched_range", "corrupt_checkpoint_rejected"]},
+    {"id": "model-and-search", "atoms": ["model/deployment_v1", "training/budgeted_v1"], "development_fixtures": [], "checks": ["distinct_train_dev_test", "freeze_search_budget", "missing_or_different_asset_rejected", "dict_or_model_bytes"]},
+    {"id": "no-input-independent-decode", "atoms": ["restore/independent_v1"], "development_fixtures": ["tiny-tv", "f64-boundaries", "i64-boundaries"], "checks": ["new_decoder_process", "no_original_input", "closed_asset_dependency_graph", "validator_pass"]}
+  ]
+}

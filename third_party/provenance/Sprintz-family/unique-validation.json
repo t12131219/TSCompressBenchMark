@@ -1,0 +1,41 @@
+{
+  "status": "PASS",
+  "date": "2026-11-10",
+  "repository": "Sprintz-family",
+  "archive_sha256": "18c47f8dd0dae6770b4147b1a2870dc9c73e8927efe9761e7fe9bd3c10fd6466",
+  "isolated_build": {
+    "status": "PASS",
+    "source_archive": "Sprintz-family-source-unique-v1.tar.gz",
+    "cmake_build": "PASS"
+  },
+  "query_validation": {
+    "status": "PASS",
+    "cases": 18004,
+    "upstream_simd_cases": 15364,
+    "scalar_fallback_cases": 2640,
+    "legacy_query_regression_cases": 4080,
+    "default_vs_scalar_vs_raw_reduction": "PASS",
+    "roundtrip": "PASS",
+    "coverage": [
+      "algorithms 0..3",
+      "widths 8/16",
+      "dimensions 1..128 including non-vector counts",
+      "generic/lowdim/RLE",
+      "short and literal tails",
+      "incomplete rows",
+      "long RLE",
+      "unsigned high values",
+      "sum > 2^32",
+      "FIRE16 odd-lane fixture",
+      "truncated payload rejection"
+    ]
+  },
+  "sanitizers": {
+    "asan": "PASS",
+    "ubsan": "PASS",
+    "leaksan": "PASS",
+    "detect_leaks": true
+  },
+  "backend_policy": "generic RLE auto uses patched upstream AVX2 query; lowdim uses scalar fallback; QueryMode::Scalar is independent cross-check; Huffman stages bounded entropy decode",
+  "performance": "not rerun"
+}

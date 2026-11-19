@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "axis0",
+    "axis1",
+    "allow_pickle",
+    "mmap",
+    "timestamp_dtype",
+    "value_dtype",
+    "value_order"
+  ],
+  "properties": {
+    "axis0": {
+      "const": "rows"
+    },
+    "axis1": {
+      "const": "value_columns"
+    },
+    "allow_pickle": {
+      "const": false
+    },
+    "mmap": {
+      "const": false
+    },
+    "timestamp_dtype": {
+      "enum": [
+        "<i8",
+        ">i8"
+      ]
+    },
+    "value_dtype": {
+      "enum": [
+        "<f8",
+        ">f8"
+      ]
+    },
+    "value_order": {
+      "enum": [
+        "C",
+        "F"
+      ]
+    }
+  }
+}

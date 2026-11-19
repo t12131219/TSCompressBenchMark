@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "encoding",
+    "header",
+    "bad_rows",
+    "timestamp_encoding",
+    "decimal",
+    "missing_tokens",
+    "f64_encoding",
+    "mode",
+    "comments",
+    "empty_lines"
+  ],
+  "properties": {
+    "encoding": {
+      "const": "utf-8"
+    },
+    "header": {
+      "type": "boolean"
+    },
+    "bad_rows": {
+      "const": "error"
+    },
+    "timestamp_encoding": {
+      "const": "signed_decimal_integer"
+    },
+    "decimal": {
+      "enum": [
+        ".",
+        ","
+      ]
+    },
+    "missing_tokens": {
+      "const": [
+        "",
+        "NA"
+      ]
+    },
+    "f64_encoding": {
+      "const": "decimal_or_explicit_ieee_hex"
+    },
+    "mode": {
+      "enum": [
+        "delimited",
+        "fixed_width"
+      ]
+    },
+    "comments": {
+      "const": "reject"
+    },
+    "empty_lines": {
+      "const": "reject"
+    },
+    "delimiter": {
+      "enum": [
+        "|",
+        "\t",
+        ";"
+      ]
+    },
+    "widths": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 6,
+      "items": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 128
+      }
+    }
+  },
+  "oneOf": [
+    {
+      "properties": {
+        "mode": {
+          "const": "delimited"
+        }
+      },
+      "required": [
+        "delimiter"
+      ],
+      "not": {
+        "required": [
+          "widths"
+        ]
+      }
+    },
+    {
+      "properties": {
+        "mode": {
+          "const": "fixed_width"
+        }
+      },
+      "required": [
+        "widths"
+      ],
+      "not": {
+        "required": [
+          "delimiter"
+        ]
+      }
+    }
+  ]
+}

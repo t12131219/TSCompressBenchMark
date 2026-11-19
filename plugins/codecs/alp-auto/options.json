@@ -1,0 +1,18 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "decode_backend": {
+      "type": "string",
+      "default": "scalar-unfused",
+      "enum": [
+        "scalar-unfused",
+        "falp-scalar",
+        "falp-auto",
+        "falp-avx2",
+        "falp-avx512bw"
+      ]
+    }
+  },
+  "required": []
+}

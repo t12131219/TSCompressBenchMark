@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type":"object", "additionalProperties":false,
+  "required":["schema","generator_id","noise","files","integer_extrema","different_axes","timestamp_semantics","spatial_fields","float_special"],
+  "properties":{
+    "schema":{"const":"bmk.corpus-boundary-fixtures/1"}, "generator_id":{"const":"corpus-boundaries/v1"},
+    "noise":{"const":{"generator":"xorshift32_high16_centered_q15_v1","seed":3105541425,"file":"noise"}},
+    "files":{
+      "type":"object","minProperties":17,"maxProperties":17,
+      "propertyNames":{"pattern":"^[a-z][a-z0-9-]*$"},
+      "additionalProperties":{
+        "type":"object","additionalProperties":false,"required":["path","sha256","bytes","dtype","shape"],
+        "properties":{
+          "path":{"type":"string"}, "sha256":{"type":"string","pattern":"^[0-9a-f]{64}(?![\\s\\S])"},
+          "bytes":{"type":"integer","minimum":128,"maximum":4096},
+          "dtype":{"enum":["|b1","|i1","|u1","<i2","<u2","<i4","<u4","<i8","<u8","<f4","<f8"]},
+          "shape":{"type":"array","minItems":1,"maxItems":3,"items":{"type":"integer","minimum":1,"maximum":512}}
+        }
+      }
+    },
+    "integer_extrema":{"const":["i8-extrema","u8-extrema","i16-extrema","u16-extrema","i32-extrema","u32-extrema","i64-extrema","u64-extrema"]},
+    "different_axes":{"const":[{"axis":"axis-a","values":"trend","nominal_step_ns":1},{"axis":"axis-b","values":"masked","nominal_step_ns":2,"validity":"validity"}]},
+    "timestamp_semantics":{"const":{"unit":"ns","epoch":"unix","timezone":"UTC"}},
+    "spatial_fields":{"const":["matrix","tensor"]}, "float_special":{"const":"f32-special"}
+  }
+}

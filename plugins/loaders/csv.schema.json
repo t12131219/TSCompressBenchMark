@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "encoding",
+    "header",
+    "bad_rows",
+    "timestamp_encoding",
+    "decimal",
+    "missing_tokens",
+    "f64_encoding",
+    "delimiter",
+    "quote",
+    "escape"
+  ],
+  "properties": {
+    "encoding": {
+      "const": "utf-8"
+    },
+    "header": {
+      "type": "boolean"
+    },
+    "bad_rows": {
+      "const": "error"
+    },
+    "timestamp_encoding": {
+      "const": "signed_decimal_integer"
+    },
+    "decimal": {
+      "enum": [
+        ".",
+        ","
+      ]
+    },
+    "missing_tokens": {
+      "const": [
+        "",
+        "NA"
+      ]
+    },
+    "f64_encoding": {
+      "const": "decimal_or_explicit_ieee_hex"
+    },
+    "delimiter": {
+      "enum": [
+        ",",
+        ";",
+        "\t"
+      ]
+    },
+    "quote": {
+      "const": "\""
+    },
+    "escape": {
+      "const": "double_quote"
+    }
+  }
+}

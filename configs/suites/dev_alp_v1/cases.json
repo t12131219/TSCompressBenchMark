@@ -1,0 +1,13 @@
+{
+  "schema": "bmk.dev-alp-cases/1",
+  "selection": 9,
+  "method": {"plugin":"alp-auto", "role":"value", "encode_mode":"ALPN_AUTO", "threads":1},
+  "format": {"native":"ALN1", "vector_size":1024, "rowgroup_size":102400},
+  "fixtures": {"generator":"decimal_exception_rd_entropy_v1", "widths":[32,64], "cases":["mixed-decimal-raw","rd-only","raw-group","decimal-then-rd-rowgroup"]},
+  "decode_requests": ["scalar-unfused","falp-scalar","falp-auto","falp-avx2","falp-avx512bw"],
+  "required_compile_or_cpu_conditions": {"falp-avx2":"binary64 and built/runtime available", "falp-avx512bw":"binary64 and built/runtime available", "falp-neon":"not in Linux x86-64 plugin platform", "falp-sve":"not in Linux x86-64 plugin platform"},
+  "validator": "aln1_structure_and_bit_exact_in_new_process_v1",
+  "corpus": "datasets/manifests/first-batch-real-v2.json",
+  "corpus_id": "a9904b1ce2068186e1c3e47eccf406e030d9e73973defe50d0508c91334929b3",
+  "window": {"dataset":"mpi-beutenberg-weather", "column":"co2", "partition":"test", "offset":0, "count":1029}
+}

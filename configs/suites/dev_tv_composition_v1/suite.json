@@ -1,0 +1,31 @@
+{
+  "schema":"bmk.dev-tv-suite/1",
+  "corpus":"datasets/manifests/first-batch-real-v2.json",
+  "corpus_id":"a9904b1ce2068186e1c3e47eccf406e030d9e73973defe50d0508c91334929b3",
+  "chunk_rows":512,
+  "timeout_seconds":10,
+  "cases":{
+    "empty":{"fixture":"empty"},
+    "edge-bits":{"fixture":"edge-bits"},
+    "exchange-tail":{"window":{"dataset":"unique-forecast-exchange","partition":"test","offset":1731,"count":13,"columns":["rate_OT"]}},
+    "traffic-multi-value-tail":{"window":{"dataset":"unique-forecast-traffic","partition":"test","offset":0,"count":515,"columns":["channel_0","channel_27"]}}
+  },
+  "profiles":{
+    "gorilla-t":{"plugin":"gorilla-t-derived","role":"timestamp","options":{}},
+    "raw-t":{"plugin":"raw-timestamp","role":"timestamp","options":{}},
+    "gorilla-v":{"plugin":"gorilla-v-derived","role":"value","options":{}},
+    "alp-v":{"plugin":"alp-auto","role":"value","options":{"decode_backend":"scalar-unfused"}},
+    "gorilla-tv":{"plugin":"gorilla-tv","role":"timestamp_value","options":{}}
+  },
+  "methods":{
+    "gorilla-t-gorilla-v":{"timestamp":"gorilla-t","value":"gorilla-v"},
+    "gorilla-t-alp-v":{"timestamp":"gorilla-t","value":"alp-v"},
+    "raw-t-gorilla-v":{"timestamp":"raw-t","value":"gorilla-v"},
+    "gorilla-tv":{"joint":"gorilla-tv"}
+  },
+  "comparisons":{
+    "fixed-t":{"task":"shared_t_controlled","control":"fixed_timestamp_route","methods":["gorilla-t-gorilla-v","gorilla-t-alp-v"],"cases":["empty","edge-bits","exchange-tail","traffic-multi-value-tail"]},
+    "fixed-v":{"task":"whole_object","control":"fixed_value_route","methods":["gorilla-t-gorilla-v","raw-t-gorilla-v"],"cases":["empty","edge-bits","exchange-tail","traffic-multi-value-tail"]},
+    "native-vs-composed":{"task":"whole_object","control":null,"methods":["gorilla-tv","gorilla-t-gorilla-v"],"cases":["empty","edge-bits","exchange-tail"]}
+  }
+}

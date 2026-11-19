@@ -1,0 +1,13 @@
+{
+  "schema": "bmk.dev-lossless-suite/1",
+  "id": "dev_lossless_smoke_v1",
+  "verification": "artifact_each",
+  "timeout_seconds_per_operation": 5,
+  "fixture_manifest": "datasets/fixtures/manifest.json",
+  "fixtures": ["v.npy", "f64-bits.npy"],
+  "methods": [
+    {"plugin": "raw-store", "role": "value", "options": {}},
+    {"plugin": "zstd", "role": "bytes", "options": {}},
+    {"plugin": "alp-auto", "role": "value", "options": {"decode_backend": "scalar-unfused"}}
+  ]
+}

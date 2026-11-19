@@ -1,0 +1,40 @@
+{
+  "status": "PASS",
+  "archive_sha256": "e58fcb2d06b212d4b2d5e7ded20f8d5d02fc118ad5463bdfc72a299a2f69c62e",
+  "isolated_build": true,
+  "functional_checks": [
+    {
+      "repository": "titchy-native",
+      "test": "titchy-native-stream_c",
+      "status": "PASS",
+      "exit_code": 0
+    },
+    {
+      "repository": "titchy-native",
+      "test": "titchy-native-example",
+      "status": "PASS",
+      "exit_code": 0
+    }
+  ],
+  "isolated_functional_checks": [
+    {
+      "repository": "titchy-native",
+      "test": "titchy-native-stream_c",
+      "status": "PASS",
+      "exit_code": 0
+    },
+    {
+      "repository": "titchy-native",
+      "test": "titchy-native-example",
+      "status": "PASS",
+      "exit_code": 0
+    }
+  ],
+  "optional_components": {},
+  "scope": "Functional checks and independent source-package build. No new performance measurements. GPU runtime unavailable.",
+  "capability_fix_validation": {
+    "source_tree": "/tmp/unique-capability-fixes-20261110",
+    "isolated_build": "PASS",
+    "scope": "Capability fixes; no performance measurements; unsupported ISA/GPU runtime not executed"
+  }
+}

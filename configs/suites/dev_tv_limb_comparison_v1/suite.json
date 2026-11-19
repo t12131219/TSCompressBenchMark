@@ -1,0 +1,23 @@
+{
+  "schema":"bmk.dev-tv-suite/1",
+  "corpus":"datasets/manifests/first-batch-real-v2.json",
+  "corpus_id":"a9904b1ce2068186e1c3e47eccf406e030d9e73973defe50d0508c91334929b3",
+  "chunk_rows":512,
+  "timeout_seconds":10,
+  "cases":{
+    "five-value-edge-bits":{"fixture":"five-value-edge-bits"},
+    "traffic-five-value-tail":{"window":{"dataset":"unique-forecast-traffic","partition":"test","offset":0,"count":515,"columns":["channel_0","channel_27","channel_54","channel_81","channel_108"]}}
+  },
+  "profiles":{
+    "gorilla-t":{"plugin":"gorilla-t-derived","role":"timestamp","options":{}},
+    "alp-f64":{"plugin":"alp-auto","role":"value","options":{"decode_backend":"scalar-unfused"}},
+    "fire-u16-group":{"plugin":"sprintz-fire-u16-group","role":"value","options":{"lanes":20}}
+  },
+  "methods":{
+    "gorilla-t-alp-f64":{"timestamp":"gorilla-t","value":"alp-f64"},
+    "gorilla-t-fire-u16":{"timestamp":"gorilla-t","value":"fire-u16-group","value_transform":{"id":"f64-le-limbs-row-major/1","value_columns":5}}
+  },
+  "comparisons":{
+    "fixed-t-direct-vs-limbs":{"task":"shared_t_controlled","control":"fixed_timestamp_route","methods":["gorilla-t-alp-f64","gorilla-t-fire-u16"],"cases":["five-value-edge-bits","traffic-five-value-tail"]}
+  }
+}

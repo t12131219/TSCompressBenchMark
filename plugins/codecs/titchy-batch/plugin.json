@@ -1,0 +1,28 @@
+{
+  "schema": "bmk.plugin/1",
+  "id": "titchy-batch",
+  "kind": "codec",
+  "build": {"cmake_dir": "plugins/codecs/titchy-batch", "target": "tsbench_titchy_batch"},
+  "abi_version": 1,
+  "implementation_version": "v1",
+  "format_id": "titchy-batch.linear-envelope.v1",
+  "roles": [
+    "value"
+  ],
+  "options_schema": "plugins/codecs/titchy-batch/options.json",
+  "runtime_dependencies": [
+    "libtitchy_c.so"
+  ],
+  "source_files": [
+    "plugins/codecs/titchy-batch/CMakeLists.txt",
+    "plugins/codecs/titchy-batch/adapter.cpp",
+    "plugins/codecs/common/linear_frame.hpp",
+    "include/tsbench/plugin_abi.h",
+    "cmake/frozen.cmake",
+    "tools/prepare_plugin_source.py",
+    "tools/probe_release_builds.py",
+    "third_party/sources.lock.json",
+    "third_party/provenance/titchy-native/source-manifest.json",
+    "third_party/archives/titchy-native-source-unique-v1.tar.gz"
+  ]
+}

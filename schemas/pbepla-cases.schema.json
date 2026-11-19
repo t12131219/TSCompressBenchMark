@@ -1,0 +1,32 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "type":"object","additionalProperties":false,
+  "required":["schema","selection","method","fixtures","replay","alternate_geometry","validator","corpus","corpus_id","window","window_eps","retention"],
+  "properties":{
+    "schema":{"const":"bmk.dev-pbepla-cases/2"},"selection":{"const":87},
+    "method":{"const":{"plugin":"pbepla-rr","role":"value","dtype":"f64","format":"PBEP","max_delay":64,"value_layer_budget":2097152}},
+    "fixtures":{"type":"array","minItems":4,"maxItems":4,"items":{"type":"object","additionalProperties":false,
+      "required":["id","count","eps"],"properties":{"id":{"enum":["empty","constant","piecewise","sixteen-layers"]},
+        "count":{"$ref":"#/$defs/count"},"eps":{"$ref":"#/$defs/eps"}}}},
+    "alternate_geometry":{"type":"array","minItems":2,"maxItems":2,"items":{"type":"object","additionalProperties":false,
+      "required":["id","count","eps","geometry"],"properties":{"id":{"enum":["connected-explicit-grid","symmetric-single"]},
+        "count":{"$ref":"#/$defs/count"},"eps":{"$ref":"#/$defs/eps"},"geometry":{"enum":[
+          {"connected":1,"has_source_range":1,"source_min":-2,"source_max":2,"max_delay":16,"resolutions":[10,10]},
+          {"symmetric_band":1,"max_delay":16}
+        ]}}}},
+    "validator":{"const":"pbep_prefix_bytes_replay_and_exact_original_domain_max_error_v2"},
+    "corpus":{"type":"string"},"corpus_id":{"type":"string","pattern":"^[0-9a-f]{64}$"},
+    "window":{"type":"object","additionalProperties":false,"required":["dataset","column","partition","offset","count"],
+      "properties":{"dataset":{"type":"string"},"column":{"type":"string"},"partition":{"const":"test"},
+        "offset":{"type":"integer","minimum":0},"count":{"type":"integer","minimum":1,"maximum":8192}}},
+    "window_eps":{"$ref":"#/$defs/eps"},
+    "retention":{"const":{"max_frame_bytes":131072,"frame_each_level":true,"one_word_file_per_input":true}},
+    "replay":{"const":{"cases":["empty","piecewise","weather"],"faults":["changed","no-rewind","sink-fail","value-limit"],
+      "accounting":{"scope":"logical_callback_and_stdio_not_physical_io","empty_passes":1,"nonempty_passes_without_retry":3,
+                    "max_numerical_retries":0,"expect_batch_payload_identity":true}}}
+  },
+  "$defs":{
+    "count":{"type":"integer","minimum":0,"maximum":8192},
+    "eps":{"type":"array","minItems":1,"maxItems":16,"items":{"type":"number","exclusiveMinimum":0,"maximum":8.988465674311579e307}}
+  }
+}

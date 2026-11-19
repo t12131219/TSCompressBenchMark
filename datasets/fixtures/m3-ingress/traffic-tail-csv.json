@@ -1,0 +1,64 @@
+{
+  "schema": "bmk.typed-tv-source/1",
+  "plugin": "csv",
+  "object": {
+    "timestamp": {
+      "name": "timestamp",
+      "dtype": "i64",
+      "unit": "s",
+      "interpretation": "source_civil_label_coordinate_not_utc",
+      "epoch": "1970-01-01 00:00:00",
+      "timezone": null
+    },
+    "values": [
+      {
+        "name": "channel_0",
+        "dtype": "f64"
+      },
+      {
+        "name": "channel_27",
+        "dtype": "f64"
+      },
+      {
+        "name": "channel_54",
+        "dtype": "f64"
+      },
+      {
+        "name": "channel_81",
+        "dtype": "f64"
+      },
+      {
+        "name": "channel_108",
+        "dtype": "f64"
+      }
+    ],
+    "rows": 515,
+    "row_order": "preserve",
+    "layout": "dense_column_little_endian",
+    "nullable": false,
+    "nan_policy": "preserve_bits"
+  },
+  "files": [
+    {
+      "role": "table",
+      "path": "datasets/fixtures/m3-ingress/traffic-tail.csv",
+      "bytes": 30194,
+      "sha256": "47f9ed455455a847d021c9b699d685b07e722b2ffb3cfc7e0e8c7bd586a1815c"
+    }
+  ],
+  "options": {
+    "encoding": "utf-8",
+    "header": true,
+    "bad_rows": "error",
+    "timestamp_encoding": "signed_decimal_integer",
+    "decimal": ".",
+    "missing_tokens": [
+      "",
+      "NA"
+    ],
+    "f64_encoding": "decimal_or_explicit_ieee_hex",
+    "delimiter": ",",
+    "quote": "\"",
+    "escape": "double_quote"
+  }
+}

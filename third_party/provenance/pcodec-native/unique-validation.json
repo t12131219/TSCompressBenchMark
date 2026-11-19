@@ -1,0 +1,63 @@
+{
+  "status": "PASS",
+  "archive_sha256": "a62b4ca351fd6975b7eaf06df6d49b6c6175b541a8cea2df7af9ce09dcc3120d",
+  "isolated_build": true,
+  "functional_checks": [
+    {
+      "repository": "pcodec-native",
+      "test": "pcodec-native-test_core",
+      "status": "PASS",
+      "exit_code": 0
+    },
+    {
+      "repository": "pcodec-native",
+      "test": "pcodec-native-test_native_ext",
+      "status": "PASS",
+      "exit_code": 0
+    },
+    {
+      "repository": "pcodec-native",
+      "test": "pcodec-native-native_negative",
+      "status": "PASS",
+      "exit_code": 0
+    },
+    {
+      "repository": "pcodec-native",
+      "test": "pcodec-source-c-consumer",
+      "status": "PASS"
+    }
+  ],
+  "isolated_functional_checks": [
+    {
+      "repository": "pcodec-native",
+      "test": "pcodec-native-test_core",
+      "status": "PASS",
+      "exit_code": 0
+    },
+    {
+      "repository": "pcodec-native",
+      "test": "pcodec-native-test_native_ext",
+      "status": "PASS",
+      "exit_code": 0
+    },
+    {
+      "repository": "pcodec-native",
+      "test": "pcodec-native-native_negative",
+      "status": "PASS",
+      "exit_code": 0
+    }
+  ],
+  "optional_components": {
+    "rust_build": "PASS",
+    "rust_c_consumer": "PASS",
+    "cuda_build": "PASS",
+    "cuda_runtime": "SKIP_NO_GPU",
+    "isolated_packages": true
+  },
+  "scope": "Functional checks and independent source-package build. No new performance measurements. GPU runtime unavailable.",
+  "capability_fix_validation": {
+    "source_tree": "/tmp/unique-capability-fixes-20261110",
+    "isolated_build": "PASS",
+    "scope": "Capability fixes; no performance measurements; unsupported ISA/GPU runtime not executed"
+  }
+}

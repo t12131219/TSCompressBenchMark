@@ -1,0 +1,26 @@
+{
+  "schema": "bmk.m0-method-boundaries/2",
+  "scope": "development_only",
+  "corpus": "datasets/manifests/first-batch-real-v2.json",
+  "corpus_id": "a9904b1ce2068186e1c3e47eccf406e030d9e73973defe50d0508c91334929b3",
+  "run_policy": {"quality":"bitwise_exact_values_and_schema","access":"whole_object_batch","verification":"artifact_each","measurement":"none","max_frame_bytes":131072},
+  "triplets": [
+    {"method":"alp-auto","selection":9,"route":"auto-batch","boundary":"ALN1_vector_length","rows":1024,"plus_one":"verify_new_vector","options":{"decode_backend":"scalar-unfused"},
+     "window":{"dataset":"mpi-beutenberg-weather","partition":"test","column":"air_temperature","offset":0,"count":1025}},
+    {"method":"zstd","selection":40,"route":"zstd-baseline","boundary":"native_65536_input_bytes","rows":8192,"plus_one":"expect_resource_limit_7","options":{},
+     "window":{"dataset":"uci-electricity-pt","partition":"test","column":"MT_231","offset":0,"count":8193}},
+    {"method":"gorilla-tv","selection":7,"route":"tv-batch","boundary":"native_chunk_max_rows","rows":512,"plus_one":"expect_resource_limit_7","options":{},
+     "window":{"dataset":"unique-forecast-traffic","partition":"test","column":"channel_0","offset":0,"count":513}}
+  ],
+  "fixture": {"method":"alp-auto","name":"f32-special","dtype":"<f4","rows":9,"role":"value"},
+  "domain_windows": {
+    "corpus": "datasets/manifests/first-batch-real-v3.json",
+    "corpus_id": "825ffefd229088e7ea8f7a6f1d09c34ab929fc07d3f50fe0e78c1aaa935a45ae",
+    "task": "values_only",
+    "methods": ["alp-auto","zstd"],
+    "windows": [
+      {"dataset":"westermo-system1","partition":"test","column":"cpu-user","offset":0,"count":1025},
+      {"dataset":"ceda-cmip6-gsat","partition":"test","column":"ACCESS-CM2","offset":0,"count":57}
+    ]
+  }
+}

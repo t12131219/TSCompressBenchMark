@@ -1,0 +1,298 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "M0 native functional requirements closure (not execution)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "target_stage",
+    "state",
+    "scope_suite",
+    "policies",
+    "expected",
+    "groups",
+    "boundary_contracts",
+    "titchy_access_contracts",
+    "titchy_native_contracts",
+    "pbepla_contracts",
+    "gorilla_contracts",
+    "alp_contracts",
+    "lzbench_contracts",
+    "pcodec_contracts",
+    "sprintz_contracts",
+    "zfp_contracts",
+    "huff0_contracts",
+    "selfstar_contracts",
+    "corad_contracts",
+    "corad_training_contracts"
+  ],
+  "properties": {
+    "schema": {
+      "const": "bmk.native-requirements/1"
+    },
+    "target_stage": {
+      "const": "M3"
+    },
+    "state": {
+      "const": "partial_case_bindings"
+    },
+    "scope_suite": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_-]{1,110}(?![\\s\\S])"
+    },
+    "policies": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "verification",
+        "measurement",
+        "single_submission",
+        "restore",
+        "bytes",
+        "retention",
+        "execution_model"
+      ],
+      "properties": {
+        "verification": {
+          "const": "artifact_each"
+        },
+        "measurement": {
+          "const": "not_collected"
+        },
+        "single_submission": {
+          "const": true
+        },
+        "restore": {
+          "const": "new_process_product_and_declared_assets_only"
+        },
+        "bytes": {
+          "const": "complete_serialized_product_and_required_assets"
+        },
+        "retention": {
+          "const": "keep_case_restore_product_dependencies_and_failure_reason"
+        },
+        "execution_model": {
+          "const": "function_only"
+        }
+      }
+    },
+    "expected": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "selections",
+        "routes"
+      ],
+      "properties": {
+        "selections": {
+          "const": 12
+        },
+        "routes": {
+          "const": 36
+        }
+      }
+    },
+    "groups": {
+      "type": "array",
+      "minItems": 36,
+      "maxItems": 36,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "selection",
+          "route",
+          "task",
+          "protocol",
+          "quality",
+          "required",
+          "conditional",
+          "out_of_scope"
+        ],
+        "properties": {
+          "selection": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "route": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_-]{1,110}(?![\\s\\S])"
+          },
+          "task": {
+            "enum": [
+              "bytes_only",
+              "training_only",
+              "values_only",
+              "whole_object"
+            ]
+          },
+          "protocol": {
+            "enum": [
+              "batch",
+              "batch_parallel",
+              "complete_pages_incremental_decode",
+              "dictionary_batch",
+              "finish_finalized_incremental",
+              "indexed_read_at",
+              "model_batch",
+              "model_training",
+              "multipass_replay",
+              "mutable_array",
+              "native_packet_stream",
+              "native_query",
+              "native_span_stream",
+              "progressive_prefix",
+              "sequential_iterator",
+              "snapshot_replay",
+              "stateless_range_validates_container"
+            ]
+          },
+          "quality": {
+            "enum": [
+              "bitwise_exact",
+              "exact_aggregate",
+              "model_solver_oracle",
+              "observed_only_pending_quality_budget",
+              "predeclared_empirical_per_column",
+              "per_case_absolute_error"
+            ]
+          },
+          "required": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 40,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_-]{1,110}(?![\\s\\S])"
+            }
+          },
+          "conditional": {
+            "type": "array",
+            "minItems": 0,
+            "maxItems": 8,
+            "uniqueItems": true,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "predicate",
+                "require"
+              ],
+              "if": {"properties": {"predicate": {"const": "alp_f64_avx512bw_available"}}},
+              "then": {"required": ["verification"], "properties": {"require": {"const": "avx512bw_decimal_with_effective_dispatch"}}},
+              "else": {"not": {"required": ["verification"]}},
+              "properties": {
+                "verification": {"const": {
+                  "built_backend": "falp-avx512bw",
+                  "cpu_features_all_of": ["avx512f", "avx512bw", "avx512dq"],
+                  "dtype": "f64",
+                  "required_wire_branch": "decimal",
+                  "runtime_unavailable": "pending_supported_runtime",
+                  "prove": ["explicit_backend_dispatch", "auto_backend_dispatch", "detached_bit_exact_restore"]
+                }},
+                "predicate": {
+                  "enum": [
+                    "alp_f64_avx2_available",
+                    "alp_f64_avx512bw_available",
+                    "huff0_dynamic_bmi2_and_cpu_available",
+                    "xz_mt_budget_and_frame_eligible",
+                    "zfp_openmp_two_threads_available",
+                    "zstd_mt_enabled_and_frame_eligible"
+                  ]
+                },
+                "require": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9_-]{1,110}(?![\\s\\S])"
+                }
+              }
+            }
+          },
+          "out_of_scope": {
+            "type": "array",
+            "minItems": 0,
+            "maxItems": 8,
+            "uniqueItems": true,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "claim",
+                "reason"
+              ],
+              "properties": {
+                "claim": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9_-]{1,110}(?![\\s\\S])"
+                },
+                "reason": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 512
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "pbepla_contracts": {"$ref": "#/properties/boundary_contracts"},
+    "gorilla_contracts": {"$ref": "#/properties/boundary_contracts"},
+    "alp_contracts": {"$ref": "#/properties/boundary_contracts"},
+    "lzbench_contracts": {"$ref": "#/properties/boundary_contracts"},
+    "pcodec_contracts": {"$ref": "#/properties/boundary_contracts"},
+    "sprintz_contracts": {"$ref": "#/properties/boundary_contracts"},
+    "zfp_contracts": {"$ref": "#/properties/boundary_contracts"},
+    "huff0_contracts": {"$ref": "#/properties/boundary_contracts"},
+    "selfstar_contracts": {"$ref": "#/properties/boundary_contracts"},
+    "corad_contracts": {"$ref": "#/properties/boundary_contracts"},
+    "corad_training_contracts": {"$ref": "#/properties/boundary_contracts"},
+    "titchy_access_contracts": {"$ref": "#/properties/boundary_contracts"},
+    "titchy_native_contracts": {"$ref": "#/properties/boundary_contracts"},
+    "boundary_contracts": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 36,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "selection",
+          "route",
+          "checks"
+        ],
+        "properties": {
+          "selection": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "route": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_-]{1,110}(?![\\s\\S])"
+          },
+          "checks": {
+            "type": "object",
+            "minProperties": 1,
+            "maxProperties": 40,
+            "propertyNames": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_-]{1,110}(?![\\s\\S])"
+            },
+            "additionalProperties": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 16,
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_-]{1,110}(?![\\s\\S])"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,96 @@
+{
+  "schema": "bmk.dev-tv-suite/2",
+  "chunk_rows": 512,
+  "timeout_seconds": 10,
+  "cases": {
+    "traffic-tail-csv": {
+      "ingress": {
+        "manifest": "datasets/fixtures/m3-ingress/traffic-tail-csv.json",
+        "group": "traffic-tail"
+      }
+    },
+    "traffic-tail-txt": {
+      "ingress": {
+        "manifest": "datasets/fixtures/m3-ingress/traffic-tail-txt.json",
+        "group": "traffic-tail"
+      }
+    },
+    "traffic-tail-npy": {
+      "ingress": {
+        "manifest": "datasets/fixtures/m3-ingress/traffic-tail-npy.json",
+        "group": "traffic-tail"
+      }
+    },
+    "exact-bits-tail-csv": {
+      "ingress": {
+        "manifest": "datasets/fixtures/m3-ingress/exact-bits-tail-csv.json",
+        "group": "exact-bits-tail"
+      }
+    },
+    "exact-bits-tail-txt": {
+      "ingress": {
+        "manifest": "datasets/fixtures/m3-ingress/exact-bits-tail-txt.json",
+        "group": "exact-bits-tail"
+      }
+    },
+    "exact-bits-tail-npy": {
+      "ingress": {
+        "manifest": "datasets/fixtures/m3-ingress/exact-bits-tail-npy.json",
+        "group": "exact-bits-tail"
+      }
+    }
+  },
+  "profiles": {
+    "gorilla-t": {
+      "plugin": "gorilla-t-derived",
+      "role": "timestamp",
+      "options": {}
+    },
+    "alp-f64": {
+      "plugin": "alp-auto",
+      "role": "value",
+      "options": {
+        "decode_backend": "scalar-unfused"
+      }
+    },
+    "fire-u16-group": {
+      "plugin": "sprintz-fire-u16-group",
+      "role": "value",
+      "options": {
+        "lanes": 20
+      }
+    }
+  },
+  "methods": {
+    "gorilla-t-alp-f64": {
+      "timestamp": "gorilla-t",
+      "value": "alp-f64"
+    },
+    "gorilla-t-fire-u16": {
+      "timestamp": "gorilla-t",
+      "value": "fire-u16-group",
+      "value_transform": {
+        "id": "f64-le-limbs-row-major/1",
+        "value_columns": 5
+      }
+    }
+  },
+  "comparisons": {
+    "fixed-t-direct-vs-limbs": {
+      "task": "shared_t_controlled",
+      "control": "fixed_timestamp_route",
+      "methods": [
+        "gorilla-t-alp-f64",
+        "gorilla-t-fire-u16"
+      ],
+      "cases": [
+        "traffic-tail-csv",
+        "traffic-tail-txt",
+        "traffic-tail-npy",
+        "exact-bits-tail-csv",
+        "exact-bits-tail-txt",
+        "exact-bits-tail-npy"
+      ]
+    }
+  }
+}

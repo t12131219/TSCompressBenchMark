@@ -1,0 +1,536 @@
+{
+  "schema": "bmk.sources/1",
+  "source_family": "Unique_Selected_Compression_Rewrite",
+  "release": "unique-v1",
+  "source_evidence_level": "archive_verified_only",
+  "selection_csv": {
+    "path": "catalog/selections/unique-v1.csv",
+    "sha256": "f5145a6e5848870265068fedc2417cd0f234f39c0ba7e71e3f44908551387a57"
+  },
+  "selection_manifest": {
+    "path": "catalog/selections/unique-v1.manifest.json",
+    "sha256": "fff764c13d0ef2a0d33405c621b9fe0be7ce2c91930367e92b19787248e5e4f2"
+  },
+  "selections": [
+    {
+      "number": 9,
+      "algorithm": "ALP（Auto）",
+      "source_id": "alp-native",
+      "target": "alp_native",
+      "selection_note": "Unique唯一主选unique-v1；来源fix_ReWrite/alp-native；C++17 原核心加固移植；alp-native；目标 alp_native（Release）；C ABI alpn_compress/alpn_decompress，ALPN_AUTO=0；默认保留raw fallback、scalar FastLanes及加固unFOR解码；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/alp-native/unique-v1；归档SHA256=3438204da027cafe16b2271eb9264d5752d80f40bac3a1d3dfd56f2565b19c2c。历史性能列未重测。",
+      "selection_field_sha256": "7e1f2b8392b1d6b6ae06534cb0b3e92e93354d7d36c2ac5e02fecc85bd29ff55",
+      "selection_id": "bac5fd67841ca5c39f20f52fb67cc40ff007ff3d830e6130721dfe4061a77eb4"
+    },
+    {
+      "number": 11,
+      "algorithm": "pcodec / pco",
+      "source_id": "pcodec-native",
+      "target": "pcodec_c",
+      "selection_note": "Unique唯一主选unique-v1；来源fix_ReWrite/pcodec-native；C11 共享源码核心的C编译版本；pcodec-native / V4（pco 1.0.4）；目标 pcodec_c；主选 pc_compress/pc_decompress，PC_F64、Native Auto（mode=-1、delta=-1）、level=8、chunk_n=262144；PC_NATIVE=ON，保留V4批次/SIMD解码及显式IntMult入口；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/pcodec-native/unique-v1；归档SHA256=e1f80a1dee5d5d4bfbc9a10fd11935140132c2bed84dc25c2e57455dedbfdfbc。历史性能列未重测。",
+      "selection_field_sha256": "2501c683c12fec0ddeb751b0e985b3683f50245c8fa05bab6386ea922dfcf8cf",
+      "selection_id": "6e895f880edf131bef3cd88e4bb31c6b430f6a4a741335aea7bafac25ab49287"
+    },
+    {
+      "number": 19,
+      "algorithm": "Sprintz-FIRE",
+      "source_id": "Sprintz-family",
+      "target": "repaired_codec",
+      "selection_note": "Unique唯一主选unique-v1；来源fix_ReWrite/Sprintz-family；C/C++ 原生核心的修复参考；Sprintz-family / sf-v2 / backend=repaired；目标 repaired_codec（别名sf::codec），CLI repaired_worker；algorithm=1、width=16、ndims=4×数值列数、PATH=0；完整SFB1帧、每块≤65536字节；沿用修复参考的资源与协议限制；修复主目标保留四变体、8/16位、1..128通道、自动lowdim/generic SIMD与scratch复用；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/Sprintz-family/unique-v1；归档SHA256=18c47f8dd0dae6770b4147b1a2870dc9c73e8927efe9761e7fe9bd3c10fd6466；接入修复上游generic AVX2 query，lowdim标量后备，结果返回实际backend。历史性能列未重测。",
+      "selection_field_sha256": "7bf0a70f08deec855e8116fb68cac5eace2b9caff35739eae1650c45ebe33b33",
+      "selection_id": "b263447aac8a6253fb503133a7897b1b2b8d241607152d6ccee1cc757c497648"
+    },
+    {
+      "number": 85,
+      "algorithm": "Titchy",
+      "source_id": "titchy-native",
+      "target": "titchy_c",
+      "selection_note": "Unique唯一主选unique-v1；来源fix_ReWrite/titchy-native；目标 titchy_c；C11独立batch/range核心仍为主选；TCHY v2；titchy_c_encode/decode/range；bits=64/chunk=4/split=1000/threshold=0.25/endian=little/max_active_bytes=UINT64_MAX；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/titchy-native/unique-v1；归档SHA256=a03bae5f178ae05e913a645484aa8f4e70af8e6ddfa0b6444f069a5388d0feba。历史性能列未重测。",
+      "selection_field_sha256": "30e6916d820e8a547d5a7047487eb2283f0c3d5c2c6771815c22c6e14e08e54d",
+      "selection_id": "dac366e9fae667d204c64f512c64ce44b374195bca0361efd0d6f2afb27fbb96"
+    },
+    {
+      "number": 7,
+      "algorithm": "Gorilla / XORChunk",
+      "source_id": "gorilla-native",
+      "target": "gorilla_c",
+      "selection_note": "Unique唯一主选unique-v1；来源fix_ReWrite/gorilla-native；C11 独立内核；gorilla-native / Prometheus XORChunk；目标 gorilla_c；g_compress/g_decompress；int64毫秒时间戳 + binary64值，512样本独立块；保留原生2字节头，无附加帧头或CRC；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/gorilla-native/unique-v1；归档SHA256=0d9ce35f06b721db46b11f1de9006150a175eace61810b650b032502c0022f79。历史性能列未重测。",
+      "selection_field_sha256": "a3869b52632c7bec761cbb534ebc2fa8cc6e073d7204f01b2311dee77fc603d8",
+      "selection_id": "28eb1e4239ee6c635aace4f3af5e54e4f271f0f757f534fdd86f002070d0ce81"
+    },
+    {
+      "number": 31,
+      "algorithm": "ZFP",
+      "source_id": "zfp-native",
+      "target": "zfp_native_c",
+      "selection_note": "Unique唯一主选unique-v1；来源fix_ReWrite/zfp-native；C 官方原核心 + C11配置/缓冲包装；zfp-native / ZFP 1.0.1+DEVELOP（codec5）；目标 zfp_native_c；zn_config_1d + zn_create/zn_encode/zn_decode，ZN_F64、ZN_REVERSIBLE；1D、4096值外块、裸ZFP流；本默认配置串行/非CUDA，参数与块边界由调用方保存；本行默认仍serial/contiguous；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/zfp-native/unique-v1；归档SHA256=390394bde5fb6586bebcf84e96649cb1a19558fac66c59e772151c7818c338b3。历史性能列未重测。",
+      "selection_field_sha256": "730d2a340e15f7f26d2a57ff49860d95ea6e64537323aeb8c18e61a9be911f90",
+      "selection_id": "fcbd13383b65ce671776b1a47f11478215c2296499a735cd6ff2aefef6091d68"
+    },
+    {
+      "number": 40,
+      "algorithm": "Zstandard",
+      "source_id": "lzbench-native",
+      "target": "lzbench_native",
+      "selection_note": "Unique唯一主选unique-v1；来源fix_ReWrite/lzbench-native；C99原核心+C ABI/C++17适配；lzbench-native v1（lzbench@fa871e66b3543a70fd4d060f7c12719343ff4ac3）；目标 lzbench_native；LN_ZSTD/level=3/contentSizeFlag=1/threads=1/checksum=0；64KiB独立块；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/lzbench-native/unique-v1；归档SHA256=54ddb93af4de953c6dd833c2d16f84286116d2c13b90b01dd87adffd2e173d7e。历史性能列未重测。",
+      "selection_field_sha256": "d22b1b6aff06b08d00a6919b6d85b224154367754994d10ddab42043026ad6ec",
+      "selection_id": "0d7a6b86c340c380576b2d5e0aee52d3dcd148f5871d7c6cf4629b507de91375"
+    },
+    {
+      "number": 39,
+      "algorithm": "XZ / LZMA2",
+      "source_id": "lzbench-native",
+      "target": "lzbench_native",
+      "selection_note": "Unique唯一主选unique-v1；来源fix_ReWrite/lzbench-native；liblzma C99原核心+C ABI/C++17适配；lzbench-native v1（lzbench@fa871e66b3543a70fd4d060f7c12719343ff4ac3）；目标 lzbench_native；LN_XZ/preset=6/check=NONE/threads=1；64KiB独立块；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/lzbench-native/unique-v1；归档SHA256=54ddb93af4de953c6dd833c2d16f84286116d2c13b90b01dd87adffd2e173d7e。历史性能列未重测。",
+      "selection_field_sha256": "82ee9d204b0589bed96b54356e8e073db95d295807e52a07661e626cd36d0908",
+      "selection_id": "9c4b1281fca3e2edf9103e8f6fe0a4c301d6390ef8828074cc39c30f84886f7e"
+    },
+    {
+      "number": 4,
+      "algorithm": "SElf*",
+      "source_id": "elf-selfstar-native",
+      "target": "selfstar_c",
+      "selection_note": "Unique唯一主选unique-v1；来源fix_ReWrite/elf-selfstar-native；C11 独立内核；elf-selfstar-native / V1；目标 selfstar_c；sf_c_create + sf_c_encode/sf_c_decode，SF_SELF_STAR=3、SF_F64；512值块，同列跨块保留状态，换列重置，原生裸位流；明确选择V1，既有V2历史指标不代表本选版成绩；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/elf-selfstar-native/unique-v1；归档SHA256=0febcf79b0a42c1c58b042478ff476b2fcafbdfe4de5b1abc2e60c34839ba355。历史性能列未重测。",
+      "selection_field_sha256": "a91b3d9f2df47af2b5383a26a3721d9a7b6b04fcafd7482353244c76e418ec27",
+      "selection_id": "33a6fe53ae7b2d8fed072b6069c290d15f8931041f94ae091061eaaf75812a2e"
+    },
+    {
+      "number": 29,
+      "algorithm": "Huff0 / Huff (HUF)",
+      "source_id": "FiniteStateEntropy",
+      "target": "reference",
+      "selection_note": "Unique唯一主选unique-v1；来源fix_ReWrite/FiniteStateEntropy；C99 原版核心 + C++17公共适配；FiniteStateEntropy / reference（上游9f30e0918f87bd835fa040d922a208d7b219e50b）；目标 reference（底层reference_core）；entropy_port::Codec，Algorithm::Huff=2；32KiB独立块、完整FEC1帧/CRC、DYNAMIC_BMI2=0；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/FiniteStateEntropy/unique-v1；归档SHA256=f85ac249a8445537a84a6c7e3641004985ac934e78d29fc015e5a6dc638394a9。历史性能列未重测。",
+      "selection_field_sha256": "3516d2e64afd45957bf7ba1de88c7cb9fa4fca3ab58b22f1c5a1cfc9052efe9d",
+      "selection_id": "d9fcfe6b9c9c3cb7c02dab0fe958d95c4c80dd5eb65d3b7425a71773d232215d"
+    },
+    {
+      "number": 87,
+      "algorithm": "PBEPLA-RR",
+      "source_id": "tsbenchmark-algorithms-native",
+      "target": "tba_native",
+      "selection_note": "Unique唯一主选unique-v1；来源fix_ReWrite/tsbenchmark-algorithms-native；C++17；tsbenchmark-algorithms-native / 原生集成v1 + benchmark-v2 int32接口 / PBEP三层 / range×5%,1%,.5%；目标 tba_native（固定port核心）；kind=1；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/tsbenchmark-algorithms-native/unique-v1；归档SHA256=ceccd9a9cddc8875b24f2bd24558bf7bcfaba03bfdbf220705a5ff92f57215cb。历史性能列未重测。",
+      "selection_field_sha256": "4f32b86e32829c925404502fc25b1f91a2a50addddb6d66d20c8670f207e49c8",
+      "selection_id": "2d89569d85e10068a7dd4abaf11d796e50adf2a81d387e39ccadfb39b1728ba9"
+    },
+    {
+      "number": 80,
+      "algorithm": "CORAD",
+      "source_id": "corad-native",
+      "target": "corad_c",
+      "selection_note": "Unique唯一主选unique-v1；来源fix_ReWrite/corad-native；C11 原生冻结模型加载/推理 + 共享C decoder；目标 corad_c；主选 corad_model_pack/load/config/encode + corad_decode；独立可执行bench为corad_native。模型为rows=0的CRD1持久帧，包含字典、均值与尺度；输入列顺序须与模型一致，原生输入为column-major binary64；保留L=40/K=200/nonzero=4/threshold=0.8的原选参数及可配置入口。归一化、Gram/OMP、相关引用选择、完整模型及全部尾行均纳入原生编解码；数据帧完整计入字典/统计，不扣除所谓免费模型；每算法只保留此主实现，保留2026-11-10矩阵列出的功能组件和条件；独立对照与历史实现不交付；发布目录fix_Release/corad-native/unique-v1；归档SHA256=3bcceaba7bf7c0aac2a61e05a2caf3bd59064e00f19b1965a1d131b719e73133。历史性能列未重测。",
+      "selection_field_sha256": "0cf75e2287dd77cfe05348a7520a5ec42594ea98b72059ba92cef0f9310c53d1",
+      "selection_id": "8b5b136dfd2cf54bc6b9b7810e00cab1a25526c5c58d6938f4016f7c1be644ab"
+    }
+  ],
+  "sources": {
+    "alp-native": {
+      "origin_release": "fix_Release/alp-native/unique-v1",
+      "archive": {
+        "path": "third_party/archives/alp-native-source-unique-v1.tar.gz",
+        "sha256": "684ec6ef490b263cda133867ccfa5437d14c9c9d6024f5fefd244e2f7476e605"
+      },
+      "source_manifest": {
+        "path": "third_party/provenance/alp-native/source-manifest.json",
+        "sha256": "362e51637553d0f9677f98fe8fab4f2cb13ccf4aca359d6b0094915855516c86"
+      },
+      "historical_validation": {
+        "path": "third_party/provenance/alp-native/unique-validation.json",
+        "sha256": "dfe0bc1e7bf4e34e7d5eaa640c74f6106b47a644777e2eec451f7bcc5a3cdd90"
+      },
+      "selection_manifest_file_count": 31,
+      "selection_manifest_count_matches": false,
+      "files": 35,
+      "license_members": [
+        "alp-native/licenses/LICENSE",
+        "alp-native/licenses/upstream/LICENSE"
+      ],
+      "public_headers": [
+        "alp-native/include/alp_native.h",
+        "alp-native/include/alp_native.hpp"
+      ],
+      "build_entry": "alp-native/CMakeLists.txt"
+    },
+    "pcodec-native": {
+      "origin_release": "fix_Release/pcodec-native/unique-v1",
+      "archive": {
+        "path": "third_party/archives/pcodec-native-source-unique-v1.tar.gz",
+        "sha256": "a62b4ca351fd6975b7eaf06df6d49b6c6175b541a8cea2df7af9ce09dcc3120d"
+      },
+      "source_manifest": {
+        "path": "third_party/provenance/pcodec-native/source-manifest.json",
+        "sha256": "e502e837b366ac50f080a370870d94081aa900e6e694bd560308e1ed852567f9"
+      },
+      "historical_validation": {
+        "path": "third_party/provenance/pcodec-native/unique-validation.json",
+        "sha256": "6f221ca8de1ed76d556ab2e976994ef627f2e99606a6084a0c8cc317395ad226"
+      },
+      "selection_manifest_file_count": 463,
+      "selection_manifest_count_matches": true,
+      "files": 463,
+      "license_members": [
+        "pcodec-native/licenses/LICENSE",
+        "pcodec-native/licenses/NOTICE",
+        "pcodec-native/licenses/oracle/vendor/cfg-if/LICENSE-APACHE",
+        "pcodec-native/licenses/oracle/vendor/cfg-if/LICENSE-MIT",
+        "pcodec-native/licenses/oracle/vendor/crunchy/LICENSE",
+        "pcodec-native/licenses/oracle/vendor/half/LICENSE-APACHE",
+        "pcodec-native/licenses/oracle/vendor/half/LICENSE-MIT",
+        "pcodec-native/licenses/oracle/vendor/proc-macro2/LICENSE-APACHE",
+        "pcodec-native/licenses/oracle/vendor/proc-macro2/LICENSE-MIT",
+        "pcodec-native/licenses/oracle/vendor/quote/LICENSE-APACHE",
+        "pcodec-native/licenses/oracle/vendor/quote/LICENSE-MIT",
+        "pcodec-native/licenses/oracle/vendor/rand_core/COPYRIGHT",
+        "pcodec-native/licenses/oracle/vendor/rand_core/LICENSE-APACHE",
+        "pcodec-native/licenses/oracle/vendor/rand_core/LICENSE-MIT",
+        "pcodec-native/licenses/oracle/vendor/rand_xoshiro/COPYRIGHT",
+        "pcodec-native/licenses/oracle/vendor/rand_xoshiro/LICENSE-APACHE",
+        "pcodec-native/licenses/oracle/vendor/rand_xoshiro/LICENSE-MIT",
+        "pcodec-native/licenses/oracle/vendor/syn/LICENSE-APACHE",
+        "pcodec-native/licenses/oracle/vendor/syn/LICENSE-MIT",
+        "pcodec-native/licenses/oracle/vendor/unicode-ident/LICENSE-APACHE",
+        "pcodec-native/licenses/oracle/vendor/unicode-ident/LICENSE-MIT",
+        "pcodec-native/licenses/oracle/vendor/unicode-ident/LICENSE-UNICODE",
+        "pcodec-native/licenses/oracle/vendor/zerocopy-derive/LICENSE-APACHE",
+        "pcodec-native/licenses/oracle/vendor/zerocopy-derive/LICENSE-BSD",
+        "pcodec-native/licenses/oracle/vendor/zerocopy-derive/LICENSE-MIT",
+        "pcodec-native/licenses/oracle/vendor/zerocopy/LICENSE-APACHE",
+        "pcodec-native/licenses/oracle/vendor/zerocopy/LICENSE-BSD",
+        "pcodec-native/licenses/oracle/vendor/zerocopy/LICENSE-MIT",
+        "pcodec-native/source-backend/vendor/cfg-if/LICENSE-APACHE",
+        "pcodec-native/source-backend/vendor/cfg-if/LICENSE-MIT",
+        "pcodec-native/source-backend/vendor/crunchy/LICENSE",
+        "pcodec-native/source-backend/vendor/half/LICENSE-APACHE",
+        "pcodec-native/source-backend/vendor/half/LICENSE-MIT",
+        "pcodec-native/source-backend/vendor/proc-macro2/LICENSE-APACHE",
+        "pcodec-native/source-backend/vendor/proc-macro2/LICENSE-MIT",
+        "pcodec-native/source-backend/vendor/quote/LICENSE-APACHE",
+        "pcodec-native/source-backend/vendor/quote/LICENSE-MIT",
+        "pcodec-native/source-backend/vendor/rand_core/COPYRIGHT",
+        "pcodec-native/source-backend/vendor/rand_core/LICENSE-APACHE",
+        "pcodec-native/source-backend/vendor/rand_core/LICENSE-MIT",
+        "pcodec-native/source-backend/vendor/rand_xoshiro/COPYRIGHT",
+        "pcodec-native/source-backend/vendor/rand_xoshiro/LICENSE-APACHE",
+        "pcodec-native/source-backend/vendor/rand_xoshiro/LICENSE-MIT",
+        "pcodec-native/source-backend/vendor/syn/LICENSE-APACHE",
+        "pcodec-native/source-backend/vendor/syn/LICENSE-MIT",
+        "pcodec-native/source-backend/vendor/unicode-ident/LICENSE-APACHE",
+        "pcodec-native/source-backend/vendor/unicode-ident/LICENSE-MIT",
+        "pcodec-native/source-backend/vendor/unicode-ident/LICENSE-UNICODE",
+        "pcodec-native/source-backend/vendor/zerocopy-derive/LICENSE-APACHE",
+        "pcodec-native/source-backend/vendor/zerocopy-derive/LICENSE-BSD",
+        "pcodec-native/source-backend/vendor/zerocopy-derive/LICENSE-MIT",
+        "pcodec-native/source-backend/vendor/zerocopy/LICENSE-APACHE",
+        "pcodec-native/source-backend/vendor/zerocopy/LICENSE-BSD",
+        "pcodec-native/source-backend/vendor/zerocopy/LICENSE-MIT"
+      ],
+      "public_headers": [
+        "pcodec-native/include/pcodec.h",
+        "pcodec-native/include/pcodec.hpp",
+        "pcodec-native/include/pcodec_native_ext.h",
+        "pcodec-native/include/pcodec_source.h",
+        "pcodec-native/include/pcodec_source.hpp"
+      ],
+      "build_entry": "pcodec-native/CMakeLists.txt"
+    },
+    "Sprintz-family": {
+      "origin_release": "fix_Release/Sprintz-family/unique-v1",
+      "archive": {
+        "path": "third_party/archives/Sprintz-family-source-unique-v1.tar.gz",
+        "sha256": "18c47f8dd0dae6770b4147b1a2870dc9c73e8927efe9761e7fe9bd3c10fd6466"
+      },
+      "source_manifest": {
+        "path": "third_party/provenance/Sprintz-family/source-manifest.json",
+        "sha256": "bcabce8363a31e67c5e28435b84fee477ae38fa50ca7efe727ec4772b23ce691"
+      },
+      "historical_validation": {
+        "path": "third_party/provenance/Sprintz-family/unique-validation.json",
+        "sha256": "e8c6855505660957a3b607d5b381c93b52409e3a5d4fdbe66d26b712554940e8"
+      },
+      "selection_manifest_file_count": 78,
+      "selection_manifest_count_matches": true,
+      "files": 78,
+      "license_members": [
+        "Sprintz-family/licenses/ReWrite/integer/vendor/fastpfor/LICENSE",
+        "Sprintz-family/licenses/ReWrite/sprintz/LICENSES/NOTICE.md",
+        "Sprintz-family/licenses/ReWrite/sprintz/vendor/huff0/LICENSE",
+        "Sprintz-family/licenses/Source/lzbench-sprintz-author/brieflz/LICENSE",
+        "Sprintz-family/licenses/Source/lzbench-sprintz-author/bzip2/LICENSE",
+        "Sprintz-family/licenses/Source/lzbench-sprintz-author/fastpfor/LICENSE",
+        "Sprintz-family/licenses/Source/lzbench-sprintz-author/gipfeli/COPYING",
+        "Sprintz-family/licenses/Source/lzbench-sprintz-author/lizard/LICENSE",
+        "Sprintz-family/licenses/Source/lzbench-sprintz-author/lz4/LICENSE",
+        "Sprintz-family/licenses/Source/lzbench-sprintz-author/lzfse/LICENSE",
+        "Sprintz-family/licenses/Source/lzbench-sprintz-author/lzsse/LICENSE",
+        "Sprintz-family/licenses/Source/lzbench-sprintz-author/tornado/license.txt",
+        "Sprintz-family/licenses/Source/lzbench-sprintz-author/wflz/LICENSE.txt",
+        "Sprintz-family/licenses/Source/lzbench-sprintz-author/zstd/LICENSE",
+        "Sprintz-family/licenses/Source/sprintz-author/LICENSE",
+        "Sprintz-family/licenses/licenses/NOTICE.md"
+      ],
+      "public_headers": [
+        "Sprintz-family/include/sf_codec.hpp"
+      ],
+      "build_entry": "Sprintz-family/CMakeLists.txt"
+    },
+    "titchy-native": {
+      "origin_release": "fix_Release/titchy-native/unique-v1",
+      "archive": {
+        "path": "third_party/archives/titchy-native-source-unique-v1.tar.gz",
+        "sha256": "e58fcb2d06b212d4b2d5e7ded20f8d5d02fc118ad5463bdfc72a299a2f69c62e"
+      },
+      "source_manifest": {
+        "path": "third_party/provenance/titchy-native/source-manifest.json",
+        "sha256": "795b30bf9d3ba4f7a2e0f229f0ae487cc5cbebd067c30a69dcc484c40bdc6973"
+      },
+      "historical_validation": {
+        "path": "third_party/provenance/titchy-native/unique-validation.json",
+        "sha256": "3c88440dde7dc93dbd77a0c7604dbd905bb2faffb21e7cb54de4978cd54ed4c4"
+      },
+      "selection_manifest_file_count": 12,
+      "selection_manifest_count_matches": false,
+      "files": 13,
+      "license_members": [
+        "titchy-native/licenses/NOTICE.md"
+      ],
+      "public_headers": [
+        "titchy-native/include/titchy.h"
+      ],
+      "build_entry": "titchy-native/CMakeLists.txt"
+    },
+    "gorilla-native": {
+      "origin_release": "fix_Release/gorilla-native/unique-v1",
+      "archive": {
+        "path": "third_party/archives/gorilla-native-source-unique-v1.tar.gz",
+        "sha256": "0d9ce35f06b721db46b11f1de9006150a175eace61810b650b032502c0022f79"
+      },
+      "source_manifest": {
+        "path": "third_party/provenance/gorilla-native/source-manifest.json",
+        "sha256": "e3e256bdc00d8aa1511e1076b73d782900d91ed5f40b7f050acd462007f95b68"
+      },
+      "historical_validation": {
+        "path": "third_party/provenance/gorilla-native/unique-validation.json",
+        "sha256": "a5fe5d4296e126f1b9adcfcffb73037f58191cb735455f19c19b0ee27d9a7b94"
+      },
+      "selection_manifest_file_count": 9,
+      "selection_manifest_count_matches": true,
+      "files": 9,
+      "license_members": [
+        "gorilla-native/licenses/LICENSE",
+        "gorilla-native/licenses/NOTICE"
+      ],
+      "public_headers": [
+        "gorilla-native/include/gorilla.h"
+      ],
+      "build_entry": "gorilla-native/CMakeLists.txt"
+    },
+    "zfp-native": {
+      "origin_release": "fix_Release/zfp-native/unique-v1",
+      "archive": {
+        "path": "third_party/archives/zfp-native-source-unique-v1.tar.gz",
+        "sha256": "97ad797ebe89ba9585a9cf49932caf15297c824765ba774bda4418b5cec4c34f"
+      },
+      "source_manifest": {
+        "path": "third_party/provenance/zfp-native/source-manifest.json",
+        "sha256": "a1c92dad2328ed7f0a2f402ddfee9b2e379ac028dd86157d41d5733e59ce2e4a"
+      },
+      "historical_validation": {
+        "path": "third_party/provenance/zfp-native/unique-validation.json",
+        "sha256": "fc132ada8b6696ed24f70eb76953edba254e69ed301523f64b7da797ba1ed0d0"
+      },
+      "selection_manifest_file_count": 127,
+      "selection_manifest_count_matches": false,
+      "files": 196,
+      "license_members": [
+        "zfp-native/core/LICENSE",
+        "zfp-native/core/NOTICE",
+        "zfp-native/licenses/LICENSE",
+        "zfp-native/licenses/core/LICENSE",
+        "zfp-native/licenses/core/NOTICE",
+        "zfp-native/licenses/upstream/LICENSE",
+        "zfp-native/licenses/upstream/NOTICE",
+        "zfp-native/licenses/upstream/docs/source/license.rst",
+        "zfp-native/licenses/upstream/python/scikit-build-cmake/LICENSE"
+      ],
+      "public_headers": [
+        "zfp-native/include/zfp_native.h",
+        "zfp-native/include/zfp_native_cpp.hpp"
+      ],
+      "build_entry": "zfp-native/CMakeLists.txt"
+    },
+    "lzbench-native": {
+      "origin_release": "fix_Release/lzbench-native/unique-v1",
+      "archive": {
+        "path": "third_party/archives/lzbench-native-source-unique-v1.tar.gz",
+        "sha256": "54ddb93af4de953c6dd833c2d16f84286116d2c13b90b01dd87adffd2e173d7e"
+      },
+      "source_manifest": {
+        "path": "third_party/provenance/lzbench-native/source-manifest.json",
+        "sha256": "2b9b1e9b45ea20333b7a94d64d6959b1a105f6d82080ad564139afc6685e8cb3"
+      },
+      "historical_validation": {
+        "path": "third_party/provenance/lzbench-native/unique-validation.json",
+        "sha256": "3e92eb4634dc3021adfc18129015e3d31318f3acf139cbce9cddde4c0557ef3e"
+      },
+      "selection_manifest_file_count": 424,
+      "selection_manifest_count_matches": false,
+      "files": 425,
+      "license_members": [
+        "lzbench-native/licenses/LICENSE-GPL-2",
+        "lzbench-native/licenses/LICENSE-GPL-3",
+        "lzbench-native/licenses/NOTICE.md",
+        "lzbench-native/licenses/upstream/LICENSE",
+        "lzbench-native/licenses/upstream/bwt/bzip2/LICENSE",
+        "lzbench-native/licenses/upstream/lz/brotli/LICENSE",
+        "lzbench-native/licenses/upstream/lz/libdeflate/COPYING",
+        "lzbench-native/licenses/upstream/lz/lz4/LICENSE",
+        "lzbench-native/licenses/upstream/lz/lz4/contrib/debian/copyright",
+        "lzbench-native/licenses/upstream/lz/lz4/contrib/djgpp/LICENSE",
+        "lzbench-native/licenses/upstream/lz/lz4/examples/COPYING",
+        "lzbench-native/licenses/upstream/lz/lz4/lib/LICENSE",
+        "lzbench-native/licenses/upstream/lz/lz4/programs/COPYING",
+        "lzbench-native/licenses/upstream/lz/lz4/tests/COPYING",
+        "lzbench-native/licenses/upstream/lz/lzsse/LICENSE",
+        "lzbench-native/licenses/upstream/lz/snappy/AUTHORS",
+        "lzbench-native/licenses/upstream/lz/snappy/COPYING",
+        "lzbench-native/licenses/upstream/lz/xz/AUTHORS",
+        "lzbench-native/licenses/upstream/lz/xz/COPYING",
+        "lzbench-native/licenses/upstream/lz/xz/COPYING.0BSD",
+        "lzbench-native/licenses/upstream/lz/xz/COPYING.GPLv2",
+        "lzbench-native/licenses/upstream/lz/xz/COPYING.GPLv3",
+        "lzbench-native/licenses/upstream/lz/xz/COPYING.LGPLv2.1",
+        "lzbench-native/licenses/upstream/lz/xz/build-aux/license-check.sh",
+        "lzbench-native/licenses/upstream/lz/zstd/COPYING",
+        "lzbench-native/licenses/upstream/lz/zstd/LICENSE",
+        "lzbench-native/licenses/upstream/lz/zstd/build/LICENSE",
+        "lzbench-native/vendor/lzbench/LICENSE",
+        "lzbench-native/vendor/lzbench/bwt/bzip2/LICENSE",
+        "lzbench-native/vendor/lzbench/lz/brotli/LICENSE",
+        "lzbench-native/vendor/lzbench/lz/libdeflate/COPYING",
+        "lzbench-native/vendor/lzbench/lz/lz4/LICENSE",
+        "lzbench-native/vendor/lzbench/lz/lz4/contrib/debian/copyright",
+        "lzbench-native/vendor/lzbench/lz/lz4/contrib/djgpp/LICENSE",
+        "lzbench-native/vendor/lzbench/lz/lz4/lib/LICENSE",
+        "lzbench-native/vendor/lzbench/lz/lz4/programs/COPYING",
+        "lzbench-native/vendor/lzbench/lz/lzsse/LICENSE",
+        "lzbench-native/vendor/lzbench/lz/snappy/COPYING",
+        "lzbench-native/vendor/lzbench/lz/xz/COPYING",
+        "lzbench-native/vendor/lzbench/lz/xz/COPYING.0BSD",
+        "lzbench-native/vendor/lzbench/lz/xz/COPYING.GPLv2",
+        "lzbench-native/vendor/lzbench/lz/xz/COPYING.GPLv3",
+        "lzbench-native/vendor/lzbench/lz/xz/COPYING.LGPLv2.1",
+        "lzbench-native/vendor/lzbench/lz/xz/build-aux/license-check.sh",
+        "lzbench-native/vendor/lzbench/lz/zstd/COPYING",
+        "lzbench-native/vendor/lzbench/lz/zstd/LICENSE",
+        "lzbench-native/vendor/lzbench/lz/zstd/build/LICENSE"
+      ],
+      "public_headers": [
+        "lzbench-native/include/lzbench_backends.h",
+        "lzbench-native/include/lzbench_extended.hpp",
+        "lzbench-native/include/lzbench_native.h",
+        "lzbench-native/include/lzbench_native.hpp"
+      ],
+      "build_entry": "lzbench-native/CMakeLists.txt"
+    },
+    "elf-selfstar-native": {
+      "origin_release": "fix_Release/elf-selfstar-native/unique-v1",
+      "archive": {
+        "path": "third_party/archives/elf-selfstar-native-source-unique-v1.tar.gz",
+        "sha256": "0febcf79b0a42c1c58b042478ff476b2fcafbdfe4de5b1abc2e60c34839ba355"
+      },
+      "source_manifest": {
+        "path": "third_party/provenance/elf-selfstar-native/source-manifest.json",
+        "sha256": "d230a272a967e1aea1f8059e6c8e832fa066a49cfab929e968f404795a956f72"
+      },
+      "historical_validation": {
+        "path": "third_party/provenance/elf-selfstar-native/unique-validation.json",
+        "sha256": "e6a8919f2e216d909f99737a430e3f831b2f105f52c4ae0887eb870e0134a194"
+      },
+      "selection_manifest_file_count": 8,
+      "selection_manifest_count_matches": true,
+      "files": 8,
+      "license_members": [
+        "elf-selfstar-native/licenses/NOTICE"
+      ],
+      "public_headers": [
+        "elf-selfstar-native/include/selfstar.h"
+      ],
+      "build_entry": "elf-selfstar-native/CMakeLists.txt"
+    },
+    "FiniteStateEntropy": {
+      "origin_release": "fix_Release/FiniteStateEntropy/unique-v1",
+      "archive": {
+        "path": "third_party/archives/FiniteStateEntropy-source-unique-v1.tar.gz",
+        "sha256": "10fd2afb4c8cab1983fd19b148f58b2cd9632831a0a9c1b57d850ff417299055"
+      },
+      "source_manifest": {
+        "path": "third_party/provenance/FiniteStateEntropy/source-manifest.json",
+        "sha256": "1026cfa13f7a76c17773c68dab9828775186e0552139d80843c91a5c7b3fbe0e"
+      },
+      "historical_validation": {
+        "path": "third_party/provenance/FiniteStateEntropy/unique-validation.json",
+        "sha256": "eab5085a11edd288426e9e3d1bf511b643577e1220bb4ac811d80aeda12a7b64"
+      },
+      "selection_manifest_file_count": 27,
+      "selection_manifest_count_matches": true,
+      "files": 27,
+      "license_members": [],
+      "public_headers": [
+        "FiniteStateEntropy/include/entropy_port.hpp"
+      ],
+      "build_entry": "FiniteStateEntropy/CMakeLists.txt"
+    },
+    "tsbenchmark-algorithms-native": {
+      "origin_release": "fix_Release/tsbenchmark-algorithms-native/unique-v1",
+      "archive": {
+        "path": "third_party/archives/tsbenchmark-algorithms-native-source-unique-v1.tar.gz",
+        "sha256": "ceccd9a9cddc8875b24f2bd24558bf7bcfaba03bfdbf220705a5ff92f57215cb"
+      },
+      "source_manifest": {
+        "path": "third_party/provenance/tsbenchmark-algorithms-native/source-manifest.json",
+        "sha256": "c71a16528dd8ccce6bacddfb2444b21e4a6c6cc450f3c748dc36011bf7be4f53"
+      },
+      "historical_validation": {
+        "path": "third_party/provenance/tsbenchmark-algorithms-native/unique-validation.json",
+        "sha256": "d6bc159710ba2e7d5c89b2b7fafcc3a65cb0bfdae66f4af35de671850c1f7e3d"
+      },
+      "selection_manifest_file_count": 115,
+      "selection_manifest_count_matches": true,
+      "files": 115,
+      "license_members": [
+        "tsbenchmark-algorithms-native/licenses/NOTICE.md",
+        "tsbenchmark-algorithms-native/licenses/port/third_party/zstd/LICENSE",
+        "tsbenchmark-algorithms-native/licenses/third_party/zstd-1.5.7/COPYING",
+        "tsbenchmark-algorithms-native/licenses/third_party/zstd-1.5.7/LICENSE",
+        "tsbenchmark-algorithms-native/licenses/upstream/third_party/zstd/LICENSE"
+      ],
+      "public_headers": [
+        "tsbenchmark-algorithms-native/include/tba.h"
+      ],
+      "build_entry": "tsbenchmark-algorithms-native/CMakeLists.txt"
+    },
+    "corad-native": {
+      "origin_release": "fix_Release/corad-native/unique-v1",
+      "archive": {
+        "path": "third_party/archives/corad-native-source-unique-v1.tar.gz",
+        "sha256": "b95e04c6ad63e2f3c0cf06dbf853311dc112544ba9d36553dce3feb89c7fab83"
+      },
+      "source_manifest": {
+        "path": "third_party/provenance/corad-native/source-manifest.json",
+        "sha256": "113924abbd32aee0bba9706fa2a685bd0ccbbf1d29a86d75a09bfd5fc721c059"
+      },
+      "historical_validation": {
+        "path": "third_party/provenance/corad-native/unique-validation.json",
+        "sha256": "42e29f346dd05de49a3fc5e193d33d79b45b1e6419a62a9575948b7791d1523c"
+      },
+      "selection_manifest_file_count": 13,
+      "selection_manifest_count_matches": false,
+      "files": 16,
+      "license_members": [
+        "corad-native/licenses/NOTICE.md"
+      ],
+      "public_headers": [
+        "corad-native/include/corad.h"
+      ],
+      "build_entry": "corad-native/CMakeLists.txt"
+    }
+  }
+}

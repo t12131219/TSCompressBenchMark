@@ -1,0 +1,7 @@
+tsbench_frozen_source(tsbenchmark-algorithms-native tba_native)
+tsbench_codec_module(tsbench_pbepla_rr bmk_pbepla_rr adapter.cpp tba_native)
+
+add_executable(tsbench_pbepla_native_control EXCLUDE_FROM_ALL native_control.cpp)
+target_link_libraries(tsbench_pbepla_native_control PRIVATE tba_native)
+target_compile_features(tsbench_pbepla_native_control PRIVATE cxx_std_17)
+set_target_properties(tsbench_pbepla_native_control PROPERTIES CXX_EXTENSIONS NO BUILD_RPATH "$ORIGIN" BUILD_RPATH_USE_ORIGIN YES)

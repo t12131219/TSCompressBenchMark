@@ -1,0 +1,42 @@
+{
+  "schema": "bmk.suite/1",
+  "id": "first_batch_service_v2",
+  "state": "draft_m0",
+  "stage": "M5",
+  "selections": [
+    9,
+    11,
+    19,
+    85,
+    7,
+    31,
+    40,
+    39,
+    4,
+    29,
+    87,
+    80
+  ],
+  "requirements": "catalog/capabilities/first_batch.json",
+  "native_inventory": "catalog/selections/first_batch_native.json",
+  "fixtures": "datasets/fixtures/manifest.json",
+  "policies": {
+    "platform": "linux_cpu",
+    "function_verification": "artifact_each",
+    "timing_resource_policy": "exclusive",
+    "submission": "one_complete_plan_one_run",
+    "retention": "preserve_evidence_and_independent_restore_sample_per_required_case",
+    "allow_raw_fallback": false,
+    "max_validation_workers": 4
+  },
+  "draft_cases": "configs/suites/first_batch_service_v2/cases.json",
+  "expected_counts": {
+    "selections": 12,
+    "groups": 17,
+    "atomic_requirements": 22,
+    "display_cells": 204,
+    "atomic_relations": 264
+  },
+  "corpus": "datasets/manifests/first-batch-real-v2.json",
+  "corpus_feature_policy": "catalog/capabilities/corpus_features_v2.json"
+}

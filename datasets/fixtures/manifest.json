@@ -1,0 +1,87 @@
+{
+  "schema": "bmk.fixtures/1",
+  "generator_id": "m0-fixtures/v1",
+  "provenance": "deterministic synthetic, generated in this project",
+  "files": {
+    "t-v.csv": {
+      "path": "datasets/fixtures/t-v.csv",
+      "sha256": "6a88aeecd114f8dfe9e2ef4dbe42fc985cbf085e587f47f134c10e650028529f",
+      "bytes": 83
+    },
+    "t-v.txt": {
+      "path": "datasets/fixtures/t-v.txt",
+      "sha256": "64139a6998fe420922494f3590d2b16949d2844c040f5fbac08de06424201efd",
+      "bytes": 83
+    },
+    "t.npy": {
+      "path": "datasets/fixtures/t.npy",
+      "sha256": "09dc88c2bf09c2128002e9c88d5290eab56d35390ed68a5623d7d11f5dfafa87",
+      "bytes": 200
+    },
+    "v.npy": {
+      "path": "datasets/fixtures/v.npy",
+      "sha256": "72fefaaae457fc4f7f2be083f604e323f5a08c68a4eb5a802213a2bc034c6f86",
+      "bytes": 200
+    },
+    "f64-bits.npy": {
+      "path": "datasets/fixtures/f64-bits.npy",
+      "sha256": "e40af9cfd9d0ce9e821a45909949d9070e8c1bf96e97e762fa92ffb6ac41e4c7",
+      "bytes": 200
+    },
+    "i64-edges.npy": {
+      "path": "datasets/fixtures/i64-edges.npy",
+      "sha256": "3b14b2a3762975106357e8e62ac3bacf3274d2c60b3036e4af9b261c216b6c47",
+      "bytes": 192
+    }
+  },
+  "objects": {
+    "tiny-tv": {
+      "rows": 9,
+      "columns": [
+        {
+          "name": "T",
+          "role": "timestamp",
+          "dtype": "i64",
+          "unit": "ns",
+          "epoch": "unix",
+          "timezone": "UTC"
+        },
+        {
+          "name": "V",
+          "role": "value",
+          "dtype": "f64"
+        }
+      ],
+      "formats": {
+        "csv": [
+          "t-v.csv"
+        ],
+        "npy": [
+          "t.npy",
+          "v.npy"
+        ],
+        "txt": [
+          "t-v.txt"
+        ]
+      }
+    },
+    "f64-boundaries": {
+      "rows": 9,
+      "dtype": "f64",
+      "formats": {
+        "npy": [
+          "f64-bits.npy"
+        ]
+      }
+    },
+    "i64-boundaries": {
+      "rows": 8,
+      "dtype": "i64",
+      "formats": {
+        "npy": [
+          "i64-edges.npy"
+        ]
+      }
+    }
+  }
+}

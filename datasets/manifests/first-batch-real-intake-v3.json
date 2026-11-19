@@ -1,0 +1,81 @@
+{
+  "schema": "bmk.first-batch-real-intake/3",
+  "base_intake": {
+    "path": "datasets/manifests/first-batch-real-intake-v2.json",
+    "sha256": "5fc28b2e17aad57c3af6cec37a743226ec625884bb2364db688cf2d7d19d779a"
+  },
+  "base_manifest": {
+    "path": "datasets/manifests/first-batch-real-v2.json",
+    "sha256": "44c2e7f7207640d66f4b01660c74741a23436512b43dc43545ffd27d215322bc"
+  },
+  "datasets": [
+    {
+      "id": "westermo-system1",
+      "source_cluster": "westermo-lab-telemetry",
+      "domain": "server_metrics",
+      "header_profile": "westermo_system1_elapsed_v1",
+      "asset_path": "datasets/raw/westermo-system1-v1.csv.gz",
+      "nominal_step_ticks": 30,
+      "split_at": [
+        "43200",
+        "86400"
+      ],
+      "rows": 4320,
+      "selection_reason": "Use the first listed server and first 36 hours in source order; keep predefined load, memory, CPU and availability metrics; no selection by codec result.",
+      "license_evidence": {
+        "path": "datasets/licenses/domain-v3/westermo-CC-BY-4.0.txt",
+        "sha256": "7e7170e3cebf88a9f60c7b8421418323c09304da1af4d5e90f4da1dc1c8a2661",
+        "bytes": 18650
+      },
+      "attribution": {
+        "path": "datasets/licenses/domain-v3/westermo-attribution.txt",
+        "sha256": "e507ae433ae6a81c0403caff2f1dedbdfa92474c6175e6877e2aee88358fd0bf",
+        "bytes": 708
+      },
+      "source_url": "https://raw.githubusercontent.com/westermo/test-system-performance-dataset/47e0ccdc10c30e86327d6eb828ed48d164469fd4/data/system-1.csv",
+      "source_version": "47e0ccdc10c30e86327d6eb828ed48d164469fd4",
+      "source_asset": {
+        "path": "datasets/raw/domain-v3/westermo-system-1-first-4320.csv",
+        "sha256": "de43463cb3b43d87cd55b6e32e57e3457d3b4225a94c5ebcd55467b10a418045",
+        "bytes": 1010536
+      },
+      "delimiter": ",",
+      "decimal_point": ".",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "id": "ceda-cmip6-gsat",
+      "source_cluster": "ceda-ipcc-ar6-cmip6",
+      "domain": "scientific_computing",
+      "header_profile": "ceda_cmip6_gsat_year_v1",
+      "asset_path": "datasets/raw/ceda-cmip6-gsat-v1.csv.gz",
+      "nominal_step_ticks": 1,
+      "split_at": [
+        "1907",
+        "1964"
+      ],
+      "rows": 171,
+      "selection_reason": "Use all 171 annual labels and first eight complete unaggregated CMIP6 models in source order, excluding observational data and multi-model mean. Selection is by model/availability, not codec outcome.",
+      "license_evidence": {
+        "path": "datasets/licenses/domain-v3/ceda-fig-3-4-License.txt",
+        "sha256": "ea59afd02f5b3ba8653e33f7959f8634bc39ff9883861227f5d68b8f3e1c0f29",
+        "bytes": 1225
+      },
+      "attribution": {
+        "path": "datasets/licenses/domain-v3/ceda-attribution.txt",
+        "sha256": "d2ea0a767e6b0113b29b9240cc65ab8b8113ffb2cfc94bbbbc9fdcb12f48fa08",
+        "bytes": 837
+      },
+      "source_url": "https://dap.ceda.ac.uk/badc/ar6_wg1/data/ch_03/ch3_fig04/v20211028/panel_a/fig_3_4_panel_a.nc",
+      "source_version": "v20211028 / 10.5285/06a4ad1656774087a5b6db3c7a57211e",
+      "source_asset": {
+        "path": "datasets/raw/domain-v3/ceda-fig-3-4-panel-a.nc",
+        "sha256": "5dbbb7bc09252550ac75859480f18753afcf176f60fcb4991fa7a54aa8aacc74",
+        "bytes": 86168
+      },
+      "delimiter": ",",
+      "decimal_point": ".",
+      "license": "CC-BY-4.0"
+    }
+  ]
+}

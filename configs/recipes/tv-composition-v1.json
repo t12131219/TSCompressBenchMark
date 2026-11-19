@@ -1,0 +1,139 @@
+{
+  "schema": "bmk.recipe/1",
+  "id": "tv-composition-v1",
+  "runner": "tv-bundle/1",
+  "suite": {
+    "path": "configs/suites/dev_tv_composition_v1/suite.json",
+    "content_id": "ece59df76c33d413e9b759618855ec9e74418d2a5c177c9802fff6b39188c21d"
+  },
+  "selection_policy": "force_recipe",
+  "max_depth": 7,
+  "conditions": {
+    "quality": "bitwise_exact",
+    "access": "batch_whole",
+    "extent": "pipeline_service",
+    "ingress": "canonical_before_clock",
+    "state": "reset_per_message",
+    "validation": "artifact_each",
+    "accounting": "all_serialized_bundle_bytes",
+    "resources": {
+      "deadline_ns": 10000000000,
+      "max_serialized_bytes": 2097152,
+      "participant_threads": 1,
+      "enforcement": "per_process_deadline_and_bounded_frame_not_core_or_memory_isolation"
+    }
+  },
+  "graphs": {
+    "separate": [
+      {
+        "id": "input",
+        "op": "typed-object",
+        "inputs": [],
+        "inverse": "verify-original-object"
+      },
+      {
+        "id": "axis",
+        "op": "exact-ms",
+        "inputs": [
+          "input"
+        ],
+        "inverse": "restore-original-unit"
+      },
+      {
+        "id": "chunk",
+        "op": "chunk-reset",
+        "inputs": [
+          "axis"
+        ],
+        "inverse": "reassemble-in-row-order"
+      },
+      {
+        "id": "t",
+        "op": "take-t",
+        "inputs": [
+          "chunk"
+        ],
+        "inverse": "restore-shared-axis"
+      },
+      {
+        "id": "v",
+        "op": "take-v",
+        "inputs": [
+          "chunk"
+        ],
+        "inverse": "restore-value-order"
+      },
+      {
+        "id": "t-codec",
+        "op": "codec-t",
+        "inputs": [
+          "t"
+        ],
+        "inverse": "decode-t"
+      },
+      {
+        "id": "v-codec",
+        "op": "codec-f64",
+        "inputs": [
+          "v"
+        ],
+        "inverse": "decode-f64"
+      },
+      {
+        "id": "product",
+        "op": "bundle-separate",
+        "inputs": [
+          "t-codec",
+          "v-codec"
+        ],
+        "inverse": "open-separate-bundle"
+      }
+    ],
+    "pair": [
+      {
+        "id": "input",
+        "op": "typed-object",
+        "inputs": [],
+        "inverse": "verify-original-object"
+      },
+      {
+        "id": "axis",
+        "op": "exact-ms",
+        "inputs": [
+          "input"
+        ],
+        "inverse": "restore-original-unit"
+      },
+      {
+        "id": "chunk",
+        "op": "chunk-reset",
+        "inputs": [
+          "axis"
+        ],
+        "inverse": "reassemble-in-row-order"
+      },
+      {
+        "id": "tv-codec",
+        "op": "codec-joint",
+        "inputs": [
+          "chunk"
+        ],
+        "inverse": "decode-joint"
+      },
+      {
+        "id": "product",
+        "op": "bundle-joint",
+        "inputs": [
+          "tv-codec"
+        ],
+        "inverse": "open-joint-bundle"
+      }
+    ]
+  },
+  "methods": {
+    "gorilla-t-gorilla-v": "separate",
+    "gorilla-t-alp-v": "separate",
+    "raw-t-gorilla-v": "separate",
+    "gorilla-tv": "pair"
+  }
+}

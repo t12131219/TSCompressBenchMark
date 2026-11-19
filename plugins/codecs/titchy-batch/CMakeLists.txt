@@ -1,0 +1,17 @@
+tsbench_frozen_source(titchy-native titchy_c)
+tsbench_codec_module(tsbench_titchy_batch bmk_titchy_batch adapter.cpp titchy_c)
+
+add_executable(tsbench_titchy_batch_control EXCLUDE_FROM_ALL direct_control.c)
+target_link_libraries(tsbench_titchy_batch_control PRIVATE titchy_c)
+set_target_properties(tsbench_titchy_batch_control PROPERTIES C_STANDARD 11 C_STANDARD_REQUIRED YES C_EXTENSIONS NO
+  BUILD_RPATH_USE_ORIGIN YES BUILD_RPATH "$ORIGIN")
+
+add_executable(tsbench_titchy_access_control EXCLUDE_FROM_ALL access_control.cpp)
+target_link_libraries(tsbench_titchy_access_control PRIVATE titchy_c)
+set_target_properties(tsbench_titchy_access_control PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED YES CXX_EXTENSIONS NO
+  BUILD_RPATH_USE_ORIGIN YES BUILD_RPATH "$ORIGIN")
+
+add_executable(tsbench_titchy_stream_control EXCLUDE_FROM_ALL stream_control.cpp)
+target_link_libraries(tsbench_titchy_stream_control PRIVATE titchy_c)
+set_target_properties(tsbench_titchy_stream_control PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED YES CXX_EXTENSIONS NO
+  BUILD_RPATH_USE_ORIGIN YES BUILD_RPATH "$ORIGIN")

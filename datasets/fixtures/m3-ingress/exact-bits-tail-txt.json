@@ -1,0 +1,72 @@
+{
+  "schema": "bmk.typed-tv-source/1",
+  "plugin": "txt",
+  "object": {
+    "timestamp": {
+      "name": "timestamp",
+      "dtype": "i64",
+      "unit": "ms",
+      "interpretation": "synthetic_integer_coordinate",
+      "epoch": null,
+      "timezone": null
+    },
+    "values": [
+      {
+        "name": "v1",
+        "dtype": "f64"
+      },
+      {
+        "name": "v2",
+        "dtype": "f64"
+      },
+      {
+        "name": "v3",
+        "dtype": "f64"
+      },
+      {
+        "name": "v4",
+        "dtype": "f64"
+      },
+      {
+        "name": "v5",
+        "dtype": "f64"
+      }
+    ],
+    "rows": 515,
+    "row_order": "preserve",
+    "layout": "dense_column_little_endian",
+    "nullable": false,
+    "nan_policy": "preserve_bits"
+  },
+  "files": [
+    {
+      "role": "table",
+      "path": "datasets/fixtures/m3-ingress/exact-bits-tail.txt",
+      "bytes": 74820,
+      "sha256": "c7e9ab6baa77e4531475e2004082dc5960ce24040d6ba19fb26759a3417ad362"
+    }
+  ],
+  "options": {
+    "encoding": "utf-8",
+    "header": true,
+    "bad_rows": "error",
+    "timestamp_encoding": "signed_decimal_integer",
+    "decimal": ".",
+    "missing_tokens": [
+      "",
+      "NA"
+    ],
+    "f64_encoding": "decimal_or_explicit_ieee_hex",
+    "comments": "reject",
+    "empty_lines": "reject",
+    "mode": "fixed_width",
+    "widths": [
+      24,
+      24,
+      24,
+      24,
+      24,
+      24
+    ]
+  }
+}

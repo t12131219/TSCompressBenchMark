@@ -1,0 +1,170 @@
+{
+  "schema": "bmk.recipe/1",
+  "id": "tv-cross-format-v2",
+  "runner": "tv-bundle/1",
+  "suite": {
+    "path": "configs/suites/dev_tv_cross_format_v2/suite.json",
+    "content_id": "574696e5f5d0ce29e7578ceb88e5a3c16064f402db9690e169853154ee4adb75"
+  },
+  "selection_policy": "force_recipe",
+  "max_depth": 7,
+  "conditions": {
+    "quality": "bitwise_exact",
+    "access": "batch_whole",
+    "extent": "pipeline_service",
+    "ingress": "canonical_before_clock",
+    "state": "reset_per_message",
+    "validation": "artifact_each",
+    "accounting": "all_serialized_bundle_bytes",
+    "resources": {
+      "deadline_ns": 10000000000,
+      "max_serialized_bytes": 2097152,
+      "participant_threads": 1,
+      "enforcement": "per_process_deadline_and_bounded_frame_not_core_or_memory_isolation"
+    }
+  },
+  "graphs": {
+    "separate": [
+      {
+        "id": "input",
+        "op": "typed-object",
+        "inputs": [],
+        "inverse": "verify-original-object"
+      },
+      {
+        "id": "axis",
+        "op": "exact-ms",
+        "inputs": [
+          "input"
+        ],
+        "inverse": "restore-original-unit"
+      },
+      {
+        "id": "chunk",
+        "op": "chunk-reset",
+        "inputs": [
+          "axis"
+        ],
+        "inverse": "reassemble-in-row-order"
+      },
+      {
+        "id": "t",
+        "op": "take-t",
+        "inputs": [
+          "chunk"
+        ],
+        "inverse": "restore-shared-axis"
+      },
+      {
+        "id": "v",
+        "op": "take-v",
+        "inputs": [
+          "chunk"
+        ],
+        "inverse": "restore-value-order"
+      },
+      {
+        "id": "t-codec",
+        "op": "codec-t",
+        "inputs": [
+          "t"
+        ],
+        "inverse": "decode-t"
+      },
+      {
+        "id": "v-codec",
+        "op": "codec-f64",
+        "inputs": [
+          "v"
+        ],
+        "inverse": "decode-f64"
+      },
+      {
+        "id": "product",
+        "op": "bundle-separate",
+        "inputs": [
+          "t-codec",
+          "v-codec"
+        ],
+        "inverse": "open-separate-bundle"
+      }
+    ],
+    "grouped-limbs": [
+      {
+        "id": "input",
+        "op": "typed-object",
+        "inputs": [],
+        "inverse": "verify-original-object"
+      },
+      {
+        "id": "axis",
+        "op": "exact-ms",
+        "inputs": [
+          "input"
+        ],
+        "inverse": "restore-original-unit"
+      },
+      {
+        "id": "chunk",
+        "op": "chunk-reset",
+        "inputs": [
+          "axis"
+        ],
+        "inverse": "reassemble-in-row-order"
+      },
+      {
+        "id": "t",
+        "op": "take-t",
+        "inputs": [
+          "chunk"
+        ],
+        "inverse": "restore-shared-axis"
+      },
+      {
+        "id": "v",
+        "op": "take-v",
+        "inputs": [
+          "chunk"
+        ],
+        "inverse": "restore-value-order"
+      },
+      {
+        "id": "t-codec",
+        "op": "codec-t",
+        "inputs": [
+          "t"
+        ],
+        "inverse": "decode-t"
+      },
+      {
+        "id": "limbs",
+        "op": "pack-limbs",
+        "inputs": [
+          "v"
+        ],
+        "inverse": "unpack-limbs-bitwise"
+      },
+      {
+        "id": "v-codec",
+        "op": "codec-u16-group",
+        "inputs": [
+          "limbs"
+        ],
+        "inverse": "decode-u16-group"
+      },
+      {
+        "id": "product",
+        "op": "bundle-grouped",
+        "inputs": [
+          "t-codec",
+          "v-codec"
+        ],
+        "inverse": "open-grouped-bundle"
+      }
+    ]
+  },
+  "methods": {
+    "gorilla-t-alp-f64": "separate",
+    "gorilla-t-fire-u16": "grouped-limbs"
+  }
+}

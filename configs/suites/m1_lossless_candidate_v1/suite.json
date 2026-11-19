@@ -1,0 +1,35 @@
+{
+  "schema": "bmk.lossless-stage-suite/1",
+  "id": "m1_lossless_candidate_v1",
+  "stage": "M1",
+  "admission": "preflight_only_m0_not_accepted",
+  "purpose": "m1_candidate_preflight",
+  "task": "values_only",
+  "comparison_track": "O",
+  "quality": "original_f64_bitwise_exact",
+  "access": "whole_value_column_batch",
+  "verification": "artifact_each",
+  "verification_placement": "outside_measurement",
+  "timeout_seconds_per_operation": 5,
+  "max_serialized_bytes_per_slot": 262144,
+  "scheduling": {"competing_methods": "serial", "requested_threads": 1, "state_reset": "new_worker_each_operation", "max_attempts": 1},
+  "measurement": {"mode": "not_collected", "byte_boundary": "complete_worker_frame_including_schema"},
+  "retention": {"verified_samples_per_slot": 1, "preserve_raw_ledger_and_failures": true},
+  "fixture_manifest": "datasets/fixtures/manifest.json",
+  "corpus_manifest": "datasets/manifests/first-batch-real-v1.json",
+  "direct_control": "configs/experiments/measurement_controls/direct_routes_v1.json",
+  "cases": [
+    {"id": "empty-f64", "input": {"kind": "empty_f64"}},
+    {"id": "short-finite-f64", "input": {"kind": "fixture", "name": "v.npy"}},
+    {"id": "special-f64-bits", "input": {"kind": "fixture", "name": "f64-bits.npy"}},
+    {"id": "alpn-vector-tail", "input": {"kind": "corpus_window", "dataset": "mpi-beutenberg-weather", "partition": "test", "column": "air_temperature", "offset": 0, "count": 1025}},
+    {"id": "zstd-near-maximum-f64-block", "input": {"kind": "corpus_window", "dataset": "uci-electricity-pt", "partition": "test", "column": "MT_231", "offset": 0, "count": 8191}},
+    {"id": "zstd-exact-maximum-f64-block", "input": {"kind": "corpus_window", "dataset": "uci-electricity-pt", "partition": "test", "column": "MT_231", "offset": 8191, "count": 8192}}
+  ],
+  "methods": [
+    {"plugin": "raw-store", "role": "value", "options": {}},
+    {"plugin": "zstd", "role": "bytes", "options": {}},
+    {"plugin": "alp-auto", "role": "value", "options": {"decode_backend": "scalar-unfused"}}
+  ],
+  "expected": {"cases": 6, "methods": 3, "slots": 18}
+}

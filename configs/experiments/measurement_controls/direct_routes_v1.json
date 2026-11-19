@@ -1,0 +1,41 @@
+{
+  "schema": "bmk.direct-control/1",
+  "state": "development_functional_only",
+  "same_work": {
+    "routes": ["worker_dlopen", "worker_linked_entry"],
+    "boundary": "fresh_process_per_operation",
+    "completion": "process_exit_with_owned_output_serialized_to_files",
+    "fixed": ["plugin_binary", "dependency_binary", "typed_input", "schema", "canonical_options", "fresh_context", "output_ownership", "artifact_bytes", "verify_every_artifact"]
+  },
+  "native_differential": {
+    "scope": "native_payload_and_original_bits_only_not_same_work",
+    "zstd": "ln_create(LN_ZSTD,3), ln_compress, ln_decompress",
+    "alp-auto": "alpn_compress(ALPN_AUTO), alpn_inspect, alpn_decompress_ex",
+    "raw-store": "independent_wire_layout_and_copy_reference"
+  },
+  "cases": {
+    "raw-store": [
+      {"id": "empty", "kind": "byte_ramp", "count": 0, "dtype": 2},
+      {"id": "special", "kind": "special_bits", "count": 5, "dtype": 10},
+      {"id": "large", "kind": "byte_ramp", "count": 4194305, "dtype": 2}
+    ],
+    "zstd": [
+      {"id": "empty", "kind": "byte_ramp", "count": 0, "dtype": 2},
+      {"id": "small", "kind": "byte_ramp", "count": 31, "dtype": 2},
+      {"id": "top-block-1", "kind": "byte_ramp", "count": 65535, "dtype": 2},
+      {"id": "top-block", "kind": "byte_ramp", "count": 65536, "dtype": 2},
+      {"id": "over-block", "kind": "byte_ramp", "count": 65537, "dtype": 2, "expected_status": 7}
+    ],
+    "alp-auto": [
+      {"id": "empty", "kind": "decimal", "count": 0, "dtype": 10},
+      {"id": "special-f32", "kind": "special_bits", "count": 5, "dtype": 9},
+      {"id": "special-f64", "kind": "special_bits", "count": 5, "dtype": 10},
+      {"id": "tail-f32", "kind": "decimal", "count": 1025, "dtype": 9},
+      {"id": "row-group-tail", "kind": "decimal", "count": 102401, "dtype": 10},
+      {"id": "falp-scalar", "kind": "decimal", "count": 1025, "dtype": 10, "options": {"decode_backend": "falp-scalar"}},
+      {"id": "falp-auto", "kind": "decimal", "count": 1025, "dtype": 10, "options": {"decode_backend": "falp-auto"}},
+      {"id": "unavailable-for-f32", "kind": "decimal", "count": 1025, "dtype": 9, "options": {"decode_backend": "falp-avx2"}, "expected_decode_status": 1}
+    ]
+  },
+  "not_run": ["latency_distribution", "cache_classification", "internal_zstd_multithreading", "zstd_session_and_dictionary", "profiling_perturbation"]
+}

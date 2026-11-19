@@ -1,0 +1,19 @@
+{
+  "schema": "bmk.derived-gorilla-routes/1",
+  "upstream_selection": 7,
+  "upstream_selection_id": "28eb1e4239ee6c635aace4f3af5e54e4f271f0f757f534fdd86f002070d0ce81",
+  "source_id": "gorilla-native",
+  "archive_sha256": "0d9ce35f06b721db46b11f1de9006150a175eace61810b650b032502c0022f79",
+  "parent_member": "gorilla-native/src/gorilla.c",
+  "parent_member_sha256": "de517e725407dd947ac4e6f1d31fdd27d2024d1236064616d2a624fa747cd677",
+  "parent_route": "gorilla-tv",
+  "implementation_kind": "derived",
+  "cross_role_dependencies": [],
+  "state": "fresh_per_batch_message",
+  "access": "whole_batch",
+  "max_rows": 512,
+  "routes": {
+    "gorilla-t-derived": {"role": "timestamp", "task": "timestamps_only", "format": "gorilla.t.delta-column.v1", "dtype": "i64", "time_unit": "ms"},
+    "gorilla-v-derived": {"role": "value", "task": "values_only", "format": "gorilla.v.xor-column.v1", "dtype": "f64", "time_unit": null}
+  }
+}

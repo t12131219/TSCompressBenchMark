@@ -1,0 +1,29 @@
+{
+  "schema": "bmk.plugin/1",
+  "id": "zstd",
+  "kind": "codec",
+  "build": {"cmake_dir": "plugins/codecs/zstd", "target": "tsbench_zstd"},
+  "supported_tasks": ["linear_f64_bitwise"],
+  "abi_version": 1,
+  "implementation_version": "v1",
+  "format_id": "zstd.linear-envelope.v1",
+  "roles": [
+    "bytes"
+  ],
+  "options_schema": "plugins/codecs/zstd/options.json",
+  "runtime_dependencies": [
+    "liblzbench_native.so"
+  ],
+  "source_files": [
+    "plugins/codecs/zstd/CMakeLists.txt",
+    "plugins/codecs/zstd/adapter.cpp",
+    "plugins/codecs/common/linear_frame.hpp",
+    "include/tsbench/plugin_abi.h",
+    "cmake/frozen.cmake",
+    "tools/prepare_plugin_source.py",
+    "tools/probe_release_builds.py",
+    "third_party/sources.lock.json",
+    "third_party/provenance/lzbench-native/source-manifest.json",
+    "third_party/archives/lzbench-native-source-unique-v1.tar.gz"
+  ]
+}

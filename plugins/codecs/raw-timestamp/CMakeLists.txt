@@ -1,0 +1,5 @@
+add_library(tsbench_raw_timestamp SHARED adapter.cpp)
+target_include_directories(tsbench_raw_timestamp PRIVATE "${PROJECT_SOURCE_DIR}/plugins/codecs/common")
+target_link_libraries(tsbench_raw_timestamp PRIVATE tsbench_plugin_abi)
+set_target_properties(tsbench_raw_timestamp PROPERTIES OUTPUT_NAME bmk_raw_timestamp CXX_EXTENSIONS NO
+  CXX_VISIBILITY_PRESET hidden VISIBILITY_INLINES_HIDDEN YES)

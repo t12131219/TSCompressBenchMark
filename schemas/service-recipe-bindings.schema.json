@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:tsbench:schema:service-recipe-bindings:1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "scope_suite", "recipes"],
+  "properties": {
+    "schema": {"const": "bmk.service-recipe-bindings/1"},
+    "scope_suite": {"type": "string", "maxLength": 64, "pattern": "^[a-z][a-z0-9_]*(?![\\s\\S])"},
+    "recipes": {
+      "type": "array", "maxItems": 8,
+      "items": {
+        "type": "object", "additionalProperties": false, "required": ["recipe", "contributors"],
+        "properties": {
+          "recipe": {
+            "type": "object", "additionalProperties": false, "required": ["path", "sha256"],
+            "properties": {
+              "path": {"type": "string", "minLength": 1, "maxLength": 256},
+              "sha256": {"type": "string", "minLength": 64, "maxLength": 64, "pattern": "^[0-9a-f]+$"}
+            }
+          },
+          "contributors": {
+            "type": "object", "minProperties": 1, "maxProperties": 32,
+            "propertyNames": {"$ref": "#/$defs/name"},
+            "additionalProperties": {
+              "type": "object", "additionalProperties": false, "required": ["selection_id", "plugin"],
+              "properties": {
+                "selection_id": {"type": "string", "minLength": 64, "maxLength": 64, "pattern": "^[0-9a-f]+$"},
+                "plugin": {"$ref": "#/$defs/name"}
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {"name": {"type": "string", "maxLength": 64, "pattern": "^[a-z][a-z0-9-]*(?![\\s\\S])"}}
+}

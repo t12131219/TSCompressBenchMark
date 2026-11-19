@@ -1,0 +1,28 @@
+{
+  "schema": "bmk.plugin/1",
+  "id": "gorilla-tv",
+  "kind": "codec",
+  "build": {"cmake_dir": "plugins/codecs/gorilla-tv", "target": "tsbench_gorilla_tv"},
+  "abi_version": 1,
+  "implementation_version": "v1",
+  "format_id": "gorilla.tv-envelope.v1",
+  "roles": [
+    "timestamp_value"
+  ],
+  "options_schema": "plugins/codecs/gorilla-tv/options.json",
+  "runtime_dependencies": [
+    "libgorilla_c.so"
+  ],
+  "source_files": [
+    "plugins/codecs/gorilla-tv/CMakeLists.txt",
+    "plugins/codecs/gorilla-tv/adapter.cpp",
+    "plugins/codecs/common/linear_frame.hpp",
+    "include/tsbench/plugin_abi.h",
+    "cmake/frozen.cmake",
+    "tools/prepare_plugin_source.py",
+    "tools/probe_release_builds.py",
+    "third_party/sources.lock.json",
+    "third_party/provenance/gorilla-native/source-manifest.json",
+    "third_party/archives/gorilla-native-source-unique-v1.tar.gz"
+  ]
+}

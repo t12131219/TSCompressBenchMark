@@ -1,0 +1,22 @@
+{
+  "schema":"bmk.frame-batches/1",
+  "scope":"frame",
+  "lifecycles":["steady","cold"],
+  "lanes":["dlopen","linked_entry"],
+  "completion":"result_ready",
+  "verification":"artifact_each",
+  "cache":"natural_repeated_input",
+  "warmups":2,
+  "matched_rounds":3,
+  "seed":20261118,
+  "target_batch_ns":3000000,
+  "max_loops":256,
+  "retention_budget_bytes":134217728,
+  "cases":[
+    {"id":"small-f64","rows":31,"methods":["raw-store","zstd","alp-auto"]},
+    {"id":"block-64k","rows":8192,"methods":["raw-store","zstd","alp-auto"]},
+    {"id":"alp-rowgroup-tail","rows":102401,"methods":["alp-auto"]},
+    {"id":"large-copy-inside","rows":524288,"methods":["raw-store"]},
+    {"id":"large-copy-outside","rows":4194304,"methods":["raw-store"]}
+  ]
+}

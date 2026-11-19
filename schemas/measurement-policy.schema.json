@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "M0 measurement policy and implemented M1 candidate extent",
+  "type": "object", "additionalProperties": false,
+  "required": ["schema", "profiles", "admission", "open_before_formal_timing"],
+  "properties": {
+    "schema": {"const": "bmk.measurement-policy/1"},
+    "profiles": {"type":"object","additionalProperties":false,"required":["process_frame_preflight"],"properties":{
+      "process_frame_preflight": {"const": {
+        "measurement_scope":"frame", "lifecycle":"process", "state_policy":"reset_per_message", "ownership":"copied_return",
+        "completion_policy":"result_ready", "verification_strength":"artifact_each", "verification_placement":"outside_extent",
+        "size_scope":"full_frame", "output_boundary":"worker_output_file_closed_and_worker_reaped", "clock":"parent_monotonic_ns",
+        "observer":"linux_waitid_wnowait_then_blocking_reap", "cache_state":"natural_uncontrolled", "native_threads_budget":1,
+        "iterations":1, "rankable":false
+      }}
+    }},
+    "admission": {"const": {
+      "qualification_and_m1":["artifact_each"], "formal_timing_only_m2_m4":["artifact_each","artifact_replay"],
+      "profiling_diagnostic":["artifact_each","artifact_replay","sample_only"], "matched_group_same_strength":true,
+      "profiling_is_separate_execution":true, "failed_and_cancelled_not_rankable":true
+    }},
+    "open_before_formal_timing": {"const": [
+      "steady_and_cold_session_extent_implementation", "calibration_warmup_and_matched_repeats",
+      "host_affinity_numa_cache_and_exclusive_resource_policy", "same_work_direct_control_timing",
+      "batch_storage_hard_bounds_and_recovery", "interference_repeat_and_attempt_analysis"
+    ]}
+  }
+}

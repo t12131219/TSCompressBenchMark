@@ -1,0 +1,57 @@
+{
+  "schema": "bmk.linear-batch-execution-policy/1",
+  "routes": [
+    {
+      "selection": 9,
+      "route": "auto-batch"
+    },
+    {
+      "selection": 40,
+      "route": "zstd-baseline"
+    },
+    {
+      "selection": 85,
+      "route": "batch"
+    },
+    {
+      "selection": 31,
+      "route": "field-baseline"
+    },
+    {
+      "selection": 39,
+      "route": "xz-baseline"
+    },
+    {
+      "selection": 11,
+      "route": "source-auto"
+    },
+    {
+      "selection": 11,
+      "route": "c-native-auto"
+    },
+    {
+      "selection": 11,
+      "route": "source-pages"
+    },
+    {
+      "selection": 11,
+      "route": "native-pages"
+    },
+    {
+      "selection": 7,
+      "route": "tv-batch"
+    }
+  ],
+  "limits": {
+    "address_space_bytes": 134217728,
+    "file_bytes": 1048576,
+    "wall_seconds": 5
+  },
+  "method_address_space_bytes": {
+    "xz-baseline": 268435456
+  },
+  "max_shared_decoder_bytes": 33554432,
+  "max_batch_bytes": 1048576,
+  "verification": "artifact_each",
+  "gorilla_file_bytes": 16384
+}

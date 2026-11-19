@@ -1,0 +1,1627 @@
+{
+  "schema": "bmk.service-workloads/1",
+  "resources": {
+    "one-core": {
+      "cpu_slots": 1,
+      "max_workers": 1,
+      "memory_bytes": 536870912,
+      "wall_ms": 15000,
+      "product_bytes": 4194304,
+      "work_bytes": 16777216
+    },
+    "two-core": {
+      "cpu_slots": 2,
+      "max_workers": 2,
+      "memory_bytes": 1073741824,
+      "wall_ms": 15000,
+      "product_bytes": 4194304,
+      "work_bytes": 16777216
+    },
+    "fit": {
+      "cpu_slots": 2,
+      "max_workers": 2,
+      "memory_bytes": 2147483648,
+      "wall_ms": 120000,
+      "product_bytes": 4194304,
+      "work_bytes": 33554432
+    }
+  },
+  "inputs": {
+    "traffic-tail-csv": {
+      "kind": "typed_source",
+      "manifest": {
+        "path": "datasets/fixtures/m3-ingress/traffic-tail-csv.json",
+        "sha256": "8f5ccf5c59180444128f15d5a23165a659ddd54f44af5206c0ab21a14b434c28"
+      },
+      "origin": {
+        "kind": "corpus_partition",
+        "dataset": "unique-forecast-traffic",
+        "offset": 0,
+        "partition": "test"
+      }
+    },
+    "traffic-tail-npy": {
+      "kind": "typed_source",
+      "manifest": {
+        "path": "datasets/fixtures/m3-ingress/traffic-tail-npy.json",
+        "sha256": "d3c493b991a5a203dc80250fd10c9bed99e28bfac416b59ab706aa4a3a44f206"
+      },
+      "origin": {
+        "kind": "corpus_partition",
+        "dataset": "unique-forecast-traffic",
+        "offset": 0,
+        "partition": "test"
+      }
+    },
+    "traffic-tail-txt": {
+      "kind": "typed_source",
+      "manifest": {
+        "path": "datasets/fixtures/m3-ingress/traffic-tail-txt.json",
+        "sha256": "c84c5531ec99e4e551941c5c27b01bb1d4d8467e98e8ce9744910df87822b656"
+      },
+      "origin": {
+        "kind": "corpus_partition",
+        "dataset": "unique-forecast-traffic",
+        "offset": 0,
+        "partition": "test"
+      }
+    },
+    "exact-bits-tail-csv": {
+      "kind": "typed_source",
+      "manifest": {
+        "path": "datasets/fixtures/m3-ingress/exact-bits-tail-csv.json",
+        "sha256": "c5e40519d7266044d2c233644523a57ff520e222fe5c34b1c956ef2d7d1de0c6"
+      },
+      "origin": {
+        "kind": "synthetic_fixture",
+        "fixture_id": "five-value-edge-bits"
+      }
+    },
+    "exact-bits-tail-npy": {
+      "kind": "typed_source",
+      "manifest": {
+        "path": "datasets/fixtures/m3-ingress/exact-bits-tail-npy.json",
+        "sha256": "1a9c21ee46e744cd4fa07d3d86156a1557aa27dd7bdfc51f8e96510e077bb534"
+      },
+      "origin": {
+        "kind": "synthetic_fixture",
+        "fixture_id": "five-value-edge-bits"
+      }
+    },
+    "exact-bits-tail-txt": {
+      "kind": "typed_source",
+      "manifest": {
+        "path": "datasets/fixtures/m3-ingress/exact-bits-tail-txt.json",
+        "sha256": "b2ba52077c3d016801691f84a87243048f84185c208169d0475334db66adbfe8"
+      },
+      "origin": {
+        "kind": "synthetic_fixture",
+        "fixture_id": "five-value-edge-bits"
+      }
+    },
+    "integer-extrema": {
+      "kind": "boundary_arrays",
+      "arrays": [
+        "i8-extrema",
+        "u8-extrema",
+        "i16-extrema",
+        "u16-extrema",
+        "i32-extrema",
+        "u32-extrema",
+        "i64-extrema",
+        "u64-extrema"
+      ]
+    },
+    "special-mask": {
+      "kind": "boundary_arrays",
+      "arrays": [
+        "f32-special",
+        "masked",
+        "validity"
+      ]
+    },
+    "axes": {
+      "kind": "boundary_arrays",
+      "arrays": [
+        "axis-a",
+        "axis-b"
+      ]
+    },
+    "finite-field": {
+      "kind": "boundary_arrays",
+      "arrays": [
+        "matrix",
+        "tensor"
+      ]
+    },
+    "finite-trend": {
+      "kind": "boundary_arrays",
+      "arrays": [
+        "trend"
+      ]
+    },
+    "entropy-noise": {
+      "kind": "boundary_arrays",
+      "arrays": [
+        "noise"
+      ]
+    },
+    "energy-heldout": {
+      "kind": "corpus_window",
+      "dataset": "uci-electricity-pt",
+      "column": "MT_001",
+      "partition": "test",
+      "offset": 0,
+      "count": 515
+    },
+    "sensor-heldout": {
+      "kind": "corpus_window",
+      "dataset": "mpi-beutenberg-weather",
+      "column": "co2",
+      "partition": "test",
+      "offset": 0,
+      "count": 515
+    },
+    "traffic-heldout": {
+      "kind": "corpus_window",
+      "dataset": "unique-forecast-traffic",
+      "column": "channel_0",
+      "partition": "test",
+      "offset": 0,
+      "count": 515
+    },
+    "finance-heldout": {
+      "kind": "corpus_window",
+      "dataset": "unique-forecast-exchange",
+      "column": "rate_0",
+      "partition": "test",
+      "offset": 0,
+      "count": 515
+    },
+    "server-heldout": {
+      "kind": "corpus_window",
+      "dataset": "westermo-system1",
+      "column": "load-1m",
+      "partition": "test",
+      "offset": 0,
+      "count": 515
+    },
+    "climate-heldout": {
+      "kind": "corpus_window",
+      "dataset": "ceda-cmip6-gsat",
+      "column": "ACCESS-CM2",
+      "partition": "test",
+      "offset": 0,
+      "count": 57
+    },
+    "sensor-train": {
+      "kind": "corpus_window",
+      "dataset": "mpi-beutenberg-weather",
+      "column": "co2",
+      "partition": "train",
+      "offset": 0,
+      "count": 515
+    },
+    "sensor-development": {
+      "kind": "corpus_window",
+      "dataset": "mpi-beutenberg-weather",
+      "column": "co2",
+      "partition": "development",
+      "offset": 0,
+      "count": 515
+    }
+  },
+  "contracts": {
+    "source/csv_v1": {
+      "operation": "ingress",
+      "permitted_origins": [
+        "A",
+        "C"
+      ],
+      "measurement_extent": "source_to_canonical_and_roundtrip",
+      "charge": [
+        "io",
+        "parse",
+        "canonicalize",
+        "schema",
+        "codec",
+        "restore"
+      ],
+      "excluded_mechanism": "codec_native_csv_parser"
+    },
+    "source/npy_v1": {
+      "operation": "ingress",
+      "permitted_origins": [
+        "A",
+        "C"
+      ],
+      "measurement_extent": "source_to_canonical_and_roundtrip",
+      "charge": [
+        "io",
+        "parse",
+        "canonicalize",
+        "schema",
+        "codec",
+        "restore"
+      ],
+      "excluded_mechanism": "codec_native_npy_parser"
+    },
+    "source/txt_v1": {
+      "operation": "ingress",
+      "permitted_origins": [
+        "A",
+        "C"
+      ],
+      "measurement_extent": "source_to_canonical_and_roundtrip",
+      "charge": [
+        "io",
+        "parse",
+        "canonicalize",
+        "schema",
+        "codec",
+        "restore"
+      ],
+      "excluded_mechanism": "codec_native_txt_parser"
+    },
+    "type/exact_v1": {
+      "operation": "typed-restore",
+      "permitted_origins": [
+        "N",
+        "A",
+        "C"
+      ],
+      "measurement_extent": "prepared_original_to_independent_restore",
+      "charge": [
+        "codec",
+        "conversion",
+        "schema",
+        "sidecars",
+        "restore"
+      ],
+      "excluded_mechanism": null
+    },
+    "type/checked_conversion_v1": {
+      "operation": "type-conversion",
+      "permitted_origins": [
+        "A",
+        "C"
+      ],
+      "measurement_extent": "original_domain_conversion_roundtrip",
+      "charge": [
+        "conversion",
+        "inverse_conversion",
+        "sidecars",
+        "codec",
+        "restore"
+      ],
+      "excluded_mechanism": "native_input_dtype_not_changed"
+    },
+    "special/mask_bits_v1": {
+      "operation": "masked-restore",
+      "permitted_origins": [
+        "N",
+        "A",
+        "C"
+      ],
+      "measurement_extent": "split_special_encode_restore_merge",
+      "charge": [
+        "scan",
+        "validity",
+        "exception_positions",
+        "exception_bits",
+        "codec",
+        "restore"
+      ],
+      "excluded_mechanism": "sidecar_not_native_special_value_support"
+    },
+    "quality/bounded_quantization_v1": {
+      "operation": "bounded-quantize",
+      "permitted_origins": [
+        "N",
+        "A",
+        "C"
+      ],
+      "measurement_extent": "original_domain_quantize_encode_restore",
+      "charge": [
+        "conversion",
+        "codec",
+        "exception_stream",
+        "inverse_conversion",
+        "restore",
+        "quality_validation"
+      ],
+      "excluded_mechanism": null
+    },
+    "quality/repair_fallback_v1": {
+      "operation": "verified-repair",
+      "permitted_origins": [
+        "A",
+        "C"
+      ],
+      "measurement_extent": "attempt_decode_check_repair_and_restore",
+      "charge": [
+        "failed_attempt",
+        "codec",
+        "scan",
+        "repair_stream",
+        "restore",
+        "quality_validation"
+      ],
+      "excluded_mechanism": "raw_only_path_not_allowed"
+    },
+    "route/whole_object_v1": {
+      "operation": "typed-route",
+      "permitted_origins": [
+        "N",
+        "A",
+        "C"
+      ],
+      "measurement_extent": "full_role_pipeline",
+      "charge": [
+        "role_routing",
+        "shared_t",
+        "value_groups",
+        "schema",
+        "container",
+        "all_codecs",
+        "restore"
+      ],
+      "excluded_mechanism": "no_inferred_timestamp_or_free_cross_method_reuse"
+    },
+    "execution/external_parallel_v1": {
+      "operation": "parallel-blocks",
+      "permitted_origins": [
+        "A",
+        "C"
+      ],
+      "measurement_extent": "outer_wall_across_all_workers",
+      "charge": [
+        "queue",
+        "ipc",
+        "copies",
+        "joins",
+        "cpu_seconds",
+        "peak_total_memory",
+        "codec",
+        "restore"
+      ],
+      "excluded_mechanism": "not_native_multithreading"
+    },
+    "execution/observed_isa_v1": {
+      "operation": "effective-isa",
+      "permitted_origins": [
+        "N",
+        "A",
+        "C"
+      ],
+      "measurement_extent": "probe_encode_decode_and_adapter",
+      "charge": [
+        "probe",
+        "codec",
+        "dispatch",
+        "adapter",
+        "restore"
+      ],
+      "excluded_mechanism": "unsupported_native_isa_not_labeled_as_adapter_isa"
+    },
+    "stream/chunked_v1": {
+      "operation": "chunk-stream",
+      "permitted_origins": [
+        "N",
+        "A",
+        "C"
+      ],
+      "measurement_extent": "first_input_to_finish_and_detached_restore",
+      "charge": [
+        "buffer_wait",
+        "backpressure",
+        "packet_metadata",
+        "queue",
+        "codec",
+        "tail",
+        "finish",
+        "restore"
+      ],
+      "excluded_mechanism": "not_unbounded_online_native_stream"
+    },
+    "point_read/service_v1": {
+      "operation": "point-read",
+      "permitted_origins": [
+        "N",
+        "A",
+        "C"
+      ],
+      "measurement_extent": "open_read_decode_and_select",
+      "charge": [
+        "index",
+        "io",
+        "decode",
+        "select",
+        "read_amplification"
+      ],
+      "excluded_mechanism": "full_decode_allowed_not_random_access"
+    },
+    "range_read/service_v1": {
+      "operation": "range-read",
+      "permitted_origins": [
+        "N",
+        "A",
+        "C"
+      ],
+      "measurement_extent": "open_read_decode_and_select",
+      "charge": [
+        "index",
+        "io",
+        "decode",
+        "select",
+        "read_amplification"
+      ],
+      "excluded_mechanism": "full_decode_allowed_not_indexed_range"
+    },
+    "query/service_v1": {
+      "operation": "query",
+      "permitted_origins": [
+        "N",
+        "A",
+        "C"
+      ],
+      "measurement_extent": "open_read_decode_query",
+      "charge": [
+        "index",
+        "decode",
+        "predicate",
+        "aggregate",
+        "read_amplification"
+      ],
+      "excluded_mechanism": "decode_then_aggregate_not_compressed_domain"
+    },
+    "progressive/quality_service_v1": {
+      "operation": "progressive",
+      "permitted_origins": [
+        "N",
+        "A",
+        "C"
+      ],
+      "measurement_extent": "refine_layers_and_validate_each",
+      "charge": [
+        "prefix_bytes",
+        "asset_bytes",
+        "refine",
+        "memory",
+        "per_level_validation"
+      ],
+      "excluded_mechanism": "external_layers_not_native_truncation"
+    },
+    "mutable/persistent_v1": {
+      "operation": "durable-update",
+      "permitted_origins": [
+        "N",
+        "A",
+        "C"
+      ],
+      "measurement_extent": "read_modify_write_flush_reopen",
+      "charge": [
+        "decode",
+        "cache",
+        "patch",
+        "reencode",
+        "flush",
+        "write_amplification"
+      ],
+      "excluded_mechanism": "reencode_not_in_place_update"
+    },
+    "checkpoint/replay_v1": {
+      "operation": "checkpoint-replay",
+      "permitted_origins": [
+        "N",
+        "A",
+        "C"
+      ],
+      "measurement_extent": "checkpoint_interrupt_restart_and_finish",
+      "charge": [
+        "state",
+        "journal",
+        "prefix_replay",
+        "all_io",
+        "restore"
+      ],
+      "excluded_mechanism": "replay_not_constant_time_snapshot"
+    },
+    "model/deployment_v1": {
+      "operation": "deployment",
+      "permitted_origins": [
+        "N",
+        "A",
+        "C"
+      ],
+      "measurement_extent": "deploy_load_and_detached_restore",
+      "charge": [
+        "model_assets",
+        "loading",
+        "transforms",
+        "codec",
+        "restore"
+      ],
+      "excluded_mechanism": "external_model_provider_not_native_training"
+    },
+    "training/budgeted_v1": {
+      "operation": "budgeted-search",
+      "permitted_origins": [
+        "N",
+        "A",
+        "C"
+      ],
+      "measurement_extent": "train_and_dev_select_then_frozen_test",
+      "charge": [
+        "fit",
+        "all_attempts",
+        "dev_score",
+        "asset_bytes",
+        "heldout_inference"
+      ],
+      "excluded_mechanism": "external_search_not_native_training"
+    },
+    "restore/independent_v1": {
+      "operation": "detached-restore",
+      "permitted_origins": [
+        "N",
+        "A",
+        "C"
+      ],
+      "measurement_extent": "sealed_product_and_dependencies_only",
+      "charge": [
+        "payload",
+        "schema",
+        "container",
+        "index",
+        "assets",
+        "independent_decode"
+      ],
+      "excluded_mechanism": null
+    },
+    "measurement/l0_l1_v1": {
+      "operation": "observe",
+      "permitted_origins": [
+        "N",
+        "A",
+        "C"
+      ],
+      "measurement_extent": "separate_total_and_stage_passes",
+      "charge": [
+        "outer_wall",
+        "stages",
+        "unknown_coverage",
+        "observability_overhead"
+      ],
+      "excluded_mechanism": "missing_events_not_zero"
+    }
+  },
+  "cases": [
+    {
+      "id": "traffic-tail-csv",
+      "requirement": "source/csv_v1",
+      "inputs": [
+        "traffic-tail-csv"
+      ],
+      "task": "whole_object",
+      "quality": "bitwise_exact",
+      "resource": "one-core",
+      "outcome": {
+        "kind": "verified",
+        "oracle": [
+          "canonical_group_bitwise_identity",
+          "source_schema_preserved",
+          "reconstruct_original_domain"
+        ]
+      },
+      "parameters": {
+        "format": "csv",
+        "canonical_group": "traffic-tail"
+      }
+    },
+    {
+      "id": "exact-bits-tail-csv",
+      "requirement": "source/csv_v1",
+      "inputs": [
+        "exact-bits-tail-csv"
+      ],
+      "task": "whole_object",
+      "quality": "bitwise_exact",
+      "resource": "one-core",
+      "outcome": {
+        "kind": "verified",
+        "oracle": [
+          "canonical_group_bitwise_identity",
+          "source_schema_preserved",
+          "reconstruct_original_domain"
+        ]
+      },
+      "parameters": {
+        "format": "csv",
+        "canonical_group": "exact-bits-tail"
+      }
+    },
+    {
+      "id": "csv-invalid-schema",
+      "requirement": "source/csv_v1",
+      "inputs": [
+        "exact-bits-tail-csv"
+      ],
+      "task": "whole_object",
+      "quality": "bitwise_exact",
+      "resource": "one-core",
+      "outcome": {
+        "kind": "expected_rejection",
+        "reason": "invalid_source_schema",
+        "oracle": [
+          "no_product_published"
+        ]
+      },
+      "parameters": {
+        "format": "csv",
+        "canonical_group": "exact-bits-tail",
+        "mutation": "declared_row_count_plus_one"
+      }
+    },
+    {
+      "id": "traffic-tail-npy",
+      "requirement": "source/npy_v1",
+      "inputs": [
+        "traffic-tail-npy"
+      ],
+      "task": "whole_object",
+      "quality": "bitwise_exact",
+      "resource": "one-core",
+      "outcome": {
+        "kind": "verified",
+        "oracle": [
+          "canonical_group_bitwise_identity",
+          "source_schema_preserved",
+          "reconstruct_original_domain"
+        ]
+      },
+      "parameters": {
+        "format": "npy",
+        "canonical_group": "traffic-tail"
+      }
+    },
+    {
+      "id": "exact-bits-tail-npy",
+      "requirement": "source/npy_v1",
+      "inputs": [
+        "exact-bits-tail-npy"
+      ],
+      "task": "whole_object",
+      "quality": "bitwise_exact",
+      "resource": "one-core",
+      "outcome": {
+        "kind": "verified",
+        "oracle": [
+          "canonical_group_bitwise_identity",
+          "source_schema_preserved",
+          "reconstruct_original_domain"
+        ]
+      },
+      "parameters": {
+        "format": "npy",
+        "canonical_group": "exact-bits-tail"
+      }
+    },
+    {
+      "id": "npy-invalid-schema",
+      "requirement": "source/npy_v1",
+      "inputs": [
+        "exact-bits-tail-npy"
+      ],
+      "task": "whole_object",
+      "quality": "bitwise_exact",
+      "resource": "one-core",
+      "outcome": {
+        "kind": "expected_rejection",
+        "reason": "invalid_source_schema",
+        "oracle": [
+          "no_product_published"
+        ]
+      },
+      "parameters": {
+        "format": "npy",
+        "canonical_group": "exact-bits-tail",
+        "mutation": "declared_row_count_plus_one"
+      }
+    },
+    {
+      "id": "traffic-tail-txt",
+      "requirement": "source/txt_v1",
+      "inputs": [
+        "traffic-tail-txt"
+      ],
+      "task": "whole_object",
+      "quality": "bitwise_exact",
+      "resource": "one-core",
+      "outcome": {
+        "kind": "verified",
+        "oracle": [
+          "canonical_group_bitwise_identity",
+          "source_schema_preserved",
+          "reconstruct_original_domain"
+        ]
+      },
+      "parameters": {
+        "format": "txt",
+        "canonical_group": "traffic-tail"
+      }
+    },
+    {
+      "id": "exact-bits-tail-txt",
+      "requirement": "source/txt_v1",
+      "inputs": [
+        "exact-bits-tail-txt"
+      ],
+      "task": "whole_object",
+      "quality": "bitwise_exact",
+      "resource": "one-core",
+      "outcome": {
+        "kind": "verified",
+        "oracle": [
+          "canonical_group_bitwise_identity",
+          "source_schema_preserved",
+          "reconstruct_original_domain"
+        ]
+      },
+      "parameters": {
+        "format": "txt",
+        "canonical_group": "exact-bits-tail"
+      }
+    },
+    {
+      "id": "txt-invalid-schema",
+      "requirement": "source/txt_v1",
+      "inputs": [
+        "exact-bits-tail-txt"
+      ],
+      "task": "whole_object",
+      "quality": "bitwise_exact",
+      "resource": "one-core",
+      "outcome": {
+        "kind": "expected_rejection",
+        "reason": "invalid_source_schema",
+        "oracle": [
+          "no_product_published"
+        ]
+      },
+      "parameters": {
+        "format": "txt",
+        "canonical_group": "exact-bits-tail",
+        "mutation": "declared_row_count_plus_one"
+      }
+    },
+    {
+      "id": "native-widths-and-signedness",
+      "requirement": "type/exact_v1",
+      "inputs": [
+        "integer-extrema"
+      ],
+      "task": "values_only",
+      "quality": "bitwise_exact",
+      "resource": "one-core",
+      "outcome": {
+        "kind": "verified",
+        "oracle": [
+          "dtype_shape_order_bitwise_equal"
+        ]
+      },
+      "parameters": {}
+    },
+    {
+      "id": "typed-fields",
+      "requirement": "type/exact_v1",
+      "inputs": [
+        "finite-field"
+      ],
+      "task": "values_only",
+      "quality": "bitwise_exact",
+      "resource": "one-core",
+      "outcome": {
+        "kind": "verified",
+        "oracle": [
+          "dtype_shape_order_bitwise_equal"
+        ]
+      },
+      "parameters": {}
+    },
+    {
+      "id": "bitwise-tail",
+      "requirement": "type/exact_v1",
+      "inputs": [
+        "exact-bits-tail-npy"
+      ],
+      "task": "whole_object",
+      "quality": "bitwise_exact",
+      "resource": "one-core",
+      "outcome": {
+        "kind": "verified",
+        "oracle": [
+          "dtype_shape_order_bitwise_equal",
+          "no_padding_in_original_denominator"
+        ]
+      },
+      "parameters": {
+        "chunk_rows": 512
+      }
+    },
+    {
+      "id": "four-u16-limbs",
+      "requirement": "type/checked_conversion_v1",
+      "inputs": [
+        "exact-bits-tail-npy"
+      ],
+      "task": "values_only",
+      "quality": "bitwise_exact",
+      "resource": "one-core",
+      "outcome": {
+        "kind": "verified",
+        "oracle": [
+          "same_f64_bits",
+          "limbs_not_original_denominator"
+        ]
+      },
+      "parameters": {
+        "transform": "f64_le_u16x4",
+        "chunk_rows": 512
+      }
+    },
+    {
+      "id": "overflow-i64-u16",
+      "requirement": "type/checked_conversion_v1",
+      "inputs": [
+        "integer-extrema"
+      ],
+      "task": "values_only",
+      "quality": "bitwise_exact",
+      "resource": "one-core",
+      "outcome": {
+        "kind": "expected_rejection",
+        "reason": "checked_cast_overflow",
+        "oracle": [
+          "no_product_published"
+        ]
+      },
+      "parameters": {
+        "transform": "i64_checked_u16"
+      }
+    },
+    {
+      "id": "mask-and-nonfinite",
+      "requirement": "special/mask_bits_v1",
+      "inputs": [
+        "special-mask",
+        "exact-bits-tail-npy"
+      ],
+      "task": "values_only",
+      "quality": "bitwise_exact",
+      "resource": "one-core",
+      "outcome": {
+        "kind": "verified",
+        "oracle": [
+          "validity_and_nonfinite_exact",
+          "signed_zero_exact",
+          "exception_cost_visible"
+        ]
+      },
+      "parameters": {}
+    },
+    {
+      "id": "bounded-finite",
+      "requirement": "quality/bounded_quantization_v1",
+      "inputs": [
+        "finite-trend",
+        "entropy-noise"
+      ],
+      "task": "values_only",
+      "quality": "bounded_absolute",
+      "resource": "one-core",
+      "outcome": {
+        "kind": "verified",
+        "oracle": [
+          "pointwise_error_in_original_units",
+          "finite_comparable_points"
+        ]
+      },
+      "parameters": {
+        "max_abs_error_ppm_of_unit": 1000,
+        "nonfinite": "reject"
+      }
+    },
+    {
+      "id": "bounded-nonfinite-refusal",
+      "requirement": "quality/bounded_quantization_v1",
+      "inputs": [
+        "exact-bits-tail-npy"
+      ],
+      "task": "values_only",
+      "quality": "bounded_absolute",
+      "resource": "one-core",
+      "outcome": {
+        "kind": "expected_rejection",
+        "reason": "nonfinite_outside_quality_domain",
+        "oracle": [
+          "no_product_published"
+        ]
+      },
+      "parameters": {
+        "max_abs_error_ppm_of_unit": 1000,
+        "nonfinite": "reject"
+      }
+    },
+    {
+      "id": "repair-mismatched-bits",
+      "requirement": "quality/repair_fallback_v1",
+      "inputs": [
+        "exact-bits-tail-npy"
+      ],
+      "task": "values_only",
+      "quality": "bitwise_exact",
+      "resource": "one-core",
+      "outcome": {
+        "kind": "verified",
+        "oracle": [
+          "charge_original_attempt",
+          "inject_quality_mismatch_before_repair",
+          "validate_repaired_original_bits",
+          "nonzero_selection_contribution"
+        ]
+      },
+      "parameters": {
+        "raw_fallback": false,
+        "fault": "first_finite_value_flip_lsb"
+      }
+    },
+    {
+      "id": "route-v-only",
+      "requirement": "route/whole_object_v1",
+      "inputs": [
+        "traffic-tail-npy"
+      ],
+      "task": "values_only",
+      "quality": "bitwise_exact",
+      "resource": "one-core",
+      "outcome": {
+        "kind": "verified",
+        "oracle": [
+          "v_only_denominator_and_only_v_restored"
+        ]
+      },
+      "parameters": {
+        "chunk_rows": 512
+      }
+    },
+    {
+      "id": "route-t-only",
+      "requirement": "route/whole_object_v1",
+      "inputs": [
+        "traffic-tail-npy"
+      ],
+      "task": "timestamps_only",
+      "quality": "bitwise_exact",
+      "resource": "one-core",
+      "outcome": {
+        "kind": "verified",
+        "oracle": [
+          "t_only_denominator_and_only_t_restored"
+        ]
+      },
+      "parameters": {
+        "chunk_rows": 512
+      }
+    },
+    {
+      "id": "route-fixed-t",
+      "requirement": "route/whole_object_v1",
+      "inputs": [
+        "traffic-tail-npy"
+      ],
+      "task": "shared_t_controlled",
+      "quality": "bitwise_exact",
+      "resource": "one-core",
+      "outcome": {
+        "kind": "verified",
+        "oracle": [
+          "same_qualified_t_build_options_chunk_and_scope",
+          "shared_t_stored_once",
+          "complete_object_restored"
+        ]
+      },
+      "parameters": {
+        "chunk_rows": 512,
+        "control": "fixed_timestamp_route"
+      }
+    },
+    {
+      "id": "route-fixed-v",
+      "requirement": "route/whole_object_v1",
+      "inputs": [
+        "traffic-tail-npy"
+      ],
+      "task": "whole_object",
+      "quality": "bitwise_exact",
+      "resource": "one-core",
+      "outcome": {
+        "kind": "verified",
+        "oracle": [
+          "same_qualified_v_build_options_layout_chunk_and_scope",
+          "complete_object_restored"
+        ]
+      },
+      "parameters": {
+        "chunk_rows": 512,
+        "control": "fixed_value_route"
+      }
+    },
+    {
+      "id": "route-joint-or-composed",
+      "requirement": "route/whole_object_v1",
+      "inputs": [
+        "finance-heldout",
+        "traffic-tail-npy"
+      ],
+      "task": "whole_object",
+      "quality": "bitwise_exact",
+      "resource": "one-core",
+      "outcome": {
+        "kind": "verified",
+        "oracle": [
+          "count_true_t_once_in_denominator",
+          "all_value_groups_in_original_order"
+        ]
+      },
+      "parameters": {
+        "chunk_rows": 512
+      }
+    },
+    {
+      "id": "unaligned-time-domain",
+      "requirement": "route/whole_object_v1",
+      "inputs": [
+        "axes"
+      ],
+      "task": "timestamps_only",
+      "quality": "bitwise_exact",
+      "resource": "one-core",
+      "outcome": {
+        "kind": "expected_rejection",
+        "reason": "nonintegral_time_unit",
+        "oracle": [
+          "no_product_published"
+        ]
+      },
+      "parameters": {
+        "time_conversion": "ns_to_us_exact"
+      }
+    },
+    {
+      "id": "serial-parallel-same-object",
+      "requirement": "execution/external_parallel_v1",
+      "inputs": [
+        "traffic-tail-npy"
+      ],
+      "task": "whole_object",
+      "quality": "bitwise_exact",
+      "resource": "two-core",
+      "outcome": {
+        "kind": "verified",
+        "oracle": [
+          "same_restore_and_partition",
+          "effective_outer_and_inner_threads",
+          "wall_from_outer_clock",
+          "sum_cpu_and_peak_memory"
+        ]
+      },
+      "parameters": {
+        "chunk_rows": 128,
+        "budgets": [
+          1,
+          2
+        ]
+      }
+    },
+    {
+      "id": "isa-observed",
+      "requirement": "execution/observed_isa_v1",
+      "inputs": [
+        "traffic-tail-npy"
+      ],
+      "task": "whole_object",
+      "quality": "bitwise_exact",
+      "resource": "one-core",
+      "outcome": {
+        "kind": "verified",
+        "oracle": [
+          "encode_decode_adapter_backends_separate",
+          "no_compile_only_inference"
+        ]
+      },
+      "parameters": {
+        "backend": "auto_observed"
+      }
+    },
+    {
+      "id": "chunked-stream-tail",
+      "requirement": "stream/chunked_v1",
+      "inputs": [
+        "traffic-tail-npy"
+      ],
+      "task": "whole_object",
+      "quality": "bitwise_exact",
+      "resource": "one-core",
+      "outcome": {
+        "kind": "verified",
+        "oracle": [
+          "first_output_before_finish",
+          "bounded_buffer_and_backpressure",
+          "explicit_tail_and_finish",
+          "full_restore_without_original"
+        ]
+      },
+      "parameters": {
+        "chunk_rows": 128,
+        "max_buffer_rows": 256,
+        "max_queued_packets": 1,
+        "arrival_batch_rows": 32,
+        "arrival_interval_ns": 1000000,
+        "consumer": "stall_after_first_packet_until_backpressure"
+      }
+    },
+    {
+      "id": "tail-point",
+      "requirement": "point_read/service_v1",
+      "inputs": [
+        "traffic-tail-npy"
+      ],
+      "task": "values_only",
+      "quality": "bitwise_exact",
+      "resource": "one-core",
+      "outcome": {
+        "kind": "verified",
+        "oracle": [
+          "addressed_original_domain_point",
+          "decoded_rows_and_bytes"
+        ]
+      },
+      "parameters": {
+        "row": 514
+      }
+    },
+    {
+      "id": "oob-point",
+      "requirement": "point_read/service_v1",
+      "inputs": [
+        "traffic-tail-npy"
+      ],
+      "task": "values_only",
+      "quality": "bitwise_exact",
+      "resource": "one-core",
+      "outcome": {
+        "kind": "expected_rejection",
+        "reason": "out_of_bounds",
+        "oracle": [
+          "no_read_result"
+        ]
+      },
+      "parameters": {
+        "row": 515
+      }
+    },
+    {
+      "id": "cross-block-range",
+      "requirement": "range_read/service_v1",
+      "inputs": [
+        "traffic-tail-npy"
+      ],
+      "task": "values_only",
+      "quality": "bitwise_exact",
+      "resource": "one-core",
+      "outcome": {
+        "kind": "verified",
+        "oracle": [
+          "original_domain_half_open_sequence",
+          "decoded_rows_and_bytes"
+        ]
+      },
+      "parameters": {
+        "chunk_rows": 128,
+        "begin": 122,
+        "end": 141
+      }
+    },
+    {
+      "id": "oob-range",
+      "requirement": "range_read/service_v1",
+      "inputs": [
+        "traffic-tail-npy"
+      ],
+      "task": "values_only",
+      "quality": "bitwise_exact",
+      "resource": "one-core",
+      "outcome": {
+        "kind": "expected_rejection",
+        "reason": "out_of_bounds",
+        "oracle": [
+          "no_read_result"
+        ]
+      },
+      "parameters": {
+        "begin": 500,
+        "end": 516
+      }
+    },
+    {
+      "id": "count-max-sum",
+      "requirement": "query/service_v1",
+      "inputs": [
+        "traffic-heldout"
+      ],
+      "task": "values_only",
+      "quality": "bitwise_exact",
+      "resource": "one-core",
+      "outcome": {
+        "kind": "verified",
+        "oracle": [
+          "equal_count_max_and_reference_sum",
+          "report_decode_and_aggregation_cost"
+        ]
+      },
+      "parameters": {
+        "begin": 122,
+        "end": 141,
+        "reductions": [
+          "count",
+          "max",
+          "sum"
+        ],
+        "sum_policy": "f64_round_once_exact_sum",
+        "nonfinite": "reject"
+      }
+    },
+    {
+      "id": "three-quality-levels",
+      "requirement": "progressive/quality_service_v1",
+      "inputs": [
+        "finite-trend"
+      ],
+      "task": "values_only",
+      "quality": "bounded_refinement",
+      "resource": "one-core",
+      "outcome": {
+        "kind": "verified",
+        "oracle": [
+          "independent_recovery_per_level",
+          "pointwise_and_monotonic_error",
+          "incremental_and_cumulative_bytes"
+        ]
+      },
+      "parameters": {
+        "level_abs_error_ppm_of_unit": [
+          100000,
+          10000,
+          0
+        ]
+      }
+    },
+    {
+      "id": "update-and-reopen",
+      "requirement": "mutable/persistent_v1",
+      "inputs": [
+        "traffic-heldout"
+      ],
+      "task": "values_only",
+      "quality": "bitwise_exact",
+      "resource": "one-core",
+      "outcome": {
+        "kind": "verified",
+        "oracle": [
+          "durable_reopen",
+          "updated_point_exact",
+          "untouched_original_domain_exact"
+        ]
+      },
+      "parameters": {
+        "row": 129,
+        "new_f64_bits": "3ff4000000000000",
+        "chunk_rows": 128
+      }
+    },
+    {
+      "id": "resume-after-interruption",
+      "requirement": "checkpoint/replay_v1",
+      "inputs": [
+        "traffic-tail-npy"
+      ],
+      "task": "whole_object",
+      "quality": "bitwise_exact",
+      "resource": "one-core",
+      "outcome": {
+        "kind": "verified",
+        "oracle": [
+          "unfinished_session_closed",
+          "parse_checkpoint_then_resume",
+          "same_uninterrupted_bits",
+          "account_replayed_rows"
+        ]
+      },
+      "parameters": {
+        "chunk_rows": 128,
+        "stopped_after_rows": 256
+      }
+    },
+    {
+      "id": "corrupt-checkpoint",
+      "requirement": "checkpoint/replay_v1",
+      "inputs": [
+        "traffic-tail-npy"
+      ],
+      "task": "whole_object",
+      "quality": "bitwise_exact",
+      "resource": "one-core",
+      "outcome": {
+        "kind": "expected_rejection",
+        "reason": "corrupt_checkpoint",
+        "oracle": [
+          "no_resume_product"
+        ]
+      },
+      "parameters": {
+        "chunk_rows": 128,
+        "stopped_after_rows": 256,
+        "mutation": "flip_checkpoint_bit"
+      }
+    },
+    {
+      "id": "persisted-decode-asset",
+      "requirement": "model/deployment_v1",
+      "inputs": [
+        "sensor-heldout"
+      ],
+      "task": "values_only",
+      "quality": "bitwise_exact",
+      "resource": "one-core",
+      "outcome": {
+        "kind": "verified",
+        "oracle": [
+          "load_only_selected_assets",
+          "charge_decode_assets",
+          "restore_original_domain"
+        ]
+      },
+      "parameters": {
+        "assets": "exact_persisted_model_or_external_reversible_transform"
+      }
+    },
+    {
+      "id": "deployment-missing-asset",
+      "requirement": "model/deployment_v1",
+      "inputs": [
+        "sensor-heldout"
+      ],
+      "task": "values_only",
+      "quality": "bitwise_exact",
+      "resource": "one-core",
+      "outcome": {
+        "kind": "expected_rejection",
+        "reason": "missing_asset",
+        "oracle": [
+          "no_restored_product"
+        ]
+      },
+      "parameters": {
+        "assets": "exact_persisted_model_or_external_reversible_transform",
+        "mutation": "missing_asset"
+      }
+    },
+    {
+      "id": "deployment-different-asset",
+      "requirement": "model/deployment_v1",
+      "inputs": [
+        "sensor-heldout"
+      ],
+      "task": "values_only",
+      "quality": "bitwise_exact",
+      "resource": "one-core",
+      "outcome": {
+        "kind": "expected_rejection",
+        "reason": "different_asset",
+        "oracle": [
+          "no_restored_product"
+        ]
+      },
+      "parameters": {
+        "assets": "exact_persisted_model_or_external_reversible_transform",
+        "mutation": "different_asset"
+      }
+    },
+    {
+      "id": "chronological-train-dev-test",
+      "requirement": "training/budgeted_v1",
+      "inputs": [
+        "sensor-train",
+        "sensor-development",
+        "sensor-heldout"
+      ],
+      "task": "values_only",
+      "quality": "bitwise_exact",
+      "resource": "fit",
+      "outcome": {
+        "kind": "verified",
+        "oracle": [
+          "train_dev_test_isolated",
+          "dev_scores_select_once",
+          "heldout_not_mounted_during_fit",
+          "all_trials_costed"
+        ]
+      },
+      "parameters": {
+        "max_trials": 4,
+        "seed": 1729,
+        "test_trials": 1,
+        "objective": "min_complete_bytes_on_bitwise_verified_dev_tie_by_config_id"
+      }
+    },
+    {
+      "id": "detached-energy",
+      "requirement": "restore/independent_v1",
+      "inputs": [
+        "energy-heldout"
+      ],
+      "task": "whole_object",
+      "quality": "bitwise_exact",
+      "resource": "one-core",
+      "outcome": {
+        "kind": "verified",
+        "oracle": [
+          "no_input_mounted",
+          "asset_closure_exact",
+          "timestamps_preserve_original_semantics",
+          "independent_original_domain_validation"
+        ]
+      },
+      "parameters": {
+        "fresh_process": true
+      }
+    },
+    {
+      "id": "detached-sensor",
+      "requirement": "restore/independent_v1",
+      "inputs": [
+        "sensor-heldout"
+      ],
+      "task": "whole_object",
+      "quality": "bitwise_exact",
+      "resource": "one-core",
+      "outcome": {
+        "kind": "verified",
+        "oracle": [
+          "no_input_mounted",
+          "asset_closure_exact",
+          "timestamps_preserve_original_semantics",
+          "independent_original_domain_validation"
+        ]
+      },
+      "parameters": {
+        "fresh_process": true
+      }
+    },
+    {
+      "id": "detached-traffic",
+      "requirement": "restore/independent_v1",
+      "inputs": [
+        "traffic-heldout"
+      ],
+      "task": "whole_object",
+      "quality": "bitwise_exact",
+      "resource": "one-core",
+      "outcome": {
+        "kind": "verified",
+        "oracle": [
+          "no_input_mounted",
+          "asset_closure_exact",
+          "timestamps_preserve_original_semantics",
+          "independent_original_domain_validation"
+        ]
+      },
+      "parameters": {
+        "fresh_process": true
+      }
+    },
+    {
+      "id": "detached-finance",
+      "requirement": "restore/independent_v1",
+      "inputs": [
+        "finance-heldout"
+      ],
+      "task": "whole_object",
+      "quality": "bitwise_exact",
+      "resource": "one-core",
+      "outcome": {
+        "kind": "verified",
+        "oracle": [
+          "no_input_mounted",
+          "asset_closure_exact",
+          "timestamps_preserve_original_semantics",
+          "independent_original_domain_validation"
+        ]
+      },
+      "parameters": {
+        "fresh_process": true
+      }
+    },
+    {
+      "id": "detached-server",
+      "requirement": "restore/independent_v1",
+      "inputs": [
+        "server-heldout"
+      ],
+      "task": "whole_object",
+      "quality": "bitwise_exact",
+      "resource": "one-core",
+      "outcome": {
+        "kind": "verified",
+        "oracle": [
+          "no_input_mounted",
+          "asset_closure_exact",
+          "timestamps_preserve_original_semantics",
+          "independent_original_domain_validation"
+        ]
+      },
+      "parameters": {
+        "fresh_process": true
+      }
+    },
+    {
+      "id": "detached-climate",
+      "requirement": "restore/independent_v1",
+      "inputs": [
+        "climate-heldout"
+      ],
+      "task": "whole_object",
+      "quality": "bitwise_exact",
+      "resource": "one-core",
+      "outcome": {
+        "kind": "verified",
+        "oracle": [
+          "no_input_mounted",
+          "asset_closure_exact",
+          "timestamps_preserve_original_semantics",
+          "independent_original_domain_validation"
+        ]
+      },
+      "parameters": {
+        "fresh_process": true
+      }
+    },
+    {
+      "id": "separate-l0-l1",
+      "requirement": "measurement/l0_l1_v1",
+      "inputs": [
+        "traffic-tail-npy"
+      ],
+      "task": "whole_object",
+      "quality": "bitwise_exact",
+      "resource": "one-core",
+      "outcome": {
+        "kind": "verified",
+        "oracle": [
+          "matched_work_and_extent",
+          "no_trace_in_main_pass",
+          "missing_fused_opaque_not_zero",
+          "no_overlap_double_count"
+        ]
+      },
+      "parameters": {
+        "passes": [
+          "l0",
+          "l1"
+        ],
+        "exclusive": true
+      }
+    }
+  ]
+}

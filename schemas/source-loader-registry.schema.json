@@ -1,0 +1,13 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "type":"object","additionalProperties":false,"required":["schema","plugins"],
+  "properties":{
+    "schema":{"const":"bmk.source-loader-registry/1"},
+    "plugins":{"type":"object","minProperties":1,"maxProperties":16,
+      "propertyNames":{"pattern":"^[a-z][a-z0-9-]{0,31}$"},
+      "additionalProperties":{"type":"object","additionalProperties":false,"required":["implementation","options_schema","version"],
+        "properties":{"implementation":{"type":"string","pattern":"^plugins/loaders/[a-z0-9_]+\\.py$"},
+          "options_schema":{"type":"string","pattern":"^plugins/loaders/[a-z0-9_-]+\\.schema\\.json$"},
+          "version":{"type":"integer","minimum":1}}}}
+  }
+}

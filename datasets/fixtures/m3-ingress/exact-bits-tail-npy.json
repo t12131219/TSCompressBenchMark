@@ -1,0 +1,64 @@
+{
+  "schema": "bmk.typed-tv-source/1",
+  "plugin": "npy",
+  "object": {
+    "timestamp": {
+      "name": "timestamp",
+      "dtype": "i64",
+      "unit": "ms",
+      "interpretation": "synthetic_integer_coordinate",
+      "epoch": null,
+      "timezone": null
+    },
+    "values": [
+      {
+        "name": "v1",
+        "dtype": "f64"
+      },
+      {
+        "name": "v2",
+        "dtype": "f64"
+      },
+      {
+        "name": "v3",
+        "dtype": "f64"
+      },
+      {
+        "name": "v4",
+        "dtype": "f64"
+      },
+      {
+        "name": "v5",
+        "dtype": "f64"
+      }
+    ],
+    "rows": 515,
+    "row_order": "preserve",
+    "layout": "dense_column_little_endian",
+    "nullable": false,
+    "nan_policy": "preserve_bits"
+  },
+  "files": [
+    {
+      "role": "timestamp",
+      "path": "datasets/fixtures/m3-ingress/exact-bits-tail.t.npy",
+      "bytes": 4248,
+      "sha256": "5c97a1ef8e76c1c928e6b2d7d81259926baeb4e68bb5152217765a51db6f1075"
+    },
+    {
+      "role": "values",
+      "path": "datasets/fixtures/m3-ingress/exact-bits-tail.v.npy",
+      "bytes": 20728,
+      "sha256": "df405f537ae7960a67f5bb662b57fa5c3d5a9b82b8a5d2ebdafc14c574dd32ca"
+    }
+  ],
+  "options": {
+    "axis0": "rows",
+    "axis1": "value_columns",
+    "allow_pickle": false,
+    "mmap": false,
+    "timestamp_dtype": ">i8",
+    "value_dtype": ">f8",
+    "value_order": "F"
+  }
+}

@@ -1,0 +1,307 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Held-out native functional boundary cases",
+  "$defs": {
+    "window": {
+      "type": "object",
+      "required": [
+        "dataset",
+        "partition",
+        "column",
+        "offset",
+        "count"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "dataset": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_-]{1,90}(?![\\s\\S])"
+        },
+        "partition": {
+          "const": "test"
+        },
+        "column": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "offset": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000
+        },
+        "count": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 8193
+        }
+      }
+    }
+  },
+  "type": "object",
+  "required": [
+    "schema",
+    "scope",
+    "corpus",
+    "corpus_id",
+    "run_policy",
+    "triplets",
+    "fixture",
+    "domain_windows"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "const": "bmk.m0-method-boundaries/2"
+    },
+    "scope": {
+      "const": "development_only"
+    },
+    "corpus": {
+      "const": "datasets/manifests/first-batch-real-v2.json"
+    },
+    "corpus_id": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}(?![\\s\\S])"
+    },
+    "run_policy": {
+      "type": "object",
+      "required": [
+        "quality",
+        "access",
+        "verification",
+        "measurement",
+        "max_frame_bytes"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "quality": {
+          "const": "bitwise_exact_values_and_schema"
+        },
+        "access": {
+          "const": "whole_object_batch"
+        },
+        "verification": {
+          "const": "artifact_each"
+        },
+        "measurement": {
+          "const": "none"
+        },
+        "max_frame_bytes": {
+          "const": 131072
+        }
+      }
+    },
+    "triplets": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "uniqueItems": true,
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "required": [
+              "method",
+              "selection",
+              "route",
+              "boundary",
+              "rows",
+              "plus_one",
+              "options",
+              "window"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "method": {
+                "const": "alp-auto"
+              },
+              "selection": {
+                "const": 9
+              },
+              "route": {
+                "const": "auto-batch"
+              },
+              "boundary": {
+                "const": "ALN1_vector_length"
+              },
+              "rows": {
+                "const": 1024
+              },
+              "plus_one": {
+                "const": "verify_new_vector"
+              },
+              "options": {
+                "type": "object",
+                "required": [
+                  "decode_backend"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "decode_backend": {
+                    "const": "scalar-unfused"
+                  }
+                }
+              },
+              "window": {
+                "$ref": "#/$defs/window"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "required": [
+              "method",
+              "selection",
+              "route",
+              "boundary",
+              "rows",
+              "plus_one",
+              "options",
+              "window"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "method": {
+                "const": "zstd"
+              },
+              "selection": {
+                "const": 40
+              },
+              "route": {
+                "const": "zstd-baseline"
+              },
+              "boundary": {
+                "const": "native_65536_input_bytes"
+              },
+              "rows": {
+                "const": 8192
+              },
+              "plus_one": {
+                "const": "expect_resource_limit_7"
+              },
+              "options": {
+                "type": "object",
+                "required": [],
+                "additionalProperties": false,
+                "properties": {}
+              },
+              "window": {
+                "$ref": "#/$defs/window"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "required": [
+              "method",
+              "selection",
+              "route",
+              "boundary",
+              "rows",
+              "plus_one",
+              "options",
+              "window"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "method": {
+                "const": "gorilla-tv"
+              },
+              "selection": {
+                "const": 7
+              },
+              "route": {
+                "const": "tv-batch"
+              },
+              "boundary": {
+                "const": "native_chunk_max_rows"
+              },
+              "rows": {
+                "const": 512
+              },
+              "plus_one": {
+                "const": "expect_resource_limit_7"
+              },
+              "options": {
+                "type": "object",
+                "required": [],
+                "additionalProperties": false,
+                "properties": {}
+              },
+              "window": {
+                "$ref": "#/$defs/window"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "fixture": {
+      "type": "object",
+      "required": [
+        "method",
+        "name",
+        "dtype",
+        "rows",
+        "role"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "method": {
+          "const": "alp-auto"
+        },
+        "name": {
+          "const": "f32-special"
+        },
+        "dtype": {
+          "const": "<f4"
+        },
+        "rows": {
+          "const": 9
+        },
+        "role": {
+          "const": "value"
+        }
+      }
+    },
+    "domain_windows": {
+      "type": "object",
+      "required": [
+        "corpus",
+        "corpus_id",
+        "task",
+        "methods",
+        "windows"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "corpus": {
+          "const": "datasets/manifests/first-batch-real-v3.json"
+        },
+        "corpus_id": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}(?![\\s\\S])"
+        },
+        "task": {
+          "const": "values_only"
+        },
+        "methods": {
+          "const": [
+            "alp-auto",
+            "zstd"
+          ]
+        },
+        "windows": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/window"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,144 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "BMK v1 suite \u2014 M0 declaration of M5 scope",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "id",
+    "state",
+    "stage",
+    "selections",
+    "requirements",
+    "native_inventory",
+    "fixtures",
+    "policies",
+    "draft_cases",
+    "expected_counts",
+    "corpus",
+    "corpus_feature_policy"
+  ],
+  "properties": {
+    "corpus_feature_policy": {
+      "enum": [
+        "catalog/capabilities/corpus_features_v2.json",
+        "catalog/capabilities/corpus_features_v3.json"
+      ]
+    },
+    "schema": {
+      "const": "bmk.suite/1"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9_-]+(?![\\s\\S])"
+    },
+    "state": {
+      "const": "draft_m0"
+    },
+    "stage": {
+      "const": "M5"
+    },
+    "selections": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "integer",
+        "minimum": 1
+      }
+    },
+    "requirements": {
+      "type": "string",
+      "minLength": 1
+    },
+    "native_inventory": {
+      "type": "string",
+      "minLength": 1
+    },
+    "fixtures": {
+      "type": "string",
+      "minLength": 1
+    },
+    "policies": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "platform",
+        "function_verification",
+        "timing_resource_policy",
+        "submission",
+        "retention",
+        "allow_raw_fallback",
+        "max_validation_workers"
+      ],
+      "properties": {
+        "platform": {
+          "const": "linux_cpu"
+        },
+        "function_verification": {
+          "const": "artifact_each"
+        },
+        "timing_resource_policy": {
+          "const": "exclusive"
+        },
+        "submission": {
+          "const": "one_complete_plan_one_run"
+        },
+        "retention": {
+          "const": "preserve_evidence_and_independent_restore_sample_per_required_case"
+        },
+        "allow_raw_fallback": {
+          "const": false
+        },
+        "max_validation_workers": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "draft_cases": {
+      "type": "string",
+      "minLength": 1
+    },
+    "expected_counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "selections",
+        "groups",
+        "atomic_requirements",
+        "display_cells",
+        "atomic_relations"
+      ],
+      "properties": {
+        "selections": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "groups": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "atomic_requirements": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "display_cells": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "atomic_relations": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "corpus": {
+      "enum": [
+        "datasets/manifests/first-batch-real-v1.json",
+        "datasets/manifests/first-batch-real-v2.json",
+        "datasets/manifests/first-batch-real-v3.json"
+      ]
+    }
+  }
+}
