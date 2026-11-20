@@ -18,7 +18,7 @@ _DRAFT = "https://json-schema.org/draft/2020-12/schema"
 _NAMES = frozenset({"plugin", "suite", "experiment", "matrix", "required-capabilities", "case-catalog",
                     "native-inventory", "observation", "corpus", "lossless-stage-suite", "native-preflight-suite",
                     "corpus-feature-policy", "corpus-boundary-fixtures", "corpus-domain-intake",
-                    "native-requirements", "native-admission-policy", "method-boundaries", "pbepla-cases", "measurement-policy", "comparison-contract", "resource-candidate-policy", "tv-composition-suite", "tv-ingress-suite", "tv-ingress-providers-suite", "typed-source", "source-loader-registry", "service-suite", "service-workloads", "service-recipe-bindings", "recipe", "qualification", "trace", "native-submission-policy", "stage-receipt", "m1-stage-receipt", "m2-stage-receipt", "m3-stage-receipt", "m4-stage-receipt"})
+                    "native-requirements", "native-admission-policy", "method-boundaries", "pbepla-cases", "measurement-policy", "comparison-contract", "resource-candidate-policy", "tv-composition-suite", "tv-ingress-suite", "tv-ingress-providers-suite", "typed-source", "source-loader-registry", "service-suite", "service-workloads", "service-recipe-bindings", "recipe", "qualification", "trace", "native-submission-policy", "stage-receipt", "m0-real-corpus-stage-receipt", "m1-real-corpus-stage-receipt", "m1-stage-receipt", "m2-stage-receipt", "m2-real-corpus-stage-receipt", "m2-real-corpus-plan", "m3-stage-receipt", "m3-real-corpus-plan", "m3-real-corpus-run", "m4-stage-receipt", "full-corpus", "native-corpus-policy", "m1-full-corpus-suite"})
 
 
 # Counts/ABI IDs are serialized integers, not integer-valued floating tokens.

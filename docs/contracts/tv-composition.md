@@ -53,3 +53,18 @@ tools/probe_offline_tv_composition.sh "$CONDA_PREFIX" <空目录>
 `bmk tv-restore-audit <run目录>` 逐项真正解码，不依赖原构建和原语料。恢复环境只挂载对应方法所选 DSO 的传递闭包、
 worker、一个 bundle 和临时输出目录；不挂载其他 codec 或宿主共享库。具体文件清单随审计报告记录。
 仍要求执行主机具备兼容 Linux/CPU 和 Bubblewrap，封存只供可信的内部复验。
+
+### 同一真实单 V 投影：原生 C11 与可替换组合
+
+[冻结计划](../../results/m3-tv-native-pair-20261120-r1/plan.json)以 ETTm1 的 HUFL 和 national-illness 的
+% WEIGHTED ILI 各取同一原始行窗的 T 与一列 V（512+3 行）；与五列开发用例核对同源文件、行窗及所选列原域摘要，
+不把单列和五列认作同一个完整对象。`whole_object` 对照 Unique C11 `gorilla-tv` 与 `gorilla-t-derived` +
+`gorilla-v-derived`；另以固定 T 比较 Gorilla-V / ALP、固定 V 比较 Gorilla-T / raw-T。三种输入格式、两投影、
+四方法共 24 个独立槽。[实跑](../../results/6a6e6d31e2bf43389b36e535db9e3b75/report.json)与
+[控制审计](../../results/m3-tv-native-pair-20261120-r1/controls.json)验证 24 槽逐位恢复与完整 bundle 计费；只有原生
+联合方法的解码闭包挂载 `libgorilla_c.so`。固定支路在每种方法内实际重新编码，两个块的帧摘要分别一致，不免费共享。
+
+审计在不改仓库注册表的情况下测试逐个禁用实际注册项：5 个禁用项均在执行前拒绝，不回退。T-only 冒充联合角色、
+给联合路线传五列真实 V、固定 T 未保持不变也在执行前拒绝。两组真实数据各用一份封存 CSV 产物验证 4 个错误解码方法，
+包括联合/派生互换和替换 T/V 后误用旧方法；8 次均由禁网 worker 实际拒绝，无发布文件。
+此结果仅覆盖选定投影的 batch 完整对象和控制变量，不据此授予原生流式、正式性能或阶段资格。

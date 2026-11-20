@@ -42,3 +42,15 @@ tools/probe_offline_gorilla_roles.sh "$CONDA_PREFIX" <空结果目录>
 
 独立 T、V 可进入 [T+V 组合预检](tv-composition.md)。固定 T/V 与完整对象组合另有实跑证据，
 其资格独立判定；本篇的两条组件路线不自动授予 `shared_t_controlled` 或 `whole_object` 的资格。
+
+### 真实源独立轴（M3 开发诊断）
+
+[轴任务 r2](../../results/m3-real-axis-20261120-r2/replay-audit.json)取 ETTm1 与 national-illness 各 515 行的真实投影，
+以 CSV/NPY/TXT 三种输入重建相同对象。T-only 与 raw-T 对照，并从毫秒精确逆变换到原始秒坐标；V-only 用 Gorilla-V
+对照 ALP，每列逐位验证。512 行与 3 行块分别启新进程，恢复顺序和原域摘要均需匹配。计费包括每个完整帧
+（含头、schema、原生载荷）及对象清单，分母为当前角色原始逻辑字节。结果不等于原生 TV 或正式计时。
+
+`tools/m3_real_axis_roles.py` 的 `plan` 冻结真实投影与构建，`run` 生成单一封存运行，`audit --replay` 在独立禁网进程
+里挂载帧和所需解码闭包，不读取原始输入。r2 从冻结的 T/V 首块及已封存帧复算预期拒绝挂载；重放用已恢复的首块
+构造原始拒绝调用，核对插件、操作、状态、无发布产物，以及由同一首 tick 衍生的不可精确换算探针。
+仅静态审计不证明原生调用复现；`--replay` 才执行重放。r1 保留历史存档，不由 r2 重写。

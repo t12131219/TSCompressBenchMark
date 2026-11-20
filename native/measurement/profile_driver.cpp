@@ -4,6 +4,7 @@
 #ifdef TSBENCH_PROFILE_BUILD
 #include "collector.hpp"
 #endif
+#include <algorithm>
 #include <cerrno>
 #include <chrono>
 #include <fstream>
@@ -20,7 +21,7 @@ namespace {
 using Clock = std::chrono::steady_clock;
 using lzbench_native::bytes;
 using lzbench_native::session;
-constexpr size_t file_cap = size_t{8} << 20;
+constexpr size_t file_cap = size_t{16} << 20;
 void check(bool ok, const char *error) { if (!ok) throw std::runtime_error(error); }
 
 struct Span {
@@ -79,6 +80,28 @@ bytes read(const char *name) {
     check(bool(in), "cannot read input file");
     return value;
 }
+// Same per-call spans and finish rule as the frozen corpus worker driver.
+// Input is staged before L0; output is buffered and serialized separately.
+size_t zstd_worker_spans(session &s, bool encode, const bytes &in, bytes &out) {
+    const size_t in_span = encode ? 262139 : 1 << 20;
+    const size_t out_span = encode ? 65521 : 131071;
+    size_t at = 0, end = 0, used = 0, idle = 0;
+    do {
+        if (at == end && end < in.size()) end += std::min(in_span, in.size() - end);
+        const size_t available = std::min(out_span, out.size() - used);
+        const auto step = s.process(encode, in.data() + at, end - at, out.data() + used, available, end == in.size());
+        check(step.consumed <= end - at && step.produced <= available, "native Zstd exceeded the span");
+        at += step.consumed;
+        used += step.produced;
+        if (step.finished) {
+            check(at == in.size() && used > 0, "native Zstd worker finished outside the frozen extent");
+            return used;
+        }
+        idle = (step.consumed || step.produced) ? 0 : idle + 1;
+        check(idle < 16384, "native Zstd worker stalled");
+    } while (true);
+}
+
 void save(const char *name, const bytes &value, size_t used) {
     std::ofstream out(name, std::ios::binary | std::ios::trunc);
     out.write(reinterpret_cast<const char *>(value.data()), used);
@@ -98,7 +121,8 @@ int main(int argc, char **argv) {
         check(argc == 8, "usage: DRIVER MODE ROUTE encode|decode ORIGINAL_BYTES INPUT OUTPUT TRACE_LIMIT");
         const std::string_view mode = argv[1], route = argv[2], op = argv[3];
         const bool encode = op == "encode", active = mode == "profiled";
-        const bool alp = route == "alp-fused", zstd = route == "zstd-mt";
+        const bool alp = route == "alp-fused", corpus_mt = route == "zstd-mt-real";
+        const bool zstd = route == "zstd-mt" || corpus_mt;
         check((encode || op == "decode") && (alp || zstd || route == "xz-opaque"), "unsupported route or direction");
 #ifdef TSBENCH_PROFILE_BUILD
         check(active || mode == "trace_off", "wrong driver build for pass");
@@ -133,11 +157,17 @@ int main(int argc, char **argv) {
                     lzbench_native::configuration config;
                     config.codec = LN_ZSTD;
                     config.level = 3;
-                    config.parameters = {{"workers", 2}, {"job_size", 524288}, {"checksum", 1},
-                                         {"pledged_size", static_cast<int64_t>(original)}};
+                    if (corpus_mt) config.parameters = {{"workers", encode ? 2 : 0}, {"job_size", 524288}, {"checksum", 0}};
+                    else config.parameters = {{"workers", 2}, {"job_size", 524288}, {"checksum", 1},
+                                              {"pledged_size", static_cast<int64_t>(original)}};
                     stream = std::make_unique<session>(std::move(config));
-                    if (encode) cap = original + 65536;
-                    else cap = original + 1;  // one byte remains for native end-of-frame drain
+                    if (corpus_mt) {
+                        check(stream->streaming(), "corpus Zstd requires native sessions");
+                        stream->reset(encode);
+                        // Allocate one drain span past the bound so the native decoder can
+                        // consume the final marker with a non-empty output span, as in the corpus driver.
+                        cap = encode ? original + original / 10 + 65536 + 65521 : original + 131071;
+                    } else cap = encode ? original + 65536 : original + 1;
                 } else {
                     ln_context *context = nullptr;
                     check(ln_create(LN_XZ, 6, &context) == LN_OK, "cannot create opaque XZ context");
@@ -158,6 +188,11 @@ int main(int argc, char **argv) {
                               "native ALP decode rejected");
                         used *= 8;
                     }
+                } else if (corpus_mt) {
+                    used = zstd_worker_spans(*stream, encode, input, output);
+                    check(encode ? used <= original + original / 10 + 65536 : used == original,
+                          "corpus Zstd output budget or restoration extent differs");
+                    stream.reset();
                 } else if (zstd) {
                     size_t consumed = 0;
                     for (int i = 0; i < 2048; ++i) {

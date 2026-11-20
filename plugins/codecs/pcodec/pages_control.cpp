@@ -1,11 +1,16 @@
-// Bounded native driver for the frozen two-page benchmark protocol.
+// Native caller for the frozen edge fixtures and bounded real-corpus pages.
 #include "pcodec_native_ext.h"
 #include "pcodec_source.h"
 #include <array>
+#include <charconv>
+#include <chrono>
+#include <ctime>
+#include <sys/resource.h>
 #include <cstdint>
 #include <cstdio>
 #include <cstring>
 #include <memory>
+#include <numeric>
 #include <stdexcept>
 #include <string_view>
 #include <vector>
@@ -94,11 +99,12 @@ Step step(typename Api::decoder *d, size_t cap, int expected = PC_OK, int altern
 }
 
 template<class Api>
-Bytes drain(typename Api::decoder *d, size_t rows, std::vector<size_t> *spans = nullptr) {
+Bytes drain(typename Api::decoder *d, size_t rows, std::vector<size_t> *spans = nullptr,
+            size_t read_capacity = capacity) {
     Bytes out;
     while (rows) {
-        const auto r = step<Api>(d,capacity);
-        const size_t wanted = rows > capacity ? capacity : rows;
+        const auto r = step<Api>(d,read_capacity);
+        const size_t wanted = rows > read_capacity ? read_capacity : rows;
         check(r.rows == wanted && bool(r.end) == (rows == wanted),"wrong page progress or terminal flag");
         if (spans) spans->push_back(r.rows);
         out.insert(out.end(),r.data.begin(),r.data.end());
@@ -230,8 +236,141 @@ void diagnose(const char *m, const char *one, const char *two) {
                 small,next,second,truncated_prefix,Api::native?"true":"false");
 }
 
+// PM3PAGE1: magic, page count, metadata length, (rows, bytes) for each
+// page, then metadata and page bodies in logical order. Integers are u32 LE.
+constexpr size_t corpus_rows = 65536, corpus_pages = 16;
+constexpr size_t corpus_page_rows = 4096, requested_read = 257;
+constexpr size_t corpus_max_frame = 16 + 8 * corpus_pages + max_meta * (corpus_pages + 1) + corpus_rows * width;
+
+void append_u32(Bytes &dst, size_t value) {
+    check(value <= UINT32_MAX,"page envelope integer overflow");
+    for (unsigned shift = 0; shift < 32; shift += 8) dst.push_back(static_cast<uint8_t>(value >> shift));
+}
+
+size_t read_u32(const Bytes &src, size_t &offset) {
+    check(offset <= src.size() && src.size() - offset >= 4,"truncated page envelope");
+    uint32_t value = 0;
+    for (unsigned shift = 0; shift < 32; shift += 8) value |= uint32_t(src[offset++]) << shift;
+    return value;
+}
+
+struct Timer {
+    using Clock = std::chrono::steady_clock;
+    Clock::time_point wall = Clock::now();
+    std::clock_t cpu = std::clock();
+    void print() const {
+        const auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(Clock::now() - wall).count();
+        const auto stop_cpu = std::clock();
+        struct rusage usage{};
+        check(cpu != -1 && stop_cpu >= cpu && getrusage(RUSAGE_SELF,&usage)==0,"process measurement unavailable");
+        const auto ns = static_cast<long long>((stop_cpu - cpu) * (1e9 / CLOCKS_PER_SEC));
+        std::printf("\"operation_wall_ns\":%lld,\"operation_cpu_ns\":%lld,\"process_peak_rss_bytes\":%llu",
+                    static_cast<long long>(elapsed),ns,static_cast<unsigned long long>(usage.ru_maxrss)*1024);
+    }
+};
+
+template<class Api>
+void corpus_encode(const char *input, const char *output) {
+    const auto raw = load(input,corpus_rows*width);
+    check(!raw.empty() && raw.size()%width==0,"real corpus page input extent");
+    std::vector<uint64_t> aligned(raw.size()/width);
+    std::memcpy(aligned.data(),raw.data(),raw.size());
+    std::vector<size_t> sizes;
+    for (size_t left = aligned.size(); left;) {
+        const size_t n = left < corpus_page_rows ? left : corpus_page_rows;
+        sizes.push_back(n); left -= n;
+    }
+    auto cfg = Api::defaults();
+    check(cfg.level == 8 && cfg.mode == -1 && cfg.delta == -1,"wrong Auto defaults");
+    cfg.max_page_n = corpus_page_rows;
+    typename Api::encoder *ptr = nullptr;
+    const Timer timer;
+    const int rc = Api::chunk(aligned.data(),aligned.size(),PC_F64,&cfg,sizes.data(),sizes.size(),&ptr);
+    std::unique_ptr<typename Api::encoder,decltype(Api::free_encoder)> e(ptr,Api::free_encoder);
+    check(rc == PC_OK && ptr,"real corpus chunk training failed");
+    const auto meta = extract<Api>(max_meta,Api::meta,ptr);
+    std::vector<Bytes> pages(sizes.size());
+    for (size_t i = sizes.size(); i-- > 0;)
+        pages[i] = extract<Api>(max_meta+sizes[i]*width,Api::page,ptr,i);
+    std::putchar('{'); timer.print();
+    const auto state = extract<Api>(4096,Api::enc_state,ptr);
+    const auto geometry = extract<Api>(sizes.size()*sizeof(size_t),Api::geometry,ptr);
+    check(geometry.size()==sizes.size()*sizeof(size_t) &&
+          std::memcmp(geometry.data(),sizes.data(),geometry.size())==0,"native page geometry differs");
+    check(meta.size()>=2,"empty page metadata");
+    Bytes frame{'P','M','3','P','A','G','E','1'};
+    append_u32(frame,sizes.size()); append_u32(frame,meta.size());
+    size_t payload = 0, empty_pages = 0;
+    for (size_t i=0; i<sizes.size(); ++i) {
+        // A native page can use zero bits when its values follow from metadata.
+        empty_pages += pages[i].empty();
+        append_u32(frame,sizes[i]); append_u32(frame,pages[i].size());
+        payload += pages[i].size();
+    }
+    frame.insert(frame.end(),meta.begin(),meta.end());
+    for (const auto &page : pages) frame.insert(frame.end(),page.begin(),page.end());
+    save(output,frame);
+    std::printf(",\"rows\":%zu,\"pages\":%zu,\"meta_bytes\":%zu,\"payload_bytes\":%zu,\"container_bytes\":%zu,\"zero_payload_pages\":%zu,\"state\":",
+                aligned.size(),pages.size(),meta.size(),payload,frame.size()-meta.size()-payload,empty_pages);
+    state_json(state); std::puts("}");
+}
+
+template<class Api>
+void corpus_decode(const char *input, const char *output) {
+    const auto frame = load(input,corpus_max_frame);
+    check(frame.size()>=16 && std::memcmp(frame.data(),"PM3PAGE1",8)==0,"invalid page envelope");
+    size_t pos = 8;
+    const size_t n = read_u32(frame,pos), meta_size = read_u32(frame,pos);
+    check(n && n<=corpus_pages && meta_size>=2 && meta_size<=max_meta,"page envelope bounds");
+    std::vector<size_t> sizes, lengths;
+    for (size_t i=0; i<n; ++i) {
+        const size_t rows=read_u32(frame,pos), bytes=read_u32(frame,pos);
+        check(rows && rows<=corpus_page_rows && (i+1==n || rows==corpus_page_rows) &&
+              bytes<=max_meta+rows*width,"invalid page geometry");
+        sizes.push_back(rows); lengths.push_back(bytes);
+    }
+    check(meta_size<=frame.size()-pos,"truncated metadata");
+    const Bytes meta(frame.begin()+pos,frame.begin()+pos+meta_size);
+    pos += meta_size;
+    // Exercise the frozen non-aligned request on a separate decoder. The
+    // supported capacity below stays within the request without rounding up.
+    {
+        auto d = open<Api>(meta);
+        check(lengths[0]<=frame.size()-pos,"truncated first page");
+        check(Api::start(d.get(),lengths[0] ? frame.data()+pos : meta.data(),lengths[0],sizes[0],sizes[0])
+              == PC_OK,"open first page");
+        step<Api>(d.get(),requested_read,PC_INVALID);
+    }
+    Bytes raw;
+    raw.reserve(corpus_rows*width);
+    size_t read_calls = 0, empty_pages = 0;
+    const size_t total_rows = std::accumulate(sizes.begin(),sizes.end(),size_t{0});
+    const Timer timer;
+    auto d = open<Api>(meta);
+    for (size_t i=0; i<n; ++i) {
+        check(lengths[i]<=frame.size()-pos,"truncated page");
+        const size_t quota = Api::native ? total_rows : sizes[i];
+        check(Api::start(d.get(),lengths[i] ? frame.data()+pos : meta.data(),lengths[i],sizes[i],quota)
+              == PC_OK,"start real corpus page");
+        empty_pages += lengths[i] == 0;
+        std::vector<size_t> spans;
+        const auto restored = drain<Api>(d.get(),sizes[i],&spans);
+        raw.insert(raw.end(),restored.begin(),restored.end());
+        read_calls += spans.size();
+        pos += lengths[i];
+    }
+    std::putchar('{'); timer.print();
+    check(pos==frame.size(),"trailing bytes in page envelope");
+    save(output,raw);
+    std::printf(",\"rows\":%zu,\"pages\":%zu,\"read_calls\":%zu,\"request_values\":%zu,"
+                "\"unaligned_request_status\":%d,\"effective_read_capacity\":%zu,\"zero_payload_pages\":%zu}\n",
+                raw.size()/width,n,read_calls,requested_read,PC_INVALID,capacity,empty_pages);
+}
+
 template<class Api> int run(std::string_view op, int argc, char **argv) {
-    if (op == "encode" && argc == 4) encode<Api>(argv[3]);
+    if (op == "corpus-encode" && argc == 5) corpus_encode<Api>(argv[3],argv[4]);
+    else if (op == "corpus-decode" && argc == 5) corpus_decode<Api>(argv[3],argv[4]);
+    else if (op == "encode" && argc == 4) encode<Api>(argv[3]);
     else if (op == "decode" && argc == 6 && (std::string_view(argv[3]) == "0" || std::string_view(argv[3]) == "1"))
         decode<Api>(size_t(argv[3][0]-'0'),argv[4],argv[5]);
     else if (op == "missing" && argc == 4) missing<Api>(argv[3]);

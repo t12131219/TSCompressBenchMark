@@ -7,4 +7,5 @@ ROOT = Path(__file__).resolve().parent
 sys.path.insert(0, str(ROOT / "src"))
 from tsbench.cli import main  # noqa: E402
 
-raise SystemExit(main(default_root=ROOT))
+if __name__ == '__main__':
+    raise SystemExit(main(default_root=ROOT))

@@ -1,0 +1,204 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bmk.lossless-stage-suite/4",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "access",
+    "admission",
+    "cases",
+    "comparison_track",
+    "corpus_manifest",
+    "direct_control",
+    "expected",
+    "fixture_manifest",
+    "id",
+    "input_config",
+    "max_serialized_bytes_per_slot",
+    "measurement",
+    "methods",
+    "purpose",
+    "quality",
+    "retention",
+    "scheduling",
+    "schema",
+    "stage",
+    "task",
+    "timeout_seconds_per_operation",
+    "verification",
+    "verification_placement"
+  ],
+  "properties": {
+    "schema": {
+      "const": "bmk.lossless-stage-suite/4"
+    },
+    "id": {
+      "const": "m1_lossless_full_corpus_preflight_v1"
+    },
+    "stage": {
+      "const": "M1"
+    },
+    "admission": {
+      "const": "preflight_only_m0_not_accepted"
+    },
+    "purpose": {
+      "const": "m1_candidate_preflight"
+    },
+    "task": {
+      "const": "values_only"
+    },
+    "comparison_track": {
+      "const": "O"
+    },
+    "quality": {
+      "const": "original_f64_bitwise_exact"
+    },
+    "access": {
+      "const": "whole_value_column_batch"
+    },
+    "verification": {
+      "const": "artifact_each"
+    },
+    "verification_placement": {
+      "const": "outside_measurement"
+    },
+    "timeout_seconds_per_operation": {
+      "const": 5
+    },
+    "max_serialized_bytes_per_slot": {
+      "const": 262144
+    },
+    "scheduling": {
+      "const": {
+        "competing_methods": "serial",
+        "requested_threads": 1,
+        "state_reset": "new_worker_each_operation",
+        "max_attempts": 1
+      }
+    },
+    "measurement": {
+      "const": {
+        "mode": "process_frame_preflight",
+        "byte_boundary": "complete_worker_frame_including_schema"
+      }
+    },
+    "retention": {
+      "const": {
+        "verified_samples_per_slot": 1,
+        "preserve_raw_ledger_and_failures": true
+      }
+    },
+    "fixture_manifest": {
+      "const": "datasets/fixtures/manifest.json"
+    },
+    "direct_control": {
+      "const": "configs/experiments/measurement_controls/direct_routes_v1.json"
+    },
+    "methods": {
+      "const": [
+        {
+          "plugin": "raw-store",
+          "role": "value",
+          "options": {}
+        },
+        {
+          "plugin": "zstd",
+          "role": "bytes",
+          "options": {}
+        },
+        {
+          "plugin": "alp-auto",
+          "role": "value",
+          "options": {
+            "decode_backend": "scalar-unfused"
+          }
+        }
+      ]
+    },
+    "corpus_manifest": {
+      "type": "string",
+      "minLength": 1
+    },
+    "input_config": {
+      "type": "string",
+      "minLength": 1
+    },
+    "cases": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 16,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "input"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_-]{0,79}(?![\\s\\S])"
+          },
+          "input": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "kind",
+              "dataset",
+              "column",
+              "offset",
+              "count"
+            ],
+            "properties": {
+              "kind": {
+                "const": "full_corpus_column"
+              },
+              "dataset": {
+                "type": "string",
+                "minLength": 1
+              },
+              "column": {
+                "type": "string",
+                "minLength": 1
+              },
+              "offset": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "count": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 8192
+              }
+            }
+          }
+        }
+      }
+    },
+    "expected": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "cases",
+        "methods",
+        "slots"
+      ],
+      "properties": {
+        "cases": {
+          "type": "integer",
+          "minimum": 2,
+          "maximum": 16
+        },
+        "methods": {
+          "type": "integer",
+          "const": 3
+        },
+        "slots": {
+          "type": "integer",
+          "minimum": 6,
+          "maximum": 48
+        }
+      }
+    }
+  }
+}

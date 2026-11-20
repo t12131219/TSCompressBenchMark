@@ -1,0 +1,13 @@
+# Candidate only: not applied to the Unique archive, source lock or r17 build.
+# Preserve the no-window sentinel until the first nonzero XOR defines a window.
+--- a/src/stream.c
++++ b/src/stream.c
+@@ -87,7 +87,7 @@
+     if(bytes-2>SIZE_MAX/8)return it->error=G_OVERFLOW;
+     count=((size_t)p[0]<<8)|p[1];if(count>limit)return it->error=G_LIMIT;
+     if(count && ((bytes-2)*8<72 || count-1>((bytes-2)*8-72)/2))return it->error=G_TRUNCATED;
+-    it->data=p;it->bytes=bytes;it->count=count;it->lz=0;
++    it->data=p;it->bytes=bytes;it->count=count;it->lz=255;
+     it->r.p=p+2;it->r.bytes=bytes-2;it->r.remaining=(bytes-2)*8;
+     it->error=G_OK;return G_OK;
+ }

@@ -1,0 +1,15 @@
+{
+  "schema": "bmk.native-route-repair/1",
+  "implementation": "gorilla-c11-unique-v1+tsbench-state-repair-v1",
+  "selection": 7,
+  "routes": ["append-resume", "iterator"],
+  "base_source": "gorilla-native",
+  "base_archive_sha256": "0d9ce35f06b721db46b11f1de9006150a175eace61810b650b032502c0022f79",
+  "patch": {"path": "third_party/patches/gorilla-c11-resume-initial-window.candidate.patch", "sha256": "9bc28de6bcdd9825e700d303734aed967365a8bdc053323267e56d32bec5bffd"},
+  "patched_member": "gorilla-native/src/stream.c",
+  "before_sha256": "8f41cef1578ec1a9ffa0ea67f4ab6620941b0edda36f7dfd0b76d62b1e29f5a3",
+  "after_sha256": "0304522379f682f997cffcd031ee279d514cc4ccf79b0ecdf3044ea834819613",
+  "wire_format": "original_xorchunk",
+  "change": "Use the undefined XOR window sentinel before the first nonzero XOR in the iterator and resumed predictor.",
+  "preserved_unmodified_route": "tv-batch"
+}

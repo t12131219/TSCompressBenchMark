@@ -1,0 +1,73 @@
+--- a/src/corad_c.c
++++ b/src/corad_c.c
+@@ -95,6 +95,35 @@
+     v = -1;
+   return v;
+ }
++/* Use the decoder's coefficient order and the existing unfused arithmetic. */
++static void cr_expand_sparse(const double *co, const double *dictionary,
++                             int atoms, int width, double *restored) {
++  for (int t = 0; t < width; t++) restored[t] = 0;
++  for (int j = 0; j < atoms; j++)
++    if (co[j] != 0)
++      for (int t = 0; t < width; t++)
++        restored[t] += co[j] * dictionary[(size_t)j * width + t];
++}
++
++/* A correlation alone is invariant to shifts and scaling. Accept a reference
++ * only if the actual decoder output pointwise dominates its own sparse record.
++ * For different results, reject rounded ties conservatively. */
++static int cr_reference_dominates(const double *original, const double *direct,
++                                  const double *ref, int width, double mean,
++                                  double scale) {
++  for (int t = 0; t < width; t++) {
++    double own = direct[t] * scale + mean;
++    double copy = ref[t] * scale + mean;
++    if (!isfinite(own) || !isfinite(copy)) return 0;
++    if (copy != own) {
++      double own_error = fabs(own - original[t]);
++      double copy_error = fabs(copy - original[t]);
++      if (!isfinite(own_error) || !(copy_error < own_error)) return 0;
++    }
++  }
++  return 1;
++}
++
+ int corad_c_encode(const corad_config *c, const double *x, const double *d,
+                    const double *m, const double *s, uint8_t *out,
+                    size_t capacity, size_t *written) {
+@@ -126,6 +155,8 @@
+   uint8_t *p = cr_header(out, c, d, m, s);
+   for (size_t w = 0; w < c->rows / (size_t)l; w++) {
+     double corr[64 * 64], sums[64];
++    double reconstruction[64 * 128];
++    int rebuilt[64] = {0};
+     int order[64], stored[64] = {0}, refs[64];
+     for (int a = 0; a < cols; a++) {
+       for (int t = 0; t < l; t++) {
+@@ -164,8 +195,23 @@
+       for (int b = 0; b < cols; b++)
+         if (stored[b] && b != a && corr[a * 64 + b] >= c->threshold &&
+             corr[a * 64 + b] > top) {
+-          best = b;
+-          top = corr[a * 64 + b];
++          if (!rebuilt[a]) {
++            cr_expand_sparse(co + (size_t)a * k, d, k, l,
++                             reconstruction + (size_t)a * l);
++            rebuilt[a] = 1;
++          }
++          if (!rebuilt[b]) {
++            cr_expand_sparse(co + (size_t)b * k, d, k, l,
++                             reconstruction + (size_t)b * l);
++            rebuilt[b] = 1;
++          }
++          if (cr_reference_dominates(x + (size_t)a * c->rows + w * l,
++                                     reconstruction + (size_t)a * l,
++                                     reconstruction + (size_t)b * l,
++                                     l, m[a], s[a])) {
++            best = b;
++            top = corr[a * 64 + b];
++          }
+         }
+       refs[a] = best;
+       if (best < 0)

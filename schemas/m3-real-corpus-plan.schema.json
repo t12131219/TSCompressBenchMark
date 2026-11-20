@@ -1,0 +1,505 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bmk.m3-real-corpus-plan/1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "target_stage", "stage_accepted", "runnable", "qualification_granted", "timing_admitted", "predecessors", "definition", "build", "execution_policy", "routes", "work_items", "obligations", "coverage", "plan_content_id"],
+  "properties": {
+    "schema": {"const": "bmk.m3-real-corpus-plan/1"},
+    "target_stage": {"const": "M3"},
+    "stage_accepted": {"const": false},
+    "runnable": {"const": true},
+    "qualification_granted": {"const": false},
+    "timing_admitted": {"const": false},
+    "measurement": {"type":"object", "additionalProperties":false,
+      "required":["schema","environment","population","runtime","limits","operations","policy","admission","code"],
+      "allOf":[
+        {"if":{"properties":{"schema":{"enum":["bmk.m3-in-run-measurement/2","bmk.m3-in-run-measurement/3","bmk.m3-in-run-measurement/4","bmk.m3-in-run-measurement/5","bmk.m3-in-run-measurement/6","bmk.m3-in-run-measurement/7","bmk.m3-in-run-measurement/8","bmk.m3-in-run-measurement/9","bmk.m3-in-run-measurement/10","bmk.m3-in-run-measurement/11","bmk.m3-in-run-measurement/12","bmk.m3-in-run-measurement/13","bmk.m3-in-run-measurement/14"]}}},
+          "then":{"required":["fixed_batch"]}, "else":{"not":{"required":["fixed_batch"]}}},
+        {"if":{"properties":{"schema":{"enum":["bmk.m3-in-run-measurement/3","bmk.m3-in-run-measurement/4","bmk.m3-in-run-measurement/5","bmk.m3-in-run-measurement/6","bmk.m3-in-run-measurement/7","bmk.m3-in-run-measurement/8","bmk.m3-in-run-measurement/9","bmk.m3-in-run-measurement/10","bmk.m3-in-run-measurement/11","bmk.m3-in-run-measurement/12","bmk.m3-in-run-measurement/13","bmk.m3-in-run-measurement/14"]}}},
+          "then":{"required":["column_batch"]}, "else":{"not":{"required":["column_batch"]}}},
+        {"if":{"properties":{"schema":{"enum":["bmk.m3-in-run-measurement/4","bmk.m3-in-run-measurement/5","bmk.m3-in-run-measurement/6","bmk.m3-in-run-measurement/7","bmk.m3-in-run-measurement/8","bmk.m3-in-run-measurement/9","bmk.m3-in-run-measurement/10","bmk.m3-in-run-measurement/11","bmk.m3-in-run-measurement/12","bmk.m3-in-run-measurement/13","bmk.m3-in-run-measurement/14"]}}},
+          "then":{"required":["gorilla"]}, "else":{"not":{"required":["gorilla"]}}},
+        {"if":{"properties":{"schema":{"enum":["bmk.m3-in-run-measurement/5","bmk.m3-in-run-measurement/6","bmk.m3-in-run-measurement/7","bmk.m3-in-run-measurement/8","bmk.m3-in-run-measurement/9","bmk.m3-in-run-measurement/10","bmk.m3-in-run-measurement/11","bmk.m3-in-run-measurement/12","bmk.m3-in-run-measurement/13","bmk.m3-in-run-measurement/14"]}}},
+          "then":{"required":["pcodec_pages","failure_retention"]},
+          "else":{"not":{"anyOf":[{"required":["pcodec_pages"]},{"required":["failure_retention"]}]}}},
+        {"if":{"properties":{"schema":{"enum":["bmk.m3-in-run-measurement/6","bmk.m3-in-run-measurement/7","bmk.m3-in-run-measurement/8","bmk.m3-in-run-measurement/9","bmk.m3-in-run-measurement/10","bmk.m3-in-run-measurement/11","bmk.m3-in-run-measurement/12","bmk.m3-in-run-measurement/13","bmk.m3-in-run-measurement/14"]}}},
+          "then":{"required":["whole"],"properties":{"failure_retention":{"properties":{"adapters":{"minItems":3}}}}},
+          "else":{"not":{"required":["whole"]},"properties":{"failure_retention":{"properties":{"adapters":{"maxItems":2}}}}}},
+        {"if":{"properties":{"schema":{"enum":["bmk.m3-in-run-measurement/7","bmk.m3-in-run-measurement/8","bmk.m3-in-run-measurement/9","bmk.m3-in-run-measurement/10","bmk.m3-in-run-measurement/11","bmk.m3-in-run-measurement/12","bmk.m3-in-run-measurement/13","bmk.m3-in-run-measurement/14"]}}},
+          "then":{"required":["zfp"],"properties":{"failure_retention":{"properties":{"adapters":{"minItems":4}}}}},
+          "else":{"not":{"required":["zfp"]},"properties":{"failure_retention":{"properties":{"adapters":{"maxItems":3}}}}}},
+        {"if":{"properties":{"schema":{"enum":["bmk.m3-in-run-measurement/8","bmk.m3-in-run-measurement/9","bmk.m3-in-run-measurement/10","bmk.m3-in-run-measurement/11","bmk.m3-in-run-measurement/12","bmk.m3-in-run-measurement/13","bmk.m3-in-run-measurement/14"]}}},
+          "then":{"required":["titchy_grouped"],"properties":{"failure_retention":{"properties":{"adapters":{"minItems":5}}}}},
+          "else":{"not":{"required":["titchy_grouped"]},"properties":{"failure_retention":{"properties":{"adapters":{"maxItems":4}}}}}},
+        {"if":{"properties":{"schema":{"enum":["bmk.m3-in-run-measurement/9","bmk.m3-in-run-measurement/10","bmk.m3-in-run-measurement/11","bmk.m3-in-run-measurement/12","bmk.m3-in-run-measurement/13","bmk.m3-in-run-measurement/14"]}}},
+          "then":{"required":["zstd_dictionary_grouped"],"properties":{"failure_retention":{"properties":{"adapters":{"minItems":6}}}}},
+          "else":{"not":{"required":["zstd_dictionary_grouped"]},"properties":{"failure_retention":{"properties":{"adapters":{"maxItems":5}}}}}},
+        {"if":{"properties":{"schema":{"enum":["bmk.m3-in-run-measurement/10","bmk.m3-in-run-measurement/11","bmk.m3-in-run-measurement/12","bmk.m3-in-run-measurement/13","bmk.m3-in-run-measurement/14"]}}},
+          "then":{"required":["lzbench_clock"],"properties":{"failure_retention":{"properties":{"adapters":{"minItems":7}}}}},
+          "else":{"not":{"required":["lzbench_clock"]},"properties":{"failure_retention":{"properties":{"adapters":{"maxItems":6}}}}}},
+        {"if":{"properties":{"schema":{"enum":["bmk.m3-in-run-measurement/11","bmk.m3-in-run-measurement/12","bmk.m3-in-run-measurement/13","bmk.m3-in-run-measurement/14"]}}},
+          "then":{"required":["sprintz_query_grouped"],"properties":{"failure_retention":{"properties":{"adapters":{"minItems":8}}}}},
+          "else":{"not":{"required":["sprintz_query_grouped"]},"properties":{"failure_retention":{"properties":{"adapters":{"maxItems":7}}}}}},
+        {"if":{"properties":{"schema":{"enum":["bmk.m3-in-run-measurement/12","bmk.m3-in-run-measurement/13","bmk.m3-in-run-measurement/14"]}}},
+          "then":{"required":["huff0_table_grouped"],"properties":{"failure_retention":{"properties":{"adapters":{"minItems":9}}}}},
+          "else":{"not":{"required":["huff0_table_grouped"]},"properties":{"failure_retention":{"properties":{"adapters":{"maxItems":8}}}}}},
+        {"if":{"properties":{"schema":{"enum":["bmk.m3-in-run-measurement/13","bmk.m3-in-run-measurement/14"]}}},
+          "then":{"required":["corad_clock"],"properties":{"failure_retention":{"properties":{"adapters":{"minItems":10}}}}},
+          "else":{"not":{"required":["corad_clock"]},"properties":{"failure_retention":{"properties":{"adapters":{"maxItems":9}}}}}}
+      ],
+      "properties":{
+        "schema":{"enum":["bmk.m3-in-run-measurement/1","bmk.m3-in-run-measurement/2","bmk.m3-in-run-measurement/3","bmk.m3-in-run-measurement/4","bmk.m3-in-run-measurement/5","bmk.m3-in-run-measurement/6","bmk.m3-in-run-measurement/7","bmk.m3-in-run-measurement/8","bmk.m3-in-run-measurement/9","bmk.m3-in-run-measurement/10","bmk.m3-in-run-measurement/11","bmk.m3-in-run-measurement/12","bmk.m3-in-run-measurement/13","bmk.m3-in-run-measurement/14"]},
+        "pcodec_pages":{"type":"object","additionalProperties":false,
+          "required":["tool","functional_binding","runtime","launchers","limits","operations","policy","code"],
+          "properties":{"tool":{"$ref":"#/$defs/file"},"functional_binding":{"type":"object"},"runtime":{"type":"object"},
+            "launchers":{"type":"object"},"limits":{"type":"object"},"policy":{"type":"object"},"code":{"type":"object","minProperties":1},
+            "operations":{"const":{"source-pages":["encode","decode"],"native-pages":["encode","decode"]}}}},
+        "failure_retention":{"type":"object","additionalProperties":false,"required":["adapters","policy"],
+          "properties":{"adapters":{"type":"array","minItems":2,"maxItems":10,
+            "prefixItems":[{"const":"gorilla_c11_independent_whole_file_rounds_v1"},{"const":"pcodec_independent_whole_file_pages_v1"},
+                           {"const":"abi_or_selfstar_independent_whole_file_v1"},{"const":"zfp_independent_same_run_fields_and_array_v1"},
+                           {"const":"titchy_independent_same_run_file_local_v1"},{"const":"zstd_dictionary_independent_same_run_v1"},
+                           {"const":"lzbench_session_and_worker_independent_same_run_v1"},
+                           {"const":"sprintz_query_independent_same_run_v1"},
+                           {"const":"huff0_etb1_independent_same_run_v1"},
+                           {"const":"corad_same_run_full_cohort_repeats_v1"}]},
+            "policy":{"const":"retain_supervisor_stdout_and_stderr_before_releasing_failed_scratch"}}},
+        "corad_clock":{"type":"object","additionalProperties":false,
+          "required":["worker","runtime","source_runtime","source_bridge_sha256","timed_source_bridge","limits","launchers","operations","policy","code"],
+          "properties":{"worker":{"$ref":"#/$defs/file"},"runtime":{"type":"object"},"source_runtime":{"type":"object"},
+            "source_bridge_sha256":{"type":"string","pattern":"^[0-9a-f]{64}$"},
+            "timed_source_bridge":{"type":"object","required":["bytes","sha256"]},
+            "limits":{"type":"object"},"launchers":{"type":"object"},"policy":{"type":"object"},"code":{"type":"object","minProperties":1},
+            "operations":{"const":{"corad-inference":["encode","decode"],"corad-c-training":["train"],"corad-source-training":["train"]}}}},
+        "huff0_table_grouped":{"type":"object","additionalProperties":false,
+          "required":["worker","runtime","launchers","limits","operations","streams","group_blocks","policy","code"],
+          "properties":{"worker":{"$ref":"#/$defs/file"},"runtime":{"type":"object"},"launchers":{"type":"object"},
+            "limits":{"type":"object"},"operations":{"const":["train","encode","decode"]},"streams":{"const":[1,4]},
+            "group_blocks":{"type":"integer","minimum":1},"policy":{"type":"object"},"code":{"type":"object","minProperties":1}}},
+        "sprintz_query_grouped":{"type":"object","additionalProperties":false,
+          "required":["worker","runtime","launchers","limits","operations","archive_group_max_bytes","policy","code"],
+          "properties":{"worker":{"$ref":"#/$defs/file"},"runtime":{"type":"object"},"launchers":{"type":"object"},
+            "limits":{"type":"object"},"operations":{"const":["encode","decode","query"]},
+            "archive_group_max_bytes":{"const":6291456},"policy":{"type":"object"},"code":{"type":"object","minProperties":1}}},
+        "lzbench_clock":{"type":"object","additionalProperties":false,
+          "required":["tools","runtime","worker_environment","launchers","operations","policy","code"],
+          "properties":{"tools":{"type":"object","required":["session","workers"],"additionalProperties":false,
+              "properties":{"session":{"$ref":"#/$defs/file"},"workers":{"$ref":"#/$defs/file"}}},
+            "runtime":{"type":"object"},"worker_environment":{"type":"array","minItems":3,"maxItems":3,
+              "items":{"type":"object","required":["cpu","core_id"]}},
+            "launchers":{"type":"object"},"policy":{"type":"object"},"code":{"type":"object","minProperties":1},
+            "operations":{"const":{"xz-session":["encode","decode"],"zstd-session":["encode","decode"],
+                                   "xz-workers":["encode","decode"],"zstd-workers":["encode","decode"]}}}},
+        "zstd_dictionary_grouped":{"type":"object","additionalProperties":false,
+          "required":["worker","runtime","policy","launchers","operations","code"],
+          "properties":{"worker":{"$ref":"#/$defs/file"},"runtime":{"type":"object"},"policy":{"type":"object"},
+            "launchers":{"type":"object"},"operations":{"const":["train","encode","decode"]},
+            "code":{"type":"object","minProperties":1}}},
+        "titchy_grouped":{"type":"object","additionalProperties":false,
+          "required":["worker","runtime","policy","limits","launchers","operations","code"],
+          "properties":{"worker":{"$ref":"#/$defs/file"},"runtime":{"type":"object"},"policy":{"type":"object"},
+            "limits":{"type":"object"},"launchers":{"type":"object"},"code":{"type":"object","minProperties":1},
+            "operations":{"const":{"packet-stream":["encode","decode"],"loaded-file-access":["encode","decode"],"batch-range":["encode","decode"]}}}},
+        "zfp":{"type":"object","additionalProperties":false,"required":["field","array","field_environment","operations","code"],
+          "properties":{"field":{"$ref":"#/$defs/zfp_measurement_driver"},"array":{"$ref":"#/$defs/zfp_measurement_driver"},
+            "field_environment":{"type":"array","minItems":2,"maxItems":2,"items":{"type":"object","required":["cpu","core_id"]}},
+            "operations":{"const":{"field-baseline":["encode","decode"],"field-modes":["encode","decode"],"openmp-encode":["encode","decode"],
+                                     "fixed-rate-array":["update","reopen_initial","reopen_updated"]}},
+            "code":{"type":"object","minProperties":1}}},
+        "whole":{"type":"object","additionalProperties":false,"required":["abi","selfstar","operations","launchers","policy","code"],
+          "properties":{"abi":{"$ref":"#/$defs/whole_worker","required":["env"],"not":{"required":["environment"]}},
+            "selfstar":{"$ref":"#/$defs/whole_worker","required":["environment"],"not":{"required":["env"]}},
+            "operations":{"const":{"fire-batch":["encode","decode"],"huff0-reference":["encode","decode"],
+              "selfstar-batch":["encode","decode"],"selfstar-incremental":["encode","decode"]}},
+            "launchers":{"type":"object"},"policy":{"type":"object"},"code":{"type":"object","minProperties":1}}},
+        "fixed_batch":{"type":"object","required":["worker","runtime","policy","limits","launchers","operations","code"],
+          "properties":{"worker":{"$ref":"#/$defs/file"},"operations":{"const":["encode","default"]}},"minProperties":7,"maxProperties":7},
+        "gorilla":{"type":"object","required":["bindings","operations","launchers","native_spans","policy","code"],
+          "properties":{"operations":{"const":{"tv-batch":["encode","decode"],"append-resume":["encode","decode","snapshot_decode"],
+            "iterator":["encode","decode"]}}}},
+        "column_batch":{"type":"object","additionalProperties":false,
+          "required":["worker","runtime","policy","limits","launchers","operations","code"],
+          "properties":{"worker":{"$ref":"#/$defs/file"},"runtime":{"type":"object"},"policy":{"type":"object"},
+            "limits":{"type":"object"},"launchers":{"type":"object"},"code":{"type":"object","minProperties":1},
+            "operations":{"const":{"auto-batch":["encode","scalar-unfused"],
+              "decode-backends":["encode","scalar-unfused","falp-auto"],"batch":["encode","default"]}}}},
+        "environment":{"type":"object","required":["cpu","exclusive_cpu"]},
+        "population":{"type":"object","minProperties":1}, "runtime":{"type":"object"}, "limits":{"type":"object"},
+        "operations":{"const":["encode","restore-L1","restore-L2","restore-L3"]}, "policy":{"type":"object"},
+        "admission":{"const":"cooperative_only_not_system_exclusive"}, "code":{"type":"object","minProperties":1}
+      }
+    },
+    "corad_specialist_amendment": {"type":"object","additionalProperties":false,"required":["receipt","contract","driver"],
+      "properties":{"receipt":{"$ref":"#/$defs/file"},"driver":{"const":"corad-specialized/2"},
+        "contract":{"type":"object","required":["schema","amendment_id","quality_policy_id","controls","obligations"],
+          "properties":{"schema":{"const":"bmk.m0-corad-guard-amendment/1"},
+            "controls":{"type":"array","minItems":2,"maxItems":2},"obligations":{"type":"object","minProperties":6,"maxProperties":6}}}}},
+    "predecessors": {"type": "object", "required": ["m0_real_corpus_receipt", "m1_real_corpus_receipt", "m2_real_corpus_receipt"]},
+    "definition": {"type": "object", "required": ["plan", "plan_content_id", "coverage"]},
+    "build": {
+      "type": "object",
+      "required": ["lock", "build_id", "worker", "corpus_worker", "plugins"],
+      "properties": {
+        "fixed_batch": {
+          "type": "object", "additionalProperties": false,
+          "required": ["driver", "decoder", "launchers", "limits", "code"],
+          "properties": {
+            "driver": {"const": "m3-fixed-batch-detached/1"},
+            "decoder": {"type": "object", "required": ["recovery_id", "worker", "plugins", "files"]},
+            "launchers": {"type": "object"}, "limits": {"type": "object"},
+            "retention": {"const": {"selection": "first_unit_and_first_short_unit_if_distinct", "directory": "fixed-batch-samples", "addressing": "sha256_frame", "decode_inputs": "frame_and_frozen_runtime_only"}},
+            "code": {"type": "object", "minProperties": 1, "additionalProperties": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}
+          }
+        },
+        "lzbench_session": {
+          "type": "object", "additionalProperties": false,
+          "required": ["executable", "dependency", "code"],
+          "properties": {
+            "executable": {"$ref": "#/$defs/file"}, "dependency": {"$ref": "#/$defs/file"},
+            "code": {"type": "object", "minProperties": 1, "additionalProperties": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}
+          }
+        },
+        "zstd_dictionary": {"$ref": "#/properties/build/properties/lzbench_session"},
+        "lzbench_workers": {"$ref": "#/properties/build/properties/lzbench_session"},
+        "huff0_table": {"$ref": "#/properties/build/properties/lzbench_session"},
+        "corad_corpus": {
+          "type": "object", "additionalProperties": false,
+          "required": ["driver", "decoder", "source_runtime", "source_bridge_sha256", "source_archive_sha256", "limits", "launchers", "parallel_cohorts_max", "code"],
+          "properties": {
+            "driver": {"const": "corad-same-run-corpus/1"}, "decoder": {"type": "object"},
+            "source_runtime": {"type": "object"}, "source_bridge_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+            "source_archive_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+            "limits": {"type": "object", "required": ["native", "source"]},
+            "launchers": {"type": "object"}, "parallel_cohorts_max": {"const": 4}, "code": {"type": "object"}
+          }
+        },
+        "corad_repair": {"type":"object", "additionalProperties":false,
+          "required":["provenance","implementation","wire"],
+          "properties":{"provenance":{"$ref":"#/$defs/file"},
+                        "implementation":{"const":"corad-c11-unique-v1+tsbench-reference-error-guard-v1"},
+                        "wire":{"const":"CRD1"}}},
+        "huff0_fec1": {
+          "type": "object", "additionalProperties": false,
+          "required": ["decoder", "launchers", "limits", "process_input_limit_bytes", "code"],
+          "properties": {
+            "decoder": {"type": "object", "required": ["recovery_id", "tools", "files"]},
+            "launchers": {"type": "object", "minProperties": 2, "maxProperties": 2,
+                          "additionalProperties": {"type": "string", "pattern": "^[0-9a-f]{64}$"}},
+            "limits": {"type": "object", "required": ["address_space_bytes", "file_bytes", "wall_seconds"]},
+            "process_input_limit_bytes": {"const": 4194304},
+            "code": {"type": "object", "minProperties": 1, "additionalProperties": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}
+          }
+        },
+        "zfp_corpus": {
+          "type": "object", "additionalProperties": false,
+          "required": ["executable", "dependency", "code"],
+          "properties": {
+            "executable": {"$ref": "#/$defs/file"}, "dependency": {"$ref": "#/$defs/file"},
+            "code": {"type": "object", "minProperties": 1, "additionalProperties": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}
+          }
+        },
+        "pbepla_corpus": {
+          "type": "object", "additionalProperties": false,
+          "required": ["executable", "dependency", "code"],
+          "properties": {
+            "executable": {"$ref": "#/$defs/file"}, "dependency": {"$ref": "#/$defs/file"},
+            "code": {"type": "object", "minProperties": 1, "additionalProperties": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}
+          }
+        },
+        "pbepla_repair": {
+          "type": "object", "additionalProperties": false,
+          "required": ["provenance", "implementation", "decoder", "launchers", "limits", "code"],
+          "properties": {
+            "provenance": {"$ref": "#/$defs/file"},
+            "implementation": {"const": "pbepla-rr-unique-v1+tsbench-wide-exact-v1"},
+            "decoder": {"type": "object", "required": ["recovery_id", "tools", "files"]},
+            "launchers": {"type": "object"}, "limits": {"type": "object"},
+            "code": {"type": "object", "minProperties": 1, "additionalProperties": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}
+          }
+        },
+        "gorilla_state_repair": {
+          "type": "object", "additionalProperties": false,
+          "required": ["lock", "repair_build", "implementation", "routes"],
+          "properties": {
+            "lock": {"$ref": "#/$defs/file"},
+            "repair_build": {"type": "object"},
+            "implementation": {"const": "gorilla-c11-unique-v1+tsbench-state-repair-v1"},
+            "routes": {"const": ["append-resume", "iterator"]}
+          }
+        },
+        "gorilla_corpus": {
+          "type": "object",
+          "required": ["executable", "dependency", "adapter", "wire_validator"],
+          "additionalProperties": false,
+          "properties": {
+            "executable": {"$ref": "#/$defs/file"},
+            "dependency": {"$ref": "#/$defs/file"},
+            "adapter": {"$ref": "#/$defs/file"},
+            "wire_validator": {"$ref": "#/$defs/file"}
+          }
+        },
+        "sprintz_query": {
+          "type": "object",
+          "required": ["executable", "dependency", "adapter", "wire_validator"],
+          "additionalProperties": false,
+          "properties": {
+            "executable": {"$ref": "#/$defs/file"},
+            "dependency": {"$ref": "#/$defs/file"},
+            "adapter": {"$ref": "#/$defs/file"},
+            "wire_validator": {"$ref": "#/$defs/file"}
+          }
+        },
+        "titchy_stream": {
+          "type": "object",
+          "required": ["executable", "dependency", "adapter", "wire_validator", "invoker"],
+          "additionalProperties": false,
+          "properties": {
+            "executable": {"$ref": "#/$defs/file"},
+            "dependency": {"$ref": "#/$defs/file"},
+            "adapter": {"$ref": "#/$defs/file"},
+            "wire_validator": {"$ref": "#/$defs/file"},
+            "invoker": {"$ref": "#/$defs/file"}
+          }
+        },
+        "titchy_access": {
+          "type": "object",
+          "required": ["executable", "dependency", "adapter", "wire_validator"],
+          "additionalProperties": false,
+          "properties": {
+            "executable": {"$ref": "#/$defs/file"},
+            "dependency": {"$ref": "#/$defs/file"},
+            "adapter": {"$ref": "#/$defs/file"},
+            "wire_validator": {"$ref": "#/$defs/file"}
+          }
+        },
+        "pcodec_pages": {
+          "type": "object",
+          "required": ["executable", "dependency", "adapter"],
+          "additionalProperties": false,
+          "properties": {
+            "executable": {"$ref": "#/$defs/file"},
+            "dependency": {"$ref": "#/$defs/file"},
+            "adapter": {"$ref": "#/$defs/file"}
+          }
+        }
+      }
+    },
+    "execution_policy": {"type": "object", "required": ["submit", "internal_scheduling", "verification", "outside_domain", "quality_failure", "hardware_pending", "external_support"]},
+    "routes": {"type": "array", "minItems": 36},
+    "work_items": {"type": "array", "minItems": 1},
+    "obligations": {"type": "array"},
+    "specialized": {
+      "type": "object", "minProperties": 1, "additionalProperties": false,
+      "properties": {
+        "pcodec_auto_pages": {
+          "$ref": "#/$defs/batch_specialized",
+          "properties": {
+            "driver": {"const": "pcodec-auto-pages-specialized/1"}, "family": {"const": "pcodec_auto_pages"}, "suite": {"const": "extended-v4"},
+            "slots": {"minProperties": 28, "maxProperties": 28}, "obligation_slots": {"minProperties": 23, "maxProperties": 23}
+          }
+        },
+        "lzbench_baseline": {
+          "$ref": "#/$defs/batch_specialized",
+          "properties": {
+            "driver": {"const": "lzbench-baseline-specialized/1"}, "family": {"const": "lzbench_baseline"}, "suite": {"const": "extended-v2"},
+            "slots": {"minProperties": 14, "maxProperties": 14}, "obligation_slots": {"minProperties": 11, "maxProperties": 11}
+          }
+        },
+        "alp": {
+          "type": "object", "additionalProperties": false,
+          "required": ["driver", "schema", "methods", "decoder", "direct_control", "limits", "launchers", "slots", "obligation_slots", "obligation_bindings", "code"],
+          "properties": {
+            "driver": {"const": "alp-specialized/1"}, "schema": {"const": "bmk.native-batch-execution/1"},
+            "methods": {"type": "object"}, "decoder": {"type": "object"}, "direct_control": {"type": "object"},
+            "limits": {"type": "object"}, "launchers": {"type": "object"}, "code": {"type": "object"},
+            "obligation_bindings": {"type": "object", "required": ["rounding_mode_controls"]},
+            "slots": {"type": "object", "minProperties": 24, "maxProperties": 24},
+            "obligation_slots": {"type": "object", "minProperties": 14, "maxProperties": 14}
+          }
+        },
+        "corad": {
+          "type": "object", "additionalProperties": false,
+          "required": ["driver", "decoder", "limits", "launchers", "slots", "obligation_slots", "code"],
+          "properties": {
+            "driver": {"const": "corad-specialized/1"}, "decoder": {"type": "object"},
+            "limits": {"type": "object"}, "launchers": {"type": "object"},
+            "slots": {"type": "object", "minProperties": 3, "maxProperties": 3},
+            "obligation_slots": {"type": "object", "minProperties": 17, "maxProperties": 17}, "code": {"type": "object"}
+          }
+        },
+        "huff0": {
+          "type": "object", "additionalProperties": false,
+          "required": ["driver", "decoder", "limits", "launchers", "slots", "required_slots", "condition", "code"],
+          "properties": {
+            "driver": {"const": "huff0-specialized/1"},
+            "decoder": {"type": "object"}, "limits": {"type": "object"}, "launchers": {"type": "object"},
+            "slots": {"type": "object", "minProperties": 11, "maxProperties": 11},
+            "required_slots": {"type": "object", "minProperties": 11, "maxProperties": 11},
+            "condition": {"type": "object", "required": ["obligation_id", "slots"]},
+            "huff0_bmi2_control": {"type": "object", "required": ["build_dir", "decoder", "normalized_build_recipe"]},
+            "code": {"type": "object"}
+          }
+        },
+        "lzbench_profiles": {
+          "type": "object", "additionalProperties": false,
+          "required": ["driver", "decoder", "launchers", "code", "obligation_slots", "slots"],
+          "properties": {
+            "driver": {"const": "lzbench-profiles-specialized/1"},
+            "decoder": {"type": "object"}, "launchers": {"type": "object"}, "code": {"type": "object"},
+            "obligation_slots": {
+              "type": "object", "minProperties": 13, "maxProperties": 13,
+              "additionalProperties": {"type": "array", "minItems": 1, "maxItems": 1, "items": {"type": "string"}}
+            },
+            "slots": {"type": "object", "minProperties": 3, "maxProperties": 3}
+          }
+        },
+        "lzbench_session": {
+          "type": "object", "additionalProperties": false,
+          "required": ["driver", "decoder", "limits", "launchers", "code", "obligation_slots", "slots"],
+          "properties": {
+            "driver": {"const": "lzbench-session-specialized/1"},
+            "decoder": {"type": "object"}, "limits": {"type": "object"},
+            "launchers": {"type": "object"}, "code": {"type": "object"},
+            "obligation_slots": {
+              "type": "object", "minProperties": 10, "maxProperties": 10,
+              "additionalProperties": {"type": "array", "minItems": 1, "maxItems": 1, "items": {"type": "string"}}
+            },
+            "slots": {"type": "object", "minProperties": 2, "maxProperties": 2}
+          }
+        },
+        "gorilla": {
+          "type": "object", "additionalProperties": false,
+          "required": ["driver", "state", "tv_batch", "obligation_slots", "code"],
+          "properties": {
+            "driver": {"const": "gorilla-specialized/1"},
+            "state": {"type": "object"}, "tv_batch": {"type": "object"}, "code": {"type": "object"},
+            "obligation_slots": {
+              "type": "object", "additionalProperties": false, "required": ["tv-batch", "state"],
+              "properties": {
+                "tv-batch": {"type": "object", "minProperties": 4, "maxProperties": 4},
+                "state": {"type": "object", "minProperties": 8, "maxProperties": 8}
+              }
+            }
+          }
+        },
+        "sprintz": {
+          "type": "object", "additionalProperties": false,
+          "required": ["driver", "decoder", "limits", "launchers", "code", "obligation_slots", "slots"],
+          "properties": {
+            "driver": {"const": "sprintz-specialized/1"},
+            "decoder": {"type": "object"}, "limits": {"type": "object"}, "launchers": {"type": "object"},
+            "code": {"type": "object"},
+            "obligation_slots": {"type": "object", "minProperties": 10, "maxProperties": 10},
+            "slots": {"type": "object", "minProperties": 20, "maxProperties": 20}
+          }
+        },
+        "selfstar": {
+          "type": "object", "additionalProperties": false,
+          "required": ["driver", "decoder", "limits", "launchers", "code", "obligation_slots", "slots"],
+          "properties": {
+            "driver": {"const": "selfstar-specialized/1"},
+            "decoder": {"type": "object"}, "limits": {"type": "object"}, "launchers": {"type": "object"},
+            "code": {"type": "object"},
+            "obligation_slots": {"type": "object", "minProperties": 9, "maxProperties": 9},
+            "slots": {"type": "object", "minProperties": 25, "maxProperties": 25}
+          }
+        },
+        "titchy": {
+          "type": "object", "additionalProperties": false,
+          "required": ["driver", "schema", "suite", "decoder", "methods", "direct_control", "limits", "launchers", "code", "obligation_slots", "slots"],
+          "properties": {
+            "driver": {"const": "titchy-specialized/1"}, "schema": {"const": "bmk.native-batch-execution/1"},
+            "suite": {"const": "extended-v1"}, "decoder": {"type": "object"}, "methods": {"type": "object"},
+            "direct_control": {"type": "object"}, "limits": {"type": "object"}, "launchers": {"type": "object"},
+            "code": {"type": "object"}, "obligation_slots": {"type": "object", "minProperties": 22, "maxProperties": 22},
+            "slots": {"type": "object", "minProperties": 18, "maxProperties": 18}
+          }
+        },
+        "zfp": {
+          "type": "object", "additionalProperties": false,
+          "required": ["driver", "schema", "methods", "decoder", "direct_control", "limits", "launchers", "obligation_slots", "slots", "code"],
+          "properties": {
+            "driver": {"const": "zfp-specialized/1"}, "schema": {"const": "bmk.native-batch-execution/1"},
+            "methods": {"type": "object"}, "decoder": {"type": "object"}, "direct_control": {"type": "object"},
+            "limits": {"type": "object"}, "launchers": {"type": "object"}, "code": {"type": "object"},
+            "obligation_slots": {"type": "object", "minProperties": 20, "maxProperties": 20},
+            "slots": {"type": "object", "minProperties": 20, "maxProperties": 20}
+          }
+        },
+        "pbepla": {
+          "type": "object", "additionalProperties": false,
+          "required": ["driver", "decoder", "limits", "launchers", "code", "obligation_slots", "slots"],
+          "properties": {
+            "driver": {"const": "pbepla-specialized/1"},
+            "decoder": {"type": "object"}, "limits": {"type": "object"},
+            "launchers": {"type": "object"}, "code": {"type": "object"},
+            "obligation_slots": {
+              "type": "object", "minProperties": 9, "maxProperties": 9,
+              "additionalProperties": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string"}}
+            },
+            "slots": {"type": "object", "minProperties": 13, "maxProperties": 13}
+          }
+        },
+        "pcodec_intmult": {
+          "type": "object", "additionalProperties": false,
+          "required": ["driver", "limits", "launchers", "decoder", "code", "obligation_slots", "slots"],
+          "properties": {
+            "driver": {"const": "pcodec-intmult-specialized/1"},
+            "limits": {"type": "object"}, "launchers": {"type": "object"}, "decoder": {"type": "object"},
+            "code": {"type": "object"},
+            "obligation_slots": {"type": "object", "minProperties": 4, "maxProperties": 4},
+            "slots": {"type": "object", "minProperties": 6, "maxProperties": 6}
+          }
+        }
+      }
+    },
+    "input_switch": {
+      "type": "object", "additionalProperties": false,
+      "required": ["baseline", "baseline_plan_id", "additional_novelty_manifests", "eligible_selections", "does_not_replace_full_corpus_or_specialists"],
+      "properties": {
+        "baseline": {"$ref": "#/$defs/file"},
+        "baseline_plan_id": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "additional_novelty_manifests": {"type": "array", "items": {"$ref": "#/$defs/file"}},
+        "eligible_selections": {"type": "array", "uniqueItems": true, "items": {"type": "integer", "minimum": 1}},
+        "does_not_replace_full_corpus_or_specialists": {"const": true}
+      }
+    },
+    "coverage": {"type": "object", "required": ["datasets", "routes", "file_route_decisions", "input_domain_matches", "outside_declared_domain", "condition_not_triggered", "required_obligations", "conditional_obligations", "executable_work_items", "executed_work_items", "qualified_work_items"]},
+    "plan_content_id": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  },
+  "allOf": [
+    {
+      "if": {"required": ["input_switch"]},
+      "then": {"properties": {"obligations": {"maxItems": 0}, "execution_policy": {"required": ["input_scope"],
+        "properties": {"input_scope": {"const": "supplemental_new_input_per_selection_v1"}}}}},
+      "else": {"properties": {"work_items": {"minItems": 828}, "obligations": {"minItems": 186},
+        "execution_policy": {"not": {"required": ["input_scope"]}}}}
+    }
+  ],
+  "$defs": {
+    "zfp_measurement_driver":{"type":"object","additionalProperties":false,"required":["tools","runtime","policy","launchers"],
+      "properties":{"tools":{"type":"object","minProperties":1,"additionalProperties":{"$ref":"#/$defs/file"}},
+        "runtime":{"type":"object"},"policy":{"type":"object"},"launchers":{"type":"object"}}},
+    "whole_worker":{"type":"object","additionalProperties":false,"required":["worker","runtime","limits"],
+      "properties":{"worker":{"$ref":"#/$defs/file"},"runtime":{"type":"object"},"limits":{"type":"object"},
+        "env":{"type":"object"},"environment":{"type":"object"}}},
+    "batch_specialized": {
+      "type": "object", "additionalProperties": false,
+      "required": ["driver", "family", "schema", "suite", "methods", "protocol_methods", "decoder", "direct_control", "limits", "launchers", "slots", "obligation_slots", "code"],
+      "properties": {
+        "driver": {"type": "string"}, "family": {"type": "string"}, "schema": {"const": "bmk.native-batch-execution/1"}, "suite": {"type": "string"},
+        "methods": {"type": "object"}, "protocol_methods": {"type": "object"}, "decoder": {"type": "object"}, "direct_control": {"type": "object"},
+        "limits": {"type": "object"}, "launchers": {"type": "object"}, "slots": {"type": "object"}, "obligation_slots": {"type": "object"}, "code": {"type": "object"}
+      }
+    },
+    "file": {
+      "type": "object", "required": ["path", "bytes", "sha256"], "additionalProperties": false,
+      "properties": {
+        "path": {"type": "string", "minLength": 1},
+        "bytes": {"type": "integer", "minimum": 1},
+        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    }
+  }
+}

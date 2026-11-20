@@ -1,0 +1,412 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bmk.native-corpus-policy/5",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "scope",
+    "routes"
+  ],
+  "properties": {
+    "schema": {
+      "enum": [
+        "bmk.native-corpus-policy/1",
+        "bmk.native-corpus-policy/2",
+        "bmk.native-corpus-policy/3",
+        "bmk.native-corpus-policy/4",
+        "bmk.native-corpus-policy/5"
+      ]
+    },
+    "scope": {
+      "const": "first_batch_native_v3_definition"
+    },
+    "routes": {
+      "type": "array",
+      "minItems": 36,
+      "maxItems": 36,
+      "items": {
+        "$ref": "#/$defs/route"
+      }
+    }
+  },
+  "$defs": {
+    "slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9_-]*$"
+    },
+    "size": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 1073741824
+    },
+    "route": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "selection",
+        "route",
+        "view",
+        "operation",
+        "partition",
+        "missing",
+        "prerequisites",
+        "options",
+        "evidence_contract"
+      ],
+      "properties": {
+        "selection": {
+          "enum": [
+            4,
+            7,
+            9,
+            11,
+            19,
+            29,
+            31,
+            39,
+            40,
+            80,
+            85,
+            87
+          ],
+          "type": "integer"
+        },
+        "route": {
+          "$ref": "#/$defs/slug"
+        },
+        "view": {
+          "enum": [
+            "f64_columns",
+            "v_bytes_interleaved",
+            "tv_per_value_column_ms",
+            "f64_multicolumn",
+            "u16_le_limbs_per_f64_column",
+            "u64_bitcast_per_f64_column",
+            "native_unsigned_integers_only"
+          ]
+        },
+        "operation": {
+          "enum": [
+            "roundtrip",
+            "decode_common_frame",
+            "complete_page_and_drain",
+            "query_unsigned_channels",
+            "push_backpressure_finish_reset",
+            "point_bit_range",
+            "range_with_full_validation",
+            "append_snapshot_resume",
+            "iterate_forward_seek",
+            "encode_worker_comparison",
+            "mutate_flush_reopen",
+            "session_roundtrip",
+            "train_then_test_roundtrip",
+            "same_frame_decode_and_encode_worker_comparison",
+            "ordered_roundtrip",
+            "push_finish_ordered_restore",
+            "each_prefix_restore",
+            "bounded_source_rewind_and_prefix_restore",
+            "model_roundtrip",
+            "train_validate_and_separate_heldout_inference"
+          ]
+        },
+        "partition": {
+          "enum": [
+            "full",
+            "test",
+            "train_test"
+          ]
+        },
+        "missing": {
+          "enum": [
+            "preserve",
+            "require_no_retained_sentinel"
+          ]
+        },
+        "prerequisites": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "original_domain_lossy_budget",
+              "mutable_field_layout",
+              "real_input_dictionary_training_samples",
+              "real_input_table_training_samples",
+              "matching_deployment_and_ordered_columns",
+              "bounded_training_column_and_row_selection"
+            ]
+          }
+        },
+        "options": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "encode": {
+              "const": "auto"
+            },
+            "decode": {
+              "const": [
+                "scalar-unfused",
+                "falp-auto"
+              ]
+            },
+            "conditional_dispatch": {
+              "const": "see_native_obligations"
+            },
+            "page_values": {
+              "$ref": "#/$defs/size"
+            },
+            "decode_request_values": {
+              "$ref": "#/$defs/size"
+            },
+            "lanes": {
+              "type": "integer",
+              "const": 4
+            },
+            "aggregates": {
+              "const": [
+                "count",
+                "sum",
+                "max"
+              ]
+            },
+            "semantics": {
+              "const": "unsigned_u16_limbs_not_original_f64"
+            },
+            "pattern": {
+              "enum": [
+                "first_middle_last_and_midpoint_half_open_window",
+                "midpoint_half_open_window"
+              ]
+            },
+            "snapshot_offset": {
+              "const": "midpoint"
+            },
+            "mode": {
+              "const": "reversible"
+            },
+            "rank": {
+              "type": "integer",
+              "const": 1
+            },
+            "other_modes": {
+              "const": "explicit_specialized_cases"
+            },
+            "threads": {
+              "const": [
+                1,
+                2
+              ]
+            },
+            "workers": {
+              "const": [
+                0,
+                2
+              ]
+            },
+            "schema": {
+              "const": "distinct_array_format"
+            },
+            "level": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 22
+            },
+            "preset": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9
+            },
+            "input_span_bytes": {
+              "$ref": "#/$defs/size"
+            },
+            "output_span_bytes": {
+              "$ref": "#/$defs/size"
+            },
+            "capacity_bytes": {
+              "$ref": "#/$defs/size"
+            },
+            "job_bytes": {
+              "$ref": "#/$defs/size"
+            },
+            "block_bytes": {
+              "$ref": "#/$defs/size"
+            },
+            "decoder_memory_limit_bytes": {
+              "$ref": "#/$defs/size"
+            },
+            "native_block_values": {
+              "type": "integer",
+              "const": 512
+            },
+            "state": {
+              "const": "same_column"
+            }
+          }
+        },
+        "evidence_contract": {
+          "$ref": "#/$defs/slug"
+        },
+        "rows_per_unit": {
+          "$ref": "#/$defs/size"
+        },
+        "bytes_per_unit": {
+          "$ref": "#/$defs/size"
+        },
+        "min_payload": {
+          "$ref": "#/$defs/size"
+        },
+        "training": {
+          "oneOf": [
+            {
+              "const": {
+                "profile": "zstd_bounded_train_v1",
+                "max_samples": 128,
+                "max_sample_bytes": 2048,
+                "min_samples": 8,
+                "min_total_bytes": 8192
+              }
+            },
+            {
+              "const": {
+                "profile": "huff0_bounded_train_v1",
+                "max_train_bytes": 32768,
+                "streams": [
+                  1,
+                  4
+                ]
+              }
+            },
+            {
+              "const": {
+                "profile": "zstd_two_extents_train_v1",
+                "max_samples": 128,
+                "max_sample_bytes": 2048,
+                "min_samples": 8,
+                "min_total_bytes": 8192,
+                "short_train": {
+                  "capacity_bytes": 256,
+                  "sample_bytes": 32,
+                  "min_samples": 8
+                }
+              }
+            }
+          ]
+        },
+        "array_layout": {
+          "const": {
+            "profile": "zfp_f64_array_mutation_v1",
+            "min_rows": 8,
+            "max_rows": 4096,
+            "requested_rate": 18,
+            "expected_effective_rate": 32,
+            "quality": {
+              "absolute_floor": 1e-05,
+              "relative_to_expected": 1e-06
+            }
+          }
+        },
+        "prefix_layout": {
+          "const": {
+            "profile": "pbepla_original_abs_eps_v1",
+            "min_rows": 1,
+            "max_rows": 4096,
+            "requested_eps": [
+              16,
+              4,
+              1
+            ],
+            "max_delay": 64,
+            "value_layer_budget": 2097152,
+            "max_prefix_frame_bytes": 131072
+          }
+        },
+        "corad_layout": {
+          "const": {
+            "profile": "corad_ordered_cohort_train_and_test_v1",
+            "max_columns": 8,
+            "train_rows": 129,
+            "max_test_rows_per_frame": 4096,
+            "max_values_per_frame": 131072,
+            "tricklet": 4,
+            "atoms": 4,
+            "nonzero": 2,
+            "threshold": 0.9,
+            "model_bytes_limit": 16384,
+            "alpha": 0.25,
+            "c_lars": {
+              "seed": 20261103,
+              "max_iter": 6,
+              "solver_max_iter": 4000,
+              "objective_tolerance": 1e-08,
+              "solver_tolerance": 1e-08
+            },
+            "source_bridge": {
+              "iterations": 10,
+              "timeout_seconds": 25,
+              "rng": "shipped_default",
+              "runtime": "locked_tsbench"
+            }
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "view": {
+                "const": "v_bytes_interleaved"
+              }
+            }
+          },
+          "then": {
+            "not": {
+              "required": [
+                "rows_per_unit"
+              ]
+            }
+          },
+          "else": {
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "bytes_per_unit"
+                  ]
+                },
+                {
+                  "required": [
+                    "min_payload"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "training"
+            ]
+          },
+          "then": {
+            "properties": {
+              "view": {
+                "const": "v_bytes_interleaved"
+              },
+              "partition": {
+                "const": "train_test"
+              },
+              "operation": {
+                "const": "train_then_test_roundtrip"
+              }
+            },
+            "required": [
+              "bytes_per_unit"
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

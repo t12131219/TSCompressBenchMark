@@ -6,17 +6,18 @@ from ..assets import ContractError, require
 from ..planner.corad_deployment import NATIVE as HEADER
 
 
-def interpret(frame: bytes):
-    """Return recovered bytes, independently parsed byte counts and embedded model arrays."""
+def interpret(frame: bytes, *, max_values: int = 16384):
+    """Return recovered bytes, parsed byte counts and embedded model arrays."""
+    require(type(max_values) is int and 0 < max_values <= 131072, 'invalid CRD1 interpretation budget')
     try:
-        return _interpret(frame)
+        return _interpret(frame, max_values)
     except (struct.error, OverflowError) as exc:
         raise ContractError('truncated or invalid CRD1 fields') from exc
 
 
-def _interpret(frame):
+def _interpret(frame, max_values):
     magic, rows, cols, width, atoms, nzmax, threshold, total = HEADER.unpack_from(frame)
-    require(magic == b'CRD1' and total == len(frame) and 0 < cols <= 64 and rows * cols <= 16384 and
+    require(magic == b'CRD1' and total == len(frame) and 0 < cols <= 64 and rows * cols <= max_values and
             1 <= width <= 128 and 1 <= atoms <= 512 and 0 < nzmax <= min(32,width,atoms) and -1 <= threshold <= 1,
             'invalid CRD1 descriptor')
     count = atoms * width

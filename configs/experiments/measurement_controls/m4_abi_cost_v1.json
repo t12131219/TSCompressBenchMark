@@ -1,0 +1,17 @@
+{
+  "schema": "bmk.m4-abi-identical-work-control/1",
+  "seed": 428071,
+  "measured_rounds": 5,
+  "cases": [
+    {"id":"ett-small", "dataset":"etth1", "column":0, "rows":[0,31], "regime":"small_message", "plugins":["raw-store","zstd","alp-auto","xz-baseline"]},
+    {"id":"alp-before-vector", "dataset":"ettm2", "column":5, "rows":[0,1023], "regime":"before_alp_vector", "plugins":["alp-auto"]},
+    {"id":"alp-at-vector", "dataset":"ettm2", "column":5, "rows":[0,1024], "regime":"at_alp_vector", "plugins":["alp-auto"]},
+    {"id":"alp-after-vector", "dataset":"ettm2", "column":5, "rows":[0,1025], "regime":"after_alp_vector", "plugins":["alp-auto"]},
+    {"id":"ett-before-64k", "dataset":"etth1", "column":0, "rows":[0,8191], "regime":"before_64k_abi_limit", "plugins":["zstd","xz-baseline"]},
+    {"id":"ett-at-64k", "dataset":"etth1", "column":0, "rows":[0,8192], "regime":"at_64k_abi_limit", "plugins":["raw-store","zstd","alp-auto","xz-baseline"]},
+    {"id":"ett-after-64k", "dataset":"etth1", "column":0, "rows":[0,8193], "regime":"above_64k_abi_limit_controls_only", "plugins":["raw-store","alp-auto"]},
+    {"id":"alp-exact-profile", "dataset":"ettm2", "column":5, "rows":[0,65536], "regime":"exact_m3_m4_fused_anchor", "plugins":["alp-auto"]},
+    {"id":"raw-l2-size", "dataset":"ld2011", "column":null, "rows":[0,80], "regime":"logical_shape_inside_l2", "plugins":["raw-store"]},
+    {"id":"raw-llc-size", "dataset":"ld2011", "column":null, "rows":[0,8600], "regime":"logical_input_exceeds_llc", "plugins":["raw-store"]}
+  ]
+}

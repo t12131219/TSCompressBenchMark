@@ -38,3 +38,15 @@ bash tools/probe_offline_tv_composition.sh /home/fzg/anaconda3/envs/tsbench \
 尚不覆盖 `source_file` 端到端比较、可空/变长值、数值量化及异常旁流、单列文件/字符串时间和通用大语料调度；既有 T+V 验证不能替代 M3 要求的独立 T-only、V-only 和全部首批原生机制验证。ALP AVX512 构建和条件路线保留；本套件不把它标为已实跑。
 
 实测记录：[主报告](../../results/m3-tv-cross-format-20261119-r2/report.json)、[独立恢复](../../results/m3-tv-cross-format-20261119-r2/restore.json)、[控制](../../results/m3-tv-cross-format-20261119-r2/controls.json)。同一 run 完成 12/12，报告字节复算一致，152 项 Python 测试和 5 项 CTest 通过；不与早期开发 run 拼接。
+
+## 从首批原件换输入的开发验证（2026-11-20）
+
+按[来源配置](../../configs/suites/dev_tv_full_corpus_sources_v1/sources.json)，从 ETTm1 和 national-illness
+两个原始文件各提取第 0–514 行和五列值；读取到文件末尾校验原件身份。输出是 515 行投影，不是全文件编解码。
+[投影来源和列名映射](../../results/m3-tv-real-sources-20261120-r2/projections.json)保留原始文件摘要、行范围、原列名及投影位摘要；
+同一生成器写 CSV/TXT/NPY，现有入口解析后核对原位摘要。将 CPU worker 误用作 TV worker 的开发运行 `d40f3ee3531d4257b4f74a2302b07aa1`
+保留失败状态；修正只换为同构建专用 TV worker 的锁，未改变样本、功能或资格口径。
+
+[同次主报告](../../results/a0dd23fb706349749b9977b46461ecba/report.json)的 18 槽全部通过；
+[禁网独立恢复](../../results/m3-tv-real-sources-20261120-r2/restore.json)全部重放。同一方法、同一对象的三种格式生成字节相同的 bundle。
+固定 Gorilla-T 比较 ALP f64 与 Sprintz-FIRE 位片；固定 ALP V 比较 Gorilla-T 与 raw-T。只涵盖完整对象和固定 T 组合，不代表更新版 T-only、V-only 或正式 M3 全量。

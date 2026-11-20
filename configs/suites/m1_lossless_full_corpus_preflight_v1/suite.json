@@ -1,0 +1,79 @@
+{
+  "schema": "bmk.lossless-stage-suite/4",
+  "id": "m1_lossless_full_corpus_preflight_v1",
+  "stage": "M1",
+  "admission": "preflight_only_m0_not_accepted",
+  "purpose": "m1_candidate_preflight",
+  "task": "values_only",
+  "comparison_track": "O",
+  "quality": "original_f64_bitwise_exact",
+  "access": "whole_value_column_batch",
+  "verification": "artifact_each",
+  "verification_placement": "outside_measurement",
+  "timeout_seconds_per_operation": 5,
+  "max_serialized_bytes_per_slot": 262144,
+  "scheduling": {
+    "competing_methods": "serial",
+    "requested_threads": 1,
+    "state_reset": "new_worker_each_operation",
+    "max_attempts": 1
+  },
+  "measurement": {
+    "mode": "process_frame_preflight",
+    "byte_boundary": "complete_worker_frame_including_schema"
+  },
+  "retention": {
+    "verified_samples_per_slot": 1,
+    "preserve_raw_ledger_and_failures": true
+  },
+  "fixture_manifest": "datasets/fixtures/manifest.json",
+  "corpus_manifest": "datasets/manifests/first-batch-full-v1.json",
+  "direct_control": "configs/experiments/measurement_controls/direct_routes_v1.json",
+  "cases": [
+    {
+      "id": "economics-heldout",
+      "input": {
+        "kind": "full_corpus_column",
+        "dataset": "economics-17",
+        "column": "channel_1",
+        "offset": 0,
+        "count": 31
+      }
+    },
+    {
+      "id": "bitcoin-heldout",
+      "input": {
+        "kind": "full_corpus_column",
+        "dataset": "bitcoin-dataset-without-missing-values-1",
+        "column": "channel_1",
+        "offset": 0,
+        "count": 31
+      }
+    }
+  ],
+  "methods": [
+    {
+      "plugin": "raw-store",
+      "role": "value",
+      "options": {}
+    },
+    {
+      "plugin": "zstd",
+      "role": "bytes",
+      "options": {}
+    },
+    {
+      "plugin": "alp-auto",
+      "role": "value",
+      "options": {
+        "decode_backend": "scalar-unfused"
+      }
+    }
+  ],
+  "expected": {
+    "cases": 2,
+    "methods": 3,
+    "slots": 6
+  },
+  "input_config": "configs/experiments/m1_real_inputs/two_holdouts_v1.json"
+}

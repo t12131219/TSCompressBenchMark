@@ -9,6 +9,7 @@ import tomllib
 from .assets import ContractError, content_id, digest, load_json, local_file, require, verify_asset
 from .contracts import Contract, load_contract
 from .corpus import BOUNDARY_GENERATOR, MANIFEST_V3, check_corpus, load_boundary_fixtures, load_feature_policy
+from .corpus_ingress import check_full_corpus
 from .plugins import discover
 
 
@@ -227,6 +228,7 @@ from .application.restore import audit_smoke_restore  # noqa: E402,F401
 from .planner.native import NativePlanRequest, plan_native  # noqa: E402,F401
 from .planner.native_requirements import plan_native_requirements  # noqa: E402,F401
 from .planner.native_admission import plan_native_admission  # noqa: E402,F401
+from .planner.native_corpus import plan_native_corpus, verify_native_corpus_plan  # noqa: E402,F401
 from .application.native import report_native, run_native  # noqa: E402,F401
 
 from .planner.comparison import plan_comparison  # noqa: E402,F401
@@ -238,6 +240,93 @@ from .planner.batch_execution import plan_batch_execution  # noqa: E402,F401
 from .application.batch_execution import audit_batch_execution, report_batch_execution, run_batch_execution  # noqa: E402,F401
 
 from .planner.timing import TimingPlanRequest, plan_timing  # noqa: E402,F401
+from .planner.m2_real_corpus import M2RealCorpusPlanRequest, plan_m2_real_corpus  # noqa: E402,F401
+from .application.m2_real_corpus_acceptance import audit_m2_real_corpus  # noqa: E402,F401
+from .planner.m3_real_corpus import M3RealCorpusPlanRequest, check_m3_real_corpus_plan, plan_m3_real_corpus  # noqa: E402,F401
+def run_m3_real_corpus(root, plan, results, **preflight):
+    """Dispatch only the explicit versioned execution contract to the new engine."""
+    from .planner.m3_in_run_measurement_v2 import SCHEMA as MEASUREMENT_V2
+
+    from .planner.m3_in_run_measurement_v3 import SCHEMA as MEASUREMENT_V3
+
+    from .planner.m3_in_run_measurement_v4 import SCHEMA as MEASUREMENT_V4
+    from .planner.m3_in_run_measurement_v5 import SCHEMA as MEASUREMENT_V5
+    from .planner.m3_in_run_measurement_v6 import SCHEMA as MEASUREMENT_V6
+    from .planner.m3_in_run_measurement_v7 import SCHEMA as MEASUREMENT_V7
+    from .planner.m3_in_run_measurement_v8 import SCHEMA as MEASUREMENT_V8
+
+    from .planner.m3_in_run_measurement_v9 import SCHEMA as MEASUREMENT_V9
+
+    from .planner.m3_in_run_measurement_v10 import SCHEMA as MEASUREMENT_V10
+
+    from .planner.m3_in_run_measurement_v11 import SCHEMA as MEASUREMENT_V11
+
+    from .planner.m3_in_run_measurement_v12 import SCHEMA as MEASUREMENT_V12
+
+    from .planner.m3_in_run_measurement_v13 import SCHEMA as MEASUREMENT_V13
+
+    from .planner.m3_in_run_measurement_v14 import SCHEMA as MEASUREMENT_V14
+
+    schema = plan.get('measurement', {}).get('schema')
+    if schema == MEASUREMENT_V14:
+        from .application.m3_real_corpus_primary import run_m3_real_corpus as execute
+        from .application.m3_in_run_corad_pipeline import observe
+        return execute(root, plan, results, observer=observe, **preflight)
+    if schema == MEASUREMENT_V13:
+        from .application.m3_real_corpus_primary import run_m3_real_corpus as execute
+        from .application.m3_primary_measurement_v13 import observe
+        return execute(root, plan, results, observer=observe, **preflight)
+    if schema == MEASUREMENT_V12:
+        from .application.m3_real_corpus_primary import run_m3_real_corpus as execute
+        from .application.m3_primary_measurement_v12 import observe
+        return execute(root, plan, results, observer=observe, **preflight)
+    if schema == MEASUREMENT_V11:
+        from .application.m3_real_corpus_primary import run_m3_real_corpus as execute
+        from .application.m3_primary_measurement_v11 import observe
+        return execute(root, plan, results, observer=observe, **preflight)
+    if schema == MEASUREMENT_V10:
+        from .application.m3_real_corpus_primary import run_m3_real_corpus as execute
+        from .application.m3_primary_measurement_v10 import observe
+        return execute(root, plan, results, observer=observe, **preflight)
+    if schema == MEASUREMENT_V9:
+        from .application.m3_real_corpus_primary import run_m3_real_corpus as execute
+        from .application.m3_primary_measurement_v9 import observe
+        return execute(root, plan, results, observer=observe, **preflight)
+    if schema == MEASUREMENT_V8:
+        from .application.m3_real_corpus_primary import run_m3_real_corpus as execute
+        from .application.m3_primary_measurement_v8 import observe
+        return execute(root, plan, results, observer=observe, **preflight)
+    if schema == MEASUREMENT_V7:
+        from .application.m3_real_corpus_primary import run_m3_real_corpus as execute
+        from .application.m3_primary_measurement_v7 import observe
+        return execute(root, plan, results, observer=observe, **preflight)
+    if schema == MEASUREMENT_V6:
+        from .application.m3_real_corpus_primary import run_m3_real_corpus as execute
+        from .application.m3_primary_measurement_v6 import observe
+        return execute(root, plan, results, observer=observe, **preflight)
+    if schema == MEASUREMENT_V5:
+        from .application.m3_real_corpus_primary import run_m3_real_corpus as execute
+        from .application.m3_primary_measurement_v5 import observe
+        return execute(root, plan, results, observer=observe, **preflight)
+    if schema == MEASUREMENT_V4:
+        from .application.m3_real_corpus_primary import run_m3_real_corpus as execute
+        from .application.m3_in_run_gorilla import observe
+        return execute(root, plan, results, observer=observe, **preflight)
+    if 'corad_specialist_amendment' in plan:
+        from .application.m3_real_corpus_amended import run_m3_real_corpus as execute
+    elif schema == MEASUREMENT_V3:
+        from .application.m3_real_corpus_measured import run_m3_real_corpus as execute
+    elif schema == MEASUREMENT_V2:
+        from .application.m3_real_corpus_execution_v4 import run_m3_real_corpus as execute
+    elif 'measurement' in plan:
+        from .application.m3_real_corpus_execution_v3 import run_m3_real_corpus as execute
+    elif 'pbepla_repair' in plan.get('build', {}):
+        from .application.m3_real_corpus_execution_v2 import run_m3_real_corpus as execute
+    else:
+        from .application.m3_real_corpus_execution import run_m3_real_corpus as execute
+    return execute(root, plan, results, **preflight)
+from .planner.m3_input_switch import plan_input_switch as plan_m3_input_switch  # noqa: E402,F401
+from .application.m3_intmult_audit import audit_m3_intmult_run  # noqa: E402,F401
 from .application.timing import report_timing, run_timing  # noqa: E402,F401
 from .analysis.timing_repeat import compare_timing_repeats  # noqa: E402,F401
 

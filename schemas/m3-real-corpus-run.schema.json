@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bmk.m3-real-corpus-run/1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "run_id", "plan_content_id", "stage_accepted", "qualification_granted", "timing_admitted", "partial_preflight", "planned_work_items", "selected_work_items", "statuses", "rows", "artifact_retention", "execution_policy"],
+  "properties": {
+    "schema": {"const": "bmk.m3-real-corpus-run/1"},
+    "run_id": {"type": "string", "pattern": "^[0-9a-f]{32}$"},
+    "plan_content_id": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "stage_accepted": {"const": false},
+    "qualification_granted": {"const": false},
+    "timing_admitted": {"const": false},
+    "partial_preflight": {"type": "boolean"},
+    "route_filter": {
+      "type": ["array", "null"],
+      "items": {"type": "string"},
+      "uniqueItems": true
+    },
+    "dataset_filter": {"type": "array", "minItems": 1, "items": {"type": "string"}, "uniqueItems": true},
+    "max_work_items": {"type": "integer", "minimum": 1},
+    "planned_work_items": {"type": "integer", "minimum": 1},
+    "selected_work_items": {"type": "integer", "minimum": 0},
+    "selected_corpus_decisions": {"type": "integer", "minimum": 1},
+    "obligations": {"type": "array", "maxItems": 186},
+    "obligation_statuses": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 1}},
+    "specialized": {"type": "object"},
+    "statuses": {"type": "object"},
+    "rows": {"type": "array", "minItems": 1},
+    "artifact_retention": {"const": "verified_then_released_after_hash_and_size"},
+    "execution_policy": {"type": "object"}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"execution_policy": {"required": ["input_scope"]}}},
+      "then": {"properties": {
+        "execution_policy": {"properties": {"input_scope": {"const": "supplemental_new_input_per_selection_v1"}}},
+        "obligations": {"maxItems": 0}
+      }},
+      "else": {"properties": {
+        "planned_work_items": {"const": 828}, "selected_work_items": {"maximum": 724},
+        "selected_corpus_decisions": {"maximum": 828}
+      }}
+    }
+  ]
+}

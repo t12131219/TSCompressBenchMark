@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bmk.full-corpus/1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "scope", "datasets"],
+  "properties": {
+    "schema": {"const": "bmk.full-corpus/1"},
+    "scope": {"type": "string", "minLength": 1},
+    "datasets": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/dataset"}}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "offset": {"type": "integer", "minimum": 0},
+    "tick": {"type": "integer", "minimum": -9223372036854775808, "maximum": 9223372036854775807},
+    "identity": {
+      "type": "object", "additionalProperties": false,
+      "required": ["axis_sha256", "values_sha256", "object_id"],
+      "properties": {
+        "axis_sha256": {"$ref": "#/$defs/sha256"},
+        "values_sha256": {"$ref": "#/$defs/sha256"},
+        "object_id": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "partition": {
+      "type": "object", "additionalProperties": false,
+      "required": ["name", "start", "end", "canonical"],
+      "properties": {
+        "name": {"enum": ["train", "development", "test"]},
+        "start": {"$ref": "#/$defs/offset"},
+        "end": {"$ref": "#/$defs/offset"},
+        "canonical": {"$ref": "#/$defs/identity"}
+      }
+    },
+    "dataset": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "source_cluster", "file", "parser", "columns", "axis", "values_dtype",
+                   "rows", "value_count", "canonical", "axis_observations", "retained_sentinel_values", "partitions"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9_-]*$"},
+        "source_cluster": {"type": "string", "pattern": "^[a-z0-9][a-z0-9_-]*$"},
+        "file": {
+          "type": "object", "additionalProperties": false, "required": ["path", "bytes", "sha256"],
+          "properties": {
+            "path": {"type": "string", "minLength": 1},
+            "bytes": {"type": "integer", "minimum": 1},
+            "sha256": {"$ref": "#/$defs/sha256"}
+          }
+        },
+        "parser": {
+          "type": "object", "additionalProperties": false,
+          "required": ["format", "separator", "decimal", "timestamp", "missing"],
+          "properties": {
+            "format": {"const": "utf8_delimited_physical_rows_v1"},
+            "separator": {"enum": [",", ";", "\t"]},
+            "decimal": {"enum": [".", ","]},
+            "timestamp": {"enum": ["civil_iso_seconds", "civil_slash_minutes", "integer_label"]},
+            "missing": {"enum": ["reject_empty_preserve_finite", "retain_source_minus_9999"]}
+          }
+        },
+        "columns": {"type": "array", "minItems": 2, "maxItems": 8193, "items": {"type": "string"}},
+        "axis": {
+          "type": "object", "additionalProperties": false,
+          "required": ["dtype", "unit", "interpretation", "epoch", "timezone"],
+          "properties": {
+            "dtype": {"const": "<i8"}, "unit": {"enum": ["second", "source_tick"]},
+            "interpretation": {"enum": ["source_integer_label", "source_civil_label_coordinate_not_utc"]},
+            "epoch": {"enum": [null, "1970-01-01 00:00:00"]}, "timezone": {"const": null}
+          }
+        },
+        "values_dtype": {"const": "<f8"},
+        "rows": {"type": "integer", "minimum": 3},
+        "value_count": {"type": "integer", "minimum": 1, "maximum": 8192},
+        "canonical": {"$ref": "#/$defs/identity"},
+        "axis_observations": {
+          "type": "object", "additionalProperties": false,
+          "required": ["first", "last", "min", "max", "adjacent_equal", "decreases"],
+          "properties": {
+            "first": {"$ref": "#/$defs/tick"}, "last": {"$ref": "#/$defs/tick"},
+            "min": {"$ref": "#/$defs/tick"}, "max": {"$ref": "#/$defs/tick"},
+            "adjacent_equal": {"$ref": "#/$defs/offset"}, "decreases": {"$ref": "#/$defs/offset"}
+          }
+        },
+        "retained_sentinel_values": {"$ref": "#/$defs/offset"},
+        "partitions": {"type": "array", "minItems": 3, "maxItems": 3, "items": {"$ref": "#/$defs/partition"}}
+      }
+    }
+  }
+}

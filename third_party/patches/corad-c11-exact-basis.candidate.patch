@@ -1,0 +1,151 @@
+--- a/include/corad.h
++++ b/include/corad.h
+@@ -49,6 +49,12 @@
+                        double threshold, corad_config *);
+ int corad_model_encode(const corad_model *, const corad_config *, const double *,
+                        uint8_t *, size_t, size_t *);
++/* Development candidate only. Bits select positional columns with frozen
++ * train-only zero error gates. Width/nonzero must both be four for a nonzero
++ * mask. Allow four extra dictionary atoms in the CRD1 output capacity.
++ * Exact means numerical equality, not preservation of negative zero bits. */
++int corad_model_encode_exact_basis(const corad_model *, const corad_config *,
++                                  const double *, uint64_t, uint8_t *, size_t, size_t *);
+ /* C11 batch dictionary training. Source objective is
+  * .5||Y-CD||_F^2 + alpha||C||_1 with ||D_atom||_2 <= 1.
+  * solver=0 signed LARS/LASSO homotopy, 1 cyclic coordinate descent.
+--- a/src/corad_c.c
++++ b/src/corad_c.c
+@@ -124,15 +124,24 @@
+   return 1;
+ }
+ 
+-int corad_c_encode(const corad_config *c, const double *x, const double *d,
+-                   const double *m, const double *s, uint8_t *out,
+-                   size_t capacity, size_t *written) {
++static int cr_basis_column(uint64_t mask, int column) {
++  return (int)((mask >> column) & 1);
++}
++
++int cr_encode_exact_basis(const corad_config *c, const double *x, const double *d,
++                          const double *m, const double *s, uint64_t exact_columns,
++                          uint8_t *out, size_t capacity, size_t *written) {
+   if (!written)
+     return CORAD_INVALID;
+   *written = 0;
+   if (!cr_inputs(c, x, d, m, s) || !out)
+     return CORAD_INVALID;
+-  if (capacity < corad_bound(c))
++  if (exact_columns && (c->tricklet != 4 || c->nonzero != 4 || c->atoms > 508 ||
++      (c->columns < 64 && (exact_columns >> c->columns))))
++    return CORAD_INVALID;
++  corad_config wire = *c;
++  if (exact_columns) wire.atoms += 4;
++  if (capacity < corad_bound(&wire))
+     return CORAD_CAPACITY;
+   int k = c->atoms, l = c->tricklet, cols = c->columns, status = CORAD_INVALID;
+   double *g = (double *)malloc((size_t)k * k * sizeof(double));
+@@ -152,7 +161,23 @@
+           goto done;
+         g[(size_t)i * k + j] = g[(size_t)j * k + i] = v;
+       }
+-  uint8_t *p = cr_header(out, c, d, m, s);
++  /* Keep the trained dictionary and normalization for OMP and reference
++   * selection. Change only the emitted records/stats of masked columns. */
++  uint8_t *p;
++  if (exact_columns) {
++    double dictionary[512 * 4], mean[64], scale[64];
++    memcpy(dictionary, d, (size_t)k * l * sizeof(double));
++    for (int j = 0; j < l; j++)
++      for (int t = 0; t < l; t++)
++        dictionary[(size_t)(k + j) * l + t] = j == t ? 1.0 : 0.0;
++    for (int a = 0; a < cols; a++) {
++      mean[a] = cr_basis_column(exact_columns, a) ? 0.0 : m[a];
++      scale[a] = cr_basis_column(exact_columns, a) ? 1.0 : s[a];
++    }
++    p = cr_header(out, &wire, dictionary, mean, scale);
++  } else {
++    p = cr_header(out, c, d, m, s);
++  }
+   for (size_t w = 0; w < c->rows / (size_t)l; w++) {
+     double corr[64 * 64], sums[64];
+     double reconstruction[64 * 128];
+@@ -218,18 +243,30 @@
+         stored[a] = 1;
+     }
+     for (int a = 0; a < cols; a++) {
+-      if (refs[a] >= 0) {
++      if (cr_basis_column(exact_columns, a)) {
++        const double *values = x + (size_t)a * c->rows + w * l;
++        uint16_t nz = 0;
++        for (int t = 0; t < l; t++) nz += values[t] != 0;
++        cr_u16(&p, nz);
++        for (int t = 0; t < l; t++)
++          if (values[t] != 0) {
++            cr_u16(&p, (uint16_t)(k + t));
++            cr_f64(&p, values[t]);
++          }
++      } else if (refs[a] >= 0 && !cr_basis_column(exact_columns, refs[a])) {
+         cr_u16(&p, 65535);
+         cr_u16(&p, (uint16_t)refs[a]);
+       } else {
+-        int nz = 0;
++        /* If a preserved column referenced a masked one, copy the
++         * original coefficient vector instead of its changed record. */
++        const double *coeff = co + (size_t)(refs[a] >= 0 ? refs[a] : a) * k;
++        uint16_t nz = 0;
++        for (int j = 0; j < k; j++) nz += coeff[j] != 0;
++        cr_u16(&p, nz);
+         for (int j = 0; j < k; j++)
+-          nz += co[(size_t)a * k + j] != 0;
+-        cr_u16(&p, (uint16_t)nz);
+-        for (int j = 0; j < k; j++)
+-          if (co[(size_t)a * k + j] != 0) {
++          if (coeff[j] != 0) {
+             cr_u16(&p, (uint16_t)j);
+-            cr_f64(&p, co[(size_t)a * k + j]);
++            cr_f64(&p, coeff[j]);
+           }
+       }
+     }
+@@ -247,3 +284,9 @@
+   free(co);
+   return status;
+ }
++
++int corad_c_encode(const corad_config *c, const double *x, const double *d,
++                   const double *m, const double *s, uint8_t *out,
++                   size_t capacity, size_t *written) {
++  return cr_encode_exact_basis(c, x, d, m, s, 0, out, capacity, written);
++}
+--- a/src/internal.h
++++ b/src/internal.h
+@@ -93,4 +93,8 @@
+   }
+   return p;
+ }
++/* Candidate-only entry; a zero mask is the original guarded encoder. */
++int cr_encode_exact_basis(const corad_config *, const double *, const double *,
++                          const double *, const double *, uint64_t,
++                          uint8_t *, size_t, size_t *);
+ #endif
+--- a/src/model.c
++++ b/src/model.c
+@@ -40,6 +40,18 @@
+   return corad_c_encode(cfg,x,m->dictionary,m->mean,m->scale,out,cap,written);
+ }
+ 
++int corad_model_encode_exact_basis(const corad_model *m, const corad_config *cfg,
++                                  const double *x, uint64_t exact_columns,
++                                  uint8_t *out, size_t cap, size_t *written) {
++  if (!written) return CORAD_INVALID;
++  *written = 0;
++  if (!m || !cfg || cfg->columns != m->cfg.columns ||
++      cfg->tricklet != m->cfg.tricklet || cfg->atoms != m->cfg.atoms)
++    return CORAD_INVALID;
++  return cr_encode_exact_basis(cfg, x, m->dictionary, m->mean, m->scale,
++                               exact_columns, out, cap, written);
++}
++
+ size_t corad_model_size(const corad_model*m){return m?corad_bound(&m->cfg):0;}
+ int corad_model_save(const corad_model*m,uint8_t*out,size_t capacity,size_t*written){
+  if(written)*written=0;if(!m||!written)return CORAD_INVALID;

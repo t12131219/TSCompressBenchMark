@@ -1,0 +1,28 @@
+cmake_minimum_required(VERSION 3.22)
+project(tsbench_pcodec_pages_grouped LANGUAGES CXX)
+set(TSBENCH_FROZEN_PCODEC "" CACHE PATH "Directory containing the selected frozen libpcodec_c.so and source headers")
+set(source "${TSBENCH_FROZEN_PCODEC}/source/pcodec-native/include")
+set(lib "${TSBENCH_FROZEN_PCODEC}/libpcodec_c.so")
+if(NOT EXISTS "${source}/pcodec_source.h" OR NOT EXISTS "${source}/pcodec_native_ext.h" OR NOT EXISTS "${lib}")
+  message(FATAL_ERROR "Set TSBENCH_FROZEN_PCODEC to the frozen codec directory")
+endif()
+add_library(pcodec_frozen SHARED IMPORTED)
+set_target_properties(pcodec_frozen PROPERTIES IMPORTED_LOCATION "${lib}")
+# Copy/patch only in the build directory. Existing r40 and specialized plans
+# continue to bind the original controller source and frozen executable.
+set(control "${CMAKE_CURRENT_LIST_DIR}/../../../plugins/codecs/pcodec/pages_control.cpp")
+file(SHA256 "${control}" control_hash)
+if(NOT control_hash STREQUAL "a6938a5839ccc79c966b17b0645c03b8b6e1538c4c334766ea49c1c0e0d4383e")
+  message(FATAL_ERROR "The grouped I/O overlay requires the frozen r40 page controller source")
+endif()
+find_program(PATCH_EXECUTABLE patch REQUIRED)
+set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS "${CMAKE_CURRENT_LIST_DIR}/grouped-io.patch")
+configure_file("${control}" "${CMAKE_CURRENT_BINARY_DIR}/pages_control.original.cpp" COPYONLY)
+execute_process(COMMAND "${PATCH_EXECUTABLE}" --batch --forward --fuzz=0
+  --output "${CMAKE_CURRENT_BINARY_DIR}/pages_control.cpp" "${CMAKE_CURRENT_BINARY_DIR}/pages_control.original.cpp"
+  "${CMAKE_CURRENT_LIST_DIR}/grouped-io.patch" COMMAND_ERROR_IS_FATAL ANY)
+add_executable(tsbench_pcodec_pages_grouped main.cpp)
+target_include_directories(tsbench_pcodec_pages_grouped PRIVATE "${source}" "${CMAKE_CURRENT_BINARY_DIR}")
+target_link_libraries(tsbench_pcodec_pages_grouped PRIVATE pcodec_frozen)
+target_compile_features(tsbench_pcodec_pages_grouped PRIVATE cxx_std_17)
+set_target_properties(tsbench_pcodec_pages_grouped PROPERTIES CXX_EXTENSIONS NO BUILD_WITH_INSTALL_RPATH YES INSTALL_RPATH "$ORIGIN")

@@ -60,3 +60,12 @@ SFB1 的配置、长度、RLE 结构、位片原始 CRC 与 payload CRC。`tv-re
 | 交通五列 | 24,720 | 10,518 | 19,760 |
 
 这些是两个固定对象的实际字节数，不是总体压缩率或速度排名。旧 `dev_tv_composition_v1` 报告在新代码下仍逐字节复算。
+
+### 真实源组合与独立轴的匹配范围
+
+[真实源组合](../../results/a0dd23fb706349749b9977b46461ecba/report.json)在 ETTm1 / national-illness 的同窗五列
+投影上按格式分别运行：固定 Gorilla-T 对照 ALP-f64 与 Sprintz-FIRE-u16，固定 ALP 对照 Gorilla-T 与 raw-T。
+两个视角共享同一个 `gorilla-t-alp-f64` 结果；每个投影对应三个方法 × 三种输入格式，共 18 个不同槽，不是 24 个。
+[谱系核对](../../results/m3-real-axis-20261120-r2/tv-axis-lineage.json)独立读取封存运行，确认与独立轴任务共用
+行窗、原域列摘要和 `source_group_id`；两份运行不合并，不将固定轴对照误记成 T-only 或 V-only。
+本轮同窗组合没有原生 Gorilla TV 插件；它的单 V 联合输出不能直接与五 V 对象记为同一用例，也不能由派生 T/V 代替。

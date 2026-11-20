@@ -391,35 +391,41 @@ def _slot_dependencies(spec, build, plugins):
     return sorted(paths)
 
 
+def _replay_bundle(run, plan, slot, artifact, work):
+    """Attempt one isolated decode with only this artifact and the selected method's closure."""
+    spec = plan['recovery']
+    _, _, cols, profiles = _fields(plan,slot)
+    mounted = _slot_dependencies(spec,plan['build'],{r['plugin'] for r in profiles})
+    argv = [BWRAP,'--unshare-net','--unshare-pid','--unshare-ipc','--die-with-parent','--clearenv','--cap-drop','ALL']
+    for path in mounted:
+        argv += ['--ro-bind',str((run/DIRECTORY/path).resolve(strict=True)),'/recovery/'+path]
+    outputs = work/'out'; outputs.mkdir()
+    argv += ['--ro-bind',str(artifact),'/input.tvb','--bind',str(outputs),'/out','--chdir','/out','--',
+             '/recovery/'+spec['loader'],'--inhibit-cache','--library-path','/recovery/lib']
+    argv += _args(plan,slot,'decode','/input.tvb','/out/schema.json',[f'/out/column-{i}.bin' for i in range(cols)],
+                  '/recovery/'+spec['worker'],{k:'/recovery/'+v for k,v in spec['plugins'].items()})
+    try:
+        with (work/'stdout').open('wb') as out, (work/'stderr').open('wb') as err:
+            r = subprocess.run(argv,env={},stdin=subprocess.DEVNULL,stdout=out,stderr=err,check=False,timeout=plan['suite']['timeout_seconds'])
+    except subprocess.TimeoutExpired as exc:
+        raise ContractError('isolated TV restore deadline exceeded') from exc
+    return r.returncode, mounted
+
+
 def restore_tv(run: Path) -> dict:
     plan,seal,runtime,rows,_ = _read_report(run)
     require(runtime['ready'],'run has no sealed recovery closure')
-    spec = plan['recovery']
     results = []
     for slot in (r for r in rows if r['status']=='verified'):
-        _, _, cols, profiles = _fields(plan,slot)
-        keep = {r['plugin'] for r in profiles}
-        mounted = _slot_dependencies(spec,plan['build'],keep)
-        argv = [BWRAP,'--unshare-net','--unshare-pid','--unshare-ipc','--die-with-parent','--clearenv','--cap-drop','ALL']
-        for path in mounted:
-            argv += ['--ro-bind',str((run/DIRECTORY/path).resolve(strict=True)),'/recovery/'+path]
         artifact = verify_asset(run,slot['artifact'])
         with tempfile.TemporaryDirectory(prefix='tv-audit-') as temp:
-            work = Path(temp); outputs = work/'out'; outputs.mkdir()
-            argv += ['--ro-bind',str(artifact),'/input.tvb','--bind',str(outputs),'/out','--chdir','/out','--',
-                     '/recovery/'+spec['loader'],'--inhibit-cache','--library-path','/recovery/lib']
-            argv += _args(plan,slot,'decode','/input.tvb','/out/schema.json',[f'/out/column-{i}.bin' for i in range(cols)],
-                          '/recovery/'+spec['worker'],{k:'/recovery/'+v for k,v in spec['plugins'].items()})
-            try:
-                with (work/'stdout').open('wb') as out, (work/'stderr').open('wb') as err:
-                    r = subprocess.run(argv,env={},stdin=subprocess.DEVNULL,stdout=out,stderr=err,check=False,timeout=plan['suite']['timeout_seconds'])
-            except subprocess.TimeoutExpired as exc:
-                raise ContractError('isolated TV restore deadline exceeded') from exc
-            require(r.returncode==0,'isolated TV restore failed: '+_diagnostic(work/'stderr'))
+            work = Path(temp)
+            returncode,mounted = _replay_bundle(run,plan,slot,artifact,work)
+            require(returncode==0,'isolated TV restore failed: '+_diagnostic(work/'stderr'))
             require(_facts(work/'stdout',slot['accounting'],plan['cases'][slot['case']],'decode')==slot['execution']['decode'],
                     'isolated TV restore actual operation changed')
             results.append({'slot_id':slot['slot_id'],'artifact':slot['artifact'],'mounted_decoder_files':mounted,
-                            **_restored(outputs,plan,slot)})
+                            **_restored(work/'out',plan,slot)})
     require(results,'no verified TV object to restore')
     return {'schema':'bmk.dev-tv-restore/1','run_id':seal['run_id'],'seal_id':seal['seal_id'],'restored_slots':len(results),
             'isolation':'files_only_bubblewrap','slots':results,'qualification_granted':False}

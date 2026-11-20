@@ -14,7 +14,8 @@ from ..recovery import check_recovery, plan_recovery
 from ..runtime import resolve_worker
 from ..supervisor.resource import resource_binding
 from .corpus_windows import bind_window, read_window
-from .measurement import PROFILE, TIMED_SUITE, process_binding, timed
+from .full_corpus_windows import bind_full_column, read_full_column
+from .measurement import FULL_CORPUS_SUITE, PROFILE, TIMED_SUITE, process_binding, timed
 from .smoke_comparison import bind_stage_comparisons
 from . import smoke_isolation as isolation
 
@@ -23,7 +24,7 @@ PROTOCOL = "bmk.dev-lossless-plan/2"
 DEV_SUITE = "dev_lossless_smoke_v1"
 STAGE_SUITE = "m1_lossless_candidate_v1"
 FORMAL_SUITE = "m1_lossless_formal_v1"
-STAGE_SUITES = frozenset({STAGE_SUITE, TIMED_SUITE, isolation.SUITE, FORMAL_SUITE})
+STAGE_SUITES = frozenset({STAGE_SUITE, TIMED_SUITE, isolation.SUITE, FORMAL_SUITE, FULL_CORPUS_SUITE})
 STAGE_PROTOCOL = "bmk.lossless-stage-plan/1"
 STAGE_PURPOSE = "m1_candidate_preflight"
 FORMAL_PURPOSE = "m1_formal_execution"
@@ -38,6 +39,8 @@ NPY_LIMIT = 64 * 1024 + 2048
 class SmokePlanRequest:
     build_lock: str
     suite: str = DEV_SUITE
+    input_config: str | None = None
+    native_definition: str | None = None
 
 
 def sha(data: bytes) -> str:
@@ -69,13 +72,29 @@ def fixture(root: Path, ref: dict) -> tuple[int, bytes]:
     return shape[0], content[end:]
 
 
-def _suite(root: Path, suite_id: str = DEV_SUITE) -> dict:
+def stage_suite_schema(suite: dict) -> str:
+    return "m1-full-corpus-suite" if suite["id"] == FULL_CORPUS_SUITE else "lossless-stage-suite"
+
+
+def _suite(root: Path, suite_id: str = DEV_SUITE, input_config: str | None = None) -> dict:
     require(type(suite_id) is str and re.fullmatch(r"[a-z0-9][a-z0-9_-]{0,79}", suite_id),
             f"invalid lossless suite ID: {suite_id!r}")
     path = f"configs/suites/{suite_id}/suite.json"
     suite = load_json(local_file(root, path))
+    require(input_config is None or suite_id == FULL_CORPUS_SUITE,
+            "only the full-corpus preflight suite accepts --input-config")
+    if suite_id == FULL_CORPUS_SUITE:
+        config = suite['input_config'] if input_config is None else input_config
+        requested = load_json(local_file(root, config))
+        require(isinstance(requested, dict) and requested.keys() == {'schema', 'manifest', 'cases'}
+                and requested['schema'] == 'bmk.m1-full-corpus-input-request/1'
+                and isinstance(requested['cases'], list), 'invalid M1 full-corpus input request')
+        cases = requested['cases']
+        suite = {**suite, 'input_config': config, 'corpus_manifest': requested['manifest'], 'cases': cases,
+                 'expected': {'cases': len(cases), 'methods': 3, 'slots': 3 * len(cases)}}
+        require(suite.get('id') == suite_id, 'M1 full-corpus template suite identity differs')
     if suite_id in STAGE_SUITES:
-        load_contract(root, "lossless-stage-suite").validate(suite, path)
+        load_contract(root, stage_suite_schema(suite)).validate(suite, path)
         _stage_denominator(suite)
     else:
         _development_suite(suite, suite_id)
@@ -123,15 +142,30 @@ def read_input(root: Path, source: dict) -> tuple[int, bytes]:
         return fixture(root, source["asset"])
     if kind == "empty_f64":
         return 0, b""
+    if kind == "full_corpus_column":
+        raw = read_full_column(root, source["window"])
+        return len(raw) // 8, raw
     require(kind == "corpus_window", "unknown input kind")
     raw = read_window(root, source["window"])
     return len(raw) // 8, raw
 
 
-def _input(root: Path, source: dict) -> dict:
-    n, raw = read_input(root, source)
+def _input(root: Path, source: dict, materialized: bytes | None = None) -> dict:
+    n, raw = read_input(root, source) if materialized is None else (len(materialized) // 8, materialized)
     return {**source, "count": n, "bytes": len(raw), "raw_sha256": sha(raw),
             "schema_sha256": sha(input_schema(n)), "dtype": DTYPE}
+
+
+def _full_corpus_case(root: Path, suite: dict, spec: dict, manifest_id: str) -> dict:
+    window, raw = bind_full_column(root, suite["corpus_manifest"], dataset=spec["dataset"], column=spec["column"],
+                                   offset=spec["offset"], count=spec["count"])
+    require(window["manifest_id"] == manifest_id, "full-corpus manifest changed while freezing input")
+    return _input(root, {"kind": "full_corpus_column", "window": window}, raw)
+
+
+def _full_corpus_engine(root: Path) -> dict:
+    return {path: digest(local_file(root, path)) for path in ('schemas/full-corpus.schema.json',
+                 'src/tsbench/corpus_ingress.py', 'src/tsbench/planner/full_corpus_windows.py')}
 
 
 def _estimates(suite, inputs, recovery=None):
@@ -152,9 +186,20 @@ def verify_stage_bindings(root: Path, plan: dict) -> None:
     """Reject a stale binding before launch; missing binary/input is still a ledger outcome."""
     suite = plan["suite"]
     docs = {key: load_json(local_file(root, suite[key])) for key in ("fixture_manifest", "corpus_manifest", "direct_control")}
-    binding = {"suite_schema": load_contract(root, "lossless-stage-suite").document_id,
+    binding = {"suite_schema": load_contract(root, stage_suite_schema(suite)).document_id,
                "fixture_manifest": content_id(docs["fixture_manifest"]), "corpus": content_id(docs["corpus_manifest"]),
                "direct_control": content_id(docs["direct_control"])}
+    if suite["id"] == FULL_CORPUS_SUITE:
+        binding["full_corpus_engine"] = _full_corpus_engine(root)
+        if "native_corpus_definition" in plan["contract_bindings"]:
+            from .native_corpus import verify_native_corpus_plan
+            ref = plan["contract_bindings"]["native_corpus_definition"]
+            native = load_json(local_file(root, ref["path"]))
+            require(digest(local_file(root, ref["path"])) == ref["sha256"] and
+                    native["plan_content_id"] == ref["plan_content_id"] and
+                    verify_native_corpus_plan(root, native)["definition_verified"],
+                    "bound native corpus definition changed or failed rederivation")
+            binding["native_corpus_definition"] = ref
     if suite["id"] == FORMAL_SUITE:
         receipt = load_json(local_file(root, suite["m0_receipt"]))
         require(receipt.get("stage_accepted") is True and receipt.get("qualification_granted") is False,
@@ -179,12 +224,17 @@ def verify_stage_bindings(root: Path, plan: dict) -> None:
         if spec["kind"] == "corpus_window":
             window = bind_window(root, suite["corpus_manifest"], binding["corpus"], spec)
             require(actual["window"] == window, f"stage window binding differs: {case['id']}")
+        elif spec["kind"] == "full_corpus_column":
+            window = actual["window"]
+            require(window["manifest"] == suite["corpus_manifest"] and window["manifest_id"] == binding["corpus"] and
+                    all(window[name] == spec[name] for name in ('dataset', 'column', 'offset', 'count')),
+                    f"stage full-corpus selection differs: {case['id']}")
         elif spec["kind"] == "fixture":
             require(actual["asset"] == docs["fixture_manifest"]["files"][spec["name"]], f"stage fixture differs: {case['id']}")
 
 
 def plan_smoke(root: Path, request: SmokePlanRequest) -> dict:
-    suite = _suite(root, request.suite)
+    suite = _suite(root, request.suite, request.input_config)
     registry = discover(root, selected={method["plugin"] for method in suite["methods"]})
     for method in suite["methods"]:
         name = method["plugin"]
@@ -201,7 +251,19 @@ def plan_smoke(root: Path, request: SmokePlanRequest) -> dict:
     stage = request.suite in STAGE_SUITES
     extra = {}
     if stage:
-        corpus = check_corpus(root, suite["corpus_manifest"])
+        if request.native_definition is not None:
+            require(request.suite == FULL_CORPUS_SUITE,
+                    'native definition binding is only supported for the full-corpus M1 preflight')
+            from .native_corpus import verify_native_corpus_plan
+            native_definition = load_json(local_file(root, request.native_definition))
+            native_receipt = verify_native_corpus_plan(root, native_definition)
+            require(native_receipt['definition_verified'] and native_receipt['runnable'] is False and
+                    native_receipt['stage_accepted'] is False,
+                    'M1 may bind only an unaccepted, fully rederived native definition')
+        else:
+            native_definition = None
+        corpus = ({"corpus_id": content_id(load_json(local_file(root, suite['corpus_manifest'])))}
+                  if request.suite == FULL_CORPUS_SUITE else check_corpus(root, suite["corpus_manifest"]))
         controls = load_json(local_file(root, suite["direct_control"]))
         require(controls["schema"] == "bmk.direct-control/1" and
                 all(m["plugin"] in controls["cases"] for m in suite["methods"]), "direct-control plan lacks candidate methods")
@@ -213,10 +275,25 @@ def plan_smoke(root: Path, request: SmokePlanRequest) -> dict:
                 source["asset"] = manifest["files"][spec["name"]]
             elif spec["kind"] == "corpus_window":
                 source["window"] = bind_window(root, suite["corpus_manifest"], corpus["corpus_id"], spec)
-            inputs[case["id"]] = _input(root, source)
-        extra = {"contract_bindings": {"suite_schema": load_contract(root, "lossless-stage-suite").document_id,
+            if spec["kind"] == "full_corpus_column":
+                inputs[case["id"]] = _full_corpus_case(root, suite, spec, corpus["corpus_id"])
+            else:
+                inputs[case["id"]] = _input(root, source)
+        extra = {"contract_bindings": {"suite_schema": load_contract(root, stage_suite_schema(suite)).document_id,
                                        "corpus": corpus["corpus_id"], "fixture_manifest": content_id(manifest),
                                        "direct_control": content_id(controls)}, "estimates": _estimates(suite, inputs)}
+        if request.suite == FULL_CORPUS_SUITE:
+            extra['contract_bindings']['full_corpus_engine'] = _full_corpus_engine(root)
+            if native_definition is not None:
+                extra['contract_bindings']['native_corpus_definition'] = {
+                    'path': request.native_definition,
+                    'sha256': digest(local_file(root, request.native_definition)),
+                    'plan_content_id': native_definition['plan_content_id'],
+                    'coverage': native_definition['coverage'],
+                }
+            require(len({i['window']['source_file']['sha256'] for i in inputs.values()}) >= 2 and
+                    len({i['raw_sha256'] for i in inputs.values()}) >= 2,
+                    'full-corpus M1 preflight requires at least two distinct original files and decoded inputs')
         if request.suite == FORMAL_SUITE:
             receipt = load_json(local_file(root, suite["m0_receipt"]))
             require(receipt.get("schema") == "bmk.m0-stage-receipt/1" and receipt.get("stage_accepted") is True
@@ -254,7 +331,7 @@ def plan_smoke(root: Path, request: SmokePlanRequest) -> dict:
     return {**body, "plan_content_id": content_id(body)}
 
 
-def check_plan(plan: dict, suite: dict | None = None) -> None:
+def check_plan(plan: dict, suite: dict | None = None, root: Path | None = None) -> None:
     require(isinstance(plan, dict), "not a lossless plan")
     stage = plan.get("schema") == STAGE_PROTOCOL
     common = {"schema", "purpose", "suite", "build", "inputs", "methods", "qualification_granted", "scope_id", "slots",
@@ -286,6 +363,30 @@ def check_plan(plan: dict, suite: dict | None = None) -> None:
             require(src["kind"] == case["input"]["kind"] and src["dtype"] == DTYPE and
                     type(src["count"]) is int and 0 <= src["count"] <= 8192 and src["bytes"] == src["count"] * 8,
                     f"invalid stage input binding: {case['id']}")
+        if plan['suite']['id'] == FULL_CORPUS_SUITE:
+            require(len({src['window']['source_file']['sha256'] for src in plan['inputs'].values()}) >= 2 and
+                    len({src['raw_sha256'] for src in plan['inputs'].values()}) >= 2 and
+                    all(src['window']['count'] == src['count'] and src['window']['raw_sha256'] == src['raw_sha256'] and
+                        src['window']['partition'] == 'test' for src in plan['inputs'].values()),
+                    'full-corpus input identities or extents differ')
+            if 'native_corpus_definition' in bindings:
+                ref = bindings['native_corpus_definition']
+                require(isinstance(ref, dict) and ref.keys() == {'path','sha256','plan_content_id','coverage'} and
+                        isinstance(ref['path'], str) and re.fullmatch(r'[a-f0-9]{64}', ref['sha256']) and
+                        re.fullmatch(r'[a-f0-9]{64}', ref['plan_content_id']) and
+                        ref['coverage'] == {'datasets':23,'routes':36,'selections':12,'file_route_decisions':828,
+                                             'decision_states': {'condition_not_triggered':30,'input_domain_matches':724,
+                                                                 'outside_declared_domain':74},
+                                             'required_obligations':180,'conditional_obligations':6,'executed':0,'qualified':0,
+                                             'selections_with_input_domain_match':12},
+                        'invalid native corpus definition binding')
+                if root is not None:
+                    from .native_corpus import verify_native_corpus_plan
+                    native = load_json(local_file(root, ref['path']))
+                    require(digest(local_file(root, ref['path'])) == ref['sha256'] and
+                            native['plan_content_id'] == ref['plan_content_id'] and
+                            verify_native_corpus_plan(root, native)['definition_verified'],
+                            'bound native corpus definition changed or failed rederivation')
         for decl in methods:
             method = plan["methods"][decl["plugin"]]
             require(method["plugin"] == decl["plugin"] and method["role"] == decl["role"], "invalid stage method binding")

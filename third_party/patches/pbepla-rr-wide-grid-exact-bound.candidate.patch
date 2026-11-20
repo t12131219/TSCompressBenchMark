@@ -1,0 +1,221 @@
+--- a/core/pbepla_rr/pbepla_rr.cpp
++++ b/core/pbepla_rr/pbepla_rr.cpp
+@@ -21,8 +21,13 @@
+ namespace {
+ 
+ constexpr unsigned kMaxLayers = 16;
+-constexpr unsigned kContainerVersion = 1;
+-constexpr unsigned kMaxResolution = 30;
++constexpr std::uint8_t kLegacyContainerVersion = 1;
++constexpr std::uint8_t kWideContainerVersion = 2;
++constexpr unsigned kLegacyResolution = 30;
++
++std::uint8_t frame_version(unsigned maximum_resolution) noexcept {
++    return maximum_resolution > kLegacyResolution ? kWideContainerVersion : kLegacyContainerVersion;
++}
+ constexpr std::uint64_t kMaxDelay = 65536;
+ constexpr double kShrinkFactor = 1.0 - 1e-3;
+ constexpr int kMaxShrinkAttempts = 40;
+@@ -39,6 +44,22 @@
+ }
+ [[noreturn]] void corrupt(const std::string& message) {
+     throw std::runtime_error("pbepla_rr: " + message);
++}
++
++// Bounds and input values are binary64. A rounded subtraction can only
++// misclassify a tie with a representable positive bound. On that tie, use
++// FastTwoSum on x + (-y), with the greater magnitude as the first addend.
++// The residual is exact under round-to-nearest with strict binary64 ops.
++// A residual with the same sign as delta makes the exact magnitude larger.
++bool within_exact_error(double x, double y, double limit) noexcept {
++    const double delta = x - y;
++    const double magnitude = std::fabs(delta);
++    if (magnitude != limit) return magnitude < limit;
++    double a = x;
++    double b = -y;
++    if (std::fabs(a) < std::fabs(b)) std::swap(a, b);
++    const double correction = b - (delta - a);
++    return delta > 0.0 ? correction <= 0.0 : correction >= 0.0;
+ }
+ 
+ // Header layout (engineering decision D8, see docs/pbepla_rr/paper_mapping.md):
+@@ -140,7 +161,7 @@
+         invalid("resolutions must be empty or match the number of error bounds");
+     }
+     for (unsigned resolution : params.resolutions) {
+-        if (resolution > kMaxResolution) invalid("resolution exceeds 30 bits");
++        if (resolution > kMaxGridResolution) invalid("resolution exceeds 52-bit candidate limit");
+     }
+     if (params.max_delay == 0 || params.max_delay > kMaxDelay) {
+         invalid("max_delay must be in [1, 65536]");
+@@ -163,7 +184,7 @@
+     out.push_back('B');
+     out.push_back('E');
+     out.push_back('P');
+-    out.push_back(static_cast<uint8_t>(kContainerVersion));
++    out.push_back(kLegacyContainerVersion);
+     out.push_back(static_cast<uint8_t>(container_flags(params)));
+     out.push_back(static_cast<uint8_t>(k));
+     out.push_back(static_cast<uint8_t>(k));
+@@ -178,6 +199,7 @@
+                            params.source_min.value_or(-1.0), params.source_max.value_or(1.0),
+                            params.resolutions);
+         out.push_back(static_cast<uint8_t>(geometry.resolution));
++        out[4] = std::max(out[4], frame_version(geometry.resolution));
+     }
+     for (std::size_t i = 0; i < k; ++i) tsbits::put_le(out, 0, 8);
+     tsbits::put_le(out, tsbits::crc32(nullptr, 0), 4);
+@@ -283,8 +305,7 @@
+                 }
+                 const double sum = cumulative[tick] + scratch[tick];
+                 const double decoded = sum + (params.symmetric_band ? 0.0 : attempt_eps);
+-                inside = inside && std::isfinite(decoded) &&
+-                         std::fabs(values[tick] - decoded) <= attempt_eps;
++                inside = inside && within_exact_error(values[tick], decoded, attempt_eps);
+                 if (!params.symmetric_band) {
+                     const double remaining = values[tick] - sum;
+                     inside = inside && remaining >= 0.0 && remaining <= 2.0 * attempt_eps;
+@@ -346,7 +367,7 @@
+     header.push_back('B');
+     header.push_back('E');
+     header.push_back('P');
+-    header.push_back(static_cast<std::uint8_t>(kContainerVersion));
++    header.push_back(kLegacyContainerVersion);
+     header.push_back(static_cast<std::uint8_t>(container_flags(params)));
+     header.push_back(static_cast<std::uint8_t>(k));
+     header.push_back(static_cast<std::uint8_t>(k));
+@@ -357,6 +378,7 @@
+     for (double eps : effective) put_double(header, eps);
+     for (const auto& geometry : geometries) {
+         header.push_back(static_cast<std::uint8_t>(geometry.resolution));
++        header[4] = std::max(header[4], frame_version(geometry.resolution));
+     }
+     for (std::uint64_t bits : payload_bits) tsbits::put_le(header, bits, 8);
+ 
+@@ -427,7 +449,9 @@
+     info.flags = data[5];
+     info.layer_count = data[6];
+     info.layer_present = data[7];
+-    if (info.version != kContainerVersion) corrupt("unsupported container version");
++    if (info.version != kLegacyContainerVersion && info.version != kWideContainerVersion) {
++        corrupt("unsupported container version");
++    }
+     if ((info.flags & ~kKnownFlags) != 0) corrupt("reserved flag bits are not zero");
+     if (info.layer_count == 0 || info.layer_count > kMaxLayers) corrupt("layer count out of range");
+     if (info.layer_present == 0 || info.layer_present > info.layer_count) {
+@@ -463,11 +487,15 @@
+         }
+         info.error_bounds[i] = eps;
+     }
++    const unsigned limit = info.version == kLegacyContainerVersion ? kLegacyResolution : kMaxGridResolution;
++    unsigned maximum_resolution = 0;
+     for (std::size_t i = 0; i < k; ++i) {
+         const unsigned resolution = data[kFixedHeader + 8 * k + i];
+-        if (resolution > kMaxResolution) corrupt("resolution out of range");
++        if (resolution > limit) corrupt("resolution out of range");
++        maximum_resolution = std::max(maximum_resolution, resolution);
+         info.resolutions[i] = resolution;
+     }
++    if (info.version != frame_version(maximum_resolution)) corrupt("noncanonical container version");
+     const std::size_t bits_offset = kFixedHeader + 9 * k;
+     std::uint64_t total_bits = 0;
+     for (std::size_t i = 0; i < m; ++i) {
+@@ -597,7 +625,7 @@
+         const double offset = info.symmetric_band ? 0.0 : info.error_bounds[i];
+         for (std::size_t t = 0; t < n; ++t) {
+             const double decoded = cumulative[t] + offset;
+-            if (!std::isfinite(decoded) || std::fabs(original[t] - decoded) > info.error_bounds[i]) {
++            if (!within_exact_error(original[t], decoded, info.error_bounds[i])) {
+                 throw std::runtime_error("pbepla_rr: serialized version " +
+                     std::to_string(i + 1) + " exceeds its error bound");
+             }
+@@ -850,7 +878,7 @@
+             if (params.symmetric_band) inside = inside && value >= residual - eps && value <= residual + eps;
+             else inside = inside && value <= residual && value >= residual - 2.0 * eps &&
+                           sample.original - sum >= 0 && sample.original - sum <= 2.0 * eps;
+-            if (!inside || !std::isfinite(decoded) || std::fabs(sample.original - decoded) > eps)
++            if (!inside || !within_exact_error(sample.original, decoded, eps))
+                 throw std::runtime_error("pbepla_rr: streaming band violation");
+         }
+         const unsigned length = span_field_bits(params.max_delay, params.mode);
+@@ -997,7 +1025,7 @@
+         for (std::size_t i = 0; i < k; ++i) {
+             sum += cursors[i].at(t);
+             const double decoded = sum + (params.symmetric_band ? 0.0 : effective[i]);
+-            if (!std::isfinite(decoded) || std::fabs(original - decoded) > effective[i])
++            if (!within_exact_error(original, decoded, effective[i]))
+                 corrupt("serialized streaming version exceeds its error bound");
+         }
+     });
+@@ -1015,12 +1043,15 @@
+             }
+         }
+     }
+-    std::vector<std::uint8_t> header{'P', 'B', 'E', 'P', kContainerVersion,
++    std::vector<std::uint8_t> header{'P', 'B', 'E', 'P', kLegacyContainerVersion,
+         static_cast<std::uint8_t>(container_flags(params)), static_cast<std::uint8_t>(k), static_cast<std::uint8_t>(k)};
+     tsbits::put_le(header, measured.value_count, 8); tsbits::put_le(header, params.max_delay, 4);
+     put_double(header, geometries[0].grid_min); put_double(header, geometries[0].grid_max);
+     for (double e : effective) put_double(header, e);
+-    for (const auto& g : geometries) header.push_back(static_cast<std::uint8_t>(g.resolution));
++    for (const auto& g : geometries) {
++        header.push_back(static_cast<std::uint8_t>(g.resolution));
++        header[4] = std::max(header[4], frame_version(g.resolution));
++    }
+     for (const auto& layer : pipeline) tsbits::put_le(header, layer->writer.bits, 8);
+     tsbits::put_le(header, payload_crc ^ 0xffffffffU, 4);
+     tsbits::put_le(header, tsbits::crc32(header.data(), header.size()), 4);
+--- a/core/pbepla_rr/rr_grid.cpp
++++ b/core/pbepla_rr/rr_grid.cpp
+@@ -9,11 +9,6 @@
+ namespace pbepla_rr {
+ namespace {
+ 
+-// Hard cap on the resolution.  The container stores r in one byte and the
+-// spec caps it at 30; anything above means the caller asked for a block finer
+-// than any paper scenario needs.
+-constexpr unsigned kMaxResolution = 30;
+-
+ [[noreturn]] void fail(const std::string& message) {
+     throw std::runtime_error("RrGrid: " + message);
+ }
+@@ -24,8 +19,8 @@
+     if (!std::isfinite(gmin) || !std::isfinite(gmax) || !(gmin < gmax)) {
+         fail("grid range must be finite with gmin < gmax");
+     }
+-    if (resolution > kMaxResolution) {
+-        fail("resolution exceeds 30 bits");
++    if (resolution > kMaxGridResolution) {
++        fail("resolution exceeds 52-bit candidate limit");
+     }
+     gmin_ = gmin;
+     gmax_ = gmax;
+@@ -97,13 +92,13 @@
+         fail("band width must be a positive finite number");
+     }
+     const double target = band_width;
+-    for (unsigned r = 0; r <= kMaxResolution; ++r) {
++    for (unsigned r = 0; r <= kMaxGridResolution; ++r) {
+         const double width = std::ldexp(range, -static_cast<int>(r));
+         if (width <= target) {
+             return r;
+         }
+     }
+-    fail("no resolution up to 30 bits gives a block narrow enough");
++    fail("no resolution up to 52 bits gives a block narrow enough");
+ }
+ 
+ }  // namespace pbepla_rr
+--- a/core/pbepla_rr/rr_grid.h
++++ b/core/pbepla_rr/rr_grid.h
+@@ -29,6 +29,10 @@
+     // the 2019 paper.
+     double center_offset() const noexcept { return (upper - lower) * 0.5; }
+ };
++
++// Up to 52 bits keeps every index + 0.5 exactly representable in binary64.
++// This limits index precision, not the error of the affine grid itself.
++inline constexpr unsigned kMaxGridResolution = 52;
+ 
+ class RrGrid {
+ public:

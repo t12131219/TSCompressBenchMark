@@ -1,0 +1,77 @@
+--- pages_control.cpp
++++ pages_control.cpp
+@@ -269,10 +269,9 @@
+     }
+ };
+ 
+-template<class Api>
+-void corpus_encode(const char *input, const char *output) {
+-    const auto raw = load(input,corpus_rows*width);
+-    check(!raw.empty() && raw.size()%width==0,"real corpus page input extent");
++template<class Api, class Sink>
++void corpus_encode_bytes(const Bytes &raw, Sink &&sink) {
++    check(!raw.empty() && raw.size()<=corpus_rows*width && raw.size()%width==0,"real corpus page input extent");
+     std::vector<uint64_t> aligned(raw.size()/width);
+     std::memcpy(aligned.data(),raw.data(),raw.size());
+     std::vector<size_t> sizes;
+@@ -309,16 +308,16 @@
+     }
+     frame.insert(frame.end(),meta.begin(),meta.end());
+     for (const auto &page : pages) frame.insert(frame.end(),page.begin(),page.end());
+-    save(output,frame);
++    sink(frame);
+     std::printf(",\"rows\":%zu,\"pages\":%zu,\"meta_bytes\":%zu,\"payload_bytes\":%zu,\"container_bytes\":%zu,\"zero_payload_pages\":%zu,\"state\":",
+                 aligned.size(),pages.size(),meta.size(),payload,frame.size()-meta.size()-payload,empty_pages);
+     state_json(state); std::puts("}");
+ }
+ 
+-template<class Api>
+-void corpus_decode(const char *input, const char *output) {
+-    const auto frame = load(input,corpus_max_frame);
+-    check(frame.size()>=16 && std::memcmp(frame.data(),"PM3PAGE1",8)==0,"invalid page envelope");
++template<class Api, class Sink>
++void corpus_decode_bytes(const Bytes &frame, Sink &&sink) {
++    check(frame.size()>=16 && frame.size()<=corpus_max_frame &&
++          std::memcmp(frame.data(),"PM3PAGE1",8)==0,"invalid page envelope");
+     size_t pos = 8;
+     const size_t n = read_u32(frame,pos), meta_size = read_u32(frame,pos);
+     check(n && n<=corpus_pages && meta_size>=2 && meta_size<=max_meta,"page envelope bounds");
+@@ -361,15 +360,17 @@
+     }
+     std::putchar('{'); timer.print();
+     check(pos==frame.size(),"trailing bytes in page envelope");
+-    save(output,raw);
++    sink(raw);
+     std::printf(",\"rows\":%zu,\"pages\":%zu,\"read_calls\":%zu,\"request_values\":%zu,"
+                 "\"unaligned_request_status\":%d,\"effective_read_capacity\":%zu,\"zero_payload_pages\":%zu}\n",
+                 raw.size()/width,n,read_calls,requested_read,PC_INVALID,capacity,empty_pages);
+ }
+ 
++#ifndef TSBENCH_PCODEC_GROUPED
++// Keep the historical standalone controls and timing boundaries unchanged.
+ template<class Api> int run(std::string_view op, int argc, char **argv) {
+-    if (op == "corpus-encode" && argc == 5) corpus_encode<Api>(argv[3],argv[4]);
+-    else if (op == "corpus-decode" && argc == 5) corpus_decode<Api>(argv[3],argv[4]);
++    if (op == "corpus-encode" && argc == 5) corpus_encode_bytes<Api>(load(argv[3],corpus_rows*width),[&](const Bytes &wire){ save(argv[4],wire); });
++    else if (op == "corpus-decode" && argc == 5) corpus_decode_bytes<Api>(load(argv[3],corpus_max_frame),[&](const Bytes &raw){ save(argv[4],raw); });
+     else if (op == "encode" && argc == 4) encode<Api>(argv[3]);
+     else if (op == "decode" && argc == 6 && (std::string_view(argv[3]) == "0" || std::string_view(argv[3]) == "1"))
+         decode<Api>(size_t(argv[3][0]-'0'),argv[4],argv[5]);
+@@ -378,8 +379,10 @@
+     else return 2;
+     return std::fflush(stdout) == 0 && !std::ferror(stdout) ? 0 : 3;
+ }
+-}
+-
++#endif
++}
++
++#ifndef TSBENCH_PCODEC_GROUPED
+ int main(int argc, char **argv) {
+     if (argc < 2 || !pc_source_backend_available()) return 2;
+     try {
+@@ -392,3 +395,4 @@
+     } catch (const std::exception &e) { std::fprintf(stderr,"pcodec wrapped page control: %s\n",e.what()); return 1; }
+     return 2;
+ }
++#endif

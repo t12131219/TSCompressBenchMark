@@ -1,0 +1,31 @@
+cmake_minimum_required(VERSION 3.22)
+project(tsbench_zfp_field_grouped LANGUAGES CXX)
+set(TSBENCH_FROZEN_ZFP "" CACHE PATH "Directory of the r40 frozen ZFP library and source header")
+if(NOT IS_DIRECTORY "${TSBENCH_FROZEN_ZFP}")
+  message(FATAL_ERROR "Set TSBENCH_FROZEN_ZFP to the r40 frozen codec directory")
+endif()
+set(includes "${TSBENCH_FROZEN_ZFP}/source/zfp-native/include")
+set(lib "${TSBENCH_FROZEN_ZFP}/libzfp_native_c.so")
+file(SHA256 "${lib}" library_hash)
+file(SHA256 "${includes}/zfp_native.h" header_hash)
+if(NOT library_hash STREQUAL "8188634c0f3d360d27b21d60d54cbf658560e2c06e1e10afc6190a35d4981217" OR
+   NOT header_hash STREQUAL "a702beb75462ac64772339455d8041302e634edb88c2f9aa2bebf07b5a9b832b")
+  message(FATAL_ERROR "The grouped ZFP field harness requires the frozen r40 C11 library and header")
+endif()
+add_library(zfp_frozen SHARED IMPORTED)
+set_target_properties(zfp_frozen PROPERTIES IMPORTED_LOCATION "${lib}")
+add_executable(tsbench_zfp_field_grouped main.cpp)
+target_compile_features(tsbench_zfp_field_grouped PRIVATE cxx_std_17)
+target_include_directories(tsbench_zfp_field_grouped PRIVATE "${includes}")
+target_link_libraries(tsbench_zfp_field_grouped PRIVATE zfp_frozen)
+set_target_properties(tsbench_zfp_field_grouped PROPERTIES CXX_EXTENSIONS NO BUILD_WITH_INSTALL_RPATH YES INSTALL_RPATH "$ORIGIN")
+
+# Build TID interposition as a distinct non-timing tool with no hooks in the
+# normal executable. Both tools resolve the same frozen libzfp_native_c.so.
+add_executable(tsbench_zfp_field_observer main.cpp observe.cpp)
+target_compile_features(tsbench_zfp_field_observer PRIVATE cxx_std_17)
+target_compile_definitions(tsbench_zfp_field_observer PRIVATE TSBENCH_ZFP_GROUPED_OBSERVE)
+target_include_directories(tsbench_zfp_field_observer PRIVATE "${includes}" "${TSBENCH_FROZEN_ZFP}/source/zfp-native/core/include")
+target_link_libraries(tsbench_zfp_field_observer PRIVATE zfp_frozen ${CMAKE_DL_LIBS})
+set_target_properties(tsbench_zfp_field_observer PROPERTIES CXX_EXTENSIONS NO ENABLE_EXPORTS YES
+  BUILD_WITH_INSTALL_RPATH YES INSTALL_RPATH "$ORIGIN")

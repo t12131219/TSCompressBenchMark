@@ -10,3 +10,8 @@ add_executable(tsbench_corad_training_control EXCLUDE_FROM_ALL training_control.
 target_link_libraries(tsbench_corad_training_control PRIVATE corad_c)
 set_target_properties(tsbench_corad_training_control PROPERTIES C_STANDARD 11 C_STANDARD_REQUIRED YES
   C_EXTENSIONS NO BUILD_RPATH_USE_ORIGIN YES BUILD_RPATH "$ORIGIN")
+
+add_executable(tsbench_corad_corpus_control EXCLUDE_FROM_ALL corpus_control.c)
+target_link_libraries(tsbench_corad_corpus_control PRIVATE corad_c)
+set_target_properties(tsbench_corad_corpus_control PROPERTIES C_STANDARD 11 C_STANDARD_REQUIRED YES
+  C_EXTENSIONS NO BUILD_RPATH_USE_ORIGIN YES BUILD_RPATH "$ORIGIN")

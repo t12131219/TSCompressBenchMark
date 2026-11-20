@@ -1,0 +1,18 @@
+cmake_minimum_required(VERSION 3.22)
+project(tsbench_sprintz_grouped_diagnostic LANGUAGES CXX)
+
+# Link the existing frozen Unique reference; build outside its historic tree.
+get_filename_component(repo "${CMAKE_CURRENT_SOURCE_DIR}/../../.." ABSOLUTE)
+set(TSBENCH_FROZEN_SPRINTZ "" CACHE PATH "Path to frozen Sprintz codec build directory")
+set(headers "${TSBENCH_FROZEN_SPRINTZ}/source/Sprintz-family/include")
+set(lib "${TSBENCH_FROZEN_SPRINTZ}/librepaired_codec.so")
+if(NOT EXISTS "${headers}/sf_codec.hpp" OR NOT EXISTS "${lib}")
+  message(FATAL_ERROR "Set TSBENCH_FROZEN_SPRINTZ to the frozen codec directory")
+endif()
+add_library(sprintz_frozen SHARED IMPORTED)
+set_target_properties(sprintz_frozen PROPERTIES IMPORTED_LOCATION "${lib}")
+add_executable(tsbench_sprintz_grouped "${repo}/plugins/codecs/sprintz-fire/corpus_query_control.cpp")
+target_include_directories(tsbench_sprintz_grouped PRIVATE "${headers}")
+target_link_libraries(tsbench_sprintz_grouped PRIVATE sprintz_frozen)
+target_compile_features(tsbench_sprintz_grouped PRIVATE cxx_std_17)
+set_target_properties(tsbench_sprintz_grouped PROPERTIES CXX_EXTENSIONS NO BUILD_WITH_INSTALL_RPATH YES INSTALL_RPATH "$ORIGIN")

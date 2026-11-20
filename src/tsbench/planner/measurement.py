@@ -10,6 +10,7 @@ PROFILE = "process_frame_preflight"
 SNAPSHOT = "measurement-policy.schema.json"
 TIMED_SUITE = "m1_lossless_candidate_v2"
 FORMAL_TIMED_SUITE = "m1_lossless_formal_v1"
+FULL_CORPUS_SUITE = "m1_lossless_full_corpus_preflight_v1"
 
 
 def measurement_policy(root: Path) -> dict:
@@ -20,7 +21,7 @@ def measurement_policy(root: Path) -> dict:
 
 
 def timed(suite: dict) -> bool:
-    return suite["id"] in {TIMED_SUITE, FORMAL_TIMED_SUITE, ISOLATED_SUITE}
+    return suite["id"] in {TIMED_SUITE, FORMAL_TIMED_SUITE, ISOLATED_SUITE, FULL_CORPUS_SUITE}
 
 
 def process_binding(root: Path) -> dict:

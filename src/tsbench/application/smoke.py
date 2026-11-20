@@ -15,7 +15,7 @@ from ..contracts import Contract, compile_contract, load_contract
 from ..planner import smoke_isolation as isolation
 from ..planner.measurement import PROFILE, SNAPSHOT as MEASUREMENT_SNAPSHOT, comparison_identity, timed
 from ..planner.smoke_comparison import SNAPSHOT as COMPARISON_SNAPSHOT, verify_stage_comparisons
-from ..planner.smoke import STAGE_PROTOCOL, STAGE_PURPOSE, _suite, check_plan, read_input, input_schema, sha, verify_stage_bindings, stage_purpose
+from ..planner.smoke import STAGE_PROTOCOL, STAGE_PURPOSE, _suite, check_plan, read_input, input_schema, sha, verify_stage_bindings, stage_purpose, stage_suite_schema
 from ..recovery import DIRECTORY as RECOVERY_DIR, MANIFEST as RECOVERY_MANIFEST, stage_recovery, verify_recovery_binding
 from ..runtime import resolve_worker
 from ..supervisor.process import invoke
@@ -227,7 +227,7 @@ def _case(root, run, plan, slot, cancelled, contract, tmp, *, capture_usage=Fals
 def run_smoke(root: Path, plan: dict, *, cancelled=lambda: False) -> dict:
     root = root.resolve(strict=True)
     check_plan(plan)
-    check_plan(plan, _suite(root, plan["suite"]["id"]))
+    check_plan(plan, _suite(root, plan["suite"]["id"], plan["suite"].get("input_config")), root)
     stage = plan["schema"] == STAGE_PROTOCOL
     observed = timed(plan["suite"])
     resources = "resource" in plan.get("contract_bindings",{})
@@ -265,7 +265,7 @@ def run_smoke(root: Path, plan: dict, *, cancelled=lambda: False) -> dict:
     write_new(run / "source-build-manifest.json", plan["build"])
     write_new(run / OBSERVATION_SNAPSHOT, contract.document)
     if stage:
-        write_new(run / STAGE_SNAPSHOT, load_contract(root, "lossless-stage-suite").document)
+        write_new(run / STAGE_SNAPSHOT, load_contract(root, stage_suite_schema(plan["suite"])).document)
     if observed:
         write_new(run / MEASUREMENT_SNAPSHOT, load_contract(root, "measurement-policy").document)
         write_new(run / COMPARISON_SNAPSHOT, load_contract(root, "comparison-contract").document)
@@ -383,7 +383,7 @@ def _read_run(root: Path, run_id: str) -> tuple[Path, dict, dict, list, dict]:
     require(meta["kind"] == (stage_purpose(plan["suite"]["id"]) if stage else "development_functional"), "run kind differs from plan")
     if stage:
         require(STAGE_SNAPSHOT in sealed, "stage suite schema unavailable from seal")
-        schema = compile_contract("lossless-stage-suite", load_json(run / STAGE_SNAPSHOT))
+        schema = compile_contract(stage_suite_schema(plan["suite"]), load_json(run / STAGE_SNAPSHOT))
         require(schema.document_id == plan["contract_bindings"]["suite_schema"], "stage suite schema differs from plan")
         schema.validate(plan["suite"], "sealed stage suite")
     observed = timed(plan["suite"])

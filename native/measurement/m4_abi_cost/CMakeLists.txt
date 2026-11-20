@@ -1,0 +1,16 @@
+cmake_minimum_required(VERSION 3.22)
+project(tsbench_m4_abi_cost LANGUAGES CXX)
+get_filename_component(repo "${CMAKE_CURRENT_SOURCE_DIR}/../../.." ABSOLUTE)
+foreach(target IN ITEMS tsbench_m4_abi_cost tsbench_m4_abi_cost_counted)
+  add_executable(${target} main.cpp "${repo}/native/runtime/plugin_loader.cpp")
+  target_include_directories(${target} PRIVATE "${repo}/native/runtime" "${repo}/include")
+  target_link_libraries(${target} PRIVATE ${CMAKE_DL_LIBS})
+  target_compile_features(${target} PRIVATE cxx_std_17)
+  target_compile_options(${target} PRIVATE -Wall -Wextra -Werror)
+  set_target_properties(${target} PROPERTIES CXX_EXTENSIONS NO)
+endforeach()
+# Only wrap references emitted by these executable translation units. The
+# already-built plugin DSOs, stdlib internals and inlined copies are opaque.
+target_compile_definitions(tsbench_m4_abi_cost_counted PRIVATE TSBENCH_COUNT_ABI_CALLSITE=1)
+target_compile_options(tsbench_m4_abi_cost_counted PRIVATE -fno-builtin-memcpy)
+target_link_options(tsbench_m4_abi_cost_counted PRIVATE "LINKER:--wrap=_Znwm" "LINKER:--wrap=memcpy")

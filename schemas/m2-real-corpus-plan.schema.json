@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bmk.m2-real-corpus-plan/1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "target_stage", "stage_accepted", "formal_performance", "predecessors", "input_binding", "timing", "measurement_contract", "plan_content_id"],
+  "properties": {
+    "schema": {"const": "bmk.m2-real-corpus-plan/1"},
+    "target_stage": {"const": "M2"},
+    "stage_accepted": {"const": false},
+    "formal_performance": {"const": false},
+    "predecessors": {"type": "object", "required": ["m0_real_corpus_receipt", "m1_real_corpus_receipt"]},
+    "input_binding": {"type": "object", "required": ["corpus_manifest", "native_definition", "datasets", "routes", "m1_inputs", "m1_slots"]},
+    "timing": {"type": "object", "required": ["plan", "plan_content_id", "planned_batches", "methods", "directions", "verification", "input_context"]},
+    "measurement_contract": {"type": "object", "required": ["cache_cases", "lifecycle", "lanes", "matched_rounds", "calibration", "samples", "scheduler", "repeat_runs", "resource_policy", "numa_policy"]},
+    "plan_content_id": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

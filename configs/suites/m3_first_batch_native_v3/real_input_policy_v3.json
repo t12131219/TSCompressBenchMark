@@ -1,0 +1,544 @@
+{
+  "schema": "bmk.native-corpus-policy/3",
+  "scope": "first_batch_native_v3_definition",
+  "routes": [
+    {
+      "selection": 9,
+      "route": "auto-batch",
+      "view": "f64_columns",
+      "operation": "roundtrip",
+      "partition": "full",
+      "missing": "preserve",
+      "prerequisites": [],
+      "options": {
+        "encode": "auto"
+      },
+      "evidence_contract": "alp-native",
+      "rows_per_unit": 65536
+    },
+    {
+      "selection": 9,
+      "route": "decode-backends",
+      "view": "f64_columns",
+      "operation": "decode_common_frame",
+      "partition": "full",
+      "missing": "preserve",
+      "prerequisites": [],
+      "options": {
+        "decode": [
+          "scalar-unfused",
+          "falp-auto"
+        ],
+        "conditional_dispatch": "see_native_obligations"
+      },
+      "evidence_contract": "alp-native",
+      "rows_per_unit": 65536
+    },
+    {
+      "selection": 11,
+      "route": "source-auto",
+      "view": "f64_columns",
+      "operation": "roundtrip",
+      "partition": "full",
+      "missing": "preserve",
+      "prerequisites": [],
+      "options": {},
+      "evidence_contract": "pcodec-native",
+      "rows_per_unit": 65536
+    },
+    {
+      "selection": 11,
+      "route": "c-native-auto",
+      "view": "f64_columns",
+      "operation": "roundtrip",
+      "partition": "full",
+      "missing": "preserve",
+      "prerequisites": [],
+      "options": {},
+      "evidence_contract": "pcodec-native",
+      "rows_per_unit": 65536
+    },
+    {
+      "selection": 11,
+      "route": "source-pages",
+      "view": "f64_columns",
+      "operation": "complete_page_and_drain",
+      "partition": "full",
+      "missing": "preserve",
+      "prerequisites": [],
+      "options": {
+        "page_values": 4096,
+        "decode_request_values": 257
+      },
+      "evidence_contract": "pcodec-native",
+      "rows_per_unit": 65536
+    },
+    {
+      "selection": 11,
+      "route": "native-pages",
+      "view": "f64_columns",
+      "operation": "complete_page_and_drain",
+      "partition": "full",
+      "missing": "preserve",
+      "prerequisites": [],
+      "options": {
+        "page_values": 4096,
+        "decode_request_values": 257
+      },
+      "evidence_contract": "pcodec-native",
+      "rows_per_unit": 65536
+    },
+    {
+      "selection": 11,
+      "route": "intmult",
+      "view": "native_unsigned_integers_only",
+      "operation": "roundtrip",
+      "partition": "full",
+      "missing": "preserve",
+      "prerequisites": [],
+      "options": {},
+      "evidence_contract": "pcodec-native"
+    },
+    {
+      "selection": 19,
+      "route": "fire-batch",
+      "view": "u16_le_limbs_per_f64_column",
+      "operation": "roundtrip",
+      "partition": "full",
+      "missing": "preserve",
+      "prerequisites": [],
+      "options": {
+        "lanes": 4
+      },
+      "evidence_contract": "sprintz-fire-native",
+      "rows_per_unit": 8192
+    },
+    {
+      "selection": 19,
+      "route": "query",
+      "view": "u16_le_limbs_per_f64_column",
+      "operation": "query_unsigned_channels",
+      "partition": "full",
+      "missing": "preserve",
+      "prerequisites": [],
+      "options": {
+        "lanes": 4,
+        "aggregates": [
+          "count",
+          "sum",
+          "max"
+        ],
+        "semantics": "unsigned_u16_limbs_not_original_f64"
+      },
+      "evidence_contract": "sprintz-fire-native",
+      "rows_per_unit": 8192
+    },
+    {
+      "selection": 85,
+      "route": "batch",
+      "view": "u64_bitcast_per_f64_column",
+      "operation": "roundtrip",
+      "partition": "full",
+      "missing": "preserve",
+      "prerequisites": [],
+      "options": {},
+      "evidence_contract": "titchy-native",
+      "rows_per_unit": 65536
+    },
+    {
+      "selection": 85,
+      "route": "packet-stream",
+      "view": "u64_bitcast_per_f64_column",
+      "operation": "push_backpressure_finish_reset",
+      "partition": "full",
+      "missing": "preserve",
+      "prerequisites": [],
+      "options": {},
+      "evidence_contract": "titchy-native"
+    },
+    {
+      "selection": 85,
+      "route": "loaded-file-access",
+      "view": "u64_bitcast_per_f64_column",
+      "operation": "point_bit_range",
+      "partition": "full",
+      "missing": "preserve",
+      "prerequisites": [],
+      "options": {
+        "pattern": "first_middle_last_and_midpoint_half_open_window"
+      },
+      "evidence_contract": "titchy-native",
+      "rows_per_unit": 65536
+    },
+    {
+      "selection": 85,
+      "route": "batch-range",
+      "view": "u64_bitcast_per_f64_column",
+      "operation": "range_with_full_validation",
+      "partition": "full",
+      "missing": "preserve",
+      "prerequisites": [],
+      "options": {
+        "pattern": "midpoint_half_open_window"
+      },
+      "evidence_contract": "titchy-native",
+      "rows_per_unit": 65536
+    },
+    {
+      "selection": 7,
+      "route": "tv-batch",
+      "view": "tv_per_value_column_ms",
+      "operation": "roundtrip",
+      "partition": "full",
+      "missing": "preserve",
+      "prerequisites": [],
+      "options": {},
+      "evidence_contract": "gorilla-tv-native",
+      "rows_per_unit": 512
+    },
+    {
+      "selection": 7,
+      "route": "append-resume",
+      "view": "tv_per_value_column_ms",
+      "operation": "append_snapshot_resume",
+      "partition": "full",
+      "missing": "preserve",
+      "prerequisites": [],
+      "options": {
+        "snapshot_offset": "midpoint"
+      },
+      "evidence_contract": "gorilla-tv-native",
+      "rows_per_unit": 512
+    },
+    {
+      "selection": 7,
+      "route": "iterator",
+      "view": "tv_per_value_column_ms",
+      "operation": "iterate_forward_seek",
+      "partition": "full",
+      "missing": "preserve",
+      "prerequisites": [],
+      "options": {},
+      "evidence_contract": "gorilla-tv-native",
+      "rows_per_unit": 512
+    },
+    {
+      "selection": 31,
+      "route": "field-baseline",
+      "view": "f64_columns",
+      "operation": "roundtrip",
+      "partition": "full",
+      "missing": "preserve",
+      "prerequisites": [],
+      "options": {
+        "mode": "reversible",
+        "rank": 1
+      },
+      "evidence_contract": "zfp-native"
+    },
+    {
+      "selection": 31,
+      "route": "field-modes",
+      "view": "f64_columns",
+      "operation": "roundtrip",
+      "partition": "full",
+      "missing": "preserve",
+      "prerequisites": [],
+      "options": {
+        "mode": "reversible",
+        "rank": 1,
+        "other_modes": "explicit_specialized_cases"
+      },
+      "evidence_contract": "zfp-native"
+    },
+    {
+      "selection": 31,
+      "route": "openmp-encode",
+      "view": "f64_columns",
+      "operation": "encode_worker_comparison",
+      "partition": "full",
+      "missing": "preserve",
+      "prerequisites": [],
+      "options": {
+        "mode": "reversible",
+        "rank": 1,
+        "threads": [
+          1,
+          2
+        ]
+      },
+      "evidence_contract": "zfp-native"
+    },
+    {
+      "selection": 31,
+      "route": "fixed-rate-array",
+      "view": "f64_columns",
+      "operation": "mutate_flush_reopen",
+      "partition": "full",
+      "missing": "require_no_retained_sentinel",
+      "prerequisites": [],
+      "options": {
+        "schema": "distinct_array_format"
+      },
+      "evidence_contract": "zfp-native",
+      "array_layout": {
+        "profile": "zfp_f64_array_mutation_v1",
+        "min_rows": 8,
+        "max_rows": 4096,
+        "requested_rate": 18,
+        "expected_effective_rate": 32,
+        "quality": {
+          "absolute_floor": 1e-05,
+          "relative_to_expected": 1e-06
+        }
+      }
+    },
+    {
+      "selection": 40,
+      "route": "zstd-baseline",
+      "view": "v_bytes_interleaved",
+      "operation": "roundtrip",
+      "partition": "full",
+      "missing": "preserve",
+      "prerequisites": [],
+      "options": {
+        "level": 3
+      },
+      "evidence_contract": "lzbench-native-operations",
+      "bytes_per_unit": 65536
+    },
+    {
+      "selection": 40,
+      "route": "zstd-session",
+      "view": "v_bytes_interleaved",
+      "operation": "session_roundtrip",
+      "partition": "full",
+      "missing": "preserve",
+      "prerequisites": [],
+      "options": {
+        "level": 3,
+        "input_span_bytes": 307,
+        "output_span_bytes": 521
+      },
+      "evidence_contract": "lzbench-native-operations"
+    },
+    {
+      "selection": 40,
+      "route": "zstd-dictionary",
+      "view": "v_bytes_interleaved",
+      "operation": "train_then_test_roundtrip",
+      "partition": "train_test",
+      "missing": "preserve",
+      "prerequisites": [],
+      "options": {
+        "capacity_bytes": 2048,
+        "level": 3
+      },
+      "evidence_contract": "lzbench-native-operations",
+      "training": {
+        "profile": "zstd_bounded_train_v1",
+        "max_samples": 128,
+        "max_sample_bytes": 2048,
+        "min_samples": 8,
+        "min_total_bytes": 8192
+      },
+      "bytes_per_unit": 65536
+    },
+    {
+      "selection": 40,
+      "route": "zstd-workers",
+      "view": "v_bytes_interleaved",
+      "operation": "encode_worker_comparison",
+      "partition": "full",
+      "missing": "preserve",
+      "prerequisites": [],
+      "options": {
+        "level": 3,
+        "job_bytes": 524288,
+        "workers": [
+          0,
+          2
+        ]
+      },
+      "evidence_contract": "lzbench-native-operations",
+      "min_payload": 5243177
+    },
+    {
+      "selection": 39,
+      "route": "xz-baseline",
+      "view": "v_bytes_interleaved",
+      "operation": "roundtrip",
+      "partition": "full",
+      "missing": "preserve",
+      "prerequisites": [],
+      "options": {
+        "preset": 6
+      },
+      "evidence_contract": "lzbench-native-operations",
+      "bytes_per_unit": 65536
+    },
+    {
+      "selection": 39,
+      "route": "xz-session",
+      "view": "v_bytes_interleaved",
+      "operation": "session_roundtrip",
+      "partition": "full",
+      "missing": "preserve",
+      "prerequisites": [],
+      "options": {
+        "input_span_bytes": 307,
+        "output_span_bytes": 521,
+        "block_bytes": 32768
+      },
+      "evidence_contract": "lzbench-native-operations"
+    },
+    {
+      "selection": 39,
+      "route": "xz-workers",
+      "view": "v_bytes_interleaved",
+      "operation": "same_frame_decode_and_encode_worker_comparison",
+      "partition": "full",
+      "missing": "preserve",
+      "prerequisites": [],
+      "options": {
+        "preset": 1,
+        "block_bytes": 131072,
+        "threads": [
+          1,
+          2
+        ],
+        "decoder_memory_limit_bytes": 134217728
+      },
+      "evidence_contract": "lzbench-native-operations",
+      "min_payload": 2097449
+    },
+    {
+      "selection": 4,
+      "route": "selfstar-batch",
+      "view": "f64_columns",
+      "operation": "ordered_roundtrip",
+      "partition": "full",
+      "missing": "preserve",
+      "prerequisites": [],
+      "options": {
+        "native_block_values": 512,
+        "state": "same_column"
+      },
+      "evidence_contract": "selfstar-native"
+    },
+    {
+      "selection": 4,
+      "route": "selfstar-incremental",
+      "view": "f64_columns",
+      "operation": "push_finish_ordered_restore",
+      "partition": "full",
+      "missing": "preserve",
+      "prerequisites": [],
+      "options": {
+        "native_block_values": 512,
+        "state": "same_column"
+      },
+      "evidence_contract": "selfstar-native"
+    },
+    {
+      "selection": 29,
+      "route": "huff0-reference",
+      "view": "v_bytes_interleaved",
+      "operation": "roundtrip",
+      "partition": "full",
+      "missing": "preserve",
+      "prerequisites": [],
+      "options": {},
+      "evidence_contract": "huff0-native",
+      "bytes_per_unit": 65536
+    },
+    {
+      "selection": 29,
+      "route": "huff0-shared-table",
+      "view": "v_bytes_interleaved",
+      "operation": "train_then_test_roundtrip",
+      "partition": "train_test",
+      "missing": "preserve",
+      "prerequisites": [],
+      "options": {},
+      "evidence_contract": "huff0-native",
+      "bytes_per_unit": 32768,
+      "training": {
+        "profile": "huff0_bounded_train_v1",
+        "max_train_bytes": 32768,
+        "streams": [
+          1,
+          4
+        ]
+      }
+    },
+    {
+      "selection": 87,
+      "route": "pbepla-progressive",
+      "view": "f64_columns",
+      "operation": "each_prefix_restore",
+      "partition": "full",
+      "missing": "require_no_retained_sentinel",
+      "prerequisites": [
+        "original_domain_lossy_budget"
+      ],
+      "options": {},
+      "evidence_contract": "pbepla-native"
+    },
+    {
+      "selection": 87,
+      "route": "pbepla-replay",
+      "view": "f64_columns",
+      "operation": "bounded_source_rewind_and_prefix_restore",
+      "partition": "full",
+      "missing": "require_no_retained_sentinel",
+      "prerequisites": [
+        "original_domain_lossy_budget"
+      ],
+      "options": {},
+      "evidence_contract": "pbepla-native"
+    },
+    {
+      "selection": 80,
+      "route": "corad-inference",
+      "view": "f64_multicolumn",
+      "operation": "model_roundtrip",
+      "partition": "test",
+      "missing": "require_no_retained_sentinel",
+      "prerequisites": [
+        "matching_deployment_and_ordered_columns",
+        "original_domain_lossy_budget"
+      ],
+      "options": {},
+      "evidence_contract": "corad-native"
+    },
+    {
+      "selection": 80,
+      "route": "corad-c-training",
+      "view": "f64_multicolumn",
+      "operation": "train_validate_and_separate_heldout_inference",
+      "partition": "train_test",
+      "missing": "require_no_retained_sentinel",
+      "prerequisites": [
+        "bounded_training_column_and_row_selection",
+        "original_domain_lossy_budget"
+      ],
+      "options": {},
+      "evidence_contract": "corad-native"
+    },
+    {
+      "selection": 80,
+      "route": "corad-source-training",
+      "view": "f64_multicolumn",
+      "operation": "train_validate_and_separate_heldout_inference",
+      "partition": "train_test",
+      "missing": "require_no_retained_sentinel",
+      "prerequisites": [
+        "bounded_training_column_and_row_selection",
+        "original_domain_lossy_budget"
+      ],
+      "options": {},
+      "evidence_contract": "corad-native"
+    }
+  ]
+}
